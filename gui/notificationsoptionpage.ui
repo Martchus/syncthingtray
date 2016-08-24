@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QtGui::NotificationsOptionPage</class>
+ <widget class="QWidget" name="QtGui::NotificationsOptionPage">
+  <property name="windowTitle">
+   <string>Notifications</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QCheckBox" name="notifyOnDisconnectCheckBox">
+     <property name="text">
+      <string>Notify on disconnect</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="notifyOnErrorsCheckBox">
+     <property name="text">
+      <string>Notify on errors</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="notifyOnSyncCompleteCheckBox">
+     <property name="text">
+      <string>Notify on sync complete</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="showSyncthingNotificationsCheckBox">
+     <property name="text">
+      <string>Show Syncthing notifications</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

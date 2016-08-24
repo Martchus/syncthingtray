@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QtGui::LauncherOptionPage</class>
+ <widget class="QWidget" name="QtGui::LauncherOptionPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>229</width>
+    <height>164</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Launcher</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
