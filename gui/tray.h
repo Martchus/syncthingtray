@@ -51,8 +51,9 @@ public slots:
 private slots:
     void updateStatusButton(Data::SyncthingStatus status);
     void applySettings();
-    void openDir(const QModelIndex &index);
-    void scanDir(const QModelIndex &index);
+    void openDir(const QModelIndex &dirIndex);
+    void scanDir(const QModelIndex &dirIndex);
+    void pauseResumeDev(const QModelIndex &devIndex);
     void handleStatusButtonClicked();
     void handleWebViewDeleted();
 

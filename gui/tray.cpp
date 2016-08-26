@@ -78,7 +78,6 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     viewIdButton->setToolTip(tr("View own device ID"));
     viewIdButton->setIcon(QIcon::fromTheme(QStringLiteral("view-barcode")));
     viewIdButton->setFlat(true);
-    connect(viewIdButton, &QPushButton::clicked, this, &TrayWidget::showOwnDeviceId);
     cornerFrameLayout->addWidget(viewIdButton);
     auto *showLogButton = new QPushButton(cornerFrame);
     showLogButton->setToolTip(tr("Show Syncthing log"));
@@ -90,7 +89,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     scanAllButton->setToolTip(tr("Rescan all directories"));
     scanAllButton->setIcon(QIcon::fromTheme(QStringLiteral("folder-sync")));
     scanAllButton->setFlat(true);
-    connect(scanAllButton, &QPushButton::clicked, &m_connection, &SyncthingConnection::rescanAllDirs);
+
     cornerFrameLayout->addWidget(scanAllButton);
     m_ui->tabWidget->setCornerWidget(cornerFrame, Qt::BottomRightCorner);
 
@@ -103,6 +102,9 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &TrayWidget::updateStatusButton);
     connect(m_ui->dirsTreeView, &DirView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->dirsTreeView, &DirView::scanDir, this, &TrayWidget::scanDir);
+    connect(m_ui->devsTreeView, &DevView::pauseResumeDev, this, &TrayWidget::pauseResumeDev);
+    connect(scanAllButton, &QPushButton::clicked, &m_connection, &SyncthingConnection::rescanAllDirs);
+    connect(viewIdButton, &QPushButton::clicked, this, &TrayWidget::showOwnDeviceId);
 }
 
 TrayWidget::~TrayWidget()
@@ -238,12 +240,12 @@ void TrayWidget::updateStatusButton(SyncthingStatus status)
     case SyncthingStatus::NotificationsAvailable:
     case SyncthingStatus::Synchronizing:
         m_ui->statusPushButton->setText(tr("Pause"));
-        m_ui->statusPushButton->setToolTip(tr("Syncthing is doing its job, click to pause"));
+        m_ui->statusPushButton->setToolTip(tr("Syncthing is running, click to pause all devices"));
         m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause")));
         break;
     case SyncthingStatus::Paused:
         m_ui->statusPushButton->setText(tr("Continue"));
-        m_ui->statusPushButton->setToolTip(tr("Syncthing is suspended, click to continue"));
+        m_ui->statusPushButton->setToolTip(tr("At least one device is paused, click to resume"));
         m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start")));
         break;
     }
@@ -261,9 +263,9 @@ void TrayWidget::applySettings()
     m_connection.reconnect();
 }
 
-void TrayWidget::openDir(const QModelIndex &index)
+void TrayWidget::openDir(const QModelIndex &dirIndex)
 {
-    if(const SyncthingDir *dir = m_dirModel.dirInfo(index)) {
+    if(const SyncthingDir *dir = m_dirModel.dirInfo(dirIndex)) {
         if(QDir(dir->path).exists()) {
             DesktopUtils::openLocalFileOrDir(dir->path);
         } else {
@@ -272,10 +274,21 @@ void TrayWidget::openDir(const QModelIndex &index)
     }
 }
 
-void TrayWidget::scanDir(const QModelIndex &index)
+void TrayWidget::scanDir(const QModelIndex &dirIndex)
 {
-    if(const SyncthingDir *dir = m_dirModel.dirInfo(index)) {
+    if(const SyncthingDir *dir = m_dirModel.dirInfo(dirIndex)) {
         m_connection.rescan(dir->id);
+    }
+}
+
+void TrayWidget::pauseResumeDev(const QModelIndex &devIndex)
+{
+    if(const SyncthingDev *dev = m_devModel.devInfo(devIndex)) {
+        if(dev->paused) {
+            m_connection.resume(dev->id);
+        } else {
+            m_connection.pause(dev->id);
+        }
     }
 }
 
@@ -417,7 +430,7 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
         break;
     case SyncthingStatus::Paused:
         setIcon(m_statusIconPause);
-        setToolTip(tr("Syncthing has been suspended"));
+        setToolTip(tr("At least one device is paused"));
         break;
     case SyncthingStatus::Synchronizing:
         setIcon(m_statusIconSync);

@@ -12,8 +12,17 @@ Qt 5-based tray application for [Syncthing](https://github.com/syncthing/syncthi
   * Can be built without web view support as well (then the web UI is opened in the regular browser)
 
 ## Screenshots
-### Openbox/Tint2
-![Openbox/Tint2](/resources/screenshots/1.png?raw=true "Under Openbox with Tint2")
+### Under Openbox/Tint2
+![Openbox/Tint2](/resources/screenshots/tint2.png?raw=true)
+
+### Under Plasma 5 (dark color theme)
+![Plasma 5](/resources/screenshots/plasma.png?raw=true)
+
+### Settings dialog (dark color theme)
+![Settings dialog](/resources/screenshots/settings.png?raw=true)
+
+### Web view (dark color theme)
+![Web view](/resources/screenshots/webview.png?raw=true)
 
 ## Download / binary repository
 I will provide packages for Arch Linux and Windows when releasing. For more information checkout my

@@ -34,6 +34,7 @@ set(WIDGETS_HEADER_FILES
     gui/webviewdialog.h
     gui/webviewprovider.h
     gui/dirbuttonsitemdelegate.h
+    gui/devbuttonsitemdelegate.h
     gui/dirview.h
     gui/devview.h
 )
@@ -45,6 +46,7 @@ set(WIDGETS_SRC_FILES
     gui/webpage.cpp
     gui/webviewdialog.cpp
     gui/dirbuttonsitemdelegate.cpp
+    gui/devbuttonsitemdelegate.cpp
     gui/dirview.cpp
     gui/devview.cpp
     resources/icons.qrc

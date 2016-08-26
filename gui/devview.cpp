@@ -1,4 +1,5 @@
 #include "./devview.h"
+#include "./devbuttonsitemdelegate.h"
 
 #include <QHeaderView>
 #include <QMouseEvent>
@@ -14,8 +15,26 @@ DevView::DevView(QWidget *parent) :
 {
     header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     header()->hide();
+    setItemDelegateForColumn(1, new DevButtonsItemDelegate(this));
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &DevView::customContextMenuRequested, this, &DevView::showContextMenu);
+}
+
+void DevView::mouseReleaseEvent(QMouseEvent *event)
+{
+    QTreeView::mouseReleaseEvent(event);
+    const QPoint pos(event->pos());
+    const QModelIndex clickedIndex(indexAt(event->pos()));
+    if(clickedIndex.isValid() && clickedIndex.column() == 1 && !clickedIndex.parent().isValid()) {
+        const QRect itemRect(visualRect(clickedIndex));
+        //if(pos.x() > itemRect.right() - 34) {
+            if(pos.x() > itemRect.right() - 17) {
+                emit pauseResumeDev(clickedIndex);
+        //    } else {
+        //        emit scanDir(clickedIndex);
+        //    }
+        }
+    }
 }
 
 void DevView::showContextMenu()

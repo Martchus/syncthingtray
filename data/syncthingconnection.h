@@ -55,10 +55,11 @@ enum class DevStatus
 {
     Unknown,
     Disconnected,
+    OwnDevice,
     Idle,
     Synchronizing,
-    Paused,
-    OutOfSync
+    OutOfSync,
+    Rejected,
 };
 
 struct SyncthingDev
@@ -71,6 +72,12 @@ struct SyncthingDev
     DevStatus status;
     int progressPercentage;
     bool introducer;
+    bool paused;
+    int totalIncomingTraffic;
+    int totalOutgoingTraffic;
+    QString connectionAddress;
+    QString connectionType;
+    QString clientVersion;
 };
 
 struct SyncthingLogEntry
@@ -154,6 +161,14 @@ Q_SIGNALS:
      */
     void dirStatusChanged(const SyncthingDir &dir, int index);
 
+    /*!
+     * \brief Indicates the status of the specified \a dev changed.
+     */
+    void devStatusChanged(const SyncthingDev &dev, int index);
+
+    /*!
+     * \brief Indicates a new Syncthing notification is available.
+     */
     void newNotification(const QString &message);
 
     /*!
@@ -179,17 +194,19 @@ Q_SIGNALS:
 private Q_SLOTS:
     void requestConfig();
     void requestStatus();
+    void requestConnections();
     void requestEvents();
+    void abortAllRequests();
 
     void readConfig();
     void readDirs(const QJsonArray &dirs);
     void readDevs(const QJsonArray &devs);
-
     void readStatus();
-
+    void readConnections();
     void readEvents();
-    void readStartingEvent(const QJsonObject &event);
-    void readStatusChangedEvent(const QJsonObject &event);
+    void readStartingEvent(const QJsonObject &eventData);
+    void readStatusChangedEvent(const QJsonObject &eventData);
+    void readDeviceEvent(const QString &eventType, const QJsonObject &eventData);
     void readRescan();
     void readPauseResume();
 
@@ -200,6 +217,8 @@ private:
     QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
     SyncthingDir *findDirInfo(const QString &dir, int &row);
+    SyncthingDev *findDevInfo(const QString &dev, int &row);
+    void continueConnecting();
 
     QString m_syncthingUrl;
     QByteArray m_apiKey;
@@ -211,10 +230,15 @@ private:
     int m_lastEventId;
     QString m_configDir;
     QString m_myId;
+    int m_totalIncomingTraffic;
+    int m_totalOutgoingTraffic;
     QNetworkReply *m_configReply;
     QNetworkReply *m_statusReply;
+    QNetworkReply *m_connectionsReply;
     QNetworkReply *m_eventsReply;
     bool m_unreadNotifications;
+    bool m_hasConfig;
+    bool m_hasStatus;
     std::vector<SyncthingDir> m_dirs;
     std::vector<SyncthingDev> m_devs;
 };

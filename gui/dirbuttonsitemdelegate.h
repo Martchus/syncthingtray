@@ -13,7 +13,6 @@ public:
     DirButtonsItemDelegate(QObject *parent);
 
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const;
-    //QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private:
     const QPixmap m_refreshIcon;

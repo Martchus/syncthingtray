@@ -11,6 +11,12 @@ class DevView : public QTreeView
 public:
     DevView(QWidget *parent = nullptr);
 
+Q_SIGNALS:
+    void pauseResumeDev(const QModelIndex &index);
+
+protected:
+    void mouseReleaseEvent(QMouseEvent *event);
+
 private Q_SLOTS:
     void showContextMenu();
     void copySelectedItem();

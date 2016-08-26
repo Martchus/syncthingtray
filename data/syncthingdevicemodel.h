@@ -15,6 +15,13 @@ class SyncthingDeviceModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
+    enum SyncthingDevideModelRole
+    {
+        DeviceStatus = Qt::UserRole + 1,
+        DevicePaused,
+        IsOwnDevice
+    };
+
     explicit SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent = nullptr);
 
 public Q_SLOTS:
@@ -26,6 +33,11 @@ public Q_SLOTS:
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
     const SyncthingDev *devInfo(const QModelIndex &index) const;
+
+private slots:
+    void newConfig();
+    void newDevices();
+    void devStatusChanged(const SyncthingDev &, int index);
 
 private:
     Data::SyncthingConnection &m_connection;

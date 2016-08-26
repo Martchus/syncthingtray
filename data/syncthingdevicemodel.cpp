@@ -14,7 +14,9 @@ SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObj
     m_pausedIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-pause.svg"))),
     m_otherIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-default.svg")))
 {
-
+    connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingDeviceModel::newConfig);
+    connect(&m_connection, &SyncthingConnection::newDevices, this, &SyncthingDeviceModel::newDevices);
+    connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &SyncthingDeviceModel::devStatusChanged);
 }
 
 /*!
@@ -111,13 +113,18 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 switch(index.column()) {
                 case 0: return dev.name.isEmpty() ? dev.id : dev.name;
                 case 1:
-                    switch(dev.status) {
-                    case DevStatus::Unknown: return tr("Unknown status");
-                    case DevStatus::Idle: return tr("Idle");
-                    case DevStatus::Disconnected: return tr("Idle");
-                    case DevStatus::Synchronizing: return dev.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dev.progressPercentage) : tr("Synchronizing");
-                    case DevStatus::Paused: return tr("Paused");
-                    case DevStatus::OutOfSync: return tr("Out of sync");
+                    if(dev.paused) {
+                        return tr("Paused");
+                    } else {
+                        switch(dev.status) {
+                        case DevStatus::Unknown: return tr("Unknown status");
+                        case DevStatus::OwnDevice: return tr("Own device");
+                        case DevStatus::Idle: return tr("Idle");
+                        case DevStatus::Disconnected: return tr("Disconnected");
+                        case DevStatus::Synchronizing: return dev.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dev.progressPercentage) : tr("Synchronizing");
+                        case DevStatus::OutOfSync: return tr("Out of sync");
+                        case DevStatus::Rejected: return tr("Rejected");
+                        }
                     }
                     break;
                 }
@@ -125,13 +132,18 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             case Qt::DecorationRole:
                 switch(index.column()) {
                 case 0:
-                    switch(dev.status) {
-                    case DevStatus::Unknown:
-                    case DevStatus::Disconnected: return m_unknownIcon;
-                    case DevStatus::Idle: return m_idleIcon;
-                    case DevStatus::Synchronizing: return m_syncIcon;
-                    case DevStatus::Paused: return m_pausedIcon;
-                    case DevStatus::OutOfSync: return m_errorIcon;
+                    if(dev.paused) {
+                        return m_pausedIcon;
+                    } else {
+                        switch(dev.status) {
+                        case DevStatus::Unknown:
+                        case DevStatus::Disconnected: return m_unknownIcon;
+                        case DevStatus::OwnDevice:
+                        case DevStatus::Idle: return m_idleIcon;
+                        case DevStatus::Synchronizing: return m_syncIcon;
+                        case DevStatus::OutOfSync:
+                        case DevStatus::Rejected: return m_errorIcon;
+                        }
                     }
                     break;
                 }
@@ -146,17 +158,26 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 switch(index.column()) {
                 case 0: break;
                 case 1:
-                    switch(dev.status) {
-                    case DevStatus::Unknown: break;
-                    case DevStatus::Disconnected: break;
-                    case DevStatus::Idle: return QColor(Qt::darkGreen);
-                    case DevStatus::Synchronizing: return QColor(Qt::blue);
-                    case DevStatus::Paused: break;
-                    case DevStatus::OutOfSync: return QColor(Qt::red);
+                    if(!dev.paused) {
+                        switch(dev.status) {
+                        case DevStatus::Unknown: break;
+                        case DevStatus::Disconnected: break;
+                        case DevStatus::OwnDevice:
+                        case DevStatus::Idle: return QColor(Qt::darkGreen);
+                        case DevStatus::Synchronizing: return QColor(Qt::darkBlue);
+                        case DevStatus::OutOfSync:
+                        case DevStatus::Rejected: return QColor(Qt::red);
+                        }
                     }
                     break;
                 }
                 break;
+            case DeviceStatus:
+                return static_cast<int>(dev.status);
+            case DevicePaused:
+                return dev.paused;
+            case IsOwnDevice:
+                return dev.status == DevStatus::OwnDevice;
             default:
                 ;
             }
@@ -190,6 +211,24 @@ int SyncthingDeviceModel::columnCount(const QModelIndex &parent) const
     } else {
         return 0;
     }
+}
+
+void SyncthingDeviceModel::newConfig()
+{
+    beginResetModel();
+}
+
+void SyncthingDeviceModel::newDevices()
+{
+    endResetModel();
+}
+
+void SyncthingDeviceModel::devStatusChanged(const SyncthingDev &, int index)
+{
+    const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
+    emit dataChanged(modelIndex1, modelIndex1, QVector<int>() << Qt::DecorationRole);
+    const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
+    emit dataChanged(modelIndex2, modelIndex2, QVector<int>() << Qt::DisplayRole << Qt::ForegroundRole << DeviceStatus);
 }
 
 } // namespace Data
