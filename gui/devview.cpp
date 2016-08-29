@@ -41,7 +41,7 @@ void DevView::showContextMenu()
 {
     if(selectionModel() && selectionModel()->selectedRows(0).size() == 1) {
         QMenu menu;
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy")), tr("Copy")), &QAction::triggered, this, &DevView::copySelectedItem);
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))), tr("Copy")), &QAction::triggered, this, &DevView::copySelectedItem);
         menu.exec(QCursor::pos());
     }
 }

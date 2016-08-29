@@ -23,8 +23,8 @@ inline int centerObj(int avail, int size)
 
 DevButtonsItemDelegate::DevButtonsItemDelegate(QObject* parent) :
     QStyledItemDelegate(parent),
-    m_pauseIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause")).pixmap(QSize(16, 16))),
-    m_resumeIcon(QIcon::fromTheme(QStringLiteral("media-playback-start")).pixmap(QSize(16, 16)))
+    m_pauseIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg"))).pixmap(QSize(16, 16))),
+    m_resumeIcon(QIcon::fromTheme(QStringLiteral("media-playback-start"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-start.svg"))).pixmap(QSize(16, 16)))
 {}
 
 void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const

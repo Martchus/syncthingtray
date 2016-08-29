@@ -54,7 +54,8 @@ private slots:
     void openDir(const QModelIndex &dirIndex);
     void scanDir(const QModelIndex &dirIndex);
     void pauseResumeDev(const QModelIndex &devIndex);
-    void handleStatusButtonClicked();
+    void changeStatus();
+    void updateTraffic(int totalIncomingTraffic, int totalOutgoingTraffic);
     void handleWebViewDeleted();
 
 private:

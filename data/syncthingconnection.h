@@ -36,19 +36,35 @@ enum class DirStatus
     OutOfSync
 };
 
-struct SyncthingDir
+struct DirErrors
 {
+    DirErrors(const QString &message, const QString &path) :
+        message(message),
+        path(path)
+    {}
+    QString message;
+    QString path;
+};
+
+struct SyncthingDir
+{    
     QString id;
     QString label;
     QString path;
     QStringList devices;
-    bool readOnly;
-    bool ignorePermissions;
-    bool autoNormalize;
-    int rescanInterval;
-    int minDiskFreePercentage;
-    DirStatus status;
-    int progressPercentage;
+    bool readOnly = false;
+    bool ignorePermissions = false;
+    bool autoNormalize = false;
+    int rescanInterval = 0;
+    int minDiskFreePercentage = 0;
+    DirStatus status = DirStatus::Unknown;
+    int progressPercentage = 0;
+    std::vector<DirErrors> errors;
+    int globalBytes = 0, globalDeleted = 0, globalFiles = 0;
+    int localBytes = 0, localDeleted = 0, localFiles = 0;
+    int neededByted = 0, neededFiles = 0;
+
+    bool assignStatus(const QString &statusStr);
 };
 
 enum class DevStatus
@@ -70,11 +86,11 @@ struct SyncthingDev
     QString compression;
     QString certName;
     DevStatus status;
-    int progressPercentage;
-    bool introducer;
-    bool paused;
-    int totalIncomingTraffic;
-    int totalOutgoingTraffic;
+    int progressPercentage = 0;
+    bool introducer = false;
+    bool paused = false;
+    int totalIncomingTraffic = 0;
+    int totalOutgoingTraffic = 0;
     QString connectionAddress;
     QString connectionType;
     QString clientVersion;
@@ -94,6 +110,8 @@ class SyncthingConnection : public QObject
     Q_PROPERTY(SyncthingStatus status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString configDir READ configDir NOTIFY configDirChanged)
     Q_PROPERTY(QString myId READ myId NOTIFY myIdChanged)
+    Q_PROPERTY(int totalIncomingTraffic READ totalIncomingTraffic NOTIFY trafficChanged)
+    Q_PROPERTY(int totalOutgoingTraffic READ totalOutgoingTraffic NOTIFY trafficChanged)
 
 public:
     explicit SyncthingConnection(const QString &syncthingUrl = QStringLiteral("http://localhost:8080"), const QByteArray &apiKey = QByteArray(), QObject *parent = nullptr);
@@ -111,6 +129,8 @@ public:
     bool isConnected() const;
     const QString &configDir() const;
     const QString &myId() const;
+    int totalIncomingTraffic() const;
+    int totalOutgoingTraffic() const;
     const std::vector<SyncthingDir> &dirInfo() const;
     const std::vector<SyncthingDev> &devInfo() const;
     void requestQrCode(const QString &text, std::function<void (const QPixmap &)> callback);
@@ -191,6 +211,11 @@ Q_SIGNALS:
      */
     void myIdChanged(const QString &myNewId);
 
+    /*!
+     * \brief Indicates totalIncomingTraffic() or totalOutgoingTraffic() has changed.
+     */
+    void trafficChanged(int totalIncomingTraffic, int totalOutgoingTraffic);
+
 private Q_SLOTS:
     void requestConfig();
     void requestStatus();
@@ -206,6 +231,8 @@ private Q_SLOTS:
     void readEvents();
     void readStartingEvent(const QJsonObject &eventData);
     void readStatusChangedEvent(const QJsonObject &eventData);
+    void readDownloadProgressEvent(const QJsonObject &eventData);
+    void readDirEvent(const QString &eventType, const QJsonObject &eventData);
     void readDeviceEvent(const QString &eventType, const QJsonObject &eventData);
     void readRescan();
     void readPauseResume();
@@ -329,6 +356,22 @@ inline const QString &SyncthingConnection::configDir() const
 inline const QString &SyncthingConnection::myId() const
 {
     return m_myId;
+}
+
+/*!
+ * \brief Returns the total incoming traffic.
+ */
+inline int SyncthingConnection::totalIncomingTraffic() const
+{
+    return m_totalIncomingTraffic;
+}
+
+/*!
+ * \brief Returns the total outgoing traffic.
+ */
+inline int SyncthingConnection::totalOutgoingTraffic() const
+{
+    return m_totalOutgoingTraffic;
 }
 
 /*!

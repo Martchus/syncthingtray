@@ -29,6 +29,7 @@ bool &notifyOnDisconnect();
 bool &notifyOnErrors();
 bool &notifyOnSyncComplete();
 bool &showSyncthingNotifications();
+bool &showTraffic();
 
 bool &launchSynchting();
 QString &syncthingCommand();

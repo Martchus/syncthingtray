@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>QtGui::NotificationsOptionPage</class>
  <widget class="QWidget" name="QtGui::NotificationsOptionPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>175</width>
+    <height>156</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Notifications</string>
   </property>
@@ -16,7 +24,14 @@
    <item>
     <widget class="QCheckBox" name="notifyOnErrorsCheckBox">
      <property name="text">
-      <string>Notify on errors</string>
+      <string>Notify on internal errors</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="showSyncthingNotificationsCheckBox">
+     <property name="text">
+      <string>Notify on Syncthing errors</string>
      </property>
     </widget>
    </item>
@@ -24,13 +39,6 @@
     <widget class="QCheckBox" name="notifyOnSyncCompleteCheckBox">
      <property name="text">
       <string>Notify on sync complete</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="showSyncthingNotificationsCheckBox">
-     <property name="text">
-      <string>Show Syncthing notifications</string>
      </property>
     </widget>
    </item>

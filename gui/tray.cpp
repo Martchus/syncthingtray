@@ -17,6 +17,8 @@
 #include <qtutilities/misc/dialogutils.h>
 #include <qtutilities/misc/desktoputils.h>
 
+#include <c++utilities/conversion/stringconversion.h>
+
 #include <QApplication>
 #include <QSvgRenderer>
 #include <QPainter>
@@ -25,8 +27,6 @@
 #include <QDesktopServices>
 #include <QMainWindow>
 #include <QMessageBox>
-#include <QCursor>
-#include <QDesktopWidget>
 #include <QLabel>
 #include <QClipboard>
 #include <QUrl>
@@ -37,6 +37,7 @@
 #include <functional>
 
 using namespace ApplicationUtilities;
+using namespace ConversionUtilities;
 using namespace Dialogs;
 using namespace Data;
 using namespace std;
@@ -76,30 +77,33 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     cornerFrame->setLayout(cornerFrameLayout);
     auto *viewIdButton = new QPushButton(cornerFrame);
     viewIdButton->setToolTip(tr("View own device ID"));
-    viewIdButton->setIcon(QIcon::fromTheme(QStringLiteral("view-barcode")));
+    viewIdButton->setIcon(QIcon::fromTheme(QStringLiteral("view-barcode"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-barcode.svg"))));
     viewIdButton->setFlat(true);
     cornerFrameLayout->addWidget(viewIdButton);
     auto *showLogButton = new QPushButton(cornerFrame);
     showLogButton->setToolTip(tr("Show Syncthing log"));
-    showLogButton->setIcon(QIcon::fromTheme(QStringLiteral("text-plain")));
+    showLogButton->setIcon(QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/text-x-generic.svg"))));
     showLogButton->setFlat(true);
     connect(showLogButton, &QPushButton::clicked, this, &TrayWidget::showLog);
     cornerFrameLayout->addWidget(showLogButton);
     auto *scanAllButton = new QPushButton(cornerFrame);
     scanAllButton->setToolTip(tr("Rescan all directories"));
-    scanAllButton->setIcon(QIcon::fromTheme(QStringLiteral("folder-sync")));
+    scanAllButton->setIcon(QIcon::fromTheme(QStringLiteral("folder-sync"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/folder-sync.svg"))));
     scanAllButton->setFlat(true);
 
     cornerFrameLayout->addWidget(scanAllButton);
     m_ui->tabWidget->setCornerWidget(cornerFrame, Qt::BottomRightCorner);
 
+    m_ui->trafficIconLabel->setPixmap(QIcon::fromTheme(QStringLiteral("network-card"), QIcon(QStringLiteral(":/icons/hicolor/scalable/devices/network-card.svg"))).pixmap(32));
+
     // connect signals and slots
-    connect(m_ui->statusPushButton, &QPushButton::clicked, this, &TrayWidget::handleStatusButtonClicked);
+    connect(m_ui->statusPushButton, &QPushButton::clicked, this, &TrayWidget::changeStatus);
     connect(m_ui->closePushButton, &QPushButton::clicked, &QApplication::quit);
     connect(m_ui->aboutPushButton, &QPushButton::clicked, this, &TrayWidget::showAboutDialog);
     connect(m_ui->webUiPushButton, &QPushButton::clicked, this, &TrayWidget::showWebUi);
     connect(m_ui->settingsPushButton, &QPushButton::clicked, this, &TrayWidget::showSettingsDialog);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &TrayWidget::updateStatusButton);
+    connect(&m_connection, &SyncthingConnection::trafficChanged, this, &TrayWidget::updateTraffic);
     connect(m_ui->dirsTreeView, &DirView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->dirsTreeView, &DirView::scanDir, this, &TrayWidget::scanDir);
     connect(m_ui->devsTreeView, &DevView::pauseResumeDev, this, &TrayWidget::pauseResumeDev);
@@ -133,7 +137,7 @@ void TrayWidget::showSettingsDialog()
 void TrayWidget::showAboutDialog()
 {
     if(!m_aboutDlg) {
-        m_aboutDlg = new AboutDialog(this, tr("Tray application for Syncthing"), QImage(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+        m_aboutDlg = new AboutDialog(this, QString(), QStringLiteral(APP_AUTHOR "\nfallback icons from KDE/Breeze project\nSyncthing icons from Syncthing project"), QString(), QString(), tr("Tray application for Syncthing"), QImage(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
         m_aboutDlg->setWindowTitle(tr("About - Syncthing Tray"));
         m_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     }
@@ -234,19 +238,19 @@ void TrayWidget::updateStatusButton(SyncthingStatus status)
     case SyncthingStatus::Disconnected:
         m_ui->statusPushButton->setText(tr("Connect"));
         m_ui->statusPushButton->setToolTip(tr("Not connected to Syncthing, click to connect"));
-        m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh")));
+        m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
         break;
     case SyncthingStatus::Default:
     case SyncthingStatus::NotificationsAvailable:
     case SyncthingStatus::Synchronizing:
         m_ui->statusPushButton->setText(tr("Pause"));
         m_ui->statusPushButton->setToolTip(tr("Syncthing is running, click to pause all devices"));
-        m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause")));
+        m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg"))));
         break;
     case SyncthingStatus::Paused:
         m_ui->statusPushButton->setText(tr("Continue"));
         m_ui->statusPushButton->setToolTip(tr("At least one device is paused, click to resume"));
-        m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start")));
+        m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-resume.svg"))));
         break;
     }
 }
@@ -261,6 +265,7 @@ void TrayWidget::applySettings()
         m_connection.setCredentials(QString(), QString());
     }
     m_connection.reconnect();
+    m_ui->trafficFrame->setVisible(Settings::showTraffic());
 }
 
 void TrayWidget::openDir(const QModelIndex &dirIndex)
@@ -292,7 +297,7 @@ void TrayWidget::pauseResumeDev(const QModelIndex &devIndex)
     }
 }
 
-void TrayWidget::handleStatusButtonClicked()
+void TrayWidget::changeStatus()
 {
     switch(m_connection.status()) {
     case SyncthingStatus::Disconnected:
@@ -307,6 +312,12 @@ void TrayWidget::handleStatusButtonClicked()
         m_connection.resumeAllDevs();
         break;
     }
+}
+
+void TrayWidget::updateTraffic(int totalIncomingTraffic, int totalOutgoingTraffic)
+{
+    m_ui->inTrafficLabel->setText(totalIncomingTraffic >= 0 ? QString::fromUtf8(dataSizeToString(totalIncomingTraffic).data()) : tr("unknown"));
+    m_ui->outTrafficLabel->setText(totalOutgoingTraffic >= 0 ? QString::fromUtf8(dataSizeToString(totalOutgoingTraffic).data()) : tr("unknown"));
 }
 
 void TrayWidget::handleWebViewDeleted()
@@ -343,11 +354,11 @@ TrayIcon::TrayIcon(QObject *parent) :
     m_status(SyncthingStatus::Disconnected)
 {
     // set context menu
-    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("internet-web-browser")), tr("Web UI")), &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showWebUi);
-    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("preferences-other")), tr("Settings")), &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showSettingsDialog);
-    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("help-about")), tr("About")), &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showAboutDialog);
+    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("internet-web-browser"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))), tr("Web UI")), &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showWebUi);
+    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))), tr("Settings")), &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showSettingsDialog);
+    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("help-about"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/help-about.svg"))), tr("About")), &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showAboutDialog);
     m_contextMenu.addSeparator();
-    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("window-close")), tr("Close")), &QAction::triggered, &QCoreApplication::quit);
+    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("window-close"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))), tr("Close")), &QAction::triggered, &QCoreApplication::quit);
     setContextMenu(&m_contextMenu);
 
     // set initial status
@@ -372,22 +383,11 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
         if(false) {
             m_trayMenu.widget()->showWebUi();
         } else {
+            m_trayMenu.resize(m_trayMenu.sizeHint());
             // when showing the menu manually
             // move the menu to the closest of the currently available screen
             // this implies that the tray icon is located near the edge of the screen; otherwise this behavior makes no sense
-            const QPoint cursorPos(QCursor::pos());
-            const QRect availableGeometry(QApplication::desktop()->availableGeometry(cursorPos));
-            Qt::Alignment alignment = 0;
-            alignment |= (cursorPos.x() - availableGeometry.left() < availableGeometry.right() - cursorPos.x() ? Qt::AlignLeft : Qt::AlignRight);
-            alignment |= (cursorPos.y() - availableGeometry.top() < availableGeometry.bottom() - cursorPos.y() ? Qt::AlignTop : Qt::AlignBottom);
-            m_trayMenu.setGeometry(
-                QStyle::alignedRect(
-                    Qt::LeftToRight,
-                    alignment,
-                    m_trayMenu.sizeHint(),
-                    availableGeometry
-                )
-            );
+            cornerWidget(&m_trayMenu);
             m_trayMenu.show();
         }
         break;

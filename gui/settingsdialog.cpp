@@ -5,6 +5,7 @@
 
 #include "ui_connectionoptionpage.h"
 #include "ui_notificationsoptionpage.h"
+#include "ui_appearanceoptionpage.h"
 #include "ui_launcheroptionpage.h"
 #include "ui_webviewoptionpage.h"
 
@@ -113,6 +114,29 @@ void NotificationsOptionPage::reset()
     }
 }
 
+// AppearanceOptionPage
+AppearanceOptionPage::AppearanceOptionPage(QWidget *parentWidget) :
+    AppearanceOptionPageBase(parentWidget)
+{}
+
+AppearanceOptionPage::~AppearanceOptionPage()
+{}
+
+bool AppearanceOptionPage::apply()
+{
+    if(hasBeenShown()) {
+        showTraffic() = ui()->showTrafficCheckBox->isChecked();
+    }
+    return true;
+}
+
+void AppearanceOptionPage::reset()
+{
+    if(hasBeenShown()) {
+        ui()->showTrafficCheckBox->setChecked(showTraffic());
+    }
+}
+
 // LauncherOptionPage
 LauncherOptionPage::LauncherOptionPage(QWidget *parentWidget) :
     LauncherOptionPageBase(parentWidget)
@@ -187,14 +211,14 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     category->setDisplayName(tr("Tray"));
     category->assignPages(QList<Dialogs::OptionPage *>()
                           << new ConnectionOptionPage(connection) << new NotificationsOptionPage
-                          << new LauncherOptionPage);
+                          << new AppearanceOptionPage << new LauncherOptionPage);
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     categories << category;
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Web view"));
     category->assignPages(QList<Dialogs::OptionPage *>() << new WebViewOptionPage);
-    category->setIcon(QIcon::fromTheme(QStringLiteral("internet-web-browser"), QIcon(QStringLiteral(":/icons/hicolor/scalable/app/"))));
+    category->setIcon(QIcon::fromTheme(QStringLiteral("internet-web-browser"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))));
     categories << category;
 
     categories << Settings::qtSettings().category();
@@ -202,7 +226,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     categoryModel()->setCategories(categories);
 
     setMinimumSize(800, 450);
-    setWindowIcon(QIcon::fromTheme(QStringLiteral("preferences-other")));
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
 
     // some settings could be applied without restarting the application, good idea?
     //connect(this, &Dialogs::SettingsDialog::applied, bind(&Dialogs::QtSettings::apply, &Settings::qtSettings()));

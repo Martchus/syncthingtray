@@ -18,8 +18,8 @@ inline int centerObj(int avail, int size)
 
 DirButtonsItemDelegate::DirButtonsItemDelegate(QObject* parent) :
     QStyledItemDelegate(parent),
-    m_refreshIcon(QIcon::fromTheme(QStringLiteral("view-refresh")).pixmap(QSize(16, 16))),
-    m_folderIcon(QIcon::fromTheme(QStringLiteral("folder-open")).pixmap(QSize(16, 16)))
+    m_refreshIcon(QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))).pixmap(QSize(16, 16))),
+    m_folderIcon(QIcon::fromTheme(QStringLiteral("folder-open"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg"))).pixmap(QSize(16, 16)))
 {}
 
 void DirButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const

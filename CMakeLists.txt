@@ -55,6 +55,7 @@ set(WIDGETS_UI_FILES
     gui/traywidget.ui
     gui/connectionoptionpage.ui
     gui/notificationsoptionpage.ui
+    gui/appearanceoptionpage.ui
     gui/launcheroptionpage.ui
     gui/webviewoptionpage.ui
 )
@@ -75,6 +76,24 @@ set(ICON_FILES
 
 set(DOC_FILES
     README.md
+)
+
+set(REQUIRED_ICONS
+    network-card
+    window-close
+    edit-copy
+    preferences-other
+    view-barcode
+    folder-open
+    media-playback-start
+    text-plain
+    help-about
+    media-playback-pause
+    view-refresh
+    folder
+    network-server
+    folder-sync
+    internet-web-browser
 )
 
 # find c++utilities

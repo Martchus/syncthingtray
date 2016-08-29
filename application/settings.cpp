@@ -56,6 +56,11 @@ bool &showSyncthingNotifications()
     static bool v = true;
     return v;
 }
+bool &showTraffic()
+{
+    static bool v = true;
+    return v;
+}
 bool &launchSynchting()
 {
     static bool v = false;
@@ -111,7 +116,8 @@ void restore()
     notifyOnDisconnect() = settings.value(QStringLiteral("notifyOnDisconnect"), true).toBool();
     notifyOnErrors() = settings.value(QStringLiteral("notifyOnErrors"), true).toBool();
     notifyOnSyncComplete() = settings.value(QStringLiteral("notifyOnSyncComplete"), true).toBool();
-    notifyOnSyncComplete() = settings.value(QStringLiteral("showSyncthingNotifications"), true).toBool();
+    showSyncthingNotifications() = settings.value(QStringLiteral("showSyncthingNotifications"), true).toBool();
+    showTraffic() = settings.value(QStringLiteral("showTraffic"), true).toBool();
     launchSynchting() = settings.value(QStringLiteral("launchSynchting"), false).toBool();
     syncthingCommand() = settings.value(QStringLiteral("syncthingCommand"), QStringLiteral("syncthing")).toString();
     settings.endGroup();
@@ -142,6 +148,7 @@ void save()
     settings.setValue(QStringLiteral("notifyOnErrors"), notifyOnErrors());
     settings.setValue(QStringLiteral("notifyOnSyncComplete"), notifyOnSyncComplete());
     settings.setValue(QStringLiteral("showSyncthingNotifications"), showSyncthingNotifications());
+    settings.setValue(QStringLiteral("showTraffic"), showTraffic());
     settings.setValue(QStringLiteral("launchSynchting"), launchSynchting());
     settings.setValue(QStringLiteral("syncthingCommand"), syncthingCommand());
     settings.endGroup();
