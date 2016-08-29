@@ -2,6 +2,7 @@
 #define SYNCTHINGCONNECTION_H
 
 #include <QObject>
+#include <QDateTime>
 
 #include <functional>
 #include <vector>
@@ -233,7 +234,7 @@ private Q_SLOTS:
     void readStatusChangedEvent(const QJsonObject &eventData);
     void readDownloadProgressEvent(const QJsonObject &eventData);
     void readDirEvent(const QString &eventType, const QJsonObject &eventData);
-    void readDeviceEvent(const QString &eventType, const QJsonObject &eventData);
+    void readDeviceEvent(const QDateTime &eventTime, const QString &eventType, const QJsonObject &eventData);
     void readRescan();
     void readPauseResume();
 
@@ -268,6 +269,7 @@ private:
     bool m_hasStatus;
     std::vector<SyncthingDir> m_dirs;
     std::vector<SyncthingDev> m_devs;
+    QDateTime m_lastConnectionsUpdate;
 };
 
 /*!

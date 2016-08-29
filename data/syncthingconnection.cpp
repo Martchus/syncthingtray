@@ -576,6 +576,7 @@ void SyncthingConnection::readConnections()
                 }
                 ++index;
             }
+            m_lastConnectionsUpdate = QDateTime::currentDateTime();
         } else {
             emit error(tr("Unable to parse connections: ") + jsonError.errorString());
         }
@@ -608,6 +609,7 @@ void SyncthingConnection::readEvents()
             for(const QJsonValue &eventVal : replyArray) {
                 const QJsonObject event = eventVal.toObject();
                 m_lastEventId = event.value(QStringLiteral("id")).toInt(m_lastEventId);
+                const QDateTime eventTime(QDateTime::fromString(event.value(QStringLiteral("time")).toString(), Qt::ISODate));
                 const QString eventType(event.value(QStringLiteral("type")).toString());
                 const QJsonObject eventData(event.value(QStringLiteral("data")).toObject());
                 if(eventType == QLatin1String("Starting")) {
@@ -619,7 +621,7 @@ void SyncthingConnection::readEvents()
                 } else if(eventType.startsWith(QLatin1String("Folder"))) {
                     readDirEvent(eventType, eventData);
                 } else if(eventType.startsWith(QLatin1String("Device"))) {
-                    readDeviceEvent(eventType, eventData);
+                    readDeviceEvent(eventTime, eventType, eventData);
                 }
             }
         } else {
@@ -749,8 +751,11 @@ void SyncthingConnection::readDirEvent(const QString &eventType, const QJsonObje
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readDeviceEvent(const QString &eventType, const QJsonObject &eventData)
+void SyncthingConnection::readDeviceEvent(const QDateTime &eventTime, const QString &eventType, const QJsonObject &eventData)
 {
+    if(eventTime.isValid() && m_lastConnectionsUpdate.isValid() && eventTime < m_lastConnectionsUpdate) {
+        return; // ignore device events happened before the last connections update
+    }
     const QString dev(eventData.value(QStringLiteral("device")).toString());
     if(!dev.isEmpty()) {
         // dev status changed, depending on event type
