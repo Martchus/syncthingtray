@@ -28,7 +28,9 @@ set(SRC_FILES
 
 set(WIDGETS_HEADER_FILES
     application/settings.h
-    gui/tray.h
+    gui/trayicon.h
+    gui/traywidget.h
+    gui/traymenu.h
     gui/settingsdialog.h
     gui/webpage.h
     gui/webviewdialog.h
@@ -41,7 +43,9 @@ set(WIDGETS_HEADER_FILES
 set(WIDGETS_SRC_FILES
     application/main.cpp
     application/settings.cpp
-    gui/tray.cpp
+    gui/trayicon.cpp
+    gui/traywidget.cpp
+    gui/traymenu.cpp
     gui/settingsdialog.cpp
     gui/webpage.cpp
     gui/webviewdialog.cpp
@@ -56,7 +60,7 @@ set(WIDGETS_UI_FILES
     gui/connectionoptionpage.ui
     gui/notificationsoptionpage.ui
     gui/appearanceoptionpage.ui
-    gui/launcheroptionpage.ui
+    gui/autostartoptionpage.ui
     gui/webviewoptionpage.ui
 )
 

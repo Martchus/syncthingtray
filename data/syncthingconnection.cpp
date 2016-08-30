@@ -1,5 +1,7 @@
 #include "./syncthingconnection.h"
 
+#include <c++utilities/conversion/conversionexception.h>
+
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QUrlQuery>
@@ -10,10 +12,13 @@
 #include <QPixmap>
 #include <QAuthenticator>
 #include <QStringBuilder>
+#include <QTimer>
 
 #include <utility>
 
 using namespace std;
+using namespace ChronoUtilities;
+using namespace ConversionUtilities;
 
 namespace Data {
 
@@ -75,6 +80,8 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     m_lastEventId(0),
     m_totalIncomingTraffic(0),
     m_totalOutgoingTraffic(0),
+    m_totalIncomingRate(0),
+    m_totalOutgoingRate(0),
     m_configReply(nullptr),
     m_statusReply(nullptr),
     m_eventsReply(nullptr),
@@ -542,9 +549,20 @@ void SyncthingConnection::readConnections()
         if(jsonError.error == QJsonParseError::NoError) {
             const QJsonObject replyObj(replyDoc.object());
             const QJsonObject totalObj(replyObj.value(QStringLiteral("total")).toObject());
-            m_totalIncomingTraffic = totalObj.value(QStringLiteral("inBytesTotal")).toInt(0);
-            m_totalOutgoingTraffic = totalObj.value(QStringLiteral("outBytesTotal")).toInt(0);
-            emit trafficChanged(m_totalIncomingTraffic, m_totalOutgoingTraffic);
+
+            // read traffic
+            const int totalIncomingTraffic = totalObj.value(QStringLiteral("inBytesTotal")).toInt(0);
+            const int totalOutgoingTraffic = totalObj.value(QStringLiteral("outBytesTotal")).toInt(0);
+            double transferTime;
+            if(!m_lastConnectionsUpdate.isNull() && ((transferTime = (DateTime::gmtNow() - m_lastConnectionsUpdate).totalSeconds()) != 0.0)) {
+                m_totalIncomingRate = (totalIncomingTraffic - m_totalIncomingTraffic) * 0.008 / transferTime,
+                m_totalOutgoingRate = (totalOutgoingTraffic - m_totalOutgoingTraffic) * 0.008 / transferTime;
+            } else {
+                m_totalIncomingRate = m_totalOutgoingRate = 0.0;
+            }
+            emit trafficChanged(m_totalIncomingTraffic = totalIncomingTraffic, m_totalOutgoingTraffic = totalOutgoingTraffic);
+
+            // read connection status
             const QJsonObject connectionsObj(replyObj.value(QStringLiteral("connections")).toObject());
             int index = 0;
             for(SyncthingDev &dev : m_devs) {
@@ -576,7 +594,13 @@ void SyncthingConnection::readConnections()
                 }
                 ++index;
             }
-            m_lastConnectionsUpdate = QDateTime::currentDateTime();
+
+            m_lastConnectionsUpdate = DateTime::gmtNow();
+
+            // since there seems no event for this data, just request every 2 seconds, FIXME: make interval configurable
+            if(m_keepPolling) {
+                QTimer::singleShot(2000, Qt::VeryCoarseTimer, this, SLOT(requestConnections()));
+            }
         } else {
             emit error(tr("Unable to parse connections: ") + jsonError.errorString());
         }
@@ -609,7 +633,12 @@ void SyncthingConnection::readEvents()
             for(const QJsonValue &eventVal : replyArray) {
                 const QJsonObject event = eventVal.toObject();
                 m_lastEventId = event.value(QStringLiteral("id")).toInt(m_lastEventId);
-                const QDateTime eventTime(QDateTime::fromString(event.value(QStringLiteral("time")).toString(), Qt::ISODate));
+                DateTime eventTime;
+                try {
+                    eventTime = DateTime::fromIsoString(event.value(QStringLiteral("time")).toString().toLocal8Bit().data()).first;
+                } catch(const ConversionException &) {
+                    // ignore conversion error
+                }
                 const QString eventType(event.value(QStringLiteral("type")).toString());
                 const QJsonObject eventData(event.value(QStringLiteral("data")).toObject());
                 if(eventType == QLatin1String("Starting")) {
@@ -731,7 +760,7 @@ void SyncthingConnection::readDirEvent(const QString &eventType, const QJsonObje
                     dirInfo->localFiles = summary.value(QStringLiteral("localFiles")).toInt();
                     dirInfo->neededByted = summary.value(QStringLiteral("needByted")).toInt();
                     dirInfo->neededFiles = summary.value(QStringLiteral("needFiles")).toInt();
-                    //dirInfo->assignStatus(summary.value(QStringLiteral("state")).toString());
+                    // FIXME: dirInfo->assignStatus(summary.value(QStringLiteral("state")).toString());
                     emit dirStatusChanged(*dirInfo, index);
                 }
             } else if(eventType == QLatin1String("FolderCompletion")) {
@@ -743,6 +772,16 @@ void SyncthingConnection::readDirEvent(const QString &eventType, const QJsonObje
                     // just show the smallest percentage for now
                     dirInfo->progressPercentage = percentage;
                 }
+            } else if(eventType == QLatin1String("FolderScanProgress")) {
+                // FIXME: for some reason current is always 0
+                int current = eventData.value(QStringLiteral("current")).toInt(0);
+                int total = eventData.value(QStringLiteral("total")).toInt(0);
+                int rate = eventData.value(QStringLiteral("rate")).toInt(0);
+                if(current > 0 && total > 0) {
+                    dirInfo->progressPercentage = current * 100 / total;
+                    dirInfo->progressRate = rate;
+                    dirInfo->status = DirStatus::Scanning; // ensure state is scanning
+                }
             }
         }
     }
@@ -751,9 +790,9 @@ void SyncthingConnection::readDirEvent(const QString &eventType, const QJsonObje
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readDeviceEvent(const QDateTime &eventTime, const QString &eventType, const QJsonObject &eventData)
+void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
 {
-    if(eventTime.isValid() && m_lastConnectionsUpdate.isValid() && eventTime < m_lastConnectionsUpdate) {
+    if(eventTime.isNull() && m_lastConnectionsUpdate.isNull() && eventTime < m_lastConnectionsUpdate) {
         return; // ignore device events happened before the last connections update
     }
     const QString dev(eventData.value(QStringLiteral("device")).toString());
@@ -773,6 +812,7 @@ void SyncthingConnection::readDeviceEvent(const QDateTime &eventTime, const QStr
                 status = DevStatus::Rejected;
             } else if(eventType == QLatin1String("DeviceResumed")) {
                 paused = false;
+                status = DevStatus::Disconnected; // FIXME: correct to assume device which has just been resumed is still disconnected?
             } else if(eventType == QLatin1String("DeviceDiscovered")) {
                 // we know about this device already, set status anyways because it might still be unknown
                 status = DevStatus::Disconnected;

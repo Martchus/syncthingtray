@@ -41,7 +41,12 @@ void DirView::showContextMenu()
 {
     if(selectionModel() && selectionModel()->selectedRows(0).size() == 1) {
         QMenu menu;
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))), tr("Copy")), &QAction::triggered, this, &DirView::copySelectedItem);
+        if(selectionModel()->selectedRows(0).at(0).parent().isValid()) {
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))), tr("Copy value")), &QAction::triggered, this, &DirView::copySelectedItem);
+        } else {
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))), tr("Copy label/ID")), &QAction::triggered, this, &DirView::copySelectedItem);
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))), tr("Copy path")), &QAction::triggered, this, &DirView::copySelectedItemPath);
+        }
         menu.exec(QCursor::pos());
     }
 }
@@ -57,6 +62,23 @@ void DirView::copySelectedItem()
         } else {
             // dev label/id
             text = model()->data(selectedIndex).toString();
+        }
+        if(!text.isEmpty()) {
+            QGuiApplication::clipboard()->setText(text);
+        }
+    }
+}
+
+void DirView::copySelectedItemPath()
+{
+    if(selectionModel() && selectionModel()->selectedRows(0).size() == 1) {
+        const QModelIndex selectedIndex = selectionModel()->selectedRows(0).at(0);
+        QString text;
+        if(selectedIndex.parent().isValid()) {
+            // dev attribute: should be handled by copySelectedItem() only
+        } else {
+            // dev path
+            text = model()->data(model()->index(1, 1, selectedIndex)).toString();
         }
         if(!text.isEmpty()) {
             QGuiApplication::clipboard()->setText(text);

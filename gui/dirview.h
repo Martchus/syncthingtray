@@ -21,6 +21,7 @@ protected:
 private Q_SLOTS:
     void showContextMenu();
     void copySelectedItem();
+    void copySelectedItemPath();
 
 };
 

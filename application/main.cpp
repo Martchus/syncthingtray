@@ -1,5 +1,6 @@
 #include "./settings.h"
-#include "../gui/tray.h"
+#include "../gui/trayicon.h"
+#include "../gui/traywidget.h"
 
 #include "resources/config.h"
 
@@ -9,6 +10,7 @@
 
 #include <qtutilities/resources/qtconfigarguments.h>
 #include <qtutilities/resources/resources.h>
+#include <qtutilities/resources/importplugin.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 
 #include <QApplication>
@@ -28,6 +30,9 @@ int main(int argc, char *argv[])
     HelpArgument helpArg(parser);
     // Qt configuration arguments
     QT_CONFIG_ARGUMENTS qtConfigArgs;
+    Argument windowedArg("windowed", 'w', "shows the UI in a regular window");
+    windowedArg.setCombinable(true);
+    qtConfigArgs.qtWidgetsGuiArg().addSubArgument(&windowedArg);
     parser.setMainArguments({&qtConfigArgs.qtWidgetsGuiArg(), &helpArg});
     try {
         parser.parseArgs(argc, argv);
@@ -42,10 +47,16 @@ int main(int argc, char *argv[])
             int res;
 #ifndef QT_NO_SYSTEMTRAYICON
             if(QSystemTrayIcon::isSystemTrayAvailable()) {
-                application.setQuitOnLastWindowClosed(false);
-                TrayIcon trayIcon;
-                trayIcon.show();
-                res = application.exec();
+                if(windowedArg.isPresent()) {
+                    TrayWidget trayWidget;
+                    trayWidget.show();
+                    res = application.exec();
+                } else {
+                    application.setQuitOnLastWindowClosed(false);
+                    TrayIcon trayIcon;
+                    trayIcon.show();
+                    res = application.exec();
+                }
             } else {
                 QMessageBox::critical(nullptr, QApplication::applicationName(), QApplication::translate("main", "The system tray is (currently) not available."));
                 res = -1;

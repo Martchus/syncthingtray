@@ -1,8 +1,9 @@
 #ifndef SYNCTHINGCONNECTION_H
 #define SYNCTHINGCONNECTION_H
 
+#include <c++utilities/chrono/datetime.h>
+
 #include <QObject>
-#include <QDateTime>
 
 #include <functional>
 #include <vector>
@@ -60,6 +61,7 @@ struct SyncthingDir
     int minDiskFreePercentage = 0;
     DirStatus status = DirStatus::Unknown;
     int progressPercentage = 0;
+    int progressRate = 0;
     std::vector<DirErrors> errors;
     int globalBytes = 0, globalDeleted = 0, globalFiles = 0;
     int localBytes = 0, localDeleted = 0, localFiles = 0;
@@ -76,7 +78,7 @@ enum class DevStatus
     Idle,
     Synchronizing,
     OutOfSync,
-    Rejected,
+    Rejected
 };
 
 struct SyncthingDev
@@ -88,6 +90,7 @@ struct SyncthingDev
     QString certName;
     DevStatus status;
     int progressPercentage = 0;
+    int progressRate = 0;
     bool introducer = false;
     bool paused = false;
     int totalIncomingTraffic = 0;
@@ -132,6 +135,8 @@ public:
     const QString &myId() const;
     int totalIncomingTraffic() const;
     int totalOutgoingTraffic() const;
+    double totalIncomingRate() const;
+    double totalOutgoingRate() const;
     const std::vector<SyncthingDir> &dirInfo() const;
     const std::vector<SyncthingDev> &devInfo() const;
     void requestQrCode(const QString &text, std::function<void (const QPixmap &)> callback);
@@ -234,7 +239,7 @@ private Q_SLOTS:
     void readStatusChangedEvent(const QJsonObject &eventData);
     void readDownloadProgressEvent(const QJsonObject &eventData);
     void readDirEvent(const QString &eventType, const QJsonObject &eventData);
-    void readDeviceEvent(const QDateTime &eventTime, const QString &eventType, const QJsonObject &eventData);
+    void readDeviceEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
     void readRescan();
     void readPauseResume();
 
@@ -260,6 +265,8 @@ private:
     QString m_myId;
     int m_totalIncomingTraffic;
     int m_totalOutgoingTraffic;
+    double m_totalIncomingRate;
+    double m_totalOutgoingRate;
     QNetworkReply *m_configReply;
     QNetworkReply *m_statusReply;
     QNetworkReply *m_connectionsReply;
@@ -269,7 +276,7 @@ private:
     bool m_hasStatus;
     std::vector<SyncthingDir> m_dirs;
     std::vector<SyncthingDev> m_devs;
-    QDateTime m_lastConnectionsUpdate;
+    ChronoUtilities::DateTime m_lastConnectionsUpdate;
 };
 
 /*!
@@ -361,7 +368,7 @@ inline const QString &SyncthingConnection::myId() const
 }
 
 /*!
- * \brief Returns the total incoming traffic.
+ * \brief Returns the total incoming traffic in byte.
  */
 inline int SyncthingConnection::totalIncomingTraffic() const
 {
@@ -369,11 +376,27 @@ inline int SyncthingConnection::totalIncomingTraffic() const
 }
 
 /*!
- * \brief Returns the total outgoing traffic.
+ * \brief Returns the total outgoing traffic in byte.
  */
 inline int SyncthingConnection::totalOutgoingTraffic() const
 {
     return m_totalOutgoingTraffic;
+}
+
+/*!
+ * \brief Returns the total incoming transfer rate in kbit/s.
+ */
+inline double SyncthingConnection::totalIncomingRate() const
+{
+    return m_totalIncomingRate;
+}
+
+/*!
+ * \brief Returns the total outgoing transfer rate in kbit/s.
+ */
+inline double SyncthingConnection::totalOutgoingRate() const
+{
+    return m_totalOutgoingRate;
 }
 
 /*!

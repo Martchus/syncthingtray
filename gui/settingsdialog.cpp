@@ -6,7 +6,7 @@
 #include "ui_connectionoptionpage.h"
 #include "ui_notificationsoptionpage.h"
 #include "ui_appearanceoptionpage.h"
-#include "ui_launcheroptionpage.h"
+#include "ui_autostartoptionpage.h"
 #include "ui_webviewoptionpage.h"
 
 #include <tagparser/mediafileinfo.h>
@@ -138,21 +138,21 @@ void AppearanceOptionPage::reset()
 }
 
 // LauncherOptionPage
-LauncherOptionPage::LauncherOptionPage(QWidget *parentWidget) :
-    LauncherOptionPageBase(parentWidget)
+AutostartOptionPage::AutostartOptionPage(QWidget *parentWidget) :
+    AutostartOptionPageBase(parentWidget)
 {}
 
-LauncherOptionPage::~LauncherOptionPage()
+AutostartOptionPage::~AutostartOptionPage()
 {}
 
-bool LauncherOptionPage::apply()
+bool AutostartOptionPage::apply()
 {
     if(hasBeenShown()) {
     }
     return true;
 }
 
-void LauncherOptionPage::reset()
+void AutostartOptionPage::reset()
 {
     if(hasBeenShown()) {
     }
@@ -211,7 +211,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     category->setDisplayName(tr("Tray"));
     category->assignPages(QList<Dialogs::OptionPage *>()
                           << new ConnectionOptionPage(connection) << new NotificationsOptionPage
-                          << new AppearanceOptionPage << new LauncherOptionPage);
+                          << new AppearanceOptionPage << new AutostartOptionPage);
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     categories << category;
 

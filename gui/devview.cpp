@@ -41,7 +41,12 @@ void DevView::showContextMenu()
 {
     if(selectionModel() && selectionModel()->selectedRows(0).size() == 1) {
         QMenu menu;
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))), tr("Copy")), &QAction::triggered, this, &DevView::copySelectedItem);
+        if(selectionModel()->selectedRows(0).at(0).parent().isValid()) {
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))), tr("Copy value")), &QAction::triggered, this, &DevView::copySelectedItem);
+        } else {
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))), tr("Copy name")), &QAction::triggered, this, &DevView::copySelectedItem);
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))), tr("Copy ID")), &QAction::triggered, this, &DevView::copySelectedItemId);
+        }
         menu.exec(QCursor::pos());
     }
 }
@@ -57,6 +62,23 @@ void DevView::copySelectedItem()
         } else {
             // dev name/id
             text = model()->data(selectedIndex).toString();
+        }
+        if(!text.isEmpty()) {
+            QGuiApplication::clipboard()->setText(text);
+        }
+    }
+}
+
+void DevView::copySelectedItemId()
+{
+    if(selectionModel() && selectionModel()->selectedRows(0).size() == 1) {
+        const QModelIndex selectedIndex = selectionModel()->selectedRows(0).at(0);
+        QString text;
+        if(selectedIndex.parent().isValid()) {
+            // dev attribute: should be handled by copySelectedItemId()
+        } else {
+            // dev name/id
+            text = model()->data(model()->index(0, 1, selectedIndex)).toString();
         }
         if(!text.isEmpty()) {
             QGuiApplication::clipboard()->setText(text);

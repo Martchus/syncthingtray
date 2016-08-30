@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Syncthing Tray</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/icons.qrc">
+    <normaloff>:/icons/hicolor/scalable/app/syncthingtray.svg</normaloff>:/icons/hicolor/scalable/app/syncthingtray.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -219,6 +223,9 @@
          </item>
          <item row="0" column="1">
           <widget class="QLabel" name="inTrafficLabel">
+           <property name="toolTip">
+            <string>Incoming traffic</string>
+           </property>
            <property name="text">
             <string>unknown</string>
            </property>
@@ -236,6 +243,9 @@
          </item>
          <item row="1" column="1">
           <widget class="QLabel" name="outTrafficLabel">
+           <property name="toolTip">
+            <string>Outgoing traffic</string>
+           </property>
            <property name="text">
             <string>unknown</string>
            </property>
@@ -335,6 +345,8 @@
    <header>./gui/devview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

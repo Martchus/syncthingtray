@@ -20,6 +20,7 @@ protected:
 private Q_SLOTS:
     void showContextMenu();
     void copySelectedItem();
+    void copySelectedItemId();
 
 };
 

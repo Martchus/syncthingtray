@@ -1,17 +1,15 @@
-#include "./tray.h"
+#include "./traywidget.h"
+#include "./traymenu.h"
 #include "./settingsdialog.h"
 #include "./webviewdialog.h"
-#include "./dirbuttonsitemdelegate.h"
 
 #include "../application/settings.h"
 
 #include "resources/config.h"
-
 #include "ui_traywidget.h"
 
 #include <qtutilities/resources/qtconfigarguments.h>
 #include <qtutilities/resources/resources.h>
-#include <qtutilities/resources/importplugin.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 #include <qtutilities/aboutdialog/aboutdialog.h>
 #include <qtutilities/misc/dialogutils.h>
@@ -19,17 +17,10 @@
 
 #include <c++utilities/conversion/stringconversion.h>
 
-#include <QApplication>
-#include <QSvgRenderer>
-#include <QPainter>
-#include <QPixmap>
-#include <QMenu>
+#include <QCoreApplication>
 #include <QDesktopServices>
-#include <QMainWindow>
 #include <QMessageBox>
-#include <QLabel>
 #include <QClipboard>
-#include <QUrl>
 #include <QDir>
 #include <QTextBrowser>
 #include <QStringBuilder>
@@ -98,7 +89,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
 
     // connect signals and slots
     connect(m_ui->statusPushButton, &QPushButton::clicked, this, &TrayWidget::changeStatus);
-    connect(m_ui->closePushButton, &QPushButton::clicked, &QApplication::quit);
+    connect(m_ui->closePushButton, &QPushButton::clicked, &QCoreApplication::quit);
     connect(m_ui->aboutPushButton, &QPushButton::clicked, this, &TrayWidget::showAboutDialog);
     connect(m_ui->webUiPushButton, &QPushButton::clicked, this, &TrayWidget::showWebUi);
     connect(m_ui->settingsPushButton, &QPushButton::clicked, this, &TrayWidget::showSettingsDialog);
@@ -266,6 +257,9 @@ void TrayWidget::applySettings()
     }
     m_connection.reconnect();
     m_ui->trafficFrame->setVisible(Settings::showTraffic());
+    if(Settings::showTraffic()) {
+        updateTraffic();
+    }
 }
 
 void TrayWidget::openDir(const QModelIndex &dirIndex)
@@ -314,155 +308,31 @@ void TrayWidget::changeStatus()
     }
 }
 
-void TrayWidget::updateTraffic(int totalIncomingTraffic, int totalOutgoingTraffic)
+void TrayWidget::updateTraffic()
 {
-    m_ui->inTrafficLabel->setText(totalIncomingTraffic >= 0 ? QString::fromUtf8(dataSizeToString(totalIncomingTraffic).data()) : tr("unknown"));
-    m_ui->outTrafficLabel->setText(totalOutgoingTraffic >= 0 ? QString::fromUtf8(dataSizeToString(totalOutgoingTraffic).data()) : tr("unknown"));
+    if(m_ui->trafficFrame->isHidden()) {
+        return;
+    }
+    if(m_connection.totalIncomingRate() != 0.0) {
+        m_ui->inTrafficLabel->setText(m_connection.totalIncomingTraffic() >= 0
+                                      ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(m_connection.totalIncomingRate(), true).data()), QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data()))
+                                      : QString::fromUtf8(bitrateToString(m_connection.totalIncomingRate(), true).data()));
+    } else {
+        m_ui->inTrafficLabel->setText(m_connection.totalIncomingTraffic() >= 0 ? QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data()) : tr("unknown"));
+    }
+    if(m_connection.totalOutgoingRate() != 0.0) {
+        m_ui->outTrafficLabel->setText(m_connection.totalIncomingTraffic() >= 0
+                                      ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(m_connection.totalOutgoingRate(), true).data()), QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data()))
+                                      : QString::fromUtf8(bitrateToString(m_connection.totalOutgoingRate(), true).data()));
+    } else {
+        m_ui->outTrafficLabel->setText(m_connection.totalOutgoingTraffic() >= 0 ? QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data()) : tr("unknown"));
+    }
+
 }
 
 void TrayWidget::handleWebViewDeleted()
 {
     m_webViewDlg = nullptr;
-}
-
-TrayMenu::TrayMenu(QWidget *parent) :
-    QMenu(parent)
-{
-    auto *menuLayout = new QHBoxLayout;
-    menuLayout->setMargin(0), menuLayout->setSpacing(0);
-    menuLayout->addWidget(m_trayWidget = new TrayWidget(this));
-    setLayout(menuLayout);
-    setPlatformMenu(nullptr);
-}
-
-QSize TrayMenu::sizeHint() const
-{
-    return QSize(350, 300);
-}
-
-/*!
- * \brief Instantiates a new tray icon.
- */
-TrayIcon::TrayIcon(QObject *parent) :
-    QSystemTrayIcon(parent),
-    m_size(QSize(128, 128)),
-    m_statusIconDisconnected(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-disconnected.svg")))),
-    m_statusIconDefault(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-default.svg")))),
-    m_statusIconNotify(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-notify.svg")))),
-    m_statusIconPause(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-pause.svg")))),
-    m_statusIconSync(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-sync.svg")))),
-    m_status(SyncthingStatus::Disconnected)
-{
-    // set context menu
-    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("internet-web-browser"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))), tr("Web UI")), &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showWebUi);
-    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))), tr("Settings")), &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showSettingsDialog);
-    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("help-about"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/help-about.svg"))), tr("About")), &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showAboutDialog);
-    m_contextMenu.addSeparator();
-    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("window-close"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))), tr("Close")), &QAction::triggered, &QCoreApplication::quit);
-    setContextMenu(&m_contextMenu);
-
-    // set initial status
-    updateStatusIconAndText(SyncthingStatus::Disconnected);
-
-    // connect signals and slots
-    SyncthingConnection *connection = &(m_trayMenu.widget()->connection());
-    connect(this, &TrayIcon::activated, this, &TrayIcon::handleActivated);
-    connect(connection, &SyncthingConnection::error, this, &TrayIcon::showSyncthingError);
-    connect(connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
-    connect(connection, &SyncthingConnection::statusChanged, this, &TrayIcon::updateStatusIconAndText);
-}
-
-void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
-{
-    switch(reason) {
-    case QSystemTrayIcon::Context:
-        // can't catch that event on Plasma 5 anyways
-        break;
-    case QSystemTrayIcon::Trigger:
-        // either show web UI or context menu
-        if(false) {
-            m_trayMenu.widget()->showWebUi();
-        } else {
-            m_trayMenu.resize(m_trayMenu.sizeHint());
-            // when showing the menu manually
-            // move the menu to the closest of the currently available screen
-            // this implies that the tray icon is located near the edge of the screen; otherwise this behavior makes no sense
-            cornerWidget(&m_trayMenu);
-            m_trayMenu.show();
-        }
-        break;
-    default:
-        ;
-    }
-}
-
-void TrayIcon::showSyncthingError(const QString &errorMsg)
-{
-    if(Settings::notifyOnErrors()) {
-        showMessage(tr("Syncthing error"), errorMsg, QSystemTrayIcon::Critical);
-    }
-}
-
-void TrayIcon::showSyncthingNotification(const QString &message)
-{
-    if(Settings::showSyncthingNotifications()) {
-        showMessage(tr("Syncthing notification"), message, QSystemTrayIcon::Information);
-    }
-}
-
-void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
-{
-    switch(status) {
-    case SyncthingStatus::Disconnected:
-        setIcon(m_statusIconDisconnected);
-        setToolTip(tr("Not connected to Syncthing"));
-        if(Settings::notifyOnDisconnect()) {
-            showMessage(QCoreApplication::applicationName(), tr("Disconnected from Syncthing"), QSystemTrayIcon::Warning);
-        }
-        break;
-    case SyncthingStatus::Default:
-        setIcon(m_statusIconDefault);
-        setToolTip(tr("Syncthing is running"));
-        break;
-    case SyncthingStatus::NotificationsAvailable:
-        setIcon(m_statusIconNotify);
-        setToolTip(tr("Notifications available"));
-        break;
-    case SyncthingStatus::Paused:
-        setIcon(m_statusIconPause);
-        setToolTip(tr("At least one device is paused"));
-        break;
-    case SyncthingStatus::Synchronizing:
-        setIcon(m_statusIconSync);
-        setToolTip(tr("Synchronization is ongoing"));
-        break;
-    }
-    switch(status) {
-    case SyncthingStatus::Disconnected:
-    case SyncthingStatus::Synchronizing:
-        break;
-    default:
-        if(m_status == SyncthingStatus::Synchronizing && Settings::notifyOnSyncComplete()) {
-            showMessage(QCoreApplication::applicationName(), tr("Synchronization complete"), QSystemTrayIcon::Information);
-        }
-    }
-
-    m_status = status;
-}
-
-/*!
- * \brief Renders an SVG image to a QPixmap.
- * \remarks If instantiating QIcon directly from SVG image the icon is not displayed under Plasma 5. It would work
- *          with Tint2, tough.
- */
-QPixmap TrayIcon::renderSvgImage(const QString &path)
-{
-    QSvgRenderer renderer(path);
-    QPixmap pm(m_size);
-    pm.fill(QColor(Qt::transparent));
-    QPainter painter(&pm);
-    renderer.render(&painter, pm.rect());
-    return pm;
 }
 
 }

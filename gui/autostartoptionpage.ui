@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QtGui::AutostartOptionPage</class>
+ <widget class="QWidget" name="QtGui::AutostartOptionPage">
+  <property name="windowTitle">
+   <string>Autostart</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Not implemented yet&lt;/span&gt;&lt;/p&gt;&lt;p&gt;This will allow launching the tray when the desktop environment starts and to launch Syncthing when the tray is started.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
