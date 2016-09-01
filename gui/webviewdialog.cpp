@@ -3,7 +3,6 @@
 #include "./webpage.h"
 
 #include "../application/settings.h"
-#include "../data/syncthingconnection.h"
 
 #include <qtutilities/misc/dialogutils.h>
 
@@ -28,6 +27,7 @@ WebViewDialog::WebViewDialog(QWidget *parent) :
     setCentralWidget(m_view);
 
     m_view->setPage(new WebPage(m_view));
+
 
     applySettings();
 
@@ -60,4 +60,4 @@ void QtGui::WebViewDialog::closeEvent(QCloseEvent *event)
 
 }
 
-#endif
+#endif // SYNCTHINGTRAY_NO_WEBVIEW

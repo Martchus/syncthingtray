@@ -19,11 +19,15 @@ set(HEADER_FILES
     data/syncthingconnection.h
     data/syncthingdirectorymodel.h
     data/syncthingdevicemodel.h
+    data/syncthingconfig.h
+    data/utils.h
 )
 set(SRC_FILES
     data/syncthingconnection.cpp
     data/syncthingdirectorymodel.cpp
     data/syncthingdevicemodel.cpp
+    data/syncthingconfig.cpp
+    data/utils.cpp
 )
 
 set(WIDGETS_HEADER_FILES
@@ -86,6 +90,7 @@ set(REQUIRED_ICONS
     network-card
     window-close
     edit-copy
+    edit-paste
     preferences-other
     view-barcode
     folder-open
@@ -98,6 +103,13 @@ set(REQUIRED_ICONS
     network-server
     folder-sync
     internet-web-browser
+    network-connect
+    system-run
+    system-search
+    preferences-desktop
+    preferences-desktop-notification
+    preferences-desktop-icons
+    preferences-desktop-locale
 )
 
 # find c++utilities

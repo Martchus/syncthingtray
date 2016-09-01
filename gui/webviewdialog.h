@@ -29,5 +29,5 @@ private:
 
 }
 
-#endif
+#endif // SYNCTHINGTRAY_NO_WEBVIEW
 #endif // WEBVIEW_DIALOG_H

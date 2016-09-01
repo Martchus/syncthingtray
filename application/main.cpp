@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     HelpArgument helpArg(parser);
     // Qt configuration arguments
     QT_CONFIG_ARGUMENTS qtConfigArgs;
-    Argument windowedArg("windowed", 'w', "shows the UI in a regular window");
+    Argument windowedArg("windowed", 'w', "opens the tray menu as a regular window");
     windowedArg.setCombinable(true);
     qtConfigArgs.qtWidgetsGuiArg().addSubArgument(&windowedArg);
     parser.setMainArguments({&qtConfigArgs.qtWidgetsGuiArg(), &helpArg});
@@ -45,26 +45,34 @@ int main(int argc, char *argv[])
             LOAD_QT_TRANSLATIONS;
             QtUtilitiesResources::init();
             int res;
+            if(windowedArg.isPresent()) {
+                TrayWidget trayWidget;
+                trayWidget.show();
+                res = application.exec();
+            } else {
 #ifndef QT_NO_SYSTEMTRAYICON
-            if(QSystemTrayIcon::isSystemTrayAvailable()) {
-                if(windowedArg.isPresent()) {
-                    TrayWidget trayWidget;
-                    trayWidget.show();
-                    res = application.exec();
-                } else {
+                if(QSystemTrayIcon::isSystemTrayAvailable()) {
                     application.setQuitOnLastWindowClosed(false);
                     TrayIcon trayIcon;
                     trayIcon.show();
+                    if(Settings::firstLaunch()) {
+                        trayIcon.trayMenu().widget()->showSettingsDialog();
+                        QMessageBox msgBox;
+                        msgBox.setIcon(QMessageBox::Information);
+                        msgBox.setText(QCoreApplication::translate("main", "You must configure how to connect to Syncthing when using Syncthing Tray the first time."));
+                        msgBox.setInformativeText(QCoreApplication::translate("main", "Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration."));
+                        msgBox.exec();
+                    }
                     res = application.exec();
+                } else {
+                    QMessageBox::critical(nullptr, QApplication::applicationName(), QApplication::translate("main", "The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though."));
+                    res = -1;
                 }
-            } else {
-                QMessageBox::critical(nullptr, QApplication::applicationName(), QApplication::translate("main", "The system tray is (currently) not available."));
-                res = -1;
-            }
 #else
-            QMessageBox::critical(nullptr, QApplication::applicationName(), QApplication::translate("main", "The Qt libraries have not been built with tray icon support."));
-            res = -2;
+                QMessageBox::critical(nullptr, QApplication::applicationName(), QApplication::translate("main", "The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though."));
+                res = -2;
 #endif
+            }
             Settings::save();
             QtUtilitiesResources::cleanup();
             return res;

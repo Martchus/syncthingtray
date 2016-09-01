@@ -2,43 +2,46 @@
 <ui version="4.0">
  <class>QtGui::NotificationsOptionPage</class>
  <widget class="QWidget" name="QtGui::NotificationsOptionPage">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>175</width>
-    <height>156</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Notifications</string>
   </property>
+  <property name="windowIcon">
+   <iconset theme="preferences-desktop-notification">
+    <normaloff>.</normaloff>.</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="notifyOnLabel">
+     <property name="text">
+      <string>Notify on</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QCheckBox" name="notifyOnDisconnectCheckBox">
      <property name="text">
-      <string>Notify on disconnect</string>
+      <string>disconnect</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="notifyOnErrorsCheckBox">
      <property name="text">
-      <string>Notify on internal errors</string>
+      <string>internal errors</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="showSyncthingNotificationsCheckBox">
      <property name="text">
-      <string>Notify on Syncthing errors</string>
+      <string>errors/notifications from Syncthing</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="notifyOnSyncCompleteCheckBox">
      <property name="text">
-      <string>Notify on sync complete</string>
+      <string>sync complete</string>
      </property>
     </widget>
    </item>

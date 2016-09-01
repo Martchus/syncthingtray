@@ -95,6 +95,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     connect(m_ui->settingsPushButton, &QPushButton::clicked, this, &TrayWidget::showSettingsDialog);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &TrayWidget::updateStatusButton);
     connect(&m_connection, &SyncthingConnection::trafficChanged, this, &TrayWidget::updateTraffic);
+    connect(&m_connection, &SyncthingConnection::newNotification, this, &TrayWidget::handleNewNotification);
     connect(m_ui->dirsTreeView, &DirView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->dirsTreeView, &DirView::scanDir, this, &TrayWidget::scanDir);
     connect(m_ui->devsTreeView, &DevView::pauseResumeDev, this, &TrayWidget::pauseResumeDev);
@@ -109,7 +110,7 @@ void TrayWidget::showSettingsDialog()
 {
     if(!m_settingsDlg) {
         m_settingsDlg = new SettingsDialog(&m_connection, this);
-        m_settingsDlg->setWindowTitle(tr("Settings - Syncthing tray"));
+        m_settingsDlg->setWindowTitle(tr("Settings") + QStringLiteral(" - " APP_NAME));
         connect(m_settingsDlg, &SettingsDialog::applied, this, &TrayWidget::applySettings);
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
         if(m_webViewDlg) {
@@ -128,8 +129,8 @@ void TrayWidget::showSettingsDialog()
 void TrayWidget::showAboutDialog()
 {
     if(!m_aboutDlg) {
-        m_aboutDlg = new AboutDialog(this, QString(), QStringLiteral(APP_AUTHOR "\nfallback icons from KDE/Breeze project\nSyncthing icons from Syncthing project"), QString(), QString(), tr("Tray application for Syncthing"), QImage(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
-        m_aboutDlg->setWindowTitle(tr("About - Syncthing Tray"));
+        m_aboutDlg = new AboutDialog(this, QString(), QStringLiteral(APP_AUTHOR "\nfallback icons from KDE/Breeze project\nSyncthing icons from Syncthing project"), QString(), QString(), QStringLiteral(APP_DESCRIPTION), QImage(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+        m_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         m_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     }
     m_aboutDlg->show();
@@ -167,7 +168,7 @@ void TrayWidget::showWebUi()
 void TrayWidget::showOwnDeviceId()
 {
     auto *dlg = new QDialog(this);
-    dlg->setWindowTitle(tr("Own device ID - Syncthing Tray"));
+    dlg->setWindowTitle(tr("Own device ID") + QStringLiteral(" - " APP_NAME));
     dlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->setBackgroundRole(QPalette::Background);
@@ -201,7 +202,7 @@ void TrayWidget::showOwnDeviceId()
 void TrayWidget::showLog()
 {
     auto *dlg = new QDialog(this);
-    dlg->setWindowTitle(tr("Log - Syncthing"));
+    dlg->setWindowTitle(tr("Log") + QStringLiteral(" - " APP_NAME));
     dlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     auto *layout = new QVBoxLayout(dlg);
@@ -255,6 +256,7 @@ void TrayWidget::applySettings()
     } else {
         m_connection.setCredentials(QString(), QString());
     }
+    m_connection.loadSelfSignedCertificate();
     m_connection.reconnect();
     m_ui->trafficFrame->setVisible(Settings::showTraffic());
     if(Settings::showTraffic()) {
@@ -268,7 +270,7 @@ void TrayWidget::openDir(const QModelIndex &dirIndex)
         if(QDir(dir->path).exists()) {
             DesktopUtils::openLocalFileOrDir(dir->path);
         } else {
-            QMessageBox::warning(this, QCoreApplication::applicationName(), tr("The directly <i>%1</i> does not exist on the local machine.").arg(dir->path));
+            QMessageBox::warning(this, QCoreApplication::applicationName(), tr("The directory <i>%1</i> does not exist on the local machine.").arg(dir->path));
         }
     }
 }
@@ -333,6 +335,11 @@ void TrayWidget::updateTraffic()
 void TrayWidget::handleWebViewDeleted()
 {
     m_webViewDlg = nullptr;
+}
+
+void TrayWidget::handleNewNotification(const QString &msg)
+{
+    // FIXME
 }
 
 }

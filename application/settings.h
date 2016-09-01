@@ -7,6 +7,7 @@
 
 QT_FORWARD_DECLARE_CLASS(QByteArray)
 QT_FORWARD_DECLARE_CLASS(QString)
+QT_FORWARD_DECLARE_CLASS(QSize)
 
 namespace Media {
 enum class TagUsage;
@@ -19,21 +20,30 @@ class QtSettings;
 
 namespace Settings {
 
+bool &firstLaunch();
+
+// connection
 QString &syncthingUrl();
 bool &authEnabled();
 QString &userName();
 QString &password();
 QByteArray &apiKey();
 
+// notifications
 bool &notifyOnDisconnect();
-bool &notifyOnErrors();
+bool &notifyOnInternalErrors();
 bool &notifyOnSyncComplete();
 bool &showSyncthingNotifications();
-bool &showTraffic();
 
+// apprearance
+bool &showTraffic();
+QSize &trayMenuSize();
+
+// autostart/launcher
 bool &launchSynchting();
 QString &syncthingCommand();
 
+// web view
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
 bool &webViewDisabled();
 double &webViewZoomFactor();

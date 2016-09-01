@@ -1,4 +1,5 @@
 #include "./syncthingconnection.h"
+#include "./syncthingconfig.h"
 
 #include <c++utilities/conversion/conversionexception.h>
 
@@ -13,6 +14,7 @@
 #include <QAuthenticator>
 #include <QStringBuilder>
 #include <QTimer>
+#include <QHostAddress>
 
 #include <utility>
 
@@ -56,6 +58,13 @@ bool SyncthingDir::assignStatus(const QString &statusStr)
         newStatus = DirStatus::Unknown;
     }
     if(newStatus != status) {
+        switch(status) {
+        case DirStatus::Scanning:
+            lastScanTime = DateTime::now();
+            break;
+        default:
+            ;
+        }
         status = newStatus;
         return true;
     }
@@ -66,6 +75,8 @@ bool SyncthingDir::assignStatus(const QString &statusStr)
  * \class SyncthingConnection
  * \brief The SyncthingConnection class allows Qt applications to access Syncthing.
  */
+
+QList<QSslError> SyncthingConnection::m_expectedCertificateErrors;
 
 /*!
  * \brief Constructs a new instance ready to connect. To establish the connection, call connect().
@@ -84,10 +95,12 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     m_totalOutgoingRate(0),
     m_configReply(nullptr),
     m_statusReply(nullptr),
+    m_connectionsReply(nullptr),
     m_eventsReply(nullptr),
     m_unreadNotifications(false),
     m_hasConfig(false),
-    m_hasStatus(false)
+    m_hasStatus(false),
+    m_lastFileDeleted(false)
 {}
 
 /*!
@@ -226,17 +239,21 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
 /*!
  * \brief Requests asynchronously data using the rest API.
  */
-inline QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQuery &query, bool rest)
+QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQuery &query, bool rest)
 {
-    return networkAccessManager().get(prepareRequest(path, query, rest));
+    auto *reply = networkAccessManager().get(prepareRequest(path, query, rest));
+    reply->ignoreSslErrors(m_expectedCertificateErrors);
+    return reply;
 }
 
 /*!
  * \brief Posts asynchronously data using the rest API.
  */
-inline QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuery &query, const QByteArray &data)
+QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuery &query, const QByteArray &data)
 {
-    return networkAccessManager().post(prepareRequest(path, query), data);
+    auto *reply = networkAccessManager().post(prepareRequest(path, query), data);
+    reply->ignoreSslErrors(m_expectedCertificateErrors);
+    return reply;
 }
 
 SyncthingDir *SyncthingConnection::findDirInfo(const QString &dir, int &row)
@@ -270,6 +287,8 @@ void SyncthingConnection::continueConnecting()
 {
     if(m_keepPolling && m_hasConfig && m_hasStatus) {
         requestConnections();
+        requestDirStatistics();
+        requestDeviceStatistics();
         // since config and status could be read successfully, let's poll for events
         m_lastEventId = 0;
         requestEvents();
@@ -318,11 +337,27 @@ void SyncthingConnection::requestStatus()
 /*!
  * \brief Requests current connections asynchronously.
  *
- * The signal devStatusChanged() is emitted for each device where the connection status has changed updated; error() is emitted in the error case.
+ * The signal devStatusChanged() is emitted for each device where the connection status has changed; error() is emitted in the error case.
  */
 void SyncthingConnection::requestConnections()
 {
     QObject::connect(m_connectionsReply = requestData(QStringLiteral("system/connections"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readConnections);
+}
+
+/*!
+ * \brief Requests directory statistics asynchronously.
+ */
+void SyncthingConnection::requestDirStatistics()
+{
+    QObject::connect(requestData(QStringLiteral("stats/folder"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readDirStatistics);
+}
+
+/*!
+ * \brief Requests device statistics asynchronously.
+ */
+void SyncthingConnection::requestDeviceStatistics()
+{
+    QObject::connect(requestData(QStringLiteral("stats/device"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readDeviceStatistics);
 }
 
 /*!
@@ -397,6 +432,37 @@ void SyncthingConnection::requestLog(std::function<void (const std::vector<Synct
             emit error(tr("Unable to request system log: ") + reply->errorString());
         }
     });
+}
+
+/*!
+ * \brief Locates and loads the (self-signed) certificate used by the Syncthing GUI.
+ */
+void SyncthingConnection::loadSelfSignedCertificate()
+{
+    // only possible if the Syncthing instance is running on the local machine
+    const QString host(QUrl(syncthingUrl()).host());
+    if(host.compare(QLatin1String("localhost"), Qt::CaseInsensitive) != 0 && !QHostAddress().isLoopback()) {
+        return;
+    }
+
+    // ensure current exceptions for self-signed certificates are cleared
+    m_expectedCertificateErrors.clear();
+    // find cert
+    const QString certPath = !m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate();
+    if(certPath.isEmpty()) {
+        emit error(tr("Unable to locate certificate used by Syncthing GUI."));
+        return;
+    }
+    // add exception
+    const QList<QSslCertificate> cert = QSslCertificate::fromPath(certPath);
+    if(cert.isEmpty()) {
+        emit error(tr("Unable to load certificate used by Syncthing GUI."));
+        return;
+    }
+    m_expectedCertificateErrors << QSslError(QSslError::UnableToGetLocalIssuerCertificate, cert.at(0));
+    m_expectedCertificateErrors << QSslError(QSslError::UnableToVerifyFirstCertificate, cert.at(0));
+    m_expectedCertificateErrors << QSslError(QSslError::SelfSignedCertificate, cert.at(0));
+    m_expectedCertificateErrors << QSslError(QSslError::HostNameMismatch, cert.at(0));
 }
 
 /*!
@@ -556,7 +622,7 @@ void SyncthingConnection::readConnections()
             double transferTime;
             if(!m_lastConnectionsUpdate.isNull() && ((transferTime = (DateTime::gmtNow() - m_lastConnectionsUpdate).totalSeconds()) != 0.0)) {
                 m_totalIncomingRate = (totalIncomingTraffic - m_totalIncomingTraffic) * 0.008 / transferTime,
-                m_totalOutgoingRate = (totalOutgoingTraffic - m_totalOutgoingTraffic) * 0.008 / transferTime;
+                        m_totalOutgoingRate = (totalOutgoingTraffic - m_totalOutgoingTraffic) * 0.008 / transferTime;
             } else {
                 m_totalIncomingRate = m_totalOutgoingRate = 0.0;
             }
@@ -612,6 +678,108 @@ void SyncthingConnection::readConnections()
 }
 
 /*!
+ * \brief Reads results of requestDirStatistics().
+ * \remarks TODO
+ */
+void SyncthingConnection::readDirStatistics()
+{
+    auto *reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+
+    switch(reply->error()) {
+    case QNetworkReply::NoError: {
+        QJsonParseError jsonError;
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
+        if(jsonError.error == QJsonParseError::NoError) {
+            const QJsonObject replyObj(replyDoc.object());
+            int index = 0;
+            for(SyncthingDir &dirInfo : m_dirs) {
+                const QJsonObject dirObj(replyObj.value(dirInfo.id).toObject());
+                if(!dirObj.isEmpty()) {
+                    bool mod = false;
+                    try {
+                        dirInfo.lastScanTime = DateTime::fromIsoStringLocal(dirObj.value(QStringLiteral("lastScan")).toString().toUtf8().data());
+                        mod = true;
+                    } catch(const ConversionException &) {
+                        dirInfo.lastScanTime = DateTime();
+                    }
+                    const QJsonObject lastFileObj(dirObj.value(QStringLiteral("lastFile")).toObject());
+                    if(!lastFileObj.isEmpty()) {
+                        dirInfo.lastFileName = lastFileObj.value(QStringLiteral("filename")).toString();
+                        mod = true;
+                        if(!dirInfo.lastFileName.isEmpty()) {
+                            dirInfo.lastFileDeleted = lastFileObj.value(QStringLiteral("deleted")).toBool(false);
+                            try {
+                                dirInfo.lastFileTime = DateTime::fromIsoStringLocal(lastFileObj.value(QStringLiteral("at")).toString().toUtf8().data());
+                                if(dirInfo.lastFileTime > m_lastFileTime) {
+                                    m_lastFileTime = dirInfo.lastFileTime,
+                                    m_lastFileName = dirInfo.lastFileName,
+                                    m_lastFileDeleted = dirInfo.lastFileDeleted;
+                                }
+                            } catch(const ConversionException &) {
+                                dirInfo.lastFileTime = DateTime();
+                            }
+                        }
+                    }
+                    if(mod) {
+                        emit dirStatusChanged(dirInfo, index);
+                    }
+                }
+                ++index;
+            }
+        } else {
+            emit error(tr("Unable to parse directory statistics: ") + jsonError.errorString());
+        }
+    } case QNetworkReply::OperationCanceledError:
+        return; // intended, not an error
+    default:
+        emit error(tr("Unable to request directory statistics: ") + reply->errorString());
+    }
+}
+
+/*!
+ * \brief Reads results of requestDeviceStatistics().
+ * \remarks TODO
+ */
+void SyncthingConnection::readDeviceStatistics()
+{
+    auto *reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+
+    switch(reply->error()) {
+    case QNetworkReply::NoError: {
+        QJsonParseError jsonError;
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
+        if(jsonError.error == QJsonParseError::NoError) {
+            const QJsonObject replyObj(replyDoc.object());
+            int index = 0;
+            for(SyncthingDev &devInfo : m_devs) {
+                const QJsonObject devObj(replyObj.value(devInfo.id).toObject());
+                if(!devObj.isEmpty()) {
+                    try {
+                        devInfo.lastSeen = DateTime::fromIsoStringLocal(devObj.value(QStringLiteral("lastSeen")).toString().toUtf8().data());
+                        emit devStatusChanged(devInfo, index);
+                    } catch(const ConversionException &) {
+                        devInfo.lastSeen = DateTime();
+                    }
+                }
+                ++index;
+            }
+            // since there seems no event for this data, just request every minute, FIXME: make interval configurable
+            if(m_keepPolling) {
+                QTimer::singleShot(60000, Qt::VeryCoarseTimer, this, SLOT(requestConnections()));
+            }
+        } else {
+            emit error(tr("Unable to parse device statistics: ") + jsonError.errorString());
+        }
+    } case QNetworkReply::OperationCanceledError:
+        return; // intended, not an error
+    default:
+        emit error(tr("Unable to request device statistics: ") + reply->errorString());
+    }
+}
+
+/*!
  * \brief Reads results of requestEvents().
  */
 void SyncthingConnection::readEvents()
@@ -635,7 +803,7 @@ void SyncthingConnection::readEvents()
                 m_lastEventId = event.value(QStringLiteral("id")).toInt(m_lastEventId);
                 DateTime eventTime;
                 try {
-                    eventTime = DateTime::fromIsoString(event.value(QStringLiteral("time")).toString().toLocal8Bit().data()).first;
+                    eventTime = DateTime::fromIsoStringGmt(event.value(QStringLiteral("time")).toString().toLocal8Bit().data());
                 } catch(const ConversionException &) {
                     // ignore conversion error
                 }
@@ -651,6 +819,10 @@ void SyncthingConnection::readEvents()
                     readDirEvent(eventType, eventData);
                 } else if(eventType.startsWith(QLatin1String("Device"))) {
                     readDeviceEvent(eventTime, eventType, eventData);
+                } else if(eventType == QLatin1String("ItemStarted")) {
+                    readItemStarted(eventTime, eventData);
+                } else if(eventType == QLatin1String("ItemFinished")) {
+                    readItemFinished(eventTime, eventData);
                 }
             }
         } else {
@@ -727,8 +899,13 @@ void SyncthingConnection::readStatusChangedEvent(const QJsonObject &eventData)
  * \remarks TODO
  */
 void SyncthingConnection::readDownloadProgressEvent(const QJsonObject &eventData)
-{}
+{
+    VAR_UNUSED(eventData)
+}
 
+/*!
+ * \brief Reads results of requestEvents().
+ */
 void SyncthingConnection::readDirEvent(const QString &eventType, const QJsonObject &eventData)
 {
     const QString dir(eventData.value(QStringLiteral("folder")).toString());
@@ -743,6 +920,7 @@ void SyncthingConnection::readDirEvent(const QString &eventType, const QJsonObje
                         const QJsonObject error(errorVal.toObject());
                         if(!error.isEmpty()) {
                             dirInfo->errors.emplace_back(error.value(QStringLiteral("error")).toString(), error.value(QStringLiteral("path")).toString());
+                            dirInfo->status = DirStatus::OutOfSync;
                             emit newNotification(dirInfo->errors.back().message);
                         }
                     }
@@ -774,9 +952,9 @@ void SyncthingConnection::readDirEvent(const QString &eventType, const QJsonObje
                 }
             } else if(eventType == QLatin1String("FolderScanProgress")) {
                 // FIXME: for some reason current is always 0
-                int current = eventData.value(QStringLiteral("current")).toInt(0);
-                int total = eventData.value(QStringLiteral("total")).toInt(0);
-                int rate = eventData.value(QStringLiteral("rate")).toInt(0);
+                int current = eventData.value(QStringLiteral("current")).toInt(0),
+                    total = eventData.value(QStringLiteral("total")).toInt(0),
+                    rate = eventData.value(QStringLiteral("rate")).toInt(0);
                 if(current > 0 && total > 0) {
                     dirInfo->progressPercentage = current * 100 / total;
                     dirInfo->progressRate = rate;
@@ -831,6 +1009,46 @@ void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eve
 }
 
 /*!
+ * \brief Reads results of requestEvents().
+ */
+void SyncthingConnection::readItemStarted(DateTime eventTime, const QJsonObject &eventData)
+{
+    VAR_UNUSED(eventTime)
+    VAR_UNUSED(eventData)
+}
+
+/*!
+ * \brief Reads results of requestEvents().
+ */
+void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject &eventData)
+{
+    const QString dir(eventData.value(QStringLiteral("folder")).toString());
+    if(!dir.isEmpty()) {
+        int index;
+        if(SyncthingDir *dirInfo = findDirInfo(dir, index)) {
+            const QString error(eventData.value(QStringLiteral("error")).toString()),
+                          item(eventData.value(QStringLiteral("item")).toString());
+            if(error.isEmpty()) {
+                if(dirInfo->lastFileTime.isNull() || eventTime < dirInfo->lastFileTime) {
+                    dirInfo->lastFileTime = eventTime,
+                    dirInfo->lastFileName = item,
+                    dirInfo->lastFileDeleted = (eventData.value(QStringLiteral("action")) != QLatin1String("delete"));
+                    if(eventTime > m_lastFileTime) {
+                        m_lastFileTime = dirInfo->lastFileTime,
+                        m_lastFileName = dirInfo->lastFileName,
+                        m_lastFileDeleted = dirInfo->lastFileDeleted;
+                    }
+                    emit dirStatusChanged(*dirInfo, index);
+                }
+            } else {
+                dirInfo->errors.emplace_back(error, item);
+                emit newNotification(error);
+            }
+        }
+    }
+}
+
+/*!
  * \brief Reads results of rescan().
  */
 void SyncthingConnection::readRescan()
@@ -841,7 +1059,7 @@ void SyncthingConnection::readRescan()
     case QNetworkReply::NoError:
         break;
     default:
-         emit error(tr("Unable to request rescan: ") + reply->errorString());
+        emit error(tr("Unable to request rescan: ") + reply->errorString());
     }
 }
 
@@ -856,7 +1074,7 @@ void SyncthingConnection::readPauseResume()
     case QNetworkReply::NoError:
         break;
     default:
-         emit error(tr("Unable to request pause/resume: ") + reply->errorString());
+        emit error(tr("Unable to request pause/resume: ") + reply->errorString());
     }
 }
 

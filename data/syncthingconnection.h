@@ -4,6 +4,8 @@
 #include <c++utilities/chrono/datetime.h>
 
 #include <QObject>
+#include <QList>
+#include <QSslError>
 
 #include <functional>
 #include <vector>
@@ -59,13 +61,17 @@ struct SyncthingDir
     bool autoNormalize = false;
     int rescanInterval = 0;
     int minDiskFreePercentage = 0;
-    DirStatus status = DirStatus::Unknown;
+    DirStatus status = DirStatus::Idle;
     int progressPercentage = 0;
     int progressRate = 0;
     std::vector<DirErrors> errors;
     int globalBytes = 0, globalDeleted = 0, globalFiles = 0;
     int localBytes = 0, localDeleted = 0, localFiles = 0;
     int neededByted = 0, neededFiles = 0;
+    ChronoUtilities::DateTime lastScanTime;
+    ChronoUtilities::DateTime lastFileTime;
+    QString lastFileName;
+    bool lastFileDeleted = false;
 
     bool assignStatus(const QString &statusStr);
 };
@@ -98,6 +104,7 @@ struct SyncthingDev
     QString connectionAddress;
     QString connectionType;
     QString clientVersion;
+    ChronoUtilities::DateTime lastSeen;
 };
 
 struct SyncthingLogEntry
@@ -141,8 +148,10 @@ public:
     const std::vector<SyncthingDev> &devInfo() const;
     void requestQrCode(const QString &text, std::function<void (const QPixmap &)> callback);
     void requestLog(std::function<void (const std::vector<SyncthingLogEntry> &)> callback);
+    static const QList<QSslError> &expectedCertificateErrors();
 
 public Q_SLOTS:
+    void loadSelfSignedCertificate();
     void connect();
     void disconnect();
     void reconnect();
@@ -226,6 +235,8 @@ private Q_SLOTS:
     void requestConfig();
     void requestStatus();
     void requestConnections();
+    void requestDirStatistics();
+    void requestDeviceStatistics();
     void requestEvents();
     void abortAllRequests();
 
@@ -234,12 +245,16 @@ private Q_SLOTS:
     void readDevs(const QJsonArray &devs);
     void readStatus();
     void readConnections();
+    void readDirStatistics();
+    void readDeviceStatistics();
     void readEvents();
     void readStartingEvent(const QJsonObject &eventData);
     void readStatusChangedEvent(const QJsonObject &eventData);
     void readDownloadProgressEvent(const QJsonObject &eventData);
     void readDirEvent(const QString &eventType, const QJsonObject &eventData);
     void readDeviceEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
+    void readItemStarted(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
+    void readItemFinished(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readRescan();
     void readPauseResume();
 
@@ -277,6 +292,10 @@ private:
     std::vector<SyncthingDir> m_dirs;
     std::vector<SyncthingDev> m_devs;
     ChronoUtilities::DateTime m_lastConnectionsUpdate;
+    ChronoUtilities::DateTime m_lastFileTime;
+    QString m_lastFileName;
+    bool m_lastFileDeleted;
+    static QList<QSslError> m_expectedCertificateErrors;
 };
 
 /*!
@@ -417,6 +436,15 @@ inline const std::vector<SyncthingDir> &SyncthingConnection::dirInfo() const
 inline const std::vector<SyncthingDev> &SyncthingConnection::devInfo() const
 {
     return m_devs;
+}
+
+/*!
+ * \brief Returns a list of all expected certificate errors.
+ * \remarks This list is shared by all instances and updated via loadSelfSignedCertificate().
+ */
+inline const QList<QSslError> &SyncthingConnection::expectedCertificateErrors()
+{
+    return m_expectedCertificateErrors;
 }
 
 }

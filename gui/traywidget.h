@@ -55,6 +55,7 @@ private slots:
     void changeStatus();
     void updateTraffic();
     void handleWebViewDeleted();
+    void handleNewNotification(const QString &msg);
 
 private:
     TrayMenu *m_menu;

@@ -2,29 +2,85 @@
 <ui version="4.0">
  <class>QtGui::AppearanceOptionPage</class>
  <widget class="QWidget" name="QtGui::AppearanceOptionPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>283</width>
+    <height>74</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Appearance</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QCheckBox" name="showTrafficCheckBox">
+  <property name="windowIcon">
+   <iconset theme="preferences-desktop"/>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="sizeLabel">
      <property name="text">
-      <string>Show traffic</string>
+      <string>Menu size</string>
      </property>
     </widget>
    </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+   <item row="2" column="0">
+    <widget class="QLabel" name="guiElementsLabel">
+     <property name="text">
+      <string>Optional GUI elements</string>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QCheckBox" name="showTrafficCheckBox">
+     <property name="text">
+      <string>Traffic statistics</string>
      </property>
-    </spacer>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QSpinBox" name="widthSpinBox">
+       <property name="minimum">
+        <number>150</number>
+       </property>
+       <property name="maximum">
+        <number>1000</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="sizeTimesLabel">
+       <property name="text">
+        <string>x</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::PlainText</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="heightSpinBox">
+       <property name="minimum">
+        <number>150</number>
+       </property>
+       <property name="maximum">
+        <number>1000</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="sizePxLabel">
+       <property name="text">
+        <string>px</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::PlainText</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

@@ -1,4 +1,5 @@
 #include "./settings.h"
+
 #include <qtutilities/settingsdialog/qtsettings.h>
 
 #include <QString>
@@ -10,7 +11,13 @@ using namespace Media;
 
 namespace Settings {
 
-// tray
+bool &firstLaunch()
+{
+    static bool v = false;
+    return v;
+}
+
+// connection
 QString &syncthingUrl()
 {
     static QString v;
@@ -36,12 +43,14 @@ QByteArray &apiKey()
     static QByteArray v;
     return v;
 }
+
+// notifications
 bool &notifyOnDisconnect()
 {
     static bool v = true;
     return v;
 }
-bool &notifyOnErrors()
+bool &notifyOnInternalErrors()
 {
     static bool v = true;
     return v;
@@ -56,11 +65,20 @@ bool &showSyncthingNotifications()
     static bool v = true;
     return v;
 }
+
+// appearance
 bool &showTraffic()
 {
     static bool v = true;
     return v;
 }
+QSize &trayMenuSize()
+{
+    static QSize v(350, 300);
+    return v;
+}
+
+// autostart/launcher
 bool &launchSynchting()
 {
     static bool v = false;
@@ -108,16 +126,18 @@ void restore()
     QSettings settings(QSettings::IniFormat, QSettings::UserScope,  QApplication::organizationName(), QApplication::applicationName());
 
     settings.beginGroup(QStringLiteral("tray"));
+    firstLaunch() = !settings.contains(QStringLiteral("syncthingUrl"));
     syncthingUrl() = settings.value(QStringLiteral("syncthingUrl"), QStringLiteral("http://localhost:8080/")).toString();
     authEnabled() = settings.value(QStringLiteral("authEnabled"), false).toBool();
     userName() = settings.value(QStringLiteral("userName")).toString();
     password() = settings.value(QStringLiteral("password")).toString();
     apiKey() = settings.value(QStringLiteral("apiKey")).toByteArray();
     notifyOnDisconnect() = settings.value(QStringLiteral("notifyOnDisconnect"), true).toBool();
-    notifyOnErrors() = settings.value(QStringLiteral("notifyOnErrors"), true).toBool();
+    notifyOnInternalErrors() = settings.value(QStringLiteral("notifyOnErrors"), true).toBool();
     notifyOnSyncComplete() = settings.value(QStringLiteral("notifyOnSyncComplete"), true).toBool();
     showSyncthingNotifications() = settings.value(QStringLiteral("showSyncthingNotifications"), true).toBool();
     showTraffic() = settings.value(QStringLiteral("showTraffic"), true).toBool();
+    trayMenuSize() = settings.value(QStringLiteral("trayMenuSize"), trayMenuSize()).toSize();
     launchSynchting() = settings.value(QStringLiteral("launchSynchting"), false).toBool();
     syncthingCommand() = settings.value(QStringLiteral("syncthingCommand"), QStringLiteral("syncthing")).toString();
     settings.endGroup();
@@ -145,10 +165,11 @@ void save()
     settings.setValue(QStringLiteral("password"), password());
     settings.setValue(QStringLiteral("apiKey"), apiKey());
     settings.setValue(QStringLiteral("notifyOnDisconnect"), notifyOnDisconnect());
-    settings.setValue(QStringLiteral("notifyOnErrors"), notifyOnErrors());
+    settings.setValue(QStringLiteral("notifyOnErrors"), notifyOnInternalErrors());
     settings.setValue(QStringLiteral("notifyOnSyncComplete"), notifyOnSyncComplete());
     settings.setValue(QStringLiteral("showSyncthingNotifications"), showSyncthingNotifications());
     settings.setValue(QStringLiteral("showTraffic"), showTraffic());
+    settings.setValue(QStringLiteral("trayMenuSize"), trayMenuSize());
     settings.setValue(QStringLiteral("launchSynchting"), launchSynchting());
     settings.setValue(QStringLiteral("syncthingCommand"), syncthingCommand());
     settings.endGroup();

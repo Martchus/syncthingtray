@@ -22,10 +22,11 @@ class TrayIcon : public QSystemTrayIcon
 
 public:
     TrayIcon(QObject *parent = nullptr);
+    TrayMenu &trayMenu();
 
 private slots:
     void handleActivated(QSystemTrayIcon::ActivationReason reason);
-    void showSyncthingError(const QString &errorMsg);
+    void showInternalError(const QString &errorMsg);
     void showSyncthingNotification(const QString &message);
     void updateStatusIconAndText(Data::SyncthingStatus status);
 
@@ -42,6 +43,11 @@ private:
     QMenu m_contextMenu;
     Data::SyncthingStatus m_status;
 };
+
+inline TrayMenu &TrayIcon::trayMenu()
+{
+    return m_trayMenu;
+}
 
 }
 

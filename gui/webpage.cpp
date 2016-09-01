@@ -13,11 +13,15 @@
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE)
 # include <QWebEngineSettings>
 # include <QWebEngineView>
+# include <QWebEngineCertificateError>
 #elif defined(SYNCTHINGTRAY_USE_WEBKIT)
 # include <QWebSettings>
 # include <QWebView>
 # include <QWebFrame>
+# include <QSslError>
 #endif
+
+using namespace Data;
 
 namespace QtGui {
 
@@ -32,6 +36,7 @@ WebPage::WebPage(WEB_VIEW_PROVIDER *view) :
     settings()->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
     setNetworkAccessManager(&Data::networkAccessManager());
     connect(&Data::networkAccessManager(), &QNetworkAccessManager::authenticationRequired, this, static_cast<void(WebPage::*)(QNetworkReply *, QAuthenticator *)>(&WebPage::supplyCredentials));
+    connect(&Data::networkAccessManager(), &QNetworkAccessManager::sslErrors, this, static_cast<void(WebPage::*)(QNetworkReply *, const QList<QSslError> &errors)>(&WebPage::handleSslErrors));
 #endif
     if(!m_view) {
         // delegate to external browser if no view is assigned
@@ -50,9 +55,24 @@ WEB_PAGE_PROVIDER *WebPage::createWindow(WEB_PAGE_PROVIDER::WebWindowType type)
     return new WebPage;
 }
 
+#ifdef SYNCTHINGTRAY_USE_WEBENGINE
+bool WebPage::certificateError(const QWebEngineCertificateError &certificateError)
+{
+    switch(certificateError.error()) {
+    case QWebEngineCertificateError::CertificateCommonNameInvalid:
+    case QWebEngineCertificateError::CertificateAuthorityInvalid:
+        // FIXME: only ignore the error if the used certificate matches the certificate
+        // known to be used by the Syncthing GUI
+        return true;
+    default:
+        return false;
+    }
+}
+#endif
+
 void WebPage::delegateToExternalBrowser(const QUrl &url)
 {
-    openUrlExternal(url);
+    QDesktopServices::openUrl(url);
     // this page and the associated view are useless
     m_view->deleteLater();
     deleteLater();
@@ -78,10 +98,14 @@ void WebPage::supplyCredentials(QAuthenticator *authenticator)
     }
 }
 
-void WebPage::openUrlExternal(const QUrl &url)
+#ifdef SYNCTHINGTRAY_USE_WEBKIT
+void WebPage::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
 {
-    QDesktopServices::openUrl(url);
+    if(reply->request().url().host() == m_view->url().host()) {
+        reply->ignoreSslErrors(SyncthingConnection::expectedCertificateErrors());
+    }
 }
+#endif
 
 }
 

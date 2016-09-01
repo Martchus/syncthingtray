@@ -23,6 +23,7 @@ public:
     ConnectionOptionPage(Data::SyncthingConnection *connection, QWidget *parentWidget = nullptr);
 private:
     DECLARE_SETUP_WIDGETS
+    void insertFromConfigFile();
     void updateConnectionStatus();
     void applyAndReconnect();
     Data::SyncthingConnection *m_connection;

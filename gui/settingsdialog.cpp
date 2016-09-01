@@ -2,6 +2,7 @@
 
 #include "../application/settings.h"
 #include "../data/syncthingconnection.h"
+#include "../data/syncthingconfig.h"
 
 #include "ui_connectionoptionpage.h"
 #include "ui_notificationsoptionpage.h"
@@ -9,12 +10,18 @@
 #include "ui_autostartoptionpage.h"
 #include "ui_webviewoptionpage.h"
 
+#include "resources/config.h"
+
 #include <tagparser/mediafileinfo.h>
 #include <tagparser/backuphelper.h>
 
 #include <qtutilities/settingsdialog/optioncategory.h>
 #include <qtutilities/settingsdialog/optioncategorymodel.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
+
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QHostAddress>
 
 #include <functional>
 
@@ -40,12 +47,49 @@ QWidget *ConnectionOptionPage::setupWidget()
     updateConnectionStatus();
     QObject::connect(m_connection, &SyncthingConnection::statusChanged, bind(&ConnectionOptionPage::updateConnectionStatus, this));
     QObject::connect(ui()->connectPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::applyAndReconnect, this));
+    QObject::connect(ui()->insertFromConfigFilePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::insertFromConfigFile, this));
     return w;
+}
+
+void ConnectionOptionPage::insertFromConfigFile()
+{
+    if(hasBeenShown()) {
+        QString configFile = SyncthingConfig::locateConfigFile();
+        if(configFile.isEmpty()) {
+            // allow user to select config file manually if it could not be located
+            configFile = QFileDialog::getOpenFileName(widget(), QCoreApplication::translate("QtGui::ConnectionOptionPage", "Select Syncthing config file") + QStringLiteral(" - " APP_NAME));
+        }
+        if(configFile.isEmpty()) {
+            return;
+        }
+        SyncthingConfig config;
+        if(!config.restore(configFile)) {
+            QMessageBox::critical(widget(), widget()->windowTitle() + QStringLiteral(" - " APP_NAME), QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to parse the Syncthing config file."));
+            return;
+        }
+        if(!config.guiAddress.isEmpty()) {
+            ui()->urlLineEdit->selectAll();
+            ui()->urlLineEdit->insert(((config.guiEnforcesSecureConnection || !QHostAddress(config.guiAddress.mid(0, config.guiAddress.indexOf(QChar(':')))).isLoopback()) ? QStringLiteral("https://") : QStringLiteral("http://")) + config.guiAddress);
+        }
+        if(!config.guiUser.isEmpty() || !config.guiPasswordHash.isEmpty()) {
+            ui()->authCheckBox->setChecked(true);
+            ui()->userNameLineEdit->selectAll();
+            ui()->userNameLineEdit->insert(config.guiUser);
+        } else {
+            ui()->authCheckBox->setChecked(false);
+        }
+        if(!config.guiApiKey.isEmpty()) {
+            ui()->apiKeyLineEdit->selectAll();
+            ui()->apiKeyLineEdit->insert(config.guiApiKey);
+        }
+    }
 }
 
 void ConnectionOptionPage::updateConnectionStatus()
 {
-    ui()->statusLabel->setText(m_connection->statusText());
+    if(hasBeenShown()) {
+        ui()->statusLabel->setText(m_connection->statusText());
+    }
 }
 
 bool ConnectionOptionPage::apply()
@@ -97,7 +141,7 @@ bool NotificationsOptionPage::apply()
 {
     if(hasBeenShown()) {
         notifyOnDisconnect() = ui()->notifyOnDisconnectCheckBox->isChecked();
-        notifyOnErrors() = ui()->notifyOnErrorsCheckBox->isChecked();
+        notifyOnInternalErrors() = ui()->notifyOnErrorsCheckBox->isChecked();
         notifyOnSyncComplete() = ui()->notifyOnSyncCompleteCheckBox->isChecked();
         showSyncthingNotifications() = ui()->showSyncthingNotificationsCheckBox->isChecked();
     }
@@ -108,7 +152,7 @@ void NotificationsOptionPage::reset()
 {
     if(hasBeenShown()) {
         ui()->notifyOnDisconnectCheckBox->setChecked(notifyOnDisconnect());
-        ui()->notifyOnErrorsCheckBox->setChecked(notifyOnErrors());
+        ui()->notifyOnErrorsCheckBox->setChecked(notifyOnInternalErrors());
         ui()->notifyOnSyncCompleteCheckBox->setChecked(notifyOnSyncComplete());
         ui()->showSyncthingNotificationsCheckBox->setChecked(showSyncthingNotifications());
     }
@@ -125,6 +169,8 @@ AppearanceOptionPage::~AppearanceOptionPage()
 bool AppearanceOptionPage::apply()
 {
     if(hasBeenShown()) {
+        trayMenuSize().setWidth(ui()->widthSpinBox->value());
+        trayMenuSize().setHeight(ui()->heightSpinBox->value());
         showTraffic() = ui()->showTrafficCheckBox->isChecked();
     }
     return true;
@@ -133,6 +179,8 @@ bool AppearanceOptionPage::apply()
 void AppearanceOptionPage::reset()
 {
     if(hasBeenShown()) {
+        ui()->widthSpinBox->setValue(trayMenuSize().width());
+        ui()->heightSpinBox->setValue(trayMenuSize().height());
         ui()->showTrafficCheckBox->setChecked(showTraffic());
     }
 }

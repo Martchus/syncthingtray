@@ -43,7 +43,7 @@ TrayIcon::TrayIcon(QObject *parent) :
     // connect signals and slots
     SyncthingConnection *connection = &(m_trayMenu.widget()->connection());
     connect(this, &TrayIcon::activated, this, &TrayIcon::handleActivated);
-    connect(connection, &SyncthingConnection::error, this, &TrayIcon::showSyncthingError);
+    connect(connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
     connect(connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
     connect(connection, &SyncthingConnection::statusChanged, this, &TrayIcon::updateStatusIconAndText);
 }
@@ -72,17 +72,17 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
     }
 }
 
-void TrayIcon::showSyncthingError(const QString &errorMsg)
+void TrayIcon::showInternalError(const QString &errorMsg)
 {
-    if(Settings::notifyOnErrors()) {
-        showMessage(tr("Syncthing error"), errorMsg, QSystemTrayIcon::Critical);
+    if(Settings::notifyOnInternalErrors()) {
+        showMessage(tr("Error"), errorMsg, QSystemTrayIcon::Critical);
     }
 }
 
 void TrayIcon::showSyncthingNotification(const QString &message)
 {
     if(Settings::showSyncthingNotifications()) {
-        showMessage(tr("Syncthing notification"), message, QSystemTrayIcon::Information);
+        showMessage(tr("Syncthing notification"), message, QSystemTrayIcon::Warning);
     }
 }
 

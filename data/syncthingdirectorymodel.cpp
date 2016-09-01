@@ -1,5 +1,8 @@
 #include "./syncthingdirectorymodel.h"
 #include "./syncthingconnection.h"
+#include "./utils.h"
+
+using namespace ChronoUtilities;
 
 namespace Data {
 
@@ -86,6 +89,8 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 2: return tr("Devices");
                         case 3: return tr("Read-only");
                         case 4: return tr("Rescan interval");
+                        case 5: return tr("Last scan");
+                        case 6: return tr("Last file");
                         }
                         break;
                     case 1: // attribute values
@@ -96,10 +101,53 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 2: return dir.devices.join(QStringLiteral(", "));
                         case 3: return dir.readOnly ? tr("yes") : tr("no");
                         case 4: return QStringLiteral("%1 s").arg(dir.rescanInterval);
+                        case 5: return dir.lastScanTime.isNull() ? tr("unknown") : QString::fromLatin1(dir.lastScanTime.toString(DateTimeOutputFormat::DateAndTime, true).data());
+                        case 6: return dir.lastFileName.isEmpty() ? tr("unknown") : dir.lastFileName;
                         }
                         break;
                     }
                     break;
+                case Qt::ForegroundRole:
+                    switch(index.column()) {
+                    case 1:
+                        const SyncthingDir &dir = m_dirs[index.parent().row()];
+                        switch(index.row()) {
+                        case 5:
+                            if(dir.lastScanTime.isNull()) {
+                                return QColor(Qt::gray);
+                            }
+                            break;
+                        case 6:
+                            if(dir.lastFileName.isEmpty()) {
+                                return QColor(Qt::gray);
+                            } else if(dir.lastFileDeleted) {
+                                return QColor(Qt::red);
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                case Qt::ToolTipRole:
+                    switch(index.column()) {
+                    case 1:
+                        const SyncthingDir &dir = m_dirs[index.parent().row()];
+                        switch(index.row()) {
+                        case 5:
+                            if(!dir.lastScanTime.isNull()) {
+                                return agoString(dir.lastScanTime);
+                            }
+                            break;
+                        case 6:
+                            if(!dir.lastFileTime.isNull()) {
+                                if(dir.lastFileDeleted) {
+                                    return tr("Deleted at %1").arg(QString::fromLatin1(dir.lastFileTime.toString(DateTimeOutputFormat::DateAndTime, true).data()));
+                                } else {
+                                    return tr("Updated at %1").arg(QString::fromLatin1(dir.lastFileTime.toString(DateTimeOutputFormat::DateAndTime, true).data()));
+                                }
+                            }
+                            break;
+                        }
+                    }
                 default:
                     ;
                 }
@@ -177,7 +225,7 @@ int SyncthingDirectoryModel::rowCount(const QModelIndex &parent) const
     if(!parent.isValid()) {
         return m_dirs.size();
     } else if(!parent.parent().isValid()) {
-        return 5;
+        return 7;
     } else {
         return 0;
     }

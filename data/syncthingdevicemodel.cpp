@@ -1,5 +1,8 @@
 #include "./syncthingdevicemodel.h"
 #include "./syncthingconnection.h"
+#include "./utils.h"
+
+using namespace ChronoUtilities;
 
 namespace Data {
 
@@ -83,9 +86,10 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                         switch(index.row()) {
                         case 0: return tr("ID");
                         case 1: return tr("Addresses");
-                        case 2: return tr("Compression");
-                        case 3: return tr("Certificate");
-                        case 4: return tr("Introducer");
+                        case 2: return tr("Last seen");
+                        case 3: return tr("Compression");
+                        case 4: return tr("Certificate");
+                        case 5: return tr("Introducer");
                         }
                         break;
                     case 1: // attribute values
@@ -93,13 +97,44 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                         switch(index.row()) {
                         case 0: return dev.id;
                         case 1: return dev.addresses.join(QStringLiteral(", "));
-                        case 2: return dev.compression;
-                        case 3: return dev.certName.isEmpty() ? tr("none") : dev.certName;
-                        case 4: return dev.introducer ? tr("yes") : tr("no");
+                        case 2: return dev.lastSeen.isNull() ? tr("unknown or own device") : QString::fromLatin1(dev.lastSeen.toString(DateTimeOutputFormat::DateAndTime, true).data());
+                        case 3: return dev.compression;
+                        case 4: return dev.certName.isEmpty() ? tr("none") : dev.certName;
+                        case 5: return dev.introducer ? tr("yes") : tr("no");
                         }
                         break;
                     }
                     break;
+                case Qt::ForegroundRole:
+                    switch(index.column()) {
+                    case 1:
+                        const SyncthingDev &dev = m_devs[index.parent().row()];
+                        switch(index.row()) {
+                        case 2:
+                            if(dev.lastSeen.isNull()) {
+                                return QColor(Qt::gray);
+                            }
+                            break;
+                        case 4:
+                            if(dev.certName.isEmpty()) {
+                                return QColor(Qt::gray);
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                case Qt::ToolTipRole:
+                    switch(index.column()) {
+                    case 1:
+                        switch(index.row()) {
+                        case 2:
+                            const SyncthingDev &dev = m_devs[index.parent().row()];
+                            if(!dev.lastSeen.isNull()) {
+                                return agoString(dev.lastSeen);
+                            }
+                            break;
+                        }
+                    }
                 default:
                     ;
                 }
@@ -196,7 +231,7 @@ int SyncthingDeviceModel::rowCount(const QModelIndex &parent) const
     if(!parent.isValid()) {
         return m_devs.size();
     } else if(!parent.parent().isValid()) {
-        return 5;
+        return 6;
     } else {
         return 0;
     }

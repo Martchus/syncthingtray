@@ -1,6 +1,8 @@
 #include "./traymenu.h"
 #include "./traywidget.h"
 
+#include "../application/settings.h"
+
 #include <QHBoxLayout>
 
 namespace QtGui {
@@ -17,7 +19,7 @@ TrayMenu::TrayMenu(QWidget *parent) :
 
 QSize TrayMenu::sizeHint() const
 {
-    return QSize(350, 300);
+    return Settings::trayMenuSize();
 }
 
 }
