@@ -17,6 +17,10 @@ QT_FORWARD_DECLARE_CLASS(QUrlQuery)
 QT_FORWARD_DECLARE_CLASS(QJsonObject)
 QT_FORWARD_DECLARE_CLASS(QJsonArray)
 
+namespace Settings {
+struct ConnectionSettings;
+}
+
 namespace Data {
 
 QNetworkAccessManager &networkAccessManager();
@@ -151,13 +155,14 @@ public:
     const std::vector<SyncthingDev> &devInfo() const;
     QMetaObject::Connection requestQrCode(const QString &text, std::function<void (const QPixmap &)> callback);
     QMetaObject::Connection requestLog(std::function<void (const std::vector<SyncthingLogEntry> &)> callback);
-    static const QList<QSslError> &expectedCertificateErrors();
+    const QList<QSslError> &expectedSslErrors();
 
 public Q_SLOTS:
     void loadSelfSignedCertificate();
     void connect();
     void disconnect();
     void reconnect();
+    void reconnect(Settings::ConnectionSettings &connectionSettings);
     void pause(const QString &dev);
     void pauseAllDevs();
     void resume(const QString &dev);
@@ -263,6 +268,7 @@ private Q_SLOTS:
     void readPauseResume();
     void readRestart();
 
+    void continueReconnect();
     void setStatus(SyncthingStatus status);
 
 private:
@@ -300,7 +306,7 @@ private:
     ChronoUtilities::DateTime m_lastFileTime;
     QString m_lastFileName;
     bool m_lastFileDeleted;
-    static QList<QSslError> m_expectedCertificateErrors;
+    QList<QSslError> m_expectedSslErrors;
 };
 
 /*!
@@ -447,9 +453,9 @@ inline const std::vector<SyncthingDev> &SyncthingConnection::devInfo() const
  * \brief Returns a list of all expected certificate errors.
  * \remarks This list is shared by all instances and updated via loadSelfSignedCertificate().
  */
-inline const QList<QSslError> &SyncthingConnection::expectedCertificateErrors()
+inline const QList<QSslError> &SyncthingConnection::expectedSslErrors()
 {
-    return m_expectedCertificateErrors;
+    return m_expectedSslErrors;
 }
 
 }

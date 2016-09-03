@@ -64,12 +64,12 @@ int main(int argc, char *argv[])
                     TrayIcon trayIcon;
                     trayIcon.show();
                     if(Settings::firstLaunch()) {
-                        trayIcon.trayMenu().widget()->showSettingsDialog();
                         QMessageBox msgBox;
                         msgBox.setIcon(QMessageBox::Information);
                         msgBox.setText(QCoreApplication::translate("main", "You must configure how to connect to Syncthing when using Syncthing Tray the first time."));
                         msgBox.setInformativeText(QCoreApplication::translate("main", "Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration."));
                         msgBox.exec();
+                        trayIcon.trayMenu().widget()->showSettingsDialog();
                     }
                     res = application.exec();
                 } else {

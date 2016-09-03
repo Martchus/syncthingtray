@@ -8,7 +8,7 @@ namespace Data {
 
 /*!
  * \struct SyncthingConfig
- * \brief The SyncthingConfig struct holds the configuration of Syncthing itself read from config.xml in the Syncthing home directory.
+ * \brief The SyncthingConfig struct holds the configuration of the local Syncthing instance read from config.xml in the Syncthing home directory.
  * \remarks Only a few fields are required since most of the Syncthing config can be accessed via SyncthingConnection class.
  */
 

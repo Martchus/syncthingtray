@@ -26,10 +26,8 @@ WebViewDialog::WebViewDialog(QWidget *parent) :
     setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     setCentralWidget(m_view);
 
-    m_view->setPage(new WebPage(m_view));
-
-
-    applySettings();
+    m_view->setPage(new WebPage(this, m_view));
+    connect(m_view, &WEB_VIEW_PROVIDER::titleChanged, this, &WebViewDialog::setWindowTitle);
 
     if(Settings::webViewGeometry().isEmpty()) {
         resize(1200, 800);
@@ -44,9 +42,10 @@ QtGui::WebViewDialog::~WebViewDialog()
     Settings::webViewGeometry() = saveGeometry();
 }
 
-void QtGui::WebViewDialog::applySettings()
+void QtGui::WebViewDialog::applySettings(const Settings::ConnectionSettings &connectionSettings)
 {
-    m_view->setUrl(Settings::syncthingUrl());
+    m_settings = connectionSettings;
+    m_view->setUrl(connectionSettings.syncthingUrl);
     m_view->setZoomFactor(Settings::webViewZoomFactor());
 }
 

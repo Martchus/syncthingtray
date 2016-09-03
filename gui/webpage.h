@@ -17,11 +17,13 @@ QT_FORWARD_DECLARE_CLASS(QSslError)
 
 namespace QtGui {
 
+class WebViewDialog;
+
 class WebPage : public WEB_PAGE_PROVIDER
 {
     Q_OBJECT
 public:
-    WebPage(WEB_VIEW_PROVIDER *view = nullptr);
+    WebPage(WebViewDialog *dlg = nullptr, WEB_VIEW_PROVIDER *view = nullptr);
 
 protected:
     WEB_PAGE_PROVIDER *createWindow(WebWindowType type);
@@ -39,6 +41,7 @@ private slots:
 #endif
 
 private:
+    WebViewDialog *m_dlg;
     WEB_VIEW_PROVIDER *m_view;
 };
 

@@ -3,10 +3,12 @@
 
 #include <c++utilities/conversion/types.h>
 
-#include <QtGlobal>
+#include <QString>
+#include <QByteArray>
+#include <QSslError>
 
-QT_FORWARD_DECLARE_CLASS(QByteArray)
-QT_FORWARD_DECLARE_CLASS(QString)
+#include <vector>
+
 QT_FORWARD_DECLARE_CLASS(QSize)
 
 namespace Media {
@@ -23,11 +25,19 @@ namespace Settings {
 bool &firstLaunch();
 
 // connection
-QString &syncthingUrl();
-bool &authEnabled();
-QString &userName();
-QString &password();
-QByteArray &apiKey();
+struct ConnectionSettings {
+    QString label;
+    QString syncthingUrl;
+    bool authEnabled = false;
+    QString userName;
+    QString password;
+    QByteArray apiKey;
+    QString httpsCertPath;
+    QList<QSslError> expectedSslErrors;
+    bool loadHttpsCert();
+};
+ConnectionSettings &primaryConnectionSettings();
+std::vector<ConnectionSettings> &secondaryConnectionSettings();
 
 // notifications
 bool &notifyOnDisconnect();

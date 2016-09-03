@@ -90,29 +90,36 @@ set(DOC_FILES
 )
 
 set(REQUIRED_ICONS
-    network-card
-    window-close
+    dialog-cancel
+    dialog-ok
+    dialog-ok-apply
     edit-copy
     edit-paste
-    preferences-other
-    view-barcode
-    folder-open
-    media-playback-start
-    text-plain
-    help-about
-    media-playback-pause
-    view-refresh
     folder
-    network-server
+    folder-open
     folder-sync
+    help-about
     internet-web-browser
+    list-add
+    list-remove
+    media-playback-pause
+    media-playback-start
+    network-card
     network-connect
-    system-run
-    system-search
+    network-server
     preferences-desktop
-    preferences-desktop-notification
     preferences-desktop-icons
     preferences-desktop-locale
+    preferences-desktop-notification
+    preferences-other
+    qtcreator
+    system-run
+    system-search
+    system-file-manager
+    text-plain
+    view-barcode
+    view-refresh
+    window-close
 )
 
 # find c++utilities

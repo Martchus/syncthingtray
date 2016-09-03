@@ -7,12 +7,15 @@
 #include "../data/syncthingdirectorymodel.h"
 #include "../data/syncthingdevicemodel.h"
 #include "../data/syncthingprocess.h"
+#include "../application/settings.h"
 
 #include <QWidget>
 
 #include <memory>
 
 QT_FORWARD_DECLARE_CLASS(QFrame)
+QT_FORWARD_DECLARE_CLASS(QMenu)
+QT_FORWARD_DECLARE_CLASS(QActionGroup)
 
 namespace ApplicationUtilities {
 class QtConfigArguments;
@@ -41,6 +44,7 @@ public:
     ~TrayWidget();
 
     Data::SyncthingConnection &connection();
+    QMenu *connectionsMenu();
 
 public slots:
     void showSettingsDialog();
@@ -57,8 +61,12 @@ private slots:
     void pauseResumeDev(const QModelIndex &devIndex);
     void changeStatus();
     void updateTraffic();
+#ifndef SYNCTHINGTRAY_NO_WEBVIEW
     void handleWebViewDeleted();
+#endif
     void handleNewNotification(const QString &msg);
+    void handleConnectionSelected(QAction *connectionAction);
+    void showConnectionsMenu();
 
 private:
     TrayMenu *m_menu;
@@ -72,11 +80,19 @@ private:
     Data::SyncthingConnection m_connection;
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
+    QMenu *m_connectionsMenu;
+    QActionGroup *m_connectionsActionGroup;
+    Settings::ConnectionSettings *m_selectedConnection;
 };
 
 inline Data::SyncthingConnection &TrayWidget::connection()
 {
     return m_connection;
+}
+
+inline QMenu *TrayWidget::connectionsMenu()
+{
+    return m_connectionsMenu;
 }
 
 }

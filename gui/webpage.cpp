@@ -1,5 +1,6 @@
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
 #include "./webpage.h"
+#include "./webviewdialog.h"
 
 #include "../application/settings.h"
 #include "../data/syncthingconnection.h"
@@ -25,8 +26,9 @@ using namespace Data;
 
 namespace QtGui {
 
-WebPage::WebPage(WEB_VIEW_PROVIDER *view) :
+WebPage::WebPage(WebViewDialog *dlg, WEB_VIEW_PROVIDER *view) :
     WEB_PAGE_PROVIDER(view),
+    m_dlg(dlg),
     m_view(view)
 {
 #ifdef SYNCTHINGTRAY_USE_WEBENGINE
@@ -52,6 +54,7 @@ WebPage::WebPage(WEB_VIEW_PROVIDER *view) :
 
 WEB_PAGE_PROVIDER *WebPage::createWindow(WEB_PAGE_PROVIDER::WebWindowType type)
 {
+    Q_UNUSED(type)
     return new WebPage;
 }
 
@@ -92,17 +95,18 @@ void WebPage::supplyCredentials(QNetworkReply *reply, QAuthenticator *authentica
 
 void WebPage::supplyCredentials(QAuthenticator *authenticator)
 {
-    if(Settings::authEnabled()) {
-        authenticator->setUser(Settings::userName());
-        authenticator->setPassword(Settings::password());
+    if(m_dlg && m_dlg->settings().authEnabled) {
+        authenticator->setUser(m_dlg->settings().userName);
+        authenticator->setPassword(m_dlg->settings().password);
     }
 }
 
 #ifdef SYNCTHINGTRAY_USE_WEBKIT
 void WebPage::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
 {
-    if(reply->request().url().host() == m_view->url().host()) {
-        reply->ignoreSslErrors(SyncthingConnection::expectedCertificateErrors());
+    Q_UNUSED(errors)
+    if(m_dlg && reply->request().url().host() == m_view->url().host()) {
+        reply->ignoreSslErrors(m_dlg->settings().expectedSslErrors);
     }
 }
 #endif

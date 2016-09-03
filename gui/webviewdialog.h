@@ -4,9 +4,15 @@
 
 #include "./webviewprovider.h"
 
+#include "../application/settings.h"
+
 #include <QMainWindow>
 
 QT_FORWARD_DECLARE_CLASS(WEB_VIEW_PROVIDER)
+
+namespace Settings {
+struct ConnectionSettings;
+}
 
 namespace QtGui {
 
@@ -18,14 +24,21 @@ public:
     ~WebViewDialog();
 
 public slots:
-    void applySettings();
+    void applySettings(const Settings::ConnectionSettings &connectionSettings);
+    const Settings::ConnectionSettings &settings() const;
 
 protected:
     void closeEvent(QCloseEvent *event);
 
 private:
     WEB_VIEW_PROVIDER *m_view;
+    Settings::ConnectionSettings m_settings;
 };
+
+inline const Settings::ConnectionSettings &WebViewDialog::settings() const
+{
+    return m_settings;
+}
 
 }
 

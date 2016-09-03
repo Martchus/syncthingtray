@@ -1,17 +1,14 @@
 #ifndef SETTINGS_DIALOG_H
 #define SETTINGS_DIALOG_H
 
+#include "../application/settings.h"
+
 #include <qtutilities/settingsdialog/settingsdialog.h>
 #include <qtutilities/settingsdialog/optionpage.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 
 #include <QWidget>
 #include <QProcess>
-
-namespace Settings {
-class KnownFieldModel;
-class TargetLevelModel;
-}
 
 namespace Data {
 class SyncthingConnection;
@@ -27,7 +24,15 @@ private:
     void insertFromConfigFile();
     void updateConnectionStatus();
     void applyAndReconnect();
+    bool showConnectionSettings(int index);
+    bool cacheCurrentSettings(bool applying);
+    void saveCurrentConnectionName(const QString &name);
+    void addConnectionSettings();
+    void removeConnectionSettings();
     Data::SyncthingConnection *m_connection;
+    Settings::ConnectionSettings m_primarySettings;
+    std::vector<Settings::ConnectionSettings> m_secondarySettings;
+    int m_currentIndex;
 END_DECLARE_OPTION_PAGE
 
 DECLARE_UI_FILE_BASED_OPTION_PAGE(NotificationsOptionPage)

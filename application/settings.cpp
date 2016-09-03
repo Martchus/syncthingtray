@@ -7,7 +7,11 @@
 #include <QApplication>
 #include <QSettings>
 #include <QFrame>
+#include <QSslCertificate>
+#include <QSslError>
+#include <QMessageBox>
 
+using namespace std;
 using namespace Media;
 
 namespace Settings {
@@ -19,29 +23,15 @@ bool &firstLaunch()
 }
 
 // connection
-QString &syncthingUrl()
+ConnectionSettings &primaryConnectionSettings()
 {
-    static QString v;
+    static ConnectionSettings v;
     return v;
 }
-bool &authEnabled()
+
+std::vector<ConnectionSettings> &secondaryConnectionSettings()
 {
-    static bool v = false;
-    return v;
-}
-QString &userName()
-{
-    static QString v;
-    return v;
-}
-QString &password()
-{
-    static QString v;
-    return v;
-}
-QByteArray &apiKey()
-{
-    static QByteArray v;
+    static vector<ConnectionSettings> v;
     return v;
 }
 
@@ -141,17 +131,45 @@ void restore()
     QSettings settings(QSettings::IniFormat, QSettings::UserScope,  QApplication::organizationName(), QApplication::applicationName());
 
     settings.beginGroup(QStringLiteral("tray"));
-    firstLaunch() = !settings.contains(QStringLiteral("syncthingUrl"));
-    syncthingUrl() = settings.value(QStringLiteral("syncthingUrl"), QStringLiteral("http://localhost:8080/")).toString();
-    authEnabled() = settings.value(QStringLiteral("authEnabled"), false).toBool();
-    userName() = settings.value(QStringLiteral("userName")).toString();
-    password() = settings.value(QStringLiteral("password")).toString();
-    apiKey() = settings.value(QStringLiteral("apiKey")).toByteArray();
-    notifyOnDisconnect() = settings.value(QStringLiteral("notifyOnDisconnect"), true).toBool();
-    notifyOnInternalErrors() = settings.value(QStringLiteral("notifyOnErrors"), true).toBool();
-    notifyOnSyncComplete() = settings.value(QStringLiteral("notifyOnSyncComplete"), true).toBool();
-    showSyncthingNotifications() = settings.value(QStringLiteral("showSyncthingNotifications"), true).toBool();
-    showTraffic() = settings.value(QStringLiteral("showTraffic"), true).toBool();
+
+    const int connectionCount = settings.beginReadArray(QStringLiteral("connections"));
+    if(connectionCount > 0) {
+        secondaryConnectionSettings().clear();
+        secondaryConnectionSettings().reserve(static_cast<size_t>(connectionCount));
+        for(int i = 0; i < connectionCount; ++i) {
+            ConnectionSettings *connectionSettings;
+            if(i == 0) {
+                connectionSettings = &primaryConnectionSettings();
+            } else {
+                secondaryConnectionSettings().emplace_back();
+                connectionSettings = &secondaryConnectionSettings().back();
+            }
+            settings.setArrayIndex(i);
+            connectionSettings->label = settings.value(QStringLiteral("label")).toString();
+            if(connectionSettings->label.isEmpty()) {
+                connectionSettings->label = (i == 0 ? QStringLiteral("Primary instance") : QStringLiteral("Secondary instance %1").arg(i));
+            }
+            connectionSettings->syncthingUrl = settings.value(QStringLiteral("syncthingUrl"), connectionSettings->syncthingUrl).toString();
+            connectionSettings->authEnabled = settings.value(QStringLiteral("authEnabled"), connectionSettings->authEnabled).toBool();
+            connectionSettings->userName = settings.value(QStringLiteral("userName")).toString();
+            connectionSettings->password = settings.value(QStringLiteral("password")).toString();
+            connectionSettings->apiKey = settings.value(QStringLiteral("apiKey")).toByteArray();
+            connectionSettings->httpsCertPath = settings.value(QStringLiteral("httpsCertPath")).toString();
+            if(!connectionSettings->loadHttpsCert()) {
+                QMessageBox::critical(nullptr, QCoreApplication::applicationName(), QCoreApplication::translate("Settings::restore", "Unable to load certificate \"%1\" when restoring settings.").arg(connectionSettings->httpsCertPath));
+            }
+        }
+    } else {
+        firstLaunch() = true;
+        primaryConnectionSettings().label = QStringLiteral("Primary instance");
+    }
+    settings.endArray();
+
+    notifyOnDisconnect() = settings.value(QStringLiteral("notifyOnDisconnect"), notifyOnDisconnect()).toBool();
+    notifyOnInternalErrors() = settings.value(QStringLiteral("notifyOnErrors"), notifyOnInternalErrors()).toBool();
+    notifyOnSyncComplete() = settings.value(QStringLiteral("notifyOnSyncComplete"), notifyOnSyncComplete()).toBool();
+    showSyncthingNotifications() = settings.value(QStringLiteral("showSyncthingNotifications"), showSyncthingNotifications()).toBool();
+    showTraffic() = settings.value(QStringLiteral("showTraffic"), showTraffic()).toBool();
     trayMenuSize() = settings.value(QStringLiteral("trayMenuSize"), trayMenuSize()).toSize();
     frameStyle() = settings.value(QStringLiteral("frameStyle"), frameStyle()).toInt();
     settings.endGroup();
@@ -179,11 +197,21 @@ void save()
     QSettings settings(QSettings::IniFormat, QSettings::UserScope,  QApplication::organizationName(), QApplication::applicationName());
 
     settings.beginGroup(QStringLiteral("tray"));
-    settings.setValue(QStringLiteral("syncthingUrl"), syncthingUrl());
-    settings.setValue(QStringLiteral("authEnabled"), authEnabled());
-    settings.setValue(QStringLiteral("userName"), userName());
-    settings.setValue(QStringLiteral("password"), password());
-    settings.setValue(QStringLiteral("apiKey"), apiKey());
+    const int connectionCount = static_cast<int>(1 + secondaryConnectionSettings().size());
+    settings.beginWriteArray(QStringLiteral("connections"), connectionCount);
+    for(int i = 0; i < connectionCount; ++i) {
+        const ConnectionSettings *connectionSettings = (i == 0 ? &primaryConnectionSettings() : &secondaryConnectionSettings()[static_cast<size_t>(i - 1)]);
+        settings.setArrayIndex(i);
+        settings.setValue(QStringLiteral("label"), connectionSettings->label);
+        settings.setValue(QStringLiteral("syncthingUrl"), connectionSettings->syncthingUrl);
+        settings.setValue(QStringLiteral("authEnabled"), connectionSettings->authEnabled);
+        settings.setValue(QStringLiteral("userName"), connectionSettings->userName);
+        settings.setValue(QStringLiteral("password"), connectionSettings->password);
+        settings.setValue(QStringLiteral("apiKey"), connectionSettings->apiKey);
+        settings.setValue(QStringLiteral("httpsCertPath"), connectionSettings->httpsCertPath);
+    }
+    settings.endArray();
+
     settings.setValue(QStringLiteral("notifyOnDisconnect"), notifyOnDisconnect());
     settings.setValue(QStringLiteral("notifyOnErrors"), notifyOnInternalErrors());
     settings.setValue(QStringLiteral("notifyOnSyncComplete"), notifyOnSyncComplete());
@@ -209,6 +237,23 @@ void save()
 #endif
 
     qtSettings().save(settings);
+}
+
+bool ConnectionSettings::loadHttpsCert()
+{
+    if(!httpsCertPath.isEmpty()) {
+        const QList<QSslCertificate> cert = QSslCertificate::fromPath(httpsCertPath);
+        if(cert.isEmpty()) {
+            return false;
+        }
+        expectedSslErrors.clear();
+        expectedSslErrors.reserve(4);
+        expectedSslErrors << QSslError(QSslError::UnableToGetLocalIssuerCertificate, cert.at(0));
+        expectedSslErrors << QSslError(QSslError::UnableToVerifyFirstCertificate, cert.at(0));
+        expectedSslErrors << QSslError(QSslError::SelfSignedCertificate, cert.at(0));
+        expectedSslErrors << QSslError(QSslError::HostNameMismatch, cert.at(0));
+    }
+    return true;
 }
 
 }

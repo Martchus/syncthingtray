@@ -25,10 +25,11 @@ Qt 5-based tray application for [Syncthing](https://github.com/syncthing/syncthi
 * Provides quick access to the official web UI
   * Utilizes either Qt WebKit or Qt WebEngine
   * Can be built without web view support as well (then the web UI is opened in the regular browser)
+* Allows quickly switching between multiple Syncthing instances
 * Still under development; the following features are planned
-  * Connect to multiple instances of Syncthing at a time
   * Show currently processed items
   * Show recently processed items
+  * Improve notification handling
 
 ## Screenshots
 ### Under Openbox/Tint2

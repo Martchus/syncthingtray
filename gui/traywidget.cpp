@@ -49,7 +49,8 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     m_webViewDlg(nullptr),
 #endif
     m_dirModel(m_connection),
-    m_devModel(m_connection)
+    m_devModel(m_connection),
+    m_selectedConnection(nullptr)
 {
     m_ui->setupUi(this);
 
@@ -87,6 +88,11 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     cornerFrameLayout->addWidget(scanAllButton);
     m_ui->tabWidget->setCornerWidget(m_cornerFrame, Qt::BottomRightCorner);
 
+    // setup connection menu
+    m_connectionsActionGroup = new QActionGroup(m_connectionsMenu = new QMenu(tr("Connection"), this));
+    m_connectionsMenu->setIcon(QIcon::fromTheme(QStringLiteral("network-connect"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/network-connect.svg"))));
+    connect(m_ui->connectionsPushButton, &QPushButton::clicked, this, &TrayWidget::showConnectionsMenu);
+
     // apply settings, this also establishes the connection to Syncthing
     applySettings();
 
@@ -106,6 +112,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     connect(m_ui->devsTreeView, &DevView::pauseResumeDev, this, &TrayWidget::pauseResumeDev);
     connect(scanAllButton, &QPushButton::clicked, &m_connection, &SyncthingConnection::rescanAllDirs);
     connect(viewIdButton, &QPushButton::clicked, this, &TrayWidget::showOwnDeviceId);
+    connect(m_connectionsActionGroup, &QActionGroup::triggered, this, &TrayWidget::handleConnectionSelected);
 }
 
 TrayWidget::~TrayWidget()
@@ -115,13 +122,7 @@ void TrayWidget::showSettingsDialog()
 {
     if(!m_settingsDlg) {
         m_settingsDlg = new SettingsDialog(&m_connection, this);
-        m_settingsDlg->setWindowTitle(tr("Settings") + QStringLiteral(" - " APP_NAME));
         connect(m_settingsDlg, &SettingsDialog::applied, this, &TrayWidget::applySettings);
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
-        if(m_webViewDlg) {
-            connect(m_settingsDlg, &SettingsDialog::applied, m_webViewDlg, &WebViewDialog::applySettings);
-        }
-#endif
     }
     m_settingsDlg->show();
     centerWidget(m_settingsDlg);
@@ -151,15 +152,15 @@ void TrayWidget::showWebUi()
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
     if(Settings::webViewDisabled()) {
 #endif
-        QDesktopServices::openUrl(Settings::syncthingUrl());
+        QDesktopServices::openUrl(m_connection.syncthingUrl());
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
     } else {
         if(!m_webViewDlg) {
             m_webViewDlg = new WebViewDialog(this);
-            connect(m_webViewDlg, &WebViewDialog::destroyed, this, &TrayWidget::handleWebViewDeleted);
-            if(m_settingsDlg) {
-                connect(m_settingsDlg, &SettingsDialog::applied, m_webViewDlg, &WebViewDialog::applySettings);
+            if(m_selectedConnection) {
+                m_webViewDlg->applySettings(*m_selectedConnection);
             }
+            connect(m_webViewDlg, &WebViewDialog::destroyed, this, &TrayWidget::handleWebViewDeleted);
         }
         m_webViewDlg->show();
         if(m_menu) {
@@ -263,16 +264,44 @@ void TrayWidget::updateStatusButton(SyncthingStatus status)
 
 void TrayWidget::applySettings()
 {
-    m_connection.setSyncthingUrl(Settings::syncthingUrl());
-    m_connection.setApiKey(Settings::apiKey());
-    if(Settings::authEnabled()) {
-        m_connection.setCredentials(Settings::userName(), Settings::password());
-    } else {
-        m_connection.setCredentials(QString(), QString());
+    // update connections menu
+    int connectionIndex = 0;
+    const int connectionCount = static_cast<int>(1 + Settings::secondaryConnectionSettings().size());
+    const QList<QAction *> connectionActions = m_connectionsActionGroup->actions();
+    m_selectedConnection = nullptr;
+    for(; connectionIndex < connectionCount; ++connectionIndex) {
+        Settings::ConnectionSettings &connectionSettings = (connectionIndex == 0 ? Settings::primaryConnectionSettings() : Settings::secondaryConnectionSettings()[static_cast<size_t>(connectionIndex - 1)]);
+        if(connectionIndex < connectionActions.size()) {
+            QAction *action = connectionActions.at(connectionIndex);
+            action->setText(connectionSettings.label);
+            if(action->isChecked()) {
+                m_selectedConnection = &connectionSettings;
+            }
+        } else {
+            QAction *action = m_connectionsMenu->addAction(connectionSettings.label);
+            action->setCheckable(true);
+            m_connectionsActionGroup->addAction(action);
+        }
     }
-    m_connection.loadSelfSignedCertificate();
-    m_connection.reconnect();
-    m_ui->trafficFrame->setVisible(Settings::showTraffic());
+    for(; connectionIndex < connectionActions.size(); ++connectionIndex) {
+        m_connectionsActionGroup->removeAction(connectionActions.at(connectionIndex));
+    }
+    if(!m_selectedConnection) {
+        m_selectedConnection = &Settings::primaryConnectionSettings();
+        m_connectionsMenu->actions().at(0)->setChecked(true);
+    }
+
+    m_connection.reconnect(*m_selectedConnection);
+
+    // web view
+#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+    if(m_webViewDlg) {
+        m_webViewDlg->applySettings(*m_selectedConnection);
+    }
+#endif
+
+    // update visual appearance
+    m_ui->trafficFormWidget->setVisible(Settings::showTraffic());
     if(Settings::showTraffic()) {
         updateTraffic();
     }
@@ -354,14 +383,37 @@ void TrayWidget::updateTraffic()
 
 }
 
+#ifndef SYNCTHINGTRAY_NO_WEBVIEW
 void TrayWidget::handleWebViewDeleted()
 {
     m_webViewDlg = nullptr;
 }
+#endif
 
 void TrayWidget::handleNewNotification(const QString &msg)
 {
     // FIXME
+}
+
+void TrayWidget::handleConnectionSelected(QAction *connectionAction)
+{
+    int index = m_connectionsMenu->actions().indexOf(connectionAction);
+    if(index >= 0) {
+        m_selectedConnection = (index == 0)
+                ? &Settings::primaryConnectionSettings()
+                : &Settings::secondaryConnectionSettings()[static_cast<size_t>(index - 1)];
+        m_connection.reconnect(*m_selectedConnection);
+#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+        if(m_webViewDlg) {
+            m_webViewDlg->applySettings(*m_selectedConnection);
+        }
+#endif
+    }
+}
+
+void TrayWidget::showConnectionsMenu()
+{
+    m_connectionsMenu->exec(QCursor::pos());
 }
 
 }

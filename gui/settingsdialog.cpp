@@ -1,6 +1,5 @@
 #include "./settingsdialog.h"
 
-#include "../application/settings.h"
 #include "../data/syncthingconnection.h"
 #include "../data/syncthingconfig.h"
 #include "../data/syncthingprocess.h"
@@ -13,9 +12,6 @@
 #include "ui_webviewoptionpage.h"
 
 #include "resources/config.h"
-
-#include <tagparser/mediafileinfo.h>
-#include <tagparser/backuphelper.h>
 
 #include <qtutilities/settingsdialog/optioncategory.h>
 #include <qtutilities/settingsdialog/optioncategorymodel.h>
@@ -45,7 +41,8 @@ namespace QtGui {
 // ConnectionOptionPage
 ConnectionOptionPage::ConnectionOptionPage(Data::SyncthingConnection *connection, QWidget *parentWidget) :
     ConnectionOptionPageBase(parentWidget),
-    m_connection(connection)
+    m_connection(connection),
+    m_currentIndex(0)
 {}
 
 ConnectionOptionPage::~ConnectionOptionPage()
@@ -55,9 +52,15 @@ QWidget *ConnectionOptionPage::setupWidget()
 {
     auto *w = ConnectionOptionPageBase::setupWidget();
     updateConnectionStatus();
+    ui()->certPathSelection->provideCustomFileMode(QFileDialog::ExistingFile);
+    ui()->certPathSelection->lineEdit()->setPlaceholderText(QCoreApplication::translate("QtGui::ConnectionOptionPage", "Auto-detected for local instance"));
     QObject::connect(m_connection, &SyncthingConnection::statusChanged, bind(&ConnectionOptionPage::updateConnectionStatus, this));
     QObject::connect(ui()->connectPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::applyAndReconnect, this));
     QObject::connect(ui()->insertFromConfigFilePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::insertFromConfigFile, this));
+    QObject::connect(ui()->selectionComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), bind(&ConnectionOptionPage::showConnectionSettings, this, _1));
+    QObject::connect(ui()->selectionComboBox, static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::editTextChanged), bind(&ConnectionOptionPage::saveCurrentConnectionName, this, _1));
+    QObject::connect(ui()->addPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::addConnectionSettings, this));
+    QObject::connect(ui()->removePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::removeConnectionSettings, this));
     return w;
 }
 
@@ -102,41 +105,114 @@ void ConnectionOptionPage::updateConnectionStatus()
     }
 }
 
-bool ConnectionOptionPage::apply()
+bool ConnectionOptionPage::showConnectionSettings(int index)
 {
-    if(hasBeenShown()) {
-        syncthingUrl() = ui()->urlLineEdit->text();
-        authEnabled() = ui()->authCheckBox->isChecked();
-        userName() = ui()->userNameLineEdit->text();
-        password() = ui()->passwordLineEdit->text();
-        apiKey() = ui()->apiKeyLineEdit->text().toUtf8();
+    bool ok = true;
+    if(index != m_currentIndex) {
+        if((ok = cacheCurrentSettings(false))) {
+            const ConnectionSettings &connectionSettings = (index == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(index - 1)]);
+            ui()->urlLineEdit->setText(connectionSettings.syncthingUrl);
+            ui()->authCheckBox->setChecked(connectionSettings.authEnabled);
+            ui()->userNameLineEdit->setText(connectionSettings.userName);
+            ui()->passwordLineEdit->setText(connectionSettings.password);
+            ui()->apiKeyLineEdit->setText(connectionSettings.apiKey);
+            ui()->certPathSelection->lineEdit()->setText(connectionSettings.httpsCertPath);
+            m_currentIndex = index;
+        } else {
+            ui()->selectionComboBox->setCurrentIndex(m_currentIndex);
+        }
 
     }
-    return true;
+    ui()->removePushButton->setEnabled(index);
+    return ok;
+}
+
+bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
+{
+    bool ok = true;
+    if(m_currentIndex >= 0) {
+        ConnectionSettings &connectionSettings = (m_currentIndex == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(m_currentIndex - 1)]);
+        connectionSettings.syncthingUrl = ui()->urlLineEdit->text();
+        connectionSettings.authEnabled = ui()->authCheckBox->isChecked();
+        connectionSettings.userName = ui()->userNameLineEdit->text();
+        connectionSettings.password = ui()->passwordLineEdit->text();
+        connectionSettings.apiKey = ui()->apiKeyLineEdit->text().toUtf8();
+        connectionSettings.expectedSslErrors.clear();
+        connectionSettings.httpsCertPath = ui()->certPathSelection->lineEdit()->text();
+        if(!connectionSettings.loadHttpsCert()) {
+            const QString errorMessage = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to load specified certificate \"%1\".").arg(connectionSettings.httpsCertPath);
+            if(!applying) {
+                QMessageBox::critical(widget(), QCoreApplication::applicationName(), errorMessage);
+            } else {
+                errors() << errorMessage;
+            }
+            ok = false;
+        }
+    }
+    return ok;
+}
+
+void ConnectionOptionPage::saveCurrentConnectionName(const QString &name)
+{
+    const int index = ui()->selectionComboBox->currentIndex();
+    if(index == m_currentIndex && index >= 0) {
+        (index == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(index - 1)]).label = name;
+        ui()->selectionComboBox->setItemText(index, name);
+    }
+}
+
+void ConnectionOptionPage::addConnectionSettings()
+{
+    m_secondarySettings.emplace_back();
+    m_secondarySettings.back().label = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Instance %1").arg(ui()->selectionComboBox->count() + 1);
+    ui()->selectionComboBox->addItem(m_secondarySettings.back().label);
+    ui()->selectionComboBox->setCurrentIndex(ui()->selectionComboBox->count() - 1);
+}
+
+void ConnectionOptionPage::removeConnectionSettings()
+{
+    int index = ui()->selectionComboBox->currentIndex();
+    if(index > 0) {
+        m_secondarySettings.erase(m_secondarySettings.begin() + (index - 1));
+        m_currentIndex = -1;
+        ui()->selectionComboBox->removeItem(index);
+    }
+}
+
+bool ConnectionOptionPage::apply()
+{
+    bool ok = true;
+    if(hasBeenShown()) {
+        ok = cacheCurrentSettings(true);
+        Settings::primaryConnectionSettings() = m_primarySettings;
+        Settings::secondaryConnectionSettings() = m_secondarySettings;
+    }
+    return ok;
 }
 
 void ConnectionOptionPage::reset()
 {
     if(hasBeenShown()) {
-        ui()->urlLineEdit->setText(syncthingUrl());
-        ui()->authCheckBox->setChecked(authEnabled());
-        ui()->userNameLineEdit->setText(userName());
-        ui()->passwordLineEdit->setText(password());
-        ui()->apiKeyLineEdit->setText(apiKey());
+        m_primarySettings = primaryConnectionSettings();
+        m_secondarySettings = secondaryConnectionSettings();
+        m_currentIndex = -1;
+
+        QStringList itemTexts;
+        itemTexts.reserve(1 + static_cast<int>(m_secondarySettings.size()));
+        itemTexts << m_primarySettings.label;
+        for(const ConnectionSettings &settings : m_secondarySettings) {
+            itemTexts << settings.label;
+        }
+        ui()->selectionComboBox->clear();
+        ui()->selectionComboBox->addItems(itemTexts);
+        ui()->selectionComboBox->setCurrentIndex(0);
     }
 }
 
 void ConnectionOptionPage::applyAndReconnect()
 {
     apply();
-    m_connection->setSyncthingUrl(Settings::syncthingUrl());
-    m_connection->setApiKey(Settings::apiKey());
-    if(Settings::authEnabled()) {
-        m_connection->setCredentials(Settings::userName(), Settings::password());
-    } else {
-        m_connection->setCredentials(QString(), QString());
-    }
-    m_connection->reconnect();
+    m_connection->reconnect(primaryConnectionSettings());
 }
 
 // NotificationsOptionPage
@@ -312,7 +388,7 @@ bool setAutostartEnabled(bool enabled)
 #elif defined(PLATFORM_WINDOWS)
     QSettings settings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat);
     if(enabled) {
-        settings.setValue(QStringLiteral(PROJECT_NAME), QCoreApplication::applicationFilePath().replace(QChar('/'), QChar("\\")));
+        settings.setValue(QStringLiteral(PROJECT_NAME), QCoreApplication::applicationFilePath().replace(QChar('/'), QChar('\\')));
     } else {
         settings.remove(QStringLiteral(PROJECT_NAME));
     }
@@ -515,7 +591,8 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     categoryModel()->setCategories(categories);
 
-    setMinimumSize(800, 450);
+    setMinimumSize(800, 550);
+    setWindowTitle(tr("Settings") + QStringLiteral(" - " APP_NAME));
     setWindowIcon(QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
 
     // some settings could be applied without restarting the application, good idea?

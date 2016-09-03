@@ -1,6 +1,8 @@
 #include "./syncthingconnection.h"
 #include "./syncthingconfig.h"
 
+#include "../application/settings.h"
+
 #include <c++utilities/conversion/conversionexception.h>
 
 #include <QNetworkAccessManager>
@@ -102,8 +104,6 @@ bool SyncthingDir::assignStatus(DirStatus newStatus, DateTime time)
  * \brief The SyncthingConnection class allows Qt applications to access Syncthing.
  */
 
-QList<QSslError> SyncthingConnection::m_expectedCertificateErrors;
-
 /*!
  * \brief Constructs a new instance ready to connect. To establish the connection, call connect().
  */
@@ -165,6 +165,10 @@ void SyncthingConnection::connect()
 {
     if(!isConnected()) {
         m_reconnecting = m_hasConfig = m_hasStatus = false;
+        if(m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
+            emit error(tr("Connection configuration is insufficient."));
+            return;
+        }
         requestConfig();
         requestStatus();
         m_keepPolling = true;
@@ -182,6 +186,7 @@ void SyncthingConnection::disconnect()
 
 /*!
  * \brief Disconnects if connected, then (re-)connects asynchronously.
+ * \remarks Clears the currently cached configuration.
  */
 void SyncthingConnection::reconnect()
 {
@@ -190,8 +195,61 @@ void SyncthingConnection::reconnect()
         m_hasConfig = m_hasStatus = false;
         abortAllRequests();
     } else {
-        connect();
+        continueReconnect();
     }
+}
+
+/*!
+ * \brief Applies the specifies configuration and tries to reconnect via reconnect().
+ * \remarks The expected SSL errors of the specified configuration are updated accordingly.
+ */
+void SyncthingConnection::reconnect(Settings::ConnectionSettings &connectionSettings)
+{
+    setSyncthingUrl(connectionSettings.syncthingUrl);
+    setApiKey(connectionSettings.apiKey);
+    if(connectionSettings.authEnabled) {
+        setCredentials(connectionSettings.userName, connectionSettings.password);
+    } else {
+        setCredentials(QString(), QString());
+    }
+    loadSelfSignedCertificate();
+    if(connectionSettings.expectedSslErrors.isEmpty()) {
+        connectionSettings.expectedSslErrors = expectedSslErrors();
+    }
+    reconnect();
+}
+
+/*!
+ * \brief Internally called to reconnect; ensures currently cached config is cleared.
+ */
+void SyncthingConnection::continueReconnect()
+{
+    emit newConfig(QJsonObject()); // configuration will be invalidated
+    m_status = SyncthingStatus::Disconnected;
+    m_keepPolling = true;
+    m_reconnecting = false;
+    m_lastEventId = 0;
+    m_configDir.clear();
+    m_myId.clear();
+    m_totalIncomingTraffic = 0;
+    m_totalOutgoingTraffic = 0;
+    m_totalIncomingRate = 0.0;
+    m_totalOutgoingRate = 0.0;
+    m_unreadNotifications = false;
+    m_hasConfig = false;
+    m_hasStatus = false;
+    m_dirs.clear();
+    m_devs.clear();
+    m_lastConnectionsUpdate = DateTime();
+    m_lastFileTime = DateTime();
+    m_lastFileName.clear();
+    m_lastFileDeleted = false;
+    if(m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
+        emit error(tr("Connection configuration is insufficient."));
+        return;
+    }
+    requestConfig();
+    requestStatus();
 }
 
 void SyncthingConnection::pause(const QString &dev)
@@ -273,7 +331,7 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
 QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQuery &query, bool rest)
 {
     auto *reply = networkAccessManager().get(prepareRequest(path, query, rest));
-    reply->ignoreSslErrors(m_expectedCertificateErrors);
+    reply->ignoreSslErrors(m_expectedSslErrors);
     return reply;
 }
 
@@ -283,7 +341,7 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuery &query, const QByteArray &data)
 {
     auto *reply = networkAccessManager().post(prepareRequest(path, query), data);
-    reply->ignoreSslErrors(m_expectedCertificateErrors);
+    reply->ignoreSslErrors(m_expectedSslErrors);
     return reply;
 }
 
@@ -470,14 +528,15 @@ QMetaObject::Connection SyncthingConnection::requestLog(std::function<void (cons
  */
 void SyncthingConnection::loadSelfSignedCertificate()
 {
+    // ensure current exceptions for self-signed certificates are cleared
+    m_expectedSslErrors.clear();
+
     // only possible if the Syncthing instance is running on the local machine
     const QString host(QUrl(syncthingUrl()).host());
-    if(host.compare(QLatin1String("localhost"), Qt::CaseInsensitive) != 0 && !QHostAddress().isLoopback()) {
+    if(host.compare(QLatin1String("localhost"), Qt::CaseInsensitive) != 0 && !QHostAddress(host).isLoopback()) {
         return;
     }
 
-    // ensure current exceptions for self-signed certificates are cleared
-    m_expectedCertificateErrors.clear();
     // find cert
     const QString certPath = !m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate();
     if(certPath.isEmpty()) {
@@ -490,10 +549,11 @@ void SyncthingConnection::loadSelfSignedCertificate()
         emit error(tr("Unable to load certificate used by Syncthing GUI."));
         return;
     }
-    m_expectedCertificateErrors << QSslError(QSslError::UnableToGetLocalIssuerCertificate, cert.at(0));
-    m_expectedCertificateErrors << QSslError(QSslError::UnableToVerifyFirstCertificate, cert.at(0));
-    m_expectedCertificateErrors << QSslError(QSslError::SelfSignedCertificate, cert.at(0));
-    m_expectedCertificateErrors << QSslError(QSslError::HostNameMismatch, cert.at(0));
+    m_expectedSslErrors.reserve(4);
+    m_expectedSslErrors << QSslError(QSslError::UnableToGetLocalIssuerCertificate, cert.at(0));
+    m_expectedSslErrors << QSslError(QSslError::UnableToVerifyFirstCertificate, cert.at(0));
+    m_expectedSslErrors << QSslError(QSslError::SelfSignedCertificate, cert.at(0));
+    m_expectedSslErrors << QSslError(QSslError::HostNameMismatch, cert.at(0));
 }
 
 /*!
@@ -868,11 +928,7 @@ void SyncthingConnection::readEvents()
         // intended disconnect, not an error
         if(m_reconnecting) {
             // if reconnection flag is set, instantly etstablish a new connection ...
-            m_reconnecting = false;
-            requestConfig();
-            requestStatus();
-            m_lastEventId = 0;
-            m_keepPolling = true;
+            continueReconnect();
         } else {
             // ... otherwise keep disconnected
             setStatus(SyncthingStatus::Disconnected);
