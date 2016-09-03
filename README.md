@@ -3,7 +3,10 @@
 Qt 5-based tray application for [Syncthing](https://github.com/syncthing/syncthing)
 
 * Designed to work under any desktop environment with tray icon support
-  * Tested under Plasma 5 and Openbox/qt5ct/Tint2
+  * Tested under
+    * Plasma 5
+    * Openbox/qt5ct/Tint2
+    * Cinnamon
   * Could be shown as regular window if no tray icon support is available
 * Doesn't require desktop environment specific libraries
 * Provides quick access to most frequently used features but does not intend to replace the official web UI
@@ -11,18 +14,21 @@ Qt 5-based tray application for [Syncthing](https://github.com/syncthing/syncthi
   * Check current traffic statistics
   * Display further details about direcoties and devices, like last file, last
     scan, ...
-  * Trigger re-scan of a specific directory
+  * Trigger re-scan of a specific directory or all directories at once
   * Open a directory with the default file browser
-  * Pause/resume devices
+  * Pause/resume a specific device or all devices at once
 * Shows Syncthing notifications
 * Does *not* allow configuring Syncthing itself (currently I do not intend to add this feature as it could cause more harm than good when not implemented correctly)
+* Can read the Syncthing configuration file for quick setup when just connecting to local instance
+* Provides an option to conveniently add the tray to the applications launched when the desktop environment starts
+* Can launch Syncthing when started and display stdout/stderr (useful under Windows)
 * Provides quick access to the official web UI
   * Utilizes either Qt WebKit or Qt WebEngine
   * Can be built without web view support as well (then the web UI is opened in the regular browser)
 * Still under development; the following features are planned
   * Connect to multiple instances of Syncthing at a time
-  * Add option to conveniently add the tray to the applications launched when the desktop environment starts
-  * Add option to launch Syncthing when the tray is started and log stdout/stderr (would make sense for me under Windows, otherwise starting Syncthing via systemd is more preferable of course)
+  * Show currently processed items
+  * Show recently processed items
 
 ## Screenshots
 ### Under Openbox/Tint2

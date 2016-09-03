@@ -37,8 +37,13 @@ QNetworkAccessManager &networkAccessManager()
  * \brief Assigns the status from the specified status string.
  * \returns Returns whether the status has actually changed.
  */
-bool SyncthingDir::assignStatus(const QString &statusStr)
+bool SyncthingDir::assignStatus(const QString &statusStr, DateTime time)
 {
+    if(lastStatusUpdate > time) {
+        return false;
+    } else {
+        lastStatusUpdate = time;
+    }
     DirStatus newStatus;
     if(statusStr == QLatin1String("idle")) {
         progressPercentage = 0;
@@ -56,6 +61,27 @@ bool SyncthingDir::assignStatus(const QString &statusStr)
         newStatus = DirStatus::OutOfSync;
     } else {
         newStatus = DirStatus::Unknown;
+    }
+    if(newStatus != status) {
+        switch(status) {
+        case DirStatus::Scanning:
+            lastScanTime = DateTime::now();
+            break;
+        default:
+            ;
+        }
+        status = newStatus;
+        return true;
+    }
+    return false;
+}
+
+bool SyncthingDir::assignStatus(DirStatus newStatus, DateTime time)
+{
+    if(lastStatusUpdate > time) {
+        return false;
+    } else {
+        lastStatusUpdate = time;
     }
     if(newStatus != status) {
         switch(status) {
@@ -119,7 +145,7 @@ QString SyncthingConnection::statusText() const
     switch(m_status) {
     case SyncthingStatus::Disconnected:
         return tr("disconnected");
-    case SyncthingStatus::Default:
+    case SyncthingStatus::Idle:
         return tr("connected");
     case SyncthingStatus::NotificationsAvailable:
         return tr("connected, notifications available");
@@ -213,6 +239,11 @@ void SyncthingConnection::rescanAllDirs()
     for(const SyncthingDir &dir : m_dirs) {
         rescan(dir.id);
     }
+}
+
+void SyncthingConnection::restart()
+{
+    QObject::connect(postData(QStringLiteral("system/restart"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readRestart);
 }
 
 void SyncthingConnection::notificationsRead()
@@ -379,12 +410,12 @@ void SyncthingConnection::requestEvents()
  *
  * The specified \a callback is called on success; otherwise error() is emitted.
  */
-void SyncthingConnection::requestQrCode(const QString &text, std::function<void(const QPixmap &)> callback)
+QMetaObject::Connection SyncthingConnection::requestQrCode(const QString &text, std::function<void(const QPixmap &)> callback)
 {
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("text"), text);
     QNetworkReply *reply = requestData(QStringLiteral("/qr/"), query, false);
-    QObject::connect(reply, &QNetworkReply::finished, [this, reply, callback] {
+    return QObject::connect(reply, &QNetworkReply::finished, [this, reply, callback] {
         reply->deleteLater();
         QPixmap pixmap;
         switch(reply->error()) {
@@ -403,10 +434,10 @@ void SyncthingConnection::requestQrCode(const QString &text, std::function<void(
  *
  * The specified \a callback is called on success; otherwise error() is emitted.
  */
-void SyncthingConnection::requestLog(std::function<void (const std::vector<SyncthingLogEntry> &)> callback)
+QMetaObject::Connection SyncthingConnection::requestLog(std::function<void (const std::vector<SyncthingLogEntry> &)> callback)
 {
     QNetworkReply *reply = requestData(QStringLiteral("system/log"), QUrlQuery());
-    QObject::connect(reply, &QNetworkReply::finished, [this, reply, callback] {
+    return QObject::connect(reply, &QNetworkReply::finished, [this, reply, callback] {
         reply->deleteLater();
         switch(reply->error()) {
         case QNetworkReply::NoError: {
@@ -812,11 +843,11 @@ void SyncthingConnection::readEvents()
                 if(eventType == QLatin1String("Starting")) {
                     readStartingEvent(eventData);
                 } else if(eventType == QLatin1String("StateChanged")) {
-                    readStatusChangedEvent(eventData);
+                    readStatusChangedEvent(eventTime, eventData);
                 } else if(eventType == QLatin1String("DownloadProgress")) {
                     readDownloadProgressEvent(eventData);
                 } else if(eventType.startsWith(QLatin1String("Folder"))) {
-                    readDirEvent(eventType, eventData);
+                    readDirEvent(eventTime, eventType, eventData);
                 } else if(eventType.startsWith(QLatin1String("Device"))) {
                     readDeviceEvent(eventTime, eventType, eventData);
                 } else if(eventType == QLatin1String("ItemStarted")) {
@@ -856,7 +887,7 @@ void SyncthingConnection::readEvents()
     if(m_keepPolling) {
         requestEvents();
         // TODO: need to change the status somewhere else
-        setStatus(SyncthingStatus::Default);
+        setStatus(SyncthingStatus::Idle);
     } else {
         setStatus(SyncthingStatus::Disconnected);
     }
@@ -880,14 +911,14 @@ void SyncthingConnection::readStartingEvent(const QJsonObject &eventData)
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readStatusChangedEvent(const QJsonObject &eventData)
+void SyncthingConnection::readStatusChangedEvent(DateTime eventTime, const QJsonObject &eventData)
 {
     const QString dir(eventData.value(QStringLiteral("folder")).toString());
     if(!dir.isEmpty()) {
         // dir status changed
         int index;
         if(SyncthingDir *dirInfo = findDirInfo(dir, index)) {
-            if(dirInfo->assignStatus(eventData.value(QStringLiteral("to")).toString())) {
+            if(dirInfo->assignStatus(eventData.value(QStringLiteral("to")).toString(), eventTime)) {
                 emit dirStatusChanged(*dirInfo, index);
             }
         }
@@ -906,7 +937,7 @@ void SyncthingConnection::readDownloadProgressEvent(const QJsonObject &eventData
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readDirEvent(const QString &eventType, const QJsonObject &eventData)
+void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
 {
     const QString dir(eventData.value(QStringLiteral("folder")).toString());
     if(!dir.isEmpty()) {
@@ -920,7 +951,7 @@ void SyncthingConnection::readDirEvent(const QString &eventType, const QJsonObje
                         const QJsonObject error(errorVal.toObject());
                         if(!error.isEmpty()) {
                             dirInfo->errors.emplace_back(error.value(QStringLiteral("error")).toString(), error.value(QStringLiteral("path")).toString());
-                            dirInfo->status = DirStatus::OutOfSync;
+                            dirInfo->assignStatus(DirStatus::OutOfSync, eventTime);
                             emit newNotification(dirInfo->errors.back().message);
                         }
                     }
@@ -958,7 +989,8 @@ void SyncthingConnection::readDirEvent(const QString &eventType, const QJsonObje
                 if(current > 0 && total > 0) {
                     dirInfo->progressPercentage = current * 100 / total;
                     dirInfo->progressRate = rate;
-                    dirInfo->status = DirStatus::Scanning; // ensure state is scanning
+                    dirInfo->assignStatus(DirStatus::Scanning, eventTime); // ensure state is scanning
+                    emit dirStatusChanged(*dirInfo, index);
                 }
             }
         }
@@ -1040,7 +1072,7 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
                     }
                     emit dirStatusChanged(*dirInfo, index);
                 }
-            } else {
+            } else if(dirInfo->status == DirStatus::OutOfSync) { // FIXME: find better way to check whether the event is still relevant
                 dirInfo->errors.emplace_back(error, item);
                 emit newNotification(error);
             }
@@ -1079,6 +1111,21 @@ void SyncthingConnection::readPauseResume()
 }
 
 /*!
+ * \brief Reads results of restart().
+ */
+void SyncthingConnection::readRestart()
+{
+    auto *reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+    switch(reply->error()) {
+    case QNetworkReply::NoError:
+        break;
+    default:
+        emit error(tr("Unable to request restart: ") + reply->errorString());
+    }
+}
+
+/*!
  * \brief Sets the connection status. Ensures statusChanged() is emitted.
  * \param status Specifies the status; should be either SyncthingStatus::Disconnected or SyncthingStatus::Default. There is no use
  *               in specifying other values such as SyncthingStatus::Synchronizing as these are determined automatically within the method.
@@ -1092,16 +1139,20 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
         if(m_unreadNotifications) {
             status = SyncthingStatus::NotificationsAvailable;
         } else {
-            // check whether at least one directory is synchronizing
+            // check whether at least one directory is scanning or synchronizing
+            bool scanning = false;
             bool synchronizing = false;
-            for(const SyncthingDir &dir : m_dirs) {
+            for(const SyncthingDir &dir : m_dirs)
                 if(dir.status == DirStatus::Synchronizing) {
                     synchronizing = true;
                     break;
-                }
+                } else if(dir.status == DirStatus::Scanning) {
+                    scanning = true;
             }
             if(synchronizing) {
                 status = SyncthingStatus::Synchronizing;
+            } else if(scanning) {
+                status = SyncthingStatus::Scanning;
             } else {
                 // check whether at least one device is paused
                 bool paused = false;
@@ -1114,7 +1165,7 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
                 if(paused) {
                     status = SyncthingStatus::Paused;
                 } else {
-                    status = SyncthingStatus::Default;
+                    status = SyncthingStatus::Idle;
                 }
             }
         }

@@ -23,7 +23,8 @@ TrayIcon::TrayIcon(QObject *parent) :
     QSystemTrayIcon(parent),
     m_size(QSize(128, 128)),
     m_statusIconDisconnected(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-disconnected.svg")))),
-    m_statusIconDefault(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-default.svg")))),
+    m_statusIconIdling(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-ok.svg")))),
+    m_statusIconScanning(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-default.svg")))),
     m_statusIconNotify(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-notify.svg")))),
     m_statusIconPause(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-pause.svg")))),
     m_statusIconSync(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-sync.svg")))),
@@ -54,18 +55,16 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
     case QSystemTrayIcon::Context:
         // can't catch that event on Plasma 5 anyways
         break;
+    case QSystemTrayIcon::MiddleClick:
+        m_trayMenu.widget()->showWebUi();
+        break;
     case QSystemTrayIcon::Trigger:
-        // either show web UI or context menu
-        if(false) {
-            m_trayMenu.widget()->showWebUi();
-        } else {
-            m_trayMenu.resize(m_trayMenu.sizeHint());
-            // when showing the menu manually
-            // move the menu to the closest of the currently available screen
-            // this implies that the tray icon is located near the edge of the screen; otherwise this behavior makes no sense
-            cornerWidget(&m_trayMenu);
-            m_trayMenu.show();
-        }
+        m_trayMenu.resize(m_trayMenu.sizeHint());
+        // when showing the menu manually
+        // move the menu to the closest of the currently available screen
+        // this implies that the tray icon is located near the edge of the screen; otherwise this behavior makes no sense
+        cornerWidget(&m_trayMenu);
+        m_trayMenu.show();
         break;
     default:
         ;
@@ -96,9 +95,13 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
             showMessage(QCoreApplication::applicationName(), tr("Disconnected from Syncthing"), QSystemTrayIcon::Warning);
         }
         break;
-    case SyncthingStatus::Default:
-        setIcon(m_statusIconDefault);
-        setToolTip(tr("Syncthing is running"));
+    case SyncthingStatus::Idle:
+        setIcon(m_statusIconIdling);
+        setToolTip(tr("Syncthing is idling"));
+        break;
+    case SyncthingStatus::Scanning:
+        setIcon(m_statusIconScanning);
+        setToolTip(tr("Syncthing is scanning"));
         break;
     case SyncthingStatus::NotificationsAvailable:
         setIcon(m_statusIconNotify);

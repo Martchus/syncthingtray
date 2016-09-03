@@ -6,10 +6,13 @@
 #include "../data/syncthingconnection.h"
 #include "../data/syncthingdirectorymodel.h"
 #include "../data/syncthingdevicemodel.h"
+#include "../data/syncthingprocess.h"
 
 #include <QWidget>
 
 #include <memory>
+
+QT_FORWARD_DECLARE_CLASS(QFrame)
 
 namespace ApplicationUtilities {
 class QtConfigArguments;
@@ -65,6 +68,7 @@ private:
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
     WebViewDialog *m_webViewDlg;
 #endif
+    QFrame *m_cornerFrame;
     Data::SyncthingConnection m_connection;
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;

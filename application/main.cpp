@@ -1,6 +1,7 @@
 #include "./settings.h"
 #include "../gui/trayicon.h"
 #include "../gui/traywidget.h"
+#include "../data/syncthingprocess.h"
 
 #include "resources/config.h"
 
@@ -21,6 +22,7 @@
 using namespace std;
 using namespace ApplicationUtilities;
 using namespace QtGui;
+using namespace Data;
 
 int main(int argc, char *argv[])
 {
@@ -46,12 +48,18 @@ int main(int argc, char *argv[])
             QtUtilitiesResources::init();
             int res;
             if(windowedArg.isPresent()) {
+                if(Settings::launchSynchting()) {
+                    syncthingProcess().startSyncthing();
+                }
                 TrayWidget trayWidget;
                 trayWidget.show();
                 res = application.exec();
             } else {
 #ifndef QT_NO_SYSTEMTRAYICON
                 if(QSystemTrayIcon::isSystemTrayAvailable()) {
+                    if(Settings::launchSynchting()) {
+                        syncthingProcess().startSyncthing();
+                    }
                     application.setQuitOnLastWindowClosed(false);
                     TrayIcon trayIcon;
                     trayIcon.show();

@@ -1,6 +1,6 @@
 #ifndef WEBPAGE_H
 #define WEBPAGE_H
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
+#ifndef SYNCTHINGTRAY_NO_WEBVIEW
 
 #include "./webviewprovider.h"
 
@@ -44,5 +44,5 @@ private:
 
 }
 
-#endif // defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
+#endif // SYNCTHINGTRAY_NO_WEBVIEW
 #endif // WEBPAGE_H

@@ -24,6 +24,7 @@
 #include <QDir>
 #include <QTextBrowser>
 #include <QStringBuilder>
+#include <QFontDatabase>
 
 #include <functional>
 
@@ -56,34 +57,38 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     m_ui->dirsTreeView->setModel(&m_dirModel);
     m_ui->devsTreeView->setModel(&m_devModel);
 
-    // apply settings, this also establishes the connection to Syncthing
-    applySettings();
-
     // setup sync-all button
-    auto *cornerFrame = new QFrame(this);
-    cornerFrame->setFrameStyle(QFrame::StyledPanel), cornerFrame->setFrameShadow(QFrame::Sunken);
-    auto *cornerFrameLayout = new QHBoxLayout(cornerFrame);
+    m_cornerFrame = new QFrame(this);
+    auto *cornerFrameLayout = new QHBoxLayout(m_cornerFrame);
     cornerFrameLayout->setSpacing(0), cornerFrameLayout->setMargin(0);
-    cornerFrameLayout->addStretch();
-    cornerFrame->setLayout(cornerFrameLayout);
-    auto *viewIdButton = new QPushButton(cornerFrame);
+    //cornerFrameLayout->addStretch();
+    m_cornerFrame->setLayout(cornerFrameLayout);
+    auto *viewIdButton = new QPushButton(m_cornerFrame);
     viewIdButton->setToolTip(tr("View own device ID"));
     viewIdButton->setIcon(QIcon::fromTheme(QStringLiteral("view-barcode"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-barcode.svg"))));
     viewIdButton->setFlat(true);
     cornerFrameLayout->addWidget(viewIdButton);
-    auto *showLogButton = new QPushButton(cornerFrame);
+    auto *restartButton = new QPushButton(m_cornerFrame);
+    restartButton->setToolTip(tr("Restart Syncthing"));
+    restartButton->setIcon(QIcon::fromTheme(QStringLiteral("system-reboot"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
+    restartButton->setFlat(true);
+    connect(restartButton, &QPushButton::clicked, &m_connection, &SyncthingConnection::restart);
+    cornerFrameLayout->addWidget(restartButton);
+    auto *showLogButton = new QPushButton(m_cornerFrame);
     showLogButton->setToolTip(tr("Show Syncthing log"));
-    showLogButton->setIcon(QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/text-x-generic.svg"))));
+    showLogButton->setIcon(QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))));
     showLogButton->setFlat(true);
     connect(showLogButton, &QPushButton::clicked, this, &TrayWidget::showLog);
     cornerFrameLayout->addWidget(showLogButton);
-    auto *scanAllButton = new QPushButton(cornerFrame);
+    auto *scanAllButton = new QPushButton(m_cornerFrame);
     scanAllButton->setToolTip(tr("Rescan all directories"));
     scanAllButton->setIcon(QIcon::fromTheme(QStringLiteral("folder-sync"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/folder-sync.svg"))));
     scanAllButton->setFlat(true);
-
     cornerFrameLayout->addWidget(scanAllButton);
-    m_ui->tabWidget->setCornerWidget(cornerFrame, Qt::BottomRightCorner);
+    m_ui->tabWidget->setCornerWidget(m_cornerFrame, Qt::BottomRightCorner);
+
+    // apply settings, this also establishes the connection to Syncthing
+    applySettings();
 
     m_ui->trafficIconLabel->setPixmap(QIcon::fromTheme(QStringLiteral("network-card"), QIcon(QStringLiteral(":/icons/hicolor/scalable/devices/network-card.svg"))).pixmap(32));
 
@@ -167,7 +172,7 @@ void TrayWidget::showWebUi()
 
 void TrayWidget::showOwnDeviceId()
 {
-    auto *dlg = new QDialog(this);
+    auto *dlg = new QWidget(this, Qt::Window);
     dlg->setWindowTitle(tr("Own device ID") + QStringLiteral(" - " APP_NAME));
     dlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
@@ -189,7 +194,10 @@ void TrayWidget::showOwnDeviceId()
     copyPushButton->setText(tr("Copy to clipboard"));
     connect(copyPushButton, &QPushButton::clicked, bind(&QClipboard::setText, QGuiApplication::clipboard(), m_connection.myId(), QClipboard::Clipboard));
     layout->addWidget(copyPushButton);
-    m_connection.requestQrCode(m_connection.myId(), bind(&QLabel::setPixmap, pixmapLabel, placeholders::_1));
+    connect(dlg, &QWidget::destroyed,
+            bind(static_cast<bool(*)(const QMetaObject::Connection &)>(&QObject::disconnect),
+                 m_connection.requestQrCode(m_connection.myId(), bind(&QLabel::setPixmap, pixmapLabel, placeholders::_1))
+                 ));
     dlg->setLayout(layout);
     dlg->show();
     centerWidget(dlg);
@@ -201,18 +209,23 @@ void TrayWidget::showOwnDeviceId()
 
 void TrayWidget::showLog()
 {
-    auto *dlg = new QDialog(this);
+    auto *dlg = new QWidget(this, Qt::Window);
     dlg->setWindowTitle(tr("Log") + QStringLiteral(" - " APP_NAME));
     dlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     auto *layout = new QVBoxLayout(dlg);
     layout->setAlignment(Qt::AlignCenter);
     auto *browser = new QTextBrowser(dlg);
-    m_connection.requestLog([browser] (const std::vector<SyncthingLogEntry> &entries) {
-        for(const SyncthingLogEntry &entry : entries) {
-            browser->append(entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
-        }
-    });
+    connect(dlg, &QWidget::destroyed,
+            bind(static_cast<bool(*)(const QMetaObject::Connection &)>(&QObject::disconnect),
+                 m_connection.requestLog([browser] (const std::vector<SyncthingLogEntry> &entries) {
+                    for(const SyncthingLogEntry &entry : entries) {
+                        browser->append(entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
+                    }
+        })
+    ));
+    browser->setReadOnly(true);
+    browser->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
     layout->addWidget(browser);
     dlg->setLayout(layout);
     dlg->show();
@@ -232,7 +245,8 @@ void TrayWidget::updateStatusButton(SyncthingStatus status)
         m_ui->statusPushButton->setToolTip(tr("Not connected to Syncthing, click to connect"));
         m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
         break;
-    case SyncthingStatus::Default:
+    case SyncthingStatus::Idle:
+    case SyncthingStatus::Scanning:
     case SyncthingStatus::NotificationsAvailable:
     case SyncthingStatus::Synchronizing:
         m_ui->statusPushButton->setText(tr("Pause"));
@@ -261,6 +275,13 @@ void TrayWidget::applySettings()
     m_ui->trafficFrame->setVisible(Settings::showTraffic());
     if(Settings::showTraffic()) {
         updateTraffic();
+    }
+    m_ui->trafficFrame->setFrameStyle(Settings::frameStyle());
+    m_ui->buttonsFrame->setFrameStyle(Settings::frameStyle());
+    if(QApplication::style() && !QApplication::style()->objectName().compare(QLatin1String("adwaita"), Qt::CaseInsensitive)) {
+        m_cornerFrame->setFrameStyle(QFrame::NoFrame);
+    } else {
+        m_cornerFrame->setFrameStyle(Settings::frameStyle());
     }
 }
 
@@ -299,7 +320,8 @@ void TrayWidget::changeStatus()
     case SyncthingStatus::Disconnected:
         m_connection.connect();
         break;
-    case SyncthingStatus::Default:
+    case SyncthingStatus::Idle:
+    case SyncthingStatus::Scanning:
     case SyncthingStatus::NotificationsAvailable:
     case SyncthingStatus::Synchronizing:
         m_connection.pauseAllDevs();

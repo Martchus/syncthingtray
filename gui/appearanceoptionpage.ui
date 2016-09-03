@@ -6,17 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>283</width>
-    <height>74</height>
+    <width>422</width>
+    <height>149</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Appearance</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="preferences-desktop"/>
+   <iconset theme="preferences-desktop">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout">
+   <property name="verticalSpacing">
+    <number>4</number>
+   </property>
    <item row="0" column="0">
     <widget class="QLabel" name="sizeLabel">
      <property name="text">
@@ -48,12 +52,21 @@
        <property name="maximum">
         <number>1000</number>
        </property>
+       <property name="singleStep">
+        <number>10</number>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="sizeTimesLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
-        <string>x</string>
+        <string> x </string>
        </property>
        <property name="textFormat">
         <enum>Qt::PlainText</enum>
@@ -68,12 +81,15 @@
        <property name="maximum">
         <number>1000</number>
        </property>
+       <property name="singleStep">
+        <number>10</number>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="sizePxLabel">
        <property name="text">
-        <string>px</string>
+        <string> px</string>
        </property>
        <property name="textFormat">
         <enum>Qt::PlainText</enum>
@@ -81,6 +97,63 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="frameShapeLabel">
+     <property name="text">
+      <string>Frame shape</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="frameShadowLabel">
+     <property name="text">
+      <string>Frame shadow</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="frameShapeComboBox">
+     <item>
+      <property name="text">
+       <string>No frame</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Box</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Panel</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Styled panel</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QComboBox" name="frameShadowComboBox">
+     <item>
+      <property name="text">
+       <string>Plain</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Raised</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Sunken</string>
+      </property>
+     </item>
+    </widget>
    </item>
   </layout>
  </widget>

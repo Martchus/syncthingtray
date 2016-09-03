@@ -38,10 +38,12 @@ bool &showSyncthingNotifications();
 // apprearance
 bool &showTraffic();
 QSize &trayMenuSize();
+int &frameStyle();
 
 // autostart/launcher
 bool &launchSynchting();
-QString &syncthingCommand();
+QString &syncthingPath();
+QString &syncthingArgs();
 
 // web view
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)

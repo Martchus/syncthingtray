@@ -6,6 +6,7 @@
 #include <QByteArray>
 #include <QApplication>
 #include <QSettings>
+#include <QFrame>
 
 using namespace Media;
 
@@ -77,6 +78,11 @@ QSize &trayMenuSize()
     static QSize v(350, 300);
     return v;
 }
+int &frameStyle()
+{
+    static int v = QFrame::StyledPanel | QFrame::Sunken;
+    return v;
+}
 
 // autostart/launcher
 bool &launchSynchting()
@@ -84,7 +90,16 @@ bool &launchSynchting()
     static bool v = false;
     return v;
 }
-QString &syncthingCommand()
+QString &syncthingPath()
+{
+#ifdef PLATFORM_WINDOWS
+    static QString v(QStringLiteral("syncthing.exe"));
+#else
+    static QString v(QStringLiteral("syncthing"));
+#endif
+    return v;
+}
+QString &syncthingArgs()
 {
     static QString v;
     return v;
@@ -138,8 +153,13 @@ void restore()
     showSyncthingNotifications() = settings.value(QStringLiteral("showSyncthingNotifications"), true).toBool();
     showTraffic() = settings.value(QStringLiteral("showTraffic"), true).toBool();
     trayMenuSize() = settings.value(QStringLiteral("trayMenuSize"), trayMenuSize()).toSize();
+    frameStyle() = settings.value(QStringLiteral("frameStyle"), frameStyle()).toInt();
+    settings.endGroup();
+
+    settings.beginGroup(QStringLiteral("startup"));
     launchSynchting() = settings.value(QStringLiteral("launchSynchting"), false).toBool();
-    syncthingCommand() = settings.value(QStringLiteral("syncthingCommand"), QStringLiteral("syncthing")).toString();
+    syncthingPath() = settings.value(QStringLiteral("syncthingPath"), syncthingPath()).toString();
+    syncthingArgs() = settings.value(QStringLiteral("syncthingArgs"), syncthingArgs()).toString();
     settings.endGroup();
 
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
@@ -170,8 +190,13 @@ void save()
     settings.setValue(QStringLiteral("showSyncthingNotifications"), showSyncthingNotifications());
     settings.setValue(QStringLiteral("showTraffic"), showTraffic());
     settings.setValue(QStringLiteral("trayMenuSize"), trayMenuSize());
+    settings.setValue(QStringLiteral("frameStyle"), frameStyle());
+    settings.endGroup();
+
+    settings.beginGroup(QStringLiteral("startup"));
     settings.setValue(QStringLiteral("launchSynchting"), launchSynchting());
-    settings.setValue(QStringLiteral("syncthingCommand"), syncthingCommand());
+    settings.setValue(QStringLiteral("syncthingPath"), syncthingPath());
+    settings.setValue(QStringLiteral("syncthingArgs"), syncthingArgs());
     settings.endGroup();
 
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)

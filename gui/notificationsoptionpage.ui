@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>QtGui::NotificationsOptionPage</class>
  <widget class="QWidget" name="QtGui::NotificationsOptionPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>240</width>
+    <height>193</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Notifications</string>
   </property>
@@ -12,6 +20,12 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="notifyOnLabel">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Notify on</string>
      </property>

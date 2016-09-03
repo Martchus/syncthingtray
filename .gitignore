@@ -42,3 +42,8 @@ Makefile*
 
 # tests
 testfiles/output.*
+
+# experimental
+plasmoid/
+scripts/
+

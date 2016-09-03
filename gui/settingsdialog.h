@@ -6,6 +6,7 @@
 #include <qtutilities/settingsdialog/qtsettings.h>
 
 #include <QWidget>
+#include <QProcess>
 
 namespace Settings {
 class KnownFieldModel;
@@ -33,9 +34,20 @@ DECLARE_UI_FILE_BASED_OPTION_PAGE(NotificationsOptionPage)
 
 DECLARE_UI_FILE_BASED_OPTION_PAGE(AppearanceOptionPage)
 
-DECLARE_UI_FILE_BASED_OPTION_PAGE(AutostartOptionPage)
+DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_SETUP(AutostartOptionPage)
 
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
+BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(LauncherOptionPage)
+private:
+    DECLARE_SETUP_WIDGETS
+    void handleSyncthingReadyRead();
+    void handleSyncthingExited(int exitCode, QProcess::ExitStatus exitStatus);
+    void launch();
+    void stop();
+    QList<QMetaObject::Connection> m_connections;
+    bool m_kill;
+END_DECLARE_OPTION_PAGE
+
+#ifndef SYNCTHINGTRAY_NO_WEBVIEW
 DECLARE_UI_FILE_BASED_OPTION_PAGE(WebViewOptionPage)
 #else
 DECLARE_OPTION_PAGE(WebViewOptionPage)

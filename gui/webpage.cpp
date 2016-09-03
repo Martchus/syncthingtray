@@ -1,4 +1,4 @@
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
+#ifndef SYNCTHINGTRAY_NO_WEBVIEW
 #include "./webpage.h"
 
 #include "../application/settings.h"
@@ -29,7 +29,7 @@ WebPage::WebPage(WEB_VIEW_PROVIDER *view) :
     WEB_PAGE_PROVIDER(view),
     m_view(view)
 {
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE)
+#ifdef SYNCTHINGTRAY_USE_WEBENGINE
     settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, true);
     connect(this, &WebPage::authenticationRequired, this, static_cast<void(WebPage::*)(const QUrl &, QAuthenticator *)>(&WebPage::supplyCredentials));
 #else
@@ -40,7 +40,7 @@ WebPage::WebPage(WEB_VIEW_PROVIDER *view) :
 #endif
     if(!m_view) {
         // delegate to external browser if no view is assigned
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE)
+#ifdef SYNCTHINGTRAY_USE_WEBENGINE
         connect(this, &WebPage::urlChanged, this, &WebPage::delegateToExternalBrowser);
 #else
         connect(this->mainFrame(), &QWebFrame::urlChanged, this, &WebPage::delegateToExternalBrowser);
@@ -109,4 +109,4 @@ void WebPage::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &erro
 
 }
 
-#endif // defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
+#endif // SYNCTHINGTRAY_NO_WEBVIEW

@@ -35,7 +35,8 @@ private:
 
     const QSize m_size;
     const QIcon m_statusIconDisconnected;
-    const QIcon m_statusIconDefault;
+    const QIcon m_statusIconIdling;
+    const QIcon m_statusIconScanning;
     const QIcon m_statusIconNotify;
     const QIcon m_statusIconPause;
     const QIcon m_statusIconSync;

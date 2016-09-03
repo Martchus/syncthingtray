@@ -24,7 +24,8 @@ QNetworkAccessManager &networkAccessManager();
 enum class SyncthingStatus
 {
     Disconnected,
-    Default,
+    Idle,
+    Scanning,
     NotificationsAvailable,
     Paused,
     Synchronizing
@@ -62,6 +63,7 @@ struct SyncthingDir
     int rescanInterval = 0;
     int minDiskFreePercentage = 0;
     DirStatus status = DirStatus::Idle;
+    ChronoUtilities::DateTime lastStatusUpdate;
     int progressPercentage = 0;
     int progressRate = 0;
     std::vector<DirErrors> errors;
@@ -73,7 +75,8 @@ struct SyncthingDir
     QString lastFileName;
     bool lastFileDeleted = false;
 
-    bool assignStatus(const QString &statusStr);
+    bool assignStatus(const QString &statusStr, ChronoUtilities::DateTime time);
+    bool assignStatus(DirStatus newStatus, ChronoUtilities::DateTime time);
 };
 
 enum class DevStatus
@@ -146,8 +149,8 @@ public:
     double totalOutgoingRate() const;
     const std::vector<SyncthingDir> &dirInfo() const;
     const std::vector<SyncthingDev> &devInfo() const;
-    void requestQrCode(const QString &text, std::function<void (const QPixmap &)> callback);
-    void requestLog(std::function<void (const std::vector<SyncthingLogEntry> &)> callback);
+    QMetaObject::Connection requestQrCode(const QString &text, std::function<void (const QPixmap &)> callback);
+    QMetaObject::Connection requestLog(std::function<void (const std::vector<SyncthingLogEntry> &)> callback);
     static const QList<QSslError> &expectedCertificateErrors();
 
 public Q_SLOTS:
@@ -161,6 +164,7 @@ public Q_SLOTS:
     void resumeAllDevs();
     void rescan(const QString &dir);
     void rescanAllDirs();
+    void restart();
     void notificationsRead();
 
 Q_SIGNALS:
@@ -249,14 +253,15 @@ private Q_SLOTS:
     void readDeviceStatistics();
     void readEvents();
     void readStartingEvent(const QJsonObject &eventData);
-    void readStatusChangedEvent(const QJsonObject &eventData);
+    void readStatusChangedEvent(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readDownloadProgressEvent(const QJsonObject &eventData);
-    void readDirEvent(const QString &eventType, const QJsonObject &eventData);
+    void readDirEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
     void readDeviceEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
     void readItemStarted(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readItemFinished(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readRescan();
     void readPauseResume();
+    void readRestart();
 
     void setStatus(SyncthingStatus status);
 

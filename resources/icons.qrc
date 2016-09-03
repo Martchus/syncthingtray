@@ -25,5 +25,6 @@
         <file>icons/hicolor/scalable/places/folder-open.svg</file>
         <file>icons/hicolor/scalable/places/folder.svg</file>
         <file>icons/hicolor/scalable/places/network-workgroup.svg</file>
+        <file>icons/hicolor/scalable/apps/system-run.svg</file>
     </qresource>
 </RCC>

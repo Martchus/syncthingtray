@@ -100,7 +100,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 1: return dir.path;
                         case 2: return dir.devices.join(QStringLiteral(", "));
                         case 3: return dir.readOnly ? tr("yes") : tr("no");
-                        case 4: return QStringLiteral("%1 s").arg(dir.rescanInterval);
+                        case 4: return QString::fromLatin1(TimeSpan::fromSeconds(dir.rescanInterval).toString(TimeSpanOutputFormat::WithMeasures, true).data());
                         case 5: return dir.lastScanTime.isNull() ? tr("unknown") : QString::fromLatin1(dir.lastScanTime.toString(DateTimeOutputFormat::DateAndTime, true).data());
                         case 6: return dir.lastFileName.isEmpty() ? tr("unknown") : dir.lastFileName;
                         }

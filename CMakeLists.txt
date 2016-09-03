@@ -20,6 +20,7 @@ set(HEADER_FILES
     data/syncthingdirectorymodel.h
     data/syncthingdevicemodel.h
     data/syncthingconfig.h
+    data/syncthingprocess.h
     data/utils.h
 )
 set(SRC_FILES
@@ -27,6 +28,7 @@ set(SRC_FILES
     data/syncthingdirectorymodel.cpp
     data/syncthingdevicemodel.cpp
     data/syncthingconfig.cpp
+    data/syncthingprocess.cpp
     data/utils.cpp
 )
 
@@ -65,6 +67,7 @@ set(WIDGETS_UI_FILES
     gui/notificationsoptionpage.ui
     gui/appearanceoptionpage.ui
     gui/autostartoptionpage.ui
+    gui/launcheroptionpage.ui
     gui/webviewoptionpage.ui
 )
 
