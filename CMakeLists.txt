@@ -82,8 +82,10 @@ set(TS_FILES
 )
 
 set(ICON_FILES
-    resources/icons/hicolor/scalable/apps/${META_PROJECT_NAME}.svg
+    resources/icons/hicolor/scalable/app/${META_PROJECT_NAME}.svg
 )
+set(PNG_ICON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/resources/icons/hicolor/scalable/app/${META_PROJECT_NAME}.png")
+set(PNG_ICON_NO_CROP ON)
 
 set(DOC_FILES
     README.md
