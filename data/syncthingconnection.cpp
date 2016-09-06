@@ -145,6 +145,8 @@ QString SyncthingConnection::statusText() const
     switch(m_status) {
     case SyncthingStatus::Disconnected:
         return tr("disconnected");
+    case SyncthingStatus::Reconnecting:
+        return tr("reconnecting");
     case SyncthingStatus::Idle:
         return tr("connected");
     case SyncthingStatus::NotificationsAvailable:
@@ -225,7 +227,7 @@ void SyncthingConnection::reconnect(Settings::ConnectionSettings &connectionSett
 void SyncthingConnection::continueReconnect()
 {
     emit newConfig(QJsonObject()); // configuration will be invalidated
-    m_status = SyncthingStatus::Disconnected;
+    setStatus(SyncthingStatus::Reconnecting);
     m_keepPolling = true;
     m_reconnecting = false;
     m_lastEventId = 0;
@@ -581,10 +583,12 @@ void SyncthingConnection::readConfig()
         } else {
             emit error(tr("Unable to parse Syncthing config: ") + jsonError.errorString());
         }
+        break;
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
         emit error(tr("Unable to request Syncthing config: ") + reply->errorString());
+        setStatus(SyncthingStatus::Disconnected);
     }
 }
 
@@ -681,6 +685,7 @@ void SyncthingConnection::readStatus()
         } else {
             emit error(tr("Unable to parse Syncthing config: ") + jsonError.errorString());
         }
+        break;
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
@@ -761,6 +766,7 @@ void SyncthingConnection::readConnections()
         } else {
             emit error(tr("Unable to parse connections: ") + jsonError.errorString());
         }
+        break;
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
@@ -821,6 +827,7 @@ void SyncthingConnection::readDirStatistics()
         } else {
             emit error(tr("Unable to parse directory statistics: ") + jsonError.errorString());
         }
+        break;
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
@@ -863,6 +870,7 @@ void SyncthingConnection::readDeviceStatistics()
         } else {
             emit error(tr("Unable to parse device statistics: ") + jsonError.errorString());
         }
+        break;
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
@@ -921,6 +929,7 @@ void SyncthingConnection::readEvents()
             setStatus(SyncthingStatus::Disconnected);
             return;
         }
+        break;
     } case QNetworkReply::TimeoutError:
         // no new events available, keep polling
         break;
@@ -1190,6 +1199,7 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
 {
     switch(status) {
     case SyncthingStatus::Disconnected:
+    case SyncthingStatus::Reconnecting:
         break;
     default:
         if(m_unreadNotifications) {

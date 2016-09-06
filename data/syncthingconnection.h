@@ -28,6 +28,7 @@ QNetworkAccessManager &networkAccessManager();
 enum class SyncthingStatus
 {
     Disconnected,
+    Reconnecting,
     Idle,
     Scanning,
     NotificationsAvailable,
@@ -378,7 +379,7 @@ inline SyncthingStatus SyncthingConnection::status() const
  */
 inline bool SyncthingConnection::isConnected() const
 {
-    return m_status != SyncthingStatus::Disconnected;
+    return m_status != SyncthingStatus::Disconnected && m_status != SyncthingStatus::Reconnecting;
 }
 
 /*!

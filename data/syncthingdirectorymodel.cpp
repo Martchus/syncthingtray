@@ -27,7 +27,7 @@ SyncthingDirectoryModel::SyncthingDirectoryModel(SyncthingConnection &connection
  */
 const SyncthingDir *SyncthingDirectoryModel::dirInfo(const QModelIndex &index) const
 {
-    return (index.parent().isValid() ? dirInfo(index.parent()) : (index.row() < m_dirs.size() ? &m_dirs[index.row()] : nullptr));
+    return (index.parent().isValid() ? dirInfo(index.parent()) : (static_cast<size_t>(index.row()) < m_dirs.size() ? &m_dirs[static_cast<size_t>(index.row())] : nullptr));
 }
 
 QModelIndex SyncthingDirectoryModel::index(int row, int column, const QModelIndex &parent) const
@@ -77,7 +77,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
     if(index.isValid()) {
         if(index.parent().isValid()) {
             // dir attributes
-            if(index.parent().row() < m_dirs.size()) {
+            if(static_cast<size_t>(index.parent().row()) < m_dirs.size()) {
                 switch(role) {
                 case Qt::DisplayRole:
                 case Qt::EditRole:
@@ -152,9 +152,9 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     ;
                 }
             }
-        } else if(index.row() < m_dirs.size()) {
+        } else if(static_cast<size_t>(index.row()) < m_dirs.size()) {
             // dir IDs and status
-            const SyncthingDir &dir = m_dirs[index.row()];
+            const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.row())];
             switch(role) {
             case Qt::DisplayRole:
             case Qt::EditRole:
@@ -217,13 +217,14 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
 
 bool SyncthingDirectoryModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+    Q_UNUSED(index) Q_UNUSED(value) Q_UNUSED(role)
     return false;
 }
 
 int SyncthingDirectoryModel::rowCount(const QModelIndex &parent) const
 {
     if(!parent.isValid()) {
-        return m_dirs.size();
+        return static_cast<int>(m_dirs.size());
     } else if(!parent.parent().isValid()) {
         return 7;
     } else {

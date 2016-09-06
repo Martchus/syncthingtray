@@ -96,6 +96,10 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
             showMessage(QCoreApplication::applicationName(), tr("Disconnected from Syncthing"), QSystemTrayIcon::Warning);
         }
         break;
+    case SyncthingStatus::Reconnecting:
+        setIcon(m_statusIconDisconnected);
+        setToolTip(tr("Reconnecting ..."));
+        break;
     case SyncthingStatus::Idle:
         setIcon(m_statusIconIdling);
         setToolTip(tr("Syncthing is idling"));
@@ -119,6 +123,7 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
     }
     switch(status) {
     case SyncthingStatus::Disconnected:
+    case SyncthingStatus::Reconnecting:
     case SyncthingStatus::Synchronizing:
         break;
     default:

@@ -51,7 +51,7 @@ I will provide packages for Arch Linux and Windows when releasing. For more info
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and [qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries. For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities).
 
-The following Qt 5 modules are requried: core network gui widgets webenginewidgets/webkitwidgets
+The following Qt 5 modules are requried: core network gui widgets svg webenginewidgets/webkitwidgets
 
 #### Select Qt modules for WebView
 * If Qt WebKitWidgets is installed on the system, the tray will link against it. Otherwise it will link against Qt WebEngineWidgets.

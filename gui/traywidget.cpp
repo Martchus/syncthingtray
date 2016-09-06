@@ -104,7 +104,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     connect(m_ui->aboutPushButton, &QPushButton::clicked, this, &TrayWidget::showAboutDialog);
     connect(m_ui->webUiPushButton, &QPushButton::clicked, this, &TrayWidget::showWebUi);
     connect(m_ui->settingsPushButton, &QPushButton::clicked, this, &TrayWidget::showSettingsDialog);
-    connect(&m_connection, &SyncthingConnection::statusChanged, this, &TrayWidget::updateStatusButton);
+    connect(&m_connection, &SyncthingConnection::statusChanged, this, &TrayWidget::handleStatusChanged);
     connect(&m_connection, &SyncthingConnection::trafficChanged, this, &TrayWidget::updateTraffic);
     connect(&m_connection, &SyncthingConnection::newNotification, this, &TrayWidget::handleNewNotification);
     connect(m_ui->dirsTreeView, &DirView::openDir, this, &TrayWidget::openDir);
@@ -238,13 +238,18 @@ void TrayWidget::showLog()
     dlg->activateWindow();
 }
 
-void TrayWidget::updateStatusButton(SyncthingStatus status)
+void TrayWidget::handleStatusChanged(SyncthingStatus status)
 {
     switch(status) {
     case SyncthingStatus::Disconnected:
         m_ui->statusPushButton->setText(tr("Connect"));
         m_ui->statusPushButton->setToolTip(tr("Not connected to Syncthing, click to connect"));
         m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
+        m_ui->statusPushButton->setHidden(false);
+        updateTraffic(); // ensure previous traffic statistics are no longer shown
+        break;
+    case SyncthingStatus::Reconnecting:
+        m_ui->statusPushButton->setHidden(true);
         break;
     case SyncthingStatus::Idle:
     case SyncthingStatus::Scanning:
@@ -253,11 +258,13 @@ void TrayWidget::updateStatusButton(SyncthingStatus status)
         m_ui->statusPushButton->setText(tr("Pause"));
         m_ui->statusPushButton->setToolTip(tr("Syncthing is running, click to pause all devices"));
         m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg"))));
+        m_ui->statusPushButton->setHidden(false);
         break;
     case SyncthingStatus::Paused:
         m_ui->statusPushButton->setText(tr("Continue"));
         m_ui->statusPushButton->setToolTip(tr("At least one device is paused, click to resume"));
         m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-resume.svg"))));
+        m_ui->statusPushButton->setHidden(false);
         break;
     }
 }
@@ -349,6 +356,8 @@ void TrayWidget::changeStatus()
     case SyncthingStatus::Disconnected:
         m_connection.connect();
         break;
+    case SyncthingStatus::Reconnecting:
+        break;
     case SyncthingStatus::Idle:
     case SyncthingStatus::Scanning:
     case SyncthingStatus::NotificationsAvailable:
@@ -366,19 +375,25 @@ void TrayWidget::updateTraffic()
     if(m_ui->trafficFrame->isHidden()) {
         return;
     }
-    if(m_connection.totalIncomingRate() != 0.0) {
-        m_ui->inTrafficLabel->setText(m_connection.totalIncomingTraffic() >= 0
-                                      ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(m_connection.totalIncomingRate(), true).data()), QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data()))
-                                      : QString::fromUtf8(bitrateToString(m_connection.totalIncomingRate(), true).data()));
+    static const QString unknownStr(tr("unknown"));
+    if(m_connection.isConnected()) {
+        if(m_connection.totalIncomingRate() != 0.0) {
+            m_ui->inTrafficLabel->setText(m_connection.totalIncomingTraffic() >= 0
+                                          ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(m_connection.totalIncomingRate(), true).data()), QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data()))
+                                          : QString::fromUtf8(bitrateToString(m_connection.totalIncomingRate(), true).data()));
+        } else {
+            m_ui->inTrafficLabel->setText(m_connection.totalIncomingTraffic() >= 0 ? QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data()) : unknownStr);
+        }
+        if(m_connection.totalOutgoingRate() != 0.0) {
+            m_ui->outTrafficLabel->setText(m_connection.totalIncomingTraffic() >= 0
+                                          ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(m_connection.totalOutgoingRate(), true).data()), QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data()))
+                                          : QString::fromUtf8(bitrateToString(m_connection.totalOutgoingRate(), true).data()));
+        } else {
+            m_ui->outTrafficLabel->setText(m_connection.totalOutgoingTraffic() >= 0 ? QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data()) : unknownStr);
+        }
     } else {
-        m_ui->inTrafficLabel->setText(m_connection.totalIncomingTraffic() >= 0 ? QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data()) : tr("unknown"));
-    }
-    if(m_connection.totalOutgoingRate() != 0.0) {
-        m_ui->outTrafficLabel->setText(m_connection.totalIncomingTraffic() >= 0
-                                      ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(m_connection.totalOutgoingRate(), true).data()), QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data()))
-                                      : QString::fromUtf8(bitrateToString(m_connection.totalOutgoingRate(), true).data()));
-    } else {
-        m_ui->outTrafficLabel->setText(m_connection.totalOutgoingTraffic() >= 0 ? QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data()) : tr("unknown"));
+        m_ui->inTrafficLabel->setText(unknownStr);
+        m_ui->outTrafficLabel->setText(unknownStr);
     }
 
 }

@@ -27,7 +27,7 @@ SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObj
  */
 const SyncthingDev *SyncthingDeviceModel::devInfo(const QModelIndex &index) const
 {
-    return (index.parent().isValid() ? devInfo(index.parent()) : (index.row() < m_devs.size() ? &m_devs[index.row()] : nullptr));
+    return (index.parent().isValid() ? devInfo(index.parent()) : (static_cast<size_t>(index.row()) < m_devs.size() ? &m_devs[static_cast<size_t>(index.row())] : nullptr));
 }
 
 QModelIndex SyncthingDeviceModel::index(int row, int column, const QModelIndex &parent) const
@@ -35,12 +35,12 @@ QModelIndex SyncthingDeviceModel::index(int row, int column, const QModelIndex &
     if(!parent.isValid()) {
         // top-level: all dev IDs
         if(row < rowCount(parent)) {
-            return createIndex(row, column, -1);
+            return createIndex(row, column, static_cast<quintptr>(-1));
         }
     } else if(!parent.parent().isValid()) {
         // dev-level: dev attributes
         if(row < rowCount(parent)) {
-            return createIndex(row, column, parent.row());
+            return createIndex(row, column, static_cast<quintptr>(parent.row()));
         }
     }
     return QModelIndex();
@@ -48,7 +48,7 @@ QModelIndex SyncthingDeviceModel::index(int row, int column, const QModelIndex &
 
 QModelIndex SyncthingDeviceModel::parent(const QModelIndex &child) const
 {
-    return child.internalId() != static_cast<quintptr>(-1) ? index(child.internalId(), 0, QModelIndex()) : QModelIndex();
+    return child.internalId() != static_cast<quintptr>(-1) ? index(static_cast<int>(child.internalId()), 0, QModelIndex()) : QModelIndex();
 }
 
 QVariant SyncthingDeviceModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -77,7 +77,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
     if(index.isValid()) {
         if(index.parent().isValid()) {
             // dir attributes
-            if(index.parent().row() < m_devs.size()) {
+            if(static_cast<size_t>(index.parent().row()) < m_devs.size()) {
                 switch(role) {
                 case Qt::DisplayRole:
                 case Qt::EditRole:
@@ -93,7 +93,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                         }
                         break;
                     case 1: // attribute values
-                        const SyncthingDev &dev = m_devs[index.parent().row()];
+                        const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
                         switch(index.row()) {
                         case 0: return dev.id;
                         case 1: return dev.addresses.join(QStringLiteral(", "));
@@ -139,9 +139,9 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                     ;
                 }
             }
-        } else if(index.row() < m_devs.size()) {
+        } else if(static_cast<size_t>(index.row()) < m_devs.size()) {
             // dir IDs and status
-            const SyncthingDev &dev = m_devs[index.row()];
+            const SyncthingDev &dev = m_devs[static_cast<size_t>(index.row())];
             switch(role) {
             case Qt::DisplayRole:
             case Qt::EditRole:
@@ -223,13 +223,14 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
 
 bool SyncthingDeviceModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+    Q_UNUSED(index) Q_UNUSED(value) Q_UNUSED(role)
     return false;
 }
 
 int SyncthingDeviceModel::rowCount(const QModelIndex &parent) const
 {
     if(!parent.isValid()) {
-        return m_devs.size();
+        return static_cast<int>(m_devs.size());
     } else if(!parent.parent().isValid()) {
         return 6;
     } else {

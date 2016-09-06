@@ -54,7 +54,7 @@ public slots:
     void showLog();
 
 private slots:
-    void updateStatusButton(Data::SyncthingStatus status);
+    void handleStatusChanged(Data::SyncthingStatus status);
     void applySettings();
     void openDir(const QModelIndex &dirIndex);
     void scanDir(const QModelIndex &dirIndex);
