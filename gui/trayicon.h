@@ -10,6 +10,10 @@
 
 QT_FORWARD_DECLARE_CLASS(QPixmap)
 
+namespace ChronoUtilities {
+class DateTime;
+}
+
 namespace Data {
 enum class SyncthingStatus;
 }
@@ -26,8 +30,9 @@ public:
 
 private slots:
     void handleActivated(QSystemTrayIcon::ActivationReason reason);
+    void handleMessageClicked();
     void showInternalError(const QString &errorMsg);
-    void showSyncthingNotification(const QString &message);
+    void showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message);
     void updateStatusIconAndText(Data::SyncthingStatus status);
 
 private:

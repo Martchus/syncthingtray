@@ -52,6 +52,7 @@ public slots:
     void showWebUi();
     void showOwnDeviceId();
     void showLog();
+    void showNotifications();
 
 private slots:
     void handleStatusChanged(Data::SyncthingStatus status);
@@ -64,9 +65,10 @@ private slots:
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
     void handleWebViewDeleted();
 #endif
-    void handleNewNotification(const QString &msg);
+    void handleNewNotification(ChronoUtilities::DateTime when, const QString &msg);
     void handleConnectionSelected(QAction *connectionAction);
     void showConnectionsMenu();
+    void showDialog(QWidget *dlg);
 
 private:
     TrayMenu *m_menu;
@@ -83,6 +85,7 @@ private:
     QMenu *m_connectionsMenu;
     QActionGroup *m_connectionsActionGroup;
     Settings::ConnectionSettings *m_selectedConnection;
+    std::vector<Data::SyncthingLogEntry> m_notifications;
 };
 
 inline Data::SyncthingConnection &TrayWidget::connection()

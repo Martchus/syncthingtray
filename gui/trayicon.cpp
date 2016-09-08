@@ -45,6 +45,7 @@ TrayIcon::TrayIcon(QObject *parent) :
     // connect signals and slots
     SyncthingConnection *connection = &(m_trayMenu.widget()->connection());
     connect(this, &TrayIcon::activated, this, &TrayIcon::handleActivated);
+    connect(this, &TrayIcon::messageClicked, this, &TrayIcon::handleMessageClicked);
     connect(connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
     connect(connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
     connect(connection, &SyncthingConnection::statusChanged, this, &TrayIcon::updateStatusIconAndText);
@@ -72,6 +73,11 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
     }
 }
 
+void TrayIcon::handleMessageClicked()
+{
+    m_trayMenu.widget()->connection().notificationsRead();
+}
+
 void TrayIcon::showInternalError(const QString &errorMsg)
 {
     if(Settings::notifyOnInternalErrors()) {
@@ -79,10 +85,10 @@ void TrayIcon::showInternalError(const QString &errorMsg)
     }
 }
 
-void TrayIcon::showSyncthingNotification(const QString &message)
+void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message)
 {
     if(Settings::showSyncthingNotifications()) {
-        showMessage(tr("Syncthing notification"), message, QSystemTrayIcon::Warning);
+        showMessage(tr("Syncthing notification - click to dismiss"), message, QSystemTrayIcon::Warning);
     }
 }
 

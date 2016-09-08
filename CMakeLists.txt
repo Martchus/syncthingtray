@@ -45,6 +45,7 @@ set(WIDGETS_HEADER_FILES
     gui/devbuttonsitemdelegate.h
     gui/dirview.h
     gui/devview.h
+    gui/textviewdialog.h
 )
 set(WIDGETS_SRC_FILES
     application/main.cpp
@@ -59,6 +60,7 @@ set(WIDGETS_SRC_FILES
     gui/devbuttonsitemdelegate.cpp
     gui/dirview.cpp
     gui/devview.cpp
+    gui/textviewdialog.cpp
     resources/icons.qrc
 )
 set(WIDGETS_UI_FILES

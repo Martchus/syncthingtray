@@ -160,7 +160,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="trafficFrame">
+    <widget class="QFrame" name="infoFrame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -255,6 +255,35 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="notificationsPushButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Click to show &lt;i&gt;new&lt;/i&gt; notifications&lt;br&gt;
+For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
+        </property>
+        <property name="text">
+         <string>New notifications</string>
+        </property>
+        <property name="icon">
+         <iconset theme="dialog-warning"/>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="connectionsPushButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -263,7 +292,8 @@
          </sizepolicy>
         </property>
         <property name="icon">
-         <iconset theme="network-connect"/>
+         <iconset theme="network-connect">
+          <normaloff>.</normaloff>.</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>

@@ -117,6 +117,10 @@ struct SyncthingDev
 
 struct SyncthingLogEntry
 {
+    SyncthingLogEntry(const QString &when, const QString &message) :
+        when(when),
+        message(message)
+    {}
     QString when;
     QString message;
 };
@@ -214,7 +218,7 @@ Q_SIGNALS:
     /*!
      * \brief Indicates a new Syncthing notification is available.
      */
-    void newNotification(const QString &message);
+    void newNotification(ChronoUtilities::DateTime when, const QString &message);
 
     /*!
      * \brief Indicates a request (for configuration, events, ...) failed.
@@ -245,6 +249,7 @@ private Q_SLOTS:
     void requestConfig();
     void requestStatus();
     void requestConnections();
+    void requestErrors();
     void requestDirStatistics();
     void requestDeviceStatistics();
     void requestEvents();
@@ -257,6 +262,7 @@ private Q_SLOTS:
     void readConnections();
     void readDirStatistics();
     void readDeviceStatistics();
+    void readErrors();
     void readEvents();
     void readStartingEvent(const QJsonObject &eventData);
     void readStatusChangedEvent(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
@@ -269,8 +275,10 @@ private Q_SLOTS:
     void readPauseResume();
     void readRestart();
 
-    void continueReconnect();
+    void continueConnecting();
+    void continueReconnecting();
     void setStatus(SyncthingStatus status);
+    void emitNotification(ChronoUtilities::DateTime when, const QString &message);
 
 private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
@@ -278,7 +286,6 @@ private:
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
     SyncthingDir *findDirInfo(const QString &dir, int &row);
     SyncthingDev *findDevInfo(const QString &dev, int &row);
-    void continueConnecting();
 
     QString m_syncthingUrl;
     QByteArray m_apiKey;
@@ -297,6 +304,7 @@ private:
     QNetworkReply *m_configReply;
     QNetworkReply *m_statusReply;
     QNetworkReply *m_connectionsReply;
+    QNetworkReply *m_errorsReply;
     QNetworkReply *m_eventsReply;
     bool m_unreadNotifications;
     bool m_hasConfig;
@@ -305,6 +313,7 @@ private:
     std::vector<SyncthingDev> m_devs;
     ChronoUtilities::DateTime m_lastConnectionsUpdate;
     ChronoUtilities::DateTime m_lastFileTime;
+    ChronoUtilities::DateTime m_lastErrorTime;
     QString m_lastFileName;
     bool m_lastFileDeleted;
     QList<QSslError> m_expectedSslErrors;

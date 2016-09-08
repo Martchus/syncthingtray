@@ -4,135 +4,145 @@
 <context>
     <name>Data::SyncthingConnection</name>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="147"/>
+        <location filename="../data/syncthingconnection.cpp" line="148"/>
         <source>disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="149"/>
+        <location filename="../data/syncthingconnection.cpp" line="150"/>
         <source>reconnecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="151"/>
+        <location filename="../data/syncthingconnection.cpp" line="152"/>
         <source>connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="153"/>
+        <location filename="../data/syncthingconnection.cpp" line="154"/>
         <source>connected, notifications available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="155"/>
+        <location filename="../data/syncthingconnection.cpp" line="156"/>
         <source>connected, paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="157"/>
+        <location filename="../data/syncthingconnection.cpp" line="158"/>
         <source>connected, synchronizing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="159"/>
+        <location filename="../data/syncthingconnection.cpp" line="160"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="171"/>
-        <location filename="../data/syncthingconnection.cpp" line="250"/>
+        <location filename="../data/syncthingconnection.cpp" line="172"/>
+        <location filename="../data/syncthingconnection.cpp" line="252"/>
         <source>Connection configuration is insufficient.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="519"/>
+        <location filename="../data/syncthingconnection.cpp" line="532"/>
         <source>Unable to parse Syncthing log: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="523"/>
+        <location filename="../data/syncthingconnection.cpp" line="536"/>
         <source>Unable to request system log: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="545"/>
+        <location filename="../data/syncthingconnection.cpp" line="558"/>
         <source>Unable to locate certificate used by Syncthing GUI.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="551"/>
+        <location filename="../data/syncthingconnection.cpp" line="564"/>
         <source>Unable to load certificate used by Syncthing GUI.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="584"/>
-        <location filename="../data/syncthingconnection.cpp" line="686"/>
+        <location filename="../data/syncthingconnection.cpp" line="597"/>
+        <location filename="../data/syncthingconnection.cpp" line="699"/>
         <source>Unable to parse Syncthing config: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="590"/>
-        <location filename="../data/syncthingconnection.cpp" line="692"/>
+        <location filename="../data/syncthingconnection.cpp" line="603"/>
+        <location filename="../data/syncthingconnection.cpp" line="705"/>
         <source>Unable to request Syncthing config: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="767"/>
+        <location filename="../data/syncthingconnection.cpp" line="780"/>
         <source>Unable to parse connections: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="773"/>
+        <location filename="../data/syncthingconnection.cpp" line="786"/>
         <source>Unable to request connections: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="828"/>
+        <location filename="../data/syncthingconnection.cpp" line="841"/>
         <source>Unable to parse directory statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="834"/>
+        <location filename="../data/syncthingconnection.cpp" line="847"/>
         <source>Unable to request directory statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="871"/>
+        <location filename="../data/syncthingconnection.cpp" line="884"/>
         <source>Unable to parse device statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="877"/>
+        <location filename="../data/syncthingconnection.cpp" line="890"/>
         <source>Unable to request device statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="928"/>
+        <location filename="../data/syncthingconnection.cpp" line="925"/>
+        <source>Unable to parse errors: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../data/syncthingconnection.cpp" line="936"/>
+        <source>Unable to request errors: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../data/syncthingconnection.cpp" line="987"/>
         <source>Unable to parse Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="947"/>
+        <location filename="../data/syncthingconnection.cpp" line="1006"/>
         <source>Unable to request Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="1159"/>
+        <location filename="../data/syncthingconnection.cpp" line="1218"/>
         <source>Unable to request rescan: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="1174"/>
+        <location filename="../data/syncthingconnection.cpp" line="1233"/>
         <source>Unable to request pause/resume: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="1189"/>
+        <location filename="../data/syncthingconnection.cpp" line="1248"/>
         <source>Unable to request restart: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="487"/>
+        <location filename="../data/syncthingconnection.cpp" line="503"/>
         <source>Unable to request QR-Code: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -753,57 +763,57 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="78"/>
+        <location filename="../gui/trayicon.cpp" line="84"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="85"/>
-        <source>Syncthing notification</source>
+        <location filename="../gui/trayicon.cpp" line="91"/>
+        <source>Syncthing notification - click to dismiss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="94"/>
+        <location filename="../gui/trayicon.cpp" line="100"/>
         <source>Not connected to Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="96"/>
+        <location filename="../gui/trayicon.cpp" line="102"/>
         <source>Disconnected from Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="101"/>
+        <location filename="../gui/trayicon.cpp" line="107"/>
         <source>Reconnecting ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="105"/>
+        <location filename="../gui/trayicon.cpp" line="111"/>
         <source>Syncthing is idling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="109"/>
+        <location filename="../gui/trayicon.cpp" line="115"/>
         <source>Syncthing is scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="113"/>
+        <location filename="../gui/trayicon.cpp" line="119"/>
         <source>Notifications available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="117"/>
+        <location filename="../gui/trayicon.cpp" line="123"/>
         <source>At least one device is paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="121"/>
+        <location filename="../gui/trayicon.cpp" line="127"/>
         <source>Synchronization is ongoing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="131"/>
+        <location filename="../gui/trayicon.cpp" line="137"/>
         <source>Synchronization complete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -817,7 +827,7 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="107"/>
-        <location filename="../gui/traywidget.cpp" line="245"/>
+        <location filename="../gui/traywidget.cpp" line="230"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
@@ -842,9 +852,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/traywidget.ui" line="272"/>
+        <source>Click to show &lt;i&gt;new&lt;/i&gt; notifications&lt;br&gt;
+For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/traywidget.ui" line="230"/>
         <location filename="../gui/traywidget.ui" line="250"/>
-        <location filename="../gui/traywidget.cpp" line="378"/>
+        <location filename="../gui/traywidget.cpp" line="363"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -859,18 +875,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="296"/>
+        <location filename="../gui/traywidget.ui" line="326"/>
         <source>Directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="325"/>
+        <location filename="../gui/traywidget.ui" line="355"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="80"/>
-        <location filename="../gui/traywidget.cpp" line="139"/>
+        <location filename="../gui/traywidget.cpp" line="140"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
@@ -885,7 +901,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="68"/>
+        <location filename="../gui/traywidget.cpp" line="70"/>
         <source>View own device ID</source>
         <translation type="unfinished"></translation>
     </message>
@@ -895,12 +911,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="79"/>
+        <location filename="../gui/traywidget.cpp" line="80"/>
         <source>Show Syncthing log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="73"/>
+        <location filename="../gui/traywidget.cpp" line="75"/>
         <source>Restart Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -910,52 +926,58 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="187"/>
+        <location filename="../gui/traywidget.cpp" line="180"/>
         <source>device ID is unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="195"/>
+        <location filename="../gui/traywidget.cpp" line="188"/>
         <source>Copy to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="246"/>
+        <location filename="../gui/traywidget.ui" line="276"/>
+        <location filename="../gui/traywidget.cpp" line="216"/>
+        <source>New notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/traywidget.cpp" line="231"/>
         <source>Not connected to Syncthing, click to connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="258"/>
+        <location filename="../gui/traywidget.cpp" line="243"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="259"/>
+        <location filename="../gui/traywidget.cpp" line="244"/>
         <source>Syncthing is running, click to pause all devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="265"/>
+        <location filename="../gui/traywidget.cpp" line="250"/>
         <source>At least one device is paused, click to resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="330"/>
+        <location filename="../gui/traywidget.cpp" line="315"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="264"/>
+        <location filename="../gui/traywidget.cpp" line="249"/>
         <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="177"/>
+        <location filename="../gui/traywidget.cpp" line="170"/>
         <source>Own device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="214"/>
+        <location filename="../gui/traywidget.cpp" line="202"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>

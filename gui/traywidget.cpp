@@ -2,6 +2,7 @@
 #include "./traymenu.h"
 #include "./settingsdialog.h"
 #include "./webviewdialog.h"
+#include "./textviewdialog.h"
 
 #include "../application/settings.h"
 
@@ -30,6 +31,7 @@
 
 using namespace ApplicationUtilities;
 using namespace ConversionUtilities;
+using namespace ChronoUtilities;
 using namespace Dialogs;
 using namespace Data;
 using namespace std;
@@ -73,13 +75,11 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     restartButton->setToolTip(tr("Restart Syncthing"));
     restartButton->setIcon(QIcon::fromTheme(QStringLiteral("system-reboot"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
     restartButton->setFlat(true);
-    connect(restartButton, &QPushButton::clicked, &m_connection, &SyncthingConnection::restart);
     cornerFrameLayout->addWidget(restartButton);
     auto *showLogButton = new QPushButton(m_cornerFrame);
     showLogButton->setToolTip(tr("Show Syncthing log"));
     showLogButton->setIcon(QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))));
     showLogButton->setFlat(true);
-    connect(showLogButton, &QPushButton::clicked, this, &TrayWidget::showLog);
     cornerFrameLayout->addWidget(showLogButton);
     auto *scanAllButton = new QPushButton(m_cornerFrame);
     scanAllButton->setToolTip(tr("Rescan all directories"));
@@ -96,6 +96,8 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     // apply settings, this also establishes the connection to Syncthing
     applySettings();
 
+    // setup other widgets
+    m_ui->notificationsPushButton->setHidden(true);
     m_ui->trafficIconLabel->setPixmap(QIcon::fromTheme(QStringLiteral("network-card"), QIcon(QStringLiteral(":/icons/hicolor/scalable/devices/network-card.svg"))).pixmap(32));
 
     // connect signals and slots
@@ -112,6 +114,9 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     connect(m_ui->devsTreeView, &DevView::pauseResumeDev, this, &TrayWidget::pauseResumeDev);
     connect(scanAllButton, &QPushButton::clicked, &m_connection, &SyncthingConnection::rescanAllDirs);
     connect(viewIdButton, &QPushButton::clicked, this, &TrayWidget::showOwnDeviceId);
+    connect(showLogButton, &QPushButton::clicked, this, &TrayWidget::showLog);
+    connect(m_ui->notificationsPushButton, &QPushButton::clicked, this, &TrayWidget::showNotifications);
+    connect(restartButton, &QPushButton::clicked, &m_connection, &SyncthingConnection::restart);
     connect(m_connectionsActionGroup, &QActionGroup::triggered, this, &TrayWidget::handleConnectionSelected);
 }
 
@@ -124,12 +129,8 @@ void TrayWidget::showSettingsDialog()
         m_settingsDlg = new SettingsDialog(&m_connection, this);
         connect(m_settingsDlg, &SettingsDialog::applied, this, &TrayWidget::applySettings);
     }
-    m_settingsDlg->show();
     centerWidget(m_settingsDlg);
-    if(m_menu) {
-        m_menu->close();
-    }
-    m_settingsDlg->activateWindow();
+    showDialog(m_settingsDlg);
 }
 
 void TrayWidget::showAboutDialog()
@@ -139,12 +140,8 @@ void TrayWidget::showAboutDialog()
         m_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         m_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     }
-    m_aboutDlg->show();
     centerWidget(m_aboutDlg);
-    if(m_menu) {
-        m_menu->close();
-    }
-    m_aboutDlg->activateWindow();
+    showDialog(m_aboutDlg);
 }
 
 void TrayWidget::showWebUi()
@@ -162,11 +159,7 @@ void TrayWidget::showWebUi()
             }
             connect(m_webViewDlg, &WebViewDialog::destroyed, this, &TrayWidget::handleWebViewDeleted);
         }
-        m_webViewDlg->show();
-        if(m_menu) {
-            m_menu->close();
-        }
-        m_webViewDlg->activateWindow();
+        showDialog(m_webViewDlg);
     }
 #endif
 }
@@ -200,42 +193,34 @@ void TrayWidget::showOwnDeviceId()
                  m_connection.requestQrCode(m_connection.myId(), bind(&QLabel::setPixmap, pixmapLabel, placeholders::_1))
                  ));
     dlg->setLayout(layout);
-    dlg->show();
     centerWidget(dlg);
-    if(m_menu) {
-        m_menu->close();
-    }
-    dlg->activateWindow();
+    showDialog(dlg);
 }
 
 void TrayWidget::showLog()
 {
-    auto *dlg = new QWidget(this, Qt::Window);
-    dlg->setWindowTitle(tr("Log") + QStringLiteral(" - " APP_NAME));
-    dlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    auto *layout = new QVBoxLayout(dlg);
-    layout->setAlignment(Qt::AlignCenter);
-    auto *browser = new QTextBrowser(dlg);
+    auto *dlg = new TextViewDialog(tr("Log"), this);
     connect(dlg, &QWidget::destroyed,
             bind(static_cast<bool(*)(const QMetaObject::Connection &)>(&QObject::disconnect),
-                 m_connection.requestLog([browser] (const std::vector<SyncthingLogEntry> &entries) {
+                 m_connection.requestLog([dlg] (const std::vector<SyncthingLogEntry> &entries) {
                     for(const SyncthingLogEntry &entry : entries) {
-                        browser->append(entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
+                        dlg->browser()->append(entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
                     }
         })
     ));
-    browser->setReadOnly(true);
-    browser->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
-    layout->addWidget(browser);
-    dlg->setLayout(layout);
-    dlg->show();
-    dlg->resize(600, 500);
-    centerWidget(dlg);
-    if(m_menu) {
-        m_menu->close();
+    showDialog(dlg);
+}
+
+void TrayWidget::showNotifications()
+{
+    auto *dlg = new TextViewDialog(tr("New notifications"), this);
+    for(const SyncthingLogEntry &entry : m_notifications) {
+        dlg->browser()->append(entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
     }
-    dlg->activateWindow();
+    m_notifications.clear();
+    showDialog(dlg);
+    m_connection.notificationsRead();
+    m_ui->notificationsPushButton->setHidden(true);
 }
 
 void TrayWidget::handleStatusChanged(SyncthingStatus status)
@@ -312,7 +297,7 @@ void TrayWidget::applySettings()
     if(Settings::showTraffic()) {
         updateTraffic();
     }
-    m_ui->trafficFrame->setFrameStyle(Settings::frameStyle());
+    m_ui->infoFrame->setFrameStyle(Settings::frameStyle());
     m_ui->buttonsFrame->setFrameStyle(Settings::frameStyle());
     if(QApplication::style() && !QApplication::style()->objectName().compare(QLatin1String("adwaita"), Qt::CaseInsensitive)) {
         m_cornerFrame->setFrameStyle(QFrame::NoFrame);
@@ -372,7 +357,7 @@ void TrayWidget::changeStatus()
 
 void TrayWidget::updateTraffic()
 {
-    if(m_ui->trafficFrame->isHidden()) {
+    if(m_ui->trafficFormWidget->isHidden()) {
         return;
     }
     static const QString unknownStr(tr("unknown"));
@@ -405,9 +390,10 @@ void TrayWidget::handleWebViewDeleted()
 }
 #endif
 
-void TrayWidget::handleNewNotification(const QString &msg)
+void TrayWidget::handleNewNotification(DateTime when, const QString &msg)
 {
-    // FIXME
+    m_notifications.emplace_back(QString::fromLocal8Bit(when.toString(DateTimeOutputFormat::DateAndTime, true).data()), msg);
+    m_ui->notificationsPushButton->setHidden(false);
 }
 
 void TrayWidget::handleConnectionSelected(QAction *connectionAction)
@@ -429,6 +415,15 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
 void TrayWidget::showConnectionsMenu()
 {
     m_connectionsMenu->exec(QCursor::pos());
+}
+
+void TrayWidget::showDialog(QWidget *dlg)
+{
+    if(m_menu) {
+        m_menu->close();
+    }
+    dlg->show();
+    dlg->activateWindow();
 }
 
 }

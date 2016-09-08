@@ -122,6 +122,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     m_configReply(nullptr),
     m_statusReply(nullptr),
     m_connectionsReply(nullptr),
+    m_errorsReply(nullptr),
     m_eventsReply(nullptr),
     m_unreadNotifications(false),
     m_hasConfig(false),
@@ -197,7 +198,7 @@ void SyncthingConnection::reconnect()
         m_hasConfig = m_hasStatus = false;
         abortAllRequests();
     } else {
-        continueReconnect();
+        continueReconnecting();
     }
 }
 
@@ -224,7 +225,7 @@ void SyncthingConnection::reconnect(Settings::ConnectionSettings &connectionSett
 /*!
  * \brief Internally called to reconnect; ensures currently cached config is cleared.
  */
-void SyncthingConnection::continueReconnect()
+void SyncthingConnection::continueReconnecting()
 {
     emit newConfig(QJsonObject()); // configuration will be invalidated
     setStatus(SyncthingStatus::Reconnecting);
@@ -244,6 +245,7 @@ void SyncthingConnection::continueReconnect()
     m_devs.clear();
     m_lastConnectionsUpdate = DateTime();
     m_lastFileTime = DateTime();
+    m_lastErrorTime = DateTime();
     m_lastFileName.clear();
     m_lastFileDeleted = false;
     if(m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
@@ -380,6 +382,7 @@ void SyncthingConnection::continueConnecting()
         requestConnections();
         requestDirStatistics();
         requestDeviceStatistics();
+        requestErrors();
         // since config and status could be read successfully, let's poll for events
         m_lastEventId = 0;
         requestEvents();
@@ -399,6 +402,9 @@ void SyncthingConnection::abortAllRequests()
     }
     if(m_connectionsReply) {
         m_connectionsReply->abort();
+    }
+    if(m_errorsReply) {
+        m_errorsReply->abort();
     }
     if(m_eventsReply) {
         m_eventsReply->abort();
@@ -433,6 +439,16 @@ void SyncthingConnection::requestStatus()
 void SyncthingConnection::requestConnections()
 {
     QObject::connect(m_connectionsReply = requestData(QStringLiteral("system/connections"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readConnections);
+}
+
+/*!
+ * \brief Requests errors asynchronously.
+ *
+ * The signal newNotification() is emitted on success; error() is emitted in the error case.
+ */
+void SyncthingConnection::requestErrors()
+{
+    QObject::connect(m_errorsReply = requestData(QStringLiteral("system/error"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readErrors);
 }
 
 /*!
@@ -509,10 +525,7 @@ QMetaObject::Connection SyncthingConnection::requestLog(std::function<void (cons
                 logEntries.reserve(log.size());
                 for(const QJsonValue &logVal : log) {
                     const QJsonObject logObj(logVal.toObject());
-                    SyncthingLogEntry entry;
-                    entry.when = logObj.value(QStringLiteral("when")).toString();
-                    entry.message = logObj.value(QStringLiteral("message")).toString();
-                    logEntries.emplace_back(move(entry));
+                    logEntries.emplace_back(logObj.value(QStringLiteral("when")).toString(), logObj.value(QStringLiteral("message")).toString());
                 }
                 callback(logEntries);
             } else {
@@ -878,6 +891,52 @@ void SyncthingConnection::readDeviceStatistics()
     }
 }
 
+void SyncthingConnection::readErrors()
+{
+    auto *reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+    if(reply == m_errorsReply) {
+        m_errorsReply = nullptr;
+    }
+
+    // ignore any errors occured before connecting
+    if(m_lastErrorTime.isNull()) {
+        m_lastErrorTime = DateTime::now();
+    }
+
+    switch(reply->error()) {
+    case QNetworkReply::NoError: {
+        QJsonParseError jsonError;
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
+        if(jsonError.error == QJsonParseError::NoError) {
+            for(const QJsonValue &errorVal : replyDoc.object().value(QStringLiteral("errors")).toArray()) {
+                const QJsonObject errorObj(errorVal.toObject());
+                if(!errorObj.isEmpty()) {
+                    try {
+                        const DateTime when = DateTime::fromIsoStringLocal(errorObj.value(QStringLiteral("when")).toString().toLocal8Bit().data());
+                        if(m_lastErrorTime < when) {
+                            emitNotification(m_lastErrorTime = when, errorObj.value(QStringLiteral("message")).toString());
+                        }
+                    } catch(const ConversionException &) {
+                    }
+                }
+            }
+        } else {
+            emit error(tr("Unable to parse errors: ") + jsonError.errorString());
+        }
+
+        // since there seems no event for this data, just request every thirty seconds, FIXME: make interval configurable
+        if(m_keepPolling) {
+            QTimer::singleShot(300/*00*/, Qt::VeryCoarseTimer, this, SLOT(requestErrors()));
+        }
+        break;
+    } case QNetworkReply::OperationCanceledError:
+        return; // intended, not an error
+    default:
+        emit error(tr("Unable to request errors: ") + reply->errorString());
+    }
+}
+
 /*!
  * \brief Reads results of requestEvents().
  */
@@ -937,7 +996,7 @@ void SyncthingConnection::readEvents()
         // intended disconnect, not an error
         if(m_reconnecting) {
             // if reconnection flag is set, instantly etstablish a new connection ...
-            continueReconnect();
+            continueReconnecting();
         } else {
             // ... otherwise keep disconnected
             setStatus(SyncthingStatus::Disconnected);
@@ -1017,7 +1076,7 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
                         if(!error.isEmpty()) {
                             dirInfo->errors.emplace_back(error.value(QStringLiteral("error")).toString(), error.value(QStringLiteral("path")).toString());
                             dirInfo->assignStatus(DirStatus::OutOfSync, eventTime);
-                            emit newNotification(dirInfo->errors.back().message);
+                            emitNotification(eventTime, dirInfo->errors.back().message);
                         }
                     }
                     emit dirStatusChanged(*dirInfo, index);
@@ -1139,7 +1198,7 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
                 }
             } else if(dirInfo->status == DirStatus::OutOfSync) { // FIXME: find better way to check whether the event is still relevant
                 dirInfo->errors.emplace_back(error, item);
-                emit newNotification(error);
+                emitNotification(eventTime, error);
             }
         }
     }
@@ -1208,12 +1267,13 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
             // check whether at least one directory is scanning or synchronizing
             bool scanning = false;
             bool synchronizing = false;
-            for(const SyncthingDir &dir : m_dirs)
+            for(const SyncthingDir &dir : m_dirs) {
                 if(dir.status == DirStatus::Synchronizing) {
                     synchronizing = true;
                     break;
                 } else if(dir.status == DirStatus::Scanning) {
                     scanning = true;
+                }
             }
             if(synchronizing) {
                 status = SyncthingStatus::Synchronizing;
@@ -1239,6 +1299,17 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
     if(m_status != status) {
         emit statusChanged(m_status = status);
     }
+}
+
+/*!
+ * \brief Interanlly called to emit the notification with the specified \a message.
+ * \remarks Ensures the status is updated and the unread notifications flag is set.
+ */
+void SyncthingConnection::emitNotification(DateTime when, const QString &message)
+{
+    m_unreadNotifications = true;
+    setStatus(status());
+    emit newNotification(when, message);
 }
 
 }
