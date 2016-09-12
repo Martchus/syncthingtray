@@ -927,7 +927,7 @@ void SyncthingConnection::readErrors()
 
         // since there seems no event for this data, just request every thirty seconds, FIXME: make interval configurable
         if(m_keepPolling) {
-            QTimer::singleShot(300/*00*/, Qt::VeryCoarseTimer, this, SLOT(requestErrors()));
+            QTimer::singleShot(30000, Qt::VeryCoarseTimer, this, SLOT(requestErrors()));
         }
         break;
     } case QNetworkReply::OperationCanceledError:
