@@ -34,7 +34,10 @@ int main(int argc, char *argv[])
     QT_CONFIG_ARGUMENTS qtConfigArgs;
     Argument windowedArg("windowed", 'w', "opens the tray menu as a regular window");
     windowedArg.setCombinable(true);
+    Argument waitForTrayArg("wait", '\0', "wait until the system tray becomes available instead of showing an error message if the system tray is not available on start-up");
+    waitForTrayArg.setCombinable(true);
     qtConfigArgs.qtWidgetsGuiArg().addSubArgument(&windowedArg);
+    qtConfigArgs.qtWidgetsGuiArg().addSubArgument(&waitForTrayArg);
     parser.setMainArguments({&qtConfigArgs.qtWidgetsGuiArg(), &helpArg});
     try {
         parser.parseArgs(argc, argv);
@@ -56,7 +59,7 @@ int main(int argc, char *argv[])
                 res = application.exec();
             } else {
 #ifndef QT_NO_SYSTEMTRAYICON
-                if(QSystemTrayIcon::isSystemTrayAvailable()) {
+                if(QSystemTrayIcon::isSystemTrayAvailable() || waitForTrayArg.isPresent()) {
                     if(Settings::launchSynchting()) {
                         syncthingProcess().startSyncthing();
                     }
