@@ -55,7 +55,8 @@ The tray is still under development; the following features are planned:
 ![Web view](/resources/screenshots/webview.png?raw=true)
 
 ## Download / binary repository
-I provide packages for Arch Linux and Windows. For more information checkout my
+I currently provide packages for Arch Linux and Windows. Sources for those packages can be found in a
+separate [repository](https://github.com/Martchus/PKGBUILDs). For binaries checkout my
 [website](http://martchus.no-ip.biz/website/page.php?name=programming).
 
 ## Build instructions
