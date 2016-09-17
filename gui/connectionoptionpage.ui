@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>QtGui::ConnectionOptionPage</class>
  <widget class="QWidget" name="QtGui::ConnectionOptionPage">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>502</width>
-    <height>368</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Connection</string>
   </property>
@@ -252,7 +244,7 @@
       </size>
      </property>
      <property name="text">
-      <string>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the arrow in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and must not match the name of the corresponding Syncthing device.</string>
+      <string>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
