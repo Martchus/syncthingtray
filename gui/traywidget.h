@@ -67,7 +67,6 @@ private slots:
 #endif
     void handleNewNotification(ChronoUtilities::DateTime when, const QString &msg);
     void handleConnectionSelected(QAction *connectionAction);
-    void showConnectionsMenu();
     void showDialog(QWidget *dlg);
 
 private:

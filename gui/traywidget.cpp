@@ -91,7 +91,8 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     // setup connection menu
     m_connectionsActionGroup = new QActionGroup(m_connectionsMenu = new QMenu(tr("Connection"), this));
     m_connectionsMenu->setIcon(QIcon::fromTheme(QStringLiteral("network-connect"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/network-connect.svg"))));
-    connect(m_ui->connectionsPushButton, &QPushButton::clicked, this, &TrayWidget::showConnectionsMenu);
+    m_ui->connectionsPushButton->setText(Settings::primaryConnectionSettings().label);
+    m_ui->connectionsPushButton->setMenu(m_connectionsMenu);
 
     // apply settings, this also establishes the connection to Syncthing
     applySettings();
@@ -403,6 +404,7 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
         m_selectedConnection = (index == 0)
                 ? &Settings::primaryConnectionSettings()
                 : &Settings::secondaryConnectionSettings()[static_cast<size_t>(index - 1)];
+        m_ui->connectionsPushButton->setText(m_selectedConnection->label);
         m_connection.reconnect(*m_selectedConnection);
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
         if(m_webViewDlg) {
@@ -410,11 +412,6 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
         }
 #endif
     }
-}
-
-void TrayWidget::showConnectionsMenu()
-{
-    m_connectionsMenu->exec(QCursor::pos());
 }
 
 void TrayWidget::showDialog(QWidget *dlg)
