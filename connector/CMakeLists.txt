@@ -30,6 +30,13 @@ set(SRC_FILES
     utils.cpp
 )
 
+set(TEST_HEADER_FILES
+)
+set(TEST_SRC_FILES
+    tests/cppunit.cpp
+    tests/connectiontests.cpp
+)
+
 set(TS_FILES
     translations/${META_PROJECT_NAME}_de_DE.ts
     translations/${META_PROJECT_NAME}_en_US.ts
@@ -74,5 +81,6 @@ include(BasicConfig)
 include(QtConfig)
 include(WindowsResources)
 include(LibraryTarget)
+include(TestTarget)
 include(Doxygen)
 include(ConfigHeader)

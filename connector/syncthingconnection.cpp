@@ -985,7 +985,9 @@ void SyncthingConnection::readStatus()
             }
             // other values are currently not interesting
             m_hasStatus = true;
-            continueConnecting();
+            if(!isConnected()) {
+                continueConnecting();
+            }
         } else {
             emit error(tr("Unable to parse Syncthing status: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
         }
@@ -1671,8 +1673,9 @@ void SyncthingConnection::readShutdown()
 
 /*!
  * \brief Sets the connection status. Ensures statusChanged() is emitted.
- * \param status Specifies the status; should be either SyncthingStatus::Disconnected or SyncthingStatus::Default. There is no use
- *               in specifying other values such as SyncthingStatus::Synchronizing as these are determined automatically within the method.
+ * \param status Specifies the status; should be either SyncthingStatus::Disconnected, SyncthingStatus::Reconnecting, or
+ *        SyncthingStatus::Idle. There is no use in specifying other values such as SyncthingStatus::Synchronizing as
+ *        these are determined automatically within the method.
  */
 void SyncthingConnection::setStatus(SyncthingStatus status)
 {
