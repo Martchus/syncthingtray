@@ -1,12 +1,16 @@
 #include "./devview.h"
 #include "./devbuttonsitemdelegate.h"
 
+#include "../data/syncthingdevicemodel.h"
+
 #include <QHeaderView>
 #include <QMouseEvent>
 #include <QMenu>
 #include <QCursor>
 #include <QGuiApplication>
 #include <QClipboard>
+
+using namespace Data;
 
 namespace QtGui {
 
@@ -23,16 +27,16 @@ DevView::DevView(QWidget *parent) :
 void DevView::mouseReleaseEvent(QMouseEvent *event)
 {
     QTreeView::mouseReleaseEvent(event);
-    const QPoint pos(event->pos());
-    const QModelIndex clickedIndex(indexAt(event->pos()));
-    if(clickedIndex.isValid() && clickedIndex.column() == 1 && !clickedIndex.parent().isValid()) {
-        const QRect itemRect(visualRect(clickedIndex));
-        //if(pos.x() > itemRect.right() - 34) {
-            if(pos.x() > itemRect.right() - 17) {
-                emit pauseResumeDev(clickedIndex);
-        //    } else {
-        //        emit scanDir(clickedIndex);
-        //    }
+    if(const auto *devModel = qobject_cast<SyncthingDeviceModel *>(model())) {
+        const QPoint pos(event->pos());
+        const QModelIndex clickedIndex(indexAt(event->pos()));
+        if(clickedIndex.isValid() && clickedIndex.column() == 1 && !clickedIndex.parent().isValid()) {
+            if(const SyncthingDev *devInfo = devModel->devInfo(clickedIndex)) {
+                const QRect itemRect(visualRect(clickedIndex));
+                if(pos.x() > itemRect.right() - 17) {
+                    emit pauseResumeDev(*devInfo);
+                }
+            }
         }
     }
 }

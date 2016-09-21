@@ -52,6 +52,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
 #endif
     m_dirModel(m_connection),
     m_devModel(m_connection),
+    m_dlModel(m_connection),
     m_selectedConnection(nullptr)
 {
     m_ui->setupUi(this);
@@ -59,6 +60,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     // setup model and view
     m_ui->dirsTreeView->setModel(&m_dirModel);
     m_ui->devsTreeView->setModel(&m_devModel);
+    m_ui->downloadsTreeView->setModel(&m_dlModel);
 
     // setup sync-all button
     m_cornerFrame = new QFrame(this);
@@ -113,6 +115,8 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     connect(m_ui->dirsTreeView, &DirView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->dirsTreeView, &DirView::scanDir, this, &TrayWidget::scanDir);
     connect(m_ui->devsTreeView, &DevView::pauseResumeDev, this, &TrayWidget::pauseResumeDev);
+    connect(m_ui->downloadsTreeView, &DownloadView::openDir, this, &TrayWidget::openDir);
+    connect(m_ui->downloadsTreeView, &DownloadView::openItemDir, this, &TrayWidget::openItemDir);
     connect(scanAllButton, &QPushButton::clicked, &m_connection, &SyncthingConnection::rescanAllDirs);
     connect(viewIdButton, &QPushButton::clicked, this, &TrayWidget::showOwnDeviceId);
     connect(showLogButton, &QPushButton::clicked, this, &TrayWidget::showLog);
@@ -307,32 +311,35 @@ void TrayWidget::applySettings()
     }
 }
 
-void TrayWidget::openDir(const QModelIndex &dirIndex)
+void TrayWidget::openDir(const SyncthingDir &dir)
 {
-    if(const SyncthingDir *dir = m_dirModel.dirInfo(dirIndex)) {
-        if(QDir(dir->path).exists()) {
-            DesktopUtils::openLocalFileOrDir(dir->path);
-        } else {
-            QMessageBox::warning(this, QCoreApplication::applicationName(), tr("The directory <i>%1</i> does not exist on the local machine.").arg(dir->path));
-        }
+    if(QDir(dir.path).exists()) {
+        DesktopUtils::openLocalFileOrDir(dir.path);
+    } else {
+        QMessageBox::warning(this, QCoreApplication::applicationName(), tr("The directory <i>%1</i> does not exist on the local machine.").arg(dir.path));
     }
 }
 
-void TrayWidget::scanDir(const QModelIndex &dirIndex)
+void TrayWidget::openItemDir(const SyncthingItemDownloadProgress &item)
 {
-    if(const SyncthingDir *dir = m_dirModel.dirInfo(dirIndex)) {
-        m_connection.rescan(dir->id);
+    if(item.fileInfo.exists()) {
+        DesktopUtils::openLocalFileOrDir(item.fileInfo.path());
+    } else {
+        QMessageBox::warning(this, QCoreApplication::applicationName(), tr("The file <i>%1</i> does not exist on the local machine.").arg(item.fileInfo.filePath()));
     }
 }
 
-void TrayWidget::pauseResumeDev(const QModelIndex &devIndex)
+void TrayWidget::scanDir(const SyncthingDir &dir)
 {
-    if(const SyncthingDev *dev = m_devModel.devInfo(devIndex)) {
-        if(dev->paused) {
-            m_connection.resume(dev->id);
-        } else {
-            m_connection.pause(dev->id);
-        }
+    m_connection.rescan(dir.id);
+}
+
+void TrayWidget::pauseResumeDev(const SyncthingDev &dev)
+{
+    if(dev.paused) {
+        m_connection.resume(dev.id);
+    } else {
+        m_connection.pause(dev.id);
     }
 }
 

@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QList>
 #include <QSslError>
+#include <QFileInfo>
 
 #include <functional>
 #include <vector>
@@ -56,8 +57,27 @@ struct DirErrors
     QString path;
 };
 
+struct SyncthingItemDownloadProgress
+{
+    SyncthingItemDownloadProgress(const QString &containingDirPath, const QString &relativeItemPath, const QJsonObject &values);
+    QString relativePath;
+    QFileInfo fileInfo;
+    int blocksCurrentlyDownloading = 0;
+    int blocksAlreadyDownloaded = 0;
+    int totalNumberOfBlocks = 0;
+    unsigned int downloadPercentage = 0;
+    int blocksCopiedFromOrigin = 0;
+    int blocksCopiedFromElsewhere = 0;
+    int blocksReused = 0;
+    int bytesAlreadyHandled;
+    int totalNumberOfBytes = 0;
+    QString label;
+    ChronoUtilities::DateTime lastUpdate;
+    static constexpr unsigned int syncthingBlockSize = 128 * 1024;
+};
+
 struct SyncthingDir
-{    
+{
     QString id;
     QString label;
     QString path;
@@ -79,6 +99,11 @@ struct SyncthingDir
     ChronoUtilities::DateTime lastFileTime;
     QString lastFileName;
     bool lastFileDeleted = false;
+    std::vector<SyncthingItemDownloadProgress> downloadingItems;
+    int blocksAlreadyDownloaded = 0;
+    int blocksToBeDownloaded = 0;
+    unsigned int downloadPercentage = 0;
+    QString downloadLabel;
 
     bool assignStatus(const QString &statusStr, ChronoUtilities::DateTime time);
     bool assignStatus(DirStatus newStatus, ChronoUtilities::DateTime time);
@@ -216,6 +241,11 @@ Q_SIGNALS:
     void devStatusChanged(const SyncthingDev &dev, int index);
 
     /*!
+     * \brief Indicates the download progress changed.
+     */
+    void downloadProgressChanged();
+
+    /*!
      * \brief Indicates a new Syncthing notification is available.
      */
     void newNotification(ChronoUtilities::DateTime when, const QString &message);
@@ -266,7 +296,7 @@ private Q_SLOTS:
     void readEvents();
     void readStartingEvent(const QJsonObject &eventData);
     void readStatusChangedEvent(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
-    void readDownloadProgressEvent(const QJsonObject &eventData);
+    void readDownloadProgressEvent(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readDirEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
     void readDeviceEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
     void readItemStarted(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);

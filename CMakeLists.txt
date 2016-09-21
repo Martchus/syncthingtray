@@ -11,7 +11,7 @@ set(META_APP_CATEGORIES "Utility;Network;")
 set(META_GUI_OPTIONAL false)
 set(META_VERSION_MAJOR 0)
 set(META_VERSION_MINOR 0)
-set(META_VERSION_PATCH 1)
+set(META_VERSION_PATCH 2)
 set(META_APP_VERSION ${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH})
 
 # add project files
@@ -19,6 +19,7 @@ set(HEADER_FILES
     data/syncthingconnection.h
     data/syncthingdirectorymodel.h
     data/syncthingdevicemodel.h
+    data/syncthingdownloadmodel.h
     data/syncthingconfig.h
     data/syncthingprocess.h
     data/utils.h
@@ -27,6 +28,7 @@ set(SRC_FILES
     data/syncthingconnection.cpp
     data/syncthingdirectorymodel.cpp
     data/syncthingdevicemodel.cpp
+    data/syncthingdownloadmodel.cpp
     data/syncthingconfig.cpp
     data/syncthingprocess.cpp
     data/utils.cpp
@@ -43,8 +45,10 @@ set(WIDGETS_HEADER_FILES
     gui/webviewprovider.h
     gui/dirbuttonsitemdelegate.h
     gui/devbuttonsitemdelegate.h
+    gui/downloaditemdelegate.h
     gui/dirview.h
     gui/devview.h
+    gui/downloadview.h
     gui/textviewdialog.h
 )
 set(WIDGETS_SRC_FILES
@@ -58,8 +62,10 @@ set(WIDGETS_SRC_FILES
     gui/webviewdialog.cpp
     gui/dirbuttonsitemdelegate.cpp
     gui/devbuttonsitemdelegate.cpp
+    gui/downloaditemdelegate.cpp
     gui/dirview.cpp
     gui/devview.cpp
+    gui/downloadview.cpp
     gui/textviewdialog.cpp
     resources/icons.qrc
 )
@@ -100,6 +106,7 @@ set(REQUIRED_ICONS
     edit-copy
     edit-paste
     folder
+    folder-download
     folder-open
     folder-sync
     help-about

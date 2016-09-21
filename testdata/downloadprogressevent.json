@@ -1,0 +1,51 @@
+{
+    "id": 221,
+    "type": "DownloadProgress",
+    "time": "2014-12-13T00:26:12.9876937Z",
+    "data": {
+        "repo": {
+            "file1": {
+                "Total": 800,
+                "Pulling": 2,
+                "CopiedFromOrigin": 0,
+                "Reused": 633,
+                "CopiedFromElsewhere": 0,
+                "Pulled": 38,
+                "BytesTotal": 104792064,
+                "BytesDone": 87883776
+            },
+            "dir\\file2": {
+                "Total": 80,
+                "Pulling": 2,
+                "CopiedFromOrigin": 0,
+                "Reused": 0,
+                "CopiedFromElsewhere": 0,
+                "Pulled": 32,
+                "BytesTotal": 10420224,
+                "BytesDone": 4128768
+            }
+        },
+        "projects": {
+            "file3": {
+                "Total": 800,
+                "Pulling": 2,
+                "CopiedFromOrigin": 0,
+                "Reused": 633,
+                "CopiedFromElsewhere": 0,
+                "Pulled": 38,
+                "BytesTotal": 104792064,
+                "BytesDone": 87883776
+            },
+            "dir\\file4": {
+                "Total": 80,
+                "Pulling": 2,
+                "CopiedFromOrigin": 0,
+                "Reused": 0,
+                "CopiedFromElsewhere": 0,
+                "Pulled": 32,
+                "BytesTotal": 10420224,
+                "BytesDone": 4128768
+            }
+        }
+    }
+} 

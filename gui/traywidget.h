@@ -6,6 +6,7 @@
 #include "../data/syncthingconnection.h"
 #include "../data/syncthingdirectorymodel.h"
 #include "../data/syncthingdevicemodel.h"
+#include "../data/syncthingdownloadmodel.h"
 #include "../data/syncthingprocess.h"
 #include "../application/settings.h"
 
@@ -57,9 +58,10 @@ public slots:
 private slots:
     void handleStatusChanged(Data::SyncthingStatus status);
     void applySettings();
-    void openDir(const QModelIndex &dirIndex);
-    void scanDir(const QModelIndex &dirIndex);
-    void pauseResumeDev(const QModelIndex &devIndex);
+    void openDir(const Data::SyncthingDir &dir);
+    void openItemDir(const Data::SyncthingItemDownloadProgress &item);
+    void scanDir(const Data::SyncthingDir &dir);
+    void pauseResumeDev(const Data::SyncthingDev &dev);
     void changeStatus();
     void updateTraffic();
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
@@ -81,6 +83,7 @@ private:
     Data::SyncthingConnection m_connection;
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
+    Data::SyncthingDownloadModel m_dlModel;
     QMenu *m_connectionsMenu;
     QActionGroup *m_connectionsActionGroup;
     Settings::ConnectionSettings *m_selectedConnection;

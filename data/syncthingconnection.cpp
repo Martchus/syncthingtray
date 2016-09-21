@@ -4,6 +4,7 @@
 #include "../application/settings.h"
 
 #include <c++utilities/conversion/conversionexception.h>
+#include <c++utilities/conversion/stringconversion.h>
 
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -98,6 +99,27 @@ bool SyncthingDir::assignStatus(DirStatus newStatus, DateTime time)
     }
     return false;
 }
+
+SyncthingItemDownloadProgress::SyncthingItemDownloadProgress(const QString &containingDirPath, const QString &relativeItemPath, const QJsonObject &values) :
+    relativePath(relativeItemPath),
+    fileInfo(containingDirPath % QChar('/') % relativeItemPath),
+    blocksCurrentlyDownloading(values.value(QStringLiteral("Pulling")).toInt()),
+    blocksAlreadyDownloaded(values.value(QStringLiteral("Pulled")).toInt()),
+    totalNumberOfBlocks(values.value(QStringLiteral("Total")).toInt()),
+    downloadPercentage((blocksAlreadyDownloaded > 0 && totalNumberOfBlocks > 0)
+                       ? (static_cast<unsigned int>(blocksAlreadyDownloaded) * 100 / static_cast<unsigned int>(totalNumberOfBlocks))
+                       : 0),
+    blocksCopiedFromOrigin(values.value(QStringLiteral("CopiedFromOrigin")).toInt()),
+    blocksCopiedFromElsewhere(values.value(QStringLiteral("CopiedFromElsewhere")).toInt()),
+    blocksReused(values.value(QStringLiteral("Reused")).toInt()),
+    bytesAlreadyHandled(values.value(QStringLiteral("BytesDone")).toInt()),
+    totalNumberOfBytes(values.value(QStringLiteral("BytesTotal")).toInt()),
+    label(QStringLiteral("%1 / %2 - %3 %").arg(
+              QString::fromLatin1(dataSizeToString(blocksAlreadyDownloaded > 0 ? static_cast<uint64>(blocksAlreadyDownloaded) * syncthingBlockSize : 0).data()),
+              QString::fromLatin1(dataSizeToString(totalNumberOfBlocks > 0 ? static_cast<uint64>(totalNumberOfBlocks) * syncthingBlockSize : 0).data()),
+              QString::number(downloadPercentage))
+          )
+{}
 
 /*!
  * \class SyncthingConnection
@@ -972,7 +994,7 @@ void SyncthingConnection::readEvents()
                 } else if(eventType == QLatin1String("StateChanged")) {
                     readStatusChangedEvent(eventTime, eventData);
                 } else if(eventType == QLatin1String("DownloadProgress")) {
-                    readDownloadProgressEvent(eventData);
+                    readDownloadProgressEvent(eventTime, eventData);
                 } else if(eventType.startsWith(QLatin1String("Folder"))) {
                     readDirEvent(eventTime, eventType, eventData);
                 } else if(eventType.startsWith(QLatin1String("Device"))) {
@@ -1053,9 +1075,34 @@ void SyncthingConnection::readStatusChangedEvent(DateTime eventTime, const QJson
  * \brief Reads results of requestEvents().
  * \remarks TODO
  */
-void SyncthingConnection::readDownloadProgressEvent(const QJsonObject &eventData)
+void SyncthingConnection::readDownloadProgressEvent(DateTime eventTime, const QJsonObject &eventData)
 {
-    VAR_UNUSED(eventData)
+    VAR_UNUSED(eventTime)
+    for(SyncthingDir &dirInfo : m_dirs) {
+        // disappearing implies that the download has been finished so just wipe old entries
+        dirInfo.downloadingItems.clear();
+        dirInfo.blocksAlreadyDownloaded = dirInfo.blocksToBeDownloaded = 0;
+
+        // read progress of currently downloading items
+        const QJsonObject dirObj(eventData.value(dirInfo.id).toObject());
+        if(!dirObj.isEmpty()) {
+            dirInfo.downloadingItems.reserve(static_cast<size_t>(dirObj.size()));
+            for(auto filePair = dirObj.constBegin(), end = dirObj.constEnd(); filePair != end; ++filePair) {
+                dirInfo.downloadingItems.emplace_back(dirInfo.path, filePair.key(), filePair.value().toObject());
+                const SyncthingItemDownloadProgress &itemProgress = dirInfo.downloadingItems.back();
+                dirInfo.blocksAlreadyDownloaded += itemProgress.blocksAlreadyDownloaded;
+                dirInfo.blocksToBeDownloaded += itemProgress.totalNumberOfBlocks;
+            }
+        }
+        dirInfo.downloadPercentage = (dirInfo.blocksAlreadyDownloaded > 0 && dirInfo.blocksToBeDownloaded > 0)
+                ? (static_cast<unsigned int>(dirInfo.blocksAlreadyDownloaded) * 100 / static_cast<unsigned int>(dirInfo.blocksToBeDownloaded))
+                : 0;
+        dirInfo.downloadLabel = QStringLiteral("%1 / %2 - %3 %").arg(
+                    QString::fromLatin1(dataSizeToString(dirInfo.blocksAlreadyDownloaded > 0 ? static_cast<uint64>(dirInfo.blocksAlreadyDownloaded) * SyncthingItemDownloadProgress::syncthingBlockSize : 0).data()),
+                    QString::fromLatin1(dataSizeToString(dirInfo.blocksToBeDownloaded > 0 ? static_cast<uint64>(dirInfo.blocksToBeDownloaded) * SyncthingItemDownloadProgress::syncthingBlockSize : 0).data()),
+                    QString::number(dirInfo.downloadPercentage));
+    }
+    emit downloadProgressChanged();
 }
 
 /*!

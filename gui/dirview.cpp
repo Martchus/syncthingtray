@@ -1,12 +1,16 @@
 #include "./dirview.h"
 #include "./dirbuttonsitemdelegate.h"
 
+#include "../data/syncthingdirectorymodel.h"
+
 #include <QHeaderView>
 #include <QMouseEvent>
 #include <QMenu>
 #include <QCursor>
 #include <QGuiApplication>
 #include <QClipboard>
+
+using namespace Data;
 
 namespace QtGui {
 
@@ -23,15 +27,19 @@ DirView::DirView(QWidget *parent) :
 void DirView::mouseReleaseEvent(QMouseEvent *event)
 {
     QTreeView::mouseReleaseEvent(event);
-    const QPoint pos(event->pos());
-    const QModelIndex clickedIndex(indexAt(event->pos()));
-    if(clickedIndex.isValid() && clickedIndex.column() == 1 && !clickedIndex.parent().isValid()) {
-        const QRect itemRect(visualRect(clickedIndex));
-        if(pos.x() > itemRect.right() - 34) {
-            if(pos.x() > itemRect.right() - 17) {
-                emit openDir(clickedIndex);
-            } else {
-                emit scanDir(clickedIndex);
+    if(const SyncthingDirectoryModel *dirModel = qobject_cast<SyncthingDirectoryModel *>(model())) {
+        const QPoint pos(event->pos());
+        const QModelIndex clickedIndex(indexAt(event->pos()));
+        if(clickedIndex.isValid() && clickedIndex.column() == 1 && !clickedIndex.parent().isValid()) {
+            if(const SyncthingDir *dir = dirModel->dirInfo(clickedIndex)) {
+                const QRect itemRect(visualRect(clickedIndex));
+                if(pos.x() > itemRect.right() - 34) {
+                    if(pos.x() > itemRect.right() - 17) {
+                        emit openDir(*dir);
+                    } else {
+                        emit scanDir(*dir);
+                    }
+                }
             }
         }
     }

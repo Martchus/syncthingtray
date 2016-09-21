@@ -27,7 +27,7 @@ public Q_SLOTS:
     int columnCount(const QModelIndex &parent) const;
     const SyncthingDir *dirInfo(const QModelIndex &index) const;
 
-private slots:
+private Q_SLOTS:
     void newConfig();
     void newDirs();
     void dirStatusChanged(const SyncthingDir &, int index);

@@ -108,7 +108,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 case Qt::ForegroundRole:
                     switch(index.column()) {
                     case 1:
-                        const SyncthingDev &dev = m_devs[index.parent().row()];
+                        const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
                         switch(index.row()) {
                         case 2:
                             if(dev.lastSeen.isNull()) {
@@ -128,7 +128,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                     case 1:
                         switch(index.row()) {
                         case 2:
-                            const SyncthingDev &dev = m_devs[index.parent().row()];
+                            const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
                             if(!dev.lastSeen.isNull()) {
                                 return agoString(dev.lastSeen);
                             }

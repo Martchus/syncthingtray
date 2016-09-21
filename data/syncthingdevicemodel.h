@@ -34,7 +34,7 @@ public Q_SLOTS:
     int columnCount(const QModelIndex &parent) const;
     const SyncthingDev *devInfo(const QModelIndex &index) const;
 
-private slots:
+private Q_SLOTS:
     void newConfig();
     void newDevices();
     void devStatusChanged(const SyncthingDev &, int index);

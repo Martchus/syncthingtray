@@ -3,6 +3,10 @@
 
 #include <QTreeView>
 
+namespace Data {
+struct SyncthingDev;
+}
+
 namespace QtGui {
 
 class DevView : public QTreeView
@@ -12,7 +16,7 @@ public:
     DevView(QWidget *parent = nullptr);
 
 Q_SIGNALS:
-    void pauseResumeDev(const QModelIndex &index);
+    void pauseResumeDev(const Data::SyncthingDev &dev);
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event);

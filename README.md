@@ -18,6 +18,7 @@ support
   * Check current traffic statistics
   * Display further details about direcoties and devices, like last file, last
     scan, ...
+  * Display ongoing downloads
   * Trigger re-scan of a specific directory or all directories at once
   * Open a directory with the default file browser
   * Pause/resume a specific device or all devices at once
@@ -33,7 +34,6 @@ support
 
 ## Planned features
 The tray is still under development; the following features are planned:
-* Show currently processed items
 * Show recently processed items
 * Improve notification handling
 * Create Plasmoid for Plasma 5 desktop

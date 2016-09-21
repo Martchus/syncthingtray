@@ -1,23 +1,24 @@
-#ifndef DIRVIEW_H
-#define DIRVIEW_H
+#ifndef DOWNLOADVIEW_H
+#define DOWNLOADVIEW_H
 
 #include <QTreeView>
 
 namespace Data {
+struct SyncthingItemDownloadProgress;
 struct SyncthingDir;
 }
 
 namespace QtGui {
 
-class DirView : public QTreeView
+class DownloadView : public QTreeView
 {
     Q_OBJECT
 public:
-    DirView(QWidget *parent = nullptr);
+    DownloadView(QWidget *parent = nullptr);
 
 Q_SIGNALS:
     void openDir(const Data::SyncthingDir &dir);
-    void scanDir(const Data::SyncthingDir &dir);
+    void openItemDir(const Data::SyncthingItemDownloadProgress &dir);
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event);
@@ -25,10 +26,9 @@ protected:
 private Q_SLOTS:
     void showContextMenu();
     void copySelectedItem();
-    void copySelectedItemPath();
 
 };
 
 }
 
-#endif // DIRVIEW_H
+#endif // DOWNLOADVIEW_H

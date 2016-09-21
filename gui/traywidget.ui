@@ -276,7 +276,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
          <string>New notifications</string>
         </property>
         <property name="icon">
-         <iconset theme="dialog-warning"/>
+         <iconset theme="dialog-warning">
+          <normaloff>.</normaloff>.</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -375,6 +376,35 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="downloadsTab">
+      <attribute name="icon">
+       <iconset theme="folder-download">
+        <normaloff>.</normaloff>.</iconset>
+      </attribute>
+      <attribute name="title">
+       <string>Downloads</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QtGui::DownloadView" name="downloadsTreeView"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>
@@ -389,6 +419,11 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
    <class>QtGui::DevView</class>
    <extends>QTreeView</extends>
    <header>./gui/devview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QtGui::DownloadView</class>
+   <extends>QTreeView</extends>
+   <header>./gui/downloadview.h</header>
   </customwidget>
  </customwidgets>
  <resources>

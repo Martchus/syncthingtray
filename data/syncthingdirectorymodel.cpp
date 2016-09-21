@@ -35,12 +35,12 @@ QModelIndex SyncthingDirectoryModel::index(int row, int column, const QModelInde
     if(!parent.isValid()) {
         // top-level: all dir labels/IDs
         if(row < rowCount(parent)) {
-            return createIndex(row, column, -1);
+            return createIndex(row, column, static_cast<quintptr>(-1));
         }
     } else if(!parent.parent().isValid()) {
         // dir-level: dir attributes
         if(row < rowCount(parent)) {
-            return createIndex(row, column, parent.row());
+            return createIndex(row, column, static_cast<quintptr>(parent.row()));
         }
     }
     return QModelIndex();
@@ -48,7 +48,7 @@ QModelIndex SyncthingDirectoryModel::index(int row, int column, const QModelInde
 
 QModelIndex SyncthingDirectoryModel::parent(const QModelIndex &child) const
 {
-    return child.internalId() != static_cast<quintptr>(-1) ? index(child.internalId(), 0, QModelIndex()) : QModelIndex();
+    return child.internalId() != static_cast<quintptr>(-1) ? index(static_cast<int>(child.internalId()), 0, QModelIndex()) : QModelIndex();
 }
 
 QVariant SyncthingDirectoryModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -94,7 +94,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         }
                         break;
                     case 1: // attribute values
-                        const SyncthingDir &dir = m_dirs[index.parent().row()];
+                        const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
                         switch(index.row()) {
                         case 0: return dir.id;
                         case 1: return dir.path;
@@ -110,7 +110,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case Qt::ForegroundRole:
                     switch(index.column()) {
                     case 1:
-                        const SyncthingDir &dir = m_dirs[index.parent().row()];
+                        const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
                         switch(index.row()) {
                         case 5:
                             if(dir.lastScanTime.isNull()) {
@@ -130,7 +130,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case Qt::ToolTipRole:
                     switch(index.column()) {
                     case 1:
-                        const SyncthingDir &dir = m_dirs[index.parent().row()];
+                        const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
                         switch(index.row()) {
                         case 5:
                             if(!dir.lastScanTime.isNull()) {

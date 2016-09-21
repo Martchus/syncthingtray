@@ -65,7 +65,7 @@ bool &showTraffic()
 }
 QSize &trayMenuSize()
 {
-    static QSize v(350, 300);
+    static QSize v(450, 400);
     return v;
 }
 int &frameStyle()
