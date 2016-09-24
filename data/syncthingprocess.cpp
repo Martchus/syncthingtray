@@ -29,7 +29,9 @@ void SyncthingProcess::restartSyncthing()
 
 void SyncthingProcess::startSyncthing()
 {
-    start(Settings::syncthingPath() % QChar(' ') % Settings::syncthingArgs(), QProcess::ReadOnly);
+    if(state() == QProcess::NotRunning) {
+        start(Settings::syncthingPath() % QChar(' ') % Settings::syncthingArgs(), QProcess::ReadOnly);
+    }
 }
 
 void SyncthingProcess::handleFinished(int exitCode, QProcess::ExitStatus exitStatus)

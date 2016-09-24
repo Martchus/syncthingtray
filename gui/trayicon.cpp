@@ -6,7 +6,7 @@
 
 #include <qtutilities/misc/dialogutils.h>
 
-#include <QCoreApplication>
+#include <QApplication>
 #include <QSvgRenderer>
 #include <QPainter>
 #include <QPixmap>
@@ -28,6 +28,7 @@ TrayIcon::TrayIcon(QObject *parent) :
     m_statusIconNotify(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-notify.svg")))),
     m_statusIconPause(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-pause.svg")))),
     m_statusIconSync(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-sync.svg")))),
+    m_trayMenu(this),
     m_status(SyncthingStatus::Disconnected)
 {
     // set context menu
@@ -37,7 +38,7 @@ TrayIcon::TrayIcon(QObject *parent) :
     m_contextMenu.addMenu(m_trayMenu.widget()->connectionsMenu());
     connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("help-about"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/help-about.svg"))), tr("About")), &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showAboutDialog);
     m_contextMenu.addSeparator();
-    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("window-close"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))), tr("Close")), &QAction::triggered, &QCoreApplication::quit);
+    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("window-close"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))), tr("Close")), &QAction::triggered, this, &TrayIcon::deleteLater);
     setContextMenu(&m_contextMenu);
 
     // set initial status

@@ -1,5 +1,6 @@
 #include "./traywidget.h"
 #include "./traymenu.h"
+#include "./trayicon.h"
 #include "./settingsdialog.h"
 #include "./webviewdialog.h"
 #include "./textviewdialog.h"
@@ -28,6 +29,7 @@
 #include <QFontDatabase>
 
 #include <functional>
+#include <algorithm>
 
 using namespace ApplicationUtilities;
 using namespace ConversionUtilities;
@@ -37,6 +39,8 @@ using namespace Data;
 using namespace std;
 
 namespace QtGui {
+
+vector<TrayWidget *> TrayWidget::m_instances;
 
 /*!
  * \brief Instantiates a new tray widget.
@@ -55,6 +59,8 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     m_dlModel(m_connection),
     m_selectedConnection(nullptr)
 {
+    m_instances.push_back(this);
+
     m_ui->setupUi(this);
 
     // setup model and view
@@ -105,7 +111,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
 
     // connect signals and slots
     connect(m_ui->statusPushButton, &QPushButton::clicked, this, &TrayWidget::changeStatus);
-    connect(m_ui->closePushButton, &QPushButton::clicked, &QCoreApplication::quit);
+    connect(m_ui->closePushButton, &QPushButton::clicked, this, &TrayWidget::quitTray);
     connect(m_ui->aboutPushButton, &QPushButton::clicked, this, &TrayWidget::showAboutDialog);
     connect(m_ui->webUiPushButton, &QPushButton::clicked, this, &TrayWidget::showWebUi);
     connect(m_ui->settingsPushButton, &QPushButton::clicked, this, &TrayWidget::showSettingsDialog);
@@ -126,7 +132,15 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
 }
 
 TrayWidget::~TrayWidget()
-{}
+{
+    auto i = std::find(m_instances.begin(), m_instances.end(), this);
+    if(i != m_instances.end()) {
+        m_instances.erase(i);
+    }
+    if(m_instances.empty()) {
+        QCoreApplication::quit();
+    }
+}
 
 void TrayWidget::showSettingsDialog()
 {
@@ -226,6 +240,21 @@ void TrayWidget::showNotifications()
     showDialog(dlg);
     m_connection.notificationsRead();
     m_ui->notificationsPushButton->setHidden(true);
+}
+
+void TrayWidget::quitTray()
+{
+    QObject *parent;
+    if(m_menu) {
+        if(m_menu->icon()) {
+            parent = m_menu->icon();
+        } else {
+            parent = m_menu;
+        }
+    } else {
+        parent = this;
+    }
+    parent->deleteLater();
 }
 
 void TrayWidget::handleStatusChanged(SyncthingStatus status)

@@ -46,6 +46,7 @@ public:
 
     Data::SyncthingConnection &connection();
     QMenu *connectionsMenu();
+    static const std::vector<TrayWidget *> &instances();
 
 public slots:
     void showSettingsDialog();
@@ -54,6 +55,7 @@ public slots:
     void showOwnDeviceId();
     void showLog();
     void showNotifications();
+    void quitTray();
 
 private slots:
     void handleStatusChanged(Data::SyncthingStatus status);
@@ -88,6 +90,7 @@ private:
     QActionGroup *m_connectionsActionGroup;
     Settings::ConnectionSettings *m_selectedConnection;
     std::vector<Data::SyncthingLogEntry> m_notifications;
+    static std::vector<TrayWidget *> m_instances;
 };
 
 inline Data::SyncthingConnection &TrayWidget::connection()
@@ -98,6 +101,11 @@ inline Data::SyncthingConnection &TrayWidget::connection()
 inline QMenu *TrayWidget::connectionsMenu()
 {
     return m_connectionsMenu;
+}
+
+inline const std::vector<TrayWidget *> &TrayWidget::instances()
+{
+    return m_instances;
 }
 
 }

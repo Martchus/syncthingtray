@@ -36,6 +36,7 @@ set(SRC_FILES
 
 set(WIDGETS_HEADER_FILES
     application/settings.h
+    application/singleinstance.h
     gui/trayicon.h
     gui/traywidget.h
     gui/traymenu.h
@@ -54,6 +55,7 @@ set(WIDGETS_HEADER_FILES
 set(WIDGETS_SRC_FILES
     application/main.cpp
     application/settings.cpp
+    application/singleinstance.cpp
     gui/trayicon.cpp
     gui/traywidget.cpp
     gui/traymenu.cpp

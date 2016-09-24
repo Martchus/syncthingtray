@@ -10,7 +10,7 @@ support
   * Openbox/qt5ct/Tint2
   * Cinnamon
   * Windows 10
-  * Can be shown as regular window if tray icon support is not available
+* Can be shown as regular window if tray icon support is not available
 
 ## Features
 * Provides quick access to most frequently used features but does not intend to replace the official web UI
@@ -53,6 +53,12 @@ The tray is still under development; the following features are planned:
 
 ### Web view (dark color theme)
 ![Web view](/resources/screenshots/webview.png?raw=true)
+
+## Hotkey for Web UI
+To create a hotkey for the web UI, you can use the same approach as for any other
+application. Just add `--webui` to the arguments to trigger the web UI.
+Syncthing Tray ensures that no second instance will be spawned if it is already
+running.
 
 ## Download / binary repository
 I currently provide packages for Arch Linux and Windows. Sources for those packages can be found in a
