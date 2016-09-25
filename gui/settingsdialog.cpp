@@ -117,6 +117,8 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
             ui()->passwordLineEdit->setText(connectionSettings.password);
             ui()->apiKeyLineEdit->setText(connectionSettings.apiKey);
             ui()->certPathSelection->lineEdit()->setText(connectionSettings.httpsCertPath);
+            ui()->pollTrafficSpinBox->setValue(connectionSettings.trafficPollInterval);
+            ui()->pollDevStatsSpinBox->setValue(connectionSettings.devStatsPollInterval);
             m_currentIndex = index;
         } else {
             ui()->selectionComboBox->setCurrentIndex(m_currentIndex);
@@ -139,6 +141,8 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
         connectionSettings.apiKey = ui()->apiKeyLineEdit->text().toUtf8();
         connectionSettings.expectedSslErrors.clear();
         connectionSettings.httpsCertPath = ui()->certPathSelection->lineEdit()->text();
+        connectionSettings.trafficPollInterval = ui()->pollTrafficSpinBox->value();
+        connectionSettings.devStatsPollInterval = ui()->pollDevStatsSpinBox->value();
         if(!connectionSettings.loadHttpsCert()) {
             const QString errorMessage = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to load specified certificate \"%1\".").arg(connectionSettings.httpsCertPath);
             if(!applying) {

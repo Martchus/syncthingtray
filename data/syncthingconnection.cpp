@@ -137,6 +137,8 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     m_keepPolling(false),
     m_reconnecting(false),
     m_lastEventId(0),
+    m_trafficPollInterval(2000),
+    m_devStatsPollInterval(60000),
     m_totalIncomingTraffic(0),
     m_totalOutgoingTraffic(0),
     m_totalIncomingRate(0),
@@ -237,6 +239,8 @@ void SyncthingConnection::reconnect(Settings::ConnectionSettings &connectionSett
     } else {
         setCredentials(QString(), QString());
     }
+    setTrafficPollInterval(connectionSettings.trafficPollInterval);
+    setDevStatsPollInterval(connectionSettings.devStatsPollInterval);
     loadSelfSignedCertificate();
     if(connectionSettings.expectedSslErrors.isEmpty()) {
         connectionSettings.expectedSslErrors = expectedSslErrors();
@@ -794,9 +798,9 @@ void SyncthingConnection::readConnections()
 
             m_lastConnectionsUpdate = DateTime::gmtNow();
 
-            // since there seems no event for this data, just request every 2 seconds, FIXME: make interval configurable
+            // since there seems no event for this data, just request every 2 seconds
             if(m_keepPolling) {
-                QTimer::singleShot(2000, Qt::VeryCoarseTimer, this, SLOT(requestConnections()));
+                QTimer::singleShot(m_trafficPollInterval, Qt::VeryCoarseTimer, this, &SyncthingConnection::requestConnections);
             }
         } else {
             emit error(tr("Unable to parse connections: ") + jsonError.errorString());
@@ -900,7 +904,7 @@ void SyncthingConnection::readDeviceStatistics()
             }
             // since there seems no event for this data, just request every minute, FIXME: make interval configurable
             if(m_keepPolling) {
-                QTimer::singleShot(60000, Qt::VeryCoarseTimer, this, SLOT(requestConnections()));
+                QTimer::singleShot(m_devStatsPollInterval, Qt::VeryCoarseTimer, this, SLOT(requestConnections()));
             }
         } else {
             emit error(tr("Unable to parse device statistics: ") + jsonError.errorString());
@@ -1153,7 +1157,7 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
                     dirInfo->progressPercentage = percentage;
                 }
             } else if(eventType == QLatin1String("FolderScanProgress")) {
-                // FIXME: for some reason current is always 0
+                // FIXME: for some reason this is always 0
                 int current = eventData.value(QStringLiteral("current")).toInt(0),
                     total = eventData.value(QStringLiteral("total")).toInt(0),
                     rate = eventData.value(QStringLiteral("rate")).toInt(0);
@@ -1193,7 +1197,8 @@ void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eve
                 status = DevStatus::Rejected;
             } else if(eventType == QLatin1String("DeviceResumed")) {
                 paused = false;
-                status = DevStatus::Disconnected; // FIXME: correct to assume device which has just been resumed is still disconnected?
+                // FIXME: correct to assume device which has just been resumed is still disconnected?
+                status = DevStatus::Disconnected;
             } else if(eventType == QLatin1String("DeviceDiscovered")) {
                 // we know about this device already, set status anyways because it might still be unknown
                 status = DevStatus::Disconnected;
@@ -1243,7 +1248,8 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
                     }
                     emit dirStatusChanged(*dirInfo, index);
                 }
-            } else if(dirInfo->status == DirStatus::OutOfSync) { // FIXME: find better way to check whether the event is still relevant
+            } else if(dirInfo->status == DirStatus::OutOfSync) {
+                // FIXME: find better way to check whether the event is still relevant
                 dirInfo->errors.emplace_back(error, item);
                 emitNotification(eventTime, error);
             }

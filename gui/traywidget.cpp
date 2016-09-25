@@ -40,6 +40,8 @@ using namespace std;
 
 namespace QtGui {
 
+SettingsDialog *TrayWidget::m_settingsDlg = nullptr;
+Dialogs::AboutDialog *TrayWidget::m_aboutDlg = nullptr;
 vector<TrayWidget *> TrayWidget::m_instances;
 
 /*!
@@ -49,8 +51,6 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     QWidget(parent),
     m_menu(parent),
     m_ui(new Ui::TrayWidget),
-    m_settingsDlg(nullptr),
-    m_aboutDlg(nullptr),
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
     m_webViewDlg(nullptr),
 #endif
@@ -146,7 +146,7 @@ void TrayWidget::showSettingsDialog()
 {
     if(!m_settingsDlg) {
         m_settingsDlg = new SettingsDialog(&m_connection, this);
-        connect(m_settingsDlg, &SettingsDialog::applied, this, &TrayWidget::applySettings);
+        connect(m_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettings);
     }
     centerWidget(m_settingsDlg);
     showDialog(m_settingsDlg);
@@ -290,53 +290,56 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
 
 void TrayWidget::applySettings()
 {
-    // update connections menu
-    int connectionIndex = 0;
-    const int connectionCount = static_cast<int>(1 + Settings::secondaryConnectionSettings().size());
-    const QList<QAction *> connectionActions = m_connectionsActionGroup->actions();
-    m_selectedConnection = nullptr;
-    for(; connectionIndex < connectionCount; ++connectionIndex) {
-        Settings::ConnectionSettings &connectionSettings = (connectionIndex == 0 ? Settings::primaryConnectionSettings() : Settings::secondaryConnectionSettings()[static_cast<size_t>(connectionIndex - 1)]);
-        if(connectionIndex < connectionActions.size()) {
-            QAction *action = connectionActions.at(connectionIndex);
-            action->setText(connectionSettings.label);
-            if(action->isChecked()) {
-                m_selectedConnection = &connectionSettings;
+    for(TrayWidget *instance : m_instances) {
+        // update connections menu
+        int connectionIndex = 0;
+        const int connectionCount = static_cast<int>(1 + Settings::secondaryConnectionSettings().size());
+        const QList<QAction *> connectionActions = instance->m_connectionsActionGroup->actions();
+        instance->m_selectedConnection = nullptr;
+        for(; connectionIndex < connectionCount; ++connectionIndex) {
+            Settings::ConnectionSettings &connectionSettings = (connectionIndex == 0 ? Settings::primaryConnectionSettings() : Settings::secondaryConnectionSettings()[static_cast<size_t>(connectionIndex - 1)]);
+            if(connectionIndex < connectionActions.size()) {
+                QAction *action = connectionActions.at(connectionIndex);
+                action->setText(connectionSettings.label);
+                if(action->isChecked()) {
+                    instance->m_selectedConnection = &connectionSettings;
+                }
+            } else {
+                QAction *action = instance->m_connectionsMenu->addAction(connectionSettings.label);
+                action->setCheckable(true);
+                instance->m_connectionsActionGroup->addAction(action);
             }
-        } else {
-            QAction *action = m_connectionsMenu->addAction(connectionSettings.label);
-            action->setCheckable(true);
-            m_connectionsActionGroup->addAction(action);
         }
-    }
-    for(; connectionIndex < connectionActions.size(); ++connectionIndex) {
-        m_connectionsActionGroup->removeAction(connectionActions.at(connectionIndex));
-    }
-    if(!m_selectedConnection) {
-        m_selectedConnection = &Settings::primaryConnectionSettings();
-        m_connectionsMenu->actions().at(0)->setChecked(true);
-    }
+        for(; connectionIndex < connectionActions.size(); ++connectionIndex) {
+            delete connectionActions.at(connectionIndex);
+        }
+        if(!instance->m_selectedConnection) {
+            instance->m_selectedConnection = &Settings::primaryConnectionSettings();
+            instance->m_connectionsMenu->actions().at(0)->setChecked(true);
+            instance->m_ui->connectionsPushButton->setText(instance->m_selectedConnection->label);
+        }
 
-    m_connection.reconnect(*m_selectedConnection);
+        instance->m_connection.reconnect(*instance->m_selectedConnection);
 
-    // web view
+        // web view
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
-    if(m_webViewDlg) {
-        m_webViewDlg->applySettings(*m_selectedConnection);
-    }
+        if(instance->m_webViewDlg) {
+            instance->m_webViewDlg->applySettings(*instance->m_selectedConnection);
+        }
 #endif
 
-    // update visual appearance
-    m_ui->trafficFormWidget->setVisible(Settings::showTraffic());
-    if(Settings::showTraffic()) {
-        updateTraffic();
-    }
-    m_ui->infoFrame->setFrameStyle(Settings::frameStyle());
-    m_ui->buttonsFrame->setFrameStyle(Settings::frameStyle());
-    if(QApplication::style() && !QApplication::style()->objectName().compare(QLatin1String("adwaita"), Qt::CaseInsensitive)) {
-        m_cornerFrame->setFrameStyle(QFrame::NoFrame);
-    } else {
-        m_cornerFrame->setFrameStyle(Settings::frameStyle());
+        // update visual appearance
+        instance->m_ui->trafficFormWidget->setVisible(Settings::showTraffic());
+        if(Settings::showTraffic()) {
+            instance->updateTraffic();
+        }
+        instance->m_ui->infoFrame->setFrameStyle(Settings::frameStyle());
+        instance->m_ui->buttonsFrame->setFrameStyle(Settings::frameStyle());
+        if(QApplication::style() && !QApplication::style()->objectName().compare(QLatin1String("adwaita"), Qt::CaseInsensitive)) {
+            instance->m_cornerFrame->setFrameStyle(QFrame::NoFrame);
+        } else {
+            instance->m_cornerFrame->setFrameStyle(Settings::frameStyle());
+        }
     }
 }
 

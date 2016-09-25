@@ -77,7 +77,7 @@ void SingleInstance::readArgs()
     socket->close();
     socket->deleteLater();
 
-    // reconstruct argc argv array
+    // reconstruct argc and argv array
     uint16 argc = BE::toUInt16(argData.get());
     vector<const char *> args;
     args.reserve(argc + 1);
@@ -91,7 +91,7 @@ void SingleInstance::readArgs()
     }
     args.push_back(nullptr);
 
-    emit newInstance(static_cast<int>(argc), args.data());
+    emit newInstance(static_cast<int>(args.size() - 1), args.data());
 }
 
 }

@@ -4,145 +4,145 @@
 <context>
     <name>Data::SyncthingConnection</name>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="170"/>
+        <location filename="../data/syncthingconnection.cpp" line="172"/>
         <source>disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="172"/>
+        <location filename="../data/syncthingconnection.cpp" line="174"/>
         <source>reconnecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="174"/>
+        <location filename="../data/syncthingconnection.cpp" line="176"/>
         <source>connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="176"/>
+        <location filename="../data/syncthingconnection.cpp" line="178"/>
         <source>connected, notifications available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="178"/>
+        <location filename="../data/syncthingconnection.cpp" line="180"/>
         <source>connected, paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="180"/>
+        <location filename="../data/syncthingconnection.cpp" line="182"/>
         <source>connected, synchronizing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="182"/>
+        <location filename="../data/syncthingconnection.cpp" line="184"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="194"/>
-        <location filename="../data/syncthingconnection.cpp" line="274"/>
+        <location filename="../data/syncthingconnection.cpp" line="196"/>
+        <location filename="../data/syncthingconnection.cpp" line="278"/>
         <source>Connection configuration is insufficient.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="554"/>
+        <location filename="../data/syncthingconnection.cpp" line="558"/>
         <source>Unable to parse Syncthing log: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="558"/>
+        <location filename="../data/syncthingconnection.cpp" line="562"/>
         <source>Unable to request system log: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="580"/>
+        <location filename="../data/syncthingconnection.cpp" line="584"/>
         <source>Unable to locate certificate used by Syncthing GUI.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="586"/>
+        <location filename="../data/syncthingconnection.cpp" line="590"/>
         <source>Unable to load certificate used by Syncthing GUI.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="619"/>
-        <location filename="../data/syncthingconnection.cpp" line="721"/>
+        <location filename="../data/syncthingconnection.cpp" line="623"/>
+        <location filename="../data/syncthingconnection.cpp" line="725"/>
         <source>Unable to parse Syncthing config: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="625"/>
-        <location filename="../data/syncthingconnection.cpp" line="727"/>
+        <location filename="../data/syncthingconnection.cpp" line="629"/>
+        <location filename="../data/syncthingconnection.cpp" line="731"/>
         <source>Unable to request Syncthing config: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="802"/>
+        <location filename="../data/syncthingconnection.cpp" line="806"/>
         <source>Unable to parse connections: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="808"/>
+        <location filename="../data/syncthingconnection.cpp" line="812"/>
         <source>Unable to request connections: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="863"/>
+        <location filename="../data/syncthingconnection.cpp" line="867"/>
         <source>Unable to parse directory statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="869"/>
+        <location filename="../data/syncthingconnection.cpp" line="873"/>
         <source>Unable to request directory statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="906"/>
+        <location filename="../data/syncthingconnection.cpp" line="910"/>
         <source>Unable to parse device statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="912"/>
+        <location filename="../data/syncthingconnection.cpp" line="916"/>
         <source>Unable to request device statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="947"/>
+        <location filename="../data/syncthingconnection.cpp" line="951"/>
         <source>Unable to parse errors: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="958"/>
+        <location filename="../data/syncthingconnection.cpp" line="962"/>
         <source>Unable to request errors: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="1009"/>
+        <location filename="../data/syncthingconnection.cpp" line="1013"/>
         <source>Unable to parse Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="1028"/>
+        <location filename="../data/syncthingconnection.cpp" line="1032"/>
         <source>Unable to request Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="1265"/>
+        <location filename="../data/syncthingconnection.cpp" line="1271"/>
         <source>Unable to request rescan: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="1280"/>
+        <location filename="../data/syncthingconnection.cpp" line="1286"/>
         <source>Unable to request pause/resume: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="1295"/>
+        <location filename="../data/syncthingconnection.cpp" line="1301"/>
         <source>Unable to request restart: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/syncthingconnection.cpp" line="525"/>
+        <location filename="../data/syncthingconnection.cpp" line="529"/>
         <source>Unable to request QR-Code: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -478,22 +478,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="314"/>
+        <location filename="../gui/settingsdialog.cpp" line="318"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="316"/>
+        <location filename="../gui/settingsdialog.cpp" line="320"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="318"/>
+        <location filename="../gui/settingsdialog.cpp" line="322"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="405"/>
+        <location filename="../gui/settingsdialog.cpp" line="409"/>
         <source>unable to modify startup entry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -506,72 +506,93 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="22"/>
+        <location filename="../gui/connectionoptionpage.ui" line="25"/>
         <source>Config label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="72"/>
+        <location filename="../gui/connectionoptionpage.ui" line="75"/>
         <source>Add secondary instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="89"/>
+        <location filename="../gui/connectionoptionpage.ui" line="92"/>
         <source>Remove currently selected secondary instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="103"/>
+        <location filename="../gui/connectionoptionpage.ui" line="141"/>
         <source>Syncthing URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="113"/>
+        <location filename="../gui/connectionoptionpage.ui" line="151"/>
         <source>Authentication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="126"/>
+        <location filename="../gui/connectionoptionpage.ui" line="164"/>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="204"/>
+        <location filename="../gui/connectionoptionpage.ui" line="259"/>
         <source>disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="211"/>
+        <location filename="../gui/connectionoptionpage.ui" line="277"/>
+        <source>Poll interval</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/connectionoptionpage.ui" line="299"/>
+        <location filename="../gui/connectionoptionpage.ui" line="326"/>
+        <source> ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/connectionoptionpage.ui" line="266"/>
         <source>Apply connection settings and try to reconnect with the currently selected config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="247"/>
+        <location filename="../gui/connectionoptionpage.ui" line="292"/>
+        <source>Traffic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/connectionoptionpage.ui" line="319"/>
+        <source>Device statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/connectionoptionpage.ui" line="118"/>
         <source>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="257"/>
+        <location filename="../gui/connectionoptionpage.ui" line="208"/>
         <source>HTTPS certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="197"/>
+        <location filename="../gui/connectionoptionpage.ui" line="252"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="160"/>
+        <location filename="../gui/connectionoptionpage.ui" line="198"/>
         <source>API key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="173"/>
+        <location filename="../gui/connectionoptionpage.ui" line="228"/>
         <source>Insert values from local Syncthing configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="143"/>
+        <location filename="../gui/connectionoptionpage.ui" line="181"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
@@ -591,12 +612,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="143"/>
+        <location filename="../gui/settingsdialog.cpp" line="147"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="167"/>
+        <location filename="../gui/settingsdialog.cpp" line="171"/>
         <source>Instance %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -698,13 +719,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="485"/>
+        <location filename="../gui/settingsdialog.cpp" line="489"/>
         <source>Syncthing existed with exit code %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="488"/>
+        <location filename="../gui/settingsdialog.cpp" line="492"/>
         <source>Syncthing crashed with exit code %1
 </source>
         <translation type="unfinished"></translation>
@@ -746,22 +767,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="573"/>
+        <location filename="../gui/settingsdialog.cpp" line="577"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="585"/>
+        <location filename="../gui/settingsdialog.cpp" line="589"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="595"/>
+        <location filename="../gui/settingsdialog.cpp" line="599"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="579"/>
+        <location filename="../gui/settingsdialog.cpp" line="583"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -896,7 +917,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/traywidget.ui" line="230"/>
         <location filename="../gui/traywidget.ui" line="250"/>
-        <location filename="../gui/traywidget.cpp" line="400"/>
+        <location filename="../gui/traywidget.cpp" line="403"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -998,12 +1019,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="348"/>
+        <location filename="../gui/traywidget.cpp" line="351"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="357"/>
+        <location filename="../gui/traywidget.cpp" line="360"/>
         <source>The file &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1035,7 +1056,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../gui/webviewoptionpage.ui" line="14"/>
-        <location filename="../gui/settingsdialog.cpp" line="535"/>
+        <location filename="../gui/settingsdialog.cpp" line="539"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1065,7 +1086,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="537"/>
+        <location filename="../gui/settingsdialog.cpp" line="541"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
@@ -1074,7 +1095,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../application/settings.cpp" line="159"/>
+        <location filename="../application/settings.cpp" line="161"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation type="unfinished"></translation>
     </message>

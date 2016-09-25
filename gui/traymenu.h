@@ -15,7 +15,6 @@ class TrayMenu : public QMenu
 public:
     TrayMenu(TrayIcon *trayIcon, QWidget *parent = nullptr);
     TrayMenu(QWidget *parent = nullptr);
-    ~TrayMenu();
 
     QSize sizeHint() const;
     TrayWidget *widget();

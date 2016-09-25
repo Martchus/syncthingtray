@@ -59,7 +59,7 @@ public slots:
 
 private slots:
     void handleStatusChanged(Data::SyncthingStatus status);
-    void applySettings();
+    static void applySettings();
     void openDir(const Data::SyncthingDir &dir);
     void openItemDir(const Data::SyncthingItemDownloadProgress &item);
     void scanDir(const Data::SyncthingDir &dir);
@@ -76,8 +76,8 @@ private slots:
 private:
     TrayMenu *m_menu;
     std::unique_ptr<Ui::TrayWidget> m_ui;
-    SettingsDialog *m_settingsDlg;
-    Dialogs::AboutDialog *m_aboutDlg;
+    static SettingsDialog *m_settingsDlg;
+    static Dialogs::AboutDialog *m_aboutDlg;
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
     WebViewDialog *m_webViewDlg;
 #endif

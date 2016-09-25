@@ -32,6 +32,8 @@ struct ConnectionSettings {
     QString userName;
     QString password;
     QByteArray apiKey;
+    int trafficPollInterval = 2000;
+    int devStatsPollInterval = 60000;
     QString httpsCertPath;
     QList<QSslError> expectedSslErrors;
     bool loadHttpsCert();

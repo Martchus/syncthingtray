@@ -156,10 +156,14 @@ class SyncthingConnection : public QObject
     Q_PROPERTY(QString syncthingUrl READ syncthingUrl WRITE setSyncthingUrl)
     Q_PROPERTY(QByteArray apiKey READ apiKey WRITE setApiKey)
     Q_PROPERTY(SyncthingStatus status READ status NOTIFY statusChanged)
+    Q_PROPERTY(int trafficPollInterval READ trafficPollInterval WRITE setTrafficPollInterval)
+    Q_PROPERTY(int devStatsPollInterval READ devStatsPollInterval WRITE setDevStatsPollInterval)
     Q_PROPERTY(QString configDir READ configDir NOTIFY configDirChanged)
     Q_PROPERTY(QString myId READ myId NOTIFY myIdChanged)
     Q_PROPERTY(int totalIncomingTraffic READ totalIncomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(int totalOutgoingTraffic READ totalOutgoingTraffic NOTIFY trafficChanged)
+    Q_PROPERTY(double totalIncomingRate READ totalIncomingRate NOTIFY trafficChanged)
+    Q_PROPERTY(double totalOutgoingRate READ totalOutgoingRate NOTIFY trafficChanged)
 
 public:
     explicit SyncthingConnection(const QString &syncthingUrl = QStringLiteral("http://localhost:8080"), const QByteArray &apiKey = QByteArray(), QObject *parent = nullptr);
@@ -175,6 +179,10 @@ public:
     SyncthingStatus status() const;
     QString statusText() const;
     bool isConnected() const;
+    int trafficPollInterval() const;
+    void setTrafficPollInterval(int trafficPollInterval);
+    int devStatsPollInterval() const;
+    void setDevStatsPollInterval(int devStatsPollInterval);
     const QString &configDir() const;
     const QString &myId() const;
     int totalIncomingTraffic() const;
@@ -325,6 +333,8 @@ private:
     bool m_keepPolling;
     bool m_reconnecting;
     int m_lastEventId;
+    int m_trafficPollInterval;
+    int m_devStatsPollInterval;
     QString m_configDir;
     QString m_myId;
     int m_totalIncomingTraffic;
@@ -419,6 +429,42 @@ inline SyncthingStatus SyncthingConnection::status() const
 inline bool SyncthingConnection::isConnected() const
 {
     return m_status != SyncthingStatus::Disconnected && m_status != SyncthingStatus::Reconnecting;
+}
+
+/*!
+ * \brief Returns the interval for polling traffic status (which currently can not be received via event API) in milliseconds.
+ * \remarks Default value is 2000 milliseconds.
+ */
+inline int SyncthingConnection::trafficPollInterval() const
+{
+    return m_trafficPollInterval;
+}
+
+/*!
+ * \brief Sets the interval for polling traffic status (which currently can not be received via event API) in milliseconds.
+ * \remarks Default value is 2000 milliseconds.
+ */
+inline void SyncthingConnection::setTrafficPollInterval(int trafficPollInterval)
+{
+    m_trafficPollInterval = trafficPollInterval;
+}
+
+/*!
+ * \brief Returns the interval for polling device statistics (which currently can not be received via event API) in milliseconds.
+ * \remarks Default value is 60000 milliseconds.
+ */
+inline int SyncthingConnection::devStatsPollInterval() const
+{
+    return m_devStatsPollInterval;
+}
+
+/*!
+ * \brief Sets the interval for polling device statistics (which currently can not be received via event API) in milliseconds.
+ * \remarks Default value is 60000 milliseconds.
+ */
+inline void SyncthingConnection::setDevStatsPollInterval(int devStatsPollInterval)
+{
+    m_devStatsPollInterval = devStatsPollInterval;
 }
 
 /*!

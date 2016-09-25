@@ -25,11 +25,6 @@ TrayMenu::TrayMenu(QWidget *parent) :
     setPlatformMenu(nullptr);
 }
 
-TrayMenu::~TrayMenu()
-{
-
-}
-
 QSize TrayMenu::sizeHint() const
 {
     return Settings::trayMenuSize();

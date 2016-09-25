@@ -10,6 +10,9 @@
     <normaloff>.</normaloff>.</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout">
+   <property name="verticalSpacing">
+    <number>4</number>
+   </property>
    <item row="0" column="0">
     <widget class="QLabel" name="instanceLabel">
      <property name="font">
@@ -97,6 +100,41 @@
      </layout>
     </widget>
    </item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="instanceNoteLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>42</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="Line" name="line1">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
    <item row="3" column="0">
     <widget class="QLabel" name="urlLabel">
      <property name="text">
@@ -164,6 +202,23 @@
    <item row="8" column="1">
     <widget class="Widgets::ClearLineEdit" name="apiKeyLineEdit"/>
    </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="certificateLabel">
+     <property name="text">
+      <string>HTTPS certificate</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="Widgets::PathSelection" name="certPathSelection" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
    <item row="11" column="1">
     <widget class="QPushButton" name="insertFromConfigFilePushButton">
      <property name="styleSheet">
@@ -191,21 +246,21 @@
      </property>
     </widget>
    </item>
-   <item row="13" column="0">
+   <item row="15" column="0">
     <widget class="QLabel" name="statusTextLabel">
      <property name="text">
       <string>Status</string>
      </property>
     </widget>
    </item>
-   <item row="13" column="1">
+   <item row="15" column="1">
     <widget class="QLabel" name="statusLabel">
      <property name="text">
       <string>disconnected</string>
      </property>
     </widget>
    </item>
-   <item row="14" column="1">
+   <item row="18" column="1">
     <widget class="QPushButton" name="connectPushButton">
      <property name="text">
       <string>Apply connection settings and try to reconnect with the currently selected config</string>
@@ -216,57 +271,69 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="Line" name="line1">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLabel" name="instanceNoteLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>42</height>
-      </size>
-     </property>
+   <item row="13" column="0">
+    <widget class="QLabel" name="pollLabel">
      <property name="text">
-      <string>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device.</string>
+      <string>Poll interval</string>
      </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="0">
-    <widget class="QLabel" name="certificateLabel">
-     <property name="text">
-      <string>HTTPS certificate</string>
+     <property name="margin">
+      <number>1</number>
      </property>
     </widget>
    </item>
-   <item row="9" column="1">
-    <widget class="Widgets::PathSelection" name="certPathSelection" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+   <item row="13" column="1">
+    <layout class="QHBoxLayout" name="pollHorizontalLayout">
+     <property name="spacing">
+      <number>10</number>
      </property>
-    </widget>
+     <item>
+      <widget class="QLabel" name="pollTrafficLabel">
+       <property name="text">
+        <string>Traffic</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="pollTrafficSpinBox">
+       <property name="suffix">
+        <string> ms</string>
+       </property>
+       <property name="minimum">
+        <number>100</number>
+       </property>
+       <property name="maximum">
+        <number>999999999</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line3">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="pollDevStatsLabel">
+       <property name="text">
+        <string>Device statistics</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="pollDevStatsSpinBox">
+       <property name="suffix">
+        <string> ms</string>
+       </property>
+       <property name="minimum">
+        <number>100</number>
+       </property>
+       <property name="maximum">
+        <number>999999999</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

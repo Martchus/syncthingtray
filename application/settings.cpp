@@ -154,6 +154,8 @@ void restore()
             connectionSettings->userName = settings.value(QStringLiteral("userName")).toString();
             connectionSettings->password = settings.value(QStringLiteral("password")).toString();
             connectionSettings->apiKey = settings.value(QStringLiteral("apiKey")).toByteArray();
+            connectionSettings->trafficPollInterval = settings.value(QStringLiteral("trafficPollInterval"), connectionSettings->trafficPollInterval).toInt();
+            connectionSettings->devStatsPollInterval = settings.value(QStringLiteral("devStatsPollInterval"), connectionSettings->devStatsPollInterval).toInt();
             connectionSettings->httpsCertPath = settings.value(QStringLiteral("httpsCertPath")).toString();
             if(!connectionSettings->loadHttpsCert()) {
                 QMessageBox::critical(nullptr, QCoreApplication::applicationName(), QCoreApplication::translate("Settings::restore", "Unable to load certificate \"%1\" when restoring settings.").arg(connectionSettings->httpsCertPath));
@@ -208,6 +210,8 @@ void save()
         settings.setValue(QStringLiteral("userName"), connectionSettings->userName);
         settings.setValue(QStringLiteral("password"), connectionSettings->password);
         settings.setValue(QStringLiteral("apiKey"), connectionSettings->apiKey);
+        settings.setValue(QStringLiteral("trafficPollInterval"), connectionSettings->trafficPollInterval);
+        settings.setValue(QStringLiteral("devStatsPollInterval"), connectionSettings->devStatsPollInterval);
         settings.setValue(QStringLiteral("httpsCertPath"), connectionSettings->httpsCertPath);
     }
     settings.endArray();

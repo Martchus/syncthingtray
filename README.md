@@ -70,12 +70,14 @@ The application depends on [c++utilities](https://github.com/Martchus/cpp-utilit
 
 The following Qt 5 modules are requried: core network gui widgets svg webenginewidgets/webkitwidgets
 
-#### Select Qt modules for WebView
+#### Select Qt module for WebView
 * If Qt WebKitWidgets is installed on the system, the tray will link against it. Otherwise it will link against Qt WebEngineWidgets.
 * To force usage of Qt WebKit/Qt WebEngine or to disable both add `-DWEBVIEW_PROVIDER=webkit/webengine/none` to the CMake arguments.
 
-BTW: I still prefer the deprecated Qt WebKit because
-* I currently don't know how to allow a particular self-signed certificate in Qt WebEngine. Currently any self-signed certificate is accepted!
+#### BTW: I still prefer the deprecated Qt WebKit because
+* Currently there is no way to allow a particular self-signed certificate in Qt
+  WebEngine. Currently any self-signed certificate is accepted! See:
+  https://bugreports.qt.io/browse/QTBUG-51176)
 * Qt WebEngine can not be built with mingw-w64.
 * Qt WebEngine is more buggy in my experience.
 * Security issues are not a concern because no other website than the Syncthing web UI is shown.
