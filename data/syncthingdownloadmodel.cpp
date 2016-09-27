@@ -13,7 +13,8 @@ SyncthingDownloadModel::SyncthingDownloadModel(SyncthingConnection &connection, 
     m_connection(connection),
     m_dirs(connection.dirInfo()),
     m_unknownIcon(QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg")))),
-    m_pendingDirs(0)
+    m_pendingDirs(0),
+    m_singleColumnMode(true)
 {
     connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingDownloadModel::newConfig);
     connect(&m_connection, &SyncthingConnection::newDirs, this, &SyncthingDownloadModel::newDirs);
@@ -112,6 +113,8 @@ QVariant SyncthingDownloadModel::data(const QModelIndex &index, int role) const
                         break;
                     case ItemPercentage:
                         return progress.downloadPercentage;
+                    case ItemProgressLabel:
+                        return progress.label;
                     default:
                         ;
                     }
@@ -136,6 +139,8 @@ QVariant SyncthingDownloadModel::data(const QModelIndex &index, int role) const
                 break;
             case ItemPercentage:
                 return dir.downloadPercentage;
+            case ItemProgressLabel:
+                return dir.downloadLabel;
             default:
                 ;
             }
@@ -164,9 +169,9 @@ int SyncthingDownloadModel::rowCount(const QModelIndex &parent) const
 int SyncthingDownloadModel::columnCount(const QModelIndex &parent) const
 {
     if(!parent.isValid()) {
-        return 2; // label/ID, status/progress
+        return singleColumnMode() ? 1 : 2; // label/ID, status/progress
     } else if(!parent.parent().isValid()) {
-        return 2; // file, progress
+        return singleColumnMode() ? 1 : 2; // file, progress
     } else {
         return 0;
     }
@@ -206,6 +211,21 @@ void SyncthingDownloadModel::downloadProgressChanged()
                 endInsertRows();
             }
             ++row;
+        }
+    }
+}
+
+void SyncthingDownloadModel::setSingleColumnMode(bool singleColumnModeEnabled)
+{
+    if(m_singleColumnMode != singleColumnModeEnabled) {
+        if(m_singleColumnMode) {
+            beginInsertColumns(QModelIndex(), 1, 1);
+            m_singleColumnMode = true;
+            endInsertColumns();
+        } else {
+            beginRemoveColumns(QModelIndex(), 1, 1);
+            m_singleColumnMode = false;
+            endRemoveColumns();
         }
     }
 }

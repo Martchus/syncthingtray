@@ -102,7 +102,7 @@ bool SyncthingDir::assignStatus(DirStatus newStatus, DateTime time)
 
 SyncthingItemDownloadProgress::SyncthingItemDownloadProgress(const QString &containingDirPath, const QString &relativeItemPath, const QJsonObject &values) :
     relativePath(relativeItemPath),
-    fileInfo(containingDirPath % QChar('/') % relativeItemPath),
+    fileInfo(containingDirPath % QChar('/') % QString(relativeItemPath).replace(QChar('\\'), QChar('/'))),
     blocksCurrentlyDownloading(values.value(QStringLiteral("Pulling")).toInt()),
     blocksAlreadyDownloaded(values.value(QStringLiteral("Pulled")).toInt()),
     totalNumberOfBlocks(values.value(QStringLiteral("Total")).toInt()),
@@ -681,7 +681,7 @@ void SyncthingConnection::readConfig()
 void SyncthingConnection::readDirs(const QJsonArray &dirs)
 {
     m_dirs.clear();
-    m_dirs.reserve(dirs.size());
+    m_dirs.reserve(static_cast<size_t>(dirs.size()));
     for(const QJsonValue &dirVal : dirs) {
         const QJsonObject dirObj(dirVal.toObject());
         SyncthingDir dirItem;
@@ -712,7 +712,7 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
 void SyncthingConnection::readDevs(const QJsonArray &devs)
 {
     m_devs.clear();
-    m_devs.reserve(devs.size());
+    m_devs.reserve(static_cast<size_t>(devs.size()));
     for(const QJsonValue &devVal: devs) {
         const QJsonObject devObj(devVal.toObject());
         SyncthingDev devItem;
@@ -1121,7 +1121,6 @@ void SyncthingConnection::readStatusChangedEvent(DateTime eventTime, const QJson
 
 /*!
  * \brief Reads results of requestEvents().
- * \remarks TODO
  */
 void SyncthingConnection::readDownloadProgressEvent(DateTime eventTime, const QJsonObject &eventData)
 {

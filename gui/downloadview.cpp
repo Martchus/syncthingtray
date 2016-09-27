@@ -19,7 +19,7 @@ DownloadView::DownloadView(QWidget *parent) :
 {
     header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     header()->hide();
-    setItemDelegateForColumn(1, new DownloadItemDelegate(this));
+    setItemDelegateForColumn(0, new DownloadItemDelegate(this));
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &DownloadView::customContextMenuRequested, this, &DownloadView::showContextMenu);
 }
@@ -30,12 +30,14 @@ void DownloadView::mouseReleaseEvent(QMouseEvent *event)
     if(const SyncthingDownloadModel *dlModel = qobject_cast<SyncthingDownloadModel *>(model())) {
         const QPoint pos(event->pos());
         const QModelIndex clickedIndex(indexAt(event->pos()));
-        if(clickedIndex.isValid() && clickedIndex.column() == 1) {
+        if(clickedIndex.isValid() && clickedIndex.column() == 0) {
             const QRect itemRect(visualRect(clickedIndex));
             if(pos.x() > itemRect.right() - 17) {
                 if(clickedIndex.parent().isValid()) {
-                    if(const SyncthingItemDownloadProgress *progress = dlModel->progressInfo(clickedIndex)) {
-                        emit openItemDir(*progress);
+                    if(pos.y() < itemRect.y() + itemRect.height() / 2) {
+                        if(const SyncthingItemDownloadProgress *progress = dlModel->progressInfo(clickedIndex)) {
+                            emit openItemDir(*progress);
+                        }
                     }
                 } else if(const SyncthingDir *dir = dlModel->dirInfo(clickedIndex)) {
                     emit openDir(*dir);

@@ -17,12 +17,14 @@ class SyncthingDownloadModel : public QAbstractItemModel
 {
     Q_OBJECT
     Q_PROPERTY(unsigned int pendingDownloads READ pendingDownloads NOTIFY pendingDownloadsChanged)
+    Q_PROPERTY(bool singleColumnMode READ singleColumnMode WRITE setSingleColumnMode)
 public:
     explicit SyncthingDownloadModel(SyncthingConnection &connection, QObject *parent = nullptr);
 
     enum SyncthingDownloadModelRole
     {
-        ItemPercentage = Qt::UserRole + 1
+        ItemPercentage = Qt::UserRole + 1,
+        ItemProgressLabel
     };
 
 public Q_SLOTS:
@@ -36,6 +38,8 @@ public Q_SLOTS:
     const SyncthingDir *dirInfo(const QModelIndex &index) const;
     const SyncthingItemDownloadProgress *progressInfo(const QModelIndex &index) const;
     unsigned int pendingDownloads() const;
+    bool singleColumnMode() const;
+    void setSingleColumnMode(bool singleColumnModeEnabled);
 
 Q_SIGNALS:
     void pendingDownloadsChanged(unsigned int pendingDownloads);
@@ -52,11 +56,17 @@ private:
     const QFileIconProvider m_fileIconProvider;
     std::vector<const SyncthingDir *> m_pendingDirs;
     unsigned int m_pendingDownloads;
+    bool m_singleColumnMode;
 };
 
 inline unsigned int SyncthingDownloadModel::pendingDownloads() const
 {
     return m_pendingDownloads;
+}
+
+inline bool SyncthingDownloadModel::singleColumnMode() const
+{
+    return m_singleColumnMode;
 }
 
 } // namespace Data

@@ -36,7 +36,7 @@
                 "BytesTotal": 104792064,
                 "BytesDone": 87883776
             },
-            "dir\\file4": {
+            "directory1\\directory\\directory3\\directory4\\directory5\\directory3\\directory4\\directory5\\file4": {
                 "Total": 80,
                 "Pulling": 2,
                 "CopiedFromOrigin": 0,
