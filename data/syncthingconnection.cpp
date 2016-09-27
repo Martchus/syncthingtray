@@ -40,7 +40,7 @@ QNetworkAccessManager &networkAccessManager()
  * \brief Assigns the status from the specified status string.
  * \returns Returns whether the status has actually changed.
  */
-bool SyncthingDir::assignStatus(const QString &statusStr, DateTime time)
+bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateTime time)
 {
     if(lastStatusUpdate > time) {
         return false;
@@ -124,6 +124,7 @@ SyncthingItemDownloadProgress::SyncthingItemDownloadProgress(const QString &cont
 /*!
  * \class SyncthingConnection
  * \brief The SyncthingConnection class allows Qt applications to access Syncthing.
+ * \remarks All requests are performed asynchronously.
  */
 
 /*!
@@ -282,13 +283,23 @@ void SyncthingConnection::continueReconnecting()
     requestStatus();
 }
 
-void SyncthingConnection::pause(const QString &dev)
+/*!
+ * \brief Requests pausing the device with the specified ID.
+ *
+ * The signal error() is emitted when the request was not successful.
+ */
+void SyncthingConnection::pause(const QString &devId)
 {
     QUrlQuery query;
-    query.addQueryItem(QStringLiteral("device"), dev);
+    query.addQueryItem(QStringLiteral("device"), devId);
     QObject::connect(postData(QStringLiteral("system/pause"), query), &QNetworkReply::finished, this, &SyncthingConnection::readPauseResume);
 }
 
+/*!
+ * \brief Requests pausing all devices.
+ *
+ * The signal error() is emitted when the request was not successful.
+ */
 void SyncthingConnection::pauseAllDevs()
 {
     for(const SyncthingDev &dev : m_devs) {
@@ -296,13 +307,23 @@ void SyncthingConnection::pauseAllDevs()
     }
 }
 
-void SyncthingConnection::resume(const QString &dev)
+/*!
+ * \brief Requests resuming the device with the specified ID.
+ *
+ * The signal error() is emitted when the request was not successful.
+ */
+void SyncthingConnection::resume(const QString &devId)
 {
     QUrlQuery query;
-    query.addQueryItem(QStringLiteral("device"), dev);
+    query.addQueryItem(QStringLiteral("device"), devId);
     QObject::connect(postData(QStringLiteral("system/resume"), query), &QNetworkReply::finished, this, &SyncthingConnection::readPauseResume);
 }
 
+/*!
+ * \brief Requests resuming all devices.
+ *
+ * The signal error() is emitted when the request was not successful.
+ */
 void SyncthingConnection::resumeAllDevs()
 {
     for(const SyncthingDev &dev : m_devs) {
@@ -315,13 +336,18 @@ void SyncthingConnection::resumeAllDevs()
  *
  * The signal error() is emitted when the request was not successful.
  */
-void SyncthingConnection::rescan(const QString &dir)
+void SyncthingConnection::rescan(const QString &dirId)
 {
     QUrlQuery query;
-    query.addQueryItem(QStringLiteral("folder"), dir);
+    query.addQueryItem(QStringLiteral("folder"), dirId);
     QObject::connect(postData(QStringLiteral("db/scan"), query), &QNetworkReply::finished, this, &SyncthingConnection::readRescan);
 }
 
+/*!
+ * \brief Requests rescanning all directories.
+ *
+ * The signal error() is emitted when the request was not successful.
+ */
 void SyncthingConnection::rescanAllDirs()
 {
     for(const SyncthingDir &dir : m_dirs) {
@@ -329,12 +355,20 @@ void SyncthingConnection::rescanAllDirs()
     }
 }
 
+/*!
+ * \brief Requests Syncthing to restart.
+ *
+ * The signal error() is emitted when the request was not successful.
+ */
 void SyncthingConnection::restart()
 {
     QObject::connect(postData(QStringLiteral("system/restart"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readRestart);
 }
 
-void SyncthingConnection::notificationsRead()
+/*!
+ * \brief Considers all notifications as read; hence might trigger a status update.
+ */
+void SyncthingConnection::considerAllNotificationsRead()
 {
     m_unreadNotifications = false;
     setStatus(status());
@@ -375,11 +409,16 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
     return reply;
 }
 
-SyncthingDir *SyncthingConnection::findDirInfo(const QString &dir, int &row)
+/*!
+ * \brief Returns the directory info object for the directory with the specified ID.
+ * \returns Returns a pointer to the object or nullptr if not found.
+ * \remarks The returned object becomes invalid when the newDirs() signal is emitted or the connection is destroyed.
+ */
+SyncthingDir *SyncthingConnection::findDirInfo(const QString &dirId, int &row)
 {
     row = 0;
     for(SyncthingDir &d : m_dirs) {
-        if(d.id == dir) {
+        if(d.id == dirId) {
             return &d;
         }
         ++row;
@@ -387,11 +426,16 @@ SyncthingDir *SyncthingConnection::findDirInfo(const QString &dir, int &row)
     return nullptr; // TODO: dir is unknown, trigger refreshing the config
 }
 
-SyncthingDev *SyncthingConnection::findDevInfo(const QString &dev, int &row)
+/*!
+ * \brief Returns the device info object for the device with the specified ID.
+ * \returns Returns a pointer to the object or nullptr if not found.
+ * \remarks The returned object becomes invalid when the newConfig() signal is emitted or the connection is destroyed.
+ */
+SyncthingDev *SyncthingConnection::findDevInfo(const QString &devId, int &row)
 {
     row = 0;
     for(SyncthingDev &d : m_devs) {
-        if(d.id == dev) {
+        if(d.id == devId) {
             return &d;
         }
         ++row;

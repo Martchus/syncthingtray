@@ -156,6 +156,7 @@ include(WindowsResources)
 include(WebViewProviderConfig)
 include(AppTarget)
 include(ShellCompletion)
+include(Doxygen)
 include(ConfigHeader)
 
 # create desktop file using previously defined meta data

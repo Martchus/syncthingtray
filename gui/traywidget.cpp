@@ -238,7 +238,7 @@ void TrayWidget::showNotifications()
     }
     m_notifications.clear();
     showDialog(dlg);
-    m_connection.notificationsRead();
+    m_connection.considerAllNotificationsRead();
     m_ui->notificationsPushButton->setHidden(true);
 }
 

@@ -201,14 +201,14 @@ public Q_SLOTS:
     void disconnect();
     void reconnect();
     void reconnect(Settings::ConnectionSettings &connectionSettings);
-    void pause(const QString &dev);
+    void pause(const QString &devId);
     void pauseAllDevs();
-    void resume(const QString &dev);
+    void resume(const QString &devId);
     void resumeAllDevs();
-    void rescan(const QString &dir);
+    void rescan(const QString &dirId);
     void rescanAllDirs();
     void restart();
-    void notificationsRead();
+    void considerAllNotificationsRead();
 
 Q_SIGNALS:
     /*!
@@ -322,8 +322,8 @@ private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
-    SyncthingDir *findDirInfo(const QString &dir, int &row);
-    SyncthingDev *findDevInfo(const QString &dev, int &row);
+    SyncthingDir *findDirInfo(const QString &dirId, int &row);
+    SyncthingDev *findDevInfo(const QString &devId, int &row);
 
     QString m_syncthingUrl;
     QByteArray m_apiKey;
@@ -516,7 +516,7 @@ inline double SyncthingConnection::totalOutgoingRate() const
 }
 
 /*!
- * \brief Returns all available directory info.
+ * \brief Returns all available directory information.
  * \remarks The returned object container object is persistent. However, the contained
  *          info objects are invalidated when the newConfig() signal is emitted.
  */
@@ -526,7 +526,7 @@ inline const std::vector<SyncthingDir> &SyncthingConnection::dirInfo() const
 }
 
 /*!
- * \brief Returns all available device info.
+ * \brief Returns all available device information.
  * \remarks The returned object container object is persistent. However, the contained
  *          info objects are invalidated when the newConfig() signal is emitted.
  */

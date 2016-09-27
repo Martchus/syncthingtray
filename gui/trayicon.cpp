@@ -77,7 +77,7 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
 
 void TrayIcon::handleMessageClicked()
 {
-    m_trayMenu.widget()->connection().notificationsRead();
+    m_trayMenu.widget()->connection().considerAllNotificationsRead();
 }
 
 void TrayIcon::showInternalError(const QString &errorMsg)
