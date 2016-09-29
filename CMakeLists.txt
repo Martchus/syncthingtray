@@ -17,6 +17,7 @@ set(META_APP_VERSION ${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_
 # add project files
 set(HEADER_FILES
     data/syncthingconnection.h
+    data/syncthingconnectionsettings.h
     data/syncthingdirectorymodel.h
     data/syncthingdevicemodel.h
     data/syncthingdownloadmodel.h
@@ -26,6 +27,7 @@ set(HEADER_FILES
 )
 set(SRC_FILES
     data/syncthingconnection.cpp
+    data/syncthingconnectionsettings.cpp
     data/syncthingdirectorymodel.cpp
     data/syncthingdevicemodel.cpp
     data/syncthingdownloadmodel.cpp

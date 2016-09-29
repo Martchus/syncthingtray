@@ -30,8 +30,8 @@ private:
     void addConnectionSettings();
     void removeConnectionSettings();
     Data::SyncthingConnection *m_connection;
-    Settings::ConnectionSettings m_primarySettings;
-    std::vector<Settings::ConnectionSettings> m_secondarySettings;
+    Data::SyncthingConnectionSettings m_primarySettings;
+    std::vector<Data::SyncthingConnectionSettings> m_secondarySettings;
     int m_currentIndex;
 END_DECLARE_OPTION_PAGE
 

@@ -297,7 +297,7 @@ void TrayWidget::applySettings()
         const QList<QAction *> connectionActions = instance->m_connectionsActionGroup->actions();
         instance->m_selectedConnection = nullptr;
         for(; connectionIndex < connectionCount; ++connectionIndex) {
-            Settings::ConnectionSettings &connectionSettings = (connectionIndex == 0 ? Settings::primaryConnectionSettings() : Settings::secondaryConnectionSettings()[static_cast<size_t>(connectionIndex - 1)]);
+            SyncthingConnectionSettings &connectionSettings = (connectionIndex == 0 ? Settings::primaryConnectionSettings() : Settings::secondaryConnectionSettings()[static_cast<size_t>(connectionIndex - 1)]);
             if(connectionIndex < connectionActions.size()) {
                 QAction *action = connectionActions.at(connectionIndex);
                 action->setText(connectionSettings.label);

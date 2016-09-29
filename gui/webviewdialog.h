@@ -24,18 +24,18 @@ public:
     ~WebViewDialog();
 
 public slots:
-    void applySettings(const Settings::ConnectionSettings &connectionSettings);
-    const Settings::ConnectionSettings &settings() const;
+    void applySettings(const Data::SyncthingConnectionSettings &connectionSettings);
+    const Data::SyncthingConnectionSettings &settings() const;
 
 protected:
     void closeEvent(QCloseEvent *event);
 
 private:
     WEB_VIEW_PROVIDER *m_view;
-    Settings::ConnectionSettings m_settings;
+    Data::SyncthingConnectionSettings m_settings;
 };
 
-inline const Settings::ConnectionSettings &WebViewDialog::settings() const
+inline const Data::SyncthingConnectionSettings &WebViewDialog::settings() const
 {
     return m_settings;
 }

@@ -1,11 +1,12 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include "../data/syncthingconnectionsettings.h"
+
 #include <c++utilities/conversion/types.h>
 
 #include <QString>
 #include <QByteArray>
-#include <QSslError>
 
 #include <vector>
 
@@ -25,21 +26,8 @@ namespace Settings {
 bool &firstLaunch();
 
 // connection
-struct ConnectionSettings {
-    QString label;
-    QString syncthingUrl;
-    bool authEnabled = false;
-    QString userName;
-    QString password;
-    QByteArray apiKey;
-    int trafficPollInterval = 2000;
-    int devStatsPollInterval = 60000;
-    QString httpsCertPath;
-    QList<QSslError> expectedSslErrors;
-    bool loadHttpsCert();
-};
-ConnectionSettings &primaryConnectionSettings();
-std::vector<ConnectionSettings> &secondaryConnectionSettings();
+Data::SyncthingConnectionSettings &primaryConnectionSettings();
+std::vector<Data::SyncthingConnectionSettings> &secondaryConnectionSettings();
 
 // notifications
 bool &notifyOnDisconnect();
@@ -56,6 +44,7 @@ int &frameStyle();
 bool &launchSynchting();
 QString &syncthingPath();
 QString &syncthingArgs();
+QString syncthingCmd();
 
 // web view
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)

@@ -18,11 +18,9 @@ QT_FORWARD_DECLARE_CLASS(QUrlQuery)
 QT_FORWARD_DECLARE_CLASS(QJsonObject)
 QT_FORWARD_DECLARE_CLASS(QJsonArray)
 
-namespace Settings {
-struct ConnectionSettings;
-}
-
 namespace Data {
+
+struct SyncthingConnectionSettings;
 
 QNetworkAccessManager &networkAccessManager();
 
@@ -200,7 +198,7 @@ public Q_SLOTS:
     void connect();
     void disconnect();
     void reconnect();
-    void reconnect(Settings::ConnectionSettings &connectionSettings);
+    void reconnect(SyncthingConnectionSettings &connectionSettings);
     void pause(const QString &devId);
     void pauseAllDevs();
     void resume(const QString &devId);

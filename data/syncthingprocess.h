@@ -12,15 +12,15 @@ public:
     SyncthingProcess(QObject *parent = nullptr);
 
 public Q_SLOTS:
-    void restartSyncthing();
-    void startSyncthing();
+    void restartSyncthing(const QString &cmd);
+    void startSyncthing(const QString &cmd);
 
 private Q_SLOTS:
     void handleFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void killToRestart();
 
 private:
-    bool m_restarting;
+    QString m_cmd;
 };
 
 SyncthingProcess &syncthingProcess();

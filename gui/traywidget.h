@@ -88,7 +88,7 @@ private:
     Data::SyncthingDownloadModel m_dlModel;
     QMenu *m_connectionsMenu;
     QActionGroup *m_connectionsActionGroup;
-    Settings::ConnectionSettings *m_selectedConnection;
+    Data::SyncthingConnectionSettings *m_selectedConnection;
     std::vector<Data::SyncthingLogEntry> m_notifications;
     static std::vector<TrayWidget *> m_instances;
 };

@@ -110,7 +110,7 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
     bool ok = true;
     if(index != m_currentIndex) {
         if((ok = cacheCurrentSettings(false))) {
-            const ConnectionSettings &connectionSettings = (index == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(index - 1)]);
+            const SyncthingConnectionSettings &connectionSettings = (index == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(index - 1)]);
             ui()->urlLineEdit->setText(connectionSettings.syncthingUrl);
             ui()->authCheckBox->setChecked(connectionSettings.authEnabled);
             ui()->userNameLineEdit->setText(connectionSettings.userName);
@@ -133,7 +133,7 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
 {
     bool ok = true;
     if(m_currentIndex >= 0) {
-        ConnectionSettings &connectionSettings = (m_currentIndex == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(m_currentIndex - 1)]);
+        SyncthingConnectionSettings &connectionSettings = (m_currentIndex == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(m_currentIndex - 1)]);
         connectionSettings.syncthingUrl = ui()->urlLineEdit->text();
         connectionSettings.authEnabled = ui()->authCheckBox->isChecked();
         connectionSettings.userName = ui()->userNameLineEdit->text();
@@ -204,7 +204,7 @@ void ConnectionOptionPage::reset()
         QStringList itemTexts;
         itemTexts.reserve(1 + static_cast<int>(m_secondarySettings.size()));
         itemTexts << m_primarySettings.label;
-        for(const ConnectionSettings &settings : m_secondarySettings) {
+        for(const SyncthingConnectionSettings &settings : m_secondarySettings) {
             itemTexts << settings.label;
         }
         ui()->selectionComboBox->clear();
@@ -505,7 +505,7 @@ void LauncherOptionPage::launch()
             ui()->launchNowPushButton->hide();
             ui()->stopPushButton->show();
             m_kill = false;
-            syncthingProcess().startSyncthing();
+            syncthingProcess().startSyncthing(Settings::syncthingCmd());
         }
     }
 }

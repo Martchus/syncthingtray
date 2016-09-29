@@ -3,6 +3,7 @@
 #include <qtutilities/settingsdialog/qtsettings.h>
 
 #include <QString>
+#include <QStringBuilder>
 #include <QByteArray>
 #include <QApplication>
 #include <QSettings>
@@ -12,7 +13,7 @@
 #include <QMessageBox>
 
 using namespace std;
-using namespace Media;
+using namespace Data;
 
 namespace Settings {
 
@@ -23,15 +24,15 @@ bool &firstLaunch()
 }
 
 // connection
-ConnectionSettings &primaryConnectionSettings()
+SyncthingConnectionSettings &primaryConnectionSettings()
 {
-    static ConnectionSettings v;
+    static SyncthingConnectionSettings v;
     return v;
 }
 
-std::vector<ConnectionSettings> &secondaryConnectionSettings()
+std::vector<SyncthingConnectionSettings> &secondaryConnectionSettings()
 {
-    static vector<ConnectionSettings> v;
+    static vector<SyncthingConnectionSettings> v;
     return v;
 }
 
@@ -94,6 +95,10 @@ QString &syncthingArgs()
     static QString v;
     return v;
 }
+QString syncthingCmd()
+{
+    return syncthingPath() % QChar(' ') % syncthingArgs();
+}
 
 // web view
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
@@ -137,7 +142,7 @@ void restore()
         secondaryConnectionSettings().clear();
         secondaryConnectionSettings().reserve(static_cast<size_t>(connectionCount));
         for(int i = 0; i < connectionCount; ++i) {
-            ConnectionSettings *connectionSettings;
+            SyncthingConnectionSettings *connectionSettings;
             if(i == 0) {
                 connectionSettings = &primaryConnectionSettings();
             } else {
@@ -202,7 +207,7 @@ void save()
     const int connectionCount = static_cast<int>(1 + secondaryConnectionSettings().size());
     settings.beginWriteArray(QStringLiteral("connections"), connectionCount);
     for(int i = 0; i < connectionCount; ++i) {
-        const ConnectionSettings *connectionSettings = (i == 0 ? &primaryConnectionSettings() : &secondaryConnectionSettings()[static_cast<size_t>(i - 1)]);
+        const SyncthingConnectionSettings *connectionSettings = (i == 0 ? &primaryConnectionSettings() : &secondaryConnectionSettings()[static_cast<size_t>(i - 1)]);
         settings.setArrayIndex(i);
         settings.setValue(QStringLiteral("label"), connectionSettings->label);
         settings.setValue(QStringLiteral("syncthingUrl"), connectionSettings->syncthingUrl);
@@ -241,23 +246,6 @@ void save()
 #endif
 
     qtSettings().save(settings);
-}
-
-bool ConnectionSettings::loadHttpsCert()
-{
-    if(!httpsCertPath.isEmpty()) {
-        const QList<QSslCertificate> cert = QSslCertificate::fromPath(httpsCertPath);
-        if(cert.isEmpty()) {
-            return false;
-        }
-        expectedSslErrors.clear();
-        expectedSslErrors.reserve(4);
-        expectedSslErrors << QSslError(QSslError::UnableToGetLocalIssuerCertificate, cert.at(0));
-        expectedSslErrors << QSslError(QSslError::UnableToVerifyFirstCertificate, cert.at(0));
-        expectedSslErrors << QSslError(QSslError::SelfSignedCertificate, cert.at(0));
-        expectedSslErrors << QSslError(QSslError::HostNameMismatch, cert.at(0));
-    }
-    return true;
 }
 
 }

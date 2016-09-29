@@ -1,7 +1,6 @@
 #include "./syncthingconnection.h"
 #include "./syncthingconfig.h"
-
-#include "../application/settings.h"
+#include "./syncthingconnectionsettings.h"
 
 #include <c++utilities/conversion/conversionexception.h>
 #include <c++utilities/conversion/stringconversion.h>
@@ -231,7 +230,7 @@ void SyncthingConnection::reconnect()
  * \brief Applies the specifies configuration and tries to reconnect via reconnect().
  * \remarks The expected SSL errors of the specified configuration are updated accordingly.
  */
-void SyncthingConnection::reconnect(Settings::ConnectionSettings &connectionSettings)
+void SyncthingConnection::reconnect(SyncthingConnectionSettings &connectionSettings)
 {
     setSyncthingUrl(connectionSettings.syncthingUrl);
     setApiKey(connectionSettings.apiKey);

@@ -31,7 +31,7 @@ int initSyncthingTray(bool windowed, bool waitForTray)
 {
     if(windowed) {
         if(Settings::launchSynchting()) {
-            syncthingProcess().startSyncthing();
+            syncthingProcess().startSyncthing(Settings::syncthingCmd());
         }
         auto *trayWidget = new TrayWidget;
         trayWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -40,7 +40,7 @@ int initSyncthingTray(bool windowed, bool waitForTray)
 #ifndef QT_NO_SYSTEMTRAYICON
         if(QSystemTrayIcon::isSystemTrayAvailable() || waitForTray) {
             if(Settings::launchSynchting()) {
-                syncthingProcess().startSyncthing();
+                syncthingProcess().startSyncthing(Settings::syncthingCmd());
             }
             auto *trayIcon = new TrayIcon;
             trayIcon->show();

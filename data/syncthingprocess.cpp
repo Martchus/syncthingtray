@@ -1,36 +1,36 @@
 #include "./syncthingprocess.h"
 
-#include "../application/settings.h"
-
 #include <QTimer>
-#include <QStringBuilder>
 
 namespace Data {
 
 SyncthingProcess::SyncthingProcess(QObject *parent) :
-    QProcess(parent),
-    m_restarting(false)
+    QProcess(parent)
 {
     setProcessChannelMode(QProcess::MergedChannels);
     connect(this, static_cast<void(SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this, &SyncthingProcess::handleFinished);
 }
 
-void SyncthingProcess::restartSyncthing()
+void SyncthingProcess::restartSyncthing(const QString &cmd)
 {
     if(state() == QProcess::Running) {
-        m_restarting = true;
+        m_cmd = cmd;
         // give Syncthing 5 seconds to terminate, otherwise kill it
         QTimer::singleShot(5000, this, SLOT(killToRestart()));
         terminate();
     } else {
-        startSyncthing();
+        startSyncthing(cmd);
     }
 }
 
-void SyncthingProcess::startSyncthing()
+void SyncthingProcess::startSyncthing(const QString &cmd)
 {
     if(state() == QProcess::NotRunning) {
-        start(Settings::syncthingPath() % QChar(' ') % Settings::syncthingArgs(), QProcess::ReadOnly);
+        if(cmd.isEmpty()) {
+            start(QProcess::ReadOnly);
+        } else {
+            start(cmd, QProcess::ReadOnly);
+        }
     }
 }
 
@@ -38,15 +38,15 @@ void SyncthingProcess::handleFinished(int exitCode, QProcess::ExitStatus exitSta
 {
     Q_UNUSED(exitCode)
     Q_UNUSED(exitStatus)
-    if(m_restarting) {
-        m_restarting = false;
-        startSyncthing();
+    if(!m_cmd.isEmpty()) {
+        startSyncthing(m_cmd);
+        m_cmd.clear();
     }
 }
 
 void SyncthingProcess::killToRestart()
 {
-    if(m_restarting) {
+    if(!m_cmd.isEmpty()) {
         kill();
     }
 }
