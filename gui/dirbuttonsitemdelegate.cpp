@@ -41,7 +41,7 @@ void DirButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         QTextOption textOption;
         textOption.setAlignment(opt.displayAlignment);
         painter->setFont(opt.font);
-        painter->setPen(opt.palette.color(QPalette::Text));
+        painter->setPen(opt.palette.color(opt.state & QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
         painter->drawText(textRect, displayText(index.data(Qt::DisplayRole), option.locale), textOption);
 
         // draw buttons

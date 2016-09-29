@@ -47,15 +47,12 @@ void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         QTextOption textOption;
         textOption.setAlignment(opt.displayAlignment);
         painter->setFont(opt.font);
-        painter->setPen(opt.palette.color(QPalette::Text));
+        painter->setPen(opt.palette.color(opt.state & QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
         painter->drawText(textRect, displayText(index.data(Qt::DisplayRole), option.locale), textOption);
 
         // draw buttons
         const int buttonY = option.rect.y() + centerObj(option.rect.height(), 16);
-        //painter->drawPixmap(option.rect.right() - 34, buttonY, 16, 16, m_refreshIcon);
-        //if(!index.data(SyncthingDeviceModel::IsOwnDevice).toBool()) {
         painter->drawPixmap(option.rect.right() - 16, buttonY, 16, 16, index.data(SyncthingDeviceModel::DevicePaused).toBool() ? m_resumeIcon : m_pauseIcon);
-        //}
     }
 
 }
