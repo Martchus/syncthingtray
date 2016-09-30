@@ -36,23 +36,22 @@ support
 The tray is still under development; the following features are planned:
 * Show recently processed items
 * Improve notification handling
+* Create simple command line application
 * Create Plasmoid for Plasma 5 desktop
-  * Outsource backend to extra library so it can be shared by regular tray menu
-    and Plasmoid
 
 ## Screenshots
 
 ### Under Openbox/Tint2
-![Openbox/Tint2](/resources/screenshots/tint2.png?raw=true)
+![Openbox/Tint2](/tray/resources/screenshots/tint2.png?raw=true)
 
 ### Under Plasma 5 (dark color theme)
-![Plasma 5](/resources/screenshots/plasma.png?raw=true)
+![Plasma 5](/tray/resources/screenshots/plasma.png?raw=true)
 
 ### Settings dialog (dark color theme)
-![Settings dialog](/resources/screenshots/settings.png?raw=true)
+![Settings dialog](/tray/resources/screenshots/settings.png?raw=true)
 
 ### Web view (dark color theme)
-![Web view](/resources/screenshots/webview.png?raw=true)
+![Web view](/tray/resources/screenshots/webview.png?raw=true)
 
 ## Hotkey for Web UI
 To create a hotkey for the web UI, you can use the same approach as for any other
@@ -66,9 +65,29 @@ separate [repository](https://github.com/Martchus/PKGBUILDs). For binaries check
 [website](http://martchus.no-ip.biz/website/page.php?name=programming).
 
 ## Build instructions
-The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and [qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries. For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities).
+The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and [qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries. For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities). For building this straight, see the next section.
 
 The following Qt 5 modules are requried: core network gui widgets svg webenginewidgets/webkitwidgets
+
+#### Building this straight
+0. Install (preferably the latest version of) g++ or clang, the required Qt 5 modules and CMake.
+1. Get the sources. For the lastest version from Git clone the following repositories:
+   ```
+   cd $SOURCES
+   git clone https://github.com/Martchus/cpp-utilities.git
+   git clone https://github.com/Martchus/qtutilities.git
+   git glone https://github.com/Martchus/syncthingtray.git
+   git clone https://github.com/Martchus/subdirs.git
+   ```
+2. Build and install everything in one step:
+   ```
+   cd $BUILD_DIR
+   cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX="/install/prefix" \
+    $SOURCES/subdirs/syncthingtray
+   make install -j$(nproc)
+   ```
 
 #### Select Qt module for WebView
 * If Qt WebKitWidgets is installed on the system, the tray will link against it. Otherwise it will link against Qt WebEngineWidgets.
@@ -77,7 +96,9 @@ The following Qt 5 modules are requried: core network gui widgets svg webenginew
 #### BTW: I still prefer the deprecated Qt WebKit because
 * Currently there is no way to allow a particular self-signed certificate in Qt
   WebEngine. Currently any self-signed certificate is accepted! See:
-  https://bugreports.qt.io/browse/QTBUG-51176)
+  https://bugreports.qt.io/browse/QTBUG-51176
 * Qt WebEngine can not be built with mingw-w64.
 * Qt WebEngine is more buggy in my experience.
-* Security issues are not a concern because no other website than the Syncthing web UI is shown.
+* Security issues are not a concern because no other website than the
+  Syncthing web UI is shown. Any external links will be opened in the
+  regular web browser anyways.

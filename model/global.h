@@ -1,0 +1,17 @@
+// Created via CMake from template global.h.in
+// WARNING! Any changes to this file will be overwritten by the next CMake run!
+
+#ifndef LIB_SYNCTHING_MODEL_GLOBAL
+#define LIB_SYNCTHING_MODEL_GLOBAL
+
+#include <c++utilities/application/global.h>
+
+#ifdef LIB_SYNCTHING_MODEL_STATIC
+# define LIB_SYNCTHING_MODEL_EXPORT
+# define LIB_SYNCTHING_MODEL_IMPORT
+#else
+# define LIB_SYNCTHING_MODEL_EXPORT LIB_EXPORT
+# define LIB_SYNCTHING_MODEL_IMPORT LIB_IMPORT
+#endif
+
+#endif // LIB_SYNCTHING_MODEL_GLOBAL
