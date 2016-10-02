@@ -25,7 +25,7 @@ private:
     QString m_cmd;
 };
 
-SyncthingProcess &syncthingProcess();
+SyncthingProcess LIB_SYNCTHING_CONNECTOR_EXPORT &syncthingProcess();
 
 } // namespace Data
 

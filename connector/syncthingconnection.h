@@ -24,7 +24,7 @@ namespace Data {
 
 struct SyncthingConnectionSettings;
 
-QNetworkAccessManager &networkAccessManager();
+QNetworkAccessManager LIB_SYNCTHING_CONNECTOR_EXPORT &networkAccessManager();
 
 enum class SyncthingStatus
 {

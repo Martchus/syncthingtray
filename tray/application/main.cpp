@@ -118,7 +118,7 @@ int runApplication(int argc, const char *const *argv)
                 return res;
             } else {
                 if(!TrayWidget::instances().empty() && showWebUi.isPresent()) {
-                    // if --webui is present don't create a new tray icon, just show the web UI one of the present ones
+                    // if --webui is present don't create a new tray icon, just show the web UI of the present one
                     TrayWidget::instances().front()->showWebUi();
                 } else {
                     return initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent());

@@ -27,9 +27,10 @@ set(SRC_FILES
 find_package(c++utilities 4.0.0 REQUIRED)
 use_cpp_utilities()
 
-# find qtutilities (only header used)
+# find qtutilities (only headers and CMake modules used)
 find_package(qtutilities 5.0.0 REQUIRED)
 include_directories(BEFORE SYSTEM ${QT_UTILITIES_INCLUDE_DIRS})
+list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
 
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES Network)

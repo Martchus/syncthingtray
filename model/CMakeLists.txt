@@ -23,6 +23,10 @@ set(SRC_FILES
 find_package(c++utilities 4.0.0 REQUIRED)
 use_cpp_utilities()
 
+# find qtutilities (only CMake modules used)
+find_package(qtutilities 5.0.0 REQUIRED)
+list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
+
 # find backend libraries
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector()
