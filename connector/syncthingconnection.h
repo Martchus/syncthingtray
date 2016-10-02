@@ -212,6 +212,7 @@ public Q_SLOTS:
     void rescan(const QString &dirId);
     void rescanAllDirs();
     void restart();
+    void shutdown();
     void considerAllNotificationsRead();
 
 Q_SIGNALS:
@@ -232,6 +233,7 @@ Q_SIGNALS:
     void pauseTriggered(const QString &devId);
     void resumeTriggered(const QString &devId);
     void restartTriggered();
+    void shutdownTriggered();
 
 private Q_SLOTS:
     void requestConfig();
@@ -262,6 +264,7 @@ private Q_SLOTS:
     void readRescan();
     void readPauseResume();
     void readRestart();
+    void readShutdown();
 
     void continueConnecting();
     void continueReconnecting();

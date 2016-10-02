@@ -34,6 +34,7 @@ Application::Application() :
     // setup argument callbacks
     m_args.status.setCallback(bind(&Application::printStatus, this, _1));
     m_args.log.setCallback(bind(&Application::requestLog, this, _1));
+    m_args.stop.setCallback(bind(&Application::requestShutdown, this, _1));
     m_args.restart.setCallback(bind(&Application::requestRestart, this, _1));
     m_args.rescan.setCallback(bind(&Application::requestRescan, this, _1));
     m_args.rescanAll.setCallback(bind(&Application::requestRescanAll, this, _1));
@@ -165,6 +166,14 @@ void Application::requestLog(const ArgumentOccurrence &)
 {
     m_connection.requestLog(bind(&Application::printLog, this, _1));
     cerr << "Request log from " << m_settings.syncthingUrl.toLocal8Bit().data() << " ...";
+    cerr.flush();
+}
+
+void Application::requestShutdown(const ArgumentOccurrence &)
+{
+    connect(&m_connection, &SyncthingConnection::shutdownTriggered, &QCoreApplication::quit);
+    m_connection.shutdown();
+    cerr << "Request shutdown " << m_settings.syncthingUrl.toLocal8Bit().data() << " ...";
     cerr.flush();
 }
 

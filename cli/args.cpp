@@ -6,6 +6,7 @@ Args::Args() :
     help(parser),
     status("status", 's', "shows the status"),
     log("log", 'l', "shows the Syncthing log"),
+    stop("stop", '\0', "stops Syncthing"),
     restart("restart", '\0', "restarts Syncthing"),
     rescan("rescan", 'r', "rescans the specified directories"),
     rescanAll("rescan-all", '\0', "rescans all directories"),
@@ -31,8 +32,7 @@ Args::Args() :
     resume.setValueNames({"dev ID"});
     resume.setRequiredValueCount(-1);
 
-    parser.setMainArguments({&status, &log, &restart, &rescan, &rescanAll, &pause, &pauseAll,
-                             &resume, &resumeAll,
+    parser.setMainArguments({&status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &pauseAll, &resume, &resumeAll,
                              &configFile, &apiKey, &url, &credentials, &certificate, &help});
 
     // allow setting default values via environment

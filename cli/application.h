@@ -27,6 +27,7 @@ private slots:
 
 private:
     void requestLog(const ArgumentOccurrence &);
+    void requestShutdown(const ArgumentOccurrence &);
     void requestRestart(const ArgumentOccurrence &);
     void requestRescan(const ArgumentOccurrence &occurrence);
     void requestRescanAll(const ArgumentOccurrence &);

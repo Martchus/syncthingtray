@@ -360,6 +360,16 @@ void SyncthingConnection::restart()
 }
 
 /*!
+ * \brief Requests Syncthing to exit and not restart.
+ *
+ * The signal error() is emitted when the request was not successful.
+ */
+void SyncthingConnection::shutdown()
+{
+    QObject::connect(postData(QStringLiteral("system/shutdown"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readShutdown);
+}
+
+/*!
  * \brief Considers all notifications as read; hence might trigger a status update.
  */
 void SyncthingConnection::considerAllNotificationsRead()
@@ -1393,6 +1403,22 @@ void SyncthingConnection::readRestart()
         break;
     default:
         emit error(tr("Unable to request restart: ") + reply->errorString());
+    }
+}
+
+/*!
+ * \brief Reads results of shutdown().
+ */
+void SyncthingConnection::readShutdown()
+{
+    auto *reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+    switch(reply->error()) {
+    case QNetworkReply::NoError:
+        emit shutdownTriggered();
+        break;
+    default:
+        emit error(tr("Unable to request shutdown: ") + reply->errorString());
     }
 }
 
