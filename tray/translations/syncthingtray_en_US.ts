@@ -4,78 +4,103 @@
 <context>
     <name>QtGui::AppearanceOptionPage</name>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="14"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="6"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="27"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="19"/>
         <source>Menu size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="34"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="26"/>
         <source>Optional GUI elements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="41"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="33"/>
         <source>Traffic statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="69"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="61"/>
         <source> x </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="92"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="84"/>
         <source> px</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="104"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="96"/>
         <source>Frame shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="111"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="103"/>
         <source>Frame shadow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="119"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="111"/>
         <source>No frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="124"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="116"/>
         <source>Box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="129"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="121"/>
         <source>Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="134"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="126"/>
         <source>Styled panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="143"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="135"/>
         <source>Plain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="148"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="140"/>
         <source>Raised</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/appearanceoptionpage.ui" line="153"/>
+        <location filename="../gui/appearanceoptionpage.ui" line="145"/>
         <source>Sunken</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/appearanceoptionpage.ui" line="153"/>
+        <source>Tab position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/appearanceoptionpage.ui" line="161"/>
+        <source>Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/appearanceoptionpage.ui" line="166"/>
+        <source>Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/appearanceoptionpage.ui" line="171"/>
+        <source>Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/appearanceoptionpage.ui" line="176"/>
+        <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -92,22 +117,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="318"/>
+        <location filename="../gui/settingsdialog.cpp" line="320"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="320"/>
+        <location filename="../gui/settingsdialog.cpp" line="322"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="322"/>
+        <location filename="../gui/settingsdialog.cpp" line="324"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="409"/>
+        <location filename="../gui/settingsdialog.cpp" line="411"/>
         <source>unable to modify startup entry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -333,13 +358,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="489"/>
+        <location filename="../gui/settingsdialog.cpp" line="491"/>
         <source>Syncthing existed with exit code %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="492"/>
+        <location filename="../gui/settingsdialog.cpp" line="494"/>
         <source>Syncthing crashed with exit code %1
 </source>
         <translation type="unfinished"></translation>
@@ -381,22 +406,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="577"/>
+        <location filename="../gui/settingsdialog.cpp" line="579"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="589"/>
+        <location filename="../gui/settingsdialog.cpp" line="591"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="599"/>
+        <location filename="../gui/settingsdialog.cpp" line="601"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="583"/>
+        <location filename="../gui/settingsdialog.cpp" line="585"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -531,7 +556,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/traywidget.ui" line="230"/>
         <location filename="../gui/traywidget.ui" line="250"/>
-        <location filename="../gui/traywidget.cpp" line="406"/>
+        <location filename="../gui/traywidget.cpp" line="410"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -633,12 +658,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="354"/>
+        <location filename="../gui/traywidget.cpp" line="358"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="363"/>
+        <location filename="../gui/traywidget.cpp" line="367"/>
         <source>The file &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -670,7 +695,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../gui/webviewoptionpage.ui" line="14"/>
-        <location filename="../gui/settingsdialog.cpp" line="539"/>
+        <location filename="../gui/settingsdialog.cpp" line="541"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -700,7 +725,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="541"/>
+        <location filename="../gui/settingsdialog.cpp" line="543"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
@@ -709,7 +734,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../application/settings.cpp" line="166"/>
+        <location filename="../application/settings.cpp" line="172"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -717,22 +742,22 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="50"/>
+        <location filename="../application/main.cpp" line="51"/>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="51"/>
+        <location filename="../application/main.cpp" line="52"/>
         <source>Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="56"/>
+        <location filename="../application/main.cpp" line="57"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="60"/>
+        <location filename="../application/main.cpp" line="61"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation type="unfinished"></translation>
     </message>

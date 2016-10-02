@@ -333,6 +333,7 @@ void TrayWidget::applySettings()
 
         // update visual appearance
         instance->m_ui->trafficFormWidget->setVisible(Settings::showTraffic());
+        instance->m_ui->trafficIconLabel->setVisible(Settings::showTraffic());
         if(Settings::showTraffic()) {
             instance->updateTraffic();
         }
@@ -342,6 +343,9 @@ void TrayWidget::applySettings()
             instance->m_cornerFrame->setFrameStyle(QFrame::NoFrame);
         } else {
             instance->m_cornerFrame->setFrameStyle(Settings::frameStyle());
+        }
+        if(Settings::tabPosition() >= QTabWidget::North && Settings::tabPosition() <= QTabWidget::East) {
+            instance->m_ui->tabWidget->setTabPosition(static_cast<QTabWidget::TabPosition>(Settings::tabPosition()));
         }
     }
 }

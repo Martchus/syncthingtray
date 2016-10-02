@@ -39,6 +39,7 @@ bool &showSyncthingNotifications();
 bool &showTraffic();
 QSize &trayMenuSize();
 int &frameStyle();
+int &tabPosition();
 
 // autostart/launcher
 bool &launchSynchting();

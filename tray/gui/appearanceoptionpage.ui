@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>QtGui::AppearanceOptionPage</class>
  <widget class="QWidget" name="QtGui::AppearanceOptionPage">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>422</width>
-    <height>149</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Appearance</string>
   </property>
@@ -151,6 +143,37 @@
      <item>
       <property name="text">
        <string>Sunken</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="tabPosLabel">
+     <property name="text">
+      <string>Tab position</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QComboBox" name="tabPosComboBox">
+     <item>
+      <property name="text">
+       <string>Top</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Bottom</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Left</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Right</string>
       </property>
      </item>
     </widget>

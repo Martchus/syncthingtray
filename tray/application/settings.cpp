@@ -11,6 +11,7 @@
 #include <QSslCertificate>
 #include <QSslError>
 #include <QMessageBox>
+#include <QTabWidget>
 
 using namespace std;
 using namespace Data;
@@ -72,6 +73,11 @@ QSize &trayMenuSize()
 int &frameStyle()
 {
     static int v = QFrame::StyledPanel | QFrame::Sunken;
+    return v;
+}
+int &tabPosition()
+{
+    static int v = QTabWidget::South;
     return v;
 }
 
@@ -179,6 +185,7 @@ void restore()
     showTraffic() = settings.value(QStringLiteral("showTraffic"), showTraffic()).toBool();
     trayMenuSize() = settings.value(QStringLiteral("trayMenuSize"), trayMenuSize()).toSize();
     frameStyle() = settings.value(QStringLiteral("frameStyle"), frameStyle()).toInt();
+    tabPosition() = settings.value(QStringLiteral("tabPos"), tabPosition()).toInt();
     settings.endGroup();
 
     settings.beginGroup(QStringLiteral("startup"));
@@ -228,6 +235,7 @@ void save()
     settings.setValue(QStringLiteral("showTraffic"), showTraffic());
     settings.setValue(QStringLiteral("trayMenuSize"), trayMenuSize());
     settings.setValue(QStringLiteral("frameStyle"), frameStyle());
+    settings.setValue(QStringLiteral("tabPos"), tabPosition());
     settings.endGroup();
 
     settings.beginGroup(QStringLiteral("startup"));

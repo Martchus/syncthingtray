@@ -275,6 +275,7 @@ bool AppearanceOptionPage::apply()
         default: style |= QFrame::Sunken;
         }
         frameStyle() = style;
+        tabPosition() = ui()->tabPosComboBox->currentIndex();
     }
     return true;
 }
@@ -299,6 +300,7 @@ void AppearanceOptionPage::reset()
         default: index = 2;
         }
         ui()->frameShadowComboBox->setCurrentIndex(index);
+        ui()->tabPosComboBox->setCurrentIndex(tabPosition());
     }
 }
 
