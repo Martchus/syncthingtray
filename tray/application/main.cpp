@@ -18,6 +18,7 @@
 #include <qtutilities/settingsdialog/qtsettings.h>
 
 #include <QApplication>
+#include <QNetworkAccessManager>
 #include <QMessageBox>
 
 #include <iostream>
@@ -94,6 +95,7 @@ int runApplication(int argc, const char *const *argv)
                 QApplication application(argc, const_cast<char **>(argv));
                 QGuiApplication::setQuitOnLastWindowClosed(false);
                 SingleInstance singleInstance(argc, argv);
+                networkAccessManager().setParent(&singleInstance);
                 QObject::connect(&singleInstance, &SingleInstance::newInstance, &runApplication);
 
                 Settings::restore();
@@ -125,7 +127,8 @@ int runApplication(int argc, const char *const *argv)
         }
     } catch(const Failure &ex) {
         CMD_UTILS_START_CONSOLE;
-        cout << "Unable to parse arguments. " << ex.what() << "\nSee --help for available commands." << endl;
+        cerr << "Unable to parse arguments. " << ex.what() << "\nSee --help for available commands." << endl;
+        return 1;
     }
 
     return 0;

@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 # metadata
 set(META_PROJECT_NAME syncthingconnector)
 set(META_PROJECT_TYPE library)
+set(META_APP_NAME "Connection backend of Syncthing Tray")
 set(META_APP_DESCRIPTION "Connection backend of Syncthing Tray")
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING_CONNECTOR)
 

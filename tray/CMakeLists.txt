@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 # metadata
 set(META_PROJECT_TYPE application)
 set(META_GUI_OPTIONAL false)
+set(META_APP_NAME "Syncthing Tray")
 
 # add project files
 set(WIDGETS_HEADER_FILES

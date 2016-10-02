@@ -194,9 +194,13 @@ public:
     QMetaObject::Connection requestQrCode(const QString &text, std::function<void (const QByteArray &)> callback);
     QMetaObject::Connection requestLog(std::function<void (const std::vector<SyncthingLogEntry> &)> callback);
     const QList<QSslError> &expectedSslErrors();
+    SyncthingDir *findDirInfo(const QString &dirId, int &row);
+    SyncthingDev *findDevInfo(const QString &devId, int &row);
+    SyncthingDev *findDevInfoByName(const QString &devName, int &row);
 
 public Q_SLOTS:
     void loadSelfSignedCertificate();
+    void applySettings(SyncthingConnectionSettings &connectionSettings);
     void connect();
     void disconnect();
     void reconnect();
@@ -211,77 +215,23 @@ public Q_SLOTS:
     void considerAllNotificationsRead();
 
 Q_SIGNALS:
-    /*!
-     * \brief Indicates new configuration (dirs, devs, ...) is available.
-     * \remarks
-     * - Configuration is requested automatically when connecting.
-     * - Previous directories (and directory info objects!) are invalidated.
-     * - Previous devices (and device info objects!) are invalidated.
-     */
     void newConfig(const QJsonObject &config);
-
-    /*!
-     * \brief Indicates new directories are available.
-     * \remarks Always emitted after newConfig() as soon as new directory info objects become available.
-     */
     void newDirs(const std::vector<SyncthingDir> &dirs);
-
-    /*!
-     * \brief Indicates new devices are available.
-     * \remarks Always emitted after newConfig() as soon as new device info objects become available.
-     */
     void newDevices(const std::vector<SyncthingDev> &devs);
-
-    /*!
-     * \brief Indicates new events (dir status changed, ...) are available.
-     * \remarks New events are automatically polled when connected.
-     */
     void newEvents(const QJsonArray &events);
-
-    /*!
-     * \brief Indicates the status of the specified \a dir changed.
-     */
     void dirStatusChanged(const SyncthingDir &dir, int index);
-
-    /*!
-     * \brief Indicates the status of the specified \a dev changed.
-     */
     void devStatusChanged(const SyncthingDev &dev, int index);
-
-    /*!
-     * \brief Indicates the download progress changed.
-     */
     void downloadProgressChanged();
-
-    /*!
-     * \brief Indicates a new Syncthing notification is available.
-     */
     void newNotification(ChronoUtilities::DateTime when, const QString &message);
-
-    /*!
-     * \brief Indicates a request (for configuration, events, ...) failed.
-     */
     void error(const QString &errorMessage);
-
-    /*!
-     * \brief Indicates the status of the connection changed.
-     */
     void statusChanged(SyncthingStatus newStatus);
-
-    /*!
-     * \brief Indicates the Syncthing home/configuration directory changed.
-     */
     void configDirChanged(const QString &newConfigDir);
-
-    /*!
-     * \brief Indicates ID of the own Syncthing device changed.
-     */
     void myIdChanged(const QString &myNewId);
-
-    /*!
-     * \brief Indicates totalIncomingTraffic() or totalOutgoingTraffic() has changed.
-     */
     void trafficChanged(int totalIncomingTraffic, int totalOutgoingTraffic);
+    void rescanTriggered(const QString &dirId);
+    void pauseTriggered(const QString &devId);
+    void resumeTriggered(const QString &devId);
+    void restartTriggered();
 
 private Q_SLOTS:
     void requestConfig();
@@ -322,8 +272,6 @@ private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
-    SyncthingDir *findDirInfo(const QString &dirId, int &row);
-    SyncthingDev *findDevInfo(const QString &devId, int &row);
 
     QString m_syncthingUrl;
     QByteArray m_apiKey;
@@ -536,8 +484,8 @@ inline const std::vector<SyncthingDev> &SyncthingConnection::devInfo() const
 }
 
 /*!
- * \brief Returns a list of all expected certificate errors.
- * \remarks This list is shared by all instances and updated via loadSelfSignedCertificate().
+ * \brief Returns a list of all expected certificate errors. This is meant to allow self-signed certificates.
+ * \remarks This list is updated via loadSelfSignedCertificate().
  */
 inline const QList<QSslError> &SyncthingConnection::expectedSslErrors()
 {

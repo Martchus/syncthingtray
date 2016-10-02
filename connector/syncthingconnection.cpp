@@ -30,8 +30,8 @@ namespace Data {
  */
 QNetworkAccessManager &networkAccessManager()
 {
-    static QNetworkAccessManager networkAccessManager;
-    return networkAccessManager;
+    static auto networkAccessManager = new QNetworkAccessManager;
+    return *networkAccessManager;
 }
 
 /*!
@@ -226,24 +226,12 @@ void SyncthingConnection::reconnect()
 }
 
 /*!
- * \brief Applies the specifies configuration and tries to reconnect via reconnect().
+ * \brief Applies the specified configuration and tries to reconnect via reconnect().
  * \remarks The expected SSL errors of the specified configuration are updated accordingly.
  */
 void SyncthingConnection::reconnect(SyncthingConnectionSettings &connectionSettings)
 {
-    setSyncthingUrl(connectionSettings.syncthingUrl);
-    setApiKey(connectionSettings.apiKey);
-    if(connectionSettings.authEnabled) {
-        setCredentials(connectionSettings.userName, connectionSettings.password);
-    } else {
-        setCredentials(QString(), QString());
-    }
-    setTrafficPollInterval(connectionSettings.trafficPollInterval);
-    setDevStatsPollInterval(connectionSettings.devStatsPollInterval);
-    loadSelfSignedCertificate();
-    if(connectionSettings.expectedSslErrors.isEmpty()) {
-        connectionSettings.expectedSslErrors = expectedSslErrors();
-    }
+    applySettings(connectionSettings);
     reconnect();
 }
 
@@ -290,7 +278,10 @@ void SyncthingConnection::pause(const QString &devId)
 {
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("device"), devId);
-    QObject::connect(postData(QStringLiteral("system/pause"), query), &QNetworkReply::finished, this, &SyncthingConnection::readPauseResume);
+    QNetworkReply *reply = postData(QStringLiteral("system/pause"), query);
+    reply->setProperty("devId", devId);
+    reply->setProperty("resume", false);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readPauseResume);
 }
 
 /*!
@@ -314,7 +305,10 @@ void SyncthingConnection::resume(const QString &devId)
 {
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("device"), devId);
-    QObject::connect(postData(QStringLiteral("system/resume"), query), &QNetworkReply::finished, this, &SyncthingConnection::readPauseResume);
+    QNetworkReply *reply = postData(QStringLiteral("system/resume"), query);
+    reply->setProperty("devId", devId);
+    reply->setProperty("resume", true);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readPauseResume);
 }
 
 /*!
@@ -338,7 +332,9 @@ void SyncthingConnection::rescan(const QString &dirId)
 {
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("folder"), dirId);
-    QObject::connect(postData(QStringLiteral("db/scan"), query), &QNetworkReply::finished, this, &SyncthingConnection::readRescan);
+    QNetworkReply *reply = postData(QStringLiteral("db/scan"), query);
+    reply->setProperty("dirId", dirId);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readRescan);
 }
 
 /*!
@@ -383,6 +379,7 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
     url.setPassword(password());
     url.setQuery(query);
     QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArray("application/x-www-form-urlencoded"));
     request.setRawHeader("X-API-Key", m_apiKey);
     return request;
 }
@@ -439,6 +436,23 @@ SyncthingDev *SyncthingConnection::findDevInfo(const QString &devId, int &row)
         ++row;
     }
     return nullptr; // TODO: dev is unknown, trigger refreshing the config
+}
+
+/*!
+ * \brief Returns the device info object for the first device with the specified name.
+ * \returns Returns a pointer to the object or nullptr if not found.
+ * \remarks The returned object becomes invalid when the newConfig() signal is emitted or the connection is destroyed.
+ */
+SyncthingDev *SyncthingConnection::findDevInfoByName(const QString &devName, int &row)
+{
+    row = 0;
+    for(SyncthingDev &d : m_devs) {
+        if(d.name == devName) {
+            return &d;
+        }
+        ++row;
+    }
+    return nullptr;
 }
 
 /*!
@@ -612,11 +626,17 @@ void SyncthingConnection::loadSelfSignedCertificate()
     // ensure current exceptions for self-signed certificates are cleared
     m_expectedSslErrors.clear();
 
-    // only possible if the Syncthing instance is running on the local machine
-    const QString host(QUrl(syncthingUrl()).host());
-    if(host.compare(QLatin1String("localhost"), Qt::CaseInsensitive) != 0 && !QHostAddress(host).isLoopback()) {
+    // not required when not using secure connection
+    const QUrl syncthingUrl(m_syncthingUrl);
+    if(!syncthingUrl.scheme().endsWith(QChar('s'))) {
         return;
     }
+
+    // only possible if the Syncthing instance is running on the local machine
+    const QString host(syncthingUrl.host());
+    if(host.compare(QLatin1String("localhost"), Qt::CaseInsensitive) != 0 && !QHostAddress(host).isLoopback()) {
+        return;
+    }    
 
     // find cert
     const QString certPath = !m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate();
@@ -635,6 +655,32 @@ void SyncthingConnection::loadSelfSignedCertificate()
     m_expectedSslErrors << QSslError(QSslError::UnableToVerifyFirstCertificate, cert.at(0));
     m_expectedSslErrors << QSslError(QSslError::SelfSignedCertificate, cert.at(0));
     m_expectedSslErrors << QSslError(QSslError::HostNameMismatch, cert.at(0));
+}
+
+/*!
+ * \brief Applies the specified configuration.
+ * \remarks
+ * - The expected SSL errors of the specified configuration are updated accordingly.
+ * - The configuration is not used instantly. It will be used on the next reconnect.
+ * \sa reconnect()
+ */
+void SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionSettings)
+{
+    setSyncthingUrl(connectionSettings.syncthingUrl);
+    setApiKey(connectionSettings.apiKey);
+    if(connectionSettings.authEnabled) {
+        setCredentials(connectionSettings.userName, connectionSettings.password);
+    } else {
+        setCredentials(QString(), QString());
+    }
+    setTrafficPollInterval(connectionSettings.trafficPollInterval);
+    setDevStatsPollInterval(connectionSettings.devStatsPollInterval);
+    if(connectionSettings.expectedSslErrors.isEmpty()) {
+        loadSelfSignedCertificate();
+        connectionSettings.expectedSslErrors = expectedSslErrors();
+    } else {
+        m_expectedSslErrors = connectionSettings.expectedSslErrors;
+    }
 }
 
 /*!
@@ -855,7 +901,6 @@ void SyncthingConnection::readConnections()
 
 /*!
  * \brief Reads results of requestDirStatistics().
- * \remarks TODO
  */
 void SyncthingConnection::readDirStatistics()
 {
@@ -916,7 +961,6 @@ void SyncthingConnection::readDirStatistics()
 
 /*!
  * \brief Reads results of requestDeviceStatistics().
- * \remarks TODO
  */
 void SyncthingConnection::readDeviceStatistics()
 {
@@ -957,6 +1001,9 @@ void SyncthingConnection::readDeviceStatistics()
     }
 }
 
+/*!
+ * \brief Reads results of requestErrors().
+ */
 void SyncthingConnection::readErrors()
 {
     auto *reply = static_cast<QNetworkReply *>(sender());
@@ -1257,6 +1304,7 @@ void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eve
 
 /*!
  * \brief Reads results of requestEvents().
+ * \remarks TODO
  */
 void SyncthingConnection::readItemStarted(DateTime eventTime, const QJsonObject &eventData)
 {
@@ -1305,6 +1353,7 @@ void SyncthingConnection::readRescan()
     reply->deleteLater();
     switch(reply->error()) {
     case QNetworkReply::NoError:
+        emit rescanTriggered(reply->property("dirId").toString());
         break;
     default:
         emit error(tr("Unable to request rescan: ") + reply->errorString());
@@ -1320,6 +1369,11 @@ void SyncthingConnection::readPauseResume()
     reply->deleteLater();
     switch(reply->error()) {
     case QNetworkReply::NoError:
+        if(reply->property("resume").toBool()) {
+            emit resumeTriggered(reply->property("devId").toString());
+        } else {
+            emit pauseTriggered(reply->property("devId").toString());
+        }
         break;
     default:
         emit error(tr("Unable to request pause/resume: ") + reply->errorString());
@@ -1335,6 +1389,7 @@ void SyncthingConnection::readRestart()
     reply->deleteLater();
     switch(reply->error()) {
     case QNetworkReply::NoError:
+        emit restartTriggered();
         break;
     default:
         emit error(tr("Unable to request restart: ") + reply->errorString());
@@ -1403,5 +1458,100 @@ void SyncthingConnection::emitNotification(DateTime when, const QString &message
     setStatus(status());
     emit newNotification(when, message);
 }
+
+/*!
+ * \fn SyncthingConnection::newConfig()
+ * \brief Indicates new configuration (dirs, devs, ...) is available.
+ * \remarks
+ * - Configuration is requested automatically when connecting.
+ * - Previous directories (and directory info objects!) are invalidated.
+ * - Previous devices (and device info objects!) are invalidated.
+ */
+
+/*!
+ * \fn SyncthingConnection::newDirs()
+ * \brief Indicates new directories are available.
+ * \remarks Always emitted after newConfig() as soon as new directory info objects become available.
+ */
+
+/*!
+ * \fn SyncthingConnection::newDevices()
+ * \brief Indicates new devices are available.
+ * \remarks Always emitted after newConfig() as soon as new device info objects become available.
+ */
+
+/*!
+ * \fn SyncthingConnection::newEvents()
+ * \brief Indicates new events (dir status changed, ...) are available.
+ * \remarks New events are automatically polled when connected.
+ */
+
+/*!
+ * \fn SyncthingConnection::dirStatusChanged()
+ * \brief Indicates the status of the specified \a dir changed.
+ */
+
+/*!
+ * \fn SyncthingConnection::devStatusChanged()
+ * \brief Indicates the status of the specified \a dev changed.
+ */
+
+/*!
+ * \fn SyncthingConnection::downloadProgressChanged()
+ * \brief Indicates the download progress changed.
+ */
+
+/*!
+ * \fn SyncthingConnection::newNotification()
+ * \brief Indicates a new Syncthing notification is available.
+ */
+
+/*!
+ * \fn SyncthingConnection::error()
+ * \brief Indicates a request (for configuration, events, ...) failed.
+ */
+
+/*!
+ * \fn SyncthingConnection::statusChanged()
+ * \brief Indicates the status of the connection changed.
+ */
+
+/*!
+ * \fn SyncthingConnection::configDirChanged()
+ * \brief Indicates the Syncthing home/configuration directory changed.
+ */
+
+/*!
+ * \fn SyncthingConnection::myIdChanged()
+ * \brief Indicates ID of the own Syncthing device changed.
+ */
+
+/*!
+ * \fn SyncthingConnection::trafficChanged()
+ * \brief Indicates totalIncomingTraffic() or totalOutgoingTraffic() has changed.
+ */
+
+/*!
+ * \fn SyncthingConnection::rescanTriggered()
+ * \brief Indicates a rescan has been triggered sucessfully.
+ * \remarks Only emitted for rescans triggered internally via rescan() or rescanAll().
+ */
+
+/*!
+ * \fn SyncthingConnection::pauseTriggered()
+ * \brief Indicates a device has been paused sucessfully.
+ * \remarks Only emitted for pausing triggered internally via pause() or pauseAll().
+ */
+
+/*!
+ * \fn SyncthingConnection::resumeTriggered()
+ * \brief Indicates a device has been resumed sucessfully.
+ * \remarks Only emitted for resuming triggered internally via resume() or resumeAll().
+ */
+
+/*!
+ * \fn SyncthingConnection::restartTriggered()
+ * \brief Indicates a restart has been successfully triggered via restart().
+ */
 
 }
