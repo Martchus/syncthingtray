@@ -158,6 +158,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
  */
 SyncthingConnection::~SyncthingConnection()
 {
+    m_status = SyncthingStatus::BeingDestroyed;
     disconnect();
 }
 
@@ -1429,6 +1430,9 @@ void SyncthingConnection::readShutdown()
  */
 void SyncthingConnection::setStatus(SyncthingStatus status)
 {
+    if(m_status == SyncthingStatus::BeingDestroyed) {
+        return;
+    }
     switch(status) {
     case SyncthingStatus::Disconnected:
     case SyncthingStatus::Reconnecting:

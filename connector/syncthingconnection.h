@@ -34,7 +34,8 @@ enum class SyncthingStatus
     Scanning,
     NotificationsAvailable,
     Paused,
-    Synchronizing
+    Synchronizing,
+    BeingDestroyed
 };
 
 enum class DirStatus
