@@ -818,13 +818,13 @@ void SyncthingConnection::readStatus()
             m_hasStatus = true;
             continueConnecting();
         } else {
-            emit error(tr("Unable to parse Syncthing config: ") + jsonError.errorString());
+            emit error(tr("Unable to parse Syncthing status: ") + jsonError.errorString());
         }
         break;
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request Syncthing config: ") + reply->errorString());
+        emit error(tr("Unable to request Syncthing status: ") + reply->errorString());
     }
 }
 
