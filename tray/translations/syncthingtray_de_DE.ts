@@ -287,17 +287,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="67"/>
+        <location filename="../gui/dirview.cpp" line="68"/>
         <source>Copy value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="69"/>
+        <location filename="../gui/dirview.cpp" line="70"/>
         <source>Copy label/ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="70"/>
+        <location filename="../gui/dirview.cpp" line="71"/>
         <source>Copy path</source>
         <translation type="unfinished"></translation>
     </message>

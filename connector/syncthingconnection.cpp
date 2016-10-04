@@ -35,101 +35,6 @@ QNetworkAccessManager &networkAccessManager()
 }
 
 /*!
- * \brief Assigns the status from the specified status string.
- * \returns Returns whether the status has actually changed.
- */
-bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateTime time)
-{
-    if(lastStatusUpdate > time) {
-        return false;
-    } else {
-        lastStatusUpdate = time;
-    }
-    DirStatus newStatus;
-    if(statusStr == QLatin1String("idle")) {
-        progressPercentage = 0;
-        newStatus = errors.empty() ? DirStatus::Idle : DirStatus::OutOfSync;
-    } else if(statusStr == QLatin1String("scanning")) {
-        newStatus = DirStatus::Scanning;
-    } else if(statusStr == QLatin1String("syncing")) {
-        if(!errors.empty()) {
-            errors.clear(); // errors become obsolete
-            status = DirStatus::Unknown; // ensure status changed signal is emitted
-        }
-        newStatus = DirStatus::Synchronizing;
-    } else if(statusStr == QLatin1String("error")) {
-        progressPercentage = 0;
-        newStatus = DirStatus::OutOfSync;
-    } else {
-        newStatus = errors.empty() ? DirStatus::Idle : DirStatus::OutOfSync;
-    }
-    if(newStatus != status) {
-        switch(status) {
-        case DirStatus::Scanning:
-            lastScanTime = DateTime::now();
-            break;
-        default:
-            ;
-        }
-        status = newStatus;
-        return true;
-    }
-    return false;
-}
-
-bool SyncthingDir::assignStatus(DirStatus newStatus, DateTime time)
-{
-    if(lastStatusUpdate > time) {
-        return false;
-    } else {
-        lastStatusUpdate = time;
-    }
-    switch(newStatus) {
-    case DirStatus::Idle:
-    case DirStatus::Unknown:
-        if(!errors.empty()) {
-            newStatus = DirStatus::OutOfSync;
-        }
-        break;
-    default:
-        ;
-    }
-    if(newStatus != status) {
-        switch(status) {
-        case DirStatus::Scanning:
-            lastScanTime = DateTime::now();
-            break;
-        default:
-            ;
-        }
-        status = newStatus;
-        return true;
-    }
-    return false;
-}
-
-SyncthingItemDownloadProgress::SyncthingItemDownloadProgress(const QString &containingDirPath, const QString &relativeItemPath, const QJsonObject &values) :
-    relativePath(relativeItemPath),
-    fileInfo(containingDirPath % QChar('/') % QString(relativeItemPath).replace(QChar('\\'), QChar('/'))),
-    blocksCurrentlyDownloading(values.value(QStringLiteral("Pulling")).toInt()),
-    blocksAlreadyDownloaded(values.value(QStringLiteral("Pulled")).toInt()),
-    totalNumberOfBlocks(values.value(QStringLiteral("Total")).toInt()),
-    downloadPercentage((blocksAlreadyDownloaded > 0 && totalNumberOfBlocks > 0)
-                       ? (static_cast<unsigned int>(blocksAlreadyDownloaded) * 100 / static_cast<unsigned int>(totalNumberOfBlocks))
-                       : 0),
-    blocksCopiedFromOrigin(values.value(QStringLiteral("CopiedFromOrigin")).toInt()),
-    blocksCopiedFromElsewhere(values.value(QStringLiteral("CopiedFromElsewhere")).toInt()),
-    blocksReused(values.value(QStringLiteral("Reused")).toInt()),
-    bytesAlreadyHandled(values.value(QStringLiteral("BytesDone")).toInt()),
-    totalNumberOfBytes(values.value(QStringLiteral("BytesTotal")).toInt()),
-    label(QStringLiteral("%1 / %2 - %3 %").arg(
-              QString::fromLatin1(dataSizeToString(blocksAlreadyDownloaded > 0 ? static_cast<uint64>(blocksAlreadyDownloaded) * syncthingBlockSize : 0).data()),
-              QString::fromLatin1(dataSizeToString(totalNumberOfBlocks > 0 ? static_cast<uint64>(totalNumberOfBlocks) * syncthingBlockSize : 0).data()),
-              QString::number(downloadPercentage))
-          )
-{}
-
-/*!
  * \class SyncthingConnection
  * \brief The SyncthingConnection class allows Qt applications to access Syncthing.
  * \remarks All requests are performed asynchronously.
@@ -199,7 +104,7 @@ QString SyncthingConnection::statusText() const
 bool SyncthingConnection::hasOutOfSyncDirs() const
 {
     for(const SyncthingDir &dir : m_dirs) {
-        if(dir.status == DirStatus::OutOfSync) {
+        if(dir.status == SyncthingDirStatus::OutOfSync) {
             return true;
         }
     }
@@ -799,7 +704,7 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
             devItem.compression = devObj.value(QStringLiteral("compression")).toString();
             devItem.certName = devObj.value(QStringLiteral("certName")).toString();
             devItem.introducer = devObj.value(QStringLiteral("introducer")).toBool(false);
-            devItem.status = devItem.id == m_myId ? DevStatus::OwnDevice : DevStatus::Unknown;
+            devItem.status = devItem.id == m_myId ? SyncthingDevStatus::OwnDevice : SyncthingDevStatus::Unknown;
             m_devs.push_back(move(devItem));
         }
     }
@@ -829,7 +734,7 @@ void SyncthingConnection::readStatus()
                 int index = 0;
                 for(SyncthingDev &dev : m_devs) {
                     if(dev.id == m_myId) {
-                        dev.status = DevStatus::OwnDevice;
+                        dev.status = SyncthingDevStatus::OwnDevice;
                         emit devStatusChanged(dev, index);
                         break;
                     }
@@ -888,19 +793,19 @@ void SyncthingConnection::readConnections()
                 const QJsonObject connectionObj(connectionsObj.value(dev.id).toObject());
                 if(!connectionObj.isEmpty()) {
                     switch(dev.status) {
-                    case DevStatus::OwnDevice:
+                    case SyncthingDevStatus::OwnDevice:
                         break;
-                    case DevStatus::Disconnected:
-                    case DevStatus::Unknown:
+                    case SyncthingDevStatus::Disconnected:
+                    case SyncthingDevStatus::Unknown:
                         if(connectionObj.value(QStringLiteral("connected")).toBool(false)) {
-                            dev.status = DevStatus::Idle;
+                            dev.status = SyncthingDevStatus::Idle;
                         } else {
-                            dev.status = DevStatus::Disconnected;
+                            dev.status = SyncthingDevStatus::Disconnected;
                         }
                         break;
                     default:
                         if(!connectionObj.value(QStringLiteral("connected")).toBool(false)) {
-                            dev.status = DevStatus::Disconnected;
+                            dev.status = SyncthingDevStatus::Disconnected;
                         }
                     }
                     dev.paused = connectionObj.value(QStringLiteral("paused")).toBool(false);
@@ -1244,10 +1149,10 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
                         const QJsonObject error(errorVal.toObject());
                         if(!error.isEmpty()) {
                             auto &errors = dirInfo->errors;
-                            DirError dirError(error.value(QStringLiteral("error")).toString(), error.value(QStringLiteral("path")).toString());
+                            SyncthingDirError dirError(error.value(QStringLiteral("error")).toString(), error.value(QStringLiteral("path")).toString());
                             if(find(errors.cbegin(), errors.cend(), dirError) == errors.cend()) {
                                 errors.emplace_back(move(dirError));
-                                dirInfo->assignStatus(DirStatus::OutOfSync, eventTime);
+                                dirInfo->assignStatus(SyncthingDirStatus::OutOfSync, eventTime);
                                 emitNotification(eventTime, dirInfo->errors.back().message);
                             }
                         }
@@ -1286,7 +1191,7 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
                 if(current > 0 && total > 0) {
                     dirInfo->progressPercentage = current * 100 / total;
                     dirInfo->progressRate = rate;
-                    dirInfo->assignStatus(DirStatus::Scanning, eventTime); // ensure state is scanning
+                    dirInfo->assignStatus(SyncthingDirStatus::Scanning, eventTime); // ensure state is scanning
                     emit dirStatusChanged(*dirInfo, index);
                 }
             }
@@ -1307,28 +1212,28 @@ void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eve
         // dev status changed, depending on event type
         int index;
         if(SyncthingDev *devInfo = findDevInfo(dev, index)) {
-            DevStatus status = devInfo->status;
+            SyncthingDevStatus status = devInfo->status;
             bool paused = devInfo->paused;
             if(eventType == QLatin1String("DeviceConnected")) {
-                status = DevStatus::Idle; // TODO: figure out when dev is actually syncing
+                status = SyncthingDevStatus::Idle; // TODO: figure out when dev is actually syncing
             } else if(eventType == QLatin1String("DeviceDisconnected")) {
-                status = DevStatus::Disconnected;
+                status = SyncthingDevStatus::Disconnected;
             } else if(eventType == QLatin1String("DevicePaused")) {
                 paused = true;
             } else if(eventType == QLatin1String("DeviceRejected")) {
-                status = DevStatus::Rejected;
+                status = SyncthingDevStatus::Rejected;
             } else if(eventType == QLatin1String("DeviceResumed")) {
                 paused = false;
                 // FIXME: correct to assume device which has just been resumed is still disconnected?
-                status = DevStatus::Disconnected;
+                status = SyncthingDevStatus::Disconnected;
             } else if(eventType == QLatin1String("DeviceDiscovered")) {
                 // we know about this device already, set status anyways because it might still be unknown
-                status = DevStatus::Disconnected;
+                status = SyncthingDevStatus::Disconnected;
             } else {
                 return; // can't handle other event types currently
             }
             if(devInfo->status != status || devInfo->paused != paused) {
-                if(devInfo->status != DevStatus::OwnDevice) { // don't mess with the status of the own device
+                if(devInfo->status != SyncthingDevStatus::OwnDevice) { // don't mess with the status of the own device
                     devInfo->status = status;
                 }
                 devInfo->paused = paused;
@@ -1371,10 +1276,10 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
                     }
                     emit dirStatusChanged(*dirInfo, index);
                 }
-            } else if(dirInfo->status == DirStatus::OutOfSync) {
+            } else if(dirInfo->status == SyncthingDirStatus::OutOfSync) {
                 // FIXME: find better way to check whether the event is still relevant
                 dirInfo->errors.emplace_back(error, item);
-                dirInfo->status = DirStatus::OutOfSync;
+                dirInfo->status = SyncthingDirStatus::OutOfSync;
                 emit dirStatusChanged(*dirInfo, index);
                 emitNotification(eventTime, error);
             }
@@ -1469,10 +1374,10 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
         bool scanning = false;
         bool synchronizing = false;
         for(const SyncthingDir &dir : m_dirs) {
-            if(dir.status == DirStatus::Synchronizing) {
+            if(dir.status == SyncthingDirStatus::Synchronizing) {
                 synchronizing = true;
                 break;
-            } else if(dir.status == DirStatus::Scanning) {
+            } else if(dir.status == SyncthingDirStatus::Scanning) {
                 scanning = true;
             }
         }

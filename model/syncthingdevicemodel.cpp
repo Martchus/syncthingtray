@@ -153,13 +153,13 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                         return tr("Paused");
                     } else {
                         switch(dev.status) {
-                        case DevStatus::Unknown: return tr("Unknown status");
-                        case DevStatus::OwnDevice: return tr("Own device");
-                        case DevStatus::Idle: return tr("Idle");
-                        case DevStatus::Disconnected: return tr("Disconnected");
-                        case DevStatus::Synchronizing: return dev.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dev.progressPercentage) : tr("Synchronizing");
-                        case DevStatus::OutOfSync: return tr("Out of sync");
-                        case DevStatus::Rejected: return tr("Rejected");
+                        case SyncthingDevStatus::Unknown: return tr("Unknown status");
+                        case SyncthingDevStatus::OwnDevice: return tr("Own device");
+                        case SyncthingDevStatus::Idle: return tr("Idle");
+                        case SyncthingDevStatus::Disconnected: return tr("Disconnected");
+                        case SyncthingDevStatus::Synchronizing: return dev.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dev.progressPercentage) : tr("Synchronizing");
+                        case SyncthingDevStatus::OutOfSync: return tr("Out of sync");
+                        case SyncthingDevStatus::Rejected: return tr("Rejected");
                         }
                     }
                     break;
@@ -172,13 +172,13 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                         return m_pausedIcon;
                     } else {
                         switch(dev.status) {
-                        case DevStatus::Unknown:
-                        case DevStatus::Disconnected: return m_unknownIcon;
-                        case DevStatus::OwnDevice:
-                        case DevStatus::Idle: return m_idleIcon;
-                        case DevStatus::Synchronizing: return m_syncIcon;
-                        case DevStatus::OutOfSync:
-                        case DevStatus::Rejected: return m_errorIcon;
+                        case SyncthingDevStatus::Unknown:
+                        case SyncthingDevStatus::Disconnected: return m_unknownIcon;
+                        case SyncthingDevStatus::OwnDevice:
+                        case SyncthingDevStatus::Idle: return m_idleIcon;
+                        case SyncthingDevStatus::Synchronizing: return m_syncIcon;
+                        case SyncthingDevStatus::OutOfSync:
+                        case SyncthingDevStatus::Rejected: return m_errorIcon;
                         }
                     }
                     break;
@@ -196,13 +196,13 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 case 1:
                     if(!dev.paused) {
                         switch(dev.status) {
-                        case DevStatus::Unknown: break;
-                        case DevStatus::Disconnected: break;
-                        case DevStatus::OwnDevice:
-                        case DevStatus::Idle: return QColor(Qt::darkGreen);
-                        case DevStatus::Synchronizing: return QColor(Qt::darkBlue);
-                        case DevStatus::OutOfSync:
-                        case DevStatus::Rejected: return QColor(Qt::red);
+                        case SyncthingDevStatus::Unknown: break;
+                        case SyncthingDevStatus::Disconnected: break;
+                        case SyncthingDevStatus::OwnDevice:
+                        case SyncthingDevStatus::Idle: return QColor(Qt::darkGreen);
+                        case SyncthingDevStatus::Synchronizing: return QColor(Qt::darkBlue);
+                        case SyncthingDevStatus::OutOfSync:
+                        case SyncthingDevStatus::Rejected: return QColor(Qt::red);
                         }
                     }
                     break;
@@ -213,7 +213,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             case DevicePaused:
                 return dev.paused;
             case IsOwnDevice:
-                return dev.status == DevStatus::OwnDevice;
+                return dev.status == SyncthingDevStatus::OwnDevice;
             default:
                 ;
             }

@@ -297,15 +297,15 @@ void Application::printStatus(const ArgumentOccurrence &)
             printProperty("Path", dir->path);
             const char *status;
             switch(dir->status) {
-            case DirStatus::Idle:
+            case SyncthingDirStatus::Idle:
                 status = "idle"; break;
-            case DirStatus::Scanning:
+            case SyncthingDirStatus::Scanning:
                 status = "scanning"; break;
-            case DirStatus::Synchronizing:
+            case SyncthingDirStatus::Synchronizing:
                 status = "synchronizing"; break;
-            case DirStatus::Paused:
+            case SyncthingDirStatus::Paused:
                 status = "paused"; break;
-            case DirStatus::OutOfSync:
+            case SyncthingDirStatus::OutOfSync:
                 status = "out of sync"; break;
             default:
                 status = "unknown";
@@ -323,7 +323,7 @@ void Application::printStatus(const ArgumentOccurrence &)
             printProperty("Min. free disk percentage", dir->minDiskFreePercentage);
             if(!dir->errors.empty()) {
                 cout << "   Errors\n";
-                for(const DirError &error : dir->errors) {
+                for(const SyncthingDirError &error : dir->errors) {
                     printProperty(" - Message", error.message);
                     printProperty("   File", error.path);
                 }
@@ -348,17 +348,17 @@ void Application::printStatus(const ArgumentOccurrence &)
                 status = "paused";
             } else {
                 switch(dev->status) {
-                case DevStatus::Disconnected:
+                case SyncthingDevStatus::Disconnected:
                     status = "disconnected"; break;
-                case DevStatus::OwnDevice:
+                case SyncthingDevStatus::OwnDevice:
                     status = "own device"; break;
-                case DevStatus::Idle:
+                case SyncthingDevStatus::Idle:
                     status = "idle"; break;
-                case DevStatus::Synchronizing:
+                case SyncthingDevStatus::Synchronizing:
                     status = "synchronizing"; break;
-                case DevStatus::OutOfSync:
+                case SyncthingDevStatus::OutOfSync:
                     status = "out of sync"; break;
-                case DevStatus::Rejected:
+                case SyncthingDevStatus::Rejected:
                     status = "rejected"; break;
                 default:
                     status = "unknown";

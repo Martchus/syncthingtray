@@ -50,7 +50,7 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
                     // show errors
                     auto *textViewDlg = new TextViewDialog(tr("Errors of %1").arg(dir->label.isEmpty() ? dir->id : dir->label));
                     auto *browser = textViewDlg->browser();
-                    for(const DirError &error : dir->errors) {
+                    for(const SyncthingDirError &error : dir->errors) {
                         browser->append(error.path % QChar(':') % QChar(' ') % QChar('\n') % error.message % QChar('\n'));
                     }
                     textViewDlg->show();

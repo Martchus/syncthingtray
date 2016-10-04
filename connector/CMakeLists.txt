@@ -9,6 +9,8 @@ set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING_CONNECTOR)
 
 # add project files
 set(HEADER_FILES
+    syncthingdir.h
+    syncthingdev.h
     syncthingconnection.h
     syncthingconnectionsettings.h
     syncthingconfig.h
@@ -16,6 +18,8 @@ set(HEADER_FILES
     utils.h
 )
 set(SRC_FILES
+    syncthingdir.cpp
+    syncthingdev.cpp
     syncthingconnection.cpp
     syncthingconnectionsettings.cpp
     syncthingconfig.cpp

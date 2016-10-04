@@ -1,14 +1,12 @@
 #ifndef SYNCTHINGCONNECTION_H
 #define SYNCTHINGCONNECTION_H
 
-#include "./global.h"
-
-#include <c++utilities/chrono/datetime.h>
+#include "./syncthingdir.h"
+#include "./syncthingdev.h"
 
 #include <QObject>
 #include <QList>
 #include <QSslError>
-#include <QFileInfo>
 
 #include <functional>
 #include <vector>
@@ -36,115 +34,6 @@ enum class SyncthingStatus
     Synchronizing,
     OutOfSync,
     BeingDestroyed
-};
-
-enum class DirStatus
-{
-    Unknown,
-    Idle,
-    Scanning,
-    Synchronizing,
-    Paused,
-    OutOfSync
-};
-
-struct LIB_SYNCTHING_CONNECTOR_EXPORT DirError
-{
-    DirError(const QString &message, const QString &path) :
-        message(message),
-        path(path)
-    {}
-
-    bool operator ==(const DirError &other) const
-    {
-        return message == other.message && path == other.path;
-    }
-
-    QString message;
-    QString path;
-};
-
-struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemDownloadProgress
-{
-    SyncthingItemDownloadProgress(const QString &containingDirPath, const QString &relativeItemPath, const QJsonObject &values);
-    QString relativePath;
-    QFileInfo fileInfo;
-    int blocksCurrentlyDownloading = 0;
-    int blocksAlreadyDownloaded = 0;
-    int totalNumberOfBlocks = 0;
-    unsigned int downloadPercentage = 0;
-    int blocksCopiedFromOrigin = 0;
-    int blocksCopiedFromElsewhere = 0;
-    int blocksReused = 0;
-    int bytesAlreadyHandled;
-    int totalNumberOfBytes = 0;
-    QString label;
-    ChronoUtilities::DateTime lastUpdate;
-    static constexpr unsigned int syncthingBlockSize = 128 * 1024;
-};
-
-struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir
-{
-    QString id;
-    QString label;
-    QString path;
-    QStringList devices;
-    bool readOnly = false;
-    bool ignorePermissions = false;
-    bool autoNormalize = false;
-    int rescanInterval = 0;
-    int minDiskFreePercentage = 0;
-    DirStatus status = DirStatus::Idle;
-    ChronoUtilities::DateTime lastStatusUpdate;
-    int progressPercentage = 0;
-    int progressRate = 0;
-    std::vector<DirError> errors;
-    int globalBytes = 0, globalDeleted = 0, globalFiles = 0;
-    int localBytes = 0, localDeleted = 0, localFiles = 0;
-    int neededByted = 0, neededFiles = 0;
-    ChronoUtilities::DateTime lastScanTime;
-    ChronoUtilities::DateTime lastFileTime;
-    QString lastFileName;
-    bool lastFileDeleted = false;
-    std::vector<SyncthingItemDownloadProgress> downloadingItems;
-    int blocksAlreadyDownloaded = 0;
-    int blocksToBeDownloaded = 0;
-    unsigned int downloadPercentage = 0;
-    QString downloadLabel;
-
-    bool assignStatus(const QString &statusStr, ChronoUtilities::DateTime time);
-    bool assignStatus(DirStatus newStatus, ChronoUtilities::DateTime time);
-};
-
-enum class DevStatus
-{
-    Unknown,
-    Disconnected,
-    OwnDevice,
-    Idle,
-    Synchronizing,
-    OutOfSync,
-    Rejected
-};
-
-struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev
-{
-    QString id;
-    QString name;
-    QStringList addresses;
-    QString compression;
-    QString certName;
-    DevStatus status;
-    int progressPercentage = 0;
-    int progressRate = 0;
-    bool introducer = false;
-    bool paused = false;
-    int totalIncomingTraffic = 0;
-    int totalOutgoingTraffic = 0;
-    QString connectionAddress;
-    QString connectionType;
-    QString clientVersion;
-    ChronoUtilities::DateTime lastSeen;
 };
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry
