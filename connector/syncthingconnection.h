@@ -32,9 +32,9 @@ enum class SyncthingStatus
     Reconnecting,
     Idle,
     Scanning,
-    NotificationsAvailable,
     Paused,
     Synchronizing,
+    OutOfSync,
     BeingDestroyed
 };
 
@@ -48,12 +48,18 @@ enum class DirStatus
     OutOfSync
 };
 
-struct LIB_SYNCTHING_CONNECTOR_EXPORT DirErrors
+struct LIB_SYNCTHING_CONNECTOR_EXPORT DirError
 {
-    DirErrors(const QString &message, const QString &path) :
+    DirError(const QString &message, const QString &path) :
         message(message),
         path(path)
     {}
+
+    bool operator ==(const DirError &other) const
+    {
+        return message == other.message && path == other.path;
+    }
+
     QString message;
     QString path;
 };
@@ -92,7 +98,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir
     ChronoUtilities::DateTime lastStatusUpdate;
     int progressPercentage = 0;
     int progressRate = 0;
-    std::vector<DirErrors> errors;
+    std::vector<DirError> errors;
     int globalBytes = 0, globalDeleted = 0, globalFiles = 0;
     int localBytes = 0, localDeleted = 0, localFiles = 0;
     int neededByted = 0, neededFiles = 0;
@@ -157,6 +163,8 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject
     Q_PROPERTY(QString syncthingUrl READ syncthingUrl WRITE setSyncthingUrl)
     Q_PROPERTY(QByteArray apiKey READ apiKey WRITE setApiKey)
     Q_PROPERTY(SyncthingStatus status READ status NOTIFY statusChanged)
+    Q_PROPERTY(bool hasUnreadNotifications READ hasUnreadNotifications)
+    Q_PROPERTY(bool hasOutOfSyncDirs READ hasOutOfSyncDirs)
     Q_PROPERTY(int trafficPollInterval READ trafficPollInterval WRITE setTrafficPollInterval)
     Q_PROPERTY(int devStatsPollInterval READ devStatsPollInterval WRITE setDevStatsPollInterval)
     Q_PROPERTY(QString configDir READ configDir NOTIFY configDirChanged)
@@ -180,6 +188,8 @@ public:
     SyncthingStatus status() const;
     QString statusText() const;
     bool isConnected() const;
+    bool hasUnreadNotifications() const;
+    bool hasOutOfSyncDirs() const;
     int trafficPollInterval() const;
     void setTrafficPollInterval(int trafficPollInterval);
     int devStatsPollInterval() const;
@@ -381,6 +391,15 @@ inline SyncthingStatus SyncthingConnection::status() const
 inline bool SyncthingConnection::isConnected() const
 {
     return m_status != SyncthingStatus::Disconnected && m_status != SyncthingStatus::Reconnecting;
+}
+
+/*!
+ * \brief Returns whether there are unread notifications available.
+ * \remarks This flag is set to true when new notifications become available. It can be unset again by calling considerAllNotificationsRead().
+ */
+inline bool SyncthingConnection::hasUnreadNotifications() const
+{
+    return m_unreadNotifications;
 }
 
 /*!

@@ -29,6 +29,7 @@ TrayIcon::TrayIcon(QObject *parent) :
     m_statusIconNotify(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-notify.svg")))),
     m_statusIconPause(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-pause.svg")))),
     m_statusIconSync(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-sync.svg")))),
+    m_statusIconOutOfSync(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-error.svg")))),
     m_trayMenu(this),
     m_status(SyncthingStatus::Disconnected)
 {
@@ -97,6 +98,7 @@ void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const Q
 
 void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
 {
+    const SyncthingConnection &connection = trayMenu().widget()->connection();
     switch(status) {
     case SyncthingStatus::Disconnected:
         setIcon(m_statusIconDisconnected);
@@ -109,26 +111,35 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
         setIcon(m_statusIconDisconnected);
         setToolTip(tr("Reconnecting ..."));
         break;
-    case SyncthingStatus::Idle:
-        setIcon(m_statusIconIdling);
-        setToolTip(tr("Syncthing is idling"));
-        break;
-    case SyncthingStatus::Scanning:
-        setIcon(m_statusIconScanning);
-        setToolTip(tr("Syncthing is scanning"));
-        break;
-    case SyncthingStatus::NotificationsAvailable:
-        setIcon(m_statusIconNotify);
-        setToolTip(tr("Notifications available"));
-        break;
-    case SyncthingStatus::Paused:
-        setIcon(m_statusIconPause);
-        setToolTip(tr("At least one device is paused"));
-        break;
-    case SyncthingStatus::Synchronizing:
-        setIcon(m_statusIconSync);
-        setToolTip(tr("Synchronization is ongoing"));
-        break;
+    default:
+        if(connection.hasOutOfSyncDirs()) {
+            setIcon(m_statusIconOutOfSync);
+            setToolTip(tr("At least one directory is out of sync"));
+        } else if(connection.hasUnreadNotifications()) {
+            setIcon(m_statusIconNotify);
+            setToolTip(tr("Notifications available"));
+        } else {
+            switch(status) {
+            case SyncthingStatus::Idle:
+                setIcon(m_statusIconIdling);
+                setToolTip(tr("Syncthing is idling"));
+                break;
+            case SyncthingStatus::Scanning:
+                setIcon(m_statusIconScanning);
+                setToolTip(tr("Syncthing is scanning"));
+                break;
+            case SyncthingStatus::Paused:
+                setIcon(m_statusIconPause);
+                setToolTip(tr("At least one device is paused"));
+                break;
+            case SyncthingStatus::Synchronizing:
+                setIcon(m_statusIconSync);
+                setToolTip(tr("Synchronization is ongoing"));
+                break;
+            default:
+                ;
+            }
+        }
     }
     switch(status) {
     case SyncthingStatus::Disconnected:
@@ -140,7 +151,6 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
             showMessage(QCoreApplication::applicationName(), tr("Synchronization complete"), QSystemTrayIcon::Information);
         }
     }
-
     m_status = status;
 }
 

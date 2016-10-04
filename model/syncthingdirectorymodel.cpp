@@ -92,6 +92,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 4: return tr("Rescan interval");
                         case 5: return tr("Last scan");
                         case 6: return tr("Last file");
+                        case 7: return tr("Errors");
                         }
                         break;
                     case 1: // attribute values
@@ -104,6 +105,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 4: return QString::fromLatin1(TimeSpan::fromSeconds(dir.rescanInterval).toString(TimeSpanOutputFormat::WithMeasures, true).data());
                         case 5: return dir.lastScanTime.isNull() ? tr("unknown") : QString::fromLatin1(dir.lastScanTime.toString(DateTimeOutputFormat::DateAndTime, true).data());
                         case 6: return dir.lastFileName.isEmpty() ? tr("unknown") : dir.lastFileName;
+                        case 7: return dir.errors.empty() ? tr("none") : tr("%1 item(s) out of sync", nullptr, static_cast<int>(dir.errors.size())).arg(dir.errors.size());
                         }
                         break;
                     }
@@ -227,7 +229,7 @@ int SyncthingDirectoryModel::rowCount(const QModelIndex &parent) const
     if(!parent.isValid()) {
         return static_cast<int>(m_dirs.size());
     } else if(!parent.parent().isValid()) {
-        return 7;
+        return parent.parent().row() >= 0 && static_cast<size_t>(parent.parent().row()) < m_dirs.size() && m_dirs[static_cast<size_t>(parent.parent().row())].errors.empty() ? 6 : 7;
     } else {
         return 0;
     }

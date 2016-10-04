@@ -1,7 +1,9 @@
 #include "./dirview.h"
 #include "./dirbuttonsitemdelegate.h"
+#include "./textviewdialog.h"
 
 #include "../../model/syncthingdirectorymodel.h"
+#include "../../connector/syncthingconnection.h"
 
 #include <QHeaderView>
 #include <QMouseEvent>
@@ -9,6 +11,8 @@
 #include <QCursor>
 #include <QGuiApplication>
 #include <QClipboard>
+#include <QTextBrowser>
+#include <QStringBuilder>
 
 using namespace Data;
 
@@ -30,15 +34,26 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
     if(const SyncthingDirectoryModel *dirModel = qobject_cast<SyncthingDirectoryModel *>(model())) {
         const QPoint pos(event->pos());
         const QModelIndex clickedIndex(indexAt(event->pos()));
-        if(clickedIndex.isValid() && clickedIndex.column() == 1 && !clickedIndex.parent().isValid()) {
+        if(clickedIndex.isValid() && clickedIndex.column() == 1) {
             if(const SyncthingDir *dir = dirModel->dirInfo(clickedIndex)) {
-                const QRect itemRect(visualRect(clickedIndex));
-                if(pos.x() > itemRect.right() - 34) {
-                    if(pos.x() > itemRect.right() - 17) {
-                        emit openDir(*dir);
-                    } else {
-                        emit scanDir(*dir);
+                if(!clickedIndex.parent().isValid()) {
+                    // open/scan dir buttons
+                    const QRect itemRect(visualRect(clickedIndex));
+                    if(pos.x() > itemRect.right() - 34) {
+                        if(pos.x() > itemRect.right() - 17) {
+                            emit openDir(*dir);
+                        } else {
+                            emit scanDir(*dir);
+                        }
                     }
+                } else if(clickedIndex.row() == 7) {
+                    // show errors
+                    auto *textViewDlg = new TextViewDialog(tr("Errors of %1").arg(dir->label.isEmpty() ? dir->id : dir->label));
+                    auto *browser = textViewDlg->browser();
+                    for(const DirError &error : dir->errors) {
+                        browser->append(error.path % QChar(':') % QChar(' ') % QChar('\n') % error.message % QChar('\n'));
+                    }
+                    textViewDlg->show();
                 }
             }
         }

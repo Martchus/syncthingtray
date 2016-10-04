@@ -48,7 +48,7 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
     DirStatus newStatus;
     if(statusStr == QLatin1String("idle")) {
         progressPercentage = 0;
-        newStatus = DirStatus::Idle;
+        newStatus = errors.empty() ? DirStatus::Idle : DirStatus::OutOfSync;
     } else if(statusStr == QLatin1String("scanning")) {
         newStatus = DirStatus::Scanning;
     } else if(statusStr == QLatin1String("syncing")) {
@@ -61,7 +61,7 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
         progressPercentage = 0;
         newStatus = DirStatus::OutOfSync;
     } else {
-        newStatus = DirStatus::Unknown;
+        newStatus = errors.empty() ? DirStatus::Idle : DirStatus::OutOfSync;
     }
     if(newStatus != status) {
         switch(status) {
@@ -83,6 +83,16 @@ bool SyncthingDir::assignStatus(DirStatus newStatus, DateTime time)
         return false;
     } else {
         lastStatusUpdate = time;
+    }
+    switch(newStatus) {
+    case DirStatus::Idle:
+    case DirStatus::Unknown:
+        if(!errors.empty()) {
+            newStatus = DirStatus::OutOfSync;
+        }
+        break;
+    default:
+        ;
     }
     if(newStatus != status) {
         switch(status) {
@@ -174,8 +184,6 @@ QString SyncthingConnection::statusText() const
         return tr("reconnecting");
     case SyncthingStatus::Idle:
         return tr("connected");
-    case SyncthingStatus::NotificationsAvailable:
-        return tr("connected, notifications available");
     case SyncthingStatus::Paused:
         return tr("connected, paused");
     case SyncthingStatus::Synchronizing:
@@ -183,6 +191,19 @@ QString SyncthingConnection::statusText() const
     default:
         return tr("unknown");
     }
+}
+
+/*!
+ * \brief Returns whether there is at least one directory out-of-sync.
+ */
+bool SyncthingConnection::hasOutOfSyncDirs() const
+{
+    for(const SyncthingDir &dir : m_dirs) {
+        if(dir.status == DirStatus::OutOfSync) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /*!
@@ -1222,9 +1243,13 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
                     for(const QJsonValue &errorVal : errors) {
                         const QJsonObject error(errorVal.toObject());
                         if(!error.isEmpty()) {
-                            dirInfo->errors.emplace_back(error.value(QStringLiteral("error")).toString(), error.value(QStringLiteral("path")).toString());
-                            dirInfo->assignStatus(DirStatus::OutOfSync, eventTime);
-                            emitNotification(eventTime, dirInfo->errors.back().message);
+                            auto &errors = dirInfo->errors;
+                            DirError dirError(error.value(QStringLiteral("error")).toString(), error.value(QStringLiteral("path")).toString());
+                            if(find(errors.cbegin(), errors.cend(), dirError) == errors.cend()) {
+                                errors.emplace_back(move(dirError));
+                                dirInfo->assignStatus(DirStatus::OutOfSync, eventTime);
+                                emitNotification(eventTime, dirInfo->errors.back().message);
+                            }
                         }
                     }
                     emit dirStatusChanged(*dirInfo, index);
@@ -1349,6 +1374,8 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
             } else if(dirInfo->status == DirStatus::OutOfSync) {
                 // FIXME: find better way to check whether the event is still relevant
                 dirInfo->errors.emplace_back(error, item);
+                dirInfo->status = DirStatus::OutOfSync;
+                emit dirStatusChanged(*dirInfo, index);
                 emitNotification(eventTime, error);
             }
         }
@@ -1438,38 +1465,34 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
     case SyncthingStatus::Reconnecting:
         break;
     default:
-        if(m_unreadNotifications) {
-            status = SyncthingStatus::NotificationsAvailable;
+        // check whether at least one directory is scanning or synchronizing
+        bool scanning = false;
+        bool synchronizing = false;
+        for(const SyncthingDir &dir : m_dirs) {
+            if(dir.status == DirStatus::Synchronizing) {
+                synchronizing = true;
+                break;
+            } else if(dir.status == DirStatus::Scanning) {
+                scanning = true;
+            }
+        }
+        if(synchronizing) {
+            status = SyncthingStatus::Synchronizing;
+        } else if(scanning) {
+            status = SyncthingStatus::Scanning;
         } else {
-            // check whether at least one directory is scanning or synchronizing
-            bool scanning = false;
-            bool synchronizing = false;
-            for(const SyncthingDir &dir : m_dirs) {
-                if(dir.status == DirStatus::Synchronizing) {
-                    synchronizing = true;
+            // check whether at least one device is paused
+            bool paused = false;
+            for(const SyncthingDev &dev : m_devs) {
+                if(dev.paused) {
+                    paused = true;
                     break;
-                } else if(dir.status == DirStatus::Scanning) {
-                    scanning = true;
                 }
             }
-            if(synchronizing) {
-                status = SyncthingStatus::Synchronizing;
-            } else if(scanning) {
-                status = SyncthingStatus::Scanning;
+            if(paused) {
+                status = SyncthingStatus::Paused;
             } else {
-                // check whether at least one device is paused
-                bool paused = false;
-                for(const SyncthingDev &dev : m_devs) {
-                    if(dev.paused) {
-                        paused = true;
-                        break;
-                    }
-                }
-                if(paused) {
-                    status = SyncthingStatus::Paused;
-                } else {
-                    status = SyncthingStatus::Idle;
-                }
+                status = SyncthingStatus::Idle;
             }
         }
     }

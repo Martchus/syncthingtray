@@ -275,7 +275,6 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
         break;
     case SyncthingStatus::Idle:
     case SyncthingStatus::Scanning:
-    case SyncthingStatus::NotificationsAvailable:
     case SyncthingStatus::Synchronizing:
         m_ui->statusPushButton->setText(tr("Pause"));
         m_ui->statusPushButton->setToolTip(tr("Syncthing is running, click to pause all devices"));
@@ -319,8 +318,8 @@ void TrayWidget::applySettings()
         if(!instance->m_selectedConnection) {
             instance->m_selectedConnection = &Settings::primaryConnectionSettings();
             instance->m_connectionsMenu->actions().at(0)->setChecked(true);
-            instance->m_ui->connectionsPushButton->setText(instance->m_selectedConnection->label);
         }
+        instance->m_ui->connectionsPushButton->setText(instance->m_selectedConnection->label);
 
         instance->m_connection.reconnect(*instance->m_selectedConnection);
 
@@ -392,7 +391,6 @@ void TrayWidget::changeStatus()
         break;
     case SyncthingStatus::Idle:
     case SyncthingStatus::Scanning:
-    case SyncthingStatus::NotificationsAvailable:
     case SyncthingStatus::Synchronizing:
         m_connection.pauseAllDevs();
         break;

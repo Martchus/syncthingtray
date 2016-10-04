@@ -321,6 +321,13 @@ void Application::printStatus(const ArgumentOccurrence &)
             printProperty("Auto-normalize", dir->autoNormalize);
             printProperty("Rescan interval", TimeSpan::fromSeconds(dir->rescanInterval));
             printProperty("Min. free disk percentage", dir->minDiskFreePercentage);
+            if(!dir->errors.empty()) {
+                cout << "   Errors\n";
+                for(const DirError &error : dir->errors) {
+                    printProperty(" - Message", error.message);
+                    printProperty("   File", error.path);
+                }
+            }
             cout << '\n';
         }
     }

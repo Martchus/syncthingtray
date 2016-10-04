@@ -41,6 +41,7 @@ private:
     const QIcon m_statusIconNotify;
     const QIcon m_statusIconPause;
     const QIcon m_statusIconSync;
+    const QIcon m_statusIconOutOfSync;
     TrayMenu m_trayMenu;
     QMenu m_contextMenu;
     Data::SyncthingStatus m_status;
