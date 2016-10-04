@@ -127,7 +127,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     connect(viewIdButton, &QPushButton::clicked, this, &TrayWidget::showOwnDeviceId);
     connect(showLogButton, &QPushButton::clicked, this, &TrayWidget::showLog);
     connect(m_ui->notificationsPushButton, &QPushButton::clicked, this, &TrayWidget::showNotifications);
-    connect(restartButton, &QPushButton::clicked, &m_connection, &SyncthingConnection::restart);
+    connect(restartButton, &QPushButton::clicked, this, &TrayWidget::restartSyncthing);
     connect(m_connectionsActionGroup, &QActionGroup::triggered, this, &TrayWidget::handleConnectionSelected);
 }
 
@@ -243,6 +243,13 @@ void TrayWidget::showNotifications()
     showDialog(dlg);
     m_connection.considerAllNotificationsRead();
     m_ui->notificationsPushButton->setHidden(true);
+}
+
+void TrayWidget::restartSyncthing()
+{
+    if(QMessageBox::warning(this, QCoreApplication::applicationName(), tr("Do you really want to restart Syncthing?"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+        m_connection.restart();
+    }
 }
 
 void TrayWidget::quitTray()

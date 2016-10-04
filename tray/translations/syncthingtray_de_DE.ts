@@ -539,7 +539,7 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="107"/>
-        <location filename="../gui/traywidget.cpp" line="267"/>
+        <location filename="../gui/traywidget.cpp" line="274"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
@@ -571,7 +571,7 @@
     <message>
         <location filename="../gui/traywidget.ui" line="230"/>
         <location filename="../gui/traywidget.ui" line="250"/>
-        <location filename="../gui/traywidget.cpp" line="408"/>
+        <location filename="../gui/traywidget.cpp" line="415"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -658,37 +658,42 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="268"/>
+        <location filename="../gui/traywidget.cpp" line="250"/>
+        <source>Do you really want to restart Syncthing?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/traywidget.cpp" line="275"/>
         <source>Not connected to Syncthing, click to connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="279"/>
+        <location filename="../gui/traywidget.cpp" line="286"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="280"/>
+        <location filename="../gui/traywidget.cpp" line="287"/>
         <source>Syncthing is running, click to pause all devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="285"/>
+        <location filename="../gui/traywidget.cpp" line="292"/>
         <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="286"/>
+        <location filename="../gui/traywidget.cpp" line="293"/>
         <source>At least one device is paused, click to resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="357"/>
+        <location filename="../gui/traywidget.cpp" line="364"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="366"/>
+        <location filename="../gui/traywidget.cpp" line="373"/>
         <source>The file &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>

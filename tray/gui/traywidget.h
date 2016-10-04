@@ -57,6 +57,7 @@ public slots:
     void showOwnDeviceId();
     void showLog();
     void showNotifications();
+    void restartSyncthing();
     void quitTray();
 
 private slots:
