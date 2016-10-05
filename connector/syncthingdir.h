@@ -73,6 +73,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir
     int progressPercentage = 0;
     int progressRate = 0;
     std::vector<SyncthingDirError> errors;
+    std::vector<SyncthingDirError> previousErrors;
     int globalBytes = 0, globalDeleted = 0, globalFiles = 0;
     int localBytes = 0, localDeleted = 0, localFiles = 0;
     int neededByted = 0, neededFiles = 0;

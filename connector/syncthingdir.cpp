@@ -28,10 +28,14 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
     } else if(statusStr == QLatin1String("scanning")) {
         newStatus = SyncthingDirStatus::Scanning;
     } else if(statusStr == QLatin1String("syncing")) {
+        // ensure status changed signal is emitted
         if(!errors.empty()) {
-            errors.clear(); // errors become obsolete
-            status = SyncthingDirStatus::Unknown; // ensure status changed signal is emitted
+            status = SyncthingDirStatus::Unknown;
         }
+        // errors become obsolete; however errors must be kept as previous errors to be able
+        // to identify new errors occuring during this sync attempt as known errors
+        previousErrors.clear();
+        previousErrors.swap(errors);
         newStatus = SyncthingDirStatus::Synchronizing;
     } else if(statusStr == QLatin1String("error")) {
         progressPercentage = 0;

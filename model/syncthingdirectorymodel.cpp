@@ -127,6 +127,8 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                                 return QColor(Qt::red);
                             }
                             break;
+                        case 7:
+                            return dir.errors.empty() ? QColor(Qt::gray) : QColor(Qt::red);
                         }
                     }
                     break;
@@ -229,7 +231,7 @@ int SyncthingDirectoryModel::rowCount(const QModelIndex &parent) const
     if(!parent.isValid()) {
         return static_cast<int>(m_dirs.size());
     } else if(!parent.parent().isValid()) {
-        return parent.parent().row() >= 0 && static_cast<size_t>(parent.parent().row()) < m_dirs.size() && m_dirs[static_cast<size_t>(parent.parent().row())].errors.empty() ? 6 : 7;
+        return 8;
     } else {
         return 0;
     }
@@ -262,6 +264,7 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &, int index)
     emit dataChanged(modelIndex1, modelIndex1, QVector<int>() << Qt::DecorationRole);
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     emit dataChanged(modelIndex2, modelIndex2, QVector<int>() << Qt::DisplayRole << Qt::ForegroundRole);
+    emit dataChanged(this->index(0, 1, modelIndex1), this->index(7, 1, modelIndex1), QVector<int>() << Qt::DisplayRole);
 }
 
 } // namespace Data

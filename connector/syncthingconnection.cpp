@@ -1163,7 +1163,12 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
                             if(find(errors.cbegin(), errors.cend(), dirError) == errors.cend()) {
                                 errors.emplace_back(move(dirError));
                                 dirInfo->assignStatus(SyncthingDirStatus::OutOfSync, eventTime);
-                                emitNotification(eventTime, dirInfo->errors.back().message);
+
+                                // emit newNotification() for new errors
+                                auto &previousErrors = dirInfo->previousErrors;
+                                if(find(previousErrors.cbegin(), previousErrors.cend(), dirInfo->errors.back()) == previousErrors.cend()) {
+                                    emitNotification(eventTime, dirInfo->errors.back().message);
+                                }
                             }
                         }
                     }
