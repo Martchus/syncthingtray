@@ -103,6 +103,8 @@ int runApplication(int argc, const char *const *argv)
                 qtConfigArgs.applySettings(true);
 
                 LOAD_QT_TRANSLATIONS;
+                TranslationFiles::loadApplicationTranslationFile(QStringLiteral("syncthingconnection"));
+                TranslationFiles::loadApplicationTranslationFile(QStringLiteral("syncthingmodel"));
                 QtUtilitiesResources::init();
 
                 int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent());

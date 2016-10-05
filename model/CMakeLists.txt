@@ -19,6 +19,11 @@ set(SRC_FILES
     syncthingdownloadmodel.cpp
 )
 
+set(TS_FILES
+    translations/${META_PROJECT_NAME}_de_DE.ts
+    translations/${META_PROJECT_NAME}_en_US.ts
+)
+
 # find c++utilities
 find_package(c++utilities 4.0.0 REQUIRED)
 use_cpp_utilities()

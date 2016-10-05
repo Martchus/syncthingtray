@@ -489,6 +489,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/trayicon.cpp" line="120"/>
+        <source>Notifications available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/trayicon.cpp" line="125"/>
         <source>Syncthing is idling</source>
         <translation type="unfinished"></translation>
@@ -496,11 +501,6 @@
     <message>
         <location filename="../gui/trayicon.cpp" line="129"/>
         <source>Syncthing is scanning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="120"/>
-        <source>Notifications available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
