@@ -3,6 +3,8 @@
 #include "../connector/syncthingconnection.h"
 #include "../connector/utils.h"
 
+#include <QStringBuilder>
+
 using namespace ChronoUtilities;
 
 namespace Data {
@@ -151,6 +153,15 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                                 }
                             }
                             break;
+                        case 7:
+                            if(!dir.errors.empty()) {
+                                QStringList errors;
+                                errors.reserve(static_cast<int>(dir.errors.size()));
+                                for(const auto &error : dir.errors) {
+                                    errors << error.path;
+                                }
+                                return QVariant(QStringLiteral("<b>") % tr("Failed items") % QStringLiteral("</b><ul><li>") % errors.join(QString()) % QStringLiteral("</li></ul>") % tr("Click for details"));
+                            }
                         }
                     }
                 default:
