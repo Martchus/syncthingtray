@@ -16,6 +16,7 @@
 #include <QStringBuilder>
 #include <QTimer>
 #include <QHostAddress>
+#include <QNetworkInterface>
 
 #include <utility>
 
@@ -557,6 +558,12 @@ QMetaObject::Connection SyncthingConnection::requestLog(std::function<void (cons
 
 /*!
  * \brief Locates and loads the (self-signed) certificate used by the Syncthing GUI.
+ * \remarks
+ *  - Ensures any previous certificates are cleared in any case.
+ *  - Emits error() when an error occurs.
+ *  - Loading the certificate is only possible if the connection object is configured
+ *    to connect to the locally running Syncthing instance. Otherwise this method will
+ *    only do the cleanup of previous certificates but not emit any errors.
  */
 void SyncthingConnection::loadSelfSignedCertificate()
 {
@@ -571,9 +578,12 @@ void SyncthingConnection::loadSelfSignedCertificate()
 
     // only possible if the Syncthing instance is running on the local machine
     const QString host(syncthingUrl.host());
-    if(host.compare(QLatin1String("localhost"), Qt::CaseInsensitive) != 0 && !QHostAddress(host).isLoopback()) {
+    const QHostAddress hostAddress(host);
+    if(host.compare(QLatin1String("localhost"), Qt::CaseInsensitive) != 0
+            && !hostAddress.isLoopback()
+            && !QNetworkInterface::allAddresses().contains(hostAddress)) {
         return;
-    }    
+    }
 
     // find cert
     const QString certPath = !m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate();
