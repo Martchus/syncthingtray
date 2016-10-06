@@ -51,7 +51,6 @@ ConnectionOptionPage::~ConnectionOptionPage()
 QWidget *ConnectionOptionPage::setupWidget()
 {
     auto *w = ConnectionOptionPageBase::setupWidget();
-    updateConnectionStatus();
     ui()->certPathSelection->provideCustomFileMode(QFileDialog::ExistingFile);
     ui()->certPathSelection->lineEdit()->setPlaceholderText(QCoreApplication::translate("QtGui::ConnectionOptionPage", "Auto-detected for local instance"));
     QObject::connect(m_connection, &SyncthingConnection::statusChanged, bind(&ConnectionOptionPage::updateConnectionStatus, this));
@@ -210,13 +209,15 @@ void ConnectionOptionPage::reset()
         ui()->selectionComboBox->clear();
         ui()->selectionComboBox->addItems(itemTexts);
         ui()->selectionComboBox->setCurrentIndex(0);
+
+        updateConnectionStatus();
     }
 }
 
 void ConnectionOptionPage::applyAndReconnect()
 {
     apply();
-    m_connection->reconnect(primaryConnectionSettings());
+    m_connection->reconnect((m_currentIndex == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(m_currentIndex - 1)]));
 }
 
 // NotificationsOptionPage
