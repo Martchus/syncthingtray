@@ -29,7 +29,8 @@ TrayIcon::TrayIcon(QObject *parent) :
     m_statusIconNotify(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-notify.svg")))),
     m_statusIconPause(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-pause.svg")))),
     m_statusIconSync(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-sync.svg")))),
-    m_statusIconOutOfSync(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-error.svg")))),
+    m_statusIconError(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-error.svg")))),
+    m_statusIconErrorSync(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-error-sync.svg")))),
     m_trayMenu(this),
     m_status(SyncthingStatus::Disconnected)
 {
@@ -113,8 +114,13 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
         break;
     default:
         if(connection.hasOutOfSyncDirs()) {
-            setIcon(m_statusIconOutOfSync);
-            setToolTip(tr("At least one directory is out of sync"));
+            if(status == SyncthingStatus::Synchronizing) {
+                setIcon(m_statusIconErrorSync);
+                setToolTip(tr("Synchronization is ongoing but at least one directory is out of sync"));
+            } else {
+                setIcon(m_statusIconError);
+                setToolTip(tr("At least one directory is out of sync"));
+            }
         } else if(connection.hasUnreadNotifications()) {
             setIcon(m_statusIconNotify);
             setToolTip(tr("Notifications available"));

@@ -27,5 +27,6 @@
         <file>icons/hicolor/scalable/places/network-workgroup.svg</file>
         <file>icons/hicolor/scalable/apps/system-run.svg</file>
         <file>icons/hicolor/scalable/actions/network-connect.svg</file>
+        <file>icons/hicolor/scalable/status/syncthing-error-sync.svg</file>
     </qresource>
 </RCC>
