@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QList>
 #include <QSslError>
+#include <QTimer>
 
 #include <functional>
 #include <vector>
@@ -83,6 +84,8 @@ public:
     void setTrafficPollInterval(int trafficPollInterval);
     int devStatsPollInterval() const;
     void setDevStatsPollInterval(int devStatsPollInterval);
+    int reconnectInterval() const;
+    void setReconnectInterval(int reconnectInterval);
     const QString &configDir() const;
     const QString &myId() const;
     int totalIncomingTraffic() const;
@@ -186,6 +189,7 @@ private:
     int m_lastEventId;
     int m_trafficPollInterval;
     int m_devStatsPollInterval;
+    QTimer m_reconnectTimer;
     QString m_configDir;
     QString m_myId;
     int m_totalIncomingTraffic;
@@ -325,6 +329,27 @@ inline int SyncthingConnection::devStatsPollInterval() const
 inline void SyncthingConnection::setDevStatsPollInterval(int devStatsPollInterval)
 {
     m_devStatsPollInterval = devStatsPollInterval;
+}
+
+/*!
+ * \brief Returns the reconnect interval in milliseconds.
+ * \remarks Default value is 0 which indicates disabled auto-reconnect.
+ */
+inline int SyncthingConnection::reconnectInterval() const
+{
+    return m_reconnectTimer.interval();
+}
+
+/*!
+ * \brief Sets the reconnect interval in milliseconds.
+ * \remarks Default value is 0 which indicates disabled auto-reconnect.
+ */
+inline void SyncthingConnection::setReconnectInterval(int reconnectInterval)
+{
+    if(!reconnectInterval) {
+        m_reconnectTimer.stop();
+    }
+    m_reconnectTimer.setInterval(reconnectInterval);
 }
 
 /*!

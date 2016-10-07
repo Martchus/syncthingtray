@@ -54,6 +54,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     m_lastEventId(0),
     m_trafficPollInterval(2000),
     m_devStatsPollInterval(60000),
+    m_reconnectTimer(),
     m_totalIncomingTraffic(0),
     m_totalOutgoingTraffic(0),
     m_totalIncomingRate(0),
@@ -67,7 +68,10 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     m_hasConfig(false),
     m_hasStatus(false),
     m_lastFileDeleted(false)
-{}
+{
+    m_reconnectTimer.setTimerType(Qt::VeryCoarseTimer);
+    QObject::connect(&m_reconnectTimer, &QTimer::timeout, this, static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
+}
 
 /*!
  * \brief Destroys the instance. Ongoing requests are aborted.
@@ -117,6 +121,7 @@ bool SyncthingConnection::hasOutOfSyncDirs() const
  */
 void SyncthingConnection::connect()
 {
+    m_reconnectTimer.stop();
     if(!isConnected()) {
         m_reconnecting = m_hasConfig = m_hasStatus = false;
         if(m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
@@ -144,6 +149,7 @@ void SyncthingConnection::disconnect()
  */
 void SyncthingConnection::reconnect()
 {
+    m_reconnectTimer.stop();
     if(isConnected()) {
         m_reconnecting = true;
         m_hasConfig = m_hasStatus = false;
@@ -622,6 +628,7 @@ void SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
     }
     setTrafficPollInterval(connectionSettings.trafficPollInterval);
     setDevStatsPollInterval(connectionSettings.devStatsPollInterval);
+    setReconnectInterval(connectionSettings.reconnectInterval);
     if(connectionSettings.expectedSslErrors.isEmpty()) {
         loadSelfSignedCertificate();
         connectionSettings.expectedSslErrors = expectedSslErrors();
@@ -661,6 +668,9 @@ void SyncthingConnection::readConfig()
     default:
         emit error(tr("Unable to request Syncthing config: ") + reply->errorString());
         setStatus(SyncthingStatus::Disconnected);
+        if(m_reconnectTimer.interval()) {
+            m_reconnectTimer.start();
+        }
     }
 }
 
@@ -1046,6 +1056,9 @@ void SyncthingConnection::readEvents()
         } else {
             emit error(tr("Unable to parse Syncthing events: ") + jsonError.errorString());
             setStatus(SyncthingStatus::Disconnected);
+            if(m_reconnectTimer.interval()) {
+                m_reconnectTimer.start();
+            }
             return;
         }
         break;
@@ -1065,6 +1078,9 @@ void SyncthingConnection::readEvents()
     default:
         emit error(tr("Unable to request Syncthing events: ") + reply->errorString());
         setStatus(SyncthingStatus::Disconnected);
+        if(m_reconnectTimer.interval()) {
+            m_reconnectTimer.start();
+        }
         return;
     }
 

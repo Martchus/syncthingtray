@@ -294,6 +294,8 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
         m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-resume.svg"))));
         m_ui->statusPushButton->setHidden(false);
         break;
+    default:
+        ;
     }
 }
 
@@ -404,6 +406,8 @@ void TrayWidget::changeStatus()
     case SyncthingStatus::Paused:
         m_connection.resumeAllDevs();
         break;
+    default:
+        ;
     }
 }
 
