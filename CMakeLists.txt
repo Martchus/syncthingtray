@@ -9,7 +9,7 @@ set(META_APP_DESCRIPTION "Tray application for Syncthing")
 set(META_APP_CATEGORIES "Utility;Network;")
 set(META_VERSION_MAJOR 0)
 set(META_VERSION_MINOR 0)
-set(META_VERSION_PATCH 2)
+set(META_VERSION_PATCH 3)
 
 project(${META_PROJECT_NAME})
 
