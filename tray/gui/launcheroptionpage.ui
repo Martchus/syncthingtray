@@ -111,8 +111,8 @@
         <string>Apply and launch now</string>
        </property>
        <property name="icon">
-        <iconset theme="view-refresh">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset theme="view-refresh" resource="../resources/icons.qrc">
+         <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
        </property>
       </widget>
      </item>
@@ -128,8 +128,8 @@
         <string>Stop launched instance</string>
        </property>
        <property name="icon">
-        <iconset theme="process-stop">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset theme="process-stop" resource="../resources/icons.qrc">
+         <normaloff>:/icons/hicolor/scalable/actions/process-stop.svg</normaloff>:/icons/hicolor/scalable/actions/process-stop.svg</iconset>
        </property>
       </widget>
      </item>
@@ -178,7 +178,9 @@
    <header location="global">qtutilities/widgets/clearplaintextedit.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>enabledCheckBox</sender>

@@ -28,5 +28,10 @@
         <file>icons/hicolor/scalable/apps/system-run.svg</file>
         <file>icons/hicolor/scalable/actions/network-connect.svg</file>
         <file>icons/hicolor/scalable/status/syncthing-error-sync.svg</file>
+        <file>icons/hicolor/scalable/places/folder-download.svg</file>
+        <file>icons/hicolor/scalable/actions/process-stop.svg</file>
+        <file>icons/hicolor/scalable/actions/list-add.svg</file>
+        <file>icons/hicolor/scalable/actions/list-remove.svg</file>
+        <file>icons/hicolor/scalable/actions/edit-paste.svg</file>
     </qresource>
 </RCC>

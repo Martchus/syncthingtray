@@ -75,8 +75,8 @@
          <string>Add secondary instance</string>
         </property>
         <property name="icon">
-         <iconset theme="list-add">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset theme="list-add" resource="../resources/icons.qrc">
+          <normaloff>:/icons/hicolor/scalable/actions/list-add.svg</normaloff>:/icons/hicolor/scalable/actions/list-add.svg</iconset>
         </property>
        </widget>
       </item>
@@ -92,8 +92,8 @@
          <string>Remove currently selected secondary instance</string>
         </property>
         <property name="icon">
-         <iconset theme="list-remove">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset theme="list-remove" resource="../resources/icons.qrc">
+          <normaloff>:/icons/hicolor/scalable/actions/list-remove.svg</normaloff>:/icons/hicolor/scalable/actions/list-remove.svg</iconset>
         </property>
        </widget>
       </item>
@@ -228,8 +228,8 @@
       <string>Insert values from local Syncthing configuration</string>
      </property>
      <property name="icon">
-      <iconset theme="edit-paste">
-       <normaloff>.</normaloff>.</iconset>
+      <iconset theme="edit-paste" resource="../resources/icons.qrc">
+       <normaloff>:/icons/hicolor/scalable/actions/edit-paste.svg</normaloff>:/icons/hicolor/scalable/actions/edit-paste.svg</iconset>
      </property>
     </widget>
    </item>
@@ -266,8 +266,8 @@
       <string>Apply connection settings and try to reconnect with the currently selected config</string>
      </property>
      <property name="icon">
-      <iconset theme="view-refresh">
-       <normaloff>.</normaloff>.</iconset>
+      <iconset theme="view-refresh" resource="../resources/icons.qrc">
+       <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
      </property>
     </widget>
    </item>
@@ -395,7 +395,9 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>authCheckBox</sender>
