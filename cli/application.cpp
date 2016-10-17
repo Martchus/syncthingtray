@@ -42,6 +42,7 @@ Application::Application() :
     m_args.pauseAll.setCallback(bind(&Application::requestPauseAll, this, _1));
     m_args.resume.setCallback(bind(&Application::requestResume, this, _1));
     m_args.resumeAll.setCallback(bind(&Application::requestResumeAll, this, _1));
+    m_args.waitForIdle.setCallback(bind(&Application::initWaitForIdle, this, _1));
 
     // connect signals and slots
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &Application::handleStatusChanged);
@@ -111,7 +112,7 @@ int Application::exec(int argc, const char * const *argv)
         }
 
         // finally to request / establish connection
-        if(m_args.status.isPresent() || m_args.rescanAll.isPresent() || m_args.pauseAll.isPresent() || m_args.resumeAll.isPresent()) {
+        if(m_args.status.isPresent() || m_args.rescanAll.isPresent() || m_args.pauseAll.isPresent() || m_args.resumeAll.isPresent() || m_args.waitForIdle.isPresent()) {
             // those arguments rquire establishing a connection first, the actual handler is called by handleStatusChanged() when
             // the connection has been established
             m_connection.reconnect(m_settings);
@@ -139,7 +140,9 @@ void Application::handleStatusChanged(SyncthingStatus newStatus)
         eraseLine(cout);
         cout << '\r';
         m_args.parser.invokeCallbacks();
-        m_connection.disconnect();
+        if(!m_args.waitForIdle.isPresent()) {
+            m_connection.disconnect();
+        }
     }
 }
 
@@ -242,53 +245,55 @@ void Application::requestResumeAll(const ArgumentOccurrence &)
     m_connection.resumeAllDevs();
 }
 
-void Application::printStatus(const ArgumentOccurrence &)
+void Application::findRelevantDirsAndDevs()
 {
-    // find relevant dirs and devs
-    std::vector<const SyncthingDir *> relevantDirs;
-    std::vector<const SyncthingDev *> relevantDevs;
     int dummy;
     if(m_args.dir.isPresent()) {
-        relevantDirs.reserve(m_args.dir.occurrences());
+        m_relevantDirs.reserve(m_args.dir.occurrences());
         for(size_t i = 0; i != m_args.dir.occurrences(); ++i) {
             if(const SyncthingDir *dir = m_connection.findDirInfo(QString::fromLocal8Bit(m_args.dir.values(i).front()), dummy)) {
-                relevantDirs.emplace_back(dir);
+                m_relevantDirs.emplace_back(dir);
             } else {
-                cerr << "Warning: Specified directory \"" << m_args.dir.values(i).front() << "\" does not exist" << endl;
+                cerr << "Warning: Specified directory \"" << m_args.dir.values(i).front() << "\" does not exist and will be ignored" << endl;
             }
         }
     }
     if(m_args.dev.isPresent()) {
-        relevantDevs.reserve(m_args.dev.occurrences());
+        m_relevantDevs.reserve(m_args.dev.occurrences());
         for(size_t i = 0; i != m_args.dev.occurrences(); ++i) {
             const SyncthingDev *dev = m_connection.findDevInfo(QString::fromLocal8Bit(m_args.dev.values(i).front()), dummy);
             if(!dev) {
                 dev = m_connection.findDevInfoByName(QString::fromLocal8Bit(m_args.dev.values(i).front()), dummy);
             }
             if(dev) {
-                relevantDevs.emplace_back(dev);
+                m_relevantDevs.emplace_back(dev);
             } else {
-                cerr << "Warning: Specified device \"" << m_args.dev.values(i).front() << "\" does not exist" << endl;
+                cerr << "Warning: Specified device \"" << m_args.dev.values(i).front() << "\" does not exist and will be ignored" << endl;
             }
         }
     }
-    if(relevantDirs.empty() && relevantDevs.empty()) {
-        relevantDirs.reserve(m_connection.dirInfo().size());
+    if(m_relevantDirs.empty() && m_relevantDevs.empty()) {
+        m_relevantDirs.reserve(m_connection.dirInfo().size());
         for(const SyncthingDir &dir : m_connection.dirInfo()) {
-            relevantDirs.emplace_back(&dir);
+            m_relevantDirs.emplace_back(&dir);
         }
-        relevantDevs.reserve(m_connection.devInfo().size());
+        m_relevantDevs.reserve(m_connection.devInfo().size());
         for(const SyncthingDev &dev : m_connection.devInfo()) {
-            relevantDevs.emplace_back(&dev);
+            m_relevantDevs.emplace_back(&dev);
         }
     }
+}
+
+void Application::printStatus(const ArgumentOccurrence &)
+{
+    findRelevantDirsAndDevs();
 
     // display dirs
-    if(!relevantDirs.empty()) {
+    if(!m_relevantDirs.empty()) {
         setStyle(cout, TextAttribute::Bold);
         cout << "Directories\n";
         setStyle(cout);
-        for(const SyncthingDir *dir : relevantDirs) {
+        for(const SyncthingDir *dir : m_relevantDirs) {
             cout << " - ";
             setStyle(cout, TextAttribute::Bold);
             cout << dir->id.toLocal8Bit().data() << '\n';
@@ -333,11 +338,11 @@ void Application::printStatus(const ArgumentOccurrence &)
     }
 
     // display devs
-    if(!relevantDevs.empty()) {
+    if(!m_relevantDevs.empty()) {
         setStyle(cout, TextAttribute::Bold);
         cout << "Devices\n";
         setStyle(cout);
-        for(const SyncthingDev *dev : relevantDevs) {
+        for(const SyncthingDev *dev : m_relevantDevs) {
             cout << " - ";
             setStyle(cout, TextAttribute::Bold);
             cout << dev->name.toLocal8Bit().data() << '\n';
@@ -395,6 +400,47 @@ void Application::printLog(const std::vector<SyncthingLogEntry> &logEntries)
         cout << DateTime::fromIsoStringLocal(entry.when.toLocal8Bit().data()).toString(DateTimeOutputFormat::DateAndTime, true).data() << ':' << ' ' << entry.message.toLocal8Bit().data() << '\n';
     }
     cout.flush();
+    QCoreApplication::exit();
+}
+
+void Application::initWaitForIdle(const ArgumentOccurrence &)
+{
+    findRelevantDirsAndDevs();
+
+    // might idle already
+    waitForIdle();
+
+    // currently not idling
+    // -> relevant dirs/devs might be invalidated so findRelevantDirsAndDevs() must invoked again
+    connect(&m_connection, &SyncthingConnection::newDirs, this, &Application::findRelevantDirsAndDevs);
+    connect(&m_connection, &SyncthingConnection::newDevices, this, &Application::findRelevantDirsAndDevs);
+    // -> check for idle again when dir/dev status changed
+    connect(&m_connection, &SyncthingConnection::dirStatusChanged, this, &Application::waitForIdle);
+    connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &Application::waitForIdle);
+}
+
+void Application::waitForIdle()
+{
+    for(const SyncthingDir *dir : m_relevantDirs) {
+        switch(dir->status) {
+        case SyncthingDirStatus::Unknown:
+        case SyncthingDirStatus::Idle:
+            break;
+        default:
+            return;
+        }
+    }
+    for(const SyncthingDev *dev : m_relevantDevs) {
+        switch(dev->status) {
+        case SyncthingDevStatus::Unknown:
+        case SyncthingDevStatus::Disconnected:
+        case SyncthingDevStatus::OwnDevice:
+        case SyncthingDevStatus::Idle:
+            break;
+        default:
+            return;
+        }
+    }
     QCoreApplication::exit();
 }
 

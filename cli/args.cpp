@@ -14,6 +14,7 @@ Args::Args() :
     pauseAll("pause-all", '\0', "pauses all devices"),
     resume("resume", '\0', "resumes the specified devices"),
     resumeAll("resume-all", '\0', "resumes all devices"),
+    waitForIdle("wait-for-idle", 'w', "waits until the specified dirs/devs are idling"),
     dir("dir", 'd', "specifies the directory to display status info for (default is all dirs)", {"ID"}),
     dev("dev", '\0', "specifies the device to display status info for (default is all devs)", {"ID"}),
     configFile("config-file", 'f', "specifies the Syncthing config file", {"path"}),
@@ -24,6 +25,7 @@ Args::Args() :
 {
     dir.setConstraints(0, -1), dev.setConstraints(0, -1);
     status.setSubArguments({&dir, &dev});
+    waitForIdle.setSubArguments({&dir, &dev});
 
     rescan.setValueNames({"dir ID"});
     rescan.setRequiredValueCount(-1);
@@ -33,7 +35,7 @@ Args::Args() :
     resume.setRequiredValueCount(-1);
 
     parser.setMainArguments({&status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &pauseAll, &resume, &resumeAll,
-                             &configFile, &apiKey, &url, &credentials, &certificate, &help});
+                             &waitForIdle, &configFile, &apiKey, &url, &credentials, &certificate, &help});
 
     // allow setting default values via environment
     configFile.setEnvironmentVariable("SYNCTHING_CTL_CONFIG_FILE");
