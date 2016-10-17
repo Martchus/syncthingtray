@@ -117,22 +117,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="321"/>
+        <location filename="../gui/settingsdialog.cpp" line="323"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="323"/>
+        <location filename="../gui/settingsdialog.cpp" line="325"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="325"/>
+        <location filename="../gui/settingsdialog.cpp" line="327"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="412"/>
+        <location filename="../gui/settingsdialog.cpp" line="414"/>
         <source>unable to modify startup entry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -225,14 +225,25 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="299"/>
-        <location filename="../gui/connectionoptionpage.ui" line="326"/>
+        <location filename="../gui/connectionoptionpage.ui" line="305"/>
+        <location filename="../gui/connectionoptionpage.ui" line="338"/>
+        <location filename="../gui/connectionoptionpage.ui" line="374"/>
         <source> ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/connectionoptionpage.ui" line="319"/>
+        <location filename="../gui/connectionoptionpage.ui" line="325"/>
         <source>Device statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/connectionoptionpage.ui" line="358"/>
+        <source>Reconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/connectionoptionpage.ui" line="371"/>
+        <source>no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -251,12 +262,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="146"/>
+        <location filename="../gui/settingsdialog.cpp" line="148"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="170"/>
+        <location filename="../gui/settingsdialog.cpp" line="172"/>
         <source>Instance %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -363,13 +374,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="492"/>
+        <location filename="../gui/settingsdialog.cpp" line="494"/>
         <source>Syncthing existed with exit code %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="495"/>
+        <location filename="../gui/settingsdialog.cpp" line="497"/>
         <source>Syncthing crashed with exit code %1
 </source>
         <translation type="unfinished"></translation>
@@ -411,22 +422,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="580"/>
+        <location filename="../gui/settingsdialog.cpp" line="582"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="586"/>
+        <location filename="../gui/settingsdialog.cpp" line="588"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="592"/>
+        <location filename="../gui/settingsdialog.cpp" line="594"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="602"/>
+        <location filename="../gui/settingsdialog.cpp" line="604"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -576,7 +587,7 @@
     <message>
         <location filename="../gui/traywidget.ui" line="230"/>
         <location filename="../gui/traywidget.ui" line="250"/>
-        <location filename="../gui/traywidget.cpp" line="415"/>
+        <location filename="../gui/traywidget.cpp" line="419"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -603,17 +614,17 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="327"/>
+        <location filename="../gui/traywidget.ui" line="323"/>
         <source>Directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="356"/>
+        <location filename="../gui/traywidget.ui" line="352"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="385"/>
+        <location filename="../gui/traywidget.ui" line="381"/>
         <source>Downloads</source>
         <translation type="unfinished"></translation>
     </message>
@@ -693,12 +704,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="364"/>
+        <location filename="../gui/traywidget.cpp" line="366"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="373"/>
+        <location filename="../gui/traywidget.cpp" line="375"/>
         <source>The file &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -715,7 +726,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../gui/webviewoptionpage.ui" line="14"/>
-        <location filename="../gui/settingsdialog.cpp" line="542"/>
+        <location filename="../gui/settingsdialog.cpp" line="544"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -745,7 +756,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="544"/>
+        <location filename="../gui/settingsdialog.cpp" line="546"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
@@ -754,7 +765,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../application/settings.cpp" line="172"/>
+        <location filename="../application/settings.cpp" line="173"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation type="unfinished"></translation>
     </message>

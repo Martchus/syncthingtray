@@ -4,153 +4,153 @@
 <context>
     <name>Data::SyncthingConnection</name>
     <message>
-        <location filename="../syncthingconnection.cpp" line="88"/>
+        <location filename="../syncthingconnection.cpp" line="92"/>
         <source>disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="90"/>
+        <location filename="../syncthingconnection.cpp" line="94"/>
         <source>reconnecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="92"/>
+        <location filename="../syncthingconnection.cpp" line="96"/>
         <source>connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="94"/>
+        <location filename="../syncthingconnection.cpp" line="98"/>
         <source>connected, paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="96"/>
+        <location filename="../syncthingconnection.cpp" line="100"/>
         <source>connected, synchronizing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="98"/>
+        <location filename="../syncthingconnection.cpp" line="102"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="123"/>
-        <location filename="../syncthingconnection.cpp" line="193"/>
+        <location filename="../syncthingconnection.cpp" line="128"/>
+        <location filename="../syncthingconnection.cpp" line="199"/>
         <source>Connection configuration is insufficient.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="521"/>
+        <location filename="../syncthingconnection.cpp" line="527"/>
         <source>Unable to request QR-Code: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="550"/>
+        <location filename="../syncthingconnection.cpp" line="556"/>
         <source>Unable to parse Syncthing log: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="554"/>
+        <location filename="../syncthingconnection.cpp" line="560"/>
         <source>Unable to request system log: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="591"/>
+        <location filename="../syncthingconnection.cpp" line="597"/>
         <source>Unable to locate certificate used by Syncthing GUI.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="597"/>
+        <location filename="../syncthingconnection.cpp" line="603"/>
         <source>Unable to load certificate used by Syncthing GUI.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="656"/>
+        <location filename="../syncthingconnection.cpp" line="663"/>
         <source>Unable to parse Syncthing config: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="662"/>
+        <location filename="../syncthingconnection.cpp" line="669"/>
         <source>Unable to request Syncthing config: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="758"/>
+        <location filename="../syncthingconnection.cpp" line="768"/>
         <source>Unable to parse Syncthing status: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="764"/>
+        <location filename="../syncthingconnection.cpp" line="774"/>
         <source>Unable to request Syncthing status: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="839"/>
+        <location filename="../syncthingconnection.cpp" line="849"/>
         <source>Unable to parse connections: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="845"/>
+        <location filename="../syncthingconnection.cpp" line="855"/>
         <source>Unable to request connections: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="899"/>
+        <location filename="../syncthingconnection.cpp" line="909"/>
         <source>Unable to parse directory statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="905"/>
+        <location filename="../syncthingconnection.cpp" line="915"/>
         <source>Unable to request directory statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="941"/>
+        <location filename="../syncthingconnection.cpp" line="951"/>
         <source>Unable to parse device statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="947"/>
+        <location filename="../syncthingconnection.cpp" line="957"/>
         <source>Unable to request device statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="985"/>
+        <location filename="../syncthingconnection.cpp" line="995"/>
         <source>Unable to parse errors: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="996"/>
+        <location filename="../syncthingconnection.cpp" line="1006"/>
         <source>Unable to request errors: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1047"/>
+        <location filename="../syncthingconnection.cpp" line="1057"/>
         <source>Unable to parse Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1066"/>
+        <location filename="../syncthingconnection.cpp" line="1079"/>
         <source>Unable to request Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1317"/>
+        <location filename="../syncthingconnection.cpp" line="1333"/>
         <source>Unable to request rescan: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1337"/>
+        <location filename="../syncthingconnection.cpp" line="1353"/>
         <source>Unable to request pause/resume: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1353"/>
+        <location filename="../syncthingconnection.cpp" line="1369"/>
         <source>Unable to request restart: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1369"/>
+        <location filename="../syncthingconnection.cpp" line="1385"/>
         <source>Unable to request shutdown: </source>
         <translation type="unfinished"></translation>
     </message>
