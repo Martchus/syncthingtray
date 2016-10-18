@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 set(META_PROJECT_TYPE application)
 set(META_GUI_OPTIONAL false)
 set(META_APP_NAME "Syncthing Tray")
+set(META_APP_ACTIONS OPEN_WEBUI)
+set(META_APP_ACTION_OPEN_WEBUI "open-webui" "Open web UI" "--webui")
 
 # add project files
 set(WIDGETS_HEADER_FILES
