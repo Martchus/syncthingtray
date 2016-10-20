@@ -19,6 +19,7 @@
 #include <QNetworkInterface>
 
 #include <utility>
+#include <iostream>
 
 using namespace std;
 using namespace ChronoUtilities;
@@ -794,9 +795,9 @@ void SyncthingConnection::readConnections()
             const QJsonObject replyObj(replyDoc.object());
             const QJsonObject totalObj(replyObj.value(QStringLiteral("total")).toObject());
 
-            // read traffic
-            const int totalIncomingTraffic = totalObj.value(QStringLiteral("inBytesTotal")).toInt(0);
-            const int totalOutgoingTraffic = totalObj.value(QStringLiteral("outBytesTotal")).toInt(0);
+            // read traffic, the conversion to double is neccassary because toInt() doesn't work for high values
+            const uint64 totalIncomingTraffic = static_cast<uint64>(totalObj.value(QStringLiteral("inBytesTotal")).toDouble(0.0));
+            const uint64 totalOutgoingTraffic = static_cast<uint64>(totalObj.value(QStringLiteral("outBytesTotal")).toDouble(0.0));
             double transferTime;
             if(!m_lastConnectionsUpdate.isNull() && ((transferTime = (DateTime::gmtNow() - m_lastConnectionsUpdate).totalSeconds()) != 0.0)) {
                 m_totalIncomingRate = (totalIncomingTraffic - m_totalIncomingTraffic) * 0.008 / transferTime,
@@ -829,8 +830,8 @@ void SyncthingConnection::readConnections()
                         }
                     }
                     dev.paused = connectionObj.value(QStringLiteral("paused")).toBool(false);
-                    dev.totalIncomingTraffic = connectionObj.value(QStringLiteral("inBytesTotal")).toInt(0);
-                    dev.totalOutgoingTraffic = connectionObj.value(QStringLiteral("outBytesTotal")).toInt(0);
+                    dev.totalIncomingTraffic = static_cast<uint64>(connectionObj.value(QStringLiteral("inBytesTotal")).toDouble(0));
+                    dev.totalOutgoingTraffic = static_cast<uint64>(connectionObj.value(QStringLiteral("outBytesTotal")).toDouble(0));
                     dev.connectionAddress = connectionObj.value(QStringLiteral("address")).toString();
                     dev.connectionType = connectionObj.value(QStringLiteral("type")).toString();
                     dev.clientVersion = connectionObj.value(QStringLiteral("clientVersion")).toString();
@@ -943,9 +944,9 @@ void SyncthingConnection::readDeviceStatistics()
                 }
                 ++index;
             }
-            // since there seems no event for this data, just request every minute, FIXME: make interval configurable
+            // since there seems no event for this data, just request every minute
             if(m_keepPolling) {
-                QTimer::singleShot(m_devStatsPollInterval, Qt::VeryCoarseTimer, this, SLOT(requestConnections()));
+                QTimer::singleShot(m_devStatsPollInterval, Qt::VeryCoarseTimer, this, &SyncthingConnection::requestDeviceStatistics);
             }
         } else {
             emit error(tr("Unable to parse device statistics: ") + jsonError.errorString());

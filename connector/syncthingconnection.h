@@ -88,8 +88,8 @@ public:
     void setReconnectInterval(int reconnectInterval);
     const QString &configDir() const;
     const QString &myId() const;
-    int totalIncomingTraffic() const;
-    int totalOutgoingTraffic() const;
+    uint64 totalIncomingTraffic() const;
+    uint64 totalOutgoingTraffic() const;
     double totalIncomingRate() const;
     double totalOutgoingRate() const;
     const std::vector<SyncthingDir> &dirInfo() const;
@@ -131,7 +131,7 @@ Q_SIGNALS:
     void statusChanged(SyncthingStatus newStatus);
     void configDirChanged(const QString &newConfigDir);
     void myIdChanged(const QString &myNewId);
-    void trafficChanged(int totalIncomingTraffic, int totalOutgoingTraffic);
+    void trafficChanged(uint64 totalIncomingTraffic, uint64 totalOutgoingTraffic);
     void rescanTriggered(const QString &dirId);
     void pauseTriggered(const QString &devId);
     void resumeTriggered(const QString &devId);
@@ -192,8 +192,8 @@ private:
     QTimer m_reconnectTimer;
     QString m_configDir;
     QString m_myId;
-    int m_totalIncomingTraffic;
-    int m_totalOutgoingTraffic;
+    uint64 m_totalIncomingTraffic;
+    uint64 m_totalOutgoingTraffic;
     double m_totalIncomingRate;
     double m_totalOutgoingRate;
     QNetworkReply *m_configReply;
@@ -371,7 +371,7 @@ inline const QString &SyncthingConnection::myId() const
 /*!
  * \brief Returns the total incoming traffic in byte.
  */
-inline int SyncthingConnection::totalIncomingTraffic() const
+inline uint64 SyncthingConnection::totalIncomingTraffic() const
 {
     return m_totalIncomingTraffic;
 }
@@ -379,7 +379,7 @@ inline int SyncthingConnection::totalIncomingTraffic() const
 /*!
  * \brief Returns the total outgoing traffic in byte.
  */
-inline int SyncthingConnection::totalOutgoingTraffic() const
+inline uint64 SyncthingConnection::totalOutgoingTraffic() const
 {
     return m_totalOutgoingTraffic;
 }

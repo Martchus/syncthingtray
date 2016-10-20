@@ -105,11 +105,11 @@ set(REQUIRED_ICONS
 )
 
 # find c++utilities
-find_package(c++utilities 4.0.0 REQUIRED)
+find_package(c++utilities 4.2.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities
-find_package(qtutilities 5.0.0 REQUIRED)
+find_package(qtutilities 5.1.0 REQUIRED)
 use_qt_utilities()
 
 # find backend libraries
