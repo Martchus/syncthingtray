@@ -286,7 +286,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
       <item>
        <widget class="QPushButton" name="connectionsPushButton">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
