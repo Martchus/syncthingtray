@@ -1260,7 +1260,9 @@ void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eve
                 status = SyncthingDevStatus::Disconnected;
             } else if(eventType == QLatin1String("DeviceDiscovered")) {
                 // we know about this device already, set status anyways because it might still be unknown
-                status = SyncthingDevStatus::Disconnected;
+                if(status == SyncthingDevStatus::Unknown) {
+                    status = SyncthingDevStatus::Disconnected;
+                }
             } else {
                 return; // can't handle other event types currently
             }

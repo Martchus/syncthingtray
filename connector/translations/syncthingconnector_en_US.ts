@@ -135,22 +135,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1334"/>
+        <location filename="../syncthingconnection.cpp" line="1336"/>
         <source>Unable to request rescan: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1354"/>
+        <location filename="../syncthingconnection.cpp" line="1356"/>
         <source>Unable to request pause/resume: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1370"/>
+        <location filename="../syncthingconnection.cpp" line="1372"/>
         <source>Unable to request restart: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1386"/>
+        <location filename="../syncthingconnection.cpp" line="1388"/>
         <source>Unable to request shutdown: </source>
         <translation type="unfinished"></translation>
     </message>
