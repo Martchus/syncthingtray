@@ -44,14 +44,16 @@ The tray is still under development; the following features are planned:
 ### Under Openbox/Tint2
 ![Openbox/Tint2](/tray/resources/screenshots/tint2.png?raw=true)
 
-### Under Plasma 5 (dark color theme)
+### Under Plasma 5
 ![Plasma 5](/tray/resources/screenshots/plasma.png?raw=true)
+![Plasma 5 (dark)](/tray/resources/screenshots/plasma-dark.png?raw=true)
 
-### Settings dialog (dark color theme)
+### Settings dialog
 ![Settings dialog](/tray/resources/screenshots/settings.png?raw=true)
 
-### Web view (dark color theme)
+### Web view
 ![Web view](/tray/resources/screenshots/webview.png?raw=true)
+![Web view (dark)](/tray/resources/screenshots/webview-dark.png?raw=true)
 
 ## Hotkey for Web UI
 To create a hotkey for the web UI, you can use the same approach as for any other
