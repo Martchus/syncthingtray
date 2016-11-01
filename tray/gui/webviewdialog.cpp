@@ -8,6 +8,7 @@
 
 #include <QIcon>
 #include <QCloseEvent>
+#include <QKeyEvent>
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE)
 # include <QWebEngineView>
 #elif defined(SYNCTHINGTRAY_USE_WEBKIT)
@@ -55,6 +56,18 @@ void QtGui::WebViewDialog::closeEvent(QCloseEvent *event)
         deleteLater();
     }
     event->accept();
+}
+
+void WebViewDialog::keyPressEvent(QKeyEvent *event)
+{
+    switch(event->key()) {
+    case Qt::Key_F5:
+        m_view->reload();
+        event->accept();
+        break;
+    default:
+        QMainWindow::keyPressEvent(event);
+    }
 }
 
 }

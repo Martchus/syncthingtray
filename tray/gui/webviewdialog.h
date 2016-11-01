@@ -29,6 +29,7 @@ public slots:
 
 protected:
     void closeEvent(QCloseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 
 private:
     WEB_VIEW_PROVIDER *m_view;
