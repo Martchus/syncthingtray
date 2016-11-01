@@ -14,4 +14,14 @@
 # define LIB_SYNCTHING_MODEL_IMPORT LIB_IMPORT
 #endif
 
+/*!
+ * \def LIB_SYNCTHING_MODEL_EXPORT
+ * \brief Marks the symbol to be exported by the syncthingmodel library.
+ */
+
+/*!
+ * \def LIB_SYNCTHING_MODEL_IMPORT
+ * \brief Marks the symbol to be imported from the syncthingmodel library.
+ */
+
 #endif // LIB_SYNCTHING_MODEL_GLOBAL

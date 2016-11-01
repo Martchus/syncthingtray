@@ -14,4 +14,14 @@
 # define LIB_SYNCTHING_CONNECTOR_IMPORT LIB_IMPORT
 #endif
 
+/*!
+ * \def LIB_SYNCTHING_CONNECTOR_EXPORT
+ * \brief Marks the symbol to be exported by the syncthingconnector library.
+ */
+
+/*!
+ * \def LIB_SYNCTHING_CONNECTOR_IMPORT
+ * \brief Marks the symbol to be imported from the syncthingconnector library.
+ */
+
 #endif // LIB_SYNCTHING_CONNECTOR_GLOBAL
