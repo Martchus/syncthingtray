@@ -46,7 +46,7 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
                             emit scanDir(*dir);
                         }
                     }
-                } else if(clickedIndex.row() == 7) {
+                } else if(clickedIndex.row() == 7 && !dir->errors.empty()) {
                     // show errors
                     auto *textViewDlg = new TextViewDialog(tr("Errors of %1").arg(dir->label.isEmpty() ? dir->id : dir->label));
                     auto *browser = textViewDlg->browser();
