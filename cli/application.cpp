@@ -304,6 +304,8 @@ void Application::printStatus(const ArgumentOccurrence &)
             switch(dir->status) {
             case SyncthingDirStatus::Idle:
                 status = "idle"; break;
+            case SyncthingDirStatus::Unshared:
+                status = "unshared"; break;
             case SyncthingDirStatus::Scanning:
                 status = "scanning"; break;
             case SyncthingDirStatus::Synchronizing:
@@ -425,6 +427,7 @@ void Application::waitForIdle()
         switch(dir->status) {
         case SyncthingDirStatus::Unknown:
         case SyncthingDirStatus::Idle:
+        case SyncthingDirStatus::Unshared:
             break;
         default:
             return;

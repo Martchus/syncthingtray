@@ -16,6 +16,7 @@ enum class SyncthingDirStatus
 {
     Unknown,
     Idle,
+    Unshared,
     Scanning,
     Synchronizing,
     Paused,

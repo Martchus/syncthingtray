@@ -24,7 +24,7 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
     SyncthingDirStatus newStatus;
     if(statusStr == QLatin1String("idle")) {
         progressPercentage = 0;
-        newStatus = errors.empty() ? SyncthingDirStatus::Idle : SyncthingDirStatus::OutOfSync;
+        newStatus = SyncthingDirStatus::Idle;
     } else if(statusStr == QLatin1String("scanning")) {
         newStatus = SyncthingDirStatus::Scanning;
     } else if(statusStr == QLatin1String("syncing")) {
@@ -41,7 +41,15 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
         progressPercentage = 0;
         newStatus = SyncthingDirStatus::OutOfSync;
     } else {
-        newStatus = errors.empty() ? SyncthingDirStatus::Idle : SyncthingDirStatus::OutOfSync;
+        newStatus = SyncthingDirStatus::Idle;
+    }
+    if(newStatus == SyncthingDirStatus::Idle) {
+        if(!errors.empty()) {
+            newStatus = SyncthingDirStatus::OutOfSync;
+        } else if(devices.size() < 2) {
+            // FIXME: we can assume only own device is assigned, correct?
+            newStatus = SyncthingDirStatus::Unshared;
+        }
     }
     if(newStatus != status) {
         switch(status) {
@@ -65,10 +73,14 @@ bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, DateTime time)
         lastStatusUpdate = time;
     }
     switch(newStatus) {
-    case SyncthingDirStatus::Idle:
     case SyncthingDirStatus::Unknown:
+    case SyncthingDirStatus::Idle:
+    case SyncthingDirStatus::Unshared:
         if(!errors.empty()) {
             newStatus = SyncthingDirStatus::OutOfSync;
+        } else if(devices.size() < 2) {
+            // FIXME: we can assume only own device is assigned, correct?
+            newStatus = SyncthingDirStatus::Unshared;
         }
         break;
     default:

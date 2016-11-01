@@ -179,6 +179,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case 1:
                     switch(dir.status) {
                     case SyncthingDirStatus::Unknown: return tr("Unknown status");
+                    case SyncthingDirStatus::Unshared: return tr("Unshared");
                     case SyncthingDirStatus::Idle: return tr("Idle");
                     case SyncthingDirStatus::Scanning: return dir.progressPercentage > 0 ? tr("Scanning (%1 %)").arg(dir.progressPercentage) : tr("Scanning");
                     case SyncthingDirStatus::Synchronizing: return dir.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dir.progressPercentage) : tr("Synchronizing");
@@ -193,6 +194,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case 0:
                     switch(dir.status) {
                     case SyncthingDirStatus::Unknown: return m_unknownIcon;
+                    case SyncthingDirStatus::Unshared: return m_unknownIcon;
                     case SyncthingDirStatus::Idle: return m_idleIcon;
                     case SyncthingDirStatus::Scanning: return m_otherIcon;
                     case SyncthingDirStatus::Synchronizing: return m_syncIcon;
@@ -215,6 +217,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     switch(dir.status) {
                     case SyncthingDirStatus::Unknown: break;
                     case SyncthingDirStatus::Idle: return QColor(Qt::darkGreen);
+                    case SyncthingDirStatus::Unshared: return QColor(0xA85900);
                     case SyncthingDirStatus::Scanning: return QColor(Qt::blue);
                     case SyncthingDirStatus::Synchronizing: return QColor(Qt::blue);
                     case SyncthingDirStatus::Paused: break;
