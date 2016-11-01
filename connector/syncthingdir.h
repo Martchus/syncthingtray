@@ -60,6 +60,10 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemDownloadProgress
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir
 {
+    SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
+    bool assignStatus(const QString &statusStr, ChronoUtilities::DateTime time);
+    bool assignStatus(SyncthingDirStatus newStatus, ChronoUtilities::DateTime time);
+
     QString id;
     QString label;
     QString path;
@@ -87,10 +91,13 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir
     int blocksToBeDownloaded = 0;
     unsigned int downloadPercentage = 0;
     QString downloadLabel;
-
-    bool assignStatus(const QString &statusStr, ChronoUtilities::DateTime time);
-    bool assignStatus(SyncthingDirStatus newStatus, ChronoUtilities::DateTime time);
 };
+
+inline SyncthingDir::SyncthingDir(const QString &id, const QString &label, const QString &path) :
+    id(id),
+    label(label),
+    path(path)
+{}
 
 } // namespace Data
 

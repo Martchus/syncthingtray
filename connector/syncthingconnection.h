@@ -178,6 +178,8 @@ private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
+    SyncthingDir *addDirInfo(std::vector<SyncthingDir> &dirs, const QString &dirId);
+    SyncthingDev *addDevInfo(std::vector<SyncthingDev> &devs, const QString &devId);
 
     QString m_syncthingUrl;
     QByteArray m_apiKey;

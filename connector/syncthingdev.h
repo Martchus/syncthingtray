@@ -23,6 +23,7 @@ enum class SyncthingDevStatus
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev
 {
+    SyncthingDev(const QString &id = QString(), const QString &name = QString());
     QString id;
     QString name;
     QStringList addresses;
@@ -40,6 +41,11 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev
     QString clientVersion;
     ChronoUtilities::DateTime lastSeen;
 };
+
+inline SyncthingDev::SyncthingDev(const QString &id, const QString &name) :
+    id(id),
+    name(name)
+{}
 
 } // namespace Data
 

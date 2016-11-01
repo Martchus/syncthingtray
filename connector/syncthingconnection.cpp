@@ -367,6 +367,28 @@ SyncthingDir *SyncthingConnection::findDirInfo(const QString &dirId, int &row)
 }
 
 /*!
+ * \brief Appends a directory info object with the specified \a dirId to \a dirs.
+ *
+ * If such an object already exists, it is recycled by moving it do \a dirs.
+ * Otherwise a new, empty object is created.
+ *
+ * \returns Returns the directory info object or nullptr if \a dirId is invalid.
+ */
+SyncthingDir *SyncthingConnection::addDirInfo(std::vector<SyncthingDir> &dirs, const QString &dirId)
+{
+    if(dirId.isEmpty()) {
+        return nullptr;
+    }
+    int row;
+    if(SyncthingDir *existingDirInfo = findDirInfo(dirId, row)) {
+        dirs.emplace_back(move(*existingDirInfo));
+    } else {
+        dirs.emplace_back(dirId);
+    }
+    return &dirs.back();
+}
+
+/*!
  * \brief Returns the device info object for the device with the specified ID.
  * \returns Returns a pointer to the object or nullptr if not found.
  * \remarks The returned object becomes invalid when the newConfig() signal is emitted or the connection is destroyed.
@@ -398,6 +420,28 @@ SyncthingDev *SyncthingConnection::findDevInfoByName(const QString &devName, int
         ++row;
     }
     return nullptr;
+}
+
+/*!
+ * \brief Appends a device info object with the specified \a devId to \a devs.
+ *
+ * If such an object already exists, it is recycled by moving it do \a dirs.
+ * Otherwise a new, empty object is created.
+ *
+ * \returns Returns the device info object or nullptr if \a devId is invalid.
+ */
+SyncthingDev *SyncthingConnection::addDevInfo(std::vector<SyncthingDev> &devs, const QString &devId)
+{
+    if(devId.isEmpty()) {
+        return nullptr;
+    }
+    int row;
+    if(SyncthingDev *existingDevInfo = findDevInfo(devId, row)) {
+        devs.emplace_back(move(*existingDevInfo));
+    } else {
+        devs.emplace_back(devId);
+    }
+    return &devs.back();
 }
 
 /*!
@@ -659,7 +703,9 @@ void SyncthingConnection::readConfig()
             readDirs(replyObj.value(QStringLiteral("folders")).toArray());
             readDevs(replyObj.value(QStringLiteral("devices")).toArray());
             m_hasConfig = true;
-            continueConnecting();
+            if(!isConnected()) {
+                continueConnecting();
+            }
         } else {
             emit error(tr("Unable to parse Syncthing config: ") + jsonError.errorString());
         }
@@ -680,30 +726,29 @@ void SyncthingConnection::readConfig()
  */
 void SyncthingConnection::readDirs(const QJsonArray &dirs)
 {
-    m_dirs.clear();
-    m_dirs.reserve(static_cast<size_t>(dirs.size()));
+    std::vector<SyncthingDir> newDirs;
+    newDirs.reserve(static_cast<size_t>(dirs.size()));
     for(const QJsonValue &dirVal : dirs) {
         const QJsonObject dirObj(dirVal.toObject());
-        SyncthingDir dirItem;
-        dirItem.id = dirObj.value(QStringLiteral("id")).toString();
-        if(!dirItem.id.isEmpty()) { // ignore dirs with empty id
-            dirItem.label = dirObj.value(QStringLiteral("label")).toString();
-            dirItem.path = dirObj.value(QStringLiteral("path")).toString();
+        if(SyncthingDir *dirItem = addDirInfo(newDirs, dirObj.value(QStringLiteral("id")).toString())) {
+            dirItem->label = dirObj.value(QStringLiteral("label")).toString();
+            dirItem->path = dirObj.value(QStringLiteral("path")).toString();
+            dirItem->devices.clear();
             for(const QJsonValue &dev : dirObj.value(QStringLiteral("devices")).toArray()) {
                 const QString devId = dev.toObject().value(QStringLiteral("deviceID")).toString();
                 if(!devId.isEmpty()) {
-                    dirItem.devices << devId;
+                    dirItem->devices << devId;
                 }
             }
-            dirItem.readOnly = dirObj.value(QStringLiteral("readOnly")).toBool(false);
-            dirItem.rescanInterval = dirObj.value(QStringLiteral("rescanIntervalS")).toInt(-1);
-            dirItem.ignorePermissions = dirObj.value(QStringLiteral("ignorePerms")).toBool(false);
-            dirItem.autoNormalize = dirObj.value(QStringLiteral("autoNormalize")).toBool(false);
-            dirItem.minDiskFreePercentage = dirObj.value(QStringLiteral("minDiskFreePct")).toInt(-1);
-            m_dirs.emplace_back(move(dirItem));
+            dirItem->readOnly = dirObj.value(QStringLiteral("readOnly")).toBool(false);
+            dirItem->rescanInterval = dirObj.value(QStringLiteral("rescanIntervalS")).toInt(-1);
+            dirItem->ignorePermissions = dirObj.value(QStringLiteral("ignorePerms")).toBool(false);
+            dirItem->autoNormalize = dirObj.value(QStringLiteral("autoNormalize")).toBool(false);
+            dirItem->minDiskFreePercentage = dirObj.value(QStringLiteral("minDiskFreePct")).toInt(-1);
         }
     }
-    emit newDirs(m_dirs);
+    m_dirs.swap(newDirs);
+    emit this->newDirs(m_dirs);
 }
 
 /*!
@@ -711,25 +756,24 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
  */
 void SyncthingConnection::readDevs(const QJsonArray &devs)
 {
-    m_devs.clear();
-    m_devs.reserve(static_cast<size_t>(devs.size()));
+    vector<SyncthingDev> newDevs;
+    newDevs.reserve(static_cast<size_t>(devs.size()));
     for(const QJsonValue &devVal: devs) {
         const QJsonObject devObj(devVal.toObject());
-        SyncthingDev devItem;
-        devItem.id = devObj.value(QStringLiteral("deviceID")).toString();
-        if(!devItem.id.isEmpty()) { // ignore dirs with empty id
-            devItem.name = devObj.value(QStringLiteral("name")).toString();
+        if(SyncthingDev *devItem = addDevInfo(newDevs, devObj.value(QStringLiteral("deviceID")).toString())) {
+            devItem->name = devObj.value(QStringLiteral("name")).toString();
+            devItem->addresses.clear();
             for(const QJsonValue &addrVal : devObj.value(QStringLiteral("addresses")).toArray()) {
-                devItem.addresses << addrVal.toString();
+                devItem->addresses << addrVal.toString();
             }
-            devItem.compression = devObj.value(QStringLiteral("compression")).toString();
-            devItem.certName = devObj.value(QStringLiteral("certName")).toString();
-            devItem.introducer = devObj.value(QStringLiteral("introducer")).toBool(false);
-            devItem.status = devItem.id == m_myId ? SyncthingDevStatus::OwnDevice : SyncthingDevStatus::Unknown;
-            m_devs.push_back(move(devItem));
+            devItem->compression = devObj.value(QStringLiteral("compression")).toString();
+            devItem->certName = devObj.value(QStringLiteral("certName")).toString();
+            devItem->introducer = devObj.value(QStringLiteral("introducer")).toBool(false);
+            devItem->status = devItem->id == m_myId ? SyncthingDevStatus::OwnDevice : SyncthingDevStatus::Unknown;
         }
     }
-    emit newDevices(m_devs);
+    m_devs.swap(newDevs);
+    emit this->newDevices(m_devs);
 }
 
 /*!
@@ -1052,6 +1096,8 @@ void SyncthingConnection::readEvents()
                     readItemStarted(eventTime, eventData);
                 } else if(eventType == QLatin1String("ItemFinished")) {
                     readItemFinished(eventTime, eventData);
+                } else if(eventType == QLatin1String("ConfigSaved")) {
+                    requestConfig(); // just consider current config as invalidated
                 }
             }
         } else {
@@ -1119,9 +1165,17 @@ void SyncthingConnection::readStatusChangedEvent(DateTime eventTime, const QJson
         // dir status changed
         int index;
         if(SyncthingDir *dirInfo = findDirInfo(dir, index)) {
+            // directory is already known -> just update status
             if(dirInfo->assignStatus(eventData.value(QStringLiteral("to")).toString(), eventTime)) {
                 emit dirStatusChanged(*dirInfo, index);
             }
+        } else {
+            // the directory is unknown
+            // -> add new directory
+            m_dirs.emplace_back(dir);
+            m_dirs.back().assignStatus(eventData.value(QStringLiteral("to")).toString(), eventTime);
+            // -> request config for complete meta data of new directory
+            requestConfig();
         }
     }
 }

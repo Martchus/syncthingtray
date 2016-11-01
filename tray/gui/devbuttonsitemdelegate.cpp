@@ -42,7 +42,6 @@ void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 
         // draw text
         QRectF textRect = option.rect;
-        //textRect.setWidth(textRect.width() - 38);
         textRect.setWidth(textRect.width() - 20);
         QTextOption textOption;
         textOption.setAlignment(opt.displayAlignment);
