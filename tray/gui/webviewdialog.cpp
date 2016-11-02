@@ -30,29 +30,29 @@ WebViewDialog::WebViewDialog(QWidget *parent) :
     m_view->setPage(new WebPage(this, m_view));
     connect(m_view, &WEB_VIEW_PROVIDER::titleChanged, this, &WebViewDialog::setWindowTitle);
 
-    if(Settings::webViewGeometry().isEmpty()) {
+    if(Settings::values().webView.geometry.isEmpty()) {
         resize(1200, 800);
         centerWidget(this);
     } else {
-        restoreGeometry(Settings::webViewGeometry());
+        restoreGeometry(Settings::values().webView.geometry);
     }
 }
 
 QtGui::WebViewDialog::~WebViewDialog()
 {
-    Settings::webViewGeometry() = saveGeometry();
+    Settings::values().webView.geometry = saveGeometry();
 }
 
 void QtGui::WebViewDialog::applySettings(const Data::SyncthingConnectionSettings &connectionSettings)
 {
     m_settings = connectionSettings;
     m_view->setUrl(connectionSettings.syncthingUrl);
-    m_view->setZoomFactor(Settings::webViewZoomFactor());
+    m_view->setZoomFactor(Settings::values().webView.zoomFactor);
 }
 
 void QtGui::WebViewDialog::closeEvent(QCloseEvent *event)
 {
-    if(!Settings::webViewKeepRunning()) {
+    if(!Settings::values().webView.keepRunning) {
         deleteLater();
     }
     event->accept();

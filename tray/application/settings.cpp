@@ -2,158 +2,48 @@
 
 #include <qtutilities/settingsdialog/qtsettings.h>
 
-#include <QString>
 #include <QStringBuilder>
-#include <QByteArray>
 #include <QApplication>
 #include <QSettings>
-#include <QFrame>
 #include <QSslCertificate>
 #include <QSslError>
 #include <QMessageBox>
-#include <QTabWidget>
 
 using namespace std;
 using namespace Data;
 
 namespace Settings {
 
-bool &firstLaunch()
+QString Launcher::syncthingCmd() const
 {
-    static bool v = false;
-    return v;
+    return syncthingPath % QChar(' ') % syncthingArgs;
 }
 
-// connection
-SyncthingConnectionSettings &primaryConnectionSettings()
+Settings &values()
 {
-    static SyncthingConnectionSettings v;
-    return v;
-}
-
-std::vector<SyncthingConnectionSettings> &secondaryConnectionSettings()
-{
-    static vector<SyncthingConnectionSettings> v;
-    return v;
-}
-
-// notifications
-bool &notifyOnDisconnect()
-{
-    static bool v = true;
-    return v;
-}
-bool &notifyOnInternalErrors()
-{
-    static bool v = true;
-    return v;
-}
-bool &notifyOnSyncComplete()
-{
-    static bool v = true;
-    return v;
-}
-bool &showSyncthingNotifications()
-{
-    static bool v = true;
-    return v;
-}
-
-// appearance
-bool &showTraffic()
-{
-    static bool v = true;
-    return v;
-}
-QSize &trayMenuSize()
-{
-    static QSize v(450, 400);
-    return v;
-}
-int &frameStyle()
-{
-    static int v = QFrame::StyledPanel | QFrame::Sunken;
-    return v;
-}
-int &tabPosition()
-{
-    static int v = QTabWidget::South;
-    return v;
-}
-
-// autostart/launcher
-bool &launchSynchting()
-{
-    static bool v = false;
-    return v;
-}
-QString &syncthingPath()
-{
-#ifdef PLATFORM_WINDOWS
-    static QString v(QStringLiteral("syncthing.exe"));
-#else
-    static QString v(QStringLiteral("syncthing"));
-#endif
-    return v;
-}
-QString &syncthingArgs()
-{
-    static QString v;
-    return v;
-}
-QString syncthingCmd()
-{
-    return syncthingPath() % QChar(' ') % syncthingArgs();
-}
-
-// web view
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
-bool &webViewDisabled()
-{
-    static bool v = false;
-    return v;
-}
-double &webViewZoomFactor()
-{
-    static double v = 1.0;
-    return v;
-}
-QByteArray &webViewGeometry()
-{
-    static QByteArray v;
-    return v;
-}
-bool &webViewKeepRunning()
-{
-    static bool v = true;
-    return v;
-}
-#endif
-
-// Qt settings
-Dialogs::QtSettings &qtSettings()
-{
-    static Dialogs::QtSettings v;
-    return v;
+    static Settings settings;
+    return settings;
 }
 
 void restore()
 {
     QSettings settings(QSettings::IniFormat, QSettings::UserScope,  QApplication::organizationName(), QApplication::applicationName());
+    Settings &v = values();
 
     settings.beginGroup(QStringLiteral("tray"));
-
     const int connectionCount = settings.beginReadArray(QStringLiteral("connections"));
+    auto &primaryConnectionSettings = v.connection.primary;
     if(connectionCount > 0) {
-        secondaryConnectionSettings().clear();
-        secondaryConnectionSettings().reserve(static_cast<size_t>(connectionCount));
+        auto &secondaryConnectionSettings = v.connection.secondary;
+        secondaryConnectionSettings.clear();
+        secondaryConnectionSettings.reserve(static_cast<size_t>(connectionCount));
         for(int i = 0; i < connectionCount; ++i) {
             SyncthingConnectionSettings *connectionSettings;
             if(i == 0) {
-                connectionSettings = &primaryConnectionSettings();
+                connectionSettings = &primaryConnectionSettings;
             } else {
-                secondaryConnectionSettings().emplace_back();
-                connectionSettings = &secondaryConnectionSettings().back();
+                secondaryConnectionSettings.emplace_back();
+                connectionSettings = &secondaryConnectionSettings.back();
             }
             settings.setArrayIndex(i);
             connectionSettings->label = settings.value(QStringLiteral("label")).toString();
@@ -174,48 +64,55 @@ void restore()
             }
         }
     } else {
-        firstLaunch() = true;
-        primaryConnectionSettings().label = QStringLiteral("Primary instance");
+        v.firstLaunch = true;
+        primaryConnectionSettings.label = QStringLiteral("Primary instance");
     }
     settings.endArray();
 
-    notifyOnDisconnect() = settings.value(QStringLiteral("notifyOnDisconnect"), notifyOnDisconnect()).toBool();
-    notifyOnInternalErrors() = settings.value(QStringLiteral("notifyOnErrors"), notifyOnInternalErrors()).toBool();
-    notifyOnSyncComplete() = settings.value(QStringLiteral("notifyOnSyncComplete"), notifyOnSyncComplete()).toBool();
-    showSyncthingNotifications() = settings.value(QStringLiteral("showSyncthingNotifications"), showSyncthingNotifications()).toBool();
-    showTraffic() = settings.value(QStringLiteral("showTraffic"), showTraffic()).toBool();
-    trayMenuSize() = settings.value(QStringLiteral("trayMenuSize"), trayMenuSize()).toSize();
-    frameStyle() = settings.value(QStringLiteral("frameStyle"), frameStyle()).toInt();
-    tabPosition() = settings.value(QStringLiteral("tabPos"), tabPosition()).toInt();
+    auto &notifyOn = v.notifyOn;
+    notifyOn.disconnect = settings.value(QStringLiteral("notifyOnDisconnect"), notifyOn.disconnect).toBool();
+    notifyOn.internalErrors = settings.value(QStringLiteral("notifyOnErrors"), notifyOn.internalErrors).toBool();
+    notifyOn.syncComplete = settings.value(QStringLiteral("notifyOnSyncComplete"), notifyOn.syncComplete).toBool();
+    notifyOn.syncthingErrors = settings.value(QStringLiteral("showSyncthingNotifications"), notifyOn.syncthingErrors).toBool();
+    auto &appearance = v.appearance;
+    appearance.showTraffic = settings.value(QStringLiteral("showTraffic"), appearance.showTraffic).toBool();
+    appearance.trayMenuSize = settings.value(QStringLiteral("trayMenuSize"), appearance.trayMenuSize).toSize();
+    appearance.frameStyle = settings.value(QStringLiteral("frameStyle"), appearance.frameStyle).toInt();
+    appearance.tabPosition = settings.value(QStringLiteral("tabPos"), appearance.tabPosition).toInt();
     settings.endGroup();
 
     settings.beginGroup(QStringLiteral("startup"));
-    launchSynchting() = settings.value(QStringLiteral("launchSynchting"), false).toBool();
-    syncthingPath() = settings.value(QStringLiteral("syncthingPath"), syncthingPath()).toString();
-    syncthingArgs() = settings.value(QStringLiteral("syncthingArgs"), syncthingArgs()).toString();
+    auto &launcher = v.launcher;
+    launcher.enabled = settings.value(QStringLiteral("launchSynchting"), launcher.enabled).toBool();
+    launcher.syncthingPath = settings.value(QStringLiteral("syncthingPath"), launcher.syncthingPath).toString();
+    launcher.syncthingArgs = settings.value(QStringLiteral("syncthingArgs"), launcher.syncthingArgs).toString();
     settings.endGroup();
 
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
     settings.beginGroup(QStringLiteral("webview"));
-    webViewDisabled() = settings.value(QStringLiteral("isabled"), false).toBool();
-    webViewZoomFactor() = settings.value(QStringLiteral("zoomFactor"), 1.0).toDouble();
-    webViewGeometry() = settings.value(QStringLiteral("geometry")).toByteArray();
-    webViewKeepRunning() = settings.value(QStringLiteral("keepRunning"), true).toBool();
+    auto &webView = v.webView;
+    webView.disabled = settings.value(QStringLiteral("isabled"), webView.disabled).toBool();
+    webView.zoomFactor = settings.value(QStringLiteral("zoomFactor"), webView.zoomFactor).toDouble();
+    webView.geometry = settings.value(QStringLiteral("geometry")).toByteArray();
+    webView.keepRunning = settings.value(QStringLiteral("keepRunning"), webView.keepRunning).toBool();
     settings.endGroup();
 #endif
 
-    qtSettings().restore(settings);
+    v.qt.restore(settings);
 }
 
 void save()
 {
     QSettings settings(QSettings::IniFormat, QSettings::UserScope,  QApplication::organizationName(), QApplication::applicationName());
+    const Settings &v = values();
 
     settings.beginGroup(QStringLiteral("tray"));
-    const int connectionCount = static_cast<int>(1 + secondaryConnectionSettings().size());
+    const auto &primaryConnectionSettings = v.connection.primary;
+    const auto &secondaryConnectionSettings = v.connection.secondary;
+    const int connectionCount = static_cast<int>(1 + secondaryConnectionSettings.size());
     settings.beginWriteArray(QStringLiteral("connections"), connectionCount);
     for(int i = 0; i < connectionCount; ++i) {
-        const SyncthingConnectionSettings *connectionSettings = (i == 0 ? &primaryConnectionSettings() : &secondaryConnectionSettings()[static_cast<size_t>(i - 1)]);
+        const SyncthingConnectionSettings *connectionSettings = (i == 0 ? &primaryConnectionSettings : &secondaryConnectionSettings[static_cast<size_t>(i - 1)]);
         settings.setArrayIndex(i);
         settings.setValue(QStringLiteral("label"), connectionSettings->label);
         settings.setValue(QStringLiteral("syncthingUrl"), connectionSettings->syncthingUrl);
@@ -230,32 +127,36 @@ void save()
     }
     settings.endArray();
 
-    settings.setValue(QStringLiteral("notifyOnDisconnect"), notifyOnDisconnect());
-    settings.setValue(QStringLiteral("notifyOnErrors"), notifyOnInternalErrors());
-    settings.setValue(QStringLiteral("notifyOnSyncComplete"), notifyOnSyncComplete());
-    settings.setValue(QStringLiteral("showSyncthingNotifications"), showSyncthingNotifications());
-    settings.setValue(QStringLiteral("showTraffic"), showTraffic());
-    settings.setValue(QStringLiteral("trayMenuSize"), trayMenuSize());
-    settings.setValue(QStringLiteral("frameStyle"), frameStyle());
-    settings.setValue(QStringLiteral("tabPos"), tabPosition());
+    const auto &notifyOn = v.notifyOn;
+    settings.setValue(QStringLiteral("notifyOnDisconnect"), notifyOn.disconnect);
+    settings.setValue(QStringLiteral("notifyOnErrors"), notifyOn.internalErrors);
+    settings.setValue(QStringLiteral("notifyOnSyncComplete"), notifyOn.syncComplete);
+    settings.setValue(QStringLiteral("showSyncthingNotifications"), notifyOn.syncthingErrors);
+    const auto &appearance = v.appearance;
+    settings.setValue(QStringLiteral("showTraffic"), appearance.showTraffic);
+    settings.setValue(QStringLiteral("trayMenuSize"), appearance.trayMenuSize);
+    settings.setValue(QStringLiteral("frameStyle"), appearance.frameStyle);
+    settings.setValue(QStringLiteral("tabPos"), appearance.tabPosition);
     settings.endGroup();
 
     settings.beginGroup(QStringLiteral("startup"));
-    settings.setValue(QStringLiteral("launchSynchting"), launchSynchting());
-    settings.setValue(QStringLiteral("syncthingPath"), syncthingPath());
-    settings.setValue(QStringLiteral("syncthingArgs"), syncthingArgs());
+    const auto &launcher = v.launcher;
+    settings.setValue(QStringLiteral("launchSynchting"), launcher.enabled);
+    settings.setValue(QStringLiteral("syncthingPath"), launcher.syncthingPath);
+    settings.setValue(QStringLiteral("syncthingArgs"), launcher.syncthingArgs);
     settings.endGroup();
 
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
     settings.beginGroup(QStringLiteral("webview"));
-    settings.setValue(QStringLiteral("disabled"), webViewDisabled());
-    settings.setValue(QStringLiteral("zoomFactor"), webViewZoomFactor());
-    settings.setValue(QStringLiteral("geometry"), webViewGeometry());
-    settings.setValue(QStringLiteral("keepRunning"), webViewKeepRunning());
+    const auto &webView = v.webView;
+    settings.setValue(QStringLiteral("disabled"), webView.disabled);
+    settings.setValue(QStringLiteral("zoomFactor"), webView.zoomFactor);
+    settings.setValue(QStringLiteral("geometry"), webView.geometry);
+    settings.setValue(QStringLiteral("keepRunning"), webView.keepRunning);
     settings.endGroup();
 #endif
 
-    qtSettings().save(settings);
+    v.qt.save(settings);
 }
 
 }

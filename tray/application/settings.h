@@ -3,14 +3,17 @@
 
 #include "../../connector/syncthingconnectionsettings.h"
 
+#include <qtutilities/settingsdialog/qtsettings.h>
+
 #include <c++utilities/conversion/types.h>
 
 #include <QString>
 #include <QByteArray>
+#include <QSize>
+#include <QFrame>
+#include <QTabWidget>
 
 #include <vector>
-
-QT_FORWARD_DECLARE_CLASS(QSize)
 
 namespace Media {
 enum class TagUsage;
@@ -23,41 +26,65 @@ class QtSettings;
 
 namespace Settings {
 
-bool &firstLaunch();
+struct Connection
+{
+    Data::SyncthingConnectionSettings primary;
+    std::vector<Data::SyncthingConnectionSettings> secondary;
+};
 
-// connection
-Data::SyncthingConnectionSettings &primaryConnectionSettings();
-std::vector<Data::SyncthingConnectionSettings> &secondaryConnectionSettings();
+struct NotifyOn
+{
+    bool disconnect = true;
+    bool internalErrors = true;
+    bool syncComplete = true;
+    bool syncthingErrors = true;
+};
 
-// notifications
-bool &notifyOnDisconnect();
-bool &notifyOnInternalErrors();
-bool &notifyOnSyncComplete();
-bool &showSyncthingNotifications();
+struct Appearance
+{
+    bool showTraffic = true;
+    QSize trayMenuSize = QSize(450, 400);
+    int frameStyle = QFrame::StyledPanel | QFrame::Sunken;
+    int tabPosition = QTabWidget::South;
+};
 
-// apprearance
-bool &showTraffic();
-QSize &trayMenuSize();
-int &frameStyle();
-int &tabPosition();
+struct Launcher
+{
+    bool enabled = false;
+    QString syncthingPath =
+#ifdef PLATFORM_WINDOWS
+            QStringLiteral("syncthing.exe");
+#else
+            QStringLiteral("syncthing");
+#endif
+    QString syncthingArgs;
+    QString syncthingCmd() const;
+};
 
-// autostart/launcher
-bool &launchSynchting();
-QString &syncthingPath();
-QString &syncthingArgs();
-QString syncthingCmd();
-
-// web view
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
-bool &webViewDisabled();
-double &webViewZoomFactor();
-QByteArray &webViewGeometry();
-bool &webViewKeepRunning();
+struct WebView
+{
+    bool disabled = false;
+    double zoomFactor = 1.0;
+    QByteArray geometry;
+    bool keepRunning = true;
+};
 #endif
 
-// Qt settings
-Dialogs::QtSettings &qtSettings();
+struct Settings
+{
+    bool firstLaunch = false;
+    Connection connection;
+    NotifyOn notifyOn;
+    Appearance appearance;
+    Launcher launcher;
+#if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
+    WebView webView;
+#endif
+    Dialogs::QtSettings qt;
+};
 
+Settings &values();
 void restore();
 void save();
 

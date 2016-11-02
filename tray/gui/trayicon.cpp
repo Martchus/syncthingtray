@@ -85,14 +85,15 @@ void TrayIcon::handleMessageClicked()
 
 void TrayIcon::showInternalError(const QString &errorMsg)
 {
-    if(Settings::notifyOnInternalErrors()) {
+    if(Settings::values().notifyOn.internalErrors) {
         showMessage(tr("Error"), errorMsg, QSystemTrayIcon::Critical);
     }
 }
 
 void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message)
 {
-    if(Settings::showSyncthingNotifications()) {
+    Q_UNUSED(when)
+    if(Settings::values().notifyOn.syncthingErrors) {
         showMessage(tr("Syncthing notification - click to dismiss"), message, QSystemTrayIcon::Warning);
     }
 }
@@ -104,7 +105,7 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
     case SyncthingStatus::Disconnected:
         setIcon(m_statusIconDisconnected);
         setToolTip(tr("Not connected to Syncthing"));
-        if(Settings::notifyOnDisconnect()) {
+        if(Settings::values().notifyOn.disconnect) {
             showMessage(QCoreApplication::applicationName(), tr("Disconnected from Syncthing"), QSystemTrayIcon::Warning);
         }
         break;
@@ -153,7 +154,7 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
     case SyncthingStatus::Synchronizing:
         break;
     default:
-        if(m_status == SyncthingStatus::Synchronizing && Settings::notifyOnSyncComplete()) {
+        if(m_status == SyncthingStatus::Synchronizing && Settings::values().notifyOn.syncComplete) {
             showMessage(QCoreApplication::applicationName(), tr("Synchronization complete"), QSystemTrayIcon::Information);
         }
     }

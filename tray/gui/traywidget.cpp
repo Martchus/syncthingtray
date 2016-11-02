@@ -99,7 +99,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     // setup connection menu
     m_connectionsActionGroup = new QActionGroup(m_connectionsMenu = new QMenu(tr("Connection"), this));
     m_connectionsMenu->setIcon(QIcon::fromTheme(QStringLiteral("network-connect"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/network-connect.svg"))));
-    m_ui->connectionsPushButton->setText(Settings::primaryConnectionSettings().label);
+    m_ui->connectionsPushButton->setText(Settings::values().connection.primary.label);
     m_ui->connectionsPushButton->setMenu(m_connectionsMenu);
 
     // apply settings, this also establishes the connection to Syncthing
@@ -166,7 +166,7 @@ void TrayWidget::showAboutDialog()
 void TrayWidget::showWebUi()
 {
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
-    if(Settings::webViewDisabled()) {
+    if(Settings::values().webView.disabled) {
 #endif
         QDesktopServices::openUrl(m_connection.syncthingUrl());
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
@@ -304,11 +304,14 @@ void TrayWidget::applySettings()
     for(TrayWidget *instance : m_instances) {
         // update connections menu
         int connectionIndex = 0;
-        const int connectionCount = static_cast<int>(1 + Settings::secondaryConnectionSettings().size());
+        auto &settings = Settings::values();
+        auto &primaryConnectionSettings = settings.connection.primary;
+        auto &secondaryConnectionSettings = settings.connection.secondary;
+        const int connectionCount = static_cast<int>(1 + secondaryConnectionSettings.size());
         const QList<QAction *> connectionActions = instance->m_connectionsActionGroup->actions();
         instance->m_selectedConnection = nullptr;
         for(; connectionIndex < connectionCount; ++connectionIndex) {
-            SyncthingConnectionSettings &connectionSettings = (connectionIndex == 0 ? Settings::primaryConnectionSettings() : Settings::secondaryConnectionSettings()[static_cast<size_t>(connectionIndex - 1)]);
+            SyncthingConnectionSettings &connectionSettings = (connectionIndex == 0 ? primaryConnectionSettings : secondaryConnectionSettings[static_cast<size_t>(connectionIndex - 1)]);
             if(connectionIndex < connectionActions.size()) {
                 QAction *action = connectionActions.at(connectionIndex);
                 action->setText(connectionSettings.label);
@@ -325,7 +328,7 @@ void TrayWidget::applySettings()
             delete connectionActions.at(connectionIndex);
         }
         if(!instance->m_selectedConnection) {
-            instance->m_selectedConnection = &Settings::primaryConnectionSettings();
+            instance->m_selectedConnection = &primaryConnectionSettings;
             instance->m_connectionsMenu->actions().at(0)->setChecked(true);
         }
         instance->m_ui->connectionsPushButton->setText(instance->m_selectedConnection->label);
@@ -340,20 +343,20 @@ void TrayWidget::applySettings()
 #endif
 
         // update visual appearance
-        instance->m_ui->trafficFormWidget->setVisible(Settings::showTraffic());
-        instance->m_ui->trafficIconLabel->setVisible(Settings::showTraffic());
-        if(Settings::showTraffic()) {
+        instance->m_ui->trafficFormWidget->setVisible(settings.appearance.showTraffic);
+        instance->m_ui->trafficIconLabel->setVisible(settings.appearance.showTraffic);
+        if(settings.appearance.showTraffic) {
             instance->updateTraffic();
         }
-        instance->m_ui->infoFrame->setFrameStyle(Settings::frameStyle());
-        instance->m_ui->buttonsFrame->setFrameStyle(Settings::frameStyle());
+        instance->m_ui->infoFrame->setFrameStyle(settings.appearance.frameStyle);
+        instance->m_ui->buttonsFrame->setFrameStyle(settings.appearance.frameStyle);
         if(QApplication::style() && !QApplication::style()->objectName().compare(QLatin1String("adwaita"), Qt::CaseInsensitive)) {
             instance->m_cornerFrame->setFrameStyle(QFrame::NoFrame);
         } else {
-            instance->m_cornerFrame->setFrameStyle(Settings::frameStyle());
+            instance->m_cornerFrame->setFrameStyle(settings.appearance.frameStyle);
         }
-        if(Settings::tabPosition() >= QTabWidget::North && Settings::tabPosition() <= QTabWidget::East) {
-            instance->m_ui->tabWidget->setTabPosition(static_cast<QTabWidget::TabPosition>(Settings::tabPosition()));
+        if(settings.appearance.tabPosition >= QTabWidget::North && settings.appearance.tabPosition <= QTabWidget::East) {
+            instance->m_ui->tabWidget->setTabPosition(static_cast<QTabWidget::TabPosition>(settings.appearance.tabPosition));
         }
     }
 }
@@ -457,8 +460,8 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
     int index = m_connectionsMenu->actions().indexOf(connectionAction);
     if(index >= 0) {
         m_selectedConnection = (index == 0)
-                ? &Settings::primaryConnectionSettings()
-                : &Settings::secondaryConnectionSettings()[static_cast<size_t>(index - 1)];
+                ? &Settings::values().connection.primary
+                : &Settings::values().connection.secondary[static_cast<size_t>(index - 1)];
         m_ui->connectionsPushButton->setText(m_selectedConnection->label);
         m_connection.reconnect(*m_selectedConnection);
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW

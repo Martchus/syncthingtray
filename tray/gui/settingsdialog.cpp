@@ -189,8 +189,8 @@ bool ConnectionOptionPage::apply()
     bool ok = true;
     if(hasBeenShown()) {
         ok = cacheCurrentSettings(true);
-        Settings::primaryConnectionSettings() = m_primarySettings;
-        Settings::secondaryConnectionSettings() = m_secondarySettings;
+        values().connection.primary = m_primarySettings;
+        values().connection.secondary = m_secondarySettings;
     }
     return ok;
 }
@@ -198,8 +198,8 @@ bool ConnectionOptionPage::apply()
 void ConnectionOptionPage::reset()
 {
     if(hasBeenShown()) {
-        m_primarySettings = primaryConnectionSettings();
-        m_secondarySettings = secondaryConnectionSettings();
+        m_primarySettings = values().connection.primary;
+        m_secondarySettings = values().connection.secondary;
         m_currentIndex = -1;
 
         QStringList itemTexts;
@@ -233,10 +233,11 @@ NotificationsOptionPage::~NotificationsOptionPage()
 bool NotificationsOptionPage::apply()
 {
     if(hasBeenShown()) {
-        notifyOnDisconnect() = ui()->notifyOnDisconnectCheckBox->isChecked();
-        notifyOnInternalErrors() = ui()->notifyOnErrorsCheckBox->isChecked();
-        notifyOnSyncComplete() = ui()->notifyOnSyncCompleteCheckBox->isChecked();
-        showSyncthingNotifications() = ui()->showSyncthingNotificationsCheckBox->isChecked();
+        auto &notifyOn = values().notifyOn;
+        notifyOn.disconnect = ui()->notifyOnDisconnectCheckBox->isChecked();
+        notifyOn.internalErrors = ui()->notifyOnErrorsCheckBox->isChecked();
+        notifyOn.syncComplete = ui()->notifyOnSyncCompleteCheckBox->isChecked();
+        notifyOn.syncthingErrors = ui()->showSyncthingNotificationsCheckBox->isChecked();
     }
     return true;
 }
@@ -244,10 +245,11 @@ bool NotificationsOptionPage::apply()
 void NotificationsOptionPage::reset()
 {
     if(hasBeenShown()) {
-        ui()->notifyOnDisconnectCheckBox->setChecked(notifyOnDisconnect());
-        ui()->notifyOnErrorsCheckBox->setChecked(notifyOnInternalErrors());
-        ui()->notifyOnSyncCompleteCheckBox->setChecked(notifyOnSyncComplete());
-        ui()->showSyncthingNotificationsCheckBox->setChecked(showSyncthingNotifications());
+        const auto &notifyOn = values().notifyOn;
+        ui()->notifyOnDisconnectCheckBox->setChecked(notifyOn.disconnect);
+        ui()->notifyOnErrorsCheckBox->setChecked(notifyOn.internalErrors);
+        ui()->notifyOnSyncCompleteCheckBox->setChecked(notifyOn.syncComplete);
+        ui()->showSyncthingNotificationsCheckBox->setChecked(notifyOn.syncthingErrors);
     }
 }
 
@@ -262,9 +264,10 @@ AppearanceOptionPage::~AppearanceOptionPage()
 bool AppearanceOptionPage::apply()
 {
     if(hasBeenShown()) {
-        trayMenuSize().setWidth(ui()->widthSpinBox->value());
-        trayMenuSize().setHeight(ui()->heightSpinBox->value());
-        showTraffic() = ui()->showTrafficCheckBox->isChecked();
+        auto &settings = values().appearance;
+        settings.trayMenuSize.setWidth(ui()->widthSpinBox->value());
+        settings.trayMenuSize.setHeight(ui()->heightSpinBox->value());
+        settings.showTraffic = ui()->showTrafficCheckBox->isChecked();
         int style;
         switch(ui()->frameShapeComboBox->currentIndex()) {
         case 0: style = QFrame::NoFrame; break;
@@ -277,8 +280,8 @@ bool AppearanceOptionPage::apply()
         case 1: style |= QFrame::Raised; break;
         default: style |= QFrame::Sunken;
         }
-        frameStyle() = style;
-        tabPosition() = ui()->tabPosComboBox->currentIndex();
+        settings.frameStyle = style;
+        settings.tabPosition = ui()->tabPosComboBox->currentIndex();
     }
     return true;
 }
@@ -286,24 +289,25 @@ bool AppearanceOptionPage::apply()
 void AppearanceOptionPage::reset()
 {
     if(hasBeenShown()) {
-        ui()->widthSpinBox->setValue(trayMenuSize().width());
-        ui()->heightSpinBox->setValue(trayMenuSize().height());
-        ui()->showTrafficCheckBox->setChecked(showTraffic());
+        const auto &settings = values().appearance;
+        ui()->widthSpinBox->setValue(settings.trayMenuSize.width());
+        ui()->heightSpinBox->setValue(settings.trayMenuSize.height());
+        ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
         int index;
-        switch(frameStyle() & QFrame::Shape_Mask) {
+        switch(settings.frameStyle & QFrame::Shape_Mask) {
         case QFrame::NoFrame: index = 0; break;
         case QFrame::Box: index = 1; break;
         case QFrame::Panel: index = 2; break;
         default: index = 3;
         }
         ui()->frameShapeComboBox->setCurrentIndex(index);
-        switch(frameStyle() & QFrame::Shadow_Mask) {
+        switch(settings.frameStyle & QFrame::Shadow_Mask) {
         case QFrame::Plain: index = 0; break;
         case QFrame::Raised: index = 1; break;
         default: index = 2;
         }
         ui()->frameShadowComboBox->setCurrentIndex(index);
-        ui()->tabPosComboBox->setCurrentIndex(tabPosition());
+        ui()->tabPosComboBox->setCurrentIndex(settings.tabPosition);
     }
 }
 
@@ -456,9 +460,10 @@ QWidget *LauncherOptionPage::setupWidget()
 bool LauncherOptionPage::apply()
 {
     if(hasBeenShown()) {
-        Settings::launchSynchting() = ui()->enabledCheckBox->isChecked(),
-        Settings::syncthingPath() = ui()->syncthingPathSelection->lineEdit()->text(),
-        Settings::syncthingArgs() = ui()->argumentsLineEdit->text();
+        auto &settings = values().launcher;
+        settings.enabled = ui()->enabledCheckBox->isChecked();
+        settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
+        settings.syncthingArgs = ui()->argumentsLineEdit->text();
     }
     return true;
 }
@@ -466,9 +471,10 @@ bool LauncherOptionPage::apply()
 void LauncherOptionPage::reset()
 {
     if(hasBeenShown()) {
-        ui()->enabledCheckBox->setChecked(Settings::launchSynchting());
-        ui()->syncthingPathSelection->lineEdit()->setText(Settings::syncthingPath());
-        ui()->argumentsLineEdit->setText(Settings::syncthingArgs());
+        const auto &settings = values().launcher;
+        ui()->enabledCheckBox->setChecked(settings.enabled);
+        ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
+        ui()->argumentsLineEdit->setText(settings.syncthingArgs);
     }
 }
 
@@ -510,7 +516,7 @@ void LauncherOptionPage::launch()
             ui()->launchNowPushButton->hide();
             ui()->stopPushButton->show();
             m_kill = false;
-            syncthingProcess().startSyncthing(Settings::syncthingCmd());
+            syncthingProcess().startSyncthing(values().launcher.syncthingCmd());
         }
     }
 }
@@ -552,9 +558,10 @@ bool WebViewOptionPage::apply()
 {
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
     if(hasBeenShown()) {
-        webViewDisabled() = ui()->disableCheckBox->isChecked();
-        webViewZoomFactor() = ui()->zoomDoubleSpinBox->value();
-        webViewKeepRunning() = ui()->keepRunningCheckBox->isChecked();
+        auto &webView = values().webView;
+        webView.disabled = ui()->disableCheckBox->isChecked();
+        webView.zoomFactor = ui()->zoomDoubleSpinBox->value();
+        webView.keepRunning = ui()->keepRunningCheckBox->isChecked();
     }
 #endif
     return true;
@@ -564,9 +571,10 @@ void WebViewOptionPage::reset()
 {
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
     if(hasBeenShown()) {
-        ui()->disableCheckBox->setChecked(webViewDisabled());
-        ui()->zoomDoubleSpinBox->setValue(webViewZoomFactor());
-        ui()->keepRunningCheckBox->setChecked(webViewKeepRunning());
+        const auto &webView = values().webView;
+        ui()->disableCheckBox->setChecked(webView.disabled);
+        ui()->zoomDoubleSpinBox->setValue(webView.zoomFactor);
+        ui()->keepRunningCheckBox->setChecked(webView.keepRunning);
     }
 #endif
 }
@@ -596,7 +604,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     category->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
     categories << category;
 
-    categories << Settings::qtSettings().category();
+    categories << values().qt.category();
 
     categoryModel()->setCategories(categories);
 

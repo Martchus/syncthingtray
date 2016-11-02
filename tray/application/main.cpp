@@ -30,9 +30,10 @@ using namespace Data;
 
 int initSyncthingTray(bool windowed, bool waitForTray)
 {
+    auto &v = Settings::values();
     if(windowed) {
-        if(Settings::launchSynchting()) {
-            syncthingProcess().startSyncthing(Settings::syncthingCmd());
+        if(v.launcher.enabled) {
+            syncthingProcess().startSyncthing(v.launcher.syncthingCmd());
         }
         auto *trayWidget = new TrayWidget;
         trayWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -40,12 +41,12 @@ int initSyncthingTray(bool windowed, bool waitForTray)
     } else {
 #ifndef QT_NO_SYSTEMTRAYICON
         if(QSystemTrayIcon::isSystemTrayAvailable() || waitForTray) {
-            if(Settings::launchSynchting()) {
-                syncthingProcess().startSyncthing(Settings::syncthingCmd());
+            if(v.launcher.enabled) {
+                syncthingProcess().startSyncthing(v.launcher.syncthingCmd());
             }
             auto *trayIcon = new TrayIcon;
             trayIcon->show();
-            if(Settings::firstLaunch()) {
+            if(v.firstLaunch) {
                 QMessageBox msgBox;
                 msgBox.setIcon(QMessageBox::Information);
                 msgBox.setText(QCoreApplication::translate("main", "You must configure how to connect to Syncthing when using Syncthing Tray the first time."));
@@ -99,7 +100,7 @@ int runApplication(int argc, const char *const *argv)
                 QObject::connect(&singleInstance, &SingleInstance::newInstance, &runApplication);
 
                 Settings::restore();
-                Settings::qtSettings().apply();
+                Settings::values().qt.apply();
                 qtConfigArgs.applySettings(true);
 
                 LOAD_QT_TRANSLATIONS;

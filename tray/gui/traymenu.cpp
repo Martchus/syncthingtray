@@ -27,7 +27,7 @@ TrayMenu::TrayMenu(QWidget *parent) :
 
 QSize TrayMenu::sizeHint() const
 {
-    return Settings::trayMenuSize();
+    return Settings::values().appearance.trayMenuSize;
 }
 
 }
