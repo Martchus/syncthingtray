@@ -103,7 +103,8 @@ set(REQUIRED_ICONS
     view-refresh
     window-close
 )
-set(FALLBACK_ICON_THEME breeze)
+# fallback icons can not replace built-in Breeze icons (yet)
+#set(FALLBACK_ICON_THEME breeze)
 
 # find c++utilities
 find_package(c++utilities 4.2.0 REQUIRED)
