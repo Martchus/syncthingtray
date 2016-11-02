@@ -46,6 +46,7 @@ struct Appearance
     QSize trayMenuSize = QSize(450, 400);
     int frameStyle = QFrame::StyledPanel | QFrame::Sunken;
     int tabPosition = QTabWidget::South;
+    bool brightTextColors = false;
 };
 
 struct Launcher

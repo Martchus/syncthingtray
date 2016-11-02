@@ -282,6 +282,7 @@ bool AppearanceOptionPage::apply()
         }
         settings.frameStyle = style;
         settings.tabPosition = ui()->tabPosComboBox->currentIndex();
+        settings.brightTextColors = ui()->brightTextColorsCheckBox->isChecked();
     }
     return true;
 }
@@ -308,6 +309,7 @@ void AppearanceOptionPage::reset()
         }
         ui()->frameShadowComboBox->setCurrentIndex(index);
         ui()->tabPosComboBox->setCurrentIndex(settings.tabPosition);
+        ui()->brightTextColorsCheckBox->setChecked(settings.brightTextColors);
     }
 }
 

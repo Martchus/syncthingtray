@@ -1,9 +1,8 @@
 #ifndef DATA_SYNCTHINGDOWNLOADMODEL_H
 #define DATA_SYNCTHINGDOWNLOADMODEL_H
 
-#include "./global.h"
+#include "./syncthingmodel.h"
 
-#include <QAbstractItemModel>
 #include <QIcon>
 #include <QFileIconProvider>
 
@@ -11,11 +10,10 @@
 
 namespace Data {
 
-class SyncthingConnection;
 struct SyncthingDir;
 struct SyncthingItemDownloadProgress;
 
-class LIB_SYNCTHING_MODEL_EXPORT SyncthingDownloadModel : public QAbstractItemModel
+class LIB_SYNCTHING_MODEL_EXPORT SyncthingDownloadModel : public SyncthingModel
 {
     Q_OBJECT
     Q_PROPERTY(unsigned int pendingDownloads READ pendingDownloads NOTIFY pendingDownloadsChanged)
@@ -52,7 +50,6 @@ private Q_SLOTS:
     void downloadProgressChanged();
 
 private:
-    Data::SyncthingConnection &m_connection;
     const std::vector<SyncthingDir> &m_dirs;
     const QIcon m_unknownIcon;
     const QFileIconProvider m_fileIconProvider;

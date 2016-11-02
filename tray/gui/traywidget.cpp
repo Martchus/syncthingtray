@@ -358,6 +358,9 @@ void TrayWidget::applySettings()
         if(settings.appearance.tabPosition >= QTabWidget::North && settings.appearance.tabPosition <= QTabWidget::East) {
             instance->m_ui->tabWidget->setTabPosition(static_cast<QTabWidget::TabPosition>(settings.appearance.tabPosition));
         }
+        instance->m_dirModel.setBrightColors(settings.appearance.brightTextColors);
+        instance->m_devModel.setBrightColors(settings.appearance.brightTextColors);
+        instance->m_dlModel.setBrightColors(settings.appearance.brightTextColors);
     }
 }
 

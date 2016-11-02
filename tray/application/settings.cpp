@@ -79,6 +79,7 @@ void restore()
     appearance.trayMenuSize = settings.value(QStringLiteral("trayMenuSize"), appearance.trayMenuSize).toSize();
     appearance.frameStyle = settings.value(QStringLiteral("frameStyle"), appearance.frameStyle).toInt();
     appearance.tabPosition = settings.value(QStringLiteral("tabPos"), appearance.tabPosition).toInt();
+    appearance.brightTextColors = settings.value(QStringLiteral("brightTextColors"), appearance.brightTextColors).toBool();
     settings.endGroup();
 
     settings.beginGroup(QStringLiteral("startup"));
@@ -137,6 +138,7 @@ void save()
     settings.setValue(QStringLiteral("trayMenuSize"), appearance.trayMenuSize);
     settings.setValue(QStringLiteral("frameStyle"), appearance.frameStyle);
     settings.setValue(QStringLiteral("tabPos"), appearance.tabPosition);
+    settings.setValue(QStringLiteral("brightTextColors"), appearance.brightTextColors);
     settings.endGroup();
 
     settings.beginGroup(QStringLiteral("startup"));

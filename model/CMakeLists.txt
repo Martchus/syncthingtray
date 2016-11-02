@@ -9,11 +9,13 @@ set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING_MODEL)
 
 # add project files
 set(HEADER_FILES
+    syncthingmodel.h
     syncthingdirectorymodel.h
     syncthingdevicemodel.h
     syncthingdownloadmodel.h
 )
 set(SRC_FILES
+    syncthingmodel.cpp
     syncthingdirectorymodel.cpp
     syncthingdevicemodel.cpp
     syncthingdownloadmodel.cpp

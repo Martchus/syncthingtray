@@ -8,8 +8,7 @@ using namespace ChronoUtilities;
 namespace Data {
 
 SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent) :
-    QAbstractItemModel(parent),
-    m_connection(connection),
+    SyncthingModel(connection, parent),
     m_devs(connection.devInfo()),
     m_unknownIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-disconnected.svg"))),
     m_idleIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-ok.svg"))),
@@ -113,12 +112,12 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                         switch(index.row()) {
                         case 2:
                             if(dev.lastSeen.isNull()) {
-                                return QColor(Qt::gray);
+                                return (m_brightColors ? QColor(Qt::lightGray) : QColor(Qt::darkGray));
                             }
                             break;
                         case 4:
                             if(dev.certName.isEmpty()) {
-                                return QColor(Qt::gray);
+                                return (m_brightColors ? QColor(Qt::lightGray) : QColor(Qt::darkGray));
                             }
                             break;
                         }
@@ -199,10 +198,10 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                         case SyncthingDevStatus::Unknown: break;
                         case SyncthingDevStatus::Disconnected: break;
                         case SyncthingDevStatus::OwnDevice:
-                        case SyncthingDevStatus::Idle: return QColor(Qt::darkGreen);
-                        case SyncthingDevStatus::Synchronizing: return QColor(Qt::darkBlue);
+                        case SyncthingDevStatus::Idle: return (m_brightColors ? QColor(Qt::green) : QColor(Qt::darkGreen));
+                        case SyncthingDevStatus::Synchronizing: return (m_brightColors ? QColor(0x3FA5FF) : QColor(Qt::darkBlue));
                         case SyncthingDevStatus::OutOfSync:
-                        case SyncthingDevStatus::Rejected: return QColor(Qt::red);
+                        case SyncthingDevStatus::Rejected: return (m_brightColors ? QColor(0xFF7B84) : QColor(Qt::red));
                         }
                     }
                     break;

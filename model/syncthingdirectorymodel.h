@@ -1,19 +1,17 @@
 #ifndef DATA_SYNCTHINGDIRECTORYMODEL_H
 #define DATA_SYNCTHINGDIRECTORYMODEL_H
 
-#include "./global.h"
+#include "./syncthingmodel.h"
 
-#include <QAbstractItemModel>
 #include <QIcon>
 
 #include <vector>
 
 namespace Data {
 
-class SyncthingConnection;
 struct SyncthingDir;
 
-class LIB_SYNCTHING_MODEL_EXPORT SyncthingDirectoryModel : public QAbstractItemModel
+class LIB_SYNCTHING_MODEL_EXPORT SyncthingDirectoryModel : public SyncthingModel
 {
     Q_OBJECT
 public:
@@ -35,7 +33,6 @@ private Q_SLOTS:
     void dirStatusChanged(const SyncthingDir &, int index);
 
 private:
-    Data::SyncthingConnection &m_connection;
     const std::vector<SyncthingDir> &m_dirs;
     const QIcon m_unknownIcon;
     const QIcon m_idleIcon;

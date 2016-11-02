@@ -10,8 +10,7 @@ using namespace ChronoUtilities;
 namespace Data {
 
 SyncthingDirectoryModel::SyncthingDirectoryModel(SyncthingConnection &connection, QObject *parent) :
-    QAbstractItemModel(parent),
-    m_connection(connection),
+    SyncthingModel(connection, parent),
     m_dirs(connection.dirInfo()),
     m_unknownIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-disconnected.svg"))),
     m_idleIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-ok.svg"))),
@@ -119,18 +118,20 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         switch(index.row()) {
                         case 5:
                             if(dir.lastScanTime.isNull()) {
-                                return QColor(Qt::gray);
+                                return (m_brightColors ? QColor(Qt::lightGray) : QColor(Qt::darkGray));
                             }
                             break;
                         case 6:
                             if(dir.lastFileName.isEmpty()) {
-                                return QColor(Qt::gray);
+                                return (m_brightColors ? QColor(Qt::lightGray) : QColor(Qt::darkGray));
                             } else if(dir.lastFileDeleted) {
-                                return QColor(Qt::red);
+                                return (m_brightColors ? QColor(0xFF7B84) : QColor(Qt::red));
                             }
                             break;
                         case 7:
-                            return dir.errors.empty() ? QColor(Qt::gray) : QColor(Qt::red);
+                            return dir.errors.empty()
+                                    ? (m_brightColors ? QColor(Qt::lightGray) : QColor(Qt::darkGray))
+                                    : (m_brightColors ? QColor(0xFF7B84) : QColor(Qt::red));
                         }
                     }
                     break;
@@ -216,12 +217,12 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case 1:
                     switch(dir.status) {
                     case SyncthingDirStatus::Unknown: break;
-                    case SyncthingDirStatus::Idle: return QColor(Qt::darkGreen);
-                    case SyncthingDirStatus::Unshared: return QColor(0xA85900);
-                    case SyncthingDirStatus::Scanning: return QColor(Qt::blue);
-                    case SyncthingDirStatus::Synchronizing: return QColor(Qt::blue);
+                    case SyncthingDirStatus::Idle: return (m_brightColors ? QColor(Qt::green) : QColor(Qt::darkGreen));
+                    case SyncthingDirStatus::Unshared: return (m_brightColors ? QColor(0xFFC500) : QColor(0xA85900));
+                    case SyncthingDirStatus::Scanning:
+                    case SyncthingDirStatus::Synchronizing: return (m_brightColors ? QColor(0x3FA5FF) : QColor(Qt::darkBlue));
                     case SyncthingDirStatus::Paused: break;
-                    case SyncthingDirStatus::OutOfSync: return QColor(Qt::red);
+                    case SyncthingDirStatus::OutOfSync: return (m_brightColors ? QColor(0xFF7B84) : QColor(Qt::red));
                     }
                     break;
                 }

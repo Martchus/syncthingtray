@@ -10,8 +10,7 @@ using namespace ChronoUtilities;
 namespace Data {
 
 SyncthingDownloadModel::SyncthingDownloadModel(SyncthingConnection &connection, QObject *parent) :
-    QAbstractItemModel(parent),
-    m_connection(connection),
+    SyncthingModel(connection, parent),
     m_dirs(connection.dirInfo()),
     m_unknownIcon(QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg")))),
     m_pendingDirs(0),

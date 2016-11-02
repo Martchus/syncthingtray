@@ -1,19 +1,17 @@
 #ifndef DATA_SYNCTHINGDEVICEMODEL_H
 #define DATA_SYNCTHINGDEVICEMODEL_H
 
-#include "./global.h"
+#include "./syncthingmodel.h"
 
-#include <QAbstractItemModel>
 #include <QIcon>
 
 #include <vector>
 
 namespace Data {
 
-class SyncthingConnection;
 struct SyncthingDev;
 
-class LIB_SYNCTHING_MODEL_EXPORT SyncthingDeviceModel : public QAbstractItemModel
+class LIB_SYNCTHING_MODEL_EXPORT SyncthingDeviceModel : public SyncthingModel
 {
     Q_OBJECT
 public:
@@ -42,7 +40,6 @@ private Q_SLOTS:
     void devStatusChanged(const SyncthingDev &, int index);
 
 private:
-    Data::SyncthingConnection &m_connection;
     const std::vector<SyncthingDev> &m_devs;
     const QIcon m_unknownIcon;
     const QIcon m_idleIcon;
