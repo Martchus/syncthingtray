@@ -100,6 +100,7 @@ public:
     SyncthingDir *findDirInfo(const QString &dirId, int &row);
     SyncthingDev *findDevInfo(const QString &devId, int &row);
     SyncthingDev *findDevInfoByName(const QString &devName, int &row);
+    const std::vector<SyncthingDir *> &completedDirs() const;
 
 public Q_SLOTS:
     void loadSelfSignedCertificate();
@@ -207,6 +208,8 @@ private:
     bool m_hasConfig;
     bool m_hasStatus;
     std::vector<SyncthingDir> m_dirs;
+    std::vector<SyncthingDir *> m_syncedDirs;
+    std::vector<SyncthingDir *> m_completedDirs;
     std::vector<SyncthingDev> m_devs;
     ChronoUtilities::DateTime m_lastConnectionsUpdate;
     ChronoUtilities::DateTime m_lastFileTime;
@@ -429,6 +432,14 @@ inline const std::vector<SyncthingDev> &SyncthingConnection::devInfo() const
 inline const QList<QSslError> &SyncthingConnection::expectedSslErrors()
 {
     return m_expectedSslErrors;
+}
+
+/*!
+ * \brief Returns the directories which have been synchronized during the last synchronizing status().
+ */
+inline const std::vector<SyncthingDir *> &SyncthingConnection::completedDirs() const
+{
+    return m_completedDirs;
 }
 
 }

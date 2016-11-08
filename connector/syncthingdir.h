@@ -63,6 +63,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir
     SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
     bool assignStatus(const QString &statusStr, ChronoUtilities::DateTime time);
     bool assignStatus(SyncthingDirStatus newStatus, ChronoUtilities::DateTime time);
+    const QString displayName() const;
 
     QString id;
     QString label;
@@ -98,6 +99,11 @@ inline SyncthingDir::SyncthingDir(const QString &id, const QString &label, const
     label(label),
     path(path)
 {}
+
+inline const QString SyncthingDir::displayName() const
+{
+    return label.isEmpty() ? id : label;
+}
 
 } // namespace Data
 

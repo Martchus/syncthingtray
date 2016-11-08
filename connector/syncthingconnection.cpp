@@ -748,6 +748,7 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
         }
     }
     m_dirs.swap(newDirs);
+    m_syncedDirs.reserve(m_dirs.size());
     emit this->newDirs(m_dirs);
 }
 
@@ -1133,7 +1134,6 @@ void SyncthingConnection::readEvents()
 
     if(m_keepPolling) {
         requestEvents();
-        // TODO: need to change the status somewhere else
         setStatus(SyncthingStatus::Idle);
     } else {
         setStatus(SyncthingStatus::Disconnected);
@@ -1456,15 +1456,19 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
     switch(status) {
     case SyncthingStatus::Disconnected:
     case SyncthingStatus::Reconnecting:
+        // don't consider synchronization finished in this this case
+        m_syncedDirs.clear();
         break;
     default:
         // check whether at least one directory is scanning or synchronizing
         bool scanning = false;
         bool synchronizing = false;
-        for(const SyncthingDir &dir : m_dirs) {
+        for(SyncthingDir &dir : m_dirs) {
             if(dir.status == SyncthingDirStatus::Synchronizing) {
+                if(find(m_syncedDirs.cbegin(), m_syncedDirs.cend(), &dir) == m_syncedDirs.cend()) {
+                    m_syncedDirs.push_back(&dir);
+                }
                 synchronizing = true;
-                break;
             } else if(dir.status == SyncthingDirStatus::Scanning) {
                 scanning = true;
             }
@@ -1484,9 +1488,15 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
             }
             if(paused) {
                 status = SyncthingStatus::Paused;
+                // don't consider synchronization finished in this this case
+                m_syncedDirs.clear();
             } else {
                 status = SyncthingStatus::Idle;
             }
+        }
+        if(status != SyncthingStatus::Synchronizing) {
+            m_completedDirs.clear();
+            m_completedDirs.swap(m_syncedDirs);
         }
     }
     if(m_status != status) {

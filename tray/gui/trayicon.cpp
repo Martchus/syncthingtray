@@ -12,6 +12,7 @@
 #include <QPainter>
 #include <QPixmap>
 
+using namespace std;
 using namespace Dialogs;
 using namespace Data;
 
@@ -155,7 +156,21 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
         break;
     default:
         if(m_status == SyncthingStatus::Synchronizing && Settings::values().notifyOn.syncComplete) {
-            showMessage(QCoreApplication::applicationName(), tr("Synchronization complete"), QSystemTrayIcon::Information);
+            const vector<SyncthingDir *> &completedDirs = connection.completedDirs();
+            if(!completedDirs.empty()) {
+                QString message;
+                if(completedDirs.size() == 1) {
+                    message = tr("Synchronization of %1 complete").arg(completedDirs.front()->displayName());
+                } else {
+                    QStringList names;
+                    names.reserve(static_cast<int>(completedDirs.size()));
+                    for(const SyncthingDir *dir : completedDirs) {
+                        names << dir->displayName();
+                    }
+                    message = tr("Synchronization of the following devices complete:\n") + names.join(QStringLiteral(", "));
+                }
+                showMessage(QCoreApplication::applicationName(), message, QSystemTrayIcon::Information);
+            }
         }
     }
     m_status = status;
