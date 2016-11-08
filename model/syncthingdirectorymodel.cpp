@@ -1,4 +1,5 @@
 #include "./syncthingdirectorymodel.h"
+#include "./colors.h"
 
 #include "../connector/syncthingconnection.h"
 #include "../connector/utils.h"
@@ -118,20 +119,13 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         switch(index.row()) {
                         case 5:
                             if(dir.lastScanTime.isNull()) {
-                                return (m_brightColors ? QColor(Qt::lightGray) : QColor(Qt::darkGray));
+                                return Colors::gray(m_brightColors);
                             }
                             break;
                         case 6:
-                            if(dir.lastFileName.isEmpty()) {
-                                return (m_brightColors ? QColor(Qt::lightGray) : QColor(Qt::darkGray));
-                            } else if(dir.lastFileDeleted) {
-                                return (m_brightColors ? QColor(0xFF7B84) : QColor(Qt::red));
-                            }
-                            break;
+                            return dir.lastFileName.isEmpty() ? Colors::gray(m_brightColors) : Colors::red(m_brightColors);
                         case 7:
-                            return dir.errors.empty()
-                                    ? (m_brightColors ? QColor(Qt::lightGray) : QColor(Qt::darkGray))
-                                    : (m_brightColors ? QColor(0xFF7B84) : QColor(Qt::red));
+                            return dir.errors.empty() ? Colors::gray(m_brightColors) : Colors::red(m_brightColors);
                         }
                     }
                     break;
@@ -217,12 +211,12 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case 1:
                     switch(dir.status) {
                     case SyncthingDirStatus::Unknown: break;
-                    case SyncthingDirStatus::Idle: return (m_brightColors ? QColor(Qt::green) : QColor(Qt::darkGreen));
-                    case SyncthingDirStatus::Unshared: return (m_brightColors ? QColor(0xFFC500) : QColor(0xA85900));
+                    case SyncthingDirStatus::Idle: return Colors::green(m_brightColors);
+                    case SyncthingDirStatus::Unshared: return Colors::orange(m_brightColors);
                     case SyncthingDirStatus::Scanning:
-                    case SyncthingDirStatus::Synchronizing: return (m_brightColors ? QColor(0x3FA5FF) : QColor(Qt::darkBlue));
+                    case SyncthingDirStatus::Synchronizing: return Colors::blue(m_brightColors);
                     case SyncthingDirStatus::Paused: break;
-                    case SyncthingDirStatus::OutOfSync: return (m_brightColors ? QColor(0xFF7B84) : QColor(Qt::red));
+                    case SyncthingDirStatus::OutOfSync: return Colors::red(m_brightColors);
                     }
                     break;
                 }

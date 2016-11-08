@@ -13,6 +13,7 @@ set(HEADER_FILES
     syncthingdirectorymodel.h
     syncthingdevicemodel.h
     syncthingdownloadmodel.h
+    colors.h
 )
 set(SRC_FILES
     syncthingmodel.cpp

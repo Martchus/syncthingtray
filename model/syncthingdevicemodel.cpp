@@ -1,4 +1,5 @@
 #include "./syncthingdevicemodel.h"
+#include "./colors.h"
 
 #include "../connector/syncthingconnection.h"
 #include "../connector/utils.h"
@@ -112,12 +113,12 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                         switch(index.row()) {
                         case 2:
                             if(dev.lastSeen.isNull()) {
-                                return (m_brightColors ? QColor(Qt::lightGray) : QColor(Qt::darkGray));
+                                return Colors::gray(m_brightColors);
                             }
                             break;
                         case 4:
                             if(dev.certName.isEmpty()) {
-                                return (m_brightColors ? QColor(Qt::lightGray) : QColor(Qt::darkGray));
+                                return Colors::gray(m_brightColors);
                             }
                             break;
                         }
@@ -198,10 +199,10 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                         case SyncthingDevStatus::Unknown: break;
                         case SyncthingDevStatus::Disconnected: break;
                         case SyncthingDevStatus::OwnDevice:
-                        case SyncthingDevStatus::Idle: return (m_brightColors ? QColor(Qt::green) : QColor(Qt::darkGreen));
-                        case SyncthingDevStatus::Synchronizing: return (m_brightColors ? QColor(0x3FA5FF) : QColor(Qt::darkBlue));
+                        case SyncthingDevStatus::Idle: return Colors::green(m_brightColors);
+                        case SyncthingDevStatus::Synchronizing: return Colors::blue(m_brightColors);
                         case SyncthingDevStatus::OutOfSync:
-                        case SyncthingDevStatus::Rejected: return (m_brightColors ? QColor(0xFF7B84) : QColor(Qt::red));
+                        case SyncthingDevStatus::Rejected: return Colors::red(m_brightColors);
                         }
                     }
                     break;
