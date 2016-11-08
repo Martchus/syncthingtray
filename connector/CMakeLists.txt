@@ -6,6 +6,7 @@ set(META_PROJECT_TYPE library)
 set(META_APP_NAME "Connection backend of Syncthing Tray")
 set(META_APP_DESCRIPTION "Connection backend of Syncthing Tray")
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING_CONNECTOR)
+set(META_PUBLIC_QT_MODULES Core Network)
 
 # add project files
 set(HEADER_FILES
