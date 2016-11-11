@@ -25,11 +25,21 @@ using namespace Data;
 
 namespace Cli {
 
+bool terminated = false;
+int statusCode = 0;
+
+void exitApplication(int statusCode)
+{
+    statusCode = ::Cli::statusCode;
+    terminated = true;
+}
+
 Application::Application() :
     m_expectedResponse(0)
 {
     // take ownership over the global QNetworkAccessManager
     networkAccessManager().setParent(this);
+    exitFunction = &exitApplication;
 
     // setup argument callbacks
     m_args.status.setCallback(bind(&Application::printStatus, this, _1));
@@ -57,6 +67,12 @@ int Application::exec(int argc, const char * const *argv)
     try {
         // parse arguments
         m_args.parser.readArgs(argc, argv);
+
+        // check whether application needs to be terminated due to --bash-completion argument
+        if(terminated) {
+            return statusCode;
+        }
+
         m_args.parser.checkConstraints();
 
         // handle help argument
