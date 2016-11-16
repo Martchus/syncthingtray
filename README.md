@@ -102,6 +102,7 @@ The following Qt 5 modules are requried: core network gui widgets svg webenginew
   WebEngine. Currently any self-signed certificate is accepted! See:
   https://bugreports.qt.io/browse/QTBUG-51176
 * Qt WebEngine can not be built with mingw-w64.
+* QWebEngineView seems to eat `keyPressEvent`.
 * Qt WebEngine is more buggy in my experience.
 * Security issues are not a concern because no other website than the
   Syncthing web UI is shown. Any external links will be opened in the

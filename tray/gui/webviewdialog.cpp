@@ -13,6 +13,7 @@
 # include <QWebEngineView>
 #elif defined(SYNCTHINGTRAY_USE_WEBKIT)
 # include <QWebView>
+# include <QWebFrame>
 #endif
 
 using namespace Dialogs;
@@ -50,6 +51,33 @@ void QtGui::WebViewDialog::applySettings(const Data::SyncthingConnectionSettings
     m_view->setZoomFactor(Settings::values().webView.zoomFactor);
 }
 
+#if defined(SYNCTHINGTRAY_USE_WEBKIT)
+bool WebViewDialog::isModalVisible() const
+{
+    if(m_view->page()->mainFrame()) {
+        return m_view->page()->mainFrame()->evaluateJavaScript(QStringLiteral("$('.modal-dialog').is(':visible')")).toBool();
+    }
+    return false;
+}
+#endif
+
+void WebViewDialog::closeUnlessModalVisible()
+{
+#if defined(SYNCTHINGTRAY_USE_WEBKIT)
+    if(!isModalVisible()) {
+        close();
+    }
+#elif defined(SYNCTHINGTRAY_USE_WEBENGINE)
+    m_view->page()->runJavaScript(QStringLiteral("$('.modal-dialog').is(':visible')"), [this] (const QVariant &modalVisible) {
+        if(!modalVisible.toBool()) {
+            close();
+        }
+    });
+#else
+    close();
+#endif
+}
+
 void QtGui::WebViewDialog::closeEvent(QCloseEvent *event)
 {
     if(!Settings::values().webView.keepRunning) {
@@ -63,6 +91,11 @@ void WebViewDialog::keyPressEvent(QKeyEvent *event)
     switch(event->key()) {
     case Qt::Key_F5:
         m_view->reload();
+        event->accept();
+        break;
+    case Qt::Key_Escape:
+        // FIXME: never called when using Qt WebEngine, hence close on ESC does not work yet
+        closeUnlessModalVisible();
         event->accept();
         break;
     default:

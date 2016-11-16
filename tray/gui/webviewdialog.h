@@ -26,6 +26,10 @@ public:
 public slots:
     void applySettings(const Data::SyncthingConnectionSettings &connectionSettings);
     const Data::SyncthingConnectionSettings &settings() const;
+#if defined(SYNCTHINGTRAY_USE_WEBKIT)
+    bool isModalVisible() const;
+#endif
+    void closeUnlessModalVisible();
 
 protected:
     void closeEvent(QCloseEvent *event);
