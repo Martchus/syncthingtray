@@ -31,6 +31,13 @@ WebViewDialog::WebViewDialog(QWidget *parent) :
     m_view->setPage(new WebPage(this, m_view));
     connect(m_view, &WEB_VIEW_PROVIDER::titleChanged, this, &WebViewDialog::setWindowTitle);
 
+#if defined(SYNCTHINGTRAY_USE_WEBENGINE)
+    m_view->installEventFilter(this);
+    if(m_view->focusProxy()) {
+        m_view->focusProxy()->installEventFilter(this);
+    }
+#endif
+
     if(Settings::values().webView.geometry.isEmpty()) {
         resize(1200, 800);
         centerWidget(this);
@@ -94,7 +101,6 @@ void WebViewDialog::keyPressEvent(QKeyEvent *event)
         event->accept();
         break;
     case Qt::Key_Escape:
-        // FIXME: never called when using Qt WebEngine, hence close on ESC does not work yet
         closeUnlessModalVisible();
         event->accept();
         break;
@@ -102,6 +108,25 @@ void WebViewDialog::keyPressEvent(QKeyEvent *event)
         QMainWindow::keyPressEvent(event);
     }
 }
+
+#if defined(SYNCTHINGTRAY_USE_WEBENGINE)
+bool WebViewDialog::eventFilter(QObject *watched, QEvent *event)
+{
+    switch(event->type()) {
+    case QEvent::ChildAdded:
+        if(m_view->focusProxy()) {
+            m_view->focusProxy()->installEventFilter(this);
+        }
+        break;
+    case QEvent::KeyPress:
+        keyPressEvent(static_cast<QKeyEvent *>(event));
+        break;
+    default:
+        ;
+    }
+    return QMainWindow::eventFilter(watched, event);
+}
+#endif
 
 }
 

@@ -34,6 +34,9 @@ public slots:
 protected:
     void closeEvent(QCloseEvent *event);
     void keyPressEvent(QKeyEvent *event);
+#if defined(SYNCTHINGTRAY_USE_WEBENGINE)
+    bool eventFilter(QObject *watched, QEvent *event);
+#endif
 
 private:
     WEB_VIEW_PROVIDER *m_view;
