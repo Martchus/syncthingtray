@@ -22,7 +22,7 @@ inline QColor red(bool bright)
 
 inline QColor green(bool bright)
 {
-    return bright ? QColor(0xA8FF41) : QColor(Qt::green);
+    return bright ? QColor(0xA8FF41) : QColor(Qt::darkGreen);
 }
 
 inline QColor blue(bool bright)
