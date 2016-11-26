@@ -61,9 +61,22 @@ application. Just add `--webui` to the arguments to trigger the web UI.
 Syncthing Tray ensures that no second instance will be spawned if it is already
 running.
 
-## Download / binary repository
-I currently provide packages for Arch Linux (see [AUR](https://aur.archlinux.org/packages/syncthingtray/)) and Windows (see
-[my website](http://martchus.no-ip.biz/website/page.php?name=programming)). Sources for those packages can be found in a separate [repository](https://github.com/Martchus/PKGBUILDs).
+## Download
+### Source
+See the release section on GitHub.
+
+### Packages and binaries
+* Arch Linux
+  * for PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs) or
+    [the AUR](https://aur.archlinux.org/packages?SeB=m&K=Martchus)
+  * for binary repository checkout [my website](http://martchus.no-ip.biz/website/page.php?name=programming)
+* Tumbleweed
+  * for RPM \*.spec files and binary repository checkout
+    [openSUSE Build Servide](https://build.opensuse.org/project/show/home:mkittler)
+* Windows
+  * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
+  * for binaries checkout [my website](http://martchus.no-ip.biz/website/page.php?name=programming) and the
+    release section on GitHub
 .
 
 ## Build instructions
