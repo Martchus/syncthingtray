@@ -183,62 +183,67 @@
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="150"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="145"/>
         <source>Deleted at %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="152"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="147"/>
         <source>Updated at %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="163"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="158"/>
         <source>Click for details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="163"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="158"/>
         <source>Failed items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="181"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="176"/>
         <source>Unknown status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="182"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="178"/>
         <source>Idle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="183"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="177"/>
+        <source>Unshared</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="179"/>
         <source>Scanning (%1 %)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="183"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="179"/>
         <source>Scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="184"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="180"/>
         <source>Synchronizing (%1 %)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="184"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="180"/>
         <source>Synchronizing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="185"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="181"/>
         <source>Paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="186"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="182"/>
         <source>Out of sync</source>
         <translation type="unfinished"></translation>
     </message>
@@ -246,12 +251,12 @@
 <context>
     <name>Data::SyncthingDownloadModel</name>
     <message>
-        <location filename="../syncthingdownloadmodel.cpp" line="72"/>
+        <location filename="../syncthingdownloadmodel.cpp" line="71"/>
         <source>Dir/item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdownloadmodel.cpp" line="73"/>
+        <location filename="../syncthingdownloadmodel.cpp" line="72"/>
         <source>Progress</source>
         <translation type="unfinished"></translation>
     </message>
