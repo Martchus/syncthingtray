@@ -301,6 +301,14 @@ inline bool SyncthingConnection::hasUnreadNotifications() const
 }
 
 /*!
+ * \brief Considers all notifications as read; hence might trigger a status update.
+ */
+inline void SyncthingConnection::considerAllNotificationsRead()
+{
+    m_unreadNotifications = false;
+}
+
+/*!
  * \brief Returns the interval for polling traffic status (which currently can not be received via event API) in milliseconds.
  * \remarks Default value is 2000 milliseconds.
  */

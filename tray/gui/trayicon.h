@@ -24,12 +24,14 @@ public:
     TrayIcon(QObject *parent = nullptr);
     TrayMenu &trayMenu();
 
-private slots:
-    void handleActivated(QSystemTrayIcon::ActivationReason reason);
-    void handleMessageClicked();
+public slots:
     void showInternalError(const QString &errorMsg);
     void showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message);
     void updateStatusIconAndText(Data::SyncthingStatus status);
+
+private slots:
+    void handleActivated(QSystemTrayIcon::ActivationReason reason);
+    void handleMessageClicked();
 
 private:
     QPixmap renderSvgImage(const QString &path);

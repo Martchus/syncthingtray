@@ -305,15 +305,6 @@ void SyncthingConnection::shutdown()
 }
 
 /*!
- * \brief Considers all notifications as read; hence might trigger a status update.
- */
-void SyncthingConnection::considerAllNotificationsRead()
-{
-    m_unreadNotifications = false;
-    setStatus(status());
-}
-
-/*!
  * \brief Prepares a request for the specified \a path and \a query.
  */
 QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const QUrlQuery &query, bool rest)

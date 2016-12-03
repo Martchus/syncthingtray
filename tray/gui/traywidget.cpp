@@ -243,6 +243,9 @@ void TrayWidget::showNotifications()
     showDialog(dlg);
     m_connection.considerAllNotificationsRead();
     m_ui->notificationsPushButton->setHidden(true);
+    if(m_menu && m_menu->icon()) {
+        m_menu->icon()->updateStatusIconAndText(m_connection.status());
+    }
 }
 
 void TrayWidget::restartSyncthing()
