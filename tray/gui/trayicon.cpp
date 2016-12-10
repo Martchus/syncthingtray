@@ -97,6 +97,7 @@ void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const Q
     if(Settings::values().notifyOn.syncthingErrors) {
         showMessage(tr("Syncthing notification - click to dismiss"), message, QSystemTrayIcon::Warning);
     }
+    updateStatusIconAndText(m_status);
 }
 
 void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
