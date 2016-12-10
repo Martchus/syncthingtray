@@ -102,7 +102,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     m_ui->connectionsPushButton->setText(Settings::values().connection.primary.label);
     m_ui->connectionsPushButton->setMenu(m_connectionsMenu);
 
-    // apply settings, this also establishes the connection to Syncthing
+    // apply settings, this also establishes the connection to Syncthing (according to settings)
     applySettings();
 
     // setup other widgets
@@ -348,6 +348,7 @@ void TrayWidget::applySettings()
         // update visual appearance
         instance->m_ui->trafficFormWidget->setVisible(settings.appearance.showTraffic);
         instance->m_ui->trafficIconLabel->setVisible(settings.appearance.showTraffic);
+        instance->m_ui->trafficHorizontalSpacer->changeSize(0, 20, settings.appearance.showTraffic ? QSizePolicy::Expanding : QSizePolicy::Ignored, QSizePolicy::Minimum);
         if(settings.appearance.showTraffic) {
             instance->updateTraffic();
         }
