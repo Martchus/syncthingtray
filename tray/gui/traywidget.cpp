@@ -241,6 +241,11 @@ void TrayWidget::showNotifications()
     }
     m_notifications.clear();
     showDialog(dlg);
+    dismissNotifications();
+}
+
+void TrayWidget::dismissNotifications()
+{
     m_connection.considerAllNotificationsRead();
     m_ui->notificationsPushButton->setHidden(true);
     if(m_menu && m_menu->icon()) {
