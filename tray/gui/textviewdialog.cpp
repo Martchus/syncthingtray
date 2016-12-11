@@ -8,6 +8,7 @@
 #include <QTextBrowser>
 #include <QFontDatabase>
 #include <QVBoxLayout>
+#include <QKeyEvent>
 
 using namespace Dialogs;
 
@@ -41,6 +42,20 @@ TextViewDialog::TextViewDialog(const QString &title, QWidget *parent) :
     // default position and size
     resize(600, 500);
     centerWidget(this);
+}
+
+void TextViewDialog::keyPressEvent(QKeyEvent *event)
+{
+    switch(event->key()) {
+    case Qt::Key_Escape:
+        close();
+        break;
+    case Qt::Key_F5:
+        emit reload();
+        break;
+    default:
+        ;
+    }
 }
 
 }

@@ -15,6 +15,12 @@ public:
 
     QTextBrowser *browser();
 
+signals:
+    void reload();
+
+protected:
+    void keyPressEvent(QKeyEvent *event);
+
 private:
     QTextBrowser *m_browser;
 };

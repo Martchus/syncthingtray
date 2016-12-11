@@ -222,14 +222,19 @@ void TrayWidget::showOwnDeviceId()
 void TrayWidget::showLog()
 {
     auto *dlg = new TextViewDialog(tr("Log"), this);
-    connect(dlg, &QWidget::destroyed,
-            bind(static_cast<bool(*)(const QMetaObject::Connection &)>(&QObject::disconnect),
-                 m_connection.requestLog([dlg] (const std::vector<SyncthingLogEntry> &entries) {
-                    for(const SyncthingLogEntry &entry : entries) {
-                        dlg->browser()->append(entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
-                    }
-        })
-    ));
+    auto loadLog = [dlg, this] {
+        connect(dlg, &QWidget::destroyed,
+                bind(static_cast<bool(*)(const QMetaObject::Connection &)>(&QObject::disconnect),
+                     m_connection.requestLog([dlg, this] (const std::vector<SyncthingLogEntry> &entries) {
+                        dlg->browser()->clear();
+                        for(const SyncthingLogEntry &entry : entries) {
+                            dlg->browser()->append(entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
+                        }
+            })
+        ));
+    };
+    connect(dlg, &TextViewDialog::reload, loadLog);
+    loadLog();
     showDialog(dlg);
 }
 
