@@ -26,6 +26,7 @@ namespace QtGui {
  */
 TrayIcon::TrayIcon(QObject *parent) :
     QSystemTrayIcon(parent),
+    m_initialized(false),
     m_size(QSize(128, 128)),
     m_statusIconDisconnected(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-disconnected.svg")))),
     m_statusIconIdling(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-ok.svg")))),
@@ -74,6 +75,8 @@ TrayIcon::TrayIcon(QObject *parent) :
     connect(connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
     connect(connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
     connect(connection, &SyncthingConnection::statusChanged, this, &TrayIcon::updateStatusIconAndText);
+
+    m_initialized = true;
 }
 
 void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
@@ -154,7 +157,7 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
         } else {
             setToolTip(tr("Not connected to Syncthing"));
         }
-        if(settings.notifyOn.disconnect) {
+        if(m_initialized && settings.notifyOn.disconnect) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
             if(settings.dbusNotifications) {
                 m_disconnectedNotification.show();

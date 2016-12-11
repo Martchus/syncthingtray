@@ -41,6 +41,7 @@ private slots:
 private:
     QPixmap renderSvgImage(const QString &path);
 
+    bool m_initialized;
     const QSize m_size;
     const QIcon m_statusIconDisconnected;
     const QIcon m_statusIconIdling;
