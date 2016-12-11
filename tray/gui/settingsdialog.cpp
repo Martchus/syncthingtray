@@ -16,6 +16,9 @@
 #include <qtutilities/settingsdialog/optioncategory.h>
 #include <qtutilities/settingsdialog/optioncategorymodel.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+# include <qtutilities/misc/dbusnotification.h>
+#endif
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -35,6 +38,9 @@ using namespace std::placeholders;
 using namespace Settings;
 using namespace Dialogs;
 using namespace Data;
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+using namespace MiscUtils;
+#endif
 
 namespace QtGui {
 
@@ -232,14 +238,21 @@ NotificationsOptionPage::~NotificationsOptionPage()
 
 bool NotificationsOptionPage::apply()
 {
+    bool ok = true;
     if(hasBeenShown()) {
         auto &notifyOn = values().notifyOn;
         notifyOn.disconnect = ui()->notifyOnDisconnectCheckBox->isChecked();
         notifyOn.internalErrors = ui()->notifyOnErrorsCheckBox->isChecked();
         notifyOn.syncComplete = ui()->notifyOnSyncCompleteCheckBox->isChecked();
         notifyOn.syncthingErrors = ui()->showSyncthingNotificationsCheckBox->isChecked();
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+        if((values().dbusNotifications = ui()->dbusRadioButton->isChecked()) && !DBusNotification::isAvailable()) {
+            errors() << QCoreApplication::translate("QtGui::NotificationsOptionPage", "Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.");
+            ok = false;
+        }
+#endif
     }
-    return true;
+    return ok;
 }
 
 void NotificationsOptionPage::reset()
@@ -250,6 +263,12 @@ void NotificationsOptionPage::reset()
         ui()->notifyOnErrorsCheckBox->setChecked(notifyOn.internalErrors);
         ui()->notifyOnSyncCompleteCheckBox->setChecked(notifyOn.syncComplete);
         ui()->showSyncthingNotificationsCheckBox->setChecked(notifyOn.syncthingErrors);
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+        (values().dbusNotifications ? ui()->dbusRadioButton : ui()->qtRadioButton)->setChecked(true);
+#else
+        ui()->dbusRadioButton->setEnabled(false);
+        ui()->qtRadioButton->setChecked(true);
+#endif
     }
 }
 

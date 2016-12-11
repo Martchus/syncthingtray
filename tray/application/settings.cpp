@@ -1,6 +1,9 @@
 #include "./settings.h"
 
 #include <qtutilities/settingsdialog/qtsettings.h>
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+# include <qtutilities/misc/dbusnotification.h>
+#endif
 
 #include <QStringBuilder>
 #include <QApplication>
@@ -11,6 +14,9 @@
 
 using namespace std;
 using namespace Data;
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+using namespace MiscUtils;
+#endif
 
 namespace Settings {
 
@@ -74,6 +80,9 @@ void restore()
     notifyOn.internalErrors = settings.value(QStringLiteral("notifyOnErrors"), notifyOn.internalErrors).toBool();
     notifyOn.syncComplete = settings.value(QStringLiteral("notifyOnSyncComplete"), notifyOn.syncComplete).toBool();
     notifyOn.syncthingErrors = settings.value(QStringLiteral("showSyncthingNotifications"), notifyOn.syncthingErrors).toBool();
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    v.dbusNotifications = settings.value(QStringLiteral("dbusNotifications"), DBusNotification::isAvailable()).toBool();
+#endif
     auto &appearance = v.appearance;
     appearance.showTraffic = settings.value(QStringLiteral("showTraffic"), appearance.showTraffic).toBool();
     appearance.trayMenuSize = settings.value(QStringLiteral("trayMenuSize"), appearance.trayMenuSize).toSize();
@@ -133,6 +142,9 @@ void save()
     settings.setValue(QStringLiteral("notifyOnErrors"), notifyOn.internalErrors);
     settings.setValue(QStringLiteral("notifyOnSyncComplete"), notifyOn.syncComplete);
     settings.setValue(QStringLiteral("showSyncthingNotifications"), notifyOn.syncthingErrors);
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    settings.setValue(QStringLiteral("dbusNotifications"), v.dbusNotifications);
+#endif
     const auto &appearance = v.appearance;
     settings.setValue(QStringLiteral("showTraffic"), appearance.showTraffic);
     settings.setValue(QStringLiteral("trayMenuSize"), appearance.trayMenuSize);

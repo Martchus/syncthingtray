@@ -88,6 +88,7 @@ set(REQUIRED_ICONS
     media-playback-start
     network-card
     network-connect
+    network-disconnect
     network-server
     preferences-desktop
     preferences-desktop-icons

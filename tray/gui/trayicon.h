@@ -5,6 +5,10 @@
 
 #include <c++utilities/chrono/datetime.h>
 
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+# include <qtutilities/misc/dbusnotification.h>
+#endif
+
 #include <QSystemTrayIcon>
 #include <QIcon>
 
@@ -31,7 +35,7 @@ public slots:
 
 private slots:
     void handleActivated(QSystemTrayIcon::ActivationReason reason);
-    void handleMessageClicked();
+    void handleSyncthingNotificationAction(const QString &action);
 
 private:
     QPixmap renderSvgImage(const QString &path);
@@ -48,6 +52,12 @@ private:
     TrayMenu m_trayMenu;
     QMenu m_contextMenu;
     Data::SyncthingStatus m_status;
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    MiscUtils::DBusNotification m_disconnectedNotification;
+    MiscUtils::DBusNotification m_internalErrorNotification;
+    MiscUtils::DBusNotification m_syncthingNotification;
+    MiscUtils::DBusNotification m_syncCompleteNotification;
+#endif
 };
 
 inline TrayMenu &TrayIcon::trayMenu()

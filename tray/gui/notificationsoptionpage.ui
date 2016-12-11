@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>QtGui::NotificationsOptionPage</class>
  <widget class="QWidget" name="QtGui::NotificationsOptionPage">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>240</width>
-    <height>193</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Notifications</string>
   </property>
@@ -19,44 +11,63 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="notifyOnLabel">
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
+    <widget class="QGroupBox" name="notifyOnGroupBox">
+     <property name="title">
       <string>Notify on</string>
      </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="notifyOnDisconnectCheckBox">
+        <property name="text">
+         <string>disconnect</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="notifyOnErrorsCheckBox">
+        <property name="text">
+         <string>internal errors</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="showSyncthingNotificationsCheckBox">
+        <property name="text">
+         <string>errors/notifications from Syncthing</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="notifyOnSyncCompleteCheckBox">
+        <property name="text">
+         <string>sync complete</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="notifyOnDisconnectCheckBox">
-     <property name="text">
-      <string>disconnect</string>
+    <widget class="QGroupBox" name="apiGroupBox">
+     <property name="title">
+      <string>Notification API</string>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="notifyOnErrorsCheckBox">
-     <property name="text">
-      <string>internal errors</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="showSyncthingNotificationsCheckBox">
-     <property name="text">
-      <string>errors/notifications from Syncthing</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="notifyOnSyncCompleteCheckBox">
-     <property name="text">
-      <string>sync complete</string>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QRadioButton" name="dbusRadioButton">
+        <property name="text">
+         <string>D-Bus notifi&amp;cations (org.freedesktop.Notifications)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="qtRadioButton">
+        <property name="text">
+         <string>&amp;Method provided by Qt (might be overridden by QPA plugin)</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>

@@ -77,6 +77,9 @@ struct Settings
     bool firstLaunch = false;
     Connection connection;
     NotifyOn notifyOn;
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    bool dbusNotifications = false;
+#endif
     Appearance appearance;
     Launcher launcher;
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
