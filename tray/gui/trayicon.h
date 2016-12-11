@@ -16,6 +16,7 @@ QT_FORWARD_DECLARE_CLASS(QPixmap)
 
 namespace Data {
 enum class SyncthingStatus;
+enum class SyncthingErrorCategory;
 }
 
 namespace QtGui {
@@ -29,7 +30,7 @@ public:
     TrayMenu &trayMenu();
 
 public slots:
-    void showInternalError(const QString &errorMsg);
+    void showInternalError(const QString &errorMsg, Data::SyncthingErrorCategory category);
     void showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message);
     void updateStatusIconAndText(Data::SyncthingStatus status);
 

@@ -55,7 +55,8 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     m_lastEventId(0),
     m_trafficPollInterval(2000),
     m_devStatsPollInterval(60000),
-    m_reconnectTimer(),
+    m_autoReconnectTimer(),
+    m_autoReconnectTries(0),
     m_totalIncomingTraffic(0),
     m_totalOutgoingTraffic(0),
     m_totalIncomingRate(0),
@@ -70,8 +71,8 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     m_hasStatus(false),
     m_lastFileDeleted(false)
 {
-    m_reconnectTimer.setTimerType(Qt::VeryCoarseTimer);
-    QObject::connect(&m_reconnectTimer, &QTimer::timeout, this, static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
+    m_autoReconnectTimer.setTimerType(Qt::VeryCoarseTimer);
+    QObject::connect(&m_autoReconnectTimer, &QTimer::timeout, this, &SyncthingConnection::autoReconnect);
 }
 
 /*!
@@ -122,11 +123,12 @@ bool SyncthingConnection::hasOutOfSyncDirs() const
  */
 void SyncthingConnection::connect()
 {
-    m_reconnectTimer.stop();
+    m_autoReconnectTimer.stop();
+    m_autoReconnectTries = 0;
     if(!isConnected()) {
         m_reconnecting = m_hasConfig = m_hasStatus = false;
         if(m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
-            emit error(tr("Connection configuration is insufficient."));
+            emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection);
             return;
         }
         requestConfig();
@@ -141,16 +143,20 @@ void SyncthingConnection::connect()
 void SyncthingConnection::disconnect()
 {
     m_reconnecting = m_hasConfig = m_hasStatus = false;
+    m_autoReconnectTries = 0;
     abortAllRequests();
 }
 
 /*!
  * \brief Disconnects if connected, then (re-)connects asynchronously.
- * \remarks Clears the currently cached configuration.
+ * \remarks
+ * - Clears the currently cached configuration.
+ * - This explicit request to reconnect will reset the autoReconnectTries().
  */
 void SyncthingConnection::reconnect()
 {
-    m_reconnectTimer.stop();
+    m_autoReconnectTimer.stop();
+    m_autoReconnectTries = 0;
     if(isConnected()) {
         m_reconnecting = true;
         m_hasConfig = m_hasStatus = false;
@@ -197,11 +203,18 @@ void SyncthingConnection::continueReconnecting()
     m_lastFileName.clear();
     m_lastFileDeleted = false;
     if(m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
-        emit error(tr("Connection configuration is insufficient."));
+        emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection);
         return;
     }
     requestConfig();
     requestStatus();
+}
+
+void SyncthingConnection::autoReconnect()
+{
+    const auto tmp = m_autoReconnectTries;
+    connect();
+    m_autoReconnectTries = tmp + 1;
 }
 
 /*!
@@ -560,7 +573,7 @@ QMetaObject::Connection SyncthingConnection::requestQrCode(const QString &text, 
             callback(reply->readAll());
             break;
         default:
-            emit error(tr("Unable to request QR-Code: ") + reply->errorString());
+            emit error(tr("Unable to request QR-Code: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest);
         }
     });
 }
@@ -589,11 +602,11 @@ QMetaObject::Connection SyncthingConnection::requestLog(std::function<void (cons
                 }
                 callback(logEntries);
             } else {
-                emit error(tr("Unable to parse Syncthing log: ") + jsonError.errorString());
+                emit error(tr("Unable to parse Syncthing log: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing);
             }
             break;
         } default:
-            emit error(tr("Unable to request system log: ") + reply->errorString());
+            emit error(tr("Unable to request system log: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest);
         }
     });
 }
@@ -630,13 +643,13 @@ void SyncthingConnection::loadSelfSignedCertificate()
     // find cert
     const QString certPath = !m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate();
     if(certPath.isEmpty()) {
-        emit error(tr("Unable to locate certificate used by Syncthing GUI."));
+        emit error(tr("Unable to locate certificate used by Syncthing GUI."), SyncthingErrorCategory::OverallConnection);
         return;
     }
     // add exception
     const QList<QSslCertificate> cert = QSslCertificate::fromPath(certPath);
     if(cert.isEmpty()) {
-        emit error(tr("Unable to load certificate used by Syncthing GUI."));
+        emit error(tr("Unable to load certificate used by Syncthing GUI."), SyncthingErrorCategory::OverallConnection);
         return;
     }
     m_expectedSslErrors.reserve(4);
@@ -664,7 +677,7 @@ void SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
     }
     setTrafficPollInterval(connectionSettings.trafficPollInterval);
     setDevStatsPollInterval(connectionSettings.devStatsPollInterval);
-    setReconnectInterval(connectionSettings.reconnectInterval);
+    setAutoReconnectInterval(connectionSettings.reconnectInterval);
     if(connectionSettings.expectedSslErrors.isEmpty()) {
         loadSelfSignedCertificate();
         connectionSettings.expectedSslErrors = expectedSslErrors();
@@ -698,16 +711,16 @@ void SyncthingConnection::readConfig()
                 continueConnecting();
             }
         } else {
-            emit error(tr("Unable to parse Syncthing config: ") + jsonError.errorString());
+            emit error(tr("Unable to parse Syncthing config: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing);
         }
         break;
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request Syncthing config: ") + reply->errorString());
+        emit error(tr("Unable to request Syncthing config: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection);
         setStatus(SyncthingStatus::Disconnected);
-        if(m_reconnectTimer.interval()) {
-            m_reconnectTimer.start();
+        if(m_autoReconnectTimer.interval()) {
+            m_autoReconnectTimer.start();
         }
     }
 }
@@ -802,13 +815,13 @@ void SyncthingConnection::readStatus()
             m_hasStatus = true;
             continueConnecting();
         } else {
-            emit error(tr("Unable to parse Syncthing status: ") + jsonError.errorString());
+            emit error(tr("Unable to parse Syncthing status: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing);
         }
         break;
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request Syncthing status: ") + reply->errorString());
+        emit error(tr("Unable to request Syncthing status: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection);
     }
 }
 
@@ -883,13 +896,13 @@ void SyncthingConnection::readConnections()
                 QTimer::singleShot(m_trafficPollInterval, Qt::VeryCoarseTimer, this, &SyncthingConnection::requestConnections);
             }
         } else {
-            emit error(tr("Unable to parse connections: ") + jsonError.errorString());
+            emit error(tr("Unable to parse connections: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing);
         }
         break;
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request connections: ") + reply->errorString());
+        emit error(tr("Unable to request connections: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection);
     }
 }
 
@@ -943,13 +956,13 @@ void SyncthingConnection::readDirStatistics()
                 ++index;
             }
         } else {
-            emit error(tr("Unable to parse directory statistics: ") + jsonError.errorString());
+            emit error(tr("Unable to parse directory statistics: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing);
         }
         break;
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request directory statistics: ") + reply->errorString());
+        emit error(tr("Unable to request directory statistics: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection);
     }
 }
 
@@ -985,13 +998,13 @@ void SyncthingConnection::readDeviceStatistics()
                 QTimer::singleShot(m_devStatsPollInterval, Qt::VeryCoarseTimer, this, &SyncthingConnection::requestDeviceStatistics);
             }
         } else {
-            emit error(tr("Unable to parse device statistics: ") + jsonError.errorString());
+            emit error(tr("Unable to parse device statistics: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing);
         }
         break;
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request device statistics: ") + reply->errorString());
+        emit error(tr("Unable to request device statistics: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection);
     }
 }
 
@@ -1029,7 +1042,7 @@ void SyncthingConnection::readErrors()
                 }
             }
         } else {
-            emit error(tr("Unable to parse errors: ") + jsonError.errorString());
+            emit error(tr("Unable to parse errors: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing);
         }
 
         // since there seems no event for this data, just request every thirty seconds, FIXME: make interval configurable
@@ -1040,7 +1053,7 @@ void SyncthingConnection::readErrors()
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request errors: ") + reply->errorString());
+        emit error(tr("Unable to request errors: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection);
     }
 }
 
@@ -1093,10 +1106,10 @@ void SyncthingConnection::readEvents()
                 }
             }
         } else {
-            emit error(tr("Unable to parse Syncthing events: ") + jsonError.errorString());
+            emit error(tr("Unable to parse Syncthing events: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing);
             setStatus(SyncthingStatus::Disconnected);
-            if(m_reconnectTimer.interval()) {
-                m_reconnectTimer.start();
+            if(m_autoReconnectTimer.interval()) {
+                m_autoReconnectTimer.start();
             }
             return;
         }
@@ -1115,10 +1128,10 @@ void SyncthingConnection::readEvents()
         }
         return;
     default:
-        emit error(tr("Unable to request Syncthing events: ") + reply->errorString());
+        emit error(tr("Unable to request Syncthing events: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection);
         setStatus(SyncthingStatus::Disconnected);
-        if(m_reconnectTimer.interval()) {
-            m_reconnectTimer.start();
+        if(m_autoReconnectTimer.interval()) {
+            m_autoReconnectTimer.start();
         }
         return;
     }
@@ -1378,7 +1391,7 @@ void SyncthingConnection::readRescan()
         emit rescanTriggered(reply->property("dirId").toString());
         break;
     default:
-        emit error(tr("Unable to request rescan: ") + reply->errorString());
+        emit error(tr("Unable to request rescan: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest);
     }
 }
 
@@ -1398,7 +1411,7 @@ void SyncthingConnection::readPauseResume()
         }
         break;
     default:
-        emit error(tr("Unable to request pause/resume: ") + reply->errorString());
+        emit error(tr("Unable to request pause/resume: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest);
     }
 }
 
@@ -1414,7 +1427,7 @@ void SyncthingConnection::readRestart()
         emit restartTriggered();
         break;
     default:
-        emit error(tr("Unable to request restart: ") + reply->errorString());
+        emit error(tr("Unable to request restart: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest);
     }
 }
 
@@ -1430,7 +1443,7 @@ void SyncthingConnection::readShutdown()
         emit shutdownTriggered();
         break;
     default:
-        emit error(tr("Unable to request shutdown: ") + reply->errorString());
+        emit error(tr("Unable to request shutdown: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest);
     }
 }
 
@@ -1451,6 +1464,9 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
         m_syncedDirs.clear();
         break;
     default:
+        // reset reconnect tries
+        m_autoReconnectTries = 0;
+
         // check whether at least one directory is scanning or synchronizing
         bool scanning = false;
         bool synchronizing = false;

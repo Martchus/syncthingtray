@@ -340,7 +340,6 @@ void TrayWidget::applySettings()
             instance->m_connectionsMenu->actions().at(0)->setChecked(true);
         }
         instance->m_ui->connectionsPushButton->setText(instance->m_selectedConnection->label);
-
         instance->m_connection.reconnect(*instance->m_selectedConnection);
 
         // web view

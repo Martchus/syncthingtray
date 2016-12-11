@@ -37,6 +37,13 @@ enum class SyncthingStatus
     BeingDestroyed
 };
 
+enum class SyncthingErrorCategory
+{
+    OverallConnection,
+    SpecificRequest,
+    Parsing
+};
+
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry
 {
     SyncthingLogEntry(const QString &when, const QString &message) :
@@ -84,8 +91,9 @@ public:
     void setTrafficPollInterval(int trafficPollInterval);
     int devStatsPollInterval() const;
     void setDevStatsPollInterval(int devStatsPollInterval);
-    int reconnectInterval() const;
-    void setReconnectInterval(int reconnectInterval);
+    int autoReconnectInterval() const;
+    unsigned int autoReconnectTries() const;
+    void setAutoReconnectInterval(int interval);
     const QString &configDir() const;
     const QString &myId() const;
     uint64 totalIncomingTraffic() const;
@@ -128,7 +136,7 @@ Q_SIGNALS:
     void devStatusChanged(const SyncthingDev &dev, int index);
     void downloadProgressChanged();
     void newNotification(ChronoUtilities::DateTime when, const QString &message);
-    void error(const QString &errorMessage);
+    void error(const QString &errorMessage, SyncthingErrorCategory category);
     void statusChanged(SyncthingStatus newStatus);
     void configDirChanged(const QString &newConfigDir);
     void myIdChanged(const QString &myNewId);
@@ -172,6 +180,7 @@ private Q_SLOTS:
 
     void continueConnecting();
     void continueReconnecting();
+    void autoReconnect();
     void setStatus(SyncthingStatus status);
     void emitNotification(ChronoUtilities::DateTime when, const QString &message);
 
@@ -192,7 +201,8 @@ private:
     int m_lastEventId;
     int m_trafficPollInterval;
     int m_devStatsPollInterval;
-    QTimer m_reconnectTimer;
+    QTimer m_autoReconnectTimer;
+    unsigned int m_autoReconnectTries;
     QString m_configDir;
     QString m_myId;
     uint64 m_totalIncomingTraffic;
@@ -348,21 +358,29 @@ inline void SyncthingConnection::setDevStatsPollInterval(int devStatsPollInterva
  * \brief Returns the reconnect interval in milliseconds.
  * \remarks Default value is 0 which indicates disabled auto-reconnect.
  */
-inline int SyncthingConnection::reconnectInterval() const
+inline int SyncthingConnection::autoReconnectInterval() const
 {
-    return m_reconnectTimer.interval();
+    return m_autoReconnectTimer.interval();
+}
+
+/*!
+ * \brief Returns the current number of auto-reconnect tries.
+ */
+inline unsigned int SyncthingConnection::autoReconnectTries() const
+{
+    return m_autoReconnectTries;
 }
 
 /*!
  * \brief Sets the reconnect interval in milliseconds.
  * \remarks Default value is 0 which indicates disabled auto-reconnect.
  */
-inline void SyncthingConnection::setReconnectInterval(int reconnectInterval)
+inline void SyncthingConnection::setAutoReconnectInterval(int interval)
 {
-    if(!reconnectInterval) {
-        m_reconnectTimer.stop();
+    if(!interval) {
+        m_autoReconnectTimer.stop();
     }
-    m_reconnectTimer.setInterval(reconnectInterval);
+    m_autoReconnectTimer.setInterval(interval);
 }
 
 /*!

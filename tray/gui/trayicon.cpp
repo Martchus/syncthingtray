@@ -108,10 +108,11 @@ void TrayIcon::handleSyncthingNotificationAction(const QString &action)
     }
 }
 
-void TrayIcon::showInternalError(const QString &errorMsg)
+void TrayIcon::showInternalError(const QString &errorMsg, SyncthingErrorCategory category)
 {
     const auto &settings = Settings::values();
-    if(settings.notifyOn.internalErrors) {
+    if(settings.notifyOn.internalErrors
+            && (m_trayMenu.widget()->connection().autoReconnectTries() < 1 || category != SyncthingErrorCategory::OverallConnection)) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
         if(settings.dbusNotifications) {
             m_internalErrorNotification.update(errorMsg);
@@ -147,7 +148,12 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
     switch(status) {
     case SyncthingStatus::Disconnected:
         setIcon(m_statusIconDisconnected);
-        setToolTip(tr("Not connected to Syncthing"));
+        if(connection.autoReconnectInterval() > 0) {
+            setToolTip(tr("Not connected to Syncthing - trying to reconnect every %1 ms")
+                       .arg(connection.autoReconnectInterval()));
+        } else {
+            setToolTip(tr("Not connected to Syncthing"));
+        }
         if(settings.notifyOn.disconnect) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
             if(settings.dbusNotifications) {
