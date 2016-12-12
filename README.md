@@ -59,11 +59,15 @@ The tray is still under development; the following features are planned:
 ![Web view](/tray/resources/screenshots/webview.png?raw=true)
 ![Web view (dark)](/tray/resources/screenshots/webview-dark.png?raw=true)
 
-## Hotkey for Web UI
-To create a hotkey for the web UI, you can use the same approach as for any other
-application. Just add `--webui` to the arguments to trigger the web UI.
+## Hotkeys
+To create hotkeys, you can use the same approach as for any other
+application. Just make it invoke the `syncthingctl` application with
+the arguments for the desired action.
+
+### Hotkey for web UI
+Just add `--webui` to the `syncthingtray` arguments to trigger the web UI.
 Syncthing Tray ensures that no second instance will be spawned if it is already
-running.
+running and just trigger the web UI.
 
 ## Download
 ### Source
