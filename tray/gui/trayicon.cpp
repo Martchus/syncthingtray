@@ -11,6 +11,7 @@
 #include <QSvgRenderer>
 #include <QPainter>
 #include <QPixmap>
+#include <QCursor>
 
 using namespace std;
 using namespace Dialogs;
@@ -91,11 +92,7 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
         break;
     case QSystemTrayIcon::Trigger:
         m_trayMenu.resize(m_trayMenu.sizeHint());
-        // when showing the menu manually
-        // move the menu to the closest of the currently available screen
-        // this implies that the tray icon is located near the edge of the screen; otherwise this behavior makes no sense
-        cornerWidget(&m_trayMenu);
-        m_trayMenu.show();
+        m_trayMenu.popup(QCursor::pos());
         break;
     default:
         ;
