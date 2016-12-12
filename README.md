@@ -17,8 +17,9 @@ support
   * Check state of directories and devices
   * Check current traffic statistics
   * Display further details about direcoties and devices, like last file, last
-    scan, ...
+    scan, items out of sync, ...
   * Display ongoing downloads
+  * Display Syncthing log
   * Trigger re-scan of a specific directory or all directories at once
   * Open a directory with the default file browser
   * Pause/resume a specific device or all devices at once
@@ -31,12 +32,14 @@ support
   * Utilizes either Qt WebKit or Qt WebEngine
   * Can be built without web view support as well (then the web UI is opened in the regular browser)
 * Allows quickly switching between multiple Syncthing instances
+* Shows notifications via Qt or uses D-Bus notification daemon directly
 * Features a simple command line utility `syncthingctl` to check Syncthing status and trigger rescan/pause/resume/restart
 
 ## Planned features
 The tray is still under development; the following features are planned:
 * Show recently processed items
 * Improve notification handling
+* Start/stop systemd user service
 * Create Plasmoid for Plasma 5 desktop
 
 ## Screenshots
@@ -46,6 +49,7 @@ The tray is still under development; the following features are planned:
 
 ### Under Plasma 5
 ![Plasma 5](/tray/resources/screenshots/plasma.png?raw=true)
+![Plasma 5 (directory error)](/tray/resources/screenshots/plasma-2.png?raw=true)
 ![Plasma 5 (dark)](/tray/resources/screenshots/plasma-dark.png?raw=true)
 
 ### Settings dialog
