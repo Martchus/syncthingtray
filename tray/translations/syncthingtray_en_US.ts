@@ -127,22 +127,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="329"/>
+        <location filename="../gui/settingsdialog.cpp" line="348"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="331"/>
+        <location filename="../gui/settingsdialog.cpp" line="350"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="333"/>
+        <location filename="../gui/settingsdialog.cpp" line="352"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="420"/>
+        <location filename="../gui/settingsdialog.cpp" line="439"/>
         <source>unable to modify startup entry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -257,27 +257,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="55"/>
+        <location filename="../gui/settingsdialog.cpp" line="61"/>
         <source>Auto-detected for local instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="72"/>
+        <location filename="../gui/settingsdialog.cpp" line="78"/>
         <source>Select Syncthing config file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="79"/>
+        <location filename="../gui/settingsdialog.cpp" line="85"/>
         <source>Unable to parse the Syncthing config file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="148"/>
+        <location filename="../gui/settingsdialog.cpp" line="154"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="172"/>
+        <location filename="../gui/settingsdialog.cpp" line="178"/>
         <source>Instance %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -384,13 +384,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="502"/>
+        <location filename="../gui/settingsdialog.cpp" line="521"/>
         <source>Syncthing existed with exit code %1
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="505"/>
+        <location filename="../gui/settingsdialog.cpp" line="524"/>
         <source>Syncthing crashed with exit code %1
 </source>
         <translation type="unfinished"></translation>
@@ -399,55 +399,75 @@
 <context>
     <name>QtGui::NotificationsOptionPage</name>
     <message>
-        <location filename="../gui/notificationsoptionpage.ui" line="14"/>
+        <location filename="../gui/notificationsoptionpage.ui" line="6"/>
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/notificationsoptionpage.ui" line="30"/>
+        <location filename="../gui/notificationsoptionpage.ui" line="16"/>
         <source>Notify on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/notificationsoptionpage.ui" line="37"/>
+        <location filename="../gui/notificationsoptionpage.ui" line="22"/>
         <source>disconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/notificationsoptionpage.ui" line="44"/>
+        <location filename="../gui/notificationsoptionpage.ui" line="29"/>
         <source>internal errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/notificationsoptionpage.ui" line="51"/>
+        <location filename="../gui/notificationsoptionpage.ui" line="36"/>
         <source>errors/notifications from Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/notificationsoptionpage.ui" line="58"/>
+        <location filename="../gui/notificationsoptionpage.ui" line="43"/>
         <source>sync complete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/notificationsoptionpage.ui" line="53"/>
+        <source>Notification API</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/notificationsoptionpage.ui" line="59"/>
+        <source>D-Bus notifi&amp;cations (org.freedesktop.Notifications)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/notificationsoptionpage.ui" line="66"/>
+        <source>&amp;Method provided by Qt (might be overridden by QPA plugin)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/settingsdialog.cpp" line="250"/>
+        <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="592"/>
+        <location filename="../gui/settingsdialog.cpp" line="611"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="598"/>
+        <location filename="../gui/settingsdialog.cpp" line="617"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="604"/>
+        <location filename="../gui/settingsdialog.cpp" line="623"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="614"/>
+        <location filename="../gui/settingsdialog.cpp" line="633"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -455,97 +475,133 @@
 <context>
     <name>QtGui::TrayIcon</name>
     <message>
-        <location filename="../gui/trayicon.cpp" line="39"/>
+        <location filename="../gui/trayicon.cpp" line="46"/>
+        <source> - internal error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="47"/>
+        <source>Syncthing notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="52"/>
         <source>Web UI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="40"/>
+        <location filename="../gui/trayicon.cpp" line="53"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="41"/>
+        <location filename="../gui/trayicon.cpp" line="54"/>
         <source>Rescan all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="43"/>
+        <location filename="../gui/trayicon.cpp" line="57"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="45"/>
+        <location filename="../gui/trayicon.cpp" line="59"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="90"/>
+        <location filename="../gui/trayicon.cpp" line="161"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="98"/>
+        <location filename="../gui/trayicon.cpp" line="177"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="108"/>
+        <location filename="../gui/trayicon.cpp" line="191"/>
+        <source>Not connected to Syncthing - trying to reconnect every %1 ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="194"/>
         <source>Not connected to Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="110"/>
+        <location filename="../gui/trayicon.cpp" line="64"/>
+        <location filename="../gui/trayicon.cpp" line="203"/>
         <source>Disconnected from Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="115"/>
+        <location filename="../gui/trayicon.cpp" line="55"/>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="65"/>
+        <source>Try to reconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="67"/>
+        <source>Dismiss</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="67"/>
+        <source>Show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="209"/>
         <source>Reconnecting ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="121"/>
+        <location filename="../gui/trayicon.cpp" line="215"/>
         <source>Synchronization is ongoing but at least one directory is out of sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="124"/>
+        <location filename="../gui/trayicon.cpp" line="218"/>
         <source>At least one directory is out of sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="128"/>
+        <location filename="../gui/trayicon.cpp" line="222"/>
         <source>Notifications available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="133"/>
+        <location filename="../gui/trayicon.cpp" line="227"/>
         <source>Syncthing is idling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="137"/>
+        <location filename="../gui/trayicon.cpp" line="231"/>
         <source>Syncthing is scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="141"/>
+        <location filename="../gui/trayicon.cpp" line="235"/>
         <source>At least one device is paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="145"/>
+        <location filename="../gui/trayicon.cpp" line="239"/>
         <source>Synchronization is ongoing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="163"/>
+        <location filename="../gui/trayicon.cpp" line="257"/>
         <source>Synchronization of %1 complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="170"/>
+        <location filename="../gui/trayicon.cpp" line="264"/>
         <source>Synchronization of the following devices complete:
 </source>
         <translation type="unfinished"></translation>
@@ -554,34 +610,34 @@
 <context>
     <name>QtGui::TrayWidget</name>
     <message>
-        <location filename="../gui/traywidget.ui" line="14"/>
+        <location filename="../gui/traywidget.ui" line="6"/>
         <source>Syncthing Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="66"/>
+        <location filename="../gui/traywidget.ui" line="58"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="80"/>
+        <location filename="../gui/traywidget.ui" line="72"/>
         <location filename="../gui/traywidget.cpp" line="159"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="107"/>
-        <location filename="../gui/traywidget.cpp" line="274"/>
+        <location filename="../gui/traywidget.ui" line="99"/>
+        <location filename="../gui/traywidget.cpp" line="287"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="134"/>
+        <location filename="../gui/traywidget.ui" line="126"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="148"/>
+        <location filename="../gui/traywidget.ui" line="140"/>
         <source>Web UI</source>
         <translation type="unfinished"></translation>
     </message>
@@ -591,56 +647,56 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="220"/>
+        <location filename="../gui/traywidget.ui" line="226"/>
         <source>In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="227"/>
+        <location filename="../gui/traywidget.ui" line="233"/>
         <source>Incoming traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="230"/>
-        <location filename="../gui/traywidget.ui" line="250"/>
-        <location filename="../gui/traywidget.cpp" line="425"/>
+        <location filename="../gui/traywidget.ui" line="236"/>
+        <location filename="../gui/traywidget.ui" line="256"/>
+        <location filename="../gui/traywidget.cpp" line="438"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="237"/>
+        <location filename="../gui/traywidget.ui" line="243"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="247"/>
+        <location filename="../gui/traywidget.ui" line="253"/>
         <source>Outgoing traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="272"/>
+        <location filename="../gui/traywidget.ui" line="293"/>
         <source>Click to show &lt;i&gt;new&lt;/i&gt; notifications&lt;br&gt;
 For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="276"/>
-        <location filename="../gui/traywidget.cpp" line="238"/>
+        <location filename="../gui/traywidget.ui" line="297"/>
+        <location filename="../gui/traywidget.cpp" line="243"/>
         <source>New notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="323"/>
+        <location filename="../gui/traywidget.ui" line="365"/>
         <source>Directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="352"/>
+        <location filename="../gui/traywidget.ui" line="394"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="381"/>
+        <location filename="../gui/traywidget.ui" line="423"/>
         <source>Downloads</source>
         <translation type="unfinished"></translation>
     </message>
@@ -690,42 +746,42 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="250"/>
+        <location filename="../gui/traywidget.cpp" line="263"/>
         <source>Do you really want to restart Syncthing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="275"/>
+        <location filename="../gui/traywidget.cpp" line="288"/>
         <source>Not connected to Syncthing, click to connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="286"/>
+        <location filename="../gui/traywidget.cpp" line="299"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="287"/>
+        <location filename="../gui/traywidget.cpp" line="300"/>
         <source>Syncthing is running, click to pause all devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="292"/>
+        <location filename="../gui/traywidget.cpp" line="305"/>
         <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="293"/>
+        <location filename="../gui/traywidget.cpp" line="306"/>
         <source>At least one device is paused, click to resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="372"/>
+        <location filename="../gui/traywidget.cpp" line="385"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="381"/>
+        <location filename="../gui/traywidget.cpp" line="394"/>
         <source>The file &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -742,7 +798,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../gui/webviewoptionpage.ui" line="14"/>
-        <location filename="../gui/settingsdialog.cpp" line="552"/>
+        <location filename="../gui/settingsdialog.cpp" line="571"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -772,7 +828,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="554"/>
+        <location filename="../gui/settingsdialog.cpp" line="573"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
@@ -781,7 +837,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../application/settings.cpp" line="63"/>
+        <location filename="../application/settings.cpp" line="69"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation type="unfinished"></translation>
     </message>
