@@ -12,6 +12,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QCursor>
+#include <QDesktopWidget>
 
 using namespace std;
 using namespace Dialogs;
@@ -81,6 +82,41 @@ TrayIcon::TrayIcon(QObject *parent) :
     m_initialized = true;
 }
 
+/*!
+ * \brief Moves the specified \a point in the specified \a rect.
+ */
+void moveInside(QPoint &point, const QRect &rect)
+{
+    if(point.y() < rect.top()) {
+        point.setY(rect.top());
+    } else if(point.y() > rect.bottom()) {
+        point.setY(rect.bottom());
+    }
+    if(point.x() < rect.left()) {
+        point.setX(rect.left());
+    } else if(point.x() > rect.right()) {
+        point.setX(rect.right());
+    }
+}
+
+/*!
+ * \brief Moves the specified \a innerRect at the specified \a point into the specified \a outerRect
+ *        by altering \a point.
+ */
+void moveInside(QPoint &point, const QSize &innerRect, const QRect &outerRect)
+{
+    if(point.y() < outerRect.top()) {
+        point.setY(outerRect.top());
+    } else if(point.y() + innerRect.height() > outerRect.bottom()) {
+        point.setY(outerRect.bottom() - innerRect.height());
+    }
+    if(point.x() < outerRect.left()) {
+        point.setX(outerRect.left());
+    } else if(point.x() + innerRect.width() > outerRect.right()) {
+        point.setX(outerRect.right() - innerRect.width());
+    }
+}
+
 void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch(reason) {
@@ -90,10 +126,13 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
     case QSystemTrayIcon::MiddleClick:
         m_trayMenu.widget()->showWebUi();
         break;
-    case QSystemTrayIcon::Trigger:
+    case QSystemTrayIcon::Trigger: {
         m_trayMenu.resize(m_trayMenu.sizeHint());
-        m_trayMenu.popup(QCursor::pos());
+        QPoint pos(QCursor::pos());
+        moveInside(pos, m_trayMenu.size(), QApplication::desktop()->availableGeometry(pos));
+        m_trayMenu.popup(pos);
         break;
+    }
     default:
         ;
     }
