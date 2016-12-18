@@ -7,6 +7,11 @@
 
 #include "../application/settings.h"
 
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+# include "../../connector/syncthingservice.h"
+# include "../../connector/utils.h"
+#endif
+
 #include "resources/config.h"
 #include "ui_traywidget.h"
 
@@ -129,6 +134,11 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     connect(m_ui->notificationsPushButton, &QPushButton::clicked, this, &TrayWidget::showNotifications);
     connect(restartButton, &QPushButton::clicked, this, &TrayWidget::restartSyncthing);
     connect(m_connectionsActionGroup, &QActionGroup::triggered, this, &TrayWidget::handleConnectionSelected);
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    const SyncthingService &service = syncthingService();
+    connect(m_ui->startStopPushButton, &QPushButton::clicked, &service, &SyncthingService::toggleRunning);
+    connect(&service, &SyncthingService::stateChanged, this, &TrayWidget::updateStartStopButton);
+#endif
 }
 
 TrayWidget::~TrayWidget()
@@ -354,6 +364,11 @@ void TrayWidget::applySettings()
         }
 #endif
 
+        // systemd
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        instance->updateStartStopButton();
+#endif
+
         // update visual appearance
         instance->m_ui->trafficFormWidget->setVisible(settings.appearance.showTraffic);
         instance->m_ui->trafficIconLabel->setVisible(settings.appearance.showTraffic);
@@ -458,6 +473,29 @@ void TrayWidget::updateTraffic()
 
 }
 
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+void TrayWidget::updateStartStopButton()
+{
+    const SyncthingService &service = syncthingService();
+    const Settings::Systemd &settings = Settings::values().systemd;
+
+    if(settings.showButton && service.isUnitAvailable() && m_selectedConnection && isLocal(QUrl(m_selectedConnection->syncthingUrl))) {
+        m_ui->startStopPushButton->setVisible(true);
+        if(service.isRunning()) {
+            m_ui->startStopPushButton->setText(tr("Stop"));
+            m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user stop ") + service.unitName());
+            m_ui->startStopPushButton->setIcon(QIcon::fromTheme(QStringLiteral("process-stop"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/process-stop.svg"))));
+        } else {
+            m_ui->startStopPushButton->setText(tr("Start"));
+            m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user start ") + service.unitName());
+            m_ui->startStopPushButton->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
+        }
+    } else {
+        m_ui->startStopPushButton->setVisible(false);
+    }
+}
+#endif
+
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
 void TrayWidget::handleWebViewDeleted()
 {
@@ -480,6 +518,9 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
                 : &Settings::values().connection.secondary[static_cast<size_t>(index - 1)];
         m_ui->connectionsPushButton->setText(m_selectedConnection->label);
         m_connection.reconnect(*m_selectedConnection);
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        updateStartStopButton();
+#endif
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
         if(m_webViewDlg) {
             m_webViewDlg->applySettings(*m_selectedConnection);

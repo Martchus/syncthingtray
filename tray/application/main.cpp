@@ -5,6 +5,9 @@
 #include "../gui/traywidget.h"
 
 #include "../../connector/syncthingprocess.h"
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+# include "../../connector/syncthingservice.h"
+#endif
 
 #include "resources/config.h"
 
@@ -20,6 +23,7 @@
 #include <QApplication>
 #include <QNetworkAccessManager>
 #include <QMessageBox>
+#include <QStringBuilder>
 
 #include <iostream>
 
@@ -28,9 +32,25 @@ using namespace ApplicationUtilities;
 using namespace QtGui;
 using namespace Data;
 
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+void handleSystemdServiceError(const QString &context, const QString &name, const QString &message)
+{
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.setText(QCoreApplication::translate("main", "Unable to ") + context);
+    msgBox.setInformativeText(name % QStringLiteral(": ") % message);
+    msgBox.exec();
+}
+#endif
+
 int initSyncthingTray(bool windowed, bool waitForTray)
 {
     auto &v = Settings::values();
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    SyncthingService &service = syncthingService();
+    service.setUnitName(v.systemd.syncthingUnit);
+    QObject::connect(&service, &SyncthingService::errorOccurred, &handleSystemdServiceError);
+#endif
     if(windowed) {
         if(v.launcher.enabled) {
             syncthingProcess().startSyncthing(v.launcher.syncthingCmd());

@@ -96,6 +96,11 @@ void restore()
     launcher.enabled = settings.value(QStringLiteral("launchSynchting"), launcher.enabled).toBool();
     launcher.syncthingPath = settings.value(QStringLiteral("syncthingPath"), launcher.syncthingPath).toString();
     launcher.syncthingArgs = settings.value(QStringLiteral("syncthingArgs"), launcher.syncthingArgs).toString();
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    auto &systemd = v.systemd;
+    systemd.syncthingUnit = settings.value(QStringLiteral("syncthingUnit"), systemd.syncthingUnit).toString();
+    systemd.showButton = settings.value(QStringLiteral("showButton"), systemd.showButton).toBool();
+#endif
     settings.endGroup();
 
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
@@ -158,6 +163,11 @@ void save()
     settings.setValue(QStringLiteral("launchSynchting"), launcher.enabled);
     settings.setValue(QStringLiteral("syncthingPath"), launcher.syncthingPath);
     settings.setValue(QStringLiteral("syncthingArgs"), launcher.syncthingArgs);
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    const auto &systemd = v.systemd;
+    settings.setValue(QStringLiteral("syncthingUnit"), systemd.syncthingUnit);
+    settings.setValue(QStringLiteral("showButton"), systemd.showButton);
+#endif
     settings.endGroup();
 
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)

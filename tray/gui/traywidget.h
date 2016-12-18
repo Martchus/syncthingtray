@@ -70,6 +70,9 @@ private slots:
     void pauseResumeDev(const Data::SyncthingDev &dev);
     void changeStatus();
     void updateTraffic();
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    void updateStartStopButton();
+#endif
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
     void handleWebViewDeleted();
 #endif

@@ -62,6 +62,14 @@ struct Launcher
     QString syncthingCmd() const;
 };
 
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+struct Systemd
+{
+    QString syncthingUnit = QStringLiteral("syncthing.service");
+    bool showButton = true;
+};
+#endif
+
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
 struct WebView
 {
@@ -82,6 +90,9 @@ struct Settings
 #endif
     Appearance appearance;
     Launcher launcher;
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    Systemd systemd;
+#endif
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
     WebView webView;
 #endif

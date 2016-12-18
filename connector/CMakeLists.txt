@@ -45,6 +45,35 @@ list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 
+# configure support for D-Bus notifications
+option(SYSTEMD_SUPPORT "enables support for controlling Syncthing systemd service" ${UNIX})
+if(DBUS_NOTIFICATIONS)
+    list(APPEND HEADER_FILES
+        syncthingservice.h
+    )
+    list(APPEND SRC_FILES
+        syncthingservice.cpp
+    )
+    list(APPEND DBUS_FILES
+        org.freedesktop.DBus.Properties.xml
+        org.freedesktop.systemd1.Manager.xml
+        org.freedesktop.systemd1.Service.xml
+        org.freedesktop.systemd1.Unit.xml
+    )
+    set_source_files_properties(
+        org.freedesktop.systemd1.Manager.xml
+        PROPERTIES INCLUDE syncthingservice.h
+    )
+    list(APPEND META_PUBLIC_COMPILE_DEFINITIONS LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
+    message(STATUS "systemd support enabled")
+else()
+    list(APPEND DOC_ONLY_FILES
+        syncthingservice.h
+        syncthingservice.cpp
+    )
+    message(STATUS "systemd support disabled")
+endif()
+
 # include modules to apply configuration
 include(BasicConfig)
 include(QtConfig)

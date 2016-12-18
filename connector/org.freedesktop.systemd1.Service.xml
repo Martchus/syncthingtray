@@ -1,0 +1,524 @@
+<node>
+    <interface name="org.freedesktop.systemd1.Service">
+        <!--<method name="GetProcesses">
+            <arg type="a(sus)" direction="out" />
+        </method>-->
+        <property name="Type" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Restart" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="PIDFile" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="NotifyAccess" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RestartUSec" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="TimeoutStartUSec" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="TimeoutStopUSec" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RuntimeMaxUSec" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="WatchdogUSec" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="WatchdogTimestamp" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="WatchdogTimestampMonotonic" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="FailureAction" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="PermissionsStartOnly" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RootDirectoryStartOnly" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RemainAfterExit" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="GuessMainPID" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="MainPID" type="u" access="read"></property>
+        <property name="ControlPID" type="u" access="read"></property>
+        <property name="BusName" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="FileDescriptorStoreMax" type="u" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="NFileDescriptorStore" type="u" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="StatusText" type="s" access="read"></property>
+        <property name="StatusErrno" type="i" access="read"></property>
+        <property name="Result" type="s" access="read"></property>
+        <property name="USBFunctionDescriptors" type="s" access="read"></property>
+        <property name="USBFunctionStrings" type="s" access="read"></property>
+        <property name="UID" type="u" access="read"></property>
+        <property name="GID" type="u" access="read"></property>
+        <property name="ExecMainStartTimestamp" type="t" access="read"></property>
+        <property name="ExecMainStartTimestampMonotonic" type="t" access="read"></property>
+        <property name="ExecMainExitTimestamp" type="t" access="read"></property>
+        <property name="ExecMainExitTimestampMonotonic" type="t" access="read"></property>
+        <property name="ExecMainPID" type="u" access="read"></property>
+        <property name="ExecMainCode" type="i" access="read"></property>
+        <property name="ExecMainStatus" type="i" access="read"></property>
+        <!--<property name="ExecStartPre" type="a(sasbttttuii)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="invalidates" />
+        </property>
+        <property name="ExecStart" type="a(sasbttttuii)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="invalidates" />
+        </property>
+        <property name="ExecStartPost" type="a(sasbttttuii)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="invalidates" />
+        </property>
+        <property name="ExecReload" type="a(sasbttttuii)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="invalidates" />
+        </property>
+        <property name="ExecStop" type="a(sasbttttuii)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="invalidates" />
+        </property>
+        <property name="ExecStopPost" type="a(sasbttttuii)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="invalidates" />
+        </property>-->
+        <property name="Slice" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="ControlGroup" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="MemoryCurrent" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="CPUUsageNSec" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="TasksCurrent" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="Delegate" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="CPUAccounting" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="CPUWeight" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="StartupCPUWeight" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="CPUShares" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="StartupCPUShares" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="CPUQuotaPerSecUSec" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="IOAccounting" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="IOWeight" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="StartupIOWeight" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <!--<property name="IODeviceWeight" type="a(st)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="IOReadBandwidthMax" type="a(st)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="IOWriteBandwidthMax" type="a(st)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="IOReadIOPSMax" type="a(st)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="IOWriteIOPSMax" type="a(st)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>-->
+        <property name="BlockIOAccounting" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="BlockIOWeight" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="StartupBlockIOWeight" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <!--<property name="BlockIODeviceWeight" type="a(st)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="BlockIOReadBandwidth" type="a(st)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="BlockIOWriteBandwidth" type="a(st)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>-->
+        <property name="MemoryAccounting" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="MemoryLow" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="MemoryHigh" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="MemoryMax" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="MemorySwapMax" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="MemoryLimit" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="DevicePolicy" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <!--<property name="DeviceAllow" type="a(ss)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>-->
+        <property name="TasksAccounting" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="TasksMax" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="Environment" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <!--<property name="EnvironmentFiles" type="a(sb)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>-->
+        <property name="PassEnvironment" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="UMask" type="u" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitCPU" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitCPUSoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitFSIZE" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitFSIZESoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitDATA" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitDATASoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitSTACK" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitSTACKSoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitCORE" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitCORESoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitRSS" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitRSSSoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitNOFILE" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitNOFILESoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitAS" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitASSoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitNPROC" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitNPROCSoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitMEMLOCK" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitMEMLOCKSoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitLOCKS" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitLOCKSSoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitSIGPENDING" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitSIGPENDINGSoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitMSGQUEUE" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitMSGQUEUESoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitNICE" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitNICESoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitRTPRIO" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitRTPRIOSoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitRTTIME" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LimitRTTIMESoft" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="WorkingDirectory" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RootDirectory" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="OOMScoreAdjust" type="i" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Nice" type="i" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="IOScheduling" type="i" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="CPUSchedulingPolicy" type="i" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="CPUSchedulingPriority" type="i" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="CPUAffinity" type="ay" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="TimerSlackNSec" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="CPUSchedulingResetOnFork" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="NonBlocking" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="StandardInput" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="StandardInputFileDescriptorName" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="StandardOutput" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="StandardOutputFileDescriptorName" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="StandardError" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="StandardErrorFileDescriptorName" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="TTYPath" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="TTYReset" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="TTYVHangup" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="TTYVTDisallocate" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SyslogPriority" type="i" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SyslogIdentifier" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SyslogLevelPrefix" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SyslogLevel" type="i" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SyslogFacility" type="i" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SecureBits" type="i" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="CapabilityBoundingSet" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="AmbientCapabilities" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="User" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Group" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="DynamicUser" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RemoveIPC" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SupplementaryGroups" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="PAMName" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="ReadWritePaths" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="ReadOnlyPaths" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="InaccessiblePaths" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="MountFlags" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="PrivateTmp" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="PrivateDevices" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="ProtectKernelTunables" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="ProtectKernelModules" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="ProtectControlGroups" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="PrivateNetwork" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="PrivateUsers" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="ProtectHome" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="ProtectSystem" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SameProcessGroup" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="UtmpIdentifier" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="UtmpMode" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <!--<property name="SELinuxContext" type="(bs)" access="read">
+            <annotation name="org.qtproject.QtDBus.QtTypeName" value="ExecuteDBusSELinuxContext"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="AppArmorProfile" type="(bs)" access="read">
+            <annotation name="org.qtproject.QtDBus.QtTypeName" value="ExecuteDBusAppArmorProfile"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SmackProcessLabel" type="(bs)" access="read">
+            <annotation name="org.qtproject.QtDBus.QtTypeName" value="ExecuteDBusSmackProcessLabel"/>
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>-->
+        <property name="IgnoreSIGPIPE" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="NoNewPrivileges" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <!--><property name="SystemCallFilter" type="(bas)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>-->
+        <property name="SystemCallArchitectures" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SystemCallErrorNumber" type="i" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Personality" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <!--<property name="RestrictAddressFamilies" type="(bas)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>-->
+        <property name="RuntimeDirectoryMode" type="u" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RuntimeDirectory" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="MemoryDenyWriteExecute" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RestrictRealtime" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="KillMode" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="KillSignal" type="i" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SendSIGKILL" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SendSIGHUP" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+    </interface>
+</node>

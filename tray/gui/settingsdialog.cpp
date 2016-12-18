@@ -3,12 +3,19 @@
 #include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingconfig.h"
 #include "../../connector/syncthingprocess.h"
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+# include "../../connector/syncthingservice.h"
+# include "../../model/colors.h"
+#endif
 
 #include "ui_connectionoptionpage.h"
 #include "ui_notificationsoptionpage.h"
 #include "ui_appearanceoptionpage.h"
 #include "ui_autostartoptionpage.h"
 #include "ui_launcheroptionpage.h"
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+# include "ui_systemdoptionpage.h"
+#endif
 #include "ui_webviewoptionpage.h"
 
 #include "resources/config.h"
@@ -18,6 +25,9 @@
 #include <qtutilities/settingsdialog/qtsettings.h>
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
 # include <qtutilities/misc/dbusnotification.h>
+#endif
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+# include <qtutilities/misc/dialogutils.h>
 #endif
 
 #include <QFileDialog>
@@ -556,6 +566,98 @@ void LauncherOptionPage::stop()
     }
 }
 
+// SystemdOptionPage
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+SystemdOptionPage::SystemdOptionPage(QWidget *parentWidget) :
+    SystemdOptionPageBase(parentWidget),
+    m_service(syncthingService())
+{}
+
+SystemdOptionPage::~SystemdOptionPage()
+{}
+
+QWidget *SystemdOptionPage::setupWidget()
+{
+    auto *widget = SystemdOptionPageBase::setupWidget();
+    QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, &m_service, &SyncthingService::setUnitName);
+    QObject::connect(ui()->startPushButton, &QPushButton::clicked, &m_service, &SyncthingService::start);
+    QObject::connect(ui()->stopPushButton, &QPushButton::clicked, &m_service, &SyncthingService::stop);
+    QObject::connect(ui()->enablePushButton, &QPushButton::clicked, &m_service, &SyncthingService::enable);
+    QObject::connect(ui()->disablePushButton, &QPushButton::clicked, &m_service, &SyncthingService::disable);
+    QObject::connect(&m_service, &SyncthingService::descriptionChanged, bind(&SystemdOptionPage::handleDescriptionChanged, this, _1));
+    QObject::connect(&m_service, &SyncthingService::stateChanged, bind(&SystemdOptionPage::handleStatusChanged, this, _1, _2));
+    QObject::connect(&m_service, &SyncthingService::unitFileStateChanged, bind(&SystemdOptionPage::handleEnabledChanged, this, _1));
+    return widget;
+}
+
+bool SystemdOptionPage::apply()
+{
+    if(hasBeenShown()) {
+        auto &settings = values().systemd;
+        settings.syncthingUnit = ui()->syncthingUnitLineEdit->text();
+        settings.showButton = ui()->showButtonCheckBox->isChecked();
+    }
+    return true;
+}
+
+void SystemdOptionPage::reset()
+{
+    if(hasBeenShown()) {
+        const auto &settings = values().systemd;
+        ui()->syncthingUnitLineEdit->setText(settings.syncthingUnit);
+        ui()->showButtonCheckBox->setChecked(settings.showButton);
+        handleDescriptionChanged(m_service.description());
+        handleStatusChanged(m_service.activeState(), m_service.subState());
+        handleEnabledChanged(m_service.unitFileState());
+    }
+}
+
+void SystemdOptionPage::handleDescriptionChanged(const QString &description)
+{
+    ui()->descriptionValueLabel->setText(description.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "specified unit is unknown") : description);
+}
+
+void setIndicatorColor(QWidget *indicator, const QColor &color)
+{
+    indicator->setStyleSheet(QStringLiteral("border-radius:8px;background-color:") + color.name());
+}
+
+void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QString &subState)
+{
+    QStringList status;
+    if(!activeState.isEmpty()) {
+        status << activeState;
+    }
+    if(!subState.isEmpty()) {
+        status << subState;
+    }
+    const bool isRunning = m_service.isRunning();
+
+    ui()->statusValueLabel->setText(status.isEmpty()
+                                    ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown")
+                                    : status.join(QStringLiteral(" - ")));
+    setIndicatorColor(ui()->statusIndicator, status.isEmpty()
+                     ? Colors::gray(values().appearance.brightTextColors)
+                     : (isRunning
+                        ? Colors::green(values().appearance.brightTextColors)
+                        : Colors::red(values().appearance.brightTextColors))
+                       );
+    ui()->startPushButton->setVisible(!status.isEmpty() && !isRunning);
+    ui()->stopPushButton->setVisible(!status.isEmpty() && isRunning);
+}
+
+void SystemdOptionPage::handleEnabledChanged(const QString &unitFileState)
+{
+    const bool isEnabled = m_service.isEnabled();
+    ui()->unitFileStateValueLabel->setText(unitFileState.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown") : unitFileState);
+    setIndicatorColor(ui()->enabledIndicator, isEnabled
+                     ? Colors::green(values().appearance.brightTextColors)
+                     : Colors::gray(values().appearance.brightTextColors));
+    ui()->enablePushButton->setVisible(!unitFileState.isEmpty() && !isEnabled);
+    ui()->disablePushButton->setVisible(!unitFileState.isEmpty() && isEnabled);
+}
+#endif
+
 // WebViewOptionPage
 WebViewOptionPage::WebViewOptionPage(QWidget *parentWidget) :
     WebViewOptionPageBase(parentWidget)
@@ -621,7 +723,11 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Startup"));
-    category->assignPages(QList<Dialogs::OptionPage *>() << new AutostartOptionPage << new LauncherOptionPage);
+    category->assignPages(QList<Dialogs::OptionPage *>() << new AutostartOptionPage << new LauncherOptionPage
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+                          << new SystemdOptionPage
+#endif
+                          );
     category->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
     categories << category;
 
@@ -647,6 +753,9 @@ INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, NotificationsOptionPage)
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, AppearanceOptionPage)
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, AutostartOptionPage)
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, LauncherOptionPage)
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, SystemdOptionPage)
+#endif
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, WebViewOptionPage)
 #endif

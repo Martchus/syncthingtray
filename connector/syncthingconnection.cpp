@@ -1,6 +1,7 @@
 #include "./syncthingconnection.h"
 #include "./syncthingconfig.h"
 #include "./syncthingconnectionsettings.h"
+#include "./utils.h"
 
 #include <c++utilities/conversion/conversionexception.h>
 #include <c++utilities/conversion/stringconversion.h>
@@ -632,11 +633,7 @@ void SyncthingConnection::loadSelfSignedCertificate()
     }
 
     // only possible if the Syncthing instance is running on the local machine
-    const QString host(syncthingUrl.host());
-    const QHostAddress hostAddress(host);
-    if(host.compare(QLatin1String("localhost"), Qt::CaseInsensitive) != 0
-            && !hostAddress.isLoopback()
-            && !QNetworkInterface::allAddresses().contains(hostAddress)) {
+    if(!isLocal(syncthingUrl)) {
         return;
     }
 

@@ -12,6 +12,7 @@
 
 namespace Data {
 class SyncthingConnection;
+class SyncthingService;
 }
 
 namespace QtGui {
@@ -52,6 +53,17 @@ private:
     bool m_kill;
 END_DECLARE_OPTION_PAGE
 
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(SystemdOptionPage)
+private:
+    DECLARE_SETUP_WIDGETS
+    void handleDescriptionChanged(const QString &description);
+    void handleStatusChanged(const QString &activeState, const QString &subState);
+    void handleEnabledChanged(const QString &unitFileState);
+    Data::SyncthingService &m_service;
+END_DECLARE_OPTION_PAGE
+#endif
+
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
 DECLARE_UI_FILE_BASED_OPTION_PAGE(WebViewOptionPage)
 #else
@@ -73,6 +85,9 @@ DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, NotificationsOptionPage)
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, AppearanceOptionPage)
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, AutostartOptionPage)
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, LauncherOptionPage)
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, SystemdOptionPage)
+#endif
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, WebViewOptionPage)
 #endif

@@ -52,6 +52,7 @@ set(WIDGETS_UI_FILES
     gui/appearanceoptionpage.ui
     gui/autostartoptionpage.ui
     gui/launcheroptionpage.ui
+    gui/systemdoptionpage.ui
     gui/webviewoptionpage.ui
 )
 

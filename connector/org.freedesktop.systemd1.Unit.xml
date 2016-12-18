@@ -1,0 +1,233 @@
+<node>
+    <interface name="org.freedesktop.systemd1.Unit">
+        <method name="Start">
+            <arg type="s" direction="in" />
+            <arg type="o" direction="out" />
+        </method>
+        <method name="Stop">
+            <arg type="s" direction="in" />
+            <arg type="o" direction="out" />
+        </method>
+        <method name="Reload">
+            <arg type="s" direction="in" />
+            <arg type="o" direction="out" />
+        </method>
+        <method name="Restart">
+            <arg type="s" direction="in" />
+            <arg type="o" direction="out" />
+        </method>
+        <method name="TryRestart">
+            <arg type="s" direction="in" />
+            <arg type="o" direction="out" />
+        </method>
+        <method name="ReloadOrRestart">
+            <arg type="s" direction="in" />
+            <arg type="o" direction="out" />
+        </method>
+        <method name="ReloadOrTryRestart">
+            <arg type="s" direction="in" />
+            <arg type="o" direction="out" />
+        </method>
+        <method name="Kill">
+            <arg type="s" direction="in" />
+            <arg type="i" direction="in" />
+        </method>
+        <method name="ResetFailed"></method>
+        <!--<method name="SetProperties">
+            <arg type="b" direction="in" />
+            <arg type="a(sv)" direction="in" />
+        </method>-->
+        <method name="Ref"></method>
+        <method name="Unref"></method>
+        <property name="Id" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Names" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Following" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="Requires" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Requisite" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Wants" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="BindsTo" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="PartOf" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RequiredBy" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RequisiteOf" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="WantedBy" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="BoundBy" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="ConsistsOf" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Conflicts" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="ConflictedBy" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Before" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="After" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="OnFailure" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Triggers" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="TriggeredBy" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="PropagatesReloadTo" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="ReloadPropagatedFrom" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="JoinsNamespaceOf" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RequiresMountsFor" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Documentation" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Description" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="LoadState" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="ActiveState" type="s" access="read"></property>
+        <property name="SubState" type="s" access="read"></property>
+        <property name="FragmentPath" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="SourcePath" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="DropInPaths" type="as" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="UnitFileState" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="UnitFilePreset" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="StateChangeTimestamp" type="t" access="read"></property>
+        <property name="StateChangeTimestampMonotonic" type="t" access="read"></property>
+        <property name="InactiveExitTimestamp" type="t" access="read"></property>
+        <property name="InactiveExitTimestampMonotonic" type="t" access="read"></property>
+        <property name="ActiveEnterTimestamp" type="t" access="read"></property>
+        <property name="ActiveEnterTimestampMonotonic" type="t" access="read"></property>
+        <property name="ActiveExitTimestamp" type="t" access="read"></property>
+        <property name="ActiveExitTimestampMonotonic" type="t" access="read"></property>
+        <property name="InactiveEnterTimestamp" type="t" access="read"></property>
+        <property name="InactiveEnterTimestampMonotonic" type="t" access="read"></property>
+        <property name="CanStart" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="CanStop" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="CanReload" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="CanIsolate" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <!--<property name="Job" type="(uo)" access="read"></property>-->
+        <property name="StopWhenUnneeded" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RefuseManualStart" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RefuseManualStop" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="AllowIsolate" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="DefaultDependencies" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="OnFailureJobMode" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="IgnoreOnIsolate" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="NeedDaemonReload" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="JobTimeoutUSec" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="JobTimeoutAction" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="JobTimeoutRebootArgument" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="ConditionResult" type="b" access="read"></property>
+        <property name="AssertResult" type="b" access="read"></property>
+        <property name="ConditionTimestamp" type="t" access="read"></property>
+        <property name="ConditionTimestampMonotonic" type="t" access="read"></property>
+        <property name="AssertTimestamp" type="t" access="read"></property>
+        <property name="AssertTimestampMonotonic" type="t" access="read"></property>
+        <!--<property name="Conditions" type="a(sbbsi)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="Asserts" type="a(sbbsi)" access="read">-->
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+        <property name="LoadError" type="(ss)" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Transient" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="Perpetual" type="b" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="StartLimitIntervalSec" type="t" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="StartLimitBurst" type="u" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="StartLimitAction" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="RebootArgument" type="s" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
+        </property>
+        <property name="InvocationID" type="ay" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
+        </property>
+    </interface>
+</node>

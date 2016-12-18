@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>QtGui::TrayWidget</class>
  <widget class="QWidget" name="QtGui::TrayWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>314</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Syncthing Tray</string>
   </property>
@@ -101,6 +109,20 @@
         <property name="icon">
          <iconset theme="view-refresh" resource="../resources/icons.qrc">
           <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="startStopPushButton">
+        <property name="text">
+         <string>Start</string>
+        </property>
+        <property name="icon">
+         <iconset theme="system-run" resource="../resources/icons.qrc">
+          <normaloff>:/icons/hicolor/scalable/apps/system-run.svg</normaloff>:/icons/hicolor/scalable/apps/system-run.svg</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
