@@ -214,6 +214,9 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
         setToolTip(tr("Reconnecting ..."));
         break;
     default:
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+        m_disconnectedNotification.hide();
+#endif
         if(connection.hasOutOfSyncDirs()) {
             if(status == SyncthingStatus::Synchronizing) {
                 setIcon(m_statusIconErrorSync);
