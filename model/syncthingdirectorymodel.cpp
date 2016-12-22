@@ -123,7 +123,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                             }
                             break;
                         case 6:
-                            return dir.lastFileName.isEmpty() ? Colors::gray(m_brightColors) : Colors::red(m_brightColors);
+                            return dir.lastFileName.isEmpty() ? Colors::gray(m_brightColors) : (dir.lastFileDeleted ? Colors::red(m_brightColors) : QVariant());
                         case 7:
                             return dir.errors.empty() ? Colors::gray(m_brightColors) : Colors::red(m_brightColors);
                         }
