@@ -32,6 +32,7 @@
 #include <QTextBrowser>
 #include <QStringBuilder>
 #include <QFontDatabase>
+#include <QCursor>
 
 #include <functional>
 #include <algorithm>
@@ -265,6 +266,16 @@ void TrayWidget::showNotifications()
     m_notifications.clear();
     showDialog(dlg);
     dismissNotifications();
+}
+
+void TrayWidget::showAtCursor()
+{
+    if(m_menu) {
+        m_menu->showAtCursor();
+    } else {
+        move(QCursor::pos());
+        show();
+    }
 }
 
 void TrayWidget::dismissNotifications()

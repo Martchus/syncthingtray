@@ -4,7 +4,10 @@
 
 #include "../application/settings.h"
 
+#include <QApplication>
 #include <QHBoxLayout>
+#include <QCursor>
+#include <QDesktopWidget>
 
 namespace QtGui {
 
@@ -28,6 +31,32 @@ TrayMenu::TrayMenu(QWidget *parent) :
 QSize TrayMenu::sizeHint() const
 {
     return Settings::values().appearance.trayMenuSize;
+}
+
+/*!
+ * \brief Moves the specified \a innerRect at the specified \a point into the specified \a outerRect
+ *        by altering \a point.
+ */
+void moveInside(QPoint &point, const QSize &innerRect, const QRect &outerRect)
+{
+    if(point.y() < outerRect.top()) {
+        point.setY(outerRect.top());
+    } else if(point.y() + innerRect.height() > outerRect.bottom()) {
+        point.setY(outerRect.bottom() - innerRect.height());
+    }
+    if(point.x() < outerRect.left()) {
+        point.setX(outerRect.left());
+    } else if(point.x() + innerRect.width() > outerRect.right()) {
+        point.setX(outerRect.right() - innerRect.width());
+    }
+}
+
+void TrayMenu::showAtCursor()
+{
+    resize(sizeHint());
+    QPoint pos(QCursor::pos());
+    moveInside(pos, size(), QApplication::desktop()->availableGeometry(pos));
+    popup(pos);
 }
 
 }

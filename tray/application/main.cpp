@@ -86,6 +86,19 @@ int initSyncthingTray(bool windowed, bool waitForTray)
     return 0;
 }
 
+void trigger(bool tray, bool webUi)
+{
+    if(!TrayWidget::instances().empty() && (tray || webUi)) {
+        TrayWidget *trayWidget = TrayWidget::instances().front();
+        if(webUi) {
+            trayWidget->showWebUi();
+        }
+        if(tray) {
+            trayWidget->showAtCursor();
+        }
+    }
+}
+
 int runApplication(int argc, const char *const *argv)
 {
     static bool firstRun = true;
@@ -98,13 +111,18 @@ int runApplication(int argc, const char *const *argv)
     QT_CONFIG_ARGUMENTS qtConfigArgs;
     Argument windowedArg("windowed", 'w', "opens the tray menu as a regular window");
     windowedArg.setCombinable(true);
-    Argument showWebUi("webui", '\0', "instantly shows the web UI - meant for creating shortcut to web UI");
-    showWebUi.setCombinable(true);
+    Argument showWebUiArg("webui", '\0', "instantly shows the web UI - meant for creating shortcut to web UI");
+    showWebUiArg.setCombinable(true);
+    Argument triggerArg("trigger", '\0', "instantly shows the left-click tray menu - meant for creating a shortcut");
+    triggerArg.setCombinable(true);
     Argument waitForTrayArg("wait", '\0', "wait until the system tray becomes available instead of showing an error message if the system tray is not available on start-up");
     waitForTrayArg.setCombinable(true);
-    qtConfigArgs.qtWidgetsGuiArg().addSubArgument(&windowedArg);
-    qtConfigArgs.qtWidgetsGuiArg().addSubArgument(&showWebUi);
-    qtConfigArgs.qtWidgetsGuiArg().addSubArgument(&waitForTrayArg);
+    Argument &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
+    widgetsGuiArg.addSubArgument(&windowedArg);
+    widgetsGuiArg.addSubArgument(&showWebUiArg);
+    widgetsGuiArg.addSubArgument(&triggerArg);
+    widgetsGuiArg.addSubArgument(&waitForTrayArg);
+
     parser.setMainArguments({&qtConfigArgs.qtWidgetsGuiArg(), &helpArg});
     try {
         parser.parseArgs(argc, argv);
@@ -130,9 +148,7 @@ int runApplication(int argc, const char *const *argv)
 
                 int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent());
                 if(!res) {
-                    if(!TrayWidget::instances().empty() && showWebUi.isPresent()) {
-                        TrayWidget::instances().front()->showWebUi();
-                    }
+                    trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
                     res = application.exec();
                 }
 
@@ -140,11 +156,15 @@ int runApplication(int argc, const char *const *argv)
                 QtUtilitiesResources::cleanup();
                 return res;
             } else {
-                if(!TrayWidget::instances().empty() && showWebUi.isPresent()) {
-                    // if --webui is present don't create a new tray icon, just show the web UI of the present one
-                    TrayWidget::instances().front()->showWebUi();
+                if(!TrayWidget::instances().empty() && (showWebUiArg.isPresent() || triggerArg.isPresent())) {
+                    // if --webui or --trigger is present don't create a new tray icon, just trigger actions
+                    trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
                 } else {
-                    return initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent());
+                    const int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent());
+                    if(!res) {
+                        trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
+                    }
+                    return res;
                 }
             }
         }

@@ -7,12 +7,10 @@
 
 #include <qtutilities/misc/dialogutils.h>
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QSvgRenderer>
 #include <QPainter>
 #include <QPixmap>
-#include <QCursor>
-#include <QDesktopWidget>
 
 using namespace std;
 using namespace Dialogs;
@@ -99,24 +97,6 @@ void moveInside(QPoint &point, const QRect &rect)
     }
 }
 
-/*!
- * \brief Moves the specified \a innerRect at the specified \a point into the specified \a outerRect
- *        by altering \a point.
- */
-void moveInside(QPoint &point, const QSize &innerRect, const QRect &outerRect)
-{
-    if(point.y() < outerRect.top()) {
-        point.setY(outerRect.top());
-    } else if(point.y() + innerRect.height() > outerRect.bottom()) {
-        point.setY(outerRect.bottom() - innerRect.height());
-    }
-    if(point.x() < outerRect.left()) {
-        point.setX(outerRect.left());
-    } else if(point.x() + innerRect.width() > outerRect.right()) {
-        point.setX(outerRect.right() - innerRect.width());
-    }
-}
-
 void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch(reason) {
@@ -127,10 +107,7 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
         m_trayMenu.widget()->showWebUi();
         break;
     case QSystemTrayIcon::Trigger: {
-        m_trayMenu.resize(m_trayMenu.sizeHint());
-        QPoint pos(QCursor::pos());
-        moveInside(pos, m_trayMenu.size(), QApplication::desktop()->availableGeometry(pos));
-        m_trayMenu.popup(pos);
+        m_trayMenu.showAtCursor();
         break;
     }
     default:
