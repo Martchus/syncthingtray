@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>QtGui::TrayWidget</class>
  <widget class="QWidget" name="QtGui::TrayWidget">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>300</width>
-    <height>314</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Syncthing Tray</string>
   </property>
@@ -468,6 +460,25 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
     </widget>
    </item>
   </layout>
+  <action name="actionShowNotifications">
+   <property name="icon">
+    <iconset theme="text-x-generic" resource="../resources/icons.qrc">
+     <normaloff>:/icons/hicolor/scalable/mimetypes/text-x-generic.svg</normaloff>:/icons/hicolor/scalable/mimetypes/text-x-generic.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Show</string>
+   </property>
+  </action>
+  <action name="actionDismissNotifications">
+   <property name="icon">
+    <iconset theme="window-close">
+     <disabledoff>:/icons/hicolor/scalable/actions/window-close.svg</disabledoff>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Dismiss</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

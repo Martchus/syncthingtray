@@ -107,6 +107,12 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     m_ui->connectionsPushButton->setText(Settings::values().connection.primary.label);
     m_ui->connectionsPushButton->setMenu(m_connectionsMenu);
 
+    // setup notifications menu
+    m_notificationsMenu = new QMenu(tr("New notifications"), this);
+    m_notificationsMenu->addAction(m_ui->actionShowNotifications);
+    m_notificationsMenu->addAction(m_ui->actionDismissNotifications);
+    m_ui->notificationsPushButton->setMenu(m_notificationsMenu);
+
     // apply settings, this also establishes the connection to Syncthing (according to settings)
     applySettings();
 
@@ -134,6 +140,8 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     connect(m_ui->notificationsPushButton, &QPushButton::clicked, this, &TrayWidget::showNotifications);
     connect(restartButton, &QPushButton::clicked, this, &TrayWidget::restartSyncthing);
     connect(m_connectionsActionGroup, &QActionGroup::triggered, this, &TrayWidget::handleConnectionSelected);
+    connect(m_ui->actionShowNotifications, &QAction::triggered, this, &TrayWidget::showNotifications);
+    connect(m_ui->actionDismissNotifications, &QAction::triggered, this, &TrayWidget::dismissNotifications);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     const SyncthingService &service = syncthingService();
     connect(m_ui->startStopPushButton, &QPushButton::clicked, &service, &SyncthingService::toggleRunning);

@@ -96,6 +96,7 @@ private:
     QMenu *m_connectionsMenu;
     QActionGroup *m_connectionsActionGroup;
     Data::SyncthingConnectionSettings *m_selectedConnection;
+    QMenu *m_notificationsMenu;
     std::vector<Data::SyncthingLogEntry> m_notifications;
     static std::vector<TrayWidget *> m_instances;
 };
