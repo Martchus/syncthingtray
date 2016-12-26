@@ -3,14 +3,17 @@ Qt 5-based tray application for [Syncthing](https://github.com/syncthing/syncthi
 
 ## Supported platforms
 * Designed to work under any desktop environment supported by Qt 5 with tray icon
-support
+  support
 * No desktop environment specific libraries required
-* Tested under
+* Tested under \*
   * Plasma 5
   * Openbox/qt5ct/Tint2
   * Cinnamon
   * Windows 10
 * Can be shown as regular window if tray icon support is not available
+
+\* If you can confirm it works under other desktop environments, please add it
+to the list. Maybe someone could check whether it works under Mac OS X.
 
 ## Features
 * Provides quick access to most frequently used features but does not intend to replace the official web UI
