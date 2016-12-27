@@ -40,6 +40,8 @@
 #endif
 #include <QFontDatabase>
 #include <QTextCursor>
+#include <QApplication>
+#include <QStyle>
 
 #include <functional>
 
@@ -69,6 +71,7 @@ QWidget *ConnectionOptionPage::setupWidget()
     auto *w = ConnectionOptionPageBase::setupWidget();
     ui()->certPathSelection->provideCustomFileMode(QFileDialog::ExistingFile);
     ui()->certPathSelection->lineEdit()->setPlaceholderText(QCoreApplication::translate("QtGui::ConnectionOptionPage", "Auto-detected for local instance"));
+    ui()->instanceNoteIcon->setPixmap(QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation).pixmap(32, 32));
     QObject::connect(m_connection, &SyncthingConnection::statusChanged, bind(&ConnectionOptionPage::updateConnectionStatus, this));
     QObject::connect(ui()->connectPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::applyAndReconnect, this));
     QObject::connect(ui()->insertFromConfigFilePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::insertFromConfigFile, this));
