@@ -61,6 +61,8 @@ SyncthingService::SyncthingService(QObject *parent) :
     connect(s_manager, &OrgFreedesktopSystemd1ManagerInterface::UnitNew, this, &SyncthingService::handleUnitAdded);
     connect(s_manager, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
     m_serviceWatcher = new QDBusServiceWatcher(s_manager->service(), s_manager->connection());
+    connect(m_serviceWatcher, &QDBusServiceWatcher::serviceRegistered, this, &SyncthingService::handleServiceRegisteredChanged);
+    connect(m_serviceWatcher, &QDBusServiceWatcher::serviceUnregistered, this, &SyncthingService::handleServiceRegisteredChanged);
 }
 
 void SyncthingService::setUnitName(const QString &unitName)
@@ -91,18 +93,18 @@ bool SyncthingService::isUnitAvailable() const
 void SyncthingService::setRunning(bool running)
 {
     if(running) {
-        registerErrorHandler(s_manager->StartUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("starting unit"));
+        registerErrorHandler(s_manager->StartUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("start unit"));
     } else {
-        registerErrorHandler(s_manager->StopUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("stopping unit"));
+        registerErrorHandler(s_manager->StopUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("stop unit"));
     }
 }
 
 void SyncthingService::setEnabled(bool enabled)
 {
     if(enabled) {
-        registerErrorHandler(s_manager->EnableUnitFiles(QStringList(m_unitName), false, true), QT_TR_NOOP_UTF8("enabling unit"));
+        registerErrorHandler(s_manager->EnableUnitFiles(QStringList(m_unitName), false, true), QT_TR_NOOP_UTF8("enable unit"));
     } else {
-        registerErrorHandler(s_manager->DisableUnitFiles(QStringList(m_unitName), false), QT_TR_NOOP_UTF8("disabling unit"));
+        registerErrorHandler(s_manager->DisableUnitFiles(QStringList(m_unitName), false), QT_TR_NOOP_UTF8("disable unit"));
     }
 }
 
@@ -161,6 +163,13 @@ void SyncthingService::handleError(const char *context, QDBusPendingCallWatcher 
     const QDBusError error = watcher->error();
     if(error.isValid()) {
         emit errorOccurred(tr(context), error.name(), error.message());
+    }
+}
+
+void SyncthingService::handleServiceRegisteredChanged(const QString &service)
+{
+    if(service == s_manager->service()) {
+        emit systemdAvailableChanged(s_manager->isValid());
     }
 }
 

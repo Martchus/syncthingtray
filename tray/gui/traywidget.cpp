@@ -146,7 +146,8 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     const SyncthingService &service = syncthingService();
     connect(m_ui->startStopPushButton, &QPushButton::clicked, &service, &SyncthingService::toggleRunning);
-    connect(&service, &SyncthingService::stateChanged, this, &TrayWidget::updateStartStopButton);
+    connect(&service, &SyncthingService::systemdAvailableChanged, this, &TrayWidget::handleSystemdStatusChanged);
+    connect(&service, &SyncthingService::stateChanged, this, &TrayWidget::handleSystemdStatusChanged);
 #endif
 }
 
@@ -385,7 +386,7 @@ void TrayWidget::applySettings()
 
         // systemd
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        instance->updateStartStopButton();
+        instance->handleSystemdStatusChanged();
 #endif
 
         // update visual appearance
@@ -493,24 +494,53 @@ void TrayWidget::updateTraffic()
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-void TrayWidget::updateStartStopButton()
+void TrayWidget::handleSystemdStatusChanged()
 {
     const SyncthingService &service = syncthingService();
     const Settings::Systemd &settings = Settings::values().systemd;
+    const bool serviceRelevant = service.isSystemdAvailable() && isLocal(QUrl(m_connection.syncthingUrl()));
 
-    if(settings.showButton && service.isUnitAvailable() && m_selectedConnection && isLocal(QUrl(m_selectedConnection->syncthingUrl))) {
-        m_ui->startStopPushButton->setVisible(true);
-        if(service.isRunning()) {
-            m_ui->startStopPushButton->setText(tr("Stop"));
-            m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user stop ") + service.unitName());
-            m_ui->startStopPushButton->setIcon(QIcon::fromTheme(QStringLiteral("process-stop"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/process-stop.svg"))));
-        } else {
-            m_ui->startStopPushButton->setText(tr("Start"));
-            m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user start ") + service.unitName());
-            m_ui->startStopPushButton->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
+    if(serviceRelevant) {
+        const bool isRunning = service.isRunning();
+        if(settings.showButton) {
+            m_ui->startStopPushButton->setVisible(true);
+            if(isRunning) {
+                m_ui->startStopPushButton->setText(tr("Stop"));
+                m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user stop ") + service.unitName());
+                m_ui->startStopPushButton->setIcon(QIcon::fromTheme(QStringLiteral("process-stop"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/process-stop.svg"))));
+            } else {
+                m_ui->startStopPushButton->setText(tr("Start"));
+                m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user start ") + service.unitName());
+                m_ui->startStopPushButton->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
+            }
         }
-    } else {
+        if(settings.considerForReconnect) {
+            if(isRunning && m_selectedConnection) {
+                // auto-reconnect might have been disabled when unit was inactive before, so re-enable it according current connection settings
+                m_connection.setAutoReconnectInterval(m_selectedConnection->reconnectInterval);
+                // and reconnect in 5 seconds (Syncthing needs a few seconds till the API becomes available)
+                QTimer::singleShot(5000, Qt::VeryCoarseTimer, this, &TrayWidget::connectIfServiceRunning);
+            } else {
+                // disable auto-reconnect if unit isn't running
+                m_connection.setAutoReconnectInterval(0);
+            }
+        }
+    }
+
+    if(!settings.showButton || !serviceRelevant) {
         m_ui->startStopPushButton->setVisible(false);
+    }
+    if((!settings.considerForReconnect || !serviceRelevant) && m_selectedConnection) {
+        m_connection.setAutoReconnectInterval(m_selectedConnection->reconnectInterval);
+    }
+}
+
+void TrayWidget::connectIfServiceRunning()
+{
+    if(Settings::values().systemd.considerForReconnect
+            && isLocal(QUrl(m_connection.syncthingUrl()))
+            && syncthingService().isRunning()) {
+        m_connection.connect();
     }
 }
 #endif
@@ -538,7 +568,7 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
         m_ui->connectionsPushButton->setText(m_selectedConnection->label);
         m_connection.reconnect(*m_selectedConnection);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        updateStartStopButton();
+        handleSystemdStatusChanged();
 #endif
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
         if(m_webViewDlg) {

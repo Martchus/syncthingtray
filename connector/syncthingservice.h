@@ -81,6 +81,7 @@ private Q_SLOTS:
     void handleUnitGet(QDBusPendingCallWatcher *watcher);
     void handlePropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
     void handleError(const char *error, QDBusPendingCallWatcher *watcher);
+    void handleServiceRegisteredChanged(const QString &service);
     void setUnit(const QDBusObjectPath &objectPath);
     void setProperties(const QString &activeState, const QString &subState, const QString &unitFileState, const QString &description);
 

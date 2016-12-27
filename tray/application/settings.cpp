@@ -100,6 +100,7 @@ void restore()
     auto &systemd = v.systemd;
     systemd.syncthingUnit = settings.value(QStringLiteral("syncthingUnit"), systemd.syncthingUnit).toString();
     systemd.showButton = settings.value(QStringLiteral("showButton"), systemd.showButton).toBool();
+    systemd.considerForReconnect = settings.value(QStringLiteral("considerForReconnect"), systemd.considerForReconnect).toBool();
 #endif
     settings.endGroup();
 
@@ -167,6 +168,7 @@ void save()
     const auto &systemd = v.systemd;
     settings.setValue(QStringLiteral("syncthingUnit"), systemd.syncthingUnit);
     settings.setValue(QStringLiteral("showButton"), systemd.showButton);
+    settings.setValue(QStringLiteral("considerForReconnect"), systemd.considerForReconnect);
 #endif
     settings.endGroup();
 

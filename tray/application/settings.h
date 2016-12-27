@@ -66,7 +66,8 @@ struct Launcher
 struct Systemd
 {
     QString syncthingUnit = QStringLiteral("syncthing.service");
-    bool showButton = true;
+    bool showButton = false;
+    bool considerForReconnect = false;
 };
 #endif
 

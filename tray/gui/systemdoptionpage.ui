@@ -15,7 +15,23 @@
       </font>
      </property>
      <property name="text">
-      <string>Show start/stop button on tray for local instance when specified unit available</string>
+      <string>Show start/stop button on tray for local instance when systemd is available</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="considerForReconnectCheckBox">
+     <property name="text">
+      <string>Consider systemd unit status for reconnect attempts to local instance
+ • Don't reconnect when unit not active/running
+ • Try to reconnect when unit becomes active/running</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -50,20 +66,7 @@
       <item row="0" column="1">
        <widget class="Widgets::ClearLineEdit" name="syncthingUnitLineEdit"/>
       </item>
-      <item row="1" column="1">
-       <widget class="Line" name="line1">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="descriptionLabel">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -76,7 +79,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="1" column="1">
        <layout class="QHBoxLayout" name="descriptionHorizontalLayout">
         <item>
          <widget class="QLabel" name="descriptionValueLabel">
@@ -99,7 +102,7 @@
         </item>
        </layout>
       </item>
-      <item row="3" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="statusLabel">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -112,7 +115,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="2" column="1">
        <layout class="QHBoxLayout" name="statusHorizontalLayout">
         <item>
          <widget class="QWidget" name="statusIndicator" native="true">
@@ -176,7 +179,7 @@
         </item>
        </layout>
       </item>
-      <item row="4" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="unitFileStateLabel">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -189,7 +192,7 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="3" column="1">
        <layout class="QHBoxLayout" name="unitFileStateHorizontalLayout">
         <item>
          <widget class="QWidget" name="enabledIndicator" native="true">

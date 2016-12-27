@@ -38,7 +38,7 @@ void handleSystemdServiceError(const QString &context, const QString &name, cons
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Critical);
     msgBox.setText(QCoreApplication::translate("main", "Unable to ") + context);
-    msgBox.setInformativeText(name % QStringLiteral(": ") % message);
+    msgBox.setInformativeText(name % QStringLiteral(":\n") % message);
     msgBox.exec();
 }
 #endif

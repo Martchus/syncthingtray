@@ -596,6 +596,7 @@ bool SystemdOptionPage::apply()
         auto &settings = values().systemd;
         settings.syncthingUnit = ui()->syncthingUnitLineEdit->text();
         settings.showButton = ui()->showButtonCheckBox->isChecked();
+        settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
     }
     return true;
 }
@@ -606,6 +607,7 @@ void SystemdOptionPage::reset()
         const auto &settings = values().systemd;
         ui()->syncthingUnitLineEdit->setText(settings.syncthingUnit);
         ui()->showButtonCheckBox->setChecked(settings.showButton);
+        ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
         handleDescriptionChanged(m_service.description());
         handleStatusChanged(m_service.activeState(), m_service.subState());
         handleEnabledChanged(m_service.unitFileState());
@@ -614,7 +616,7 @@ void SystemdOptionPage::reset()
 
 void SystemdOptionPage::handleDescriptionChanged(const QString &description)
 {
-    ui()->descriptionValueLabel->setText(description.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "specified unit is unknown") : description);
+    ui()->descriptionValueLabel->setText(description.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "specified unit is either inactive or doesn't exist") : description);
 }
 
 void setIndicatorColor(QWidget *indicator, const QColor &color)
@@ -642,7 +644,7 @@ void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QS
                         ? Colors::green(values().appearance.brightTextColors)
                         : Colors::red(values().appearance.brightTextColors))
                        );
-    ui()->startPushButton->setVisible(!status.isEmpty() && !isRunning);
+    ui()->startPushButton->setVisible(!isRunning);
     ui()->stopPushButton->setVisible(!status.isEmpty() && isRunning);
 }
 
@@ -653,7 +655,7 @@ void SystemdOptionPage::handleEnabledChanged(const QString &unitFileState)
     setIndicatorColor(ui()->enabledIndicator, isEnabled
                      ? Colors::green(values().appearance.brightTextColors)
                      : Colors::gray(values().appearance.brightTextColors));
-    ui()->enablePushButton->setVisible(!unitFileState.isEmpty() && !isEnabled);
+    ui()->enablePushButton->setVisible(!isEnabled);
     ui()->disablePushButton->setVisible(!unitFileState.isEmpty() && isEnabled);
 }
 #endif
