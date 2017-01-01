@@ -54,7 +54,9 @@ QtGui::WebViewDialog::~WebViewDialog()
 void QtGui::WebViewDialog::applySettings(const Data::SyncthingConnectionSettings &connectionSettings)
 {
     m_settings = connectionSettings;
-    m_view->setUrl(connectionSettings.syncthingUrl);
+    if(!WebPage::isSamePage(m_view->url(), connectionSettings.syncthingUrl)) {
+        m_view->setUrl(connectionSettings.syncthingUrl);
+    }
     m_view->setZoomFactor(Settings::values().webView.zoomFactor);
 }
 

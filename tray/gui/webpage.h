@@ -26,6 +26,8 @@ class WebPage : public WEB_PAGE_PROVIDER
 public:
     WebPage(WebViewDialog *dlg = nullptr, WEB_VIEW_PROVIDER *view = nullptr);
 
+    static bool isSamePage(const QUrl &url1, const QUrl &url2);
+
 protected:
     WEB_PAGE_PROVIDER *createWindow(WebWindowType type);
 #ifdef SYNCTHINGTRAY_USE_WEBENGINE
@@ -45,7 +47,7 @@ private slots:
 #endif
 
 private:
-    bool handleNavigationRequest(const QUrl &currentUrl, const QUrl &url);
+    static bool handleNavigationRequest(const QUrl &currentUrl, const QUrl &url);
 
     WebViewDialog *m_dlg;
     WEB_VIEW_PROVIDER *m_view;

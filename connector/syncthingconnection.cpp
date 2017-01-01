@@ -139,6 +139,18 @@ void SyncthingConnection::connect()
 }
 
 /*!
+ * \brief Applies the specified configuration and tries to reconnect via reconnect() if properties requiring reconnect
+ *        to take effect have changed.
+ * \remarks The expected SSL errors of the specified configuration are updated accordingly.
+ */
+void SyncthingConnection::connect(SyncthingConnectionSettings &connectionSettings)
+{
+    if(applySettings(connectionSettings)) {
+        reconnect();
+    }
+}
+
+/*!
  * \brief Disconnects. Does nothing if not connected.
  */
 void SyncthingConnection::disconnect()
@@ -620,8 +632,9 @@ QMetaObject::Connection SyncthingConnection::requestLog(std::function<void (cons
  *  - Loading the certificate is only possible if the connection object is configured
  *    to connect to the locally running Syncthing instance. Otherwise this method will
  *    only do the cleanup of previous certificates but not emit any errors.
+ * \returns Returns whether a certificate could be loaded.
  */
-void SyncthingConnection::loadSelfSignedCertificate()
+bool SyncthingConnection::loadSelfSignedCertificate()
 {
     // ensure current exceptions for self-signed certificates are cleared
     m_expectedSslErrors.clear();
@@ -629,31 +642,33 @@ void SyncthingConnection::loadSelfSignedCertificate()
     // not required when not using secure connection
     const QUrl syncthingUrl(m_syncthingUrl);
     if(!syncthingUrl.scheme().endsWith(QChar('s'))) {
-        return;
+        return false;
     }
 
     // only possible if the Syncthing instance is running on the local machine
     if(!isLocal(syncthingUrl)) {
-        return;
+        return false;
     }
 
     // find cert
     const QString certPath = !m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate();
     if(certPath.isEmpty()) {
         emit error(tr("Unable to locate certificate used by Syncthing GUI."), SyncthingErrorCategory::OverallConnection);
-        return;
+        return false;
     }
     // add exception
-    const QList<QSslCertificate> cert = QSslCertificate::fromPath(certPath);
-    if(cert.isEmpty()) {
+    const QList<QSslCertificate> certs = QSslCertificate::fromPath(certPath);
+    if(certs.isEmpty()) {
         emit error(tr("Unable to load certificate used by Syncthing GUI."), SyncthingErrorCategory::OverallConnection);
-        return;
+        return false;
     }
+    const QSslCertificate &cert = certs.at(0);
     m_expectedSslErrors.reserve(4);
-    m_expectedSslErrors << QSslError(QSslError::UnableToGetLocalIssuerCertificate, cert.at(0));
-    m_expectedSslErrors << QSslError(QSslError::UnableToVerifyFirstCertificate, cert.at(0));
-    m_expectedSslErrors << QSslError(QSslError::SelfSignedCertificate, cert.at(0));
-    m_expectedSslErrors << QSslError(QSslError::HostNameMismatch, cert.at(0));
+    m_expectedSslErrors << QSslError(QSslError::UnableToGetLocalIssuerCertificate, cert)
+                        << QSslError(QSslError::UnableToVerifyFirstCertificate, cert)
+                        << QSslError(QSslError::SelfSignedCertificate, cert)
+                        << QSslError(QSslError::HostNameMismatch, cert);
+    return true;
 }
 
 /*!
@@ -661,26 +676,46 @@ void SyncthingConnection::loadSelfSignedCertificate()
  * \remarks
  * - The expected SSL errors of the specified configuration are updated accordingly.
  * - The configuration is not used instantly. It will be used on the next reconnect.
+ * \returns Returns whether at least one property requiring a reconnect to take effect has changed.
  * \sa reconnect()
  */
-void SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionSettings)
+bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionSettings)
 {
-    setSyncthingUrl(connectionSettings.syncthingUrl);
-    setApiKey(connectionSettings.apiKey);
-    if(connectionSettings.authEnabled) {
-        setCredentials(connectionSettings.userName, connectionSettings.password);
-    } else {
-        setCredentials(QString(), QString());
+    bool reconnectRequired = false;
+    if(syncthingUrl() != connectionSettings.syncthingUrl) {
+        setSyncthingUrl(connectionSettings.syncthingUrl);
+        reconnectRequired = true;
     }
+    if(apiKey() != connectionSettings.apiKey) {
+        setApiKey(connectionSettings.apiKey);
+        reconnectRequired = true;
+    }
+    if((connectionSettings.authEnabled && (user() != connectionSettings.userName || password() != connectionSettings.password))
+            || (!connectionSettings.authEnabled && (!user().isEmpty() || !password().isEmpty()))) {
+        if(connectionSettings.authEnabled) {
+            setCredentials(connectionSettings.userName, connectionSettings.password);
+        } else {
+            setCredentials(QString(), QString());
+        }
+        reconnectRequired = true;
+    }
+    if(connectionSettings.expectedSslErrors.isEmpty()) {
+        const bool previouslyHadExpectedSslErrors = !expectedSslErrors().isEmpty();
+        const bool ok = loadSelfSignedCertificate();
+        connectionSettings.expectedSslErrors = expectedSslErrors();
+        if(ok || (previouslyHadExpectedSslErrors && !ok)) {
+            reconnectRequired = true;
+        }
+    } else if(expectedSslErrors() != connectionSettings.expectedSslErrors) {
+        m_expectedSslErrors = connectionSettings.expectedSslErrors;
+        reconnectRequired = true;
+    }
+
     setTrafficPollInterval(connectionSettings.trafficPollInterval);
     setDevStatsPollInterval(connectionSettings.devStatsPollInterval);
     setAutoReconnectInterval(connectionSettings.reconnectInterval);
-    if(connectionSettings.expectedSslErrors.isEmpty()) {
-        loadSelfSignedCertificate();
-        connectionSettings.expectedSslErrors = expectedSslErrors();
-    } else {
-        m_expectedSslErrors = connectionSettings.expectedSslErrors;
-    }
+
+    return reconnectRequired;
 }
 
 /*!

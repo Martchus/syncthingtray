@@ -57,6 +57,26 @@ WebPage::WebPage(WebViewDialog *dlg, WEB_VIEW_PROVIDER *view) :
     }
 }
 
+bool WebPage::isSamePage(const QUrl &url1, const QUrl &url2)
+{
+    if(url1.scheme() == url2.scheme()
+            && url1.host() == url2.host()
+            && url1.port() == url2.port()) {
+        QString path1 = url1.path();
+        while(path1.endsWith(QChar('/'))) {
+            path1.resize(path1.size() - 1);
+        }
+        QString path2 = url2.path();
+        while(path2.endsWith(QChar('/'))) {
+            path2.resize(path2.size() - 1);
+        }
+        if(path1 == path2) {
+            return true;
+        }
+    }
+    return false;
+}
+
 WEB_PAGE_PROVIDER *WebPage::createWindow(WEB_PAGE_PROVIDER::WebWindowType type)
 {
     Q_UNUSED(type)
@@ -128,20 +148,8 @@ bool WebPage::handleNavigationRequest(const QUrl &currentUrl, const QUrl &target
         return true;
     }
     // only allow navigation on the same page
-    if(currentUrl.scheme() == targetUrl.scheme()
-            && currentUrl.host() == targetUrl.host()
-            && currentUrl.port() == targetUrl.port()) {
-        QString currentPath = currentUrl.path();
-        while(currentPath.endsWith(QChar('/'))) {
-            currentPath.resize(currentPath.size() - 1);
-        }
-        QString targetPath = targetUrl.path();
-        while(targetPath.endsWith(QChar('/'))) {
-            targetPath.resize(targetPath.size() - 1);
-        }
-        if(currentPath == targetPath) {
-            return true;
-        }
+    if(isSamePage(currentUrl, targetUrl)) {
+        return true;
     }
     // otherwise open URL in external browser
     QDesktopServices::openUrl(targetUrl);

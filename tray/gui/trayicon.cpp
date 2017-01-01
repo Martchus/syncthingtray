@@ -61,7 +61,7 @@ TrayIcon::TrayIcon(QObject *parent) :
     // setup notifications
     m_disconnectedNotification.setMessage(tr("Disconnected from Syncthing"));
     m_disconnectedNotification.setActions(QStringList(tr("Try to reconnect")));
-    connect(&m_disconnectedNotification, &DBusNotification::actionInvoked, &(m_trayMenu.widget()->connection()), &SyncthingConnection::connect);
+    connect(&m_disconnectedNotification, &DBusNotification::actionInvoked, &(m_trayMenu.widget()->connection()), static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
     m_syncthingNotification.setActions(QStringList({QStringLiteral("show"), tr("Show"), QStringLiteral("dismiss"), tr("Dismiss")}));
     connect(&m_syncthingNotification, &DBusNotification::actionInvoked, this, &TrayIcon::handleSyncthingNotificationAction);
 #endif

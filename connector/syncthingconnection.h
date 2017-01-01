@@ -111,9 +111,10 @@ public:
     const std::vector<SyncthingDir *> &completedDirs() const;
 
 public Q_SLOTS:
-    void loadSelfSignedCertificate();
-    void applySettings(SyncthingConnectionSettings &connectionSettings);
+    bool loadSelfSignedCertificate();
+    bool applySettings(SyncthingConnectionSettings &connectionSettings);
     void connect();
+    void connect(SyncthingConnectionSettings &connectionSettings);
     void disconnect();
     void reconnect();
     void reconnect(SyncthingConnectionSettings &connectionSettings);
