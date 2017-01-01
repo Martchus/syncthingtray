@@ -13,6 +13,7 @@
 QT_FORWARD_DECLARE_CLASS(WEB_VIEW_PROVIDER)
 QT_FORWARD_DECLARE_CLASS(QAuthenticator)
 QT_FORWARD_DECLARE_CLASS(QNetworkReply)
+QT_FORWARD_DECLARE_CLASS(QNetworkRequest)
 QT_FORWARD_DECLARE_CLASS(QSslError)
 
 namespace QtGui {
@@ -29,10 +30,13 @@ protected:
     WEB_PAGE_PROVIDER *createWindow(WebWindowType type);
 #ifdef SYNCTHINGTRAY_USE_WEBENGINE
     bool certificateError(const QWebEngineCertificateError &certificateError);
+    bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
+#else
+    bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type);
 #endif
 
 private slots:
-    void delegateToExternalBrowser(const QUrl &url);
+    void delegateNewWindowToExternalBrowser(const QUrl &url);
     void supplyCredentials(const QUrl &requestUrl, QAuthenticator *authenticator);
     void supplyCredentials(QNetworkReply *reply, QAuthenticator *authenticator);
     void supplyCredentials(QAuthenticator *authenticator);
@@ -41,6 +45,8 @@ private slots:
 #endif
 
 private:
+    bool handleNavigationRequest(const QUrl &currentUrl, const QUrl &url);
+
     WebViewDialog *m_dlg;
     WEB_VIEW_PROVIDER *m_view;
 };

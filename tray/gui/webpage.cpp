@@ -21,6 +21,7 @@
 # include <QWebView>
 # include <QWebFrame>
 # include <QSslError>
+# include <QNetworkRequest>
 #endif
 
 using namespace Data;
@@ -41,13 +42,16 @@ WebPage::WebPage(WebViewDialog *dlg, WEB_VIEW_PROVIDER *view) :
     connect(&Data::networkAccessManager(), &QNetworkAccessManager::authenticationRequired, this, static_cast<void(WebPage::*)(QNetworkReply *, QAuthenticator *)>(&WebPage::supplyCredentials));
     connect(&Data::networkAccessManager(), &QNetworkAccessManager::sslErrors, this, static_cast<void(WebPage::*)(QNetworkReply *, const QList<QSslError> &errors)>(&WebPage::handleSslErrors));
 #endif
+
     if(!m_view) {
-        // delegate to external browser if no view is assigned
+        // initialization for new window
+        // -> delegate to external browser if no view is assigned
 #ifdef SYNCTHINGTRAY_USE_WEBENGINE
-        connect(this, &WebPage::urlChanged, this, &WebPage::delegateToExternalBrowser);
+        connect(this, &WebPage::urlChanged, this, &WebPage::delegateNewWindowToExternalBrowser);
 #else
-        connect(this->mainFrame(), &QWebFrame::urlChanged, this, &WebPage::delegateToExternalBrowser);
+        connect(this->mainFrame(), &QWebFrame::urlChanged, this, &WebPage::delegateNewWindowToExternalBrowser);
 #endif
+        // -> there need to be a view, though
         m_view = new WEB_VIEW_PROVIDER;
         m_view->setPage(this);
     }
@@ -72,9 +76,24 @@ bool WebPage::certificateError(const QWebEngineCertificateError &certificateErro
         return false;
     }
 }
+
+bool WebPage::acceptNavigationRequest(const QUrl &url, WEB_PAGE_PROVIDER::NavigationType type, bool isMainFrame)
+{
+    Q_UNUSED(isMainFrame)
+    Q_UNUSED(type)
+    return handleNavigationRequest(this->url(), url);
+}
+
+#else // SYNCTHINGTRAY_USE_WEBKIT
+bool WebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, WEB_PAGE_PROVIDER::NavigationType type)
+{
+    Q_UNUSED(frame)
+    Q_UNUSED(type)
+    return handleNavigationRequest(mainFrame() ? mainFrame()->url() : QUrl(), request.url());
+}
 #endif
 
-void WebPage::delegateToExternalBrowser(const QUrl &url)
+void WebPage::delegateNewWindowToExternalBrowser(const QUrl &url)
 {
     QDesktopServices::openUrl(url);
     // this page and the associated view are useless
@@ -100,6 +119,33 @@ void WebPage::supplyCredentials(QAuthenticator *authenticator)
         authenticator->setUser(m_dlg->settings().userName);
         authenticator->setPassword(m_dlg->settings().password);
     }
+}
+
+bool WebPage::handleNavigationRequest(const QUrl &currentUrl, const QUrl &targetUrl)
+{
+    if(currentUrl.isEmpty()) {
+        // allow initial request
+        return true;
+    }
+    // only allow navigation on the same page
+    if(currentUrl.scheme() == targetUrl.scheme()
+            && currentUrl.host() == targetUrl.host()
+            && currentUrl.port() == targetUrl.port()) {
+        QString currentPath = currentUrl.path();
+        while(currentPath.endsWith(QChar('/'))) {
+            currentPath.resize(currentPath.size() - 1);
+        }
+        QString targetPath = targetUrl.path();
+        while(targetPath.endsWith(QChar('/'))) {
+            targetPath.resize(targetPath.size() - 1);
+        }
+        if(currentPath == targetPath) {
+            return true;
+        }
+    }
+    // otherwise open URL in external browser
+    QDesktopServices::openUrl(targetUrl);
+    return false;
 }
 
 #ifdef SYNCTHINGTRAY_USE_WEBKIT
