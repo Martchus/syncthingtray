@@ -105,6 +105,7 @@ int runApplication(int argc, const char *const *argv)
 
     // setup argument parser
     SET_APPLICATION_INFO;
+    CMD_UTILS_CONVERT_ARGS_TO_UTF8;
     ArgumentParser parser;
     HelpArgument helpArg(parser);
     // Qt configuration arguments

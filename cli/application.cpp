@@ -8,6 +8,8 @@
 #include <c++utilities/chrono/timespan.h>
 #include <c++utilities/conversion/stringconversion.h>
 
+#include <qtutilities/misc/conversion.h>
+
 #include <QCoreApplication>
 #include <QNetworkAccessManager>
 #include <QHostAddress>
@@ -32,6 +34,16 @@ void exitApplication(int statusCode)
 {
     statusCode = ::Cli::statusCode;
     terminated = true;
+}
+
+inline QString argToQString(const char *arg)
+{
+#if !defined(PLATFORM_WINDOWS)
+    return argToQString(arg);
+#else
+    // under Windows args are converted to UTF-8
+    return QString::fromUtf8(arg);
+#endif
 }
 
 Application::Application() :
@@ -85,7 +97,7 @@ int Application::exec(int argc, const char * const *argv)
         QString configFile;
         const char *configFileArgValue = m_args.configFile.firstValue();
         if(configFileArgValue) {
-            configFile = QString::fromLocal8Bit(configFileArgValue);
+            configFile = fromNativeFileName(configFileArgValue);
         } else {
             configFile = SyncthingConfig::locateConfigFile();
         }
@@ -103,7 +115,7 @@ int Application::exec(int argc, const char * const *argv)
 
         // apply settings for connection
         if(const char *urlArgValue = m_args.url.firstValue()) {
-            m_settings.syncthingUrl = QString::fromLocal8Bit(urlArgValue);
+            m_settings.syncthingUrl = argToQString(urlArgValue);
         } else if(!config.guiAddress.isEmpty()) {
             m_settings.syncthingUrl = (config.guiEnforcesSecureConnection || !QHostAddress(config.guiAddress.mid(0, config.guiAddress.indexOf(QChar(':')))).isLoopback() ? QStringLiteral("https://") : QStringLiteral("http://")) + config.guiAddress;
         } else {
@@ -111,8 +123,8 @@ int Application::exec(int argc, const char * const *argv)
         }
         if(m_args.credentials.isPresent()) {
             m_settings.authEnabled = true;
-            m_settings.userName = QString::fromLocal8Bit(m_args.credentials.values(0)[0]);
-            m_settings.password = QString::fromLocal8Bit(m_args.credentials.values(0)[1]);
+            m_settings.userName = argToQString(m_args.credentials.values(0)[0]);
+            m_settings.password = argToQString(m_args.credentials.values(0)[1]);
         }
         if(apiKeyArgValue) {
             m_settings.apiKey.append(apiKeyArgValue);
@@ -120,7 +132,7 @@ int Application::exec(int argc, const char * const *argv)
             m_settings.apiKey.append(config.guiApiKey);
         }
         if(const char *certArgValue = m_args.certificate.firstValue()) {
-            m_settings.httpsCertPath = QString::fromLocal8Bit(certArgValue);
+            m_settings.httpsCertPath = argToQString(certArgValue);
             if(m_settings.httpsCertPath.isEmpty() || !m_settings.loadHttpsCert()) {
                 cerr << "Error: Unable to load specified certificate \"" << m_args.certificate.firstValue() << "\"" << endl;
                 return -3;
@@ -210,7 +222,7 @@ void Application::requestRescan(const ArgumentOccurrence &occurrence)
     connect(&m_connection, &SyncthingConnection::rescanTriggered, this, &Application::handleResponse);
     for(const char *value : occurrence.values) {
         cerr << "Request rescanning " << value << " ...\n";
-        m_connection.rescan(QString::fromLocal8Bit(value));
+        m_connection.rescan(argToQString(value));
     }
     cerr.flush();
 }
@@ -229,7 +241,7 @@ void Application::requestPause(const ArgumentOccurrence &occurrence)
     connect(&m_connection, &SyncthingConnection::pauseTriggered, this, &Application::handleResponse);
     for(const char *value : occurrence.values) {
         cerr << "Request pausing " << value << " ...\n";
-        m_connection.pause(QString::fromLocal8Bit(value));
+        m_connection.pause(argToQString(value));
     }
     cerr.flush();
 }
@@ -248,7 +260,7 @@ void Application::requestResume(const ArgumentOccurrence &occurrence)
     connect(&m_connection, &SyncthingConnection::resumeTriggered, this, &Application::handleResponse);
     for(const char *value : occurrence.values) {
         cerr << "Request resuming " << value << " ...\n";
-        m_connection.resume(QString::fromLocal8Bit(value));
+        m_connection.resume(argToQString(value));
     }
     cerr.flush();
 }
@@ -267,7 +279,7 @@ void Application::findRelevantDirsAndDevs()
     if(m_args.dir.isPresent()) {
         m_relevantDirs.reserve(m_args.dir.occurrences());
         for(size_t i = 0; i != m_args.dir.occurrences(); ++i) {
-            if(const SyncthingDir *dir = m_connection.findDirInfo(QString::fromLocal8Bit(m_args.dir.values(i).front()), dummy)) {
+            if(const SyncthingDir *dir = m_connection.findDirInfo(argToQString(m_args.dir.values(i).front()), dummy)) {
                 m_relevantDirs.emplace_back(dir);
             } else {
                 cerr << "Warning: Specified directory \"" << m_args.dir.values(i).front() << "\" does not exist and will be ignored" << endl;
@@ -277,9 +289,9 @@ void Application::findRelevantDirsAndDevs()
     if(m_args.dev.isPresent()) {
         m_relevantDevs.reserve(m_args.dev.occurrences());
         for(size_t i = 0; i != m_args.dev.occurrences(); ++i) {
-            const SyncthingDev *dev = m_connection.findDevInfo(QString::fromLocal8Bit(m_args.dev.values(i).front()), dummy);
+            const SyncthingDev *dev = m_connection.findDevInfo(argToQString(m_args.dev.values(i).front()), dummy);
             if(!dev) {
-                dev = m_connection.findDevInfoByName(QString::fromLocal8Bit(m_args.dev.values(i).front()), dummy);
+                dev = m_connection.findDevInfoByName(argToQString(m_args.dev.values(i).front()), dummy);
             }
             if(dev) {
                 m_relevantDevs.emplace_back(dev);
