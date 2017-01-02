@@ -45,7 +45,7 @@ list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 
-# configure support for D-Bus notifications
+# configure support for controlling Syncthing via systemd service
 option(SYSTEMD_SUPPORT "enables support for controlling Syncthing systemd service" ${UNIX})
 if(DBUS_NOTIFICATIONS)
     list(APPEND HEADER_FILES

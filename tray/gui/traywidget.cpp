@@ -120,6 +120,9 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     // setup other widgets
     m_ui->notificationsPushButton->setHidden(true);
     m_ui->trafficIconLabel->setPixmap(QIcon::fromTheme(QStringLiteral("network-card"), QIcon(QStringLiteral(":/icons/hicolor/scalable/devices/network-card.svg"))).pixmap(32));
+#ifndef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    delete m_ui->startStopPushButton;
+#endif
 
     // connect signals and slots
     connect(m_ui->statusPushButton, &QPushButton::clicked, this, &TrayWidget::changeStatus);
