@@ -27,8 +27,8 @@ using namespace Data;
 
 namespace Cli {
 
-bool terminated = false;
-int statusCode = 0;
+static bool terminated = false;
+static int statusCode = 0;
 
 void exitApplication(int statusCode)
 {
