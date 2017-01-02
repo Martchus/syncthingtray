@@ -47,7 +47,7 @@ list(APPEND ADDITIONAL_QT_MODULES Network)
 
 # configure support for controlling Syncthing via systemd service
 option(SYSTEMD_SUPPORT "enables support for controlling Syncthing systemd service" ${UNIX})
-if(DBUS_NOTIFICATIONS)
+if(SYSTEMD_SUPPORT)
     list(APPEND HEADER_FILES
         syncthingservice.h
     )
