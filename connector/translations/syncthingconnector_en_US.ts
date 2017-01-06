@@ -51,17 +51,17 @@
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="622"/>
-        <source>Unable to request system log: </source>
+        <source>Unable to request Syncthing log: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="656"/>
-        <source>Unable to locate certificate used by Syncthing GUI.</source>
+        <source>Unable to locate certificate used by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="662"/>
-        <source>Unable to load certificate used by Syncthing GUI.</source>
+        <source>Unable to load certificate used by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

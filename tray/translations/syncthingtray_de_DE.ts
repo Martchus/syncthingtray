@@ -6,112 +6,112 @@
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="6"/>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Erscheinungsbild</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="19"/>
         <source>Menu size</source>
-        <translation type="unfinished"></translation>
+        <translation>Größe des Menüs</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="26"/>
         <source>Optional GUI elements</source>
-        <translation type="unfinished"></translation>
+        <translation>Optionale Elemente</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="33"/>
         <source>Traffic statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Traffic-Statistiken</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="61"/>
         <source> x </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="84"/>
         <source> px</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="96"/>
         <source>Frame shape</source>
-        <translation type="unfinished"></translation>
+        <translation>Rahmenform</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="103"/>
         <source>Frame shadow</source>
-        <translation type="unfinished"></translation>
+        <translation>Rahmenschatten</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="111"/>
         <source>No frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein Rahmen</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="116"/>
         <source>Box</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="121"/>
         <source>Panel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="126"/>
         <source>Styled panel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="135"/>
         <source>Plain</source>
-        <translation type="unfinished"></translation>
+        <translation>Einfach</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="140"/>
         <source>Raised</source>
-        <translation type="unfinished"></translation>
+        <translation>Angehoben</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="145"/>
         <source>Sunken</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingedrückt</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="153"/>
         <source>Tab position</source>
-        <translation type="unfinished"></translation>
+        <translation>Position der Tabs</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="161"/>
         <source>Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Oben</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="166"/>
         <source>Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Unten</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="171"/>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Links</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="176"/>
         <source>Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechts</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="184"/>
         <source>Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Farben</translation>
     </message>
     <message>
         <location filename="../gui/appearanceoptionpage.ui" line="191"/>
         <source>Bright custom text colors (use for dark color scheme)</source>
-        <translation type="unfinished"></translation>
+        <translation>Helle benutzerdefinierte Schriftfarben (für dunkles Farbschema gedacht)</translation>
     </message>
 </context>
 <context>
@@ -119,32 +119,32 @@
     <message>
         <location filename="../gui/autostartoptionpage.ui" line="14"/>
         <source>Autostart</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-Start</translation>
     </message>
     <message>
         <location filename="../gui/autostartoptionpage.ui" line="26"/>
         <source>Start the tray icon when the desktop environment launches</source>
-        <translation type="unfinished"></translation>
+        <translation>Tray-Icon beim Starten der Desktopumgebung automatisch starten</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="361"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Durch das Hinzufügen einer *.desktop-Datei unter &lt;i&gt;~/.config/autostart&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="363"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Durch das Hinzufügen eines Registry-Schlüssels unter &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="365"/>
         <source>This feature has not been implemented for your platform (yet).</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Funktion wurde für die aktuelle Plattform nicht nicht implementiert.</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="452"/>
         <source>unable to modify startup entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim aktualisieren des Auto-Start-Eintrags</translation>
     </message>
 </context>
 <context>
@@ -152,134 +152,134 @@
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="6"/>
         <source>Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="25"/>
         <source>Config label</source>
-        <translation type="unfinished"></translation>
+        <translation>Name der Konfig.</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="75"/>
         <source>Add secondary instance</source>
-        <translation type="unfinished"></translation>
+        <translation>Sekundäre Konfiguration hinzufügen</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="92"/>
         <source>Remove currently selected secondary instance</source>
-        <translation type="unfinished"></translation>
+        <translation>Sekundäre Konfiguration löschen</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="112"/>
         <source>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es ist möglich, mehrere Konfigurationen zu speichern. Zwischen diesen kann anschließend über das Verbindungsmenü rechts oben im Tray schnell hin- und hergewechselt werden. Der Name der Konfiguration muss nicht mit dem Namen des entsprechenden Syncthing-Gerätes übereinstimmen.</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="135"/>
         <source>Syncthing URL</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="145"/>
         <source>Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Authentifizierung</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="158"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="175"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="192"/>
         <source>API key</source>
-        <translation type="unfinished"></translation>
+        <translation>API-Schlüssel</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="202"/>
         <source>HTTPS certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>HTTPS-Zertifikat</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="222"/>
         <source>Insert values from local Syncthing configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Werte aus lokaler Syncthing-Konfiguration einfügen</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="246"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="253"/>
         <source>disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>getrennt</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="260"/>
         <source>Apply connection settings and try to reconnect with the currently selected config</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungseinstellungen übernehmen und mit neuen Einstellungen verbinden</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="271"/>
         <source>Poll interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Abfrageintervall</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="286"/>
         <source>Traffic</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="299"/>
         <location filename="../gui/connectionoptionpage.ui" line="332"/>
         <location filename="../gui/connectionoptionpage.ui" line="368"/>
         <source> ms</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="319"/>
         <source>Device statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Gerätestatistiken</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="352"/>
         <source>Reconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungsveruch</translation>
     </message>
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="365"/>
         <source>no</source>
-        <translation type="unfinished"></translation>
+        <translation>nicht neu verbinden</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="73"/>
         <source>Auto-detected for local instance</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann für lokale Instanz automatisch ermittelt werden</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="91"/>
         <source>Select Syncthing config file</source>
-        <translation type="unfinished"></translation>
+        <translation>Wähle die Syncthing-Konfigurationsdatei</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="98"/>
         <source>Unable to parse the Syncthing config file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Auslesen der Syncthing-Konfigurationsdatei.</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="167"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Auslesen des angegebenen Zertifikats: %1</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="191"/>
         <source>Instance %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Instanz %1</translation>
     </message>
 </context>
 <context>
@@ -287,17 +287,17 @@
     <message>
         <location filename="../gui/devview.cpp" line="49"/>
         <source>Copy value</source>
-        <translation type="unfinished"></translation>
+        <translation>Wert kopieren</translation>
     </message>
     <message>
         <location filename="../gui/devview.cpp" line="51"/>
         <source>Copy name</source>
-        <translation type="unfinished"></translation>
+        <translation>Namen kopieren</translation>
     </message>
     <message>
         <location filename="../gui/devview.cpp" line="52"/>
         <source>Copy ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID kopieren</translation>
     </message>
 </context>
 <context>
@@ -305,22 +305,22 @@
     <message>
         <location filename="../gui/dirview.cpp" line="51"/>
         <source>Errors of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler von %1</translation>
     </message>
     <message>
         <location filename="../gui/dirview.cpp" line="68"/>
         <source>Copy value</source>
-        <translation type="unfinished"></translation>
+        <translation>Wert kopieren</translation>
     </message>
     <message>
         <location filename="../gui/dirview.cpp" line="70"/>
         <source>Copy label/ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Namen/ID kopieren</translation>
     </message>
     <message>
         <location filename="../gui/dirview.cpp" line="71"/>
         <source>Copy path</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfad kopieren</translation>
     </message>
 </context>
 <context>
@@ -328,12 +328,12 @@
     <message>
         <location filename="../gui/downloadview.cpp" line="55"/>
         <source>Copy value</source>
-        <translation type="unfinished"></translation>
+        <translation>Wert kopieren</translation>
     </message>
     <message>
         <location filename="../gui/downloadview.cpp" line="57"/>
         <source>Copy label/ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Namen/ID kopieren</translation>
     </message>
 </context>
 <context>
@@ -341,59 +341,59 @@
     <message>
         <location filename="../gui/launcheroptionpage.ui" line="14"/>
         <source>Syncthing launcher</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing-Starter</translation>
     </message>
     <message>
         <location filename="../gui/launcheroptionpage.ui" line="26"/>
         <source>Launch Syncthing when starting the tray icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Starte Syncthing beim Starten des Tray-Icons</translation>
     </message>
     <message>
         <location filename="../gui/launcheroptionpage.ui" line="51"/>
         <source>Syncthing executable</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausführbare Datei von Syncthing</translation>
     </message>
     <message>
         <location filename="../gui/launcheroptionpage.ui" line="61"/>
         <source>Arguments</source>
-        <translation type="unfinished"></translation>
+        <translation>Argumente</translation>
     </message>
     <message>
         <location filename="../gui/launcheroptionpage.ui" line="95"/>
         <source>Syncthing log (interleaved stdout/stderr)</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing-Log (stdout/stderr)</translation>
     </message>
     <message>
         <location filename="../gui/launcheroptionpage.ui" line="111"/>
         <source>Apply and launch now</source>
-        <translation type="unfinished"></translation>
+        <translation>Jetzt starten</translation>
     </message>
     <message>
         <location filename="../gui/launcheroptionpage.ui" line="128"/>
         <source>Stop launched instance</source>
-        <translation type="unfinished"></translation>
+        <translation>Stoppen</translation>
     </message>
     <message>
         <location filename="../gui/launcheroptionpage.ui" line="147"/>
         <source>No log messages available yet</source>
-        <translation type="unfinished"></translation>
+        <translation>Bisher keine Log-Meldungen</translation>
     </message>
     <message>
         <location filename="../gui/launcheroptionpage.ui" line="154"/>
         <source>Ensure latest log is visible</source>
-        <translation type="unfinished"></translation>
+        <translation>Log folgen</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="534"/>
-        <source>Syncthing existed with exit code %1
+        <source>Syncthing exited with exit code %1
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing wurde mit dem Statuscode %1 beendet</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="537"/>
         <source>Syncthing crashed with exit code %1
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing ist mit dem Statuscode %1 abgestürzt</translation>
     </message>
 </context>
 <context>
@@ -401,52 +401,52 @@
     <message>
         <location filename="../gui/notificationsoptionpage.ui" line="6"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigungen</translation>
     </message>
     <message>
         <location filename="../gui/notificationsoptionpage.ui" line="16"/>
         <source>Notify on</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigen, wenn</translation>
     </message>
     <message>
         <location filename="../gui/notificationsoptionpage.ui" line="22"/>
         <source>disconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>die Verbindung zu Syncthing getrennt wird</translation>
     </message>
     <message>
         <location filename="../gui/notificationsoptionpage.ui" line="29"/>
         <source>internal errors</source>
-        <translation type="unfinished"></translation>
+        <translation>interne Fehler auftreten</translation>
     </message>
     <message>
         <location filename="../gui/notificationsoptionpage.ui" line="36"/>
         <source>errors/notifications from Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler/Warnungen von Syncthing gemeldet werden</translation>
     </message>
     <message>
         <location filename="../gui/notificationsoptionpage.ui" line="43"/>
         <source>sync complete</source>
-        <translation type="unfinished"></translation>
+        <translation>die Synchronisierung abgeschlossen wurde</translation>
     </message>
     <message>
         <location filename="../gui/notificationsoptionpage.ui" line="53"/>
         <source>Notification API</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigungs-API</translation>
     </message>
     <message>
         <location filename="../gui/notificationsoptionpage.ui" line="59"/>
         <source>D-Bus notifi&amp;cations (org.freedesktop.Notifications)</source>
-        <translation type="unfinished"></translation>
+        <translation>D-Bus (org.freedesktop.Notifications)</translation>
     </message>
     <message>
         <location filename="../gui/notificationsoptionpage.ui" line="66"/>
         <source>&amp;Method provided by Qt (might be overridden by QPA plugin)</source>
-        <translation type="unfinished"></translation>
+        <translation>Methode die von Qt verwendet wird (kann vom QPA-Plugin überschrieben werden)</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="263"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigungen via D-Bus wurden eingestellt, aber es scheint kein Daemon zu laufen der den Dienst bereitstellt.</translation>
     </message>
 </context>
 <context>
@@ -454,22 +454,22 @@
     <message>
         <location filename="../gui/settingsdialog.cpp" line="718"/>
         <source>Tray</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="724"/>
         <source>Web view</source>
-        <translation type="unfinished"></translation>
+        <translation>Weboberfläche</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="730"/>
         <source>Startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Starten</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="744"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen</translation>
     </message>
 </context>
 <context>
@@ -477,32 +477,32 @@
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="6"/>
         <source>Systemd</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="18"/>
         <source>Show start/stop button on tray for local instance when systemd is available</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Start/Stop-Button für die lokale Instanz wenn systemd verfügbar ist</translation>
     </message>
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="62"/>
         <source>Syncthing unit</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="78"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschreibung</translation>
     </message>
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="114"/>
         <source>Current status</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktueller Status</translation>
     </message>
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="191"/>
         <source>Unit file state</source>
-        <translation type="unfinished"></translation>
+        <translation>Status des Unit files</translation>
     </message>
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="99"/>
@@ -511,39 +511,41 @@
         <location filename="../gui/settingsdialog.cpp" line="642"/>
         <location filename="../gui/settingsdialog.cpp" line="657"/>
         <source>unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>unbekannt</translation>
     </message>
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="25"/>
         <source>Consider systemd unit status for reconnect attempts to local instance
  • Don&apos;t reconnect when unit not active/running
  • Try to reconnect when unit becomes active/running</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwende den systemd-Status für Neuverbindungsversuche zur lokalen Instanz
+ • Nicht versuchen neu zu verbinden, wenn die Syncthing unit nicht läuft
+ • Automatisch neu verbinden, wenn die Syncthing unit gestartet wird</translation>
     </message>
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="238"/>
         <source>Enable</source>
-        <translation type="unfinished"></translation>
+        <translation>Autom. starten</translation>
     </message>
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="249"/>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht autom. starten</translation>
     </message>
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="161"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Starten</translation>
     </message>
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="172"/>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Stoppen</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="622"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
-        <translation type="unfinished"></translation>
+        <translation>angegebene Unit ist entweder nicht geladen oder existiert nicht</translation>
     </message>
 </context>
 <context>
@@ -551,134 +553,135 @@
     <message>
         <location filename="../gui/trayicon.cpp" line="44"/>
         <source> - internal error</source>
-        <translation type="unfinished"></translation>
+        <translation> - interner Fehler</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="45"/>
         <source>Syncthing notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing-Benachrichtigung</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="50"/>
         <source>Web UI</source>
-        <translation type="unfinished"></translation>
+        <translation>Weboberfäche</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="51"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="52"/>
         <source>Rescan all</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle neu scannen</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="55"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Über Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="57"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Beenden</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="139"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="155"/>
         <source>Syncthing notification - click to dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Syncthing-Benachrichtigung</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="173"/>
         <source>Not connected to Syncthing - trying to reconnect every %1 ms</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht mit Syncthing verbunden - versuche alle %1 ms zu verbinden</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="176"/>
         <source>Not connected to Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht mit Syncthing verbunden</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="62"/>
         <location filename="../gui/trayicon.cpp" line="185"/>
         <source>Disconnected from Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung zu Syncthing getrennt</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="53"/>
         <source>Log</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="63"/>
         <source>Try to reconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>Versuche Verbindung wieder herzustellen</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="65"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorieren</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="65"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeigen</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="191"/>
         <source>Reconnecting ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Neu verbinden ...</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="200"/>
         <source>Synchronization is ongoing but at least one directory is out of sync</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronisiert, aber mind. ein Verzeichnis hat Fehler</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="203"/>
         <source>At least one directory is out of sync</source>
-        <translation type="unfinished"></translation>
+        <translation>Mind. ein Verzeichnis hat Fehler</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="207"/>
         <source>Notifications available</source>
-        <translation type="unfinished"></translation>
+        <translation>Es gibt neue Benachrichtigungen</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="212"/>
         <source>Syncthing is idling</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing ist im Leerlauf</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="216"/>
         <source>Syncthing is scanning</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing scannt</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="220"/>
         <source>At least one device is paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Mind. ein Gerät ist pausiert</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="224"/>
         <source>Synchronization is ongoing</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing synchronisiert</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="242"/>
         <source>Synchronization of %1 complete</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wurde synchronisiert</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="249"/>
         <source>Synchronization of the following devices complete:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Folgende Verzeichnisse wurden synchronisiert:
+</translation>
     </message>
 </context>
 <context>
@@ -686,200 +689,201 @@
     <message>
         <location filename="../gui/traywidget.ui" line="6"/>
         <source>Syncthing Tray</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Beenden</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="72"/>
-        <location filename="../gui/traywidget.cpp" line="179"/>
+        <location filename="../gui/traywidget.cpp" line="182"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Über Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="99"/>
-        <location filename="../gui/traywidget.cpp" line="317"/>
+        <location filename="../gui/traywidget.cpp" line="320"/>
         <source>Connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbinden</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="113"/>
-        <location filename="../gui/traywidget.cpp" line="512"/>
+        <location filename="../gui/traywidget.cpp" line="515"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Starten</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="140"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="154"/>
         <source>Web UI</source>
-        <translation type="unfinished"></translation>
+        <translation>Weboberfläche</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="209"/>
         <source>Traffic</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingehender und ausgehender Datenverkehr</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="240"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>eing.</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="247"/>
         <source>Incoming traffic</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingehender Datenverkehr</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="250"/>
         <location filename="../gui/traywidget.ui" line="270"/>
-        <location filename="../gui/traywidget.cpp" line="473"/>
+        <location filename="../gui/traywidget.cpp" line="476"/>
         <source>unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>unbekannt</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="257"/>
         <source>Out</source>
-        <translation type="unfinished"></translation>
+        <translation>ausg.</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="267"/>
         <source>Outgoing traffic</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgehender Datenverkehr</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="307"/>
         <source>Click to show &lt;i&gt;new&lt;/i&gt; notifications&lt;br&gt;
 For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
-        <translation type="unfinished"></translation>
+        <translation>Klicke um &lt;i&gt;neue&lt;/i&gt; Benachrichtigungen zu zeigen&lt;br&gt;
+(für &lt;i&gt;alle&lt;/i&gt; Benachrichtigungen, in den Log schauen)</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="311"/>
         <location filename="../gui/traywidget.cpp" line="112"/>
-        <location filename="../gui/traywidget.cpp" line="263"/>
+        <location filename="../gui/traywidget.cpp" line="266"/>
         <source>New notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="379"/>
         <source>Directories</source>
-        <translation type="unfinished"></translation>
+        <translation>Verzeichnisse</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="408"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Geräte</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="437"/>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="469"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeigen</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="479"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorieren</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="84"/>
         <source>View own device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="89"/>
         <source>Restart Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing neustarten</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="94"/>
         <source>Show Syncthing log</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing-Log zeigen</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="99"/>
         <source>Rescan all directories</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="106"/>
         <source>Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="209"/>
+        <location filename="../gui/traywidget.cpp" line="212"/>
         <source>Own device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigene Geräte-ID</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="219"/>
+        <location filename="../gui/traywidget.cpp" line="222"/>
         <source>device ID is unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>die Geräte-ID ist unbekannt</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="227"/>
+        <location filename="../gui/traywidget.cpp" line="230"/>
         <source>Copy to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>in Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="244"/>
+        <location filename="../gui/traywidget.cpp" line="247"/>
         <source>Log</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="293"/>
+        <location filename="../gui/traywidget.cpp" line="296"/>
         <source>Do you really want to restart Syncthing?</source>
-        <translation type="unfinished"></translation>
+        <translation>Soll Syncthing wirklich neu gestartet werden?</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="318"/>
+        <location filename="../gui/traywidget.cpp" line="321"/>
         <source>Not connected to Syncthing, click to connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung zu Syncthing getrennt, klicke um zu verbinden</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="329"/>
+        <location filename="../gui/traywidget.cpp" line="332"/>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="330"/>
+        <location filename="../gui/traywidget.cpp" line="333"/>
         <source>Syncthing is running, click to pause all devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing läuft, klicke um alle Geräte zu pausieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="335"/>
+        <location filename="../gui/traywidget.cpp" line="338"/>
         <source>Continue</source>
-        <translation type="unfinished"></translation>
+        <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="336"/>
+        <location filename="../gui/traywidget.cpp" line="339"/>
         <source>At least one device is paused, click to resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Mind. ein Gerät ist pausiert, klicke um fortzusetzen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="420"/>
+        <location filename="../gui/traywidget.cpp" line="423"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Verzeichnis &lt;i&gt;%i&lt;/i&gt; existiert nicht (lokal).</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="429"/>
+        <location filename="../gui/traywidget.cpp" line="432"/>
         <source>The file &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Datei &lt;i&gt;%1&lt;/i&gt; existiert nicht (lokal).</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="508"/>
+        <location filename="../gui/traywidget.cpp" line="511"/>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Stoppen</translation>
     </message>
 </context>
 <context>
@@ -887,7 +891,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/webviewdialog.cpp" line="27"/>
         <source>Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -896,38 +900,39 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <location filename="../gui/webviewoptionpage.ui" line="14"/>
         <location filename="../gui/settingsdialog.cpp" line="678"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <location filename="../gui/webviewoptionpage.ui" line="20"/>
         <source>Usage</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwendung</translation>
     </message>
     <message>
         <location filename="../gui/webviewoptionpage.ui" line="27"/>
         <source>Disable web view (open regular web browser instead)</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingebaute Anzeige deaktivieren (stattdessen Standardbrowser verwenden)</translation>
     </message>
     <message>
         <location filename="../gui/webviewoptionpage.ui" line="34"/>
         <source>Zoom factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoom-Faktor</translation>
     </message>
     <message>
         <location filename="../gui/webviewoptionpage.ui" line="57"/>
         <source>Hiding</source>
-        <translation type="unfinished"></translation>
+        <translation>Schließen</translation>
     </message>
     <message>
         <location filename="../gui/webviewoptionpage.ui" line="64"/>
         <source>Keep web view running when currently not shown</source>
-        <translation type="unfinished"></translation>
+        <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
         <location filename="../gui/settingsdialog.cpp" line="680"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.
+Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation>
     </message>
 </context>
 <context>
@@ -935,7 +940,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../application/settings.cpp" line="69"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim laden des Zertifikats &quot;%1&quot; beim wiederherstellen der Einstellungen.</translation>
     </message>
 </context>
 <context>
@@ -943,27 +948,27 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../application/main.cpp" line="40"/>
         <source>Unable to </source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim </translation>
     </message>
     <message>
         <location filename="../application/main.cpp" line="72"/>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vor der ersten Verwendung muss eingestellt werden, wie sich das Syncthing Tray mit Syncthing verbinden soll.</translation>
     </message>
     <message>
         <location filename="../application/main.cpp" line="73"/>
         <source>Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Einstellungsdialog ermöglicht es die URL, Zugangsdaten und den API-Key automatisch aus der lokalen Syncthing-Konfiguration auszulesen.</translation>
     </message>
     <message>
         <location filename="../application/main.cpp" line="78"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das System-Tray bzw. der Infobereich ist aktuell nicht verfügbar. Es wäre möglich, Syncthing Tray als normales Fenster zu starten (mit Option -w).</translation>
     </message>
     <message>
         <location filename="../application/main.cpp" line="82"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die verwendete Qt-Bibliothek wurde nicht mit Unterstützung für System-Tray konfiguriert. Es wäre möglich, Syncthing Tray als normales Fenster zu starten (mit Option -w).</translation>
     </message>
 </context>
 </TS>

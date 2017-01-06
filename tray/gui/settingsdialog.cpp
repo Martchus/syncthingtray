@@ -531,7 +531,7 @@ void LauncherOptionPage::handleSyncthingExited(int exitCode, QProcess::ExitStatu
         cursor.movePosition(QTextCursor::End);
         switch(exitStatus) {
         case QProcess::NormalExit:
-            cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Syncthing existed with exit code %1\n").arg(exitCode));
+            cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Syncthing exited with exit code %1\n").arg(exitCode));
             break;
         case QProcess::CrashExit:
             cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Syncthing crashed with exit code %1\n").arg(exitCode));

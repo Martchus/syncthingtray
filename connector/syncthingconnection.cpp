@@ -619,7 +619,7 @@ QMetaObject::Connection SyncthingConnection::requestLog(std::function<void (cons
             }
             break;
         } default:
-            emit error(tr("Unable to request system log: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest);
+            emit error(tr("Unable to request Syncthing log: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest);
         }
     });
 }
@@ -653,13 +653,13 @@ bool SyncthingConnection::loadSelfSignedCertificate()
     // find cert
     const QString certPath = !m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate();
     if(certPath.isEmpty()) {
-        emit error(tr("Unable to locate certificate used by Syncthing GUI."), SyncthingErrorCategory::OverallConnection);
+        emit error(tr("Unable to locate certificate used by Syncthing."), SyncthingErrorCategory::OverallConnection);
         return false;
     }
     // add exception
     const QList<QSslCertificate> certs = QSslCertificate::fromPath(certPath);
     if(certs.isEmpty()) {
-        emit error(tr("Unable to load certificate used by Syncthing GUI."), SyncthingErrorCategory::OverallConnection);
+        emit error(tr("Unable to load certificate used by Syncthing."), SyncthingErrorCategory::OverallConnection);
         return false;
     }
     const QSslCertificate &cert = certs.at(0);
