@@ -42,7 +42,7 @@ class SyncthingService : public QObject
     Q_PROPERTY(bool enable READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
 
 public:
-    SyncthingService(QObject *parent = nullptr);
+    explicit SyncthingService(QObject *parent = nullptr);
 
     const QString &unitName() const;
     bool isSystemdAvailable() const;

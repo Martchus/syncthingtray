@@ -11,7 +11,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingProcess : public QProcess
 {
     Q_OBJECT
 public:
-    SyncthingProcess(QObject *parent = nullptr);
+    explicit SyncthingProcess(QObject *parent = nullptr);
 
 public Q_SLOTS:
     void restartSyncthing(const QString &cmd);
