@@ -160,7 +160,7 @@ void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const Q
 
 void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
 {
-    if(!m_initialized && m_status == status) {
+    if(m_initialized && m_status == status) {
         return;
     }
 
