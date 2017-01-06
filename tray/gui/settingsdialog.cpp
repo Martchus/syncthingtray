@@ -740,7 +740,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     categoryModel()->setCategories(categories);
 
-    setMinimumSize(800, 550);
+    resize(850, 600);
     setWindowTitle(tr("Settings") + QStringLiteral(" - " APP_NAME));
     setWindowIcon(QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
 
