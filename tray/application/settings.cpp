@@ -107,7 +107,7 @@ void restore()
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
     settings.beginGroup(QStringLiteral("webview"));
     auto &webView = v.webView;
-    webView.disabled = settings.value(QStringLiteral("isabled"), webView.disabled).toBool();
+    webView.disabled = settings.value(QStringLiteral("disabled"), webView.disabled).toBool();
     webView.zoomFactor = settings.value(QStringLiteral("zoomFactor"), webView.zoomFactor).toDouble();
     webView.geometry = settings.value(QStringLiteral("geometry")).toByteArray();
     webView.keepRunning = settings.value(QStringLiteral("keepRunning"), webView.keepRunning).toBool();
