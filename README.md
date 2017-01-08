@@ -39,6 +39,7 @@ to the list. Maybe someone could check whether it works under Mac OS X.
 * Allows quickly switching between multiple Syncthing instances
 * Shows notifications via Qt or uses D-Bus notification daemon directly
 * Features a simple command line utility `syncthingctl` to check Syncthing status and trigger rescan/pause/resume/restart
+* English and German localization
 
 ## Planned features
 The tray is still under development; the following features are planned:
@@ -132,3 +133,16 @@ The following Qt 5 modules are requried: core network gui widgets svg webenginew
 * Security issues are not a concern because no other website than the
   Syncthing web UI is shown. Any external links will be opened in the
   regular web browser anyways.
+
+## Adding translations
+Currently translations for English and German are available. Further translations
+can be added quite easily:
+
+1. Append a new translation file for the desired locale to the `TS_FILES` list
+   in `connector/CMakeLists.txt`, `model/CMakeLists.txt` and `tray/CMakeLists.txt`.
+2. Trigger a new build, eg. follow steps under *Building this straight*.
+3. New translation files should have been created by the build system under
+   `connector/translations`, `model/translations` and `tray/translations`.
+4. Open the files with Qt Linguist to add translations. Qt Linguist is part of
+   the [Qt Tools repository](http://code.qt.io/cgit/qt/qttools.git/) and its usage
+   is [well documented](http://doc.qt.io/qt-5/linguist-translators.html).
