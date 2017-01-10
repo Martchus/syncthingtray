@@ -4,6 +4,9 @@
 #include "../application/settings.h"
 
 #include "../../connector/syncthingconnection.h"
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+# include "../../connector/syncthingservice.h"
+#endif
 
 #include <qtutilities/misc/dialogutils.h>
 
@@ -11,6 +14,9 @@
 #include <QSvgRenderer>
 #include <QPainter>
 #include <QPixmap>
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+# include <QNetworkReply>
+#endif
 
 using namespace std;
 using namespace Dialogs;
@@ -125,11 +131,15 @@ void TrayIcon::handleSyncthingNotificationAction(const QString &action)
     }
 }
 
-void TrayIcon::showInternalError(const QString &errorMsg, SyncthingErrorCategory category)
+void TrayIcon::showInternalError(const QString &errorMsg, SyncthingErrorCategory category, int networkError)
 {
     const auto &settings = Settings::values();
     if(settings.notifyOn.internalErrors
-            && (m_trayMenu.widget()->connection().autoReconnectTries() < 1 || category != SyncthingErrorCategory::OverallConnection)) {
+            && (m_trayMenu.widget()->connection().autoReconnectTries() < 1 || category != SyncthingErrorCategory::OverallConnection)
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+            && (networkError != QNetworkReply::RemoteHostClosedError || !syncthingService().isManuallyStopped())
+#endif
+            ) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
         if(settings.dbusNotifications) {
             m_internalErrorNotification.update(errorMsg);
@@ -175,7 +185,11 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
         } else {
             setToolTip(tr("Not connected to Syncthing"));
         }
-        if(m_initialized && settings.notifyOn.disconnect) {
+        if(m_initialized && settings.notifyOn.disconnect
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+                && !syncthingService().isManuallyStopped()
+#endif
+                ) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
             if(settings.dbusNotifications) {
                 m_disconnectedNotification.show();

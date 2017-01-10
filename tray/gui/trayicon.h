@@ -30,7 +30,7 @@ public:
     TrayMenu &trayMenu();
 
 public slots:
-    void showInternalError(const QString &errorMsg, Data::SyncthingErrorCategory category);
+    void showInternalError(const QString &errorMsg, Data::SyncthingErrorCategory category, int networkError);
     void showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message);
     void updateStatusIconAndText(Data::SyncthingStatus status);
 

@@ -42,7 +42,8 @@ SyncthingService::SyncthingService(QObject *parent) :
     QObject(parent),
     m_unit(nullptr),
     m_service(nullptr),
-    m_properties(nullptr)
+    m_properties(nullptr),
+    m_manuallyStopped(false)
 {
     if(!s_manager) {
         // register custom data types
@@ -92,6 +93,7 @@ bool SyncthingService::isUnitAvailable() const
 
 void SyncthingService::setRunning(bool running)
 {
+    m_manuallyStopped = !running;
     if(running) {
         registerErrorHandler(s_manager->StartUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("start unit"));
     } else {
@@ -138,18 +140,22 @@ void SyncthingService::handleUnitGet(QDBusPendingCallWatcher *watcher)
 void SyncthingService::handlePropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
     if(interface == m_unit->interface()) {
-        const bool running = isRunning();
+        const bool wasRunningBefore = isRunning();
         if(handlePropertyChanged(m_activeState, &SyncthingService::activeStateChanged, QStringLiteral("ActiveState"), changedProperties, invalidatedProperties)
                 | handlePropertyChanged(m_subState, &SyncthingService::subStateChanged, QStringLiteral("SubState"), changedProperties, invalidatedProperties)) {
             emit stateChanged(m_activeState, m_subState);
         }
-        if(running != isRunning()) {
-            emit runningChanged(isRunning());
+        const bool currentlyRunning = isRunning();
+        if(currentlyRunning) {
+            m_manuallyStopped = false;
+        }
+        if(wasRunningBefore != currentlyRunning) {
+            emit runningChanged(currentlyRunning);
         }
 
-        const bool enabled = isEnabled();
+        const bool wasEnabledBefore = isEnabled();
         handlePropertyChanged(m_unitFileState, &SyncthingService::unitFileStateChanged, QStringLiteral("UnitFileState"), changedProperties, invalidatedProperties);
-        if(enabled != isEnabled()) {
+        if(wasEnabledBefore != isEnabled()) {
             emit enabledChanged(isEnabled());
         }
 

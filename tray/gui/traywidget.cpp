@@ -36,7 +36,7 @@
 
 #include <functional>
 #include <algorithm>
-
+#include <iostream>
 using namespace ApplicationUtilities;
 using namespace ConversionUtilities;
 using namespace ChronoUtilities;
@@ -521,10 +521,11 @@ void TrayWidget::handleSystemdStatusChanged()
             if(isRunning && m_selectedConnection) {
                 // auto-reconnect might have been disabled when unit was inactive before, so re-enable it according current connection settings
                 m_connection.setAutoReconnectInterval(m_selectedConnection->reconnectInterval);
-                // and reconnect in 5 seconds (Syncthing needs a few seconds till the API becomes available)
-                QTimer::singleShot(5000, Qt::VeryCoarseTimer, this, &TrayWidget::connectIfServiceRunning);
+                // and reconnect in 8 seconds (Syncthing needs a few seconds till the API becomes available)
+                QTimer::singleShot(8000, Qt::VeryCoarseTimer, this, &TrayWidget::connectIfServiceRunning);
             } else {
                 // disable auto-reconnect if unit isn't running
+                std::cout << "disabling reconnect" << std::endl;
                 m_connection.setAutoReconnectInterval(0);
             }
         }

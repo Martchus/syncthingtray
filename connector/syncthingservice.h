@@ -40,6 +40,7 @@ class SyncthingService : public QObject
     Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
     Q_PROPERTY(bool running READ isRunning WRITE setRunning NOTIFY runningChanged)
     Q_PROPERTY(bool enable READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
+    Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
 
 public:
     explicit SyncthingService(QObject *parent = nullptr);
@@ -53,6 +54,7 @@ public:
     const QString &description() const;
     bool isRunning() const;
     bool isEnabled() const;
+    bool isManuallyStopped() const;
 
 public Q_SLOTS:
     void setUnitName(const QString &unitName);
@@ -99,6 +101,7 @@ private:
     QString m_activeState;
     QString m_subState;
     QString m_unitFileState;
+    bool m_manuallyStopped;
 };
 
 inline const QString &SyncthingService::unitName() const
@@ -149,6 +152,11 @@ inline void SyncthingService::toggleRunning()
 inline bool SyncthingService::isEnabled() const
 {
     return m_unitFileState == QLatin1String("enabled");
+}
+
+inline bool SyncthingService::isManuallyStopped() const
+{
+    return m_manuallyStopped;
 }
 
 inline void SyncthingService::enable()

@@ -137,7 +137,7 @@ Q_SIGNALS:
     void devStatusChanged(const SyncthingDev &dev, int index);
     void downloadProgressChanged();
     void newNotification(ChronoUtilities::DateTime when, const QString &message);
-    void error(const QString &errorMessage, SyncthingErrorCategory category);
+    void error(const QString &errorMessage, SyncthingErrorCategory category, int networkError);
     void statusChanged(SyncthingStatus newStatus);
     void configDirChanged(const QString &newConfigDir);
     void myIdChanged(const QString &myNewId);
@@ -200,8 +200,8 @@ private:
     bool m_keepPolling;
     bool m_reconnecting;
     int m_lastEventId;
-    int m_trafficPollInterval;
-    int m_devStatsPollInterval;
+    QTimer m_trafficPollTimer;
+    QTimer m_devStatsPollTimer;
     QTimer m_autoReconnectTimer;
     unsigned int m_autoReconnectTries;
     QString m_configDir;
@@ -325,7 +325,7 @@ inline void SyncthingConnection::considerAllNotificationsRead()
  */
 inline int SyncthingConnection::trafficPollInterval() const
 {
-    return m_trafficPollInterval;
+    return m_trafficPollTimer.interval();
 }
 
 /*!
@@ -334,7 +334,10 @@ inline int SyncthingConnection::trafficPollInterval() const
  */
 inline void SyncthingConnection::setTrafficPollInterval(int trafficPollInterval)
 {
-    m_trafficPollInterval = trafficPollInterval;
+    if(!trafficPollInterval) {
+        m_trafficPollTimer.stop();
+    }
+    m_trafficPollTimer.setInterval(trafficPollInterval);
 }
 
 /*!
@@ -343,7 +346,7 @@ inline void SyncthingConnection::setTrafficPollInterval(int trafficPollInterval)
  */
 inline int SyncthingConnection::devStatsPollInterval() const
 {
-    return m_devStatsPollInterval;
+    return m_devStatsPollTimer.interval();
 }
 
 /*!
@@ -352,7 +355,10 @@ inline int SyncthingConnection::devStatsPollInterval() const
  */
 inline void SyncthingConnection::setDevStatsPollInterval(int devStatsPollInterval)
 {
-    m_devStatsPollInterval = devStatsPollInterval;
+    if(!devStatsPollInterval) {
+        m_devStatsPollTimer.stop();
+    }
+    m_devStatsPollTimer.setInterval(devStatsPollInterval);
 }
 
 /*!
