@@ -72,7 +72,7 @@ private slots:
     void changeStatus();
     void updateTraffic();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    void handleSystemdStatusChanged();
+    bool handleSystemdStatusChanged();
     void connectIfServiceRunning();
 #endif
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW

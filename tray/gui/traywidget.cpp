@@ -36,7 +36,7 @@
 
 #include <functional>
 #include <algorithm>
-#include <iostream>
+
 using namespace ApplicationUtilities;
 using namespace ConversionUtilities;
 using namespace ChronoUtilities;
@@ -378,18 +378,23 @@ void TrayWidget::applySettings()
             instance->m_connectionsMenu->actions().at(0)->setChecked(true);
         }
         instance->m_ui->connectionsPushButton->setText(instance->m_selectedConnection->label);
-        instance->m_connection.connect(*instance->m_selectedConnection);
+        const bool reconnectRequired = instance->m_connection.applySettings(*instance->m_selectedConnection);
+
+        // reconnect to apply settings considering systemd
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        const bool couldReconnect = instance->handleSystemdStatusChanged();
+        if(reconnectRequired && couldReconnect) {
+            instance->m_connection.reconnect();
+        }
+#else
+        instances->m_connection.reconnect();
+#endif
 
         // web view
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
         if(instance->m_webViewDlg) {
             instance->m_webViewDlg->applySettings(*instance->m_selectedConnection);
         }
-#endif
-
-        // systemd
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        instance->handleSystemdStatusChanged();
 #endif
 
         // update visual appearance
@@ -497,11 +502,12 @@ void TrayWidget::updateTraffic()
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-void TrayWidget::handleSystemdStatusChanged()
+bool TrayWidget::handleSystemdStatusChanged()
 {
     const SyncthingService &service = syncthingService();
     const Settings::Systemd &settings = Settings::values().systemd;
     const bool serviceRelevant = service.isSystemdAvailable() && isLocal(QUrl(m_connection.syncthingUrl()));
+    bool couldConnectNow = true;
 
     if(serviceRelevant) {
         const bool isRunning = service.isRunning();
@@ -521,12 +527,14 @@ void TrayWidget::handleSystemdStatusChanged()
             if(isRunning && m_selectedConnection) {
                 // auto-reconnect might have been disabled when unit was inactive before, so re-enable it according current connection settings
                 m_connection.setAutoReconnectInterval(m_selectedConnection->reconnectInterval);
-                // and reconnect in 8 seconds (Syncthing needs a few seconds till the API becomes available)
-                QTimer::singleShot(8000, Qt::VeryCoarseTimer, this, &TrayWidget::connectIfServiceRunning);
+                if(!m_connection.isConnected()) {
+                    // FIXME: This will fail if Syncthing has just been started and isn't ready yet
+                    m_connection.connect();
+                }
             } else {
                 // disable auto-reconnect if unit isn't running
-                std::cout << "disabling reconnect" << std::endl;
                 m_connection.setAutoReconnectInterval(0);
+                couldConnectNow = false;
             }
         }
     }
@@ -537,6 +545,8 @@ void TrayWidget::handleSystemdStatusChanged()
     if((!settings.considerForReconnect || !serviceRelevant) && m_selectedConnection) {
         m_connection.setAutoReconnectInterval(m_selectedConnection->reconnectInterval);
     }
+
+    return couldConnectNow;
 }
 
 void TrayWidget::connectIfServiceRunning()
