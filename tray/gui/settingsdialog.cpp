@@ -137,6 +137,7 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
             ui()->certPathSelection->lineEdit()->setText(connectionSettings.httpsCertPath);
             ui()->pollTrafficSpinBox->setValue(connectionSettings.trafficPollInterval);
             ui()->pollDevStatsSpinBox->setValue(connectionSettings.devStatsPollInterval);
+            ui()->pollErrorsSpinBox->setValue(connectionSettings.errorsPollInterval);
             ui()->reconnectSpinBox->setValue(connectionSettings.reconnectInterval);
             m_currentIndex = index;
         } else {
@@ -162,6 +163,7 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
         connectionSettings.httpsCertPath = ui()->certPathSelection->lineEdit()->text();
         connectionSettings.trafficPollInterval = ui()->pollTrafficSpinBox->value();
         connectionSettings.devStatsPollInterval = ui()->pollDevStatsSpinBox->value();
+        connectionSettings.errorsPollInterval = ui()->pollErrorsSpinBox->value();
         connectionSettings.reconnectInterval = ui()->reconnectSpinBox->value();
         if(!connectionSettings.loadHttpsCert()) {
             const QString errorMessage = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to load specified certificate \"%1\".").arg(connectionSettings.httpsCertPath);
@@ -740,7 +742,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     categoryModel()->setCategories(categories);
 
-    resize(850, 600);
+    resize(860, 620);
     setWindowTitle(tr("Settings") + QStringLiteral(" - " APP_NAME));
     setWindowIcon(QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
 

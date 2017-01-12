@@ -91,6 +91,8 @@ public:
     void setTrafficPollInterval(int trafficPollInterval);
     int devStatsPollInterval() const;
     void setDevStatsPollInterval(int devStatsPollInterval);
+    int errorsPollInterval() const;
+    void setErrorsPollInterval(int errorsPollInterval);
     int autoReconnectInterval() const;
     unsigned int autoReconnectTries() const;
     void setAutoReconnectInterval(int interval);
@@ -204,6 +206,7 @@ private:
     int m_lastEventId;
     QTimer m_trafficPollTimer;
     QTimer m_devStatsPollTimer;
+    QTimer m_errorsPollTimer;
     QTimer m_autoReconnectTimer;
     unsigned int m_autoReconnectTries;
     QString m_configDir;
@@ -362,6 +365,27 @@ inline void SyncthingConnection::setDevStatsPollInterval(int devStatsPollInterva
         m_devStatsPollTimer.stop();
     }
     m_devStatsPollTimer.setInterval(devStatsPollInterval);
+}
+
+/*!
+ * \brief Returns the interval for polling Syncthing errors (which currently can not be received via event API) in milliseconds.
+ * \remarks Default value is 30000 milliseconds.
+ */
+inline int SyncthingConnection::errorsPollInterval() const
+{
+    return m_errorsPollTimer.interval();
+}
+
+/*!
+ * \brief Sets the interval for polling Syncthing errors (which currently can not be received via event API) in milliseconds.
+ * \remarks Default value is 30000 milliseconds.
+ */
+inline void SyncthingConnection::setErrorsPollInterval(int errorPollInterval)
+{
+    if(!errorPollInterval) {
+        m_errorsPollTimer.stop();
+    }
+    m_errorsPollTimer.setInterval(errorPollInterval);
 }
 
 /*!

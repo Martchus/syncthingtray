@@ -63,6 +63,7 @@ void restore()
             connectionSettings->apiKey = settings.value(QStringLiteral("apiKey")).toByteArray();
             connectionSettings->trafficPollInterval = settings.value(QStringLiteral("trafficPollInterval"), connectionSettings->trafficPollInterval).toInt();
             connectionSettings->devStatsPollInterval = settings.value(QStringLiteral("devStatsPollInterval"), connectionSettings->devStatsPollInterval).toInt();
+            connectionSettings->errorsPollInterval = settings.value(QStringLiteral("errorsPollInterval"), connectionSettings->errorsPollInterval).toInt();
             connectionSettings->reconnectInterval = settings.value(QStringLiteral("reconnectInterval"), connectionSettings->reconnectInterval).toInt();
             connectionSettings->httpsCertPath = settings.value(QStringLiteral("httpsCertPath")).toString();
             if(!connectionSettings->loadHttpsCert()) {
@@ -138,6 +139,7 @@ void save()
         settings.setValue(QStringLiteral("apiKey"), connectionSettings->apiKey);
         settings.setValue(QStringLiteral("trafficPollInterval"), connectionSettings->trafficPollInterval);
         settings.setValue(QStringLiteral("devStatsPollInterval"), connectionSettings->devStatsPollInterval);
+        settings.setValue(QStringLiteral("errorsPollInterval"), connectionSettings->errorsPollInterval);
         settings.setValue(QStringLiteral("reconnectInterval"), connectionSettings->reconnectInterval);
         settings.setValue(QStringLiteral("httpsCertPath"), connectionSettings->httpsCertPath);
     }

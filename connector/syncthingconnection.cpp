@@ -54,9 +54,6 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     m_keepPolling(false),
     m_reconnecting(false),
     m_lastEventId(0),
-    m_trafficPollTimer(),
-    m_devStatsPollTimer(),
-    m_autoReconnectTimer(),
     m_autoReconnectTries(0),
     m_totalIncomingTraffic(0),
     m_totalOutgoingTraffic(0),
@@ -80,6 +77,10 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     m_devStatsPollTimer.setTimerType(Qt::VeryCoarseTimer);
     m_devStatsPollTimer.setSingleShot(true);
     QObject::connect(&m_devStatsPollTimer, &QTimer::timeout, this, &SyncthingConnection::requestDeviceStatistics);
+    m_errorsPollTimer.setInterval(30000);
+    m_errorsPollTimer.setTimerType(Qt::VeryCoarseTimer);
+    m_errorsPollTimer.setSingleShot(true);
+    QObject::connect(&m_errorsPollTimer, &QTimer::timeout, this, &SyncthingConnection::requestErrors);
     m_autoReconnectTimer.setTimerType(Qt::VeryCoarseTimer);
     QObject::connect(&m_autoReconnectTimer, &QTimer::timeout, this, &SyncthingConnection::autoReconnect);
 }
@@ -731,6 +732,7 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
 
     setTrafficPollInterval(connectionSettings.trafficPollInterval);
     setDevStatsPollInterval(connectionSettings.devStatsPollInterval);
+    setErrorsPollInterval(connectionSettings.errorsPollInterval);
     setAutoReconnectInterval(connectionSettings.reconnectInterval);
 
     return reconnectRequired;
@@ -941,7 +943,7 @@ void SyncthingConnection::readConnections()
 
             m_lastConnectionsUpdate = DateTime::gmtNow();
 
-            // since there seems no event for this data, just request every 2 seconds
+            // since there seems no event for this data, keep polling
             if(m_keepPolling && m_trafficPollTimer.interval()) {
                 m_trafficPollTimer.start();
             }
@@ -1043,7 +1045,7 @@ void SyncthingConnection::readDeviceStatistics()
                 }
                 ++index;
             }
-            // since there seems no event for this data, just request every minute
+            // since there seems no event for this data, keep polling
             if(m_keepPolling && m_devStatsPollTimer.interval()) {
                 m_devStatsPollTimer.start();
             }
@@ -1095,15 +1097,15 @@ void SyncthingConnection::readErrors()
             emit error(tr("Unable to parse errors: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
         }
 
-        // since there seems no event for this data, just request every thirty seconds, FIXME: make interval configurable
-        if(m_keepPolling) {
-            QTimer::singleShot(30000, Qt::VeryCoarseTimer, this, SLOT(requestErrors()));
+        // since there seems no event for this data, keep polling
+        if(m_keepPolling && m_errorsPollTimer.interval()) {
+            m_errorsPollTimer.start();
         }
         break;
     } case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request errors: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection, reply->error());
+        emit error(tr("Unable to request errors: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
     }
 }
 
@@ -1529,6 +1531,7 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
         // don't consider synchronization finished in this this case
         m_devStatsPollTimer.stop();
         m_trafficPollTimer.stop();
+        m_errorsPollTimer.stop();
         m_syncedDirs.clear();
         break;
     default:
