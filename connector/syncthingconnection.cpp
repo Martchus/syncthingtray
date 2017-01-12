@@ -548,6 +548,16 @@ void SyncthingConnection::requestErrors()
 }
 
 /*!
+ * \brief Requests clearing errors asynchronously.
+ *
+ * The signal error() is emitted in the error case.
+ */
+void SyncthingConnection::requestClearingErrors()
+{
+    QObject::connect(m_errorsReply = postData(QStringLiteral("system/error/clear"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readClearingErrors);
+}
+
+/*!
  * \brief Requests directory statistics asynchronously.
  */
 void SyncthingConnection::requestDirStatistics()
@@ -1094,6 +1104,22 @@ void SyncthingConnection::readErrors()
         return; // intended, not an error
     default:
         emit error(tr("Unable to request errors: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection, reply->error());
+    }
+}
+
+/*!
+ * \brief Reads results of requestClearingErrors().
+ */
+void SyncthingConnection::readClearingErrors()
+{
+    auto *reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+
+    switch(reply->error()) {
+    case QNetworkReply::NoError:
+        break;
+    default:
+        emit error(tr("Unable to request clearing errors: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
     }
 }
 

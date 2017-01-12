@@ -153,6 +153,7 @@ private Q_SLOTS:
     void requestStatus();
     void requestConnections();
     void requestErrors();
+    void requestClearingErrors();
     void requestDirStatistics();
     void requestDeviceStatistics();
     void requestEvents();
@@ -166,6 +167,7 @@ private Q_SLOTS:
     void readDirStatistics();
     void readDeviceStatistics();
     void readErrors();
+    void readClearingErrors();
     void readEvents();
     void readStartingEvent(const QJsonObject &eventData);
     void readStatusChangedEvent(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
@@ -317,6 +319,7 @@ inline bool SyncthingConnection::hasUnreadNotifications() const
 inline void SyncthingConnection::considerAllNotificationsRead()
 {
     m_unreadNotifications = false;
+    requestClearingErrors();
 }
 
 /*!
