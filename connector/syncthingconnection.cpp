@@ -153,7 +153,7 @@ void SyncthingConnection::connect()
  */
 void SyncthingConnection::connect(SyncthingConnectionSettings &connectionSettings)
 {
-    if(applySettings(connectionSettings)) {
+    if(applySettings(connectionSettings) || !isConnected()) {
         reconnect();
     }
 }
