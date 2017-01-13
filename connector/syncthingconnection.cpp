@@ -555,7 +555,7 @@ void SyncthingConnection::requestErrors()
  */
 void SyncthingConnection::requestClearingErrors()
 {
-    QObject::connect(m_errorsReply = postData(QStringLiteral("system/error/clear"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readClearingErrors);
+    QObject::connect(postData(QStringLiteral("system/error/clear"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readClearingErrors);
 }
 
 /*!
