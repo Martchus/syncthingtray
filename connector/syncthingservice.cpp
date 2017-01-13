@@ -17,6 +17,7 @@
 
 using namespace std;
 using namespace std::placeholders;
+using namespace ChronoUtilities;
 
 namespace Data {
 
@@ -34,6 +35,11 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ManagerDBusUnitFi
     argument >> unitFileChange.type >> unitFileChange.path >> unitFileChange.source;
     argument.endStructure();
     return argument;
+}
+
+constexpr DateTime dateTimeFromSystemdTimeStamp(qulonglong timeStamp)
+{
+    return DateTime(621355968000000000 + timeStamp * 10);
 }
 
 OrgFreedesktopSystemd1ManagerInterface *SyncthingService::s_manager = nullptr;
@@ -140,10 +146,12 @@ void SyncthingService::handleUnitGet(QDBusPendingCallWatcher *watcher)
 void SyncthingService::handlePropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
     if(interface == m_unit->interface()) {
+        handlePropertyChanged(m_activeSince, QStringLiteral("ActiveEnterTimestamp"), changedProperties, invalidatedProperties);
+
         const bool wasRunningBefore = isRunning();
         if(handlePropertyChanged(m_activeState, &SyncthingService::activeStateChanged, QStringLiteral("ActiveState"), changedProperties, invalidatedProperties)
                 | handlePropertyChanged(m_subState, &SyncthingService::subStateChanged, QStringLiteral("SubState"), changedProperties, invalidatedProperties)) {
-            emit stateChanged(m_activeState, m_subState);
+            emit stateChanged(m_activeState, m_subState, m_activeSince);
         }
         const bool currentlyRunning = isRunning();
         if(currentlyRunning) {
@@ -196,6 +204,23 @@ bool SyncthingService::handlePropertyChanged(QString &variable, void (SyncthingS
     return false;
 }
 
+bool SyncthingService::handlePropertyChanged(DateTime &variable, const QString &propertyName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
+{
+    const QVariant valueVariant(changedProperties[propertyName]);
+    if(valueVariant.isValid()) {
+        bool ok;
+        const qulonglong valueInt = valueVariant.toULongLong(&ok);
+        if(ok) {
+            variable = dateTimeFromSystemdTimeStamp(valueInt);
+            return true;
+        }
+    } else if(invalidatedProperties.contains(propertyName) && !variable.isNull()) {
+        variable = DateTime();
+        return true;
+    }
+    return false;
+}
+
 void SyncthingService::registerErrorHandler(const QDBusPendingCall &call, const char *context)
 {
     connect(new QDBusPendingCallWatcher(call, this), &QDBusPendingCallWatcher::finished, bind(&SyncthingService::handleError, this, context, _1));
@@ -215,6 +240,7 @@ void SyncthingService::setUnit(const QDBusObjectPath &objectPath)
 
     // init unit
     m_unit = new OrgFreedesktopSystemd1UnitInterface(s_manager->service(), path, s_manager->connection());
+    m_activeSince = dateTimeFromSystemdTimeStamp(m_unit->activeEnterTimestamp());
     setProperties(m_unit->activeState(), m_unit->subState(), m_unit->unitFileState(), m_unit->description());
 
     // init properties
@@ -235,7 +261,7 @@ void SyncthingService::setProperties(const QString &activeState, const QString &
         anyStateChanged = true;
     }
     if(anyStateChanged) {
-        emit stateChanged(m_activeState, m_subState);
+        emit stateChanged(m_activeState, m_subState, m_activeSince);
     }
     if(running != isRunning()) {
         emit runningChanged(isRunning());

@@ -127,22 +127,22 @@
         <translation>Tray-Icon beim Starten der Desktopumgebung automatisch starten</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="363"/>
+        <location filename="../gui/settingsdialog.cpp" line="365"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Durch das Hinzufügen einer *.desktop-Datei unter &lt;i&gt;~/.config/autostart&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="365"/>
+        <location filename="../gui/settingsdialog.cpp" line="367"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation>Durch das Hinzufügen eines Registry-Schlüssels unter &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="367"/>
+        <location filename="../gui/settingsdialog.cpp" line="369"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation>Diese Funktion wurde für die aktuelle Plattform nicht nicht implementiert.</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="454"/>
+        <location filename="../gui/settingsdialog.cpp" line="456"/>
         <source>unable to modify startup entry</source>
         <translation>Fehler beim aktualisieren des Auto-Start-Eintrags</translation>
     </message>
@@ -263,27 +263,27 @@
         <translation>nicht neu verbinden</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="73"/>
+        <location filename="../gui/settingsdialog.cpp" line="75"/>
         <source>Auto-detected for local instance</source>
         <translation>Kann für lokale Instanz automatisch ermittelt werden</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="91"/>
+        <location filename="../gui/settingsdialog.cpp" line="93"/>
         <source>Select Syncthing config file</source>
         <translation>Wähle die Syncthing-Konfigurationsdatei</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="98"/>
+        <location filename="../gui/settingsdialog.cpp" line="100"/>
         <source>Unable to parse the Syncthing config file.</source>
         <translation>Fehler beim Auslesen der Syncthing-Konfigurationsdatei.</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="169"/>
+        <location filename="../gui/settingsdialog.cpp" line="171"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
         <translation>Fehler beim Auslesen des angegebenen Zertifikats: %1</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="193"/>
+        <location filename="../gui/settingsdialog.cpp" line="195"/>
         <source>Instance %1</source>
         <translation>Instanz %1</translation>
     </message>
@@ -390,13 +390,13 @@
         <translation>Log folgen</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="536"/>
+        <location filename="../gui/settingsdialog.cpp" line="538"/>
         <source>Syncthing exited with exit code %1
 </source>
         <translation>Syncthing wurde mit dem Statuscode %1 beendet</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="539"/>
+        <location filename="../gui/settingsdialog.cpp" line="541"/>
         <source>Syncthing crashed with exit code %1
 </source>
         <translation>Syncthing ist mit dem Statuscode %1 abgestürzt</translation>
@@ -450,7 +450,7 @@
         <translation>Methode die von Qt verwendet wird (kann vom QPA-Plugin überschrieben werden)</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="265"/>
+        <location filename="../gui/settingsdialog.cpp" line="267"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation>Benachrichtigungen via D-Bus wurden eingestellt, aber es scheint kein Daemon zu laufen der den Dienst bereitstellt.</translation>
     </message>
@@ -458,22 +458,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="720"/>
+        <location filename="../gui/settingsdialog.cpp" line="729"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="726"/>
+        <location filename="../gui/settingsdialog.cpp" line="735"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="732"/>
+        <location filename="../gui/settingsdialog.cpp" line="741"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="746"/>
+        <location filename="../gui/settingsdialog.cpp" line="755"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -514,8 +514,8 @@
         <location filename="../gui/systemdoptionpage.ui" line="99"/>
         <location filename="../gui/systemdoptionpage.ui" line="154"/>
         <location filename="../gui/systemdoptionpage.ui" line="231"/>
-        <location filename="../gui/settingsdialog.cpp" line="644"/>
-        <location filename="../gui/settingsdialog.cpp" line="659"/>
+        <location filename="../gui/settingsdialog.cpp" line="653"/>
+        <location filename="../gui/settingsdialog.cpp" line="668"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -549,9 +549,14 @@
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="624"/>
+        <location filename="../gui/settingsdialog.cpp" line="626"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit ist entweder nicht geladen oder existiert nicht</translation>
+    </message>
+    <message>
+        <location filename="../gui/settingsdialog.cpp" line="648"/>
+        <source>since </source>
+        <translation>seit </translation>
     </message>
 </context>
 <context>
@@ -904,7 +909,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../gui/webviewoptionpage.ui" line="14"/>
-        <location filename="../gui/settingsdialog.cpp" line="680"/>
+        <location filename="../gui/settingsdialog.cpp" line="689"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
@@ -934,7 +939,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="682"/>
+        <location filename="../gui/settingsdialog.cpp" line="691"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.

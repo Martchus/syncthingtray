@@ -27,6 +27,7 @@
 # include <qtutilities/misc/dbusnotification.h>
 #endif
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+# include <c++utilities/chrono/datetime.h>
 # include <qtutilities/misc/dialogutils.h>
 #endif
 
@@ -42,6 +43,7 @@
 #include <QTextCursor>
 #include <QApplication>
 #include <QStyle>
+#include <QStringBuilder>
 
 #include <functional>
 
@@ -590,7 +592,7 @@ QWidget *SystemdOptionPage::setupWidget()
     QObject::connect(ui()->enablePushButton, &QPushButton::clicked, &m_service, &SyncthingService::enable);
     QObject::connect(ui()->disablePushButton, &QPushButton::clicked, &m_service, &SyncthingService::disable);
     QObject::connect(&m_service, &SyncthingService::descriptionChanged, bind(&SystemdOptionPage::handleDescriptionChanged, this, _1));
-    QObject::connect(&m_service, &SyncthingService::stateChanged, bind(&SystemdOptionPage::handleStatusChanged, this, _1, _2));
+    QObject::connect(&m_service, &SyncthingService::stateChanged, bind(&SystemdOptionPage::handleStatusChanged, this, _1, _2, _3));
     QObject::connect(&m_service, &SyncthingService::unitFileStateChanged, bind(&SystemdOptionPage::handleEnabledChanged, this, _1));
     return widget;
 }
@@ -614,7 +616,7 @@ void SystemdOptionPage::reset()
         ui()->showButtonCheckBox->setChecked(settings.showButton);
         ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
         handleDescriptionChanged(m_service.description());
-        handleStatusChanged(m_service.activeState(), m_service.subState());
+        handleStatusChanged(m_service.activeState(), m_service.subState(), m_service.activeSince());
         handleEnabledChanged(m_service.unitFileState());
     }
 }
@@ -629,7 +631,7 @@ void setIndicatorColor(QWidget *indicator, const QColor &color)
     indicator->setStyleSheet(QStringLiteral("border-radius:8px;background-color:") + color.name());
 }
 
-void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QString &subState)
+void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QString &subState, ChronoUtilities::DateTime activeSince)
 {
     QStringList status;
     if(!activeState.isEmpty()) {
@@ -638,11 +640,18 @@ void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QS
     if(!subState.isEmpty()) {
         status << subState;
     }
+
     const bool isRunning = m_service.isRunning();
+    QString timeStamp;
+    if(isRunning && !activeSince.isNull()) {
+        timeStamp = QLatin1Char('\n')
+                  % QCoreApplication::translate("QtGui::SystemdOptionPage", "since ")
+                  % QString::fromUtf8(activeSince.toString(ChronoUtilities::DateTimeOutputFormat::DateAndTime).data());
+    }
 
     ui()->statusValueLabel->setText(status.isEmpty()
                                     ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown")
-                                    : status.join(QStringLiteral(" - ")));
+                                    : status.join(QStringLiteral(" - ")) + timeStamp);
     setIndicatorColor(ui()->statusIndicator, status.isEmpty()
                      ? Colors::gray(values().appearance.brightTextColors)
                      : (isRunning

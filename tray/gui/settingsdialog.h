@@ -10,6 +10,10 @@
 #include <QWidget>
 #include <QProcess>
 
+namespace ChronoUtilities {
+class DateTime;
+}
+
 namespace Data {
 class SyncthingConnection;
 class SyncthingService;
@@ -58,7 +62,7 @@ BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(SystemdOptionPage)
 private:
     DECLARE_SETUP_WIDGETS
     void handleDescriptionChanged(const QString &description);
-    void handleStatusChanged(const QString &activeState, const QString &subState);
+    void handleStatusChanged(const QString &activeState, const QString &subState, ChronoUtilities::DateTime activeSince);
     void handleEnabledChanged(const QString &unitFileState);
     Data::SyncthingService &m_service;
 END_DECLARE_OPTION_PAGE

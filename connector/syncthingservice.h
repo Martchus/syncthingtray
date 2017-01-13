@@ -1,6 +1,8 @@
 #ifndef DATA_SYNCTHINGSERVICE_H
 #define DATA_SYNCTHINGSERVICE_H
 
+#include <c++utilities/chrono/datetime.h>
+
 #include <QObject>
 #include <QVariantMap>
 
@@ -36,6 +38,7 @@ class SyncthingService : public QObject
     Q_PROPERTY(bool unitAvailable READ isUnitAvailable)
     Q_PROPERTY(QString activeState READ activeState NOTIFY activeStateChanged)
     Q_PROPERTY(QString subState READ subState NOTIFY subStateChanged)
+    Q_PROPERTY(ChronoUtilities::DateTime activeSince READ activeSince NOTIFY activeStateChanged)
     Q_PROPERTY(QString unitFileState READ unitFileState NOTIFY unitFileStateChanged)
     Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
     Q_PROPERTY(bool running READ isRunning WRITE setRunning NOTIFY runningChanged)
@@ -50,6 +53,8 @@ public:
     bool isUnitAvailable() const;
     const QString &activeState() const;
     const QString &subState() const;
+    ChronoUtilities::DateTime activeSince() const;
+    bool isActiveFor(unsigned int atleastSeconds) const;
     const QString &unitFileState() const;
     const QString &description() const;
     bool isRunning() const;
@@ -68,7 +73,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void systemdAvailableChanged(bool available);
-    void stateChanged(const QString &activeState, const QString &subState);
+    void stateChanged(const QString &activeState, const QString &subState, ChronoUtilities::DateTime activeSince);
     void activeStateChanged(const QString &activeState);
     void subStateChanged(const QString &subState);
     void unitFileStateChanged(const QString &unitFileState);
@@ -89,6 +94,7 @@ private Q_SLOTS:
 
 private:
     bool handlePropertyChanged(QString &variable, void(SyncthingService::*signal)(const QString &), const QString &propertyName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
+    bool handlePropertyChanged(ChronoUtilities::DateTime &variable, const QString &propertyName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
     void registerErrorHandler(const QDBusPendingCall &call, const char *context);
 
     static OrgFreedesktopSystemd1ManagerInterface *s_manager;
@@ -102,6 +108,7 @@ private:
     QString m_subState;
     QString m_unitFileState;
     bool m_manuallyStopped;
+    ChronoUtilities::DateTime m_activeSince;
 };
 
 inline const QString &SyncthingService::unitName() const
@@ -157,6 +164,16 @@ inline bool SyncthingService::isEnabled() const
 inline bool SyncthingService::isManuallyStopped() const
 {
     return m_manuallyStopped;
+}
+
+inline ChronoUtilities::DateTime SyncthingService::activeSince() const
+{
+    return m_activeSince;
+}
+
+inline bool SyncthingService::isActiveFor(unsigned int atleastSeconds) const
+{
+    return !m_activeSince.isNull() && (ChronoUtilities::DateTime::now() - m_activeSince).totalSeconds() > atleastSeconds;
 }
 
 inline void SyncthingService::enable()
