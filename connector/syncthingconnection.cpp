@@ -55,10 +55,10 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     m_reconnecting(false),
     m_lastEventId(0),
     m_autoReconnectTries(0),
-    m_totalIncomingTraffic(0),
-    m_totalOutgoingTraffic(0),
-    m_totalIncomingRate(0),
-    m_totalOutgoingRate(0),
+    m_totalIncomingTraffic(unknownTraffic),
+    m_totalOutgoingTraffic(unknownTraffic),
+    m_totalIncomingRate(0.0),
+    m_totalOutgoingRate(0.0),
     m_configReply(nullptr),
     m_statusReply(nullptr),
     m_connectionsReply(nullptr),
@@ -210,8 +210,8 @@ void SyncthingConnection::continueReconnecting()
     m_lastEventId = 0;
     m_configDir.clear();
     m_myId.clear();
-    m_totalIncomingTraffic = 0;
-    m_totalOutgoingTraffic = 0;
+    m_totalIncomingTraffic = unknownTraffic;
+    m_totalOutgoingTraffic = unknownTraffic;
     m_totalIncomingRate = 0.0;
     m_totalOutgoingRate = 0.0;
     m_unreadNotifications = false;
@@ -897,15 +897,19 @@ void SyncthingConnection::readConnections()
             const QJsonObject totalObj(replyObj.value(QStringLiteral("total")).toObject());
 
             // read traffic, the conversion to double is neccassary because toInt() doesn't work for high values
-            const uint64 totalIncomingTraffic = static_cast<uint64>(totalObj.value(QStringLiteral("inBytesTotal")).toDouble(0.0));
-            const uint64 totalOutgoingTraffic = static_cast<uint64>(totalObj.value(QStringLiteral("outBytesTotal")).toDouble(0.0));
+            const QJsonValue totalIncomingTrafficValue(totalObj.value(QStringLiteral("inBytesTotal")));
+            const QJsonValue totalOutgoingTrafficValue(totalObj.value(QStringLiteral("outBytesTotal")));
+            const uint64 totalIncomingTraffic = totalIncomingTrafficValue.isDouble()
+                    ? static_cast<uint64>(totalIncomingTrafficValue.toDouble(0.0)) : unknownTraffic;
+            const uint64 totalOutgoingTraffic = totalOutgoingTrafficValue.isDouble()
+                    ? static_cast<uint64>(totalOutgoingTrafficValue.toDouble(0.0)) : unknownTraffic;
             double transferTime;
-            if(!m_lastConnectionsUpdate.isNull() && ((transferTime = (DateTime::gmtNow() - m_lastConnectionsUpdate).totalSeconds()) != 0.0)) {
-                m_totalIncomingRate = (totalIncomingTraffic - m_totalIncomingTraffic) * 0.008 / transferTime,
-                        m_totalOutgoingRate = (totalOutgoingTraffic - m_totalOutgoingTraffic) * 0.008 / transferTime;
-            } else {
-                m_totalIncomingRate = m_totalOutgoingRate = 0.0;
-            }
+            const bool hasDelta = !m_lastConnectionsUpdate.isNull()
+                    && ((transferTime = (DateTime::gmtNow() - m_lastConnectionsUpdate).totalSeconds()) != 0.0);
+            m_totalIncomingRate = (hasDelta && totalIncomingTraffic != unknownTraffic && m_totalIncomingTraffic != unknownTraffic)
+                    ? (totalIncomingTraffic - m_totalIncomingTraffic) * 0.008 / transferTime : 0.0;
+            m_totalOutgoingRate = (hasDelta && totalOutgoingTraffic != unknownTraffic && m_totalOutgoingRate != unknownTraffic)
+                    ? (totalOutgoingTraffic - m_totalOutgoingTraffic) * 0.008 / transferTime : 0.0;
             emit trafficChanged(m_totalIncomingTraffic = totalIncomingTraffic, m_totalOutgoingTraffic = totalOutgoingTraffic);
 
             // read connection status

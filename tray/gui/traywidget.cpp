@@ -481,18 +481,20 @@ void TrayWidget::updateTraffic()
     static const QString unknownStr(tr("unknown"));
     if(m_connection.isConnected()) {
         if(m_connection.totalIncomingRate() != 0.0) {
-            m_ui->inTrafficLabel->setText(m_connection.totalIncomingTraffic() != 0
+            m_ui->inTrafficLabel->setText(m_connection.totalIncomingTraffic() != SyncthingConnection::unknownTraffic
                                           ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(m_connection.totalIncomingRate(), true).data()), QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data()))
                                           : QString::fromUtf8(bitrateToString(m_connection.totalIncomingRate(), true).data()));
         } else {
-            m_ui->inTrafficLabel->setText(m_connection.totalIncomingTraffic() != 0 ? QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data()) : unknownStr);
+            m_ui->inTrafficLabel->setText(m_connection.totalIncomingTraffic() != SyncthingConnection::unknownTraffic
+                    ? QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data()) : unknownStr);
         }
         if(m_connection.totalOutgoingRate() != 0.0) {
-            m_ui->outTrafficLabel->setText(m_connection.totalIncomingTraffic() != 0
+            m_ui->outTrafficLabel->setText(m_connection.totalIncomingTraffic() != SyncthingConnection::unknownTraffic
                                           ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(m_connection.totalOutgoingRate(), true).data()), QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data()))
                                           : QString::fromUtf8(bitrateToString(m_connection.totalOutgoingRate(), true).data()));
         } else {
-            m_ui->outTrafficLabel->setText(m_connection.totalOutgoingTraffic() != 0 ? QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data()) : unknownStr);
+            m_ui->outTrafficLabel->setText(m_connection.totalOutgoingTraffic() != SyncthingConnection::unknownTraffic
+                    ? QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data()) : unknownStr);
         }
     } else {
         m_ui->inTrafficLabel->setText(unknownStr);

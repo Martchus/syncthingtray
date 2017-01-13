@@ -11,6 +11,7 @@
 
 #include <functional>
 #include <vector>
+#include <limits>
 
 QT_FORWARD_DECLARE_CLASS(QNetworkAccessManager)
 QT_FORWARD_DECLARE_CLASS(QNetworkReply)
@@ -102,6 +103,7 @@ public:
     uint64 totalOutgoingTraffic() const;
     double totalIncomingRate() const;
     double totalOutgoingRate() const;
+    static constexpr uint64 unknownTraffic = std::numeric_limits<uint64>::max();
     const std::vector<SyncthingDir> &dirInfo() const;
     const std::vector<SyncthingDev> &devInfo() const;
     QMetaObject::Connection requestQrCode(const QString &text, std::function<void (const QByteArray &)> callback);
