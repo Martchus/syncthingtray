@@ -1,3 +1,5 @@
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+
 #include "./syncthingservice.h"
 
 #include "managerinterface.h"
@@ -287,3 +289,5 @@ SyncthingService &syncthingService()
 }
 
 } // namespace Data
+
+#endif

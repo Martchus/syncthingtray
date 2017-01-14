@@ -16,6 +16,7 @@ set(HEADER_FILES
     syncthingconnectionsettings.h
     syncthingconfig.h
     syncthingprocess.h
+    syncthingservice.h
     utils.h
 )
 set(SRC_FILES
@@ -25,6 +26,7 @@ set(SRC_FILES
     syncthingconnectionsettings.cpp
     syncthingconfig.cpp
     syncthingprocess.cpp
+    syncthingservice.cpp
     utils.cpp
 )
 
@@ -50,12 +52,6 @@ list(APPEND ADDITIONAL_QT_MODULES Network)
 # configure support for controlling Syncthing via systemd service
 option(SYSTEMD_SUPPORT "enables support for controlling Syncthing systemd service" ${UNIX})
 if(SYSTEMD_SUPPORT)
-    list(APPEND HEADER_FILES
-        syncthingservice.h
-    )
-    list(APPEND SRC_FILES
-        syncthingservice.cpp
-    )
     list(APPEND DBUS_FILES
         org.freedesktop.DBus.Properties.xml
         org.freedesktop.systemd1.Manager.xml
@@ -69,10 +65,6 @@ if(SYSTEMD_SUPPORT)
     list(APPEND META_PUBLIC_COMPILE_DEFINITIONS LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
     message(STATUS "systemd support enabled")
 else()
-    list(APPEND DOC_ONLY_FILES
-        syncthingservice.h
-        syncthingservice.cpp
-    )
     message(STATUS "systemd support disabled")
 endif()
 

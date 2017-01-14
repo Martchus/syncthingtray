@@ -1,4 +1,4 @@
-#ifndef DATA_SYNCTHINGSERVICE_H
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD) && !defined(DATA_SYNCTHINGSERVICE_H)
 #define DATA_SYNCTHINGSERVICE_H
 
 #include <c++utilities/chrono/datetime.h>
@@ -193,4 +193,4 @@ SyncthingService &syncthingService();
 Q_DECLARE_METATYPE(Data::ManagerDBusUnitFileChange)
 Q_DECLARE_METATYPE(Data::ManagerDBusUnitFileChangeList)
 
-#endif // DATA_SYNCTHINGSERVICE_H
+#endif // defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD) && !defined(DATA_SYNCTHINGSERVICE_H)
