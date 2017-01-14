@@ -54,6 +54,7 @@ option(SYSTEMD_SUPPORT "enables support for controlling Syncthing systemd servic
 if(SYSTEMD_SUPPORT)
     list(APPEND DBUS_FILES
         org.freedesktop.DBus.Properties.xml
+        org.freedesktop.login1.LoginManager.xml
         org.freedesktop.systemd1.Manager.xml
         org.freedesktop.systemd1.Service.xml
         org.freedesktop.systemd1.Unit.xml
