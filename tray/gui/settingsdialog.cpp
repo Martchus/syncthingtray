@@ -364,7 +364,7 @@ QWidget *AutostartOptionPage::setupWidget()
 {
     auto *widget = AutostartOptionPageBase::setupWidget();
     ui()->infoIconLabel->setPixmap(QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation, nullptr, ui()->infoIconLabel).pixmap(ui()->infoIconLabel->size()));
-#if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
+#if defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
     ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage", "This is achieved by adding a *.desktop file under <i>~/.config/autostart</i> so the setting only affects the current user."));
 #elif defined(PLATFORM_WINDOWS)
     ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage", "This is achieved by adding a registry key under <i>HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run</i> so the setting only affects the current user. Note that the startup entry is invalidated when moving <i>syncthingtray.exe</i>."));
