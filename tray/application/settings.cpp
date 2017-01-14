@@ -84,6 +84,7 @@ void restore()
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     v.dbusNotifications = settings.value(QStringLiteral("dbusNotifications"), DBusNotification::isAvailable()).toBool();
 #endif
+    v.ignoreInavailabilityAfterStart = settings.value(QStringLiteral("ignoreInavailabilityAfterStart"), v.ignoreInavailabilityAfterStart).toUInt();
     auto &appearance = v.appearance;
     appearance.showTraffic = settings.value(QStringLiteral("showTraffic"), appearance.showTraffic).toBool();
     appearance.trayMenuSize = settings.value(QStringLiteral("trayMenuSize"), appearance.trayMenuSize).toSize();
@@ -153,6 +154,7 @@ void save()
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     settings.setValue(QStringLiteral("dbusNotifications"), v.dbusNotifications);
 #endif
+    settings.setValue(QStringLiteral("ignoreInavailabilityAfterStart"), v.ignoreInavailabilityAfterStart);
     const auto &appearance = v.appearance;
     settings.setValue(QStringLiteral("showTraffic"), appearance.showTraffic);
     settings.setValue(QStringLiteral("trayMenuSize"), appearance.trayMenuSize);

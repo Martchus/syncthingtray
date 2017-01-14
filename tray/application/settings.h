@@ -89,6 +89,7 @@ struct Settings
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     bool dbusNotifications = false;
 #endif
+    unsigned int ignoreInavailabilityAfterStart = 15;
     Appearance appearance;
     Launcher launcher;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

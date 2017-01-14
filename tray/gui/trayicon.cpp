@@ -6,6 +6,7 @@
 #include "../../connector/syncthingconnection.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 # include "../../connector/syncthingservice.h"
+# include "../../connector/utils.h"
 #endif
 
 #include <qtutilities/misc/dialogutils.h>
@@ -134,10 +135,16 @@ void TrayIcon::handleSyncthingNotificationAction(const QString &action)
 void TrayIcon::showInternalError(const QString &errorMsg, SyncthingErrorCategory category, int networkError)
 {
     const auto &settings = Settings::values();
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    const SyncthingService &service = syncthingService();
+    const bool serviceRelevant = service.isSystemdAvailable() && isLocal(QUrl(m_trayMenu.widget()->connection().syncthingUrl()));
+#endif
     if(settings.notifyOn.internalErrors
             && (m_trayMenu.widget()->connection().autoReconnectTries() < 1 || category != SyncthingErrorCategory::OverallConnection)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-            && (networkError != QNetworkReply::RemoteHostClosedError || !syncthingService().isManuallyStopped())
+            && (!settings.systemd.considerForReconnect || !serviceRelevant || !(networkError == QNetworkReply::RemoteHostClosedError && service.isManuallyStopped()))
+            && (settings.ignoreInavailabilityAfterStart == 0
+                || !(networkError == QNetworkReply::ConnectionRefusedError && service.isRunning() && !service.isActiveFor(settings.ignoreInavailabilityAfterStart)))
 #endif
             ) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS

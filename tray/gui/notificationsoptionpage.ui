@@ -71,6 +71,35 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="miscGroupBox">
+     <property name="title">
+      <string>Misc</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <widget class="QLabel" name="ignoreInavailabilityAfterStartLabel">
+        <property name="text">
+         <string>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance by checking Systemd unit status</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="ignoreInavailabilityAfterStartSpinBox">
+        <property name="specialValueText">
+         <string>don't ignore</string>
+        </property>
+        <property name="suffix">
+         <string> s</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

@@ -54,7 +54,7 @@ public:
     const QString &activeState() const;
     const QString &subState() const;
     ChronoUtilities::DateTime activeSince() const;
-    bool isActiveFor(unsigned int atleastSeconds) const;
+    bool isActiveFor(unsigned int atLeastSeconds) const;
     const QString &unitFileState() const;
     const QString &description() const;
     bool isRunning() const;
@@ -171,9 +171,9 @@ inline ChronoUtilities::DateTime SyncthingService::activeSince() const
     return m_activeSince;
 }
 
-inline bool SyncthingService::isActiveFor(unsigned int atleastSeconds) const
+inline bool SyncthingService::isActiveFor(unsigned int atLeastSeconds) const
 {
-    return !m_activeSince.isNull() && (ChronoUtilities::DateTime::now() - m_activeSince).totalSeconds() > atleastSeconds;
+    return !m_activeSince.isNull() && (ChronoUtilities::DateTime::gmtNow() - m_activeSince).totalSeconds() > atLeastSeconds;
 }
 
 inline void SyncthingService::enable()

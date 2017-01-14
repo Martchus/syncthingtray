@@ -268,6 +268,8 @@ bool NotificationsOptionPage::apply()
             ok = false;
         }
 #endif
+        values().ignoreInavailabilityAfterStart = static_cast<unsigned int>(ui()->ignoreInavailabilityAfterStartSpinBox->value());
+
     }
     return ok;
 }
@@ -286,6 +288,7 @@ void NotificationsOptionPage::reset()
         ui()->dbusRadioButton->setEnabled(false);
         ui()->qtRadioButton->setChecked(true);
 #endif
+        ui()->ignoreInavailabilityAfterStartSpinBox->setValue(static_cast<int>(values().ignoreInavailabilityAfterStart));
     }
 }
 
