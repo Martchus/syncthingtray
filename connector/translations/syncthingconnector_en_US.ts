@@ -163,22 +163,22 @@
 <context>
     <name>Data::SyncthingService</name>
     <message>
-        <location filename="../syncthingservice.cpp" line="104"/>
+        <location filename="../syncthingservice.cpp" line="132"/>
         <source>start unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="106"/>
+        <location filename="../syncthingservice.cpp" line="134"/>
         <source>stop unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="113"/>
+        <location filename="../syncthingservice.cpp" line="141"/>
         <source>enable unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="115"/>
+        <location filename="../syncthingservice.cpp" line="143"/>
         <source>disable unit</source>
         <translation type="unfinished"></translation>
     </message>

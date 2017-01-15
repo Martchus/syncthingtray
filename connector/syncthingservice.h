@@ -16,6 +16,7 @@ class OrgFreedesktopSystemd1ManagerInterface;
 class OrgFreedesktopSystemd1UnitInterface;
 class OrgFreedesktopSystemd1ServiceInterface;
 class OrgFreedesktopDBusPropertiesInterface;
+class OrgFreedesktopLogin1ManagerInterface;
 
 namespace Data {
 
@@ -55,6 +56,8 @@ public:
     const QString &subState() const;
     ChronoUtilities::DateTime activeSince() const;
     bool isActiveFor(unsigned int atLeastSeconds) const;
+    bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
+    static ChronoUtilities::DateTime lastWakeUp();
     const QString &unitFileState() const;
     const QString &description() const;
     bool isRunning() const;
@@ -89,6 +92,7 @@ private Q_SLOTS:
     void handlePropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
     void handleError(const char *error, QDBusPendingCallWatcher *watcher);
     void handleServiceRegisteredChanged(const QString &service);
+    static void handlePrepareForSleep(bool rightBefore);
     void setUnit(const QDBusObjectPath &objectPath);
     void setProperties(const QString &activeState, const QString &subState, const QString &unitFileState, const QString &description);
 
@@ -98,6 +102,9 @@ private:
     void registerErrorHandler(const QDBusPendingCall &call, const char *context);
 
     static OrgFreedesktopSystemd1ManagerInterface *s_manager;
+    static OrgFreedesktopLogin1ManagerInterface *s_loginManager;
+    static bool s_fallingAsleep;
+    static ChronoUtilities::DateTime s_lastWakeUp;
     QString m_unitName;
     QDBusServiceWatcher *m_serviceWatcher;
     OrgFreedesktopSystemd1UnitInterface *m_unit;
@@ -174,6 +181,11 @@ inline ChronoUtilities::DateTime SyncthingService::activeSince() const
 inline bool SyncthingService::isActiveFor(unsigned int atLeastSeconds) const
 {
     return !m_activeSince.isNull() && (ChronoUtilities::DateTime::gmtNow() - m_activeSince).totalSeconds() > atLeastSeconds;
+}
+
+inline ChronoUtilities::DateTime SyncthingService::lastWakeUp()
+{
+    return s_lastWakeUp;
 }
 
 inline void SyncthingService::enable()

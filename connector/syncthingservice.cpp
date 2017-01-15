@@ -6,6 +6,7 @@
 #include "unitinterface.h"
 #include "serviceinterface.h"
 #include "propertiesinterface.h"
+#include "loginmanagerinterface.h"
 
 #include <QDBusArgument>
 #include <QDBusConnection>
@@ -45,6 +46,9 @@ constexpr DateTime dateTimeFromSystemdTimeStamp(qulonglong timeStamp)
 }
 
 OrgFreedesktopSystemd1ManagerInterface *SyncthingService::s_manager = nullptr;
+OrgFreedesktopLogin1ManagerInterface *SyncthingService::s_loginManager = nullptr;
+DateTime SyncthingService::s_lastWakeUp = DateTime();
+bool SyncthingService::s_fallingAsleep = false;
 
 SyncthingService::SyncthingService(QObject *parent) :
     QObject(parent),
@@ -66,6 +70,14 @@ SyncthingService::SyncthingService(QObject *parent) :
 
         // enable systemd to emit signals
         s_manager->Subscribe();
+    }
+    if(!s_loginManager) {
+        s_loginManager = new OrgFreedesktopLogin1ManagerInterface(
+                        QStringLiteral("org.freedesktop.login1"),
+                        QStringLiteral("/org/freedesktop/login1"),
+                        QDBusConnection::systemBus()
+                    );
+        connect(s_loginManager, &OrgFreedesktopLogin1ManagerInterface::PrepareForSleep, &SyncthingService::handlePrepareForSleep);
     }
     connect(s_manager, &OrgFreedesktopSystemd1ManagerInterface::UnitNew, this, &SyncthingService::handleUnitAdded);
     connect(s_manager, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
@@ -97,6 +109,20 @@ bool SyncthingService::isSystemdAvailable() const
 bool SyncthingService::isUnitAvailable() const
 {
     return m_unit && m_unit->isValid();
+}
+
+bool SyncthingService::isActiveWithoutSleepFor(unsigned int atLeastSeconds) const
+{
+    if(!atLeastSeconds) {
+        return true;
+    }
+    if(m_activeSince.isNull() || s_fallingAsleep) {
+        return false;
+    }
+
+    const DateTime now(DateTime::gmtNow());
+    return ((now - m_activeSince).totalSeconds() > atLeastSeconds)
+            && (s_lastWakeUp.isNull() || ((now - s_lastWakeUp).totalSeconds() > atLeastSeconds));
 }
 
 void SyncthingService::setRunning(bool running)
@@ -186,6 +212,13 @@ void SyncthingService::handleServiceRegisteredChanged(const QString &service)
 {
     if(service == s_manager->service()) {
         emit systemdAvailableChanged(s_manager->isValid());
+    }
+}
+
+void SyncthingService::handlePrepareForSleep(bool rightBefore)
+{
+    if(!(s_fallingAsleep = rightBefore)) {
+        s_lastWakeUp = DateTime::gmtNow();
     }
 }
 

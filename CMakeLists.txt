@@ -8,7 +8,7 @@ set(META_APP_URL "https://github.com/${META_APP_AUTHOR}/${META_PROJECT_NAME}")
 set(META_APP_DESCRIPTION "Tray application for Syncthing")
 set(META_APP_CATEGORIES "System;Utility;Network;FileTransfer")
 set(META_VERSION_MAJOR 0)
-set(META_VERSION_MINOR 3)
+set(META_VERSION_MINOR 4)
 set(META_VERSION_PATCH 0)
 set(META_VERSION_EXACT_SONAME ON)
 

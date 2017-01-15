@@ -144,7 +144,7 @@ void TrayIcon::showInternalError(const QString &errorMsg, SyncthingErrorCategory
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
             && (!settings.systemd.considerForReconnect || !serviceRelevant || !(networkError == QNetworkReply::RemoteHostClosedError && service.isManuallyStopped()))
             && (settings.ignoreInavailabilityAfterStart == 0
-                || !(networkError == QNetworkReply::ConnectionRefusedError && service.isRunning() && !service.isActiveFor(settings.ignoreInavailabilityAfterStart)))
+                || !(networkError == QNetworkReply::ConnectionRefusedError && service.isRunning() && !service.isActiveWithoutSleepFor(settings.ignoreInavailabilityAfterStart)))
 #endif
             ) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
