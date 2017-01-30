@@ -387,7 +387,7 @@ void TrayWidget::applySettings()
             instance->m_connection.reconnect();
         }
 #else
-        instances->m_connection.reconnect();
+        instance->m_connection.reconnect();
 #endif
 
         // web view
