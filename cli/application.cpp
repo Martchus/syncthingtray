@@ -39,7 +39,7 @@ void exitApplication(int statusCode)
 inline QString argToQString(const char *arg)
 {
 #if !defined(PLATFORM_WINDOWS)
-    return argToQString(arg);
+    return QString::fromLocal8Bit(arg);
 #else
     // under Windows args are converted to UTF-8
     return QString::fromUtf8(arg);
