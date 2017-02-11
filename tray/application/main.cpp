@@ -32,6 +32,8 @@ using namespace ApplicationUtilities;
 using namespace QtGui;
 using namespace Data;
 
+ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
+
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 void handleSystemdServiceError(const QString &context, const QString &name, const QString &message)
 {
@@ -141,11 +143,7 @@ int runApplication(int argc, const char *const *argv)
                 Settings::restore();
                 Settings::values().qt.apply();
                 qtConfigArgs.applySettings(true);
-
                 LOAD_QT_TRANSLATIONS;
-                TranslationFiles::loadApplicationTranslationFile(QStringLiteral("syncthingconnection"));
-                TranslationFiles::loadApplicationTranslationFile(QStringLiteral("syncthingmodel"));
-                QtUtilitiesResources::init();
 
                 int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent());
                 if(!res) {
@@ -154,7 +152,6 @@ int runApplication(int argc, const char *const *argv)
                 }
 
                 Settings::save();
-                QtUtilitiesResources::cleanup();
                 return res;
             } else {
                 if(!TrayWidget::instances().empty() && (showWebUiArg.isPresent() || triggerArg.isPresent())) {
