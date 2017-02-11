@@ -1,6 +1,5 @@
 #include "./singleinstance.h"
 
-#include <c++utilities/misc/memory.h>
 #include <c++utilities/conversion/binaryconversion.h>
 
 #include <QLocalServer>
@@ -9,6 +8,7 @@
 #include <QCoreApplication>
 
 #include <iostream>
+#include <memory>
 
 using namespace std;
 using namespace ConversionUtilities;
