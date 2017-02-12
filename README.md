@@ -8,6 +8,7 @@ Qt 5-based tray application for [Syncthing](https://github.com/syncthing/syncthi
 * Tested under \*
   * Plasma 5
   * Openbox/qt5ct/Tint2
+  * Awesome
   * Cinnamon
   * Windows 10
 * Can be shown as regular window if tray icon support is not available
