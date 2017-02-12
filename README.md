@@ -91,7 +91,6 @@ See the release section on GitHub.
   * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
   * for binaries checkout [my website](http://martchus.no-ip.biz/website/page.php?name=programming) and the
     release section on GitHub
-.
 
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and [qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries. For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities). For building this straight, see the next section.
@@ -123,6 +122,7 @@ The following Qt 5 modules are requried: core network gui widgets svg webenginew
 #### Select Qt module for WebView
 * If Qt WebKitWidgets is installed on the system, the tray will link against it. Otherwise it will link against Qt WebEngineWidgets.
 * To force usage of Qt WebKit/Qt WebEngine or to disable both add `-DWEBVIEW_PROVIDER=webkit/webengine/none` to the CMake arguments.
+* To use Qt WebKit revived/ng, set the web view provider to `webkit`. It works already without any (known) issues.
 
 #### BTW: I still prefer the deprecated Qt WebKit because
 * Currently there is no way to allow a particular self-signed certificate in Qt
@@ -134,6 +134,7 @@ The following Qt 5 modules are requried: core network gui widgets svg webenginew
 * Security issues are not a concern because no other website than the
   Syncthing web UI is shown. Any external links will be opened in the
   regular web browser anyways.
+* It will be replaced by the compatible Qt WebKit revived/ng soon and hence no longer be deprecated.
 
 ## Adding translations
 Currently translations for English and German are available. Further translations
