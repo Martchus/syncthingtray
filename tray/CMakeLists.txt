@@ -43,7 +43,9 @@ set(WIDGETS_SRC_FILES
     gui/devview.cpp
     gui/downloadview.cpp
     gui/textviewdialog.cpp
-    resources/icons.qrc
+)
+set(RES_FILES
+    resources/${META_PROJECT_NAME}icons.qrc
 )
 set(WIDGETS_UI_FILES
     gui/traywidget.ui

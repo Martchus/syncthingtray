@@ -24,6 +24,9 @@ set(SRC_FILES
     syncthingdevicemodel.cpp
     syncthingdownloadmodel.cpp
 )
+set(RES_FILES
+    resources/${META_PROJECT_NAME}icons.qrc
+)
 
 set(TS_FILES
     translations/${META_PROJECT_NAME}_de_DE.ts

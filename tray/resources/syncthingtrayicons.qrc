@@ -1,13 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>icons/hicolor/scalable/app/syncthingtray.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-default.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-notify.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-pause.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-sync.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-disconnected.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-ok.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-error.svg</file>
         <file>icons/hicolor/scalable/actions/application-menu.svg</file>
         <file>icons/hicolor/scalable/actions/edit-copy.svg</file>
         <file>icons/hicolor/scalable/actions/folder-sync.svg</file>
@@ -21,13 +14,11 @@
         <file>icons/hicolor/scalable/apps/internet-web-browser.svg</file>
         <file>icons/hicolor/scalable/apps/preferences-other.svg</file>
         <file>icons/hicolor/scalable/devices/network-card.svg</file>
-        <file>icons/hicolor/scalable/mimetypes/text-x-generic.svg</file>
         <file>icons/hicolor/scalable/places/folder-open.svg</file>
         <file>icons/hicolor/scalable/places/folder.svg</file>
         <file>icons/hicolor/scalable/places/network-workgroup.svg</file>
         <file>icons/hicolor/scalable/apps/system-run.svg</file>
         <file>icons/hicolor/scalable/actions/network-connect.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-error-sync.svg</file>
         <file>icons/hicolor/scalable/places/folder-download.svg</file>
         <file>icons/hicolor/scalable/actions/process-stop.svg</file>
         <file>icons/hicolor/scalable/actions/list-add.svg</file>
