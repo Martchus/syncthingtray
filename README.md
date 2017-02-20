@@ -44,6 +44,8 @@ to the list. Maybe someone could check whether it works under Mac OS X.
 
 ## Planned features
 The tray is still under development; the following features are planned:
+* Allow pausing/resuming directories
+* Integration in Dolphin file manager (first approach already done)
 * Show recently processed items
 * Improve notification handling
 * Create Plasmoid for Plasma 5 desktop
