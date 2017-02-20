@@ -17,6 +17,7 @@ project(${META_PROJECT_NAME})
 # options for partial build
 option(NO_CLI "specifies whether building CLI should be skipped" OFF)
 option(NO_TRAY "specifies whether building the tray should be skipped" OFF)
+option(NO_FILE_ITEM_ACTION_PLUGIN "specifies whether building the file item action plugin should be skipped" OFF)
 option(NO_MODEL "specifies whether building models should be skipped, implies NO_TRAY" OFF)
 
 # add subdirectories
@@ -31,4 +32,7 @@ if(NOT NO_MODEL)
     if(NOT NO_TRAY)
         add_subdirectory(tray)
     endif()
+endif()
+if(NOT NO_FILE_ITEM_ACTION_PLUGIN)
+    add_subdirectory(fileitemactionplugin)
 endif()

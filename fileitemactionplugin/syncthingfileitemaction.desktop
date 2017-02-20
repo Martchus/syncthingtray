@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+Name=Trigger Syncthing scan
+Name[de]="Syncthing-Rescan" im Servicemenü
+X-KDE-Library=syncthingfileitemaction
+X-KDE-Submenu=Syncthing
+
+Icon=syncthingtray
+ServiceTypes=KFileItemAction/Plugin
+MimeType=application/octet-stream;inode/directory
