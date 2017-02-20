@@ -582,133 +582,133 @@
 <context>
     <name>QtGui::TrayIcon</name>
     <message>
-        <location filename="../gui/trayicon.cpp" line="51"/>
+        <location filename="../gui/trayicon.cpp" line="43"/>
         <source> - internal error</source>
         <translation> - interner Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="52"/>
+        <location filename="../gui/trayicon.cpp" line="44"/>
         <source>Syncthing notification</source>
         <translation>Syncthing-Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="57"/>
+        <location filename="../gui/trayicon.cpp" line="49"/>
         <source>Web UI</source>
         <translation>Weboberfäche</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="58"/>
+        <location filename="../gui/trayicon.cpp" line="50"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="59"/>
+        <location filename="../gui/trayicon.cpp" line="51"/>
         <source>Rescan all</source>
         <translation>Alle neu scannen</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="62"/>
+        <location filename="../gui/trayicon.cpp" line="54"/>
         <source>About</source>
         <translation>Über Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="64"/>
+        <location filename="../gui/trayicon.cpp" line="56"/>
         <source>Close</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="156"/>
+        <location filename="../gui/trayicon.cpp" line="148"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="172"/>
+        <location filename="../gui/trayicon.cpp" line="164"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation>Neue Syncthing-Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="190"/>
+        <location filename="../gui/trayicon.cpp" line="182"/>
         <source>Not connected to Syncthing - trying to reconnect every %1 ms</source>
         <translation>Nicht mit Syncthing verbunden - versuche alle %1 ms zu verbinden</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="193"/>
+        <location filename="../gui/trayicon.cpp" line="185"/>
         <source>Not connected to Syncthing</source>
         <translation>Nicht mit Syncthing verbunden</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="69"/>
-        <location filename="../gui/trayicon.cpp" line="206"/>
+        <location filename="../gui/trayicon.cpp" line="61"/>
+        <location filename="../gui/trayicon.cpp" line="198"/>
         <source>Disconnected from Syncthing</source>
         <translation>Verbindung zu Syncthing getrennt</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="60"/>
+        <location filename="../gui/trayicon.cpp" line="52"/>
         <source>Log</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="70"/>
+        <location filename="../gui/trayicon.cpp" line="62"/>
         <source>Try to reconnect</source>
         <translation>Versuche Verbindung wieder herzustellen</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="72"/>
+        <location filename="../gui/trayicon.cpp" line="64"/>
         <source>Dismiss</source>
         <translation>Ignorieren</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="72"/>
+        <location filename="../gui/trayicon.cpp" line="64"/>
         <source>Show</source>
         <translation>Zeigen</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="212"/>
+        <location filename="../gui/trayicon.cpp" line="204"/>
         <source>Reconnecting ...</source>
         <translation>Neu verbinden ...</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="221"/>
+        <location filename="../gui/trayicon.cpp" line="213"/>
         <source>Synchronization is ongoing but at least one directory is out of sync</source>
         <translation>Synchronisiert, aber mind. ein Verzeichnis hat Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="224"/>
+        <location filename="../gui/trayicon.cpp" line="216"/>
         <source>At least one directory is out of sync</source>
         <translation>Mind. ein Verzeichnis hat Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="228"/>
+        <location filename="../gui/trayicon.cpp" line="220"/>
         <source>Notifications available</source>
         <translation>Es gibt neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="233"/>
+        <location filename="../gui/trayicon.cpp" line="225"/>
         <source>Syncthing is idling</source>
         <translation>Syncthing ist im Leerlauf</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="237"/>
+        <location filename="../gui/trayicon.cpp" line="229"/>
         <source>Syncthing is scanning</source>
         <translation>Syncthing scannt</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="241"/>
+        <location filename="../gui/trayicon.cpp" line="233"/>
         <source>At least one device is paused</source>
         <translation>Mind. ein Gerät ist pausiert</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="245"/>
+        <location filename="../gui/trayicon.cpp" line="237"/>
         <source>Synchronization is ongoing</source>
         <translation>Syncthing synchronisiert</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="263"/>
+        <location filename="../gui/trayicon.cpp" line="255"/>
         <source>Synchronization of %1 complete</source>
         <translation>%1 wurde synchronisiert</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="270"/>
+        <location filename="../gui/trayicon.cpp" line="262"/>
         <source>Synchronization of the following devices complete:
 </source>
         <translation>Folgende Verzeichnisse wurden synchronisiert:
@@ -977,27 +977,27 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="40"/>
+        <location filename="../application/main.cpp" line="42"/>
         <source>Unable to </source>
         <translation>Fehler beim </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="72"/>
+        <location filename="../application/main.cpp" line="74"/>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>
         <translation>Vor der ersten Verwendung muss eingestellt werden, wie sich das Syncthing Tray mit Syncthing verbinden soll.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="73"/>
+        <location filename="../application/main.cpp" line="75"/>
         <source>Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration.</source>
         <translation>Der Einstellungsdialog ermöglicht es die URL, Zugangsdaten und den API-Key automatisch aus der lokalen Syncthing-Konfiguration auszulesen.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="78"/>
+        <location filename="../application/main.cpp" line="80"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Das System-Tray bzw. der Infobereich ist aktuell nicht verfügbar. Es wäre möglich, Syncthing Tray als normales Fenster zu starten (mit Option -w).</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="82"/>
+        <location filename="../application/main.cpp" line="84"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Die verwendete Qt-Bibliothek wurde nicht mit Unterstützung für System-Tray konfiguriert. Es wäre möglich, Syncthing Tray als normales Fenster zu starten (mit Option -w).</translation>
     </message>

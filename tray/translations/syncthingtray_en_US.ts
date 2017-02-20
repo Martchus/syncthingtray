@@ -210,8 +210,41 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/connectionoptionpage.ui" line="256"/>
+        <source>Poll interval</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/connectionoptionpage.ui" line="280"/>
+        <location filename="../gui/connectionoptionpage.ui" line="320"/>
+        <location filename="../gui/connectionoptionpage.ui" line="346"/>
+        <location filename="../gui/connectionoptionpage.ui" line="375"/>
+        <source> ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/connectionoptionpage.ui" line="293"/>
+        <source>Traffic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/connectionoptionpage.ui" line="300"/>
+        <source>Device statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/connectionoptionpage.ui" line="333"/>
         <source>Errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/connectionoptionpage.ui" line="359"/>
+        <source>Reconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/connectionoptionpage.ui" line="372"/>
+        <source>no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -227,39 +260,6 @@
     <message>
         <location filename="../gui/connectionoptionpage.ui" line="408"/>
         <source>Apply connection settings and try to reconnect with the currently selected config</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/connectionoptionpage.ui" line="256"/>
-        <source>Poll interval</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/connectionoptionpage.ui" line="293"/>
-        <source>Traffic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/connectionoptionpage.ui" line="280"/>
-        <location filename="../gui/connectionoptionpage.ui" line="320"/>
-        <location filename="../gui/connectionoptionpage.ui" line="346"/>
-        <location filename="../gui/connectionoptionpage.ui" line="375"/>
-        <source> ms</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/connectionoptionpage.ui" line="300"/>
-        <source>Device statistics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/connectionoptionpage.ui" line="359"/>
-        <source>Reconnect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/connectionoptionpage.ui" line="372"/>
-        <source>no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -511,6 +511,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/systemdoptionpage.ui" line="25"/>
+        <source>Consider systemd unit status for reconnect attempts to local instance
+ • Don&apos;t reconnect when unit not active/running
+ • Try to reconnect when unit becomes active/running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/systemdoptionpage.ui" line="62"/>
         <source>Syncthing unit</source>
         <translation type="unfinished"></translation>
@@ -518,16 +525,6 @@
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="78"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/systemdoptionpage.ui" line="114"/>
-        <source>Current status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/systemdoptionpage.ui" line="191"/>
-        <source>Unit file state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -540,20 +537,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/systemdoptionpage.ui" line="25"/>
-        <source>Consider systemd unit status for reconnect attempts to local instance
- • Don&apos;t reconnect when unit not active/running
- • Try to reconnect when unit becomes active/running</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/systemdoptionpage.ui" line="238"/>
-        <source>Enable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/systemdoptionpage.ui" line="249"/>
-        <source>Disable</source>
+        <location filename="../gui/systemdoptionpage.ui" line="114"/>
+        <source>Current status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -564,6 +549,21 @@
     <message>
         <location filename="../gui/systemdoptionpage.ui" line="172"/>
         <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/systemdoptionpage.ui" line="191"/>
+        <source>Unit file state</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/systemdoptionpage.ui" line="238"/>
+        <source>Enable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/systemdoptionpage.ui" line="249"/>
+        <source>Disable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -580,133 +580,133 @@
 <context>
     <name>QtGui::TrayIcon</name>
     <message>
-        <location filename="../gui/trayicon.cpp" line="51"/>
+        <location filename="../gui/trayicon.cpp" line="43"/>
         <source> - internal error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="52"/>
+        <location filename="../gui/trayicon.cpp" line="44"/>
         <source>Syncthing notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="57"/>
+        <location filename="../gui/trayicon.cpp" line="49"/>
         <source>Web UI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="58"/>
+        <location filename="../gui/trayicon.cpp" line="50"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="59"/>
+        <location filename="../gui/trayicon.cpp" line="51"/>
         <source>Rescan all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="62"/>
-        <source>About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="64"/>
-        <source>Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="156"/>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="172"/>
-        <source>Syncthing notification - click to dismiss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="190"/>
-        <source>Not connected to Syncthing - trying to reconnect every %1 ms</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="193"/>
-        <source>Not connected to Syncthing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="69"/>
-        <location filename="../gui/trayicon.cpp" line="206"/>
-        <source>Disconnected from Syncthing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="60"/>
+        <location filename="../gui/trayicon.cpp" line="52"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="70"/>
+        <location filename="../gui/trayicon.cpp" line="54"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="56"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="61"/>
+        <location filename="../gui/trayicon.cpp" line="198"/>
+        <source>Disconnected from Syncthing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="62"/>
         <source>Try to reconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="72"/>
-        <source>Dismiss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="72"/>
+        <location filename="../gui/trayicon.cpp" line="64"/>
         <source>Show</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="212"/>
+        <location filename="../gui/trayicon.cpp" line="64"/>
+        <source>Dismiss</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="148"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="164"/>
+        <source>Syncthing notification - click to dismiss</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="182"/>
+        <source>Not connected to Syncthing - trying to reconnect every %1 ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="185"/>
+        <source>Not connected to Syncthing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="204"/>
         <source>Reconnecting ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="221"/>
+        <location filename="../gui/trayicon.cpp" line="213"/>
         <source>Synchronization is ongoing but at least one directory is out of sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="224"/>
+        <location filename="../gui/trayicon.cpp" line="216"/>
         <source>At least one directory is out of sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="228"/>
+        <location filename="../gui/trayicon.cpp" line="220"/>
         <source>Notifications available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="233"/>
+        <location filename="../gui/trayicon.cpp" line="225"/>
         <source>Syncthing is idling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="237"/>
+        <location filename="../gui/trayicon.cpp" line="229"/>
         <source>Syncthing is scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="241"/>
+        <location filename="../gui/trayicon.cpp" line="233"/>
         <source>At least one device is paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="245"/>
+        <location filename="../gui/trayicon.cpp" line="237"/>
         <source>Synchronization is ongoing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="263"/>
+        <location filename="../gui/trayicon.cpp" line="255"/>
         <source>Synchronization of %1 complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="270"/>
+        <location filename="../gui/trayicon.cpp" line="262"/>
         <source>Synchronization of the following devices complete:
 </source>
         <translation type="unfinished"></translation>
@@ -972,27 +972,27 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="40"/>
+        <location filename="../application/main.cpp" line="42"/>
         <source>Unable to </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="72"/>
+        <location filename="../application/main.cpp" line="74"/>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="73"/>
+        <location filename="../application/main.cpp" line="75"/>
         <source>Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="78"/>
+        <location filename="../application/main.cpp" line="80"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="82"/>
+        <location filename="../application/main.cpp" line="84"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation type="unfinished"></translation>
     </message>
