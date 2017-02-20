@@ -34,12 +34,6 @@ private Q_SLOTS:
 
 private:
     const std::vector<SyncthingDir> &m_dirs;
-    const QIcon m_unknownIcon;
-    const QIcon m_idleIcon;
-    const QIcon m_syncIcon;
-    const QIcon m_errorIcon;
-    const QIcon m_pausedIcon;
-    const QIcon m_otherIcon;
 };
 
 } // namespace Data

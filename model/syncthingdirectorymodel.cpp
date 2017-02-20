@@ -1,4 +1,5 @@
 #include "./syncthingdirectorymodel.h"
+#include "./syncthingicons.h"
 #include "./colors.h"
 
 #include "../connector/syncthingconnection.h"
@@ -12,13 +13,7 @@ namespace Data {
 
 SyncthingDirectoryModel::SyncthingDirectoryModel(SyncthingConnection &connection, QObject *parent) :
     SyncthingModel(connection, parent),
-    m_dirs(connection.dirInfo()),
-    m_unknownIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-disconnected.svg"))),
-    m_idleIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-ok.svg"))),
-    m_syncIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-sync.svg"))),
-    m_errorIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-error.svg"))),
-    m_pausedIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-pause.svg"))),
-    m_otherIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-default.svg")))
+    m_dirs(connection.dirInfo())
 {
     connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingDirectoryModel::newConfig);
     connect(&m_connection, &SyncthingConnection::newDirs, this, &SyncthingDirectoryModel::newDirs);
@@ -188,13 +183,13 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 switch(index.column()) {
                 case 0:
                     switch(dir.status) {
-                    case SyncthingDirStatus::Unknown: return m_unknownIcon;
-                    case SyncthingDirStatus::Unshared: return m_unknownIcon;
-                    case SyncthingDirStatus::Idle: return m_idleIcon;
-                    case SyncthingDirStatus::Scanning: return m_otherIcon;
-                    case SyncthingDirStatus::Synchronizing: return m_syncIcon;
-                    case SyncthingDirStatus::Paused: return m_pausedIcon;
-                    case SyncthingDirStatus::OutOfSync: return m_errorIcon;
+                    case SyncthingDirStatus::Unknown:
+                    case SyncthingDirStatus::Unshared: return statusIcons().disconnected;
+                    case SyncthingDirStatus::Idle: return statusIcons().idling;
+                    case SyncthingDirStatus::Scanning: return statusIcons().scanninig;
+                    case SyncthingDirStatus::Synchronizing: return statusIcons().sync;
+                    case SyncthingDirStatus::Paused: return statusIcons().pause;
+                    case SyncthingDirStatus::OutOfSync: return statusIcons().error;
                     }
                     break;
                 }

@@ -3,6 +3,8 @@
 
 #include "../application/settings.h"
 
+#include "../../model/syncthingicons.h"
+
 #include "../../connector/syncthingconnection.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 # include "../../connector/syncthingservice.h"
@@ -12,7 +14,6 @@
 #include <qtutilities/misc/dialogutils.h>
 
 #include <QCoreApplication>
-#include <QSvgRenderer>
 #include <QPainter>
 #include <QPixmap>
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -34,15 +35,6 @@ namespace QtGui {
 TrayIcon::TrayIcon(QObject *parent) :
     QSystemTrayIcon(parent),
     m_initialized(false),
-    m_size(QSize(128, 128)),
-    m_statusIconDisconnected(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-disconnected.svg")))),
-    m_statusIconIdling(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-ok.svg")))),
-    m_statusIconScanning(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-default.svg")))),
-    m_statusIconNotify(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-notify.svg")))),
-    m_statusIconPause(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-pause.svg")))),
-    m_statusIconSync(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-sync.svg")))),
-    m_statusIconError(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-error.svg")))),
-    m_statusIconErrorSync(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-error-sync.svg")))),
     m_trayMenu(this),
     m_status(SyncthingStatus::Disconnected)
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
@@ -185,7 +177,7 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
     const auto &settings = Settings::values();
     switch(status) {
     case SyncthingStatus::Disconnected:
-        setIcon(m_statusIconDisconnected);
+        setIcon(statusIcons().disconnected);
         if(connection.autoReconnectInterval() > 0) {
             setToolTip(tr("Not connected to Syncthing - trying to reconnect every %1 ms")
                        .arg(connection.autoReconnectInterval()));
@@ -208,7 +200,7 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
         }
         break;
     case SyncthingStatus::Reconnecting:
-        setIcon(m_statusIconDisconnected);
+        setIcon(statusIcons().disconnected);
         setToolTip(tr("Reconnecting ..."));
         break;
     default:
@@ -217,31 +209,31 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
 #endif
         if(connection.hasOutOfSyncDirs()) {
             if(status == SyncthingStatus::Synchronizing) {
-                setIcon(m_statusIconErrorSync);
+                setIcon(statusIcons().errorSync);
                 setToolTip(tr("Synchronization is ongoing but at least one directory is out of sync"));
             } else {
-                setIcon(m_statusIconError);
+                setIcon(statusIcons().error);
                 setToolTip(tr("At least one directory is out of sync"));
             }
         } else if(connection.hasUnreadNotifications()) {
-            setIcon(m_statusIconNotify);
+            setIcon(statusIcons().notify);
             setToolTip(tr("Notifications available"));
         } else {
             switch(status) {
             case SyncthingStatus::Idle:
-                setIcon(m_statusIconIdling);
+                setIcon(statusIcons().idling);
                 setToolTip(tr("Syncthing is idling"));
                 break;
             case SyncthingStatus::Scanning:
-                setIcon(m_statusIconScanning);
+                setIcon(statusIcons().scanninig);
                 setToolTip(tr("Syncthing is scanning"));
                 break;
             case SyncthingStatus::Paused:
-                setIcon(m_statusIconPause);
+                setIcon(statusIcons().pause);
                 setToolTip(tr("At least one device is paused"));
                 break;
             case SyncthingStatus::Synchronizing:
-                setIcon(m_statusIconSync);
+                setIcon(statusIcons().sync);
                 setToolTip(tr("Synchronization is ongoing"));
                 break;
             default:
@@ -281,21 +273,6 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
         }
     }
     m_status = status;
-}
-
-/*!
- * \brief Renders an SVG image to a QPixmap.
- * \remarks If instantiating QIcon directly from SVG image the icon is not displayed under Plasma 5. It would work
- *          with Tint2, tough.
- */
-QPixmap TrayIcon::renderSvgImage(const QString &path)
-{
-    QSvgRenderer renderer(path);
-    QPixmap pm(m_size);
-    pm.fill(QColor(Qt::transparent));
-    QPainter painter(&pm);
-    renderer.render(&painter, pm.rect());
-    return pm;
 }
 
 }

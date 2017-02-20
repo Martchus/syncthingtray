@@ -125,7 +125,7 @@ find_package(syncthingmodel ${META_APP_VERSION} REQUIRED)
 use_syncthingmodel()
 
 # link also explicitely against the following Qt 5 modules
-list(APPEND ADDITIONAL_QT_MODULES Network Svg)
+list(APPEND ADDITIONAL_QT_MODULES Network)
 
 # include modules to apply configuration
 include(BasicConfig)

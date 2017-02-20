@@ -16,6 +16,7 @@ set(HEADER_FILES
     syncthingdirectorymodel.h
     syncthingdevicemodel.h
     syncthingdownloadmodel.h
+    syncthingicons.h
     colors.h
 )
 set(SRC_FILES
@@ -23,6 +24,7 @@ set(SRC_FILES
     syncthingdirectorymodel.cpp
     syncthingdevicemodel.cpp
     syncthingdownloadmodel.cpp
+    syncthingicons.cpp
 )
 set(RES_FILES
     resources/${META_PROJECT_NAME}icons.qrc
@@ -46,7 +48,7 @@ find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector()
 
 # link also explicitely against the following Qt 5 modules
-list(APPEND ADDITIONAL_QT_MODULES Network Gui Widgets)
+list(APPEND ADDITIONAL_QT_MODULES Network Gui Widgets Svg)
 
 # include modules to apply configuration
 include(BasicConfig)

@@ -39,18 +39,7 @@ private slots:
     void handleSyncthingNotificationAction(const QString &action);
 
 private:
-    QPixmap renderSvgImage(const QString &path);
-
     bool m_initialized;
-    const QSize m_size;
-    const QIcon m_statusIconDisconnected;
-    const QIcon m_statusIconIdling;
-    const QIcon m_statusIconScanning;
-    const QIcon m_statusIconNotify;
-    const QIcon m_statusIconPause;
-    const QIcon m_statusIconSync;
-    const QIcon m_statusIconError;
-    const QIcon m_statusIconErrorSync;
     TrayMenu m_trayMenu;
     QMenu m_contextMenu;
     Data::SyncthingStatus m_status;

@@ -1,4 +1,5 @@
 #include "./syncthingdevicemodel.h"
+#include "./syncthingicons.h"
 #include "./colors.h"
 
 #include "../connector/syncthingconnection.h"
@@ -10,13 +11,7 @@ namespace Data {
 
 SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent) :
     SyncthingModel(connection, parent),
-    m_devs(connection.devInfo()),
-    m_unknownIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-disconnected.svg"))),
-    m_idleIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-ok.svg"))),
-    m_syncIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-sync.svg"))),
-    m_errorIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-error.svg"))),
-    m_pausedIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-pause.svg"))),
-    m_otherIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-default.svg")))
+    m_devs(connection.devInfo())
 {
     connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingDeviceModel::newConfig);
     connect(&m_connection, &SyncthingConnection::newDevices, this, &SyncthingDeviceModel::newDevices);
@@ -168,17 +163,17 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             case Qt::DecorationRole:
                 switch(index.column()) {
                 case 0:
-                    if(dev.paused) {
-                        return m_pausedIcon;
+                   if(dev.paused) {
+                        return statusIcons().pause;
                     } else {
                         switch(dev.status) {
                         case SyncthingDevStatus::Unknown:
-                        case SyncthingDevStatus::Disconnected: return m_unknownIcon;
+                        case SyncthingDevStatus::Disconnected: return statusIcons().disconnected;
                         case SyncthingDevStatus::OwnDevice:
-                        case SyncthingDevStatus::Idle: return m_idleIcon;
-                        case SyncthingDevStatus::Synchronizing: return m_syncIcon;
+                        case SyncthingDevStatus::Idle: return statusIcons().idling;
+                        case SyncthingDevStatus::Synchronizing: return statusIcons().sync;
                         case SyncthingDevStatus::OutOfSync:
-                        case SyncthingDevStatus::Rejected: return m_errorIcon;
+                        case SyncthingDevStatus::Rejected: return statusIcons().error;
                         }
                     }
                     break;
