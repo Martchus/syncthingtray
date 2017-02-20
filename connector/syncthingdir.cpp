@@ -4,11 +4,32 @@
 
 #include <QStringBuilder>
 #include <QJsonObject>
+#include <QCoreApplication>
 
 using namespace ChronoUtilities;
 using namespace ConversionUtilities;
 
 namespace Data {
+
+QString statusString(SyncthingDirStatus status)
+{
+    switch(status) {
+    case SyncthingDirStatus::Unknown:
+        return QCoreApplication::translate("SyncthingDirStatus", "unknown");
+    case SyncthingDirStatus::Idle:
+        return QCoreApplication::translate("SyncthingDirStatus", "idle");
+    case SyncthingDirStatus::Unshared:
+        return QCoreApplication::translate("SyncthingDirStatus", "unshared");
+    case SyncthingDirStatus::Scanning:
+        return QCoreApplication::translate("SyncthingDirStatus", "scanning");
+    case SyncthingDirStatus::Synchronizing:
+        return QCoreApplication::translate("SyncthingDirStatus", "synchronizing");
+    case SyncthingDirStatus::Paused:
+        return QCoreApplication::translate("SyncthingDirStatus", "paused");
+    case SyncthingDirStatus::OutOfSync:
+        return QCoreApplication::translate("SyncthingDirStatus", "out of sync");
+    }
+}
 
 /*!
  * \brief Assigns the status from the specified status string.

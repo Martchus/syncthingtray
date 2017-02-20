@@ -23,6 +23,8 @@ enum class SyncthingDirStatus
     OutOfSync
 };
 
+QString statusString(SyncthingDirStatus status);
+
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDirError
 {
     SyncthingDirError(const QString &message, const QString &path) :

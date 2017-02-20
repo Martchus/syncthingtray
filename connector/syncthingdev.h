@@ -21,6 +21,8 @@ enum class SyncthingDevStatus
     Rejected
 };
 
+QString statusString(SyncthingDevStatus status);
+
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev
 {
     SyncthingDev(const QString &id = QString(), const QString &name = QString());

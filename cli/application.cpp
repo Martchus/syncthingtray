@@ -327,24 +327,7 @@ void Application::printStatus(const ArgumentOccurrence &)
             setStyle(cout);
             printProperty("Label", dir->label);
             printProperty("Path", dir->path);
-            const char *status;
-            switch(dir->status) {
-            case SyncthingDirStatus::Idle:
-                status = "idle"; break;
-            case SyncthingDirStatus::Unshared:
-                status = "unshared"; break;
-            case SyncthingDirStatus::Scanning:
-                status = "scanning"; break;
-            case SyncthingDirStatus::Synchronizing:
-                status = "synchronizing"; break;
-            case SyncthingDirStatus::Paused:
-                status = "paused"; break;
-            case SyncthingDirStatus::OutOfSync:
-                status = "out of sync"; break;
-            default:
-                status = "unknown";
-            }
-            printProperty("Status", status);
+            printProperty("Status", statusString(dir->status));
             printProperty("Last scan time", dir->lastScanTime);
             printProperty("Last file time", dir->lastFileTime);
             printProperty("Last file name", dir->lastFileName);
@@ -377,26 +360,11 @@ void Application::printStatus(const ArgumentOccurrence &)
             cout << dev->name.toLocal8Bit().data() << '\n';
             setStyle(cout);
             printProperty("ID", dev->id);
-            const char *status;
+            QString status;
             if(dev->paused) {
-                status = "paused";
+                status = QStringLiteral("paused");
             } else {
-                switch(dev->status) {
-                case SyncthingDevStatus::Disconnected:
-                    status = "disconnected"; break;
-                case SyncthingDevStatus::OwnDevice:
-                    status = "own device"; break;
-                case SyncthingDevStatus::Idle:
-                    status = "idle"; break;
-                case SyncthingDevStatus::Synchronizing:
-                    status = "synchronizing"; break;
-                case SyncthingDevStatus::OutOfSync:
-                    status = "out of sync"; break;
-                case SyncthingDevStatus::Rejected:
-                    status = "rejected"; break;
-                default:
-                    status = "unknown";
-                }
+                status = statusString(dev->status);
             }
             printProperty("Status", status);
             printProperty("Addresses", dev->addresses);
