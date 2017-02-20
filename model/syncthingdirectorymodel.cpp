@@ -167,14 +167,17 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 switch(index.column()) {
                 case 0: return dir.label.isEmpty() ? dir.id : dir.label;
                 case 1:
-                    switch(dir.status) {
-                    case SyncthingDirStatus::Unknown: return tr("Unknown status");
-                    case SyncthingDirStatus::Unshared: return tr("Unshared");
-                    case SyncthingDirStatus::Idle: return tr("Idle");
-                    case SyncthingDirStatus::Scanning: return dir.progressPercentage > 0 ? tr("Scanning (%1 %)").arg(dir.progressPercentage) : tr("Scanning");
-                    case SyncthingDirStatus::Synchronizing: return dir.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dir.progressPercentage) : tr("Synchronizing");
-                    case SyncthingDirStatus::Paused: return tr("Paused");
-                    case SyncthingDirStatus::OutOfSync: return tr("Out of sync");
+                    if(dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
+                        return tr("Paused");
+                    } else {
+                        switch(dir.status) {
+                        case SyncthingDirStatus::Unknown: return tr("Unknown status");
+                        case SyncthingDirStatus::Unshared: return tr("Unshared");
+                        case SyncthingDirStatus::Idle: return tr("Idle");
+                        case SyncthingDirStatus::Scanning: return dir.progressPercentage > 0 ? tr("Scanning (%1 %)").arg(dir.progressPercentage) : tr("Scanning");
+                        case SyncthingDirStatus::Synchronizing: return dir.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dir.progressPercentage) : tr("Synchronizing");
+                        case SyncthingDirStatus::OutOfSync: return tr("Out of sync");
+                        }
                     }
                     break;
                 }
@@ -182,14 +185,17 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
             case Qt::DecorationRole:
                 switch(index.column()) {
                 case 0:
-                    switch(dir.status) {
-                    case SyncthingDirStatus::Unknown:
-                    case SyncthingDirStatus::Unshared: return statusIcons().disconnected;
-                    case SyncthingDirStatus::Idle: return statusIcons().idling;
-                    case SyncthingDirStatus::Scanning: return statusIcons().scanninig;
-                    case SyncthingDirStatus::Synchronizing: return statusIcons().sync;
-                    case SyncthingDirStatus::Paused: return statusIcons().pause;
-                    case SyncthingDirStatus::OutOfSync: return statusIcons().error;
+                    if(dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
+                        return statusIcons().pause;
+                    } else {
+                        switch(dir.status) {
+                        case SyncthingDirStatus::Unknown:
+                        case SyncthingDirStatus::Unshared: return statusIcons().disconnected;
+                        case SyncthingDirStatus::Idle: return statusIcons().idling;
+                        case SyncthingDirStatus::Scanning: return statusIcons().scanninig;
+                        case SyncthingDirStatus::Synchronizing: return statusIcons().sync;
+                        case SyncthingDirStatus::OutOfSync: return statusIcons().error;
+                        }
                     }
                     break;
                 }
@@ -204,14 +210,17 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 switch(index.column()) {
                 case 0: break;
                 case 1:
-                    switch(dir.status) {
-                    case SyncthingDirStatus::Unknown: break;
-                    case SyncthingDirStatus::Idle: return Colors::green(m_brightColors);
-                    case SyncthingDirStatus::Unshared: return Colors::orange(m_brightColors);
-                    case SyncthingDirStatus::Scanning:
-                    case SyncthingDirStatus::Synchronizing: return Colors::blue(m_brightColors);
-                    case SyncthingDirStatus::Paused: break;
-                    case SyncthingDirStatus::OutOfSync: return Colors::red(m_brightColors);
+                    if(dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
+                        break;
+                    } else {
+                        switch(dir.status) {
+                        case SyncthingDirStatus::Unknown: break;
+                        case SyncthingDirStatus::Idle: return Colors::green(m_brightColors);
+                        case SyncthingDirStatus::Unshared: return Colors::orange(m_brightColors);
+                        case SyncthingDirStatus::Scanning:
+                        case SyncthingDirStatus::Synchronizing: return Colors::blue(m_brightColors);
+                        case SyncthingDirStatus::OutOfSync: return Colors::red(m_brightColors);
+                        }
                     }
                     break;
                 }

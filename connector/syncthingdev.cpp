@@ -24,4 +24,13 @@ QString statusString(SyncthingDevStatus status)
     }
 }
 
+QString SyncthingDev::statusString() const
+{
+    if(paused) {
+        return QCoreApplication::translate("SyncthingDev", "paused");
+    } else {
+        return ::Data::statusString(status);
+    }
+}
+
 } // namespace Data

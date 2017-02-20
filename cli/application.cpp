@@ -327,7 +327,7 @@ void Application::printStatus(const ArgumentOccurrence &)
             setStyle(cout);
             printProperty("Label", dir->label);
             printProperty("Path", dir->path);
-            printProperty("Status", statusString(dir->status));
+            printProperty("Status", dir->statusString());
             printProperty("Last scan time", dir->lastScanTime);
             printProperty("Last file time", dir->lastFileTime);
             printProperty("Last file name", dir->lastFileName);
@@ -360,13 +360,7 @@ void Application::printStatus(const ArgumentOccurrence &)
             cout << dev->name.toLocal8Bit().data() << '\n';
             setStyle(cout);
             printProperty("ID", dev->id);
-            QString status;
-            if(dev->paused) {
-                status = QStringLiteral("paused");
-            } else {
-                status = statusString(dev->status);
-            }
-            printProperty("Status", status);
+            printProperty("Status", dev->statusString());
             printProperty("Addresses", dev->addresses);
             printProperty("Compression", dev->compression);
             printProperty("Cert name", dev->certName);

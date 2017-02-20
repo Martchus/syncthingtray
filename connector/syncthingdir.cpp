@@ -24,8 +24,6 @@ QString statusString(SyncthingDirStatus status)
         return QCoreApplication::translate("SyncthingDirStatus", "scanning");
     case SyncthingDirStatus::Synchronizing:
         return QCoreApplication::translate("SyncthingDirStatus", "synchronizing");
-    case SyncthingDirStatus::Paused:
-        return QCoreApplication::translate("SyncthingDirStatus", "paused");
     case SyncthingDirStatus::OutOfSync:
         return QCoreApplication::translate("SyncthingDirStatus", "out of sync");
     }
@@ -119,6 +117,15 @@ bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, DateTime time)
         return true;
     }
     return false;
+}
+
+QString SyncthingDir::statusString() const
+{
+    if(paused) {
+        return QCoreApplication::translate("SyncthingDir", "paused");
+    } else {
+        return ::Data::statusString(status);
+    }
 }
 
 SyncthingItemDownloadProgress::SyncthingItemDownloadProgress(const QString &containingDirPath, const QString &relativeItemPath, const QJsonObject &values) :

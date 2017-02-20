@@ -26,6 +26,8 @@ QString statusString(SyncthingDevStatus status);
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev
 {
     SyncthingDev(const QString &id = QString(), const QString &name = QString());
+    QString statusString() const;
+
     QString id;
     QString name;
     QStringList addresses;

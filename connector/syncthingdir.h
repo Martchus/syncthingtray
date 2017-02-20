@@ -19,7 +19,6 @@ enum class SyncthingDirStatus
     Unshared,
     Scanning,
     Synchronizing,
-    Paused,
     OutOfSync
 };
 
@@ -65,7 +64,8 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir
     SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
     bool assignStatus(const QString &statusStr, ChronoUtilities::DateTime time);
     bool assignStatus(SyncthingDirStatus newStatus, ChronoUtilities::DateTime time);
-    const QString displayName() const;
+    QString displayName() const;
+    QString statusString() const;
 
     QString id;
     QString label;
@@ -77,6 +77,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir
     int rescanInterval = 0;
     int minDiskFreePercentage = 0;
     SyncthingDirStatus status = SyncthingDirStatus::Idle;
+    bool paused = false;
     ChronoUtilities::DateTime lastStatusUpdate;
     int progressPercentage = 0;
     int progressRate = 0;
@@ -102,7 +103,7 @@ inline SyncthingDir::SyncthingDir(const QString &id, const QString &label, const
     path(path)
 {}
 
-inline const QString SyncthingDir::displayName() const
+inline QString SyncthingDir::displayName() const
 {
     return label.isEmpty() ? id : label;
 }

@@ -804,6 +804,7 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
             dirItem->ignorePermissions = dirObj.value(QStringLiteral("ignorePerms")).toBool(false);
             dirItem->autoNormalize = dirObj.value(QStringLiteral("autoNormalize")).toBool(false);
             dirItem->minDiskFreePercentage = dirObj.value(QStringLiteral("minDiskFreePct")).toInt(-1);
+            dirItem->paused = dirObj.value(QStringLiteral("paused")).toBool(dirItem->paused);
         }
     }
     m_dirs.swap(newDirs);
@@ -830,6 +831,7 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
             devItem->certName = devObj.value(QStringLiteral("certName")).toString();
             devItem->introducer = devObj.value(QStringLiteral("introducer")).toBool(false);
             devItem->status = devItem->id == m_myId ? SyncthingDevStatus::OwnDevice : SyncthingDevStatus::Unknown;
+            devItem->paused = devObj.value(QStringLiteral("paused")).toBool(devItem->paused);
         }
     }
     m_devs.swap(newDevs);
@@ -1297,7 +1299,10 @@ void SyncthingConnection::readDownloadProgressEvent(DateTime eventTime, const QJ
  */
 void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
 {
-    const QString dir(eventData.value(QStringLiteral("folder")).toString());
+    QString dir(eventData.value(QStringLiteral("folder")).toString());
+    if(dir.isEmpty()) {
+        dir = eventData.value(QStringLiteral("id")).toString();
+    }
     if(!dir.isEmpty()) {
         int index;
         if(SyncthingDir *dirInfo = findDirInfo(dir, index)) {
@@ -1357,6 +1362,16 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
                     dirInfo->progressPercentage = current * 100 / total;
                     dirInfo->progressRate = rate;
                     dirInfo->assignStatus(SyncthingDirStatus::Scanning, eventTime); // ensure state is scanning
+                    emit dirStatusChanged(*dirInfo, index);
+                }
+            } else if(eventType == QLatin1String("FolderPaused")) {
+                if(!dirInfo->paused) {
+                    dirInfo->paused = true;
+                    emit dirStatusChanged(*dirInfo, index);
+                }
+            } else if(eventType == QLatin1String("FolderResumed")) {
+                if(dirInfo->paused) {
+                    dirInfo->paused = false;
                     emit dirStatusChanged(*dirInfo, index);
                 }
             }

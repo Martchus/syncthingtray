@@ -202,27 +202,28 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
         QAction *infoAction = menu->addSeparator();
         infoAction->setIcon(QIcon::fromTheme(QStringLiteral("dialog-information")));
         infoAction->setText(tr("Directory"));
-        QAction *statusAction = menu->addAction(tr("Status: ") + statusString(lastDir->status));
-        switch(lastDir->status) {
-        case SyncthingDirStatus::Unknown:
-        case SyncthingDirStatus::Unshared:
-            statusAction->setIcon(statusIcons().disconnected);
-            break;
-        case SyncthingDirStatus::Idle:
-            statusAction->setIcon(statusIcons().idling);
-            break;
-        case SyncthingDirStatus::Scanning:
-            statusAction->setIcon(statusIcons().scanninig);
-            break;
-        case SyncthingDirStatus::Synchronizing:
-            statusAction->setIcon(statusIcons().sync);
-            break;
-        case SyncthingDirStatus::Paused:
+        QAction *statusAction = menu->addAction(tr("Status: ") + lastDir->statusString());
+        if(lastDir->paused && lastDir->status != SyncthingDirStatus::OutOfSync) {
             statusAction->setIcon(statusIcons().pause);
-            break;
-        case SyncthingDirStatus::OutOfSync:
-            statusAction->setIcon(statusIcons().error);
-            break;
+        } else {
+            switch(lastDir->status) {
+            case SyncthingDirStatus::Unknown:
+            case SyncthingDirStatus::Unshared:
+                statusAction->setIcon(statusIcons().disconnected);
+                break;
+            case SyncthingDirStatus::Idle:
+                statusAction->setIcon(statusIcons().idling);
+                break;
+            case SyncthingDirStatus::Scanning:
+                statusAction->setIcon(statusIcons().scanninig);
+                break;
+            case SyncthingDirStatus::Synchronizing:
+                statusAction->setIcon(statusIcons().sync);
+                break;
+            case SyncthingDirStatus::OutOfSync:
+                statusAction->setIcon(statusIcons().error);
+                break;
+            }
         }
         menu->addAction(QIcon::fromTheme(QStringLiteral("accept_time_event")),
                         tr("Last scan time: ") + agoString(lastDir->lastScanTime))->setEnabled(false);

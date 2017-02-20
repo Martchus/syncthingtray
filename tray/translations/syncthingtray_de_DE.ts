@@ -969,7 +969,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../application/settings.cpp" line="70"/>
+        <location filename="../application/settings.cpp" line="77"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Fehler beim laden des Zertifikats &quot;%1&quot; beim wiederherstellen der Einstellungen.</translation>
     </message>
