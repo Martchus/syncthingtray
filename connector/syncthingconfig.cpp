@@ -3,6 +3,7 @@
 #include <QStandardPaths>
 #include <QXmlStreamReader>
 #include <QFile>
+#include <QHostAddress>
 
 namespace Data {
 
@@ -65,6 +66,11 @@ bool SyncthingConfig::restore(const QString &configFilePath)
     }
 #include <qtutilities/misc/undefxmlparsermacros.h>
     return ok;
+}
+
+QString SyncthingConfig::syncthingUrl() const
+{
+    return (guiEnforcesSecureConnection || !QHostAddress(guiAddress.mid(0, guiAddress.indexOf(QChar(':')))).isLoopback() ? QStringLiteral("https://") : QStringLiteral("http://")) + guiAddress;
 }
 
 } // namespace Data

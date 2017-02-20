@@ -12,7 +12,6 @@
 
 #include <QCoreApplication>
 #include <QNetworkAccessManager>
-#include <QHostAddress>
 
 #include <functional>
 #include <iostream>
@@ -117,7 +116,7 @@ int Application::exec(int argc, const char * const *argv)
         if(const char *urlArgValue = m_args.url.firstValue()) {
             m_settings.syncthingUrl = argToQString(urlArgValue);
         } else if(!config.guiAddress.isEmpty()) {
-            m_settings.syncthingUrl = (config.guiEnforcesSecureConnection || !QHostAddress(config.guiAddress.mid(0, config.guiAddress.indexOf(QChar(':')))).isLoopback() ? QStringLiteral("https://") : QStringLiteral("http://")) + config.guiAddress;
+            m_settings.syncthingUrl = config.syncthingUrl();
         } else {
             m_settings.syncthingUrl = QStringLiteral("http://localhost:8080");
         }

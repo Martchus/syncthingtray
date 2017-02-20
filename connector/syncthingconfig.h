@@ -20,6 +20,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConfig
     static QString locateConfigFile();
     static QString locateHttpsCertificate();
     bool restore(const QString &configFilePath);
+    QString syncthingUrl() const;
 };
 
 
