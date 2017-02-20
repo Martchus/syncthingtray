@@ -1,5 +1,7 @@
 #include "./settings.h"
 
+#include "resources/config.h"
+
 #include <qtutilities/settingsdialog/qtsettings.h>
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
 # include <qtutilities/misc/dbusnotification.h>
@@ -11,6 +13,7 @@
 #include <QSslCertificate>
 #include <QSslError>
 #include <QMessageBox>
+#include <QFile>
 
 using namespace std;
 using namespace Data;
@@ -33,7 +36,11 @@ Settings &values()
 
 void restore()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope,  QApplication::organizationName(), QApplication::applicationName());
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral(PROJECT_NAME));
+    // move old config to new location
+    const QString oldConfig = QSettings(QSettings::IniFormat, QSettings::UserScope, QApplication::organizationName(), QApplication::applicationName()).fileName();
+    QFile::rename(oldConfig, settings.fileName()) || QFile::remove(oldConfig);
+    settings.sync();
     Settings &v = values();
 
     settings.beginGroup(QStringLiteral("tray"));
@@ -121,7 +128,8 @@ void restore()
 
 void save()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope,  QApplication::organizationName(), QApplication::applicationName());
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral(PROJECT_NAME));
+
     const Settings &v = values();
 
     settings.beginGroup(QStringLiteral("tray"));
