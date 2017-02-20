@@ -126,7 +126,7 @@ public Q_SLOTS:
     void pauseAllDevs();
     void resume(const QString &devId);
     void resumeAllDevs();
-    void rescan(const QString &dirId);
+    void rescan(const QString &dirId, const QString &relpath = QString());
     void rescanAllDirs();
     void restart();
     void shutdown();

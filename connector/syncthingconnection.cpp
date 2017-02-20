@@ -298,10 +298,13 @@ void SyncthingConnection::resumeAllDevs()
  *
  * The signal error() is emitted when the request was not successful.
  */
-void SyncthingConnection::rescan(const QString &dirId)
+void SyncthingConnection::rescan(const QString &dirId, const QString &relpath)
 {
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("folder"), dirId);
+    if(!relpath.isEmpty()) {
+        query.addQueryItem(QStringLiteral("sub"), relpath);
+    }
     QNetworkReply *reply = postData(QStringLiteral("db/scan"), query);
     reply->setProperty("dirId", dirId);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readRescan);
