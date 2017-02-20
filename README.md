@@ -105,7 +105,7 @@ The following Qt 5 modules are requried: core network gui widgets svg webenginew
    cd $SOURCES
    git clone https://github.com/Martchus/cpp-utilities.git
    git clone https://github.com/Martchus/qtutilities.git
-   git glone https://github.com/Martchus/syncthingtray.git
+   git clone https://github.com/Martchus/syncthingtray.git
    git clone https://github.com/Martchus/subdirs.git
    ```
 2. Build and install everything in one step:
