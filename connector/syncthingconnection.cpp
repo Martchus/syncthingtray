@@ -10,7 +10,6 @@
 #include <QNetworkReply>
 #include <QUrlQuery>
 #include <QJsonDocument>
-#include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QAuthenticator>
@@ -244,14 +243,14 @@ void SyncthingConnection::autoReconnect()
  *
  * The signal error() is emitted when the request was not successful.
  */
-void SyncthingConnection::pause(const QString &devId)
+void SyncthingConnection::pauseDevice(const QString &devId)
 {
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("device"), devId);
     QNetworkReply *reply = postData(QStringLiteral("system/pause"), query);
     reply->setProperty("devId", devId);
     reply->setProperty("resume", false);
-    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readPauseResume);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDevPauseResume);
 }
 
 /*!
@@ -262,7 +261,7 @@ void SyncthingConnection::pause(const QString &devId)
 void SyncthingConnection::pauseAllDevs()
 {
     for(const SyncthingDev &dev : m_devs) {
-        pause(dev.id);
+        pauseDevice(dev.id);
     }
 }
 
@@ -271,14 +270,14 @@ void SyncthingConnection::pauseAllDevs()
  *
  * The signal error() is emitted when the request was not successful.
  */
-void SyncthingConnection::resume(const QString &devId)
+void SyncthingConnection::resumeDevice(const QString &devId)
 {
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("device"), devId);
     QNetworkReply *reply = postData(QStringLiteral("system/resume"), query);
     reply->setProperty("devId", devId);
     reply->setProperty("resume", true);
-    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readPauseResume);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDevPauseResume);
 }
 
 /*!
@@ -289,8 +288,80 @@ void SyncthingConnection::resume(const QString &devId)
 void SyncthingConnection::resumeAllDevs()
 {
     for(const SyncthingDev &dev : m_devs) {
-        resume(dev.id);
+        resumeDevice(dev.id);
     }
+}
+
+bool setPaused(QJsonObject &config, const QStringList &dirs, bool paused)
+{
+    bool altered = false;
+    QJsonValueRef folders = config.find(QLatin1String("folders")).value();
+    if(folders.isArray()) {
+        QJsonArray foldersArray = folders.toArray();
+        for(QJsonValueRef folder : foldersArray) {
+            QJsonObject folderObj = folder.toObject();
+            if(dirs.isEmpty() || dirs.contains(folderObj.value(QLatin1String("id")).toString())) {
+                QJsonValueRef pausedValue = folderObj.find(QLatin1String("paused")).value();
+                if(pausedValue.toBool(false) != paused) {
+                    pausedValue = paused;
+                    folder = folderObj;
+                    altered = true;
+                }
+            }
+        }
+        if(altered) {
+            folders = foldersArray;
+        }
+    }
+    return altered;
+}
+
+/*!
+ * \brief Pauses the directories with the specified IDs.
+ * \remarks Calling this method when not connected results in an error because the *current* Syncthing config must
+ *          be available for this call.
+ *
+ * The signal error() is emitted when the request was not successful.
+ */
+void SyncthingConnection::pauseDirectories(const QStringList &dirIds)
+{
+    pauseResumeDirectory(dirIds, true);
+}
+
+/*!
+ * \brief Pauses all directories.
+ * \remarks Calling this method when not connected results in an error because the *current* Syncthing config must
+ *          be available for this call.
+ *
+ * The signal error() is emitted when the request was not successful.
+ */
+void SyncthingConnection::pauseAllDirs()
+{
+    pauseResumeDirectory(directoryIds(), true);
+}
+
+/*!
+ * \brief Resumes the directories with the specified IDs.
+ * \remarks Calling this method when not connected results in an error because the *current* Syncthing config must
+ *          be available for this call.
+ *
+ * The signal error() is emitted when the request was not successful.
+ */
+void SyncthingConnection::resumeDirectories(const QStringList &dirIds)
+{
+    pauseResumeDirectory(dirIds, false);
+}
+
+/*!
+ * \brief Resumes all directories.
+ * \remarks Calling this method when not connected results in an error because the *current* Syncthing config must
+ *          be available for this call.
+ *
+ * The signal error() is emitted when the request was not successful.
+ */
+void SyncthingConnection::resumeAllDirs()
+{
+    pauseResumeDirectory(directoryIds(), false);
 }
 
 /*!
@@ -378,6 +449,24 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
     return reply;
 }
 
+void SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool paused)
+{
+    if(!isConnected()) {
+        emit error(tr("Unable to pause/resume a directories when not connected"), SyncthingErrorCategory::SpecificRequest, QNetworkReply::NoError);
+        return;
+    }
+
+    QJsonObject config = m_rawConfig;
+    if(setPaused(config, dirIds, paused)) {
+        QJsonDocument doc;
+        doc.setObject(config);
+        QNetworkReply *reply = postData(QStringLiteral("system/config"), QUrlQuery(), doc.toJson());
+        reply->setProperty("dirIds", dirIds);
+        reply->setProperty("resume", !paused);
+        QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirPauseResume);
+    }
+}
+
 /*!
  * \brief Returns the directory info object for the directory with the specified ID.
  * \returns Returns a pointer to the object or nullptr if not found.
@@ -449,6 +538,16 @@ SyncthingDev *SyncthingConnection::findDevInfoByName(const QString &devName, int
         ++row;
     }
     return nullptr;
+}
+
+QStringList SyncthingConnection::directoryIds() const
+{
+    return ids(m_dirs);
+}
+
+QStringList SyncthingConnection::deviceIds() const
+{
+    return ids(m_devs);
 }
 
 /*!
@@ -757,10 +856,10 @@ void SyncthingConnection::readConfig()
         QJsonParseError jsonError;
         const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
         if(jsonError.error == QJsonParseError::NoError) {
-            const QJsonObject replyObj(replyDoc.object());
-            emit newConfig(replyObj);
-            readDirs(replyObj.value(QStringLiteral("folders")).toArray());
-            readDevs(replyObj.value(QStringLiteral("devices")).toArray());
+            m_rawConfig = replyDoc.object();
+            emit newConfig(m_rawConfig);
+            readDirs(m_rawConfig.value(QStringLiteral("folders")).toArray());
+            readDevs(m_rawConfig.value(QStringLiteral("devices")).toArray());
             m_hasConfig = true;
             if(!isConnected()) {
                 continueConnecting();
@@ -1486,22 +1585,39 @@ void SyncthingConnection::readRescan()
 }
 
 /*!
- * \brief Reads results of pause().
+ * \brief Reads results of pauseDevice() and resumeDevice().
  */
-void SyncthingConnection::readPauseResume()
+void SyncthingConnection::readDevPauseResume()
 {
     auto *reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     switch(reply->error()) {
     case QNetworkReply::NoError:
         if(reply->property("resume").toBool()) {
-            emit resumeTriggered(reply->property("devId").toString());
+            emit deviceResumeTriggered(reply->property("devId").toString());
         } else {
-            emit pauseTriggered(reply->property("devId").toString());
+            emit devicePauseTriggered(reply->property("devId").toString());
         }
         break;
     default:
-        emit error(tr("Unable to request pause/resume: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
+        emit error(tr("Unable to request device pause/resume: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
+    }
+}
+
+void SyncthingConnection::readDirPauseResume()
+{
+    auto *reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+    switch(reply->error()) {
+    case QNetworkReply::NoError:
+        if(reply->property("resume").toBool()) {
+            emit directoryResumeTriggered(reply->property("dirIds").toStringList());
+        } else {
+            emit directoryPauseTriggered(reply->property("dirIds").toStringList());
+        }
+        break;
+    default:
+        emit error(tr("Unable to request directory pause/resume: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
     }
 }
 

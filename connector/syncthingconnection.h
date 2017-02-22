@@ -8,6 +8,7 @@
 #include <QList>
 #include <QSslError>
 #include <QTimer>
+#include <QJsonObject>
 
 #include <functional>
 #include <vector>
@@ -113,6 +114,8 @@ public:
     SyncthingDev *findDevInfo(const QString &devId, int &row);
     SyncthingDev *findDevInfoByName(const QString &devName, int &row);
     const std::vector<SyncthingDir *> &completedDirs() const;
+    QStringList directoryIds() const;
+    QStringList deviceIds() const;
 
 public Q_SLOTS:
     bool loadSelfSignedCertificate();
@@ -122,10 +125,14 @@ public Q_SLOTS:
     void disconnect();
     void reconnect();
     void reconnect(SyncthingConnectionSettings &connectionSettings);
-    void pause(const QString &devId);
+    void pauseDevice(const QString &devId);
     void pauseAllDevs();
-    void resume(const QString &devId);
+    void resumeDevice(const QString &devId);
     void resumeAllDevs();
+    void pauseDirectories(const QStringList &dirIds);
+    void pauseAllDirs();
+    void resumeDirectories(const QStringList &dirIds);
+    void resumeAllDirs();
     void rescan(const QString &dirId, const QString &relpath = QString());
     void rescanAllDirs();
     void restart();
@@ -147,8 +154,10 @@ Q_SIGNALS:
     void myIdChanged(const QString &myNewId);
     void trafficChanged(uint64 totalIncomingTraffic, uint64 totalOutgoingTraffic);
     void rescanTriggered(const QString &dirId);
-    void pauseTriggered(const QString &devId);
-    void resumeTriggered(const QString &devId);
+    void devicePauseTriggered(const QString &devId);
+    void deviceResumeTriggered(const QString &devId);
+    void directoryPauseTriggered(const QStringList &dirIds);
+    void directoryResumeTriggered(const QStringList &dirIds);
     void restartTriggered();
     void shutdownTriggered();
 
@@ -181,7 +190,8 @@ private Q_SLOTS:
     void readItemStarted(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readItemFinished(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readRescan();
-    void readPauseResume();
+    void readDevPauseResume();
+    void readDirPauseResume();
     void readRestart();
     void readShutdown();
 
@@ -195,6 +205,7 @@ private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
+    void pauseResumeDirectory(const QStringList &dirIds, bool paused);
     SyncthingDir *addDirInfo(std::vector<SyncthingDir> &dirs, const QString &dirId);
     SyncthingDev *addDevInfo(std::vector<SyncthingDev> &devs, const QString &devId);
 
@@ -235,6 +246,7 @@ private:
     QString m_lastFileName;
     bool m_lastFileDeleted;
     QList<QSslError> m_expectedSslErrors;
+    QJsonObject m_rawConfig;
 };
 
 /*!

@@ -240,7 +240,7 @@ void Application::requestPause(const ArgumentOccurrence &occurrence)
     connect(&m_connection, &SyncthingConnection::pauseTriggered, this, &Application::handleResponse);
     for(const char *value : occurrence.values) {
         cerr << "Request pausing " << value << " ...\n";
-        m_connection.pause(argToQString(value));
+        m_connection.pauseDevice(argToQString(value));
     }
     cerr.flush();
 }
@@ -259,7 +259,7 @@ void Application::requestResume(const ArgumentOccurrence &occurrence)
     connect(&m_connection, &SyncthingConnection::resumeTriggered, this, &Application::handleResponse);
     for(const char *value : occurrence.values) {
         cerr << "Request resuming " << value << " ...\n";
-        m_connection.resume(argToQString(value));
+        m_connection.resumeDevice(argToQString(value));
     }
     cerr.flush();
 }

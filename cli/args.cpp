@@ -29,10 +29,8 @@ Args::Args() :
 
     rescan.setValueNames({"dir ID"});
     rescan.setRequiredValueCount(-1);
-    pause.setValueNames({"dev ID"});
-    pause.setRequiredValueCount(-1);
-    resume.setValueNames({"dev ID"});
-    resume.setRequiredValueCount(-1);
+    pause.setSubArguments({&dir, &dev});
+    resume.setSubArguments({&dir, &dev});
 
     parser.setMainArguments({&status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &pauseAll, &resume, &resumeAll,
                              &waitForIdle, &configFile, &apiKey, &url, &credentials, &certificate, &help});
