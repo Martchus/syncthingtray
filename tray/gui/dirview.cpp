@@ -39,11 +39,13 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
                 if(!clickedIndex.parent().isValid()) {
                     // open/scan dir buttons
                     const QRect itemRect(visualRect(clickedIndex));
-                    if(pos.x() > itemRect.right() - 34) {
-                        if(pos.x() > itemRect.right() - 17) {
-                            emit openDir(*dir);
-                        } else {
+                    if(pos.x() > itemRect.right() - 58) {
+                        if(pos.x() < itemRect.right() - 34) {
+                            emit pauseResumeDir(*dir);
+                        } else if(pos.x() < itemRect.right() - 17) {
                             emit scanDir(*dir);
+                        } else {
+                            emit openDir(*dir);
                         }
                     }
                 } else if(clickedIndex.row() == 7 && !dir->errors.empty()) {

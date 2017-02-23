@@ -69,6 +69,7 @@ private slots:
     void openItemDir(const Data::SyncthingItemDownloadProgress &item);
     void scanDir(const Data::SyncthingDir &dir);
     void pauseResumeDev(const Data::SyncthingDev &dev);
+    void pauseResumeDir(const Data::SyncthingDir &dir);
     void changeStatus();
     void updateTraffic();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

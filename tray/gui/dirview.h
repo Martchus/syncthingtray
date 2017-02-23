@@ -18,6 +18,7 @@ public:
 Q_SIGNALS:
     void openDir(const Data::SyncthingDir &dir);
     void scanDir(const Data::SyncthingDir &dir);
+    void pauseResumeDir(const Data::SyncthingDir &dir);
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event);

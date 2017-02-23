@@ -135,6 +135,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     connect(&m_connection, &SyncthingConnection::newNotification, this, &TrayWidget::handleNewNotification);
     connect(m_ui->dirsTreeView, &DirView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->dirsTreeView, &DirView::scanDir, this, &TrayWidget::scanDir);
+    connect(m_ui->dirsTreeView, &DirView::pauseResumeDir, this, &TrayWidget::pauseResumeDir);
     connect(m_ui->devsTreeView, &DevView::pauseResumeDev, this, &TrayWidget::pauseResumeDev);
     connect(m_ui->downloadsTreeView, &DownloadView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->downloadsTreeView, &DownloadView::openItemDir, this, &TrayWidget::openItemDir);
@@ -449,6 +450,15 @@ void TrayWidget::pauseResumeDev(const SyncthingDev &dev)
         m_connection.resumeDevice(dev.id);
     } else {
         m_connection.pauseDevice(dev.id);
+    }
+}
+
+void TrayWidget::pauseResumeDir(const SyncthingDir &dir)
+{
+    if(dir.paused) {
+        m_connection.resumeDirectories(QStringList(dir.id));
+    } else {
+        m_connection.pauseDirectories(QStringList(dir.id));
     }
 }
 

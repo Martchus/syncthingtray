@@ -17,6 +17,8 @@ public:
 private:
     const QPixmap m_refreshIcon;
     const QPixmap m_folderIcon;
+    const QPixmap m_pauseIcon;
+    const QPixmap m_resumeIcon;
 };
 
 }
