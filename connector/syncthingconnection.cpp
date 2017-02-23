@@ -456,9 +456,15 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
 /*!
  * \brief Internally used to pause/resume directories.
  * \returns Returns whether a request has been made.
+ * \remarks This might currently result in errors caused by Syncthing not
+ *          handling E notation correctly:
+ *          https://github.com/syncthing/syncthing/issues/4001
  */
 bool SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool paused)
 {
+    if(dirIds.isEmpty()) {
+        return false;
+    }
     if(!isConnected()) {
         emit error(tr("Unable to pause/resume a directories when not connected"), SyncthingErrorCategory::SpecificRequest, QNetworkReply::NoError);
         return false;
@@ -468,7 +474,7 @@ bool SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool p
     if(setPaused(config, dirIds, paused)) {
         QJsonDocument doc;
         doc.setObject(config);
-        QNetworkReply *reply = postData(QStringLiteral("system/config"), QUrlQuery(), doc.toJson());
+        QNetworkReply *reply = postData(QStringLiteral("system/config"), QUrlQuery(), doc.toJson(QJsonDocument::Compact));
         reply->setProperty("dirIds", dirIds);
         reply->setProperty("resume", !paused);
         QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirPauseResume);
