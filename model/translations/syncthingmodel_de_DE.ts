@@ -7,12 +7,12 @@
         <location filename="../syncthingdevicemodel.cpp" line="57"/>
         <location filename="../syncthingdevicemodel.cpp" line="83"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="58"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="84"/>
@@ -111,12 +111,12 @@
         <location filename="../syncthingdirectorymodel.cpp" line="59"/>
         <location filename="../syncthingdirectorymodel.cpp" line="85"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="60"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="86"/>
