@@ -120,7 +120,11 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
     for(const SyncthingDir &dir : dirs) {
         QStringRef dirPath(&dir.path);
         while(dirPath.endsWith(QChar('/'))) {
+#if QT_VERSION_MAJOR >= 5 && QT_VERSION_MINOR >= 8
             dirPath.chop(1);
+#else
+            dirPath = dirPath.left(dirPath.size() - 1);
+#endif
         }
         for(const QString &path : paths) {
             if(path == dirPath) {
