@@ -15,7 +15,7 @@ class LIB_SYNCTHING_MODEL_EXPORT SyncthingDeviceModel : public SyncthingModel
 {
     Q_OBJECT
 public:
-    enum SyncthingDevideModelRole
+    enum SyncthingDeviceModelRole
     {
         DeviceStatus = Qt::UserRole + 1,
         DevicePaused,

@@ -225,6 +225,10 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     break;
                 }
                 break;
+            case DirectoryStatus:
+                return static_cast<int>(dir.status);
+            case DirectoryPaused:
+                return dir.paused;
             default:
                 ;
             }
