@@ -129,10 +129,10 @@ public Q_SLOTS:
     void pauseAllDevs();
     void resumeDevice(const QString &devId);
     void resumeAllDevs();
-    void pauseDirectories(const QStringList &dirIds);
-    void pauseAllDirs();
-    void resumeDirectories(const QStringList &dirIds);
-    void resumeAllDirs();
+    bool pauseDirectories(const QStringList &dirIds);
+    bool pauseAllDirs();
+    bool resumeDirectories(const QStringList &dirIds);
+    bool resumeAllDirs();
     void rescan(const QString &dirId, const QString &relpath = QString());
     void rescanAllDirs();
     void restart();
@@ -205,7 +205,7 @@ private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
-    void pauseResumeDirectory(const QStringList &dirIds, bool paused);
+    bool pauseResumeDirectory(const QStringList &dirIds, bool paused);
     SyncthingDir *addDirInfo(std::vector<SyncthingDir> &dirs, const QString &dirId);
     SyncthingDev *addDevInfo(std::vector<SyncthingDev> &devs, const QString &devId);
 

@@ -11,29 +11,35 @@ Args::Args() :
     rescan("rescan", 'r', "rescans the specified directories"),
     rescanAll("rescan-all", '\0', "rescans all directories"),
     pause("pause", '\0', "pauses the specified devices"),
-    pauseAll("pause-all", '\0', "pauses all devices"),
+    pauseAllDevs("pause-all-devs", '\0', "pauses all devices"),
+    pauseAllDirs("pause-all-dirs", '\0', "pauses all directories"),
     resume("resume", '\0', "resumes the specified devices"),
-    resumeAll("resume-all", '\0', "resumes all devices"),
+    resumeAllDevs("resume-all-devs", '\0', "resumes all devices"),
+    resumeAllDirs("resume-all-dirs", '\0', "resumes all directories"),
     waitForIdle("wait-for-idle", 'w', "waits until the specified dirs/devs are idling"),
-    dir("dir", 'd', "specifies the directory to display status info for (default is all dirs)", {"ID"}),
-    dev("dev", '\0', "specifies the device to display status info for (default is all devs)", {"ID"}),
+    statusDir("dir", 'd', "specifies the directoies (default is all dirs)", {"ID"}),
+    statusDev("dev", '\0', "specifies the devices (default is all devs)", {"ID"}),
+    pauseDir("dir", 'd', "specifies the directories", {"ID"}),
+    pauseDev("dev", '\0', "specifies the devices", {"ID"}),
     configFile("config-file", 'f', "specifies the Syncthing config file", {"path"}),
     apiKey("api-key", 'k', "specifies the API key", {"key"}),
     url("url", 'u', "specifies the Syncthing URL, default is http://localhost:8080", {"URL"}),
     credentials("credentials", 'c', "specifies user name and password", {"user name", "password"}),
     certificate("cert", '\0', "specifies the certificate used by the Syncthing instance", {"path"})
 {
-    dir.setConstraints(0, -1), dev.setConstraints(0, -1);
-    status.setSubArguments({&dir, &dev});
-    waitForIdle.setSubArguments({&dir, &dev});
+    for(Argument *arg : {&statusDir, &statusDev, &pauseDev, &pauseDir}) {
+        arg->setConstraints(0, -1);
+    }
+    status.setSubArguments({&statusDir, &statusDev});
+    waitForIdle.setSubArguments({&statusDir, &statusDev});
 
     rescan.setValueNames({"dir ID"});
     rescan.setRequiredValueCount(-1);
-    pause.setSubArguments({&dir, &dev});
-    resume.setSubArguments({&dir, &dev});
+    pause.setSubArguments({&pauseDir, &pauseDev});
+    resume.setSubArguments({&pauseDir, &pauseDev});
 
-    parser.setMainArguments({&status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &pauseAll, &resume, &resumeAll,
-                             &waitForIdle, &configFile, &apiKey, &url, &credentials, &certificate, &help});
+    parser.setMainArguments({&status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &pauseAllDevs, &pauseAllDirs, &resume, &resumeAllDevs,
+                             &resumeAllDirs, &waitForIdle, &configFile, &apiKey, &url, &credentials, &certificate, &help});
 
     // allow setting default values via environment
     configFile.setEnvironmentVariable("SYNCTHING_CTL_CONFIG_FILE");

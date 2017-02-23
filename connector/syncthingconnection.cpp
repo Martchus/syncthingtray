@@ -292,6 +292,10 @@ void SyncthingConnection::resumeAllDevs()
     }
 }
 
+/*!
+ * \brief Alters the specified \a config so that the specified \a dirs are paused or not.
+ * \returns Returns whether the config has been altered (all dirs might have been already paused/unpaused).
+ */
 bool setPaused(QJsonObject &config, const QStringList &dirs, bool paused)
 {
     bool altered = false;
@@ -320,12 +324,12 @@ bool setPaused(QJsonObject &config, const QStringList &dirs, bool paused)
  * \brief Pauses the directories with the specified IDs.
  * \remarks Calling this method when not connected results in an error because the *current* Syncthing config must
  *          be available for this call.
- *
+ * \returns Returns whether a request has been made.
  * The signal error() is emitted when the request was not successful.
  */
-void SyncthingConnection::pauseDirectories(const QStringList &dirIds)
+bool SyncthingConnection::pauseDirectories(const QStringList &dirIds)
 {
-    pauseResumeDirectory(dirIds, true);
+    return pauseResumeDirectory(dirIds, true);
 }
 
 /*!
@@ -335,9 +339,9 @@ void SyncthingConnection::pauseDirectories(const QStringList &dirIds)
  *
  * The signal error() is emitted when the request was not successful.
  */
-void SyncthingConnection::pauseAllDirs()
+bool SyncthingConnection::pauseAllDirs()
 {
-    pauseResumeDirectory(directoryIds(), true);
+    return pauseResumeDirectory(directoryIds(), true);
 }
 
 /*!
@@ -347,9 +351,9 @@ void SyncthingConnection::pauseAllDirs()
  *
  * The signal error() is emitted when the request was not successful.
  */
-void SyncthingConnection::resumeDirectories(const QStringList &dirIds)
+bool SyncthingConnection::resumeDirectories(const QStringList &dirIds)
 {
-    pauseResumeDirectory(dirIds, false);
+    return pauseResumeDirectory(dirIds, false);
 }
 
 /*!
@@ -359,9 +363,9 @@ void SyncthingConnection::resumeDirectories(const QStringList &dirIds)
  *
  * The signal error() is emitted when the request was not successful.
  */
-void SyncthingConnection::resumeAllDirs()
+bool SyncthingConnection::resumeAllDirs()
 {
-    pauseResumeDirectory(directoryIds(), false);
+    return pauseResumeDirectory(directoryIds(), false);
 }
 
 /*!
@@ -449,11 +453,15 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
     return reply;
 }
 
-void SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool paused)
+/*!
+ * \brief Internally used to pause/resume directories.
+ * \returns Returns whether a request has been made.
+ */
+bool SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool paused)
 {
     if(!isConnected()) {
         emit error(tr("Unable to pause/resume a directories when not connected"), SyncthingErrorCategory::SpecificRequest, QNetworkReply::NoError);
-        return;
+        return false;
     }
 
     QJsonObject config = m_rawConfig;
@@ -464,7 +472,9 @@ void SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool p
         reply->setProperty("dirIds", dirIds);
         reply->setProperty("resume", !paused);
         QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirPauseResume);
+        return true;
     }
+    return false;
 }
 
 /*!

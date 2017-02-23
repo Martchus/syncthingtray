@@ -12,6 +12,12 @@
 
 namespace Cli {
 
+enum class OperationType
+{
+    Status,
+    PauseResume
+};
+
 class Application : public QObject
 {
     Q_OBJECT
@@ -27,6 +33,7 @@ private slots:
     void handleResponse();
     void handleError(const QString &message);
     void findRelevantDirsAndDevs();
+    void findRelevantDirsAndDevs(OperationType operationType);
 
 private:
     void requestLog(const ArgumentOccurrence &);
@@ -34,10 +41,11 @@ private:
     void requestRestart(const ArgumentOccurrence &);
     void requestRescan(const ArgumentOccurrence &occurrence);
     void requestRescanAll(const ArgumentOccurrence &);
-    void requestPause(const ArgumentOccurrence &occurrence);
-    void requestPauseAll(const ArgumentOccurrence &);
-    void requestResume(const ArgumentOccurrence &);
-    void requestResumeAll(const ArgumentOccurrence &);
+    void requestPauseResume(bool pause);
+    void requestPauseAllDevs(const ArgumentOccurrence &);
+    void requestPauseAllDirs(const ArgumentOccurrence &);
+    void requestResumeAllDevs(const ArgumentOccurrence &);
+    void requestResumeAllDirs(const ArgumentOccurrence &);
     void printStatus(const ArgumentOccurrence &);
     void printLog(const std::vector<Data::SyncthingLogEntry> &logEntries);
     void initWaitForIdle(const ArgumentOccurrence &);
