@@ -41,9 +41,9 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
                     const QRect itemRect(visualRect(clickedIndex));
                     if(pos.x() > itemRect.right() - 58) {
                         if(pos.x() < itemRect.right() - 34) {
-                            emit pauseResumeDir(*dir);
-                        } else if(pos.x() < itemRect.right() - 17) {
                             emit scanDir(*dir);
+                        } else if(pos.x() < itemRect.right() - 17) {
+                            emit pauseResumeDir(*dir);
                         } else {
                             emit openDir(*dir);
                         }
