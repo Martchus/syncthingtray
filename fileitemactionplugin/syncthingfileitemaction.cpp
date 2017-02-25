@@ -131,14 +131,35 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
                 detectedDirs << (lastDir = &dir);
             } else if(path.startsWith(dir.path)) {
                 detectedItems << SyncthingItem(&dir, path.mid(dir.path.size()));
-                containingDirs << (lastDir = &dir);
+                lastDir = &dir;
+                if(!containingDirs.contains(lastDir)) {
+                    containingDirs << lastDir;
+                }
             }
         }
     }
 
-    // add actions for explicitely selected Syncthing dirs
+    // add actions for the selected items itself
     QList<QAction*> actions;
+    if(!detectedItems.isEmpty()) {
+        actions << new QAction(
+                       QIcon::fromTheme(QStringLiteral("view-refresh")),
+                       detectedItems.size() == 1
+                       ? tr("Rescan %1 (in %2)").arg(detectedItems.front().name, detectedItems.front().dir->displayName())
+                       : tr("Rescan selected items"),
+                       parentWidget);
+        if(s_connection.isConnected()) {
+            for(const SyncthingItem &item : detectedItems) {
+                connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemAction::rescanDir, item.dir->id, item.path));
+            }
+        } else {
+            actions.back()->setEnabled(false);
+        }
+    }
+
+    // add actions for explicitely selected Syncthing dirs
     if(!detectedDirs.isEmpty()) {
+        // rescan item
         actions << new QAction(
                        QIcon::fromTheme(QStringLiteral("folder-sync")),
                        detectedDirs.size() == 1
@@ -153,10 +174,43 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
         } else {
             actions.back()->setEnabled(false);
         }
+
+        // pause/resume item
+        QStringList ids;
+        ids.reserve(detectedDirs.size());
+        bool isPaused = false;
+        for(const SyncthingDir *dir : detectedDirs) {
+            ids << dir->id;
+            if(dir->paused) {
+                isPaused = true;
+                break;
+            }
+        }
+        if(isPaused) {
+            actions << new QAction(
+                           QIcon::fromTheme(QStringLiteral("media-playback-start")),
+                           containingDirs.size() == 1
+                           ? tr("Resume ") + containingDirs.front()->displayName()
+                           : tr("Resume selected directories"),
+                           parentWidget);
+        } else {
+            actions << new QAction(
+                           QIcon::fromTheme(QStringLiteral("media-playback-pause")),
+                           containingDirs.size() == 1
+                           ? tr("Pause ") + containingDirs.front()->displayName()
+                           : tr("Pause selected directories"),
+                           parentWidget);
+        }
+        if(s_connection.isConnected()) {
+            connect(actions.back(), &QAction::triggered, bind(isPaused ? &SyncthingConnection::resumeDirectories : &SyncthingConnection::pauseDirectories, &s_connection, ids));
+        } else {
+            actions.back()->setEnabled(false);
+        }
     }
 
     // add actions for the Syncthing dirs containing selected items
     if(!containingDirs.isEmpty()) {
+        // rescan item
         actions << new QAction(
                        QIcon::fromTheme(QStringLiteral("folder-sync")),
                        containingDirs.size() == 1
@@ -170,20 +224,35 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
         } else {
             actions.back()->setEnabled(false);
         }
-    }
 
-    // add actions for the selected items itself
-    if(!detectedItems.isEmpty()) {
-        actions << new QAction(
-                       QIcon::fromTheme(QStringLiteral("view-refresh")),
-                       detectedItems.size() == 1
-                       ? tr("Rescan %1 (in %2)").arg(detectedItems.front().name, detectedItems.front().dir->displayName())
-                       : tr("Rescan selected items"),
-                       parentWidget);
-        if(s_connection.isConnected()) {
-            for(const SyncthingItem &item : detectedItems) {
-                connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemAction::rescanDir, item.dir->id, item.path));
+        // pause/resume item
+        QStringList ids;
+        ids.reserve(containingDirs.size());
+        bool isPaused = false;
+        for(const SyncthingDir *dir : containingDirs) {
+            ids << dir->id;
+            if(dir->paused) {
+                isPaused = true;
+                break;
             }
+        }
+        if(isPaused) {
+            actions << new QAction(
+                           QIcon::fromTheme(QStringLiteral("media-playback-start")),
+                           containingDirs.size() == 1
+                           ? tr("Resume ") + containingDirs.front()->displayName()
+                           : tr("Resume containing directories"),
+                           parentWidget);
+        } else {
+            actions << new QAction(
+                           QIcon::fromTheme(QStringLiteral("media-playback-pause")),
+                           containingDirs.size() == 1
+                           ? tr("Pause ") + containingDirs.front()->displayName()
+                           : tr("Pause containing directories"),
+                           parentWidget);
+        }
+        if(s_connection.isConnected()) {
+            connect(actions.back(), &QAction::triggered, bind(isPaused ? &SyncthingConnection::resumeDirectories : &SyncthingConnection::pauseDirectories, &s_connection, ids));
         } else {
             actions.back()->setEnabled(false);
         }
@@ -205,7 +274,7 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
     if(detectedDirs.size() + containingDirs.size() == 1) {
         QAction *infoAction = menu->addSeparator();
         infoAction->setIcon(QIcon::fromTheme(QStringLiteral("dialog-information")));
-        infoAction->setText(tr("Directory"));
+        infoAction->setText(tr("Directory info"));
         QAction *statusAction = menu->addAction(tr("Status: ") + lastDir->statusString());
         if(lastDir->paused && lastDir->status != SyncthingDirStatus::OutOfSync) {
             statusAction->setIcon(statusIcons().pause);
@@ -230,8 +299,8 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
             }
         }
         menu->addAction(QIcon::fromTheme(QStringLiteral("accept_time_event")),
-                        tr("Last scan time: ") + agoString(lastDir->lastScanTime))->setEnabled(false);
-        menu->addAction(tr("Rescan interval: %1 seconds").arg(lastDir->rescanInterval))->setEnabled(false);
+                        tr("Last scan time: ") + agoString(lastDir->lastScanTime));
+        menu->addAction(tr("Rescan interval: %1 seconds").arg(lastDir->rescanInterval));
     }
 
     // about about action
