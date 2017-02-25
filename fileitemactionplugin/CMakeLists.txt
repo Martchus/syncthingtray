@@ -19,7 +19,6 @@ list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 # find qtutilities
 find_package(qtutilities 5.0.0 REQUIRED)
 use_qt_utilities()
-#list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
 
 # find backend libraries
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
