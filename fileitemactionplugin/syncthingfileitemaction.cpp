@@ -128,7 +128,10 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
         }
         for(const QString &path : paths) {
             if(path == dirPath) {
-                detectedDirs << (lastDir = &dir);
+                lastDir = &dir;
+                if(!detectedDirs.contains(lastDir)) {
+                    detectedDirs << lastDir;
+                }
             } else if(path.startsWith(dir.path)) {
                 detectedItems << SyncthingItem(&dir, path.mid(dir.path.size()));
                 lastDir = &dir;
@@ -189,15 +192,15 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
         if(isPaused) {
             actions << new QAction(
                            QIcon::fromTheme(QStringLiteral("media-playback-start")),
-                           containingDirs.size() == 1
-                           ? tr("Resume ") + containingDirs.front()->displayName()
+                           detectedDirs.size() == 1
+                           ? tr("Resume ") + detectedDirs.front()->displayName()
                            : tr("Resume selected directories"),
                            parentWidget);
         } else {
             actions << new QAction(
                            QIcon::fromTheme(QStringLiteral("media-playback-pause")),
-                           containingDirs.size() == 1
-                           ? tr("Pause ") + containingDirs.front()->displayName()
+                           detectedDirs.size() == 1
+                           ? tr("Pause ") + detectedDirs.front()->displayName()
                            : tr("Pause selected directories"),
                            parentWidget);
         }
