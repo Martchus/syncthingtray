@@ -40,12 +40,17 @@ to the list. Maybe someone could check whether it works under Mac OS X.
 * Allows quickly switching between multiple Syncthing instances
 * Shows notifications via Qt or uses D-Bus notification daemon directly
 * Features a simple command line utility `syncthingctl` to check Syncthing status and trigger rescan/pause/resume/restart
+* Also bundles a KIO plugin which shows the status of a Syncthing directory
+  and allows to trigger Syncthing actions in Dolphin file manager
+  * rescan selected items
+  * rescan entire Syncthing directory
+  * pause/resume Syncthing directory
+  * also see screenshots
 * English and German localization
 
 ## Planned features
 The tray is still under development; the following features are planned:
 * Allow pausing/resuming directories
-* Integration in Dolphin file manager (first approach already done)
 * Show recently processed items
 * Improve notification handling
 * Create Plasmoid for Plasma 5 desktop
@@ -66,6 +71,9 @@ The tray is still under development; the following features are planned:
 ### Web view
 ![Web view](/tray/resources/screenshots/webview.png?raw=true)
 ![Web view (dark)](/tray/resources/screenshots/webview-dark.png?raw=true)
+
+### Syncthing actions for Dolphin
+![Rescan/pause/status](/fileitemactionplugin/resources/screenshots/dolphin.png?raw=true)
 
 ## Hotkeys
 To create hotkeys, you can use the same approach as for any other
