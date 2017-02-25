@@ -27,6 +27,7 @@ to the list. Maybe someone could check whether it works under Mac OS X.
   * Trigger re-scan of a specific directory or all directories at once
   * Open a directory with the default file browser
   * Pause/resume a specific device or all devices at once
+  * Pause/resume a specific directory
 * Shows Syncthing notifications
 * Does *not* allow configuring Syncthing itself (currently I do not intend to add this feature as it could
   cause more harm than good when not implemented correctly)
@@ -39,18 +40,18 @@ to the list. Maybe someone could check whether it works under Mac OS X.
   * Can be built without web view support as well (then the web UI is opened in the regular browser)
 * Allows quickly switching between multiple Syncthing instances
 * Shows notifications via Qt or uses D-Bus notification daemon directly
-* Features a simple command line utility `syncthingctl` to check Syncthing status and trigger rescan/pause/resume/restart
+* Features a simple command line utility `syncthingctl` to check Syncthing status and trigger
+  rescan/pause/resume/restart
 * Also bundles a KIO plugin which shows the status of a Syncthing directory
   and allows to trigger Syncthing actions in Dolphin file manager
   * rescan selected items
   * rescan entire Syncthing directory
   * pause/resume Syncthing directory
-  * also see screenshots
+  * see also screenshots section
 * English and German localization
 
 ## Planned features
 The tray is still under development; the following features are planned:
-* Allow pausing/resuming directories
 * Show recently processed items
 * Improve notification handling
 * Create Plasmoid for Plasma 5 desktop
