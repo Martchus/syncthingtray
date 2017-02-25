@@ -6,10 +6,10 @@ set(META_PROJECT_TYPE qtplugin)
 
 # add project files
 set(HEADER_FILES
-    syncthingfileitemaction.h
+    ${META_PROJECT_NAME}.h
 )
 set(SRC_FILES
-    syncthingfileitemaction.cpp
+    ${META_PROJECT_NAME}.cpp
 )
 
 # find c++utilities
@@ -41,3 +41,9 @@ list(REMOVE_ITEM PRIVATE_LIBRARIES KF5::KIO)
 list(APPEND PRIVATE_LIBRARIES KF5::KIOCore KF5::KIOFileWidgets KF5::KIOWidgets KF5::KIONTLM)
 include(LibraryTarget)
 include(ConfigHeader)
+
+install(
+    FILES ${META_PROJECT_NAME}.desktop
+    DESTINATION "share/kservices5"
+    COMPONENT desktop
+)
