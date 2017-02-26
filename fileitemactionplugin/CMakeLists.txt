@@ -12,6 +12,11 @@ set(SRC_FILES
     ${META_PROJECT_NAME}.cpp
 )
 
+set(TS_FILES
+    translations/${META_PROJECT_NAME}_de_DE.ts
+    translations/${META_PROJECT_NAME}_en_US.ts
+)
+
 # find c++utilities
 find_package(c++utilities 4.6.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
