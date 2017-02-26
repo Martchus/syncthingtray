@@ -335,7 +335,7 @@ void SyncthingFileItemAction::rescanDir(const QString &dirId, const QString &rel
 
 void SyncthingFileItemAction::showAboutDialog()
 {
-    auto *aboutDialog = new AboutDialog(nullptr, QStringLiteral(APP_NAME), QStringLiteral(APP_AUTHOR), QStringLiteral(APP_VERSION), QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION), QImage(statusIcons().scanninig.pixmap(128).toImage()));
+    auto *aboutDialog = new AboutDialog(nullptr, QStringLiteral(APP_NAME), QStringLiteral(APP_AUTHOR "\nSyncthing icons from Syncthing project"), QStringLiteral(APP_VERSION), QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION), QImage(statusIcons().scanninig.pixmap(128).toImage()));
     aboutDialog->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
     aboutDialog->setWindowIcon(QIcon::fromTheme(QStringLiteral("syncthingtray")));
     aboutDialog->setWindowFlags(static_cast<Qt::WindowFlags>(aboutDialog->windowFlags() | Qt::WA_DeleteOnClose));

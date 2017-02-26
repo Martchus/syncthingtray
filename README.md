@@ -108,6 +108,14 @@ The application depends on [c++utilities](https://github.com/Martchus/cpp-utilit
 
 The following Qt 5 modules are requried: core network gui widgets svg webenginewidgets/webkitwidgets
 
+The built-in web view is optional (see section "Select Qt module for WebView").
+
+To build the plugin for Dolphin integration KIO is also requried. To skip building
+the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN=ON` to the CMake arguments.
+
+It is also possible to build only the CLI (syncthingctl) by adding `-DNO_MODEL=ON`
+to the CMake arguments. Then only core and network are required.
+
 #### Building this straight
 0. Install (preferably the latest version of) g++ or clang, the required Qt 5 modules and CMake.
 1. Get the sources. For the lastest version from Git clone the following repositories:
