@@ -21,6 +21,8 @@ QString statusString(SyncthingDevStatus status)
         return QCoreApplication::translate("SyncthingDevStatus", "out of sync");
     case SyncthingDevStatus::Rejected:
         return QCoreApplication::translate("SyncthingDevStatus", "rejected");
+    default:
+        return QString();
     }
 }
 

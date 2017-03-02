@@ -26,6 +26,8 @@ QString statusString(SyncthingDirStatus status)
         return QCoreApplication::translate("SyncthingDirStatus", "synchronizing");
     case SyncthingDirStatus::OutOfSync:
         return QCoreApplication::translate("SyncthingDirStatus", "out of sync");
+    default:
+        return QString();
     }
 }
 
