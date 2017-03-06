@@ -432,10 +432,11 @@ void TrayWidget::openDir(const SyncthingDir &dir)
 
 void TrayWidget::openItemDir(const SyncthingItemDownloadProgress &item)
 {
-    if(item.fileInfo.exists()) {
-        DesktopUtils::openLocalFileOrDir(item.fileInfo.path());
+    const QDir containingDir(item.fileInfo.absoluteDir());
+    if(containingDir.exists()) {
+        DesktopUtils::openLocalFileOrDir(containingDir.path());
     } else {
-        QMessageBox::warning(this, QCoreApplication::applicationName(), tr("The file <i>%1</i> does not exist on the local machine.").arg(item.fileInfo.filePath()));
+        QMessageBox::warning(this, QCoreApplication::applicationName(), tr("The containing directory <i>%1</i> does not exist on the local machine.").arg(item.fileInfo.filePath()));
     }
 }
 

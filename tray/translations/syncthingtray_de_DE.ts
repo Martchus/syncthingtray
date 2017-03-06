@@ -741,7 +741,7 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="113"/>
-        <location filename="../gui/traywidget.cpp" line="533"/>
+        <location filename="../gui/traywidget.cpp" line="534"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
@@ -773,7 +773,7 @@
     <message>
         <location filename="../gui/traywidget.ui" line="250"/>
         <location filename="../gui/traywidget.ui" line="270"/>
-        <location filename="../gui/traywidget.cpp" line="491"/>
+        <location filename="../gui/traywidget.cpp" line="492"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -904,15 +904,19 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="429"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
-        <translation>Das Verzeichnis &lt;i&gt;%i&lt;/i&gt; existiert nicht (lokal).</translation>
+        <translation>Das Verzeichnis &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="438"/>
+        <location filename="../gui/traywidget.cpp" line="439"/>
+        <source>The containing directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
+        <translation>Das beinhaltende Verzeichnis &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
+    </message>
+    <message>
         <source>The file &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
-        <translation>Die Datei &lt;i&gt;%1&lt;/i&gt; existiert nicht (lokal).</translation>
+        <translation type="vanished">Die Datei &lt;i&gt;%1&lt;/i&gt; existiert nicht (lokal).</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="529"/>
+        <location filename="../gui/traywidget.cpp" line="530"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
