@@ -105,10 +105,14 @@ QString SyncthingConnection::statusText() const
         return tr("reconnecting");
     case SyncthingStatus::Idle:
         return tr("connected");
+    case SyncthingStatus::Scanning:
+        return tr("connected, scanning");
     case SyncthingStatus::Paused:
         return tr("connected, paused");
     case SyncthingStatus::Synchronizing:
         return tr("connected, synchronizing");
+    case SyncthingStatus::OutOfSync:
+        return tr("connected, out of sync");
     default:
         return tr("unknown");
     }

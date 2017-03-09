@@ -31,10 +31,12 @@ set(SRC_FILES
 )
 
 set(TEST_HEADER_FILES
+    tests/helper.h
 )
 set(TEST_SRC_FILES
     tests/cppunit.cpp
     tests/connectiontests.cpp
+    tests/misctests.cpp
 )
 
 set(TS_FILES

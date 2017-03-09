@@ -1,21 +1,19 @@
-#include "./syncthingconnection.h"
+#include "./helper.h"
+#include "../syncthingconnection.h"
 
 #include <c++utilities/tests/testutils.h>
-#include <c++utilities/conversion/stringbuilder.h>
 
-#include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/TestFixture.h>
 
 #include <QCoreApplication>
 #include <QProcess>
 #include <QFileInfo>
 #include <QDir>
-#include <QMetaMethod>
+#include <QStringBuilder>
 
 using namespace std;
 using namespace Data;
 using namespace TestUtilities;
-using namespace ConversionUtilities;
 
 using namespace CPPUNIT_NS;
 
@@ -38,9 +36,9 @@ public:
 
 private:
     template<typename Signal, typename Action, typename Handler = function<void(void)> >
-    void waitForConnection(Signal signal, Action action, int timeout = 2500, Handler handler = nullptr);
-    template<typename Signal, typename Handler = function<void(void)> >
-    void waitForConnection(Signal signal, int timeout = 2500, Handler handler = nullptr);
+    void waitForConnection(Signal signal, Action action, Handler handler = nullptr, bool *ok = nullptr, int timeout = 1000);
+    template<typename Signal, typename Action, typename Handler = function<void(void)> >
+    void waitForConnectionAnyAction(Signal signal, Action action, Handler handler = nullptr, bool *ok = nullptr, int timeout = 1000);
 
     QString m_apiKey;
     QCoreApplication m_app;
@@ -50,8 +48,8 @@ private:
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ConnectionTests);
 
-int dummy1 = 0;
-char *dummy2;
+static int dummy1 = 0;
+static char *dummy2;
 
 ConnectionTests::ConnectionTests() :
     m_apiKey(QStringLiteral("syncthingconnectortest")),
@@ -134,101 +132,21 @@ void ConnectionTests::tearDown()
 //
 
 /*!
- * \brief Prints a QString; required to use QString with CPPUNIT_ASSERT_EQUAL_MESSAGE.
- */
-std::ostream &operator <<(std::ostream &o, const QString &qstring)
-{
-    o << qstring.toLocal8Bit().data();
-    return o;
-}
-
-/*!
- * \brief Waits for the in ms specified \a duration keeping the event loop running.
- */
-void wait(int duration)
-{
-    QEventLoop loop;
-    QTimer::singleShot(duration, &loop, &QEventLoop::quit);
-    loop.exec();
-}
-
-void noop()
-{}
-
-/*!
- * \brief Waits until the \a signal is emitted by \a sender when performing \a action and connects \a signal with \a handler if specified.
- * \throws Fails if \a signal is not emitted in at least \a timeout milliseconds or when at least one of the required
- *         connections can not be established.
- */
-template<typename Signal, typename Action, typename Handler = std::function<void(void)> >
-void waitForSignal(typename QtPrivate::FunctionPointer<Signal>::Object *sender, Signal signal, Action action, int timeout = 2500, Handler handler = nullptr)
-{
-    // determine name of the signal for error messages
-    const QByteArray signalName(QMetaMethod::fromSignal(signal).name());
-
-    // create loop and connect the signal to its quit slot
-    QEventLoop loop;
-    if(!QObject::connect(sender, signal, &loop, &QEventLoop::quit, Qt::DirectConnection)) {
-        CPPUNIT_FAIL(argsToString("Unable to connect signal ", signalName.data(), " for waiting"));
-    }
-
-    // if specified, also connect handler to signal
-    if(handler) {
-        if(!QObject::connect(sender, signal, sender, handler, Qt::DirectConnection)) {
-            CPPUNIT_FAIL(argsToString("Unable to connect signal ", signalName.data(), " to handler"));
-        }
-    }
-
-    // handle case when signal is directly emitted
-    bool signalDirectlyEmitted = false;
-    if(!QObject::connect(sender, signal, sender, [&signalDirectlyEmitted] {
-                         signalDirectlyEmitted = true;
-        }, Qt::DirectConnection)) {
-        CPPUNIT_FAIL(argsToString("Unable to connect signal ", signalName.data(), " to check for direct emmitation"));
-    }
-
-    // perform specified action
-    action();
-
-    // no reason to enter event loop when signal has been emitted directly
-    if(signalDirectlyEmitted) {
-        return;
-    }
-
-    // also connect and start a timer if a timeout has been specified
-    QTimer timer;
-    if(timeout) {
-        QObject::connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit, Qt::DirectConnection);
-        timer.setSingleShot(true);
-        timer.setInterval(timeout);
-        timer.start();
-    }
-
-    // enter event loop
-    loop.exec();
-
-    // check whether a timeout occured
-    if(timeout && !timer.isActive()) {
-        CPPUNIT_FAIL(argsToString("Signal ", signalName.data(), " has not emmitted within at least ", timeout, " ms."));
-    }
-}
-
-/*!
  * \brief Variant of waitForSignal() where sender is the connection and the action is a method of the connection.
  */
 template<typename Signal, typename Action, typename Handler>
-void ConnectionTests::waitForConnection(Signal signal, Action action, int timeout, Handler handler)
+void ConnectionTests::waitForConnection(Signal signal, Action action, Handler handler, bool *ok, int timeout)
 {
     waitForSignal(&m_connection, signal, bind(action, &m_connection), timeout, handler);
 }
 
 /*!
- * \brief Variant of waitForSignal() where sender is the connection and the action is a method of the connection.
+ * \brief Variant of waitForSignal() where sender is the connection.
  */
-template<typename Signal, typename Handler>
-void ConnectionTests::waitForConnection(Signal signal, int timeout, Handler handler)
+template<typename Signal, typename Action, typename Handler>
+void ConnectionTests::waitForConnectionAnyAction(Signal signal, Action action, Handler handler, bool *ok, int timeout)
 {
-    waitForSignal(&m_connection, signal, noop, timeout, handler);
+    waitForSignal(&m_connection, signal, action, timeout, handler);
 }
 
 //
@@ -242,41 +160,110 @@ void ConnectionTests::testConnection()
 {
     cerr << "\n - Connecting initially ..." << endl;
 
-    // error in case of wrong API key
-    m_connection.setAutoReconnectInterval(200);
+    // error in case of inavailability and wrong API key
     m_connection.setApiKey(QByteArray("wrong API key"));
-    waitForConnection(&SyncthingConnection::error, static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::connect), 10000, [] (const QString &errorMessage) {
-        if(errorMessage != QStringLiteral("Unable to request Syncthing config: Connection refused")
-                && errorMessage != QStringLiteral("Unable to request Syncthing status: Connection refused")) {
-            CPPUNIT_FAIL(argsToString("wrong error message in case of wrong API key: ", errorMessage.toLocal8Bit().data()));
-        }
-    });
+    bool syncthingAvailable = false;
+    const function<void(const QString &errorMessage)> errorHandler = [this, &syncthingAvailable] (const QString &errorMessage) {
+                if(errorMessage == QStringLiteral("Unable to request Syncthing config: Connection refused")
+                        || errorMessage == QStringLiteral("Unable to request Syncthing status: Connection refused")) {
+                    return; // Syncthing not ready yet
+                }
+                syncthingAvailable = true;
+                if(errorMessage != QStringLiteral("Unable to request Syncthing config: Error transferring ") % m_connection.syncthingUrl() % QStringLiteral("/rest/system/config - server replied: Forbidden")
+                        && errorMessage != QStringLiteral("Unable to request Syncthing status: Error transferring ") % m_connection.syncthingUrl() % QStringLiteral("/rest/system/status - server replied: Forbidden")) {
+                    CPPUNIT_FAIL(argsToString("wrong error message in case of wrong API key: ", errorMessage.toLocal8Bit().data()));
+                }
+            };
+    while(!syncthingAvailable) {
+        waitForConnection(&SyncthingConnection::error, static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::connect), errorHandler);
+    }
 
     // initial connection
     m_connection.setApiKey(m_apiKey.toUtf8());
-    waitForConnection(&SyncthingConnection::statusChanged, static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::connect), 10000);
+    waitForConnection(&SyncthingConnection::statusChanged, static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("connected and paused (one dev is initially paused)", QStringLiteral("connected, paused"), m_connection.statusText());
-
-    // dirs present
-    const auto &dirInfo = m_connection.dirInfo();
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("2 dirs present", 2ul, dirInfo.size());
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("test1"), dirInfo.front().id);
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("test2"), dirInfo.back().id);
 
     // devs present
     const auto &devInfo = m_connection.devInfo();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("3 devs present", 3ul, devInfo.size());
+    QString ownDevId;
+    for(const SyncthingDev &dev : devInfo) {
+        if(dev.id != QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7") && dev.id != QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4")) {
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("own device", QStringLiteral("own device"), dev.statusString());
+            ownDevId = dev.id;
+        }
+    }
+    for(const SyncthingDev &dev : devInfo) {
+        if(dev.id == QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7")) {
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("paused device", QStringLiteral("paused"), dev.statusString());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("name", QStringLiteral("Test dev 2"), dev.name);
+            CPPUNIT_ASSERT_MESSAGE("no introducer", !dev.introducer);
+            CPPUNIT_ASSERT_EQUAL(1, dev.addresses.size());
+            CPPUNIT_ASSERT_EQUAL(QStringLiteral("tcp://192.168.2.2:22000"), dev.addresses.front());
+        } else if(dev.id == QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4")) {
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("disconnected device", QStringLiteral("disconnected"), dev.statusString());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("name", QStringLiteral("Test dev 1"), dev.name);
+            CPPUNIT_ASSERT_MESSAGE("introducer", dev.introducer);
+            CPPUNIT_ASSERT_EQUAL(1, dev.addresses.size());
+            CPPUNIT_ASSERT_EQUAL(QStringLiteral("dynamic"), dev.addresses.front());
+        }
+    }
+
+    // dirs present
+    const auto &dirInfo = m_connection.dirInfo();
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("2 dirs present", 2ul, dirInfo.size());
+    const SyncthingDir &dir1 = dirInfo.front();
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("test1"), dir1.id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral(""), dir1.label);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("test1"), dir1.displayName());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("/tmp/some/path/1/"), dir1.path);
+    CPPUNIT_ASSERT(!dir1.readOnly);
+    CPPUNIT_ASSERT(!dir1.paused);
+    CPPUNIT_ASSERT_EQUAL(dir1.devices, QStringList({QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"),
+                                                    QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4"),
+                                                   ownDevId}));
+    const SyncthingDir &dir2 = dirInfo.back();
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("test2"), dir2.id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Test dir 2"), dir2.label);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Test dir 2"), dir2.displayName());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("/tmp/some/path/2/"), dir2.path);
+    CPPUNIT_ASSERT(!dir2.readOnly);
+    CPPUNIT_ASSERT(dir2.paused);
+    CPPUNIT_ASSERT_EQUAL(dir2.devices, QStringList({QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"),
+                                                   ownDevId}));
 
     // reconnecting
     cerr << "\n - Reconnecting ..." << endl;
-    waitForConnection(&SyncthingConnection::statusChanged, static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::reconnect), 1000);
+    waitForConnection(&SyncthingConnection::statusChanged, static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::reconnect));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("reconnecting", QStringLiteral("reconnecting"), m_connection.statusText());
-    waitForConnection(&SyncthingConnection::statusChanged, 1000);
+    waitForConnectionAnyAction(&SyncthingConnection::statusChanged, noop);
+    if(m_connection.isConnected() && m_connection.status() != SyncthingStatus::Paused) {
+        // FIXME: Maybe it takes one further update to recon paused dev?
+        waitForConnectionAnyAction(&SyncthingConnection::statusChanged, noop);
+    }
     CPPUNIT_ASSERT_EQUAL_MESSAGE("connected again", QStringLiteral("connected, paused"), m_connection.statusText());
+
+    // resume all devs
+    bool devPaused = false;
+    waitForConnection(&SyncthingConnection::devStatusChanged, &SyncthingConnection::resumeAllDevs, static_cast<function<void(const SyncthingDev &, int)> >([&devPaused] (const SyncthingDev &dev, int) {
+        if(dev.name == QStringLiteral("Test dev 2") && !dev.paused) {
+            devPaused = true;
+        }
+    }), &devPaused);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("not paused anymore", QStringLiteral("connected"), m_connection.statusText());
+
+    // resume all dirs
+    bool dirPaused = false;
+    waitForConnection(&SyncthingConnection::dirStatusChanged, &SyncthingConnection::resumeAllDirs, static_cast<function<void(const SyncthingDir &, int)> >([&dirPaused] (const SyncthingDir &dir, int) {
+        if(dir.id == QStringLiteral("test2") && dir.paused) {
+            dirPaused = true;
+        }
+    }), &dirPaused);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("still 2 dirs present", 2ul, m_connection.dirInfo().size());
 
     // disconnecting
     cerr << "\n - Disconnecting ..." << endl;
-    waitForConnection(&SyncthingConnection::statusChanged, static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::disconnect), 5000);
+    waitForConnection(&SyncthingConnection::statusChanged, static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::disconnect));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("disconnected", QStringLiteral("disconnected"), m_connection.statusText());
 }
 
