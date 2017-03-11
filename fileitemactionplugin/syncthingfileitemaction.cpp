@@ -9,7 +9,6 @@
 #include <qtutilities/resources/resources.h>
 #include <qtutilities/aboutdialog/aboutdialog.h>
 
-#include <KFileItemListProperties>
 #include <KFileItem>
 #include <KPluginFactory>
 #include <KPluginLoader>
@@ -48,6 +47,44 @@ SyncthingItem::SyncthingItem(const SyncthingDir *dir, const QString &path) :
         name = path.mid(lastSep + 1);
     } else {
         name = path;
+    }
+}
+
+SyncthingMenuAction::SyncthingMenuAction(const KFileItemListProperties &properties, const QList<QAction *> &actions, QWidget *parentWidget) :
+    QAction(parentWidget),
+    m_properties(properties)
+{
+    if(!actions.isEmpty()) {
+        auto *menu = new QMenu(parentWidget);
+        menu->addActions(actions);
+        setMenu(menu);
+    }
+    updateStatus(SyncthingFileItemAction::connection().status());
+}
+
+void SyncthingMenuAction::updateStatus(SyncthingStatus status)
+{
+    if(status != SyncthingStatus::Disconnected && status != SyncthingStatus::Reconnecting && status != SyncthingStatus::BeingDestroyed) {
+        setText(tr("Syncthing"));
+        setIcon(statusIcons().scanninig);
+        if(!menu()) {
+            const QList<QAction *> actions = SyncthingFileItemAction::createActions(m_properties, parentWidget());
+            if(!actions.isEmpty()) {
+                auto *menu = new QMenu(parentWidget());
+                menu->addActions(actions);
+                setMenu(menu);
+            }
+        }
+    } else {
+        if(status != SyncthingStatus::Reconnecting) {
+            SyncthingFileItemAction::connection().connect();
+        }
+        setText(tr("Syncthing - connecting"));
+        setIcon(statusIcons().disconnected);
+        if(QMenu *menu = this->menu()) {
+            setMenu(nullptr);
+            delete menu;
+        }
     }
 }
 
@@ -100,10 +137,60 @@ SyncthingFileItemAction::SyncthingFileItemAction(QObject *parent, const QVariant
 
 QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties &fileItemInfo, QWidget *parentWidget)
 {
+    // handle case when not connected yet
+    if(!s_connection.isConnected()) {
+        s_connection.connect();
+        auto *menuAction = new SyncthingMenuAction(fileItemInfo, QList<QAction *>(), parentWidget);
+        connect(&s_connection, &SyncthingConnection::statusChanged, menuAction, &SyncthingMenuAction::updateStatus);
+        return QList<QAction *>() << menuAction;
+    }
+
+    QList<QAction *> actions = createActions(fileItemInfo, parentWidget);
+    // don't show anything if relevant actions could be determined
+    if(actions.isEmpty()) {
+        return actions;
+    }
+
+    return QList<QAction*>() << new SyncthingMenuAction(fileItemInfo, actions, parentWidget);
+}
+
+SyncthingConnection &SyncthingFileItemAction::connection()
+{
+    return s_connection;
+}
+
+void SyncthingFileItemAction::logConnectionStatus()
+{
+    cerr << "Syncthing connection status changed to: " << s_connection.statusText().toLocal8Bit().data() << endl;
+}
+
+void SyncthingFileItemAction::logConnectionError(const QString &errorMessage)
+{
+    cerr << "Syncthing connection error: " << errorMessage.toLocal8Bit().data() << endl;
+}
+
+void SyncthingFileItemAction::rescanDir(const QString &dirId, const QString &relpath)
+{
+    s_connection.rescan(dirId, relpath);
+}
+
+void SyncthingFileItemAction::showAboutDialog()
+{
+    auto *aboutDialog = new AboutDialog(nullptr, QStringLiteral(APP_NAME), QStringLiteral(APP_AUTHOR "\nSyncthing icons from Syncthing project"), QStringLiteral(APP_VERSION), QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION), QImage(statusIcons().scanninig.pixmap(128).toImage()));
+    aboutDialog->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
+    aboutDialog->setWindowIcon(QIcon::fromTheme(QStringLiteral("syncthingtray")));
+    aboutDialog->setWindowFlags(static_cast<Qt::WindowFlags>(aboutDialog->windowFlags() | Qt::WA_DeleteOnClose));
+    aboutDialog->show();
+}
+
+QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListProperties &fileItemInfo, QWidget *parentWidget)
+{
+    QList<QAction*> actions;
+
     // check whether any directories are known
     const auto &dirs = s_connection.dirInfo();
     if(dirs.empty()) {
-        return QList<QAction*>();
+        return actions;
     }
 
     // get all paths
@@ -148,7 +235,6 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
     }
 
     // add actions for the selected items itself
-    QList<QAction*> actions;
     if(!detectedItems.isEmpty()) {
         actions << new QAction(
                        QIcon::fromTheme(QStringLiteral("view-refresh")),
@@ -266,24 +352,17 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
         }
     }
 
-    // don't show anything if relevant actions could be determined
+    // don't add any further actions if no relevant actions could be determined so far
     if(actions.isEmpty()) {
         return actions;
     }
 
-    // create the menu
-    QAction *menuAction = new QAction(statusIcons().scanninig, tr("Syncthing"), this);
-    QMenu *menu = new QMenu(parentWidget);
-    menuAction->setMenu(menu);
-    menu->addActions(actions);
-
     // add action to show further information about directory if the selection is only about
     // one particular Syncthing dir
     if(detectedDirs.size() + containingDirs.size() == 1) {
-        QAction *infoAction = menu->addSeparator();
-        infoAction->setIcon(QIcon::fromTheme(QStringLiteral("dialog-information")));
-        infoAction->setText(tr("Directory info"));
-        QAction *statusAction = menu->addAction(tr("Status: ") + lastDir->statusString());
+        QAction *infoAction = new QAction(QIcon::fromTheme(QStringLiteral("dialog-information")), tr("Directory info"), parentWidget);
+        infoAction->setSeparator(true);
+        QAction *statusAction = new QAction(tr("Status: ") + lastDir->statusString());
         if(lastDir->paused && lastDir->status != SyncthingDirStatus::OutOfSync) {
             statusAction->setIcon(statusIcons().pause);
         } else {
@@ -306,41 +385,21 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
                 break;
             }
         }
-        menu->addAction(QIcon::fromTheme(QStringLiteral("accept_time_event")),
-                        tr("Last scan time: ") + agoString(lastDir->lastScanTime));
-        menu->addAction(tr("Rescan interval: %1 seconds").arg(lastDir->rescanInterval));
+        actions << infoAction << statusAction;
+
+        actions << new QAction(QIcon::fromTheme(QStringLiteral("accept_time_event")),
+                               tr("Last scan time: ") + agoString(lastDir->lastScanTime), parentWidget);
+        actions << new QAction(tr("Rescan interval: %1 seconds").arg(lastDir->rescanInterval), parentWidget);
     }
 
     // about about action
-    menu->addSeparator();
-    menu->addAction(QIcon::fromTheme(QStringLiteral("help-about")), tr("About"), &SyncthingFileItemAction::showAboutDialog);
+    QAction *separator = new QAction(parentWidget);
+    separator->setSeparator(true);
+    QAction *aboutAction = new QAction(QIcon::fromTheme(QStringLiteral("help-about")), tr("About"));
+    connect(aboutAction, &QAction::triggered, &SyncthingFileItemAction::showAboutDialog);
+    actions << separator << aboutAction;
 
-    return QList<QAction*>() << menuAction;
+    return actions;
 }
-
-void SyncthingFileItemAction::logConnectionStatus()
-{
-    cerr << "Syncthing connection status changed to: " << s_connection.statusText().toLocal8Bit().data() << endl;
-}
-
-void SyncthingFileItemAction::logConnectionError(const QString &errorMessage)
-{
-    cerr << "Syncthing connection error: " << errorMessage.toLocal8Bit().data() << endl;
-}
-
-void SyncthingFileItemAction::rescanDir(const QString &dirId, const QString &relpath)
-{
-    s_connection.rescan(dirId, relpath);
-}
-
-void SyncthingFileItemAction::showAboutDialog()
-{
-    auto *aboutDialog = new AboutDialog(nullptr, QStringLiteral(APP_NAME), QStringLiteral(APP_AUTHOR "\nSyncthing icons from Syncthing project"), QStringLiteral(APP_VERSION), QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION), QImage(statusIcons().scanninig.pixmap(128).toImage()));
-    aboutDialog->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
-    aboutDialog->setWindowIcon(QIcon::fromTheme(QStringLiteral("syncthingtray")));
-    aboutDialog->setWindowFlags(static_cast<Qt::WindowFlags>(aboutDialog->windowFlags() | Qt::WA_DeleteOnClose));
-    aboutDialog->show();
-}
-
 
 #include <syncthingfileitemaction.moc>

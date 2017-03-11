@@ -4,11 +4,27 @@
 #include "../connector/syncthingconnection.h"
 
 #include <KAbstractFileItemActionPlugin>
+#include <KFileItemListProperties>
 
-QT_FORWARD_DECLARE_CLASS(QAction)
+#include <QAction>
+
 QT_FORWARD_DECLARE_CLASS(QWidget)
 
 class KFileItemListProperties;
+
+class SyncthingMenuAction : public QAction
+{
+    Q_OBJECT
+
+public:
+    SyncthingMenuAction(const KFileItemListProperties &properties = KFileItemListProperties(), const QList<QAction *> &actions = QList<QAction *>(), QWidget *parentWidget = nullptr);
+
+public Q_SLOTS:
+    void updateStatus(Data::SyncthingStatus status);
+
+private:
+    KFileItemListProperties m_properties;
+};
 
 class SyncthingFileItemAction : public KAbstractFileItemActionPlugin
 {
@@ -17,6 +33,8 @@ class SyncthingFileItemAction : public KAbstractFileItemActionPlugin
 public:
     SyncthingFileItemAction(QObject* parent, const QVariantList &args);
     QList<QAction *> actions(const KFileItemListProperties &fileItemInfo, QWidget *parentWidget) override;
+    static Data::SyncthingConnection &connection();
+    static QList<QAction *> createActions(const KFileItemListProperties &fileItemInfo, QWidget *parentWidget);
 
 private Q_SLOTS:
     static void logConnectionStatus();
