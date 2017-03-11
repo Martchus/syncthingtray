@@ -9,6 +9,7 @@
 #include <QEventLoop>
 #include <QTimer>
 #include <QMetaMethod>
+#include <QSet>
 
 #include <ostream>
 #include <functional>
@@ -30,6 +31,15 @@ inline std::ostream &operator <<(std::ostream &o, const QString &qstring)
 inline std::ostream &operator <<(std::ostream &o, const QStringList &qstringlist)
 {
     o << qstringlist.join(QStringLiteral(", ")).toLocal8Bit().data();
+    return o;
+}
+
+/*!
+ * \brief Prints a QString; required to use QSet<QString> with CPPUNIT_ASSERT_EQUAL_MESSAGE.
+ */
+inline std::ostream &operator <<(std::ostream &o, const QSet<QString> &qstringset)
+{
+    o << qstringset.toList().join(QStringLiteral(", ")).toLocal8Bit().data();
     return o;
 }
 
@@ -84,9 +94,10 @@ void waitForSignal(typename QtPrivate::FunctionPointer<Signal>::Object *sender, 
 
     // handle case when signal is directly emitted
     bool signalDirectlyEmitted = false;
-    if(!QObject::connect(sender, signal, sender, [&signalDirectlyEmitted] {
-                         signalDirectlyEmitted = true;
-        }, Qt::DirectConnection)) {
+    QMetaObject::Connection signalDirectlyEmittedConnection = QObject::connect(sender, signal, sender, [&signalDirectlyEmitted] {
+        signalDirectlyEmitted = true;
+    }, Qt::DirectConnection);
+    if(!signalDirectlyEmittedConnection) {
         CPPUNIT_FAIL(argsToString("Unable to connect signal ", signalName.data(), " to check for direct emmitation"));
     }
 
@@ -118,10 +129,11 @@ void waitForSignal(typename QtPrivate::FunctionPointer<Signal>::Object *sender, 
     }
 
     // check whether a timeout occured
-    if(timeout && !timer.isActive()) {
+    if((!ok || !*ok) && timeout && !timer.isActive()) {
         CPPUNIT_FAIL(argsToString("Signal ", signalName.data(), " has not emmitted within at least ", timeout, " ms."));
     }
 
+    QObject::disconnect(signalDirectlyEmittedConnection);
     QObject::disconnect(handlerConnection);
 }
 
