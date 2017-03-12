@@ -26,6 +26,28 @@ private:
     KFileItemListProperties m_properties;
 };
 
+class SyncthingDirActions : public QObject
+{
+    Q_OBJECT
+    friend QList<QAction *> &operator <<(QList<QAction *> &, SyncthingDirActions &);
+
+public:
+    SyncthingDirActions(const Data::SyncthingDir &dir, QObject *parent = nullptr);
+
+public Q_SLOTS:
+    void updateStatus(const std::vector<Data::SyncthingDir> &dirs);
+    bool updateStatus(const Data::SyncthingDir &dir);
+
+private:
+    QString m_dirId;
+    QAction m_infoAction;
+    QAction m_statusAction;
+    QAction m_lastScanAction;
+    QAction m_rescanIntervalAction;
+};
+
+QList<QAction *> &operator <<(QList<QAction *> &actions, SyncthingDirActions &dirActions);
+
 class SyncthingFileItemAction : public KAbstractFileItemActionPlugin
 {
     Q_OBJECT

@@ -88,6 +88,66 @@ void SyncthingMenuAction::updateStatus(SyncthingStatus status)
     }
 }
 
+SyncthingDirActions::SyncthingDirActions(const SyncthingDir &dir, QObject *parent) :
+    QObject(parent),
+    m_dirId(dir.id)
+{
+    m_infoAction.setSeparator(true);
+    updateStatus(dir);
+}
+
+void SyncthingDirActions::updateStatus(const std::vector<SyncthingDir> &dirs)
+{
+    for(const SyncthingDir &dir : dirs) {
+        if(updateStatus(dir)) {
+            return;
+        }
+    }
+    m_statusAction.setText(tr("Status: not available anymore"));
+    m_statusAction.setIcon(statusIcons().disconnected);
+}
+
+bool SyncthingDirActions::updateStatus(const SyncthingDir &dir)
+{
+    if(dir.id != m_dirId) {
+        return false;
+    }
+    m_infoAction.setText(tr("Directory info for %1").arg(dir.displayName()));
+    m_infoAction.setIcon(QIcon::fromTheme(QStringLiteral("dialog-information")));
+    m_statusAction.setText(tr("Status: ") + dir.statusString());
+    if(dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
+        m_statusAction.setIcon(statusIcons().pause);
+    } else {
+        switch(dir.status) {
+        case SyncthingDirStatus::Unknown:
+        case SyncthingDirStatus::Unshared:
+            m_statusAction.setIcon(statusIcons().disconnected);
+            break;
+        case SyncthingDirStatus::Idle:
+            m_statusAction.setIcon(statusIcons().idling);
+            break;
+        case SyncthingDirStatus::Scanning:
+            m_statusAction.setIcon(statusIcons().scanninig);
+            break;
+        case SyncthingDirStatus::Synchronizing:
+            m_statusAction.setIcon(statusIcons().sync);
+            break;
+        case SyncthingDirStatus::OutOfSync:
+            m_statusAction.setIcon(statusIcons().error);
+            break;
+        }
+    }
+    m_lastScanAction.setText(tr("Last scan time: ") + agoString(dir.lastScanTime));
+    m_lastScanAction.setIcon(QIcon::fromTheme(QStringLiteral("accept_time_event")));
+    m_rescanIntervalAction.setText(tr("Rescan interval: %1 seconds").arg(dir.rescanInterval));
+    return true;
+}
+
+QList<QAction *> &operator <<(QList<QAction *> &actions, SyncthingDirActions &dirActions)
+{
+    return actions << &dirActions.m_infoAction << &dirActions.m_statusAction << &dirActions.m_lastScanAction << &dirActions.m_rescanIntervalAction;
+}
+
 SyncthingConnection SyncthingFileItemAction::s_connection;
 
 SyncthingFileItemAction::SyncthingFileItemAction(QObject *parent, const QVariantList &) :
@@ -357,39 +417,12 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         return actions;
     }
 
-    // add action to show further information about directory if the selection is only about
-    // one particular Syncthing dir
+    // add actions to show further information about directory if the selection is only about one particular Syncthing dir
     if(detectedDirs.size() + containingDirs.size() == 1) {
-        QAction *infoAction = new QAction(QIcon::fromTheme(QStringLiteral("dialog-information")), tr("Directory info"), parentWidget);
-        infoAction->setSeparator(true);
-        QAction *statusAction = new QAction(tr("Status: ") + lastDir->statusString());
-        if(lastDir->paused && lastDir->status != SyncthingDirStatus::OutOfSync) {
-            statusAction->setIcon(statusIcons().pause);
-        } else {
-            switch(lastDir->status) {
-            case SyncthingDirStatus::Unknown:
-            case SyncthingDirStatus::Unshared:
-                statusAction->setIcon(statusIcons().disconnected);
-                break;
-            case SyncthingDirStatus::Idle:
-                statusAction->setIcon(statusIcons().idling);
-                break;
-            case SyncthingDirStatus::Scanning:
-                statusAction->setIcon(statusIcons().scanninig);
-                break;
-            case SyncthingDirStatus::Synchronizing:
-                statusAction->setIcon(statusIcons().sync);
-                break;
-            case SyncthingDirStatus::OutOfSync:
-                statusAction->setIcon(statusIcons().error);
-                break;
-            }
-        }
-        actions << infoAction << statusAction;
-
-        actions << new QAction(QIcon::fromTheme(QStringLiteral("accept_time_event")),
-                               tr("Last scan time: ") + agoString(lastDir->lastScanTime), parentWidget);
-        actions << new QAction(tr("Rescan interval: %1 seconds").arg(lastDir->rescanInterval), parentWidget);
+        auto *statusActions = new SyncthingDirActions(*lastDir, parentWidget);
+        connect(&s_connection, &SyncthingConnection::newDirs, statusActions, static_cast<void(SyncthingDirActions::*)(const vector<SyncthingDir> &)>(&SyncthingDirActions::updateStatus));
+        connect(&s_connection, &SyncthingConnection::dirStatusChanged, statusActions, static_cast<bool(SyncthingDirActions::*)(const SyncthingDir &)>(&SyncthingDirActions::updateStatus));
+        actions << *statusActions;
     }
 
     // about about action
