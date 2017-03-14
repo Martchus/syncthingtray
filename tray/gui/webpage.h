@@ -2,15 +2,9 @@
 #define WEBPAGE_H
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
 
-#include "./webviewprovider.h"
+#include "./webviewdefs.h"
+#include "./webviewincludes.h"
 
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE)
-# include <QWebEnginePage>
-#elif defined(SYNCTHINGTRAY_USE_WEBKIT)
-# include <QWebPage>
-#endif
-
-QT_FORWARD_DECLARE_CLASS(WEB_VIEW_PROVIDER)
 QT_FORWARD_DECLARE_CLASS(QAuthenticator)
 QT_FORWARD_DECLARE_CLASS(QNetworkReply)
 QT_FORWARD_DECLARE_CLASS(QNetworkRequest)
@@ -20,16 +14,16 @@ namespace QtGui {
 
 class WebViewDialog;
 
-class WebPage : public WEB_PAGE_PROVIDER
+class WebPage : public SYNCTHINGTRAY_WEB_PAGE
 {
     Q_OBJECT
 public:
-    WebPage(WebViewDialog *dlg = nullptr, WEB_VIEW_PROVIDER *view = nullptr);
+    WebPage(WebViewDialog *dlg = nullptr, SYNCTHINGTRAY_WEB_VIEW *view = nullptr);
 
     static bool isSamePage(const QUrl &url1, const QUrl &url2);
 
 protected:
-    WEB_PAGE_PROVIDER *createWindow(WebWindowType type);
+    SYNCTHINGTRAY_WEB_PAGE *createWindow(WebWindowType type);
 #ifdef SYNCTHINGTRAY_USE_WEBENGINE
     bool certificateError(const QWebEngineCertificateError &certificateError);
     bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
@@ -50,7 +44,7 @@ private:
     static bool handleNavigationRequest(const QUrl &currentUrl, const QUrl &url);
 
     WebViewDialog *m_dlg;
-    WEB_VIEW_PROVIDER *m_view;
+    SYNCTHINGTRAY_WEB_VIEW *m_view;
 };
 
 }

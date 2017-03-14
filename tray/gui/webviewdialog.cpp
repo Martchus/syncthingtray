@@ -9,12 +9,6 @@
 #include <QIcon>
 #include <QCloseEvent>
 #include <QKeyEvent>
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE)
-# include <QWebEngineView>
-#elif defined(SYNCTHINGTRAY_USE_WEBKIT)
-# include <QWebView>
-# include <QWebFrame>
-#endif
 
 using namespace Dialogs;
 
@@ -22,14 +16,14 @@ namespace QtGui {
 
 WebViewDialog::WebViewDialog(QWidget *parent) :
     QMainWindow(parent),
-    m_view(new WEB_VIEW_PROVIDER(this))
+    m_view(new SYNCTHINGTRAY_WEB_VIEW(this))
 {
     setWindowTitle(tr("Syncthing"));
     setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     setCentralWidget(m_view);
 
     m_view->setPage(new WebPage(this, m_view));
-    connect(m_view, &WEB_VIEW_PROVIDER::titleChanged, this, &WebViewDialog::setWindowTitle);
+    connect(m_view, &SYNCTHINGTRAY_WEB_VIEW::titleChanged, this, &WebViewDialog::setWindowTitle);
 
 #if defined(SYNCTHINGTRAY_USE_WEBENGINE)
     m_view->installEventFilter(this);

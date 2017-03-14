@@ -2,7 +2,7 @@
 #define WEBVIEW_DIALOG_H
 #ifndef SYNCTHINGTRAY_NO_WEBVIEW
 
-#include "./webviewprovider.h"
+#include "./webviewdefs.h"
 
 #include "../application/settings.h"
 
@@ -39,7 +39,7 @@ protected:
 #endif
 
 private:
-    WEB_VIEW_PROVIDER *m_view;
+    SYNCTHINGTRAY_WEB_VIEW *m_view;
     Data::SyncthingConnectionSettings m_settings;
 };
 

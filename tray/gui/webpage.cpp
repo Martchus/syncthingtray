@@ -28,8 +28,8 @@ using namespace Data;
 
 namespace QtGui {
 
-WebPage::WebPage(WebViewDialog *dlg, WEB_VIEW_PROVIDER *view) :
-    WEB_PAGE_PROVIDER(view),
+WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGTRAY_WEB_VIEW *view) :
+    SYNCTHINGTRAY_WEB_PAGE(view),
     m_dlg(dlg),
     m_view(view)
 {
@@ -52,7 +52,7 @@ WebPage::WebPage(WebViewDialog *dlg, WEB_VIEW_PROVIDER *view) :
         connect(this->mainFrame(), &QWebFrame::urlChanged, this, &WebPage::delegateNewWindowToExternalBrowser);
 #endif
         // -> there need to be a view, though
-        m_view = new WEB_VIEW_PROVIDER;
+        m_view = new SYNCTHINGTRAY_WEB_VIEW;
         m_view->setPage(this);
     }
 }
@@ -77,7 +77,7 @@ bool WebPage::isSamePage(const QUrl &url1, const QUrl &url2)
     return false;
 }
 
-WEB_PAGE_PROVIDER *WebPage::createWindow(WEB_PAGE_PROVIDER::WebWindowType type)
+SYNCTHINGTRAY_WEB_PAGE *WebPage::createWindow(SYNCTHINGTRAY_WEB_PAGE::WebWindowType type)
 {
     Q_UNUSED(type)
     return new WebPage;
@@ -97,7 +97,7 @@ bool WebPage::certificateError(const QWebEngineCertificateError &certificateErro
     }
 }
 
-bool WebPage::acceptNavigationRequest(const QUrl &url, WEB_PAGE_PROVIDER::NavigationType type, bool isMainFrame)
+bool WebPage::acceptNavigationRequest(const QUrl &url, SYNCTHINGTRAY_WEB_PAGE::NavigationType type, bool isMainFrame)
 {
     Q_UNUSED(isMainFrame)
     Q_UNUSED(type)
@@ -105,7 +105,7 @@ bool WebPage::acceptNavigationRequest(const QUrl &url, WEB_PAGE_PROVIDER::Naviga
 }
 
 #else // SYNCTHINGTRAY_USE_WEBKIT
-bool WebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, WEB_PAGE_PROVIDER::NavigationType type)
+bool WebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, SYNCTHINGTRAY_WEB_PAGE::NavigationType type)
 {
     Q_UNUSED(frame)
     Q_UNUSED(type)

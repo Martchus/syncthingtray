@@ -1,8 +1,6 @@
 #ifndef TRAY_WIDGET_H
 #define TRAY_WIDGET_H
 
-#include "./webviewprovider.h"
-
 #include "../application/settings.h"
 
 #include "../../connector/syncthingconnection.h"
