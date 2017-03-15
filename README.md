@@ -55,6 +55,8 @@ The tray is still under development; the following features are planned:
 * Show recently processed items
 * Improve notification handling
 * Create Plasmoid for Plasma 5 desktop
+* Allow starting `syncthing-inotify`
+* Provide built-in support for file system watches
 
 ## Screenshots
 
