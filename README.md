@@ -32,7 +32,7 @@ to the list. Maybe someone could check whether it works under Mac OS X.
 * Does *not* allow configuring Syncthing itself (currently I do not intend to add this feature as it could
   cause more harm than good when not implemented correctly)
 * Can read the Syncthing configuration file for quick setup when just connecting to local instance
-* Can shows the status of the Syncthing systemd unit and allows to start and stop it
+* Can show the status of the Syncthing systemd unit and allows to start and stop it (see section *Use of systemd*)
 * Provides an option to conveniently add the tray to the applications launched when the desktop environment starts
 * Can launch Syncthing automatically when started and display stdout/stderr (useful under Windows)
 * Provides quick access to the official web UI
@@ -85,6 +85,20 @@ the arguments for the desired action.
 Just add `--webui` to the `syncthingtray` arguments to trigger the web UI.
 Syncthing Tray ensures that no second instance will be spawned if it is already
 running and just trigger the web UI.
+
+## Use of systemd
+Use of systemd can be explicitely enabled/disabled by adding
+`-DSYSTEMD_SUPPORT=ON/OFF` to the CMake arguments. There will be no hard
+dependency to systemd in any case.
+
+With systemd support the tray can start and stop the systemd unit of Syncthing.
+It will also take the unit status into account when connecting to the local
+instance. So connection attempts can be prevented when Syncthing isn't running
+anyways. However, those features are optional. To use them they must be enabled
+in the settings dialog first.
+
+Note that this only works when starting Syncthing as user service. This is
+described in the [Arch Wiki](https://wiki.archlinux.org/index.php/Systemd/User).
 
 ## Download
 ### Source
