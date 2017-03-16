@@ -219,7 +219,7 @@
 <context>
     <name>SyncthingDev</name>
     <message>
-        <location filename="../syncthingdev.cpp" line="30"/>
+        <location filename="../syncthingdev.cpp" line="32"/>
         <source>paused</source>
         <translation type="unfinished"></translation>
     </message>
@@ -265,7 +265,7 @@
 <context>
     <name>SyncthingDir</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="125"/>
+        <location filename="../syncthingdir.cpp" line="127"/>
         <source>paused</source>
         <translation type="unfinished"></translation>
     </message>

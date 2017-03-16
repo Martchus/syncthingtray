@@ -21,7 +21,7 @@
     <message>
         <location filename="../syncthingconnection.cpp" line="109"/>
         <source>connected, scanning</source>
-        <translation type="unfinished"></translation>
+        <translation>verbunden, scannt</translation>
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="111"/>
@@ -36,7 +36,7 @@
     <message>
         <location filename="../syncthingconnection.cpp" line="115"/>
         <source>connected, out of sync</source>
-        <translation type="unfinished"></translation>
+        <translation>verbunden, nicht synchronisiert</translation>
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="117"/>
@@ -223,7 +223,7 @@
 <context>
     <name>SyncthingDev</name>
     <message>
-        <location filename="../syncthingdev.cpp" line="30"/>
+        <location filename="../syncthingdev.cpp" line="32"/>
         <source>paused</source>
         <translation>pausiert</translation>
     </message>
@@ -269,7 +269,7 @@
 <context>
     <name>SyncthingDir</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="125"/>
+        <location filename="../syncthingdir.cpp" line="127"/>
         <source>paused</source>
         <translation>pausiert</translation>
     </message>

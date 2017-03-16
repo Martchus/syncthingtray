@@ -390,14 +390,34 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="541"/>
-        <source>Syncthing exited with exit code %1
+        <location filename="../gui/settingsdialog.cpp" line="499"/>
+        <source>%1-launcher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/settingsdialog.cpp" line="500"/>
+        <source>Launch %1 when starting the tray icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/settingsdialog.cpp" line="501"/>
+        <source>%1 executable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/settingsdialog.cpp" line="502"/>
+        <source>%1 log (interleaved stdout/stderr)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/settingsdialog.cpp" line="572"/>
+        <source>%1 exited with exit code %2
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="544"/>
-        <source>Syncthing crashed with exit code %1
+        <location filename="../gui/settingsdialog.cpp" line="575"/>
+        <source>%1 crashed with exit code %2
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -478,22 +498,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="732"/>
+        <location filename="../gui/settingsdialog.cpp" line="767"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="738"/>
+        <location filename="../gui/settingsdialog.cpp" line="773"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="744"/>
+        <location filename="../gui/settingsdialog.cpp" line="779"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="758"/>
+        <location filename="../gui/settingsdialog.cpp" line="793"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -531,8 +551,8 @@
         <location filename="../gui/systemdoptionpage.ui" line="99"/>
         <location filename="../gui/systemdoptionpage.ui" line="154"/>
         <location filename="../gui/systemdoptionpage.ui" line="231"/>
-        <location filename="../gui/settingsdialog.cpp" line="656"/>
-        <location filename="../gui/settingsdialog.cpp" line="671"/>
+        <location filename="../gui/settingsdialog.cpp" line="691"/>
+        <location filename="../gui/settingsdialog.cpp" line="706"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -567,12 +587,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="629"/>
+        <location filename="../gui/settingsdialog.cpp" line="664"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="651"/>
+        <location filename="../gui/settingsdialog.cpp" line="686"/>
         <source>since </source>
         <translation type="unfinished"></translation>
     </message>
@@ -916,7 +936,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>QtGui::WebViewDialog</name>
     <message>
-        <location filename="../gui/webviewdialog.cpp" line="27"/>
+        <location filename="../gui/webviewdialog.cpp" line="21"/>
         <source>Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -925,7 +945,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../gui/webviewoptionpage.ui" line="14"/>
-        <location filename="../gui/settingsdialog.cpp" line="692"/>
+        <location filename="../gui/settingsdialog.cpp" line="727"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -955,7 +975,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="694"/>
+        <location filename="../gui/settingsdialog.cpp" line="729"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
@@ -964,7 +984,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../application/settings.cpp" line="77"/>
+        <location filename="../application/settings.cpp" line="140"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -977,22 +997,22 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="74"/>
+        <location filename="../application/main.cpp" line="70"/>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="75"/>
+        <location filename="../application/main.cpp" line="71"/>
         <source>Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="80"/>
+        <location filename="../application/main.cpp" line="76"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="84"/>
+        <location filename="../application/main.cpp" line="80"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation type="unfinished"></translation>
     </message>

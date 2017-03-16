@@ -390,16 +390,46 @@
         <translation>Log folgen</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="541"/>
-        <source>Syncthing exited with exit code %1
-</source>
-        <translation>Syncthing wurde mit dem Statuscode %1 beendet</translation>
+        <location filename="../gui/settingsdialog.cpp" line="499"/>
+        <source>%1-launcher</source>
+        <translation>%1-Starter</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="544"/>
+        <location filename="../gui/settingsdialog.cpp" line="500"/>
+        <source>Launch %1 when starting the tray icon</source>
+        <translation>Starte %1 beim Starten des Tray-Icons</translation>
+    </message>
+    <message>
+        <location filename="../gui/settingsdialog.cpp" line="501"/>
+        <source>%1 executable</source>
+        <translation>Ausführbare Datei von %1</translation>
+    </message>
+    <message>
+        <location filename="../gui/settingsdialog.cpp" line="502"/>
+        <source>%1 log (interleaved stdout/stderr)</source>
+        <translation>%1-Log (stdout/stderr)</translation>
+    </message>
+    <message>
+        <location filename="../gui/settingsdialog.cpp" line="572"/>
+        <source>%1 exited with exit code %2
+</source>
+        <translation>%1 wurde mit dem Statuscode %2 beendet</translation>
+    </message>
+    <message>
+        <location filename="../gui/settingsdialog.cpp" line="575"/>
+        <source>%1 crashed with exit code %2
+</source>
+        <translation>%1 ist mit dem Statuscode %2 abgestürzt</translation>
+    </message>
+    <message>
+        <source>Syncthing exited with exit code %1
+</source>
+        <translation type="vanished">Syncthing wurde mit dem Statuscode %1 beendet</translation>
+    </message>
+    <message>
         <source>Syncthing crashed with exit code %1
 </source>
-        <translation>Syncthing ist mit dem Statuscode %1 abgestürzt</translation>
+        <translation type="vanished">Syncthing ist mit dem Statuscode %1 abgestürzt</translation>
     </message>
 </context>
 <context>
@@ -478,22 +508,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="732"/>
+        <location filename="../gui/settingsdialog.cpp" line="767"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="738"/>
+        <location filename="../gui/settingsdialog.cpp" line="773"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="744"/>
+        <location filename="../gui/settingsdialog.cpp" line="779"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="758"/>
+        <location filename="../gui/settingsdialog.cpp" line="793"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -534,8 +564,8 @@
         <location filename="../gui/systemdoptionpage.ui" line="99"/>
         <location filename="../gui/systemdoptionpage.ui" line="154"/>
         <location filename="../gui/systemdoptionpage.ui" line="231"/>
-        <location filename="../gui/settingsdialog.cpp" line="656"/>
-        <location filename="../gui/settingsdialog.cpp" line="671"/>
+        <location filename="../gui/settingsdialog.cpp" line="691"/>
+        <location filename="../gui/settingsdialog.cpp" line="706"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -569,12 +599,12 @@
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="629"/>
+        <location filename="../gui/settingsdialog.cpp" line="664"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit ist entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="651"/>
+        <location filename="../gui/settingsdialog.cpp" line="686"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -924,7 +954,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>QtGui::WebViewDialog</name>
     <message>
-        <location filename="../gui/webviewdialog.cpp" line="27"/>
+        <location filename="../gui/webviewdialog.cpp" line="21"/>
         <source>Syncthing</source>
         <translation></translation>
     </message>
@@ -933,7 +963,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../gui/webviewoptionpage.ui" line="14"/>
-        <location filename="../gui/settingsdialog.cpp" line="692"/>
+        <location filename="../gui/settingsdialog.cpp" line="727"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
@@ -963,7 +993,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../gui/settingsdialog.cpp" line="694"/>
+        <location filename="../gui/settingsdialog.cpp" line="729"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.
@@ -973,7 +1003,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../application/settings.cpp" line="77"/>
+        <location filename="../application/settings.cpp" line="140"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Fehler beim laden des Zertifikats &quot;%1&quot; beim wiederherstellen der Einstellungen.</translation>
     </message>
@@ -986,22 +1016,22 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Fehler beim </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="74"/>
+        <location filename="../application/main.cpp" line="70"/>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>
         <translation>Vor der ersten Verwendung muss eingestellt werden, wie sich das Syncthing Tray mit Syncthing verbinden soll.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="75"/>
+        <location filename="../application/main.cpp" line="71"/>
         <source>Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration.</source>
         <translation>Der Einstellungsdialog ermöglicht es die URL, Zugangsdaten und den API-Key automatisch aus der lokalen Syncthing-Konfiguration auszulesen.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="80"/>
+        <location filename="../application/main.cpp" line="76"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Das System-Tray bzw. der Infobereich ist aktuell nicht verfügbar. Es wäre möglich, Syncthing Tray als normales Fenster zu starten (mit Option -w).</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="84"/>
+        <location filename="../application/main.cpp" line="80"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Die verwendete Qt-Bibliothek wurde nicht mit Unterstützung für System-Tray konfiguriert. Es wäre möglich, Syncthing Tray als normales Fenster zu starten (mit Option -w).</translation>
     </message>

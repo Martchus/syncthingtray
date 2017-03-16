@@ -4,9 +4,13 @@
 <context>
     <name>SyncthingDirActions</name>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="106"/>
         <source>not available anymore</source>
-        <translation>nicht mehr verfügbar</translation>
+        <translation type="vanished">nicht mehr verfügbar</translation>
+    </message>
+    <message>
+        <location filename="../syncthingfileitemaction.cpp" line="106"/>
+        <source>Status: not available anymore</source>
+        <translation>Status: nicht mehr verfügbar</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="115"/>
