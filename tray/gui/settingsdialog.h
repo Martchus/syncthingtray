@@ -17,6 +17,7 @@ class DateTime;
 namespace Data {
 class SyncthingConnection;
 class SyncthingService;
+class SyncthingProcess;
 }
 
 namespace QtGui {
@@ -46,15 +47,20 @@ DECLARE_UI_FILE_BASED_OPTION_PAGE(AppearanceOptionPage)
 
 DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_SETUP(AutostartOptionPage)
 
-BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(LauncherOptionPage)
+BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(LauncherOptionPage)
+public:
+    LauncherOptionPage(QWidget *parentWidget = nullptr);
+    LauncherOptionPage(const QString &tool, QWidget *parentWidget = nullptr);
 private:
     DECLARE_SETUP_WIDGETS
     void handleSyncthingReadyRead();
     void handleSyncthingExited(int exitCode, QProcess::ExitStatus exitStatus);
     void launch();
     void stop();
+    Data::SyncthingProcess &m_process;
     QList<QMetaObject::Connection> m_connections;
     bool m_kill;
+    QString m_tool;
 END_DECLARE_OPTION_PAGE
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

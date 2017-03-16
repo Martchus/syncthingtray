@@ -16,7 +16,7 @@ void SyncthingProcess::restartSyncthing(const QString &cmd)
     if(state() == QProcess::Running) {
         m_cmd = cmd;
         // give Syncthing 5 seconds to terminate, otherwise kill it
-        QTimer::singleShot(5000, this, SLOT(killToRestart()));
+        QTimer::singleShot(5000, this, &SyncthingProcess::killToRestart);
         terminate();
     } else {
         startSyncthing(cmd);
@@ -31,6 +31,15 @@ void SyncthingProcess::startSyncthing(const QString &cmd)
         } else {
             start(cmd, QProcess::ReadOnly);
         }
+    }
+}
+
+void SyncthingProcess::stopSyncthing()
+{
+    if(state() == QProcess::Running) {
+        // give Syncthing 5 seconds to terminate, otherwise kill it
+        QTimer::singleShot(5000, this, &SyncthingProcess::kill);
+        terminate();
     }
 }
 

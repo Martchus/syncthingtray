@@ -16,6 +16,7 @@ public:
 public Q_SLOTS:
     void restartSyncthing(const QString &cmd);
     void startSyncthing(const QString &cmd);
+    void stopSyncthing();
 
 private Q_SLOTS:
     void handleFinished(int exitCode, QProcess::ExitStatus exitStatus);

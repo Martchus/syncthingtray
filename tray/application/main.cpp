@@ -54,18 +54,14 @@ int initSyncthingTray(bool windowed, bool waitForTray)
     QObject::connect(&service, &SyncthingService::errorOccurred, &handleSystemdServiceError);
 #endif
     if(windowed) {
-        if(v.launcher.enabled) {
-            syncthingProcess().startSyncthing(v.launcher.syncthingCmd());
-        }
+        v.launcher.autostart();
         auto *trayWidget = new TrayWidget;
         trayWidget->setAttribute(Qt::WA_DeleteOnClose);
         trayWidget->show();
     } else {
 #ifndef QT_NO_SYSTEMTRAYICON
         if(QSystemTrayIcon::isSystemTrayAvailable() || waitForTray) {
-            if(v.launcher.enabled) {
-                syncthingProcess().startSyncthing(v.launcher.syncthingCmd());
-            }
+            v.launcher.autostart();
             auto *trayIcon = new TrayIcon;
             trayIcon->show();
             if(v.firstLaunch) {
@@ -151,6 +147,7 @@ int runApplication(int argc, const char *const *argv)
                     res = application.exec();
                 }
 
+                Settings::Launcher::terminate();
                 Settings::save();
                 return res;
             } else {

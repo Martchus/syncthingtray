@@ -12,6 +12,7 @@
 #include <QSize>
 #include <QFrame>
 #include <QTabWidget>
+#include <QHash>
 
 #include <vector>
 
@@ -22,6 +23,10 @@ enum class ElementPosition;
 
 namespace Dialogs {
 class QtSettings;
+}
+
+namespace Data {
+class SyncthingProcess;
 }
 
 namespace Settings {
@@ -49,6 +54,13 @@ struct Appearance
     bool brightTextColors = false;
 };
 
+struct ToolParameter
+{
+    QString path;
+    QString args;
+    bool autostart = false;
+};
+
 struct Launcher
 {
     bool enabled = false;
@@ -59,7 +71,12 @@ struct Launcher
             QStringLiteral("syncthing");
 #endif
     QString syncthingArgs;
+    QHash<QString, ToolParameter> tools;
     QString syncthingCmd() const;
+    QString toolCmd(const QString &tool) const;
+    static Data::SyncthingProcess &toolProcess(const QString &tool);
+    void autostart() const;
+    static void terminate();
 };
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

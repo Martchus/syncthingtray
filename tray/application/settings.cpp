@@ -1,4 +1,5 @@
 #include "./settings.h"
+#include "../../connector/syncthingprocess.h"
 
 #include "resources/config.h"
 
@@ -15,17 +16,79 @@
 #include <QMessageBox>
 #include <QFile>
 
+#include <unordered_map>
+
 using namespace std;
 using namespace Data;
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
 using namespace MiscUtils;
 #endif
 
+namespace std {
+
+template <> struct hash<QString>
+{
+    std::size_t operator()(const QString &str) const
+    {
+        return qHash(str);
+    }
+};
+
+}
+
 namespace Settings {
+
+/*!
+ * \brief Contains the processes for launching extra tools.
+ * \remarks Using std::unordered_map instead of QHash because SyncthingProcess can not be copied.
+ */
+static unordered_map<QString, SyncthingProcess> toolProcesses;
 
 QString Launcher::syncthingCmd() const
 {
     return syncthingPath % QChar(' ') % syncthingArgs;
+}
+
+QString Launcher::toolCmd(const QString &tool) const
+{
+    const ToolParameter toolParams = tools.value(tool);
+    if(toolParams.path.isEmpty()) {
+        return QString();
+    }
+    return toolParams.path % QChar(' ') % toolParams.args;
+}
+
+SyncthingProcess &Launcher::toolProcess(const QString &tool)
+{
+    return toolProcesses[tool];
+}
+
+/*!
+ * \brief Starts all processes (Syncthing and tools) if autostart is enabled.
+ */
+void Launcher::autostart() const
+{
+    if(enabled && !syncthingPath.isEmpty()) {
+        syncthingProcess().startSyncthing(syncthingCmd());
+    }
+    for(auto i = tools.cbegin(), end = tools.cend(); i != end; ++i) {
+        const ToolParameter &toolParams = i.value();
+        if(toolParams.autostart && !toolParams.path.isEmpty()) {
+            toolProcesses[i.key()].startSyncthing(toolParams.path % QChar(' ') % toolParams.args);
+        }
+    }
+}
+
+void Launcher::terminate()
+{
+    syncthingProcess().stopSyncthing();
+    for(auto &process : toolProcesses) {
+        process.second.stopSyncthing();
+    }
+    syncthingProcess().waitForFinished();
+    for(auto &process : toolProcesses) {
+        process.second.waitForFinished();
+    }
 }
 
 Settings &values()
@@ -102,9 +165,22 @@ void restore()
 
     settings.beginGroup(QStringLiteral("startup"));
     auto &launcher = v.launcher;
-    launcher.enabled = settings.value(QStringLiteral("launchSynchting"), launcher.enabled).toBool();
+    launcher.enabled = settings.value(QStringLiteral("syncthingAutostart"), launcher.enabled).toBool();
     launcher.syncthingPath = settings.value(QStringLiteral("syncthingPath"), launcher.syncthingPath).toString();
     launcher.syncthingArgs = settings.value(QStringLiteral("syncthingArgs"), launcher.syncthingArgs).toString();
+    settings.beginGroup(QStringLiteral("tools"));
+    for(const QString &tool : settings.childGroups()) {
+        settings.beginGroup(tool);
+        ToolParameter &toolParams = launcher.tools[tool];
+        toolParams.autostart = settings.value(QStringLiteral("autostart"), toolParams.autostart).toBool();
+        toolParams.path = settings.value(QStringLiteral("path"), toolParams.path).toString();
+        toolParams.args = settings.value(QStringLiteral("args"), toolParams.args).toString();
+        settings.endGroup();
+    }
+    for(auto i = launcher.tools.cbegin(), end = launcher.tools.cend(); i != end; ++i) {
+
+    }
+    settings.endGroup();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     auto &systemd = v.systemd;
     systemd.syncthingUnit = settings.value(QStringLiteral("syncthingUnit"), systemd.syncthingUnit).toString();
@@ -173,9 +249,19 @@ void save()
 
     settings.beginGroup(QStringLiteral("startup"));
     const auto &launcher = v.launcher;
-    settings.setValue(QStringLiteral("launchSynchting"), launcher.enabled);
+    settings.setValue(QStringLiteral("syncthingAutostart"), launcher.enabled);
     settings.setValue(QStringLiteral("syncthingPath"), launcher.syncthingPath);
     settings.setValue(QStringLiteral("syncthingArgs"), launcher.syncthingArgs);
+    settings.beginGroup(QStringLiteral("tools"));
+    for(auto i = launcher.tools.cbegin(), end = launcher.tools.cend(); i != end; ++i) {
+        const ToolParameter &toolParams = i.value();
+        settings.beginGroup(i.key());
+        settings.setValue(QStringLiteral("autostart"), toolParams.autostart);
+        settings.setValue(QStringLiteral("path"), toolParams.path);
+        settings.setValue(QStringLiteral("args"), toolParams.args);
+        settings.endGroup();
+    }
+    settings.endGroup();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     const auto &systemd = v.systemd;
     settings.setValue(QStringLiteral("syncthingUnit"), systemd.syncthingUnit);

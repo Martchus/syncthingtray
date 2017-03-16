@@ -473,7 +473,15 @@ void AutostartOptionPage::reset()
 // LauncherOptionPage
 LauncherOptionPage::LauncherOptionPage(QWidget *parentWidget) :
     LauncherOptionPageBase(parentWidget),
+    m_process(syncthingProcess()),
     m_kill(false)
+{}
+
+LauncherOptionPage::LauncherOptionPage(const QString &tool, QWidget *parentWidget) :
+    LauncherOptionPageBase(parentWidget),
+    m_process(Launcher::toolProcess(tool)),
+    m_kill(false),
+    m_tool(tool)
 {}
 
 LauncherOptionPage::~LauncherOptionPage()
@@ -486,15 +494,24 @@ LauncherOptionPage::~LauncherOptionPage()
 QWidget *LauncherOptionPage::setupWidget()
 {
     auto *widget = LauncherOptionPageBase::setupWidget();
+    // adjust labels to use name of additional tool instead of "Syncthing"
+    if(!m_tool.isEmpty()) {
+        widget->setWindowTitle(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1-launcher").arg(m_tool));
+        ui()->enabledCheckBox->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Launch %1 when starting the tray icon").arg(m_tool));
+        ui()->syncthingPathLabel->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 executable").arg(m_tool));
+        ui()->logLabel->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 log (interleaved stdout/stderr)").arg(m_tool));
+    }
+    // setup other widgets
     ui()->syncthingPathSelection->provideCustomFileMode(QFileDialog::ExistingFile);
     ui()->logTextEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
-    m_connections << QObject::connect(&syncthingProcess(), &SyncthingProcess::readyRead, bind(&LauncherOptionPage::handleSyncthingReadyRead, this));
-    m_connections << QObject::connect(&syncthingProcess(), static_cast<void(SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), bind(&LauncherOptionPage::handleSyncthingExited, this, _1, _2));
-    QObject::connect(ui()->launchNowPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::launch, this));
-    QObject::connect(ui()->stopPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::stop, this));
-    const bool running = syncthingProcess().state() != QProcess::NotRunning;
+    const bool running = m_process.state() != QProcess::NotRunning;
     ui()->launchNowPushButton->setHidden(running);
     ui()->stopPushButton->setHidden(!running);
+    // connect signals & slots
+    m_connections << QObject::connect(&m_process, &SyncthingProcess::readyRead, bind(&LauncherOptionPage::handleSyncthingReadyRead, this));
+    m_connections << QObject::connect(&m_process, static_cast<void(SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), bind(&LauncherOptionPage::handleSyncthingExited, this, _1, _2));
+    QObject::connect(ui()->launchNowPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::launch, this));
+    QObject::connect(ui()->stopPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::stop, this));
     return widget;
 }
 
@@ -502,9 +519,16 @@ bool LauncherOptionPage::apply()
 {
     if(hasBeenShown()) {
         auto &settings = values().launcher;
-        settings.enabled = ui()->enabledCheckBox->isChecked();
-        settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
-        settings.syncthingArgs = ui()->argumentsLineEdit->text();
+        if(m_tool.isEmpty()) {
+            settings.enabled = ui()->enabledCheckBox->isChecked();
+            settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
+            settings.syncthingArgs = ui()->argumentsLineEdit->text();
+        } else {
+            ToolParameter &params = settings.tools[m_tool];
+            params.autostart = ui()->enabledCheckBox->isChecked();
+            params.path = ui()->syncthingPathSelection->lineEdit()->text();
+            params.args = ui()->argumentsLineEdit->text();
+        }
     }
     return true;
 }
@@ -513,9 +537,16 @@ void LauncherOptionPage::reset()
 {
     if(hasBeenShown()) {
         const auto &settings = values().launcher;
-        ui()->enabledCheckBox->setChecked(settings.enabled);
-        ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
-        ui()->argumentsLineEdit->setText(settings.syncthingArgs);
+        if(m_tool.isEmpty()) {
+            ui()->enabledCheckBox->setChecked(settings.enabled);
+            ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
+            ui()->argumentsLineEdit->setText(settings.syncthingArgs);
+        } else {
+            const ToolParameter params = settings.tools.value(m_tool);
+            ui()->enabledCheckBox->setChecked(params.autostart);
+            ui()->syncthingPathSelection->lineEdit()->setText(params.path);
+            ui()->argumentsLineEdit->setText(params.args);
+        }
     }
 }
 
@@ -524,7 +555,7 @@ void LauncherOptionPage::handleSyncthingReadyRead()
     if(hasBeenShown()) {
         QTextCursor cursor = ui()->logTextEdit->textCursor();
         cursor.movePosition(QTextCursor::End);
-        cursor.insertText(QString::fromLocal8Bit(syncthingProcess().readAll()));
+        cursor.insertText(QString::fromLocal8Bit(m_process.readAll()));
         if(ui()->ensureCursorVisibleCheckBox->isChecked()) {
             ui()->logTextEdit->ensureCursorVisible();
         }
@@ -538,10 +569,10 @@ void LauncherOptionPage::handleSyncthingExited(int exitCode, QProcess::ExitStatu
         cursor.movePosition(QTextCursor::End);
         switch(exitStatus) {
         case QProcess::NormalExit:
-            cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Syncthing exited with exit code %1\n").arg(exitCode));
+            cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 exited with exit code %2\n").arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
             break;
         case QProcess::CrashExit:
-            cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Syncthing crashed with exit code %1\n").arg(exitCode));
+            cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 crashed with exit code %2\n").arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
             break;
         }
         ui()->stopPushButton->hide();
@@ -553,11 +584,15 @@ void LauncherOptionPage::launch()
 {
     if(hasBeenShown()) {
         apply();
-        if(syncthingProcess().state() == QProcess::NotRunning) {
+        if(m_process.state() == QProcess::NotRunning) {
             ui()->launchNowPushButton->hide();
             ui()->stopPushButton->show();
             m_kill = false;
-            syncthingProcess().startSyncthing(values().launcher.syncthingCmd());
+            if(m_tool.isEmpty()) {
+                m_process.startSyncthing(values().launcher.syncthingCmd());
+            } else {
+                m_process.startSyncthing(values().launcher.toolCmd(m_tool));
+            }
         }
     }
 }
@@ -565,12 +600,12 @@ void LauncherOptionPage::launch()
 void LauncherOptionPage::stop()
 {
     if(hasBeenShown()) {
-        if(syncthingProcess().state() != QProcess::NotRunning) {
+        if(m_process.state() != QProcess::NotRunning) {
             if(m_kill) {
-                syncthingProcess().kill();
+                m_process.kill();
             } else {
                 m_kill = true;
-                syncthingProcess().terminate();
+                m_process.terminate();
             }
         }
     }
@@ -742,7 +777,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Startup"));
-    category->assignPages(QList<Dialogs::OptionPage *>() << new AutostartOptionPage << new LauncherOptionPage
+    category->assignPages(QList<Dialogs::OptionPage *>() << new AutostartOptionPage << new LauncherOptionPage << new LauncherOptionPage(QStringLiteral("Inotify"))
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
                           << new SystemdOptionPage
 #endif
