@@ -34,7 +34,8 @@ to the list. Maybe someone could check whether it works under Mac OS X.
 * Can read the Syncthing configuration file for quick setup when just connecting to local instance
 * Can show the status of the Syncthing systemd unit and allows to start and stop it (see section *Use of systemd*)
 * Provides an option to conveniently add the tray to the applications launched when the desktop environment starts
-* Can launch Syncthing automatically when started and display stdout/stderr (useful under Windows)
+* Can launch Syncthing and syncthing-inotify automatically when started and display stdout/stderr (useful under
+  Windows)
 * Provides quick access to the official web UI
   * Utilizes either Qt WebKit or Qt WebEngine
   * Can be built without web view support as well (then the web UI is opened in the regular browser)
@@ -55,7 +56,6 @@ The tray is still under development; the following features are planned:
 * Show recently processed items
 * Improve notification handling
 * Create Plasmoid for Plasma 5 desktop
-* Allow starting `syncthing-inotify`
 * Provide built-in support for file system watches
 
 ## Screenshots
