@@ -205,8 +205,8 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
         return QList<QAction *>() << menuAction;
     }
 
-    QList<QAction *> actions = createActions(fileItemInfo, parentWidget);
-    // don't show anything if relevant actions could be determined
+    const QList<QAction *> actions = createActions(fileItemInfo, parentWidget);
+    // don't show anything if no relevant actions could be determined
     if(actions.isEmpty()) {
         return actions;
     }
