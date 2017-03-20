@@ -262,7 +262,6 @@ void ConnectionTests::testConnection()
     CPPUNIT_ASSERT_EQUAL(dir2.devices.toSet(), QSet<QString>({QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"),
                                                    ownDevId}));
     // reconnecting
-#if !defined(__GNUC__) || defined(__clang__)
     cerr << "\n - Reconnecting ..." << endl;
     waitForConnection(&SyncthingConnection::statusChanged, static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::reconnect));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("reconnecting", QStringLiteral("reconnecting"), m_connection.statusText());
@@ -272,9 +271,6 @@ void ConnectionTests::testConnection()
         waitForConnectionAnyAction(&SyncthingConnection::statusChanged, noop);
     }
     CPPUNIT_ASSERT_EQUAL_MESSAGE("connected again", QStringLiteral("connected, paused"), m_connection.statusText());
-#else
-    cerr << "\n - FIXME: Skipping reconnection test when using GCC." << endl;
-#endif
 
     cerr << "\n - Pausing/resuming devs/dirs ..." << endl;
     // resume all devs

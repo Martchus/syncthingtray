@@ -106,6 +106,7 @@ void waitForSignal(typename QtPrivate::FunctionPointer<Signal>::Object *sender, 
 
     // no reason to enter event loop when signal has been emitted directly
     if((!ok || *ok) && signalDirectlyEmitted) {
+        QObject::disconnect(signalDirectlyEmittedConnection);
         QObject::disconnect(handlerConnection);
         return;
     }
