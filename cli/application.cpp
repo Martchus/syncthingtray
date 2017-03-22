@@ -35,13 +35,13 @@ void exitApplication(int statusCode)
     terminated = true;
 }
 
-inline QString argToQString(const char *arg)
+inline QString argToQString(const char *arg, int size = -1)
 {
 #if !defined(PLATFORM_WINDOWS)
-    return QString::fromLocal8Bit(arg);
+    return QString::fromLocal8Bit(arg, size);
 #else
     // under Windows args are converted to UTF-8
-    return QString::fromUtf8(arg);
+    return QString::fromUtf8(arg, size);
 #endif
 }
 
@@ -230,7 +230,14 @@ void Application::requestRescan(const ArgumentOccurrence &occurrence)
     connect(&m_connection, &SyncthingConnection::rescanTriggered, this, &Application::handleResponse);
     for(const char *value : occurrence.values) {
         cerr << "Request rescanning " << value << " ...\n";
-        m_connection.rescan(argToQString(value));
+        // split into directory name and relpath
+        const char *firstSlash = value;
+        for(; *firstSlash && *firstSlash != '/'; ++firstSlash);
+        if(*firstSlash) {
+            m_connection.rescan(argToQString(value, static_cast<int>(firstSlash - value)), argToQString(firstSlash + 1));
+        } else {
+            m_connection.rescan(argToQString(value));
+        }
     }
     cerr.flush();
 }
