@@ -150,7 +150,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                                 for(const auto &error : dir.errors) {
                                     errors << error.path;
                                 }
-                                return QVariant(QStringLiteral("<b>") % tr("Failed items") % QStringLiteral("</b><ul><li>") % errors.join(QString()) % QStringLiteral("</li></ul>") % tr("Click for details"));
+                                return QVariant(QStringLiteral("<b>") % tr("Failed items") % QStringLiteral("</b><ul><li>") % errors.join(QStringLiteral("</li><li>")) % QStringLiteral("</li></ul>") % tr("Click for details"));
                             }
                         }
                     }
