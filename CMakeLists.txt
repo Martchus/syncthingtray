@@ -21,6 +21,7 @@ option(NO_FILE_ITEM_ACTION_PLUGIN "specifies whether building the file item acti
 option(NO_MODEL "specifies whether building models should be skipped, implies NO_TRAY" OFF)
 
 # add subdirectories
+enable_testing()
 add_subdirectory(connector)
 link_directories(${LIB_SYNCTHING_CONNECTOR_BINARY_DIR})
 if(NOT NO_CLI)
