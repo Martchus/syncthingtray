@@ -18,6 +18,7 @@
 #include <QWidget>
 #include <QDir>
 #include <QEvent>
+#include <QMessageBox>
 
 #include <iostream>
 #include <functional>
@@ -224,9 +225,16 @@ void SyncthingFileItemAction::logConnectionStatus()
     cerr << "Syncthing connection status changed to: " << s_connection.statusText().toLocal8Bit().data() << endl;
 }
 
-void SyncthingFileItemAction::logConnectionError(const QString &errorMessage)
+void SyncthingFileItemAction::logConnectionError(const QString &errorMessage, SyncthingErrorCategory errorCategory)
 {
-    cerr << "Syncthing connection error: " << errorMessage.toLocal8Bit().data() << endl;
+    switch(errorCategory) {
+    case SyncthingErrorCategory::Parsing:
+    case SyncthingErrorCategory::SpecificRequest:
+        QMessageBox::critical(nullptr, tr("Syncthing connection error"), errorMessage);
+        break;
+    default:
+        cerr << "Syncthing connection error: " << errorMessage.toLocal8Bit().data() << endl;
+    }
 }
 
 void SyncthingFileItemAction::rescanDir(const QString &dirId, const QString &relpath)

@@ -60,7 +60,7 @@ public:
 
 private Q_SLOTS:
     static void logConnectionStatus();
-    static void logConnectionError(const QString &errorMessage);
+    static void logConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory errorCategory);
     static void rescanDir(const QString &dirId, const QString &relpath = QString());
     static void showAboutDialog();
 
