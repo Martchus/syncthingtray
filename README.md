@@ -8,7 +8,7 @@ Qt 5-based tray application for [Syncthing](https://github.com/syncthing/syncthi
 * Tested under \*
   * Plasma 5
   * Openbox/qt5ct/Tint2
-  * Awesome
+  * Awesome/qt5ct
   * Cinnamon
   * Windows 10
 * Can be shown as regular window if tray icon support is not available
@@ -20,7 +20,7 @@ to the list. Maybe someone could check whether it works under Mac OS X.
 * Provides quick access to most frequently used features but does not intend to replace the official web UI
   * Check state of directories and devices
   * Check current traffic statistics
-  * Display further details about direcoties and devices, like last file, last
+  * Display further details about directories and devices, like last file, last
     scan, items out of sync, ...
   * Display ongoing downloads
   * Display Syncthing log
@@ -29,9 +29,7 @@ to the list. Maybe someone could check whether it works under Mac OS X.
   * Pause/resume a specific device or all devices at once
   * Pause/resume a specific directory
 * Shows Syncthing notifications
-* Does *not* allow configuring Syncthing itself (currently I do not intend to add this feature as it could
-  cause more harm than good when not implemented correctly)
-* Can read the Syncthing configuration file for quick setup when just connecting to local instance
+* Can read the local Syncthing configuration file for quick setup when just connecting to local instance
 * Can show the status of the Syncthing systemd unit and allows to start and stop it (see section *Use of systemd*)
 * Provides an option to conveniently add the tray to the applications launched when the desktop environment starts
 * Can launch Syncthing and syncthing-inotify automatically when started and display stdout/stderr (useful under
@@ -41,14 +39,14 @@ to the list. Maybe someone could check whether it works under Mac OS X.
   * Can be built without web view support as well (then the web UI is opened in the regular browser)
 * Allows quickly switching between multiple Syncthing instances
 * Shows notifications via Qt or uses D-Bus notification daemon directly
-* Features a simple command line utility `syncthingctl` to check Syncthing status and trigger
+* Also features a simple command line utility `syncthingctl` to check Syncthing status and trigger
   rescan/pause/resume/restart
 * Also bundles a KIO plugin which shows the status of a Syncthing directory
   and allows to trigger Syncthing actions in Dolphin file manager
-  * rescan selected items
-  * rescan entire Syncthing directory
-  * pause/resume Syncthing directory
-  * see also screenshots section
+  * Rescan selected items
+  * Rescan entire Syncthing directory
+  * Pause/resume Syncthing directory
+  * See also screenshots section
 * English and German localization
 
 ## Planned features
