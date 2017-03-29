@@ -130,6 +130,19 @@ QString SyncthingDir::statusString() const
     }
 }
 
+QStringRef SyncthingDir::pathWithoutTrailingSlash() const
+{
+    QStringRef dirPath(&path);
+    while(dirPath.endsWith(QChar('/'))) {
+#if QT_VERSION_MAJOR >= 5 && QT_VERSION_MINOR >= 8
+        dirPath.chop(1);
+#else
+        dirPath = dirPath.left(dirPath.size() - 1);
+#endif
+    }
+    return dirPath;
+}
+
 SyncthingItemDownloadProgress::SyncthingItemDownloadProgress(const QString &containingDirPath, const QString &relativeItemPath, const QJsonObject &values) :
     relativePath(relativeItemPath),
     fileInfo(containingDirPath % QChar('/') % QString(relativeItemPath).replace(QChar('\\'), QChar('/'))),

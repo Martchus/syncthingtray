@@ -66,6 +66,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir
     bool assignStatus(SyncthingDirStatus newStatus, ChronoUtilities::DateTime time);
     QString displayName() const;
     QString statusString() const;
+    QStringRef pathWithoutTrailingSlash() const;
 
     QString id;
     QString label;

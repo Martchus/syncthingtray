@@ -46,15 +46,20 @@ private:
     void requestPauseAllDirs(const ArgumentOccurrence &);
     void requestResumeAllDevs(const ArgumentOccurrence &);
     void requestResumeAllDirs(const ArgumentOccurrence &);
+    static void printDir(const Data::SyncthingDir *dir);
+    static void printDev(const Data::SyncthingDev *dev);
     void printStatus(const ArgumentOccurrence &);
-    void printLog(const std::vector<Data::SyncthingLogEntry> &logEntries);
+    static void printLog(const std::vector<Data::SyncthingLogEntry> &logEntries);
     void initWaitForIdle(const ArgumentOccurrence &);
     void waitForIdle();
+    void operateOnPwd(const ArgumentOccurrence &occurrence);
 
     Args m_args;
     Data::SyncthingConnectionSettings m_settings;
     Data::SyncthingConnection m_connection;
     size_t m_expectedResponse;
+    bool m_preventDisconnect;
+    bool m_callbacksInvoked;
     std::vector<const Data::SyncthingDir *> m_relevantDirs;
     std::vector<const Data::SyncthingDev *> m_relevantDevs;
 

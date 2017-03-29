@@ -17,6 +17,7 @@ Args::Args() :
     resumeAllDevs("resume-all-devs", '\0', "resumes all devices"),
     resumeAllDirs("resume-all-dirs", '\0', "resumes all directories"),
     waitForIdle("wait-for-idle", 'w', "waits until the specified dirs/devs are idling"),
+    pwd("pwd", 'p', "operates in the current working directory"),
     statusDir("dir", 'd', "specifies the directoies (default is all dirs)", {"ID"}),
     statusDev("dev", '\0', "specifies the devices (default is all devs)", {"ID"}),
     pauseDir("dir", 'd', "specifies the directories", {"ID"}),
@@ -32,6 +33,8 @@ Args::Args() :
     }
     status.setSubArguments({&statusDir, &statusDev});
     waitForIdle.setSubArguments({&statusDir, &statusDev});
+    pwd.setValueNames({"status/rescan/pause/resume"});
+    pwd.setRequiredValueCount(1);
 
     rescan.setValueNames({"dir ID"});
     rescan.setRequiredValueCount(-1);
@@ -39,7 +42,7 @@ Args::Args() :
     resume.setSubArguments({&pauseDir, &pauseDev});
 
     parser.setMainArguments({&status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &pauseAllDevs, &pauseAllDirs, &resume, &resumeAllDevs,
-                             &resumeAllDirs, &waitForIdle, &configFile, &apiKey, &url, &credentials, &certificate, &help});
+                             &resumeAllDirs, &waitForIdle, &pwd, &configFile, &apiKey, &url, &credentials, &certificate, &help});
 
     // allow setting default values via environment
     configFile.setEnvironmentVariable("SYNCTHING_CTL_CONFIG_FILE");
