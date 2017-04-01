@@ -1,6 +1,7 @@
-#include "./helper.h"
 #include "../syncthingconfig.h"
 #include "../utils.h"
+
+#include "../testhelper/helper.h"
 
 #include <c++utilities/tests/testutils.h>
 #include <c++utilities/chrono/datetime.h>

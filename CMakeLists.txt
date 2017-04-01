@@ -22,6 +22,7 @@ option(NO_MODEL "specifies whether building models should be skipped, implies NO
 
 # add subdirectories
 enable_testing()
+add_subdirectory(testhelper)
 add_subdirectory(connector)
 link_directories(${LIB_SYNCTHING_CONNECTOR_BINARY_DIR})
 if(NOT NO_CLI)

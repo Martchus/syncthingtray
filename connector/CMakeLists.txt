@@ -31,7 +31,6 @@ set(SRC_FILES
 )
 
 set(TEST_HEADER_FILES
-    tests/helper.h
 )
 set(TEST_SRC_FILES
     tests/cppunit.cpp
@@ -54,6 +53,11 @@ set(META_PUBLIC_STATIC_LIB_DEPENDS c++utilities_static)
 find_package(qtutilities 5.0.0 REQUIRED)
 include_directories(BEFORE SYSTEM ${QT_UTILITIES_INCLUDE_DIRS})
 list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
+
+# find test helper
+find_package(syncthingtesthelper ${META_APP_VERSION} REQUIRED)
+include_directories(BEFORE SYSTEM ${SYNCTHINGTESTHELPER_INCLUDE_DIRS})
+list(APPEND TEST_LIBRARIES ${SYNCTHINGTESTHELPER_LIB})
 
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES Network)

@@ -1,5 +1,5 @@
-#ifndef TESTS_HELPER_H
-#define TESTS_HELPER_H
+#ifndef SYNCTHINGTESTHELPER_H
+#define SYNCTHINGTESTHELPER_H
 
 #include <c++utilities/conversion/stringbuilder.h>
 
@@ -138,4 +138,4 @@ void waitForSignal(typename QtPrivate::FunctionPointer<Signal>::Object *sender, 
     QObject::disconnect(handlerConnection);
 }
 
-#endif // TESTS_HELPER_H
+#endif // SYNCTHINGTESTHELPER_H
