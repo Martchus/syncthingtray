@@ -13,6 +13,7 @@ struct Args
     ArgumentParser parser;
     HelpArgument help;
     OperationArgument status, log, stop, restart, rescan, rescanAll, pause, pauseAllDevs, pauseAllDirs, resume, resumeAllDevs, resumeAllDirs, waitForIdle, pwd;
+    OperationArgument statusPwd, rescanPwd, pausePwd, resumePwd;
     ConfigValueArgument statusDir, statusDev, pauseDir, pauseDev;
     ConfigValueArgument configFile, apiKey, url, credentials, certificate;
 };

@@ -69,7 +69,11 @@ Application::Application() :
     m_args.resumeAllDevs.setCallback(bind(&Application::requestResumeAllDevs, this, _1));
     m_args.resumeAllDirs.setCallback(bind(&Application::requestResumeAllDirs, this, _1));
     m_args.waitForIdle.setCallback(bind(&Application::initWaitForIdle, this, _1));
-    m_args.pwd.setCallback(bind(&Application::operateOnPwd, this, _1));
+    m_args.pwd.setCallback(bind(&Application::checkPwdOperationPresent, this, _1));
+    m_args.statusPwd.setCallback(bind(&Application::printPwdStatus, this, _1));
+    m_args.rescanPwd.setCallback(bind(&Application::requestRescanPwd, this, _1));
+    m_args.pausePwd.setCallback(bind(&Application::requestPausePwd, this, _1));
+    m_args.resumePwd.setCallback(bind(&Application::requestResumePwd, this, _1));
 
     // connect signals and slots
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &Application::handleStatusChanged);
@@ -382,6 +386,24 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
     }
 }
 
+bool Application::findPwd()
+{
+    const QString pwd(QDir::currentPath());
+    for(const SyncthingDir &dir : m_connection.dirInfo()) {
+        if(pwd == dir.pathWithoutTrailingSlash()) {
+            m_pwd = &dir;
+            return true;
+        } else if(pwd.startsWith(dir.path)) {
+            m_pwd = &dir;
+            m_relativePath = pwd.mid(dir.path.size());
+            return true;
+        }
+    }
+    cerr << "Error: The current working directory \"" << pwd.toLocal8Bit().data() << "\" is not (part of) a Syncthing directory." << endl;
+    QCoreApplication::exit(2);
+    return false;
+}
+
 void Application::printDir(const SyncthingDir *dir)
 {
     cout << " - ";
@@ -515,67 +537,73 @@ void Application::waitForIdle()
     QCoreApplication::exit();
 }
 
-void Application::operateOnPwd(const ArgumentOccurrence &occurrence)
+void Application::checkPwdOperationPresent(const ArgumentOccurrence &occurrence)
 {
-    // find SyncthingDir for pwd
-    const QString pwd(QDir::currentPath());
-    const SyncthingDir *relatedDir = nullptr;
-    QString relativePath;
-    for(const SyncthingDir &dir : m_connection.dirInfo()) {
-        if(pwd == dir.pathWithoutTrailingSlash()) {
-            relatedDir = &dir;
-        } else if(pwd.startsWith(dir.path)) {
-            relatedDir = &dir;
-            relativePath = pwd.mid(dir.path.size());
+    // FIXME: implement requiring at least one operation and default operation in argument parser
+    for(const Argument *pwdOperationArg : m_args.pwd.subArguments()) {
+        if(pwdOperationArg->denotesOperation() && pwdOperationArg->isPresent()) {
+            return;
         }
     }
-    if(!relatedDir) {
-        cerr << "Error: The current working directory \"" << pwd.toLocal8Bit().data() << "\" is not (part of) a Syncthing directory." << endl;
-        QCoreApplication::exit(2);
+    // print status when no operation specified
+    printPwdStatus(occurrence);
+}
+
+void Application::printPwdStatus(const ArgumentOccurrence &)
+{
+    if(!findPwd()) {
         return;
     }
+    printDir(m_pwd);
+    QCoreApplication::quit();
+}
 
-    // do specified operation
-    const char *operation = occurrence.values.front();
-    if(!strcmp(operation, "status")) {
-        printDir(relatedDir);
-    } else if(!strcmp(operation, "rescan")) {
-        if(relativePath.isEmpty()) {
-            cerr << "Request rescanning directory \"" << relatedDir->path.toLocal8Bit().data() << "\" ..." << endl;
-        } else {
-            cerr << "Request rescanning item \"" << relativePath.toLocal8Bit().data() << "\" in directory \"" << relatedDir->path.toLocal8Bit().data() << "\" ..." << endl;
-        }
-        m_connection.rescan(relatedDir->id, relativePath);
-        connect(&m_connection, &SyncthingConnection::rescanTriggered, this, &Application::handleResponse);
+void Application::requestRescanPwd(const ArgumentOccurrence &)
+{
+    if(!findPwd()) {
+        return;
+    }
+    if(m_relativePath.isEmpty()) {
+        cerr << "Request rescanning directory \"" << m_pwd->path.toLocal8Bit().data() << "\" ..." << endl;
+    } else {
+        cerr << "Request rescanning item \"" << m_relativePath.toLocal8Bit().data() << "\" in directory \"" << m_pwd->path.toLocal8Bit().data() << "\" ..." << endl;
+    }
+    m_connection.rescan(m_pwd->id, m_relativePath);
+    connect(&m_connection, &SyncthingConnection::rescanTriggered, this, &Application::handleResponse);
+    m_expectedResponse = 1;
+}
+
+void Application::requestPausePwd(const ArgumentOccurrence &)
+{
+    if(!findPwd()) {
+        return;
+    }
+    if(m_connection.pauseDirectories(QStringList(m_pwd->id))) {
+        cerr << "Request pausing directory \"" << m_pwd->path.toLocal8Bit().data() << "\" ..." << endl;
+        connect(&m_connection, &SyncthingConnection::directoryPauseTriggered, this, &Application::handleResponse);
+        m_preventDisconnect = true;
+        m_expectedResponse = 1;
+    } else {
+        cerr << "Directory \"" << m_pwd->path.toLocal8Bit().data() << " already paused" << endl;
+        QCoreApplication::quit();
+    }
+}
+
+void Application::requestResumePwd(const ArgumentOccurrence &)
+{
+    if(!findPwd()) {
+        return;
+    }
+    if(m_connection.resumeDirectories(QStringList(m_pwd->id))) {
+        cerr << "Request resuming directory \"" << m_pwd->path.toLocal8Bit().data() << "\" ..." << endl;
+        connect(&m_connection, &SyncthingConnection::directoryResumeTriggered, this, &Application::handleResponse);
+        m_preventDisconnect = true;
         m_expectedResponse = 1;
         return;
-    } else if(!strcmp(operation, "pause")) {
-        if(m_connection.pauseDirectories(QStringList(relatedDir->id))) {
-            cerr << "Request pausing directory \"" << relatedDir->path.toLocal8Bit().data() << "\" ..." << endl;
-            connect(&m_connection, &SyncthingConnection::directoryPauseTriggered, this, &Application::handleResponse);
-            m_preventDisconnect = true;
-            m_expectedResponse = 1;
-            return;
-        } else {
-            cerr << "Directory \"" << relatedDir->path.toLocal8Bit().data() << " already paused" << endl;
-        }
-    } else if(!strcmp(operation, "resume")) {
-        if(m_connection.resumeDirectories(QStringList(relatedDir->id))) {
-            cerr << "Request resuming directory \"" << relatedDir->path.toLocal8Bit().data() << "\" ..." << endl;
-            connect(&m_connection, &SyncthingConnection::directoryResumeTriggered, this, &Application::handleResponse);
-            m_preventDisconnect = true;
-            m_expectedResponse = 1;
-            return;
-        } else {
-            cerr << "Directory \"" << relatedDir->path.toLocal8Bit().data() << " not paused" << endl;
-        }
     } else {
-        cerr << "Error: The specified operation \"" << operation << "\" is invalid." << endl;
-        QCoreApplication::exit(1);
-        return;
+        cerr << "Directory \"" << m_pwd->path.toLocal8Bit().data() << " not paused" << endl;
+        QCoreApplication::quit();
     }
-
-    QCoreApplication::quit();
 }
 
 } // namespace Cli

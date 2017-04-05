@@ -34,6 +34,7 @@ private slots:
     void handleError(const QString &message);
     void findRelevantDirsAndDevs();
     void findRelevantDirsAndDevs(OperationType operationType);
+    bool findPwd();
 
 private:
     void requestLog(const ArgumentOccurrence &);
@@ -52,7 +53,11 @@ private:
     static void printLog(const std::vector<Data::SyncthingLogEntry> &logEntries);
     void initWaitForIdle(const ArgumentOccurrence &);
     void waitForIdle();
-    void operateOnPwd(const ArgumentOccurrence &occurrence);
+    void checkPwdOperationPresent(const ArgumentOccurrence &occurrence);
+    void printPwdStatus(const ArgumentOccurrence &occurrence);
+    void requestRescanPwd(const ArgumentOccurrence &occurrence);
+    void requestPausePwd(const ArgumentOccurrence &occurrence);
+    void requestResumePwd(const ArgumentOccurrence &occurrence);
 
     Args m_args;
     Data::SyncthingConnectionSettings m_settings;
@@ -62,6 +67,8 @@ private:
     bool m_callbacksInvoked;
     std::vector<const Data::SyncthingDir *> m_relevantDirs;
     std::vector<const Data::SyncthingDev *> m_relevantDevs;
+    const Data::SyncthingDir *m_pwd;
+    QString m_relativePath;
 
 };
 

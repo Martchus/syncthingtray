@@ -18,6 +18,10 @@ Args::Args() :
     resumeAllDirs("resume-all-dirs", '\0', "resumes all directories"),
     waitForIdle("wait-for-idle", 'w', "waits until the specified dirs/devs are idling"),
     pwd("pwd", 'p', "operates in the current working directory"),
+    statusPwd("status", 's', "prints the status of the current working directory"),
+    rescanPwd("rescan", 'r', "rescans the current working directory"),
+    pausePwd("pause", 'p', "pauses the current working directory"),
+    resumePwd("resume", '\0', "resumes the current working directory"),
     statusDir("dir", 'd', "specifies the directoies (default is all dirs)", {"ID"}),
     statusDev("dev", '\0', "specifies the devices (default is all devs)", {"ID"}),
     pauseDir("dir", 'd', "specifies the directories", {"ID"}),
@@ -33,8 +37,7 @@ Args::Args() :
     }
     status.setSubArguments({&statusDir, &statusDev});
     waitForIdle.setSubArguments({&statusDir, &statusDev});
-    pwd.setValueNames({"status/rescan/pause/resume"});
-    pwd.setRequiredValueCount(1);
+    pwd.setSubArguments({&statusPwd, &rescanPwd, &pausePwd, &resumePwd});
 
     rescan.setValueNames({"dir ID"});
     rescan.setRequiredValueCount(-1);
