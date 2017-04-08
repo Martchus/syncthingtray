@@ -6,7 +6,7 @@
 #include <KAbstractFileItemActionPlugin>
 #include <KFileItemListProperties>
 
-#include <QAction>
+#include <QWidgetAction>
 
 QT_FORWARD_DECLARE_CLASS(QWidget)
 
@@ -26,6 +26,17 @@ private:
     KFileItemListProperties m_properties;
 };
 
+class SyncthingInfoAction : public QWidgetAction
+{
+    Q_OBJECT
+
+public:
+    SyncthingInfoAction(QObject *parent = nullptr);
+
+protected:
+    QWidget *createWidget(QWidget *parent);
+};
+
 class SyncthingDirActions : public QObject
 {
     Q_OBJECT
@@ -41,9 +52,9 @@ public Q_SLOTS:
 private:
     QString m_dirId;
     QAction m_infoAction;
-    QAction m_statusAction;
-    QAction m_lastScanAction;
-    QAction m_rescanIntervalAction;
+    SyncthingInfoAction m_statusAction;
+    SyncthingInfoAction m_lastScanAction;
+    SyncthingInfoAction m_rescanIntervalAction;
 };
 
 QList<QAction *> &operator <<(QList<QAction *> &actions, SyncthingDirActions &dirActions);

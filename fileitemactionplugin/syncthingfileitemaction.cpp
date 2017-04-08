@@ -19,6 +19,8 @@
 #include <QDir>
 #include <QEvent>
 #include <QMessageBox>
+#include <QHBoxLayout>
+#include <QLabel>
 
 #include <iostream>
 #include <functional>
@@ -87,6 +89,27 @@ void SyncthingMenuAction::updateStatus(SyncthingStatus status)
             delete menu;
         }
     }
+}
+
+SyncthingInfoAction::SyncthingInfoAction(QObject *parent) :
+    QWidgetAction(parent)
+{}
+
+QWidget *SyncthingInfoAction::createWidget(QWidget *parent)
+{
+    auto *container = new QWidget(parent);
+    auto *layout = new QHBoxLayout(parent);
+    layout->setMargin(4);
+    layout->setSpacing(5);
+    auto *iconLabel = new QLabel(parent);
+    iconLabel->setPixmap(icon().pixmap(16));
+    iconLabel->setFixedWidth(16);
+    iconLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
+    layout->addWidget(iconLabel);
+    auto *textLabel = new QLabel(text(), parent);
+    layout->addWidget(textLabel);
+    container->setLayout(layout);
+    return container;
 }
 
 SyncthingDirActions::SyncthingDirActions(const SyncthingDir &dir, QObject *parent) :
