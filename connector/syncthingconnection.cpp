@@ -1814,8 +1814,7 @@ bool SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     const QString state(summary.value(QStringLiteral("state")).toString());
     if (!state.isEmpty()) {
         try {
-            stateChanged
-                = dir.assignStatus(state, DateTime::fromIsoStringLocal(summary.value(QStringLiteral("stateChanged")).toString().toUtf8().data()));
+            dir.assignStatus(state, DateTime::fromIsoStringGmt(summary.value(QStringLiteral("stateChanged")).toString().toUtf8().data()));
         } catch (const ConversionException &) {
             // FIXME: warning about invalid stateChanged
         }
