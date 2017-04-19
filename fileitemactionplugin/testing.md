@@ -2,7 +2,7 @@
 
 1. Build as usual, ensure `NO_FILE_ITEM_ACTION_PLUGIN` is turned off
 2. Copy `*.desktop` file to `~/.local/share/kservices5` and enable it in Dolphin
-   if packages version is not already installed
+   if packaged version is not already installed
 3. Add new config for run in Qt Creator and set `dolphin` as executable
 4. In execution environment, set
   * `QT_PLUGIN_PATH` to directory containing plugin `\*.so`-file
