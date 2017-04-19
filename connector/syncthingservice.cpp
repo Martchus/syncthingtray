@@ -42,7 +42,7 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ManagerDBusUnitFi
 
 constexpr DateTime dateTimeFromSystemdTimeStamp(qulonglong timeStamp)
 {
-    return DateTime(621355968000000000 + timeStamp * 10);
+    return DateTime(DateTime::unixEpochStart().totalTicks() + timeStamp * 10);
 }
 
 OrgFreedesktopSystemd1ManagerInterface *SyncthingService::s_manager = nullptr;
