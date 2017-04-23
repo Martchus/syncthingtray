@@ -51,7 +51,7 @@ Q_ENUM_NS(SyncthingErrorCategory)
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry
 {
-    SyncthingLogEntry(const QString &when, const QString &message) :
+    SyncthingLogEntry(const QString &when = QString(), const QString &message = QString()) :
         when(when),
         message(message)
     {}

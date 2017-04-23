@@ -8,8 +8,7 @@
 #include <QString>
 #include <QMetaType>
 #include <QFileInfo>
-
-QT_FORWARD_DECLARE_CLASS(QJsonObject)
+#include <QJsonObject>
 
 namespace Data {
 Q_NAMESPACE
@@ -29,7 +28,7 @@ QString statusString(SyncthingDirStatus status);
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDirError
 {
-    SyncthingDirError(const QString &message, const QString &path) :
+    SyncthingDirError(const QString &message = QString(), const QString &path = QString()) :
         message(message),
         path(path)
     {}
@@ -45,7 +44,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDirError
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemDownloadProgress
 {
-    SyncthingItemDownloadProgress(const QString &containingDirPath, const QString &relativeItemPath, const QJsonObject &values);
+    SyncthingItemDownloadProgress(const QString &containingDirPath = QString(), const QString &relativeItemPath = QString(), const QJsonObject &values = QJsonObject());
     QString relativePath;
     QFileInfo fileInfo;
     int blocksCurrentlyDownloading = 0;
