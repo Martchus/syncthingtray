@@ -1,13 +1,15 @@
 #ifndef TEXTVIEWDIALOG_H
 #define TEXTVIEWDIALOG_H
 
+#include "../global.h"
+
 #include <QWidget>
 
 QT_FORWARD_DECLARE_CLASS(QTextBrowser)
 
 namespace QtGui {
 
-class TextViewDialog : public QWidget
+class SYNCTHINGWIDGETS_EXPORT TextViewDialog : public QWidget
 {
     Q_OBJECT
 public:

@@ -1,7 +1,7 @@
 #include "./trayicon.h"
 #include "./traywidget.h"
 
-#include "../application/settings.h"
+#include "../../widgets/settings/settings.h"
 
 #include "../../model/syncthingicons.h"
 

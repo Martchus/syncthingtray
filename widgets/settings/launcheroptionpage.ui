@@ -103,7 +103,7 @@
         <string>Apply and launch now</string>
        </property>
        <property name="icon">
-        <iconset theme="view-refresh" resource="../resources/syncthingtrayicons.qrc">
+        <iconset theme="view-refresh" resource="../resources/syncthingwidgetsicons.qrc">
          <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
        </property>
       </widget>
@@ -120,7 +120,7 @@
         <string>Stop launched instance</string>
        </property>
        <property name="icon">
-        <iconset theme="process-stop" resource="../resources/syncthingtrayicons.qrc">
+        <iconset theme="process-stop" resource="../resources/syncthingwidgetsicons.qrc">
          <normaloff>:/icons/hicolor/scalable/actions/process-stop.svg</normaloff>:/icons/hicolor/scalable/actions/process-stop.svg</iconset>
        </property>
       </widget>
@@ -171,7 +171,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../resources/syncthingtrayicons.qrc"/>
+  <include location="../resources/syncthingwidgetsicons.qrc"/>
  </resources>
  <connections>
   <connection>

@@ -2,7 +2,7 @@
 #include "./traywidget.h"
 #include "./trayicon.h"
 
-#include "../application/settings.h"
+#include "../../widgets/settings/settings.h"
 
 #include <QApplication>
 #include <QHBoxLayout>

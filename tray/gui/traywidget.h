@@ -1,14 +1,14 @@
 #ifndef TRAY_WIDGET_H
 #define TRAY_WIDGET_H
 
-#include "../application/settings.h"
-
-#include "../../connector/syncthingconnection.h"
-#include "../../connector/syncthingprocess.h"
+#include "../../widgets/settings/settings.h"
 
 #include "../../model/syncthingdirectorymodel.h"
 #include "../../model/syncthingdevicemodel.h"
 #include "../../model/syncthingdownloadmodel.h"
+
+#include "../../connector/syncthingconnection.h"
+#include "../../connector/syncthingprocess.h"
 
 #include <QWidget>
 
@@ -74,7 +74,7 @@ private slots:
     bool handleSystemdStatusChanged();
     void connectIfServiceRunning();
 #endif
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     void handleWebViewDeleted();
 #endif
     void handleNewNotification(ChronoUtilities::DateTime when, const QString &msg);
@@ -86,7 +86,7 @@ private:
     std::unique_ptr<Ui::TrayWidget> m_ui;
     static SettingsDialog *m_settingsDlg;
     static Dialogs::AboutDialog *m_aboutDlg;
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     WebViewDialog *m_webViewDlg;
 #endif
     QFrame *m_cornerFrame;

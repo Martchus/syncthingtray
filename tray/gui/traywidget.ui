@@ -99,7 +99,7 @@
          <string>Connect</string>
         </property>
         <property name="icon">
-         <iconset theme="view-refresh" resource="../resources/syncthingtrayicons.qrc">
+         <iconset theme="view-refresh" resource="../../widgets/resources/syncthingwidgetsicons.qrc">
           <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
         </property>
         <property name="flat">
@@ -113,7 +113,7 @@
          <string>Start</string>
         </property>
         <property name="icon">
-         <iconset theme="system-run" resource="../resources/syncthingtrayicons.qrc">
+         <iconset theme="system-run" resource="../../widgets/resources/syncthingwidgetsicons.qrc">
           <normaloff>:/icons/hicolor/scalable/apps/system-run.svg</normaloff>:/icons/hicolor/scalable/apps/system-run.svg</iconset>
         </property>
         <property name="flat">
@@ -154,7 +154,7 @@
          <string>Web UI</string>
         </property>
         <property name="icon">
-         <iconset theme="internet-web-browser" resource="../resources/syncthingtrayicons.qrc">
+         <iconset theme="internet-web-browser" resource="../../widgets/resources/syncthingwidgetsicons.qrc">
           <normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</iconset>
         </property>
         <property name="flat">
@@ -499,6 +499,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
  </customwidgets>
  <resources>
   <include location="../../model/resources/syncthingmodelicons.qrc"/>
+  <include location="../../widgets/resources/syncthingwidgetsicons.qrc"/>
   <include location="../resources/syncthingtrayicons.qrc"/>
  </resources>
  <connections/>

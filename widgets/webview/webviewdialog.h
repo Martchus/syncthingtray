@@ -1,10 +1,10 @@
 #ifndef WEBVIEW_DIALOG_H
 #define WEBVIEW_DIALOG_H
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 
 #include "./webviewdefs.h"
 
-#include "../application/settings.h"
+#include "../settings/settings.h"
 
 #include <QMainWindow>
 
@@ -16,7 +16,7 @@ struct ConnectionSettings;
 
 namespace QtGui {
 
-class WebViewDialog : public QMainWindow
+class SYNCTHINGWIDGETS_EXPORT WebViewDialog : public QMainWindow
 {
     Q_OBJECT
 public:
@@ -26,7 +26,7 @@ public:
 public slots:
     void applySettings(const Data::SyncthingConnectionSettings &connectionSettings);
     const Data::SyncthingConnectionSettings &settings() const;
-#if defined(SYNCTHINGTRAY_USE_WEBKIT)
+#if defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     bool isModalVisible() const;
 #endif
     void closeUnlessModalVisible();
@@ -34,12 +34,12 @@ public slots:
 protected:
     void closeEvent(QCloseEvent *event);
     void keyPressEvent(QKeyEvent *event);
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE)
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
     bool eventFilter(QObject *watched, QEvent *event);
 #endif
 
 private:
-    SYNCTHINGTRAY_WEB_VIEW *m_view;
+    SYNCTHINGWIDGETS_WEB_VIEW *m_view;
     Data::SyncthingConnectionSettings m_settings;
 };
 
@@ -50,5 +50,5 @@ inline const Data::SyncthingConnectionSettings &WebViewDialog::settings() const
 
 }
 
-#endif // SYNCTHINGTRAY_NO_WEBVIEW
+#endif // SYNCTHINGWIDGETS_NO_WEBVIEW
 #endif // WEBVIEW_DIALOG_H

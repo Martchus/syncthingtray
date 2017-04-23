@@ -1,7 +1,7 @@
 #include "./dirview.h"
 #include "./dirbuttonsitemdelegate.h"
-#include "./textviewdialog.h"
 
+#include "../../widgets/misc/textviewdialog.h"
 #include "../../model/syncthingdirectorymodel.h"
 #include "../../connector/syncthingconnection.h"
 

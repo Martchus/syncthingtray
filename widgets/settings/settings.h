@@ -1,6 +1,7 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include "../global.h"
 #include "../../connector/syncthingconnectionsettings.h"
 
 #include <qtutilities/settingsdialog/qtsettings.h>
@@ -16,11 +17,6 @@
 
 #include <vector>
 
-namespace Media {
-enum class TagUsage;
-enum class ElementPosition;
-}
-
 namespace Dialogs {
 class QtSettings;
 }
@@ -31,13 +27,13 @@ class SyncthingProcess;
 
 namespace Settings {
 
-struct Connection
+struct SYNCTHINGWIDGETS_EXPORT Connection
 {
     Data::SyncthingConnectionSettings primary;
     std::vector<Data::SyncthingConnectionSettings> secondary;
 };
 
-struct NotifyOn
+struct SYNCTHINGWIDGETS_EXPORT NotifyOn
 {
     bool disconnect = true;
     bool internalErrors = true;
@@ -45,7 +41,7 @@ struct NotifyOn
     bool syncthingErrors = true;
 };
 
-struct Appearance
+struct SYNCTHINGWIDGETS_EXPORT Appearance
 {
     bool showTraffic = true;
     QSize trayMenuSize = QSize(450, 400);
@@ -54,14 +50,14 @@ struct Appearance
     bool brightTextColors = false;
 };
 
-struct ToolParameter
+struct SYNCTHINGWIDGETS_EXPORT ToolParameter
 {
     QString path;
     QString args;
     bool autostart = false;
 };
 
-struct Launcher
+struct SYNCTHINGWIDGETS_EXPORT Launcher
 {
     bool enabled = false;
     QString syncthingPath =
@@ -80,7 +76,7 @@ struct Launcher
 };
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-struct Systemd
+struct SYNCTHINGWIDGETS_EXPORT Systemd
 {
     QString syncthingUnit = QStringLiteral("syncthing.service");
     bool showButton = false;
@@ -88,8 +84,8 @@ struct Systemd
 };
 #endif
 
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
-struct WebView
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
+struct SYNCTHINGWIDGETS_EXPORT WebView
 {
     bool disabled = false;
     double zoomFactor = 1.0;
@@ -98,7 +94,7 @@ struct WebView
 };
 #endif
 
-struct Settings
+struct SYNCTHINGWIDGETS_EXPORT Settings
 {
     bool firstLaunch = false;
     Connection connection;
@@ -112,15 +108,15 @@ struct Settings
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Systemd systemd;
 #endif
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     WebView webView;
 #endif
     Dialogs::QtSettings qt;
 };
 
-Settings &values();
-void restore();
-void save();
+Settings SYNCTHINGWIDGETS_EXPORT &values();
+void SYNCTHINGWIDGETS_EXPORT restore();
+void SYNCTHINGWIDGETS_EXPORT save();
 
 }
 

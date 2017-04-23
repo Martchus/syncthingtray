@@ -18,7 +18,8 @@
 #endif
 #include "ui_webviewoptionpage.h"
 
-#include "resources/config.h"
+// use meta-data of syncthingtray application here
+#include "resources/../../tray/resources/config.h"
 
 #include <qtutilities/settingsdialog/optioncategory.h>
 #include <qtutilities/settingsdialog/optioncategorymodel.h>
@@ -720,7 +721,7 @@ WebViewOptionPage::WebViewOptionPage(QWidget *parentWidget) :
 WebViewOptionPage::~WebViewOptionPage()
 {}
 
-#ifdef SYNCTHINGTRAY_NO_WEBVIEW
+#ifdef SYNCTHINGWIDGETS_NO_WEBVIEW
 QWidget *WebViewOptionPage::setupWidget()
 {
     auto *label = new QLabel;
@@ -733,7 +734,7 @@ QWidget *WebViewOptionPage::setupWidget()
 
 bool WebViewOptionPage::apply()
 {
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     if(hasBeenShown()) {
         auto &webView = values().webView;
         webView.disabled = ui()->disableCheckBox->isChecked();
@@ -746,7 +747,7 @@ bool WebViewOptionPage::apply()
 
 void WebViewOptionPage::reset()
 {
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     if(hasBeenShown()) {
         const auto &webView = values().webView;
         ui()->disableCheckBox->setChecked(webView.disabled);
@@ -810,6 +811,6 @@ INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, LauncherOptionPage)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, SystemdOptionPage)
 #endif
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, WebViewOptionPage)
 #endif

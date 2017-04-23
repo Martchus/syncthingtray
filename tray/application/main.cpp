@@ -1,8 +1,9 @@
-#include "./settings.h"
 #include "./singleinstance.h"
 
 #include "../gui/trayicon.h"
 #include "../gui/traywidget.h"
+
+#include "../../widgets/settings/settings.h"
 
 #include "../../connector/syncthingprocess.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

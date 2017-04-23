@@ -9,52 +9,35 @@ set(META_APP_ACTION_OPEN_WEBUI "open-webui" "Open web UI" "--webui")
 
 # add project files
 set(WIDGETS_HEADER_FILES
-    application/settings.h
     application/singleinstance.h
     gui/trayicon.h
     gui/traywidget.h
     gui/traymenu.h
-    gui/settingsdialog.h
-    gui/webpage.h
-    gui/webviewdialog.h
     gui/dirbuttonsitemdelegate.h
     gui/devbuttonsitemdelegate.h
     gui/downloaditemdelegate.h
     gui/dirview.h
     gui/devview.h
     gui/downloadview.h
-    gui/textviewdialog.h
 )
 set(WIDGETS_SRC_FILES
     application/main.cpp
-    application/settings.cpp
     application/singleinstance.cpp
     gui/trayicon.cpp
     gui/traywidget.cpp
     gui/traymenu.cpp
-    gui/settingsdialog.cpp
-    gui/webpage.cpp
-    gui/webviewdialog.cpp
     gui/dirbuttonsitemdelegate.cpp
     gui/devbuttonsitemdelegate.cpp
     gui/downloaditemdelegate.cpp
     gui/dirview.cpp
     gui/devview.cpp
     gui/downloadview.cpp
-    gui/textviewdialog.cpp
 )
 set(RES_FILES
     resources/${META_PROJECT_NAME}icons.qrc
 )
 set(WIDGETS_UI_FILES
     gui/traywidget.ui
-    gui/connectionoptionpage.ui
-    gui/notificationsoptionpage.ui
-    gui/appearanceoptionpage.ui
-    gui/autostartoptionpage.ui
-    gui/launcheroptionpage.ui
-    gui/systemdoptionpage.ui
-    gui/webviewoptionpage.ui
 )
 
 set(TS_FILES
@@ -122,6 +105,8 @@ find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector()
 find_package(syncthingmodel ${META_APP_VERSION} REQUIRED)
 use_syncthingmodel()
+find_package(syncthingwidgets ${META_APP_VERSION} REQUIRED)
+use_syncthingwidgets()
 
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
@@ -131,7 +116,6 @@ include(BasicConfig)
 include(QtGuiConfig)
 include(QtConfig)
 include(WindowsResources)
-include(WebViewProviderConfig)
 include(AppTarget)
 include(ShellCompletion)
 include(Doxygen)

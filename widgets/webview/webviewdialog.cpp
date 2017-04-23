@@ -1,8 +1,8 @@
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 #include "./webviewdialog.h"
 #include "./webpage.h"
 
-#include "../application/settings.h"
+#include "../settings/settings.h"
 
 #include <qtutilities/misc/dialogutils.h>
 
@@ -16,16 +16,16 @@ namespace QtGui {
 
 WebViewDialog::WebViewDialog(QWidget *parent) :
     QMainWindow(parent),
-    m_view(new SYNCTHINGTRAY_WEB_VIEW(this))
+    m_view(new SYNCTHINGWIDGETS_WEB_VIEW(this))
 {
     setWindowTitle(tr("Syncthing"));
     setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     setCentralWidget(m_view);
 
     m_view->setPage(new WebPage(this, m_view));
-    connect(m_view, &SYNCTHINGTRAY_WEB_VIEW::titleChanged, this, &WebViewDialog::setWindowTitle);
+    connect(m_view, &SYNCTHINGWIDGETS_WEB_VIEW::titleChanged, this, &WebViewDialog::setWindowTitle);
 
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE)
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
     m_view->installEventFilter(this);
     if(m_view->focusProxy()) {
         m_view->focusProxy()->installEventFilter(this);
@@ -54,7 +54,7 @@ void QtGui::WebViewDialog::applySettings(const Data::SyncthingConnectionSettings
     m_view->setZoomFactor(Settings::values().webView.zoomFactor);
 }
 
-#if defined(SYNCTHINGTRAY_USE_WEBKIT)
+#if defined(SYNCTHINGWIDGETS_USE_WEBKIT)
 bool WebViewDialog::isModalVisible() const
 {
     if(m_view->page()->mainFrame()) {
@@ -66,11 +66,11 @@ bool WebViewDialog::isModalVisible() const
 
 void WebViewDialog::closeUnlessModalVisible()
 {
-#if defined(SYNCTHINGTRAY_USE_WEBKIT)
+#if defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     if(!isModalVisible()) {
         close();
     }
-#elif defined(SYNCTHINGTRAY_USE_WEBENGINE)
+#elif defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
     m_view->page()->runJavaScript(QStringLiteral("$('.modal-dialog').is(':visible')"), [this] (const QVariant &modalVisible) {
         if(!modalVisible.toBool()) {
             close();
@@ -105,7 +105,7 @@ void WebViewDialog::keyPressEvent(QKeyEvent *event)
     }
 }
 
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE)
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
 bool WebViewDialog::eventFilter(QObject *watched, QEvent *event)
 {
     switch(event->type()) {
@@ -126,4 +126,4 @@ bool WebViewDialog::eventFilter(QObject *watched, QEvent *event)
 
 }
 
-#endif // SYNCTHINGTRAY_NO_WEBVIEW
+#endif // SYNCTHINGWIDGETS_NO_WEBVIEW

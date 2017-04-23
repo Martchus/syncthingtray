@@ -1,11 +1,10 @@
 #include "./traywidget.h"
 #include "./traymenu.h"
 #include "./trayicon.h"
-#include "./settingsdialog.h"
-#include "./webviewdialog.h"
-#include "./textviewdialog.h"
 
-#include "../application/settings.h"
+#include "../../widgets/settings/settingsdialog.h"
+#include "../../widgets/webview/webviewdialog.h"
+#include "../../widgets/misc/textviewdialog.h"
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 # include "../../connector/syncthingservice.h"
@@ -57,7 +56,7 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     QWidget(parent),
     m_menu(parent),
     m_ui(new Ui::TrayWidget),
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     m_webViewDlg(nullptr),
 #endif
     m_dirModel(m_connection),
@@ -189,11 +188,11 @@ void TrayWidget::showAboutDialog()
 
 void TrayWidget::showWebUi()
 {
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     if(Settings::values().webView.disabled) {
 #endif
         QDesktopServices::openUrl(m_connection.syncthingUrl());
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     } else {
         if(!m_webViewDlg) {
             m_webViewDlg = new WebViewDialog(this);
@@ -392,7 +391,7 @@ void TrayWidget::applySettings()
 #endif
 
         // web view
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
         if(instance->m_webViewDlg) {
             instance->m_webViewDlg->applySettings(*instance->m_selectedConnection);
         }
@@ -572,7 +571,7 @@ void TrayWidget::connectIfServiceRunning()
 }
 #endif
 
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 void TrayWidget::handleWebViewDeleted()
 {
     m_webViewDlg = nullptr;
@@ -597,7 +596,7 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         handleSystemdStatusChanged();
 #endif
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
         if(m_webViewDlg) {
             m_webViewDlg->applySettings(*m_selectedConnection);
         }

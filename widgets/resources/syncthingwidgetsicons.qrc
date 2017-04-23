@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/hicolor/scalable/actions/view-refresh.svg</file>
+        <file>icons/hicolor/scalable/apps/internet-web-browser.svg</file>
+        <file>icons/hicolor/scalable/apps/preferences-other.svg</file>
+        <file>icons/hicolor/scalable/apps/system-run.svg</file>
+        <file>icons/hicolor/scalable/actions/process-stop.svg</file>
+        <file>icons/hicolor/scalable/actions/list-add.svg</file>
+        <file>icons/hicolor/scalable/actions/list-remove.svg</file>
+        <file>icons/hicolor/scalable/actions/edit-paste.svg</file>
+    </qresource>
+</RCC>

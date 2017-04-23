@@ -1,7 +1,8 @@
 #include "./settings.h"
 #include "../../connector/syncthingprocess.h"
 
-#include "resources/config.h"
+// use meta-data of syncthingtray application here
+#include "resources/../../tray/resources/config.h"
 
 #include <qtutilities/settingsdialog/qtsettings.h>
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
@@ -189,7 +190,7 @@ void restore()
 #endif
     settings.endGroup();
 
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     settings.beginGroup(QStringLiteral("webview"));
     auto &webView = v.webView;
     webView.disabled = settings.value(QStringLiteral("disabled"), webView.disabled).toBool();
@@ -270,7 +271,7 @@ void save()
 #endif
     settings.endGroup();
 
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE) || defined(SYNCTHINGTRAY_USE_WEBKIT)
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     settings.beginGroup(QStringLiteral("webview"));
     const auto &webView = v.webView;
     settings.setValue(QStringLiteral("disabled"), webView.disabled);

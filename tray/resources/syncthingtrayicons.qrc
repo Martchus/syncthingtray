@@ -8,21 +8,13 @@
         <file>icons/hicolor/scalable/actions/media-playback-pause.svg</file>
         <file>icons/hicolor/scalable/actions/media-playback-start.svg</file>
         <file>icons/hicolor/scalable/actions/view-barcode.svg</file>
-        <file>icons/hicolor/scalable/actions/view-refresh.svg</file>
         <file>icons/hicolor/scalable/actions/window-close.svg</file>
         <file>icons/hicolor/scalable/apps/help-about.svg</file>
-        <file>icons/hicolor/scalable/apps/internet-web-browser.svg</file>
-        <file>icons/hicolor/scalable/apps/preferences-other.svg</file>
         <file>icons/hicolor/scalable/devices/network-card.svg</file>
         <file>icons/hicolor/scalable/places/folder-open.svg</file>
         <file>icons/hicolor/scalable/places/folder.svg</file>
         <file>icons/hicolor/scalable/places/network-workgroup.svg</file>
-        <file>icons/hicolor/scalable/apps/system-run.svg</file>
         <file>icons/hicolor/scalable/actions/network-connect.svg</file>
         <file>icons/hicolor/scalable/places/folder-download.svg</file>
-        <file>icons/hicolor/scalable/actions/process-stop.svg</file>
-        <file>icons/hicolor/scalable/actions/list-add.svg</file>
-        <file>icons/hicolor/scalable/actions/list-remove.svg</file>
-        <file>icons/hicolor/scalable/actions/edit-paste.svg</file>
     </qresource>
 </RCC>

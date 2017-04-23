@@ -75,7 +75,7 @@
          <string>Add secondary instance</string>
         </property>
         <property name="icon">
-         <iconset theme="list-add" resource="../resources/syncthingtrayicons.qrc">
+         <iconset theme="list-add" resource="../resources/syncthingwidgetsicons.qrc">
           <normaloff>:/icons/hicolor/scalable/actions/list-add.svg</normaloff>:/icons/hicolor/scalable/actions/list-add.svg</iconset>
         </property>
        </widget>
@@ -92,7 +92,7 @@
          <string>Remove currently selected secondary instance</string>
         </property>
         <property name="icon">
-         <iconset theme="list-remove" resource="../resources/syncthingtrayicons.qrc">
+         <iconset theme="list-remove" resource="../resources/syncthingwidgetsicons.qrc">
           <normaloff>:/icons/hicolor/scalable/actions/list-remove.svg</normaloff>:/icons/hicolor/scalable/actions/list-remove.svg</iconset>
         </property>
        </widget>
@@ -232,7 +232,7 @@
       <string>Insert values from local Syncthing configuration</string>
      </property>
      <property name="icon">
-      <iconset theme="edit-paste" resource="../resources/syncthingtrayicons.qrc">
+      <iconset theme="edit-paste" resource="../resources/syncthingwidgetsicons.qrc">
        <normaloff>:/icons/hicolor/scalable/actions/edit-paste.svg</normaloff>:/icons/hicolor/scalable/actions/edit-paste.svg</iconset>
      </property>
     </widget>
@@ -408,7 +408,7 @@
       <string>Apply connection settings and try to reconnect with the currently selected config</string>
      </property>
      <property name="icon">
-      <iconset theme="view-refresh" resource="../resources/syncthingtrayicons.qrc">
+      <iconset theme="view-refresh" resource="../resources/syncthingwidgetsicons.qrc">
        <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
      </property>
     </widget>
@@ -429,7 +429,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../resources/syncthingtrayicons.qrc"/>
+  <include location="../resources/syncthingwidgetsicons.qrc"/>
  </resources>
  <connections>
   <connection>

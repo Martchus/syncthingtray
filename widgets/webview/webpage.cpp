@@ -1,8 +1,8 @@
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 #include "./webpage.h"
 #include "./webviewdialog.h"
 
-#include "../application/settings.h"
+#include "../settings/settings.h"
 
 #include "../../connector/syncthingconnection.h"
 
@@ -12,11 +12,11 @@
 #include <QAuthenticator>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#if defined(SYNCTHINGTRAY_USE_WEBENGINE)
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
 # include <QWebEngineSettings>
 # include <QWebEngineView>
 # include <QWebEngineCertificateError>
-#elif defined(SYNCTHINGTRAY_USE_WEBKIT)
+#elif defined(SYNCTHINGWIDGETS_USE_WEBKIT)
 # include <QWebSettings>
 # include <QWebView>
 # include <QWebFrame>
@@ -28,12 +28,12 @@ using namespace Data;
 
 namespace QtGui {
 
-WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGTRAY_WEB_VIEW *view) :
-    SYNCTHINGTRAY_WEB_PAGE(view),
+WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view) :
+    SYNCTHINGWIDGETS_WEB_PAGE(view),
     m_dlg(dlg),
     m_view(view)
 {
-#ifdef SYNCTHINGTRAY_USE_WEBENGINE
+#ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
     settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, true);
     connect(this, &WebPage::authenticationRequired, this, static_cast<void(WebPage::*)(const QUrl &, QAuthenticator *)>(&WebPage::supplyCredentials));
 #else
@@ -46,13 +46,13 @@ WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGTRAY_WEB_VIEW *view) :
     if(!m_view) {
         // initialization for new window
         // -> delegate to external browser if no view is assigned
-#ifdef SYNCTHINGTRAY_USE_WEBENGINE
+#ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
         connect(this, &WebPage::urlChanged, this, &WebPage::delegateNewWindowToExternalBrowser);
 #else
         connect(this->mainFrame(), &QWebFrame::urlChanged, this, &WebPage::delegateNewWindowToExternalBrowser);
 #endif
         // -> there need to be a view, though
-        m_view = new SYNCTHINGTRAY_WEB_VIEW;
+        m_view = new SYNCTHINGWIDGETS_WEB_VIEW;
         m_view->setPage(this);
     }
 }
@@ -77,13 +77,13 @@ bool WebPage::isSamePage(const QUrl &url1, const QUrl &url2)
     return false;
 }
 
-SYNCTHINGTRAY_WEB_PAGE *WebPage::createWindow(SYNCTHINGTRAY_WEB_PAGE::WebWindowType type)
+SYNCTHINGWIDGETS_WEB_PAGE *WebPage::createWindow(SYNCTHINGWIDGETS_WEB_PAGE::WebWindowType type)
 {
     Q_UNUSED(type)
     return new WebPage;
 }
 
-#ifdef SYNCTHINGTRAY_USE_WEBENGINE
+#ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
 bool WebPage::certificateError(const QWebEngineCertificateError &certificateError)
 {
     switch(certificateError.error()) {
@@ -97,15 +97,15 @@ bool WebPage::certificateError(const QWebEngineCertificateError &certificateErro
     }
 }
 
-bool WebPage::acceptNavigationRequest(const QUrl &url, SYNCTHINGTRAY_WEB_PAGE::NavigationType type, bool isMainFrame)
+bool WebPage::acceptNavigationRequest(const QUrl &url, SYNCTHINGWIDGETS_WEB_PAGE::NavigationType type, bool isMainFrame)
 {
     Q_UNUSED(isMainFrame)
     Q_UNUSED(type)
     return handleNavigationRequest(this->url(), url);
 }
 
-#else // SYNCTHINGTRAY_USE_WEBKIT
-bool WebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, SYNCTHINGTRAY_WEB_PAGE::NavigationType type)
+#else // SYNCTHINGWIDGETS_USE_WEBKIT
+bool WebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, SYNCTHINGWIDGETS_WEB_PAGE::NavigationType type)
 {
     Q_UNUSED(frame)
     Q_UNUSED(type)
@@ -156,7 +156,7 @@ bool WebPage::handleNavigationRequest(const QUrl &currentUrl, const QUrl &target
     return false;
 }
 
-#ifdef SYNCTHINGTRAY_USE_WEBKIT
+#ifdef SYNCTHINGWIDGETS_USE_WEBKIT
 void WebPage::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
 {
     Q_UNUSED(errors)
@@ -168,4 +168,4 @@ void WebPage::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &erro
 
 }
 
-#endif // SYNCTHINGTRAY_NO_WEBVIEW
+#endif // SYNCTHINGWIDGETS_NO_WEBVIEW

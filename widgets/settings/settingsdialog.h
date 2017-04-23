@@ -1,7 +1,7 @@
 #ifndef SETTINGS_DIALOG_H
 #define SETTINGS_DIALOG_H
 
-#include "../application/settings.h"
+#include "./settings.h"
 
 #include <qtutilities/settingsdialog/settingsdialog.h>
 #include <qtutilities/settingsdialog/optionpage.h>
@@ -74,13 +74,13 @@ private:
 END_DECLARE_OPTION_PAGE
 #endif
 
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 DECLARE_UI_FILE_BASED_OPTION_PAGE(WebViewOptionPage)
 #else
 DECLARE_OPTION_PAGE(WebViewOptionPage)
 #endif
 
-class SettingsDialog : public Dialogs::SettingsDialog
+class SYNCTHINGWIDGETS_EXPORT SettingsDialog : public Dialogs::SettingsDialog
 {
     Q_OBJECT
 public:
@@ -98,7 +98,7 @@ DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, LauncherOptionPage)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, SystemdOptionPage)
 #endif
-#ifndef SYNCTHINGTRAY_NO_WEBVIEW
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, WebViewOptionPage)
 #endif
 
