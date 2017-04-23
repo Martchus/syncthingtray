@@ -22,6 +22,7 @@ QT_FORWARD_DECLARE_CLASS(QJsonObject)
 QT_FORWARD_DECLARE_CLASS(QJsonArray)
 
 namespace Data {
+Q_NAMESPACE
 
 struct SyncthingConnectionSettings;
 
@@ -38,6 +39,7 @@ enum class SyncthingStatus
     OutOfSync,
     BeingDestroyed
 };
+Q_ENUM_NS(SyncthingStatus)
 
 enum class SyncthingErrorCategory
 {
@@ -45,6 +47,7 @@ enum class SyncthingErrorCategory
     SpecificRequest,
     Parsing
 };
+Q_ENUM_NS(SyncthingErrorCategory)
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry
 {
@@ -61,7 +64,9 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject
     Q_OBJECT
     Q_PROPERTY(QString syncthingUrl READ syncthingUrl WRITE setSyncthingUrl)
     Q_PROPERTY(QByteArray apiKey READ apiKey WRITE setApiKey)
-    Q_PROPERTY(SyncthingStatus status READ status NOTIFY statusChanged)
+    Q_PROPERTY(Data::SyncthingStatus status READ status NOTIFY statusChanged)
+    Q_PROPERTY(QString statusText READ statusText NOTIFY statusChanged)
+    Q_PROPERTY(bool connected READ isConnected NOTIFY statusChanged)
     Q_PROPERTY(bool hasUnreadNotifications READ hasUnreadNotifications)
     Q_PROPERTY(bool hasOutOfSyncDirs READ hasOutOfSyncDirs)
     Q_PROPERTY(int trafficPollInterval READ trafficPollInterval WRITE setTrafficPollInterval)
@@ -517,5 +522,7 @@ inline const std::vector<SyncthingDir *> &SyncthingConnection::completedDirs() c
 }
 
 }
+
+Q_DECLARE_METATYPE(Data::SyncthingLogEntry)
 
 #endif // SYNCTHINGCONNECTION_H

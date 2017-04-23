@@ -6,11 +6,13 @@
 #include <c++utilities/chrono/datetime.h>
 
 #include <QString>
+#include <QMetaType>
 #include <QFileInfo>
 
 QT_FORWARD_DECLARE_CLASS(QJsonObject)
 
 namespace Data {
+Q_NAMESPACE
 
 enum class SyncthingDirStatus
 {
@@ -21,6 +23,7 @@ enum class SyncthingDirStatus
     Synchronizing,
     OutOfSync
 };
+Q_ENUM_NS(SyncthingDirStatus)
 
 QString statusString(SyncthingDirStatus status);
 
@@ -110,5 +113,9 @@ inline QString SyncthingDir::displayName() const
 }
 
 } // namespace Data
+
+Q_DECLARE_METATYPE(Data::SyncthingDirError)
+Q_DECLARE_METATYPE(Data::SyncthingItemDownloadProgress)
+Q_DECLARE_METATYPE(Data::SyncthingDir)
 
 #endif // DATA_SYNCTHINGDIR_H

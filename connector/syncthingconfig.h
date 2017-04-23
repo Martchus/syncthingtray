@@ -23,7 +23,6 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConfig
     QString syncthingUrl() const;
 };
 
-
 } // namespace Data
 
 #endif // DATA_SYNCTHINGCONFIG_H

@@ -7,8 +7,10 @@
 
 #include <QString>
 #include <QStringList>
+#include <QMetaType>
 
 namespace Data {
+Q_NAMESPACE
 
 enum class SyncthingDevStatus
 {
@@ -20,6 +22,7 @@ enum class SyncthingDevStatus
     OutOfSync,
     Rejected
 };
+Q_ENUM_NS(SyncthingDevStatus)
 
 QString statusString(SyncthingDevStatus status);
 
@@ -52,5 +55,7 @@ inline SyncthingDev::SyncthingDev(const QString &id, const QString &name) :
 {}
 
 } // namespace Data
+
+Q_DECLARE_METATYPE(Data::SyncthingDev)
 
 #endif // DATA_SYNCTHINGDEV_H
