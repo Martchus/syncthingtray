@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>QtGui::WebViewOptionPage</class>
  <widget class="QWidget" name="QtGui::WebViewOptionPage">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>356</width>
-    <height>98</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>General</string>
   </property>

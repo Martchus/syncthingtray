@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>QtGui::AutostartOptionPage</class>
  <widget class="QWidget" name="QtGui::AutostartOptionPage">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>376</width>
-    <height>80</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Autostart</string>
   </property>
