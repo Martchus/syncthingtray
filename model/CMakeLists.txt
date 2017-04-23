@@ -6,7 +6,7 @@ set(META_PROJECT_TYPE library)
 set(META_APP_NAME "Data models of Syncthing Tray")
 set(META_APP_DESCRIPTION "Data models of Syncthing Tray")
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING_MODEL)
-set(META_PUBLIC_QT_MODULES Gui)
+set(META_PUBLIC_QT_MODULES Gui Widgets)
 set(META_PUBLIC_SHARED_LIB_DEPENDS syncthingconnector)
 set(META_PUBLIC_STATIC_LIB_DEPENDS syncthingconnector_static)
 
