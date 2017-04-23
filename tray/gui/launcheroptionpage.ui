@@ -103,7 +103,7 @@
         <string>Apply and launch now</string>
        </property>
        <property name="icon">
-        <iconset theme="view-refresh" resource="../resources/icons.qrc">
+        <iconset theme="view-refresh" resource="../resources/syncthingtrayicons.qrc">
          <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
        </property>
       </widget>
@@ -120,7 +120,7 @@
         <string>Stop launched instance</string>
        </property>
        <property name="icon">
-        <iconset theme="process-stop" resource="../resources/icons.qrc">
+        <iconset theme="process-stop" resource="../resources/syncthingtrayicons.qrc">
          <normaloff>:/icons/hicolor/scalable/actions/process-stop.svg</normaloff>:/icons/hicolor/scalable/actions/process-stop.svg</iconset>
        </property>
       </widget>
@@ -154,15 +154,15 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>Widgets::PathSelection</class>
+   <extends>QWidget</extends>
+   <header>widgets/pathselection.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>Widgets::ClearLineEdit</class>
    <extends>QLineEdit</extends>
    <header location="global">qtutilities/widgets/clearlineedit.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Widgets::PathSelection</class>
-   <extends>QWidget</extends>
-   <header location="global">qtutilities/widgets/pathselection.h</header>
-   <container>1</container>
   </customwidget>
   <customwidget>
    <class>Widgets::ClearPlainTextEdit</class>
@@ -171,7 +171,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../resources/icons.qrc"/>
+  <include location="../resources/syncthingtrayicons.qrc"/>
  </resources>
  <connections>
   <connection>

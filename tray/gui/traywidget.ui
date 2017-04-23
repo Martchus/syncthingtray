@@ -6,7 +6,7 @@
    <string>Syncthing Tray</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources/icons.qrc">
+   <iconset resource="../resources/syncthingtrayicons.qrc">
     <normaloff>:/icons/hicolor/scalable/app/syncthingtray.svg</normaloff>:/icons/hicolor/scalable/app/syncthingtray.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -58,7 +58,7 @@
          <string>Close</string>
         </property>
         <property name="icon">
-         <iconset theme="window-close" resource="../resources/icons.qrc">
+         <iconset theme="window-close" resource="../resources/syncthingtrayicons.qrc">
           <normaloff>:/icons/hicolor/scalable/actions/window-close.svg</normaloff>:/icons/hicolor/scalable/actions/window-close.svg</iconset>
         </property>
         <property name="flat">
@@ -72,7 +72,7 @@
          <string>About</string>
         </property>
         <property name="icon">
-         <iconset theme="help-about" resource="../resources/icons.qrc">
+         <iconset theme="help-about" resource="../resources/syncthingtrayicons.qrc">
           <normaloff>:/icons/hicolor/scalable/actions/help-about.svg</normaloff>:/icons/hicolor/scalable/actions/help-about.svg</iconset>
         </property>
         <property name="flat">
@@ -99,7 +99,7 @@
          <string>Connect</string>
         </property>
         <property name="icon">
-         <iconset theme="view-refresh" resource="../resources/icons.qrc">
+         <iconset theme="view-refresh" resource="../resources/syncthingtrayicons.qrc">
           <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
         </property>
         <property name="flat">
@@ -113,7 +113,7 @@
          <string>Start</string>
         </property>
         <property name="icon">
-         <iconset theme="system-run" resource="../resources/icons.qrc">
+         <iconset theme="system-run" resource="../resources/syncthingtrayicons.qrc">
           <normaloff>:/icons/hicolor/scalable/apps/system-run.svg</normaloff>:/icons/hicolor/scalable/apps/system-run.svg</iconset>
         </property>
         <property name="flat">
@@ -140,7 +140,7 @@
          <string>Settings</string>
         </property>
         <property name="icon">
-         <iconset theme="preferences-other" resource="../resources/icons.qrc">
+         <iconset theme="preferences-other" resource="../resources/syncthingtrayicons.qrc">
           <normaloff>:/icons/hicolor/scalable/actions/application-menu.svg</normaloff>:/icons/hicolor/scalable/actions/application-menu.svg</iconset>
         </property>
         <property name="flat">
@@ -154,7 +154,7 @@
          <string>Web UI</string>
         </property>
         <property name="icon">
-         <iconset theme="internet-web-browser" resource="../resources/icons.qrc">
+         <iconset theme="internet-web-browser" resource="../resources/syncthingtrayicons.qrc">
           <normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</iconset>
         </property>
         <property name="flat">
@@ -346,7 +346,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
            </sizepolicy>
           </property>
           <property name="icon">
-           <iconset theme="network-connect" resource="../resources/icons.qrc">
+           <iconset theme="network-connect" resource="../resources/syncthingtrayicons.qrc">
             <normaloff>:/icons/hicolor/scalable/actions/network-connect.svg</normaloff>:/icons/hicolor/scalable/actions/network-connect.svg</iconset>
           </property>
           <property name="flat">
@@ -372,7 +372,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
      </property>
      <widget class="QWidget" name="dirsTab">
       <attribute name="icon">
-       <iconset theme="folder" resource="../resources/icons.qrc">
+       <iconset theme="folder" resource="../resources/syncthingtrayicons.qrc">
         <normaloff>:/icons/hicolor/scalable/places/folder.svg</normaloff>:/icons/hicolor/scalable/places/folder.svg</iconset>
       </attribute>
       <attribute name="title">
@@ -401,7 +401,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
      </widget>
      <widget class="QWidget" name="devsTab">
       <attribute name="icon">
-       <iconset theme="network-server" resource="../resources/icons.qrc">
+       <iconset theme="network-server" resource="../resources/syncthingtrayicons.qrc">
         <normaloff>:/icons/hicolor/scalable/places/network-workgroup.svg</normaloff>:/icons/hicolor/scalable/places/network-workgroup.svg</iconset>
       </attribute>
       <attribute name="title">
@@ -430,7 +430,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
      </widget>
      <widget class="QWidget" name="downloadsTab">
       <attribute name="icon">
-       <iconset theme="folder-download" resource="../resources/icons.qrc">
+       <iconset theme="folder-download" resource="../resources/syncthingtrayicons.qrc">
         <normaloff>:/icons/hicolor/scalable/places/folder-download.svg</normaloff>:/icons/hicolor/scalable/places/folder-download.svg</iconset>
       </attribute>
       <attribute name="title">
@@ -462,7 +462,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
   </layout>
   <action name="actionShowNotifications">
    <property name="icon">
-    <iconset theme="text-x-generic" resource="../resources/icons.qrc">
+    <iconset theme="text-x-generic" resource="../../model/resources/syncthingmodelicons.qrc">
      <normaloff>:/icons/hicolor/scalable/mimetypes/text-x-generic.svg</normaloff>:/icons/hicolor/scalable/mimetypes/text-x-generic.svg</iconset>
    </property>
    <property name="text">
@@ -498,7 +498,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../resources/icons.qrc"/>
+  <include location="../../model/resources/syncthingmodelicons.qrc"/>
+  <include location="../resources/syncthingtrayicons.qrc"/>
  </resources>
  <connections/>
 </ui>
