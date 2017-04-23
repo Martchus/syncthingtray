@@ -156,7 +156,7 @@
   <customwidget>
    <class>Widgets::PathSelection</class>
    <extends>QWidget</extends>
-   <header>widgets/pathselection.h</header>
+   <header location="global">qtutilities/widgets/pathselection.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
