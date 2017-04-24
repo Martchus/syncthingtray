@@ -2,6 +2,7 @@
 #include "./traywidget.h"
 
 #include "../../widgets/settings/settings.h"
+#include "../../widgets/misc/statusinfo.h"
 
 #include "../../model/syncthingicons.h"
 
@@ -37,13 +38,6 @@ TrayIcon::TrayIcon(QObject *parent) :
     m_initialized(false),
     m_trayMenu(this),
     m_status(SyncthingStatus::Disconnected)
-#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-    ,
-    m_disconnectedNotification(QCoreApplication::applicationName(), QStringLiteral("network-disconnect"), 5000),
-    m_internalErrorNotification(QCoreApplication::applicationName() + tr(" - internal error"), NotificationIcon::Critical, 5000),
-    m_syncthingNotification(tr("Syncthing notification"), NotificationIcon::Warning, 10000),
-    m_syncCompleteNotification(QCoreApplication::applicationName(), NotificationIcon::Information, 5000)
-#endif
 {
     // set context menu
     connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("internet-web-browser"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))), tr("Web UI")), &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showWebUi);
@@ -56,17 +50,8 @@ TrayIcon::TrayIcon(QObject *parent) :
     connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("window-close"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))), tr("Close")), &QAction::triggered, this, &TrayIcon::deleteLater);
     setContextMenu(&m_contextMenu);
 
-#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-    // setup notifications
-    m_disconnectedNotification.setMessage(tr("Disconnected from Syncthing"));
-    m_disconnectedNotification.setActions(QStringList(tr("Try to reconnect")));
-    connect(&m_disconnectedNotification, &DBusNotification::actionInvoked, &(m_trayMenu.widget()->connection()), static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
-    m_syncthingNotification.setActions(QStringList({QStringLiteral("show"), tr("Show"), QStringLiteral("dismiss"), tr("Dismiss")}));
-    connect(&m_syncthingNotification, &DBusNotification::actionInvoked, this, &TrayIcon::handleSyncthingNotificationAction);
-#endif
-
     // set initial status
-    updateStatusIconAndText(SyncthingStatus::Disconnected);
+    handleConnectionStatusChanged(SyncthingStatus::Disconnected);
 
     // connect signals and slots
     SyncthingConnection *connection = &(m_trayMenu.widget()->connection());
@@ -74,7 +59,10 @@ TrayIcon::TrayIcon(QObject *parent) :
     connect(this, &TrayIcon::messageClicked, m_trayMenu.widget(), &TrayWidget::dismissNotifications);
     connect(connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
     connect(connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
-    connect(connection, &SyncthingConnection::statusChanged, this, &TrayIcon::updateStatusIconAndText);
+    connect(connection, &SyncthingConnection::statusChanged, this, &TrayIcon::handleConnectionStatusChanged);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, connection, static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
+    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, m_trayMenu.widget(), &TrayWidget::dismissNotifications);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, m_trayMenu.widget(), &TrayWidget::showNotifications);
 
     m_initialized = true;
 }
@@ -114,14 +102,14 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
     }
 }
 
-void TrayIcon::handleSyncthingNotificationAction(const QString &action)
+void TrayIcon::handleConnectionStatusChanged(SyncthingStatus status)
 {
-    if(action == QLatin1String("dismiss")) {
-        m_trayMenu.widget()->dismissNotifications();
-
-    } else if(action == QLatin1String("show")) {
-        m_trayMenu.widget()->showNotifications();
+    if(m_initialized && m_status == status) {
+        return;
     }
+    updateStatusIconAndText();
+    showStatusNotification(status);
+    m_status = status;
 }
 
 void TrayIcon::showInternalError(const QString &errorMsg, SyncthingErrorCategory category, int networkError)
@@ -141,7 +129,7 @@ void TrayIcon::showInternalError(const QString &errorMsg, SyncthingErrorCategory
             ) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
         if(settings.dbusNotifications) {
-            m_internalErrorNotification.update(errorMsg);
+            m_dbusNotifier.showInternalError(errorMsg, category, networkError);
         } else
 #endif
         {
@@ -152,38 +140,36 @@ void TrayIcon::showInternalError(const QString &errorMsg, SyncthingErrorCategory
 
 void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message)
 {
-    Q_UNUSED(when)
     const auto &settings = Settings::values();
     if(settings.notifyOn.syncthingErrors) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
         if(settings.dbusNotifications) {
-            m_syncthingNotification.update(message);
+            m_dbusNotifier.showSyncthingNotification(when, message);
         } else
+#else
+        Q_UNUSED(when)
 #endif
         {
             showMessage(tr("Syncthing notification - click to dismiss"), message, QSystemTrayIcon::Warning);
         }
     }
-    updateStatusIconAndText(m_status);
+    updateStatusIconAndText();
 }
 
-void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
+void TrayIcon::updateStatusIconAndText()
 {
-    if(m_initialized && m_status == status) {
-        return;
-    }
+    const StatusInfo statusInfo(trayMenu().widget()->connection());
+    setToolTip(statusInfo.statusText());
+    setIcon(statusInfo.statusIcon());
+}
 
+void TrayIcon::showStatusNotification(SyncthingStatus status)
+{
     const SyncthingConnection &connection = trayMenu().widget()->connection();
     const auto &settings = Settings::values();
+
     switch(status) {
     case SyncthingStatus::Disconnected:
-        setIcon(statusIcons().disconnected);
-        if(connection.autoReconnectInterval() > 0) {
-            setToolTip(tr("Not connected to Syncthing - trying to reconnect every %1 ms")
-                       .arg(connection.autoReconnectInterval()));
-        } else {
-            setToolTip(tr("Not connected to Syncthing"));
-        }
         if(m_initialized && settings.notifyOn.disconnect
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
                 && !syncthingService().isManuallyStopped()
@@ -191,55 +177,18 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
                 ) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
             if(settings.dbusNotifications) {
-                m_disconnectedNotification.show();
+                m_dbusNotifier.showDisconnect();
             } else
 #endif
             {
                 showMessage(QCoreApplication::applicationName(), tr("Disconnected from Syncthing"), QSystemTrayIcon::Warning);
             }
         }
-        break;
-    case SyncthingStatus::Reconnecting:
-        setIcon(statusIcons().disconnected);
-        setToolTip(tr("Reconnecting ..."));
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
         break;
     default:
-#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-        m_disconnectedNotification.hide();
+        m_dbusNotifier.hideDisconnect();
 #endif
-        if(connection.hasOutOfSyncDirs()) {
-            if(status == SyncthingStatus::Synchronizing) {
-                setIcon(statusIcons().errorSync);
-                setToolTip(tr("Synchronization is ongoing but at least one directory is out of sync"));
-            } else {
-                setIcon(statusIcons().error);
-                setToolTip(tr("At least one directory is out of sync"));
-            }
-        } else if(connection.hasUnreadNotifications()) {
-            setIcon(statusIcons().notify);
-            setToolTip(tr("Notifications available"));
-        } else {
-            switch(status) {
-            case SyncthingStatus::Idle:
-                setIcon(statusIcons().idling);
-                setToolTip(tr("Syncthing is idling"));
-                break;
-            case SyncthingStatus::Scanning:
-                setIcon(statusIcons().scanninig);
-                setToolTip(tr("Syncthing is scanning"));
-                break;
-            case SyncthingStatus::Paused:
-                setIcon(statusIcons().pause);
-                setToolTip(tr("At least one device is paused"));
-                break;
-            case SyncthingStatus::Synchronizing:
-                setIcon(statusIcons().sync);
-                setToolTip(tr("Synchronization is ongoing"));
-                break;
-            default:
-                ;
-            }
-        }
     }
     switch(status) {
     case SyncthingStatus::Disconnected:
@@ -263,7 +212,7 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
                 }
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
                 if(settings.dbusNotifications) {
-                    m_syncCompleteNotification.update(message);
+                    m_dbusNotifier.showSyncComplete(message);
                 } else
 #endif
                 {
@@ -272,7 +221,6 @@ void TrayIcon::updateStatusIconAndText(SyncthingStatus status)
             }
         }
     }
-    m_status = status;
 }
 
 }

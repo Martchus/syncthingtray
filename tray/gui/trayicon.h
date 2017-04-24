@@ -3,11 +3,9 @@
 
 #include "./traymenu.h"
 
-#include <c++utilities/chrono/datetime.h>
+#include "../../widgets/misc/dbusstatusnotifier.h"
 
-#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-# include <qtutilities/misc/dbusnotification.h>
-#endif
+#include <c++utilities/chrono/datetime.h>
 
 #include <QSystemTrayIcon>
 #include <QIcon>
@@ -32,11 +30,12 @@ public:
 public slots:
     void showInternalError(const QString &errorMsg, Data::SyncthingErrorCategory category, int networkError);
     void showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message);
-    void updateStatusIconAndText(Data::SyncthingStatus status);
+    void showStatusNotification(Data::SyncthingStatus status);
+    void updateStatusIconAndText();
 
 private slots:
     void handleActivated(QSystemTrayIcon::ActivationReason reason);
-    void handleSyncthingNotificationAction(const QString &action);
+    void handleConnectionStatusChanged(Data::SyncthingStatus status);
 
 private:
     bool m_initialized;
@@ -44,10 +43,7 @@ private:
     QMenu m_contextMenu;
     Data::SyncthingStatus m_status;
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-    MiscUtils::DBusNotification m_disconnectedNotification;
-    MiscUtils::DBusNotification m_internalErrorNotification;
-    MiscUtils::DBusNotification m_syncthingNotification;
-    MiscUtils::DBusNotification m_syncCompleteNotification;
+    DBusStatusNotifier m_dbusNotifier;
 #endif
 };
 

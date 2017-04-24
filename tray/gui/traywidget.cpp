@@ -287,7 +287,7 @@ void TrayWidget::dismissNotifications()
     m_connection.considerAllNotificationsRead();
     m_ui->notificationsPushButton->setHidden(true);
     if(m_menu && m_menu->icon()) {
-        m_menu->icon()->updateStatusIconAndText(m_connection.status());
+        m_menu->icon()->updateStatusIconAndText();
     }
 }
 

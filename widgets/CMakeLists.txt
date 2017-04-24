@@ -17,6 +17,8 @@ set(WIDGETS_HEADER_FILES
     webview/webpage.h
     webview/webviewdialog.h
     misc/textviewdialog.h
+    misc/statusinfo.h
+    misc/dbusstatusnotifier.h
 )
 set(WIDGETS_SRC_FILES
     settings/settings.cpp
@@ -24,6 +26,8 @@ set(WIDGETS_SRC_FILES
     webview/webpage.cpp
     webview/webviewdialog.cpp
     misc/textviewdialog.cpp
+    misc/statusinfo.cpp
+    misc/dbusstatusnotifier.cpp
 )
 set(RES_FILES
     resources/${META_PROJECT_NAME}icons.qrc
