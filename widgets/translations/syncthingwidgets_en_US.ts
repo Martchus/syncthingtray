@@ -289,6 +289,39 @@
     </message>
 </context>
 <context>
+    <name>QtGui::DBusStatusNotifier</name>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="14"/>
+        <source> - internal error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="15"/>
+        <source>Syncthing notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="18"/>
+        <source>Disconnected from Syncthing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="19"/>
+        <source>Try to reconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="21"/>
+        <source>Show</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="21"/>
+        <source>Dismiss</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QtGui::LauncherOptionPage</name>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="6"/>
@@ -461,6 +494,69 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="794"/>
         <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QtGui::StatusInfo</name>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="14"/>
+        <source>Initializing ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="23"/>
+        <source>Not connected to Syncthing - trying to reconnect every %1 ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="26"/>
+        <source>Not connected to Syncthing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="31"/>
+        <source>Reconnecting ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="38"/>
+        <source>Synchronization is ongoing but at least one directory is out of sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="42"/>
+        <source>At least one directory is out of sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="46"/>
+        <source>Notifications available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="51"/>
+        <source>Syncthing is idling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="55"/>
+        <source>Syncthing is scanning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="59"/>
+        <source>At least one device is paused</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="63"/>
+        <source>Synchronization is ongoing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="67"/>
+        <source>Status is unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -514,7 +514,7 @@
     <message>
         <location filename="../gui/trayicon.cpp" line="52"/>
         <source>Log</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="62"/>
@@ -589,7 +589,7 @@
     <message>
         <location filename="../gui/traywidget.ui" line="6"/>
         <source>Syncthing Tray</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="58"/>
@@ -683,7 +683,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/traywidget.ui" line="437"/>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="469"/>
@@ -738,7 +738,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="247"/>
         <source>Log</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="296"/>

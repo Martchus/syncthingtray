@@ -2,6 +2,33 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de_DE">
 <context>
+    <name>DBusStatusNotifier</name>
+    <message>
+        <source> - internal error</source>
+        <translation type="obsolete"> - interner Fehler</translation>
+    </message>
+    <message>
+        <source>Syncthing notification</source>
+        <translation type="obsolete">Syncthing-Benachrichtigung</translation>
+    </message>
+    <message>
+        <source>Disconnected from Syncthing</source>
+        <translation type="obsolete">Verbindung zu Syncthing getrennt</translation>
+    </message>
+    <message>
+        <source>Try to reconnect</source>
+        <translation type="obsolete">Versuche Verbindung wieder herzustellen</translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation type="obsolete">Zeigen</translation>
+    </message>
+    <message>
+        <source>Dismiss</source>
+        <translation type="obsolete">Ignorieren</translation>
+    </message>
+</context>
+<context>
     <name>QtGui::AppearanceOptionPage</name>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="6"/>
@@ -289,6 +316,39 @@
     </message>
 </context>
 <context>
+    <name>QtGui::DBusStatusNotifier</name>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="14"/>
+        <source> - internal error</source>
+        <translation> - interner Fehler</translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="15"/>
+        <source>Syncthing notification</source>
+        <translation>Syncthing-Benachrichtigung</translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="18"/>
+        <source>Disconnected from Syncthing</source>
+        <translation>Verbindung zu Syncthing getrennt</translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="19"/>
+        <source>Try to reconnect</source>
+        <translation>Versuche Verbindung wieder herzustellen</translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="21"/>
+        <source>Show</source>
+        <translation>Zeigen</translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="21"/>
+        <source>Dismiss</source>
+        <translation>Ignorieren</translation>
+    </message>
+</context>
+<context>
     <name>QtGui::DevView</name>
     <message>
         <source>Copy value</source>
@@ -517,6 +577,69 @@
         <location filename="../settings/settingsdialog.cpp" line="794"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
+    </message>
+</context>
+<context>
+    <name>QtGui::StatusInfo</name>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="14"/>
+        <source>Initializing ...</source>
+        <translation>Initialisierung ...</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="23"/>
+        <source>Not connected to Syncthing - trying to reconnect every %1 ms</source>
+        <translation>Nicht mit Syncthing verbunden - versuche alle %1 ms zu verbinden</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="26"/>
+        <source>Not connected to Syncthing</source>
+        <translation>Nicht mit Syncthing verbunden</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="31"/>
+        <source>Reconnecting ...</source>
+        <translation>Neu verbinden ...</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="38"/>
+        <source>Synchronization is ongoing but at least one directory is out of sync</source>
+        <translation>Synchronisiert, aber mind. ein Verzeichnis hat Fehler</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="42"/>
+        <source>At least one directory is out of sync</source>
+        <translation>Mind. ein Verzeichnis hat Fehler</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="46"/>
+        <source>Notifications available</source>
+        <translation>Es gibt neue Benachrichtigungen</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="51"/>
+        <source>Syncthing is idling</source>
+        <translation>Syncthing ist im Leerlauf</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="55"/>
+        <source>Syncthing is scanning</source>
+        <translation>Syncthing scannt</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="59"/>
+        <source>At least one device is paused</source>
+        <translation>Mind. ein Gerät ist pausiert</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="63"/>
+        <source>Synchronization is ongoing</source>
+        <translation>Syncthing synchronisiert</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="67"/>
+        <source>Status is unknown</source>
+        <translation>Status ist unbekannt</translation>
     </message>
 </context>
 <context>
@@ -909,6 +1032,49 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <location filename="../settings/settings.cpp" line="141"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Fehler beim laden des Zertifikats &quot;%1&quot; beim wiederherstellen der Einstellungen.</translation>
+    </message>
+</context>
+<context>
+    <name>StatusInfo</name>
+    <message>
+        <source>Not connected to Syncthing - trying to reconnect every %1 ms</source>
+        <translation type="obsolete">Nicht mit Syncthing verbunden - versuche alle %1 ms zu verbinden</translation>
+    </message>
+    <message>
+        <source>Not connected to Syncthing</source>
+        <translation type="obsolete">Nicht mit Syncthing verbunden</translation>
+    </message>
+    <message>
+        <source>Reconnecting ...</source>
+        <translation type="obsolete">Neu verbinden ...</translation>
+    </message>
+    <message>
+        <source>Synchronization is ongoing but at least one directory is out of sync</source>
+        <translation type="obsolete">Synchronisiert, aber mind. ein Verzeichnis hat Fehler</translation>
+    </message>
+    <message>
+        <source>At least one directory is out of sync</source>
+        <translation type="obsolete">Mind. ein Verzeichnis hat Fehler</translation>
+    </message>
+    <message>
+        <source>Notifications available</source>
+        <translation type="obsolete">Es gibt neue Benachrichtigungen</translation>
+    </message>
+    <message>
+        <source>Syncthing is idling</source>
+        <translation type="obsolete">Syncthing ist im Leerlauf</translation>
+    </message>
+    <message>
+        <source>Syncthing is scanning</source>
+        <translation type="obsolete">Syncthing scannt</translation>
+    </message>
+    <message>
+        <source>At least one device is paused</source>
+        <translation type="obsolete">Mind. ein Gerät ist pausiert</translation>
+    </message>
+    <message>
+        <source>Synchronization is ongoing</source>
+        <translation type="obsolete">Syncthing synchronisiert</translation>
     </message>
 </context>
 <context>

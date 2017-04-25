@@ -59,132 +59,56 @@
     <name>QtGui::TrayIcon</name>
     <message>
         <location filename="../gui/trayicon.cpp" line="43"/>
-        <source> - internal error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="44"/>
-        <source>Syncthing notification</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="49"/>
         <source>Web UI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="50"/>
+        <location filename="../gui/trayicon.cpp" line="44"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="51"/>
+        <location filename="../gui/trayicon.cpp" line="45"/>
         <source>Rescan all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="52"/>
+        <location filename="../gui/trayicon.cpp" line="46"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="54"/>
+        <location filename="../gui/trayicon.cpp" line="48"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="56"/>
+        <location filename="../gui/trayicon.cpp" line="50"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="61"/>
-        <location filename="../gui/trayicon.cpp" line="198"/>
+        <location filename="../gui/trayicon.cpp" line="184"/>
         <source>Disconnected from Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="62"/>
-        <source>Try to reconnect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="64"/>
-        <source>Show</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="64"/>
-        <source>Dismiss</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="148"/>
+        <location filename="../gui/trayicon.cpp" line="136"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="164"/>
+        <location filename="../gui/trayicon.cpp" line="153"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="182"/>
-        <source>Not connected to Syncthing - trying to reconnect every %1 ms</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="185"/>
-        <source>Not connected to Syncthing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../gui/trayicon.cpp" line="204"/>
-        <source>Reconnecting ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="213"/>
-        <source>Synchronization is ongoing but at least one directory is out of sync</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="216"/>
-        <source>At least one directory is out of sync</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="220"/>
-        <source>Notifications available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="225"/>
-        <source>Syncthing is idling</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="229"/>
-        <source>Syncthing is scanning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="233"/>
-        <source>At least one device is paused</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="237"/>
-        <source>Synchronization is ongoing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="255"/>
         <source>Synchronization of %1 complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="262"/>
+        <location filename="../gui/trayicon.cpp" line="211"/>
         <source>Synchronization of the following devices complete:
 </source>
         <translation type="unfinished"></translation>
