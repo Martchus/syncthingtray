@@ -9,8 +9,7 @@ struct SyncthingDev;
 
 namespace QtGui {
 
-class DevView : public QTreeView
-{
+class DevView : public QTreeView {
     Q_OBJECT
 public:
     DevView(QWidget *parent = nullptr);
@@ -25,9 +24,7 @@ private Q_SLOTS:
     void showContextMenu();
     void copySelectedItem();
     void copySelectedItemId();
-
 };
-
 }
 
 #endif // DEVVIEW_H

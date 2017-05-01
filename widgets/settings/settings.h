@@ -1,19 +1,19 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include "../global.h"
 #include "../../connector/syncthingconnectionsettings.h"
+#include "../global.h"
 
 #include <qtutilities/settingsdialog/qtsettings.h>
 
 #include <c++utilities/conversion/types.h>
 
-#include <QString>
 #include <QByteArray>
-#include <QSize>
 #include <QFrame>
-#include <QTabWidget>
 #include <QHash>
+#include <QSize>
+#include <QString>
+#include <QTabWidget>
 
 #include <vector>
 
@@ -27,22 +27,19 @@ class SyncthingProcess;
 
 namespace Settings {
 
-struct SYNCTHINGWIDGETS_EXPORT Connection
-{
+struct SYNCTHINGWIDGETS_EXPORT Connection {
     Data::SyncthingConnectionSettings primary;
     std::vector<Data::SyncthingConnectionSettings> secondary;
 };
 
-struct SYNCTHINGWIDGETS_EXPORT NotifyOn
-{
+struct SYNCTHINGWIDGETS_EXPORT NotifyOn {
     bool disconnect = true;
     bool internalErrors = true;
     bool syncComplete = true;
     bool syncthingErrors = true;
 };
 
-struct SYNCTHINGWIDGETS_EXPORT Appearance
-{
+struct SYNCTHINGWIDGETS_EXPORT Appearance {
     bool showTraffic = true;
     QSize trayMenuSize = QSize(450, 400);
     int frameStyle = QFrame::StyledPanel | QFrame::Sunken;
@@ -50,21 +47,19 @@ struct SYNCTHINGWIDGETS_EXPORT Appearance
     bool brightTextColors = false;
 };
 
-struct SYNCTHINGWIDGETS_EXPORT ToolParameter
-{
+struct SYNCTHINGWIDGETS_EXPORT ToolParameter {
     QString path;
     QString args;
     bool autostart = false;
 };
 
-struct SYNCTHINGWIDGETS_EXPORT Launcher
-{
+struct SYNCTHINGWIDGETS_EXPORT Launcher {
     bool enabled = false;
     QString syncthingPath =
 #ifdef PLATFORM_WINDOWS
-            QStringLiteral("syncthing.exe");
+        QStringLiteral("syncthing.exe");
 #else
-            QStringLiteral("syncthing");
+        QStringLiteral("syncthing");
 #endif
     QString syncthingArgs;
     QHash<QString, ToolParameter> tools;
@@ -76,8 +71,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher
 };
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-struct SYNCTHINGWIDGETS_EXPORT Systemd
-{
+struct SYNCTHINGWIDGETS_EXPORT Systemd {
     QString syncthingUnit = QStringLiteral("syncthing.service");
     bool showButton = false;
     bool considerForReconnect = false;
@@ -85,8 +79,7 @@ struct SYNCTHINGWIDGETS_EXPORT Systemd
 #endif
 
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
-struct SYNCTHINGWIDGETS_EXPORT WebView
-{
+struct SYNCTHINGWIDGETS_EXPORT WebView {
     bool disabled = false;
     double zoomFactor = 1.0;
     QByteArray geometry;
@@ -94,8 +87,7 @@ struct SYNCTHINGWIDGETS_EXPORT WebView
 };
 #endif
 
-struct SYNCTHINGWIDGETS_EXPORT Settings
-{
+struct SYNCTHINGWIDGETS_EXPORT Settings {
     bool firstLaunch = false;
     Connection connection;
     NotifyOn notifyOn;
@@ -117,7 +109,6 @@ struct SYNCTHINGWIDGETS_EXPORT Settings
 Settings SYNCTHINGWIDGETS_EXPORT &values();
 void SYNCTHINGWIDGETS_EXPORT restore();
 void SYNCTHINGWIDGETS_EXPORT save();
-
 }
 
 #endif // SETTINGS_H

@@ -3,15 +3,14 @@
 
 #include "./global.h"
 
-#include <QSize>
 #include <QIcon>
+#include <QSize>
 
 namespace Data {
 
 QPixmap LIB_SYNCTHING_MODEL_EXPORT renderSvgImage(const QString &path, const QSize &size = QSize(128, 128));
 
-struct StatusIcons
-{
+struct StatusIcons {
     StatusIcons();
     QIcon disconnected;
     QIcon idling;

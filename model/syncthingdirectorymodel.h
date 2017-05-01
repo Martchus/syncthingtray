@@ -11,15 +11,10 @@ namespace Data {
 
 struct SyncthingDir;
 
-class LIB_SYNCTHING_MODEL_EXPORT SyncthingDirectoryModel : public SyncthingModel
-{
+class LIB_SYNCTHING_MODEL_EXPORT SyncthingDirectoryModel : public SyncthingModel {
     Q_OBJECT
 public:
-    enum SyncthingDirectoryModelRole
-    {
-        DirectoryStatus = Qt::UserRole + 1,
-        DirectoryPaused
-    };
+    enum SyncthingDirectoryModelRole { DirectoryStatus = Qt::UserRole + 1, DirectoryPaused };
 
     explicit SyncthingDirectoryModel(SyncthingConnection &connection, QObject *parent = nullptr);
 

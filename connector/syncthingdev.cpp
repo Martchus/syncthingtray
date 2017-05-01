@@ -6,7 +6,7 @@ namespace Data {
 
 QString statusString(SyncthingDevStatus status)
 {
-    switch(status) {
+    switch (status) {
     case SyncthingDevStatus::Unknown:
         return QCoreApplication::translate("SyncthingDevStatus", "unknown");
     case SyncthingDevStatus::Disconnected:
@@ -28,7 +28,7 @@ QString statusString(SyncthingDevStatus status)
 
 QString SyncthingDev::statusString() const
 {
-    if(paused) {
+    if (paused) {
         return QCoreApplication::translate("SyncthingDev", "paused");
     } else {
         return ::Data::statusString(status);

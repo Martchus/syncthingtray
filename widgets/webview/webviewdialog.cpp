@@ -6,17 +6,17 @@
 
 #include <qtutilities/misc/dialogutils.h>
 
-#include <QIcon>
 #include <QCloseEvent>
+#include <QIcon>
 #include <QKeyEvent>
 
 using namespace Dialogs;
 
 namespace QtGui {
 
-WebViewDialog::WebViewDialog(QWidget *parent) :
-    QMainWindow(parent),
-    m_view(new SYNCTHINGWIDGETS_WEB_VIEW(this))
+WebViewDialog::WebViewDialog(QWidget *parent)
+    : QMainWindow(parent)
+    , m_view(new SYNCTHINGWIDGETS_WEB_VIEW(this))
 {
     setWindowTitle(tr("Syncthing"));
     setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
@@ -27,12 +27,12 @@ WebViewDialog::WebViewDialog(QWidget *parent) :
 
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
     m_view->installEventFilter(this);
-    if(m_view->focusProxy()) {
+    if (m_view->focusProxy()) {
         m_view->focusProxy()->installEventFilter(this);
     }
 #endif
 
-    if(Settings::values().webView.geometry.isEmpty()) {
+    if (Settings::values().webView.geometry.isEmpty()) {
         resize(1200, 800);
         centerWidget(this);
     } else {
@@ -48,7 +48,7 @@ QtGui::WebViewDialog::~WebViewDialog()
 void QtGui::WebViewDialog::applySettings(const Data::SyncthingConnectionSettings &connectionSettings)
 {
     m_settings = connectionSettings;
-    if(!WebPage::isSamePage(m_view->url(), connectionSettings.syncthingUrl)) {
+    if (!WebPage::isSamePage(m_view->url(), connectionSettings.syncthingUrl)) {
         m_view->setUrl(connectionSettings.syncthingUrl);
     }
     m_view->setZoomFactor(Settings::values().webView.zoomFactor);
@@ -57,7 +57,7 @@ void QtGui::WebViewDialog::applySettings(const Data::SyncthingConnectionSettings
 #if defined(SYNCTHINGWIDGETS_USE_WEBKIT)
 bool WebViewDialog::isModalVisible() const
 {
-    if(m_view->page()->mainFrame()) {
+    if (m_view->page()->mainFrame()) {
         return m_view->page()->mainFrame()->evaluateJavaScript(QStringLiteral("$('.modal-dialog').is(':visible')")).toBool();
     }
     return false;
@@ -67,12 +67,12 @@ bool WebViewDialog::isModalVisible() const
 void WebViewDialog::closeUnlessModalVisible()
 {
 #if defined(SYNCTHINGWIDGETS_USE_WEBKIT)
-    if(!isModalVisible()) {
+    if (!isModalVisible()) {
         close();
     }
 #elif defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
-    m_view->page()->runJavaScript(QStringLiteral("$('.modal-dialog').is(':visible')"), [this] (const QVariant &modalVisible) {
-        if(!modalVisible.toBool()) {
+    m_view->page()->runJavaScript(QStringLiteral("$('.modal-dialog').is(':visible')"), [this](const QVariant &modalVisible) {
+        if (!modalVisible.toBool()) {
             close();
         }
     });
@@ -83,7 +83,7 @@ void WebViewDialog::closeUnlessModalVisible()
 
 void QtGui::WebViewDialog::closeEvent(QCloseEvent *event)
 {
-    if(!Settings::values().webView.keepRunning) {
+    if (!Settings::values().webView.keepRunning) {
         deleteLater();
     }
     event->accept();
@@ -91,7 +91,7 @@ void QtGui::WebViewDialog::closeEvent(QCloseEvent *event)
 
 void WebViewDialog::keyPressEvent(QKeyEvent *event)
 {
-    switch(event->key()) {
+    switch (event->key()) {
     case Qt::Key_F5:
         m_view->reload();
         event->accept();
@@ -108,22 +108,20 @@ void WebViewDialog::keyPressEvent(QKeyEvent *event)
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
 bool WebViewDialog::eventFilter(QObject *watched, QEvent *event)
 {
-    switch(event->type()) {
+    switch (event->type()) {
     case QEvent::ChildAdded:
-        if(m_view->focusProxy()) {
+        if (m_view->focusProxy()) {
             m_view->focusProxy()->installEventFilter(this);
         }
         break;
     case QEvent::KeyPress:
         keyPressEvent(static_cast<QKeyEvent *>(event));
         break;
-    default:
-        ;
+    default:;
     }
     return QMainWindow::eventFilter(watched, event);
 }
 #endif
-
 }
 
 #endif // SYNCTHINGWIDGETS_NO_WEBVIEW

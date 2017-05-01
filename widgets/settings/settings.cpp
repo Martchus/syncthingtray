@@ -6,16 +6,16 @@
 
 #include <qtutilities/settingsdialog/qtsettings.h>
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-# include <qtutilities/misc/dbusnotification.h>
+#include <qtutilities/misc/dbusnotification.h>
 #endif
 
-#include <QStringBuilder>
 #include <QApplication>
+#include <QFile>
+#include <QMessageBox>
 #include <QSettings>
 #include <QSslCertificate>
 #include <QSslError>
-#include <QMessageBox>
-#include <QFile>
+#include <QStringBuilder>
 
 #include <unordered_map>
 
@@ -27,14 +27,12 @@ using namespace MiscUtils;
 
 namespace std {
 
-template <> struct hash<QString>
-{
+template <> struct hash<QString> {
     std::size_t operator()(const QString &str) const
     {
         return qHash(str);
     }
 };
-
 }
 
 namespace Settings {
@@ -53,7 +51,7 @@ QString Launcher::syncthingCmd() const
 QString Launcher::toolCmd(const QString &tool) const
 {
     const ToolParameter toolParams = tools.value(tool);
-    if(toolParams.path.isEmpty()) {
+    if (toolParams.path.isEmpty()) {
         return QString();
     }
     return toolParams.path % QChar(' ') % toolParams.args;
@@ -69,12 +67,12 @@ SyncthingProcess &Launcher::toolProcess(const QString &tool)
  */
 void Launcher::autostart() const
 {
-    if(enabled && !syncthingPath.isEmpty()) {
+    if (enabled && !syncthingPath.isEmpty()) {
         syncthingProcess().startSyncthing(syncthingCmd());
     }
-    for(auto i = tools.cbegin(), end = tools.cend(); i != end; ++i) {
+    for (auto i = tools.cbegin(), end = tools.cend(); i != end; ++i) {
         const ToolParameter &toolParams = i.value();
-        if(toolParams.autostart && !toolParams.path.isEmpty()) {
+        if (toolParams.autostart && !toolParams.path.isEmpty()) {
             toolProcesses[i.key()].startSyncthing(toolParams.path % QChar(' ') % toolParams.args);
         }
     }
@@ -83,11 +81,11 @@ void Launcher::autostart() const
 void Launcher::terminate()
 {
     syncthingProcess().stopSyncthing();
-    for(auto &process : toolProcesses) {
+    for (auto &process : toolProcesses) {
         process.second.stopSyncthing();
     }
     syncthingProcess().waitForFinished();
-    for(auto &process : toolProcesses) {
+    for (auto &process : toolProcesses) {
         process.second.waitForFinished();
     }
 }
@@ -102,7 +100,8 @@ void restore()
 {
     QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral(PROJECT_NAME));
     // move old config to new location
-    const QString oldConfig = QSettings(QSettings::IniFormat, QSettings::UserScope, QApplication::organizationName(), QApplication::applicationName()).fileName();
+    const QString oldConfig
+        = QSettings(QSettings::IniFormat, QSettings::UserScope, QApplication::organizationName(), QApplication::applicationName()).fileName();
     QFile::rename(oldConfig, settings.fileName()) || QFile::remove(oldConfig);
     settings.sync();
     Settings &v = values();
@@ -110,13 +109,13 @@ void restore()
     settings.beginGroup(QStringLiteral("tray"));
     const int connectionCount = settings.beginReadArray(QStringLiteral("connections"));
     auto &primaryConnectionSettings = v.connection.primary;
-    if(connectionCount > 0) {
+    if (connectionCount > 0) {
         auto &secondaryConnectionSettings = v.connection.secondary;
         secondaryConnectionSettings.clear();
         secondaryConnectionSettings.reserve(static_cast<size_t>(connectionCount));
-        for(int i = 0; i < connectionCount; ++i) {
+        for (int i = 0; i < connectionCount; ++i) {
             SyncthingConnectionSettings *connectionSettings;
-            if(i == 0) {
+            if (i == 0) {
                 connectionSettings = &primaryConnectionSettings;
             } else {
                 secondaryConnectionSettings.emplace_back();
@@ -124,7 +123,7 @@ void restore()
             }
             settings.setArrayIndex(i);
             connectionSettings->label = settings.value(QStringLiteral("label")).toString();
-            if(connectionSettings->label.isEmpty()) {
+            if (connectionSettings->label.isEmpty()) {
                 connectionSettings->label = (i == 0 ? QStringLiteral("Primary instance") : QStringLiteral("Secondary instance %1").arg(i));
             }
             connectionSettings->syncthingUrl = settings.value(QStringLiteral("syncthingUrl"), connectionSettings->syncthingUrl).toString();
@@ -132,13 +131,19 @@ void restore()
             connectionSettings->userName = settings.value(QStringLiteral("userName")).toString();
             connectionSettings->password = settings.value(QStringLiteral("password")).toString();
             connectionSettings->apiKey = settings.value(QStringLiteral("apiKey")).toByteArray();
-            connectionSettings->trafficPollInterval = settings.value(QStringLiteral("trafficPollInterval"), connectionSettings->trafficPollInterval).toInt();
-            connectionSettings->devStatsPollInterval = settings.value(QStringLiteral("devStatsPollInterval"), connectionSettings->devStatsPollInterval).toInt();
-            connectionSettings->errorsPollInterval = settings.value(QStringLiteral("errorsPollInterval"), connectionSettings->errorsPollInterval).toInt();
-            connectionSettings->reconnectInterval = settings.value(QStringLiteral("reconnectInterval"), connectionSettings->reconnectInterval).toInt();
+            connectionSettings->trafficPollInterval
+                = settings.value(QStringLiteral("trafficPollInterval"), connectionSettings->trafficPollInterval).toInt();
+            connectionSettings->devStatsPollInterval
+                = settings.value(QStringLiteral("devStatsPollInterval"), connectionSettings->devStatsPollInterval).toInt();
+            connectionSettings->errorsPollInterval
+                = settings.value(QStringLiteral("errorsPollInterval"), connectionSettings->errorsPollInterval).toInt();
+            connectionSettings->reconnectInterval
+                = settings.value(QStringLiteral("reconnectInterval"), connectionSettings->reconnectInterval).toInt();
             connectionSettings->httpsCertPath = settings.value(QStringLiteral("httpsCertPath")).toString();
-            if(!connectionSettings->loadHttpsCert()) {
-                QMessageBox::critical(nullptr, QCoreApplication::applicationName(), QCoreApplication::translate("Settings::restore", "Unable to load certificate \"%1\" when restoring settings.").arg(connectionSettings->httpsCertPath));
+            if (!connectionSettings->loadHttpsCert()) {
+                QMessageBox::critical(nullptr, QCoreApplication::applicationName(),
+                    QCoreApplication::translate("Settings::restore", "Unable to load certificate \"%1\" when restoring settings.")
+                        .arg(connectionSettings->httpsCertPath));
             }
         }
     } else {
@@ -170,7 +175,7 @@ void restore()
     launcher.syncthingPath = settings.value(QStringLiteral("syncthingPath"), launcher.syncthingPath).toString();
     launcher.syncthingArgs = settings.value(QStringLiteral("syncthingArgs"), launcher.syncthingArgs).toString();
     settings.beginGroup(QStringLiteral("tools"));
-    for(const QString &tool : settings.childGroups()) {
+    for (const QString &tool : settings.childGroups()) {
         settings.beginGroup(tool);
         ToolParameter &toolParams = launcher.tools[tool];
         toolParams.autostart = settings.value(QStringLiteral("autostart"), toolParams.autostart).toBool();
@@ -178,8 +183,7 @@ void restore()
         toolParams.args = settings.value(QStringLiteral("args"), toolParams.args).toString();
         settings.endGroup();
     }
-    for(auto i = launcher.tools.cbegin(), end = launcher.tools.cend(); i != end; ++i) {
-
+    for (auto i = launcher.tools.cbegin(), end = launcher.tools.cend(); i != end; ++i) {
     }
     settings.endGroup();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -214,8 +218,9 @@ void save()
     const auto &secondaryConnectionSettings = v.connection.secondary;
     const int connectionCount = static_cast<int>(1 + secondaryConnectionSettings.size());
     settings.beginWriteArray(QStringLiteral("connections"), connectionCount);
-    for(int i = 0; i < connectionCount; ++i) {
-        const SyncthingConnectionSettings *connectionSettings = (i == 0 ? &primaryConnectionSettings : &secondaryConnectionSettings[static_cast<size_t>(i - 1)]);
+    for (int i = 0; i < connectionCount; ++i) {
+        const SyncthingConnectionSettings *connectionSettings
+            = (i == 0 ? &primaryConnectionSettings : &secondaryConnectionSettings[static_cast<size_t>(i - 1)]);
         settings.setArrayIndex(i);
         settings.setValue(QStringLiteral("label"), connectionSettings->label);
         settings.setValue(QStringLiteral("syncthingUrl"), connectionSettings->syncthingUrl);
@@ -254,7 +259,7 @@ void save()
     settings.setValue(QStringLiteral("syncthingPath"), launcher.syncthingPath);
     settings.setValue(QStringLiteral("syncthingArgs"), launcher.syncthingArgs);
     settings.beginGroup(QStringLiteral("tools"));
-    for(auto i = launcher.tools.cbegin(), end = launcher.tools.cend(); i != end; ++i) {
+    for (auto i = launcher.tools.cbegin(), end = launcher.tools.cend(); i != end; ++i) {
         const ToolParameter &toolParams = i.value();
         settings.beginGroup(i.key());
         settings.setValue(QStringLiteral("autostart"), toolParams.autostart);
@@ -283,5 +288,4 @@ void save()
 
     v.qt.save(settings);
 }
-
 }

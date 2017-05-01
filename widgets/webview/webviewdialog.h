@@ -16,8 +16,7 @@ struct ConnectionSettings;
 
 namespace QtGui {
 
-class SYNCTHINGWIDGETS_EXPORT WebViewDialog : public QMainWindow
-{
+class SYNCTHINGWIDGETS_EXPORT WebViewDialog : public QMainWindow {
     Q_OBJECT
 public:
     WebViewDialog(QWidget *parent = nullptr);
@@ -47,7 +46,6 @@ inline const Data::SyncthingConnectionSettings &WebViewDialog::settings() const
 {
     return m_settings;
 }
-
 }
 
 #endif // SYNCTHINGWIDGETS_NO_WEBVIEW

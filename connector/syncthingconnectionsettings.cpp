@@ -5,9 +5,9 @@ namespace Data {
 bool SyncthingConnectionSettings::loadHttpsCert()
 {
     expectedSslErrors.clear();
-    if(!httpsCertPath.isEmpty()) {
+    if (!httpsCertPath.isEmpty()) {
         const QList<QSslCertificate> cert = QSslCertificate::fromPath(httpsCertPath);
-        if(cert.isEmpty()) {
+        if (cert.isEmpty()) {
             return false;
         }
         expectedSslErrors.reserve(4);
@@ -18,5 +18,4 @@ bool SyncthingConnectionSettings::loadHttpsCert()
     }
     return true;
 }
-
 }

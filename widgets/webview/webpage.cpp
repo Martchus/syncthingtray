@@ -8,44 +8,47 @@
 
 #include "resources/config.h"
 
-#include <QDesktopServices>
 #include <QAuthenticator>
+#include <QDesktopServices>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
-# include <QWebEngineSettings>
-# include <QWebEngineView>
-# include <QWebEngineCertificateError>
+#include <QWebEngineCertificateError>
+#include <QWebEngineSettings>
+#include <QWebEngineView>
 #elif defined(SYNCTHINGWIDGETS_USE_WEBKIT)
-# include <QWebSettings>
-# include <QWebView>
-# include <QWebFrame>
-# include <QSslError>
-# include <QNetworkRequest>
+#include <QNetworkRequest>
+#include <QSslError>
+#include <QWebFrame>
+#include <QWebSettings>
+#include <QWebView>
 #endif
 
 using namespace Data;
 
 namespace QtGui {
 
-WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view) :
-    SYNCTHINGWIDGETS_WEB_PAGE(view),
-    m_dlg(dlg),
-    m_view(view)
+WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view)
+    : SYNCTHINGWIDGETS_WEB_PAGE(view)
+    , m_dlg(dlg)
+    , m_view(view)
 {
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
     settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, true);
-    connect(this, &WebPage::authenticationRequired, this, static_cast<void(WebPage::*)(const QUrl &, QAuthenticator *)>(&WebPage::supplyCredentials));
+    connect(
+        this, &WebPage::authenticationRequired, this, static_cast<void (WebPage::*)(const QUrl &, QAuthenticator *)>(&WebPage::supplyCredentials));
 #else
     settings()->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
     setNetworkAccessManager(&Data::networkAccessManager());
-    connect(&Data::networkAccessManager(), &QNetworkAccessManager::authenticationRequired, this, static_cast<void(WebPage::*)(QNetworkReply *, QAuthenticator *)>(&WebPage::supplyCredentials));
-    connect(&Data::networkAccessManager(), &QNetworkAccessManager::sslErrors, this, static_cast<void(WebPage::*)(QNetworkReply *, const QList<QSslError> &errors)>(&WebPage::handleSslErrors));
+    connect(&Data::networkAccessManager(), &QNetworkAccessManager::authenticationRequired, this,
+        static_cast<void (WebPage::*)(QNetworkReply *, QAuthenticator *)>(&WebPage::supplyCredentials));
+    connect(&Data::networkAccessManager(), &QNetworkAccessManager::sslErrors, this,
+        static_cast<void (WebPage::*)(QNetworkReply *, const QList<QSslError> &errors)>(&WebPage::handleSslErrors));
 #endif
 
-    if(!m_view) {
-        // initialization for new window
-        // -> delegate to external browser if no view is assigned
+    if (!m_view) {
+// initialization for new window
+// -> delegate to external browser if no view is assigned
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
         connect(this, &WebPage::urlChanged, this, &WebPage::delegateNewWindowToExternalBrowser);
 #else
@@ -59,18 +62,16 @@ WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view) :
 
 bool WebPage::isSamePage(const QUrl &url1, const QUrl &url2)
 {
-    if(url1.scheme() == url2.scheme()
-            && url1.host() == url2.host()
-            && url1.port() == url2.port()) {
+    if (url1.scheme() == url2.scheme() && url1.host() == url2.host() && url1.port() == url2.port()) {
         QString path1 = url1.path();
-        while(path1.endsWith(QChar('/'))) {
+        while (path1.endsWith(QChar('/'))) {
             path1.resize(path1.size() - 1);
         }
         QString path2 = url2.path();
-        while(path2.endsWith(QChar('/'))) {
+        while (path2.endsWith(QChar('/'))) {
             path2.resize(path2.size() - 1);
         }
-        if(path1 == path2) {
+        if (path1 == path2) {
             return true;
         }
     }
@@ -86,7 +87,7 @@ SYNCTHINGWIDGETS_WEB_PAGE *WebPage::createWindow(SYNCTHINGWIDGETS_WEB_PAGE::WebW
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
 bool WebPage::certificateError(const QWebEngineCertificateError &certificateError)
 {
-    switch(certificateError.error()) {
+    switch (certificateError.error()) {
     case QWebEngineCertificateError::CertificateCommonNameInvalid:
     case QWebEngineCertificateError::CertificateAuthorityInvalid:
         // FIXME: only ignore the error if the used certificate matches the certificate
@@ -135,7 +136,7 @@ void WebPage::supplyCredentials(QNetworkReply *reply, QAuthenticator *authentica
 
 void WebPage::supplyCredentials(QAuthenticator *authenticator)
 {
-    if(m_dlg && m_dlg->settings().authEnabled) {
+    if (m_dlg && m_dlg->settings().authEnabled) {
         authenticator->setUser(m_dlg->settings().userName);
         authenticator->setPassword(m_dlg->settings().password);
     }
@@ -143,12 +144,12 @@ void WebPage::supplyCredentials(QAuthenticator *authenticator)
 
 bool WebPage::handleNavigationRequest(const QUrl &currentUrl, const QUrl &targetUrl)
 {
-    if(currentUrl.isEmpty()) {
+    if (currentUrl.isEmpty()) {
         // allow initial request
         return true;
     }
     // only allow navigation on the same page
-    if(isSamePage(currentUrl, targetUrl)) {
+    if (isSamePage(currentUrl, targetUrl)) {
         return true;
     }
     // otherwise open URL in external browser
@@ -160,12 +161,11 @@ bool WebPage::handleNavigationRequest(const QUrl &currentUrl, const QUrl &target
 void WebPage::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
 {
     Q_UNUSED(errors)
-    if(m_dlg && reply->request().url().host() == m_view->url().host()) {
+    if (m_dlg && reply->request().url().host() == m_view->url().host()) {
         reply->ignoreSslErrors(m_dlg->settings().expectedSslErrors);
     }
 }
 #endif
-
 }
 
 #endif // SYNCTHINGWIDGETS_NO_WEBVIEW

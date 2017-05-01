@@ -11,8 +11,7 @@ struct SyncthingDir;
 
 namespace QtGui {
 
-class SingleInstance : public QObject
-{
+class SingleInstance : public QObject {
     Q_OBJECT
 public:
     SingleInstance(int argc, const char *const *argv, QObject *parent = nullptr);
@@ -26,9 +25,7 @@ private Q_SLOTS:
 
 private:
     QLocalServer *m_server;
-
 };
-
 }
 
 #endif // SINGLEINSTANCE_H

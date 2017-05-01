@@ -3,8 +3,8 @@
 
 #include <c++utilities/tests/testutils.h>
 
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
 
 using namespace std;
 using namespace TestUtilities;
@@ -12,10 +12,11 @@ using namespace TestUtilities;
 static int dummy1 = 0;
 static char *dummy2;
 
-SyncthingTestInstance::SyncthingTestInstance() :
-    m_apiKey(QStringLiteral("syncthingtestinstance")),
-    m_app(dummy1, &dummy2)
-{}
+SyncthingTestInstance::SyncthingTestInstance()
+    : m_apiKey(QStringLiteral("syncthingtestinstance"))
+    , m_app(dummy1, &dummy2)
+{
+}
 
 /*!
  * \brief Starts the Syncthing test instance.
@@ -26,16 +27,16 @@ void SyncthingTestInstance::start()
 
     // setup st config
     const string configFilePath = workingCopyPath("testconfig/config.xml");
-    if(configFilePath.empty()) {
+    if (configFilePath.empty()) {
         throw runtime_error("Unable to setup Syncthing config directory.");
     }
     const QFileInfo configFile(QString::fromLocal8Bit(configFilePath.data()));
     // clean config dir
     const QDir configDir(configFile.dir());
-    for(QFileInfo &configEntry : configDir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-        if(configEntry.isDir()) {
+    for (QFileInfo &configEntry : configDir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+        if (configEntry.isDir()) {
             QDir(configEntry.absoluteFilePath()).removeRecursively();
-        } else if(configEntry.fileName() != QStringLiteral("config.xml")) {
+        } else if (configEntry.fileName() != QStringLiteral("config.xml")) {
             QFile::remove(configEntry.absoluteFilePath());
         }
     }
@@ -64,12 +65,12 @@ void SyncthingTestInstance::start()
  */
 void SyncthingTestInstance::stop()
 {
-    if(m_syncthingProcess.state() == QProcess::Running) {
+    if (m_syncthingProcess.state() == QProcess::Running) {
         cerr << "\n - Waiting for Syncthing to terminate ..." << endl;
         m_syncthingProcess.terminate();
         m_syncthingProcess.waitForFinished();
     }
-    if(m_syncthingProcess.isOpen()) {
+    if (m_syncthingProcess.isOpen()) {
         cerr << "\n - Syncthing terminated with exit code " << m_syncthingProcess.exitCode() << ".\n";
         cerr << "\n - Syncthing stdout during the testrun:\n" << m_syncthingProcess.readAllStandardOutput().data();
         cerr << "\n - Syncthing stderr during the testrun:\n" << m_syncthingProcess.readAllStandardError().data();

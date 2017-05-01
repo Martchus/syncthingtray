@@ -8,8 +8,7 @@ namespace QtGui {
 class TrayIcon;
 class TrayWidget;
 
-class TrayMenu : public QMenu
-{
+class TrayMenu : public QMenu {
     Q_OBJECT
 
 public:
@@ -37,7 +36,6 @@ inline TrayIcon *TrayMenu::icon()
 {
     return m_trayIcon;
 }
-
 }
 
 #endif // TRAY_MENU_H

@@ -7,8 +7,7 @@
 
 namespace Data {
 
-struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConfig
-{
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConfig {
     QString version;
     bool guiEnabled = false;
     bool guiEnforcesSecureConnection = false;

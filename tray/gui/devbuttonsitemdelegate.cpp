@@ -3,14 +3,14 @@
 #include "../../connector/syncthingconnection.h"
 #include "../../model/syncthingdevicemodel.h"
 
-#include <QPixmap>
-#include <QPainter>
 #include <QApplication>
-#include <QStyle>
-#include <QTextOption>
-#include <QStyleOptionViewItem>
 #include <QBrush>
+#include <QPainter>
 #include <QPalette>
+#include <QPixmap>
+#include <QStyle>
+#include <QStyleOptionViewItem>
+#include <QTextOption>
 
 using namespace Data;
 
@@ -21,16 +21,21 @@ inline int centerObj(int avail, int size)
     return (avail - size) / 2;
 }
 
-DevButtonsItemDelegate::DevButtonsItemDelegate(QObject* parent) :
-    QStyledItemDelegate(parent),
-    m_pauseIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg"))).pixmap(QSize(16, 16))),
-    m_resumeIcon(QIcon::fromTheme(QStringLiteral("media-playback-start"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-start.svg"))).pixmap(QSize(16, 16)))
-{}
+DevButtonsItemDelegate::DevButtonsItemDelegate(QObject *parent)
+    : QStyledItemDelegate(parent)
+    , m_pauseIcon(
+          QIcon::fromTheme(QStringLiteral("media-playback-pause"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg")))
+              .pixmap(QSize(16, 16)))
+    , m_resumeIcon(
+          QIcon::fromTheme(QStringLiteral("media-playback-start"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-start.svg")))
+              .pixmap(QSize(16, 16)))
+{
+}
 
 void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     // use the customization only on top-level rows
-    if(index.parent().isValid()) {
+    if (index.parent().isValid()) {
         QStyledItemDelegate::paint(painter, option, index);
     } else {
         // init style options to use drawControl(), except for the text
@@ -51,9 +56,8 @@ void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 
         // draw buttons
         const int buttonY = option.rect.y() + centerObj(option.rect.height(), 16);
-        painter->drawPixmap(option.rect.right() - 16, buttonY, 16, 16, index.data(SyncthingDeviceModel::DevicePaused).toBool() ? m_resumeIcon : m_pauseIcon);
+        painter->drawPixmap(
+            option.rect.right() - 16, buttonY, 16, 16, index.data(SyncthingDeviceModel::DevicePaused).toBool() ? m_resumeIcon : m_pauseIcon);
     }
-
 }
-
 }

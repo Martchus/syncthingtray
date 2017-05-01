@@ -12,14 +12,9 @@
 
 namespace Cli {
 
-enum class OperationType
-{
-    Status,
-    PauseResume
-};
+enum class OperationType { Status, PauseResume };
 
-class Application : public QObject
-{
+class Application : public QObject {
     Q_OBJECT
 
 public:
@@ -69,7 +64,6 @@ private:
     std::vector<const Data::SyncthingDev *> m_relevantDevs;
     const Data::SyncthingDir *m_pwd;
     QString m_relativePath;
-
 };
 
 } // namespace Cli

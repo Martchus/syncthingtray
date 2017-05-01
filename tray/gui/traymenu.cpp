@@ -1,25 +1,25 @@
 #include "./traymenu.h"
-#include "./traywidget.h"
 #include "./trayicon.h"
+#include "./traywidget.h"
 
 #include "../../widgets/settings/settings.h"
 
 #include <QApplication>
-#include <QHBoxLayout>
 #include <QCursor>
 #include <QDesktopWidget>
+#include <QHBoxLayout>
 
 namespace QtGui {
 
-TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent) :
-    TrayMenu(parent)
+TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
+    : TrayMenu(parent)
 {
     m_trayIcon = trayIcon;
 }
 
-TrayMenu::TrayMenu(QWidget *parent) :
-    QMenu(parent),
-    m_trayIcon(nullptr)
+TrayMenu::TrayMenu(QWidget *parent)
+    : QMenu(parent)
+    , m_trayIcon(nullptr)
 {
     auto *menuLayout = new QHBoxLayout;
     menuLayout->setMargin(0), menuLayout->setSpacing(0);
@@ -39,14 +39,14 @@ QSize TrayMenu::sizeHint() const
  */
 void moveInside(QPoint &point, const QSize &innerRect, const QRect &outerRect)
 {
-    if(point.y() < outerRect.top()) {
+    if (point.y() < outerRect.top()) {
         point.setY(outerRect.top());
-    } else if(point.y() + innerRect.height() > outerRect.bottom()) {
+    } else if (point.y() + innerRect.height() > outerRect.bottom()) {
         point.setY(outerRect.bottom() - innerRect.height());
     }
-    if(point.x() < outerRect.left()) {
+    if (point.x() < outerRect.left()) {
         point.setX(outerRect.left());
-    } else if(point.x() + innerRect.width() > outerRect.right()) {
+    } else if (point.x() + innerRect.width() > outerRect.right()) {
         point.setX(outerRect.right() - innerRect.width());
     }
 }
@@ -58,5 +58,4 @@ void TrayMenu::showAtCursor()
     moveInside(pos, size(), QApplication::desktop()->availableGeometry(pos));
     popup(pos);
 }
-
 }

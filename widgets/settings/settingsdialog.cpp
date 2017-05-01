@@ -1,20 +1,20 @@
 #include "./settingsdialog.h"
 
-#include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingconfig.h"
+#include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingprocess.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-# include "../../connector/syncthingservice.h"
-# include "../../model/colors.h"
+#include "../../connector/syncthingservice.h"
+#include "../../model/colors.h"
 #endif
 
-#include "ui_connectionoptionpage.h"
-#include "ui_notificationsoptionpage.h"
 #include "ui_appearanceoptionpage.h"
 #include "ui_autostartoptionpage.h"
+#include "ui_connectionoptionpage.h"
 #include "ui_launcheroptionpage.h"
+#include "ui_notificationsoptionpage.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-# include "ui_systemdoptionpage.h"
+#include "ui_systemdoptionpage.h"
 #endif
 #include "ui_webviewoptionpage.h"
 
@@ -25,26 +25,26 @@
 #include <qtutilities/settingsdialog/optioncategorymodel.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-# include <qtutilities/misc/dbusnotification.h>
+#include <qtutilities/misc/dbusnotification.h>
 #endif
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-# include <c++utilities/chrono/datetime.h>
-# include <qtutilities/misc/dialogutils.h>
+#include <c++utilities/chrono/datetime.h>
+#include <qtutilities/misc/dialogutils.h>
 #endif
 
 #include <QFileDialog>
-#include <QMessageBox>
 #include <QHostAddress>
+#include <QMessageBox>
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
-# include <QStandardPaths>
+#include <QStandardPaths>
 #elif defined(PLATFORM_WINDOWS)
-# include <QSettings>
+#include <QSettings>
 #endif
-#include <QFontDatabase>
-#include <QTextCursor>
 #include <QApplication>
-#include <QStyle>
+#include <QFontDatabase>
 #include <QStringBuilder>
+#include <QStyle>
+#include <QTextCursor>
 
 #include <functional>
 
@@ -60,26 +60,31 @@ using namespace MiscUtils;
 namespace QtGui {
 
 // ConnectionOptionPage
-ConnectionOptionPage::ConnectionOptionPage(Data::SyncthingConnection *connection, QWidget *parentWidget) :
-    ConnectionOptionPageBase(parentWidget),
-    m_connection(connection),
-    m_currentIndex(0)
-{}
+ConnectionOptionPage::ConnectionOptionPage(Data::SyncthingConnection *connection, QWidget *parentWidget)
+    : ConnectionOptionPageBase(parentWidget)
+    , m_connection(connection)
+    , m_currentIndex(0)
+{
+}
 
 ConnectionOptionPage::~ConnectionOptionPage()
-{}
+{
+}
 
 QWidget *ConnectionOptionPage::setupWidget()
 {
     auto *w = ConnectionOptionPageBase::setupWidget();
     ui()->certPathSelection->provideCustomFileMode(QFileDialog::ExistingFile);
-    ui()->certPathSelection->lineEdit()->setPlaceholderText(QCoreApplication::translate("QtGui::ConnectionOptionPage", "Auto-detected for local instance"));
+    ui()->certPathSelection->lineEdit()->setPlaceholderText(
+        QCoreApplication::translate("QtGui::ConnectionOptionPage", "Auto-detected for local instance"));
     ui()->instanceNoteIcon->setPixmap(QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation).pixmap(32, 32));
     QObject::connect(m_connection, &SyncthingConnection::statusChanged, bind(&ConnectionOptionPage::updateConnectionStatus, this));
     QObject::connect(ui()->connectPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::applyAndReconnect, this));
     QObject::connect(ui()->insertFromConfigFilePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::insertFromConfigFile, this));
-    QObject::connect(ui()->selectionComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), bind(&ConnectionOptionPage::showConnectionSettings, this, _1));
-    QObject::connect(ui()->selectionComboBox, static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::editTextChanged), bind(&ConnectionOptionPage::saveCurrentConnectionName, this, _1));
+    QObject::connect(ui()->selectionComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+        bind(&ConnectionOptionPage::showConnectionSettings, this, _1));
+    QObject::connect(ui()->selectionComboBox, static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::editTextChanged),
+        bind(&ConnectionOptionPage::saveCurrentConnectionName, this, _1));
     QObject::connect(ui()->addPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::addConnectionSettings, this));
     QObject::connect(ui()->removePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::removeConnectionSettings, this));
     return w;
@@ -87,32 +92,38 @@ QWidget *ConnectionOptionPage::setupWidget()
 
 void ConnectionOptionPage::insertFromConfigFile()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         QString configFile = SyncthingConfig::locateConfigFile();
-        if(configFile.isEmpty()) {
+        if (configFile.isEmpty()) {
             // allow user to select config file manually if it could not be located
-            configFile = QFileDialog::getOpenFileName(widget(), QCoreApplication::translate("QtGui::ConnectionOptionPage", "Select Syncthing config file") + QStringLiteral(" - " APP_NAME));
+            configFile = QFileDialog::getOpenFileName(widget(),
+                QCoreApplication::translate("QtGui::ConnectionOptionPage", "Select Syncthing config file") + QStringLiteral(" - " APP_NAME));
         }
-        if(configFile.isEmpty()) {
+        if (configFile.isEmpty()) {
             return;
         }
         SyncthingConfig config;
-        if(!config.restore(configFile)) {
-            QMessageBox::critical(widget(), widget()->windowTitle() + QStringLiteral(" - " APP_NAME), QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to parse the Syncthing config file."));
+        if (!config.restore(configFile)) {
+            QMessageBox::critical(widget(), widget()->windowTitle() + QStringLiteral(" - " APP_NAME),
+                QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to parse the Syncthing config file."));
             return;
         }
-        if(!config.guiAddress.isEmpty()) {
+        if (!config.guiAddress.isEmpty()) {
             ui()->urlLineEdit->selectAll();
-            ui()->urlLineEdit->insert(((config.guiEnforcesSecureConnection || !QHostAddress(config.guiAddress.mid(0, config.guiAddress.indexOf(QChar(':')))).isLoopback()) ? QStringLiteral("https://") : QStringLiteral("http://")) + config.guiAddress);
+            ui()->urlLineEdit->insert(
+                ((config.guiEnforcesSecureConnection || !QHostAddress(config.guiAddress.mid(0, config.guiAddress.indexOf(QChar(':')))).isLoopback())
+                        ? QStringLiteral("https://")
+                        : QStringLiteral("http://"))
+                + config.guiAddress);
         }
-        if(!config.guiUser.isEmpty() || !config.guiPasswordHash.isEmpty()) {
+        if (!config.guiUser.isEmpty() || !config.guiPasswordHash.isEmpty()) {
             ui()->authCheckBox->setChecked(true);
             ui()->userNameLineEdit->selectAll();
             ui()->userNameLineEdit->insert(config.guiUser);
         } else {
             ui()->authCheckBox->setChecked(false);
         }
-        if(!config.guiApiKey.isEmpty()) {
+        if (!config.guiApiKey.isEmpty()) {
             ui()->apiKeyLineEdit->selectAll();
             ui()->apiKeyLineEdit->insert(config.guiApiKey);
         }
@@ -121,7 +132,7 @@ void ConnectionOptionPage::insertFromConfigFile()
 
 void ConnectionOptionPage::updateConnectionStatus()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         ui()->statusLabel->setText(m_connection->statusText());
     }
 }
@@ -129,9 +140,10 @@ void ConnectionOptionPage::updateConnectionStatus()
 bool ConnectionOptionPage::showConnectionSettings(int index)
 {
     bool ok = true;
-    if(index != m_currentIndex) {
-        if((ok = cacheCurrentSettings(false))) {
-            const SyncthingConnectionSettings &connectionSettings = (index == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(index - 1)]);
+    if (index != m_currentIndex) {
+        if ((ok = cacheCurrentSettings(false))) {
+            const SyncthingConnectionSettings &connectionSettings
+                = (index == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(index - 1)]);
             ui()->urlLineEdit->setText(connectionSettings.syncthingUrl);
             ui()->authCheckBox->setChecked(connectionSettings.authEnabled);
             ui()->userNameLineEdit->setText(connectionSettings.userName);
@@ -146,7 +158,6 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
         } else {
             ui()->selectionComboBox->setCurrentIndex(m_currentIndex);
         }
-
     }
     ui()->removePushButton->setEnabled(index);
     return ok;
@@ -155,8 +166,9 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
 bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
 {
     bool ok = true;
-    if(m_currentIndex >= 0) {
-        SyncthingConnectionSettings &connectionSettings = (m_currentIndex == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(m_currentIndex - 1)]);
+    if (m_currentIndex >= 0) {
+        SyncthingConnectionSettings &connectionSettings
+            = (m_currentIndex == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(m_currentIndex - 1)]);
         connectionSettings.syncthingUrl = ui()->urlLineEdit->text();
         connectionSettings.authEnabled = ui()->authCheckBox->isChecked();
         connectionSettings.userName = ui()->userNameLineEdit->text();
@@ -168,9 +180,10 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
         connectionSettings.devStatsPollInterval = ui()->pollDevStatsSpinBox->value();
         connectionSettings.errorsPollInterval = ui()->pollErrorsSpinBox->value();
         connectionSettings.reconnectInterval = ui()->reconnectSpinBox->value();
-        if(!connectionSettings.loadHttpsCert()) {
-            const QString errorMessage = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to load specified certificate \"%1\".").arg(connectionSettings.httpsCertPath);
-            if(!applying) {
+        if (!connectionSettings.loadHttpsCert()) {
+            const QString errorMessage = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to load specified certificate \"%1\".")
+                                             .arg(connectionSettings.httpsCertPath);
+            if (!applying) {
                 QMessageBox::critical(widget(), QCoreApplication::applicationName(), errorMessage);
             } else {
                 errors() << errorMessage;
@@ -184,7 +197,7 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
 void ConnectionOptionPage::saveCurrentConnectionName(const QString &name)
 {
     const int index = ui()->selectionComboBox->currentIndex();
-    if(index == m_currentIndex && index >= 0) {
+    if (index == m_currentIndex && index >= 0) {
         (index == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(index - 1)]).label = name;
         ui()->selectionComboBox->setItemText(index, name);
     }
@@ -193,7 +206,8 @@ void ConnectionOptionPage::saveCurrentConnectionName(const QString &name)
 void ConnectionOptionPage::addConnectionSettings()
 {
     m_secondarySettings.emplace_back();
-    m_secondarySettings.back().label = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Instance %1").arg(ui()->selectionComboBox->count() + 1);
+    m_secondarySettings.back().label
+        = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Instance %1").arg(ui()->selectionComboBox->count() + 1);
     ui()->selectionComboBox->addItem(m_secondarySettings.back().label);
     ui()->selectionComboBox->setCurrentIndex(ui()->selectionComboBox->count() - 1);
 }
@@ -201,7 +215,7 @@ void ConnectionOptionPage::addConnectionSettings()
 void ConnectionOptionPage::removeConnectionSettings()
 {
     int index = ui()->selectionComboBox->currentIndex();
-    if(index > 0) {
+    if (index > 0) {
         m_secondarySettings.erase(m_secondarySettings.begin() + (index - 1));
         m_currentIndex = -1;
         ui()->selectionComboBox->removeItem(index);
@@ -211,7 +225,7 @@ void ConnectionOptionPage::removeConnectionSettings()
 bool ConnectionOptionPage::apply()
 {
     bool ok = true;
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         ok = cacheCurrentSettings(true);
         values().connection.primary = m_primarySettings;
         values().connection.secondary = m_secondarySettings;
@@ -221,7 +235,7 @@ bool ConnectionOptionPage::apply()
 
 void ConnectionOptionPage::reset()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         m_primarySettings = values().connection.primary;
         m_secondarySettings = values().connection.secondary;
         m_currentIndex = -1;
@@ -229,7 +243,7 @@ void ConnectionOptionPage::reset()
         QStringList itemTexts;
         itemTexts.reserve(1 + static_cast<int>(m_secondarySettings.size()));
         itemTexts << m_primarySettings.label;
-        for(const SyncthingConnectionSettings &settings : m_secondarySettings) {
+        for (const SyncthingConnectionSettings &settings : m_secondarySettings) {
             itemTexts << settings.label;
         }
         ui()->selectionComboBox->clear();
@@ -247,37 +261,39 @@ void ConnectionOptionPage::applyAndReconnect()
 }
 
 // NotificationsOptionPage
-NotificationsOptionPage::NotificationsOptionPage(QWidget *parentWidget) :
-    NotificationsOptionPageBase(parentWidget)
-{}
+NotificationsOptionPage::NotificationsOptionPage(QWidget *parentWidget)
+    : NotificationsOptionPageBase(parentWidget)
+{
+}
 
 NotificationsOptionPage::~NotificationsOptionPage()
-{}
+{
+}
 
 bool NotificationsOptionPage::apply()
 {
     bool ok = true;
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         auto &notifyOn = values().notifyOn;
         notifyOn.disconnect = ui()->notifyOnDisconnectCheckBox->isChecked();
         notifyOn.internalErrors = ui()->notifyOnErrorsCheckBox->isChecked();
         notifyOn.syncComplete = ui()->notifyOnSyncCompleteCheckBox->isChecked();
         notifyOn.syncthingErrors = ui()->showSyncthingNotificationsCheckBox->isChecked();
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-        if((values().dbusNotifications = ui()->dbusRadioButton->isChecked()) && !DBusNotification::isAvailable()) {
-            errors() << QCoreApplication::translate("QtGui::NotificationsOptionPage", "Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.");
+        if ((values().dbusNotifications = ui()->dbusRadioButton->isChecked()) && !DBusNotification::isAvailable()) {
+            errors() << QCoreApplication::translate(
+                "QtGui::NotificationsOptionPage", "Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.");
             ok = false;
         }
 #endif
         values().ignoreInavailabilityAfterStart = static_cast<unsigned int>(ui()->ignoreInavailabilityAfterStartSpinBox->value());
-
     }
     return ok;
 }
 
 void NotificationsOptionPage::reset()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         const auto &notifyOn = values().notifyOn;
         ui()->notifyOnDisconnectCheckBox->setChecked(notifyOn.disconnect);
         ui()->notifyOnErrorsCheckBox->setChecked(notifyOn.internalErrors);
@@ -294,31 +310,45 @@ void NotificationsOptionPage::reset()
 }
 
 // AppearanceOptionPage
-AppearanceOptionPage::AppearanceOptionPage(QWidget *parentWidget) :
-    AppearanceOptionPageBase(parentWidget)
-{}
+AppearanceOptionPage::AppearanceOptionPage(QWidget *parentWidget)
+    : AppearanceOptionPageBase(parentWidget)
+{
+}
 
 AppearanceOptionPage::~AppearanceOptionPage()
-{}
+{
+}
 
 bool AppearanceOptionPage::apply()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         auto &settings = values().appearance;
         settings.trayMenuSize.setWidth(ui()->widthSpinBox->value());
         settings.trayMenuSize.setHeight(ui()->heightSpinBox->value());
         settings.showTraffic = ui()->showTrafficCheckBox->isChecked();
         int style;
-        switch(ui()->frameShapeComboBox->currentIndex()) {
-        case 0: style = QFrame::NoFrame; break;
-        case 1: style = QFrame::Box; break;
-        case 2: style = QFrame::Panel; break;
-        default: style = QFrame::StyledPanel;
+        switch (ui()->frameShapeComboBox->currentIndex()) {
+        case 0:
+            style = QFrame::NoFrame;
+            break;
+        case 1:
+            style = QFrame::Box;
+            break;
+        case 2:
+            style = QFrame::Panel;
+            break;
+        default:
+            style = QFrame::StyledPanel;
         }
-        switch(ui()->frameShadowComboBox->currentIndex()) {
-        case 0: style |= QFrame::Plain; break;
-        case 1: style |= QFrame::Raised; break;
-        default: style |= QFrame::Sunken;
+        switch (ui()->frameShadowComboBox->currentIndex()) {
+        case 0:
+            style |= QFrame::Plain;
+            break;
+        case 1:
+            style |= QFrame::Raised;
+            break;
+        default:
+            style |= QFrame::Sunken;
         }
         settings.frameStyle = style;
         settings.tabPosition = ui()->tabPosComboBox->currentIndex();
@@ -329,23 +359,35 @@ bool AppearanceOptionPage::apply()
 
 void AppearanceOptionPage::reset()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         const auto &settings = values().appearance;
         ui()->widthSpinBox->setValue(settings.trayMenuSize.width());
         ui()->heightSpinBox->setValue(settings.trayMenuSize.height());
         ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
         int index;
-        switch(settings.frameStyle & QFrame::Shape_Mask) {
-        case QFrame::NoFrame: index = 0; break;
-        case QFrame::Box: index = 1; break;
-        case QFrame::Panel: index = 2; break;
-        default: index = 3;
+        switch (settings.frameStyle & QFrame::Shape_Mask) {
+        case QFrame::NoFrame:
+            index = 0;
+            break;
+        case QFrame::Box:
+            index = 1;
+            break;
+        case QFrame::Panel:
+            index = 2;
+            break;
+        default:
+            index = 3;
         }
         ui()->frameShapeComboBox->setCurrentIndex(index);
-        switch(settings.frameStyle & QFrame::Shadow_Mask) {
-        case QFrame::Plain: index = 0; break;
-        case QFrame::Raised: index = 1; break;
-        default: index = 2;
+        switch (settings.frameStyle & QFrame::Shadow_Mask) {
+        case QFrame::Plain:
+            index = 0;
+            break;
+        case QFrame::Raised:
+            index = 1;
+            break;
+        default:
+            index = 2;
         }
         ui()->frameShadowComboBox->setCurrentIndex(index);
         ui()->tabPosComboBox->setCurrentIndex(settings.tabPosition);
@@ -354,23 +396,30 @@ void AppearanceOptionPage::reset()
 }
 
 // AutostartOptionPage
-AutostartOptionPage::AutostartOptionPage(QWidget *parentWidget) :
-    AutostartOptionPageBase(parentWidget)
-{}
+AutostartOptionPage::AutostartOptionPage(QWidget *parentWidget)
+    : AutostartOptionPageBase(parentWidget)
+{
+}
 
 AutostartOptionPage::~AutostartOptionPage()
-{}
+{
+}
 
 QWidget *AutostartOptionPage::setupWidget()
 {
     auto *widget = AutostartOptionPageBase::setupWidget();
-    ui()->infoIconLabel->setPixmap(QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation, nullptr, ui()->infoIconLabel).pixmap(ui()->infoIconLabel->size()));
+    ui()->infoIconLabel->setPixmap(
+        QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation, nullptr, ui()->infoIconLabel).pixmap(ui()->infoIconLabel->size()));
 #if defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
-    ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage", "This is achieved by adding a *.desktop file under <i>~/.config/autostart</i> so the setting only affects the current user."));
+    ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage",
+        "This is achieved by adding a *.desktop file under <i>~/.config/autostart</i> so the setting only affects the current user."));
 #elif defined(PLATFORM_WINDOWS)
-    ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage", "This is achieved by adding a registry key under <i>HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run</i> so the setting only affects the current user. Note that the startup entry is invalidated when moving <i>syncthingtray.exe</i>."));
+    ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage",
+        "This is achieved by adding a registry key under <i>HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run</i> so the setting "
+        "only affects the current user. Note that the startup entry is invalidated when moving <i>syncthingtray.exe</i>."));
 #else
-    ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage", "This feature has not been implemented for your platform (yet)."));
+    ui()->platformNoteLabel->setText(
+        QCoreApplication::translate("QtGui::AutostartOptionPage", "This feature has not been implemented for your platform (yet)."));
     ui()->autostartCheckBox->setEnabled(false);
 #endif
     return widget;
@@ -388,7 +437,7 @@ bool isAutostartEnabled()
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
     QFile desktopFile(QStandardPaths::locate(QStandardPaths::ConfigLocation, QStringLiteral("autostart/" PROJECT_NAME ".desktop")));
     // check whether the file can be opeed and whether it is enabled but prevent reading large files
-    if(desktopFile.open(QFile::ReadOnly) && (desktopFile.size() > (5 * 1024) || !desktopFile.readAll().contains("Hidden=true"))) {
+    if (desktopFile.open(QFile::ReadOnly) && (desktopFile.size() > (5 * 1024) || !desktopFile.readAll().contains("Hidden=true"))) {
         return true;
     }
     return false;
@@ -409,20 +458,20 @@ bool isAutostartEnabled()
  */
 bool setAutostartEnabled(bool enabled)
 {
-    if(!isAutostartEnabled() && !enabled) {
+    if (!isAutostartEnabled() && !enabled) {
         return true;
     }
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
     const QString configPath(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation));
-    if(configPath.isEmpty()) {
+    if (configPath.isEmpty()) {
         return !enabled;
     }
-    if(enabled && !QDir().mkpath(configPath + QStringLiteral("/autostart"))) {
+    if (enabled && !QDir().mkpath(configPath + QStringLiteral("/autostart"))) {
         return false;
     }
     QFile desktopFile(configPath + QStringLiteral("/autostart/" PROJECT_NAME ".desktop"));
-    if(enabled) {
-        if(desktopFile.open(QFile::WriteOnly | QFile::Truncate)) {
+    if (enabled) {
+        if (desktopFile.open(QFile::WriteOnly | QFile::Truncate)) {
             desktopFile.write("[Desktop Entry]\n");
             desktopFile.write("Name=" APP_NAME "\n");
             desktopFile.write("Exec=");
@@ -442,7 +491,7 @@ bool setAutostartEnabled(bool enabled)
 
 #elif defined(PLATFORM_WINDOWS)
     QSettings settings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat);
-    if(enabled) {
+    if (enabled) {
         settings.setValue(QStringLiteral(PROJECT_NAME), QCoreApplication::applicationFilePath().replace(QChar('/'), QChar('\\')));
     } else {
         settings.remove(QStringLiteral(PROJECT_NAME));
@@ -455,8 +504,8 @@ bool setAutostartEnabled(bool enabled)
 bool AutostartOptionPage::apply()
 {
     bool ok = true;
-    if(hasBeenShown()) {
-        if(!setAutostartEnabled(ui()->autostartCheckBox->isChecked())) {
+    if (hasBeenShown()) {
+        if (!setAutostartEnabled(ui()->autostartCheckBox->isChecked())) {
             errors() << QCoreApplication::translate("QtGui::AutostartOptionPage", "unable to modify startup entry");
             ok = false;
         }
@@ -466,28 +515,30 @@ bool AutostartOptionPage::apply()
 
 void AutostartOptionPage::reset()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         ui()->autostartCheckBox->setChecked(isAutostartEnabled());
     }
 }
 
 // LauncherOptionPage
-LauncherOptionPage::LauncherOptionPage(QWidget *parentWidget) :
-    LauncherOptionPageBase(parentWidget),
-    m_process(syncthingProcess()),
-    m_kill(false)
-{}
+LauncherOptionPage::LauncherOptionPage(QWidget *parentWidget)
+    : LauncherOptionPageBase(parentWidget)
+    , m_process(syncthingProcess())
+    , m_kill(false)
+{
+}
 
-LauncherOptionPage::LauncherOptionPage(const QString &tool, QWidget *parentWidget) :
-    LauncherOptionPageBase(parentWidget),
-    m_process(Launcher::toolProcess(tool)),
-    m_kill(false),
-    m_tool(tool)
-{}
+LauncherOptionPage::LauncherOptionPage(const QString &tool, QWidget *parentWidget)
+    : LauncherOptionPageBase(parentWidget)
+    , m_process(Launcher::toolProcess(tool))
+    , m_kill(false)
+    , m_tool(tool)
+{
+}
 
 LauncherOptionPage::~LauncherOptionPage()
 {
-    for(const QMetaObject::Connection &connection : m_connections) {
+    for (const QMetaObject::Connection &connection : m_connections) {
         QObject::disconnect(connection);
     }
 }
@@ -496,7 +547,7 @@ QWidget *LauncherOptionPage::setupWidget()
 {
     auto *widget = LauncherOptionPageBase::setupWidget();
     // adjust labels to use name of additional tool instead of "Syncthing"
-    if(!m_tool.isEmpty()) {
+    if (!m_tool.isEmpty()) {
         widget->setWindowTitle(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1-launcher").arg(m_tool));
         ui()->enabledCheckBox->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Launch %1 when starting the tray icon").arg(m_tool));
         ui()->syncthingPathLabel->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 executable").arg(m_tool));
@@ -510,7 +561,9 @@ QWidget *LauncherOptionPage::setupWidget()
     ui()->stopPushButton->setHidden(!running);
     // connect signals & slots
     m_connections << QObject::connect(&m_process, &SyncthingProcess::readyRead, bind(&LauncherOptionPage::handleSyncthingReadyRead, this));
-    m_connections << QObject::connect(&m_process, static_cast<void(SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), bind(&LauncherOptionPage::handleSyncthingExited, this, _1, _2));
+    m_connections << QObject::connect(&m_process,
+        static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished),
+        bind(&LauncherOptionPage::handleSyncthingExited, this, _1, _2));
     QObject::connect(ui()->launchNowPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::launch, this));
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::stop, this));
     return widget;
@@ -518,9 +571,9 @@ QWidget *LauncherOptionPage::setupWidget()
 
 bool LauncherOptionPage::apply()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         auto &settings = values().launcher;
-        if(m_tool.isEmpty()) {
+        if (m_tool.isEmpty()) {
             settings.enabled = ui()->enabledCheckBox->isChecked();
             settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
             settings.syncthingArgs = ui()->argumentsLineEdit->text();
@@ -536,9 +589,9 @@ bool LauncherOptionPage::apply()
 
 void LauncherOptionPage::reset()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         const auto &settings = values().launcher;
-        if(m_tool.isEmpty()) {
+        if (m_tool.isEmpty()) {
             ui()->enabledCheckBox->setChecked(settings.enabled);
             ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
             ui()->argumentsLineEdit->setText(settings.syncthingArgs);
@@ -553,11 +606,11 @@ void LauncherOptionPage::reset()
 
 void LauncherOptionPage::handleSyncthingReadyRead()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         QTextCursor cursor = ui()->logTextEdit->textCursor();
         cursor.movePosition(QTextCursor::End);
         cursor.insertText(QString::fromLocal8Bit(m_process.readAll()));
-        if(ui()->ensureCursorVisibleCheckBox->isChecked()) {
+        if (ui()->ensureCursorVisibleCheckBox->isChecked()) {
             ui()->logTextEdit->ensureCursorVisible();
         }
     }
@@ -565,15 +618,17 @@ void LauncherOptionPage::handleSyncthingReadyRead()
 
 void LauncherOptionPage::handleSyncthingExited(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         QTextCursor cursor = ui()->logTextEdit->textCursor();
         cursor.movePosition(QTextCursor::End);
-        switch(exitStatus) {
+        switch (exitStatus) {
         case QProcess::NormalExit:
-            cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 exited with exit code %2\n").arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
+            cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 exited with exit code %2\n")
+                                  .arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
             break;
         case QProcess::CrashExit:
-            cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 crashed with exit code %2\n").arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
+            cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 crashed with exit code %2\n")
+                                  .arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
             break;
         }
         ui()->stopPushButton->hide();
@@ -583,13 +638,13 @@ void LauncherOptionPage::handleSyncthingExited(int exitCode, QProcess::ExitStatu
 
 void LauncherOptionPage::launch()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         apply();
-        if(m_process.state() == QProcess::NotRunning) {
+        if (m_process.state() == QProcess::NotRunning) {
             ui()->launchNowPushButton->hide();
             ui()->stopPushButton->show();
             m_kill = false;
-            if(m_tool.isEmpty()) {
+            if (m_tool.isEmpty()) {
                 m_process.startSyncthing(values().launcher.syncthingCmd());
             } else {
                 m_process.startSyncthing(values().launcher.toolCmd(m_tool));
@@ -600,9 +655,9 @@ void LauncherOptionPage::launch()
 
 void LauncherOptionPage::stop()
 {
-    if(hasBeenShown()) {
-        if(m_process.state() != QProcess::NotRunning) {
-            if(m_kill) {
+    if (hasBeenShown()) {
+        if (m_process.state() != QProcess::NotRunning) {
+            if (m_kill) {
                 m_process.kill();
             } else {
                 m_kill = true;
@@ -614,13 +669,15 @@ void LauncherOptionPage::stop()
 
 // SystemdOptionPage
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-SystemdOptionPage::SystemdOptionPage(QWidget *parentWidget) :
-    SystemdOptionPageBase(parentWidget),
-    m_service(syncthingService())
-{}
+SystemdOptionPage::SystemdOptionPage(QWidget *parentWidget)
+    : SystemdOptionPageBase(parentWidget)
+    , m_service(syncthingService())
+{
+}
 
 SystemdOptionPage::~SystemdOptionPage()
-{}
+{
+}
 
 QWidget *SystemdOptionPage::setupWidget()
 {
@@ -638,7 +695,7 @@ QWidget *SystemdOptionPage::setupWidget()
 
 bool SystemdOptionPage::apply()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         auto &settings = values().systemd;
         settings.syncthingUnit = ui()->syncthingUnitLineEdit->text();
         settings.showButton = ui()->showButtonCheckBox->isChecked();
@@ -649,7 +706,7 @@ bool SystemdOptionPage::apply()
 
 void SystemdOptionPage::reset()
 {
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         const auto &settings = values().systemd;
         ui()->syncthingUnitLineEdit->setText(settings.syncthingUnit);
         ui()->showButtonCheckBox->setChecked(settings.showButton);
@@ -662,7 +719,9 @@ void SystemdOptionPage::reset()
 
 void SystemdOptionPage::handleDescriptionChanged(const QString &description)
 {
-    ui()->descriptionValueLabel->setText(description.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "specified unit is either inactive or doesn't exist") : description);
+    ui()->descriptionValueLabel->setText(description.isEmpty()
+            ? QCoreApplication::translate("QtGui::SystemdOptionPage", "specified unit is either inactive or doesn't exist")
+            : description);
 }
 
 void setIndicatorColor(QWidget *indicator, const QColor &color)
@@ -673,30 +732,25 @@ void setIndicatorColor(QWidget *indicator, const QColor &color)
 void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QString &subState, ChronoUtilities::DateTime activeSince)
 {
     QStringList status;
-    if(!activeState.isEmpty()) {
+    if (!activeState.isEmpty()) {
         status << activeState;
     }
-    if(!subState.isEmpty()) {
+    if (!subState.isEmpty()) {
         status << subState;
     }
 
     const bool isRunning = m_service.isRunning();
     QString timeStamp;
-    if(isRunning && !activeSince.isNull()) {
-        timeStamp = QLatin1Char('\n')
-                  % QCoreApplication::translate("QtGui::SystemdOptionPage", "since ")
-                  % QString::fromUtf8(activeSince.toString(ChronoUtilities::DateTimeOutputFormat::DateAndTime).data());
+    if (isRunning && !activeSince.isNull()) {
+        timeStamp = QLatin1Char('\n') % QCoreApplication::translate("QtGui::SystemdOptionPage", "since ")
+            % QString::fromUtf8(activeSince.toString(ChronoUtilities::DateTimeOutputFormat::DateAndTime).data());
     }
 
-    ui()->statusValueLabel->setText(status.isEmpty()
-                                    ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown")
-                                    : status.join(QStringLiteral(" - ")) + timeStamp);
-    setIndicatorColor(ui()->statusIndicator, status.isEmpty()
-                     ? Colors::gray(values().appearance.brightTextColors)
-                     : (isRunning
-                        ? Colors::green(values().appearance.brightTextColors)
-                        : Colors::red(values().appearance.brightTextColors))
-                       );
+    ui()->statusValueLabel->setText(
+        status.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown") : status.join(QStringLiteral(" - ")) + timeStamp);
+    setIndicatorColor(ui()->statusIndicator,
+        status.isEmpty() ? Colors::gray(values().appearance.brightTextColors)
+                         : (isRunning ? Colors::green(values().appearance.brightTextColors) : Colors::red(values().appearance.brightTextColors)));
     ui()->startPushButton->setVisible(!isRunning);
     ui()->stopPushButton->setVisible(!status.isEmpty() && isRunning);
 }
@@ -704,22 +758,24 @@ void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QS
 void SystemdOptionPage::handleEnabledChanged(const QString &unitFileState)
 {
     const bool isEnabled = m_service.isEnabled();
-    ui()->unitFileStateValueLabel->setText(unitFileState.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown") : unitFileState);
-    setIndicatorColor(ui()->enabledIndicator, isEnabled
-                     ? Colors::green(values().appearance.brightTextColors)
-                     : Colors::gray(values().appearance.brightTextColors));
+    ui()->unitFileStateValueLabel->setText(
+        unitFileState.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown") : unitFileState);
+    setIndicatorColor(
+        ui()->enabledIndicator, isEnabled ? Colors::green(values().appearance.brightTextColors) : Colors::gray(values().appearance.brightTextColors));
     ui()->enablePushButton->setVisible(!isEnabled);
     ui()->disablePushButton->setVisible(!unitFileState.isEmpty() && isEnabled);
 }
 #endif
 
 // WebViewOptionPage
-WebViewOptionPage::WebViewOptionPage(QWidget *parentWidget) :
-    WebViewOptionPageBase(parentWidget)
-{}
+WebViewOptionPage::WebViewOptionPage(QWidget *parentWidget)
+    : WebViewOptionPageBase(parentWidget)
+{
+}
 
 WebViewOptionPage::~WebViewOptionPage()
-{}
+{
+}
 
 #ifdef SYNCTHINGWIDGETS_NO_WEBVIEW
 QWidget *WebViewOptionPage::setupWidget()
@@ -727,7 +783,9 @@ QWidget *WebViewOptionPage::setupWidget()
     auto *label = new QLabel;
     label->setWindowTitle(QCoreApplication::translate("QtGui::WebViewOptionPage", "General"));
     label->setAlignment(Qt::AlignCenter);
-    label->setText(QCoreApplication::translate("QtGui::WebViewOptionPage", "Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.\nThe Web UI will be opened in the default web browser instead."));
+    label->setText(
+        QCoreApplication::translate("QtGui::WebViewOptionPage", "Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit "
+                                                                "or Qt WebEngine.\nThe Web UI will be opened in the default web browser instead."));
     return label;
 }
 #endif
@@ -735,7 +793,7 @@ QWidget *WebViewOptionPage::setupWidget()
 bool WebViewOptionPage::apply()
 {
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         auto &webView = values().webView;
         webView.disabled = ui()->disableCheckBox->isChecked();
         webView.zoomFactor = ui()->zoomDoubleSpinBox->value();
@@ -748,7 +806,7 @@ bool WebViewOptionPage::apply()
 void WebViewOptionPage::reset()
 {
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-    if(hasBeenShown()) {
+    if (hasBeenShown()) {
         const auto &webView = values().webView;
         ui()->disableCheckBox->setChecked(webView.disabled);
         ui()->zoomDoubleSpinBox->setValue(webView.zoomFactor);
@@ -757,8 +815,8 @@ void WebViewOptionPage::reset()
 #endif
 }
 
-SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *parent) :
-    Dialogs::SettingsDialog(parent)
+SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *parent)
+    : Dialogs::SettingsDialog(parent)
 {
     // setup categories
     QList<Dialogs::OptionCategory *> categories;
@@ -766,23 +824,26 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Tray"));
-    category->assignPages(QList<Dialogs::OptionPage *>() << new ConnectionOptionPage(connection) << new NotificationsOptionPage << new AppearanceOptionPage);
+    category->assignPages(
+        QList<Dialogs::OptionPage *>() << new ConnectionOptionPage(connection) << new NotificationsOptionPage << new AppearanceOptionPage);
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     categories << category;
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Web view"));
     category->assignPages(QList<Dialogs::OptionPage *>() << new WebViewOptionPage);
-    category->setIcon(QIcon::fromTheme(QStringLiteral("internet-web-browser"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))));
+    category->setIcon(
+        QIcon::fromTheme(QStringLiteral("internet-web-browser"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))));
     categories << category;
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Startup"));
-    category->assignPages(QList<Dialogs::OptionPage *>() << new AutostartOptionPage << new LauncherOptionPage << new LauncherOptionPage(QStringLiteral("Inotify"))
+    category->assignPages(
+        QList<Dialogs::OptionPage *>() << new AutostartOptionPage << new LauncherOptionPage << new LauncherOptionPage(QStringLiteral("Inotify"))
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-                          << new SystemdOptionPage
+                                       << new SystemdOptionPage
 #endif
-                          );
+        );
     category->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
     categories << category;
 
@@ -792,15 +853,16 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     resize(860, 620);
     setWindowTitle(tr("Settings") + QStringLiteral(" - " APP_NAME));
-    setWindowIcon(QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
+    setWindowIcon(
+        QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
 
     // some settings could be applied without restarting the application, good idea?
     //connect(this, &Dialogs::SettingsDialog::applied, bind(&Dialogs::QtSettings::apply, &Settings::qtSettings()));
 }
 
 SettingsDialog::~SettingsDialog()
-{}
-
+{
+}
 }
 
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, ConnectionOptionPage)

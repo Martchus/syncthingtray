@@ -2,14 +2,15 @@
 
 namespace Data {
 
-SyncthingModel::SyncthingModel(SyncthingConnection &connection, QObject *parent) :
-    QAbstractItemModel(parent),
-    m_connection(connection)
-{}
+SyncthingModel::SyncthingModel(SyncthingConnection &connection, QObject *parent)
+    : QAbstractItemModel(parent)
+    , m_connection(connection)
+{
+}
 
 void SyncthingModel::setBrightColors(bool brightColors)
 {
-    if(m_brightColors != brightColors) {
+    if (m_brightColors != brightColors) {
         m_brightColors = brightColors;
         emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1), QVector<int>() << Qt::ForegroundRole);
     }

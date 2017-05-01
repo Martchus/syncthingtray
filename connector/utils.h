@@ -16,12 +16,11 @@ namespace Data {
 QString LIB_SYNCTHING_CONNECTOR_EXPORT agoString(ChronoUtilities::DateTime dateTime);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QUrl &url);
 
-template<class Objects>
-QStringList LIB_SYNCTHING_CONNECTOR_EXPORT ids(const Objects &objects)
+template <class Objects> QStringList LIB_SYNCTHING_CONNECTOR_EXPORT ids(const Objects &objects)
 {
     QStringList ids;
     ids.reserve(objects.size());
-    for(const auto &object : objects) {
+    for (const auto &object : objects) {
         ids << object.id;
     }
     return ids;

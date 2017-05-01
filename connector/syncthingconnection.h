@@ -1,18 +1,18 @@
 #ifndef SYNCTHINGCONNECTION_H
 #define SYNCTHINGCONNECTION_H
 
-#include "./syncthingdir.h"
 #include "./syncthingdev.h"
+#include "./syncthingdir.h"
 
-#include <QObject>
+#include <QJsonObject>
 #include <QList>
+#include <QObject>
 #include <QSslError>
 #include <QTimer>
-#include <QJsonObject>
 
 #include <functional>
-#include <vector>
 #include <limits>
+#include <vector>
 
 QT_FORWARD_DECLARE_CLASS(QNetworkAccessManager)
 QT_FORWARD_DECLARE_CLASS(QNetworkReply)
@@ -28,39 +28,23 @@ struct SyncthingConnectionSettings;
 
 QNetworkAccessManager LIB_SYNCTHING_CONNECTOR_EXPORT &networkAccessManager();
 
-enum class SyncthingStatus
-{
-    Disconnected,
-    Reconnecting,
-    Idle,
-    Scanning,
-    Paused,
-    Synchronizing,
-    OutOfSync,
-    BeingDestroyed
-};
+enum class SyncthingStatus { Disconnected, Reconnecting, Idle, Scanning, Paused, Synchronizing, OutOfSync, BeingDestroyed };
 Q_ENUM_NS(SyncthingStatus)
 
-enum class SyncthingErrorCategory
-{
-    OverallConnection,
-    SpecificRequest,
-    Parsing
-};
+enum class SyncthingErrorCategory { OverallConnection, SpecificRequest, Parsing };
 Q_ENUM_NS(SyncthingErrorCategory)
 
-struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry
-{
-    SyncthingLogEntry(const QString &when = QString(), const QString &message = QString()) :
-        when(when),
-        message(message)
-    {}
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry {
+    SyncthingLogEntry(const QString &when = QString(), const QString &message = QString())
+        : when(when)
+        , message(message)
+    {
+    }
     QString when;
     QString message;
 };
 
-class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject
-{
+class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString syncthingUrl READ syncthingUrl WRITE setSyncthingUrl)
     Q_PROPERTY(QByteArray apiKey READ apiKey WRITE setApiKey)
@@ -79,7 +63,8 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject
     Q_PROPERTY(double totalOutgoingRate READ totalOutgoingRate NOTIFY trafficChanged)
 
 public:
-    explicit SyncthingConnection(const QString &syncthingUrl = QStringLiteral("http://localhost:8080"), const QByteArray &apiKey = QByteArray(), QObject *parent = nullptr);
+    explicit SyncthingConnection(
+        const QString &syncthingUrl = QStringLiteral("http://localhost:8080"), const QByteArray &apiKey = QByteArray(), QObject *parent = nullptr);
     ~SyncthingConnection();
 
     const QString &syncthingUrl() const;
@@ -112,8 +97,8 @@ public:
     static constexpr uint64 unknownTraffic = std::numeric_limits<uint64>::max();
     const std::vector<SyncthingDir> &dirInfo() const;
     const std::vector<SyncthingDev> &devInfo() const;
-    QMetaObject::Connection requestQrCode(const QString &text, std::function<void (const QByteArray &)> callback);
-    QMetaObject::Connection requestLog(std::function<void (const std::vector<SyncthingLogEntry> &)> callback);
+    QMetaObject::Connection requestQrCode(const QString &text, std::function<void(const QByteArray &)> callback);
+    QMetaObject::Connection requestLog(std::function<void(const std::vector<SyncthingLogEntry> &)> callback);
     const QList<QSslError> &expectedSslErrors();
     SyncthingDir *findDirInfo(const QString &dirId, int &row);
     SyncthingDev *findDevInfo(const QString &devId, int &row);
@@ -359,7 +344,7 @@ inline int SyncthingConnection::trafficPollInterval() const
  */
 inline void SyncthingConnection::setTrafficPollInterval(int trafficPollInterval)
 {
-    if(!trafficPollInterval) {
+    if (!trafficPollInterval) {
         m_trafficPollTimer.stop();
     }
     m_trafficPollTimer.setInterval(trafficPollInterval);
@@ -380,7 +365,7 @@ inline int SyncthingConnection::devStatsPollInterval() const
  */
 inline void SyncthingConnection::setDevStatsPollInterval(int devStatsPollInterval)
 {
-    if(!devStatsPollInterval) {
+    if (!devStatsPollInterval) {
         m_devStatsPollTimer.stop();
     }
     m_devStatsPollTimer.setInterval(devStatsPollInterval);
@@ -401,7 +386,7 @@ inline int SyncthingConnection::errorsPollInterval() const
  */
 inline void SyncthingConnection::setErrorsPollInterval(int errorPollInterval)
 {
-    if(!errorPollInterval) {
+    if (!errorPollInterval) {
         m_errorsPollTimer.stop();
     }
     m_errorsPollTimer.setInterval(errorPollInterval);
@@ -430,7 +415,7 @@ inline unsigned int SyncthingConnection::autoReconnectTries() const
  */
 inline void SyncthingConnection::setAutoReconnectInterval(int interval)
 {
-    if(!interval) {
+    if (!interval) {
         m_autoReconnectTimer.stop();
     }
     m_autoReconnectTimer.setInterval(interval);
@@ -520,7 +505,6 @@ inline const std::vector<SyncthingDir *> &SyncthingConnection::completedDirs() c
 {
     return m_completedDirs;
 }
-
 }
 
 Q_DECLARE_METATYPE(Data::SyncthingLogEntry)

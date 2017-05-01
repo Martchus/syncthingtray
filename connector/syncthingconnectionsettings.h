@@ -3,9 +3,9 @@
 
 #include "./global.h"
 
-#include <QString>
 #include <QByteArray>
 #include <QSslError>
+#include <QString>
 
 namespace Data {
 
@@ -24,7 +24,6 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     QList<QSslError> expectedSslErrors;
     bool loadHttpsCert();
 };
-
 }
 
 #endif // SYNCTHINGCONNECTIONSETTINGS_H

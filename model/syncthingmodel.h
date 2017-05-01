@@ -9,8 +9,7 @@ namespace Data {
 
 class SyncthingConnection;
 
-class LIB_SYNCTHING_MODEL_EXPORT SyncthingModel : public QAbstractItemModel
-{
+class LIB_SYNCTHING_MODEL_EXPORT SyncthingModel : public QAbstractItemModel {
     Q_OBJECT
     Q_PROPERTY(bool brightColors READ brightColors WRITE setBrightColors)
 

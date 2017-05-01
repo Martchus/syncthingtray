@@ -9,8 +9,7 @@ struct SyncthingDir;
 
 namespace QtGui {
 
-class DirView : public QTreeView
-{
+class DirView : public QTreeView {
     Q_OBJECT
 public:
     DirView(QWidget *parent = nullptr);
@@ -27,9 +26,7 @@ private Q_SLOTS:
     void showContextMenu();
     void copySelectedItem();
     void copySelectedItemPath();
-
 };
-
 }
 
 #endif // DIRVIEW_H

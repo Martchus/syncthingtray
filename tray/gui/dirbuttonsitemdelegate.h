@@ -1,13 +1,12 @@
 #ifndef DIRBUTTONSITEMDELEGATE_H
 #define DIRBUTTONSITEMDELEGATE_H
 
-#include <QStyledItemDelegate>
 #include <QPixmap>
+#include <QStyledItemDelegate>
 
 namespace QtGui {
 
-class DirButtonsItemDelegate : public QStyledItemDelegate
-{
+class DirButtonsItemDelegate : public QStyledItemDelegate {
     Q_OBJECT
 public:
     DirButtonsItemDelegate(QObject *parent);
@@ -20,7 +19,6 @@ private:
     const QPixmap m_pauseIcon;
     const QPixmap m_resumeIcon;
 };
-
 }
 
 #endif // DIRBUTTONSITEMDELEGATE_H

@@ -3,8 +3,8 @@
 
 #include "./syncthingmodel.h"
 
-#include <QIcon>
 #include <QFileIconProvider>
+#include <QIcon>
 
 #include <vector>
 
@@ -13,19 +13,14 @@ namespace Data {
 struct SyncthingDir;
 struct SyncthingItemDownloadProgress;
 
-class LIB_SYNCTHING_MODEL_EXPORT SyncthingDownloadModel : public SyncthingModel
-{
+class LIB_SYNCTHING_MODEL_EXPORT SyncthingDownloadModel : public SyncthingModel {
     Q_OBJECT
     Q_PROPERTY(unsigned int pendingDownloads READ pendingDownloads NOTIFY pendingDownloadsChanged)
     Q_PROPERTY(bool singleColumnMode READ singleColumnMode WRITE setSingleColumnMode)
 public:
     explicit SyncthingDownloadModel(SyncthingConnection &connection, QObject *parent = nullptr);
 
-    enum SyncthingDownloadModelRole
-    {
-        ItemPercentage = Qt::UserRole + 1,
-        ItemProgressLabel
-    };
+    enum SyncthingDownloadModelRole { ItemPercentage = Qt::UserRole + 1, ItemProgressLabel };
 
 public Q_SLOTS:
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;

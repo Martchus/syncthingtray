@@ -4,21 +4,21 @@
 
 #include <qtutilities/misc/dialogutils.h>
 
-#include <QIcon>
-#include <QTextBrowser>
 #include <QFontDatabase>
-#include <QVBoxLayout>
+#include <QIcon>
 #include <QKeyEvent>
+#include <QTextBrowser>
+#include <QVBoxLayout>
 
 using namespace Dialogs;
 
 namespace QtGui {
 
-TextViewDialog::TextViewDialog(const QString &title, QWidget *parent) :
-    QWidget(parent, Qt::Window)
+TextViewDialog::TextViewDialog(const QString &title, QWidget *parent)
+    : QWidget(parent, Qt::Window)
 {
     // set window title and icon
-    if(title.isEmpty()) {
+    if (title.isEmpty()) {
         setWindowTitle(QStringLiteral(APP_NAME));
     } else {
         setWindowTitle(title + QStringLiteral(" - " APP_NAME));
@@ -46,16 +46,14 @@ TextViewDialog::TextViewDialog(const QString &title, QWidget *parent) :
 
 void TextViewDialog::keyPressEvent(QKeyEvent *event)
 {
-    switch(event->key()) {
+    switch (event->key()) {
     case Qt::Key_Escape:
         close();
         break;
     case Qt::Key_F5:
         emit reload();
         break;
-    default:
-        ;
+    default:;
     }
 }
-
 }

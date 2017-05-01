@@ -2,11 +2,11 @@
 
 #include <c++utilities/chrono/datetime.h>
 
-#include <QString>
-#include <QUrl>
+#include <QCoreApplication>
 #include <QHostAddress>
 #include <QNetworkInterface>
-#include <QCoreApplication>
+#include <QString>
+#include <QUrl>
 
 using namespace ChronoUtilities;
 
@@ -18,8 +18,9 @@ namespace Data {
 QString agoString(DateTime dateTime)
 {
     const TimeSpan delta(DateTime::now() - dateTime);
-    if(!delta.isNegative() && static_cast<uint64>(delta.totalTicks()) > (TimeSpan::ticksPerMinute / 4uL)) {
-        return QCoreApplication::translate("Data::Utils", "%1 ago").arg(QString::fromUtf8(delta.toString(TimeSpanOutputFormat::WithMeasures, true).data()));
+    if (!delta.isNegative() && static_cast<uint64>(delta.totalTicks()) > (TimeSpan::ticksPerMinute / 4uL)) {
+        return QCoreApplication::translate("Data::Utils", "%1 ago")
+            .arg(QString::fromUtf8(delta.toString(TimeSpanOutputFormat::WithMeasures, true).data()));
     } else {
         return QCoreApplication::translate("Data::Utils", "right now");
     }
@@ -32,9 +33,7 @@ bool isLocal(const QUrl &url)
 {
     const QString host(url.host());
     const QHostAddress hostAddress(host);
-    return host.compare(QLatin1String("localhost"), Qt::CaseInsensitive) == 0
-            || hostAddress.isLoopback()
-            || QNetworkInterface::allAddresses().contains(hostAddress);
+    return host.compare(QLatin1String("localhost"), Qt::CaseInsensitive) == 0 || hostAddress.isLoopback()
+        || QNetworkInterface::allAddresses().contains(hostAddress);
 }
-
 }

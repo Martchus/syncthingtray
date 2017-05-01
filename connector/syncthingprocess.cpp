@@ -4,16 +4,17 @@
 
 namespace Data {
 
-SyncthingProcess::SyncthingProcess(QObject *parent) :
-    QProcess(parent)
+SyncthingProcess::SyncthingProcess(QObject *parent)
+    : QProcess(parent)
 {
     setProcessChannelMode(QProcess::MergedChannels);
-    connect(this, static_cast<void(SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this, &SyncthingProcess::handleFinished);
+    connect(this, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
+        &SyncthingProcess::handleFinished);
 }
 
 void SyncthingProcess::restartSyncthing(const QString &cmd)
 {
-    if(state() == QProcess::Running) {
+    if (state() == QProcess::Running) {
         m_cmd = cmd;
         // give Syncthing 5 seconds to terminate, otherwise kill it
         QTimer::singleShot(5000, this, &SyncthingProcess::killToRestart);
@@ -25,8 +26,8 @@ void SyncthingProcess::restartSyncthing(const QString &cmd)
 
 void SyncthingProcess::startSyncthing(const QString &cmd)
 {
-    if(state() == QProcess::NotRunning) {
-        if(cmd.isEmpty()) {
+    if (state() == QProcess::NotRunning) {
+        if (cmd.isEmpty()) {
             start(QProcess::ReadOnly);
         } else {
             start(cmd, QProcess::ReadOnly);
@@ -36,7 +37,7 @@ void SyncthingProcess::startSyncthing(const QString &cmd)
 
 void SyncthingProcess::stopSyncthing()
 {
-    if(state() == QProcess::Running) {
+    if (state() == QProcess::Running) {
         // give Syncthing 5 seconds to terminate, otherwise kill it
         QTimer::singleShot(5000, this, &SyncthingProcess::kill);
         terminate();
@@ -47,7 +48,7 @@ void SyncthingProcess::handleFinished(int exitCode, QProcess::ExitStatus exitSta
 {
     Q_UNUSED(exitCode)
     Q_UNUSED(exitStatus)
-    if(!m_cmd.isEmpty()) {
+    if (!m_cmd.isEmpty()) {
         startSyncthing(m_cmd);
         m_cmd.clear();
     }
@@ -55,7 +56,7 @@ void SyncthingProcess::handleFinished(int exitCode, QProcess::ExitStatus exitSta
 
 void SyncthingProcess::killToRestart()
 {
-    if(!m_cmd.isEmpty()) {
+    if (!m_cmd.isEmpty()) {
         kill();
     }
 }

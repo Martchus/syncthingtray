@@ -4,15 +4,15 @@
 #include "../connector/syncthingconfig.h"
 
 #include <c++utilities/application/failure.h>
-#include <c++utilities/io/ansiescapecodes.h>
 #include <c++utilities/chrono/timespan.h>
 #include <c++utilities/conversion/stringconversion.h>
+#include <c++utilities/io/ansiescapecodes.h>
 
 #include <qtutilities/misc/conversion.h>
 
 #include <QCoreApplication>
-#include <QNetworkAccessManager>
 #include <QDir>
+#include <QNetworkAccessManager>
 
 #include <functional>
 #include <iostream>
@@ -46,10 +46,10 @@ inline QString argToQString(const char *arg, int size = -1)
 #endif
 }
 
-Application::Application() :
-    m_expectedResponse(0),
-    m_preventDisconnect(false),
-    m_callbacksInvoked(false)
+Application::Application()
+    : m_expectedResponse(0)
+    , m_preventDisconnect(false)
+    , m_callbacksInvoked(false)
 {
     // take ownership over the global QNetworkAccessManager
     networkAccessManager().setParent(this);
@@ -81,23 +81,24 @@ Application::Application() :
 }
 
 Application::~Application()
-{}
+{
+}
 
-int Application::exec(int argc, const char * const *argv)
+int Application::exec(int argc, const char *const *argv)
 {
     try {
         // parse arguments
         m_args.parser.readArgs(argc, argv);
 
         // check whether application needs to be terminated due to --bash-completion argument
-        if(terminated) {
+        if (terminated) {
             return statusCode;
         }
 
         m_args.parser.checkConstraints();
 
         // handle help argument
-        if(m_args.help.isPresent()) {
+        if (m_args.help.isPresent()) {
             m_args.parser.printHelp(cout);
             return 0;
         }
@@ -105,53 +106,53 @@ int Application::exec(int argc, const char * const *argv)
         // locate and read Syncthing config file
         QString configFile;
         const char *configFileArgValue = m_args.configFile.firstValue();
-        if(configFileArgValue) {
+        if (configFileArgValue) {
             configFile = fromNativeFileName(configFileArgValue);
         } else {
             configFile = SyncthingConfig::locateConfigFile();
         }
         SyncthingConfig config;
         const char *apiKeyArgValue = m_args.apiKey.firstValue();
-        if(!config.restore(configFile)) {
-            if(configFileArgValue) {
+        if (!config.restore(configFile)) {
+            if (configFileArgValue) {
                 cerr << "Error: Unable to locate specified Syncthing config file \"" << configFileArgValue << "\"" << endl;
                 return -1;
-            } else if(!apiKeyArgValue) {
+            } else if (!apiKeyArgValue) {
                 cerr << "Error: Unable to locate Syncthing config file and no API key specified" << endl;
                 return -2;
             }
         }
 
         // apply settings for connection
-        if(const char *urlArgValue = m_args.url.firstValue()) {
+        if (const char *urlArgValue = m_args.url.firstValue()) {
             m_settings.syncthingUrl = argToQString(urlArgValue);
-        } else if(!config.guiAddress.isEmpty()) {
+        } else if (!config.guiAddress.isEmpty()) {
             m_settings.syncthingUrl = config.syncthingUrl();
         } else {
             m_settings.syncthingUrl = QStringLiteral("http://localhost:8080");
         }
-        if(m_args.credentials.isPresent()) {
+        if (m_args.credentials.isPresent()) {
             m_settings.authEnabled = true;
             m_settings.userName = argToQString(m_args.credentials.values(0)[0]);
             m_settings.password = argToQString(m_args.credentials.values(0)[1]);
         }
-        if(apiKeyArgValue) {
+        if (apiKeyArgValue) {
             m_settings.apiKey.append(apiKeyArgValue);
         } else {
             m_settings.apiKey.append(config.guiApiKey);
         }
-        if(const char *certArgValue = m_args.certificate.firstValue()) {
+        if (const char *certArgValue = m_args.certificate.firstValue()) {
             m_settings.httpsCertPath = argToQString(certArgValue);
-            if(m_settings.httpsCertPath.isEmpty() || !m_settings.loadHttpsCert()) {
+            if (m_settings.httpsCertPath.isEmpty() || !m_settings.loadHttpsCert()) {
                 cerr << "Error: Unable to load specified certificate \"" << m_args.certificate.firstValue() << "\"" << endl;
                 return -3;
             }
         }
 
         // finally to request / establish connection
-        if(m_args.status.isPresent() || m_args.rescanAll.isPresent() || m_args.pauseAllDirs.isPresent() || m_args.pauseAllDevs.isPresent()
-                || m_args.resumeAllDirs.isPresent() || m_args.resumeAllDevs.isPresent() || m_args.pause.isPresent()
-                || m_args.resume.isPresent() || m_args.waitForIdle.isPresent() || m_args.pwd.isPresent()) {
+        if (m_args.status.isPresent() || m_args.rescanAll.isPresent() || m_args.pauseAllDirs.isPresent() || m_args.pauseAllDevs.isPresent()
+            || m_args.resumeAllDirs.isPresent() || m_args.resumeAllDevs.isPresent() || m_args.pause.isPresent() || m_args.resume.isPresent()
+            || m_args.waitForIdle.isPresent() || m_args.pwd.isPresent()) {
             // those arguments rquire establishing a connection first, the actual handler is called by handleStatusChanged() when
             // the connection has been established
             m_connection.reconnect(m_settings);
@@ -166,7 +167,7 @@ int Application::exec(int argc, const char * const *argv)
         // enter event loop
         return QCoreApplication::exec();
 
-    } catch(const Failure &ex) {
+    } catch (const Failure &ex) {
         cerr << "Unable to parse arguments. " << ex.what() << "\nSee --help for available commands." << endl;
         return 1;
     }
@@ -175,15 +176,15 @@ int Application::exec(int argc, const char * const *argv)
 void Application::handleStatusChanged(SyncthingStatus newStatus)
 {
     Q_UNUSED(newStatus)
-    if(m_callbacksInvoked) {
+    if (m_callbacksInvoked) {
         return;
     }
-    if(m_connection.isConnected()) {
+    if (m_connection.isConnected()) {
         eraseLine(cout);
         cout << '\r';
         m_callbacksInvoked = true;
         m_args.parser.invokeCallbacks();
-        if(!m_preventDisconnect) {
+        if (!m_preventDisconnect) {
             m_connection.disconnect();
         }
     }
@@ -191,8 +192,8 @@ void Application::handleStatusChanged(SyncthingStatus newStatus)
 
 void Application::handleResponse()
 {
-    if(m_expectedResponse) {
-        if(!--m_expectedResponse) {
+    if (m_expectedResponse) {
+        if (!--m_expectedResponse) {
             QCoreApplication::quit();
         }
     } else {
@@ -240,12 +241,13 @@ void Application::requestRescan(const ArgumentOccurrence &occurrence)
 {
     m_expectedResponse = occurrence.values.size();
     connect(&m_connection, &SyncthingConnection::rescanTriggered, this, &Application::handleResponse);
-    for(const char *value : occurrence.values) {
+    for (const char *value : occurrence.values) {
         cerr << "Request rescanning " << value << " ...\n";
         // split into directory name and relpath
         const char *firstSlash = value;
-        for(; *firstSlash && *firstSlash != '/'; ++firstSlash);
-        if(*firstSlash) {
+        for (; *firstSlash && *firstSlash != '/'; ++firstSlash)
+            ;
+        if (*firstSlash) {
             m_connection.rescan(argToQString(value, static_cast<int>(firstSlash - value)), argToQString(firstSlash + 1));
         } else {
             m_connection.rescan(argToQString(value));
@@ -266,31 +268,31 @@ void Application::requestPauseResume(bool pause)
 {
     findRelevantDirsAndDevs(OperationType::PauseResume);
     m_expectedResponse = m_relevantDevs.size();
-    if(pause) {
+    if (pause) {
         connect(&m_connection, &SyncthingConnection::devicePauseTriggered, this, &Application::handleResponse);
         connect(&m_connection, &SyncthingConnection::directoryPauseTriggered, this, &Application::handleResponse);
     } else {
         connect(&m_connection, &SyncthingConnection::deviceResumeTriggered, this, &Application::handleResponse);
         connect(&m_connection, &SyncthingConnection::directoryResumeTriggered, this, &Application::handleResponse);
     }
-    if(!m_relevantDirs.empty()) {
+    if (!m_relevantDirs.empty()) {
         QStringList dirIds;
         dirIds.reserve(m_relevantDirs.size());
-        for(const SyncthingDir *dir : m_relevantDirs) {
+        for (const SyncthingDir *dir : m_relevantDirs) {
             dirIds << dir->id;
         }
-        if(pause) {
+        if (pause) {
             cerr << "Request pausing directories ";
         } else {
             cerr << "Request resuming directories ";
         }
         cerr << dirIds.join(QStringLiteral(", ")).toLocal8Bit().data() << " ...\n";
-        if(pause ? m_connection.pauseDirectories(dirIds) : m_connection.resumeDirectories(dirIds)) {
+        if (pause ? m_connection.pauseDirectories(dirIds) : m_connection.resumeDirectories(dirIds)) {
             ++m_expectedResponse;
         }
     }
-    for(const SyncthingDev *dev : m_relevantDevs) {
-        if(pause) {
+    for (const SyncthingDev *dev : m_relevantDevs) {
+        if (pause) {
             cerr << "Request pausing device ";
         }
         cerr << dev->id.toLocal8Bit().data() << " ...\n";
@@ -337,7 +339,7 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
     int dummy;
 
     Argument *dirArg, *devArg;
-    switch(operationType) {
+    switch (operationType) {
     case OperationType::Status:
         dirArg = &m_args.statusDir;
         devArg = &m_args.statusDev;
@@ -347,39 +349,39 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
         devArg = &m_args.pauseDev;
     }
 
-    if(dirArg->isPresent()) {
+    if (dirArg->isPresent()) {
         m_relevantDirs.reserve(dirArg->occurrences());
-        for(size_t i = 0; i != dirArg->occurrences(); ++i) {
-            if(const SyncthingDir *dir = m_connection.findDirInfo(argToQString(dirArg->values(i).front()), dummy)) {
+        for (size_t i = 0; i != dirArg->occurrences(); ++i) {
+            if (const SyncthingDir *dir = m_connection.findDirInfo(argToQString(dirArg->values(i).front()), dummy)) {
                 m_relevantDirs.emplace_back(dir);
             } else {
                 cerr << "Warning: Specified directory \"" << dirArg->values(i).front() << "\" does not exist and will be ignored" << endl;
             }
         }
     }
-    if(devArg->isPresent()) {
+    if (devArg->isPresent()) {
         m_relevantDevs.reserve(devArg->occurrences());
-        for(size_t i = 0; i != devArg->occurrences(); ++i) {
+        for (size_t i = 0; i != devArg->occurrences(); ++i) {
             const SyncthingDev *dev = m_connection.findDevInfo(argToQString(devArg->values(i).front()), dummy);
-            if(!dev) {
+            if (!dev) {
                 dev = m_connection.findDevInfoByName(argToQString(devArg->values(i).front()), dummy);
             }
-            if(dev) {
+            if (dev) {
                 m_relevantDevs.emplace_back(dev);
             } else {
                 cerr << "Warning: Specified device \"" << devArg->values(i).front() << "\" does not exist and will be ignored" << endl;
             }
         }
     }
-    if(operationType == OperationType::Status) {
+    if (operationType == OperationType::Status) {
         // when displaying status information and no dirs/devs have been specified, just print information for all
-        if(m_relevantDirs.empty() && m_relevantDevs.empty()) {
+        if (m_relevantDirs.empty() && m_relevantDevs.empty()) {
             m_relevantDirs.reserve(m_connection.dirInfo().size());
-            for(const SyncthingDir &dir : m_connection.dirInfo()) {
+            for (const SyncthingDir &dir : m_connection.dirInfo()) {
                 m_relevantDirs.emplace_back(&dir);
             }
             m_relevantDevs.reserve(m_connection.devInfo().size());
-            for(const SyncthingDev &dev : m_connection.devInfo()) {
+            for (const SyncthingDev &dev : m_connection.devInfo()) {
                 m_relevantDevs.emplace_back(&dev);
             }
         }
@@ -389,11 +391,11 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
 bool Application::findPwd()
 {
     const QString pwd(QDir::currentPath());
-    for(const SyncthingDir &dir : m_connection.dirInfo()) {
-        if(pwd == dir.pathWithoutTrailingSlash()) {
+    for (const SyncthingDir &dir : m_connection.dirInfo()) {
+        if (pwd == dir.pathWithoutTrailingSlash()) {
             m_pwd = &dir;
             return true;
-        } else if(pwd.startsWith(dir.path)) {
+        } else if (pwd.startsWith(dir.path)) {
             m_pwd = &dir;
             m_relativePath = pwd.mid(dir.path.size());
             return true;
@@ -423,9 +425,9 @@ void Application::printDir(const SyncthingDir *dir)
     printProperty("Auto-normalize", dir->autoNormalize);
     printProperty("Rescan interval", TimeSpan::fromSeconds(dir->rescanInterval));
     printProperty("Min. free disk percentage", dir->minDiskFreePercentage);
-    if(!dir->errors.empty()) {
+    if (!dir->errors.empty()) {
         cout << "   Errors\n";
-        for(const SyncthingDirError &error : dir->errors) {
+        for (const SyncthingDirError &error : dir->errors) {
             printProperty(" - Message", error.message);
             printProperty("   File", error.path);
         }
@@ -448,10 +450,10 @@ void Application::printDev(const SyncthingDev *dev)
     printProperty("Connection type", dev->connectionType);
     printProperty("Client version", dev->clientVersion);
     printProperty("Last seen", dev->lastSeen);
-    if(dev->totalIncomingTraffic > 0) {
+    if (dev->totalIncomingTraffic > 0) {
         printProperty("Incoming traffic", dataSizeToString(static_cast<uint64>(dev->totalIncomingTraffic)).data());
     }
-    if(dev->totalOutgoingTraffic > 0) {
+    if (dev->totalOutgoingTraffic > 0) {
         printProperty("Outgoing traffic", dataSizeToString(static_cast<uint64>(dev->totalOutgoingTraffic)).data());
     }
     cout << '\n';
@@ -462,7 +464,7 @@ void Application::printStatus(const ArgumentOccurrence &)
     findRelevantDirsAndDevs();
 
     // display dirs
-    if(!m_relevantDirs.empty()) {
+    if (!m_relevantDirs.empty()) {
         setStyle(cout, TextAttribute::Bold);
         cout << "Directories\n";
         setStyle(cout);
@@ -470,7 +472,7 @@ void Application::printStatus(const ArgumentOccurrence &)
     }
 
     // display devs
-    if(!m_relevantDevs.empty()) {
+    if (!m_relevantDevs.empty()) {
         setStyle(cout, TextAttribute::Bold);
         cout << "Devices\n";
         setStyle(cout);
@@ -486,8 +488,9 @@ void Application::printLog(const std::vector<SyncthingLogEntry> &logEntries)
     eraseLine(cout);
     cout << '\r';
 
-    for(const SyncthingLogEntry &entry : logEntries) {
-        cout << DateTime::fromIsoStringLocal(entry.when.toLocal8Bit().data()).toString(DateTimeOutputFormat::DateAndTime, true).data() << ':' << ' ' << entry.message.toLocal8Bit().data() << '\n';
+    for (const SyncthingLogEntry &entry : logEntries) {
+        cout << DateTime::fromIsoStringLocal(entry.when.toLocal8Bit().data()).toString(DateTimeOutputFormat::DateAndTime, true).data() << ':' << ' '
+             << entry.message.toLocal8Bit().data() << '\n';
     }
     cout.flush();
     QCoreApplication::exit();
@@ -504,8 +507,8 @@ void Application::initWaitForIdle(const ArgumentOccurrence &)
 
     // currently not idling
     // -> relevant dirs/devs might be invalidated so findRelevantDirsAndDevs() must invoked again
-    connect(&m_connection, &SyncthingConnection::newDirs, this, static_cast<void(Application::*)(void)>(&Application::findRelevantDirsAndDevs));
-    connect(&m_connection, &SyncthingConnection::newDevices, this, static_cast<void(Application::*)(void)>(&Application::findRelevantDirsAndDevs));
+    connect(&m_connection, &SyncthingConnection::newDirs, this, static_cast<void (Application::*)(void)>(&Application::findRelevantDirsAndDevs));
+    connect(&m_connection, &SyncthingConnection::newDevices, this, static_cast<void (Application::*)(void)>(&Application::findRelevantDirsAndDevs));
     // -> check for idle again when dir/dev status changed
     connect(&m_connection, &SyncthingConnection::dirStatusChanged, this, &Application::waitForIdle);
     connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &Application::waitForIdle);
@@ -513,8 +516,8 @@ void Application::initWaitForIdle(const ArgumentOccurrence &)
 
 void Application::waitForIdle()
 {
-    for(const SyncthingDir *dir : m_relevantDirs) {
-        switch(dir->status) {
+    for (const SyncthingDir *dir : m_relevantDirs) {
+        switch (dir->status) {
         case SyncthingDirStatus::Unknown:
         case SyncthingDirStatus::Idle:
         case SyncthingDirStatus::Unshared:
@@ -523,8 +526,8 @@ void Application::waitForIdle()
             return;
         }
     }
-    for(const SyncthingDev *dev : m_relevantDevs) {
-        switch(dev->status) {
+    for (const SyncthingDev *dev : m_relevantDevs) {
+        switch (dev->status) {
         case SyncthingDevStatus::Unknown:
         case SyncthingDevStatus::Disconnected:
         case SyncthingDevStatus::OwnDevice:
@@ -540,8 +543,8 @@ void Application::waitForIdle()
 void Application::checkPwdOperationPresent(const ArgumentOccurrence &occurrence)
 {
     // FIXME: implement requiring at least one operation and default operation in argument parser
-    for(const Argument *pwdOperationArg : m_args.pwd.subArguments()) {
-        if(pwdOperationArg->denotesOperation() && pwdOperationArg->isPresent()) {
+    for (const Argument *pwdOperationArg : m_args.pwd.subArguments()) {
+        if (pwdOperationArg->denotesOperation() && pwdOperationArg->isPresent()) {
             return;
         }
     }
@@ -551,7 +554,7 @@ void Application::checkPwdOperationPresent(const ArgumentOccurrence &occurrence)
 
 void Application::printPwdStatus(const ArgumentOccurrence &)
 {
-    if(!findPwd()) {
+    if (!findPwd()) {
         return;
     }
     printDir(m_pwd);
@@ -560,13 +563,14 @@ void Application::printPwdStatus(const ArgumentOccurrence &)
 
 void Application::requestRescanPwd(const ArgumentOccurrence &)
 {
-    if(!findPwd()) {
+    if (!findPwd()) {
         return;
     }
-    if(m_relativePath.isEmpty()) {
+    if (m_relativePath.isEmpty()) {
         cerr << "Request rescanning directory \"" << m_pwd->path.toLocal8Bit().data() << "\" ..." << endl;
     } else {
-        cerr << "Request rescanning item \"" << m_relativePath.toLocal8Bit().data() << "\" in directory \"" << m_pwd->path.toLocal8Bit().data() << "\" ..." << endl;
+        cerr << "Request rescanning item \"" << m_relativePath.toLocal8Bit().data() << "\" in directory \"" << m_pwd->path.toLocal8Bit().data()
+             << "\" ..." << endl;
     }
     m_connection.rescan(m_pwd->id, m_relativePath);
     connect(&m_connection, &SyncthingConnection::rescanTriggered, this, &Application::handleResponse);
@@ -575,10 +579,10 @@ void Application::requestRescanPwd(const ArgumentOccurrence &)
 
 void Application::requestPausePwd(const ArgumentOccurrence &)
 {
-    if(!findPwd()) {
+    if (!findPwd()) {
         return;
     }
-    if(m_connection.pauseDirectories(QStringList(m_pwd->id))) {
+    if (m_connection.pauseDirectories(QStringList(m_pwd->id))) {
         cerr << "Request pausing directory \"" << m_pwd->path.toLocal8Bit().data() << "\" ..." << endl;
         connect(&m_connection, &SyncthingConnection::directoryPauseTriggered, this, &Application::handleResponse);
         m_preventDisconnect = true;
@@ -591,10 +595,10 @@ void Application::requestPausePwd(const ArgumentOccurrence &)
 
 void Application::requestResumePwd(const ArgumentOccurrence &)
 {
-    if(!findPwd()) {
+    if (!findPwd()) {
         return;
     }
-    if(m_connection.resumeDirectories(QStringList(m_pwd->id))) {
+    if (m_connection.resumeDirectories(QStringList(m_pwd->id))) {
         cerr << "Request resuming directory \"" << m_pwd->path.toLocal8Bit().data() << "\" ..." << endl;
         connect(&m_connection, &SyncthingConnection::directoryResumeTriggered, this, &Application::handleResponse);
         m_preventDisconnect = true;

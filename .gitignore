@@ -47,3 +47,12 @@ testfiles/output.*
 plasmoid/
 scripts/
 
+# clang-format
+/cli/.clang-format
+/connector/.clang-format
+/fileitemactionplugin/.clang-format
+/model/.clang-format
+/testhelper/.clang-format
+/tray/.clang-format
+/plasmoid/.clang-format
+/widgets/.clang-format

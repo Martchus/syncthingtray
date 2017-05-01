@@ -7,8 +7,7 @@
 
 namespace Data {
 
-class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingProcess : public QProcess
-{
+class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingProcess : public QProcess {
     Q_OBJECT
 public:
     explicit SyncthingProcess(QObject *parent = nullptr);

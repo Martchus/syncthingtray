@@ -10,8 +10,7 @@ struct SyncthingDir;
 
 namespace QtGui {
 
-class DownloadView : public QTreeView
-{
+class DownloadView : public QTreeView {
     Q_OBJECT
 public:
     DownloadView(QWidget *parent = nullptr);
@@ -26,9 +25,7 @@ protected:
 private Q_SLOTS:
     void showContextMenu();
     void copySelectedItem();
-
 };
-
 }
 
 #endif // DOWNLOADVIEW_H

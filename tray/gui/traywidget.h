@@ -3,8 +3,8 @@
 
 #include "../../widgets/settings/settings.h"
 
-#include "../../model/syncthingdirectorymodel.h"
 #include "../../model/syncthingdevicemodel.h"
+#include "../../model/syncthingdirectorymodel.h"
 #include "../../model/syncthingdownloadmodel.h"
 
 #include "../../connector/syncthingconnection.h"
@@ -36,8 +36,7 @@ namespace Ui {
 class TrayWidget;
 }
 
-class TrayWidget : public QWidget
-{
+class TrayWidget : public QWidget {
     Q_OBJECT
 
 public:
@@ -116,7 +115,6 @@ inline const std::vector<TrayWidget *> &TrayWidget::instances()
 {
     return m_instances;
 }
-
 }
 
 #endif // TRAY_WIDGET_H

@@ -1,13 +1,12 @@
 #ifndef DOWNLOADITEMDELEGATE_H
 #define DOWNLOADITEMDELEGATE_H
 
-#include <QStyledItemDelegate>
 #include <QPixmap>
+#include <QStyledItemDelegate>
 
 namespace QtGui {
 
-class DownloadItemDelegate : public QStyledItemDelegate
-{
+class DownloadItemDelegate : public QStyledItemDelegate {
     Q_OBJECT
 public:
     DownloadItemDelegate(QObject *parent);
@@ -18,7 +17,6 @@ public:
 private:
     const QPixmap m_folderIcon;
 };
-
 }
 
 #endif // DOWNLOADITEMDELEGATE_H

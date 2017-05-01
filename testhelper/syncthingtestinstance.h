@@ -14,8 +14,7 @@ using namespace std;
  *
  * The class is meant to be subclassed by tests requiring a running Syncthing instance.
  */
-class SYNCTHINGTESTHELPER_EXPORT SyncthingTestInstance
-{
+class SYNCTHINGTESTHELPER_EXPORT SyncthingTestInstance {
 public:
     SyncthingTestInstance();
 

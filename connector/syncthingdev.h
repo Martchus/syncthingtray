@@ -5,29 +5,19 @@
 
 #include <c++utilities/chrono/datetime.h>
 
+#include <QMetaType>
 #include <QString>
 #include <QStringList>
-#include <QMetaType>
 
 namespace Data {
 Q_NAMESPACE
 
-enum class SyncthingDevStatus
-{
-    Unknown,
-    Disconnected,
-    OwnDevice,
-    Idle,
-    Synchronizing,
-    OutOfSync,
-    Rejected
-};
+enum class SyncthingDevStatus { Unknown, Disconnected, OwnDevice, Idle, Synchronizing, OutOfSync, Rejected };
 Q_ENUM_NS(SyncthingDevStatus)
 
 QString statusString(SyncthingDevStatus status);
 
-struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev
-{
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
     SyncthingDev(const QString &id = QString(), const QString &name = QString());
     QString statusString() const;
 
@@ -49,10 +39,11 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev
     ChronoUtilities::DateTime lastSeen;
 };
 
-inline SyncthingDev::SyncthingDev(const QString &id, const QString &name) :
-    id(id),
-    name(name)
-{}
+inline SyncthingDev::SyncthingDev(const QString &id, const QString &name)
+    : id(id)
+    , name(name)
+{
+}
 
 } // namespace Data
 

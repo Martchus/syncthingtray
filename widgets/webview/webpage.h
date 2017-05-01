@@ -16,8 +16,7 @@ namespace QtGui {
 
 class WebViewDialog;
 
-class SYNCTHINGWIDGETS_EXPORT WebPage : public SYNCTHINGWIDGETS_WEB_PAGE
-{
+class SYNCTHINGWIDGETS_EXPORT WebPage : public SYNCTHINGWIDGETS_WEB_PAGE {
     Q_OBJECT
 public:
     WebPage(WebViewDialog *dlg = nullptr, SYNCTHINGWIDGETS_WEB_VIEW *view = nullptr);
@@ -48,7 +47,6 @@ private:
     WebViewDialog *m_dlg;
     SYNCTHINGWIDGETS_WEB_VIEW *m_view;
 };
-
 }
 
 #endif // SYNCTHINGWIDGETS_NO_WEBVIEW

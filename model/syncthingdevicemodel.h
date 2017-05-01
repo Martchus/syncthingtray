@@ -11,16 +11,10 @@ namespace Data {
 
 struct SyncthingDev;
 
-class LIB_SYNCTHING_MODEL_EXPORT SyncthingDeviceModel : public SyncthingModel
-{
+class LIB_SYNCTHING_MODEL_EXPORT SyncthingDeviceModel : public SyncthingModel {
     Q_OBJECT
 public:
-    enum SyncthingDeviceModelRole
-    {
-        DeviceStatus = Qt::UserRole + 1,
-        DevicePaused,
-        IsOwnDevice
-    };
+    enum SyncthingDeviceModelRole { DeviceStatus = Qt::UserRole + 1, DevicePaused, IsOwnDevice };
 
     explicit SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent = nullptr);
 

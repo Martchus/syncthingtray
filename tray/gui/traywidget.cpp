@@ -1,40 +1,40 @@
 #include "./traywidget.h"
-#include "./traymenu.h"
 #include "./trayicon.h"
+#include "./traymenu.h"
 
+#include "../../widgets/misc/textviewdialog.h"
 #include "../../widgets/settings/settingsdialog.h"
 #include "../../widgets/webview/webviewdialog.h"
-#include "../../widgets/misc/textviewdialog.h"
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-# include "../../connector/syncthingservice.h"
-# include "../../connector/utils.h"
+#include "../../connector/syncthingservice.h"
+#include "../../connector/utils.h"
 #endif
 
 #include "resources/config.h"
 #include "ui_traywidget.h"
 
+#include <qtutilities/aboutdialog/aboutdialog.h>
+#include <qtutilities/misc/desktoputils.h>
+#include <qtutilities/misc/dialogutils.h>
 #include <qtutilities/resources/qtconfigarguments.h>
 #include <qtutilities/resources/resources.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
-#include <qtutilities/aboutdialog/aboutdialog.h>
-#include <qtutilities/misc/dialogutils.h>
-#include <qtutilities/misc/desktoputils.h>
 
 #include <c++utilities/conversion/stringconversion.h>
 
-#include <QCoreApplication>
-#include <QDesktopServices>
-#include <QMessageBox>
 #include <QClipboard>
-#include <QDir>
-#include <QTextBrowser>
-#include <QStringBuilder>
-#include <QFontDatabase>
+#include <QCoreApplication>
 #include <QCursor>
+#include <QDesktopServices>
+#include <QDir>
+#include <QFontDatabase>
+#include <QMessageBox>
+#include <QStringBuilder>
+#include <QTextBrowser>
 
-#include <functional>
 #include <algorithm>
+#include <functional>
 
 using namespace ApplicationUtilities;
 using namespace ConversionUtilities;
@@ -52,17 +52,19 @@ vector<TrayWidget *> TrayWidget::m_instances;
 /*!
  * \brief Instantiates a new tray widget.
  */
-TrayWidget::TrayWidget(TrayMenu *parent) :
-    QWidget(parent),
-    m_menu(parent),
-    m_ui(new Ui::TrayWidget),
+TrayWidget::TrayWidget(TrayMenu *parent)
+    : QWidget(parent)
+    , m_menu(parent)
+    , m_ui(new Ui::TrayWidget)
+    ,
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-    m_webViewDlg(nullptr),
+    m_webViewDlg(nullptr)
+    ,
 #endif
-    m_dirModel(m_connection),
-    m_devModel(m_connection),
-    m_dlModel(m_connection),
-    m_selectedConnection(nullptr)
+    m_dirModel(m_connection)
+    , m_devModel(m_connection)
+    , m_dlModel(m_connection)
+    , m_selectedConnection(nullptr)
 {
     m_instances.push_back(this);
 
@@ -81,29 +83,34 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
     m_cornerFrame->setLayout(cornerFrameLayout);
     auto *viewIdButton = new QPushButton(m_cornerFrame);
     viewIdButton->setToolTip(tr("View own device ID"));
-    viewIdButton->setIcon(QIcon::fromTheme(QStringLiteral("view-barcode"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-barcode.svg"))));
+    viewIdButton->setIcon(
+        QIcon::fromTheme(QStringLiteral("view-barcode"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-barcode.svg"))));
     viewIdButton->setFlat(true);
     cornerFrameLayout->addWidget(viewIdButton);
     auto *restartButton = new QPushButton(m_cornerFrame);
     restartButton->setToolTip(tr("Restart Syncthing"));
-    restartButton->setIcon(QIcon::fromTheme(QStringLiteral("system-reboot"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
+    restartButton->setIcon(
+        QIcon::fromTheme(QStringLiteral("system-reboot"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
     restartButton->setFlat(true);
     cornerFrameLayout->addWidget(restartButton);
     auto *showLogButton = new QPushButton(m_cornerFrame);
     showLogButton->setToolTip(tr("Show Syncthing log"));
-    showLogButton->setIcon(QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))));
+    showLogButton->setIcon(
+        QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))));
     showLogButton->setFlat(true);
     cornerFrameLayout->addWidget(showLogButton);
     auto *scanAllButton = new QPushButton(m_cornerFrame);
     scanAllButton->setToolTip(tr("Rescan all directories"));
-    scanAllButton->setIcon(QIcon::fromTheme(QStringLiteral("folder-sync"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/folder-sync.svg"))));
+    scanAllButton->setIcon(
+        QIcon::fromTheme(QStringLiteral("folder-sync"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/folder-sync.svg"))));
     scanAllButton->setFlat(true);
     cornerFrameLayout->addWidget(scanAllButton);
     m_ui->tabWidget->setCornerWidget(m_cornerFrame, Qt::BottomRightCorner);
 
     // setup connection menu
     m_connectionsActionGroup = new QActionGroup(m_connectionsMenu = new QMenu(tr("Connection"), this));
-    m_connectionsMenu->setIcon(QIcon::fromTheme(QStringLiteral("network-connect"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/network-connect.svg"))));
+    m_connectionsMenu->setIcon(
+        QIcon::fromTheme(QStringLiteral("network-connect"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/network-connect.svg"))));
     m_ui->connectionsPushButton->setText(Settings::values().connection.primary.label);
     m_ui->connectionsPushButton->setMenu(m_connectionsMenu);
 
@@ -118,7 +125,8 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
 
     // setup other widgets
     m_ui->notificationsPushButton->setHidden(true);
-    m_ui->trafficIconLabel->setPixmap(QIcon::fromTheme(QStringLiteral("network-card"), QIcon(QStringLiteral(":/icons/hicolor/scalable/devices/network-card.svg"))).pixmap(32));
+    m_ui->trafficIconLabel->setPixmap(
+        QIcon::fromTheme(QStringLiteral("network-card"), QIcon(QStringLiteral(":/icons/hicolor/scalable/devices/network-card.svg"))).pixmap(32));
 #ifndef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     delete m_ui->startStopPushButton;
 #endif
@@ -157,17 +165,17 @@ TrayWidget::TrayWidget(TrayMenu *parent) :
 TrayWidget::~TrayWidget()
 {
     auto i = std::find(m_instances.begin(), m_instances.end(), this);
-    if(i != m_instances.end()) {
+    if (i != m_instances.end()) {
         m_instances.erase(i);
     }
-    if(m_instances.empty()) {
+    if (m_instances.empty()) {
         QCoreApplication::quit();
     }
 }
 
 void TrayWidget::showSettingsDialog()
 {
-    if(!m_settingsDlg) {
+    if (!m_settingsDlg) {
         m_settingsDlg = new SettingsDialog(&m_connection, this);
         connect(m_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettings);
     }
@@ -177,8 +185,10 @@ void TrayWidget::showSettingsDialog()
 
 void TrayWidget::showAboutDialog()
 {
-    if(!m_aboutDlg) {
-        m_aboutDlg = new AboutDialog(this, QString(), QStringLiteral(APP_AUTHOR "\nfallback icons from KDE/Breeze project\nSyncthing icons from Syncthing project"), QString(), QString(), QStringLiteral(APP_DESCRIPTION), QImage(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+    if (!m_aboutDlg) {
+        m_aboutDlg = new AboutDialog(this, QString(),
+            QStringLiteral(APP_AUTHOR "\nfallback icons from KDE/Breeze project\nSyncthing icons from Syncthing project"), QString(), QString(),
+            QStringLiteral(APP_DESCRIPTION), QImage(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
         m_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         m_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     }
@@ -189,14 +199,14 @@ void TrayWidget::showAboutDialog()
 void TrayWidget::showWebUi()
 {
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-    if(Settings::values().webView.disabled) {
+    if (Settings::values().webView.disabled) {
 #endif
         QDesktopServices::openUrl(m_connection.syncthingUrl());
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     } else {
-        if(!m_webViewDlg) {
+        if (!m_webViewDlg) {
             m_webViewDlg = new WebViewDialog(this);
-            if(m_selectedConnection) {
+            if (m_selectedConnection) {
                 m_webViewDlg->applySettings(*m_selectedConnection);
             }
             connect(m_webViewDlg, &WebViewDialog::destroyed, this, &TrayWidget::handleWebViewDeleted);
@@ -228,15 +238,15 @@ void TrayWidget::showOwnDeviceId()
     layout->addWidget(textLabel);
     auto *copyPushButton = new QPushButton(dlg);
     copyPushButton->setText(tr("Copy to clipboard"));
-    connect(copyPushButton, &QPushButton::clicked, bind(&QClipboard::setText, QGuiApplication::clipboard(), m_connection.myId(), QClipboard::Clipboard));
+    connect(
+        copyPushButton, &QPushButton::clicked, bind(&QClipboard::setText, QGuiApplication::clipboard(), m_connection.myId(), QClipboard::Clipboard));
     layout->addWidget(copyPushButton);
-    connect(dlg, &QWidget::destroyed,
-            bind(static_cast<bool(*)(const QMetaObject::Connection &)>(&QObject::disconnect),
-                 m_connection.requestQrCode(m_connection.myId(), [pixmapLabel](const QByteArray &data) {
-        QPixmap pixmap;
-        pixmap.loadFromData(data);
-        pixmapLabel->setPixmap(pixmap);
-    })));
+    connect(dlg, &QWidget::destroyed, bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
+                                          m_connection.requestQrCode(m_connection.myId(), [pixmapLabel](const QByteArray &data) {
+                                              QPixmap pixmap;
+                                              pixmap.loadFromData(data);
+                                              pixmapLabel->setPixmap(pixmap);
+                                          })));
     dlg->setLayout(layout);
     centerWidget(dlg);
     showDialog(dlg);
@@ -246,15 +256,14 @@ void TrayWidget::showLog()
 {
     auto *dlg = new TextViewDialog(tr("Log"), this);
     auto loadLog = [dlg, this] {
-        connect(dlg, &QWidget::destroyed,
-                bind(static_cast<bool(*)(const QMetaObject::Connection &)>(&QObject::disconnect),
-                     m_connection.requestLog([dlg, this] (const std::vector<SyncthingLogEntry> &entries) {
-                        dlg->browser()->clear();
-                        for(const SyncthingLogEntry &entry : entries) {
-                            dlg->browser()->append(entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
-                        }
-            })
-        ));
+        connect(dlg, &QWidget::destroyed, bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
+                                              m_connection.requestLog([dlg, this](const std::vector<SyncthingLogEntry> &entries) {
+                                                  dlg->browser()->clear();
+                                                  for (const SyncthingLogEntry &entry : entries) {
+                                                      dlg->browser()->append(
+                                                          entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
+                                                  }
+                                              })));
     };
     connect(dlg, &TextViewDialog::reload, loadLog);
     loadLog();
@@ -264,7 +273,7 @@ void TrayWidget::showLog()
 void TrayWidget::showNotifications()
 {
     auto *dlg = new TextViewDialog(tr("New notifications"), this);
-    for(const SyncthingLogEntry &entry : m_notifications) {
+    for (const SyncthingLogEntry &entry : m_notifications) {
         dlg->browser()->append(entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
     }
     m_notifications.clear();
@@ -274,7 +283,7 @@ void TrayWidget::showNotifications()
 
 void TrayWidget::showAtCursor()
 {
-    if(m_menu) {
+    if (m_menu) {
         m_menu->showAtCursor();
     } else {
         move(QCursor::pos());
@@ -286,14 +295,16 @@ void TrayWidget::dismissNotifications()
 {
     m_connection.considerAllNotificationsRead();
     m_ui->notificationsPushButton->setHidden(true);
-    if(m_menu && m_menu->icon()) {
+    if (m_menu && m_menu->icon()) {
         m_menu->icon()->updateStatusIconAndText();
     }
 }
 
 void TrayWidget::restartSyncthing()
 {
-    if(QMessageBox::warning(this, QCoreApplication::applicationName(), tr("Do you really want to restart Syncthing?"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+    if (QMessageBox::warning(
+            this, QCoreApplication::applicationName(), tr("Do you really want to restart Syncthing?"), QMessageBox::Yes, QMessageBox::No)
+        == QMessageBox::Yes) {
         m_connection.restart();
     }
 }
@@ -301,8 +312,8 @@ void TrayWidget::restartSyncthing()
 void TrayWidget::quitTray()
 {
     QObject *parent;
-    if(m_menu) {
-        if(m_menu->icon()) {
+    if (m_menu) {
+        if (m_menu->icon()) {
             parent = m_menu->icon();
         } else {
             parent = m_menu;
@@ -315,11 +326,12 @@ void TrayWidget::quitTray()
 
 void TrayWidget::handleStatusChanged(SyncthingStatus status)
 {
-    switch(status) {
+    switch (status) {
     case SyncthingStatus::Disconnected:
         m_ui->statusPushButton->setText(tr("Connect"));
         m_ui->statusPushButton->setToolTip(tr("Not connected to Syncthing, click to connect"));
-        m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
+        m_ui->statusPushButton->setIcon(
+            QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
         m_ui->statusPushButton->setHidden(false);
         updateTraffic(); // ensure previous traffic statistics are no longer shown
         break;
@@ -331,23 +343,24 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
     case SyncthingStatus::Synchronizing:
         m_ui->statusPushButton->setText(tr("Pause"));
         m_ui->statusPushButton->setToolTip(tr("Syncthing is running, click to pause all devices"));
-        m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg"))));
+        m_ui->statusPushButton->setIcon(QIcon::fromTheme(
+            QStringLiteral("media-playback-pause"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg"))));
         m_ui->statusPushButton->setHidden(false);
         break;
     case SyncthingStatus::Paused:
         m_ui->statusPushButton->setText(tr("Continue"));
         m_ui->statusPushButton->setToolTip(tr("At least one device is paused, click to resume"));
-        m_ui->statusPushButton->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-resume.svg"))));
+        m_ui->statusPushButton->setIcon(QIcon::fromTheme(
+            QStringLiteral("media-playback-start"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-resume.svg"))));
         m_ui->statusPushButton->setHidden(false);
         break;
-    default:
-        ;
+    default:;
     }
 }
 
 void TrayWidget::applySettings()
 {
-    for(TrayWidget *instance : m_instances) {
+    for (TrayWidget *instance : m_instances) {
         // update connections menu
         int connectionIndex = 0;
         auto &settings = Settings::values();
@@ -356,12 +369,13 @@ void TrayWidget::applySettings()
         const int connectionCount = static_cast<int>(1 + secondaryConnectionSettings.size());
         const QList<QAction *> connectionActions = instance->m_connectionsActionGroup->actions();
         instance->m_selectedConnection = nullptr;
-        for(; connectionIndex < connectionCount; ++connectionIndex) {
-            SyncthingConnectionSettings &connectionSettings = (connectionIndex == 0 ? primaryConnectionSettings : secondaryConnectionSettings[static_cast<size_t>(connectionIndex - 1)]);
-            if(connectionIndex < connectionActions.size()) {
+        for (; connectionIndex < connectionCount; ++connectionIndex) {
+            SyncthingConnectionSettings &connectionSettings
+                = (connectionIndex == 0 ? primaryConnectionSettings : secondaryConnectionSettings[static_cast<size_t>(connectionIndex - 1)]);
+            if (connectionIndex < connectionActions.size()) {
                 QAction *action = connectionActions.at(connectionIndex);
                 action->setText(connectionSettings.label);
-                if(action->isChecked()) {
+                if (action->isChecked()) {
                     instance->m_selectedConnection = &connectionSettings;
                 }
             } else {
@@ -370,29 +384,29 @@ void TrayWidget::applySettings()
                 instance->m_connectionsActionGroup->addAction(action);
             }
         }
-        for(; connectionIndex < connectionActions.size(); ++connectionIndex) {
+        for (; connectionIndex < connectionActions.size(); ++connectionIndex) {
             delete connectionActions.at(connectionIndex);
         }
-        if(!instance->m_selectedConnection) {
+        if (!instance->m_selectedConnection) {
             instance->m_selectedConnection = &primaryConnectionSettings;
             instance->m_connectionsMenu->actions().at(0)->setChecked(true);
         }
         instance->m_ui->connectionsPushButton->setText(instance->m_selectedConnection->label);
         const bool reconnectRequired = instance->m_connection.applySettings(*instance->m_selectedConnection);
 
-        // reconnect to apply settings considering systemd
+// reconnect to apply settings considering systemd
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         const bool couldReconnect = instance->handleSystemdStatusChanged();
-        if(reconnectRequired && couldReconnect) {
+        if (reconnectRequired && couldReconnect) {
             instance->m_connection.reconnect();
         }
 #else
         instance->m_connection.reconnect();
 #endif
 
-        // web view
+// web view
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-        if(instance->m_webViewDlg) {
+        if (instance->m_webViewDlg) {
             instance->m_webViewDlg->applySettings(*instance->m_selectedConnection);
         }
 #endif
@@ -400,18 +414,19 @@ void TrayWidget::applySettings()
         // update visual appearance
         instance->m_ui->trafficFormWidget->setVisible(settings.appearance.showTraffic);
         instance->m_ui->trafficIconLabel->setVisible(settings.appearance.showTraffic);
-        instance->m_ui->trafficHorizontalSpacer->changeSize(0, 20, settings.appearance.showTraffic ? QSizePolicy::Expanding : QSizePolicy::Ignored, QSizePolicy::Minimum);
-        if(settings.appearance.showTraffic) {
+        instance->m_ui->trafficHorizontalSpacer->changeSize(
+            0, 20, settings.appearance.showTraffic ? QSizePolicy::Expanding : QSizePolicy::Ignored, QSizePolicy::Minimum);
+        if (settings.appearance.showTraffic) {
             instance->updateTraffic();
         }
         instance->m_ui->infoFrame->setFrameStyle(settings.appearance.frameStyle);
         instance->m_ui->buttonsFrame->setFrameStyle(settings.appearance.frameStyle);
-        if(QApplication::style() && !QApplication::style()->objectName().compare(QLatin1String("adwaita"), Qt::CaseInsensitive)) {
+        if (QApplication::style() && !QApplication::style()->objectName().compare(QLatin1String("adwaita"), Qt::CaseInsensitive)) {
             instance->m_cornerFrame->setFrameStyle(QFrame::NoFrame);
         } else {
             instance->m_cornerFrame->setFrameStyle(settings.appearance.frameStyle);
         }
-        if(settings.appearance.tabPosition >= QTabWidget::North && settings.appearance.tabPosition <= QTabWidget::East) {
+        if (settings.appearance.tabPosition >= QTabWidget::North && settings.appearance.tabPosition <= QTabWidget::East) {
             instance->m_ui->tabWidget->setTabPosition(static_cast<QTabWidget::TabPosition>(settings.appearance.tabPosition));
         }
         instance->m_dirModel.setBrightColors(settings.appearance.brightTextColors);
@@ -422,20 +437,22 @@ void TrayWidget::applySettings()
 
 void TrayWidget::openDir(const SyncthingDir &dir)
 {
-    if(QDir(dir.path).exists()) {
+    if (QDir(dir.path).exists()) {
         DesktopUtils::openLocalFileOrDir(dir.path);
     } else {
-        QMessageBox::warning(this, QCoreApplication::applicationName(), tr("The directory <i>%1</i> does not exist on the local machine.").arg(dir.path));
+        QMessageBox::warning(
+            this, QCoreApplication::applicationName(), tr("The directory <i>%1</i> does not exist on the local machine.").arg(dir.path));
     }
 }
 
 void TrayWidget::openItemDir(const SyncthingItemDownloadProgress &item)
 {
     const QDir containingDir(item.fileInfo.absoluteDir());
-    if(containingDir.exists()) {
+    if (containingDir.exists()) {
         DesktopUtils::openLocalFileOrDir(containingDir.path());
     } else {
-        QMessageBox::warning(this, QCoreApplication::applicationName(), tr("The containing directory <i>%1</i> does not exist on the local machine.").arg(item.fileInfo.filePath()));
+        QMessageBox::warning(this, QCoreApplication::applicationName(),
+            tr("The containing directory <i>%1</i> does not exist on the local machine.").arg(item.fileInfo.filePath()));
     }
 }
 
@@ -446,7 +463,7 @@ void TrayWidget::scanDir(const SyncthingDir &dir)
 
 void TrayWidget::pauseResumeDev(const SyncthingDev &dev)
 {
-    if(dev.paused) {
+    if (dev.paused) {
         m_connection.resumeDevice(dev.id);
     } else {
         m_connection.pauseDevice(dev.id);
@@ -455,7 +472,7 @@ void TrayWidget::pauseResumeDev(const SyncthingDev &dev)
 
 void TrayWidget::pauseResumeDir(const SyncthingDir &dir)
 {
-    if(dir.paused) {
+    if (dir.paused) {
         m_connection.resumeDirectories(QStringList(dir.id));
     } else {
         m_connection.pauseDirectories(QStringList(dir.id));
@@ -464,7 +481,7 @@ void TrayWidget::pauseResumeDir(const SyncthingDir &dir)
 
 void TrayWidget::changeStatus()
 {
-    switch(m_connection.status()) {
+    switch (m_connection.status()) {
     case SyncthingStatus::Disconnected:
         m_connection.connect();
         break;
@@ -478,39 +495,41 @@ void TrayWidget::changeStatus()
     case SyncthingStatus::Paused:
         m_connection.resumeAllDevs();
         break;
-    default:
-        ;
+    default:;
     }
 }
 
 void TrayWidget::updateTraffic()
 {
-    if(m_ui->trafficFormWidget->isHidden()) {
+    if (m_ui->trafficFormWidget->isHidden()) {
         return;
     }
     static const QString unknownStr(tr("unknown"));
-    if(m_connection.isConnected()) {
-        if(m_connection.totalIncomingRate() != 0.0) {
+    if (m_connection.isConnected()) {
+        if (m_connection.totalIncomingRate() != 0.0) {
             m_ui->inTrafficLabel->setText(m_connection.totalIncomingTraffic() != SyncthingConnection::unknownTraffic
-                                          ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(m_connection.totalIncomingRate(), true).data()), QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data()))
-                                          : QString::fromUtf8(bitrateToString(m_connection.totalIncomingRate(), true).data()));
+                    ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(m_connection.totalIncomingRate(), true).data()),
+                          QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data()))
+                    : QString::fromUtf8(bitrateToString(m_connection.totalIncomingRate(), true).data()));
         } else {
             m_ui->inTrafficLabel->setText(m_connection.totalIncomingTraffic() != SyncthingConnection::unknownTraffic
-                    ? QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data()) : unknownStr);
+                    ? QString::fromUtf8(dataSizeToString(m_connection.totalIncomingTraffic()).data())
+                    : unknownStr);
         }
-        if(m_connection.totalOutgoingRate() != 0.0) {
+        if (m_connection.totalOutgoingRate() != 0.0) {
             m_ui->outTrafficLabel->setText(m_connection.totalIncomingTraffic() != SyncthingConnection::unknownTraffic
-                                          ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(m_connection.totalOutgoingRate(), true).data()), QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data()))
-                                          : QString::fromUtf8(bitrateToString(m_connection.totalOutgoingRate(), true).data()));
+                    ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(m_connection.totalOutgoingRate(), true).data()),
+                          QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data()))
+                    : QString::fromUtf8(bitrateToString(m_connection.totalOutgoingRate(), true).data()));
         } else {
             m_ui->outTrafficLabel->setText(m_connection.totalOutgoingTraffic() != SyncthingConnection::unknownTraffic
-                    ? QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data()) : unknownStr);
+                    ? QString::fromUtf8(dataSizeToString(m_connection.totalOutgoingTraffic()).data())
+                    : unknownStr);
         }
     } else {
         m_ui->inTrafficLabel->setText(unknownStr);
         m_ui->outTrafficLabel->setText(unknownStr);
     }
-
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -521,25 +540,27 @@ bool TrayWidget::handleSystemdStatusChanged()
     const bool serviceRelevant = service.isSystemdAvailable() && isLocal(QUrl(m_connection.syncthingUrl()));
     bool couldConnectNow = true;
 
-    if(serviceRelevant) {
+    if (serviceRelevant) {
         const bool isRunning = service.isRunning();
-        if(settings.showButton) {
+        if (settings.showButton) {
             m_ui->startStopPushButton->setVisible(true);
-            if(isRunning) {
+            if (isRunning) {
                 m_ui->startStopPushButton->setText(tr("Stop"));
                 m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user stop ") + service.unitName());
-                m_ui->startStopPushButton->setIcon(QIcon::fromTheme(QStringLiteral("process-stop"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/process-stop.svg"))));
+                m_ui->startStopPushButton->setIcon(
+                    QIcon::fromTheme(QStringLiteral("process-stop"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/process-stop.svg"))));
             } else {
                 m_ui->startStopPushButton->setText(tr("Start"));
                 m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user start ") + service.unitName());
-                m_ui->startStopPushButton->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
+                m_ui->startStopPushButton->setIcon(
+                    QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
             }
         }
-        if(settings.considerForReconnect) {
-            if(isRunning && m_selectedConnection) {
+        if (settings.considerForReconnect) {
+            if (isRunning && m_selectedConnection) {
                 // auto-reconnect might have been disabled when unit was inactive before, so re-enable it according current connection settings
                 m_connection.setAutoReconnectInterval(m_selectedConnection->reconnectInterval);
-                if(!m_connection.isConnected()) {
+                if (!m_connection.isConnected()) {
                     // FIXME: This will fail if Syncthing has just been started and isn't ready yet
                     m_connection.connect();
                 }
@@ -551,10 +572,10 @@ bool TrayWidget::handleSystemdStatusChanged()
         }
     }
 
-    if(!settings.showButton || !serviceRelevant) {
+    if (!settings.showButton || !serviceRelevant) {
         m_ui->startStopPushButton->setVisible(false);
     }
-    if((!settings.considerForReconnect || !serviceRelevant) && m_selectedConnection) {
+    if ((!settings.considerForReconnect || !serviceRelevant) && m_selectedConnection) {
         m_connection.setAutoReconnectInterval(m_selectedConnection->reconnectInterval);
     }
 
@@ -563,9 +584,7 @@ bool TrayWidget::handleSystemdStatusChanged()
 
 void TrayWidget::connectIfServiceRunning()
 {
-    if(Settings::values().systemd.considerForReconnect
-            && isLocal(QUrl(m_connection.syncthingUrl()))
-            && syncthingService().isRunning()) {
+    if (Settings::values().systemd.considerForReconnect && isLocal(QUrl(m_connection.syncthingUrl())) && syncthingService().isRunning()) {
         m_connection.connect();
     }
 }
@@ -587,17 +606,16 @@ void TrayWidget::handleNewNotification(DateTime when, const QString &msg)
 void TrayWidget::handleConnectionSelected(QAction *connectionAction)
 {
     int index = m_connectionsMenu->actions().indexOf(connectionAction);
-    if(index >= 0) {
-        m_selectedConnection = (index == 0)
-                ? &Settings::values().connection.primary
-                : &Settings::values().connection.secondary[static_cast<size_t>(index - 1)];
+    if (index >= 0) {
+        m_selectedConnection
+            = (index == 0) ? &Settings::values().connection.primary : &Settings::values().connection.secondary[static_cast<size_t>(index - 1)];
         m_ui->connectionsPushButton->setText(m_selectedConnection->label);
         m_connection.reconnect(*m_selectedConnection);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         handleSystemdStatusChanged();
 #endif
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-        if(m_webViewDlg) {
+        if (m_webViewDlg) {
             m_webViewDlg->applySettings(*m_selectedConnection);
         }
 #endif
@@ -606,11 +624,10 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
 
 void TrayWidget::showDialog(QWidget *dlg)
 {
-    if(m_menu) {
+    if (m_menu) {
         m_menu->close();
     }
     dlg->show();
     dlg->activateWindow();
 }
-
 }

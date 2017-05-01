@@ -13,8 +13,7 @@ class SyncthingConnection;
 
 namespace QtGui {
 
-class SYNCTHINGWIDGETS_EXPORT StatusInfo
-{
+class SYNCTHINGWIDGETS_EXPORT StatusInfo {
 public:
     explicit StatusInfo();
     explicit StatusInfo(const Data::SyncthingConnection &connection);
@@ -42,7 +41,6 @@ inline const QIcon &StatusInfo::statusIcon() const
 {
     return *m_statusIcon;
 }
-
 }
 
 #endif // SYNCTHINGWIDGETS_STATUSINFO_H

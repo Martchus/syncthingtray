@@ -1,6 +1,6 @@
 #include "./syncthingdevicemodel.h"
-#include "./syncthingicons.h"
 #include "./colors.h"
+#include "./syncthingicons.h"
 
 #include "../connector/syncthingconnection.h"
 #include "../connector/utils.h"
@@ -9,9 +9,9 @@ using namespace ChronoUtilities;
 
 namespace Data {
 
-SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent) :
-    SyncthingModel(connection, parent),
-    m_devs(connection.devInfo())
+SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent)
+    : SyncthingModel(connection, parent)
+    , m_devs(connection.devInfo())
 {
     connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingDeviceModel::newConfig);
     connect(&m_connection, &SyncthingConnection::newDevices, this, &SyncthingDeviceModel::newDevices);
@@ -23,19 +23,20 @@ SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObj
  */
 const SyncthingDev *SyncthingDeviceModel::devInfo(const QModelIndex &index) const
 {
-    return (index.parent().isValid() ? devInfo(index.parent()) : (static_cast<size_t>(index.row()) < m_devs.size() ? &m_devs[static_cast<size_t>(index.row())] : nullptr));
+    return (index.parent().isValid() ? devInfo(index.parent())
+                                     : (static_cast<size_t>(index.row()) < m_devs.size() ? &m_devs[static_cast<size_t>(index.row())] : nullptr));
 }
 
 QModelIndex SyncthingDeviceModel::index(int row, int column, const QModelIndex &parent) const
 {
-    if(!parent.isValid()) {
+    if (!parent.isValid()) {
         // top-level: all dev IDs
-        if(row < rowCount(parent)) {
+        if (row < rowCount(parent)) {
             return createIndex(row, column, static_cast<quintptr>(-1));
         }
-    } else if(!parent.parent().isValid()) {
+    } else if (!parent.parent().isValid()) {
         // dev-level: dev attributes
-        if(row < rowCount(parent)) {
+        if (row < rowCount(parent)) {
             return createIndex(row, column, static_cast<quintptr>(parent.row()));
         }
     }
@@ -49,70 +50,83 @@ QModelIndex SyncthingDeviceModel::parent(const QModelIndex &child) const
 
 QVariant SyncthingDeviceModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    switch(orientation) {
+    switch (orientation) {
     case Qt::Horizontal:
-        switch(role) {
+        switch (role) {
         case Qt::DisplayRole:
-            switch(section) {
-            case 0: return tr("ID");
-            case 1: return tr("Status");
+            switch (section) {
+            case 0:
+                return tr("ID");
+            case 1:
+                return tr("Status");
             }
             break;
-        default:
-            ;
+        default:;
         }
         break;
-    default:
-        ;
+    default:;
     }
     return QVariant();
 }
 
 QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
 {
-    if(index.isValid()) {
-        if(index.parent().isValid()) {
+    if (index.isValid()) {
+        if (index.parent().isValid()) {
             // dir attributes
-            if(static_cast<size_t>(index.parent().row()) < m_devs.size()) {
-                switch(role) {
+            if (static_cast<size_t>(index.parent().row()) < m_devs.size()) {
+                switch (role) {
                 case Qt::DisplayRole:
                 case Qt::EditRole:
-                    switch(index.column()) {
+                    switch (index.column()) {
                     case 0: // attribute names
-                        switch(index.row()) {
-                        case 0: return tr("ID");
-                        case 1: return tr("Addresses");
-                        case 2: return tr("Last seen");
-                        case 3: return tr("Compression");
-                        case 4: return tr("Certificate");
-                        case 5: return tr("Introducer");
+                        switch (index.row()) {
+                        case 0:
+                            return tr("ID");
+                        case 1:
+                            return tr("Addresses");
+                        case 2:
+                            return tr("Last seen");
+                        case 3:
+                            return tr("Compression");
+                        case 4:
+                            return tr("Certificate");
+                        case 5:
+                            return tr("Introducer");
                         }
                         break;
                     case 1: // attribute values
                         const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
-                        switch(index.row()) {
-                        case 0: return dev.id;
-                        case 1: return dev.addresses.join(QStringLiteral(", "));
-                        case 2: return dev.lastSeen.isNull() ? tr("unknown or own device") : QString::fromLatin1(dev.lastSeen.toString(DateTimeOutputFormat::DateAndTime, true).data());
-                        case 3: return dev.compression;
-                        case 4: return dev.certName.isEmpty() ? tr("none") : dev.certName;
-                        case 5: return dev.introducer ? tr("yes") : tr("no");
+                        switch (index.row()) {
+                        case 0:
+                            return dev.id;
+                        case 1:
+                            return dev.addresses.join(QStringLiteral(", "));
+                        case 2:
+                            return dev.lastSeen.isNull() ? tr("unknown or own device")
+                                                         : QString::fromLatin1(dev.lastSeen.toString(DateTimeOutputFormat::DateAndTime, true).data());
+                        case 3:
+                            return dev.compression;
+                        case 4:
+                            return dev.certName.isEmpty() ? tr("none") : dev.certName;
+                        case 5:
+                            return dev.introducer ? tr("yes") : tr("no");
                         }
                         break;
                     }
                     break;
                 case Qt::ForegroundRole:
-                    switch(index.column()) {
+                    switch (index.column()) {
                     case 1:
                         const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
-                        switch(index.row()) {
+                        switch (index.row()) {
                         case 2:
-                            if(dev.lastSeen.isNull()) {
+                            if (dev.lastSeen.isNull()) {
                                 return Colors::gray(m_brightColors);
                             }
                             break;
                         case 4:
-                            if(dev.certName.isEmpty()) {
+                            if (dev.certName.isEmpty()) {
                                 return Colors::gray(m_brightColors);
                             }
                             break;
@@ -120,84 +134,103 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                     }
                     break;
                 case Qt::ToolTipRole:
-                    switch(index.column()) {
+                    switch (index.column()) {
                     case 1:
-                        switch(index.row()) {
+                        switch (index.row()) {
                         case 2:
                             const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
-                            if(!dev.lastSeen.isNull()) {
+                            if (!dev.lastSeen.isNull()) {
                                 return agoString(dev.lastSeen);
                             }
                             break;
                         }
                     }
-                default:
-                    ;
+                default:;
                 }
             }
-        } else if(static_cast<size_t>(index.row()) < m_devs.size()) {
+        } else if (static_cast<size_t>(index.row()) < m_devs.size()) {
             // dir IDs and status
             const SyncthingDev &dev = m_devs[static_cast<size_t>(index.row())];
-            switch(role) {
+            switch (role) {
             case Qt::DisplayRole:
             case Qt::EditRole:
-                switch(index.column()) {
-                case 0: return dev.name.isEmpty() ? dev.id : dev.name;
+                switch (index.column()) {
+                case 0:
+                    return dev.name.isEmpty() ? dev.id : dev.name;
                 case 1:
-                    if(dev.paused) {
+                    if (dev.paused) {
                         return tr("Paused");
                     } else {
-                        switch(dev.status) {
-                        case SyncthingDevStatus::Unknown: return tr("Unknown status");
-                        case SyncthingDevStatus::OwnDevice: return tr("Own device");
-                        case SyncthingDevStatus::Idle: return tr("Idle");
-                        case SyncthingDevStatus::Disconnected: return tr("Disconnected");
-                        case SyncthingDevStatus::Synchronizing: return dev.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dev.progressPercentage) : tr("Synchronizing");
-                        case SyncthingDevStatus::OutOfSync: return tr("Out of sync");
-                        case SyncthingDevStatus::Rejected: return tr("Rejected");
+                        switch (dev.status) {
+                        case SyncthingDevStatus::Unknown:
+                            return tr("Unknown status");
+                        case SyncthingDevStatus::OwnDevice:
+                            return tr("Own device");
+                        case SyncthingDevStatus::Idle:
+                            return tr("Idle");
+                        case SyncthingDevStatus::Disconnected:
+                            return tr("Disconnected");
+                        case SyncthingDevStatus::Synchronizing:
+                            return dev.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dev.progressPercentage) : tr("Synchronizing");
+                        case SyncthingDevStatus::OutOfSync:
+                            return tr("Out of sync");
+                        case SyncthingDevStatus::Rejected:
+                            return tr("Rejected");
                         }
                     }
                     break;
                 }
                 break;
             case Qt::DecorationRole:
-                switch(index.column()) {
+                switch (index.column()) {
                 case 0:
-                   if(dev.paused) {
+                    if (dev.paused) {
                         return statusIcons().pause;
                     } else {
-                        switch(dev.status) {
+                        switch (dev.status) {
                         case SyncthingDevStatus::Unknown:
-                        case SyncthingDevStatus::Disconnected: return statusIcons().disconnected;
+                        case SyncthingDevStatus::Disconnected:
+                            return statusIcons().disconnected;
                         case SyncthingDevStatus::OwnDevice:
-                        case SyncthingDevStatus::Idle: return statusIcons().idling;
-                        case SyncthingDevStatus::Synchronizing: return statusIcons().sync;
+                        case SyncthingDevStatus::Idle:
+                            return statusIcons().idling;
+                        case SyncthingDevStatus::Synchronizing:
+                            return statusIcons().sync;
                         case SyncthingDevStatus::OutOfSync:
-                        case SyncthingDevStatus::Rejected: return statusIcons().error;
+                        case SyncthingDevStatus::Rejected:
+                            return statusIcons().error;
                         }
                     }
                     break;
                 }
                 break;
             case Qt::TextAlignmentRole:
-                switch(index.column()) {
-                case 0: break;
-                case 1: return static_cast<int>(Qt::AlignRight | Qt::AlignVCenter);
+                switch (index.column()) {
+                case 0:
+                    break;
+                case 1:
+                    return static_cast<int>(Qt::AlignRight | Qt::AlignVCenter);
                 }
                 break;
             case Qt::ForegroundRole:
-                switch(index.column()) {
-                case 0: break;
+                switch (index.column()) {
+                case 0:
+                    break;
                 case 1:
-                    if(!dev.paused) {
-                        switch(dev.status) {
-                        case SyncthingDevStatus::Unknown: break;
-                        case SyncthingDevStatus::Disconnected: break;
+                    if (!dev.paused) {
+                        switch (dev.status) {
+                        case SyncthingDevStatus::Unknown:
+                            break;
+                        case SyncthingDevStatus::Disconnected:
+                            break;
                         case SyncthingDevStatus::OwnDevice:
-                        case SyncthingDevStatus::Idle: return Colors::green(m_brightColors);
-                        case SyncthingDevStatus::Synchronizing: return Colors::blue(m_brightColors);
+                        case SyncthingDevStatus::Idle:
+                            return Colors::green(m_brightColors);
+                        case SyncthingDevStatus::Synchronizing:
+                            return Colors::blue(m_brightColors);
                         case SyncthingDevStatus::OutOfSync:
-                        case SyncthingDevStatus::Rejected: return Colors::red(m_brightColors);
+                        case SyncthingDevStatus::Rejected:
+                            return Colors::red(m_brightColors);
                         }
                     }
                     break;
@@ -209,8 +242,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 return dev.paused;
             case IsOwnDevice:
                 return dev.status == SyncthingDevStatus::OwnDevice;
-            default:
-                ;
+            default:;
             }
         }
     }
@@ -219,15 +251,14 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
 
 bool SyncthingDeviceModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    Q_UNUSED(index) Q_UNUSED(value) Q_UNUSED(role)
-    return false;
+    Q_UNUSED(index) Q_UNUSED(value) Q_UNUSED(role) return false;
 }
 
 int SyncthingDeviceModel::rowCount(const QModelIndex &parent) const
 {
-    if(!parent.isValid()) {
+    if (!parent.isValid()) {
         return static_cast<int>(m_devs.size());
-    } else if(!parent.parent().isValid()) {
+    } else if (!parent.parent().isValid()) {
         return 6;
     } else {
         return 0;
@@ -236,9 +267,9 @@ int SyncthingDeviceModel::rowCount(const QModelIndex &parent) const
 
 int SyncthingDeviceModel::columnCount(const QModelIndex &parent) const
 {
-    if(!parent.isValid()) {
+    if (!parent.isValid()) {
         return 2; // name/id, status
-    } else if(!parent.parent().isValid()) {
+    } else if (!parent.parent().isValid()) {
         return 2; // field name and value
     } else {
         return 0;

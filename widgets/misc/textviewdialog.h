@@ -9,8 +9,7 @@ QT_FORWARD_DECLARE_CLASS(QTextBrowser)
 
 namespace QtGui {
 
-class SYNCTHINGWIDGETS_EXPORT TextViewDialog : public QWidget
-{
+class SYNCTHINGWIDGETS_EXPORT TextViewDialog : public QWidget {
     Q_OBJECT
 public:
     TextViewDialog(const QString &title = QString(), QWidget *parent = nullptr);
@@ -31,7 +30,6 @@ inline QTextBrowser *TextViewDialog::browser()
 {
     return m_browser;
 }
-
 }
 
 #endif // TEXTVIEWDIALOG_H

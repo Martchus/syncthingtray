@@ -7,8 +7,8 @@
 
 #include <c++utilities/chrono/datetime.h>
 
-#include <QSystemTrayIcon>
 #include <QIcon>
+#include <QSystemTrayIcon>
 
 QT_FORWARD_DECLARE_CLASS(QPixmap)
 
@@ -19,8 +19,7 @@ enum class SyncthingErrorCategory;
 
 namespace QtGui {
 
-class TrayIcon : public QSystemTrayIcon
-{
+class TrayIcon : public QSystemTrayIcon {
     Q_OBJECT
 
 public:
@@ -51,7 +50,6 @@ inline TrayMenu &TrayIcon::trayMenu()
 {
     return m_trayMenu;
 }
-
 }
 
 #endif // TRAY_ICON_H

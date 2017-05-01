@@ -2,9 +2,9 @@
 
 #include <c++utilities/conversion/stringconversion.h>
 
-#include <QStringBuilder>
-#include <QJsonObject>
 #include <QCoreApplication>
+#include <QJsonObject>
+#include <QStringBuilder>
 
 using namespace ChronoUtilities;
 using namespace ConversionUtilities;
@@ -13,7 +13,7 @@ namespace Data {
 
 QString statusString(SyncthingDirStatus status)
 {
-    switch(status) {
+    switch (status) {
     case SyncthingDirStatus::Unknown:
         return QCoreApplication::translate("SyncthingDirStatus", "unknown");
     case SyncthingDirStatus::Idle:
@@ -37,20 +37,20 @@ QString statusString(SyncthingDirStatus status)
  */
 bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateTime time)
 {
-    if(lastStatusUpdate > time) {
+    if (lastStatusUpdate > time) {
         return false;
     } else {
         lastStatusUpdate = time;
     }
     SyncthingDirStatus newStatus;
-    if(statusStr == QLatin1String("idle")) {
+    if (statusStr == QLatin1String("idle")) {
         progressPercentage = 0;
         newStatus = SyncthingDirStatus::Idle;
-    } else if(statusStr == QLatin1String("scanning")) {
+    } else if (statusStr == QLatin1String("scanning")) {
         newStatus = SyncthingDirStatus::Scanning;
-    } else if(statusStr == QLatin1String("syncing")) {
+    } else if (statusStr == QLatin1String("syncing")) {
         // ensure status changed signal is emitted
-        if(!errors.empty()) {
+        if (!errors.empty()) {
             status = SyncthingDirStatus::Unknown;
         }
         // errors become obsolete; however errors must be kept as previous errors to be able
@@ -58,27 +58,26 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
         previousErrors.clear();
         previousErrors.swap(errors);
         newStatus = SyncthingDirStatus::Synchronizing;
-    } else if(statusStr == QLatin1String("error")) {
+    } else if (statusStr == QLatin1String("error")) {
         progressPercentage = 0;
         newStatus = SyncthingDirStatus::OutOfSync;
     } else {
         newStatus = SyncthingDirStatus::Idle;
     }
-    if(newStatus == SyncthingDirStatus::Idle) {
-        if(!errors.empty()) {
+    if (newStatus == SyncthingDirStatus::Idle) {
+        if (!errors.empty()) {
             newStatus = SyncthingDirStatus::OutOfSync;
-        } else if(devices.size() < 2) {
+        } else if (devices.size() < 2) {
             // FIXME: we can assume only own device is assigned, correct?
             newStatus = SyncthingDirStatus::Unshared;
         }
     }
-    if(newStatus != status) {
-        switch(status) {
+    if (newStatus != status) {
+        switch (status) {
         case SyncthingDirStatus::Scanning:
             lastScanTime = DateTime::now();
             break;
-        default:
-            ;
+        default:;
         }
         status = newStatus;
         return true;
@@ -88,32 +87,30 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
 
 bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, DateTime time)
 {
-    if(lastStatusUpdate > time) {
+    if (lastStatusUpdate > time) {
         return false;
     } else {
         lastStatusUpdate = time;
     }
-    switch(newStatus) {
+    switch (newStatus) {
     case SyncthingDirStatus::Unknown:
     case SyncthingDirStatus::Idle:
     case SyncthingDirStatus::Unshared:
-        if(!errors.empty()) {
+        if (!errors.empty()) {
             newStatus = SyncthingDirStatus::OutOfSync;
-        } else if(devices.size() < 2) {
+        } else if (devices.size() < 2) {
             // FIXME: we can assume only own device is assigned, correct?
             newStatus = SyncthingDirStatus::Unshared;
         }
         break;
-    default:
-        ;
+    default:;
     }
-    if(newStatus != status) {
-        switch(status) {
+    if (newStatus != status) {
+        switch (status) {
         case SyncthingDirStatus::Scanning:
             lastScanTime = DateTime::now();
             break;
-        default:
-            ;
+        default:;
         }
         status = newStatus;
         return true;
@@ -123,7 +120,7 @@ bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, DateTime time)
 
 QString SyncthingDir::statusString() const
 {
-    if(paused) {
+    if (paused) {
         return QCoreApplication::translate("SyncthingDir", "paused");
     } else {
         return ::Data::statusString(status);
@@ -133,7 +130,7 @@ QString SyncthingDir::statusString() const
 QStringRef SyncthingDir::pathWithoutTrailingSlash() const
 {
     QStringRef dirPath(&path);
-    while(dirPath.endsWith(QChar('/'))) {
+    while (dirPath.endsWith(QChar('/'))) {
 #if QT_VERSION_MAJOR >= 5 && QT_VERSION_MINOR >= 8
         dirPath.chop(1);
 #else
@@ -143,25 +140,29 @@ QStringRef SyncthingDir::pathWithoutTrailingSlash() const
     return dirPath;
 }
 
-SyncthingItemDownloadProgress::SyncthingItemDownloadProgress(const QString &containingDirPath, const QString &relativeItemPath, const QJsonObject &values) :
-    relativePath(relativeItemPath),
-    fileInfo(containingDirPath % QChar('/') % QString(relativeItemPath).replace(QChar('\\'), QChar('/'))),
-    blocksCurrentlyDownloading(values.value(QStringLiteral("Pulling")).toInt()),
-    blocksAlreadyDownloaded(values.value(QStringLiteral("Pulled")).toInt()),
-    totalNumberOfBlocks(values.value(QStringLiteral("Total")).toInt()),
-    downloadPercentage((blocksAlreadyDownloaded > 0 && totalNumberOfBlocks > 0)
-                       ? (static_cast<unsigned int>(blocksAlreadyDownloaded) * 100 / static_cast<unsigned int>(totalNumberOfBlocks))
-                       : 0),
-    blocksCopiedFromOrigin(values.value(QStringLiteral("CopiedFromOrigin")).toInt()),
-    blocksCopiedFromElsewhere(values.value(QStringLiteral("CopiedFromElsewhere")).toInt()),
-    blocksReused(values.value(QStringLiteral("Reused")).toInt()),
-    bytesAlreadyHandled(values.value(QStringLiteral("BytesDone")).toInt()),
-    totalNumberOfBytes(values.value(QStringLiteral("BytesTotal")).toInt()),
-    label(QStringLiteral("%1 / %2 - %3 %").arg(
-              QString::fromLatin1(dataSizeToString(blocksAlreadyDownloaded > 0 ? static_cast<uint64>(blocksAlreadyDownloaded) * syncthingBlockSize : 0).data()),
-              QString::fromLatin1(dataSizeToString(totalNumberOfBlocks > 0 ? static_cast<uint64>(totalNumberOfBlocks) * syncthingBlockSize : 0).data()),
-              QString::number(downloadPercentage))
-          )
-{}
+SyncthingItemDownloadProgress::SyncthingItemDownloadProgress(
+    const QString &containingDirPath, const QString &relativeItemPath, const QJsonObject &values)
+    : relativePath(relativeItemPath)
+    , fileInfo(containingDirPath % QChar('/') % QString(relativeItemPath).replace(QChar('\\'), QChar('/')))
+    , blocksCurrentlyDownloading(values.value(QStringLiteral("Pulling")).toInt())
+    , blocksAlreadyDownloaded(values.value(QStringLiteral("Pulled")).toInt())
+    , totalNumberOfBlocks(values.value(QStringLiteral("Total")).toInt())
+    , downloadPercentage((blocksAlreadyDownloaded > 0 && totalNumberOfBlocks > 0)
+              ? (static_cast<unsigned int>(blocksAlreadyDownloaded) * 100 / static_cast<unsigned int>(totalNumberOfBlocks))
+              : 0)
+    , blocksCopiedFromOrigin(values.value(QStringLiteral("CopiedFromOrigin")).toInt())
+    , blocksCopiedFromElsewhere(values.value(QStringLiteral("CopiedFromElsewhere")).toInt())
+    , blocksReused(values.value(QStringLiteral("Reused")).toInt())
+    , bytesAlreadyHandled(values.value(QStringLiteral("BytesDone")).toInt())
+    , totalNumberOfBytes(values.value(QStringLiteral("BytesTotal")).toInt())
+    , label(
+          QStringLiteral("%1 / %2 - %3 %")
+              .arg(QString::fromLatin1(
+                       dataSizeToString(blocksAlreadyDownloaded > 0 ? static_cast<uint64>(blocksAlreadyDownloaded) * syncthingBlockSize : 0).data()),
+                  QString::fromLatin1(
+                      dataSizeToString(totalNumberOfBlocks > 0 ? static_cast<uint64>(totalNumberOfBlocks) * syncthingBlockSize : 0).data()),
+                  QString::number(downloadPercentage)))
+{
+}
 
 } // namespace Data

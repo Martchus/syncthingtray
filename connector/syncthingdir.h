@@ -5,35 +5,27 @@
 
 #include <c++utilities/chrono/datetime.h>
 
-#include <QString>
-#include <QMetaType>
 #include <QFileInfo>
 #include <QJsonObject>
+#include <QMetaType>
+#include <QString>
 
 namespace Data {
 Q_NAMESPACE
 
-enum class SyncthingDirStatus
-{
-    Unknown,
-    Idle,
-    Unshared,
-    Scanning,
-    Synchronizing,
-    OutOfSync
-};
+enum class SyncthingDirStatus { Unknown, Idle, Unshared, Scanning, Synchronizing, OutOfSync };
 Q_ENUM_NS(SyncthingDirStatus)
 
 QString statusString(SyncthingDirStatus status);
 
-struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDirError
-{
-    SyncthingDirError(const QString &message = QString(), const QString &path = QString()) :
-        message(message),
-        path(path)
-    {}
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDirError {
+    SyncthingDirError(const QString &message = QString(), const QString &path = QString())
+        : message(message)
+        , path(path)
+    {
+    }
 
-    bool operator ==(const SyncthingDirError &other) const
+    bool operator==(const SyncthingDirError &other) const
     {
         return message == other.message && path == other.path;
     }
@@ -42,9 +34,9 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDirError
     QString path;
 };
 
-struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemDownloadProgress
-{
-    SyncthingItemDownloadProgress(const QString &containingDirPath = QString(), const QString &relativeItemPath = QString(), const QJsonObject &values = QJsonObject());
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemDownloadProgress {
+    SyncthingItemDownloadProgress(
+        const QString &containingDirPath = QString(), const QString &relativeItemPath = QString(), const QJsonObject &values = QJsonObject());
     QString relativePath;
     QFileInfo fileInfo;
     int blocksCurrentlyDownloading = 0;
@@ -61,8 +53,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemDownloadProgress
     static constexpr unsigned int syncthingBlockSize = 128 * 1024;
 };
 
-struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir
-{
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
     bool assignStatus(const QString &statusStr, ChronoUtilities::DateTime time);
     bool assignStatus(SyncthingDirStatus newStatus, ChronoUtilities::DateTime time);
@@ -100,11 +91,12 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir
     QString downloadLabel;
 };
 
-inline SyncthingDir::SyncthingDir(const QString &id, const QString &label, const QString &path) :
-    id(id),
-    label(label),
-    path(path)
-{}
+inline SyncthingDir::SyncthingDir(const QString &id, const QString &label, const QString &path)
+    : id(id)
+    , label(label)
+    , path(path)
+{
+}
 
 inline QString SyncthingDir::displayName() const
 {

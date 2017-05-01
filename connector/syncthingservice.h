@@ -31,8 +31,7 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ManagerDBusUnitFi
 
 typedef QList<ManagerDBusUnitFileChange> ManagerDBusUnitFileChangeList;
 
-class SyncthingService : public QObject
-{
+class SyncthingService : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString unitName READ unitName WRITE setUnitName)
     Q_PROPERTY(bool systemdAvailable READ isSystemdAvailable NOTIFY systemdAvailableChanged)
@@ -97,8 +96,10 @@ private Q_SLOTS:
     void setProperties(const QString &activeState, const QString &subState, const QString &unitFileState, const QString &description);
 
 private:
-    bool handlePropertyChanged(QString &variable, void(SyncthingService::*signal)(const QString &), const QString &propertyName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
-    bool handlePropertyChanged(ChronoUtilities::DateTime &variable, const QString &propertyName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
+    bool handlePropertyChanged(QString &variable, void (SyncthingService::*signal)(const QString &), const QString &propertyName,
+        const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
+    bool handlePropertyChanged(ChronoUtilities::DateTime &variable, const QString &propertyName, const QVariantMap &changedProperties,
+        const QStringList &invalidatedProperties);
     void registerErrorHandler(const QDBusPendingCall &call, const char *context);
 
     static OrgFreedesktopSystemd1ManagerInterface *s_manager;

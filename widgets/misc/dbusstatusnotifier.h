@@ -15,8 +15,7 @@ enum class SyncthingErrorCategory;
 
 namespace QtGui {
 
-class SYNCTHINGWIDGETS_EXPORT DBusStatusNotifier : public QObject
-{
+class SYNCTHINGWIDGETS_EXPORT DBusStatusNotifier : public QObject {
     Q_OBJECT
 
 public:
@@ -71,7 +70,6 @@ inline void DBusStatusNotifier::showSyncComplete(const QString &message)
 {
     m_syncCompleteNotification.update(message);
 }
-
 }
 
 #endif // !defined(SYNCTHINGWIDGETS_DBUSSTATUSNOTIFIER_H) && defined(QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS)
