@@ -70,7 +70,7 @@ inline void noop()
  *         connections can not be established.
  * \remarks The handler is disconnected before the function returns.
  */
-template <typename Signal, typename Action, typename Handler = std::function<void(void)> >
+template <typename Signal, typename Action, typename Handler = std::function<void(void)>>
 void waitForSignal(typename QtPrivate::FunctionPointer<Signal>::Object *sender, Signal signal, Action action, int timeout = 2500,
     Handler handler = nullptr, bool *ok = nullptr)
 {

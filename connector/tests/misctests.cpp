@@ -3,9 +3,9 @@
 
 #include "../testhelper/helper.h"
 
-#include <c++utilities/tests/testutils.h>
 #include <c++utilities/chrono/datetime.h>
 #include <c++utilities/chrono/timespan.h>
+#include <c++utilities/tests/testutils.h>
 
 #include <cppunit/TestFixture.h>
 
@@ -21,8 +21,7 @@ using namespace CPPUNIT_NS;
 /*!
  * \brief The MiscTests class tests various features of the connector library.
  */
-class MiscTests : public TestFixture
-{
+class MiscTests : public TestFixture {
     CPPUNIT_TEST_SUITE(MiscTests);
     CPPUNIT_TEST(testParsingConfig);
     CPPUNIT_TEST(testUtils);
@@ -43,17 +42,20 @@ private:
 CPPUNIT_TEST_SUITE_REGISTRATION(MiscTests);
 
 MiscTests::MiscTests()
-{}
+{
+}
 
 //
 // test setup
 //
 
 void MiscTests::setUp()
-{}
+{
+}
 
 void MiscTests::tearDown()
-{}
+{
+}
 
 //
 // actual test
@@ -83,4 +85,3 @@ void MiscTests::testUtils()
     CPPUNIT_ASSERT(isLocal(QUrl(QStringLiteral("http://localhost/"))));
     CPPUNIT_ASSERT(!isLocal(QUrl(QStringLiteral("http://157.3.52.34"))));
 }
-
