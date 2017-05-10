@@ -77,11 +77,12 @@ TrayIcon::TrayIcon(QObject *parent)
     connect(connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
     connect(connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
     connect(connection, &SyncthingConnection::statusChanged, this, &TrayIcon::handleConnectionStatusChanged);
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, connection,
         static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
     connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, m_trayMenu.widget(), &TrayWidget::dismissNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, m_trayMenu.widget(), &TrayWidget::showNotifications);
-
+#endif
     m_initialized = true;
 }
 
