@@ -11,7 +11,11 @@
 #include <QString>
 
 namespace Data {
+#undef Q_NAMESPACE
+#define Q_NAMESPACE
 Q_NAMESPACE
+extern LIB_SYNCTHING_CONNECTOR_EXPORT const QMetaObject staticMetaObject;
+QT_ANNOTATE_CLASS(qt_qnamespace, "") /*end*/
 
 enum class SyncthingDirStatus { Unknown, Idle, Unshared, Scanning, Synchronizing, OutOfSync };
 Q_ENUM_NS(SyncthingDirStatus)
