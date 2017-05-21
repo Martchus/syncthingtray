@@ -181,3 +181,16 @@ can be added quite easily:
 4. Open the files with Qt Linguist to add translations. Qt Linguist is part of
    the [Qt Tools repository](http://code.qt.io/cgit/qt/qttools.git/) and its usage
    is [well documented](http://doc.qt.io/qt-5/linguist-translators.html).
+
+## Known bugs
+The following bugs are caused by dependencies and hence tracked externally. For bugs of Syncthing Tray itself, checkout the issues
+on GitHub.
+
+* Any self-signed certificate is accepted when using Qt WebEngine due to
+  Qt bug https://bugreports.qt.io/browse/QTBUG-51176
+* Pausing/resuming folders doesn't work when using scan-intervalls with a lot of zeros
+  because of Syncthing bug https://github.com/syncthing/syncthing/issues/4001.
+  This has already been fixed on the Qt-side with https://codereview.qt-project.org/#/c/187069/.
+* The tray disconnects from the local instance when the network connection goes down.
+  The network connection must be restored or the tray restarted to be able to connect to local
+  Syncthing again. This is caused by Qt bug https://bugreports.qt.io/browse/QTBUG-60949.
