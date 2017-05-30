@@ -17,6 +17,7 @@
 #include <QCoreApplication>
 #include <QPainter>
 #include <QPixmap>
+#include <QStringBuilder>
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include <QNetworkReply>
 #endif
@@ -179,7 +180,11 @@ void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const Q
 void TrayIcon::updateStatusIconAndText()
 {
     const StatusInfo statusInfo(trayMenu().widget()->connection());
-    setToolTip(statusInfo.statusText());
+    if (statusInfo.additionalStatusText().isEmpty()) {
+        setToolTip(statusInfo.statusText());
+    } else {
+        setToolTip(statusInfo.statusText() % QChar('\n') % statusInfo.additionalStatusText());
+    }
     setIcon(statusInfo.statusIcon());
 }
 

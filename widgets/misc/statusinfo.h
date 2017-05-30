@@ -18,12 +18,14 @@ public:
     explicit StatusInfo();
     explicit StatusInfo(const Data::SyncthingConnection &connection);
 
-    QString statusText() const;
+    const QString &statusText() const;
+    const QString &additionalStatusText() const;
     const QIcon &statusIcon() const;
     void update(const Data::SyncthingConnection &connection);
 
 private:
     QString m_statusText;
+    QString m_additionalStatusText;
     const QIcon *m_statusIcon;
 };
 
@@ -32,9 +34,14 @@ inline StatusInfo::StatusInfo(const Data::SyncthingConnection &connection)
     update(connection);
 }
 
-inline QString StatusInfo::statusText() const
+inline const QString &StatusInfo::statusText() const
 {
     return m_statusText;
+}
+
+inline const QString &StatusInfo::additionalStatusText() const
+{
+    return m_additionalStatusText;
 }
 
 inline const QIcon &StatusInfo::statusIcon() const

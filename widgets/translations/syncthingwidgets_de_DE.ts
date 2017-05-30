@@ -582,64 +582,77 @@
 <context>
     <name>QtGui::StatusInfo</name>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="14"/>
+        <location filename="../misc/statusinfo.cpp" line="15"/>
         <source>Initializing ...</source>
         <translation>Initialisierung ...</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="24"/>
+        <location filename="../misc/statusinfo.cpp" line="25"/>
         <source>Not connected to Syncthing - trying to reconnect every %1 ms</source>
         <translation>Nicht mit Syncthing verbunden - versuche alle %1 ms zu verbinden</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="27"/>
+        <location filename="../misc/statusinfo.cpp" line="28"/>
         <source>Not connected to Syncthing</source>
         <translation>Nicht mit Syncthing verbunden</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="32"/>
+        <location filename="../misc/statusinfo.cpp" line="33"/>
         <source>Reconnecting ...</source>
         <translation>Neu verbinden ...</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="40"/>
+        <location filename="../misc/statusinfo.cpp" line="41"/>
         <source>Synchronization is ongoing but at least one directory is out of sync</source>
         <translation>Synchronisiert, aber mind. ein Verzeichnis hat Fehler</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="44"/>
+        <location filename="../misc/statusinfo.cpp" line="45"/>
         <source>At least one directory is out of sync</source>
         <translation>Mind. ein Verzeichnis hat Fehler</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="48"/>
+        <location filename="../misc/statusinfo.cpp" line="49"/>
         <source>Notifications available</source>
         <translation>Es gibt neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="53"/>
+        <location filename="../misc/statusinfo.cpp" line="54"/>
         <source>Syncthing is idling</source>
         <translation>Syncthing ist im Leerlauf</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="57"/>
+        <location filename="../misc/statusinfo.cpp" line="58"/>
         <source>Syncthing is scanning</source>
         <translation>Syncthing scannt</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="61"/>
+        <location filename="../misc/statusinfo.cpp" line="62"/>
         <source>At least one device is paused</source>
         <translation>Mind. ein Gerät ist pausiert</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="65"/>
+        <location filename="../misc/statusinfo.cpp" line="66"/>
         <source>Synchronization is ongoing</source>
         <translation>Syncthing synchronisiert</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="69"/>
+        <location filename="../misc/statusinfo.cpp" line="70"/>
         <source>Status is unknown</source>
         <translation>Status ist unbekannt</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../misc/statusinfo.cpp" line="88"/>
+        <source>Conntected to %1 devices</source>
+        <translation>
+            <numerusform>Mit %1 Gerät verbunden</numerusform>
+            <numerusform>Mit %1 Geräten verbunden</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="90"/>
+        <source>Not connected to other devices</source>
+        <translation>Nicht mit anderen Geräten verbunden</translation>
     </message>
 </context>
 <context>

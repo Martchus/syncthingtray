@@ -459,37 +459,37 @@
         <translation type="vanished">Syncthing-Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="45"/>
+        <location filename="../gui/trayicon.cpp" line="46"/>
         <source>Web UI</source>
         <translation>Weboberfäche</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="49"/>
+        <location filename="../gui/trayicon.cpp" line="50"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="53"/>
+        <location filename="../gui/trayicon.cpp" line="54"/>
         <source>Rescan all</source>
         <translation>Alle neu scannen</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="61"/>
+        <location filename="../gui/trayicon.cpp" line="62"/>
         <source>About</source>
         <translation>Über Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="66"/>
+        <location filename="../gui/trayicon.cpp" line="67"/>
         <source>Close</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="155"/>
+        <location filename="../gui/trayicon.cpp" line="157"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="172"/>
+        <location filename="../gui/trayicon.cpp" line="174"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation>Neue Syncthing-Benachrichtigung</translation>
     </message>
@@ -502,12 +502,12 @@
         <translation type="vanished">Nicht mit Syncthing verbunden</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="203"/>
+        <location filename="../gui/trayicon.cpp" line="209"/>
         <source>Disconnected from Syncthing</source>
         <translation>Verbindung zu Syncthing getrennt</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="57"/>
+        <location filename="../gui/trayicon.cpp" line="58"/>
         <source>Log</source>
         <translation></translation>
     </message>
@@ -556,12 +556,12 @@
         <translation type="vanished">Syncthing synchronisiert</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="223"/>
+        <location filename="../gui/trayicon.cpp" line="229"/>
         <source>Synchronization of %1 complete</source>
         <translation>%1 wurde synchronisiert</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="230"/>
+        <location filename="../gui/trayicon.cpp" line="236"/>
         <source>Synchronization of the following devices complete:
 </source>
         <translation>Folgende Verzeichnisse wurden synchronisiert:

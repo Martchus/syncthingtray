@@ -1,6 +1,7 @@
 #include "./statusinfo.h"
 
 #include "../../connector/syncthingconnection.h"
+#include "../../connector/syncthingdev.h"
 #include "../../model/syncthingicons.h"
 
 #include <QCoreApplication>
@@ -70,6 +71,27 @@ void StatusInfo::update(const SyncthingConnection &connection)
                 m_statusIcon = &statusIcons().disconnected;
             }
         }
+    }
+    size_t connectedDevices = 0;
+    switch (connection.status()) {
+    case SyncthingStatus::Idle:
+    case SyncthingStatus::OutOfSync:
+    case SyncthingStatus::Scanning:
+    case SyncthingStatus::Synchronizing:
+        for (const SyncthingDev &dev : connection.devInfo()) {
+            if (dev.isConnected()) {
+                ++connectedDevices;
+            }
+        }
+        if (connectedDevices) {
+            m_additionalStatusText
+                = QCoreApplication::translate("QtGui::StatusInfo", "Conntected to %1 devices", nullptr, connectedDevices).arg(connectedDevices);
+        } else {
+            m_additionalStatusText = QCoreApplication::translate("QtGui::StatusInfo", "Not connected to other devices");
+        }
+        break;
+    default:
+        m_additionalStatusText.clear();
     }
 }
 }

@@ -24,6 +24,7 @@ QString statusString(SyncthingDevStatus status);
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
     SyncthingDev(const QString &id = QString(), const QString &name = QString());
     QString statusString() const;
+    bool isConnected() const;
 
     QString id;
     QString name;
@@ -47,6 +48,18 @@ inline SyncthingDev::SyncthingDev(const QString &id, const QString &name)
     : id(id)
     , name(name)
 {
+}
+
+inline bool SyncthingDev::isConnected() const
+{
+    switch (status) {
+    case SyncthingDevStatus::Unknown:
+    case SyncthingDevStatus::Disconnected:
+    case SyncthingDevStatus::OwnDevice:
+        return false;
+    default:
+        return true;
+    }
 }
 
 } // namespace Data
