@@ -13,6 +13,7 @@
 using namespace std;
 using namespace Data;
 using namespace TestUtilities;
+using namespace TestUtilities::Literals;
 
 using namespace CPPUNIT_NS;
 
@@ -163,7 +164,7 @@ void ConnectionTests::testConnection()
 
     // devs present
     const auto &devInfo = m_connection.devInfo();
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("3 devs present", 3ul, devInfo.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("3 devs present", 3_st, devInfo.size());
     QString ownDevId;
     for (const SyncthingDev &dev : devInfo) {
         if (dev.id != QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7")
@@ -190,7 +191,7 @@ void ConnectionTests::testConnection()
 
     // dirs present
     const auto &dirInfo = m_connection.dirInfo();
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("2 dirs present", 2ul, dirInfo.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("2 dirs present", 2_st, dirInfo.size());
     const SyncthingDir &dir1 = dirInfo.front();
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("test1"), dir1.id);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral(""), dir1.label);
@@ -243,7 +244,7 @@ void ConnectionTests::testConnection()
     const auto newDirsConnection1 = handleNewDirs(dirResumedHandler, &dirResumed);
     waitForConnection(&SyncthingConnection::dirStatusChanged, &SyncthingConnection::resumeAllDirs, dirResumedHandler, &dirResumed);
     QObject::disconnect(newDirsConnection1);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("still 2 dirs present", 2ul, m_connection.dirInfo().size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("still 2 dirs present", 2_st, m_connection.dirInfo().size());
 
     // pause dir 1
     bool dirPaused = false;
@@ -256,7 +257,7 @@ void ConnectionTests::testConnection()
     waitForConnectionAnyAction(&SyncthingConnection::dirStatusChanged,
         bind(&SyncthingConnection::pauseDirectories, &m_connection, QStringList({ QStringLiteral("test1") })), dirPausedHandler, &dirPaused);
     QObject::disconnect(newDirsConnection2);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("still 2 dirs present", 2ul, m_connection.dirInfo().size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("still 2 dirs present", 2_st, m_connection.dirInfo().size());
 
     // disconnecting
     cerr << "\n - Disconnecting ..." << endl;
