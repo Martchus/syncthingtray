@@ -33,10 +33,14 @@ struct SyncthingConnectionSettings;
 QNetworkAccessManager LIB_SYNCTHING_CONNECTOR_EXPORT &networkAccessManager();
 
 enum class SyncthingStatus { Disconnected, Reconnecting, Idle, Scanning, Paused, Synchronizing, OutOfSync, BeingDestroyed };
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
 Q_ENUM_NS(SyncthingStatus)
+#endif
 
 enum class SyncthingErrorCategory { OverallConnection, SpecificRequest, Parsing };
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
 Q_ENUM_NS(SyncthingErrorCategory)
+#endif
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry {
     SyncthingLogEntry(const QString &when = QString(), const QString &message = QString())

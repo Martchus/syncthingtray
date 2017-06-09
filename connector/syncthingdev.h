@@ -17,7 +17,9 @@ extern LIB_SYNCTHING_CONNECTOR_EXPORT const QMetaObject staticMetaObject;
 QT_ANNOTATE_CLASS(qt_qnamespace, "") /*end*/
 
 enum class SyncthingDevStatus { Unknown, Disconnected, OwnDevice, Idle, Synchronizing, OutOfSync, Rejected };
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
 Q_ENUM_NS(SyncthingDevStatus)
+#endif
 
 QString statusString(SyncthingDevStatus status);
 

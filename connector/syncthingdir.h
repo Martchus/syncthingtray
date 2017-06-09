@@ -18,7 +18,9 @@ extern LIB_SYNCTHING_CONNECTOR_EXPORT const QMetaObject staticMetaObject;
 QT_ANNOTATE_CLASS(qt_qnamespace, "") /*end*/
 
 enum class SyncthingDirStatus { Unknown, Idle, Unshared, Scanning, Synchronizing, OutOfSync };
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
 Q_ENUM_NS(SyncthingDirStatus)
+#endif
 
 QString statusString(SyncthingDirStatus status);
 
