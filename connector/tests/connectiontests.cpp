@@ -9,8 +9,8 @@
 
 #include <QDir>
 #include <QJsonArray>
-#include <QStringBuilder>
 #include <QJsonDocument>
+#include <QStringBuilder>
 
 using namespace std;
 using namespace Data;
@@ -46,10 +46,10 @@ public:
     void tearDown();
 
 private:
-    template <typename Action, typename... SignalInfos>
-    void waitForConnection(Action action, int timeout, const SignalInfos &... signalInfos);
-    template<typename Signal, typename Handler = function<void(void)>>
-    SignalInfo<Signal, Handler> connectionSignal(Signal signal, const Handler &handler = function<void(void)>(), bool *correctSignalEmitted = nullptr);
+    template <typename Action, typename... SignalInfos> void waitForConnection(Action action, int timeout, const SignalInfos &... signalInfos);
+    template <typename Signal, typename Handler = function<void(void)>>
+    SignalInfo<Signal, Handler> connectionSignal(
+        Signal signal, const Handler &handler = function<void(void)>(), bool *correctSignalEmitted = nullptr);
     static void (SyncthingConnection::*defaultConnect())(void);
     static void (SyncthingConnection::*defaultReconnect())(void);
     static void (SyncthingConnection::*defaultDisconnect())(void);
@@ -87,7 +87,7 @@ void ConnectionTests::setUp()
 
     // log configuration change
     QObject::connect(&m_connection, &SyncthingConnection::newConfig,
-        [] (const QJsonObject &config) { cerr << " - New config: " << QJsonDocument(config).toJson(QJsonDocument::Compact).data() << endl; });
+        [](const QJsonObject &config) { cerr << " - New config: " << QJsonDocument(config).toJson(QJsonDocument::Compact).data() << endl; });
 }
 
 /*!
@@ -106,12 +106,12 @@ void ConnectionTests::tearDown()
  * \brief Variant of waitForSignal() where sender is the connection and the action is a method of the connection.
  */
 template <typename Action, typename... SignalInfos>
-void ConnectionTests::waitForConnection(Action action, int timeout, const SignalInfos &...signalInfos)
+void ConnectionTests::waitForConnection(Action action, int timeout, const SignalInfos &... signalInfos)
 {
     waitForSignals(bind(action, &m_connection), timeout, signalInfos...);
 }
 
-template<typename Signal, typename Handler>
+template <typename Signal, typename Handler>
 SignalInfo<Signal, Handler> ConnectionTests::connectionSignal(Signal signal, const Handler &handler, bool *correctSignalEmitted)
 {
     return SignalInfo<Signal, Handler>(&m_connection, signal, handler, correctSignalEmitted);
@@ -119,17 +119,17 @@ SignalInfo<Signal, Handler> ConnectionTests::connectionSignal(Signal signal, con
 
 void (SyncthingConnection::*ConnectionTests::defaultConnect())(void)
 {
-    return static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::connect);
+    return static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect);
 }
 
 void (SyncthingConnection::*ConnectionTests::defaultReconnect())(void)
 {
-    return static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::reconnect);
+    return static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::reconnect);
 }
 
 void (SyncthingConnection::*ConnectionTests::defaultDisconnect())(void)
 {
-    return static_cast<void(SyncthingConnection::*)(void)>(&SyncthingConnection::disconnect);
+    return static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::disconnect);
 }
 
 /*!
@@ -179,9 +179,8 @@ void ConnectionTests::testConnection()
 void ConnectionTests::testErrorCases()
 {
     cerr << "\n - Error handling in case of insufficient conficuration ..." << endl;
-    waitForConnection(defaultConnect(), 1000,
-                      connectionSignal(&SyncthingConnection::error, [](const QString &errorMessage) {
-                        CPPUNIT_ASSERT_EQUAL(QStringLiteral("Connection configuration is insufficient."), errorMessage);
+    waitForConnection(defaultConnect(), 1000, connectionSignal(&SyncthingConnection::error, [](const QString &errorMessage) {
+        CPPUNIT_ASSERT_EQUAL(QStringLiteral("Connection configuration is insufficient."), errorMessage);
     }));
 
     cerr << "\n - Error handling in case of inavailability and wrong API key  ..." << endl;
@@ -291,13 +290,12 @@ void ConnectionTests::testResumingAllDevices()
             devResumed = true;
         }
     };
-    const function<void(const QStringList &)> devResumedTriggeredHandler = [this](const QStringList &devIds) {
-        CPPUNIT_ASSERT_EQUAL(m_connection.deviceIds(), devIds);
-    };
+    const function<void(const QStringList &)> devResumedTriggeredHandler
+        = [this](const QStringList &devIds) { CPPUNIT_ASSERT_EQUAL(m_connection.deviceIds(), devIds); };
     const auto newDevsConnection = handleNewDevices(devResumedHandler, &devResumed);
     waitForConnection(&SyncthingConnection::resumeAllDevs, 1000,
-                      connectionSignal(&SyncthingConnection::devStatusChanged, devResumedHandler, &devResumed),
-                      connectionSignal(&SyncthingConnection::deviceResumeTriggered, devResumedTriggeredHandler));
+        connectionSignal(&SyncthingConnection::devStatusChanged, devResumedHandler, &devResumed),
+        connectionSignal(&SyncthingConnection::deviceResumeTriggered, devResumedTriggeredHandler));
     CPPUNIT_ASSERT(devResumed);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("not paused anymore", QStringLiteral("connected"), m_connection.statusText());
     for (const QJsonValue &devValue : m_connection.m_rawConfig.value(QStringLiteral("devices")).toArray()) {
@@ -317,7 +315,8 @@ void ConnectionTests::testResumingDirectory()
         }
     };
     const auto newDirsConnection = handleNewDirs(dirResumedHandler, &dirResumed);
-    waitForConnection(&SyncthingConnection::resumeAllDirs, 1000, connectionSignal(&SyncthingConnection::dirStatusChanged, dirResumedHandler, &dirResumed));
+    waitForConnection(
+        &SyncthingConnection::resumeAllDirs, 1000, connectionSignal(&SyncthingConnection::dirStatusChanged, dirResumedHandler, &dirResumed));
     CPPUNIT_ASSERT(dirResumed);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("still 2 dirs present", 2_st, m_connection.dirInfo().size());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("still not paused anymore", QStringLiteral("connected"), m_connection.statusText());
@@ -334,7 +333,7 @@ void ConnectionTests::testPausingDirectory()
     };
     const auto newDirsConnection = handleNewDirs(dirPausedHandler, &dirPaused);
     waitForSignals(bind(&SyncthingConnection::pauseDirectories, &m_connection, QStringList({ QStringLiteral("test1") })), 1000,
-                   connectionSignal(&SyncthingConnection::dirStatusChanged, dirPausedHandler, &dirPaused));
+        connectionSignal(&SyncthingConnection::dirStatusChanged, dirPausedHandler, &dirPaused));
     CPPUNIT_ASSERT(dirPaused);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("still 2 dirs present", 2_st, m_connection.dirInfo().size());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("still not paused anymore", QStringLiteral("connected"), m_connection.statusText());

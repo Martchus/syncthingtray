@@ -1629,7 +1629,8 @@ void SyncthingConnection::readDevPauseResume()
             emit devicePauseTriggered(devIds);
         }
         break;
-    } default:
+    }
+    default:
         emit error(tr("Unable to request device pause/resume: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
     }
 }
@@ -1649,7 +1650,8 @@ void SyncthingConnection::readDirPauseResume()
             emit directoryPauseTriggered(dirIds);
         }
         break;
-    } default:
+    }
+    default:
         emit error(tr("Unable to request directory pause/resume: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
     }
 }
