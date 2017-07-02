@@ -351,7 +351,7 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
         m_ui->statusPushButton->setText(tr("Continue"));
         m_ui->statusPushButton->setToolTip(tr("At least one device is paused, click to resume"));
         m_ui->statusPushButton->setIcon(QIcon::fromTheme(
-            QStringLiteral("media-playback-start"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-resume.svg"))));
+            QStringLiteral("media-playback-start"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-start.svg"))));
         m_ui->statusPushButton->setHidden(false);
         break;
     default:;
