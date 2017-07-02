@@ -464,9 +464,9 @@ void TrayWidget::scanDir(const SyncthingDir &dir)
 void TrayWidget::pauseResumeDev(const SyncthingDev &dev)
 {
     if (dev.paused) {
-        m_connection.resumeDevice(dev.id);
+        m_connection.resumeDevice(QStringList(dev.id));
     } else {
-        m_connection.pauseDevice(dev.id);
+        m_connection.pauseDevice(QStringList(dev.id));
     }
 }
 

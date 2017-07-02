@@ -243,18 +243,13 @@ void SyncthingConnection::autoReconnect()
 }
 
 /*!
- * \brief Requests pausing the device with the specified ID.
+ * \brief Requests pausing the devices with the specified IDs.
  *
  * The signal error() is emitted when the request was not successful.
  */
-void SyncthingConnection::pauseDevice(const QString &devId)
+bool SyncthingConnection::pauseDevice(const QStringList &devIds)
 {
-    QUrlQuery query;
-    query.addQueryItem(QStringLiteral("device"), devId);
-    QNetworkReply *reply = postData(QStringLiteral("system/pause"), query);
-    reply->setProperty("devId", devId);
-    reply->setProperty("resume", false);
-    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDevPauseResume);
+    return pauseResumeDevice(devIds, true);
 }
 
 /*!
@@ -262,26 +257,19 @@ void SyncthingConnection::pauseDevice(const QString &devId)
  *
  * The signal error() is emitted when the request was not successful.
  */
-void SyncthingConnection::pauseAllDevs()
+bool SyncthingConnection::pauseAllDevs()
 {
-    for (const SyncthingDev &dev : m_devs) {
-        pauseDevice(dev.id);
-    }
+    return pauseResumeDevice(deviceIds(), true);
 }
 
 /*!
- * \brief Requests resuming the device with the specified ID.
+ * \brief Requests resuming the devices with the specified IDs.
  *
  * The signal error() is emitted when the request was not successful.
  */
-void SyncthingConnection::resumeDevice(const QString &devId)
+bool SyncthingConnection::resumeDevice(const QStringList &devIds)
 {
-    QUrlQuery query;
-    query.addQueryItem(QStringLiteral("device"), devId);
-    QNetworkReply *reply = postData(QStringLiteral("system/resume"), query);
-    reply->setProperty("devId", devId);
-    reply->setProperty("resume", true);
-    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDevPauseResume);
+    return pauseResumeDevice(devIds, false);
 }
 
 /*!
@@ -289,39 +277,9 @@ void SyncthingConnection::resumeDevice(const QString &devId)
  *
  * The signal error() is emitted when the request was not successful.
  */
-void SyncthingConnection::resumeAllDevs()
+bool SyncthingConnection::resumeAllDevs()
 {
-    for (const SyncthingDev &dev : m_devs) {
-        resumeDevice(dev.id);
-    }
-}
-
-/*!
- * \brief Alters the specified \a config so that the specified \a dirs are paused or not.
- * \returns Returns whether the config has been altered (all dirs might have been already paused/unpaused).
- */
-bool setPaused(QJsonObject &config, const QStringList &dirs, bool paused)
-{
-    bool altered = false;
-    QJsonValueRef folders = config.find(QLatin1String("folders")).value();
-    if (folders.isArray()) {
-        QJsonArray foldersArray = folders.toArray();
-        for (QJsonValueRef folder : foldersArray) {
-            QJsonObject folderObj = folder.toObject();
-            if (dirs.isEmpty() || dirs.contains(folderObj.value(QLatin1String("id")).toString())) {
-                QJsonValueRef pausedValue = folderObj.find(QLatin1String("paused")).value();
-                if (pausedValue.toBool(false) != paused) {
-                    pausedValue = paused;
-                    folder = folderObj;
-                    altered = true;
-                }
-            }
-        }
-        if (altered) {
-            folders = foldersArray;
-        }
-    }
-    return altered;
+    return pauseResumeDevice(deviceIds(), false);
 }
 
 /*!
@@ -461,7 +419,37 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
  * \brief Internally used to pause/resume directories.
  * \returns Returns whether a request has been made.
  * \remarks This might currently result in errors caused by Syncthing not
- *          handling E notation correctly:
+ *          handling E notation correctly when using Qt < 5.9:
+ *          https://github.com/syncthing/syncthing/issues/4001
+ */
+bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paused)
+{
+    if (devIds.isEmpty()) {
+        return false;
+    }
+    if (!isConnected()) {
+        emit error(tr("Unable to pause/resume a devices when not connected"), SyncthingErrorCategory::SpecificRequest, QNetworkReply::NoError);
+        return false;
+    }
+
+    QJsonObject config = m_rawConfig;
+    if (setDevicesPaused(config, devIds, paused)) {
+        QJsonDocument doc;
+        doc.setObject(config);
+        QNetworkReply *reply = postData(QStringLiteral("system/config"), QUrlQuery(), doc.toJson(QJsonDocument::Compact));
+        reply->setProperty("devIds", devIds);
+        reply->setProperty("resume", !paused);
+        QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDevPauseResume);
+        return true;
+    }
+    return false;
+}
+
+/*!
+ * \brief Internally used to pause/resume directories.
+ * \returns Returns whether a request has been made.
+ * \remarks This might currently result in errors caused by Syncthing not
+ *          handling E notation correctly when using Qt < 5.9:
  *          https://github.com/syncthing/syncthing/issues/4001
  */
 bool SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool paused)
@@ -475,7 +463,7 @@ bool SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool p
     }
 
     QJsonObject config = m_rawConfig;
-    if (setPaused(config, dirIds, paused)) {
+    if (setDirectoriesPaused(config, dirIds, paused)) {
         QJsonDocument doc;
         doc.setObject(config);
         QNetworkReply *reply = postData(QStringLiteral("system/config"), QUrlQuery(), doc.toJson(QJsonDocument::Compact));
@@ -1631,14 +1619,17 @@ void SyncthingConnection::readDevPauseResume()
     auto *reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     switch (reply->error()) {
-    case QNetworkReply::NoError:
+    case QNetworkReply::NoError: {
+        const QStringList devIds(reply->property("devIds").toStringList());
+        const bool resume = reply->property("resume").toBool();
+        setDevicesPaused(m_rawConfig, devIds, !resume);
         if (reply->property("resume").toBool()) {
-            emit deviceResumeTriggered(reply->property("devId").toString());
+            emit deviceResumeTriggered(devIds);
         } else {
-            emit devicePauseTriggered(reply->property("devId").toString());
+            emit devicePauseTriggered(devIds);
         }
         break;
-    default:
+    } default:
         emit error(tr("Unable to request device pause/resume: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
     }
 }
@@ -1648,14 +1639,17 @@ void SyncthingConnection::readDirPauseResume()
     auto *reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     switch (reply->error()) {
-    case QNetworkReply::NoError:
-        if (reply->property("resume").toBool()) {
-            emit directoryResumeTriggered(reply->property("dirIds").toStringList());
+    case QNetworkReply::NoError: {
+        const QStringList dirIds(reply->property("dirIds").toStringList());
+        const bool resume = reply->property("resume").toBool();
+        setDirectoriesPaused(m_rawConfig, dirIds, !resume);
+        if (resume) {
+            emit directoryResumeTriggered(dirIds);
         } else {
-            emit directoryPauseTriggered(reply->property("dirIds").toStringList());
+            emit directoryPauseTriggered(dirIds);
         }
         break;
-    default:
+    } default:
         emit error(tr("Unable to request directory pause/resume: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
     }
 }

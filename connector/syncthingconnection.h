@@ -123,10 +123,10 @@ public Q_SLOTS:
     void disconnect();
     void reconnect();
     void reconnect(SyncthingConnectionSettings &connectionSettings);
-    void pauseDevice(const QString &devId);
-    void pauseAllDevs();
-    void resumeDevice(const QString &devId);
-    void resumeAllDevs();
+    bool pauseDevice(const QStringList &devIds);
+    bool pauseAllDevs();
+    bool resumeDevice(const QStringList &devIds);
+    bool resumeAllDevs();
     bool pauseDirectories(const QStringList &dirIds);
     bool pauseAllDirs();
     bool resumeDirectories(const QStringList &dirIds);
@@ -152,8 +152,8 @@ Q_SIGNALS:
     void myIdChanged(const QString &myNewId);
     void trafficChanged(uint64 totalIncomingTraffic, uint64 totalOutgoingTraffic);
     void rescanTriggered(const QString &dirId);
-    void devicePauseTriggered(const QString &devId);
-    void deviceResumeTriggered(const QString &devId);
+    void devicePauseTriggered(const QStringList &devIds);
+    void deviceResumeTriggered(const QStringList &devIds);
     void directoryPauseTriggered(const QStringList &dirIds);
     void directoryResumeTriggered(const QStringList &dirIds);
     void restartTriggered();
@@ -203,6 +203,7 @@ private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
+    bool pauseResumeDevice(const QStringList &devIds, bool paused);
     bool pauseResumeDirectory(const QStringList &dirIds, bool paused);
     SyncthingDir *addDirInfo(std::vector<SyncthingDir> &dirs, const QString &dirId);
     SyncthingDev *addDevInfo(std::vector<SyncthingDev> &devs, const QString &devId);

@@ -291,12 +291,21 @@ void Application::requestPauseResume(bool pause)
             ++m_expectedResponse;
         }
     }
-    for (const SyncthingDev *dev : m_relevantDevs) {
-        if (pause) {
-            cerr << "Request pausing device ";
+    if (!m_relevantDevs.empty()) {
+        QStringList devIds;
+        devIds.reserve(m_relevantDirs.size());
+        for (const SyncthingDev *dev : m_relevantDevs) {
+            devIds << dev->id;
         }
-        cerr << dev->id.toLocal8Bit().data() << " ...\n";
-        pause ? m_connection.pauseDevice(dev->id) : m_connection.resumeDevice(dev->id);
+        if (pause) {
+            cerr << "Request pausing devices ";
+        } else {
+            cerr << "Request resuming devices ";
+        }
+        cerr << devIds.join(QStringLiteral(", ")).toLocal8Bit().data() << " ...\n";
+        if (pause ? m_connection.pauseDirectories(devIds) : m_connection.resumeDirectories(devIds)) {
+            ++m_expectedResponse;
+        }
     }
     cerr.flush();
 }

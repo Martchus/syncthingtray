@@ -6,6 +6,7 @@
 #include <QStringList>
 
 QT_FORWARD_DECLARE_CLASS(QUrl)
+QT_FORWARD_DECLARE_CLASS(QJsonObject)
 
 namespace ChronoUtilities {
 class DateTime;
@@ -15,6 +16,8 @@ namespace Data {
 
 QString LIB_SYNCTHING_CONNECTOR_EXPORT agoString(ChronoUtilities::DateTime dateTime);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QUrl &url);
+bool LIB_SYNCTHING_CONNECTOR_EXPORT setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused);
+bool LIB_SYNCTHING_CONNECTOR_EXPORT setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);
 
 template <class Objects> QStringList LIB_SYNCTHING_CONNECTOR_EXPORT ids(const Objects &objects)
 {

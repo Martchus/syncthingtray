@@ -4,6 +4,9 @@
 
 #include <QCoreApplication>
 #include <QHostAddress>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
 #include <QNetworkInterface>
 #include <QString>
 #include <QUrl>
@@ -35,5 +38,61 @@ bool isLocal(const QUrl &url)
     const QHostAddress hostAddress(host);
     return host.compare(QLatin1String("localhost"), Qt::CaseInsensitive) == 0 || hostAddress.isLoopback()
         || QNetworkInterface::allAddresses().contains(hostAddress);
+}
+
+/*!
+ * \brief Alters the specified \a syncthingConfig so that the dirs with specified IDs are paused or not.
+ * \returns Returns whether the config has been altered (all dirs might have been already paused/unpaused).
+ */
+bool setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused)
+{
+    bool altered = false;
+    QJsonValueRef folders = syncthingConfig.find(QLatin1String("folders")).value();
+    if (folders.isArray()) {
+        QJsonArray foldersArray = folders.toArray();
+        for (QJsonValueRef folder : foldersArray) {
+            QJsonObject folderObj = folder.toObject();
+            if (dirIds.isEmpty() || dirIds.contains(folderObj.value(QLatin1String("id")).toString())) {
+                QJsonValueRef pausedValue = folderObj.find(QLatin1String("paused")).value();
+                if (pausedValue.toBool(false) != paused) {
+                    pausedValue = paused;
+                    folder = folderObj;
+                    altered = true;
+                }
+            }
+        }
+        if (altered) {
+            folders = foldersArray;
+        }
+    }
+    return altered;
+}
+
+/*!
+ * \brief Alters the specified \a syncthingConfig so that the devs with the specified IDs are paused or not.
+ * \returns Returns whether the config has been altered (all devs might have been already paused/unpaused).
+ */
+bool setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &devIds, bool paused)
+{
+    bool altered = false;
+    QJsonValueRef devices = syncthingConfig.find(QLatin1String("devices")).value();
+    if (devices.isArray()) {
+        QJsonArray devicesArray = devices.toArray();
+        for (QJsonValueRef device : devicesArray) {
+            QJsonObject deviceObj = device.toObject();
+            if (devIds.isEmpty() || devIds.contains(deviceObj.value(QLatin1String("deviceID")).toString())) {
+                QJsonValueRef pausedValue = deviceObj.find(QLatin1String("paused")).value();
+                if (pausedValue.toBool(false) != paused) {
+                    pausedValue = paused;
+                    device = deviceObj;
+                    altered = true;
+                }
+            }
+        }
+        if (altered) {
+            devices = devicesArray;
+        }
+    }
+    return altered;
 }
 }
