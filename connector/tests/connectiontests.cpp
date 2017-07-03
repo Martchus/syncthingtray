@@ -34,6 +34,7 @@ public:
 
     void testErrorCases();
     void testInitialConnection();
+    void waitForAllDirsAndDevsReady();
     void checkDevices();
     void checkDirectories() const;
     void testReconnecting();
@@ -167,6 +168,7 @@ void ConnectionTests::testConnection()
 {
     testErrorCases();
     testInitialConnection();
+    waitForAllDirsAndDevsReady();
     checkDevices();
     checkDirectories();
     testReconnecting();
@@ -214,6 +216,39 @@ void ConnectionTests::testInitialConnection()
     CPPUNIT_ASSERT_EQUAL_MESSAGE(
         "connected and paused (one dev is initially paused)", QStringLiteral("connected, paused"), m_connection.statusText());
     CPPUNIT_ASSERT_MESSAGE("no dirs out-of-sync", !m_connection.hasOutOfSyncDirs());
+}
+
+void ConnectionTests::waitForAllDirsAndDevsReady()
+{
+    bool allDirsReady, allDevsReady;
+    const function<void()> checkAllDirsReady([this, &allDirsReady] {
+        for(const SyncthingDir &dir : m_connection.dirInfo()) {
+            if(dir.status == SyncthingDirStatus::Unknown) {
+                allDirsReady = false;
+                return;
+            }
+        }
+        allDirsReady = true;
+    });
+    const function<void()> checkAllDevsReady([this, &allDevsReady] {
+        for(const SyncthingDev &dev : m_connection.devInfo()) {
+            if(dev.status == SyncthingDevStatus::Unknown) {
+                allDevsReady = false;
+                return;
+            }
+        }
+        allDevsReady = true;
+    });
+    checkAllDirsReady();
+    checkAllDevsReady();
+    if(allDirsReady && allDevsReady) {
+        return;
+    }
+    waitForSignals(noop, 1000,
+                  connectionSignal(&SyncthingConnection::dirStatusChanged, checkAllDirsReady, &allDirsReady),
+                  connectionSignal(&SyncthingConnection::newDirs, checkAllDirsReady, &allDirsReady),
+                  connectionSignal(&SyncthingConnection::dirStatusChanged, checkAllDevsReady, &allDevsReady),
+                  connectionSignal(&SyncthingConnection::newDevices, checkAllDevsReady, &allDevsReady));
 }
 
 void ConnectionTests::checkDevices()
