@@ -328,7 +328,7 @@ void ConnectionTests::testResumingAllDevices()
     const function<void(const QStringList &)> devResumedTriggeredHandler
         = [this](const QStringList &devIds) { CPPUNIT_ASSERT_EQUAL(m_connection.deviceIds(), devIds); };
     const auto newDevsConnection = handleNewDevices(devResumedHandler, &devResumed);
-    waitForConnection(&SyncthingConnection::resumeAllDevs, 1000,
+    waitForConnection(&SyncthingConnection::resumeAllDevs, 3000,
         connectionSignal(&SyncthingConnection::devStatusChanged, devResumedHandler, &devResumed),
         connectionSignal(&SyncthingConnection::deviceResumeTriggered, devResumedTriggeredHandler));
     CPPUNIT_ASSERT(devResumed);
