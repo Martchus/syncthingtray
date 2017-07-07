@@ -11,7 +11,9 @@
 #include "../../connector/utils.h"
 #endif
 
-#include "resources/config.h"
+// use meta-data of syncthingtray application here
+#include "resources/../../tray/resources/config.h"
+
 #include "ui_traywidget.h"
 
 #include <qtutilities/aboutdialog/aboutdialog.h>

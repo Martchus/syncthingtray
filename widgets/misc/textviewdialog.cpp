@@ -1,6 +1,7 @@
 #include "./textviewdialog.h"
 
-#include "resources/config.h"
+// use meta-data of syncthingtray application here
+#include "resources/../../tray/resources/config.h"
 
 #include <qtutilities/misc/dialogutils.h>
 
