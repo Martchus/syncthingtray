@@ -222,8 +222,8 @@ void ConnectionTests::waitForAllDirsAndDevsReady()
 {
     bool allDirsReady, allDevsReady;
     const function<void()> checkAllDirsReady([this, &allDirsReady] {
-        for(const SyncthingDir &dir : m_connection.dirInfo()) {
-            if(dir.status == SyncthingDirStatus::Unknown) {
+        for (const SyncthingDir &dir : m_connection.dirInfo()) {
+            if (dir.status == SyncthingDirStatus::Unknown) {
                 allDirsReady = false;
                 return;
             }
@@ -231,8 +231,8 @@ void ConnectionTests::waitForAllDirsAndDevsReady()
         allDirsReady = true;
     });
     const function<void()> checkAllDevsReady([this, &allDevsReady] {
-        for(const SyncthingDev &dev : m_connection.devInfo()) {
-            if(dev.status == SyncthingDevStatus::Unknown) {
+        for (const SyncthingDev &dev : m_connection.devInfo()) {
+            if (dev.status == SyncthingDevStatus::Unknown) {
                 allDevsReady = false;
                 return;
             }
@@ -241,14 +241,13 @@ void ConnectionTests::waitForAllDirsAndDevsReady()
     });
     checkAllDirsReady();
     checkAllDevsReady();
-    if(allDirsReady && allDevsReady) {
+    if (allDirsReady && allDevsReady) {
         return;
     }
-    waitForSignals(noop, 1000,
-                  connectionSignal(&SyncthingConnection::dirStatusChanged, checkAllDirsReady, &allDirsReady),
-                  connectionSignal(&SyncthingConnection::newDirs, checkAllDirsReady, &allDirsReady),
-                  connectionSignal(&SyncthingConnection::dirStatusChanged, checkAllDevsReady, &allDevsReady),
-                  connectionSignal(&SyncthingConnection::newDevices, checkAllDevsReady, &allDevsReady));
+    waitForSignals(noop, 1000, connectionSignal(&SyncthingConnection::dirStatusChanged, checkAllDirsReady, &allDirsReady),
+        connectionSignal(&SyncthingConnection::newDirs, checkAllDirsReady, &allDirsReady),
+        connectionSignal(&SyncthingConnection::dirStatusChanged, checkAllDevsReady, &allDevsReady),
+        connectionSignal(&SyncthingConnection::newDevices, checkAllDevsReady, &allDevsReady));
 }
 
 void ConnectionTests::checkDevices()
@@ -351,7 +350,7 @@ void ConnectionTests::testResumingDirectory()
     };
     const auto newDirsConnection = handleNewDirs(dirResumedHandler, &dirResumed);
     waitForConnection(
-        &SyncthingConnection::resumeAllDirs, 1000, connectionSignal(&SyncthingConnection::dirStatusChanged, dirResumedHandler, &dirResumed));
+        &SyncthingConnection::resumeAllDirs, 3000, connectionSignal(&SyncthingConnection::dirStatusChanged, dirResumedHandler, &dirResumed));
     CPPUNIT_ASSERT(dirResumed);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("still 2 dirs present", 2_st, m_connection.dirInfo().size());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("still not paused anymore", QStringLiteral("connected"), m_connection.statusText());
@@ -367,7 +366,7 @@ void ConnectionTests::testPausingDirectory()
         }
     };
     const auto newDirsConnection = handleNewDirs(dirPausedHandler, &dirPaused);
-    waitForSignals(bind(&SyncthingConnection::pauseDirectories, &m_connection, QStringList({ QStringLiteral("test1") })), 1000,
+    waitForSignals(bind(&SyncthingConnection::pauseDirectories, &m_connection, QStringList({ QStringLiteral("test1") })), 3000,
         connectionSignal(&SyncthingConnection::dirStatusChanged, dirPausedHandler, &dirPaused));
     CPPUNIT_ASSERT(dirPaused);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("still 2 dirs present", 2_st, m_connection.dirInfo().size());
