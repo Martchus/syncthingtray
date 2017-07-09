@@ -4,6 +4,8 @@
 #include "./global.h"
 #include "./helper.h"
 
+#include "../syncthingconnector/syncthingprocess.h"
+
 #include <QCoreApplication>
 #include <QProcess>
 
@@ -33,7 +35,7 @@ private:
     QString m_apiKey;
     QString m_syncthingPort;
     QCoreApplication m_app;
-    QProcess m_syncthingProcess;
+    Data::SyncthingProcess m_syncthingProcess;
 };
 
 inline const QString &SyncthingTestInstance::apiKey() const

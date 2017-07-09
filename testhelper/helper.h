@@ -70,6 +70,13 @@ public:
     {
     }
 
+    TemporaryConnection(const TemporaryConnection &other) = delete;
+
+    TemporaryConnection(TemporaryConnection &&other)
+        : m_connection(std::move(other.m_connection))
+    {
+    }
+
     ~TemporaryConnection()
     {
         QObject::disconnect(m_connection);
@@ -95,23 +102,23 @@ public:
      * \param correctSignalEmitted Specifies whether the correct signal has been emitted. Should be set in \a handler to indicate that the emitted signal is actually the one
      *                             the test is waiting for (and not just one which has been emitted as side-effect).
      */
-    SignalInfo(
-        typename QtPrivate::FunctionPointer<Signal>::Object *sender, Signal signal, const Handler &handler, bool *correctSignalEmitted = nullptr)
-        : sender(sender)
-        , signal(signal)
-        , correctSignalEmitted(correctSignalEmitted)
-        , signalEmitted(false)
+    SignalInfo(const typename QtPrivate::FunctionPointer<Signal>::Object *sender, Signal signal, const Handler &handler,
+        bool *correctSignalEmitted = nullptr)
+        : m_sender(sender)
+        , m_signal(signal)
+        , m_correctSignalEmitted(correctSignalEmitted)
+        , m_signalEmitted(false)
     {
         // register handler if specified
         if (handler) {
-            handlerConnection = QObject::connect(sender, signal, sender, handler, Qt::DirectConnection);
-            if (!handlerConnection) {
+            m_handlerConnection = QObject::connect(sender, signal, sender, handler, Qt::DirectConnection);
+            if (!m_handlerConnection) {
                 CPPUNIT_FAIL(argsToString("Unable to connect signal ", signalName().data(), " to handler"));
             }
         }
         // register own handler to detect whether signal has been emitted
-        emittedConnection = QObject::connect(sender, signal, sender, [this] { signalEmitted = true; }, Qt::DirectConnection);
-        if (!emittedConnection) {
+        m_emittedConnection = QObject::connect(sender, signal, sender, [this] { m_signalEmitted = true; }, Qt::DirectConnection);
+        if (!m_emittedConnection) {
             CPPUNIT_FAIL(argsToString("Unable to connect signal ", signalName().data(), " to check for signal emmitation"));
         }
     }
@@ -119,15 +126,15 @@ public:
     SignalInfo(const SignalInfo &other) = delete;
 
     SignalInfo(SignalInfo &&other)
-        : sender(other.sender)
-        , signal(other.signal)
-        , handlerConnection(other.handlerConnection)
-        , emittedConnection(other.emittedConnection)
-        , loopConnection(other.loopConnection)
-        , correctSignalEmitted(other.correctSignalEmitted)
-        , signalEmitted(other.signalEmitted)
+        : m_sender(other.m_sender)
+        , m_signal(other.m_signal)
+        , m_handlerConnection(other.m_handlerConnection)
+        , m_emittedConnection(other.m_emittedConnection)
+        , m_loopConnection(other.m_loopConnection)
+        , m_correctSignalEmitted(other.m_correctSignalEmitted)
+        , m_signalEmitted(other.m_signalEmitted)
     {
-        other.handlerConnection = other.emittedConnection = other.loopConnection = QMetaObject::Connection();
+        other.m_handlerConnection = other.m_emittedConnection = other.m_loopConnection = QMetaObject::Connection();
     }
 
     /*!
@@ -135,9 +142,9 @@ public:
      */
     ~SignalInfo()
     {
-        QObject::disconnect(handlerConnection);
-        QObject::disconnect(emittedConnection);
-        QObject::disconnect(loopConnection);
+        QObject::disconnect(m_handlerConnection);
+        QObject::disconnect(m_emittedConnection);
+        QObject::disconnect(m_loopConnection);
     }
 
     /*!
@@ -145,7 +152,7 @@ public:
      */
     operator bool() const
     {
-        return (correctSignalEmitted && *correctSignalEmitted) || (!correctSignalEmitted && signalEmitted);
+        return (m_correctSignalEmitted && *m_correctSignalEmitted) || (!m_correctSignalEmitted && m_signalEmitted);
     }
 
     /*!
@@ -153,7 +160,7 @@ public:
      */
     QByteArray signalName() const
     {
-        return QMetaMethod::fromSignal(signal).name();
+        return QMetaMethod::fromSignal(m_signal).name();
     }
 
     /*!
@@ -162,21 +169,21 @@ public:
      */
     void connectToLoop(QEventLoop *loop) const
     {
-        QObject::disconnect(loopConnection);
-        loopConnection = QObject::connect(sender, signal, loop, &QEventLoop::quit, Qt::DirectConnection);
-        if (!loopConnection) {
+        QObject::disconnect(m_loopConnection);
+        m_loopConnection = QObject::connect(m_sender, m_signal, loop, &QEventLoop::quit, Qt::DirectConnection);
+        if (!m_loopConnection) {
             CPPUNIT_FAIL(argsToString("Unable to connect signal ", signalName().data(), " for waiting"));
         }
     }
 
 private:
-    typename QtPrivate::FunctionPointer<Signal>::Object *sender;
-    Signal signal;
-    QMetaObject::Connection handlerConnection;
-    QMetaObject::Connection emittedConnection;
-    mutable QMetaObject::Connection loopConnection;
-    bool *correctSignalEmitted = nullptr;
-    bool signalEmitted;
+    const typename QtPrivate::FunctionPointer<Signal>::Object *m_sender;
+    Signal m_signal;
+    QMetaObject::Connection m_handlerConnection;
+    QMetaObject::Connection m_emittedConnection;
+    mutable QMetaObject::Connection m_loopConnection;
+    bool *m_correctSignalEmitted = nullptr;
+    bool m_signalEmitted;
 };
 
 /*!

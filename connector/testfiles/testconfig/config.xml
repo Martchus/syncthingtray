@@ -48,6 +48,8 @@
     </device>
     <gui enabled="true" tls="false" debugging="false">
         <address>127.0.0.1:4001</address>
+		<user>nobody</user>
+		<password>$2a$12$35MnbsQgQNn1hzPYK/lWXOaP.U5D2TO0nuuQy2M4gsqJB4ff4q2RK</password>
         <apikey>syncthingconnectortest</apikey>
         <theme>default</theme>
     </gui>

@@ -41,6 +41,11 @@ void SyncthingTestInstance::start()
         }
     }
 
+    // ensure dirs exist
+    const QDir parentDir(QStringLiteral("/tmp/some/path"));
+    parentDir.mkpath(QStringLiteral("1"));
+    parentDir.mkpath(QStringLiteral("2"));
+
     // determine st path
     const QByteArray syncthingPathFromEnv(qgetenv("SYNCTHING_PATH"));
     const QString syncthingPath(syncthingPathFromEnv.isEmpty() ? QStringLiteral("syncthing") : QString::fromLocal8Bit(syncthingPathFromEnv));

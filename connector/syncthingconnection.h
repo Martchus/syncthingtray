@@ -22,6 +22,7 @@ QT_FORWARD_DECLARE_CLASS(QJsonObject)
 QT_FORWARD_DECLARE_CLASS(QJsonArray)
 
 class ConnectionTests;
+class MiscTests;
 
 namespace Data {
 #undef Q_NAMESPACE
@@ -56,6 +57,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry {
 
 class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     friend ConnectionTests;
+    friend MiscTests;
 
     Q_OBJECT
     Q_PROPERTY(QString syncthingUrl READ syncthingUrl WRITE setSyncthingUrl)
