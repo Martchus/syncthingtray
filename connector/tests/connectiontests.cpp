@@ -552,12 +552,12 @@ void ConnectionTests::testRequestingRescan()
     cerr << "\n - Requesting rescan ..." << endl;
 
     bool rescanTriggered = false;
-    function<void(const QString &)> rescanTriggeredHandler = [this, &rescanTriggered](const QString &dir) {
+    function<void(const QString &)> rescanTriggeredHandler = [&rescanTriggered](const QString &dir) {
         CPPUNIT_ASSERT_EQUAL(QStringLiteral("test2"), dir);
         rescanTriggered = true;
     };
     bool errorOccured = false;
-    function<void(const QString &)> errorHandler = [this, &errorOccured](const QString &message) {
+    function<void(const QString &)> errorHandler = [&errorOccured](const QString &message) {
         errorOccured |= message.startsWith(QStringLiteral("Unable to request rescan: Error transferring"))
             && message.endsWith(QStringLiteral("/rest/db/scan?folder=test1 - server replied: Internal Server Error"));
     };
