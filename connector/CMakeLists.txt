@@ -44,20 +44,16 @@ set(TS_FILES
 )
 
 # find c++utilities
-find_package(c++utilities 4.8.0 REQUIRED)
+find_package(c++utilities 4.9.0 REQUIRED)
 use_cpp_utilities()
 set(META_PUBLIC_SHARED_LIB_DEPENDS c++utilities)
 set(META_PUBLIC_STATIC_LIB_DEPENDS c++utilities_static)
 
 # find qtutilities (only headers and CMake modules used)
 find_package(qtutilities 5.0.0 REQUIRED)
-include_directories(BEFORE SYSTEM ${QT_UTILITIES_INCLUDE_DIRS})
 list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
-
-# find test helper
-find_package(syncthingtesthelper ${META_APP_VERSION} REQUIRED)
-include_directories(BEFORE SYSTEM ${SYNCTHINGTESTHELPER_INCLUDE_DIRS})
-list(APPEND TEST_LIBRARIES ${SYNCTHINGTESTHELPER_LIB})
+list(APPEND PRIVATE_SHARED_INCLUDE_DIRS ${QT_UTILITIES_INCLUDE_DIRS})
+list(APPEND PRIVATE_STATIC_INCLUDE_DIRS ${QT_UTILITIES_INCLUDE_DIRS})
 
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
@@ -87,6 +83,15 @@ include(BasicConfig)
 include(QtConfig)
 include(WindowsResources)
 include(LibraryTarget)
+
+# link tests against test helper (can't use find_package because testhelper target is not
+# present at this point)
+if(BUILD_SHARED_LIBS)
+    list(APPEND TEST_LIBRARIES syncthingtesthelper)
+else()
+    list(APPEND TEST_LIBRARIES syncthingtesthelper_static)
+endif()
 include(TestTarget)
+
 include(Doxygen)
 include(ConfigHeader)

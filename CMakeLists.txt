@@ -23,8 +23,9 @@ option(NO_WIDGETS "whether building widgets should be skipped, implies NO_TRAY" 
 
 # add subdirectories
 enable_testing()
-add_subdirectory(testhelper)
 add_subdirectory(connector)
+add_subdirectory(testhelper)
+
 link_directories(${LIB_SYNCTHING_CONNECTOR_BINARY_DIR})
 if(NOT NO_CLI)
     add_subdirectory(cli)

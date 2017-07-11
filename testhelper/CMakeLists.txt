@@ -31,10 +31,13 @@ use_cpp_utilities()
 set(META_PUBLIC_SHARED_LIB_DEPENDS c++utilities)
 set(META_PUBLIC_STATIC_LIB_DEPENDS c++utilities_static)
 
-# find qtutilities (only headers and CMake modules used)
+# find qtutilities (only CMake modules used)
 find_package(qtutilities 5.0.0 REQUIRED)
-include_directories(BEFORE SYSTEM ${QT_UTILITIES_INCLUDE_DIRS})
 list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
+
+# find syncthingconnector
+find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
+use_syncthingconnector()
 
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
