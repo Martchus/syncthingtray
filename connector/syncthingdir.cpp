@@ -31,48 +31,39 @@ QString statusString(SyncthingDirStatus status)
     }
 }
 
-/*!
- * \brief Assigns the status from the specified status string.
- * \returns Returns whether the status has actually changed.
- */
-bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateTime time)
+bool SyncthingDir::checkWhetherStatusUpdateRelevant(DateTime time)
 {
+    // ignore old updates
     if (lastStatusUpdate > time) {
         return false;
-    } else {
-        lastStatusUpdate = time;
     }
-    SyncthingDirStatus newStatus;
-    if (statusStr == QLatin1String("idle")) {
-        progressPercentage = 0;
-        newStatus = SyncthingDirStatus::Idle;
-    } else if (statusStr == QLatin1String("scanning")) {
-        newStatus = SyncthingDirStatus::Scanning;
-    } else if (statusStr == QLatin1String("syncing")) {
-        // ensure status changed signal is emitted
-        if (!errors.empty()) {
-            status = SyncthingDirStatus::Unknown;
-        }
-        // errors become obsolete; however errors must be kept as previous errors to be able
-        // to identify new errors occuring during this sync attempt as known errors
-        previousErrors.clear();
-        previousErrors.swap(errors);
-        newStatus = SyncthingDirStatus::Synchronizing;
-    } else if (statusStr == QLatin1String("error")) {
-        progressPercentage = 0;
-        newStatus = SyncthingDirStatus::OutOfSync;
-    } else {
-        newStatus = SyncthingDirStatus::Idle;
-    }
-    if (newStatus == SyncthingDirStatus::Idle) {
-        if (!errors.empty()) {
+    lastStatusUpdate = time;
+    return true;
+}
+
+bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus)
+{
+    // check whether out-of-sync or unshared
+    switch (newStatus) {
+    case SyncthingDirStatus::Unknown:
+    case SyncthingDirStatus::Idle:
+    case SyncthingDirStatus::Unshared:
+        if (!itemErrors.empty()) {
             newStatus = SyncthingDirStatus::OutOfSync;
         } else if (devices.size() < 2) {
             // FIXME: we can assume only own device is assigned, correct?
             newStatus = SyncthingDirStatus::Unshared;
         }
+        break;
+    default:;
     }
+    // clear global error if not out-of-sync anymore
+    if (newStatus != SyncthingDirStatus::OutOfSync) {
+        globalError.clear();
+    }
+    // actuall update the status ...
     if (newStatus != status) {
+        // ... and also update last scan time
         switch (status) {
         case SyncthingDirStatus::Scanning:
             lastScanTime = DateTime::now();
@@ -85,37 +76,39 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
     return false;
 }
 
-bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, DateTime time)
+/*!
+ * \brief Assigns the status from the specified status string.
+ * \returns Returns whether the status has actually changed.
+ */
+bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateTime time)
 {
-    if (lastStatusUpdate > time) {
+    if (!checkWhetherStatusUpdateRelevant(time)) {
         return false;
+    }
+    // identify statusStr
+    SyncthingDirStatus newStatus;
+    if (statusStr == QLatin1String("idle")) {
+        progressPercentage = 0;
+        newStatus = SyncthingDirStatus::Idle;
+    } else if (statusStr == QLatin1String("scanning")) {
+        newStatus = SyncthingDirStatus::Scanning;
+    } else if (statusStr == QLatin1String("syncing")) {
+        // ensure status changed signal is emitted
+        if (!itemErrors.empty()) {
+            status = SyncthingDirStatus::Unknown;
+        }
+        // errors become obsolete; however errors must be kept as previous errors to be able
+        // to identify new errors occuring during this sync attempt as known errors
+        previousItemErrors.clear();
+        previousItemErrors.swap(itemErrors);
+        newStatus = SyncthingDirStatus::Synchronizing;
+    } else if (statusStr == QLatin1String("error")) {
+        progressPercentage = 0;
+        newStatus = SyncthingDirStatus::OutOfSync;
     } else {
-        lastStatusUpdate = time;
+        newStatus = SyncthingDirStatus::Idle;
     }
-    switch (newStatus) {
-    case SyncthingDirStatus::Unknown:
-    case SyncthingDirStatus::Idle:
-    case SyncthingDirStatus::Unshared:
-        if (!errors.empty()) {
-            newStatus = SyncthingDirStatus::OutOfSync;
-        } else if (devices.size() < 2) {
-            // FIXME: we can assume only own device is assigned, correct?
-            newStatus = SyncthingDirStatus::Unshared;
-        }
-        break;
-    default:;
-    }
-    if (newStatus != status) {
-        switch (status) {
-        case SyncthingDirStatus::Scanning:
-            lastScanTime = DateTime::now();
-            break;
-        default:;
-        }
-        status = newStatus;
-        return true;
-    }
-    return false;
+    return finalizeStatusUpdate(newStatus);
 }
 
 QString SyncthingDir::statusString() const

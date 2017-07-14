@@ -173,14 +173,14 @@ void MiscTests::testSyncthingDir()
     CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastStatusUpdate);
     CPPUNIT_ASSERT(dir.lastScanTime >= lastScanTime);
 
-    dir.errors.emplace_back(QStringLiteral("message"), QStringLiteral("path"));
+    dir.itemErrors.emplace_back(QStringLiteral("message"), QStringLiteral("path"));
     CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Idle, updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("out of sync"), dir.statusString());
 
     CPPUNIT_ASSERT(!dir.assignStatus(SyncthingDirStatus::Idle, updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("syncing"), updateTime += TimeSpan::fromMinutes(1.5)));
 
-    dir.errors.clear();
+    dir.itemErrors.clear();
     CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("error"), updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("out of sync"), dir.statusString());
 
@@ -190,11 +190,11 @@ void MiscTests::testSyncthingDir()
     CPPUNIT_ASSERT_MESSAGE("older status discarded", !dir.assignStatus(QStringLiteral("scanning"), updateTime - TimeSpan::fromSeconds(1)));
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("idle"), dir.statusString());
 
-    dir.errors.emplace_back(QStringLiteral("message"), QStringLiteral("path"));
+    dir.itemErrors.emplace_back(QStringLiteral("message"), QStringLiteral("path"));
     CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("idle"), updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("out of sync"), dir.statusString());
 
-    dir.errors.clear();
+    dir.itemErrors.clear();
     dir.devices.removeLast();
     CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("idle"), updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("dir considered unshared when only one dev present", QStringLiteral("unshared"), dir.statusString());

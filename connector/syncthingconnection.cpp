@@ -1372,7 +1372,15 @@ void SyncthingConnection::readStatusChangedEvent(DateTime eventTime, const QJson
         int index;
         if (SyncthingDir *dirInfo = findDirInfo(dir, index)) {
             // directory is already known -> just update status
-            if (dirInfo->assignStatus(eventData.value(QStringLiteral("to")).toString(), eventTime)) {
+            bool statusChanged = dirInfo->assignStatus(eventData.value(QStringLiteral("to")).toString(), eventTime);
+            if (dirInfo->status == SyncthingDirStatus::OutOfSync) {
+                const QString errorMessage(eventData.value(QStringLiteral("error")).toString());
+                if (!errorMessage.isEmpty()) {
+                    dirInfo->globalError = errorMessage;
+                    statusChanged = true;
+                }
+            }
+            if (statusChanged) {
                 emit dirStatusChanged(*dirInfo, index);
             }
         } else {
@@ -1443,17 +1451,17 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
                     for (const QJsonValue &errorVal : errors) {
                         const QJsonObject error(errorVal.toObject());
                         if (!error.isEmpty()) {
-                            auto &errors = dirInfo->errors;
-                            SyncthingDirError dirError(
+                            auto &errors = dirInfo->itemErrors;
+                            SyncthingItemError dirError(
                                 error.value(QStringLiteral("error")).toString(), error.value(QStringLiteral("path")).toString());
                             if (find(errors.cbegin(), errors.cend(), dirError) == errors.cend()) {
                                 errors.emplace_back(move(dirError));
                                 dirInfo->assignStatus(SyncthingDirStatus::OutOfSync, eventTime);
 
                                 // emit newNotification() for new errors
-                                auto &previousErrors = dirInfo->previousErrors;
-                                if (find(previousErrors.cbegin(), previousErrors.cend(), dirInfo->errors.back()) == previousErrors.cend()) {
-                                    emitNotification(eventTime, dirInfo->errors.back().message);
+                                const auto &previousErrors = dirInfo->previousItemErrors;
+                                if (find(previousErrors.cbegin(), previousErrors.cend(), dirInfo->itemErrors.back()) == previousErrors.cend()) {
+                                    emitNotification(eventTime, dirInfo->itemErrors.back().message);
                                 }
                             }
                         }
@@ -1586,7 +1594,7 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
                 }
             } else if (dirInfo->status == SyncthingDirStatus::OutOfSync) {
                 // FIXME: find better way to check whether the event is still relevant
-                dirInfo->errors.emplace_back(error, item);
+                dirInfo->itemErrors.emplace_back(error, item);
                 dirInfo->status = SyncthingDirStatus::OutOfSync;
                 emit dirStatusChanged(*dirInfo, index);
                 emitNotification(eventTime, error);

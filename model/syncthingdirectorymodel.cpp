@@ -122,9 +122,19 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 6:
                             return dir.lastFileName.isEmpty() ? tr("unknown") : dir.lastFileName;
                         case 7:
-                            return dir.errors.empty()
-                                ? tr("none")
-                                : tr("%1 item(s) out of sync", nullptr, static_cast<int>(dir.errors.size())).arg(dir.errors.size());
+                            if (!dir.globalError.isEmpty() || !dir.itemErrors.empty()) {
+                                if (dir.itemErrors.empty()) {
+                                    return dir.globalError;
+                                }
+                                if (dir.globalError.isEmpty()) {
+                                    return tr("%1 item(s) out of sync", nullptr, static_cast<int>(dir.itemErrors.size())).arg(dir.itemErrors.size());
+                                }
+                                return tr("%1 and %2 item(s) out of sync", nullptr, static_cast<int>(dir.itemErrors.size()))
+                                    .arg(dir.globalError)
+                                    .arg(dir.itemErrors.size());
+                            } else {
+                                return tr("none");
+                            }
                         }
                         break;
                     }
@@ -143,7 +153,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                             return dir.lastFileName.isEmpty() ? Colors::gray(m_brightColors)
                                                               : (dir.lastFileDeleted ? Colors::red(m_brightColors) : QVariant());
                         case 7:
-                            return dir.errors.empty() ? Colors::gray(m_brightColors) : Colors::red(m_brightColors);
+                            return dir.globalError.isEmpty() && dir.itemErrors.empty() ? Colors::gray(m_brightColors) : Colors::red(m_brightColors);
                         }
                     }
                     break;
@@ -169,10 +179,10 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                             }
                             break;
                         case 7:
-                            if (!dir.errors.empty()) {
+                            if (!dir.itemErrors.empty()) {
                                 QStringList errors;
-                                errors.reserve(static_cast<int>(dir.errors.size()));
-                                for (const auto &error : dir.errors) {
+                                errors.reserve(static_cast<int>(dir.itemErrors.size()));
+                                for (const auto &error : dir.itemErrors) {
                                     errors << error.path;
                                 }
                                 return QVariant(QStringLiteral("<b>") % tr("Failed items") % QStringLiteral("</b><ul><li>")

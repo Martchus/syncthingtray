@@ -48,11 +48,11 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
                             emit openDir(*dir);
                         }
                     }
-                } else if (clickedIndex.row() == 7 && !dir->errors.empty()) {
+                } else if (clickedIndex.row() == 7 && !dir->itemErrors.empty()) {
                     // show errors
                     auto *textViewDlg = new TextViewDialog(tr("Errors of %1").arg(dir->label.isEmpty() ? dir->id : dir->label));
                     auto *browser = textViewDlg->browser();
-                    for (const SyncthingDirError &error : dir->errors) {
+                    for (const SyncthingItemError &error : dir->itemErrors) {
                         browser->append(error.path % QChar(':') % QChar(' ') % QChar('\n') % error.message % QChar('\n'));
                     }
                     textViewDlg->show();

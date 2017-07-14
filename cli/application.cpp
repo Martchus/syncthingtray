@@ -434,9 +434,10 @@ void Application::printDir(const SyncthingDir *dir)
     printProperty("Auto-normalize", dir->autoNormalize);
     printProperty("Rescan interval", TimeSpan::fromSeconds(dir->rescanInterval));
     printProperty("Min. free disk percentage", dir->minDiskFreePercentage);
-    if (!dir->errors.empty()) {
-        cout << "   Errors\n";
-        for (const SyncthingDirError &error : dir->errors) {
+    printProperty("Error", dir->globalError);
+    if (!dir->itemErrors.empty()) {
+        cout << "   Failed items\n";
+        for (const SyncthingItemError &error : dir->itemErrors) {
             printProperty(" - Message", error.message);
             printProperty("   File", error.path);
         }

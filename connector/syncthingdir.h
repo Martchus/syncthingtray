@@ -1,4 +1,4 @@
-#ifndef DATA_SYNCTHINGDIR_H
+﻿#ifndef DATA_SYNCTHINGDIR_H
 #define DATA_SYNCTHINGDIR_H
 
 #include "./global.h"
@@ -24,14 +24,14 @@ Q_ENUM_NS(SyncthingDirStatus)
 
 QString statusString(SyncthingDirStatus status);
 
-struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDirError {
-    SyncthingDirError(const QString &message = QString(), const QString &path = QString())
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemError {
+    SyncthingItemError(const QString &message = QString(), const QString &path = QString())
         : message(message)
         , path(path)
     {
     }
 
-    bool operator==(const SyncthingDirError &other) const
+    bool operator==(const SyncthingItemError &other) const
     {
         return message == other.message && path == other.path;
     }
@@ -81,8 +81,9 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     ChronoUtilities::DateTime lastStatusUpdate;
     int progressPercentage = 0;
     int progressRate = 0;
-    std::vector<SyncthingDirError> errors;
-    std::vector<SyncthingDirError> previousErrors;
+    QString globalError;
+    std::vector<SyncthingItemError> itemErrors;
+    std::vector<SyncthingItemError> previousItemErrors;
     int globalBytes = 0, globalDeleted = 0, globalFiles = 0;
     int localBytes = 0, localDeleted = 0, localFiles = 0;
     int neededByted = 0, neededFiles = 0;
@@ -95,6 +96,10 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     int blocksToBeDownloaded = 0;
     unsigned int downloadPercentage = 0;
     QString downloadLabel;
+
+private:
+    bool checkWhetherStatusUpdateRelevant(ChronoUtilities::DateTime time);
+    bool finalizeStatusUpdate(SyncthingDirStatus newStatus);
 };
 
 inline SyncthingDir::SyncthingDir(const QString &id, const QString &label, const QString &path)
@@ -109,9 +114,14 @@ inline QString SyncthingDir::displayName() const
     return label.isEmpty() ? id : label;
 }
 
+inline bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, ChronoUtilities::DateTime time)
+{
+    return checkWhetherStatusUpdateRelevant(time) && finalizeStatusUpdate(newStatus);
+}
+
 } // namespace Data
 
-Q_DECLARE_METATYPE(Data::SyncthingDirError)
+Q_DECLARE_METATYPE(Data::SyncthingItemError)
 Q_DECLARE_METATYPE(Data::SyncthingItemDownloadProgress)
 Q_DECLARE_METATYPE(Data::SyncthingDir)
 
