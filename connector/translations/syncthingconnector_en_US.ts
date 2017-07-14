@@ -160,27 +160,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1610"/>
+        <location filename="../syncthingconnection.cpp" line="1618"/>
         <source>Unable to request rescan: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1634"/>
+        <location filename="../syncthingconnection.cpp" line="1642"/>
         <source>Unable to request device pause/resume: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1655"/>
+        <location filename="../syncthingconnection.cpp" line="1663"/>
         <source>Unable to request directory pause/resume: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1671"/>
+        <location filename="../syncthingconnection.cpp" line="1679"/>
         <source>Unable to request restart: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1687"/>
+        <location filename="../syncthingconnection.cpp" line="1695"/>
         <source>Unable to request shutdown: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -270,7 +270,7 @@
 <context>
     <name>SyncthingDir</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="124"/>
+        <location filename="../syncthingdir.cpp" line="117"/>
         <source>paused</source>
         <translation type="unfinished"></translation>
     </message>

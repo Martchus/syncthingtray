@@ -169,13 +169,21 @@
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../syncthingdirectorymodel.cpp" line="132"/>
+        <source>%1 and %2 item(s) out of sync</source>
+        <translation>
+            <numerusform>&quot;%1&quot; und %2 Element nicht synchronisiert</numerusform>
+            <numerusform>&quot;%1&quot; und %2 Elemente nicht synchronisiert</numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="126"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="136"/>
         <source>none</source>
         <translation>keine</translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="127"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="130"/>
         <source>%1 item(s) out of sync</source>
         <translation>
             <numerusform>%1 Element nicht synchronisiert</numerusform>
@@ -183,67 +191,67 @@
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="163"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="173"/>
         <source>Deleted at %1</source>
         <translation>Gelöscht am %1</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="166"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="176"/>
         <source>Updated at %1</source>
         <translation>Aktualisiert am %1</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="179"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="189"/>
         <source>Click for details</source>
         <translation>Für details klicken</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="178"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="188"/>
         <source>Failed items</source>
         <translation>Fehlgeschlagene Elemente</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="201"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="211"/>
         <source>Unknown status</source>
         <translation>Unbekannter Status</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="205"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="215"/>
         <source>Idle</source>
         <translation>Leerlauf</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="203"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="213"/>
         <source>Unshared</source>
         <translation>Nicht geteilt</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="207"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="217"/>
         <source>Scanning (%1 %)</source>
         <translation>Scannen (%1 %)</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="207"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="217"/>
         <source>Scanning</source>
         <translation>Scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="209"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="219"/>
         <source>Synchronizing (%1 %)</source>
         <translation>Synchronisieren (%1 %)</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="209"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="219"/>
         <source>Synchronizing</source>
         <translation>Synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="197"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="207"/>
         <source>Paused</source>
         <translation>Pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="211"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="221"/>
         <source>Out of sync</source>
         <translation>Nicht synchronisiert</translation>
     </message>

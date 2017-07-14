@@ -52,12 +52,12 @@
     <message>
         <location filename="../syncthingconnection.cpp" line="431"/>
         <source>Unable to pause/resume a devices when not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Anfordern Verzeichnis zu Pausieren/Fortzusetzen</translation>
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="461"/>
         <source>Unable to pause/resume a directories when not connected</source>
-        <translation>Fehler beim Anfordern Gerät zu Pausieren/Fortzusetzen: </translation>
+        <translation>Fehler beim Anfordern Gerät zu Pausieren/Fortzusetzen</translation>
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="725"/>
@@ -160,17 +160,17 @@
         <translation>Fehler beim Abfragen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1610"/>
+        <location filename="../syncthingconnection.cpp" line="1618"/>
         <source>Unable to request rescan: </source>
         <translation>Fehler beim Anfordern eines Verzeichnis-Rescans: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1634"/>
+        <location filename="../syncthingconnection.cpp" line="1642"/>
         <source>Unable to request device pause/resume: </source>
         <translation>Fehler beim Anfordern Gerät zu Pausieren/Fortzusetzen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1655"/>
+        <location filename="../syncthingconnection.cpp" line="1663"/>
         <source>Unable to request directory pause/resume: </source>
         <translation>Fehler beim Anfordern Verzeichnis zu Pausieren/Fortzusetzen: </translation>
     </message>
@@ -179,12 +179,12 @@
         <translation type="vanished">Fehler beim Anfordern Gerät zu Pausieren/Fortzusetzen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1671"/>
+        <location filename="../syncthingconnection.cpp" line="1679"/>
         <source>Unable to request restart: </source>
         <translation>Fehler beim Anfordern eines Neustarts: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1687"/>
+        <location filename="../syncthingconnection.cpp" line="1695"/>
         <source>Unable to request shutdown: </source>
         <translation>Fehler beim Anfordern Syncthing zu beenden: </translation>
     </message>
@@ -274,7 +274,7 @@
 <context>
     <name>SyncthingDir</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="124"/>
+        <location filename="../syncthingdir.cpp" line="117"/>
         <source>paused</source>
         <translation>pausiert</translation>
     </message>
