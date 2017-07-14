@@ -64,7 +64,7 @@ template <typename intType>
 inline void printProperty(
     const char *propName, const intType value, const char *suffix = nullptr, bool force = false, ApplicationUtilities::Indentation indentation = 3)
 {
-    if (value != 0 || force) {
+    if (value >= 0 || force) {
         printProperty(propName, ConversionUtilities::numberToString<intType>(value).data(), suffix, indentation);
     }
 }
