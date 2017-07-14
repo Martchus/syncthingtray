@@ -11,6 +11,8 @@
 
 using namespace std;
 
+namespace TestUtilities {
+
 /*!
  * \brief The SyncthingTestInstance class provides running a test instance of Syncthing.
  *
@@ -56,6 +58,7 @@ inline QCoreApplication &SyncthingTestInstance::application()
 inline QProcess &SyncthingTestInstance::syncthingProcess()
 {
     return m_syncthingProcess;
+}
 }
 
 #endif // SYNCTHINGTESTHELPER_SYNCTHINGTESTINSTANCE_H

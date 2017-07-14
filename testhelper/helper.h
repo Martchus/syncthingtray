@@ -21,8 +21,7 @@ using namespace ConversionUtilities;
  */
 inline std::ostream &operator<<(std::ostream &o, const QString &qstring)
 {
-    o << qstring.toLocal8Bit().data();
-    return o;
+    return o << qstring.toLocal8Bit().data();
 }
 
 /*!
@@ -30,8 +29,7 @@ inline std::ostream &operator<<(std::ostream &o, const QString &qstring)
  */
 inline std::ostream &operator<<(std::ostream &o, const QStringList &qstringlist)
 {
-    o << qstringlist.join(QStringLiteral(", ")).toLocal8Bit().data();
-    return o;
+    return o << qstringlist.join(QStringLiteral(", ")).toLocal8Bit().data();
 }
 
 /*!
@@ -39,9 +37,12 @@ inline std::ostream &operator<<(std::ostream &o, const QStringList &qstringlist)
  */
 inline std::ostream &operator<<(std::ostream &o, const QSet<QString> &qstringset)
 {
-    o << qstringset.toList().join(QStringLiteral(", ")).toLocal8Bit().data();
-    return o;
+    return o << qstringset.toList().join(QStringLiteral(", ")).toLocal8Bit().data();
 }
+
+namespace TestUtilities {
+
+extern double timeoutFactor;
 
 /*!
  * \brief Waits for the\a duration specified in ms while keeping the event loop running.
@@ -49,7 +50,7 @@ inline std::ostream &operator<<(std::ostream &o, const QSet<QString> &qstringset
 inline void wait(int duration)
 {
     QEventLoop loop;
-    QTimer::singleShot(duration, &loop, &QEventLoop::quit);
+    QTimer::singleShot(duration * timeoutFactor, &loop, &QEventLoop::quit);
     loop.exec();
 }
 
@@ -282,7 +283,7 @@ template <typename Action, typename... SignalInfos> void waitForSignals(Action a
     if (timeout) {
         QObject::connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit, Qt::DirectConnection);
         timer.setSingleShot(true);
-        timer.setInterval(timeout);
+        timer.setInterval(timeout * timeoutFactor);
         timer.start();
     }
 
@@ -294,9 +295,10 @@ template <typename Action, typename... SignalInfos> void waitForSignals(Action a
 
     // check whether a timeout occured
     if (!allSignalsEmitted && timeout && !timer.isActive()) {
-        CPPUNIT_FAIL(
-            argsToString("Signal(s) ", failedSignalNames(signalInfos...).data(), " has/have not emmitted within at least ", timeout, " ms."));
+        CPPUNIT_FAIL(argsToString("Signal(s) ", failedSignalNames(signalInfos...).data(), " has/have not emmitted within at least ", timer.interval(),
+            " ms.", timeoutFactor != 1.0 ? argsToString(" (original timeout: ", timeout, " ms)") : std::string()));
     }
+}
 }
 
 #endif // SYNCTHINGTESTHELPER_H

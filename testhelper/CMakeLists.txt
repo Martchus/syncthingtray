@@ -14,6 +14,7 @@ set(HEADER_FILES
     syncthingtestinstance.h
 )
 set(SRC_FILES
+    helper.cpp
     syncthingtestinstance.cpp
 )
 

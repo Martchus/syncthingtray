@@ -1,13 +1,17 @@
 #include "./syncthingtestinstance.h"
 #include "./helper.h"
 
+#include <c++utilities/conversion/conversionexception.h>
+#include <c++utilities/conversion/stringconversion.h>
 #include <c++utilities/tests/testutils.h>
 
 #include <QDir>
 #include <QFileInfo>
 
 using namespace std;
-using namespace TestUtilities;
+using namespace ConversionUtilities;
+
+namespace TestUtilities {
 
 static int dummy1 = 0;
 static char *dummy2;
@@ -23,7 +27,18 @@ SyncthingTestInstance::SyncthingTestInstance()
  */
 void SyncthingTestInstance::start()
 {
-    cerr << "\n - Launching Syncthing ..." << endl;
+    cerr << "\n - Setup configuration for Syncthing tests ..." << endl;
+
+    // set timeout factor for helper
+    const QByteArray timeoutFactorEnv(qgetenv("SYNCTHING_TEST_TIMEOUT_FACTOR"));
+    if (!timeoutFactorEnv.isEmpty()) {
+        try {
+            timeoutFactor = stringToNumber<double>(string(timeoutFactorEnv.data()));
+            cerr << " - Using timeout factor " << timeoutFactor << endl;
+        } catch (const ConversionException &) {
+            cerr << " - Specified SYNCTHING_TEST_TIMEOUT_FACTOR \"" << timeoutFactorEnv.data() << "\" is no valid double and hence ignored" << endl;
+        }
+    }
 
     // setup st config
     const string configFilePath = workingCopyPath("testconfig/config.xml");
@@ -55,6 +70,7 @@ void SyncthingTestInstance::start()
     m_syncthingPort = !syncthingPortFromEnv ? QStringLiteral("4001") : QString::number(syncthingPortFromEnv);
 
     // start st
+    cerr << "\n - Launching Syncthing ..." << endl;
     QStringList args;
     args.reserve(2);
     args << QStringLiteral("-gui-address=http://localhost:") + m_syncthingPort;
@@ -80,4 +96,5 @@ void SyncthingTestInstance::stop()
         cerr << "\n - Syncthing stdout during the testrun:\n" << m_syncthingProcess.readAllStandardOutput().data();
         cerr << "\n - Syncthing stderr during the testrun:\n" << m_syncthingProcess.readAllStandardError().data();
     }
+}
 }
