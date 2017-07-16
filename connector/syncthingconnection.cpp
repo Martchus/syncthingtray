@@ -350,12 +350,17 @@ void SyncthingConnection::rescan(const QString &dirId, const QString &relpath)
 /*!
  * \brief Requests rescanning all directories.
  *
+ * Note that rescan is only requested for unpaused directories because requesting rescan for
+ * paused directories only leads to an error.
+ *
  * The signal error() is emitted when the request was not successful.
  */
 void SyncthingConnection::rescanAllDirs()
 {
     for (const SyncthingDir &dir : m_dirs) {
-        rescan(dir.id);
+        if (!dir.paused) {
+            rescan(dir.id);
+        }
     }
 }
 

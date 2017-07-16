@@ -59,9 +59,11 @@ void DirButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 
         // draw buttons
         const int buttonY = option.rect.y() + centerObj(option.rect.height(), 16);
-        painter->drawPixmap(option.rect.right() - 52, buttonY, 16, 16, m_refreshIcon);
-        painter->drawPixmap(
-            option.rect.right() - 34, buttonY, 16, 16, index.data(SyncthingDirectoryModel::DirectoryPaused).toBool() ? m_resumeIcon : m_pauseIcon);
+        const bool dirPaused = index.data(SyncthingDirectoryModel::DirectoryPaused).toBool();
+        if (!dirPaused) {
+            painter->drawPixmap(option.rect.right() - 52, buttonY, 16, 16, m_refreshIcon);
+        }
+        painter->drawPixmap(option.rect.right() - 34, buttonY, 16, 16, dirPaused ? m_resumeIcon : m_pauseIcon);
         painter->drawPixmap(option.rect.right() - 16, buttonY, 16, 16, m_folderIcon);
     }
 }
