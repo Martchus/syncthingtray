@@ -120,7 +120,7 @@ See the release section on GitHub.
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and [qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries. For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities). For building this straight, see the next section.
 
-The following Qt 5 modules are requried: core network gui widgets svg webenginewidgets/webkitwidgets
+The following Qt 5 modules are requried (version 5.7 or newer): core network gui widgets svg webenginewidgets/webkitwidgets
 
 The built-in web view is optional (see section "Select Qt module for WebView").
 
@@ -136,7 +136,7 @@ to the CMake arguments. Then only core and network are required.
 
    ```
    cd $SOURCES
-   git clone https://github.com/Martchus/cpp-utilities.git
+   git clone https://github.com/Martchus/cpp-utilities.git c++utilities
    git clone https://github.com/Martchus/qtutilities.git
    git clone https://github.com/Martchus/syncthingtray.git
    git clone https://github.com/Martchus/subdirs.git
