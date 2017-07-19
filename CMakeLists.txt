@@ -14,10 +14,17 @@ set(META_VERSION_EXACT_SONAME ON)
 
 project(${META_PROJECT_NAME})
 
+# disable Dolphin integration under Android, Windows and MacOS by default
+if(ANDROID OR WIN32 OR APPLE)
+    set(FILE_ITEM_ACTION_PLUGIN_DISABLED_BY_DEFAULT ON)
+else()
+    set(FILE_ITEM_ACTION_PLUGIN_DISABLED_BY_DEFAULT OFF)
+endif()
+
 # options for partial build
 option(NO_CLI "whether building CLI should be skipped" OFF)
 option(NO_TRAY "whether building the tray should be skipped" OFF)
-option(NO_FILE_ITEM_ACTION_PLUGIN "whether building the file item action plugin should be skipped" OFF)
+option(NO_FILE_ITEM_ACTION_PLUGIN "whether building the file item action plugin should be skipped" "${FILE_ITEM_ACTION_PLUGIN_DISABLED_BY_DEFAULT}")
 option(NO_MODEL "whether building models should be skipped, implies NO_TRAY" OFF)
 option(NO_WIDGETS "whether building widgets should be skipped, implies NO_TRAY" OFF)
 
