@@ -106,16 +106,18 @@ See the release section on GitHub.
 
 ### Packages and binaries
 * Arch Linux
-  * for PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs) or
-    [the AUR](https://aur.archlinux.org/packages?SeB=m&K=Martchus)
-  * for binary repository checkout [my website](http://martchus.no-ip.biz/website/page.php?name=programming)
+    * for PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs) or
+      [the AUR](https://aur.archlinux.org/packages?SeB=m&K=Martchus)
+    * for binary repository checkout [my website](http://martchus.no-ip.biz/website/page.php?name=programming)
 * Tumbleweed
-  * for RPM \*.spec files and binary repository checkout
-    [openSUSE Build Servide](https://build.opensuse.org/project/show/home:mkittler)
+    * for RPM \*.spec files and binary repository checkout
+      [openSUSE Build Servide](https://build.opensuse.org/project/show/home:mkittler)
+    * packages are available for x86_64, aarch64 and armv7l
+    * since GCC provided by Leap is too old, only Tumbleweed packages are up-to-date
 * Windows
-  * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
-  * for binaries checkout [my website](http://martchus.no-ip.biz/website/page.php?name=programming) and the
-    release section on GitHub
+    * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
+    * for binaries checkout [my website](http://martchus.no-ip.biz/website/page.php?name=programming) and the
+      release section on GitHub
 
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and [qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries. For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities). For building this straight, see the next section.
@@ -188,9 +190,10 @@ on GitHub.
 
 * Any self-signed certificate is accepted when using Qt WebEngine due to
   Qt bug https://bugreports.qt.io/browse/QTBUG-51176
-* Pausing/resuming folders doesn't work when using scan-intervalls with a lot of zeros
+* Pausing/resuming folders and devices doesn't work when using scan-intervalls with a lot of zeros
   because of Syncthing bug https://github.com/syncthing/syncthing/issues/4001.
-  This has already been fixed on the Qt-side with https://codereview.qt-project.org/#/c/187069/.
+  This has already been fixed on the Qt-side with https://codereview.qt-project.org/#/c/187069/. However, the fix is only
+  available in Qt 5.9 and above.
 * The tray disconnects from the local instance when the network connection goes down.
   The network connection must be restored or the tray restarted to be able to connect to local
   Syncthing again. This is caused by Qt bug https://bugreports.qt.io/browse/QTBUG-60949.
