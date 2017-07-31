@@ -11,8 +11,6 @@
 #include <QHeaderView>
 #include <QMenu>
 #include <QMouseEvent>
-#include <QStringBuilder>
-#include <QTextBrowser>
 
 using namespace Data;
 
@@ -31,7 +29,7 @@ DirView::DirView(QWidget *parent)
 void DirView::mouseReleaseEvent(QMouseEvent *event)
 {
     QTreeView::mouseReleaseEvent(event);
-    if (const SyncthingDirectoryModel *dirModel = qobject_cast<SyncthingDirectoryModel *>(model())) {
+    if (const SyncthingDirectoryModel *dirModel = qobject_cast<const SyncthingDirectoryModel *>(model())) {
         const QPoint pos(event->pos());
         const QModelIndex clickedIndex(indexAt(event->pos()));
         if (clickedIndex.isValid() && clickedIndex.column() == 1) {
@@ -51,12 +49,8 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
                         }
                     }
                 } else if (clickedIndex.row() == 7 && !dir->itemErrors.empty()) {
-                    // show errors
-                    auto *textViewDlg = new TextViewDialog(tr("Errors of %1").arg(dir->label.isEmpty() ? dir->id : dir->label));
-                    auto *browser = textViewDlg->browser();
-                    for (const SyncthingItemError &error : dir->itemErrors) {
-                        browser->append(error.path % QChar(':') % QChar(' ') % QChar('\n') % error.message % QChar('\n'));
-                    }
+                    auto *const textViewDlg = TextViewDialog::forDirectoryErrors(*dir);
+                    textViewDlg->setAttribute(Qt::WA_DeleteOnClose);
                     textViewDlg->show();
                 }
             }

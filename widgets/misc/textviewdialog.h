@@ -7,6 +7,10 @@
 
 QT_FORWARD_DECLARE_CLASS(QTextBrowser)
 
+namespace Data {
+struct SyncthingDir;
+}
+
 namespace QtGui {
 
 class SYNCTHINGWIDGETS_EXPORT TextViewDialog : public QWidget {
@@ -15,6 +19,7 @@ public:
     TextViewDialog(const QString &title = QString(), QWidget *parent = nullptr);
 
     QTextBrowser *browser();
+    static TextViewDialog *forDirectoryErrors(const Data::SyncthingDir &dir);
 
 signals:
     void reload();
