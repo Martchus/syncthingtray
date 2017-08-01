@@ -4,10 +4,6 @@
 <context>
     <name>SyncthingDirActions</name>
     <message>
-        <source>not available anymore</source>
-        <translation type="vanished">nicht mehr verfügbar</translation>
-    </message>
-    <message>
         <location filename="../syncthingfileitemaction.cpp" line="130"/>
         <source>Status: not available anymore</source>
         <translation>Status: nicht mehr verfügbar</translation>
@@ -97,18 +93,6 @@
         <location filename="../syncthingfileitemaction.cpp" line="407"/>
         <source>Pause containing directories</source>
         <translation>Beinhaltendes Verzeichnis pausieren</translation>
-    </message>
-    <message>
-        <source>Directory info</source>
-        <translation type="vanished">Verzeichnisinfo</translation>
-    </message>
-    <message>
-        <source>Last scan time: </source>
-        <translation type="vanished">Letzter Scan: </translation>
-    </message>
-    <message>
-        <source>Rescan interval: %1 seconds</source>
-        <translation type="vanished">Scanintervall: %1 Sekunden</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="270"/>

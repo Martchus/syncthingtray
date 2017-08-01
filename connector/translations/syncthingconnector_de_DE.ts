@@ -175,10 +175,6 @@
         <translation>Fehler beim Anfordern Verzeichnis zu Pausieren/Fortzusetzen: </translation>
     </message>
     <message>
-        <source>Unable to request pause/resume: </source>
-        <translation type="vanished">Fehler beim Anfordern Gerät zu Pausieren/Fortzusetzen: </translation>
-    </message>
-    <message>
         <location filename="../syncthingconnection.cpp" line="1684"/>
         <source>Unable to request restart: </source>
         <translation>Fehler beim Anfordern eines Neustarts: </translation>
