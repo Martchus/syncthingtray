@@ -737,6 +737,42 @@
     </message>
 </context>
 <context>
+    <name>QtGui::TextViewDialog</name>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="69"/>
+        <source>Errors of %1</source>
+        <translation>Fehler von %1</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../misc/textviewdialog.cpp" line="87"/>
+        <source>%1 item(s) out-of-sync</source>
+        <translation>
+            <numerusform>%1 Element nicht synchronisiert</numerusform>
+            <numerusform>%1 Elemente nicht synchronisiert</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="97"/>
+        <source>Remove non-empty directories</source>
+        <translation>Nicht-leere Verzeichnisse löschen</translation>
+    </message>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="104"/>
+        <source>Remove non-empty directories for folder &quot;%1&quot;</source>
+        <translation>Nicht-leere Verzeichnisse für den Ordner &quot;%1&quot; löschen</translation>
+    </message>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="107"/>
+        <source>Do you really want to remove the following directories:</source>
+        <translation>Sollen die folgenden Verzeichnisse wirklich gelöscht werden?</translation>
+    </message>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="118"/>
+        <source>Unable to remove the following dirs:</source>
+        <translation>Die folgenden Verzeichnisse konnten nicht gelöscht werden:</translation>
+    </message>
+</context>
+<context>
     <name>QtGui::TrayIcon</name>
     <message>
         <source> - internal error</source>

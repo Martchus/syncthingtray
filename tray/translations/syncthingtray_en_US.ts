@@ -22,22 +22,17 @@
 <context>
     <name>QtGui::DirView</name>
     <message>
-        <location filename="../gui/dirview.cpp" line="53"/>
-        <source>Errors of %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/dirview.cpp" line="72"/>
+        <location filename="../gui/dirview.cpp" line="68"/>
         <source>Copy value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="77"/>
+        <location filename="../gui/dirview.cpp" line="73"/>
         <source>Copy label/ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="81"/>
+        <location filename="../gui/dirview.cpp" line="77"/>
         <source>Copy path</source>
         <translation type="unfinished"></translation>
     </message>

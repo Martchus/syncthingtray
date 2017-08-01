@@ -215,22 +215,21 @@
 <context>
     <name>QtGui::DirView</name>
     <message>
-        <location filename="../gui/dirview.cpp" line="53"/>
         <source>Errors of %1</source>
-        <translation>Fehler von %1</translation>
+        <translation type="vanished">Fehler von %1</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="72"/>
+        <location filename="../gui/dirview.cpp" line="68"/>
         <source>Copy value</source>
         <translation>Wert kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="77"/>
+        <location filename="../gui/dirview.cpp" line="73"/>
         <source>Copy label/ID</source>
         <translation>Namen/ID kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="81"/>
+        <location filename="../gui/dirview.cpp" line="77"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
