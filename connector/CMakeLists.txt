@@ -60,7 +60,12 @@ list(APPEND ADDITIONAL_QT_MODULES Network)
 set(META_PUBLIC_QT_MODULES Core ${ADDITIONAL_QT_MODULES})
 
 # configure support for controlling Syncthing via systemd service
-option(SYSTEMD_SUPPORT "enables support for controlling Syncthing systemd service" ${UNIX})
+if(UNIX AND NOT APPLE)
+    set(ENABLE_SYSTEMD_SUPPORT_BY_DEFAULT ON)
+else()
+    set(ENABLE_SYSTEMD_SUPPORT_BY_DEFAULT OFF)
+endif()
+option(SYSTEMD_SUPPORT "enables support for controlling Syncthing systemd service" ${ENABLE_SYSTEMD_SUPPORT_BY_DEFAULT})
 if(SYSTEMD_SUPPORT)
     list(APPEND DBUS_FILES
         org.freedesktop.DBus.Properties.xml
