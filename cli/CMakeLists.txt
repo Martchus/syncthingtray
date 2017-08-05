@@ -31,9 +31,6 @@ list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector()
 
-# link also explicitely against the following Qt 5 modules
-list(APPEND ADDITIONAL_QT_MODULES Network)
-
 # include modules to apply configuration
 include(BasicConfig)
 include(QtConfig)

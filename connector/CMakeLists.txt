@@ -57,6 +57,7 @@ list(APPEND PRIVATE_STATIC_INCLUDE_DIRS ${QT_UTILITIES_INCLUDE_DIRS})
 
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
+set(META_PUBLIC_QT_MODULES Core ${ADDITIONAL_QT_MODULES})
 
 # configure support for controlling Syncthing via systemd service
 option(SYSTEMD_SUPPORT "enables support for controlling Syncthing systemd service" ${UNIX})
