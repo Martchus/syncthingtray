@@ -40,7 +40,7 @@ class TrayWidget : public QWidget {
     Q_OBJECT
 
 public:
-    TrayWidget(TrayMenu *parent = nullptr);
+    TrayWidget(const QString &connectionConfig = QString(), TrayMenu *parent = nullptr);
     ~TrayWidget();
 
     Data::SyncthingConnection &connection();
@@ -61,7 +61,8 @@ public slots:
 
 private slots:
     void handleStatusChanged(Data::SyncthingStatus status);
-    static void applySettings();
+    void applySettings(const QString &connectionConfig = QString());
+    static void applySettingsOnAllInstances();
     void openDir(const Data::SyncthingDir &dir);
     void openItemDir(const Data::SyncthingItemDownloadProgress &item);
     void scanDir(const Data::SyncthingDir &dir);

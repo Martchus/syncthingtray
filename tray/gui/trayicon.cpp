@@ -34,10 +34,10 @@ namespace QtGui {
 /*!
  * \brief Instantiates a new tray icon.
  */
-TrayIcon::TrayIcon(QObject *parent)
+TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     : QSystemTrayIcon(parent)
     , m_initialized(false)
-    , m_trayMenu(this)
+    , m_trayMenu(this, connectionConfig)
     , m_status(SyncthingStatus::Disconnected)
 {
     // set context menu

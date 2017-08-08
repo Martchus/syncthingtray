@@ -54,7 +54,7 @@ vector<TrayWidget *> TrayWidget::m_instances;
 /*!
  * \brief Instantiates a new tray widget.
  */
-TrayWidget::TrayWidget(TrayMenu *parent)
+TrayWidget::TrayWidget(const QString &connectionConfig, TrayMenu *parent)
     : QWidget(parent)
     , m_menu(parent)
     , m_ui(new Ui::TrayWidget)
@@ -113,7 +113,6 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     m_connectionsActionGroup = new QActionGroup(m_connectionsMenu = new QMenu(tr("Connection"), this));
     m_connectionsMenu->setIcon(
         QIcon::fromTheme(QStringLiteral("network-connect"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/network-connect.svg"))));
-    m_ui->connectionsPushButton->setText(Settings::values().connection.primary.label);
     m_ui->connectionsPushButton->setMenu(m_connectionsMenu);
 
     // setup notifications menu
@@ -123,7 +122,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     m_ui->notificationsPushButton->setMenu(m_notificationsMenu);
 
     // apply settings, this also establishes the connection to Syncthing (according to settings)
-    applySettings();
+    applySettings(connectionConfig);
 
     // setup other widgets
     m_ui->notificationsPushButton->setHidden(true);
@@ -179,7 +178,7 @@ void TrayWidget::showSettingsDialog()
 {
     if (!m_settingsDlg) {
         m_settingsDlg = new SettingsDialog(&m_connection, this);
-        connect(m_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettings);
+        connect(m_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettingsOnAllInstances);
     }
     centerWidget(m_settingsDlg);
     showDialog(m_settingsDlg);
@@ -360,80 +359,100 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
     }
 }
 
-void TrayWidget::applySettings()
+void TrayWidget::applySettings(const QString &connectionConfig)
+{
+    // update connections menu
+    int connectionIndex = 0;
+    auto &settings = Settings::values();
+    auto &primaryConnectionSettings = settings.connection.primary;
+    auto &secondaryConnectionSettings = settings.connection.secondary;
+    const int connectionCount = static_cast<int>(1 + secondaryConnectionSettings.size());
+    const QList<QAction *> connectionActions = m_connectionsActionGroup->actions();
+    m_selectedConnection = nullptr;
+    bool specifiedConnectionConfigFound = false;
+    for (; connectionIndex < connectionCount; ++connectionIndex) {
+        SyncthingConnectionSettings &connectionSettings
+            = (connectionIndex == 0 ? primaryConnectionSettings : secondaryConnectionSettings[static_cast<size_t>(connectionIndex - 1)]);
+        QAction *action;
+        if (connectionIndex < connectionActions.size()) {
+            action = connectionActions.at(connectionIndex);
+            action->setText(connectionSettings.label);
+            if (action->isChecked() && !m_selectedConnection) {
+                m_selectedConnection = &connectionSettings;
+            }
+        } else {
+            action = m_connectionsMenu->addAction(connectionSettings.label);
+            action->setCheckable(true);
+            m_connectionsActionGroup->addAction(action);
+        }
+        if (!connectionConfig.isEmpty() && !connectionSettings.label.compare(connectionConfig, Qt::CaseInsensitive)) {
+            m_selectedConnection = &connectionSettings;
+            specifiedConnectionConfigFound = true;
+            action->setChecked(true);
+        }
+    }
+    for (; connectionIndex < connectionActions.size(); ++connectionIndex) {
+        delete connectionActions.at(connectionIndex);
+    }
+    if (!m_selectedConnection) {
+        m_selectedConnection = &primaryConnectionSettings;
+        m_connectionsMenu->actions().at(0)->setChecked(true);
+    }
+    m_ui->connectionsPushButton->setText(m_selectedConnection->label);
+    const bool reconnectRequired = m_connection.applySettings(*m_selectedConnection);
+
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    // reconnect to apply settings considering systemd
+    const bool couldReconnect = handleSystemdStatusChanged();
+    if (reconnectRequired && couldReconnect) {
+        m_connection.reconnect();
+    }
+#else
+    instance->m_connection.reconnect();
+#endif
+
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
+    // web view
+    if (m_webViewDlg) {
+        m_webViewDlg->applySettings(*m_selectedConnection);
+    }
+#endif
+
+    // update visual appearance
+    m_ui->trafficFormWidget->setVisible(settings.appearance.showTraffic);
+    m_ui->trafficIconLabel->setVisible(settings.appearance.showTraffic);
+    m_ui->trafficHorizontalSpacer->changeSize(
+        0, 20, settings.appearance.showTraffic ? QSizePolicy::Expanding : QSizePolicy::Ignored, QSizePolicy::Minimum);
+    if (settings.appearance.showTraffic) {
+        updateTraffic();
+    }
+    m_ui->infoFrame->setFrameStyle(settings.appearance.frameStyle);
+    m_ui->buttonsFrame->setFrameStyle(settings.appearance.frameStyle);
+    if (QApplication::style() && !QApplication::style()->objectName().compare(QLatin1String("adwaita"), Qt::CaseInsensitive)) {
+        m_cornerFrame->setFrameStyle(QFrame::NoFrame);
+    } else {
+        m_cornerFrame->setFrameStyle(settings.appearance.frameStyle);
+    }
+    if (settings.appearance.tabPosition >= QTabWidget::North && settings.appearance.tabPosition <= QTabWidget::East) {
+        m_ui->tabWidget->setTabPosition(static_cast<QTabWidget::TabPosition>(settings.appearance.tabPosition));
+    }
+    m_dirModel.setBrightColors(settings.appearance.brightTextColors);
+    m_devModel.setBrightColors(settings.appearance.brightTextColors);
+    m_dlModel.setBrightColors(settings.appearance.brightTextColors);
+
+    // show warning when explicitely specified connection configuration was not found
+    if (!specifiedConnectionConfigFound && !connectionConfig.isEmpty()) {
+        auto *const msgBox = new QMessageBox(QMessageBox::Warning, QCoreApplication::applicationName(),
+            tr("The specified connection configuration <em>%1</em> is not defined and hence ignored.").arg(connectionConfig));
+        msgBox->setAttribute(Qt::WA_DeleteOnClose);
+        msgBox->show();
+    }
+}
+
+void TrayWidget::applySettingsOnAllInstances()
 {
     for (TrayWidget *instance : m_instances) {
-        // update connections menu
-        int connectionIndex = 0;
-        auto &settings = Settings::values();
-        auto &primaryConnectionSettings = settings.connection.primary;
-        auto &secondaryConnectionSettings = settings.connection.secondary;
-        const int connectionCount = static_cast<int>(1 + secondaryConnectionSettings.size());
-        const QList<QAction *> connectionActions = instance->m_connectionsActionGroup->actions();
-        instance->m_selectedConnection = nullptr;
-        for (; connectionIndex < connectionCount; ++connectionIndex) {
-            SyncthingConnectionSettings &connectionSettings
-                = (connectionIndex == 0 ? primaryConnectionSettings : secondaryConnectionSettings[static_cast<size_t>(connectionIndex - 1)]);
-            if (connectionIndex < connectionActions.size()) {
-                QAction *action = connectionActions.at(connectionIndex);
-                action->setText(connectionSettings.label);
-                if (action->isChecked()) {
-                    instance->m_selectedConnection = &connectionSettings;
-                }
-            } else {
-                QAction *action = instance->m_connectionsMenu->addAction(connectionSettings.label);
-                action->setCheckable(true);
-                instance->m_connectionsActionGroup->addAction(action);
-            }
-        }
-        for (; connectionIndex < connectionActions.size(); ++connectionIndex) {
-            delete connectionActions.at(connectionIndex);
-        }
-        if (!instance->m_selectedConnection) {
-            instance->m_selectedConnection = &primaryConnectionSettings;
-            instance->m_connectionsMenu->actions().at(0)->setChecked(true);
-        }
-        instance->m_ui->connectionsPushButton->setText(instance->m_selectedConnection->label);
-        const bool reconnectRequired = instance->m_connection.applySettings(*instance->m_selectedConnection);
-
-// reconnect to apply settings considering systemd
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        const bool couldReconnect = instance->handleSystemdStatusChanged();
-        if (reconnectRequired && couldReconnect) {
-            instance->m_connection.reconnect();
-        }
-#else
-        instance->m_connection.reconnect();
-#endif
-
-// web view
-#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-        if (instance->m_webViewDlg) {
-            instance->m_webViewDlg->applySettings(*instance->m_selectedConnection);
-        }
-#endif
-
-        // update visual appearance
-        instance->m_ui->trafficFormWidget->setVisible(settings.appearance.showTraffic);
-        instance->m_ui->trafficIconLabel->setVisible(settings.appearance.showTraffic);
-        instance->m_ui->trafficHorizontalSpacer->changeSize(
-            0, 20, settings.appearance.showTraffic ? QSizePolicy::Expanding : QSizePolicy::Ignored, QSizePolicy::Minimum);
-        if (settings.appearance.showTraffic) {
-            instance->updateTraffic();
-        }
-        instance->m_ui->infoFrame->setFrameStyle(settings.appearance.frameStyle);
-        instance->m_ui->buttonsFrame->setFrameStyle(settings.appearance.frameStyle);
-        if (QApplication::style() && !QApplication::style()->objectName().compare(QLatin1String("adwaita"), Qt::CaseInsensitive)) {
-            instance->m_cornerFrame->setFrameStyle(QFrame::NoFrame);
-        } else {
-            instance->m_cornerFrame->setFrameStyle(settings.appearance.frameStyle);
-        }
-        if (settings.appearance.tabPosition >= QTabWidget::North && settings.appearance.tabPosition <= QTabWidget::East) {
-            instance->m_ui->tabWidget->setTabPosition(static_cast<QTabWidget::TabPosition>(settings.appearance.tabPosition));
-        }
-        instance->m_dirModel.setBrightColors(settings.appearance.brightTextColors);
-        instance->m_devModel.setBrightColors(settings.appearance.brightTextColors);
-        instance->m_dlModel.setBrightColors(settings.appearance.brightTextColors);
+        instance->applySettings();
     }
 }
 

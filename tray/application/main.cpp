@@ -46,7 +46,7 @@ void handleSystemdServiceError(const QString &context, const QString &name, cons
 }
 #endif
 
-int initSyncthingTray(bool windowed, bool waitForTray)
+int initSyncthingTray(bool windowed, bool waitForTray, const char *connectionConfig)
 {
     auto &v = Settings::values();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -54,16 +54,17 @@ int initSyncthingTray(bool windowed, bool waitForTray)
     service.setUnitName(v.systemd.syncthingUnit);
     QObject::connect(&service, &SyncthingService::errorOccurred, &handleSystemdServiceError);
 #endif
+    const QString connectionConfigQStr = connectionConfig ? QString::fromLocal8Bit(connectionConfig) : QString();
     if (windowed) {
         v.launcher.autostart();
-        auto *trayWidget = new TrayWidget;
+        auto *trayWidget = new TrayWidget(connectionConfigQStr);
         trayWidget->setAttribute(Qt::WA_DeleteOnClose);
         trayWidget->show();
     } else {
 #ifndef QT_NO_SYSTEMTRAYICON
         if (QSystemTrayIcon::isSystemTrayAvailable() || waitForTray) {
             v.launcher.autostart();
-            auto *trayIcon = new TrayIcon;
+            auto *trayIcon = new TrayIcon(connectionConfigQStr);
             trayIcon->show();
             if (v.firstLaunch) {
                 QMessageBox msgBox;
@@ -124,11 +125,13 @@ int runApplication(int argc, const char *const *argv)
     Argument waitForTrayArg("wait", '\0',
         "wait until the system tray becomes available instead of showing an error message if the system tray is not available on start-up");
     waitForTrayArg.setCombinable(true);
+    ConfigValueArgument connectionArg("connection", '\0', "specifies the connection configuration to be used", { "config name" });
     Argument &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
     widgetsGuiArg.addSubArgument(&windowedArg);
     widgetsGuiArg.addSubArgument(&showWebUiArg);
     widgetsGuiArg.addSubArgument(&triggerArg);
     widgetsGuiArg.addSubArgument(&waitForTrayArg);
+    widgetsGuiArg.addSubArgument(&connectionArg);
 
     parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(), &helpArg });
     try {
@@ -149,7 +152,7 @@ int runApplication(int argc, const char *const *argv)
                 qtConfigArgs.applySettings(true);
                 LOAD_QT_TRANSLATIONS;
 
-                int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent());
+                int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue());
                 if (!res) {
                     trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
                     res = application.exec();
@@ -163,7 +166,7 @@ int runApplication(int argc, const char *const *argv)
                     // if --webui or --trigger is present don't create a new tray icon, just trigger actions
                     trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
                 } else {
-                    const int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent());
+                    const int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue());
                     if (!res) {
                         trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
                     }

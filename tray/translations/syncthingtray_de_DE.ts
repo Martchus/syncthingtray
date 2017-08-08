@@ -124,19 +124,19 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="72"/>
-        <location filename="../gui/traywidget.cpp" line="194"/>
+        <location filename="../gui/traywidget.cpp" line="193"/>
         <source>About</source>
         <translation>Über Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="99"/>
-        <location filename="../gui/traywidget.cpp" line="333"/>
+        <location filename="../gui/traywidget.cpp" line="332"/>
         <source>Connect</source>
         <translation>Verbinden</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="113"/>
-        <location filename="../gui/traywidget.cpp" line="555"/>
+        <location filename="../gui/traywidget.cpp" line="574"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../gui/traywidget.ui" line="250"/>
         <location filename="../gui/traywidget.ui" line="270"/>
-        <location filename="../gui/traywidget.cpp" line="509"/>
+        <location filename="../gui/traywidget.cpp" line="528"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -191,8 +191,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="311"/>
-        <location filename="../gui/traywidget.cpp" line="120"/>
-        <location filename="../gui/traywidget.cpp" line="277"/>
+        <location filename="../gui/traywidget.cpp" line="119"/>
+        <location filename="../gui/traywidget.cpp" line="276"/>
         <source>New notifications</source>
         <translation>Neue Benachrichtigungen</translation>
     </message>
@@ -247,67 +247,72 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Verbindung</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="224"/>
+        <location filename="../gui/traywidget.cpp" line="223"/>
         <source>Own device ID</source>
         <translation>Eigene Geräte-ID</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="234"/>
+        <location filename="../gui/traywidget.cpp" line="233"/>
         <source>device ID is unknown</source>
         <translation>die Geräte-ID ist unbekannt</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="242"/>
+        <location filename="../gui/traywidget.cpp" line="241"/>
         <source>Copy to clipboard</source>
         <translation>in Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="259"/>
+        <location filename="../gui/traywidget.cpp" line="258"/>
         <source>Log</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="308"/>
+        <location filename="../gui/traywidget.cpp" line="307"/>
         <source>Do you really want to restart Syncthing?</source>
         <translation>Soll Syncthing wirklich neu gestartet werden?</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="334"/>
+        <location filename="../gui/traywidget.cpp" line="333"/>
         <source>Not connected to Syncthing, click to connect</source>
         <translation>Verbindung zu Syncthing getrennt, klicke um zu verbinden</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="346"/>
+        <location filename="../gui/traywidget.cpp" line="345"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="347"/>
+        <location filename="../gui/traywidget.cpp" line="346"/>
         <source>Syncthing is running, click to pause all devices</source>
         <translation>Syncthing läuft, klicke um alle Geräte zu pausieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="353"/>
+        <location filename="../gui/traywidget.cpp" line="352"/>
         <source>Continue</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="354"/>
+        <location filename="../gui/traywidget.cpp" line="353"/>
         <source>At least one device is paused, click to resume</source>
         <translation>Mind. ein Gerät ist pausiert, klicke um fortzusetzen</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="446"/>
+        <source>The specified connection configuration &lt;em&gt;%1&lt;/em&gt; is not defined and hence ignored.</source>
+        <translation>Die angegebene Verbindungskonfiguration &lt;em&gt;%1&lt;/em&gt; ist nicht definiert und wird daher ignoriert.</translation>
+    </message>
+    <message>
+        <location filename="../gui/traywidget.cpp" line="465"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Das Verzeichnis &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="457"/>
+        <location filename="../gui/traywidget.cpp" line="476"/>
         <source>The containing directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Das beinhaltende Verzeichnis &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="550"/>
+        <location filename="../gui/traywidget.cpp" line="569"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
@@ -320,22 +325,22 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Fehler beim </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="72"/>
+        <location filename="../application/main.cpp" line="73"/>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>
         <translation>Vor der ersten Verwendung muss eingestellt werden, wie sich das Syncthing Tray mit Syncthing verbinden soll.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="73"/>
+        <location filename="../application/main.cpp" line="74"/>
         <source>Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration.</source>
         <translation>Der Einstellungsdialog ermöglicht es die URL, Zugangsdaten und den API-Key automatisch aus der lokalen Syncthing-Konfiguration auszulesen.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="80"/>
+        <location filename="../application/main.cpp" line="81"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Das System-Tray bzw. der Infobereich ist aktuell nicht verfügbar. Es wäre möglich, Syncthing Tray als normales Fenster zu starten (mit Option -w).</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="86"/>
+        <location filename="../application/main.cpp" line="87"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Die verwendete Qt-Bibliothek wurde nicht mit Unterstützung für System-Tray konfiguriert. Es wäre möglich, Syncthing Tray als normales Fenster zu starten (mit Option -w).</translation>
     </message>
