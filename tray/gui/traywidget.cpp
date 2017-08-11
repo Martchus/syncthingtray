@@ -408,7 +408,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
         m_connection.reconnect();
     }
 #else
-    instance->m_connection.reconnect();
+    m_connection.reconnect();
 #endif
 
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
