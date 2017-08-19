@@ -53,57 +53,57 @@
 <context>
     <name>QtGui::TrayIcon</name>
     <message>
-        <location filename="../gui/trayicon.cpp" line="46"/>
+        <location filename="../gui/trayicon.cpp" line="49"/>
         <source>Web UI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="50"/>
+        <location filename="../gui/trayicon.cpp" line="53"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="54"/>
+        <location filename="../gui/trayicon.cpp" line="57"/>
         <source>Rescan all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="58"/>
+        <location filename="../gui/trayicon.cpp" line="61"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="62"/>
+        <location filename="../gui/trayicon.cpp" line="65"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="67"/>
+        <location filename="../gui/trayicon.cpp" line="70"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="209"/>
-        <source>Disconnected from Syncthing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="157"/>
+        <location filename="../gui/trayicon.cpp" line="178"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="174"/>
+        <location filename="../gui/trayicon.cpp" line="197"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="229"/>
+        <location filename="../gui/trayicon.cpp" line="233"/>
+        <source>Disconnected from Syncthing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="253"/>
         <source>Synchronization of %1 complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="236"/>
+        <location filename="../gui/trayicon.cpp" line="260"/>
         <source>Synchronization of the following devices complete:
 </source>
         <translation type="unfinished"></translation>

@@ -312,12 +312,48 @@
     </message>
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="21"/>
+        <source>View details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="23"/>
         <source>Show</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="21"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="23"/>
         <source>Dismiss</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QtGui::ErrorViewDialog</name>
+    <message>
+        <location filename="../misc/errorviewdialog.cpp" line="24"/>
+        <source>Internal errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/errorviewdialog.cpp" line="25"/>
+        <source>Request URL:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/errorviewdialog.cpp" line="26"/>
+        <source>Response:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../misc/errorviewdialog.cpp" line="88"/>
+        <source>%1 error(s) occured</source>
+        <translation type="unfinished">
+            <numerusform>%1 error occured</numerusform>
+            <numerusform>%1 errors occured</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../misc/errorviewdialog.cpp" line="52"/>
+        <source>Clear errors</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
