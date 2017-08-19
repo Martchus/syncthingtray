@@ -202,10 +202,24 @@ void Application::handleResponse()
     }
 }
 
-void Application::handleError(const QString &message)
+void Application::handleError(
+    const QString &message, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
+    VAR_UNUSED(category)
+    VAR_UNUSED(networkError)
     eraseLine(cout);
-    cerr << "\rError: " << message.toLocal8Bit().data() << endl;
+    cerr << '\n';
+    setStyle(cerr, Color::Red, ColorContext::Foreground, TextAttribute::Bold);
+    cerr << "\rError: ";
+    resetStyle(cerr);
+    cerr << message.toLocal8Bit().data();
+    const QUrl url(request.url());
+    if (!url.isEmpty()) {
+        cerr << "\nRequest: " << url.toString(QUrl::PrettyDecoded).toLocal8Bit().data();
+    }
+    if (!response.isEmpty()) {
+        cerr << "\nResponse:\n" << response.data() << endl;
+    }
     QCoreApplication::exit(-3);
 }
 

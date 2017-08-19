@@ -6,6 +6,7 @@
 
 #include <QJsonObject>
 #include <QList>
+#include <QNetworkRequest>
 #include <QObject>
 #include <QSslError>
 #include <QTimer>
@@ -16,10 +17,10 @@
 
 QT_FORWARD_DECLARE_CLASS(QNetworkAccessManager)
 QT_FORWARD_DECLARE_CLASS(QNetworkReply)
-QT_FORWARD_DECLARE_CLASS(QNetworkRequest)
 QT_FORWARD_DECLARE_CLASS(QUrlQuery)
 QT_FORWARD_DECLARE_CLASS(QJsonObject)
 QT_FORWARD_DECLARE_CLASS(QJsonArray)
+QT_FORWARD_DECLARE_CLASS(QJsonParseError)
 
 class ConnectionTests;
 class MiscTests;
@@ -152,7 +153,8 @@ Q_SIGNALS:
     void devStatusChanged(const SyncthingDev &dev, int index);
     void downloadProgressChanged();
     void newNotification(ChronoUtilities::DateTime when, const QString &message);
-    void error(const QString &errorMessage, SyncthingErrorCategory category, int networkError);
+    void error(const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request = QNetworkRequest(),
+        const QByteArray &response = QByteArray());
     void statusChanged(SyncthingStatus newStatus);
     void configDirChanged(const QString &newConfigDir);
     void myIdChanged(const QString &myNewId);
@@ -204,6 +206,8 @@ private Q_SLOTS:
     void autoReconnect();
     void setStatus(SyncthingStatus status);
     void emitNotification(ChronoUtilities::DateTime when, const QString &message);
+    void emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response = QByteArray());
+    void emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply);
 
 private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);

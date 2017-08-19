@@ -864,7 +864,7 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
  */
 void SyncthingConnection::readConfig()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply == m_configReply) {
         m_configReply = nullptr;
@@ -872,8 +872,9 @@ void SyncthingConnection::readConfig()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
+        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error == QJsonParseError::NoError) {
             m_rawConfig = replyDoc.object();
             emit newConfig(m_rawConfig);
@@ -884,14 +885,14 @@ void SyncthingConnection::readConfig()
                 continueConnecting();
             }
         } else {
-            emit error(tr("Unable to parse Syncthing config: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
+            emitError(tr("Unable to parse Syncthing config: "), jsonError, reply, response);
         }
         break;
     }
     case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request Syncthing config: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection, reply->error());
+        emitError(tr("Unable to request Syncthing config: "), SyncthingErrorCategory::OverallConnection, reply);
         setStatus(SyncthingStatus::Disconnected);
         if (m_autoReconnectTimer.interval()) {
             m_autoReconnectTimer.start();
@@ -962,7 +963,7 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
  */
 void SyncthingConnection::readStatus()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply == m_statusReply) {
         m_statusReply = nullptr;
@@ -970,8 +971,9 @@ void SyncthingConnection::readStatus()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
+        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error == QJsonParseError::NoError) {
             const QJsonObject replyObj(replyDoc.object());
             const QString myId(replyObj.value(QStringLiteral("myID")).toString());
@@ -993,14 +995,14 @@ void SyncthingConnection::readStatus()
                 continueConnecting();
             }
         } else {
-            emit error(tr("Unable to parse Syncthing status: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
+            emitError(tr("Unable to parse Syncthing status: "), jsonError, reply, response);
         }
         break;
     }
     case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request Syncthing status: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection, reply->error());
+        emitError(tr("Unable to request Syncthing status: "), SyncthingErrorCategory::OverallConnection, reply);
     }
 }
 
@@ -1009,7 +1011,7 @@ void SyncthingConnection::readStatus()
  */
 void SyncthingConnection::readConnections()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply == m_connectionsReply) {
         m_connectionsReply = nullptr;
@@ -1017,8 +1019,9 @@ void SyncthingConnection::readConnections()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
+        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error == QJsonParseError::NoError) {
             const QJsonObject replyObj(replyDoc.object());
             const QJsonObject totalObj(replyObj.value(QStringLiteral("total")).toObject());
@@ -1081,14 +1084,14 @@ void SyncthingConnection::readConnections()
                 m_trafficPollTimer.start();
             }
         } else {
-            emit error(tr("Unable to parse connections: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
+            emitError(tr("Unable to parse connections: "), jsonError, reply, response);
         }
         break;
     }
     case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request connections: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection, reply->error());
+        emitError(tr("Unable to request connections: "), SyncthingErrorCategory::OverallConnection, reply);
     }
 }
 
@@ -1097,13 +1100,18 @@ void SyncthingConnection::readConnections()
  */
 void SyncthingConnection::readDirStatistics()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
+        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        QTimer::singleShot(7000, [this] {
+            emit this->error(QStringLiteral("some error message"), SyncthingErrorCategory::SpecificRequest, 0,
+                QNetworkRequest(QUrl(QString("http://tadlasjkfefj asdj<sdf jasyöldf"))), QByteArray("asdlkfja saslködfj asölf jaeöfklaj söefkla"));
+        });
         if (jsonError.error == QJsonParseError::NoError) {
             const QJsonObject replyObj(replyDoc.object());
             int index = 0;
@@ -1142,15 +1150,14 @@ void SyncthingConnection::readDirStatistics()
                 ++index;
             }
         } else {
-            emit error(
-                tr("Unable to parse directory statistics: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
+            emitError(tr("Unable to parse directory statistics: "), jsonError, reply, response);
         }
         break;
     }
     case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request directory statistics: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection, reply->error());
+        emitError(tr("Unable to request directory statistics: "), SyncthingErrorCategory::OverallConnection, reply);
     }
 }
 
@@ -1159,13 +1166,14 @@ void SyncthingConnection::readDirStatistics()
  */
 void SyncthingConnection::readDeviceStatistics()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
+        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error == QJsonParseError::NoError) {
             const QJsonObject replyObj(replyDoc.object());
             int index = 0;
@@ -1186,14 +1194,14 @@ void SyncthingConnection::readDeviceStatistics()
                 m_devStatsPollTimer.start();
             }
         } else {
-            emit error(tr("Unable to parse device statistics: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
+            emitError(tr("Unable to parse device statistics: "), jsonError, reply, response);
         }
         break;
     }
     case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request device statistics: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection, reply->error());
+        emitError(tr("Unable to request device statistics: "), SyncthingErrorCategory::OverallConnection, reply);
     }
 }
 
@@ -1202,7 +1210,7 @@ void SyncthingConnection::readDeviceStatistics()
  */
 void SyncthingConnection::readErrors()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply == m_errorsReply) {
         m_errorsReply = nullptr;
@@ -1215,8 +1223,9 @@ void SyncthingConnection::readErrors()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
+        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error == QJsonParseError::NoError) {
             for (const QJsonValue &errorVal : replyDoc.object().value(QStringLiteral("errors")).toArray()) {
                 const QJsonObject errorObj(errorVal.toObject());
@@ -1231,7 +1240,7 @@ void SyncthingConnection::readErrors()
                 }
             }
         } else {
-            emit error(tr("Unable to parse errors: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
+            emitError(tr("Unable to parse errors: "), jsonError, reply, response);
         }
 
         // since there seems no event for this data, keep polling
@@ -1243,7 +1252,7 @@ void SyncthingConnection::readErrors()
     case QNetworkReply::OperationCanceledError:
         return; // intended, not an error
     default:
-        emit error(tr("Unable to request errors: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
+        emitError(tr("Unable to request errors: "), SyncthingErrorCategory::SpecificRequest, reply);
     }
 }
 
@@ -1252,14 +1261,14 @@ void SyncthingConnection::readErrors()
  */
 void SyncthingConnection::readClearingErrors()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
 
     switch (reply->error()) {
     case QNetworkReply::NoError:
         break;
     default:
-        emit error(tr("Unable to request clearing errors: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
+        emitError(tr("Unable to request clearing errors: "), SyncthingErrorCategory::SpecificRequest, reply);
     }
 }
 
@@ -1268,7 +1277,7 @@ void SyncthingConnection::readClearingErrors()
  */
 void SyncthingConnection::readEvents()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply == m_eventsReply) {
         m_eventsReply = nullptr;
@@ -1276,8 +1285,9 @@ void SyncthingConnection::readEvents()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
+        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error == QJsonParseError::NoError) {
             const QJsonArray replyArray = replyDoc.array();
             emit newEvents(replyArray);
@@ -1312,7 +1322,7 @@ void SyncthingConnection::readEvents()
                 }
             }
         } else {
-            emit error(tr("Unable to parse Syncthing events: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
+            emitError(tr("Unable to parse Syncthing events: "), jsonError, reply, response);
             setStatus(SyncthingStatus::Disconnected);
             if (m_autoReconnectTimer.interval()) {
                 m_autoReconnectTimer.start();
@@ -1335,7 +1345,7 @@ void SyncthingConnection::readEvents()
         }
         return;
     default:
-        emit error(tr("Unable to request Syncthing events: ") + reply->errorString(), SyncthingErrorCategory::OverallConnection, reply->error());
+        emitError(tr("Unable to request Syncthing events: "), SyncthingErrorCategory::OverallConnection, reply);
         setStatus(SyncthingStatus::Disconnected);
         if (m_autoReconnectTimer.interval()) {
             m_autoReconnectTimer.start();
@@ -1570,7 +1580,7 @@ void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eve
 
 /*!
  * \brief Reads results of requestEvents().
- * \remarks TODO
+ * \todo Implement this.
  */
 void SyncthingConnection::readItemStarted(DateTime eventTime, const QJsonObject &eventData)
 {
@@ -1613,14 +1623,14 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
  */
 void SyncthingConnection::readRescan()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     switch (reply->error()) {
     case QNetworkReply::NoError:
         emit rescanTriggered(reply->property("dirId").toString());
         break;
     default:
-        emit error(tr("Unable to request rescan: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
+        emitError(tr("Unable to request rescan: "), SyncthingErrorCategory::SpecificRequest, reply);
     }
 }
 
@@ -1629,7 +1639,7 @@ void SyncthingConnection::readRescan()
  */
 void SyncthingConnection::readDevPauseResume()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     switch (reply->error()) {
     case QNetworkReply::NoError: {
@@ -1644,13 +1654,13 @@ void SyncthingConnection::readDevPauseResume()
         break;
     }
     default:
-        emit error(tr("Unable to request device pause/resume: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
+        emitError(tr("Unable to request device pause/resume: "), SyncthingErrorCategory::SpecificRequest, reply);
     }
 }
 
 void SyncthingConnection::readDirPauseResume()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     switch (reply->error()) {
     case QNetworkReply::NoError: {
@@ -1665,7 +1675,7 @@ void SyncthingConnection::readDirPauseResume()
         break;
     }
     default:
-        emit error(tr("Unable to request directory pause/resume: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
+        emitError(tr("Unable to request directory pause/resume: "), SyncthingErrorCategory::SpecificRequest, reply);
     }
 }
 
@@ -1674,14 +1684,14 @@ void SyncthingConnection::readDirPauseResume()
  */
 void SyncthingConnection::readRestart()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     switch (reply->error()) {
     case QNetworkReply::NoError:
         emit restartTriggered();
         break;
     default:
-        emit error(tr("Unable to request restart: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
+        emitError(tr("Unable to request restart: "), SyncthingErrorCategory::SpecificRequest, reply);
     }
 }
 
@@ -1690,14 +1700,14 @@ void SyncthingConnection::readRestart()
  */
 void SyncthingConnection::readShutdown()
 {
-    auto *reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     switch (reply->error()) {
     case QNetworkReply::NoError:
         emit shutdownTriggered();
         break;
     default:
-        emit error(tr("Unable to request shutdown: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
+        emitError(tr("Unable to request shutdown: "), SyncthingErrorCategory::SpecificRequest, reply);
     }
 }
 
@@ -1778,6 +1788,23 @@ void SyncthingConnection::emitNotification(DateTime when, const QString &message
     m_unreadNotifications = true;
     setStatus(status());
     emit newNotification(when, message);
+}
+
+/*!
+ * \brief Internally called to emit a JSON parsing error.
+ * \remarks Since in this case the reply has already been read, its response must be passed as extra argument.
+ */
+void SyncthingConnection::emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response)
+{
+    emit error(message + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError, reply->request(), response);
+}
+
+/*!
+ * \brief Internally called to emit a network error (server replied error code are connection or server could not be reached at all).
+ */
+void SyncthingConnection::emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply)
+{
+    emit error(message + reply->errorString(), category, reply->error(), reply->request(), reply->readAll());
 }
 
 /*!

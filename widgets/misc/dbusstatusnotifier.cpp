@@ -18,6 +18,8 @@ DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
     m_disconnectedNotification.setMessage(tr("Disconnected from Syncthing"));
     m_disconnectedNotification.setActions(QStringList(tr("Try to reconnect")));
     connect(&m_disconnectedNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::connectRequested);
+    m_internalErrorNotification.setActions(QStringList({ QStringLiteral("details"), tr("View details") }));
+    connect(&m_internalErrorNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::errorDetailsRequested);
     m_syncthingNotification.setActions(QStringList({ QStringLiteral("show"), tr("Show"), QStringLiteral("dismiss"), tr("Dismiss") }));
     connect(&m_syncthingNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::handleSyncthingNotificationAction);
 }

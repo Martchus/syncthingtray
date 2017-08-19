@@ -1,7 +1,9 @@
 #include "./trayicon.h"
 #include "./traywidget.h"
 
+#include "../../widgets/misc/errorviewdialog.h"
 #include "../../widgets/misc/statusinfo.h"
+#include "../../widgets/misc/textviewdialog.h"
 #include "../../widgets/settings/settings.h"
 
 #include "../../model/syncthingicons.h"
@@ -39,6 +41,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     , m_initialized(false)
     , m_trayMenu(this, connectionConfig)
     , m_status(SyncthingStatus::Disconnected)
+    , m_messageClickedAction(TrayIconMessageClickedAction::None)
 {
     // set context menu
     connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("internet-web-browser"),
@@ -74,7 +77,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     // connect signals and slots
     SyncthingConnection *connection = &(m_trayMenu.widget()->connection());
     connect(this, &TrayIcon::activated, this, &TrayIcon::handleActivated);
-    connect(this, &TrayIcon::messageClicked, m_trayMenu.widget(), &TrayWidget::dismissNotifications);
+    connect(this, &TrayIcon::messageClicked, this, &TrayIcon::handleMessageClicked);
     connect(connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
     connect(connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
     connect(connection, &SyncthingConnection::statusChanged, this, &TrayIcon::handleConnectionStatusChanged);
@@ -83,6 +86,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
         static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
     connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, m_trayMenu.widget(), &TrayWidget::dismissNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, m_trayMenu.widget(), &TrayWidget::showNotifications);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, &ErrorViewDialog::showInstance);
 #endif
     m_initialized = true;
 }
@@ -121,6 +125,20 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
     }
 }
 
+void TrayIcon::handleMessageClicked()
+{
+    switch (m_messageClickedAction) {
+    case TrayIconMessageClickedAction::None:
+        return;
+    case TrayIconMessageClickedAction::DismissNotification:
+        m_trayMenu.widget()->dismissNotifications();
+        break;
+    case TrayIconMessageClickedAction::ShowInternalErrors:
+        ErrorViewDialog::instance()->show();
+        break;
+    }
+}
+
 void TrayIcon::handleConnectionStatusChanged(SyncthingStatus status)
 {
     if (m_initialized && m_status == status) {
@@ -131,7 +149,8 @@ void TrayIcon::handleConnectionStatusChanged(SyncthingStatus status)
     m_status = status;
 }
 
-void TrayIcon::showInternalError(const QString &errorMsg, SyncthingErrorCategory category, int networkError)
+void TrayIcon::showInternalError(
+    const QString &errorMsg, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
     const auto &settings = Settings::values();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -148,14 +167,17 @@ void TrayIcon::showInternalError(const QString &errorMsg, SyncthingErrorCategory
                       && !service.isActiveWithoutSleepFor(settings.ignoreInavailabilityAfterStart)))
 #endif
             ) {
+        InternalError error(errorMsg, request.url(), response);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
         if (settings.dbusNotifications) {
-            m_dbusNotifier.showInternalError(errorMsg, category, networkError);
+            m_dbusNotifier.showInternalError(error);
         } else
 #endif
         {
+            m_messageClickedAction = TrayIconMessageClickedAction::ShowInternalErrors;
             showMessage(tr("Error"), errorMsg, QSystemTrayIcon::Critical);
         }
+        ErrorViewDialog::addError(move(error));
     }
 }
 
@@ -171,6 +193,7 @@ void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const Q
         Q_UNUSED(when)
 #endif
         {
+            m_messageClickedAction = TrayIconMessageClickedAction::DismissNotification;
             showMessage(tr("Syncthing notification - click to dismiss"), message, QSystemTrayIcon::Warning);
         }
     }
@@ -206,6 +229,7 @@ void TrayIcon::showStatusNotification(SyncthingStatus status)
             } else
 #endif
             {
+                m_messageClickedAction = TrayIconMessageClickedAction::None;
                 showMessage(QCoreApplication::applicationName(), tr("Disconnected from Syncthing"), QSystemTrayIcon::Warning);
             }
         }
@@ -241,6 +265,7 @@ void TrayIcon::showStatusNotification(SyncthingStatus status)
                 } else
 #endif
                 {
+                    m_messageClickedAction = TrayIconMessageClickedAction::None;
                     showMessage(QCoreApplication::applicationName(), message, QSystemTrayIcon::Information);
                 }
             }

@@ -11,6 +11,7 @@
 #include <QSystemTrayIcon>
 
 QT_FORWARD_DECLARE_CLASS(QPixmap)
+QT_FORWARD_DECLARE_CLASS(QNetworkRequest)
 
 namespace Data {
 enum class SyncthingStatus;
@@ -18,6 +19,8 @@ enum class SyncthingErrorCategory;
 }
 
 namespace QtGui {
+
+enum class TrayIconMessageClickedAction { None, DismissNotification, ShowInternalErrors };
 
 class TrayIcon : public QSystemTrayIcon {
     Q_OBJECT
@@ -27,13 +30,15 @@ public:
     TrayMenu &trayMenu();
 
 public slots:
-    void showInternalError(const QString &errorMsg, Data::SyncthingErrorCategory category, int networkError);
+    void showInternalError(
+        const QString &errorMsg, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);
     void showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message);
     void showStatusNotification(Data::SyncthingStatus status);
     void updateStatusIconAndText();
 
 private slots:
     void handleActivated(QSystemTrayIcon::ActivationReason reason);
+    void handleMessageClicked();
     void handleConnectionStatusChanged(Data::SyncthingStatus status);
 
 private:
@@ -44,6 +49,7 @@ private:
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     DBusStatusNotifier m_dbusNotifier;
 #endif
+    TrayIconMessageClickedAction m_messageClickedAction;
 };
 
 inline TrayMenu &TrayIcon::trayMenu()

@@ -1,5 +1,5 @@
-#ifndef TEXTVIEWDIALOG_H
-#define TEXTVIEWDIALOG_H
+#ifndef SYNCTHINGWIDGETS_TEXTVIEWDIALOG_H
+#define SYNCTHINGWIDGETS_TEXTVIEWDIALOG_H
 
 #include "../global.h"
 
@@ -21,7 +21,7 @@ public:
     QTextBrowser *browser();
     static TextViewDialog *forDirectoryErrors(const Data::SyncthingDir &dir);
 
-signals:
+Q_SIGNALS:
     void reload();
 
 protected:
@@ -37,4 +37,4 @@ inline QTextBrowser *TextViewDialog::browser()
 }
 }
 
-#endif // TEXTVIEWDIALOG_H
+#endif // SYNCTHINGWIDGETS_TEXTVIEWDIALOG_H

@@ -26,7 +26,8 @@ public:
 private slots:
     void handleStatusChanged(Data::SyncthingStatus newStatus);
     void handleResponse();
-    void handleError(const QString &message);
+    void handleError(
+        const QString &message, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);
     void findRelevantDirsAndDevs();
     void findRelevantDirsAndDevs(OperationType operationType);
     bool findPwd();

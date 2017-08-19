@@ -72,7 +72,7 @@ TextViewDialog *TextViewDialog::forDirectoryErrors(const Data::SyncthingDir &dir
     // add errors to text view and find errors about non-empty directories to be removed
     QStringList nonEmptyDirs;
     for (const SyncthingItemError &error : dir.itemErrors) {
-        browser->append(error.path % QChar(':') % QChar(' ') % QChar('\n') % error.message % QChar('\n'));
+        browser->append(error.path % QChar(':') % QChar('\n') % error.message % QChar('\n'));
         if (error.message.endsWith(QStringLiteral("directory not empty"))) {
             nonEmptyDirs << dir.path + error.path;
         }

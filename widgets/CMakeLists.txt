@@ -17,8 +17,10 @@ set(WIDGETS_HEADER_FILES
     webview/webpage.h
     webview/webviewdialog.h
     misc/textviewdialog.h
+    misc/errorviewdialog.h
     misc/statusinfo.h
     misc/dbusstatusnotifier.h
+    misc/internalerror.h
 )
 set(WIDGETS_SRC_FILES
     settings/settings.cpp
@@ -26,6 +28,7 @@ set(WIDGETS_SRC_FILES
     webview/webpage.cpp
     webview/webviewdialog.cpp
     misc/textviewdialog.cpp
+    misc/errorviewdialog.cpp
     misc/statusinfo.cpp
     misc/dbusstatusnotifier.cpp
 )
