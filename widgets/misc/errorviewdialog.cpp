@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 
 #include <algorithm>
+#include <iostream>
 #include <limits>
 
 using namespace std;
@@ -78,9 +79,20 @@ void ErrorViewDialog::addError(InternalError &&newError)
 
 void ErrorViewDialog::internalAddError(const InternalError &error)
 {
+    const QString url(error.url.toString(QUrl::FullyDecoded));
+
     browser()->append(QString::fromUtf8(error.when.toString(DateTimeOutputFormat::DateAndTime, true).data()) % QChar(':') % QChar(' ') % error.message
-        % QChar('\n') % m_request % QChar(' ') % error.url.toString(QUrl::FullyDecoded) % QChar('\n') % m_response % QChar('\n')
-        % QString::fromLocal8Bit(error.response) % QChar('\n'));
+        % QChar('\n') % m_request % QChar(' ') % url % QChar('\n') % m_response % QChar('\n') % QString::fromLocal8Bit(error.response) % QChar('\n'));
+
+    // also log errors to console
+    cerr << "internal error: " << error.message.toLocal8Bit().data();
+    if (!error.url.isEmpty()) {
+        cerr << "\n request URL: " << url.toLocal8Bit().data();
+    }
+    if (!error.response.isEmpty()) {
+        cerr << "\n response: " << error.response.data();
+    }
+    cerr << endl;
 }
 
 void ErrorViewDialog::updateStatusLabel()
