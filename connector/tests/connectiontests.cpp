@@ -123,8 +123,10 @@ void ConnectionTests::setUp()
         [this] { cerr << " - Connection status changed to: " << m_connection.statusText().toLocal8Bit().data() << endl; });
 
     // log configuration change
-    QObject::connect(&m_connection, &SyncthingConnection::newConfig,
-        [](const QJsonObject &config) { cerr << " - New config: " << QJsonDocument(config).toJson(QJsonDocument::Indented).data() << endl; });
+    if (qEnvironmentVariableIsSet("SYNCTHING_TEST_DUMP_CONFIG_UPDATES")) {
+        QObject::connect(&m_connection, &SyncthingConnection::newConfig,
+            [](const QJsonObject &config) { cerr << " - New config: " << QJsonDocument(config).toJson(QJsonDocument::Indented).data() << endl; });
+    }
 
     // log errors
     QObject::connect(&m_connection, &SyncthingConnection::error,
