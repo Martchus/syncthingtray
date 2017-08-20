@@ -558,12 +558,14 @@ void ConnectionTests::testRequestingRescan()
         CPPUNIT_ASSERT_EQUAL(QStringLiteral("test2"), dir);
         rescanTriggered = true;
     };
+    waitForSignals(bind(&SyncthingConnection::rescanAllDirs, &m_connection), 5000,
+        connectionSignal(&SyncthingConnection::rescanTriggered, rescanTriggeredHandler, &rescanTriggered));
+
     bool errorOccured = false;
     function<void(const QString &)> errorHandler = [&errorOccured](const QString &message) {
         errorOccured |= message.startsWith(QStringLiteral("Unable to request rescan: Error transferring"))
-            && message.endsWith(QStringLiteral("/rest/db/scan?folder=test1 - server replied: Internal Server Error"));
+            && message.endsWith(QStringLiteral("/rest/db/scan?folder=non-existing-dir&sub=sub/path - server replied: Internal Server Error"));
     };
-    waitForSignals(bind(&SyncthingConnection::rescanAllDirs, &m_connection), 5000,
-        connectionSignal(&SyncthingConnection::rescanTriggered, rescanTriggeredHandler, &rescanTriggered),
+    waitForSignals(bind(&SyncthingConnection::rescan, &m_connection, QStringLiteral("non-existing-dir"), QStringLiteral("sub/path")), 5000,
         connectionSignal(&SyncthingConnection::error, errorHandler, &errorOccured));
 }
