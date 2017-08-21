@@ -1108,10 +1108,6 @@ void SyncthingConnection::readDirStatistics()
         const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
         const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
-        QTimer::singleShot(7000, [this] {
-            emit this->error(QStringLiteral("some error message"), SyncthingErrorCategory::SpecificRequest, 0,
-                QNetworkRequest(QUrl(QString("http://tadlasjkfefj asdj<sdf jasyöldf"))), QByteArray("asdlkfja saslködfj asölf jaeöfklaj söefkla"));
-        });
         if (jsonError.error == QJsonParseError::NoError) {
             const QJsonObject replyObj(replyDoc.object());
             int index = 0;
