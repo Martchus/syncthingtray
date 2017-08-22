@@ -195,11 +195,11 @@ void MiscTests::testSyncthingDir()
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("out of sync"), dir.statusString());
 
     dir.itemErrors.clear();
-    dir.deviceIds.removeLast();
+    dir.deviceIds.clear();
     CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("idle"), updateTime += TimeSpan::fromMinutes(1.5)));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("dir considered unshared when only one dev present", QStringLiteral("unshared"), dir.statusString());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("dir considered unshared when no devs present", QStringLiteral("unshared"), dir.statusString());
     CPPUNIT_ASSERT(!dir.assignStatus(SyncthingDirStatus::Idle, updateTime += TimeSpan::fromMinutes(1.5)));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("dir considered unshared when only one dev present", QStringLiteral("unshared"), dir.statusString());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("dir considered unshared when no devs present", QStringLiteral("unshared"), dir.statusString());
 
     updateTime += TimeSpan::fromMinutes(1.5);
     CPPUNIT_ASSERT_MESSAGE("same status again not considered an update", !dir.assignStatus(QStringLiteral("idle"), updateTime));

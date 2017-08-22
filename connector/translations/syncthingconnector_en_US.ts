@@ -85,22 +85,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="888"/>
+        <location filename="../syncthingconnection.cpp" line="884"/>
         <source>Unable to parse Syncthing config: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="895"/>
+        <location filename="../syncthingconnection.cpp" line="891"/>
         <source>Unable to request Syncthing config: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1005"/>
+        <location filename="../syncthingconnection.cpp" line="986"/>
         <source>Unable to parse Syncthing status: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1012"/>
+        <location filename="../syncthingconnection.cpp" line="993"/>
         <source>Unable to request Syncthing status: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -160,27 +160,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1636"/>
+        <location filename="../syncthingconnection.cpp" line="1633"/>
         <source>Unable to request rescan: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1660"/>
+        <location filename="../syncthingconnection.cpp" line="1657"/>
         <source>Unable to request device pause/resume: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1681"/>
+        <location filename="../syncthingconnection.cpp" line="1678"/>
         <source>Unable to request directory pause/resume: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1697"/>
+        <location filename="../syncthingconnection.cpp" line="1694"/>
         <source>Unable to request restart: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1713"/>
+        <location filename="../syncthingconnection.cpp" line="1710"/>
         <source>Unable to request shutdown: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -270,7 +270,7 @@
 <context>
     <name>SyncthingDir</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="117"/>
+        <location filename="../syncthingdir.cpp" line="116"/>
         <source>paused</source>
         <translation type="unfinished"></translation>
     </message>

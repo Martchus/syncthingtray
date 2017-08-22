@@ -50,8 +50,7 @@ bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus)
     case SyncthingDirStatus::Unshared:
         if (!itemErrors.empty()) {
             newStatus = SyncthingDirStatus::OutOfSync;
-        } else if (deviceIds.size() < 2) {
-            // FIXME: we can assume only own device is assigned, correct?
+        } else if (deviceIds.empty()) {
             newStatus = SyncthingDirStatus::Unshared;
         }
         break;

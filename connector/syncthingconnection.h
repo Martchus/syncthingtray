@@ -182,6 +182,7 @@ private Q_SLOTS:
     void readDirs(const QJsonArray &dirs);
     void readDevs(const QJsonArray &devs);
     void readStatus();
+    void concludeReadingConfigAndStatus();
     void readConnections();
     void readDirStatistics();
     void readDeviceStatistics();
@@ -208,6 +209,7 @@ private Q_SLOTS:
     void emitNotification(ChronoUtilities::DateTime when, const QString &message);
     void emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response = QByteArray());
     void emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply);
+    void emitMyIdChanged(const QString &newId);
 
 private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);

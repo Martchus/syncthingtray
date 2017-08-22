@@ -878,12 +878,8 @@ void SyncthingConnection::readConfig()
         if (jsonError.error == QJsonParseError::NoError) {
             m_rawConfig = replyDoc.object();
             emit newConfig(m_rawConfig);
-            readDevs(m_rawConfig.value(QStringLiteral("devices")).toArray());
-            readDirs(m_rawConfig.value(QStringLiteral("folders")).toArray());
             m_hasConfig = true;
-            if (!isConnected()) {
-                continueConnecting();
-            }
+            concludeReadingConfigAndStatus();
         } else {
             emitError(tr("Unable to parse Syncthing config: "), jsonError, reply, response);
         }
@@ -919,7 +915,7 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
             dirItem->deviceNames.clear();
             for (const QJsonValue &dev : dirObj.value(QStringLiteral("devices")).toArray()) {
                 const QString devId = dev.toObject().value(QStringLiteral("deviceID")).toString();
-                if (!devId.isEmpty()) {
+                if (!devId.isEmpty() && devId != m_myId) {
                     dirItem->deviceIds << devId;
                     if (const SyncthingDev *const dev = findDevInfo(devId, dummy)) {
                         dirItem->deviceNames << dev->name;
@@ -982,25 +978,10 @@ void SyncthingConnection::readStatus()
         QJsonParseError jsonError;
         const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error == QJsonParseError::NoError) {
-            const QJsonObject replyObj(replyDoc.object());
-            const QString myId(replyObj.value(QStringLiteral("myID")).toString());
-            if (myId != m_myId) {
-                emit myIdChanged(m_myId = myId);
-                int index = 0;
-                for (SyncthingDev &dev : m_devs) {
-                    if (dev.id == m_myId) {
-                        dev.status = SyncthingDevStatus::OwnDevice;
-                        emit devStatusChanged(dev, index);
-                        break;
-                    }
-                    ++index;
-                }
-            }
+            emitMyIdChanged(replyDoc.object().value(QStringLiteral("myID")).toString());
             // other values are currently not interesting
             m_hasStatus = true;
-            if (!isConnected()) {
-                continueConnecting();
-            }
+            concludeReadingConfigAndStatus();
         } else {
             emitError(tr("Unable to parse Syncthing status: "), jsonError, reply, response);
         }
@@ -1010,6 +991,25 @@ void SyncthingConnection::readStatus()
         return; // intended, not an error
     default:
         emitError(tr("Unable to request Syncthing status: "), SyncthingErrorCategory::OverallConnection, reply);
+    }
+}
+
+/*!
+ * \brief Reads results of requestConfig() and requestStatus().
+ * \remarks Called in readConfig() or readStatus() to conclude reading parts requiring config *and* status
+ *          being available. Does nothing if this is not the case (yet).
+ */
+void SyncthingConnection::concludeReadingConfigAndStatus()
+{
+    if (!m_hasConfig || !m_hasStatus) {
+        return;
+    }
+
+    readDevs(m_rawConfig.value(QStringLiteral("devices")).toArray());
+    readDirs(m_rawConfig.value(QStringLiteral("folders")).toArray());
+
+    if (!isConnected()) {
+        continueConnecting();
     }
 }
 
@@ -1369,14 +1369,11 @@ void SyncthingConnection::readEvents()
  */
 void SyncthingConnection::readStartingEvent(const QJsonObject &eventData)
 {
-    QString strValue = eventData.value(QStringLiteral("home")).toString();
-    if (strValue != m_configDir) {
-        emit configDirChanged(m_configDir = strValue);
+    const QString configDir(eventData.value(QStringLiteral("home")).toString());
+    if (configDir != m_configDir) {
+        emit configDirChanged(m_configDir = configDir);
     }
-    strValue = eventData.value(QStringLiteral("myID")).toString();
-    if (strValue != m_myId) {
-        emit configDirChanged(m_myId = strValue);
-    }
+    emitMyIdChanged(eventData.value(QStringLiteral("myID")).toString());
 }
 
 /*!
@@ -1808,6 +1805,33 @@ void SyncthingConnection::emitError(const QString &message, const QJsonParseErro
 void SyncthingConnection::emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply)
 {
     emit error(message + reply->errorString(), category, reply->error(), reply->request(), reply->readAll());
+}
+
+/*!
+ * \brief Internally called to emit myIdChanged() signal.
+ */
+void SyncthingConnection::emitMyIdChanged(const QString &newId)
+{
+    if (newId.isEmpty() || m_myId == newId) {
+        return;
+    }
+
+    // adjust device status
+    int row = 0;
+    for (SyncthingDev &dev : m_devs) {
+        if (dev.id == newId) {
+            if (dev.status != SyncthingDevStatus::OwnDevice) {
+                dev.status = SyncthingDevStatus::OwnDevice;
+                emit devStatusChanged(dev, row);
+            }
+        } else if (dev.status == SyncthingDevStatus::OwnDevice) {
+            dev.status = SyncthingDevStatus::Unknown;
+            emit devStatusChanged(dev, row);
+        }
+        ++row;
+    }
+
+    emit myIdChanged(m_myId = newId);
 }
 
 /*!
