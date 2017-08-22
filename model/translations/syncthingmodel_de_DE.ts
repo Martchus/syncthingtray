@@ -124,9 +124,8 @@
         <translation>Pfad</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="91"/>
         <source>Devices</source>
-        <translation>Geräte</translation>
+        <translation type="vanished">Geräte</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="93"/>
@@ -191,67 +190,72 @@
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="173"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="180"/>
         <source>Deleted at %1</source>
         <translation>Gelöscht am %1</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="176"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="183"/>
         <source>Updated at %1</source>
         <translation>Aktualisiert am %1</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="189"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="196"/>
         <source>Click for details</source>
         <translation>Für details klicken</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="188"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="195"/>
         <source>Failed items</source>
         <translation>Fehlgeschlagene Elemente</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="211"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="218"/>
         <source>Unknown status</source>
         <translation>Unbekannter Status</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="215"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="222"/>
         <source>Idle</source>
         <translation>Leerlauf</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="213"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="220"/>
         <source>Unshared</source>
         <translation>Nicht geteilt</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="217"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="91"/>
+        <source>Shared with</source>
+        <translation>Geteilt mit</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="224"/>
         <source>Scanning (%1 %)</source>
         <translation>Scannen (%1 %)</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="217"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="224"/>
         <source>Scanning</source>
         <translation>Scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="219"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="226"/>
         <source>Synchronizing (%1 %)</source>
         <translation>Synchronisieren (%1 %)</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="219"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="226"/>
         <source>Synchronizing</source>
         <translation>Synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="207"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="214"/>
         <source>Paused</source>
         <translation>Pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="221"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="228"/>
         <source>Out of sync</source>
         <translation>Nicht synchronisiert</translation>
     </message>

@@ -442,7 +442,7 @@ void Application::printDir(const SyncthingDir *dir)
     printProperty("Last file time", dir->lastFileTime);
     printProperty("Last file name", dir->lastFileName);
     printProperty("Download progress", dir->downloadLabel);
-    printProperty("Devices", dir->devices);
+    printProperty("Shared with", dir->deviceNames.isEmpty() ? dir->deviceIds : dir->deviceNames);
     printProperty("Read-only", dir->readOnly);
     printProperty("Ignore permissions", dir->ignorePermissions);
     printProperty("Auto-normalize", dir->autoNormalize);

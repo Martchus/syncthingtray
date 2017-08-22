@@ -152,7 +152,7 @@ void MiscTests::testConnectionSettingsAndLoadingSelfSignedCert()
 void MiscTests::testSyncthingDir()
 {
     SyncthingDir dir;
-    dir.devices << QStringLiteral("dev1") << QStringLiteral("dev2");
+    dir.deviceIds << QStringLiteral("dev1") << QStringLiteral("dev2");
 
     DateTime updateTime(DateTime::fromDate(2005, 2, 3));
     CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Unshared, updateTime));
@@ -195,7 +195,7 @@ void MiscTests::testSyncthingDir()
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("out of sync"), dir.statusString());
 
     dir.itemErrors.clear();
-    dir.devices.removeLast();
+    dir.deviceIds.removeLast();
     CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("idle"), updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("dir considered unshared when only one dev present", QStringLiteral("unshared"), dir.statusString());
     CPPUNIT_ASSERT(!dir.assignStatus(SyncthingDirStatus::Idle, updateTime += TimeSpan::fromMinutes(1.5)));

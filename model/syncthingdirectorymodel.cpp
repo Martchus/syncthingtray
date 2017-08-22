@@ -88,7 +88,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 1:
                             return tr("Path");
                         case 2:
-                            return tr("Devices");
+                            return tr("Shared with");
                         case 3:
                             return tr("Read-only");
                         case 4:
@@ -109,7 +109,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 1:
                             return dir.path;
                         case 2:
-                            return dir.devices.join(QStringLiteral(", "));
+                            return (dir.deviceNames.isEmpty() ? dir.deviceIds : dir.deviceNames).join(QStringLiteral(", "));
                         case 3:
                             return dir.readOnly ? tr("yes") : tr("no");
                         case 4:
@@ -162,6 +162,13 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     case 1:
                         const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
                         switch (index.row()) {
+                        case 2:
+                            if (dir.deviceNames.isEmpty()) {
+                                return dir.deviceIds.join(QChar('\n'));
+                            } else {
+                                return QString(dir.deviceNames.join(QStringLiteral(", ")) % QChar('\n') % QChar('(') % dir.deviceIds.join(QChar('\n'))
+                                    % QChar(')'));
+                            }
                         case 5:
                             if (!dir.lastScanTime.isNull()) {
                                 return agoString(dir.lastScanTime);

@@ -96,6 +96,7 @@ private:
 
     SyncthingConnection m_connection;
     QString m_ownDevId;
+    QString m_ownDevName;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ConnectionTests);
@@ -342,6 +343,7 @@ void ConnectionTests::checkDevices()
             && dev.id != QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4")) {
             CPPUNIT_ASSERT_EQUAL_MESSAGE("own device", QStringLiteral("own device"), dev.statusString());
             m_ownDevId = dev.id;
+            m_ownDevName = dev.name;
         }
     }
     const SyncthingDev *dev1 = nullptr, *dev2 = nullptr;
@@ -388,8 +390,10 @@ void ConnectionTests::checkDirectories() const
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("idle"), dir1.statusString());
     CPPUNIT_ASSERT(!dir1.readOnly);
     CPPUNIT_ASSERT(!dir1.paused);
-    CPPUNIT_ASSERT_EQUAL(dir1.devices.toSet(), QSet<QString>({ QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"),
-                                                   QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4"), m_ownDevId }));
+    CPPUNIT_ASSERT_EQUAL(QSet<QString>({ QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"),
+                             QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4"), m_ownDevId }),
+        dir1.deviceIds.toSet());
+    CPPUNIT_ASSERT_EQUAL(QSet<QString>({ QStringLiteral("Test dev 2"), QStringLiteral("Test dev 1"), m_ownDevName }), dir1.deviceNames.toSet());
     const SyncthingDir &dir2 = dirInfo.back();
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("test2"), dir2.id);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("Test dir 2"), dir2.label);
@@ -400,7 +404,8 @@ void ConnectionTests::checkDirectories() const
     CPPUNIT_ASSERT(!dir2.readOnly);
     CPPUNIT_ASSERT(dir2.paused);
     CPPUNIT_ASSERT_EQUAL(
-        dir2.devices.toSet(), QSet<QString>({ QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"), m_ownDevId }));
+        QSet<QString>({ QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"), m_ownDevId }), dir2.deviceIds.toSet());
+    CPPUNIT_ASSERT_EQUAL(QSet<QString>({ QStringLiteral("Test dev 2"), m_ownDevName }), dir2.deviceNames.toSet());
 }
 
 void ConnectionTests::testReconnecting()

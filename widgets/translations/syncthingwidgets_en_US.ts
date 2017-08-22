@@ -329,22 +329,22 @@
 <context>
     <name>QtGui::ErrorViewDialog</name>
     <message>
-        <location filename="../misc/errorviewdialog.cpp" line="24"/>
+        <location filename="../misc/errorviewdialog.cpp" line="25"/>
         <source>Internal errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/errorviewdialog.cpp" line="25"/>
+        <location filename="../misc/errorviewdialog.cpp" line="26"/>
         <source>Request URL:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/errorviewdialog.cpp" line="26"/>
+        <location filename="../misc/errorviewdialog.cpp" line="27"/>
         <source>Response:</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/errorviewdialog.cpp" line="88"/>
+        <location filename="../misc/errorviewdialog.cpp" line="100"/>
         <source>%1 error(s) occured</source>
         <translation type="unfinished">
             <numerusform>%1 error occured</numerusform>
@@ -352,7 +352,7 @@
         </translation>
     </message>
     <message>
-        <location filename="../misc/errorviewdialog.cpp" line="52"/>
+        <location filename="../misc/errorviewdialog.cpp" line="53"/>
         <source>Clear errors</source>
         <translation type="unfinished"></translation>
     </message>

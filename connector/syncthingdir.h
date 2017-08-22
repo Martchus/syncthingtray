@@ -70,7 +70,8 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     QString id;
     QString label;
     QString path;
-    QStringList devices;
+    QStringList deviceIds;
+    QStringList deviceNames;
     bool readOnly = false;
     bool ignorePermissions = false;
     bool autoNormalize = false;

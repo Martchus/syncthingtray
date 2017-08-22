@@ -500,7 +500,7 @@ SyncthingDir *SyncthingConnection::findDirInfo(const QString &dirId, int &row)
 /*!
  * \brief Appends a directory info object with the specified \a dirId to \a dirs.
  *
- * If such an object already exists, it is recycled by moving it do \a dirs.
+ * If such an object already exists, it is recycled by moving it to \a dirs.
  * Otherwise a new, empty object is created.
  *
  * \returns Returns the directory info object or nullptr if \a dirId is invalid.
@@ -566,7 +566,7 @@ QStringList SyncthingConnection::deviceIds() const
 /*!
  * \brief Appends a device info object with the specified \a devId to \a devs.
  *
- * If such an object already exists, it is recycled by moving it do \a dirs.
+ * If such an object already exists, it is recycled by moving it to \a devs.
  * Otherwise a new, empty object is created.
  *
  * \returns Returns the device info object or nullptr if \a devId is invalid.
@@ -878,8 +878,8 @@ void SyncthingConnection::readConfig()
         if (jsonError.error == QJsonParseError::NoError) {
             m_rawConfig = replyDoc.object();
             emit newConfig(m_rawConfig);
-            readDirs(m_rawConfig.value(QStringLiteral("folders")).toArray());
             readDevs(m_rawConfig.value(QStringLiteral("devices")).toArray());
+            readDirs(m_rawConfig.value(QStringLiteral("folders")).toArray());
             m_hasConfig = true;
             if (!isConnected()) {
                 continueConnecting();
@@ -902,21 +902,28 @@ void SyncthingConnection::readConfig()
 
 /*!
  * \brief Reads directory results of requestConfig(); called by readConfig().
+ * \remarks The devs are required to resolve the names of the devices a directory is shared with.
+ *          So when parsing the config, readDevs() should be called first.
  */
 void SyncthingConnection::readDirs(const QJsonArray &dirs)
 {
     std::vector<SyncthingDir> newDirs;
     newDirs.reserve(static_cast<size_t>(dirs.size()));
+    int dummy;
     for (const QJsonValue &dirVal : dirs) {
         const QJsonObject dirObj(dirVal.toObject());
         if (SyncthingDir *dirItem = addDirInfo(newDirs, dirObj.value(QStringLiteral("id")).toString())) {
             dirItem->label = dirObj.value(QStringLiteral("label")).toString();
             dirItem->path = dirObj.value(QStringLiteral("path")).toString();
-            dirItem->devices.clear();
+            dirItem->deviceIds.clear();
+            dirItem->deviceNames.clear();
             for (const QJsonValue &dev : dirObj.value(QStringLiteral("devices")).toArray()) {
                 const QString devId = dev.toObject().value(QStringLiteral("deviceID")).toString();
                 if (!devId.isEmpty()) {
-                    dirItem->devices << devId;
+                    dirItem->deviceIds << devId;
+                    if (const SyncthingDev *const dev = findDevInfo(devId, dummy)) {
+                        dirItem->deviceNames << dev->name;
+                    }
                 }
             }
             dirItem->readOnly = dirObj.value(QStringLiteral("readOnly")).toBool(false);
