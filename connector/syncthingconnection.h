@@ -174,6 +174,8 @@ private Q_SLOTS:
     void requestErrors();
     void requestClearingErrors();
     void requestDirStatistics();
+    void requestDirStatus(const QString &dirId);
+
     void requestDeviceStatistics();
     void requestEvents();
     void abortAllRequests();
@@ -201,6 +203,8 @@ private Q_SLOTS:
     void readDirPauseResume();
     void readRestart();
     void readShutdown();
+    void readDirStatus();
+    void readDirSummary(const QJsonObject &summary, SyncthingDir &dirInfo, int index);
 
     void continueConnecting();
     void continueReconnecting();
@@ -210,6 +214,7 @@ private Q_SLOTS:
     void emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response = QByteArray());
     void emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply);
     void emitMyIdChanged(const QString &newId);
+    void handleFatalConnectionError();
 
 private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);

@@ -74,6 +74,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     QStringList deviceNames;
     bool readOnly = false;
     bool ignorePermissions = false;
+    bool ignorePatterns = false;
     bool autoNormalize = false;
     int rescanInterval = 0;
     int minDiskFreePercentage = 0;
@@ -85,9 +86,9 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     QString globalError;
     std::vector<SyncthingItemError> itemErrors;
     std::vector<SyncthingItemError> previousItemErrors;
-    int globalBytes = 0, globalDeleted = 0, globalFiles = 0;
-    int localBytes = 0, localDeleted = 0, localFiles = 0;
-    int neededByted = 0, neededFiles = 0;
+    quint64 globalBytes = 0, globalDeleted = 0, globalFiles = 0, globalDirs = 0;
+    quint64 localBytes = 0, localDeleted = 0, localFiles = 0, localDirs = 0;
+    quint64 neededByted = 0, neededFiles = 0, neededDirs = 0;
     ChronoUtilities::DateTime lastScanTime;
     ChronoUtilities::DateTime lastFileTime;
     QString lastFileName;

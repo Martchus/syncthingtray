@@ -3,6 +3,7 @@
 
 #include "./global.h"
 
+#include <QJsonValue>
 #include <QStringList>
 
 QT_FORWARD_DECLARE_CLASS(QUrl)
@@ -18,6 +19,11 @@ QString LIB_SYNCTHING_CONNECTOR_EXPORT agoString(ChronoUtilities::DateTime dateT
 bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QUrl &url);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);
+
+inline quint64 LIB_SYNCTHING_CONNECTOR_EXPORT toUInt64(const QJsonValue &value, double defaultValue = 0.0)
+{
+    return static_cast<quint64>(value.toDouble(defaultValue));
+}
 
 template <class Objects> QStringList LIB_SYNCTHING_CONNECTOR_EXPORT ids(const Objects &objects)
 {

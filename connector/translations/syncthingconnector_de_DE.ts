@@ -44,145 +44,151 @@
         <translation>Verbindungsstatus unbekannt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="144"/>
-        <location filename="../syncthingconnection.cpp" line="231"/>
+        <location filename="../syncthingconnection.cpp" line="147"/>
+        <location filename="../syncthingconnection.cpp" line="233"/>
         <source>Connection configuration is insufficient.</source>
         <translation>Verbindungskonfiguration is ungenügend</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="436"/>
+        <location filename="../syncthingconnection.cpp" line="438"/>
         <source>Unable to pause/resume a devices when not connected</source>
         <translation>Fehler beim Anfordern Verzeichnis zu Pausieren/Fortzusetzen</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="466"/>
+        <location filename="../syncthingconnection.cpp" line="469"/>
         <source>Unable to pause/resume a directories when not connected</source>
         <translation>Fehler beim Anfordern Gerät zu Pausieren/Fortzusetzen</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="730"/>
+        <location filename="../syncthingconnection.cpp" line="745"/>
         <source>Unable to request QR-Code: </source>
         <translation>Fehler beim Abfragen des QR-Codes: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="759"/>
+        <location filename="../syncthingconnection.cpp" line="765"/>
         <source>Unable to parse Syncthing log: </source>
         <translation>Fehler beim Auslesen des Syncthing-Logs: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="764"/>
+        <location filename="../syncthingconnection.cpp" line="780"/>
         <source>Unable to request Syncthing log: </source>
         <translation>Fehler beim Abfragen des Syncthing-Logs: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="798"/>
+        <location filename="../syncthingconnection.cpp" line="814"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="804"/>
+        <location filename="../syncthingconnection.cpp" line="820"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht ausgelesen werden.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="884"/>
+        <location filename="../syncthingconnection.cpp" line="895"/>
         <source>Unable to parse Syncthing config: </source>
         <translation>Fehler beim Auslesen der Syncthing-Konfiguration: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="891"/>
+        <location filename="../syncthingconnection.cpp" line="909"/>
         <source>Unable to request Syncthing config: </source>
         <translation>Fehler beim Abfragen der Syncthing-Konfiguration: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="986"/>
+        <location filename="../syncthingconnection.cpp" line="1005"/>
         <source>Unable to parse Syncthing status: </source>
         <translation>Fehler beim Auslesen des Syncthing-Status: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="993"/>
+        <location filename="../syncthingconnection.cpp" line="1019"/>
         <source>Unable to request Syncthing status: </source>
         <translation>Fehler beim Abfragen des Syncthing-Status: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1094"/>
+        <location filename="../syncthingconnection.cpp" line="1060"/>
         <source>Unable to parse connections: </source>
         <translation>Fehler beim Auslesen der Verbindungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1101"/>
+        <location filename="../syncthingconnection.cpp" line="1133"/>
         <source>Unable to request connections: </source>
         <translation>Fehler beim Abfragen der Verbindungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1156"/>
+        <location filename="../syncthingconnection.cpp" line="1151"/>
         <source>Unable to parse directory statistics: </source>
         <translation>Fehler beim Auslesen der Verzeichnisstatistiken: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1163"/>
+        <location filename="../syncthingconnection.cpp" line="1197"/>
+        <location filename="../syncthingconnection.cpp" line="1781"/>
         <source>Unable to request directory statistics: </source>
         <translation>Fehler beim Abfragen der Verzeichnisstatistiken: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1200"/>
+        <location filename="../syncthingconnection.cpp" line="1215"/>
         <source>Unable to parse device statistics: </source>
         <translation>Fehler beim Auslesen der Gerätestatistiken: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1207"/>
+        <location filename="../syncthingconnection.cpp" line="1242"/>
         <source>Unable to request device statistics: </source>
         <translation>Fehler beim Abfragen der Gerätestatistiken: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1246"/>
+        <location filename="../syncthingconnection.cpp" line="1268"/>
         <source>Unable to parse errors: </source>
         <translation>Fehler beim Auslesen der Syncthing-Fehlermeldungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1258"/>
+        <location filename="../syncthingconnection.cpp" line="1295"/>
         <source>Unable to request errors: </source>
         <translation>Fehler beim Abfragen der Syncthing-Fehlermeldungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1274"/>
+        <location filename="../syncthingconnection.cpp" line="1311"/>
         <source>Unable to request clearing errors: </source>
         <translation>Fehler beim Löschen der Fehlermeldungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1328"/>
+        <location filename="../syncthingconnection.cpp" line="1332"/>
         <source>Unable to parse Syncthing events: </source>
         <translation>Fehler beim Auslesen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1351"/>
+        <location filename="../syncthingconnection.cpp" line="1385"/>
         <source>Unable to request Syncthing events: </source>
         <translation>Fehler beim Abfragen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1633"/>
+        <location filename="../syncthingconnection.cpp" line="1669"/>
         <source>Unable to request rescan: </source>
         <translation>Fehler beim Anfordern eines Verzeichnis-Rescans: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1657"/>
+        <location filename="../syncthingconnection.cpp" line="1693"/>
         <source>Unable to request device pause/resume: </source>
         <translation>Fehler beim Anfordern Gerät zu Pausieren/Fortzusetzen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1678"/>
+        <location filename="../syncthingconnection.cpp" line="1714"/>
         <source>Unable to request directory pause/resume: </source>
         <translation>Fehler beim Anfordern Verzeichnis zu Pausieren/Fortzusetzen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1694"/>
+        <location filename="../syncthingconnection.cpp" line="1730"/>
         <source>Unable to request restart: </source>
         <translation>Fehler beim Anfordern eines Neustarts: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1710"/>
+        <location filename="../syncthingconnection.cpp" line="1746"/>
         <source>Unable to request shutdown: </source>
         <translation>Fehler beim Anfordern Syncthing zu beenden: </translation>
+    </message>
+    <message>
+        <location filename="../syncthingconnection.cpp" line="1773"/>
+        <source>Unable to parse status for directory %1: </source>
+        <translation>Fehler beim Anfordern des Status von Verzeichnis %1: </translation>
     </message>
 </context>
 <context>
