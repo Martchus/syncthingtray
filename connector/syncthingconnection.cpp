@@ -697,7 +697,7 @@ void SyncthingConnection::requestDirStatus(const QString &dirId)
 {
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("folder"), dirId);
-    QNetworkReply *reply = postData(QStringLiteral("db/status"), query);
+    QNetworkReply *reply = requestData(QStringLiteral("db/status"), query);
     reply->setProperty("dirId", dirId);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirStatus);
 }
