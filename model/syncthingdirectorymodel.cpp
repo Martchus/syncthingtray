@@ -5,9 +5,12 @@
 #include "../connector/syncthingconnection.h"
 #include "../connector/utils.h"
 
+#include <c++utilities/conversion/stringconversion.h>
+
 #include <QStringBuilder>
 
 using namespace ChronoUtilities;
+using namespace ConversionUtilities;
 
 namespace Data {
 
@@ -88,16 +91,20 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 1:
                             return tr("Path");
                         case 2:
-                            return tr("Shared with");
+                            return tr("Global status");
                         case 3:
-                            return tr("Read-only");
+                            return tr("Local status");
                         case 4:
-                            return tr("Rescan interval");
+                            return tr("Shared with");
                         case 5:
-                            return tr("Last scan");
+                            return tr("Read-only");
                         case 6:
-                            return tr("Last file");
+                            return tr("Rescan interval");
                         case 7:
+                            return tr("Last scan");
+                        case 8:
+                            return tr("Last file");
+                        case 9:
                             return tr("Errors");
                         }
                         break;
@@ -109,6 +116,10 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 1:
                             return dir.path;
                         case 2:
+                            return statusLabel(dir.globalFiles, dir.globalDirs, dir.globalBytes);
+                        case 3:
+                            return statusLabel(dir.localFiles, dir.localDirs, dir.localBytes);
+                        case 4:
                             if (!dir.deviceNames.isEmpty()) {
                                 return dir.deviceNames.join(QStringLiteral(", "));
                             } else if (!dir.deviceIds.isEmpty()) {
@@ -116,18 +127,18 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                             } else {
                                 return tr("not shared");
                             }
-                        case 3:
+                        case 5:
                             return dir.readOnly ? tr("yes") : tr("no");
-                        case 4:
+                        case 6:
                             return QString::fromLatin1(
                                 TimeSpan::fromSeconds(dir.rescanInterval).toString(TimeSpanOutputFormat::WithMeasures, true).data());
-                        case 5:
+                        case 7:
                             return dir.lastScanTime.isNull()
                                 ? tr("unknown")
                                 : QString::fromLatin1(dir.lastScanTime.toString(DateTimeOutputFormat::DateAndTime, true).data());
-                        case 6:
+                        case 8:
                             return dir.lastFileName.isEmpty() ? tr("unknown") : dir.lastFileName;
-                        case 7:
+                        case 9:
                             if (!dir.globalError.isEmpty() || !dir.itemErrors.empty()) {
                                 if (dir.itemErrors.empty()) {
                                     return dir.globalError;
@@ -150,20 +161,20 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     case 1:
                         const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
                         switch (index.row()) {
-                        case 2:
+                        case 4:
                             if (dir.deviceIds.isEmpty()) {
                                 return Colors::gray(m_brightColors);
                             }
                             break;
-                        case 5:
+                        case 7:
                             if (dir.lastScanTime.isNull()) {
                                 return Colors::gray(m_brightColors);
                             }
                             break;
-                        case 6:
+                        case 8:
                             return dir.lastFileName.isEmpty() ? Colors::gray(m_brightColors)
                                                               : (dir.lastFileDeleted ? Colors::red(m_brightColors) : QVariant());
-                        case 7:
+                        case 9:
                             return dir.globalError.isEmpty() && dir.itemErrors.empty() ? Colors::gray(m_brightColors) : Colors::red(m_brightColors);
                         }
                     }
@@ -173,19 +184,19 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     case 1:
                         const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
                         switch (index.row()) {
-                        case 2:
+                        case 3:
                             if (dir.deviceNames.isEmpty()) {
                                 return dir.deviceIds.join(QChar('\n'));
                             } else {
                                 return QString(dir.deviceNames.join(QStringLiteral(", ")) % QChar('\n') % QChar('(') % dir.deviceIds.join(QChar('\n'))
                                     % QChar(')'));
                             }
-                        case 5:
+                        case 7:
                             if (!dir.lastScanTime.isNull()) {
                                 return agoString(dir.lastScanTime);
                             }
                             break;
-                        case 6:
+                        case 8:
                             if (!dir.lastFileTime.isNull()) {
                                 if (dir.lastFileDeleted) {
                                     return tr("Deleted at %1")
@@ -196,7 +207,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                                 }
                             }
                             break;
-                        case 7:
+                        case 9:
                             if (!dir.itemErrors.empty()) {
                                 QStringList errors;
                                 errors.reserve(static_cast<int>(dir.itemErrors.size()));
@@ -319,7 +330,7 @@ int SyncthingDirectoryModel::rowCount(const QModelIndex &parent) const
     if (!parent.isValid()) {
         return static_cast<int>(m_dirs.size());
     } else if (!parent.parent().isValid()) {
-        return 8;
+        return 10;
     } else {
         return 0;
     }
@@ -353,6 +364,12 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &, int index)
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     emit dataChanged(modelIndex2, modelIndex2, QVector<int>() << Qt::DisplayRole << Qt::ForegroundRole);
     emit dataChanged(this->index(0, 1, modelIndex1), this->index(7, 1, modelIndex1), QVector<int>() << Qt::DisplayRole);
+}
+
+QString SyncthingDirectoryModel::statusLabel(quint64 files, quint64 dirs, quint64 size)
+{
+    return tr("%1 file(s)", nullptr, trQuandity(files)).arg(files) % QChar(',') % QChar(' ') % tr("%1 dir(s)", nullptr, trQuandity(dirs)).arg(dirs)
+        % QChar(',') % QChar(' ') % QString::fromUtf8(dataSizeToString(size).data());
 }
 
 } // namespace Data

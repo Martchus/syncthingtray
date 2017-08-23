@@ -6,6 +6,8 @@
 #include <QJsonValue>
 #include <QStringList>
 
+#include <limits>
+
 QT_FORWARD_DECLARE_CLASS(QUrl)
 QT_FORWARD_DECLARE_CLASS(QJsonObject)
 
@@ -23,6 +25,11 @@ bool LIB_SYNCTHING_CONNECTOR_EXPORT setDevicesPaused(QJsonObject &syncthingConfi
 inline quint64 LIB_SYNCTHING_CONNECTOR_EXPORT toUInt64(const QJsonValue &value, double defaultValue = 0.0)
 {
     return static_cast<quint64>(value.toDouble(defaultValue));
+}
+
+constexpr int LIB_SYNCTHING_CONNECTOR_EXPORT trQuandity(quint64 quandity)
+{
+    return quandity > std::numeric_limits<int>::max() ? std::numeric_limits<int>::max() : static_cast<int>(quandity);
 }
 
 template <class Objects> QStringList LIB_SYNCTHING_CONNECTOR_EXPORT ids(const Objects &objects)

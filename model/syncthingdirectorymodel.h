@@ -34,6 +34,8 @@ private Q_SLOTS:
     void dirStatusChanged(const SyncthingDir &, int index);
 
 private:
+    static QString statusLabel(quint64 files, quint64 dirs, quint64 size);
+
     const std::vector<SyncthingDir> &m_dirs;
 };
 
