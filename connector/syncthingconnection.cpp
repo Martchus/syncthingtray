@@ -682,7 +682,7 @@ void SyncthingConnection::requestClearingErrors()
 }
 
 /*!
- * \brief Requests directory statistics asynchronously.
+ * \brief Requests statistics (last file, last scan) for all directories asynchronously.
  */
 void SyncthingConnection::requestDirStatistics()
 {
@@ -691,7 +691,7 @@ void SyncthingConnection::requestDirStatistics()
 }
 
 /*!
- * \brief Requests statistics for \a dirId asynchronously.
+ * \brief Requests statistics (global and local status) for \a dirId asynchronously.
  */
 void SyncthingConnection::requestDirStatus(const QString &dirId)
 {
