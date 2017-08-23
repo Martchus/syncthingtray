@@ -598,6 +598,9 @@ void SyncthingConnection::continueConnecting()
         requestDirStatistics();
         requestDeviceStatistics();
         requestErrors();
+        for (const SyncthingDir &dir : m_dirs) {
+            requestDirStatus(dir.id);
+        }
         // since config and status could be read successfully, let's poll for events
         m_lastEventId = 0;
         requestEvents();
