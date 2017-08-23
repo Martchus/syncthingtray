@@ -204,7 +204,7 @@ private Q_SLOTS:
     void readRestart();
     void readShutdown();
     void readDirStatus();
-    void readDirSummary(ChronoUtilities::DateTime eventTime, const QJsonObject &summary, SyncthingDir &dirInfo, int index);
+    bool readDirSummary(ChronoUtilities::DateTime eventTime, const QJsonObject &summary, SyncthingDir &dirInfo, int index);
 
     void continueConnecting();
     void continueReconnecting();
@@ -215,6 +215,7 @@ private Q_SLOTS:
     void emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply);
     void emitMyIdChanged(const QString &newId);
     void handleFatalConnectionError();
+    void recalculateStatus();
 
 private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);

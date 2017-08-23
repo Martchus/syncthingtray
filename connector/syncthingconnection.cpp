@@ -219,6 +219,7 @@ void SyncthingConnection::continueReconnecting()
     m_totalOutgoingTraffic = unknownTraffic;
     m_totalIncomingRate = 0.0;
     m_totalOutgoingRate = 0.0;
+    emit trafficChanged(unknownTraffic, unknownTraffic);
     m_unreadNotifications = false;
     m_hasConfig = false;
     m_hasStatus = false;
@@ -1648,6 +1649,7 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
             // FIXME: find better way to check whether the event is still relevant
             dirInfo->itemErrors.emplace_back(error, item);
             dirInfo->status = SyncthingDirStatus::OutOfSync;
+            // emitNotification will trigger status update, so no need to call setStatus(status())
             emit dirStatusChanged(*dirInfo, index);
             emitNotification(eventTime, error);
         }
@@ -1774,7 +1776,9 @@ void SyncthingConnection::readDirStatus()
             return;
         }
 
-        readDirSummary(DateTime::gmtNow(), replyDoc.object(), *dir, index);
+        if (readDirSummary(DateTime::gmtNow(), replyDoc.object(), *dir, index)) {
+            recalculateStatus();
+        }
         break;
     }
     default:
@@ -1785,10 +1789,10 @@ void SyncthingConnection::readDirStatus()
 /*!
  * \brief Reads data from requestDirStatus() and FolderSummary-event and stores them to \a dir.
  */
-void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &summary, SyncthingDir &dir, int index)
+bool SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &summary, SyncthingDir &dir, int index)
 {
     if (summary.isEmpty() || dir.lastStatisticsUpdate > eventTime) {
-        return;
+        return false;
     }
 
     // update statistics
@@ -1806,16 +1810,19 @@ void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     dir.lastStatisticsUpdate = eventTime;
 
     // update status
+    bool stateChanged = false;
     const QString state(summary.value(QStringLiteral("state")).toString());
     if (!state.isEmpty()) {
         try {
-            dir.assignStatus(state, DateTime::fromIsoStringLocal(summary.value(QStringLiteral("stateChanged")).toString().toUtf8().data()));
+            stateChanged
+                = dir.assignStatus(state, DateTime::fromIsoStringLocal(summary.value(QStringLiteral("stateChanged")).toString().toUtf8().data()));
         } catch (const ConversionException &) {
             // FIXME: warning about invalid stateChanged
         }
     }
 
     emit dirStatusChanged(dir, index);
+    return stateChanged;
 }
 
 /*!
@@ -1893,8 +1900,8 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
 void SyncthingConnection::emitNotification(DateTime when, const QString &message)
 {
     m_unreadNotifications = true;
-    setStatus(status());
     emit newNotification(when, message);
+    recalculateStatus();
 }
 
 /*!
@@ -1949,6 +1956,22 @@ void SyncthingConnection::handleFatalConnectionError()
     setStatus(SyncthingStatus::Disconnected);
     if (m_autoReconnectTimer.interval()) {
         m_autoReconnectTimer.start();
+    }
+}
+
+/*!
+ * \brief Internally called to recalculate the overall connection status, eg. after the status of a directory
+ *        changed.
+ * \remarks
+ * - This is achieved by simply setting the status to idle. setStatus() will calculate the specific status.
+ * - If not connected, this method does nothing. This is important, because when this method is called when
+ *   establishing a connection (and the status is hence still disconnected) timers for polling would be
+ *   killed.
+ */
+void SyncthingConnection::recalculateStatus()
+{
+    if (isConnected()) {
+        setStatus(SyncthingStatus::Idle);
     }
 }
 
