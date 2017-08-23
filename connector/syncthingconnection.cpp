@@ -1505,7 +1505,6 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
     int index;
     if (SyncthingDir *dirInfo = findDirInfo(dir, index)) {
         if (eventType == QLatin1String("FolderErrors")) {
-            // check for errors
             const QJsonArray errors(eventData.value(QStringLiteral("errors")).toArray());
             if (errors.isEmpty()) {
                 return;
@@ -1532,10 +1531,8 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
             }
             emit dirStatusChanged(*dirInfo, index);
         } else if (eventType == QLatin1String("FolderSummary")) {
-            // check for summary
-            readDirSummary(eventData.value(QStringLiteral("summary")).toObject(), *dirInfo, index);
+            readDirSummary(eventTime, eventData.value(QStringLiteral("summary")).toObject(), *dirInfo, index);
         } else if (eventType == QLatin1String("FolderCompletion")) {
-            // check for progress percentage
             //const QString device(eventData.value(QStringLiteral("device")).toString());
             int percentage = eventData.value(QStringLiteral("completion")).toInt();
             if (percentage > 0 && percentage < 100 && (dirInfo->progressPercentage <= 0 || percentage < dirInfo->progressPercentage)) {
@@ -1777,7 +1774,7 @@ void SyncthingConnection::readDirStatus()
             return;
         }
 
-        readDirSummary(replyDoc.object(), *dir, index);
+        readDirSummary(DateTime::gmtNow(), replyDoc.object(), *dir, index);
         break;
     }
     default:
@@ -1788,9 +1785,9 @@ void SyncthingConnection::readDirStatus()
 /*!
  * \brief Reads data from requestDirStatus() and FolderSummary-event and stores them to \a dir.
  */
-void SyncthingConnection::readDirSummary(const QJsonObject &summary, SyncthingDir &dir, int index)
+void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &summary, SyncthingDir &dir, int index)
 {
-    if (summary.isEmpty()) {
+    if (summary.isEmpty() || dir.lastStatisticsUpdate > eventTime) {
         return;
     }
 
@@ -1798,7 +1795,7 @@ void SyncthingConnection::readDirSummary(const QJsonObject &summary, SyncthingDi
     dir.globalBytes = toUInt64(summary.value(QStringLiteral("globalBytes")));
     dir.globalDeleted = toUInt64(summary.value(QStringLiteral("globalDeleted")));
     dir.globalFiles = toUInt64(summary.value(QStringLiteral("globalFiles")));
-    dir.globalFiles = toUInt64(summary.value(QStringLiteral("globalDirectories")));
+    dir.globalDirs = toUInt64(summary.value(QStringLiteral("globalDirectories")));
     dir.localBytes = toUInt64(summary.value(QStringLiteral("localBytes")));
     dir.localDeleted = toUInt64(summary.value(QStringLiteral("localDeleted")));
     dir.localFiles = toUInt64(summary.value(QStringLiteral("localFiles")));
@@ -1806,13 +1803,13 @@ void SyncthingConnection::readDirSummary(const QJsonObject &summary, SyncthingDi
     dir.neededByted = toUInt64(summary.value(QStringLiteral("needByted")));
     dir.neededFiles = toUInt64(summary.value(QStringLiteral("needFiles")));
     dir.ignorePatterns = summary.value(QStringLiteral("ignorePatterns")).toBool();
+    dir.lastStatisticsUpdate = eventTime;
 
     // update status
     const QString state(summary.value(QStringLiteral("state")).toString());
     if (!state.isEmpty()) {
         try {
-            const auto stateChanged = DateTime::fromIsoStringLocal(summary.value(QStringLiteral("stateChanged")).toString().toUtf8().data());
-            dir.assignStatus(state, stateChanged);
+            dir.assignStatus(state, DateTime::fromIsoStringLocal(summary.value(QStringLiteral("stateChanged")).toString().toUtf8().data()));
         } catch (const ConversionException &) {
             // FIXME: warning about invalid stateChanged
         }

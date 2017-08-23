@@ -204,7 +204,7 @@ private Q_SLOTS:
     void readRestart();
     void readShutdown();
     void readDirStatus();
-    void readDirSummary(const QJsonObject &summary, SyncthingDir &dirInfo, int index);
+    void readDirSummary(ChronoUtilities::DateTime eventTime, const QJsonObject &summary, SyncthingDir &dirInfo, int index);
 
     void continueConnecting();
     void continueReconnecting();

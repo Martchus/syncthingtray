@@ -79,7 +79,6 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     int rescanInterval = 0;
     int minDiskFreePercentage = 0;
     SyncthingDirStatus status = SyncthingDirStatus::Idle;
-    bool paused = false;
     ChronoUtilities::DateTime lastStatusUpdate;
     int progressPercentage = 0;
     int progressRate = 0;
@@ -89,15 +88,17 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     quint64 globalBytes = 0, globalDeleted = 0, globalFiles = 0, globalDirs = 0;
     quint64 localBytes = 0, localDeleted = 0, localFiles = 0, localDirs = 0;
     quint64 neededByted = 0, neededFiles = 0, neededDirs = 0;
+    ChronoUtilities::DateTime lastStatisticsUpdate;
     ChronoUtilities::DateTime lastScanTime;
     ChronoUtilities::DateTime lastFileTime;
     QString lastFileName;
-    bool lastFileDeleted = false;
     std::vector<SyncthingItemDownloadProgress> downloadingItems;
     int blocksAlreadyDownloaded = 0;
     int blocksToBeDownloaded = 0;
-    unsigned int downloadPercentage = 0;
     QString downloadLabel;
+    unsigned int downloadPercentage = 0;
+    bool paused = false;
+    bool lastFileDeleted = false;
 
 private:
     bool checkWhetherStatusUpdateRelevant(ChronoUtilities::DateTime time);
