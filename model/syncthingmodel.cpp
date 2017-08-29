@@ -5,6 +5,7 @@ namespace Data {
 SyncthingModel::SyncthingModel(SyncthingConnection &connection, QObject *parent)
     : QAbstractItemModel(parent)
     , m_connection(connection)
+    , m_brightColors(false)
 {
 }
 
