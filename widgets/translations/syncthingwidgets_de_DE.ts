@@ -346,7 +346,7 @@
     <message numerus="yes">
         <location filename="../misc/errorviewdialog.cpp" line="100"/>
         <source>%1 error(s) occured</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 interner Fehler</numerusform>
             <numerusform>%1 interne Fehler</numerusform>
         </translation>
@@ -508,6 +508,24 @@
         <location filename="../settings/settingsdialog.cpp" line="284"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation>Benachrichtigungen via D-Bus wurden eingestellt, aber es scheint kein Daemon zu laufen der den Dienst bereitstellt.</translation>
+    </message>
+</context>
+<context>
+    <name>QtGui::OtherDialogs</name>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="26"/>
+        <source>Own device ID</source>
+        <translation>Eigene Geräte-ID</translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="36"/>
+        <source>device ID is unknown</source>
+        <translation>Geräte-ID ist unbekannt</translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="44"/>
+        <source>Copy to clipboard</source>
+        <translation>In Zwischenablage kopieren</translation>
     </message>
 </context>
 <context>
@@ -693,12 +711,12 @@
 <context>
     <name>QtGui::TextViewDialog</name>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="69"/>
+        <location filename="../misc/textviewdialog.cpp" line="70"/>
         <source>Errors of %1</source>
         <translation>Fehler von %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/textviewdialog.cpp" line="87"/>
+        <location filename="../misc/textviewdialog.cpp" line="88"/>
         <source>%1 item(s) out-of-sync</source>
         <translation>
             <numerusform>%1 Element nicht synchronisiert</numerusform>
@@ -706,24 +724,29 @@
         </translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="97"/>
+        <location filename="../misc/textviewdialog.cpp" line="98"/>
         <source>Remove non-empty directories</source>
         <translation>Nicht-leere Verzeichnisse löschen</translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="104"/>
+        <location filename="../misc/textviewdialog.cpp" line="105"/>
         <source>Remove non-empty directories for folder &quot;%1&quot;</source>
         <translation>Nicht-leere Verzeichnisse für den Ordner &quot;%1&quot; löschen</translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="107"/>
+        <location filename="../misc/textviewdialog.cpp" line="108"/>
         <source>Do you really want to remove the following directories:</source>
         <translation>Sollen die folgenden Verzeichnisse wirklich gelöscht werden?</translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="118"/>
+        <location filename="../misc/textviewdialog.cpp" line="119"/>
         <source>Unable to remove the following dirs:</source>
         <translation>Die folgenden Verzeichnisse konnten nicht gelöscht werden:</translation>
+    </message>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="131"/>
+        <source>Log</source>
+        <translation></translation>
     </message>
 </context>
 <context>

@@ -60,7 +60,7 @@
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="254"/>
         <source>Syncthing connection error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Verbinden mit Syncthing</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="362"/>

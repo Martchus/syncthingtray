@@ -23,7 +23,7 @@ namespace QtGui {
 QWidget *ownDeviceIdDialog(Data::SyncthingConnection &connection)
 {
     auto *dlg = new QWidget(nullptr, Qt::Window);
-    dlg->setWindowTitle(QCoreApplication::translate("otherdialogs", "Own device ID") + QStringLiteral(" - " APP_NAME));
+    dlg->setWindowTitle(QCoreApplication::translate("QtGui::OtherDialogs", "Own device ID") + QStringLiteral(" - " APP_NAME));
     dlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->setBackgroundRole(QPalette::Background);
@@ -33,7 +33,7 @@ QWidget *ownDeviceIdDialog(Data::SyncthingConnection &connection)
     pixmapLabel->setAlignment(Qt::AlignCenter);
     layout->addWidget(pixmapLabel);
     auto *textLabel = new QLabel(dlg);
-    textLabel->setText(connection.myId().isEmpty() ? QCoreApplication::translate("otherdialogs", "device ID is unknown") : connection.myId());
+    textLabel->setText(connection.myId().isEmpty() ? QCoreApplication::translate("QtGui::OtherDialogs", "device ID is unknown") : connection.myId());
     QFont defaultFont = textLabel->font();
     defaultFont.setBold(true);
     defaultFont.setPointSize(defaultFont.pointSize() + 2);
@@ -41,7 +41,7 @@ QWidget *ownDeviceIdDialog(Data::SyncthingConnection &connection)
     textLabel->setAlignment(Qt::AlignCenter);
     layout->addWidget(textLabel);
     auto *copyPushButton = new QPushButton(dlg);
-    copyPushButton->setText(QCoreApplication::translate("otherdialogs", "Copy to clipboard"));
+    copyPushButton->setText(QCoreApplication::translate("QtGui::OtherDialogs", "Copy to clipboard"));
     QObject::connect(
         copyPushButton, &QPushButton::clicked, bind(&QClipboard::setText, QGuiApplication::clipboard(), connection.myId(), QClipboard::Clipboard));
     layout->addWidget(copyPushButton);

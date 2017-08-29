@@ -346,7 +346,7 @@
     <message numerus="yes">
         <location filename="../misc/errorviewdialog.cpp" line="100"/>
         <source>%1 error(s) occured</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 error occured</numerusform>
             <numerusform>%1 errors occured</numerusform>
         </translation>
@@ -507,6 +507,24 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="284"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QtGui::OtherDialogs</name>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="26"/>
+        <source>Own device ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="36"/>
+        <source>device ID is unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="44"/>
+        <source>Copy to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -691,36 +709,41 @@
 <context>
     <name>QtGui::TextViewDialog</name>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="69"/>
+        <location filename="../misc/textviewdialog.cpp" line="70"/>
         <source>Errors of %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/textviewdialog.cpp" line="87"/>
+        <location filename="../misc/textviewdialog.cpp" line="88"/>
         <source>%1 item(s) out-of-sync</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 item out of sync</numerusform>
             <numerusform>%1 items out of sync</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="97"/>
+        <location filename="../misc/textviewdialog.cpp" line="98"/>
         <source>Remove non-empty directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="104"/>
+        <location filename="../misc/textviewdialog.cpp" line="105"/>
         <source>Remove non-empty directories for folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="107"/>
+        <location filename="../misc/textviewdialog.cpp" line="108"/>
         <source>Do you really want to remove the following directories:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="118"/>
+        <location filename="../misc/textviewdialog.cpp" line="119"/>
         <source>Unable to remove the following dirs:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="131"/>
+        <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
