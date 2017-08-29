@@ -1,0 +1,21 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Syncthing Plasmoid
+Icon=syncthingtray
+Type=Service
+Keywords=syncthing;sync;
+X-KDE-ParentApp=
+X-KDE-PluginInfo-Author=Martchus
+X-KDE-PluginInfo-Email=martchus@gmx.net
+X-KDE-PluginInfo-License=GPLv2
+X-KDE-PluginInfo-Name=martchus.syncthingplasmoid
+X-KDE-PluginInfo-Version=0.1
+X-KDE-PluginInfo-Website=https://github.com/martchus/syncthingtray
+X-KDE-ServiceTypes=Plasma/Applet
+X-Plasma-NotificationArea=true
+X-Plasma-API=declarativeappletscript
+X-Plasma-MainScript=ui/main.qml
+X-Plasma-RemoteLocation=
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-PluginInfo-Category=System Information
+X-KDE-Library=syncthingplasmoid

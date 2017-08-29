@@ -6,11 +6,11 @@ Qt 5-based tray application for [Syncthing](https://github.com/syncthing/syncthi
   support
 * No desktop environment specific libraries required
 * Tested under \*
-  * Plasma 5
-  * Openbox/qt5ct/Tint2
-  * Awesome/qt5ct
-  * Cinnamon
-  * Windows 10
+    * Plasma 5
+    * Openbox/qt5ct/Tint2
+    * Awesome/qt5ct
+    * Cinnamon
+    * Windows 10
 * Can be shown as regular window if tray icon support is not available
 
 \* If you can confirm it works under other desktop environments, please add it
@@ -18,16 +18,16 @@ to the list. Maybe someone could check whether it works under Mac OS X.
 
 ## Features
 * Provides quick access to most frequently used features but does not intend to replace the official web UI
-  * Check state of directories and devices
-  * Check current traffic statistics
-  * Display further details about directories and devices, like last file, last
-    scan, items out of sync, ...
-  * Display ongoing downloads
-  * Display Syncthing log
-  * Trigger re-scan of a specific directory or all directories at once
-  * Open a directory with the default file browser
-  * Pause/resume a specific device or all devices at once
-  * Pause/resume a specific directory
+    * Check state of directories and devices
+    * Check current traffic statistics
+    * Display further details about directories and devices, like last file, last
+      scan, items out of sync, ...
+    * Display ongoing downloads
+    * Display Syncthing log
+    * Trigger re-scan of a specific directory or all directories at once
+    * Open a directory with the default file browser
+    * Pause/resume a specific device or all devices at once
+    * Pause/resume a specific directory
 * Shows Syncthing notifications
 * Can read the local Syncthing configuration file for quick setup when just connecting to local instance
 * Can show the status of the Syncthing systemd unit and allows to start and stop it (see section *Use of systemd*)
@@ -35,25 +35,26 @@ to the list. Maybe someone could check whether it works under Mac OS X.
 * Can launch Syncthing and syncthing-inotify automatically when started and display stdout/stderr (useful under
   Windows)
 * Provides quick access to the official web UI
-  * Utilizes either Qt WebKit or Qt WebEngine
-  * Can be built without web view support as well (then the web UI is opened in the regular browser)
+    * Utilizes either Qt WebKit or Qt WebEngine
+    * Can be built without web view support as well (then the web UI is opened in the regular browser)
 * Allows quickly switching between multiple Syncthing instances
 * Shows notifications via Qt or uses D-Bus notification daemon directly
 * Also features a simple command line utility `syncthingctl` to check Syncthing status and trigger
   rescan/pause/resume/restart
 * Also bundles a KIO plugin which shows the status of a Syncthing directory
   and allows to trigger Syncthing actions in Dolphin file manager
-  * Rescan selected items
-  * Rescan entire Syncthing directory
-  * Pause/resume Syncthing directory
-  * See also screenshots section
+    * Rescan selected items
+    * Rescan entire Syncthing directory
+    * Pause/resume Syncthing directory
+    * See also screenshots section
 * English and German localization
 
 ## Planned features
 The tray is still under development; the following features are planned:
+
 * Show recently processed items
-* Improve notification handling
 * Create Plasmoid for Plasma 5 desktop
+    * An incomplete/experimental version is already available
 * Provide built-in support for file system watches
 
 ## Screenshots
@@ -135,7 +136,6 @@ to the CMake arguments. Then only core and network are required.
 #### Building this straight
 0. Install (preferably the latest version of) g++ or clang, the required Qt 5 modules and CMake.
 1. Get the sources. For the lastest version from Git clone the following repositories:
-
    ```
    cd $SOURCES
    git clone https://github.com/Martchus/cpp-utilities.git c++utilities
@@ -144,7 +144,6 @@ to the CMake arguments. Then only core and network are required.
    git clone https://github.com/Martchus/subdirs.git
    ```
 2. Build and install everything in one step:
-
    ```
    cd $BUILD_DIR
    cmake \

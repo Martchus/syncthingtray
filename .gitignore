@@ -44,7 +44,6 @@ Makefile*
 testfiles/output.*
 
 # experimental
-plasmoid/
 scripts/
 
 # clang-format
@@ -54,5 +53,5 @@ scripts/
 /model/.clang-format
 /testhelper/.clang-format
 /tray/.clang-format
-/plasmoid/.clang-format
+/plasmoid/lib/.clang-format
 /widgets/.clang-format
