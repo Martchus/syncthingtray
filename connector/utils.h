@@ -3,6 +3,8 @@
 
 #include "./global.h"
 
+#include <c++utilities/conversion/types.h>
+
 #include <QJsonValue>
 #include <QStringList>
 
@@ -18,6 +20,7 @@ class DateTime;
 namespace Data {
 
 QString LIB_SYNCTHING_CONNECTOR_EXPORT agoString(ChronoUtilities::DateTime dateTime);
+QString LIB_SYNCTHING_CONNECTOR_EXPORT trafficString(uint64 total, double rate);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QUrl &url);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);

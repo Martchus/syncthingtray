@@ -1,6 +1,8 @@
 #include "./utils.h"
+#include "./syncthingconnection.h"
 
 #include <c++utilities/chrono/datetime.h>
+#include <c++utilities/conversion/stringconversion.h>
 
 #include <QCoreApplication>
 #include <QHostAddress>
@@ -12,6 +14,7 @@
 #include <QUrl>
 
 using namespace ChronoUtilities;
+using namespace ConversionUtilities;
 
 namespace Data {
 
@@ -27,6 +30,24 @@ QString agoString(DateTime dateTime)
     } else {
         return QCoreApplication::translate("Data::Utils", "right now");
     }
+}
+
+/*!
+ * \brief Returns the "traffic string" for the specified \a total bytes and the specified \a rate.
+ *
+ * Eg. "10.2 GiB (45 kib/s)" or only "10.2 GiB" if rate is unknown or "unknown" if both values are unknown.
+ */
+QString trafficString(uint64 total, double rate)
+{
+    static const QString unknownStr(QCoreApplication::translate("Data::Utils", "unknown"));
+    if (rate != 0.0) {
+        return total != SyncthingConnection::unknownTraffic
+            ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(rate, true).data()), QString::fromUtf8(dataSizeToString(total).data()))
+            : QString::fromUtf8(bitrateToString(rate, true).data());
+    } else if (total != SyncthingConnection::unknownTraffic) {
+        return QString::fromUtf8(dataSizeToString(total).data());
+    }
+    return unknownStr;
 }
 
 /*!
