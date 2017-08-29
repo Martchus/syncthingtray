@@ -217,19 +217,35 @@
 <context>
     <name>Data::Utils</name>
     <message>
-        <location filename="../utils.cpp" line="28"/>
+        <location filename="../utils.cpp" line="29"/>
         <source>%1 ago</source>
         <translation>vor %1</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="31"/>
+        <location filename="../utils.cpp" line="32"/>
         <source>right now</source>
         <translation>gerade eben</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="42"/>
+        <location filename="../utils.cpp" line="43"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../utils.cpp" line="59"/>
+        <source>%1 file(s)</source>
+        <translation>
+            <numerusform>%1 Datei</numerusform>
+            <numerusform>%1 Dateien</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../utils.cpp" line="60"/>
+        <source>%1 dir(s)</source>
+        <translation>
+            <numerusform>%1 Verz.</numerusform>
+            <numerusform>%1 Verz.</numerusform>
+        </translation>
     </message>
 </context>
 <context>

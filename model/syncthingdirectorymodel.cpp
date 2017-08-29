@@ -141,9 +141,9 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 1:
                             return dir.path;
                         case 2:
-                            return statusLabel(dir.globalFiles, dir.globalDirs, dir.globalBytes);
+                            return directoryStatusString(dir.globalFiles, dir.globalDirs, dir.globalBytes);
                         case 3:
-                            return statusLabel(dir.localFiles, dir.localDirs, dir.localBytes);
+                            return directoryStatusString(dir.localFiles, dir.localDirs, dir.localBytes);
                         case 4:
                             if (!dir.deviceNames.isEmpty()) {
                                 return dir.deviceNames.join(QStringLiteral(", "));
@@ -408,12 +408,6 @@ QColor SyncthingDirectoryModel::dirStatusColor(const SyncthingDir &dir) const
         return Colors::red(m_brightColors);
     }
     return QColor();
-}
-
-QString SyncthingDirectoryModel::statusLabel(quint64 files, quint64 dirs, quint64 size)
-{
-    return tr("%1 file(s)", nullptr, trQuandity(files)).arg(files) % QChar(',') % QChar(' ') % tr("%1 dir(s)", nullptr, trQuandity(dirs)).arg(dirs)
-        % QChar(',') % QChar(' ') % QString::fromUtf8(dataSizeToString(size).data());
 }
 
 } // namespace Data

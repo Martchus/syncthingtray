@@ -187,17 +187,15 @@
         <translation>keine</translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="415"/>
         <source>%1 file(s)</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>%1 Datei</numerusform>
             <numerusform>%1 Dateien</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="415"/>
         <source>%1 dir(s)</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>%1 Verz.</numerusform>
             <numerusform>%1 Verz.</numerusform>
         </translation>

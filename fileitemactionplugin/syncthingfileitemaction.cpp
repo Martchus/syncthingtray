@@ -161,15 +161,25 @@ bool SyncthingDirActions::updateStatus(const SyncthingDir &dir)
             break;
         }
     }
+    m_globalStatusAction.setText(tr("Global: ") + directoryStatusString(dir.globalFiles, dir.globalDirs, dir.globalBytes));
+    m_localStatusAction.setText(tr("Local: ") + directoryStatusString(dir.localFiles, dir.localDirs, dir.localBytes));
     m_lastScanAction.setText(tr("Last scan time: ") + agoString(dir.lastScanTime));
     m_lastScanAction.setIcon(QIcon::fromTheme(QStringLiteral("accept_time_event")));
     m_rescanIntervalAction.setText(tr("Rescan interval: %1 seconds").arg(dir.rescanInterval));
+    if (dir.itemErrors.empty()) {
+        m_errorsAction.setVisible(false);
+    } else {
+        m_errorsAction.setVisible(true);
+        m_errorsAction.setIcon(QIcon::fromTheme(QStringLiteral("dialog-error")));
+        m_errorsAction.setText(tr("%1 item(s) out-of-sync", nullptr, trQuandity(dir.itemErrors.size())).arg(dir.itemErrors.size()));
+    }
     return true;
 }
 
 QList<QAction *> &operator<<(QList<QAction *> &actions, SyncthingDirActions &dirActions)
 {
-    return actions << &dirActions.m_infoAction << &dirActions.m_statusAction << &dirActions.m_lastScanAction << &dirActions.m_rescanIntervalAction;
+    return actions << &dirActions.m_infoAction << &dirActions.m_statusAction << &dirActions.m_globalStatusAction << &dirActions.m_localStatusAction
+                   << &dirActions.m_lastScanAction << &dirActions.m_rescanIntervalAction << &dirActions.m_errorsAction;
 }
 
 SyncthingConnection SyncthingFileItemAction::s_connection;

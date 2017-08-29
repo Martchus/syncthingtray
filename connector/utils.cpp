@@ -11,6 +11,7 @@
 #include <QJsonValue>
 #include <QNetworkInterface>
 #include <QString>
+#include <QStringBuilder>
 #include <QUrl>
 
 using namespace ChronoUtilities;
@@ -48,6 +49,16 @@ QString trafficString(uint64 total, double rate)
         return QString::fromUtf8(dataSizeToString(total).data());
     }
     return unknownStr;
+}
+
+/*!
+ * \brief Returns the string for global/local directory status, eg. "5 files, 1 directory, 23.7 MiB".
+ */
+QString directoryStatusString(quint64 files, quint64 dirs, quint64 size)
+{
+    return QCoreApplication::translate("Data::Utils", "%1 file(s)", nullptr, trQuandity(files)).arg(files) % QChar(',') % QChar(' ')
+        % QCoreApplication::translate("Data::Utils", "%1 dir(s)", nullptr, trQuandity(dirs)).arg(dirs) % QChar(',') % QChar(' ')
+        % QString::fromUtf8(dataSizeToString(size).data());
 }
 
 /*!

@@ -51,8 +51,11 @@ private:
     QString m_dirId;
     QAction m_infoAction;
     SyncthingInfoAction m_statusAction;
+    SyncthingInfoAction m_globalStatusAction;
+    SyncthingInfoAction m_localStatusAction;
     SyncthingInfoAction m_lastScanAction;
     SyncthingInfoAction m_rescanIntervalAction;
+    SyncthingInfoAction m_errorsAction;
 };
 
 QList<QAction *> &operator<<(QList<QAction *> &actions, SyncthingDirActions &dirActions);
