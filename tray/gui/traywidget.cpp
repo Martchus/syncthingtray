@@ -255,19 +255,9 @@ void TrayWidget::showOwnDeviceId()
 
 void TrayWidget::showLog()
 {
-    auto *dlg = new TextViewDialog(tr("Log"), this);
-    auto loadLog = [dlg, this] {
-        connect(dlg, &QWidget::destroyed, bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
-                                              m_connection.requestLog([dlg, this](const std::vector<SyncthingLogEntry> &entries) {
-                                                  dlg->browser()->clear();
-                                                  for (const SyncthingLogEntry &entry : entries) {
-                                                      dlg->browser()->append(
-                                                          entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
-                                                  }
-                                              })));
-    };
-    connect(dlg, &TextViewDialog::reload, loadLog);
-    loadLog();
+    auto *const dlg = TextViewDialog::forLogEntries(m_connection);
+    dlg->setAttribute(Qt::WA_DeleteOnClose, true);
+    centerWidget(dlg);
     showDialog(dlg);
 }
 

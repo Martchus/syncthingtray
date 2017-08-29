@@ -8,6 +8,7 @@
 QT_FORWARD_DECLARE_CLASS(QTextBrowser)
 
 namespace Data {
+class SyncthingConnection;
 struct SyncthingDir;
 }
 
@@ -20,6 +21,7 @@ public:
 
     QTextBrowser *browser();
     static TextViewDialog *forDirectoryErrors(const Data::SyncthingDir &dir);
+    static TextViewDialog *forLogEntries(Data::SyncthingConnection &connection);
 
 Q_SIGNALS:
     void reload();

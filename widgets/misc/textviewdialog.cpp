@@ -1,5 +1,6 @@
 #include "./textviewdialog.h"
 
+#include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingdir.h"
 
 // use meta-data of syncthingtray application here
@@ -123,6 +124,24 @@ TextViewDialog *TextViewDialog::forDirectoryErrors(const Data::SyncthingDir &dir
 
     textViewDlg->layout()->addItem(buttonLayout);
     return textViewDlg;
+}
+
+TextViewDialog *TextViewDialog::forLogEntries(SyncthingConnection &connection)
+{
+    auto *const dlg = new TextViewDialog(tr("Log"));
+    const auto loadLog = [dlg, &connection] {
+        connect(dlg, &QWidget::destroyed, bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
+                                              connection.requestLog([dlg](const std::vector<SyncthingLogEntry> &entries) {
+                                                  dlg->browser()->clear();
+                                                  for (const SyncthingLogEntry &entry : entries) {
+                                                      dlg->browser()->append(
+                                                          entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
+                                                  }
+                                              })));
+    };
+    connect(dlg, &TextViewDialog::reload, loadLog);
+    loadLog();
+    return dlg;
 }
 
 void TextViewDialog::keyPressEvent(QKeyEvent *event)
