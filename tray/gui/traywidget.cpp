@@ -2,6 +2,7 @@
 #include "./trayicon.h"
 #include "./traymenu.h"
 
+#include "../../widgets/misc/otherdialogs.h"
 #include "../../widgets/misc/textviewdialog.h"
 #include "../../widgets/settings/settingsdialog.h"
 #include "../../widgets/webview/webviewdialog.h"
@@ -219,36 +220,8 @@ void TrayWidget::showWebUi()
 
 void TrayWidget::showOwnDeviceId()
 {
-    auto *dlg = new QWidget(this, Qt::Window);
-    dlg->setWindowTitle(tr("Own device ID") + QStringLiteral(" - " APP_NAME));
-    dlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->setBackgroundRole(QPalette::Background);
-    auto *layout = new QVBoxLayout(dlg);
-    layout->setAlignment(Qt::AlignCenter);
-    auto *pixmapLabel = new QLabel(dlg);
-    pixmapLabel->setAlignment(Qt::AlignCenter);
-    layout->addWidget(pixmapLabel);
-    auto *textLabel = new QLabel(dlg);
-    textLabel->setText(m_connection.myId().isEmpty() ? tr("device ID is unknown") : m_connection.myId());
-    QFont defaultFont = textLabel->font();
-    defaultFont.setBold(true);
-    defaultFont.setPointSize(defaultFont.pointSize() + 2);
-    textLabel->setFont(defaultFont);
-    textLabel->setAlignment(Qt::AlignCenter);
-    layout->addWidget(textLabel);
-    auto *copyPushButton = new QPushButton(dlg);
-    copyPushButton->setText(tr("Copy to clipboard"));
-    connect(
-        copyPushButton, &QPushButton::clicked, bind(&QClipboard::setText, QGuiApplication::clipboard(), m_connection.myId(), QClipboard::Clipboard));
-    layout->addWidget(copyPushButton);
-    connect(dlg, &QWidget::destroyed, bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
-                                          m_connection.requestQrCode(m_connection.myId(), [pixmapLabel](const QByteArray &data) {
-                                              QPixmap pixmap;
-                                              pixmap.loadFromData(data);
-                                              pixmapLabel->setPixmap(pixmap);
-                                          })));
-    dlg->setLayout(layout);
+    auto *const dlg = ownDeviceIdDialog(m_connection);
+    dlg->setAttribute(Qt::WA_DeleteOnClose, true);
     centerWidget(dlg);
     showDialog(dlg);
 }
