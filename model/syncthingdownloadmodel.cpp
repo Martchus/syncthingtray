@@ -22,6 +22,20 @@ SyncthingDownloadModel::SyncthingDownloadModel(SyncthingConnection &connection, 
     connect(&m_connection, &SyncthingConnection::downloadProgressChanged, this, &SyncthingDownloadModel::downloadProgressChanged);
 }
 
+QHash<int, QByteArray> SyncthingDownloadModel::initRoleNames()
+{
+    QHash<int, QByteArray> roles;
+    roles[Qt::DisplayRole] = "name";
+    roles[Qt::DecorationRole] = "fileIcon";
+    return roles;
+}
+
+QHash<int, QByteArray> SyncthingDownloadModel::roleNames() const
+{
+    const static QHash<int, QByteArray> roles(initRoleNames());
+    return roles;
+}
+
 /*!
  * \brief Returns the directory info for the spcified \a index. The returned object is not persistent.
  */

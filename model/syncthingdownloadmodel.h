@@ -23,6 +23,7 @@ public:
     enum SyncthingDownloadModelRole { ItemPercentage = Qt::UserRole + 1, ItemProgressLabel };
 
 public Q_SLOTS:
+    QHash<int, QByteArray> roleNames() const;
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &child) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -45,6 +46,8 @@ private Q_SLOTS:
     void downloadProgressChanged();
 
 private:
+    static QHash<int, QByteArray> initRoleNames();
+
     const std::vector<SyncthingDir> &m_dirs;
     const QIcon m_unknownIcon;
     const QFileIconProvider m_fileIconProvider;

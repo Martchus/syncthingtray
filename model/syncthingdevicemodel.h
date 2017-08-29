@@ -14,11 +14,20 @@ struct SyncthingDev;
 class LIB_SYNCTHING_MODEL_EXPORT SyncthingDeviceModel : public SyncthingModel {
     Q_OBJECT
 public:
-    enum SyncthingDeviceModelRole { DeviceStatus = Qt::UserRole + 1, DevicePaused, IsOwnDevice };
+    enum SyncthingDeviceModelRole {
+        DeviceStatus = Qt::UserRole + 1,
+        DevicePaused,
+        IsOwnDevice,
+        DeviceStatusString,
+        DeviceStatusColor,
+        DeviceId,
+        DeviceDetail
+    };
 
     explicit SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent = nullptr);
 
 public Q_SLOTS:
+    QHash<int, QByteArray> roleNames() const;
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &child) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -34,6 +43,10 @@ private Q_SLOTS:
     void devStatusChanged(const SyncthingDev &, int index);
 
 private:
+    static QHash<int, QByteArray> initRoleNames();
+    static QString devStatusString(const SyncthingDev &dev);
+    QColor devStatusColor(const SyncthingDev &dev) const;
+
     const std::vector<SyncthingDev> &m_devs;
 };
 

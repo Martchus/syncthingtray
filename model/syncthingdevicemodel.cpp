@@ -18,6 +18,26 @@ SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObj
     connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &SyncthingDeviceModel::devStatusChanged);
 }
 
+QHash<int, QByteArray> SyncthingDeviceModel::initRoleNames()
+{
+    QHash<int, QByteArray> roles;
+    roles[Qt::DisplayRole] = "name";
+    roles[DeviceStatus] = "status";
+    roles[Qt::DecorationRole] = "statusIcon";
+    roles[DevicePaused] = "paused";
+    roles[DeviceStatusString] = "statusString";
+    roles[DeviceStatusColor] = "statusColor";
+    roles[DeviceId] = "devId";
+    roles[DeviceDetail] = "detail";
+    return roles;
+}
+
+QHash<int, QByteArray> SyncthingDeviceModel::roleNames() const
+{
+    const static QHash<int, QByteArray> roles(initRoleNames());
+    return roles;
+}
+
 /*!
  * \brief Returns the device info for the spcified \a index. The returned object is not persistent.
  */
@@ -78,8 +98,8 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 switch (role) {
                 case Qt::DisplayRole:
                 case Qt::EditRole:
-                    switch (index.column()) {
-                    case 0: // attribute names
+                    if (index.column() == 0) {
+                        // attribute names
                         switch (index.row()) {
                         case 0:
                             return tr("ID");
@@ -95,7 +115,11 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                             return tr("Introducer");
                         }
                         break;
-                    case 1: // attribute values
+                    }
+                    FALLTHROUGH;
+                case DeviceDetail:
+                    if (index.column() == 1 || role == DeviceDetail) {
+                        // attribute values
                         const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
                         switch (index.row()) {
                         case 0:
@@ -112,7 +136,6 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                         case 5:
                             return dev.introducer ? tr("yes") : tr("no");
                         }
-                        break;
                     }
                     break;
                 case Qt::ForegroundRole:
@@ -145,6 +168,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                             break;
                         }
                     }
+                    break;
                 default:;
                 }
             }
@@ -158,29 +182,8 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 case 0:
                     return dev.name.isEmpty() ? dev.id : dev.name;
                 case 1:
-                    if (dev.paused) {
-                        return tr("Paused");
-                    } else {
-                        switch (dev.status) {
-                        case SyncthingDevStatus::Unknown:
-                            return tr("Unknown status");
-                        case SyncthingDevStatus::OwnDevice:
-                            return tr("Own device");
-                        case SyncthingDevStatus::Idle:
-                            return tr("Idle");
-                        case SyncthingDevStatus::Disconnected:
-                            return tr("Disconnected");
-                        case SyncthingDevStatus::Synchronizing:
-                            return dev.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dev.progressPercentage) : tr("Synchronizing");
-                        case SyncthingDevStatus::OutOfSync:
-                            return tr("Out of sync");
-                        case SyncthingDevStatus::Rejected:
-                            return tr("Rejected");
-                        }
-                    }
-                    break;
+                    return devStatusString(dev);
                 }
-                break;
             case Qt::DecorationRole:
                 switch (index.column()) {
                 case 0:
@@ -217,23 +220,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 case 0:
                     break;
                 case 1:
-                    if (!dev.paused) {
-                        switch (dev.status) {
-                        case SyncthingDevStatus::Unknown:
-                            break;
-                        case SyncthingDevStatus::Disconnected:
-                            break;
-                        case SyncthingDevStatus::OwnDevice:
-                        case SyncthingDevStatus::Idle:
-                            return Colors::green(m_brightColors);
-                        case SyncthingDevStatus::Synchronizing:
-                            return Colors::blue(m_brightColors);
-                        case SyncthingDevStatus::OutOfSync:
-                        case SyncthingDevStatus::Rejected:
-                            return Colors::red(m_brightColors);
-                        }
-                    }
-                    break;
+                    return devStatusColor(dev);
                 }
                 break;
             case DeviceStatus:
@@ -242,6 +229,12 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 return dev.paused;
             case IsOwnDevice:
                 return dev.status == SyncthingDevStatus::OwnDevice;
+            case DeviceStatusString:
+                return devStatusString(dev);
+            case DeviceStatusColor:
+                return devStatusColor(dev);
+            case DeviceId:
+                return dev.id;
             default:;
             }
         }
@@ -289,9 +282,57 @@ void SyncthingDeviceModel::newDevices()
 void SyncthingDeviceModel::devStatusChanged(const SyncthingDev &, int index)
 {
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
-    emit dataChanged(modelIndex1, modelIndex1, QVector<int>() << Qt::DecorationRole);
+    static const QVector<int> modelRoles1({ Qt::DecorationRole, DevicePaused, DeviceStatus, DeviceStatusString, DeviceStatusColor, DeviceId });
+    emit dataChanged(modelIndex1, modelIndex1, modelRoles1);
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
-    emit dataChanged(modelIndex2, modelIndex2, QVector<int>() << Qt::DisplayRole << Qt::ForegroundRole << DeviceStatus);
+    static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::ForegroundRole });
+    emit dataChanged(modelIndex2, modelIndex2, modelRoles2);
+}
+
+QString SyncthingDeviceModel::devStatusString(const SyncthingDev &dev)
+{
+    if (dev.paused) {
+        return tr("Paused");
+    }
+    switch (dev.status) {
+    case SyncthingDevStatus::Unknown:
+        return tr("Unknown status");
+    case SyncthingDevStatus::OwnDevice:
+        return tr("Own device");
+    case SyncthingDevStatus::Idle:
+        return tr("Idle");
+    case SyncthingDevStatus::Disconnected:
+        return tr("Disconnected");
+    case SyncthingDevStatus::Synchronizing:
+        return dev.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dev.progressPercentage) : tr("Synchronizing");
+    case SyncthingDevStatus::OutOfSync:
+        return tr("Out of sync");
+    case SyncthingDevStatus::Rejected:
+        return tr("Rejected");
+    }
+    return QString();
+}
+
+QColor SyncthingDeviceModel::devStatusColor(const SyncthingDev &dev) const
+{
+    if (dev.paused) {
+        return QColor();
+    }
+    switch (dev.status) {
+    case SyncthingDevStatus::Unknown:
+        break;
+    case SyncthingDevStatus::Disconnected:
+        break;
+    case SyncthingDevStatus::OwnDevice:
+    case SyncthingDevStatus::Idle:
+        return Colors::green(m_brightColors);
+    case SyncthingDevStatus::Synchronizing:
+        return Colors::blue(m_brightColors);
+    case SyncthingDevStatus::OutOfSync:
+    case SyncthingDevStatus::Rejected:
+        return Colors::red(m_brightColors);
+    }
+    return QColor();
 }
 
 } // namespace Data

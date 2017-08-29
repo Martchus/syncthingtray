@@ -23,6 +23,27 @@ SyncthingDirectoryModel::SyncthingDirectoryModel(SyncthingConnection &connection
     connect(&m_connection, &SyncthingConnection::dirStatusChanged, this, &SyncthingDirectoryModel::dirStatusChanged);
 }
 
+QHash<int, QByteArray> SyncthingDirectoryModel::initRoleNames()
+{
+    QHash<int, QByteArray> roles;
+    roles[Qt::DisplayRole] = "name";
+    roles[DirectoryStatus] = "status";
+    roles[Qt::DecorationRole] = "statusIcon";
+    roles[DirectoryStatusString] = "statusString";
+    roles[DirectoryStatusColor] = "statusColor";
+    roles[DirectoryPaused] = "paused";
+    roles[DirectoryId] = "dirId";
+    roles[DirectoryPath] = "path";
+    roles[DirectoryDetail] = "detail";
+    return roles;
+}
+
+QHash<int, QByteArray> SyncthingDirectoryModel::roleNames() const
+{
+    const static QHash<int, QByteArray> roles(initRoleNames());
+    return roles;
+}
+
 /*!
  * \brief Returns the directory info for the spcified \a index. The returned object is not persistent.
  */
@@ -83,8 +104,8 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 switch (role) {
                 case Qt::DisplayRole:
                 case Qt::EditRole:
-                    switch (index.column()) {
-                    case 0: // attribute names
+                    if (index.column() == 0) {
+                        // attribute names
                         switch (index.row()) {
                         case 0:
                             return tr("ID");
@@ -108,7 +129,11 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                             return tr("Errors");
                         }
                         break;
-                    case 1: // attribute values
+                    }
+                    FALLTHROUGH;
+                case DirectoryDetail:
+                    if (index.column() == 1 || role == DirectoryDetail) {
+                        // attribute values
                         const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
                         switch (index.row()) {
                         case 0:
@@ -153,7 +178,6 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                                 return tr("none");
                             }
                         }
-                        break;
                     }
                     break;
                 case Qt::ForegroundRole:
@@ -232,25 +256,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case 0:
                     return dir.label.isEmpty() ? dir.id : dir.label;
                 case 1:
-                    if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
-                        return tr("Paused");
-                    } else {
-                        switch (dir.status) {
-                        case SyncthingDirStatus::Unknown:
-                            return tr("Unknown status");
-                        case SyncthingDirStatus::Unshared:
-                            return tr("Unshared");
-                        case SyncthingDirStatus::Idle:
-                            return tr("Idle");
-                        case SyncthingDirStatus::Scanning:
-                            return dir.progressPercentage > 0 ? tr("Scanning (%1 %)").arg(dir.progressPercentage) : tr("Scanning");
-                        case SyncthingDirStatus::Synchronizing:
-                            return dir.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dir.progressPercentage) : tr("Synchronizing");
-                        case SyncthingDirStatus::OutOfSync:
-                            return tr("Out of sync");
-                        }
-                    }
-                    break;
+                    return dirStatusString(dir);
                 }
                 break;
             case Qt::DecorationRole:
@@ -289,30 +295,21 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case 0:
                     break;
                 case 1:
-                    if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
-                        break;
-                    } else {
-                        switch (dir.status) {
-                        case SyncthingDirStatus::Unknown:
-                            break;
-                        case SyncthingDirStatus::Idle:
-                            return Colors::green(m_brightColors);
-                        case SyncthingDirStatus::Unshared:
-                            return Colors::orange(m_brightColors);
-                        case SyncthingDirStatus::Scanning:
-                        case SyncthingDirStatus::Synchronizing:
-                            return Colors::blue(m_brightColors);
-                        case SyncthingDirStatus::OutOfSync:
-                            return Colors::red(m_brightColors);
-                        }
-                    }
-                    break;
+                    return dirStatusColor(dir);
                 }
                 break;
             case DirectoryStatus:
                 return static_cast<int>(dir.status);
             case DirectoryPaused:
                 return dir.paused;
+            case DirectoryStatusString:
+                return dirStatusString(dir);
+            case DirectoryStatusColor:
+                return dirStatusColor(dir);
+            case DirectoryId:
+                return dir.id;
+            case DirectoryPath:
+                return dir.path;
             default:;
             }
         }
@@ -360,10 +357,57 @@ void SyncthingDirectoryModel::newDirs()
 void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &, int index)
 {
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
-    emit dataChanged(modelIndex1, modelIndex1, QVector<int>() << Qt::DecorationRole);
+    static const QVector<int> modelRoles1(
+        { Qt::DecorationRole, DirectoryPaused, DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath });
+    emit dataChanged(modelIndex1, modelIndex1, modelRoles1);
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
-    emit dataChanged(modelIndex2, modelIndex2, QVector<int>() << Qt::DisplayRole << Qt::ForegroundRole);
-    emit dataChanged(this->index(0, 1, modelIndex1), this->index(7, 1, modelIndex1), QVector<int>() << Qt::DisplayRole);
+    static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::ForegroundRole });
+    emit dataChanged(modelIndex2, modelIndex2, modelRoles2);
+    static const QVector<int> modelRoles3({ Qt::DisplayRole });
+    emit dataChanged(this->index(0, 1, modelIndex1), this->index(7, 1, modelIndex1), modelRoles3);
+}
+
+QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
+{
+    if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
+        return tr("Paused");
+    }
+    switch (dir.status) {
+    case SyncthingDirStatus::Unknown:
+        return tr("Unknown status");
+    case SyncthingDirStatus::Unshared:
+        return tr("Unshared");
+    case SyncthingDirStatus::Idle:
+        return tr("Idle");
+    case SyncthingDirStatus::Scanning:
+        return dir.progressPercentage > 0 ? tr("Scanning (%1 %)").arg(dir.progressPercentage) : tr("Scanning");
+    case SyncthingDirStatus::Synchronizing:
+        return dir.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dir.progressPercentage) : tr("Synchronizing");
+    case SyncthingDirStatus::OutOfSync:
+        return tr("Out of sync");
+    }
+    return QString();
+}
+
+QColor SyncthingDirectoryModel::dirStatusColor(const SyncthingDir &dir) const
+{
+    if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
+        return QColor();
+    }
+    switch (dir.status) {
+    case SyncthingDirStatus::Unknown:
+        break;
+    case SyncthingDirStatus::Idle:
+        return Colors::green(m_brightColors);
+    case SyncthingDirStatus::Unshared:
+        return Colors::orange(m_brightColors);
+    case SyncthingDirStatus::Scanning:
+    case SyncthingDirStatus::Synchronizing:
+        return Colors::blue(m_brightColors);
+    case SyncthingDirStatus::OutOfSync:
+        return Colors::red(m_brightColors);
+    }
+    return QColor();
 }
 
 QString SyncthingDirectoryModel::statusLabel(quint64 files, quint64 dirs, quint64 size)
