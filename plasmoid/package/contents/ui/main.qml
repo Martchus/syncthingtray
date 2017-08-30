@@ -38,7 +38,7 @@ Item {
     }
 
     function action_showAboutDialog() {
-        plasmoid.nativeInterface.connection.showAboutDialog()
+        plasmoid.nativeInterface.showAboutDialog()
     }
 
     Component.onCompleted: {
