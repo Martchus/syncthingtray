@@ -6,7 +6,7 @@ set(META_APP_NAME "Syncthing Plasmoid")
 set(META_APP_AUTHOR "Martchus")
 set(META_APP_DESCRIPTION "Plasmoid to interact with Syncthing")
 set(META_PROJECT_TYPE qtplugin)
-set(META_ID "martchus.syncthing-plasmoid")
+set(META_ID "martchus.${META_PROJECT_NAME}")
 
 # find ECM (required by KF5Plasma)
 find_package(ECM REQUIRED NO_MODULE)
