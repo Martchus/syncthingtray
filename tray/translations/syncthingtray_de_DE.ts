@@ -136,7 +136,7 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="113"/>
-        <location filename="../gui/traywidget.cpp" line="513"/>
+        <location filename="../gui/traywidget.cpp" line="515"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
@@ -288,22 +288,22 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Mind. ein Gerät ist pausiert, klicke um fortzusetzen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="409"/>
+        <location filename="../gui/traywidget.cpp" line="411"/>
         <source>The specified connection configuration &lt;em&gt;%1&lt;/em&gt; is not defined and hence ignored.</source>
         <translation>Die angegebene Verbindungskonfiguration &lt;em&gt;%1&lt;/em&gt; ist nicht definiert und wird daher ignoriert.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="428"/>
+        <location filename="../gui/traywidget.cpp" line="430"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Das Verzeichnis &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="439"/>
+        <location filename="../gui/traywidget.cpp" line="441"/>
         <source>The containing directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Das beinhaltende Verzeichnis &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="508"/>
+        <location filename="../gui/traywidget.cpp" line="510"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
