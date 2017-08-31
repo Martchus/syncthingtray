@@ -243,6 +243,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                             }
                         }
                     }
+                    break;
                 default:;
                 }
             }

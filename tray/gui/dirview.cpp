@@ -48,7 +48,7 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
                             emit openDir(*dir);
                         }
                     }
-                } else if (clickedIndex.row() == 7 && !dir->itemErrors.empty()) {
+                } else if (clickedIndex.row() == 9 && !dir->itemErrors.empty()) {
                     auto *const textViewDlg = TextViewDialog::forDirectoryErrors(*dir);
                     textViewDlg->setAttribute(Qt::WA_DeleteOnClose);
                     textViewDlg->show();
