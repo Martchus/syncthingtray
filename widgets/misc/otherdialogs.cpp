@@ -1,4 +1,4 @@
-#include "./textviewdialog.h"
+#include "./otherdialogs.h"
 
 #include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingdir.h"
