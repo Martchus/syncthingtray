@@ -9,8 +9,8 @@
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "../../connector/syncthingservice.h"
-#include "../../connector/utils.h"
 #endif
+#include "../../connector/utils.h"
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
@@ -371,7 +371,9 @@ void TrayWidget::applySettings(const QString &connectionConfig)
         m_connection.reconnect();
     }
 #else
-    m_connection.reconnect();
+    if (reconnectRequired) {
+        m_connection.reconnect();
+    }
 #endif
 
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
