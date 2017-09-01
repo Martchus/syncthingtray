@@ -390,10 +390,10 @@ QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
     return QString();
 }
 
-QColor SyncthingDirectoryModel::dirStatusColor(const SyncthingDir &dir) const
+QVariant SyncthingDirectoryModel::dirStatusColor(const SyncthingDir &dir) const
 {
     if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
-        return QColor();
+        return QVariant();
     }
     switch (dir.status) {
     case SyncthingDirStatus::Unknown:
@@ -408,7 +408,7 @@ QColor SyncthingDirectoryModel::dirStatusColor(const SyncthingDir &dir) const
     case SyncthingDirStatus::OutOfSync:
         return Colors::red(m_brightColors);
     }
-    return QColor();
+    return QVariant();
 }
 
 } // namespace Data

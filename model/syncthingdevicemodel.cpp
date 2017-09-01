@@ -313,10 +313,10 @@ QString SyncthingDeviceModel::devStatusString(const SyncthingDev &dev)
     return QString();
 }
 
-QColor SyncthingDeviceModel::devStatusColor(const SyncthingDev &dev) const
+QVariant SyncthingDeviceModel::devStatusColor(const SyncthingDev &dev) const
 {
     if (dev.paused) {
-        return QColor();
+        return QVariant();
     }
     switch (dev.status) {
     case SyncthingDevStatus::Unknown:
@@ -332,7 +332,7 @@ QColor SyncthingDeviceModel::devStatusColor(const SyncthingDev &dev) const
     case SyncthingDevStatus::Rejected:
         return Colors::red(m_brightColors);
     }
-    return QColor();
+    return QVariant();
 }
 
 } // namespace Data

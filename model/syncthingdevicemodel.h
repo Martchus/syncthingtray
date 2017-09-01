@@ -45,7 +45,7 @@ private Q_SLOTS:
 private:
     static QHash<int, QByteArray> initRoleNames();
     static QString devStatusString(const SyncthingDev &dev);
-    QColor devStatusColor(const SyncthingDev &dev) const;
+    QVariant devStatusColor(const SyncthingDev &dev) const;
 
     const std::vector<SyncthingDev> &m_devs;
 };
