@@ -17,6 +17,9 @@ public:
     static ErrorViewDialog *instance();
     static void addError(InternalError &&newError);
 
+Q_SIGNALS:
+    void errorsCleared();
+
 public Q_SLOTS:
     static void showInstance();
     static void clearErrors();

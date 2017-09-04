@@ -61,6 +61,7 @@ set(REQUIRED_ICONS
     dialog-ok-apply
     edit-copy
     edit-paste
+    emblem-error
     folder
     folder-download
     folder-open

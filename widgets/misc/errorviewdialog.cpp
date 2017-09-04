@@ -56,6 +56,7 @@ ErrorViewDialog::ErrorViewDialog()
         buttonLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
         buttonLayout->addWidget(clearButton);
         connect(clearButton, &QPushButton::clicked, &ErrorViewDialog::clearErrors);
+        connect(clearButton, &QPushButton::clicked, this, &ErrorViewDialog::errorsCleared);
     }
 
     layout()->addItem(buttonLayout);

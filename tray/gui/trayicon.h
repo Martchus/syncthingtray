@@ -34,17 +34,20 @@ public slots:
         const QString &errorMsg, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);
     void showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message);
     void showStatusNotification(Data::SyncthingStatus status);
+    void showInternalErrorsDialog();
     void updateStatusIconAndText();
 
 private slots:
     void handleActivated(QSystemTrayIcon::ActivationReason reason);
     void handleMessageClicked();
     void handleConnectionStatusChanged(Data::SyncthingStatus status);
+    void handleErrorsCleared();
 
 private:
     bool m_initialized;
     TrayMenu m_trayMenu;
     QMenu m_contextMenu;
+    QAction *m_errorsAction;
     Data::SyncthingStatus m_status;
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     DBusStatusNotifier m_dbusNotifier;

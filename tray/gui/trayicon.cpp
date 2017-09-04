@@ -60,6 +60,11 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
                 QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))),
                 tr("Log")),
         &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showLog);
+    m_errorsAction = m_contextMenu.addAction(
+        QIcon::fromTheme(QStringLiteral("emblem-error"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-error.svg"))),
+        tr("Show internal errors"));
+    m_errorsAction->setVisible(false);
+    connect(m_errorsAction, &QAction::triggered, this, &TrayIcon::showInternalErrorsDialog);
     m_contextMenu.addMenu(m_trayMenu.widget()->connectionsMenu());
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("help-about"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/help-about.svg"))), tr("About")),
@@ -86,7 +91,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
         static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
     connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, m_trayMenu.widget(), &TrayWidget::dismissNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, m_trayMenu.widget(), &TrayWidget::showNotifications);
-    connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, &ErrorViewDialog::showInstance);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &TrayIcon::showInternalErrorsDialog);
 #endif
     m_initialized = true;
 }
@@ -134,7 +139,7 @@ void TrayIcon::handleMessageClicked()
         m_trayMenu.widget()->dismissNotifications();
         break;
     case TrayIconMessageClickedAction::ShowInternalErrors:
-        ErrorViewDialog::instance()->show();
+        showInternalErrorsDialog();
         break;
     }
 }
@@ -147,6 +152,11 @@ void TrayIcon::handleConnectionStatusChanged(SyncthingStatus status)
     updateStatusIconAndText();
     showStatusNotification(status);
     m_status = status;
+}
+
+void TrayIcon::handleErrorsCleared()
+{
+    m_errorsAction->setVisible(false);
 }
 
 void TrayIcon::showInternalError(
@@ -178,6 +188,7 @@ void TrayIcon::showInternalError(
             showMessage(tr("Error"), errorMsg, QSystemTrayIcon::Critical);
         }
         ErrorViewDialog::addError(move(error));
+        m_errorsAction->setVisible(true);
     }
 }
 
@@ -271,5 +282,13 @@ void TrayIcon::showStatusNotification(SyncthingStatus status)
             }
         }
     }
+}
+
+void TrayIcon::showInternalErrorsDialog()
+{
+    auto *const errorViewDlg = ErrorViewDialog::instance();
+    connect(errorViewDlg, &ErrorViewDialog::errorsCleared, this, &TrayIcon::handleErrorsCleared);
+    centerWidget(errorViewDlg);
+    errorViewDlg->show();
 }
 }
