@@ -27,6 +27,8 @@ QHash<int, QByteArray> SyncthingDownloadModel::initRoleNames()
     QHash<int, QByteArray> roles;
     roles[Qt::DisplayRole] = "name";
     roles[Qt::DecorationRole] = "fileIcon";
+    roles[ItemPercentage] = "percentage";
+    roles[ItemProgressLabel] = "progressLabel";
     return roles;
 }
 
@@ -102,7 +104,7 @@ QVariant SyncthingDownloadModel::data(const QModelIndex &index, int role) const
 {
     if (index.isValid()) {
         if (index.parent().isValid()) {
-            // dir attributes
+            // downloading items (of dir)
             if (static_cast<size_t>(index.parent().row()) < m_pendingDirs.size()) {
                 const SyncthingDir &dir = *m_pendingDirs[static_cast<size_t>(index.parent().row())];
                 if (static_cast<size_t>(index.row()) < dir.downloadingItems.size()) {
@@ -210,7 +212,7 @@ void SyncthingDownloadModel::downloadProgressChanged()
 {
     int row = 0;
     for (const SyncthingDir &dirInfo : m_connection.dirInfo()) {
-        auto pendingIterator = find(m_pendingDirs.begin(), m_pendingDirs.end(), &dirInfo);
+        const auto pendingIterator = find(m_pendingDirs.begin(), m_pendingDirs.end(), &dirInfo);
         if (dirInfo.downloadingItems.empty()) {
             if (pendingIterator != m_pendingDirs.end()) {
                 beginRemoveRows(QModelIndex(), row, row);
@@ -219,8 +221,11 @@ void SyncthingDownloadModel::downloadProgressChanged()
             }
         } else {
             if (pendingIterator != m_pendingDirs.end()) {
-                emit dataChanged(index(row, 0), index(row, 1),
-                    QVector<int>() << Qt::DisplayRole << Qt::EditRole << Qt::DecorationRole << Qt::ForegroundRole << Qt::ToolTipRole);
+                static const QVector<int> roles(
+                    { Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, Qt::ForegroundRole, Qt::ToolTipRole, ItemPercentage, ItemProgressLabel });
+                const QModelIndex parentIndex(index(row, 0));
+                emit dataChanged(parentIndex, index(row, 1), roles);
+                emit dataChanged(index(0, 0, parentIndex), index(static_cast<int>(dirInfo.downloadingItems.size()), 1, parentIndex), roles);
             } else {
                 beginInsertRows(QModelIndex(), row, row);
                 beginInsertRows(index(row, row), 0, static_cast<int>(dirInfo.downloadingItems.size()));
