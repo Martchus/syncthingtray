@@ -23,6 +23,8 @@ set(SRC_FILES
     syncthingdir.cpp
     syncthingdev.cpp
     syncthingconnection.cpp
+    syncthingconnectionmockhelpers.h
+    syncthingconnectionmockhelpers.cpp
     syncthingconnectionsettings.cpp
     syncthingconfig.cpp
     syncthingprocess.cpp
@@ -82,6 +84,18 @@ if(SYSTEMD_SUPPORT)
     message(STATUS "systemd support enabled")
 else()
     message(STATUS "systemd support disabled")
+endif()
+
+# configure whether the connection should be mocked for test purposes
+option(SYNCTHING_CONNECTION_MOCKED "enables mocking the SyncthingConnection class so it will provide only some fixed test data" OFF)
+if(SYNCTHING_CONNECTION_MOCKED)
+    set_source_files_properties(
+        syncthingconnection.cpp
+        syncthingconnectionmockhelpers.h
+        syncthingconnectionmockhelpers.cpp
+        PROPERTIES COMPILE_DEFINITIONS LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
+    )
+    message(WARNING "SyncthingConnection class will be mocked")
 endif()
 
 # include modules to apply configuration

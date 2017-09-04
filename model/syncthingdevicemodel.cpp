@@ -287,6 +287,10 @@ void SyncthingDeviceModel::devStatusChanged(const SyncthingDev &, int index)
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::ForegroundRole });
     emit dataChanged(modelIndex2, modelIndex2, modelRoles2);
+    static const QVector<int> modelRoles3({ Qt::DisplayRole, Qt::ToolTipRole });
+    emit dataChanged(this->index(0, 1, modelIndex1), this->index(5, 1, modelIndex1), modelRoles3);
+    static const QVector<int> modelRoles4({ DeviceDetail });
+    emit dataChanged(this->index(0, 0, modelIndex1), this->index(5, 0, modelIndex1), modelRoles4);
 }
 
 QString SyncthingDeviceModel::devStatusString(const SyncthingDev &dev)

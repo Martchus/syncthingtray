@@ -1,0 +1,24 @@
+{
+   "total" : {
+          "paused" : false,
+          "clientVersion" : "",
+          "at" : "2015-11-07T17:29:47.691637262+01:00",
+          "connected" : false,
+          "inBytesTotal" : 1479,
+          "type" : "",
+          "outBytesTotal" : 1318,
+          "address" : ""
+   },
+   "connections" : {
+          "P56IOI7-MZJNU2Y-IQGDREY-DM2MGTI-MGL3BXN-PQ6W5BM-TBBZ4TJ-XZWICQ2" : {
+             "connected" : true,
+             "inBytesTotal" : 556,
+             "paused" : false,
+             "at" : "2015-11-07T17:29:47.691548971+01:00",
+             "clientVersion" : "v0.12.1",
+             "address" : "127.0.0.1:22002",
+             "type" : "TCP (Client)",
+             "outBytesTotal" : 550
+          }
+   }
+}

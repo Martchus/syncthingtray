@@ -1,0 +1,17 @@
+{
+  "globalBytes": 13173473780,
+  "globalDeleted": 1847,
+  "globalFiles": 42106,
+  "localBytes": 13173473780,
+  "localDeleted": 1847,
+  "localFiles": 42106,
+  "inSyncBytes": 13173473780,
+  "inSyncFiles": 42106,
+  "needBytes": 0,
+  "needFiles": 0,
+  "ignorePatterns": true,
+  "invalid": "",
+  "state": "idle",
+  "stateChanged": "2015-03-16T21:47:28.750853241+01:00",
+  "version": 71989
+}

@@ -1,6 +1,9 @@
 #include "./syncthingconnection.h"
 #include "./syncthingconfig.h"
+#include "./syncthingconnectionmockhelpers.h"
+#ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
 #include "./syncthingconnectionsettings.h"
+#endif
 #include "./utils.h"
 
 #include <c++utilities/conversion/conversionexception.h>
@@ -82,6 +85,9 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     QObject::connect(&m_errorsPollTimer, &QTimer::timeout, this, &SyncthingConnection::requestErrors);
     m_autoReconnectTimer.setTimerType(Qt::VeryCoarseTimer);
     QObject::connect(&m_autoReconnectTimer, &QTimer::timeout, this, &SyncthingConnection::autoReconnect);
+#ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
+    setupTestData();
+#endif
 }
 
 /*!
@@ -408,9 +414,13 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
  */
 QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQuery &query, bool rest)
 {
+#ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     auto *reply = networkAccessManager().get(prepareRequest(path, query, rest));
     reply->ignoreSslErrors(m_expectedSslErrors);
     return reply;
+#else
+    return MockedReply::forRequest(QStringLiteral("GET"), path, query, rest);
+#endif
 }
 
 /*!

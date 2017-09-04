@@ -364,8 +364,10 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &, int index)
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::ForegroundRole });
     emit dataChanged(modelIndex2, modelIndex2, modelRoles2);
-    static const QVector<int> modelRoles3({ Qt::DisplayRole });
-    emit dataChanged(this->index(0, 1, modelIndex1), this->index(7, 1, modelIndex1), modelRoles3);
+    static const QVector<int> modelRoles3({ Qt::DisplayRole, Qt::ToolTipRole });
+    emit dataChanged(this->index(0, 1, modelIndex1), this->index(9, 1, modelIndex1), modelRoles3);
+    static const QVector<int> modelRoles4({ DirectoryDetail });
+    emit dataChanged(this->index(0, 0, modelIndex1), this->index(9, 0, modelIndex1), modelRoles4);
 }
 
 QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)

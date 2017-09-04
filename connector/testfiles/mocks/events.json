@@ -1,0 +1,73 @@
+[
+    {
+        "id": 2,
+        "globalID": 3,
+        "type": "DeviceConnected",
+        "time": "2018-07-13T21:04:33.687836696+02:00",
+        "data": {
+            "addr": "172.16.32.25:22000",
+            "id": "53STGR7-YBM6FCX-PAZ2RHM-YPY6OEJ-WYHVZO7-PCKQRCK-PZLTP7T"
+        }
+    },
+    {
+        "id": 3,
+        "type": "DownloadProgress",
+        "time": "2018-12-13T00:26:12.9876937Z",
+        "data": {
+            "zX8xfl3ygn-": {
+                "file1": {
+                    "Total": 800,
+                    "Pulling": 2,
+                    "CopiedFromOrigin": 0,
+                    "Reused": 633,
+                    "CopiedFromElsewhere": 0,
+                    "Pulled": 38,
+                    "BytesTotal": 104792064,
+                    "BytesDone": 87883776
+                },
+                "dir\\file2": {
+                    "Total": 80,
+                    "Pulling": 2,
+                    "CopiedFromOrigin": 0,
+                    "Reused": 0,
+                    "CopiedFromElsewhere": 0,
+                    "Pulled": 32,
+                    "BytesTotal": 10420224,
+                    "BytesDone": 4128768
+                }
+            },
+            "GXWxf-3zgnU": {
+                "file3": {
+                    "Total": 800,
+                    "Pulling": 2,
+                    "CopiedFromOrigin": 0,
+                    "Reused": 633,
+                    "CopiedFromElsewhere": 0,
+                    "Pulled": 38,
+                    "BytesTotal": 104792064,
+                    "BytesDone": 87883776
+                },
+                "directory1\\directory\\directory3\\directory4\\directory5\\directory3\\directory4\\directory5\\file4": {
+                    "Total": 80,
+                    "Pulling": 2,
+                    "CopiedFromOrigin": 0,
+                    "Reused": 0,
+                    "CopiedFromElsewhere": 0,
+                    "Pulled": 32,
+                    "BytesTotal": 10420224,
+                    "BytesDone": 4128768
+                },
+                "file4": {
+                    "Total": 80,
+                    "Pulling": 2,
+                    "CopiedFromOrigin": 0,
+                    "Reused": 0,
+                    "CopiedFromElsewhere": 0,
+                    "Pulled": 32,
+                    "BytesTotal": 2048,
+                    "BytesDone": 1024
+                }
+            }
+        }
+    }
+]
