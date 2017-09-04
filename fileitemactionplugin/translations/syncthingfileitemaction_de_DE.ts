@@ -21,12 +21,12 @@
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="164"/>
         <source>Global: </source>
-        <translation type="unfinished"></translation>
+        <translation>Global: </translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="165"/>
         <source>Local: </source>
-        <translation type="unfinished"></translation>
+        <translation>Lokal: </translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="166"/>
@@ -41,9 +41,9 @@
     <message numerus="yes">
         <location filename="../syncthingfileitemaction.cpp" line="174"/>
         <source>%1 item(s) out-of-sync</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 Element nicht synchronisiert</numerusform>
+            <numerusform>%1 Elemente nicht synchronisiert</numerusform>
         </translation>
     </message>
 </context>

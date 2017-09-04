@@ -69,26 +69,31 @@
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="65"/>
+        <source>Show internal errors</source>
+        <translation>Interne Fehler</translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="70"/>
         <source>About</source>
         <translation>Über Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="70"/>
+        <location filename="../gui/trayicon.cpp" line="75"/>
         <source>Close</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="178"/>
+        <location filename="../gui/trayicon.cpp" line="188"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="197"/>
+        <location filename="../gui/trayicon.cpp" line="208"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation>Neue Syncthing-Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="233"/>
+        <location filename="../gui/trayicon.cpp" line="244"/>
         <source>Disconnected from Syncthing</source>
         <translation>Verbindung zu Syncthing getrennt</translation>
     </message>
@@ -98,12 +103,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="253"/>
+        <location filename="../gui/trayicon.cpp" line="264"/>
         <source>Synchronization of %1 complete</source>
         <translation>%1 wurde synchronisiert</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="260"/>
+        <location filename="../gui/trayicon.cpp" line="271"/>
         <source>Synchronization of the following devices complete:
 </source>
         <translation>Folgende Verzeichnisse wurden synchronisiert:
@@ -244,18 +249,6 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <location filename="../gui/traywidget.cpp" line="114"/>
         <source>Connection</source>
         <translation>Verbindung</translation>
-    </message>
-    <message>
-        <source>Own device ID</source>
-        <translation type="vanished">Eigene Geräte-ID</translation>
-    </message>
-    <message>
-        <source>device ID is unknown</source>
-        <translation type="vanished">die Geräte-ID ist unbekannt</translation>
-    </message>
-    <message>
-        <source>Copy to clipboard</source>
-        <translation type="vanished">in Zwischenablage kopieren</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="270"/>

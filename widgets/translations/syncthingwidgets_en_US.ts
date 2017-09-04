@@ -344,7 +344,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/errorviewdialog.cpp" line="100"/>
+        <location filename="../misc/errorviewdialog.cpp" line="101"/>
         <source>%1 error(s) occured</source>
         <translation>
             <numerusform>%1 error occured</numerusform>
@@ -513,17 +513,17 @@
 <context>
     <name>QtGui::OtherDialogs</name>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="26"/>
+        <location filename="../misc/otherdialogs.cpp" line="27"/>
         <source>Own device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="36"/>
+        <location filename="../misc/otherdialogs.cpp" line="37"/>
         <source>device ID is unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="44"/>
+        <location filename="../misc/otherdialogs.cpp" line="45"/>
         <source>Copy to clipboard</source>
         <translation type="unfinished"></translation>
     </message>

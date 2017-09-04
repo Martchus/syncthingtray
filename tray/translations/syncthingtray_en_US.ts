@@ -74,36 +74,41 @@
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="65"/>
-        <source>About</source>
+        <source>Show internal errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="70"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/trayicon.cpp" line="75"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="178"/>
+        <location filename="../gui/trayicon.cpp" line="188"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="197"/>
+        <location filename="../gui/trayicon.cpp" line="208"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="233"/>
+        <location filename="../gui/trayicon.cpp" line="244"/>
         <source>Disconnected from Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="253"/>
+        <location filename="../gui/trayicon.cpp" line="264"/>
         <source>Synchronization of %1 complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="260"/>
+        <location filename="../gui/trayicon.cpp" line="271"/>
         <source>Synchronization of the following devices complete:
 </source>
         <translation type="unfinished"></translation>
