@@ -7,6 +7,7 @@
 #include "resources/../../tray/resources/config.h"
 
 #include <QClipboard>
+#include <QDialog>
 #include <QFont>
 #include <QGuiApplication>
 #include <QIcon>
@@ -20,9 +21,9 @@ using namespace Data;
 
 namespace QtGui {
 
-QWidget *ownDeviceIdDialog(Data::SyncthingConnection &connection)
+QDialog *ownDeviceIdDialog(Data::SyncthingConnection &connection)
 {
-    auto *dlg = new QWidget(nullptr, Qt::Window);
+    auto *dlg = new QDialog(nullptr, Qt::Window);
     dlg->setWindowTitle(QCoreApplication::translate("QtGui::OtherDialogs", "Own device ID") + QStringLiteral(" - " APP_NAME));
     dlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     dlg->setAttribute(Qt::WA_DeleteOnClose);

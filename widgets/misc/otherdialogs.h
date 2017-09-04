@@ -3,7 +3,9 @@
 
 #include "../global.h"
 
-#include <QWidget>
+#include <QtGlobal>
+
+QT_FORWARD_DECLARE_CLASS(QDialog)
 
 namespace Data {
 class SyncthingConnection;
@@ -11,7 +13,7 @@ class SyncthingConnection;
 
 namespace QtGui {
 
-QWidget SYNCTHINGWIDGETS_EXPORT *ownDeviceIdDialog(Data::SyncthingConnection &connection);
+QDialog SYNCTHINGWIDGETS_EXPORT *ownDeviceIdDialog(Data::SyncthingConnection &connection);
 }
 
 #endif // SYNCTHINGWIDGETS_OTHERDIALOGS_H
