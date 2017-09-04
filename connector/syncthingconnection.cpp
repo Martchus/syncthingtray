@@ -1,10 +1,11 @@
 #include "./syncthingconnection.h"
 #include "./syncthingconfig.h"
-#include "./syncthingconnectionmockhelpers.h"
-#ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
 #include "./syncthingconnectionsettings.h"
-#endif
 #include "./utils.h"
+
+#ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
+#include "./syncthingconnectionmockhelpers.h"
+#endif
 
 #include <c++utilities/conversion/conversionexception.h>
 #include <c++utilities/conversion/stringconversion.h>

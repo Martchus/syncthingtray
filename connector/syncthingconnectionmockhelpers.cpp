@@ -1,5 +1,3 @@
-#ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
-
 #include "./syncthingconnectionmockhelpers.h"
 
 #include <c++utilities/conversion/stringbuilder.h>
@@ -193,5 +191,3 @@ void MockedReply::emitFinished()
     emit finished();
 }
 }
-
-#endif // LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED

@@ -23,8 +23,6 @@ set(SRC_FILES
     syncthingdir.cpp
     syncthingdev.cpp
     syncthingconnection.cpp
-    syncthingconnectionmockhelpers.h
-    syncthingconnectionmockhelpers.cpp
     syncthingconnectionsettings.cpp
     syncthingconfig.cpp
     syncthingprocess.cpp
@@ -89,6 +87,10 @@ endif()
 # configure whether the connection should be mocked for test purposes
 option(SYNCTHING_CONNECTION_MOCKED "enables mocking the SyncthingConnection class so it will provide only some fixed test data" OFF)
 if(SYNCTHING_CONNECTION_MOCKED)
+    list(APPEND SRC_FILES
+        syncthingconnectionmockhelpers.h
+        syncthingconnectionmockhelpers.cpp
+    )
     set_source_files_properties(
         syncthingconnection.cpp
         syncthingconnectionmockhelpers.h
