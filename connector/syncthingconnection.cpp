@@ -1919,7 +1919,8 @@ void SyncthingConnection::emitNotification(DateTime when, const QString &message
  */
 void SyncthingConnection::emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response)
 {
-    emit error(message + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError, reply->request(), response);
+    emit error(message % jsonError.errorString() % QChar(' ') % QChar('(') % tr("at offset %1").arg(jsonError.offset) % QChar(')'),
+        SyncthingErrorCategory::Parsing, QNetworkReply::NoError, reply->request(), response);
 }
 
 /*!
