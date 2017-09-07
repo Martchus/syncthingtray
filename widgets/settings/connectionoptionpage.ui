@@ -64,6 +64,38 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="downPushButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Move currently selected configuration down</string>
+        </property>
+        <property name="icon">
+         <iconset theme="go-down"/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="upPushButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Move currently selected configuration up</string>
+        </property>
+        <property name="icon">
+         <iconset theme="go-up"/>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="addPushButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -119,7 +151,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device.</string>
+      <string>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device. The first configuration is the primary/default configuration.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

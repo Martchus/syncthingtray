@@ -127,22 +127,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="414"/>
+        <location filename="../settings/settingsdialog.cpp" line="490"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="417"/>
+        <location filename="../settings/settingsdialog.cpp" line="493"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="422"/>
+        <location filename="../settings/settingsdialog.cpp" line="498"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="509"/>
+        <location filename="../settings/settingsdialog.cpp" line="585"/>
         <source>unable to modify startup entry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -161,104 +161,114 @@
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="75"/>
+        <source>Move currently selected configuration down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/connectionoptionpage.ui" line="107"/>
         <source>Add secondary instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="92"/>
+        <location filename="../settings/connectionoptionpage.ui" line="124"/>
         <source>Remove currently selected secondary instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="122"/>
-        <source>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device.</source>
+        <location filename="../settings/connectionoptionpage.ui" line="91"/>
+        <source>Move currently selected configuration up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="145"/>
+        <location filename="../settings/connectionoptionpage.ui" line="154"/>
+        <source>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device. The first configuration is the primary/default configuration.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/connectionoptionpage.ui" line="177"/>
         <source>Syncthing URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="155"/>
+        <location filename="../settings/connectionoptionpage.ui" line="187"/>
         <source>Authentication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="168"/>
+        <location filename="../settings/connectionoptionpage.ui" line="200"/>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="185"/>
+        <location filename="../settings/connectionoptionpage.ui" line="217"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="202"/>
+        <location filename="../settings/connectionoptionpage.ui" line="234"/>
         <source>API key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="212"/>
+        <location filename="../settings/connectionoptionpage.ui" line="244"/>
         <source>HTTPS certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="232"/>
+        <location filename="../settings/connectionoptionpage.ui" line="264"/>
         <source>Insert values from local Syncthing configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="256"/>
+        <location filename="../settings/connectionoptionpage.ui" line="288"/>
         <source>Poll interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="280"/>
-        <location filename="../settings/connectionoptionpage.ui" line="320"/>
-        <location filename="../settings/connectionoptionpage.ui" line="346"/>
-        <location filename="../settings/connectionoptionpage.ui" line="375"/>
+        <location filename="../settings/connectionoptionpage.ui" line="312"/>
+        <location filename="../settings/connectionoptionpage.ui" line="352"/>
+        <location filename="../settings/connectionoptionpage.ui" line="378"/>
+        <location filename="../settings/connectionoptionpage.ui" line="407"/>
         <source> ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="293"/>
+        <location filename="../settings/connectionoptionpage.ui" line="325"/>
         <source>Traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="300"/>
+        <location filename="../settings/connectionoptionpage.ui" line="332"/>
         <source>Device statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="333"/>
+        <location filename="../settings/connectionoptionpage.ui" line="365"/>
         <source>Errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="359"/>
+        <location filename="../settings/connectionoptionpage.ui" line="391"/>
         <source>Reconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="372"/>
+        <location filename="../settings/connectionoptionpage.ui" line="404"/>
         <source>no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="394"/>
+        <location filename="../settings/connectionoptionpage.ui" line="426"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="401"/>
+        <location filename="../settings/connectionoptionpage.ui" line="433"/>
         <source>disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="408"/>
+        <location filename="../settings/connectionoptionpage.ui" line="440"/>
         <source>Apply connection settings and try to reconnect with the currently selected config</source>
         <translation type="unfinished"></translation>
     </message>
@@ -268,22 +278,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="100"/>
+        <location filename="../settings/settingsdialog.cpp" line="104"/>
         <source>Select Syncthing config file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="108"/>
+        <location filename="../settings/settingsdialog.cpp" line="112"/>
         <source>Unable to parse the Syncthing config file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="184"/>
+        <location filename="../settings/settingsdialog.cpp" line="187"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="210"/>
+        <location filename="../settings/settingsdialog.cpp" line="212"/>
         <source>Instance %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -405,33 +415,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="551"/>
+        <location filename="../settings/settingsdialog.cpp" line="627"/>
         <source>%1-launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="552"/>
+        <location filename="../settings/settingsdialog.cpp" line="628"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="553"/>
+        <location filename="../settings/settingsdialog.cpp" line="629"/>
         <source>%1 executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="554"/>
+        <location filename="../settings/settingsdialog.cpp" line="630"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="626"/>
+        <location filename="../settings/settingsdialog.cpp" line="702"/>
         <source>%1 exited with exit code %2
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="630"/>
+        <location filename="../settings/settingsdialog.cpp" line="706"/>
         <source>%1 crashed with exit code %2
 </source>
         <translation type="unfinished"></translation>
@@ -505,7 +515,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="284"/>
+        <location filename="../settings/settingsdialog.cpp" line="360"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -531,22 +541,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="826"/>
+        <location filename="../settings/settingsdialog.cpp" line="902"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="833"/>
+        <location filename="../settings/settingsdialog.cpp" line="909"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="840"/>
+        <location filename="../settings/settingsdialog.cpp" line="916"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="855"/>
+        <location filename="../settings/settingsdialog.cpp" line="931"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -660,8 +670,8 @@
         <location filename="../settings/systemdoptionpage.ui" line="99"/>
         <location filename="../settings/systemdoptionpage.ui" line="154"/>
         <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="750"/>
-        <location filename="../settings/settingsdialog.cpp" line="762"/>
+        <location filename="../settings/settingsdialog.cpp" line="826"/>
+        <location filename="../settings/settingsdialog.cpp" line="838"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -696,12 +706,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="723"/>
+        <location filename="../settings/settingsdialog.cpp" line="799"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="745"/>
+        <location filename="../settings/settingsdialog.cpp" line="821"/>
         <source>since </source>
         <translation type="unfinished"></translation>
     </message>
@@ -759,7 +769,7 @@
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="784"/>
+        <location filename="../settings/settingsdialog.cpp" line="860"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -789,7 +799,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="787"/>
+        <location filename="../settings/settingsdialog.cpp" line="863"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>

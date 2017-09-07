@@ -84,49 +84,52 @@ QWidget *ConnectionOptionPage::setupWidget()
     QObject::connect(ui()->selectionComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
         bind(&ConnectionOptionPage::showConnectionSettings, this, _1));
     QObject::connect(ui()->selectionComboBox, static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::editTextChanged),
-        bind(&ConnectionOptionPage::saveCurrentConnectionName, this, _1));
-    QObject::connect(ui()->addPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::addConnectionSettings, this));
-    QObject::connect(ui()->removePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::removeConnectionSettings, this));
+        bind(&ConnectionOptionPage::saveCurrentConfigName, this, _1));
+    QObject::connect(ui()->downPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::moveSelectedConfigDown, this));
+    QObject::connect(ui()->upPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::moveSelectedConfigUp, this));
+    QObject::connect(ui()->addPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::addNewConfig, this));
+    QObject::connect(ui()->removePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::removeSelectedConfig, this));
     return w;
 }
 
 void ConnectionOptionPage::insertFromConfigFile()
 {
-    if (hasBeenShown()) {
-        QString configFile = SyncthingConfig::locateConfigFile();
-        if (configFile.isEmpty()) {
-            // allow user to select config file manually if it could not be located
-            configFile = QFileDialog::getOpenFileName(widget(),
-                QCoreApplication::translate("QtGui::ConnectionOptionPage", "Select Syncthing config file") + QStringLiteral(" - " APP_NAME));
-        }
-        if (configFile.isEmpty()) {
-            return;
-        }
-        SyncthingConfig config;
-        if (!config.restore(configFile)) {
-            QMessageBox::critical(widget(), widget()->windowTitle() + QStringLiteral(" - " APP_NAME),
-                QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to parse the Syncthing config file."));
-            return;
-        }
-        if (!config.guiAddress.isEmpty()) {
-            ui()->urlLineEdit->selectAll();
-            ui()->urlLineEdit->insert(
-                ((config.guiEnforcesSecureConnection || !QHostAddress(config.guiAddress.mid(0, config.guiAddress.indexOf(QChar(':')))).isLoopback())
-                        ? QStringLiteral("https://")
-                        : QStringLiteral("http://"))
-                + config.guiAddress);
-        }
-        if (!config.guiUser.isEmpty() || !config.guiPasswordHash.isEmpty()) {
-            ui()->authCheckBox->setChecked(true);
-            ui()->userNameLineEdit->selectAll();
-            ui()->userNameLineEdit->insert(config.guiUser);
-        } else {
-            ui()->authCheckBox->setChecked(false);
-        }
-        if (!config.guiApiKey.isEmpty()) {
-            ui()->apiKeyLineEdit->selectAll();
-            ui()->apiKeyLineEdit->insert(config.guiApiKey);
-        }
+    if (!hasBeenShown()) {
+        return;
+    }
+    QString configFile = SyncthingConfig::locateConfigFile();
+    if (configFile.isEmpty()) {
+        // allow user to select config file manually if it could not be located
+        configFile = QFileDialog::getOpenFileName(
+            widget(), QCoreApplication::translate("QtGui::ConnectionOptionPage", "Select Syncthing config file") + QStringLiteral(" - " APP_NAME));
+    }
+    if (configFile.isEmpty()) {
+        return;
+    }
+    SyncthingConfig config;
+    if (!config.restore(configFile)) {
+        QMessageBox::critical(widget(), widget()->windowTitle() + QStringLiteral(" - " APP_NAME),
+            QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to parse the Syncthing config file."));
+        return;
+    }
+    if (!config.guiAddress.isEmpty()) {
+        ui()->urlLineEdit->selectAll();
+        ui()->urlLineEdit->insert(
+            ((config.guiEnforcesSecureConnection || !QHostAddress(config.guiAddress.mid(0, config.guiAddress.indexOf(QChar(':')))).isLoopback())
+                    ? QStringLiteral("https://")
+                    : QStringLiteral("http://"))
+            + config.guiAddress);
+    }
+    if (!config.guiUser.isEmpty() || !config.guiPasswordHash.isEmpty()) {
+        ui()->authCheckBox->setChecked(true);
+        ui()->userNameLineEdit->selectAll();
+        ui()->userNameLineEdit->insert(config.guiUser);
+    } else {
+        ui()->authCheckBox->setChecked(false);
+    }
+    if (!config.guiApiKey.isEmpty()) {
+        ui()->apiKeyLineEdit->selectAll();
+        ui()->apiKeyLineEdit->insert(config.guiApiKey);
     }
 }
 
@@ -139,62 +142,61 @@ void ConnectionOptionPage::updateConnectionStatus()
 
 bool ConnectionOptionPage::showConnectionSettings(int index)
 {
-    bool ok = true;
-    if (index != m_currentIndex) {
-        if ((ok = cacheCurrentSettings(false))) {
-            const SyncthingConnectionSettings &connectionSettings
-                = (index == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(index - 1)]);
-            ui()->urlLineEdit->setText(connectionSettings.syncthingUrl);
-            ui()->authCheckBox->setChecked(connectionSettings.authEnabled);
-            ui()->userNameLineEdit->setText(connectionSettings.userName);
-            ui()->passwordLineEdit->setText(connectionSettings.password);
-            ui()->apiKeyLineEdit->setText(connectionSettings.apiKey);
-            ui()->certPathSelection->lineEdit()->setText(connectionSettings.httpsCertPath);
-            ui()->pollTrafficSpinBox->setValue(connectionSettings.trafficPollInterval);
-            ui()->pollDevStatsSpinBox->setValue(connectionSettings.devStatsPollInterval);
-            ui()->pollErrorsSpinBox->setValue(connectionSettings.errorsPollInterval);
-            ui()->reconnectSpinBox->setValue(connectionSettings.reconnectInterval);
-            m_currentIndex = index;
-        } else {
-            ui()->selectionComboBox->setCurrentIndex(m_currentIndex);
-        }
+    if (index == m_currentIndex) {
+        return true;
     }
-    ui()->removePushButton->setEnabled(index);
-    return ok;
+    if (!cacheCurrentSettings(false)) {
+        ui()->selectionComboBox->setCurrentIndex(m_currentIndex);
+        return false;
+    }
+    const SyncthingConnectionSettings &connectionSettings = (index == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(index - 1)]);
+    ui()->urlLineEdit->setText(connectionSettings.syncthingUrl);
+    ui()->authCheckBox->setChecked(connectionSettings.authEnabled);
+    ui()->userNameLineEdit->setText(connectionSettings.userName);
+    ui()->passwordLineEdit->setText(connectionSettings.password);
+    ui()->apiKeyLineEdit->setText(connectionSettings.apiKey);
+    ui()->certPathSelection->lineEdit()->setText(connectionSettings.httpsCertPath);
+    ui()->pollTrafficSpinBox->setValue(connectionSettings.trafficPollInterval);
+    ui()->pollDevStatsSpinBox->setValue(connectionSettings.devStatsPollInterval);
+    ui()->pollErrorsSpinBox->setValue(connectionSettings.errorsPollInterval);
+    ui()->reconnectSpinBox->setValue(connectionSettings.reconnectInterval);
+    setCurrentIndex(index);
+    return true;
 }
 
 bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
 {
-    bool ok = true;
-    if (m_currentIndex >= 0) {
-        SyncthingConnectionSettings &connectionSettings
-            = (m_currentIndex == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(m_currentIndex - 1)]);
-        connectionSettings.syncthingUrl = ui()->urlLineEdit->text();
-        connectionSettings.authEnabled = ui()->authCheckBox->isChecked();
-        connectionSettings.userName = ui()->userNameLineEdit->text();
-        connectionSettings.password = ui()->passwordLineEdit->text();
-        connectionSettings.apiKey = ui()->apiKeyLineEdit->text().toUtf8();
-        connectionSettings.expectedSslErrors.clear();
-        connectionSettings.httpsCertPath = ui()->certPathSelection->lineEdit()->text();
-        connectionSettings.trafficPollInterval = ui()->pollTrafficSpinBox->value();
-        connectionSettings.devStatsPollInterval = ui()->pollDevStatsSpinBox->value();
-        connectionSettings.errorsPollInterval = ui()->pollErrorsSpinBox->value();
-        connectionSettings.reconnectInterval = ui()->reconnectSpinBox->value();
-        if (!connectionSettings.loadHttpsCert()) {
-            const QString errorMessage = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to load specified certificate \"%1\".")
-                                             .arg(connectionSettings.httpsCertPath);
-            if (!applying) {
-                QMessageBox::critical(widget(), QCoreApplication::applicationName(), errorMessage);
-            } else {
-                errors() << errorMessage;
-            }
-            ok = false;
-        }
+    if (m_currentIndex < 0) {
+        return true;
     }
-    return ok;
+
+    SyncthingConnectionSettings &connectionSettings
+        = (m_currentIndex == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(m_currentIndex - 1)]);
+    connectionSettings.syncthingUrl = ui()->urlLineEdit->text();
+    connectionSettings.authEnabled = ui()->authCheckBox->isChecked();
+    connectionSettings.userName = ui()->userNameLineEdit->text();
+    connectionSettings.password = ui()->passwordLineEdit->text();
+    connectionSettings.apiKey = ui()->apiKeyLineEdit->text().toUtf8();
+    connectionSettings.expectedSslErrors.clear();
+    connectionSettings.httpsCertPath = ui()->certPathSelection->lineEdit()->text();
+    connectionSettings.trafficPollInterval = ui()->pollTrafficSpinBox->value();
+    connectionSettings.devStatsPollInterval = ui()->pollDevStatsSpinBox->value();
+    connectionSettings.errorsPollInterval = ui()->pollErrorsSpinBox->value();
+    connectionSettings.reconnectInterval = ui()->reconnectSpinBox->value();
+    if (!connectionSettings.loadHttpsCert()) {
+        const QString errorMessage = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to load specified certificate \"%1\".")
+                                         .arg(connectionSettings.httpsCertPath);
+        if (!applying) {
+            QMessageBox::critical(widget(), QCoreApplication::applicationName(), errorMessage);
+        } else {
+            errors() << errorMessage;
+        }
+        return false;
+    }
+    return true;
 }
 
-void ConnectionOptionPage::saveCurrentConnectionName(const QString &name)
+void ConnectionOptionPage::saveCurrentConfigName(const QString &name)
 {
     const int index = ui()->selectionComboBox->currentIndex();
     if (index == m_currentIndex && index >= 0) {
@@ -203,55 +205,129 @@ void ConnectionOptionPage::saveCurrentConnectionName(const QString &name)
     }
 }
 
-void ConnectionOptionPage::addConnectionSettings()
+void ConnectionOptionPage::addNewConfig()
 {
     m_secondarySettings.emplace_back();
     m_secondarySettings.back().label
         = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Instance %1").arg(ui()->selectionComboBox->count() + 1);
     ui()->selectionComboBox->addItem(m_secondarySettings.back().label);
     ui()->selectionComboBox->setCurrentIndex(ui()->selectionComboBox->count() - 1);
+    ui()->removePushButton->setEnabled(true);
 }
 
-void ConnectionOptionPage::removeConnectionSettings()
+void ConnectionOptionPage::removeSelectedConfig()
 {
-    int index = ui()->selectionComboBox->currentIndex();
-    if (index > 0) {
-        m_secondarySettings.erase(m_secondarySettings.begin() + (index - 1));
-        m_currentIndex = -1;
-        ui()->selectionComboBox->removeItem(index);
+    if (m_secondarySettings.empty()) {
+        return;
     }
+    const int index = ui()->selectionComboBox->currentIndex();
+    if (index < 0 || static_cast<unsigned>(index) >= m_secondarySettings.size()) {
+        return;
+    }
+
+    if (index == 0) {
+        m_primarySettings = move(m_secondarySettings.front());
+        m_secondarySettings.erase(m_secondarySettings.begin());
+    } else {
+        m_secondarySettings.erase(m_secondarySettings.begin() + (index - 1));
+    }
+    m_currentIndex = -1;
+    ui()->selectionComboBox->removeItem(index);
+    ui()->removePushButton->setEnabled(!m_secondarySettings.empty());
+}
+
+void ConnectionOptionPage::moveSelectedConfigDown()
+{
+    if (m_secondarySettings.empty()) {
+        return;
+    }
+    const int index = ui()->selectionComboBox->currentIndex();
+    if (index < 0) {
+        return;
+    }
+
+    if (index == 0) {
+        swap(m_primarySettings, m_secondarySettings.front());
+        ui()->selectionComboBox->setItemText(0, m_primarySettings.label);
+        ui()->selectionComboBox->setItemText(1, m_secondarySettings.front().label);
+        setCurrentIndex(1);
+    } else if (static_cast<unsigned>(index) < m_secondarySettings.size()) {
+        SyncthingConnectionSettings &current = m_secondarySettings[static_cast<unsigned>(index) - 1];
+        SyncthingConnectionSettings &exchange = m_secondarySettings[static_cast<unsigned>(index)];
+        swap(current, exchange);
+        ui()->selectionComboBox->setItemText(index, current.label);
+        ui()->selectionComboBox->setItemText(index + 1, exchange.label);
+        setCurrentIndex(index + 1);
+    }
+    ui()->selectionComboBox->setCurrentIndex(m_currentIndex);
+}
+
+void ConnectionOptionPage::moveSelectedConfigUp()
+{
+    if (m_secondarySettings.empty()) {
+        return;
+    }
+    const int index = ui()->selectionComboBox->currentIndex();
+    if (index <= 0) {
+        return;
+    }
+
+    if (index == 1) {
+        swap(m_primarySettings, m_secondarySettings.front());
+        ui()->selectionComboBox->setItemText(0, m_primarySettings.label);
+        ui()->selectionComboBox->setItemText(1, m_secondarySettings.front().label);
+        setCurrentIndex(0);
+    } else if (static_cast<unsigned>(index) - 1 < m_secondarySettings.size()) {
+        SyncthingConnectionSettings &current = m_secondarySettings[static_cast<unsigned>(index) - 1];
+        SyncthingConnectionSettings &exchange = m_secondarySettings[static_cast<unsigned>(index) - 2];
+        swap(current, exchange);
+        ui()->selectionComboBox->setItemText(index, current.label);
+        ui()->selectionComboBox->setItemText(index - 1, exchange.label);
+        setCurrentIndex(index - 1);
+    }
+    ui()->selectionComboBox->setCurrentIndex(m_currentIndex);
+}
+
+void ConnectionOptionPage::setCurrentIndex(int currentIndex)
+{
+    m_currentIndex = currentIndex;
+    ui()->downPushButton->setEnabled(currentIndex >= 0 && static_cast<unsigned>(currentIndex) < m_secondarySettings.size());
+    ui()->upPushButton->setEnabled(currentIndex > 0 && static_cast<unsigned>(currentIndex) - 1 < m_secondarySettings.size());
 }
 
 bool ConnectionOptionPage::apply()
 {
-    bool ok = true;
-    if (hasBeenShown()) {
-        ok = cacheCurrentSettings(true);
-        values().connection.primary = m_primarySettings;
-        values().connection.secondary = m_secondarySettings;
+    if (!hasBeenShown()) {
+        return true;
     }
-    return ok;
+    if (!cacheCurrentSettings(true)) {
+        return false;
+    }
+    values().connection.primary = m_primarySettings;
+    values().connection.secondary = m_secondarySettings;
+    return true;
 }
 
 void ConnectionOptionPage::reset()
 {
-    if (hasBeenShown()) {
-        m_primarySettings = values().connection.primary;
-        m_secondarySettings = values().connection.secondary;
-        m_currentIndex = -1;
-
-        QStringList itemTexts;
-        itemTexts.reserve(1 + static_cast<int>(m_secondarySettings.size()));
-        itemTexts << m_primarySettings.label;
-        for (const SyncthingConnectionSettings &settings : m_secondarySettings) {
-            itemTexts << settings.label;
-        }
-        ui()->selectionComboBox->clear();
-        ui()->selectionComboBox->addItems(itemTexts);
-        ui()->selectionComboBox->setCurrentIndex(0);
-
-        updateConnectionStatus();
+    if (!hasBeenShown()) {
+        return;
     }
+    m_primarySettings = values().connection.primary;
+    m_secondarySettings = values().connection.secondary;
+    m_currentIndex = -1;
+
+    QStringList itemTexts;
+    itemTexts.reserve(1 + static_cast<int>(m_secondarySettings.size()));
+    itemTexts << m_primarySettings.label;
+    for (const SyncthingConnectionSettings &settings : m_secondarySettings) {
+        itemTexts << settings.label;
+    }
+    ui()->selectionComboBox->clear();
+    ui()->selectionComboBox->addItems(itemTexts);
+    ui()->selectionComboBox->setCurrentIndex(0);
+
+    updateConnectionStatus();
 }
 
 void ConnectionOptionPage::applyAndReconnect()
