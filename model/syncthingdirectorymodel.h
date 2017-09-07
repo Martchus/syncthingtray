@@ -21,7 +21,7 @@ public:
         DirectoryStatusColor,
         DirectoryId,
         DirectoryPath,
-        DirectoryDetail
+        DirectoryDetail,
     };
 
     explicit SyncthingDirectoryModel(SyncthingConnection &connection, QObject *parent = nullptr);

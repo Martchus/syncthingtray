@@ -29,6 +29,7 @@ QHash<int, QByteArray> SyncthingDownloadModel::initRoleNames()
     roles[Qt::DecorationRole] = "fileIcon";
     roles[ItemPercentage] = "percentage";
     roles[ItemProgressLabel] = "progressLabel";
+    roles[ItemPath] = "path";
     return roles;
 }
 
@@ -132,6 +133,8 @@ QVariant SyncthingDownloadModel::data(const QModelIndex &index, int role) const
                         return progress.downloadPercentage;
                     case ItemProgressLabel:
                         return progress.label;
+                    case ItemPath:
+                        return dir.path + progress.relativePath;
                     default:;
                     }
                 }
@@ -162,6 +165,8 @@ QVariant SyncthingDownloadModel::data(const QModelIndex &index, int role) const
                 return dir.downloadPercentage;
             case ItemProgressLabel:
                 return dir.downloadLabel;
+            case ItemPath:
+                return dir.path;
             default:;
             }
         }
@@ -221,8 +226,8 @@ void SyncthingDownloadModel::downloadProgressChanged()
             }
         } else {
             if (pendingIterator != m_pendingDirs.end()) {
-                static const QVector<int> roles(
-                    { Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, Qt::ForegroundRole, Qt::ToolTipRole, ItemPercentage, ItemProgressLabel });
+                static const QVector<int> roles({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, Qt::ForegroundRole, Qt::ToolTipRole,
+                    ItemPercentage, ItemProgressLabel, ItemPath });
                 const QModelIndex parentIndex(index(row, 0));
                 emit dataChanged(parentIndex, index(row, 1), roles);
                 emit dataChanged(index(0, 0, parentIndex), index(static_cast<int>(dirInfo.downloadingItems.size()), 1, parentIndex), roles);
