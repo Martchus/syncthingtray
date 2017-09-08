@@ -279,7 +279,7 @@ void SyncthingFileItemAction::showAboutDialog()
         QStringLiteral(APP_VERSION), QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION), QImage(statusIcons().scanninig.pixmap(128).toImage()));
     aboutDialog->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
     aboutDialog->setWindowIcon(QIcon::fromTheme(QStringLiteral("syncthingtray")));
-    aboutDialog->setWindowFlags(static_cast<Qt::WindowFlags>(aboutDialog->windowFlags() | Qt::WA_DeleteOnClose));
+    aboutDialog->setAttribute(Qt::WA_DeleteOnClose);
     aboutDialog->show();
 }
 
