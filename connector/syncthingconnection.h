@@ -63,6 +63,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString syncthingUrl READ syncthingUrl WRITE setSyncthingUrl)
     Q_PROPERTY(QByteArray apiKey READ apiKey WRITE setApiKey)
+    Q_PROPERTY(bool isLocal READ isLocal)
     Q_PROPERTY(Data::SyncthingStatus status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString statusText READ statusText NOTIFY statusChanged)
     Q_PROPERTY(bool connected READ isConnected NOTIFY statusChanged)
@@ -84,6 +85,7 @@ public:
 
     const QString &syncthingUrl() const;
     void setSyncthingUrl(const QString &url);
+    bool isLocal() const;
     const QByteArray &apiKey() const;
     void setApiKey(const QByteArray &apiKey);
     const QString &user() const;

@@ -100,6 +100,11 @@ SyncthingConnection::~SyncthingConnection()
     disconnect();
 }
 
+bool SyncthingConnection::isLocal() const
+{
+    return ::Data::isLocal(QUrl(m_syncthingUrl));
+}
+
 /*!
  * \brief Returns the string representation of the current status().
  */
@@ -819,7 +824,7 @@ bool SyncthingConnection::loadSelfSignedCertificate()
     }
 
     // only possible if the Syncthing instance is running on the local machine
-    if (!isLocal(syncthingUrl)) {
+    if (!::Data::isLocal(syncthingUrl)) {
         return false;
     }
 
