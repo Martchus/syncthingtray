@@ -56,6 +56,7 @@ SyncthingService::SyncthingService(QObject *parent)
     , m_service(nullptr)
     , m_properties(nullptr)
     , m_manuallyStopped(false)
+    , m_unitAvailable(false)
 {
     if (!s_manager) {
         // register custom data types
@@ -87,12 +88,14 @@ void SyncthingService::setUnitName(const QString &unitName)
 
         delete m_service, delete m_unit, delete m_properties;
         m_service = nullptr, m_unit = nullptr, m_properties = nullptr;
-        setProperties(QString(), QString(), QString(), QString());
+        setProperties(false, QString(), QString(), QString(), QString());
 
         if (s_manager->isValid()) {
             connect(new QDBusPendingCallWatcher(s_manager->GetUnit(m_unitName), this), &QDBusPendingCallWatcher::finished, this,
                 &SyncthingService::handleUnitGet);
         }
+
+        emit unitNameChanged(unitName);
     }
 }
 
@@ -271,22 +274,27 @@ void SyncthingService::setUnit(const QDBusObjectPath &objectPath)
 
     const QString path = objectPath.path();
     if (path.isEmpty()) {
-        setProperties(QString(), QString(), QString(), QString());
+        setProperties(false, QString(), QString(), QString(), QString());
         return;
     }
 
     // init unit
     m_unit = new OrgFreedesktopSystemd1UnitInterface(s_manager->service(), path, s_manager->connection());
     m_activeSince = dateTimeFromSystemdTimeStamp(m_unit->activeEnterTimestamp());
-    setProperties(m_unit->activeState(), m_unit->subState(), m_unit->unitFileState(), m_unit->description());
+    setProperties(m_unit->isValid(), m_unit->activeState(), m_unit->subState(), m_unit->unitFileState(), m_unit->description());
 
     // init properties
     m_properties = new OrgFreedesktopDBusPropertiesInterface(s_manager->service(), path, s_manager->connection());
     connect(m_properties, &OrgFreedesktopDBusPropertiesInterface::PropertiesChanged, this, &SyncthingService::handlePropertiesChanged);
 }
 
-void SyncthingService::setProperties(const QString &activeState, const QString &subState, const QString &unitFileState, const QString &description)
+void SyncthingService::setProperties(
+    bool unitAvailable, const QString &activeState, const QString &subState, const QString &unitFileState, const QString &description)
 {
+    if (m_unitAvailable != unitAvailable) {
+        emit unitAvailableChanged(m_unitAvailable = unitAvailable);
+    }
+
     const bool running = isRunning();
     bool anyStateChanged = false;
     if (m_activeState != activeState) {

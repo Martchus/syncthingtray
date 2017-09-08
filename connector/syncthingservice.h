@@ -33,9 +33,9 @@ typedef QList<ManagerDBusUnitFileChange> ManagerDBusUnitFileChangeList;
 
 class SyncthingService : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QString unitName READ unitName WRITE setUnitName)
+    Q_PROPERTY(QString unitName READ unitName WRITE setUnitName NOTIFY unitNameChanged)
     Q_PROPERTY(bool systemdAvailable READ isSystemdAvailable NOTIFY systemdAvailableChanged)
-    Q_PROPERTY(bool unitAvailable READ isUnitAvailable)
+    Q_PROPERTY(bool unitAvailable READ isUnitAvailable NOTIFY unitAvailableChanged)
     Q_PROPERTY(QString activeState READ activeState NOTIFY activeStateChanged)
     Q_PROPERTY(QString subState READ subState NOTIFY subStateChanged)
     Q_PROPERTY(ChronoUtilities::DateTime activeSince READ activeSince NOTIFY activeStateChanged)
@@ -74,7 +74,9 @@ public Q_SLOTS:
     void disable();
 
 Q_SIGNALS:
+    void unitNameChanged(const QString &unitName);
     void systemdAvailableChanged(bool available);
+    void unitAvailableChanged(bool available);
     void stateChanged(const QString &activeState, const QString &subState, ChronoUtilities::DateTime activeSince);
     void activeStateChanged(const QString &activeState);
     void subStateChanged(const QString &subState);
@@ -93,7 +95,8 @@ private Q_SLOTS:
     void handleServiceRegisteredChanged(const QString &service);
     static void handlePrepareForSleep(bool rightBefore);
     void setUnit(const QDBusObjectPath &objectPath);
-    void setProperties(const QString &activeState, const QString &subState, const QString &unitFileState, const QString &description);
+    void setProperties(
+        bool unitAvailable, const QString &activeState, const QString &subState, const QString &unitFileState, const QString &description);
 
 private:
     bool handlePropertyChanged(QString &variable, void (SyncthingService::*signal)(const QString &), const QString &propertyName,
@@ -115,8 +118,9 @@ private:
     QString m_activeState;
     QString m_subState;
     QString m_unitFileState;
-    bool m_manuallyStopped;
     ChronoUtilities::DateTime m_activeSince;
+    bool m_manuallyStopped;
+    bool m_unitAvailable;
 };
 
 inline const QString &SyncthingService::unitName() const
