@@ -337,13 +337,21 @@ void ConnectionOptionPage::applyAndReconnect()
 }
 
 // NotificationsOptionPage
-NotificationsOptionPage::NotificationsOptionPage(QWidget *parentWidget)
+NotificationsOptionPage::NotificationsOptionPage(bool noApi, QWidget *parentWidget)
     : NotificationsOptionPageBase(parentWidget)
+    , m_noApi(noApi)
 {
 }
 
 NotificationsOptionPage::~NotificationsOptionPage()
 {
+}
+
+QWidget *NotificationsOptionPage::setupWidget()
+{
+    auto *w = NotificationsOptionPageBase::setupWidget();
+    ui()->apiGroupBox->setHidden(m_noApi);
+    return w;
 }
 
 bool NotificationsOptionPage::apply()

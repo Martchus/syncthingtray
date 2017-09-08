@@ -45,7 +45,14 @@ std::vector<Data::SyncthingConnectionSettings> m_secondarySettings;
 int m_currentIndex;
 END_DECLARE_OPTION_PAGE
 
-DECLARE_UI_FILE_BASED_OPTION_PAGE(NotificationsOptionPage)
+BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(NotificationsOptionPage)
+public:
+NotificationsOptionPage(bool noApi = false, QWidget *parentWidget = nullptr);
+
+private:
+DECLARE_SETUP_WIDGETS
+bool m_noApi;
+END_DECLARE_OPTION_PAGE
 
 DECLARE_UI_FILE_BASED_OPTION_PAGE(AppearanceOptionPage)
 
