@@ -9,10 +9,17 @@
 #include <QString>
 #include <QUrl>
 
+namespace Data {
+class SyncthingConnection;
+enum class SyncthingErrorCategory;
+}
+
 namespace QtGui {
 
 struct SYNCTHINGWIDGETS_EXPORT InternalError {
     InternalError(const QString &message = QString(), const QUrl &url = QUrl(), const QByteArray &response = QByteArray());
+
+    static bool isRelevant(const Data::SyncthingConnection &connection, Data::SyncthingErrorCategory category, int networkError);
 
     QString message;
     QUrl url;

@@ -32,6 +32,7 @@ set(WIDGETS_SRC_FILES
     misc/errorviewdialog.cpp
     misc/statusinfo.cpp
     misc/dbusstatusnotifier.cpp
+    misc/internalerror.cpp
     misc/otherdialogs.cpp
 )
 set(RES_FILES

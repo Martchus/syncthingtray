@@ -162,24 +162,10 @@ void TrayIcon::handleErrorsCleared()
 void TrayIcon::showInternalError(
     const QString &errorMsg, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    const auto &settings = Settings::values();
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    const SyncthingService &service = syncthingService();
-    const bool serviceRelevant = service.isSystemdAvailable() && isLocal(QUrl(m_trayMenu.widget()->connection().syncthingUrl()));
-#endif
-    if (settings.notifyOn.internalErrors
-        && (m_trayMenu.widget()->connection().autoReconnectTries() < 1 || category != SyncthingErrorCategory::OverallConnection)
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        && (!settings.systemd.considerForReconnect || !serviceRelevant
-               || !(networkError == QNetworkReply::RemoteHostClosedError && service.isManuallyStopped()))
-        && (settings.ignoreInavailabilityAfterStart == 0
-               || !(networkError == QNetworkReply::ConnectionRefusedError && service.isRunning()
-                      && !service.isActiveWithoutSleepFor(settings.ignoreInavailabilityAfterStart)))
-#endif
-            ) {
+    if (InternalError::isRelevant(m_trayMenu.widget()->connection(), category, networkError)) {
         InternalError error(errorMsg, request.url(), response);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-        if (settings.dbusNotifications) {
+        if (Settings::values().dbusNotifications) {
             m_dbusNotifier.showInternalError(error);
         } else
 #endif
