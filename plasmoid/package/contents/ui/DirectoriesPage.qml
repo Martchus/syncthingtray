@@ -5,6 +5,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
+import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
 
 Item {
     property alias view: directoryView
@@ -28,24 +29,19 @@ Item {
                     RowLayout {
                         id: itemSummary
 
-                        RowLayout {
-                            spacing: 5
-                            PlasmaCore.IconItem {
-                                Layout.preferredWidth: 16
-                                Layout.preferredHeight: 16
-                                anchors.verticalCenter: parent.verticalCenter
-                                source: statusIcon
-                            }
-                            PlasmaComponents.Label {
-                                anchors.verticalCenter: parent.verticalCenter
-                                elide: Text.ElideRight
-                                text: name
-                            }
+                        PlasmaCore.IconItem {
+                            Layout.preferredWidth: 24
+                            Layout.preferredHeight: 24
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: statusIcon
                         }
-                        Item {
+                        PlasmaComponents.Label {
                             Layout.fillWidth: true
-                            Layout.fillHeight: true
+                            anchors.verticalCenter: parent.verticalCenter
+                            elide: Text.ElideRight
+                            text: name
                         }
+
                         RowLayout {
                             id: toolButtonsLayout
                             spacing: 0
@@ -53,11 +49,22 @@ Item {
                             PlasmaComponents.Label {
                                 height: implicitHeight
                                 text: statusString
-                                color: statusColor
+                                color: statusColor ? statusColor : PlasmaCore.ColorScope.textColor
                                 anchors.verticalCenter: parent.verticalCenter
                             }
                             Item {
                                 width: 3
+                            }
+                            PlasmaComponents.ToolButton {
+                                iconSource: "emblem-important"
+                                tooltip: qsTr("Show errors")
+                                // 5 stands for SyncthingDirStatus::OutOfSync, unfortunately there is currently
+                                // no way to expose this to QML without conflicting SyncthingStatus
+                                visible: status === 5
+                                onClicked: {
+                                    plasmoid.nativeInterface.showDirectoryErrors(index)
+                                    plasmoid.expanded = false
+                                }
                             }
                             PlasmaComponents.ToolButton {
                                 iconSource: "view-refresh"

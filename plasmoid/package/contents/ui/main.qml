@@ -26,7 +26,7 @@ Item {
     }
 
     function action_showSettings() {
-        plasmoid.nativeInterface.showConnectionSettingsDlg()
+        plasmoid.nativeInterface.showSettingsDlg()
     }
 
     function action_rescanAllDirs() {
@@ -35,6 +35,10 @@ Item {
 
     function action_showLog() {
         plasmoid.nativeInterface.showLog()
+    }
+
+    function action_showErrors() {
+        plasmoid.nativeInterface.showInternalErrorsDialog()
     }
 
     function action_showAboutDialog() {
@@ -46,6 +50,7 @@ Item {
         plasmoid.setAction("showWebUI", qsTr("Web UI"), "internet-web-browser");
         plasmoid.setAction("showSettings", qsTr("Settings"), "configure");
         plasmoid.setAction("showLog", qsTr("Log"), "text-x-generic");
+        plasmoid.setAction("showErrors", qsTr("Errors"), "emblem-error");
         plasmoid.setAction("showAboutDialog", qsTr("About"), "help-about");
     }
 }

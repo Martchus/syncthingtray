@@ -26,24 +26,19 @@ Item {
                     spacing: 0
 
                     RowLayout {
-                        RowLayout {
-                            spacing: 5
-                            PlasmaCore.IconItem {
-                                Layout.preferredWidth: 16
-                                Layout.preferredHeight: 16
-                                anchors.verticalCenter: parent.verticalCenter
-                                source: statusIcon
-                            }
-                            PlasmaComponents.Label {
-                                anchors.verticalCenter: parent.verticalCenter
-                                elide: Text.ElideRight
-                                text: name
-                            }
+                        PlasmaCore.IconItem {
+                            Layout.preferredWidth: 24
+                            Layout.preferredHeight: 24
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: statusIcon
                         }
-                        Item {
+                        PlasmaComponents.Label {
                             Layout.fillWidth: true
-                            Layout.fillHeight: true
+                            anchors.verticalCenter: parent.verticalCenter
+                            elide: Text.ElideRight
+                            text: name
                         }
+
                         RowLayout {
                             id: toolButtonsLayout
                             spacing: 0
@@ -51,7 +46,7 @@ Item {
                             PlasmaComponents.Label {
                                 height: implicitHeight
                                 text: statusString
-                                color: statusColor
+                                color: statusColor ? statusColor : PlasmaCore.ColorScope.textColor
                                 anchors.verticalCenter: parent.verticalCenter
                             }
                             Item {
