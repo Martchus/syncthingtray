@@ -274,12 +274,12 @@
 <context>
     <name>Data::SyncthingDownloadModel</name>
     <message>
-        <location filename="../syncthingdownloadmodel.cpp" line="90"/>
+        <location filename="../syncthingdownloadmodel.cpp" line="91"/>
         <source>Dir/item</source>
         <translation>Verzeichnis/Element</translation>
     </message>
     <message>
-        <location filename="../syncthingdownloadmodel.cpp" line="92"/>
+        <location filename="../syncthingdownloadmodel.cpp" line="93"/>
         <source>Progress</source>
         <translation>Fortschritt</translation>
     </message>

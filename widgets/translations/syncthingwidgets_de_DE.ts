@@ -127,22 +127,22 @@
         <translation>Tray-Icon beim Starten der Desktopumgebung automatisch starten</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="490"/>
+        <location filename="../settings/settingsdialog.cpp" line="498"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Durch das Hinzufügen einer *.desktop-Datei unter &lt;i&gt;~/.config/autostart&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="493"/>
+        <location filename="../settings/settingsdialog.cpp" line="501"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation>Durch das Hinzufügen eines Registry-Schlüssels unter &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="498"/>
+        <location filename="../settings/settingsdialog.cpp" line="506"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation>Diese Funktion wurde für die aktuelle Plattform nicht nicht implementiert.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="585"/>
+        <location filename="../settings/settingsdialog.cpp" line="593"/>
         <source>unable to modify startup entry</source>
         <translation>Fehler beim aktualisieren des Auto-Start-Eintrags</translation>
     </message>
@@ -419,33 +419,33 @@
         <translation>Log folgen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="627"/>
+        <location filename="../settings/settingsdialog.cpp" line="635"/>
         <source>%1-launcher</source>
         <translation>%1-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="628"/>
+        <location filename="../settings/settingsdialog.cpp" line="636"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation>Starte %1 beim Starten des Tray-Icons</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="629"/>
+        <location filename="../settings/settingsdialog.cpp" line="637"/>
         <source>%1 executable</source>
         <translation>Ausführbare Datei von %1</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="630"/>
+        <location filename="../settings/settingsdialog.cpp" line="638"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation>%1-Log (stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="702"/>
+        <location filename="../settings/settingsdialog.cpp" line="710"/>
         <source>%1 exited with exit code %2
 </source>
         <translation>%1 wurde mit dem Statuscode %2 beendet</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="706"/>
+        <location filename="../settings/settingsdialog.cpp" line="714"/>
         <source>%1 crashed with exit code %2
 </source>
         <translation>%1 ist mit dem Statuscode %2 abgestürzt</translation>
@@ -519,7 +519,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="360"/>
+        <location filename="../settings/settingsdialog.cpp" line="368"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation>Benachrichtigungen via D-Bus wurden eingestellt, aber es scheint kein Daemon zu laufen der den Dienst bereitstellt.</translation>
     </message>
@@ -545,22 +545,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="902"/>
+        <location filename="../settings/settingsdialog.cpp" line="910"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="909"/>
+        <location filename="../settings/settingsdialog.cpp" line="917"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="916"/>
+        <location filename="../settings/settingsdialog.cpp" line="924"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="931"/>
+        <location filename="../settings/settingsdialog.cpp" line="939"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -677,8 +677,8 @@
         <location filename="../settings/systemdoptionpage.ui" line="99"/>
         <location filename="../settings/systemdoptionpage.ui" line="154"/>
         <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="826"/>
-        <location filename="../settings/settingsdialog.cpp" line="838"/>
+        <location filename="../settings/settingsdialog.cpp" line="834"/>
+        <location filename="../settings/settingsdialog.cpp" line="846"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -712,12 +712,12 @@
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="799"/>
+        <location filename="../settings/settingsdialog.cpp" line="807"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit ist entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="821"/>
+        <location filename="../settings/settingsdialog.cpp" line="829"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -725,12 +725,12 @@
 <context>
     <name>QtGui::TextViewDialog</name>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="70"/>
+        <location filename="../misc/textviewdialog.cpp" line="72"/>
         <source>Errors of %1</source>
         <translation>Fehler von %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/textviewdialog.cpp" line="88"/>
+        <location filename="../misc/textviewdialog.cpp" line="90"/>
         <source>%1 item(s) out-of-sync</source>
         <translation>
             <numerusform>%1 Element nicht synchronisiert</numerusform>
@@ -738,27 +738,28 @@
         </translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="98"/>
+        <location filename="../misc/textviewdialog.cpp" line="100"/>
         <source>Remove non-empty directories</source>
         <translation>Nicht-leere Verzeichnisse löschen</translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="105"/>
+        <location filename="../misc/textviewdialog.cpp" line="107"/>
         <source>Remove non-empty directories for folder &quot;%1&quot;</source>
         <translation>Nicht-leere Verzeichnisse für den Ordner &quot;%1&quot; löschen</translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="108"/>
+        <location filename="../misc/textviewdialog.cpp" line="110"/>
         <source>Do you really want to remove the following directories:</source>
         <translation>Sollen die folgenden Verzeichnisse wirklich gelöscht werden?</translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="119"/>
+        <location filename="../misc/textviewdialog.cpp" line="121"/>
         <source>Unable to remove the following dirs:</source>
         <translation>Die folgenden Verzeichnisse konnten nicht gelöscht werden:</translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="131"/>
+        <location filename="../misc/textviewdialog.cpp" line="133"/>
+        <location filename="../misc/textviewdialog.cpp" line="145"/>
         <source>Log</source>
         <translation></translation>
     </message>
@@ -775,7 +776,7 @@
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="860"/>
+        <location filename="../settings/settingsdialog.cpp" line="868"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
@@ -805,7 +806,7 @@
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="863"/>
+        <location filename="../settings/settingsdialog.cpp" line="871"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.
