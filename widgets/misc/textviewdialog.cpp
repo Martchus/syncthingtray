@@ -21,9 +21,11 @@
 #include <QVBoxLayout>
 
 #include <algorithm>
+#include <functional>
 #include <limits>
 
 using namespace std;
+using namespace std::placeholders;
 using namespace Dialogs;
 using namespace Data;
 
@@ -131,16 +133,17 @@ TextViewDialog *TextViewDialog::forLogEntries(SyncthingConnection &connection)
     auto *const dlg = new TextViewDialog(tr("Log"));
     const auto loadLog = [dlg, &connection] {
         connect(dlg, &QWidget::destroyed, bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
-                                              connection.requestLog([dlg](const std::vector<SyncthingLogEntry> &entries) {
-                                                  dlg->browser()->clear();
-                                                  for (const SyncthingLogEntry &entry : entries) {
-                                                      dlg->browser()->append(
-                                                          entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
-                                                  }
-                                              })));
+                                              connection.requestLog(bind(&TextViewDialog::showLogEntries, dlg, _1))));
     };
     connect(dlg, &TextViewDialog::reload, loadLog);
     loadLog();
+    return dlg;
+}
+
+TextViewDialog *TextViewDialog::forLogEntries(const std::vector<SyncthingLogEntry> &logEntries, const QString &title)
+{
+    auto *const dlg = new TextViewDialog(title.isEmpty() ? tr("Log") : title);
+    dlg->showLogEntries(logEntries);
     return dlg;
 }
 
@@ -154,6 +157,14 @@ void TextViewDialog::keyPressEvent(QKeyEvent *event)
         emit reload();
         break;
     default:;
+    }
+}
+
+void TextViewDialog::showLogEntries(const std::vector<SyncthingLogEntry> &logEntries)
+{
+    browser()->clear();
+    for (const SyncthingLogEntry &entry : logEntries) {
+        browser()->append(entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
     }
 }
 }

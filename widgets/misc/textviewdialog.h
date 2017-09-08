@@ -10,6 +10,7 @@ QT_FORWARD_DECLARE_CLASS(QTextBrowser)
 namespace Data {
 class SyncthingConnection;
 struct SyncthingDir;
+struct SyncthingLogEntry;
 }
 
 namespace QtGui {
@@ -22,6 +23,7 @@ public:
     QTextBrowser *browser();
     static TextViewDialog *forDirectoryErrors(const Data::SyncthingDir &dir);
     static TextViewDialog *forLogEntries(Data::SyncthingConnection &connection);
+    static TextViewDialog *forLogEntries(const std::vector<Data::SyncthingLogEntry> &logEntries, const QString &title = QString());
 
 Q_SIGNALS:
     void reload();
@@ -30,6 +32,8 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
 private:
+    void showLogEntries(const std::vector<Data::SyncthingLogEntry> &logEntries);
+
     QTextBrowser *m_browser;
 };
 

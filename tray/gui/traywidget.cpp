@@ -236,12 +236,11 @@ void TrayWidget::showLog()
 
 void TrayWidget::showNotifications()
 {
-    auto *dlg = new TextViewDialog(tr("New notifications"), this);
-    for (const SyncthingLogEntry &entry : m_notifications) {
-        dlg->browser()->append(entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
-    }
-    m_notifications.clear();
+    auto *const dlg = TextViewDialog::forLogEntries(m_notifications, tr("New notifications"));
+    dlg->setAttribute(Qt::WA_DeleteOnClose, true);
+    centerWidget(dlg);
     showDialog(dlg);
+    m_notifications.clear();
     dismissNotifications();
 }
 
