@@ -301,37 +301,37 @@
 <context>
     <name>QtGui::DBusStatusNotifier</name>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="14"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="17"/>
         <source> - internal error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="15"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="18"/>
         <source>Syncthing notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="18"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="21"/>
         <source>Disconnected from Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="19"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="22"/>
         <source>Try to reconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="21"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="24"/>
         <source>View details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="23"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="26"/>
         <source>Show</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="23"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="26"/>
         <source>Dismiss</source>
         <translation type="unfinished"></translation>
     </message>
@@ -541,22 +541,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="910"/>
+        <location filename="../settings/settingsdialog.cpp" line="917"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="917"/>
+        <location filename="../settings/settingsdialog.cpp" line="924"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="924"/>
+        <location filename="../settings/settingsdialog.cpp" line="931"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="939"/>
+        <location filename="../settings/settingsdialog.cpp" line="953"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
