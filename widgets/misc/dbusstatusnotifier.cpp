@@ -1,6 +1,9 @@
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
 #include "./dbusstatusnotifier.h"
 
+// use meta-data of syncthingtray application here
+#include "resources/../../tray/resources/config.h"
+
 #include <QCoreApplication>
 
 using namespace Data;
@@ -10,10 +13,10 @@ namespace QtGui {
 
 DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
     : QObject(parent)
-    , m_disconnectedNotification(QCoreApplication::applicationName(), QStringLiteral("network-disconnect"), 5000)
-    , m_internalErrorNotification(QCoreApplication::applicationName() + tr(" - internal error"), NotificationIcon::Critical, 5000)
+    , m_disconnectedNotification(QStringLiteral(APP_NAME), QStringLiteral("network-disconnect"), 5000)
+    , m_internalErrorNotification(QStringLiteral(APP_NAME) + tr(" - internal error"), NotificationIcon::Critical, 5000)
     , m_syncthingNotification(tr("Syncthing notification"), NotificationIcon::Warning, 10000)
-    , m_syncCompleteNotification(QCoreApplication::applicationName(), NotificationIcon::Information, 5000)
+    , m_syncCompleteNotification(QStringLiteral(APP_NAME), NotificationIcon::Information, 5000)
 {
     m_disconnectedNotification.setMessage(tr("Disconnected from Syncthing"));
     m_disconnectedNotification.setActions(QStringList({ QStringLiteral("reconnect"), tr("Try to reconnect") }));
