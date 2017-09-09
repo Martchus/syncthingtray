@@ -6,6 +6,7 @@
 #include <QWidget>
 
 QT_FORWARD_DECLARE_CLASS(QTextBrowser)
+QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
 
 namespace Data {
 class SyncthingConnection;
@@ -35,6 +36,7 @@ private:
     void showLogEntries(const std::vector<Data::SyncthingLogEntry> &logEntries);
 
     QTextBrowser *m_browser;
+    QVBoxLayout *m_layout;
 };
 
 inline QTextBrowser *TextViewDialog::browser()

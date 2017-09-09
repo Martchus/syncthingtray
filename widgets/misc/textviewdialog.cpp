@@ -51,10 +51,10 @@ TextViewDialog::TextViewDialog(const QString &title, QWidget *parent)
     m_browser->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
 
     // setup layout
-    auto *layout = new QVBoxLayout(this);
-    layout->setAlignment(Qt::AlignCenter);
-    layout->addWidget(m_browser);
-    setLayout(layout);
+    m_layout = new QVBoxLayout(this);
+    m_layout->setAlignment(Qt::AlignCenter);
+    m_layout->addWidget(m_browser);
+    setLayout(m_layout);
 
     // default position and size
     resize(600, 500);
@@ -82,7 +82,7 @@ TextViewDialog *TextViewDialog::forDirectoryErrors(const Data::SyncthingDir &dir
     }
 
     // add layout to show status and additional buttons
-    auto *const buttonLayout = new QHBoxLayout(textViewDlg);
+    auto *const buttonLayout = new QHBoxLayout;
     buttonLayout->setMargin(0);
 
     // add label for overall status
@@ -124,7 +124,7 @@ TextViewDialog *TextViewDialog::forDirectoryErrors(const Data::SyncthingDir &dir
         });
     }
 
-    textViewDlg->layout()->addItem(buttonLayout);
+    textViewDlg->m_layout->addLayout(buttonLayout);
     return textViewDlg;
 }
 
