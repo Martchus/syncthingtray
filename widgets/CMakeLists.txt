@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 # metadata
 set(META_PROJECT_NAME syncthingwidgets)
 set(META_PROJECT_TYPE library)
-set(META_GUI_OPTIONAL false)
 set(META_APP_NAME "Widgets of Syncthing Tray")
 set(META_PUBLIC_QT_MODULES Gui Widgets)
 set(META_WEBVIEW_SRC_DIR webview)

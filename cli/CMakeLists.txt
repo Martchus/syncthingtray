@@ -5,7 +5,6 @@ set(META_PROJECT_NAME syncthingctl)
 set(META_APP_NAME "Syncthing control")
 set(META_APP_DESCRIPTION "Command line app to control Syncthing")
 set(META_PROJECT_TYPE application)
-set(META_GUI_OPTIONAL false)
 
 # add project files
 set(HEADER_FILES
