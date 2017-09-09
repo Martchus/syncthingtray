@@ -30,8 +30,8 @@ Item {
                         id: itemSummary
 
                         PlasmaCore.IconItem {
-                            Layout.preferredWidth: 24
-                            Layout.preferredHeight: 24
+                            Layout.preferredWidth: units.iconSizes.smallMedium * 1.1
+                            Layout.preferredHeight: units.iconSizes.smallMedium * 1.1
                             anchors.verticalCenter: parent.verticalCenter
                             source: statusIcon
                         }
@@ -41,7 +41,6 @@ Item {
                             elide: Text.ElideRight
                             text: name
                         }
-
                         RowLayout {
                             id: toolButtonsLayout
                             spacing: 0
@@ -53,7 +52,7 @@ Item {
                                 anchors.verticalCenter: parent.verticalCenter
                             }
                             Item {
-                                width: 3
+                                width: units.smallSpacing
                             }
                             PlasmaComponents.ToolButton {
                                 iconSource: "emblem-important"
@@ -62,22 +61,26 @@ Item {
                                 // no way to expose this to QML without conflicting SyncthingStatus
                                 visible: status === 5
                                 onClicked: {
-                                    plasmoid.nativeInterface.showDirectoryErrors(index)
+                                    plasmoid.nativeInterface.showDirectoryErrors(
+                                                index)
                                     plasmoid.expanded = false
                                 }
                             }
                             PlasmaComponents.ToolButton {
                                 iconSource: "view-refresh"
                                 tooltip: qsTr("Rescan")
-                                onClicked: plasmoid.nativeInterface.connection.rescan(dirId)
+                                onClicked: plasmoid.nativeInterface.connection.rescan(
+                                               dirId)
                             }
                             PlasmaComponents.ToolButton {
                                 id: barcodeToolButton
-                                iconSource: paused ? "media-playback-start" : "media-playback-pause";
+                                iconSource: paused ? "media-playback-start" : "media-playback-pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
-                                onClicked: paused
-                                           ? plasmoid.nativeInterface.connection.resumeDirectories([dirId])
-                                           : plasmoid.nativeInterface.connection.pauseDirectories([dirId])
+                                onClicked: {
+                                    paused ? plasmoid.nativeInterface.connection.resumeDirectories(
+                                                 [dirId]) : plasmoid.nativeInterface.connection.pauseDirectories(
+                                                 [dirId])
+                                }
                             }
                             PlasmaComponents.ToolButton {
                                 iconSource: "folder"
@@ -97,7 +100,8 @@ Item {
                         model: DelegateModel {
                             model: plasmoid.nativeInterface.dirModel
                             rootIndex: detailsView.model.modelIndex(index)
-                            delegate: DetailItem { }
+                            delegate: DetailItem {
+                            }
                         }
                     }
                 }

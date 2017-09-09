@@ -1,9 +1,11 @@
 # source files
 set(HEADER_FILES
     syncthingapplet.h
+    settingsdialog.h
 )
 set(SRC_FILES
     syncthingapplet.cpp
+    settingsdialog.cpp
 )
 set(PLASMOID_FILES
     ../package/metadata.desktop
@@ -16,12 +18,18 @@ set(PLASMOID_FILES
     ../package/contents/ui/TopLevelItem.qml
     ../package/contents/ui/DetailView.qml
     ../package/contents/ui/DetailItem.qml
+    ../package/contents/ui/ToolTipView.qml
     ../package/contents/ui/main.qml
 )
-list(APPEND QML_FILES ${PLASMOID_FILES})
+list(APPEND QML_SRC_FILES ${PLASMOID_FILES})
+
+set(TS_FILES
+    ../translations/${META_PROJECT_NAME}_de_DE.ts
+    ../translations/${META_PROJECT_NAME}_en_US.ts
+)
 
 # find c++utilities
-find_package(c++utilities 4.6.0 REQUIRED)
+find_package(c++utilities 4.10.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 
 # find qtutilities

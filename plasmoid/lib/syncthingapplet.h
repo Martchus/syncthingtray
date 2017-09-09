@@ -21,6 +21,7 @@ class SettingsDialog;
 
 namespace Data {
 class SyncthingConnection;
+struct SyncthingConnectionSettings;
 class SyncthingDirectoryModel;
 class SyncthingDeviceModel;
 class SyncthingDownloadModel;
@@ -31,6 +32,8 @@ enum class SyncthingErrorCategory;
 namespace QtGui {
 class WebViewDialog;
 }
+
+namespace Plasmoid {
 
 class SyncthingApplet : public Plasma::Applet {
     Q_OBJECT
@@ -45,10 +48,11 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY connectionStatusChanged)
     Q_PROPERTY(QString incomingTraffic READ incomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(QString outgoingTraffic READ outgoingTraffic NOTIFY trafficChanged)
-    Q_PROPERTY(QStringList connectionConfigNames READ connectionConfigNames NOTIFY connectionConfigNamesChanged)
+    Q_PROPERTY(QStringList connectionConfigNames READ connectionConfigNames NOTIFY settingsChanged)
     Q_PROPERTY(QString currentConnectionConfigName READ currentConnectionConfigName NOTIFY currentConnectionConfigIndexChanged)
     Q_PROPERTY(int currentConnectionConfigIndex READ currentConnectionConfigIndex WRITE setCurrentConnectionConfigIndex NOTIFY
             currentConnectionConfigIndexChanged)
+    Q_PROPERTY(bool startStopForServiceEnabled READ isStartStopForServiceEnabled NOTIFY settingsChanged)
 
 public:
     SyncthingApplet(QObject *parent, const QVariantList &data);
@@ -69,7 +73,10 @@ public:
     QStringList connectionConfigNames() const;
     QString currentConnectionConfigName() const;
     int currentConnectionConfigIndex() const;
+    Data::SyncthingConnectionSettings *currentConnectionConfig();
+    Data::SyncthingConnectionSettings *connectionConfig(int index);
     void setCurrentConnectionConfigIndex(int index);
+    bool isStartStopForServiceEnabled() const;
 
 public Q_SLOTS:
     void init() Q_DECL_OVERRIDE;
@@ -97,12 +104,12 @@ Q_SIGNALS:
     void localChanged();
     void connectionStatusChanged();
     void trafficChanged();
-    void connectionConfigNamesChanged();
+    void settingsChanged();
     void currentConnectionConfigIndexChanged(int index);
 
 private Q_SLOTS:
-    void applyConnectionSettings();
-    void handleConnectionStatusChanged();
+    void handleSettingsChanged();
+    void handleConnectionStatusChanged(Data::SyncthingStatus status);
     void handleInternalError(
         const QString &errorMsg, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);
     void handleErrorsCleared();
@@ -127,6 +134,8 @@ private:
     QtGui::WebViewDialog *m_webViewDlg;
 #endif
     int m_currentConnectionConfig;
+    Data::SyncthingStatus m_status;
+    bool m_initialized;
 };
 
 inline Data::SyncthingConnection *SyncthingApplet::connection() const
@@ -158,6 +167,16 @@ inline Data::SyncthingService *SyncthingApplet::service() const
 #endif
 }
 
+inline QString SyncthingApplet::statusText() const
+{
+    return m_statusInfo.statusText();
+}
+
+inline QString SyncthingApplet::additionalStatusText() const
+{
+    return m_statusInfo.additionalStatusText();
+}
+
 inline bool SyncthingApplet::isLocal() const
 {
     return m_connection.isLocal();
@@ -166,6 +185,12 @@ inline bool SyncthingApplet::isLocal() const
 inline int SyncthingApplet::currentConnectionConfigIndex() const
 {
     return m_currentConnectionConfig;
+}
+
+inline Data::SyncthingConnectionSettings *SyncthingApplet::currentConnectionConfig()
+{
+    return connectionConfig(m_currentConnectionConfig);
+}
 }
 
 #endif // SYNCTHINGAPPLET_H

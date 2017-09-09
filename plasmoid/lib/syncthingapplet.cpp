@@ -1,4 +1,5 @@
 #include "./syncthingapplet.h"
+#include "./settingsdialog.h"
 
 #include "../../connector/syncthingservice.h"
 #include "../../connector/utils.h"
@@ -19,8 +20,6 @@
 #include <qtutilities/misc/desktoputils.h>
 #include <qtutilities/misc/dialogutils.h>
 #include <qtutilities/resources/resources.h>
-#include <qtutilities/settingsdialog/optioncategory.h>
-#include <qtutilities/settingsdialog/settingsdialog.h>
 
 #include <QDesktopServices>
 #include <QNetworkReply>
@@ -36,6 +35,8 @@ using namespace Dialogs;
 using namespace QtGui;
 using namespace ChronoUtilities;
 
+namespace Plasmoid {
+
 SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     : Applet(parent, data)
     , m_aboutDlg(nullptr)
@@ -48,6 +49,8 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_webViewDlg(nullptr)
 #endif
     , m_currentConnectionConfig(-1)
+    , m_status(SyncthingStatus::Disconnected)
+    , m_initialized(false)
 {
     qmlRegisterUncreatableMetaObject(Data::staticMetaObject, "martchus.syncthingplasmoid", 0, 6, "Data", QStringLiteral("only enums"));
 }
@@ -58,6 +61,40 @@ SyncthingApplet::~SyncthingApplet()
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     delete m_webViewDlg;
 #endif
+}
+
+void SyncthingApplet::init()
+{
+    LOAD_QT_TRANSLATIONS;
+
+    Applet::init();
+
+    // connect signals and slots
+    connect(&m_connection, &SyncthingConnection::statusChanged, this, &SyncthingApplet::handleConnectionStatusChanged);
+    connect(&m_connection, &SyncthingConnection::error, this, &SyncthingApplet::handleInternalError);
+    connect(&m_connection, &SyncthingConnection::trafficChanged, this, &SyncthingApplet::trafficChanged);
+    connect(&m_connection, &SyncthingConnection::newNotification, this, &SyncthingApplet::handleNewNotification);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, &m_connection,
+        static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
+    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, this, &SyncthingApplet::dismissNotifications);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, this, &SyncthingApplet::showNotificationsDialog);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &SyncthingApplet::showInternalErrorsDialog);
+
+    // restore settings
+    Settings::restore();
+    handleSettingsChanged();
+
+    // load primary connection config
+    setCurrentConnectionConfigIndex(0);
+
+// initialize systemd service support
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    SyncthingService &service = syncthingService();
+    service.setUnitName(Settings::values().systemd.syncthingUnit);
+    connect(&service, &SyncthingService::errorOccurred, this, &SyncthingApplet::handleSystemdServiceError);
+#endif
+
+    m_initialized = true;
 }
 
 QIcon SyncthingApplet::statusIcon() const
@@ -98,7 +135,16 @@ QString SyncthingApplet::currentConnectionConfigName() const
     return QString();
 }
 
-inline void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
+Data::SyncthingConnectionSettings *SyncthingApplet::connectionConfig(int index)
+{
+    auto &connectionSettings = Settings::values().connection;
+    if (index >= 0 && static_cast<unsigned>(index) <= connectionSettings.secondary.size()) {
+        return index == 0 ? &connectionSettings.primary : &connectionSettings.secondary[static_cast<unsigned>(index) - 1];
+    }
+    return nullptr;
+}
+
+void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
 {
     auto &settings = Settings::values().connection;
     if (index != m_currentConnectionConfig && index >= 0 && static_cast<unsigned>(index) <= settings.secondary.size()) {
@@ -114,66 +160,16 @@ inline void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
     }
 }
 
-QString SyncthingApplet::statusText() const
+bool SyncthingApplet::isStartStopForServiceEnabled() const
 {
-    return m_statusInfo.statusText();
-}
-
-QString SyncthingApplet::additionalStatusText() const
-{
-    return m_statusInfo.additionalStatusText();
-}
-
-void SyncthingApplet::init()
-{
-    LOAD_QT_TRANSLATIONS;
-
-    Applet::init();
-
-    // connect signals and slots
-    connect(&m_connection, &SyncthingConnection::statusChanged, this, &SyncthingApplet::handleConnectionStatusChanged);
-    connect(&m_connection, &SyncthingConnection::error, this, &SyncthingApplet::handleInternalError);
-    connect(&m_connection, &SyncthingConnection::trafficChanged, this, &SyncthingApplet::trafficChanged);
-    connect(&m_connection, &SyncthingConnection::newNotification, this, &SyncthingApplet::handleNewNotification);
-    connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, &m_connection,
-        static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
-    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, this, &SyncthingApplet::dismissNotifications);
-    connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, this, &SyncthingApplet::showNotificationsDialog);
-    connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &SyncthingApplet::showInternalErrorsDialog);
-
-    // restore settings
-    Settings::restore();
-    applyConnectionSettings();
-
-    // load primary connection config
-    setCurrentConnectionConfigIndex(0);
-
-// initialize systemd service support
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    SyncthingService &service = syncthingService();
-    service.setUnitName(Settings::values().systemd.syncthingUnit);
-    connect(&service, &SyncthingService::errorOccurred, this, &SyncthingApplet::handleSystemdServiceError);
-#endif
+    return Settings::values().systemd.showButton;
 }
 
 void SyncthingApplet::showSettingsDlg()
 {
     if (!m_settingsDlg) {
-        m_settingsDlg = new Dialogs::SettingsDialog;
-        m_settingsDlg->setTabBarAlwaysVisible(false);
-        auto *const webViewPage = new QtGui::WebViewOptionPage;
-        auto *const webViewWidget = webViewPage->widget();
-        webViewWidget->setWindowTitle(tr("Web view"));
-        webViewWidget->setWindowIcon(QIcon::fromTheme(QStringLiteral("internet-web-browser")));
-        auto *const category = new Dialogs::OptionCategory(m_settingsDlg);
-        category->assignPages({ new QtGui::ConnectionOptionPage(&m_connection), new QtGui::NotificationsOptionPage(true),
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-            new QtGui::SystemdOptionPage,
-#endif
-            webViewPage });
-        m_settingsDlg->setSingleCategory(category);
-        m_settingsDlg->resize(860, 620);
-        connect(m_settingsDlg, &Dialogs::SettingsDialog::applied, this, &SyncthingApplet::applyConnectionSettings);
+        m_settingsDlg = setupSettingsDialog(*this);
+        connect(m_settingsDlg, &Dialogs::SettingsDialog::applied, this, &SyncthingApplet::handleSettingsChanged);
         connect(m_settingsDlg, &Dialogs::SettingsDialog::applied, &Settings::save);
     }
     Dialogs::centerWidget(m_settingsDlg);
@@ -191,9 +187,9 @@ void SyncthingApplet::showWebUI()
     } else {
         if (!m_webViewDlg) {
             m_webViewDlg = new WebViewDialog;
-            //if(m_selectedConnection) {
-            m_webViewDlg->applySettings(Settings::values().connection.primary);
-            //}
+            if (const auto *connectionConfig = currentConnectionConfig()) {
+                m_webViewDlg->applySettings(*connectionConfig);
+            }
             connect(m_webViewDlg, &WebViewDialog::destroyed, this, &SyncthingApplet::handleWebViewDeleted);
         }
         m_webViewDlg->show();
@@ -268,17 +264,65 @@ void SyncthingApplet::showDirectoryErrors(unsigned int directoryIndex) const
     }
 }
 
-void SyncthingApplet::applyConnectionSettings()
+void SyncthingApplet::handleSettingsChanged()
 {
     const int currentConfig = m_currentConnectionConfig;
     m_currentConnectionConfig = -1; // force update
     setCurrentConnectionConfigIndex(currentConfig);
-    emit connectionConfigNamesChanged();
+    emit settingsChanged();
 }
 
-void SyncthingApplet::handleConnectionStatusChanged()
+void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
 {
+    if (m_initialized && m_status == status) {
+        return;
+    }
+
+    // update status icon and tooltip text
     m_statusInfo.update(m_connection);
+
+    // show notifications (FIXME: reduce C&P from trayicon.cpp)
+    const auto &settings = Settings::values();
+    switch (status) {
+    case SyncthingStatus::Disconnected:
+        if (m_initialized && settings.notifyOn.disconnect
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+            && !syncthingService().isManuallyStopped()
+#endif
+                ) {
+            m_dbusNotifier.showDisconnect();
+        }
+        break;
+    default:
+        m_dbusNotifier.hideDisconnect();
+    }
+    switch (status) {
+    case SyncthingStatus::Disconnected:
+    case SyncthingStatus::Reconnecting:
+    case SyncthingStatus::Synchronizing:
+        break;
+    default:
+        if (m_status == SyncthingStatus::Synchronizing && settings.notifyOn.syncComplete) {
+            const vector<SyncthingDir *> &completedDirs = m_connection.completedDirs();
+            if (!completedDirs.empty()) {
+                QString message;
+                if (completedDirs.size() == 1) {
+                    message = tr("Synchronization of %1 complete").arg(completedDirs.front()->displayName());
+                } else {
+                    QStringList names;
+                    names.reserve(static_cast<int>(completedDirs.size()));
+                    for (const SyncthingDir *dir : completedDirs) {
+                        names << dir->displayName();
+                    }
+                    message = tr("Synchronization of the following devices complete:\n") + names.join(QStringLiteral(", "));
+                }
+                m_dbusNotifier.showSyncComplete(message);
+            }
+        }
+    }
+
+    // set status and emit signal
+    m_status = status;
     emit connectionStatusChanged();
 }
 
@@ -319,7 +363,8 @@ void SyncthingApplet::handleSystemdServiceError(const QString &context, const QS
     handleInternalError(tr("D-Bus error - unable to ") % context % QChar('\n') % name % QChar(':') % message, SyncthingErrorCategory::SpecificRequest,
         QNetworkReply::NoError, QNetworkRequest(), QByteArray());
 }
+}
 
-K_EXPORT_PLASMA_APPLET_WITH_JSON(syncthing, SyncthingApplet, "metadata.json")
+K_EXPORT_PLASMA_APPLET_WITH_JSON(syncthing, Plasmoid::SyncthingApplet, "metadata.json")
 
 #include "syncthingapplet.moc"

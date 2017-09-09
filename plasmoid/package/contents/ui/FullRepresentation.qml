@@ -10,41 +10,44 @@ import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
 
 ColumnLayout {
     id: root
-    Layout.minimumWidth: units.gridUnit * 26
-    Layout.minimumHeight: units.gridUnit * 34
+    Layout.minimumWidth: units.gridUnit * 25
+    Layout.preferredWidth: units.gridUnit * 30
+    Layout.minimumHeight: units.gridUnit * 20
+    Layout.preferredHeight: units.gridUnit * 30
 
     Keys.onPressed: {
         // FIXME: currently only works after clicking the tab buttons
         // TODO: add more shortcuts
-        switch(event.key) {
+        switch (event.key) {
         case Qt.Key_Up:
-            mainTabGroup.currentTab.item.view.decrementCurrentIndex();
-            event.accepted = true;
-            break;
+            mainTabGroup.currentTab.item.view.decrementCurrentIndex()
+            event.accepted = true
+            break
         case Qt.Key_Down:
-            mainTabGroup.currentTab.item.view.incrementCurrentIndex();
-            event.accepted = true;
-            break;
+            mainTabGroup.currentTab.item.view.incrementCurrentIndex()
+            event.accepted = true
+            break
         case Qt.Key_Enter:
+
         case Qt.Key_Return:
-            var currentItem = mainTabGroup.currentTab.item.view.currentItem;
+            var currentItem = mainTabGroup.currentTab.item.view.currentItem
             if (currentItem) {
                 currentItem.expanded = !currentItem.expanded
             }
-            break;
+            break
         case Qt.Key_Escape:
-            break;
+            break
         case Qt.Key_1:
-            mainTabGroup.currentTab = dirsPage;
-            break;
+            dirsTabButton.clicked()
+            break
         case Qt.Key_2:
-            mainTabGroup.currentTab = devicesPage;
-            break;
+            devsTabButton.clicked()
+            break
         case Qt.Key_3:
-            mainTabGroup.currentTab = downloadsPage;
-            break;
+            downloadsTabButton.clicked()
+            break
         default:
-            break;
+            break
         }
     }
 
@@ -82,29 +85,31 @@ ColumnLayout {
                 }
             ]
             state: {
-                switch(plasmoid.nativeInterface.connection.status) {
+                switch (plasmoid.nativeInterface.connection.status) {
                 case SyncthingPlasmoid.Data.Disconnected:
+
                 case SyncthingPlasmoid.Data.Reconnecting:
-                    return "disconnected";
+                    return "disconnected"
                 case SyncthingPlasmoid.Data.Paused:
-                    return "paused";
+                    return "paused"
                 default:
-                    return "idle";
+                    return "idle"
                 }
             }
             tooltip: text
             onClicked: {
-                switch(plasmoid.nativeInterface.connection.status) {
+                switch (plasmoid.nativeInterface.connection.status) {
                 case SyncthingPlasmoid.Data.Disconnected:
+
                 case SyncthingPlasmoid.Data.Reconnecting:
-                    plasmoid.nativeInterface.connection.connect();
-                    break;
+                    plasmoid.nativeInterface.connection.connect()
+                    break
                 case SyncthingPlasmoid.Data.Paused:
-                    plasmoid.nativeInterface.connection.resumeAllDevs();
-                    break;
+                    plasmoid.nativeInterface.connection.resumeAllDevs()
+                    break
                 default:
-                    plasmoid.nativeInterface.connection.pauseAllDevs();
-                    break;
+                    plasmoid.nativeInterface.connection.pauseAllDevs()
+                    break
                 }
             }
         }
@@ -118,7 +123,8 @@ ColumnLayout {
                         target: startStopButton
                         visible: true
                         text: qsTr("Stop")
-                        tooltip: "systemctl --user stop " + plasmoid.nativeInterface.service.unitName
+                        tooltip: "systemctl --user stop "
+                                 + plasmoid.nativeInterface.service.unitName
                         iconSource: "process-stop"
                     }
                 },
@@ -128,7 +134,8 @@ ColumnLayout {
                         target: startStopButton
                         visible: true
                         text: qsTr("Start")
-                        tooltip: "systemctl --user start " + plasmoid.nativeInterface.service.unitName
+                        tooltip: "systemctl --user start "
+                                 + plasmoid.nativeInterface.service.unitName
                         iconSource: "system-run"
                     }
                 },
@@ -141,18 +148,18 @@ ColumnLayout {
                 }
             ]
             state: {
+                var nativeInterface = plasmoid.nativeInterface
                 // the systemd unit status is only relevant when connected to the local instance
-                if(!plasmoid.nativeInterface.local) {
-                    return "irrelevant";
+                if (!nativeInterface.local
+                        || !nativeInterface.startStopForServiceEnabled) {
+                    return "irrelevant"
                 }
-
                 // show start/stop button only when the configured unit is available
-                var service = plasmoid.nativeInterface.service;
-                if(!service || !service.unitAvailable) {
-                    return "irrelevant";
+                var service = nativeInterface.service
+                if (!service || !service.unitAvailable) {
+                    return "irrelevant"
                 }
-
-                return service.running ? "running" : "stopped";
+                return service.running ? "running" : "stopped"
             }
 
             onClicked: plasmoid.nativeInterface.service.toggleRunning()
@@ -193,7 +200,7 @@ ColumnLayout {
             tooltip: qsTr("Web UI")
             iconSource: "internet-web-browser"
             onClicked: {
-                plasmoid.nativeInterface.showWebUI();
+                plasmoid.nativeInterface.showWebUI()
                 plasmoid.expanded = false
             }
         }
@@ -234,10 +241,10 @@ ColumnLayout {
             spacing: 1
 
             PlasmaComponents.Label {
-                text: plasmoid.nativeInterface.incomingTraffic;
+                text: plasmoid.nativeInterface.incomingTraffic
             }
             PlasmaComponents.Label {
-                text: plasmoid.nativeInterface.outgoingTraffic;
+                text: plasmoid.nativeInterface.outgoingTraffic
             }
         }
         Item {
@@ -266,10 +273,11 @@ ColumnLayout {
                         checked: plasmoid.nativeInterface.currentConnectionConfigIndex === index
                         exclusiveGroup: connectionConfigsExclusiveGroup
                         onTriggered: {
-                            plasmoid.nativeInterface.currentConnectionConfigIndex = index;
+                            plasmoid.nativeInterface.currentConnectionConfigIndex = index
                         }
                     }
-                    onObjectAdded: connectionConfigsMenu.insertItem(index, object)
+                    onObjectAdded: connectionConfigsMenu.insertItem(index,
+                                                                    object)
                     onObjectRemoved: connectionConfigsMenu.removeItem(object)
                 }
             }
@@ -295,18 +303,19 @@ ColumnLayout {
             anchors.top: parent.top
 
             PlasmaComponents.TabButton {
+                id: dirsTabButton
                 //text: qsTr("Directories")
                 iconSource: "folder-symbolic"
-                Layout.preferredWidth: 32
-                Layout.preferredHeight: 32
                 tab: dirsPage
             }
             PlasmaComponents.TabButton {
+                id: devsTabButton
                 //text: qsTr("Devices")
                 iconSource: "network-server-symbolic"
                 tab: devicesPage
             }
             PlasmaComponents.TabButton {
+                id: downloadsTabButton
                 //text: qsTr("Downloads")
                 iconSource: "folder-download-symbolic"
                 tab: downloadsPage
@@ -328,17 +337,17 @@ ColumnLayout {
 
             PlasmaExtras.ConditionalLoader {
                 id: dirsPage
-                when: mainTabGroup.currentTab == dirsPage
+                when: mainTabGroup.currentTab === dirsPage
                 source: Qt.resolvedUrl("DirectoriesPage.qml")
             }
             PlasmaExtras.ConditionalLoader {
                 id: devicesPage
-                when: mainTabGroup.currentTab == devicesPage
+                when: mainTabGroup.currentTab === devicesPage
                 source: Qt.resolvedUrl("DevicesPage.qml")
             }
             PlasmaExtras.ConditionalLoader {
                 id: downloadsPage
-                when: mainTabGroup.currentTab == downloadsPage
+                when: mainTabGroup.currentTab === downloadsPage
                 source: Qt.resolvedUrl("DownloadsPage.qml")
             }
         }

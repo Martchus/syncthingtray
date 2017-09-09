@@ -9,6 +9,7 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 Item {
     property alias view: downloadView
     anchors.fill: parent
+
     objectName: "DownloadsPage"
 
     PlasmaExtras.ScrollArea {
@@ -29,7 +30,7 @@ Item {
                         id: itemSummary
 
                         RowLayout {
-                            spacing: 5
+                            spacing: units.smallSpacing
                             PlasmaComponents.Label {
                                 anchors.verticalCenter: parent.verticalCenter
                                 elide: Text.ElideRight
@@ -78,8 +79,8 @@ Item {
                                 width: parent.width
 
                                 PlasmaCore.IconItem {
-                                    Layout.preferredWidth: 32
-                                    Layout.preferredHeight: 32
+                                    Layout.preferredWidth: units.iconSizes.medium
+                                    Layout.preferredHeight: units.iconSizes.medium
                                     anchors.verticalCenter: parent.verticalCenter
                                     source: fileIcon
                                 }
@@ -87,19 +88,17 @@ Item {
                                     spacing: 0
                                     Layout.fillWidth: true
                                     RowLayout {
-                                        spacing: 3
+                                        spacing: units.smallSpacing
                                         Layout.fillWidth: true
                                         PlasmaComponents.Label {
                                             Layout.fillWidth: true
                                             text: name
-                                            font.pointSize: 8
-                                            //height: contentHeight
+                                            font.pointSize: theme.defaultFont.pointSize * 0.8
                                             elide: Text.ElideRight
                                         }
                                         PlasmaComponents.Label {
                                             text: progressLabel
-                                            font.pointSize: 8
-                                            //height: contentHeight
+                                            font.pointSize: theme.defaultFont.pointSize * 0.8
                                             elide: Text.ElideRight
                                         }
                                     }

@@ -8,6 +8,7 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 Item {
     property alias view: deviceView
+
     anchors.fill: parent
     objectName: "DevicesPage"
 
@@ -27,8 +28,8 @@ Item {
 
                     RowLayout {
                         PlasmaCore.IconItem {
-                            Layout.preferredWidth: 24
-                            Layout.preferredHeight: 24
+                            Layout.preferredWidth: units.iconSizes.smallMedium * 1.1
+                            Layout.preferredHeight: units.iconSizes.smallMedium * 1.1
                             anchors.verticalCenter: parent.verticalCenter
                             source: statusIcon
                         }
@@ -38,11 +39,9 @@ Item {
                             elide: Text.ElideRight
                             text: name
                         }
-
                         RowLayout {
                             id: toolButtonsLayout
                             spacing: 0
-
                             PlasmaComponents.Label {
                                 height: implicitHeight
                                 text: statusString
@@ -54,11 +53,13 @@ Item {
                             }
                             PlasmaComponents.ToolButton {
                                 id: barcodeToolButton
-                                iconSource: paused ? "media-playback-start" : "media-playback-pause";
+                                iconSource: paused ? "media-playback-start" : "media-playback-pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
-                                onClicked: paused
-                                           ? plasmoid.nativeInterface.connection.resumeDevice([devId])
-                                           : plasmoid.nativeInterface.connection.pauseDevice([devId])
+                                onClicked: {
+                                    paused ? plasmoid.nativeInterface.connection.resumeDevice(
+                                                 [devId]) : plasmoid.nativeInterface.connection.pauseDevice(
+                                                 [devId])
+                                }
                             }
                         }
                     }
@@ -70,10 +71,10 @@ Item {
                         model: DelegateModel {
                             model: plasmoid.nativeInterface.devModel
                             rootIndex: detailsView.model.modelIndex(index)
-                            delegate: DetailItem { }
+                            delegate: DetailItem {
+                            }
                         }
                     }
-
                 }
             }
         }
