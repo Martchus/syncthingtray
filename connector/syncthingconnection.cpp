@@ -352,6 +352,12 @@ bool SyncthingConnection::resumeAllDirs()
  */
 void SyncthingConnection::rescan(const QString &dirId, const QString &relpath)
 {
+    if (dirId.isEmpty()) {
+        emit error(tr("Unable to rescan: No directory ID specified."), SyncthingErrorCategory::SpecificRequest, QNetworkReply::NoError,
+            QNetworkRequest(), QByteArray());
+        return;
+    }
+
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("folder"), dirId);
     if (!relpath.isEmpty()) {
