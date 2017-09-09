@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/hicolor/scalable/app/syncthingtray.svg</file>
         <file>icons/hicolor/scalable/actions/application-menu.svg</file>
         <file>icons/hicolor/scalable/actions/edit-copy.svg</file>
         <file>icons/hicolor/scalable/actions/folder-sync.svg</file>
