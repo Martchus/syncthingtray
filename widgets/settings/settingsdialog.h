@@ -96,7 +96,11 @@ class SYNCTHINGWIDGETS_EXPORT SettingsDialog : public Dialogs::SettingsDialog {
     Q_OBJECT
 public:
     explicit SettingsDialog(Data::SyncthingConnection *connection, QWidget *parent = nullptr);
+    explicit SettingsDialog(const QList<Dialogs::OptionCategory *> &categories, QWidget *parent = nullptr);
     ~SettingsDialog();
+
+private:
+    void init();
 };
 }
 

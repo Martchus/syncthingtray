@@ -899,6 +899,13 @@ void WebViewOptionPage::reset()
 #endif
 }
 
+SettingsDialog::SettingsDialog(const QList<OptionCategory *> &categories, QWidget *parent)
+    : Dialogs::SettingsDialog(parent)
+{
+    categoryModel()->setCategories(categories);
+    init();
+}
+
 SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *parent)
     : Dialogs::SettingsDialog(parent)
 {
@@ -932,9 +939,16 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     categories << category;
 
     categories << values().qt.category();
-
     categoryModel()->setCategories(categories);
+    init();
+}
 
+SettingsDialog::~SettingsDialog()
+{
+}
+
+void SettingsDialog::init()
+{
     resize(860, 620);
     setWindowTitle(tr("Settings") + QStringLiteral(" - " APP_NAME));
     setWindowIcon(
@@ -942,10 +956,6 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     // some settings could be applied without restarting the application, good idea?
     //connect(this, &Dialogs::SettingsDialog::applied, bind(&Dialogs::QtSettings::apply, &Settings::qtSettings()));
-}
-
-SettingsDialog::~SettingsDialog()
-{
 }
 }
 
