@@ -29,7 +29,7 @@ find_package(qtutilities 5.0.0 REQUIRED)
 use_qt_utilities()
 
 # check whether qtutilities supports DBus notifications
-get_target_property(QT_UTILITIES_COMPILE_DEFINITIONS ${QT_UTILITIES_LIB} COMPILE_DEFINITIONS)
+get_target_property(QT_UTILITIES_COMPILE_DEFINITIONS ${QT_UTILITIES_LIB} INTERFACE_COMPILE_DEFINITIONS)
 list(FIND QT_UTILITIES_COMPILE_DEFINITIONS QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS)
 if(QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS LESS 0)
     message(FATAL_ERROR "The provided build of Qt Utilities does not support D-Bus notifications which is required for the Plasmoid.")
