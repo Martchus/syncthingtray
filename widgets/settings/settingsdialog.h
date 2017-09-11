@@ -22,6 +22,17 @@ class SyncthingProcess;
 
 namespace QtGui {
 
+/*!
+ * \brief The GuiType enum specifies a GUI type.
+ *
+ * Such a value can be passed to some option pages to show only the options which are relevant
+ * for the particular GUI type.
+ */
+enum class GuiType {
+    TrayWidget,
+    Plasmoid,
+};
+
 BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(ConnectionOptionPage)
 public:
 ConnectionOptionPage(Data::SyncthingConnection *connection, QWidget *parentWidget = nullptr);
@@ -47,14 +58,21 @@ END_DECLARE_OPTION_PAGE
 
 BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(NotificationsOptionPage)
 public:
-NotificationsOptionPage(bool noApi = false, QWidget *parentWidget = nullptr);
+NotificationsOptionPage(GuiType guiType = GuiType::TrayWidget, QWidget *parentWidget = nullptr);
 
 private:
 DECLARE_SETUP_WIDGETS
-bool m_noApi;
+const GuiType m_guiType;
 END_DECLARE_OPTION_PAGE
 
-DECLARE_UI_FILE_BASED_OPTION_PAGE(AppearanceOptionPage)
+BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(AppearanceOptionPage)
+public:
+AppearanceOptionPage(GuiType guiType = GuiType::TrayWidget, QWidget *parentWidget = nullptr);
+
+private:
+DECLARE_SETUP_WIDGETS
+const GuiType m_guiType;
+END_DECLARE_OPTION_PAGE
 
 DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_SETUP(AutostartOptionPage)
 

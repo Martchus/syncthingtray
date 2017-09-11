@@ -337,9 +337,9 @@ void ConnectionOptionPage::applyAndReconnect()
 }
 
 // NotificationsOptionPage
-NotificationsOptionPage::NotificationsOptionPage(bool noApi, QWidget *parentWidget)
+NotificationsOptionPage::NotificationsOptionPage(GuiType guiType, QWidget *parentWidget)
     : NotificationsOptionPageBase(parentWidget)
-    , m_noApi(noApi)
+    , m_guiType(guiType)
 {
 }
 
@@ -350,7 +350,13 @@ NotificationsOptionPage::~NotificationsOptionPage()
 QWidget *NotificationsOptionPage::setupWidget()
 {
     auto *w = NotificationsOptionPageBase::setupWidget();
-    ui()->apiGroupBox->setHidden(m_noApi);
+    switch (m_guiType) {
+    case GuiType::TrayWidget:
+        break;
+    case GuiType::Plasmoid:
+        ui()->apiGroupBox->setHidden(true);
+        break;
+    }
     return w;
 }
 
@@ -394,8 +400,9 @@ void NotificationsOptionPage::reset()
 }
 
 // AppearanceOptionPage
-AppearanceOptionPage::AppearanceOptionPage(QWidget *parentWidget)
+AppearanceOptionPage::AppearanceOptionPage(GuiType guiType, QWidget *parentWidget)
     : AppearanceOptionPageBase(parentWidget)
+    , m_guiType(guiType)
 {
 }
 
@@ -403,10 +410,28 @@ AppearanceOptionPage::~AppearanceOptionPage()
 {
 }
 
+QWidget *AppearanceOptionPage::setupWidget()
+{
+    auto *w = AppearanceOptionPageBase::setupWidget();
+    switch (m_guiType) {
+    case GuiType::TrayWidget:
+        break;
+    case GuiType::Plasmoid:
+        for (unsigned char i = 0; i != 6; ++i) {
+            ui()->formLayout->removeRow(0);
+        }
+        break;
+    }
+    return w;
+}
+
 bool AppearanceOptionPage::apply()
 {
-    if (hasBeenShown()) {
-        auto &settings = values().appearance;
+    if (!hasBeenShown()) {
+        return true;
+    }
+    auto &settings = values().appearance;
+    if (m_guiType == GuiType::TrayWidget) {
         settings.trayMenuSize.setWidth(ui()->widthSpinBox->value());
         settings.trayMenuSize.setHeight(ui()->heightSpinBox->value());
         settings.showTraffic = ui()->showTrafficCheckBox->isChecked();
@@ -436,15 +461,19 @@ bool AppearanceOptionPage::apply()
         }
         settings.frameStyle = style;
         settings.tabPosition = ui()->tabPosComboBox->currentIndex();
-        settings.brightTextColors = ui()->brightTextColorsCheckBox->isChecked();
     }
+
+    settings.brightTextColors = ui()->brightTextColorsCheckBox->isChecked();
     return true;
 }
 
 void AppearanceOptionPage::reset()
 {
-    if (hasBeenShown()) {
-        const auto &settings = values().appearance;
+    if (!hasBeenShown()) {
+        return;
+    }
+    const auto &settings = values().appearance;
+    if (m_guiType == GuiType::TrayWidget) {
         ui()->widthSpinBox->setValue(settings.trayMenuSize.width());
         ui()->heightSpinBox->setValue(settings.trayMenuSize.height());
         ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
@@ -475,8 +504,8 @@ void AppearanceOptionPage::reset()
         }
         ui()->frameShadowComboBox->setCurrentIndex(index);
         ui()->tabPosComboBox->setCurrentIndex(settings.tabPosition);
-        ui()->brightTextColorsCheckBox->setChecked(settings.brightTextColors);
     }
+    ui()->brightTextColorsCheckBox->setChecked(settings.brightTextColors);
 }
 
 // AutostartOptionPage
@@ -492,6 +521,7 @@ AutostartOptionPage::~AutostartOptionPage()
 QWidget *AutostartOptionPage::setupWidget()
 {
     auto *widget = AutostartOptionPageBase::setupWidget();
+
     ui()->infoIconLabel->setPixmap(
         QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation, nullptr, ui()->infoIconLabel).pixmap(ui()->infoIconLabel->size()));
 #if defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)

@@ -266,9 +266,17 @@ void SyncthingApplet::showDirectoryErrors(unsigned int directoryIndex) const
 
 void SyncthingApplet::handleSettingsChanged()
 {
+    // apply appearance settings
+    const auto &appearanceSettings = Settings::values().appearance;
+    m_dirModel.setBrightColors(appearanceSettings.brightTextColors);
+    m_devModel.setBrightColors(appearanceSettings.brightTextColors);
+    m_downloadModel.setBrightColors(appearanceSettings.brightTextColors);
+
+    // apply connection config
     const int currentConfig = m_currentConnectionConfig;
     m_currentConnectionConfig = -1; // force update
     setCurrentConnectionConfigIndex(currentConfig);
+
     emit settingsChanged();
 }
 
