@@ -9,11 +9,20 @@ SyncthingModel::SyncthingModel(SyncthingConnection &connection, QObject *parent)
 {
 }
 
+const QVector<int> &SyncthingModel::colorRoles() const
+{
+    static const QVector<int> colorRoles;
+    return colorRoles;
+}
+
 void SyncthingModel::setBrightColors(bool brightColors)
 {
     if (m_brightColors != brightColors) {
         m_brightColors = brightColors;
-        emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1), QVector<int>() << Qt::ForegroundRole);
+        const QVector<int> &affectedRoles = colorRoles();
+        if (!affectedRoles.isEmpty()) {
+            emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1), affectedRoles);
+        }
     }
 }
 

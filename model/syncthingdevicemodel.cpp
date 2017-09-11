@@ -38,6 +38,12 @@ QHash<int, QByteArray> SyncthingDeviceModel::roleNames() const
     return roles;
 }
 
+const QVector<int> &SyncthingDeviceModel::colorRoles() const
+{
+    static const QVector<int> colorRoles({ Qt::ForegroundRole, DeviceStatusColor });
+    return colorRoles;
+}
+
 /*!
  * \brief Returns the device info for the spcified \a index. The returned object is not persistent.
  */

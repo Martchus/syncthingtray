@@ -19,6 +19,8 @@ public:
     void setBrightColors(bool brightColors);
 
 protected:
+    virtual const QVector<int> &colorRoles() const;
+
     Data::SyncthingConnection &m_connection;
     bool m_brightColors;
 };

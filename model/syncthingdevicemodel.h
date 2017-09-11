@@ -28,6 +28,7 @@ public:
 
 public Q_SLOTS:
     QHash<int, QByteArray> roleNames() const;
+    const QVector<int> &colorRoles() const;
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &child) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

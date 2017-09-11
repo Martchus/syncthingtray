@@ -44,6 +44,12 @@ QHash<int, QByteArray> SyncthingDirectoryModel::roleNames() const
     return roles;
 }
 
+const QVector<int> &SyncthingDirectoryModel::colorRoles() const
+{
+    static const QVector<int> colorRoles({ Qt::ForegroundRole, DirectoryStatusColor });
+    return colorRoles;
+}
+
 /*!
  * \brief Returns the directory info for the spcified \a index. The returned object is not persistent.
  */
