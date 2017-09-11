@@ -27,6 +27,32 @@ ColumnLayout {
             mainTabGroup.currentTab.item.view.incrementCurrentIndex()
             event.accepted = true
             break
+        case Qt.Key_Left:
+            switch (mainTabGroup.currentTab) {
+            case dirsPage:
+                downloadsTabButton.clicked()
+                break
+            case devicesPage:
+                dirsTabButton.clicked()
+                break
+            case downloadsPage:
+                devsTabButton.clicked()
+                break
+            }
+            break
+        case Qt.Key_Right:
+            switch (mainTabGroup.currentTab) {
+            case dirsPage:
+                devsTabButton.clicked()
+                break
+            case devicesPage:
+                downloadsTabButton.clicked()
+                break
+            case downloadsPage:
+                dirsTabButton.clicked()
+                break
+            }
+            break
         case Qt.Key_Enter:
 
         case Qt.Key_Return:
