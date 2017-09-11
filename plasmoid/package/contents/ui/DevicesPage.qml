@@ -28,8 +28,8 @@ Item {
 
                     RowLayout {
                         PlasmaCore.IconItem {
-                            Layout.preferredWidth: units.iconSizes.smallMedium * 1.1
-                            Layout.preferredHeight: units.iconSizes.smallMedium * 1.1
+                            Layout.preferredWidth: units.iconSizes.small
+                            Layout.preferredHeight: units.iconSizes.small
                             anchors.verticalCenter: parent.verticalCenter
                             source: statusIcon
                         }
@@ -51,7 +51,7 @@ Item {
                             Item {
                                 width: 3
                             }
-                            PlasmaComponents.ToolButton {
+                            TinyButton {
                                 id: barcodeToolButton
                                 iconSource: paused ? "media-playback-start" : "media-playback-pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")

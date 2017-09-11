@@ -8,14 +8,12 @@ RowLayout {
         Layout.leftMargin: units.iconSizes.smallMedium
         text: name
         font.pointSize: theme.defaultFont.pointSize * 0.8
-        height: contentHeight
         elide: Text.ElideRight
     }
     PlasmaComponents.Label {
         Layout.fillWidth: true
         text: detail
         font.pointSize: theme.defaultFont.pointSize * 0.8
-        height: contentHeight
         elide: Text.ElideRight
     }
 }

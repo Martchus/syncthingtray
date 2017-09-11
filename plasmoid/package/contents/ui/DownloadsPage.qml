@@ -56,7 +56,7 @@ Item {
                             Item {
                                 width: 3
                             }
-                            PlasmaComponents.ToolButton {
+                            TinyButton {
                                 iconSource: "folder"
                                 tooltip: qsTr("Open in file browser")
                                 onClicked: {
@@ -111,7 +111,7 @@ Item {
                                         value: percentage
                                     }
                                 }
-                                PlasmaComponents.ToolButton {
+                                TinyButton {
                                     iconSource: "folder"
                                     tooltip: qsTr("Open in file browser")
                                     onClicked: {

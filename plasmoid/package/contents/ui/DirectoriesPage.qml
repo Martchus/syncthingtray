@@ -30,8 +30,8 @@ Item {
                         id: itemSummary
 
                         PlasmaCore.IconItem {
-                            Layout.preferredWidth: units.iconSizes.smallMedium * 1.1
-                            Layout.preferredHeight: units.iconSizes.smallMedium * 1.1
+                            Layout.preferredWidth: units.iconSizes.small
+                            Layout.preferredHeight: units.iconSizes.small
                             anchors.verticalCenter: parent.verticalCenter
                             source: statusIcon
                         }
@@ -54,7 +54,7 @@ Item {
                             Item {
                                 width: units.smallSpacing
                             }
-                            PlasmaComponents.ToolButton {
+                            TinyButton {
                                 iconSource: "emblem-important"
                                 tooltip: qsTr("Show errors")
                                 // 5 stands for SyncthingDirStatus::OutOfSync, unfortunately there is currently
@@ -66,13 +66,13 @@ Item {
                                     plasmoid.expanded = false
                                 }
                             }
-                            PlasmaComponents.ToolButton {
+                            TinyButton {
                                 iconSource: "view-refresh"
                                 tooltip: qsTr("Rescan")
                                 onClicked: plasmoid.nativeInterface.connection.rescan(
                                                dirId)
                             }
-                            PlasmaComponents.ToolButton {
+                            TinyButton {
                                 id: barcodeToolButton
                                 iconSource: paused ? "media-playback-start" : "media-playback-pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
@@ -82,7 +82,7 @@ Item {
                                                  [dirId])
                                 }
                             }
-                            PlasmaComponents.ToolButton {
+                            TinyButton {
                                 iconSource: "folder"
                                 tooltip: qsTr("Open in file browser")
                                 onClicked: {

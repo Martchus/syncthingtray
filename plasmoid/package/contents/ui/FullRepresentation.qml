@@ -3,9 +3,9 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import QtQml 2.2
 import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.plasma.components 2.0 as PlasmaComponents
 import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
 
 ColumnLayout {
@@ -56,8 +56,9 @@ ColumnLayout {
         id: toolBar
         Layout.fillWidth: true
 
-        PlasmaComponents.ToolButton {
+        TinyButton {
             id: connectButton
+
             states: [
                 State {
                     name: "disconnected"
@@ -113,7 +114,7 @@ ColumnLayout {
                 }
             }
         }
-        PlasmaComponents.ToolButton {
+        TinyButton {
             id: startStopButton
 
             states: [
@@ -161,13 +162,14 @@ ColumnLayout {
                 }
                 return service.running ? "running" : "stopped"
             }
-
             onClicked: plasmoid.nativeInterface.service.toggleRunning()
+            style: TinyButtonStyle {
+            }
         }
         Item {
             Layout.fillWidth: true
         }
-        PlasmaComponents.ToolButton {
+        TinyButton {
             tooltip: qsTr("Show own device ID")
             iconSource: "view-barcode"
             onClicked: {
@@ -175,7 +177,7 @@ ColumnLayout {
                 plasmoid.expanded = false
             }
         }
-        PlasmaComponents.ToolButton {
+        TinyButton {
             tooltip: qsTr("Show Syncthing log")
             iconSource: "text-x-generic"
             onClicked: {
@@ -183,12 +185,12 @@ ColumnLayout {
                 plasmoid.expanded = false
             }
         }
-        PlasmaComponents.ToolButton {
+        TinyButton {
             tooltip: qsTr("Rescan all directories")
             iconSource: "view-refresh"
             onClicked: plasmoid.nativeInterface.connection.rescanAllDirs()
         }
-        PlasmaComponents.ToolButton {
+        TinyButton {
             tooltip: qsTr("Settings")
             iconSource: "preferences-other"
             onClicked: {
@@ -196,7 +198,7 @@ ColumnLayout {
                 plasmoid.expanded = false
             }
         }
-        PlasmaComponents.ToolButton {
+        TinyButton {
             tooltip: qsTr("Web UI")
             iconSource: "internet-web-browser"
             onClicked: {
@@ -251,10 +253,10 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
         }
-        ToolButton {
+        TinyButton {
             text: plasmoid.nativeInterface.currentConnectionConfigName
-            // FIXME: iconSource doesn't work
             iconSource: "network-connect"
+            paddingEnabled: true
             // FIXME: figure out why menu doesn't work in plasmoidviewer using NVIDIA driver
             // (works with plasmawindowed or Intel graphics)
             menu: Menu {
