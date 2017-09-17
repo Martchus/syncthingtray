@@ -33,7 +33,7 @@ template <> struct hash<QString> {
         return qHash(str);
     }
 };
-}
+} // namespace std
 
 namespace Settings {
 
@@ -288,4 +288,4 @@ void save()
 
     v.qt.save(settings);
 }
-}
+} // namespace Settings

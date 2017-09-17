@@ -12,7 +12,7 @@ namespace Data {
 class SyncthingConnection;
 struct SyncthingDir;
 struct SyncthingLogEntry;
-}
+} // namespace Data
 
 namespace QtGui {
 
@@ -43,6 +43,6 @@ inline QTextBrowser *TextViewDialog::browser()
 {
     return m_browser;
 }
-}
+} // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_TEXTVIEWDIALOG_H

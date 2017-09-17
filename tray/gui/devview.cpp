@@ -98,4 +98,4 @@ void DevView::copySelectedItemId()
         }
     }
 }
-}
+} // namespace QtGui

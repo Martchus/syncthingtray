@@ -299,6 +299,6 @@ template <typename Action, typename... SignalInfos> void waitForSignals(Action a
             " ms.", timeoutFactor != 1.0 ? argsToString(" (original timeout: ", timeout, " ms)") : std::string()));
     }
 }
-}
+} // namespace TestUtilities
 
 #endif // SYNCTHINGTESTHELPER_H

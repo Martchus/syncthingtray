@@ -8,4 +8,4 @@ namespace TestUtilities {
  * The default factor is 1.0.
  */
 double timeoutFactor = 1.0;
-}
+} // namespace TestUtilities

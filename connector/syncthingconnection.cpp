@@ -1503,10 +1503,12 @@ void SyncthingConnection::readDownloadProgressEvent(DateTime eventTime, const QJ
             = QStringLiteral("%1 / %2 - %3 %")
                   .arg(QString::fromLatin1(dataSizeToString(dirInfo.blocksAlreadyDownloaded > 0
                                ? static_cast<uint64>(dirInfo.blocksAlreadyDownloaded) * SyncthingItemDownloadProgress::syncthingBlockSize
-                               : 0).data()),
+                               : 0)
+                                               .data()),
                       QString::fromLatin1(dataSizeToString(dirInfo.blocksToBeDownloaded > 0
                               ? static_cast<uint64>(dirInfo.blocksToBeDownloaded) * SyncthingItemDownloadProgress::syncthingBlockSize
-                              : 0).data()),
+                              : 0)
+                                              .data()),
                       QString::number(dirInfo.downloadPercentage));
     }
     emit downloadProgressChanged();
@@ -2091,4 +2093,4 @@ void SyncthingConnection::recalculateStatus()
  * \fn SyncthingConnection::restartTriggered()
  * \brief Indicates a restart has been successfully triggered via restart().
  */
-}
+} // namespace Data

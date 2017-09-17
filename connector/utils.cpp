@@ -127,4 +127,4 @@ bool setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &devIds, b
     }
     return altered;
 }
-}
+} // namespace Data

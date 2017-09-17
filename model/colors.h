@@ -34,7 +34,7 @@ inline QColor orange(bool bright)
 {
     return bright ? QColor(0xFFC500) : QColor(0xA85900);
 }
-}
+} // namespace Colors
 
 } // namespace Data
 

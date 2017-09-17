@@ -97,4 +97,4 @@ void SyncthingTestInstance::stop()
         cerr << "\n - Syncthing stderr during the testrun:\n" << m_syncthingProcess.readAllStandardError().data();
     }
 }
-}
+} // namespace TestUtilities

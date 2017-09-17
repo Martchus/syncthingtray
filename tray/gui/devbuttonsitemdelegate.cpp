@@ -60,4 +60,4 @@ void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
             option.rect.right() - 16, buttonY, 16, 16, index.data(SyncthingDeviceModel::DevicePaused).toBool() ? m_resumeIcon : m_pauseIcon);
     }
 }
-}
+} // namespace QtGui

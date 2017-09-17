@@ -116,6 +116,6 @@ inline const std::vector<TrayWidget *> &TrayWidget::instances()
 {
     return m_instances;
 }
-}
+} // namespace QtGui
 
 #endif // TRAY_WIDGET_H

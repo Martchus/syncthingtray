@@ -110,4 +110,4 @@ void ErrorViewDialog::clearErrors()
         s_instance->browser()->clear();
     }
 }
-}
+} // namespace QtGui

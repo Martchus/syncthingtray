@@ -27,7 +27,7 @@ class SyncthingDeviceModel;
 class SyncthingDownloadModel;
 class SyncthingService;
 enum class SyncthingErrorCategory;
-}
+} // namespace Data
 
 namespace QtGui {
 class WebViewDialog;
@@ -191,6 +191,6 @@ inline Data::SyncthingConnectionSettings *SyncthingApplet::currentConnectionConf
 {
     return connectionConfig(m_currentConnectionConfig);
 }
-}
+} // namespace Plasmoid
 
 #endif // SYNCTHINGAPPLET_H

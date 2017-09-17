@@ -24,6 +24,6 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     QList<QSslError> expectedSslErrors;
     bool loadHttpsCert();
 };
-}
+} // namespace Data
 
 #endif // SYNCTHINGCONNECTIONSETTINGS_H

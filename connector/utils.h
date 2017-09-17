@@ -45,6 +45,6 @@ template <class Objects> QStringList LIB_SYNCTHING_CONNECTOR_EXPORT ids(const Ob
     }
     return ids;
 }
-}
+} // namespace Data
 
 #endif // DATA_UTILS_H

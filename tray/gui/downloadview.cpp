@@ -83,4 +83,4 @@ void DownloadView::copySelectedItem()
         }
     }
 }
-}
+} // namespace QtGui

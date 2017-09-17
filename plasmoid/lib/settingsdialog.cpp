@@ -89,11 +89,11 @@ QtGui::SettingsDialog *setupSettingsDialog(SyncthingApplet &applet)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
                                                          << systemdPage
 #endif
-        );
+    );
     category->setIcon(
         QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
     categories << category;
 
     return new ::QtGui::SettingsDialog(categories);
 }
-}
+} // namespace Plasmoid

@@ -297,7 +297,7 @@ void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
             && !syncthingService().isManuallyStopped()
 #endif
-                ) {
+        ) {
             m_dbusNotifier.showDisconnect();
         }
         break;
@@ -371,7 +371,7 @@ void SyncthingApplet::handleSystemdServiceError(const QString &context, const QS
     handleInternalError(tr("D-Bus error - unable to ") % context % QChar('\n') % name % QChar(':') % message, SyncthingErrorCategory::SpecificRequest,
         QNetworkReply::NoError, QNetworkRequest(), QByteArray());
 }
-}
+} // namespace Plasmoid
 
 K_EXPORT_PLASMA_APPLET_WITH_JSON(syncthing, Plasmoid::SyncthingApplet, "metadata.json")
 

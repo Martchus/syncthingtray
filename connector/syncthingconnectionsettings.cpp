@@ -18,4 +18,4 @@ bool SyncthingConnectionSettings::loadHttpsCert()
     }
     return true;
 }
-}
+} // namespace Data

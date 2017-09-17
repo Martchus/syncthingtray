@@ -26,6 +26,6 @@ private Q_SLOTS:
 private:
     QLocalServer *m_server;
 };
-}
+} // namespace QtGui
 
 #endif // SINGLEINSTANCE_H

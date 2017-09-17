@@ -69,6 +69,6 @@ inline void DBusStatusNotifier::showSyncComplete(const QString &message)
 {
     m_syncCompleteNotification.update(message);
 }
-}
+} // namespace QtGui
 
 #endif // !defined(SYNCTHINGWIDGETS_DBUSSTATUSNOTIFIER_H) && defined(QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS)

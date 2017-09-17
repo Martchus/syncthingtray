@@ -94,4 +94,4 @@ void StatusInfo::update(const SyncthingConnection &connection)
         m_additionalStatusText.clear();
     }
 }
-}
+} // namespace QtGui

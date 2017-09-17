@@ -58,4 +58,4 @@ void TrayMenu::showAtCursor()
     moveInside(pos, size(), QApplication::desktop()->availableGeometry(pos));
     popup(pos);
 }
-}
+} // namespace QtGui

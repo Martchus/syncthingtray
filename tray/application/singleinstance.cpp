@@ -93,4 +93,4 @@ void SingleInstance::readArgs()
 
     emit newInstance(static_cast<int>(args.size() - 1), args.data());
 }
-}
+} // namespace QtGui

@@ -35,6 +35,6 @@ void DBusStatusNotifier::handleSyncthingNotificationAction(const QString &action
         emit showNotificationsRequested();
     }
 }
-}
+} // namespace QtGui
 
 #endif

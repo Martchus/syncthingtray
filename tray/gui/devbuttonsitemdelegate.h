@@ -17,6 +17,6 @@ private:
     const QPixmap m_pauseIcon;
     const QPixmap m_resumeIcon;
 };
-}
+} // namespace QtGui
 
 #endif // DEVBUTTONSITEMDELEGATE_H

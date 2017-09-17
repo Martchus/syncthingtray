@@ -132,8 +132,9 @@ TextViewDialog *TextViewDialog::forLogEntries(SyncthingConnection &connection)
 {
     auto *const dlg = new TextViewDialog(tr("Log"));
     const auto loadLog = [dlg, &connection] {
-        connect(dlg, &QWidget::destroyed, bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
-                                              connection.requestLog(bind(&TextViewDialog::showLogEntries, dlg, _1))));
+        connect(dlg, &QWidget::destroyed,
+            bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
+                connection.requestLog(bind(&TextViewDialog::showLogEntries, dlg, _1))));
     };
     connect(dlg, &TextViewDialog::reload, loadLog);
     loadLog();
@@ -167,4 +168,4 @@ void TextViewDialog::showLogEntries(const std::vector<SyncthingLogEntry> &logEnt
         browser()->append(entry.when % QChar(':') % QChar(' ') % QChar('\n') % entry.message % QChar('\n'));
     }
 }
-}
+} // namespace QtGui

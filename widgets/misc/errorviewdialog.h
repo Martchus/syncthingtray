@@ -47,6 +47,6 @@ inline void ErrorViewDialog::showInstance()
 {
     instance()->show();
 }
-}
+} // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_ERRORVIEWDIALOG_H

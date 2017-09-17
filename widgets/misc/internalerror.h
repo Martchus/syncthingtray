@@ -12,7 +12,7 @@
 namespace Data {
 class SyncthingConnection;
 enum class SyncthingErrorCategory;
-}
+} // namespace Data
 
 namespace QtGui {
 
@@ -34,6 +34,6 @@ inline InternalError::InternalError(const QString &message, const QUrl &url, con
     , when(ChronoUtilities::DateTime::now())
 {
 }
-}
+} // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_INTERNALERROR_H

@@ -67,4 +67,4 @@ void DirButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         painter->drawPixmap(option.rect.right() - 16, buttonY, 16, 16, m_folderIcon);
     }
 }
-}
+} // namespace QtGui

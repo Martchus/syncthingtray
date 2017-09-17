@@ -46,13 +46,14 @@ QDialog *ownDeviceIdDialog(Data::SyncthingConnection &connection)
     QObject::connect(
         copyPushButton, &QPushButton::clicked, bind(&QClipboard::setText, QGuiApplication::clipboard(), connection.myId(), QClipboard::Clipboard));
     layout->addWidget(copyPushButton);
-    QObject::connect(dlg, &QWidget::destroyed, bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
-                                                   connection.requestQrCode(connection.myId(), [pixmapLabel](const QByteArray &data) {
-                                                       QPixmap pixmap;
-                                                       pixmap.loadFromData(data);
-                                                       pixmapLabel->setPixmap(pixmap);
-                                                   })));
+    QObject::connect(dlg, &QWidget::destroyed,
+        bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
+            connection.requestQrCode(connection.myId(), [pixmapLabel](const QByteArray &data) {
+                QPixmap pixmap;
+                pixmap.loadFromData(data);
+                pixmapLabel->setPixmap(pixmap);
+            })));
     dlg->setLayout(layout);
     return dlg;
 }
-}
+} // namespace QtGui

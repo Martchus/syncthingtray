@@ -36,6 +36,6 @@ inline TrayIcon *TrayMenu::icon()
 {
     return m_trayIcon;
 }
-}
+} // namespace QtGui
 
 #endif // TRAY_MENU_H

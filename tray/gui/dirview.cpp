@@ -115,4 +115,4 @@ void DirView::copySelectedItemPath()
         }
     }
 }
-}
+} // namespace QtGui

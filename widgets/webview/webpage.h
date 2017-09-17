@@ -47,7 +47,7 @@ private:
     WebViewDialog *m_dlg;
     SYNCTHINGWIDGETS_WEB_VIEW *m_view;
 };
-}
+} // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_NO_WEBVIEW
 #endif // WEBPAGE_H

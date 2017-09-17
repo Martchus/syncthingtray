@@ -95,4 +95,4 @@ QSize DownloadItemDelegate::sizeHint(const QStyleOptionViewItem &option, const Q
     }
     return defaultSize;
 }
-}
+} // namespace QtGui

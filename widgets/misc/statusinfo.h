@@ -48,6 +48,6 @@ inline const QIcon &StatusInfo::statusIcon() const
 {
     return *m_statusIcon;
 }
-}
+} // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_STATUSINFO_H

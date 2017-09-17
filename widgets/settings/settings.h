@@ -109,6 +109,6 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
 Settings SYNCTHINGWIDGETS_EXPORT &values();
 void SYNCTHINGWIDGETS_EXPORT restore();
 void SYNCTHINGWIDGETS_EXPORT save();
-}
+} // namespace Settings
 
 #endif // SETTINGS_H

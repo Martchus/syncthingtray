@@ -6,7 +6,7 @@
 namespace Data {
 struct SyncthingItemDownloadProgress;
 struct SyncthingDir;
-}
+} // namespace Data
 
 namespace QtGui {
 
@@ -26,6 +26,6 @@ private Q_SLOTS:
     void showContextMenu();
     void copySelectedItem();
 };
-}
+} // namespace QtGui
 
 #endif // DOWNLOADVIEW_H

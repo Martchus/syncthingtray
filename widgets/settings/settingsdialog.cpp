@@ -897,9 +897,9 @@ QWidget *WebViewOptionPage::setupWidget()
     auto *label = new QLabel;
     label->setWindowTitle(QCoreApplication::translate("QtGui::WebViewOptionPage", "General"));
     label->setAlignment(Qt::AlignCenter);
-    label->setText(
-        QCoreApplication::translate("QtGui::WebViewOptionPage", "Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit "
-                                                                "or Qt WebEngine.\nThe Web UI will be opened in the default web browser instead."));
+    label->setText(QCoreApplication::translate("QtGui::WebViewOptionPage",
+        "Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit "
+        "or Qt WebEngine.\nThe Web UI will be opened in the default web browser instead."));
     return label;
 }
 #endif
@@ -964,7 +964,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
                                        << new SystemdOptionPage
 #endif
-        );
+    );
     category->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
     categories << category;
 
@@ -987,7 +987,7 @@ void SettingsDialog::init()
     // some settings could be applied without restarting the application, good idea?
     //connect(this, &Dialogs::SettingsDialog::applied, bind(&Dialogs::QtSettings::apply, &Settings::qtSettings()));
 }
-}
+} // namespace QtGui
 
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, ConnectionOptionPage)
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, NotificationsOptionPage)

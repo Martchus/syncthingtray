@@ -59,6 +59,6 @@ inline QProcess &SyncthingTestInstance::syncthingProcess()
 {
     return m_syncthingProcess;
 }
-}
+} // namespace TestUtilities
 
 #endif // SYNCTHINGTESTHELPER_SYNCTHINGTESTINSTANCE_H

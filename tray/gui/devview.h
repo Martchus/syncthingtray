@@ -25,6 +25,6 @@ private Q_SLOTS:
     void copySelectedItem();
     void copySelectedItemId();
 };
-}
+} // namespace QtGui
 
 #endif // DEVVIEW_H

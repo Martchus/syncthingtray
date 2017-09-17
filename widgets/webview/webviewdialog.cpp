@@ -122,6 +122,6 @@ bool WebViewDialog::eventFilter(QObject *watched, QEvent *event)
     return QMainWindow::eventFilter(watched, event);
 }
 #endif
-}
+} // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_NO_WEBVIEW

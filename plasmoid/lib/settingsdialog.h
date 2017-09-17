@@ -23,6 +23,6 @@ QKeySequenceEdit *m_globalShortcutEdit;
 END_DECLARE_OPTION_PAGE
 
 QtGui::SettingsDialog *setupSettingsDialog(Plasmoid::SyncthingApplet &applet);
-}
+} // namespace Plasmoid
 
 #endif // SETTINGSDIALOG_H

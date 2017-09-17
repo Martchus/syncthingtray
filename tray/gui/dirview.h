@@ -27,6 +27,6 @@ private Q_SLOTS:
     void copySelectedItem();
     void copySelectedItemPath();
 };
-}
+} // namespace QtGui
 
 #endif // DIRVIEW_H

@@ -591,4 +591,4 @@ void TrayWidget::showDialog(QWidget *dlg)
     dlg->show();
     dlg->activateWindow();
 }
-}
+} // namespace QtGui

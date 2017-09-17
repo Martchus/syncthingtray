@@ -29,4 +29,4 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
 #endif
         ;
 }
-}
+} // namespace QtGui

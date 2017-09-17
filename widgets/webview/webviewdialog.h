@@ -46,7 +46,7 @@ inline const Data::SyncthingConnectionSettings &WebViewDialog::settings() const
 {
     return m_settings;
 }
-}
+} // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_NO_WEBVIEW
 #endif // WEBVIEW_DIALOG_H

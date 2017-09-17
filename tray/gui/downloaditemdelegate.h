@@ -17,6 +17,6 @@ public:
 private:
     const QPixmap m_folderIcon;
 };
-}
+} // namespace QtGui
 
 #endif // DOWNLOADITEMDELEGATE_H

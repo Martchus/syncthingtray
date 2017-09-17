@@ -18,7 +18,7 @@ namespace Data {
 class SyncthingConnection;
 class SyncthingService;
 class SyncthingProcess;
-}
+} // namespace Data
 
 namespace QtGui {
 
@@ -120,7 +120,7 @@ public:
 private:
     void init();
 };
-}
+} // namespace QtGui
 
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, ConnectionOptionPage)
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, NotificationsOptionPage)

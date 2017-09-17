@@ -219,7 +219,7 @@ void TrayIcon::showStatusNotification(SyncthingStatus status)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
             && !syncthingService().isManuallyStopped()
 #endif
-                ) {
+        ) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
             if (settings.dbusNotifications) {
                 m_dbusNotifier.showDisconnect();
@@ -277,4 +277,4 @@ void TrayIcon::showInternalErrorsDialog()
     centerWidget(errorViewDlg);
     errorViewDlg->show();
 }
-}
+} // namespace QtGui

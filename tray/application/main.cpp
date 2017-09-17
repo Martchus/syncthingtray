@@ -84,8 +84,9 @@ int initSyncthingTray(bool windowed, bool waitForTray, const char *connectionCon
         }
 #else
         QMessageBox::critical(nullptr, QApplication::applicationName(),
-            QApplication::translate("main", "The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular "
-                                            "window using the -w flag, though."));
+            QApplication::translate("main",
+                "The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular "
+                "window using the -w flag, though."));
         return -2;
 #endif
     }

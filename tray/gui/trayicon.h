@@ -16,7 +16,7 @@ QT_FORWARD_DECLARE_CLASS(QNetworkRequest)
 namespace Data {
 enum class SyncthingStatus;
 enum class SyncthingErrorCategory;
-}
+} // namespace Data
 
 namespace QtGui {
 
@@ -59,6 +59,6 @@ inline TrayMenu &TrayIcon::trayMenu()
 {
     return m_trayMenu;
 }
-}
+} // namespace QtGui
 
 #endif // TRAY_ICON_H

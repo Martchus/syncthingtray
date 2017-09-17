@@ -166,6 +166,6 @@ void WebPage::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &erro
     }
 }
 #endif
-}
+} // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_NO_WEBVIEW
