@@ -33,14 +33,14 @@ Args::Args()
     , certificate("cert", '\0', "specifies the certificate used by the Syncthing instance", { "path" })
 {
     for (Argument *arg : { &statusDir, &statusDev, &pauseDev, &pauseDir }) {
-        arg->setConstraints(0, -1);
+        arg->setConstraints(0, Argument::varValueCount);
     }
     status.setSubArguments({ &statusDir, &statusDev });
     waitForIdle.setSubArguments({ &statusDir, &statusDev });
     pwd.setSubArguments({ &statusPwd, &rescanPwd, &pausePwd, &resumePwd });
 
     rescan.setValueNames({ "dir ID" });
-    rescan.setRequiredValueCount(-1);
+    rescan.setRequiredValueCount(Argument::varValueCount);
     pause.setSubArguments({ &pauseDir, &pauseDev });
     resume.setSubArguments({ &pauseDir, &pauseDev });
 
