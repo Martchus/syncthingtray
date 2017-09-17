@@ -5,6 +5,7 @@
 #include <c++utilities/chrono/datetime.h>
 #include <c++utilities/chrono/timespan.h>
 #include <c++utilities/conversion/stringconversion.h>
+#include <c++utilities/misc/traits.h>
 
 #include <QString>
 #include <QStringList>
@@ -60,14 +61,14 @@ inline void printProperty(const char *propName, bool value, const char *suffix =
     printProperty(propName, value ? "yes" : "no", suffix, indentation);
 }
 
-template <typename intType>
+template <typename NumberType, Traits::EnableIf<std::is_floating_point<NumberType>, std::is_integral<NumberType>>>
 inline void printProperty(
-    const char *propName, const intType value, const char *suffix = nullptr, bool force = false, ApplicationUtilities::Indentation indentation = 3)
+    const char *propName, const NumberType value, const char *suffix = nullptr, bool force = false, ApplicationUtilities::Indentation indentation = 3)
 {
     if (value >= 0 || force) {
-        printProperty(propName, ConversionUtilities::numberToString<intType>(value).data(), suffix, indentation);
+        printProperty(propName, ConversionUtilities::numberToString<NumberType>(value).data(), suffix, indentation);
     }
 }
-}
+} // namespace Cli
 
 #endif // SYNCTHINGCTL_HELPER

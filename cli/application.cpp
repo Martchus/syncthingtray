@@ -2,6 +2,7 @@
 #include "./helper.h"
 
 #include "../connector/syncthingconfig.h"
+#include "../connector/utils.h"
 
 #include <c++utilities/application/failure.h>
 #include <c++utilities/chrono/timespan.h>
@@ -149,7 +150,7 @@ int Application::exec(int argc, const char *const *argv)
             }
         }
 
-        // finally to request / establish connection
+        // finally do the request or establish connection
         if (m_args.status.isPresent() || m_args.rescanAll.isPresent() || m_args.pauseAllDirs.isPresent() || m_args.pauseAllDevs.isPresent()
             || m_args.resumeAllDirs.isPresent() || m_args.resumeAllDevs.isPresent() || m_args.pause.isPresent() || m_args.resume.isPresent()
             || m_args.waitForIdle.isPresent() || m_args.pwd.isPresent()) {
@@ -438,6 +439,8 @@ void Application::printDir(const SyncthingDir *dir)
     printProperty("Label", dir->label);
     printProperty("Path", dir->path);
     printProperty("Status", dir->statusString());
+    printProperty("Global", directoryStatusString(dir->globalFiles, dir->globalDirs, dir->globalBytes), nullptr, 6);
+    printProperty("Local", directoryStatusString(dir->localFiles, dir->localDirs, dir->localBytes), nullptr, 6);
     printProperty("Last scan time", dir->lastScanTime);
     printProperty("Last file time", dir->lastFileTime);
     printProperty("Last file name", dir->lastFileName);
