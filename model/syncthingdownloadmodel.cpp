@@ -5,6 +5,7 @@
 
 #include <QStringBuilder>
 
+using namespace std;
 using namespace ChronoUtilities;
 
 namespace Data {

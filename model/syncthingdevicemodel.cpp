@@ -5,6 +5,7 @@
 #include "../connector/syncthingconnection.h"
 #include "../connector/utils.h"
 
+using namespace std;
 using namespace ChronoUtilities;
 
 namespace Data {
