@@ -1,5 +1,7 @@
 #include "./args.h"
 
+#include "resources/config.h"
+
 namespace Cli {
 
 Args::Args()
@@ -22,11 +24,11 @@ Args::Args()
     , rescanPwd("rescan", 'r', "rescans the current working directory")
     , pausePwd("pause", 'p', "pauses the current working directory")
     , resumePwd("resume", '\0', "resumes the current working directory")
-    , statusDir("dir", 'd', "specifies the directoies (default is all dirs)", { "ID" })
-    , statusDev("dev", '\0', "specifies the devices (default is all devs)", { "ID" })
+    , statusDir("dir", 'd', "specifies the directories, default is all dirs", { "ID" })
+    , statusDev("dev", '\0', "specifies the devices, default is all devs", { "ID" })
     , pauseDir("dir", 'd', "specifies the directories", { "ID" })
     , pauseDev("dev", '\0', "specifies the devices", { "ID" })
-    , configFile("config-file", 'f', "specifies the Syncthing config file", { "path" })
+    , configFile("config-file", 'f', "specifies the Syncthing config file to read API key and URL from, when not explicitely specified", { "path" })
     , apiKey("api-key", 'k', "specifies the API key", { "key" })
     , url("url", 'u', "specifies the Syncthing URL, default is http://localhost:8080", { "URL" })
     , credentials("credentials", 'c', "specifies user name and password", { "user name", "password" })
@@ -36,13 +38,21 @@ Args::Args()
         arg->setConstraints(0, Argument::varValueCount);
     }
     status.setSubArguments({ &statusDir, &statusDev });
+    status.setExample(PROJECT_NAME " status # shows all dirs and devs\n" PROJECT_NAME " status --dir dir1 --dir dir2 --dev dev1 --dev dev2");
     waitForIdle.setSubArguments({ &statusDir, &statusDev });
+    waitForIdle.setExample(PROJECT_NAME " wait-for-idle --dir dir1 --dir dir2 --dev dev1 --dev dev2");
     pwd.setSubArguments({ &statusPwd, &rescanPwd, &pausePwd, &resumePwd });
 
     rescan.setValueNames({ "dir ID" });
     rescan.setRequiredValueCount(Argument::varValueCount);
+    rescan.setExample(PROJECT_NAME " rescan dir1 dir2 dir4 dir5");
     pause.setSubArguments({ &pauseDir, &pauseDev });
+    pause.setExample(PROJECT_NAME " pause --dir dir1 --dir dir2 --dev dev1 --dev dev2");
     resume.setSubArguments({ &pauseDir, &pauseDev });
+    resume.setExample(PROJECT_NAME " resume --dir dir1 --dir dir2 --dev dev1 --dev dev2");
+
+    configFile.setExample(PROJECT_NAME " status --dir dir1 --config-file ~/.config/syncthing/config.xml");
+    credentials.setExample(PROJECT_NAME " status --dir dir1 --credentials name supersecret");
 
     parser.setMainArguments({ &status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &pauseAllDevs, &pauseAllDirs, &resume, &resumeAllDevs,
         &resumeAllDirs, &waitForIdle, &pwd, &configFile, &apiKey, &url, &credentials, &certificate, &help });
