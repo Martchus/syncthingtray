@@ -170,7 +170,6 @@ void SyncthingApplet::showSettingsDlg()
     if (!m_settingsDlg) {
         m_settingsDlg = setupSettingsDialog(*this);
         connect(m_settingsDlg, &Dialogs::SettingsDialog::applied, this, &SyncthingApplet::handleSettingsChanged);
-        connect(m_settingsDlg, &Dialogs::SettingsDialog::applied, &Settings::save);
     }
     Dialogs::centerWidget(m_settingsDlg);
     m_settingsDlg->show();
@@ -278,6 +277,9 @@ void SyncthingApplet::handleSettingsChanged()
     setCurrentConnectionConfigIndex(currentConfig);
 
     emit settingsChanged();
+
+    // actually save the settings on the disk
+    Settings::save();
 }
 
 void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
