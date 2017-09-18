@@ -10,11 +10,39 @@ import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
 
 ColumnLayout {
     id: root
-    Layout.minimumWidth: units.gridUnit * 25
-    Layout.preferredWidth: units.gridUnit * 30
-    Layout.minimumHeight: units.gridUnit * 20
-    Layout.preferredHeight: units.gridUnit * 30
 
+    // define minimum size
+    Layout.minimumWidth: units.gridUnit * 20
+    Layout.minimumHeight: units.gridUnit * 15
+
+    // define function to update the size according to the settings
+    // when "floating" (shown as popup)
+    function updateSize() {
+        switch (plasmoid.location) {
+        case PlasmaCore.Types.Floating:
+            var size = plasmoid.nativeInterface.size
+            parent.width = units.gridUnit * size.width
+            parent.height = units.gridUnit * size.height
+            break
+        default:
+            ;
+        }
+    }
+
+    // update the size when becoming visible
+    onVisibleChanged: {
+        if (visible) {
+            updateSize()
+        }
+    }
+
+    // update the size when settings changed
+    Connections {
+        target: plasmoid.nativeInterface
+        onSizeChanged: updateSize()
+    }
+
+    // shortcut handling
     Keys.onPressed: {
         // FIXME: currently only works after clicking the tab buttons
         // TODO: add more shortcuts

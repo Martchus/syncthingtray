@@ -7,6 +7,9 @@ set(SRC_FILES
     syncthingapplet.cpp
     settingsdialog.cpp
 )
+set(WIDGETS_UI_FILES
+    appearanceoptionpage.ui
+)
 set(PLASMOID_FILES
     ../package/metadata.desktop
     ../package/contents/ui/CompactRepresentation.qml

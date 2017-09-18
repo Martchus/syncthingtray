@@ -15,6 +15,8 @@
 
 #include <Plasma/Applet>
 
+#include <QSize>
+
 namespace Dialogs {
 class SettingsDialog;
 }
@@ -53,6 +55,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(int currentConnectionConfigIndex READ currentConnectionConfigIndex WRITE setCurrentConnectionConfigIndex NOTIFY
             currentConnectionConfigIndexChanged)
     Q_PROPERTY(bool startStopForServiceEnabled READ isStartStopForServiceEnabled NOTIFY settingsChanged)
+    Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
 
 public:
     SyncthingApplet(QObject *parent, const QVariantList &data);
@@ -77,6 +80,8 @@ public:
     Data::SyncthingConnectionSettings *connectionConfig(int index);
     void setCurrentConnectionConfigIndex(int index);
     bool isStartStopForServiceEnabled() const;
+    QSize size() const;
+    void setSize(const QSize &size);
 
 public Q_SLOTS:
     void init() Q_DECL_OVERRIDE;
@@ -106,6 +111,7 @@ Q_SIGNALS:
     void trafficChanged();
     void settingsChanged();
     void currentConnectionConfigIndexChanged(int index);
+    void sizeChanged(const QSize &size);
 
 private Q_SLOTS:
     void handleSettingsChanged();
@@ -136,6 +142,7 @@ private:
     int m_currentConnectionConfig;
     Data::SyncthingStatus m_status;
     bool m_initialized;
+    QSize m_size;
 };
 
 inline Data::SyncthingConnection *SyncthingApplet::connection() const
@@ -190,6 +197,18 @@ inline int SyncthingApplet::currentConnectionConfigIndex() const
 inline Data::SyncthingConnectionSettings *SyncthingApplet::currentConnectionConfig()
 {
     return connectionConfig(m_currentConnectionConfig);
+}
+
+inline QSize SyncthingApplet::size() const
+{
+    return m_size;
+}
+
+inline void SyncthingApplet::setSize(const QSize &size)
+{
+    if (size != m_size) {
+        emit sizeChanged(m_size = size);
+    }
 }
 } // namespace Plasmoid
 

@@ -22,6 +22,14 @@ SyncthingApplet *m_applet;
 QKeySequenceEdit *m_globalShortcutEdit;
 END_DECLARE_OPTION_PAGE
 
+BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(AppearanceOptionPage)
+public:
+AppearanceOptionPage(SyncthingApplet &applet, QWidget *parentWidget = nullptr);
+
+private:
+SyncthingApplet *m_applet;
+END_DECLARE_OPTION_PAGE
+
 QtGui::SettingsDialog *setupSettingsDialog(Plasmoid::SyncthingApplet &applet);
 } // namespace Plasmoid
 

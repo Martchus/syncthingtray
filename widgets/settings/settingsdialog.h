@@ -65,14 +65,7 @@ DECLARE_SETUP_WIDGETS
 const GuiType m_guiType;
 END_DECLARE_OPTION_PAGE
 
-BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(AppearanceOptionPage)
-public:
-AppearanceOptionPage(GuiType guiType = GuiType::TrayWidget, QWidget *parentWidget = nullptr);
-
-private:
-DECLARE_SETUP_WIDGETS
-const GuiType m_guiType;
-END_DECLARE_OPTION_PAGE
+DECLARE_UI_FILE_BASED_OPTION_PAGE(AppearanceOptionPage)
 
 DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_SETUP(AutostartOptionPage)
 

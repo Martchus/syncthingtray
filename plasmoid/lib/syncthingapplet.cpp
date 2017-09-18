@@ -21,6 +21,8 @@
 #include <qtutilities/misc/dialogutils.h>
 #include <qtutilities/resources/resources.h>
 
+#include <KConfigGroup>
+
 #include <QDesktopServices>
 #include <QNetworkReply>
 #include <QQmlEngine>
@@ -85,7 +87,7 @@ void SyncthingApplet::init()
     handleSettingsChanged();
 
     // load primary connection config
-    setCurrentConnectionConfigIndex(0);
+    setCurrentConnectionConfigIndex(config().readEntry<int>("selectedConfig", 0));
 
 // initialize systemd service support
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -155,6 +157,7 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
             m_webViewDlg->applySettings(selectedConfig);
         }
 #endif
+        config().writeEntry<int>("selectedConfig", index);
         emit currentConnectionConfigIndexChanged(m_currentConnectionConfig = index);
         emit localChanged();
     }
@@ -169,7 +172,12 @@ void SyncthingApplet::showSettingsDlg()
 {
     if (!m_settingsDlg) {
         m_settingsDlg = setupSettingsDialog(*this);
+        // ensure settings take effect when applied
         connect(m_settingsDlg, &Dialogs::SettingsDialog::applied, this, &SyncthingApplet::handleSettingsChanged);
+        // save plasmoid specific settings to disk when applied
+        connect(m_settingsDlg, &Dialogs::SettingsDialog::applied, this, &SyncthingApplet::configChanged);
+        // save global/general settings to disk when applied
+        connect(m_settingsDlg, &Dialogs::SettingsDialog::applied, &Settings::save);
     }
     Dialogs::centerWidget(m_settingsDlg);
     m_settingsDlg->show();
@@ -263,13 +271,20 @@ void SyncthingApplet::showDirectoryErrors(unsigned int directoryIndex) const
     }
 }
 
+/*!
+ * \brief Ensures settings take effect when applied via the settings dialog.
+ * \remarks Does not save the settings to disk. This is done in Settings::save() and Applet::configChanged().
+ */
 void SyncthingApplet::handleSettingsChanged()
 {
+    const KConfigGroup config(this->config());
+
     // apply appearance settings
-    const auto &appearanceSettings = Settings::values().appearance;
-    m_dirModel.setBrightColors(appearanceSettings.brightTextColors);
-    m_devModel.setBrightColors(appearanceSettings.brightTextColors);
-    m_downloadModel.setBrightColors(appearanceSettings.brightTextColors);
+    setSize(config.readEntry<QSize>("size", QSize(25, 25)));
+    const bool brightColors = config.readEntry<bool>("brightColors", false);
+    m_dirModel.setBrightColors(brightColors);
+    m_devModel.setBrightColors(brightColors);
+    m_downloadModel.setBrightColors(brightColors);
 
     // apply connection config
     const int currentConfig = m_currentConnectionConfig;
@@ -277,9 +292,6 @@ void SyncthingApplet::handleSettingsChanged()
     setCurrentConnectionConfigIndex(currentConfig);
 
     emit settingsChanged();
-
-    // actually save the settings on the disk
-    Settings::save();
 }
 
 void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)

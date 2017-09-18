@@ -126,7 +126,7 @@
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="1223"/>
-        <location filename="../syncthingconnection.cpp" line="1807"/>
+        <location filename="../syncthingconnection.cpp" line="1809"/>
         <source>Unable to request directory statistics: </source>
         <translation>Fehler beim Abfragen der Verzeichnisstatistiken: </translation>
     </message>
@@ -166,37 +166,37 @@
         <translation>Fehler beim Abfragen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1693"/>
+        <location filename="../syncthingconnection.cpp" line="1695"/>
         <source>Unable to request rescan: </source>
         <translation>Fehler beim Anfordern eines Verzeichnis-Rescans: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1717"/>
+        <location filename="../syncthingconnection.cpp" line="1719"/>
         <source>Unable to request device pause/resume: </source>
         <translation>Fehler beim Anfordern Gerät zu Pausieren/Fortzusetzen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1738"/>
+        <location filename="../syncthingconnection.cpp" line="1740"/>
         <source>Unable to request directory pause/resume: </source>
         <translation>Fehler beim Anfordern Verzeichnis zu Pausieren/Fortzusetzen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1754"/>
+        <location filename="../syncthingconnection.cpp" line="1756"/>
         <source>Unable to request restart: </source>
         <translation>Fehler beim Anfordern eines Neustarts: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1770"/>
+        <location filename="../syncthingconnection.cpp" line="1772"/>
         <source>Unable to request shutdown: </source>
         <translation>Fehler beim Anfordern Syncthing zu beenden: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1797"/>
+        <location filename="../syncthingconnection.cpp" line="1799"/>
         <source>Unable to parse status for directory %1: </source>
         <translation>Fehler beim Anfordern des Status von Verzeichnis %1: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1934"/>
+        <location filename="../syncthingconnection.cpp" line="1936"/>
         <source>at offset %1</source>
         <translation>bei Zeichen %1</translation>
     </message>

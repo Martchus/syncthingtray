@@ -127,22 +127,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="498"/>
+        <location filename="../settings/settingsdialog.cpp" line="508"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="501"/>
+        <location filename="../settings/settingsdialog.cpp" line="511"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="506"/>
+        <location filename="../settings/settingsdialog.cpp" line="516"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="593"/>
+        <location filename="../settings/settingsdialog.cpp" line="603"/>
         <source>unable to modify startup entry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -415,33 +415,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="635"/>
+        <location filename="../settings/settingsdialog.cpp" line="645"/>
         <source>%1-launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="636"/>
+        <location filename="../settings/settingsdialog.cpp" line="646"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="637"/>
+        <location filename="../settings/settingsdialog.cpp" line="647"/>
         <source>%1 executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="638"/>
+        <location filename="../settings/settingsdialog.cpp" line="648"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="710"/>
+        <location filename="../settings/settingsdialog.cpp" line="720"/>
         <source>%1 exited with exit code %2
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="714"/>
+        <location filename="../settings/settingsdialog.cpp" line="724"/>
         <source>%1 crashed with exit code %2
 </source>
         <translation type="unfinished"></translation>
@@ -515,7 +515,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="368"/>
+        <location filename="../settings/settingsdialog.cpp" line="374"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -541,22 +541,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="917"/>
+        <location filename="../settings/settingsdialog.cpp" line="927"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="924"/>
+        <location filename="../settings/settingsdialog.cpp" line="934"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="931"/>
+        <location filename="../settings/settingsdialog.cpp" line="941"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="953"/>
+        <location filename="../settings/settingsdialog.cpp" line="963"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -670,8 +670,8 @@
         <location filename="../settings/systemdoptionpage.ui" line="99"/>
         <location filename="../settings/systemdoptionpage.ui" line="154"/>
         <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="834"/>
-        <location filename="../settings/settingsdialog.cpp" line="846"/>
+        <location filename="../settings/settingsdialog.cpp" line="844"/>
+        <location filename="../settings/settingsdialog.cpp" line="856"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -706,12 +706,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="807"/>
+        <location filename="../settings/settingsdialog.cpp" line="817"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="829"/>
+        <location filename="../settings/settingsdialog.cpp" line="839"/>
         <source>since </source>
         <translation type="unfinished"></translation>
     </message>
@@ -753,7 +753,7 @@
     </message>
     <message>
         <location filename="../misc/textviewdialog.cpp" line="133"/>
-        <location filename="../misc/textviewdialog.cpp" line="145"/>
+        <location filename="../misc/textviewdialog.cpp" line="146"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
@@ -770,7 +770,7 @@
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="868"/>
+        <location filename="../settings/settingsdialog.cpp" line="878"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -800,7 +800,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="871"/>
+        <location filename="../settings/settingsdialog.cpp" line="880"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>

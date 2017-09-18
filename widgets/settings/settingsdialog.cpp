@@ -400,29 +400,13 @@ void NotificationsOptionPage::reset()
 }
 
 // AppearanceOptionPage
-AppearanceOptionPage::AppearanceOptionPage(GuiType guiType, QWidget *parentWidget)
+AppearanceOptionPage::AppearanceOptionPage(QWidget *parentWidget)
     : AppearanceOptionPageBase(parentWidget)
-    , m_guiType(guiType)
 {
 }
 
 AppearanceOptionPage::~AppearanceOptionPage()
 {
-}
-
-QWidget *AppearanceOptionPage::setupWidget()
-{
-    auto *w = AppearanceOptionPageBase::setupWidget();
-    switch (m_guiType) {
-    case GuiType::TrayWidget:
-        break;
-    case GuiType::Plasmoid:
-        for (unsigned char i = 0; i != 6; ++i) {
-            ui()->formLayout->removeRow(0);
-        }
-        break;
-    }
-    return w;
 }
 
 bool AppearanceOptionPage::apply()
@@ -431,37 +415,35 @@ bool AppearanceOptionPage::apply()
         return true;
     }
     auto &settings = values().appearance;
-    if (m_guiType == GuiType::TrayWidget) {
-        settings.trayMenuSize.setWidth(ui()->widthSpinBox->value());
-        settings.trayMenuSize.setHeight(ui()->heightSpinBox->value());
-        settings.showTraffic = ui()->showTrafficCheckBox->isChecked();
-        int style;
-        switch (ui()->frameShapeComboBox->currentIndex()) {
-        case 0:
-            style = QFrame::NoFrame;
-            break;
-        case 1:
-            style = QFrame::Box;
-            break;
-        case 2:
-            style = QFrame::Panel;
-            break;
-        default:
-            style = QFrame::StyledPanel;
-        }
-        switch (ui()->frameShadowComboBox->currentIndex()) {
-        case 0:
-            style |= QFrame::Plain;
-            break;
-        case 1:
-            style |= QFrame::Raised;
-            break;
-        default:
-            style |= QFrame::Sunken;
-        }
-        settings.frameStyle = style;
-        settings.tabPosition = ui()->tabPosComboBox->currentIndex();
+    settings.trayMenuSize.setWidth(ui()->widthSpinBox->value());
+    settings.trayMenuSize.setHeight(ui()->heightSpinBox->value());
+    settings.showTraffic = ui()->showTrafficCheckBox->isChecked();
+    int style;
+    switch (ui()->frameShapeComboBox->currentIndex()) {
+    case 0:
+        style = QFrame::NoFrame;
+        break;
+    case 1:
+        style = QFrame::Box;
+        break;
+    case 2:
+        style = QFrame::Panel;
+        break;
+    default:
+        style = QFrame::StyledPanel;
     }
+    switch (ui()->frameShadowComboBox->currentIndex()) {
+    case 0:
+        style |= QFrame::Plain;
+        break;
+    case 1:
+        style |= QFrame::Raised;
+        break;
+    default:
+        style |= QFrame::Sunken;
+    }
+    settings.frameStyle = style;
+    settings.tabPosition = ui()->tabPosComboBox->currentIndex();
 
     settings.brightTextColors = ui()->brightTextColorsCheckBox->isChecked();
     return true;
@@ -473,38 +455,36 @@ void AppearanceOptionPage::reset()
         return;
     }
     const auto &settings = values().appearance;
-    if (m_guiType == GuiType::TrayWidget) {
-        ui()->widthSpinBox->setValue(settings.trayMenuSize.width());
-        ui()->heightSpinBox->setValue(settings.trayMenuSize.height());
-        ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
-        int index;
-        switch (settings.frameStyle & QFrame::Shape_Mask) {
-        case QFrame::NoFrame:
-            index = 0;
-            break;
-        case QFrame::Box:
-            index = 1;
-            break;
-        case QFrame::Panel:
-            index = 2;
-            break;
-        default:
-            index = 3;
-        }
-        ui()->frameShapeComboBox->setCurrentIndex(index);
-        switch (settings.frameStyle & QFrame::Shadow_Mask) {
-        case QFrame::Plain:
-            index = 0;
-            break;
-        case QFrame::Raised:
-            index = 1;
-            break;
-        default:
-            index = 2;
-        }
-        ui()->frameShadowComboBox->setCurrentIndex(index);
-        ui()->tabPosComboBox->setCurrentIndex(settings.tabPosition);
+    ui()->widthSpinBox->setValue(settings.trayMenuSize.width());
+    ui()->heightSpinBox->setValue(settings.trayMenuSize.height());
+    ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
+    int index;
+    switch (settings.frameStyle & QFrame::Shape_Mask) {
+    case QFrame::NoFrame:
+        index = 0;
+        break;
+    case QFrame::Box:
+        index = 1;
+        break;
+    case QFrame::Panel:
+        index = 2;
+        break;
+    default:
+        index = 3;
     }
+    ui()->frameShapeComboBox->setCurrentIndex(index);
+    switch (settings.frameStyle & QFrame::Shadow_Mask) {
+    case QFrame::Plain:
+        index = 0;
+        break;
+    case QFrame::Raised:
+        index = 1;
+        break;
+    default:
+        index = 2;
+    }
+    ui()->frameShadowComboBox->setCurrentIndex(index);
+    ui()->tabPosComboBox->setCurrentIndex(settings.tabPosition);
     ui()->brightTextColorsCheckBox->setChecked(settings.brightTextColors);
 }
 

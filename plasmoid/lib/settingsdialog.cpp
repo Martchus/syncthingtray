@@ -1,11 +1,15 @@
 #include "./settingsdialog.h"
 #include "./syncthingapplet.h"
 
+#include "ui_appearanceoptionpage.h"
+
 #include "../../widgets/settings/settingsdialog.h"
 
 #include <qtutilities/settingsdialog/optioncategory.h>
 #include <qtutilities/settingsdialog/optionpage.h>
 #include <qtutilities/settingsdialog/settingsdialog.h>
+
+#include <KConfigGroup>
 
 #include <QCoreApplication>
 #include <QFormLayout>
@@ -58,6 +62,41 @@ QWidget *ShortcutOptionPage::setupWidget()
     return widget;
 }
 
+// AppearanceOptionPage
+AppearanceOptionPage::AppearanceOptionPage(SyncthingApplet &applet, QWidget *parentWidget)
+    : AppearanceOptionPageBase(parentWidget)
+    , m_applet(&applet)
+{
+}
+
+AppearanceOptionPage::~AppearanceOptionPage()
+{
+}
+
+bool AppearanceOptionPage::apply()
+{
+    if (hasBeenShown()) {
+        KConfigGroup config = m_applet->config();
+
+        config.writeEntry<QSize>("size", QSize(ui()->widthSpinBox->value(), ui()->heightSpinBox->value()));
+        config.writeEntry<bool>("brightColors", ui()->brightTextColorsCheckBox->isChecked());
+    }
+    return true;
+}
+
+void AppearanceOptionPage::reset()
+{
+    if (hasBeenShown()) {
+        const KConfigGroup config = m_applet->config();
+
+        const QSize size(config.readEntry<QSize>("size", QSize(25, 25)));
+        ui()->widthSpinBox->setValue(size.width());
+        ui()->heightSpinBox->setValue(size.height());
+
+        ui()->brightTextColorsCheckBox->setChecked(config.readEntry<bool>("brightColors", false));
+    }
+}
+
 QtGui::SettingsDialog *setupSettingsDialog(SyncthingApplet &applet)
 {
     // setup categories
@@ -67,8 +106,8 @@ QtGui::SettingsDialog *setupSettingsDialog(SyncthingApplet &applet)
     category = new OptionCategory;
     category->setDisplayName(QCoreApplication::translate("Plasmoid::SettingsDialog", "Plasmoid"));
     category->assignPages(QList<Dialogs::OptionPage *>()
-        << new ConnectionOptionPage(applet.connection()) << new NotificationsOptionPage(GuiType::Plasmoid)
-        << new AppearanceOptionPage(GuiType::Plasmoid) << new ShortcutOptionPage(applet));
+        << new ConnectionOptionPage(applet.connection()) << new NotificationsOptionPage(GuiType::Plasmoid) << new AppearanceOptionPage(applet)
+        << new ShortcutOptionPage(applet));
     category->setIcon(QIcon::fromTheme(QStringLiteral("plasma")));
     categories << category;
 
