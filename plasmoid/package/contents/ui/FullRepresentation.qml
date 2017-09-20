@@ -20,6 +20,14 @@ ColumnLayout {
     function updateSize() {
         switch (plasmoid.location) {
         case PlasmaCore.Types.Floating:
+
+        case PlasmaCore.Types.TopEdge:
+
+        case PlasmaCore.Types.BottomEdge:
+
+        case PlasmaCore.Types.LeftEdge:
+
+        case PlasmaCore.Types.RightEdge:
             var size = plasmoid.nativeInterface.size
             parent.width = units.gridUnit * size.width
             parent.height = units.gridUnit * size.height
