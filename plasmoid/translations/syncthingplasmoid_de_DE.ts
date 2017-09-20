@@ -54,62 +54,62 @@
 <context>
     <name>FullRepresentation</name>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="121"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="129"/>
         <source>Connect</source>
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="129"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="137"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="137"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="145"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="180"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="188"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="191"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="199"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="227"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="235"/>
         <source>Show own device ID</source>
         <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="235"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="243"/>
         <source>Show Syncthing log</source>
         <translation>Syncthing-Log anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="243"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="251"/>
         <source>Rescan all directories</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="248"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="256"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="256"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="264"/>
         <source>Web UI</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="289"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="297"/>
         <source>In</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="292"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="300"/>
         <source>Out</source>
         <translation></translation>
     </message>
@@ -122,27 +122,41 @@
         <translation>Erscheinungsbild</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="50"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="16"/>
+        <source>The following settings are specific to the current instance of the Plasmoid.</source>
+        <translation>Die folgenden Einstellungen sind spezifisch für die aktuelle Instanz des Plasmoids.</translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="32"/>
+        <source>Size of full representation</source>
+        <translation>Minimale Größe</translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="82"/>
         <source> x </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="76"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="108"/>
         <source> grid units</source>
         <translation> Rastereinheiten</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="19"/>
-        <source>Minimum size of full representation</source>
-        <translation type="unfinished">Minimale Größe</translation>
+        <location filename="../lib/appearanceoptionpage.ui" line="126"/>
+        <source>Note that the size is ignored when the Plasmoid is displayed on the desktop, in full screen mode or as entry of the system tray Plasmoid.</source>
+        <translation>Die eingestellte Größe wird ignoriert, wenn das Plasmoid am Desktop, im Vollbild oder innerhalb des Systemtray-Plasmoids dargestellt wird.</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="88"/>
+        <source>Minimum size of full representation</source>
+        <translation type="obsolete">Minimale Größe</translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="39"/>
         <source>Colors</source>
         <translation>Farben</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="95"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="46"/>
         <source>Bright custom text colors (use for dark color scheme)</source>
         <translation>Helle benutzerdefinierte Schriftfarben (für dunkles Farbschema gedacht)</translation>
     </message>

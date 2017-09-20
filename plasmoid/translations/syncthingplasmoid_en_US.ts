@@ -54,62 +54,62 @@
 <context>
     <name>FullRepresentation</name>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="121"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="129"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="129"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="137"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="137"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="145"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="180"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="188"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="191"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="199"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="227"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="235"/>
         <source>Show own device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="235"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="243"/>
         <source>Show Syncthing log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="243"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="251"/>
         <source>Rescan all directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="248"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="256"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="256"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="264"/>
         <source>Web UI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="289"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="297"/>
         <source>In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="292"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="300"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -122,27 +122,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="50"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="16"/>
+        <source>The following settings are specific to the current instance of the Plasmoid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="32"/>
+        <source>Size of full representation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="82"/>
         <source> x </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="76"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="108"/>
         <source> grid units</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="19"/>
-        <source>Minimum size of full representation</source>
+        <location filename="../lib/appearanceoptionpage.ui" line="126"/>
+        <source>Note that the size is ignored when the Plasmoid is displayed on the desktop, in full screen mode or as entry of the system tray Plasmoid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="88"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="39"/>
         <source>Colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="95"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="46"/>
         <source>Bright custom text colors (use for dark color scheme)</source>
         <translation type="unfinished"></translation>
     </message>
