@@ -34,7 +34,7 @@ Item {
                             PlasmaComponents.Label {
                                 anchors.verticalCenter: parent.verticalCenter
                                 elide: Text.ElideRight
-                                text: name
+                                text: name ? name : "?"
                             }
                         }
                         PlasmaComponents.ProgressBar {
@@ -42,7 +42,7 @@ Item {
                             Layout.fillHeight: true
                             minimumValue: 0
                             maximumValue: 100
-                            value: percentage
+                            value: percentage ? percentage : 0
                         }
                         RowLayout {
                             id: toolButtonsLayout
@@ -50,7 +50,7 @@ Item {
 
                             PlasmaComponents.Label {
                                 height: implicitHeight
-                                text: progressLabel
+                                text: progressLabel ? progressLabel : ""
                                 anchors.verticalCenter: parent.verticalCenter
                             }
                             Item {
@@ -59,6 +59,7 @@ Item {
                             TinyButton {
                                 iconSource: "folder"
                                 tooltip: qsTr("Open in file browser")
+                                enabled: path !== undefined
                                 onClicked: {
                                     Qt.openUrlExternally(path)
                                     plasmoid.expanded = false
