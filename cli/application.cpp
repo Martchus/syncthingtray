@@ -572,11 +572,9 @@ void Application::waitForIdle()
 
 void Application::checkPwdOperationPresent(const ArgumentOccurrence &occurrence)
 {
-    // FIXME: implement requiring at least one operation and default operation in argument parser
-    for (const Argument *pwdOperationArg : m_args.pwd.subArguments()) {
-        if (pwdOperationArg->denotesOperation() && pwdOperationArg->isPresent()) {
-            return;
-        }
+    // FIXME: implement default operation in argument parser
+    if (m_args.pwd.specifiedOperation()) {
+        return;
     }
     // print status when no operation specified
     printPwdStatus(occurrence);
