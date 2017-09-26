@@ -61,6 +61,6 @@ private:
     const char *m_pos;
     qint64 m_bytesLeft;
 };
-}
+} // namespace Data
 
 #endif // SYNCTHINGCONNECTIONMOCKHELPERS_H

@@ -116,10 +116,11 @@ int Application::exec(int argc, const char *const *argv)
         const char *apiKeyArgValue = m_args.apiKey.firstValue();
         if (!config.restore(configFile)) {
             if (configFileArgValue) {
-                cerr << "Error: Unable to locate specified Syncthing config file \"" << configFileArgValue << "\"" << endl;
+                cerr << Phrases::Error << "Unable to locate specified Syncthing config file \"" << configFileArgValue << "\"" << Phrases::End
+                     << flush;
                 return -1;
             } else if (!apiKeyArgValue) {
-                cerr << "Error: Unable to locate Syncthing config file and no API key specified" << endl;
+                cerr << Phrases::Error << "Unable to locate Syncthing config file and no API key specified" << Phrases::End << flush;
                 return -2;
             }
         }
@@ -145,7 +146,8 @@ int Application::exec(int argc, const char *const *argv)
         if (const char *certArgValue = m_args.certificate.firstValue()) {
             m_settings.httpsCertPath = argToQString(certArgValue);
             if (m_settings.httpsCertPath.isEmpty() || !m_settings.loadHttpsCert()) {
-                cerr << "Error: Unable to load specified certificate \"" << m_args.certificate.firstValue() << "\"" << endl;
+                cerr << Phrases::Error << "Unable to load specified certificate \"" << m_args.certificate.firstValue() << '\"' << Phrases::End
+                     << flush;
                 return -3;
             }
         }
@@ -198,7 +200,7 @@ void Application::handleResponse()
             QCoreApplication::quit();
         }
     } else {
-        cerr << "Error: Unexpected response" << endl;
+        cerr << Phrases::Error << "Unexpected response" << Phrases::End << flush;
         QCoreApplication::exit(-4);
     }
 }
@@ -209,11 +211,8 @@ void Application::handleError(
     VAR_UNUSED(category)
     VAR_UNUSED(networkError)
     eraseLine(cout);
-    cerr << '\n';
-    setStyle(cerr, Color::Red, ColorContext::Foreground, TextAttribute::Bold);
-    cerr << "\rError: ";
-    resetStyle(cerr);
-    cerr << message.toLocal8Bit().data();
+    cerr << '\n' << '\r' << Phrases::Error;
+    cerr << message.toLocal8Bit().data() << Phrases::End;
     const QUrl url(request.url());
     if (!url.isEmpty()) {
         cerr << "\nRequest: " << url.toString(QUrl::PrettyDecoded).toLocal8Bit().data();
@@ -379,7 +378,8 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
             if (const SyncthingDir *dir = m_connection.findDirInfo(argToQString(dirArg->values(i).front()), dummy)) {
                 m_relevantDirs.emplace_back(dir);
             } else {
-                cerr << "Warning: Specified directory \"" << dirArg->values(i).front() << "\" does not exist and will be ignored" << endl;
+                cerr << Phrases::Warning << "Specified directory \"" << dirArg->values(i).front() << "\" does not exist and will be ignored"
+                     << Phrases::End;
             }
         }
     }
@@ -393,7 +393,8 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
             if (dev) {
                 m_relevantDevs.emplace_back(dev);
             } else {
-                cerr << "Warning: Specified device \"" << devArg->values(i).front() << "\" does not exist and will be ignored" << endl;
+                cerr << Phrases::Warning << "Specified device \"" << devArg->values(i).front() << "\" does not exist and will be ignored"
+                     << Phrases::End;
             }
         }
     }
@@ -425,7 +426,8 @@ bool Application::findPwd()
             return true;
         }
     }
-    cerr << "Error: The current working directory \"" << pwd.toLocal8Bit().data() << "\" is not (part of) a Syncthing directory." << endl;
+    cerr << Phrases::Error << "The current working directory \"" << pwd.toLocal8Bit().data() << "\" is not (part of) a Syncthing directory.";
+    cerr << Phrases::End << flush;
     QCoreApplication::exit(2);
     return false;
 }

@@ -1,6 +1,7 @@
 #include "./syncthingconnectionmockhelpers.h"
 
 #include <c++utilities/conversion/stringbuilder.h>
+#include <c++utilities/io/ansiescapecodes.h>
 #include <c++utilities/io/catchiofailure.h>
 #include <c++utilities/io/misc.h>
 #include <c++utilities/tests/testutils.h>
@@ -15,6 +16,7 @@
 
 using namespace std;
 using namespace IoUtilities;
+using namespace EscapeCodes;
 using namespace ConversionUtilities;
 
 namespace Data {
@@ -33,7 +35,7 @@ static string folderStatus;
 static string folderStatus2;
 static string connections;
 static string events;
-}
+} // namespace TestData
 
 /*!
  * \brief Loads test files for mocked configuration from directory specified via environment variable TESTFILE_PATH.
@@ -52,7 +54,7 @@ void setupTestData()
 
     const char *testfilePath = getenv("TESTFILE_PATH");
     if (!testfilePath || !*testfilePath) {
-        cerr << "Error: TESTFILE_PATH is not set; unable to initialize mock config." << endl;
+        cerr << Phrases::Error << "TESTFILE_PATH is not set; unable to initialize mock config." << Phrases::End << flush;
         exit(-1);
     }
 
@@ -190,4 +192,4 @@ void MockedReply::emitFinished()
     setFinished(true);
     emit finished();
 }
-}
+} // namespace Data
