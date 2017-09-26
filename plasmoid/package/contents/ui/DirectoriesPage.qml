@@ -69,6 +69,7 @@ Item {
                             TinyButton {
                                 iconSource: "view-refresh"
                                 tooltip: qsTr("Rescan")
+                                enabled: !paused
                                 onClicked: plasmoid.nativeInterface.connection.rescan(
                                                dirId)
                             }
