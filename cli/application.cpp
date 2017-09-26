@@ -215,11 +215,12 @@ void Application::handleError(
     cerr << message.toLocal8Bit().data() << Phrases::End;
     const QUrl url(request.url());
     if (!url.isEmpty()) {
-        cerr << "\nRequest: " << url.toString(QUrl::PrettyDecoded).toLocal8Bit().data();
+        cerr << "\nRequest: " << url.toString(QUrl::PrettyDecoded).toLocal8Bit().data() << '\n';
     }
     if (!response.isEmpty()) {
-        cerr << "\nResponse:\n" << response.data() << endl;
+        cerr << "\nResponse:\n" << response.data() << '\n';
     }
+    cerr << flush;
     QCoreApplication::exit(-3);
 }
 
