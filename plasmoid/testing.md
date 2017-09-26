@@ -23,14 +23,17 @@ rather than the regular home to separate testing from production.
 To enable QML debugging, it is required to rebuild `plasmoidviewer` with QML debugging
 enabled.
 
+For Arch Linux, I created the package
+[`plasma-sdk-debug`](https://github.com/Martchus/PKGBUILDs/tree/master/plasma-sdk/debug)
+for that purpose. Installing this package (replacing `plasma-sdk`) should make enabling
+QML debugging in the *Run* section of Qt Creator work.
+
+To create a debug build of `plasmoidviewer` manually:
+
 1. Get plasma-sdk: `git clone https://anongit.kde.org/plasma-sdk.git`
 2. Create a debug build of `plasmoidviewer` and ensure `QT_QML_DEBUG` is defined when
-   compiling `plasmoidviewer`, eg. by adding the following lines to its project file:
-   ```
-   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-       target_compile_definitions(plasmoidviewer PRIVATE -DQT_QML_DEBUG)
-   endif()
-   ```
+   compiling `plasmoidviewer`, eg. by applying
+   [[PATCH] Enable QML debugging](https://raw.githubusercontent.com/Martchus/PKGBUILDs/master/plasma-sdk/debug/0001-Enable-QML-debugging.patch).
 3. Prepend the build directory containing the `plasmoidviewer` binary to the path variable
    in the build environment of Syncthing Tray.
 4. Enable QML debugging in the *Run* section.
