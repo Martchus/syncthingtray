@@ -94,9 +94,6 @@ QWidget *ConnectionOptionPage::setupWidget()
 
 void ConnectionOptionPage::insertFromConfigFile()
 {
-    if (!hasBeenShown()) {
-        return;
-    }
     QString configFile = SyncthingConfig::locateConfigFile();
     if (configFile.isEmpty()) {
         // allow user to select config file manually if it could not be located
@@ -135,9 +132,7 @@ void ConnectionOptionPage::insertFromConfigFile()
 
 void ConnectionOptionPage::updateConnectionStatus()
 {
-    if (hasBeenShown()) {
-        ui()->statusLabel->setText(m_connection->statusText());
-    }
+    ui()->statusLabel->setText(m_connection->statusText());
 }
 
 bool ConnectionOptionPage::showConnectionSettings(int index)
@@ -297,9 +292,6 @@ void ConnectionOptionPage::setCurrentIndex(int currentIndex)
 
 bool ConnectionOptionPage::apply()
 {
-    if (!hasBeenShown()) {
-        return true;
-    }
     if (!cacheCurrentSettings(true)) {
         return false;
     }
@@ -310,9 +302,6 @@ bool ConnectionOptionPage::apply()
 
 void ConnectionOptionPage::reset()
 {
-    if (!hasBeenShown()) {
-        return;
-    }
     m_primarySettings = values().connection.primary;
     m_secondarySettings = values().connection.secondary;
     m_currentIndex = -1;
@@ -363,40 +352,36 @@ QWidget *NotificationsOptionPage::setupWidget()
 bool NotificationsOptionPage::apply()
 {
     bool ok = true;
-    if (hasBeenShown()) {
-        auto &notifyOn = values().notifyOn;
-        notifyOn.disconnect = ui()->notifyOnDisconnectCheckBox->isChecked();
-        notifyOn.internalErrors = ui()->notifyOnErrorsCheckBox->isChecked();
-        notifyOn.syncComplete = ui()->notifyOnSyncCompleteCheckBox->isChecked();
-        notifyOn.syncthingErrors = ui()->showSyncthingNotificationsCheckBox->isChecked();
+    auto &notifyOn = values().notifyOn;
+    notifyOn.disconnect = ui()->notifyOnDisconnectCheckBox->isChecked();
+    notifyOn.internalErrors = ui()->notifyOnErrorsCheckBox->isChecked();
+    notifyOn.syncComplete = ui()->notifyOnSyncCompleteCheckBox->isChecked();
+    notifyOn.syncthingErrors = ui()->showSyncthingNotificationsCheckBox->isChecked();
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-        if ((values().dbusNotifications = ui()->dbusRadioButton->isChecked()) && !DBusNotification::isAvailable()) {
-            errors() << QCoreApplication::translate(
-                "QtGui::NotificationsOptionPage", "Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.");
-            ok = false;
-        }
-#endif
-        values().ignoreInavailabilityAfterStart = static_cast<unsigned int>(ui()->ignoreInavailabilityAfterStartSpinBox->value());
+    if ((values().dbusNotifications = ui()->dbusRadioButton->isChecked()) && !DBusNotification::isAvailable()) {
+        errors() << QCoreApplication::translate(
+            "QtGui::NotificationsOptionPage", "Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.");
+        ok = false;
     }
+#endif
+    values().ignoreInavailabilityAfterStart = static_cast<unsigned int>(ui()->ignoreInavailabilityAfterStartSpinBox->value());
     return ok;
 }
 
 void NotificationsOptionPage::reset()
 {
-    if (hasBeenShown()) {
-        const auto &notifyOn = values().notifyOn;
-        ui()->notifyOnDisconnectCheckBox->setChecked(notifyOn.disconnect);
-        ui()->notifyOnErrorsCheckBox->setChecked(notifyOn.internalErrors);
-        ui()->notifyOnSyncCompleteCheckBox->setChecked(notifyOn.syncComplete);
-        ui()->showSyncthingNotificationsCheckBox->setChecked(notifyOn.syncthingErrors);
+    const auto &notifyOn = values().notifyOn;
+    ui()->notifyOnDisconnectCheckBox->setChecked(notifyOn.disconnect);
+    ui()->notifyOnErrorsCheckBox->setChecked(notifyOn.internalErrors);
+    ui()->notifyOnSyncCompleteCheckBox->setChecked(notifyOn.syncComplete);
+    ui()->showSyncthingNotificationsCheckBox->setChecked(notifyOn.syncthingErrors);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-        (values().dbusNotifications ? ui()->dbusRadioButton : ui()->qtRadioButton)->setChecked(true);
+    (values().dbusNotifications ? ui()->dbusRadioButton : ui()->qtRadioButton)->setChecked(true);
 #else
-        ui()->dbusRadioButton->setEnabled(false);
-        ui()->qtRadioButton->setChecked(true);
+    ui()->dbusRadioButton->setEnabled(false);
+    ui()->qtRadioButton->setChecked(true);
 #endif
-        ui()->ignoreInavailabilityAfterStartSpinBox->setValue(static_cast<int>(values().ignoreInavailabilityAfterStart));
-    }
+    ui()->ignoreInavailabilityAfterStartSpinBox->setValue(static_cast<int>(values().ignoreInavailabilityAfterStart));
 }
 
 // AppearanceOptionPage
@@ -411,9 +396,6 @@ AppearanceOptionPage::~AppearanceOptionPage()
 
 bool AppearanceOptionPage::apply()
 {
-    if (!hasBeenShown()) {
-        return true;
-    }
     auto &settings = values().appearance;
     settings.trayMenuSize.setWidth(ui()->widthSpinBox->value());
     settings.trayMenuSize.setHeight(ui()->heightSpinBox->value());
@@ -451,9 +433,6 @@ bool AppearanceOptionPage::apply()
 
 void AppearanceOptionPage::reset()
 {
-    if (!hasBeenShown()) {
-        return;
-    }
     const auto &settings = values().appearance;
     ui()->widthSpinBox->setValue(settings.trayMenuSize.width());
     ui()->heightSpinBox->setValue(settings.trayMenuSize.height());
@@ -597,14 +576,11 @@ bool setAutostartEnabled(bool enabled)
 
 bool AutostartOptionPage::apply()
 {
-    bool ok = true;
-    if (hasBeenShown()) {
-        if (!setAutostartEnabled(ui()->autostartCheckBox->isChecked())) {
-            errors() << QCoreApplication::translate("QtGui::AutostartOptionPage", "unable to modify startup entry");
-            ok = false;
-        }
+    if (!setAutostartEnabled(ui()->autostartCheckBox->isChecked())) {
+        errors() << QCoreApplication::translate("QtGui::AutostartOptionPage", "unable to modify startup entry");
+        return false;
     }
-    return ok;
+    return true;
 }
 
 void AutostartOptionPage::reset()
@@ -665,99 +641,97 @@ QWidget *LauncherOptionPage::setupWidget()
 
 bool LauncherOptionPage::apply()
 {
-    if (hasBeenShown()) {
-        auto &settings = values().launcher;
-        if (m_tool.isEmpty()) {
-            settings.enabled = ui()->enabledCheckBox->isChecked();
-            settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
-            settings.syncthingArgs = ui()->argumentsLineEdit->text();
-        } else {
-            ToolParameter &params = settings.tools[m_tool];
-            params.autostart = ui()->enabledCheckBox->isChecked();
-            params.path = ui()->syncthingPathSelection->lineEdit()->text();
-            params.args = ui()->argumentsLineEdit->text();
-        }
+    auto &settings = values().launcher;
+    if (m_tool.isEmpty()) {
+        settings.enabled = ui()->enabledCheckBox->isChecked();
+        settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
+        settings.syncthingArgs = ui()->argumentsLineEdit->text();
+    } else {
+        ToolParameter &params = settings.tools[m_tool];
+        params.autostart = ui()->enabledCheckBox->isChecked();
+        params.path = ui()->syncthingPathSelection->lineEdit()->text();
+        params.args = ui()->argumentsLineEdit->text();
     }
     return true;
 }
 
 void LauncherOptionPage::reset()
 {
-    if (hasBeenShown()) {
-        const auto &settings = values().launcher;
-        if (m_tool.isEmpty()) {
-            ui()->enabledCheckBox->setChecked(settings.enabled);
-            ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
-            ui()->argumentsLineEdit->setText(settings.syncthingArgs);
-        } else {
-            const ToolParameter params = settings.tools.value(m_tool);
-            ui()->enabledCheckBox->setChecked(params.autostart);
-            ui()->syncthingPathSelection->lineEdit()->setText(params.path);
-            ui()->argumentsLineEdit->setText(params.args);
-        }
+    const auto &settings = values().launcher;
+    if (m_tool.isEmpty()) {
+        ui()->enabledCheckBox->setChecked(settings.enabled);
+        ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
+        ui()->argumentsLineEdit->setText(settings.syncthingArgs);
+    } else {
+        const ToolParameter params = settings.tools.value(m_tool);
+        ui()->enabledCheckBox->setChecked(params.autostart);
+        ui()->syncthingPathSelection->lineEdit()->setText(params.path);
+        ui()->argumentsLineEdit->setText(params.args);
     }
 }
 
 void LauncherOptionPage::handleSyncthingReadyRead()
 {
-    if (hasBeenShown()) {
-        QTextCursor cursor = ui()->logTextEdit->textCursor();
-        cursor.movePosition(QTextCursor::End);
-        cursor.insertText(QString::fromLocal8Bit(m_process.readAll()));
-        if (ui()->ensureCursorVisibleCheckBox->isChecked()) {
-            ui()->logTextEdit->ensureCursorVisible();
-        }
+    if (!hasBeenShown()) {
+        return;
+    }
+    QTextCursor cursor = ui()->logTextEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    cursor.insertText(QString::fromLocal8Bit(m_process.readAll()));
+    if (ui()->ensureCursorVisibleCheckBox->isChecked()) {
+        ui()->logTextEdit->ensureCursorVisible();
     }
 }
 
 void LauncherOptionPage::handleSyncthingExited(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    if (hasBeenShown()) {
-        QTextCursor cursor = ui()->logTextEdit->textCursor();
-        cursor.movePosition(QTextCursor::End);
-        switch (exitStatus) {
-        case QProcess::NormalExit:
-            cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 exited with exit code %2\n")
-                                  .arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
-            break;
-        case QProcess::CrashExit:
-            cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 crashed with exit code %2\n")
-                                  .arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
-            break;
-        }
-        ui()->stopPushButton->hide();
-        ui()->launchNowPushButton->show();
+    if (!hasBeenShown()) {
+        return;
     }
+    QTextCursor cursor = ui()->logTextEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    switch (exitStatus) {
+    case QProcess::NormalExit:
+        cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 exited with exit code %2\n")
+                              .arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
+        break;
+    case QProcess::CrashExit:
+        cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 crashed with exit code %2\n")
+                              .arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
+        break;
+    }
+    ui()->stopPushButton->hide();
+    ui()->launchNowPushButton->show();
 }
 
 void LauncherOptionPage::launch()
 {
-    if (hasBeenShown()) {
-        apply();
-        if (m_process.state() == QProcess::NotRunning) {
-            ui()->launchNowPushButton->hide();
-            ui()->stopPushButton->show();
-            m_kill = false;
-            if (m_tool.isEmpty()) {
-                m_process.startSyncthing(values().launcher.syncthingCmd());
-            } else {
-                m_process.startSyncthing(values().launcher.toolCmd(m_tool));
-            }
+    if (!hasBeenShown()) {
+        return;
+    }
+    apply();
+    if (m_process.state() == QProcess::NotRunning) {
+        ui()->launchNowPushButton->hide();
+        ui()->stopPushButton->show();
+        m_kill = false;
+        if (m_tool.isEmpty()) {
+            m_process.startSyncthing(values().launcher.syncthingCmd());
+        } else {
+            m_process.startSyncthing(values().launcher.toolCmd(m_tool));
         }
     }
 }
 
 void LauncherOptionPage::stop()
 {
-    if (hasBeenShown()) {
-        if (m_process.state() != QProcess::NotRunning) {
-            if (m_kill) {
-                m_process.kill();
-            } else {
-                m_kill = true;
-                m_process.terminate();
-            }
-        }
+    if (!hasBeenShown() || m_process.state() == QProcess::NotRunning) {
+        return;
+    }
+    if (m_kill) {
+        m_process.kill();
+    } else {
+        m_kill = true;
+        m_process.terminate();
     }
 }
 
@@ -789,26 +763,22 @@ QWidget *SystemdOptionPage::setupWidget()
 
 bool SystemdOptionPage::apply()
 {
-    if (hasBeenShown()) {
-        auto &settings = values().systemd;
-        settings.syncthingUnit = ui()->syncthingUnitLineEdit->text();
-        settings.showButton = ui()->showButtonCheckBox->isChecked();
-        settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
-    }
+    auto &settings = values().systemd;
+    settings.syncthingUnit = ui()->syncthingUnitLineEdit->text();
+    settings.showButton = ui()->showButtonCheckBox->isChecked();
+    settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
     return true;
 }
 
 void SystemdOptionPage::reset()
 {
-    if (hasBeenShown()) {
-        const auto &settings = values().systemd;
-        ui()->syncthingUnitLineEdit->setText(settings.syncthingUnit);
-        ui()->showButtonCheckBox->setChecked(settings.showButton);
-        ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
-        handleDescriptionChanged(m_service.description());
-        handleStatusChanged(m_service.activeState(), m_service.subState(), m_service.activeSince());
-        handleEnabledChanged(m_service.unitFileState());
-    }
+    const auto &settings = values().systemd;
+    ui()->syncthingUnitLineEdit->setText(settings.syncthingUnit);
+    ui()->showButtonCheckBox->setChecked(settings.showButton);
+    ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
+    handleDescriptionChanged(m_service.description());
+    handleStatusChanged(m_service.activeState(), m_service.subState(), m_service.activeSince());
+    handleEnabledChanged(m_service.unitFileState());
 }
 
 void SystemdOptionPage::handleDescriptionChanged(const QString &description)
@@ -887,12 +857,10 @@ QWidget *WebViewOptionPage::setupWidget()
 bool WebViewOptionPage::apply()
 {
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-    if (hasBeenShown()) {
-        auto &webView = values().webView;
-        webView.disabled = ui()->disableCheckBox->isChecked();
-        webView.zoomFactor = ui()->zoomDoubleSpinBox->value();
-        webView.keepRunning = ui()->keepRunningCheckBox->isChecked();
-    }
+    auto &webView = values().webView;
+    webView.disabled = ui()->disableCheckBox->isChecked();
+    webView.zoomFactor = ui()->zoomDoubleSpinBox->value();
+    webView.keepRunning = ui()->keepRunningCheckBox->isChecked();
 #endif
     return true;
 }
@@ -900,12 +868,10 @@ bool WebViewOptionPage::apply()
 void WebViewOptionPage::reset()
 {
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-    if (hasBeenShown()) {
-        const auto &webView = values().webView;
-        ui()->disableCheckBox->setChecked(webView.disabled);
-        ui()->zoomDoubleSpinBox->setValue(webView.zoomFactor);
-        ui()->keepRunningCheckBox->setChecked(webView.keepRunning);
-    }
+    const auto &webView = values().webView;
+    ui()->disableCheckBox->setChecked(webView.disabled);
+    ui()->zoomDoubleSpinBox->setValue(webView.zoomFactor);
+    ui()->keepRunningCheckBox->setChecked(webView.keepRunning);
 #endif
 }
 

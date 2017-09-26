@@ -35,17 +35,13 @@ ShortcutOptionPage::~ShortcutOptionPage()
 
 bool ShortcutOptionPage::apply()
 {
-    if (hasBeenShown()) {
-        m_applet->setGlobalShortcut(m_globalShortcutEdit->keySequence());
-    }
+    m_applet->setGlobalShortcut(m_globalShortcutEdit->keySequence());
     return true;
 }
 
 void ShortcutOptionPage::reset()
 {
-    if (hasBeenShown()) {
-        m_globalShortcutEdit->setKeySequence(m_applet->globalShortcut());
-    }
+    m_globalShortcutEdit->setKeySequence(m_applet->globalShortcut());
 }
 
 QWidget *ShortcutOptionPage::setupWidget()
@@ -75,26 +71,19 @@ AppearanceOptionPage::~AppearanceOptionPage()
 
 bool AppearanceOptionPage::apply()
 {
-    if (hasBeenShown()) {
-        KConfigGroup config = m_applet->config();
-
-        config.writeEntry<QSize>("size", QSize(ui()->widthSpinBox->value(), ui()->heightSpinBox->value()));
-        config.writeEntry<bool>("brightColors", ui()->brightTextColorsCheckBox->isChecked());
-    }
+    KConfigGroup config = m_applet->config();
+    config.writeEntry<QSize>("size", QSize(ui()->widthSpinBox->value(), ui()->heightSpinBox->value()));
+    config.writeEntry<bool>("brightColors", ui()->brightTextColorsCheckBox->isChecked());
     return true;
 }
 
 void AppearanceOptionPage::reset()
 {
-    if (hasBeenShown()) {
-        const KConfigGroup config = m_applet->config();
-
-        const QSize size(config.readEntry<QSize>("size", QSize(25, 25)));
-        ui()->widthSpinBox->setValue(size.width());
-        ui()->heightSpinBox->setValue(size.height());
-
-        ui()->brightTextColorsCheckBox->setChecked(config.readEntry<bool>("brightColors", false));
-    }
+    const KConfigGroup config = m_applet->config();
+    const QSize size(config.readEntry<QSize>("size", QSize(25, 25)));
+    ui()->widthSpinBox->setValue(size.width());
+    ui()->heightSpinBox->setValue(size.height());
+    ui()->brightTextColorsCheckBox->setChecked(config.readEntry<bool>("brightColors", false));
 }
 
 QtGui::SettingsDialog *setupSettingsDialog(SyncthingApplet &applet)
