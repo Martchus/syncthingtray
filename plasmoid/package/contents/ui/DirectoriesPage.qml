@@ -21,6 +21,10 @@ Item {
 
             delegate: TopLevelItem {
                 id: item
+                property alias errorsButton: errorsButton
+                property alias rescanButton: rescanButton
+                property alias resumePauseButton: resumePauseButton
+                property alias openButton: openButton
 
                 ColumnLayout {
                     width: parent.width
@@ -55,6 +59,7 @@ Item {
                                 width: units.smallSpacing
                             }
                             TinyButton {
+                                id: errorsButton
                                 iconSource: "emblem-important"
                                 tooltip: qsTr("Show errors")
                                 // 5 stands for SyncthingDirStatus::OutOfSync, unfortunately there is currently
@@ -67,6 +72,7 @@ Item {
                                 }
                             }
                             TinyButton {
+                                id: rescanButton
                                 iconSource: "view-refresh"
                                 tooltip: qsTr("Rescan")
                                 enabled: !paused
@@ -74,7 +80,7 @@ Item {
                                                dirId)
                             }
                             TinyButton {
-                                id: barcodeToolButton
+                                id: resumePauseButton
                                 iconSource: paused ? "media-playback-start" : "media-playback-pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 onClicked: {
@@ -84,6 +90,7 @@ Item {
                                 }
                             }
                             TinyButton {
+                                id: openButton
                                 iconSource: "folder"
                                 tooltip: qsTr("Open in file browser")
                                 onClicked: {

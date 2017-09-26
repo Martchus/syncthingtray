@@ -21,6 +21,7 @@ Item {
 
             delegate: TopLevelItem {
                 id: item
+                property alias resumePauseButton: resumePauseButton
 
                 ColumnLayout {
                     width: parent.width
@@ -52,7 +53,7 @@ Item {
                                 width: 3
                             }
                             TinyButton {
-                                id: barcodeToolButton
+                                id: resumePauseButton
                                 iconSource: paused ? "media-playback-start" : "media-playback-pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 onClicked: {

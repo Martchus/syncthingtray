@@ -21,6 +21,7 @@ Item {
 
             delegate: TopLevelItem {
                 id: item
+                property alias openButton: openButton
 
                 ColumnLayout {
                     width: parent.width
@@ -113,6 +114,7 @@ Item {
                                     }
                                 }
                                 TinyButton {
+                                    id: openButton
                                     iconSource: "folder"
                                     tooltip: qsTr("Open in file browser")
                                     onClicked: {

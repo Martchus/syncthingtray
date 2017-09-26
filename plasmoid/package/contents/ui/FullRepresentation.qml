@@ -1,4 +1,4 @@
-import QtQuick 2.3
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import QtQml 2.2
@@ -52,18 +52,36 @@ ColumnLayout {
 
     // shortcut handling
     Keys.onPressed: {
-        // FIXME: currently only works after clicking the tab buttons
-        // TODO: add more shortcuts
+        // note: event only received after clicking the tab buttons in plasmoidviewer
+        // but works as expected in plasmashell
+        var currentItem
         switch (event.key) {
         case Qt.Key_Up:
-            mainTabGroup.currentTab.item.view.decrementCurrentIndex()
-            event.accepted = true
+            switch (event.modifiers) {
+            case Qt.NoModifier:
+                // select previous item in current tab
+                mainTabGroup.currentTab.item.view.decrementCurrentIndex()
+                break
+            case Qt.ShiftModifier:
+                // select previous connection
+                --plasmoid.nativeInterface.currentConnectionConfigIndex
+                break
+            }
             break
         case Qt.Key_Down:
-            mainTabGroup.currentTab.item.view.incrementCurrentIndex()
-            event.accepted = true
+            switch (event.modifiers) {
+            case Qt.NoModifier:
+                // select next item in current tab
+                mainTabGroup.currentTab.item.view.incrementCurrentIndex()
+                break
+            case Qt.ShiftModifier:
+                // select previous connection
+                ++plasmoid.nativeInterface.currentConnectionConfigIndex
+                break
+            }
             break
         case Qt.Key_Left:
+            // select previous tab
             switch (mainTabGroup.currentTab) {
             case dirsPage:
                 downloadsTabButton.clicked()
@@ -77,6 +95,7 @@ ColumnLayout {
             }
             break
         case Qt.Key_Right:
+            // select next tab
             switch (mainTabGroup.currentTab) {
             case dirsPage:
                 devsTabButton.clicked()
@@ -91,26 +110,61 @@ ColumnLayout {
             break
         case Qt.Key_Enter:
 
+
+            // fallthrough
         case Qt.Key_Return:
-            var currentItem = mainTabGroup.currentTab.item.view.currentItem
-            if (currentItem) {
+            // toggle expanded state of current item
+            if ((currentItem = mainTabGroup.currentTab.item.view.currentItem)) {
                 currentItem.expanded = !currentItem.expanded
             }
             break
         case Qt.Key_Escape:
+            // hide plasmoid
+            plasmoid.expanded = false
             break
         case Qt.Key_1:
+            // select directories tab
             dirsTabButton.clicked()
             break
         case Qt.Key_2:
+            // select devices tab
             devsTabButton.clicked()
             break
         case Qt.Key_3:
+            // select downloads tab
             downloadsTabButton.clicked()
             break
-        default:
+        case Qt.Key_R:
+            // rescan/resume/pause selected item
+            if ((currentItem = mainTabGroup.currentTab.item.view.currentItem)) {
+                switch (event.modifiers) {
+                case Qt.NoModifier:
+                    // rescan selected item if it has a rescan button
+                    if (currentItem.rescanButton
+                            && currentItem.rescanButton.enabled) {
+                        currentItem.rescanButton.clicked()
+                    }
+                    break
+                case Qt.ShiftModifier:
+                    // resume/pause selected item if it has a resume/pause button
+                    if (currentItem.resumePauseButton) {
+                        currentItem.resumePauseButton.clicked()
+                    }
+                    break
+                }
+            }
             break
+        case Qt.Key_O:
+            // open selected item in file browser if it has an open button
+            if ((currentItem = mainTabGroup.currentTab.item.view.currentItem)
+                    && currentItem.openButton) {
+                currentItem.openButton.clicked()
+            }
+            break
+        default:
+            return
         }
+        event.accepted = true
     }
 
     // heading and right-corner buttons
@@ -232,40 +286,65 @@ ColumnLayout {
             Layout.fillWidth: true
         }
         TinyButton {
+            id: showOwnIdButton
             tooltip: qsTr("Show own device ID")
             iconSource: "view-barcode"
             onClicked: {
                 plasmoid.nativeInterface.showOwnDeviceId()
                 plasmoid.expanded = false
             }
+            Shortcut {
+                sequence: "Ctrl+I"
+                onActivated: showOwnIdButton.clicked()
+            }
         }
         TinyButton {
+            id: showLogButton
             tooltip: qsTr("Show Syncthing log")
             iconSource: "text-x-generic"
             onClicked: {
                 plasmoid.nativeInterface.showLog()
                 plasmoid.expanded = false
             }
+            Shortcut {
+                sequence: "Ctrl+L"
+                onActivated: showLogButton.clicked()
+            }
         }
         TinyButton {
+            id: rescanAllDirsButton
             tooltip: qsTr("Rescan all directories")
             iconSource: "view-refresh"
             onClicked: plasmoid.nativeInterface.connection.rescanAllDirs()
+            Shortcut {
+                sequence: "Ctrl+R"
+                onActivated: rescanAllDirsButton.clicked()
+            }
         }
         TinyButton {
+            id: settingsButton
             tooltip: qsTr("Settings")
             iconSource: "preferences-other"
             onClicked: {
                 plasmoid.nativeInterface.showSettingsDlg()
                 plasmoid.expanded = false
             }
+            Shortcut {
+                sequence: "Ctrl+S"
+                onActivated: settingsButton.clicked()
+            }
         }
         TinyButton {
+            id: webUIButton
             tooltip: qsTr("Web UI")
             iconSource: "internet-web-browser"
             onClicked: {
                 plasmoid.nativeInterface.showWebUI()
                 plasmoid.expanded = false
+            }
+            Shortcut {
+                sequence: "Ctrl+W"
+                onActivated: webUIButton.clicked()
             }
         }
     }
@@ -320,7 +399,7 @@ ColumnLayout {
             iconSource: "network-connect"
             paddingEnabled: true
             // FIXME: figure out why menu doesn't work in plasmoidviewer using NVIDIA driver
-            // (works with plasmawindowed or Intel graphics)
+            // (works with plasmawindowed and plasmashell or always when using Intel graphics)
             menu: Menu {
                 id: connectionConfigsMenu
 
