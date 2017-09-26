@@ -27,17 +27,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="78"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="79"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="78"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="79"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="87"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="88"/>
         <source>Open in file browser</source>
         <translation type="unfinished"></translation>
     </message>
@@ -46,7 +46,7 @@
     <name>DownloadsPage</name>
     <message>
         <location filename="../package/contents/ui/DownloadsPage.qml" line="61"/>
-        <location filename="../package/contents/ui/DownloadsPage.qml" line="116"/>
+        <location filename="../package/contents/ui/DownloadsPage.qml" line="117"/>
         <source>Open in file browser</source>
         <translation type="unfinished"></translation>
     </message>

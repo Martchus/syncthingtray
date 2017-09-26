@@ -175,10 +175,6 @@
         <translation>Sekundäre Konfiguration löschen</translation>
     </message>
     <message>
-        <source>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device.</source>
-        <translation type="vanished">Es ist möglich, mehrere Konfigurationen zu speichern. Zwischen diesen kann anschließend über das Verbindungsmenü rechts oben im Tray schnell hin- und hergewechselt werden. Der Name der Konfiguration muss nicht mit dem Namen des entsprechenden Syncthing-Gerätes übereinstimmen.</translation>
-    </message>
-    <message>
         <location filename="../settings/connectionoptionpage.ui" line="177"/>
         <source>Syncthing URL</source>
         <translation></translation>

@@ -27,17 +27,17 @@
         <translation>Scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="78"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="79"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="78"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="79"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="87"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="88"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
@@ -46,7 +46,7 @@
     <name>DownloadsPage</name>
     <message>
         <location filename="../package/contents/ui/DownloadsPage.qml" line="61"/>
-        <location filename="../package/contents/ui/DownloadsPage.qml" line="116"/>
+        <location filename="../package/contents/ui/DownloadsPage.qml" line="117"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
@@ -145,10 +145,6 @@
         <location filename="../lib/appearanceoptionpage.ui" line="126"/>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop, in full screen mode or as entry of the system tray Plasmoid.</source>
         <translation>Die eingestellte Größe wird ignoriert, wenn das Plasmoid am Desktop, im Vollbild oder innerhalb des Systemtray-Plasmoids dargestellt wird.</translation>
-    </message>
-    <message>
-        <source>Minimum size of full representation</source>
-        <translation type="obsolete">Minimale Größe</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="39"/>
