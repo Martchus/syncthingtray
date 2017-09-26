@@ -171,7 +171,8 @@ int Application::exec(int argc, const char *const *argv)
         return QCoreApplication::exec();
 
     } catch (const Failure &ex) {
-        cerr << "Unable to parse arguments. " << ex.what() << "\nSee --help for available commands." << endl;
+        cerr << Phrases::Error << "Unable to parse arguments: " << TextAttribute::Reset;
+        cerr << ex.what() << "\nSee --help for available commands." << endl;
         return 1;
     }
 }
@@ -255,6 +256,10 @@ void Application::requestRestart(const ArgumentOccurrence &)
 void Application::requestRescan(const ArgumentOccurrence &occurrence)
 {
     m_expectedResponse = occurrence.values.size();
+    if (!m_expectedResponse) {
+        cerr << Phrases::Error << "No directories specified." << Phrases::End << flush;
+        exit(1);
+    }
     connect(&m_connection, &SyncthingConnection::rescanTriggered, this, &Application::handleResponse);
     for (const char *value : occurrence.values) {
         cerr << "Request rescanning " << value << " ...\n";
@@ -282,13 +287,17 @@ void Application::requestRescanAll(const ArgumentOccurrence &)
 void Application::requestPauseResume(bool pause)
 {
     findRelevantDirsAndDevs(OperationType::PauseResume);
-    m_expectedResponse = m_relevantDevs.size();
+    m_expectedResponse = 0;
     if (pause) {
         connect(&m_connection, &SyncthingConnection::devicePauseTriggered, this, &Application::handleResponse);
         connect(&m_connection, &SyncthingConnection::directoryPauseTriggered, this, &Application::handleResponse);
     } else {
         connect(&m_connection, &SyncthingConnection::deviceResumeTriggered, this, &Application::handleResponse);
         connect(&m_connection, &SyncthingConnection::directoryResumeTriggered, this, &Application::handleResponse);
+    }
+    if (m_relevantDirs.empty() && m_relevantDevs.empty()) {
+        cerr << Phrases::Error << "No directories or devices specified." << Phrases::End << flush;
+        exit(1);
     }
     if (!m_relevantDirs.empty()) {
         QStringList dirIds;
@@ -322,40 +331,56 @@ void Application::requestPauseResume(bool pause)
             ++m_expectedResponse;
         }
     }
-    cerr.flush();
+    if (!m_expectedResponse) {
+        cerr << Phrases::Warning << "No directories or devices altered." << Phrases::End << flush;
+        exit(0);
+    }
+    cerr << flush;
 }
 
 void Application::requestPauseAllDevs(const ArgumentOccurrence &)
 {
     findRelevantDirsAndDevs(OperationType::PauseResume);
-    m_expectedResponse = m_connection.devInfo().size();
     connect(&m_connection, &SyncthingConnection::devicePauseTriggered, this, &Application::handleResponse);
+    if (!m_connection.pauseAllDevs()) {
+        cerr << Phrases::Warning << "No devices to be paused." << Phrases::End << flush;
+        exit(0);
+    }
     cerr << "Request pausing all devices ..." << endl;
-    m_connection.pauseAllDevs();
+    m_expectedResponse = 1;
 }
 
 void Application::requestPauseAllDirs(const ArgumentOccurrence &)
 {
-    m_expectedResponse = m_connection.dirInfo().size();
     connect(&m_connection, &SyncthingConnection::directoryPauseTriggered, this, &Application::handleResponse);
+    if (!m_connection.pauseAllDirs()) {
+        cerr << Phrases::Warning << "No directories to be paused." << Phrases::End << flush;
+        exit(0);
+    }
     cerr << "Request pausing all directories ..." << endl;
-    m_connection.pauseAllDirs();
+    m_expectedResponse = 1;
 }
 
 void Application::requestResumeAllDevs(const ArgumentOccurrence &)
 {
-    m_expectedResponse = m_connection.devInfo().size();
     connect(&m_connection, &SyncthingConnection::deviceResumeTriggered, this, &Application::handleResponse);
+    if (!m_connection.resumeAllDevs()) {
+        cerr << Phrases::Warning << "No devices to be resumed." << Phrases::End << flush;
+        exit(0);
+    }
     cerr << "Request resuming all devices ..." << endl;
-    m_connection.resumeAllDevs();
+    m_expectedResponse = 1;
 }
 
 void Application::requestResumeAllDirs(const ArgumentOccurrence &)
 {
-    m_expectedResponse = m_connection.dirInfo().size();
     connect(&m_connection, &SyncthingConnection::deviceResumeTriggered, this, &Application::handleResponse);
+    if (!m_connection.resumeAllDirs()) {
+        cerr << Phrases::Warning << "No directories to be resumed." << Phrases::End << flush;
+        exit(0);
+    }
     cerr << "Request resuming all directories ..." << endl;
-    m_connection.resumeAllDevs();
+    m_expectedResponse = 1;
 }
 
 void Application::findRelevantDirsAndDevs(OperationType operationType)
