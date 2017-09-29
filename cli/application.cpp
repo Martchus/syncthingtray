@@ -170,9 +170,8 @@ int Application::exec(int argc, const char *const *argv)
         // enter event loop
         return QCoreApplication::exec();
 
-    } catch (const Failure &ex) {
-        cerr << Phrases::Error << "Unable to parse arguments: " << TextAttribute::Reset;
-        cerr << ex.what() << "\nSee --help for available commands." << endl;
+    } catch (const Failure &failure) {
+        cerr << failure;
         return 1;
     }
 }
