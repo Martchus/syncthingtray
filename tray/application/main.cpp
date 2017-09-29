@@ -135,50 +135,45 @@ int runApplication(int argc, const char *const *argv)
     widgetsGuiArg.addSubArgument(&connectionArg);
 
     parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(), &helpArg });
-    try {
-        parser.parseArgs(argc, argv);
-        if (qtConfigArgs.qtWidgetsGuiArg().isPresent()) {
-            if (firstRun) {
-                firstRun = false;
+    parser.parseArgsOrExit(argc, argv);
+    if (!qtConfigArgs.qtWidgetsGuiArg().isPresent()) {
+        return 0;
+    }
+    if (firstRun) {
+        firstRun = false;
 
-                SET_QT_APPLICATION_INFO;
-                QApplication application(argc, const_cast<char **>(argv));
-                QGuiApplication::setQuitOnLastWindowClosed(false);
-                SingleInstance singleInstance(argc, argv);
-                networkAccessManager().setParent(&singleInstance);
-                QObject::connect(&singleInstance, &SingleInstance::newInstance, &runApplication);
+        SET_QT_APPLICATION_INFO;
+        QApplication application(argc, const_cast<char **>(argv));
+        QGuiApplication::setQuitOnLastWindowClosed(false);
+        SingleInstance singleInstance(argc, argv);
+        networkAccessManager().setParent(&singleInstance);
+        QObject::connect(&singleInstance, &SingleInstance::newInstance, &runApplication);
 
-                Settings::restore();
-                Settings::values().qt.apply();
-                qtConfigArgs.applySettings(true);
-                LOAD_QT_TRANSLATIONS;
+        Settings::restore();
+        Settings::values().qt.apply();
+        qtConfigArgs.applySettings(true);
+        LOAD_QT_TRANSLATIONS;
 
-                int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue());
-                if (!res) {
-                    trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
-                    res = application.exec();
-                }
-
-                Settings::Launcher::terminate();
-                Settings::save();
-                return res;
-            } else {
-                if (!TrayWidget::instances().empty() && (showWebUiArg.isPresent() || triggerArg.isPresent())) {
-                    // if --webui or --trigger is present don't create a new tray icon, just trigger actions
-                    trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
-                } else {
-                    const int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue());
-                    if (!res) {
-                        trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
-                    }
-                    return res;
-                }
-            }
+        int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue());
+        if (!res) {
+            trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
+            res = application.exec();
         }
-    } catch (const Failure &ex) {
-        CMD_UTILS_START_CONSOLE;
-        cerr << "Unable to parse arguments. " << ex.what() << "\nSee --help for available commands." << endl;
-        return 1;
+
+        Settings::Launcher::terminate();
+        Settings::save();
+        return res;
+    } else {
+        if (!TrayWidget::instances().empty() && (showWebUiArg.isPresent() || triggerArg.isPresent())) {
+            // if --webui or --trigger is present don't create a new tray icon, just trigger actions
+            trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
+        } else {
+            const int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue());
+            if (!res) {
+                trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
+            }
+            return res;
+        }
     }
 
     return 0;
