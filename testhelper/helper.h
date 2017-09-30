@@ -31,7 +31,7 @@ inline std::ostream &operator<<(std::ostream &o, const QString &qstring)
 }
 
 /*!
- * \brief Prints a QString; required to use QStringList with CPPUNIT_ASSERT_EQUAL_MESSAGE.
+ * \brief Prints a QStringList; required to use QStringList with CPPUNIT_ASSERT_EQUAL_MESSAGE.
  */
 inline std::ostream &operator<<(std::ostream &o, const QStringList &qstringlist)
 {
@@ -39,7 +39,7 @@ inline std::ostream &operator<<(std::ostream &o, const QStringList &qstringlist)
 }
 
 /*!
- * \brief Prints a QString; required to use QSet<QString> with CPPUNIT_ASSERT_EQUAL_MESSAGE.
+ * \brief Prints a QSet<QString>; required to use QSet<QString> with CPPUNIT_ASSERT_EQUAL_MESSAGE.
  */
 inline std::ostream &operator<<(std::ostream &o, const QSet<QString> &qstringset)
 {
@@ -51,7 +51,7 @@ namespace TestUtilities {
 extern double timeoutFactor;
 
 /*!
- * \brief Waits for the\a duration specified in ms while keeping the event loop running.
+ * \brief Waits for the \a duration specified in ms while keeping the event loop running.
  */
 inline void wait(int duration)
 {
