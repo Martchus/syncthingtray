@@ -28,6 +28,9 @@ Args::Args()
     , statusDev("dev", '\0', "specifies the devices, default is all devs", { "ID" })
     , pauseDir("dir", 'd', "specifies the directories", { "ID" })
     , pauseDev("dev", '\0', "specifies the devices", { "ID" })
+    , atLeast("at-least", 'a', "specifies for how many milliseconds Syncthing must idle (prevents exiting to early in case of flaky status)",
+          { "number" })
+    , timeout("timeout", 't', "specifies how many milliseconds to wait at most", { "number" })
     , configFile("config-file", 'f', "specifies the Syncthing config file to read API key and URL from, when not explicitely specified", { "path" })
     , apiKey("api-key", 'k', "specifies the API key", { "key" })
     , url("url", 'u', "specifies the Syncthing URL, default is http://localhost:8080", { "URL" })
@@ -36,15 +39,18 @@ Args::Args()
 {
     for (Argument *arg : { &statusDir, &statusDev, &pauseDev, &pauseDir }) {
         arg->setConstraints(0, Argument::varValueCount);
+        arg->setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
     }
     status.setSubArguments({ &statusDir, &statusDev });
     status.setExample(PROJECT_NAME " status # shows all dirs and devs\n" PROJECT_NAME " status --dir dir1 --dir dir2 --dev dev1 --dev dev2");
-    waitForIdle.setSubArguments({ &statusDir, &statusDev });
-    waitForIdle.setExample(PROJECT_NAME " wait-for-idle --dir dir1 --dir dir2 --dev dev1 --dev dev2");
+    waitForIdle.setSubArguments({ &statusDir, &statusDev, &atLeast, &timeout });
+    waitForIdle.setExample(PROJECT_NAME " wait-for-idle --timeout 1800000 --at-least 5000 && systemctl poweroff\n" PROJECT_NAME
+                                        " wait-for-idle --dir dir1 --dir dir2 --dev dev1 --dev dev2 --at-least 5000");
     pwd.setSubArguments({ &statusPwd, &rescanPwd, &pausePwd, &resumePwd });
 
     rescan.setValueNames({ "dir ID" });
     rescan.setRequiredValueCount(Argument::varValueCount);
+    rescan.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
     rescan.setExample(PROJECT_NAME " rescan dir1 dir2 dir4 dir5");
     pause.setSubArguments({ &pauseDir, &pauseDev });
     pause.setExample(PROJECT_NAME " pause --dir dir1 --dir dir2 --dev dev1 --dev dev2");

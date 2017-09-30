@@ -15,6 +15,7 @@ struct Args {
         waitForIdle, pwd;
     OperationArgument statusPwd, rescanPwd, pausePwd, resumePwd;
     ConfigValueArgument statusDir, statusDev, pauseDir, pauseDev;
+    ConfigValueArgument atLeast, timeout;
     ConfigValueArgument configFile, apiKey, url, credentials, certificate;
 };
 

@@ -34,6 +34,7 @@ private slots:
 
 private:
     int loadConfig();
+    void waitForConnected(int timeout);
     void requestLog(const ArgumentOccurrence &);
     void requestShutdown(const ArgumentOccurrence &);
     void requestRestart(const ArgumentOccurrence &);
@@ -48,8 +49,8 @@ private:
     static void printDev(const Data::SyncthingDev *dev);
     void printStatus(const ArgumentOccurrence &);
     static void printLog(const std::vector<Data::SyncthingLogEntry> &logEntries);
-    void initWaitForIdle(const ArgumentOccurrence &);
-    void waitForIdle();
+    void waitForIdle(const ArgumentOccurrence &);
+    bool checkWhetherIdle() const;
     void checkPwdOperationPresent(const ArgumentOccurrence &occurrence);
     void printPwdStatus(const ArgumentOccurrence &occurrence);
     void requestRescanPwd(const ArgumentOccurrence &occurrence);
@@ -68,6 +69,8 @@ private:
     std::vector<const Data::SyncthingDev *> m_relevantDevs;
     const Data::SyncthingDir *m_pwd;
     QString m_relativePath;
+    int m_idleDuration;
+    int m_idleTimeout;
     bool m_argsRead;
 };
 

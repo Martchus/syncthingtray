@@ -4,6 +4,10 @@
 #include "../connector/syncthingconfig.h"
 #include "../connector/utils.h"
 
+// use header-only functions waitForSignals() and signalInfo() from test utilities; disable assertions via macro
+#define SYNCTHINGTESTHELPER_FOR_CLI
+#include "../testhelper/helper.h"
+
 #include <c++utilities/application/failure.h>
 #include <c++utilities/chrono/timespan.h>
 #include <c++utilities/conversion/stringconversion.h>
@@ -14,6 +18,7 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QNetworkAccessManager>
+#include <QTimer>
 
 #include <functional>
 #include <iostream>
@@ -51,6 +56,8 @@ Application::Application()
     : m_expectedResponse(0)
     , m_preventDisconnect(false)
     , m_callbacksInvoked(false)
+    , m_idleDuration(0)
+    , m_idleTimeout(0)
     , m_argsRead(false)
 {
     // take ownership over the global QNetworkAccessManager
@@ -70,7 +77,7 @@ Application::Application()
     m_args.pauseAllDirs.setCallback(bind(&Application::requestPauseAllDirs, this, _1));
     m_args.resumeAllDevs.setCallback(bind(&Application::requestResumeAllDevs, this, _1));
     m_args.resumeAllDirs.setCallback(bind(&Application::requestResumeAllDirs, this, _1));
-    m_args.waitForIdle.setCallback(bind(&Application::initWaitForIdle, this, _1));
+    m_args.waitForIdle.setCallback(bind(&Application::waitForIdle, this, _1));
     m_args.pwd.setCallback(bind(&Application::checkPwdOperationPresent, this, _1));
     m_args.statusPwd.setCallback(bind(&Application::printPwdStatus, this, _1));
     m_args.rescanPwd.setCallback(bind(&Application::requestRescanPwd, this, _1));
@@ -138,8 +145,23 @@ int Application::exec(int argc, const char *const *argv)
     // enter event loop
     return QCoreApplication::exec();
 }
+
+int assignIntegerFromArg(const Argument &arg, int &integer)
+{
+    if (arg.isPresent()) {
+        try {
+            integer = stringToNumber<int>(arg.firstValue());
+            if (integer < 0) {
+                throw ConversionException();
             }
+        } catch (const ConversionException &) {
+            cerr << Phrases::Error << "The specified number of milliseconds \"" << arg.firstValue() << "\" is no unsigned integer." << Phrases::End
+                 << flush;
+            return -4;
         }
+    }
+    return 0;
+}
 
 int Application::loadConfig()
 {
@@ -187,27 +209,45 @@ int Application::loadConfig()
             cerr << Phrases::Error << "Unable to load specified certificate \"" << m_args.certificate.firstValue() << '\"' << Phrases::End << flush;
             return -3;
         }
+    }
 
+    // read idle duration and timeout
+    if (const int res = assignIntegerFromArg(m_args.atLeast, m_idleDuration)) {
+        return res;
+    }
+    if (const int res = assignIntegerFromArg(m_args.timeout, m_idleTimeout)) {
+        return res;
     }
 
     return 0;
 }
+
+void Application::waitForConnected(int timeout)
+{
+    using namespace TestUtilities;
+    bool isConnected = m_connection.isConnected();
+    const function<void(SyncthingStatus)> checkStatus([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
+    waitForSignals(bind(static_cast<void (SyncthingConnection::*)(SyncthingConnectionSettings &)>(&SyncthingConnection::reconnect), ref(m_connection),
+                       ref(m_settings)),
+        timeout, signalInfo(&m_connection, &SyncthingConnection::statusChanged, checkStatus, &isConnected));
 }
 
 void Application::handleStatusChanged(SyncthingStatus newStatus)
 {
     Q_UNUSED(newStatus)
-    if (m_callbacksInvoked) {
+    // skip when callbacks have already been invoked, when doing shell completion or not connected yet
+    if (!m_argsRead || m_callbacksInvoked || !m_connection.isConnected()) {
         return;
     }
-    if (m_connection.isConnected()) {
-        eraseLine(cout);
-        cout << '\r';
-        m_callbacksInvoked = true;
-        m_args.parser.invokeCallbacks();
-        if (!m_preventDisconnect) {
-            m_connection.disconnect();
-        }
+    // erase current line
+    eraseLine(cout);
+    cout << '\r';
+    // invoke callbacks
+    m_callbacksInvoked = true;
+    m_args.parser.invokeCallbacks();
+    // disconnect, except when m_preventDisconnect has been set in callbacks
+    if (!m_preventDisconnect) {
+        m_connection.disconnect();
     }
 }
 
@@ -228,6 +268,13 @@ void Application::handleError(
 {
     VAR_UNUSED(category)
     VAR_UNUSED(networkError)
+
+    // skip error handling for shell completion
+    if (!m_argsRead) {
+        return;
+    }
+
+    // print error message and relevant request and response if present
     eraseLine(cout);
     cerr << '\n' << '\r' << Phrases::Error;
     cerr << message.toLocal8Bit().data() << Phrases::End;
@@ -573,25 +620,59 @@ void Application::printLog(const std::vector<SyncthingLogEntry> &logEntries)
     QCoreApplication::exit();
 }
 
-void Application::initWaitForIdle(const ArgumentOccurrence &)
+void Application::waitForIdle(const ArgumentOccurrence &)
 {
     m_preventDisconnect = true;
 
-    findRelevantDirsAndDevs();
+    // setup timer
+    QTimer idleTime;
+    idleTime.setSingleShot(true);
+    idleTime.setInterval(m_idleDuration);
 
-    // might idle already
-    waitForIdle();
+    // define variable which is set to true if handleTimeout to indicate the idle state has persisted long enough
+    bool isLongEnoughIdle = false;
 
-    // currently not idling
-    // -> relevant dirs/devs might be invalidated so findRelevantDirsAndDevs() must invoked again
-    connect(&m_connection, &SyncthingConnection::newDirs, this, static_cast<void (Application::*)(void)>(&Application::findRelevantDirsAndDevs));
-    connect(&m_connection, &SyncthingConnection::newDevices, this, static_cast<void (Application::*)(void)>(&Application::findRelevantDirsAndDevs));
-    // -> check for idle again when dir/dev status changed
-    connect(&m_connection, &SyncthingConnection::dirStatusChanged, this, &Application::waitForIdle);
-    connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &Application::waitForIdle);
+    // define handler for timer timeout
+    function<void(void)> handleTimeout([this, &isLongEnoughIdle] {
+        if (checkWhetherIdle()) {
+            isLongEnoughIdle = true;
+        }
+    });
+
+    // define handler for dirStatusChanged/devStatusChanged
+    function<void(void)> handleStatusChange([this, &idleTime] {
+        if (!checkWhetherIdle()) {
+            idleTime.stop();
+            return;
+        }
+        if (!idleTime.isActive()) {
+            idleTime.start();
+        }
+    });
+
+    // define handler for newDirs/newDevices to call findRelevantDirsAndDevs() in that case
+    function<void(void)> handleNewDirsOrDevs([this, &handleStatusChange] {
+        findRelevantDirsAndDevs();
+        handleStatusChange();
+    });
+
+    // invoke handler manually because Syncthing could already be idling
+    handleNewDirsOrDevs();
+
+    using namespace TestUtilities;
+    waitForSignals(&noop, m_idleTimeout, signalInfo(&m_connection, &SyncthingConnection::dirStatusChanged, handleStatusChange, &isLongEnoughIdle),
+        signalInfo(&m_connection, &SyncthingConnection::devStatusChanged, handleStatusChange, &isLongEnoughIdle),
+        signalInfo(&m_connection, &SyncthingConnection::newDirs, handleNewDirsOrDevs, &isLongEnoughIdle),
+        signalInfo(&m_connection, &SyncthingConnection::newDevices, handleNewDirsOrDevs, &isLongEnoughIdle),
+        signalInfo(&idleTime, &QTimer::timeout, handleTimeout, &isLongEnoughIdle));
+
+    if (!isLongEnoughIdle) {
+        cerr << Phrases::Warning << "Exiting after timeout" << Phrases::End << flush;
+    }
+    QCoreApplication::exit(isLongEnoughIdle ? 0 : 1);
 }
 
-void Application::waitForIdle()
+bool Application::checkWhetherIdle() const
 {
     for (const SyncthingDir *dir : m_relevantDirs) {
         switch (dir->status) {
@@ -600,7 +681,7 @@ void Application::waitForIdle()
         case SyncthingDirStatus::Unshared:
             break;
         default:
-            return;
+            return false;
         }
     }
     for (const SyncthingDev *dev : m_relevantDevs) {
@@ -611,10 +692,10 @@ void Application::waitForIdle()
         case SyncthingDevStatus::Idle:
             break;
         default:
-            return;
+            return false;
         }
     }
-    QCoreApplication::exit();
+    return true;
 }
 
 void Application::checkPwdOperationPresent(const ArgumentOccurrence &occurrence)
