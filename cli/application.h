@@ -33,6 +33,7 @@ private slots:
     bool findPwd();
 
 private:
+    int loadConfig();
     void requestLog(const ArgumentOccurrence &);
     void requestShutdown(const ArgumentOccurrence &);
     void requestRestart(const ArgumentOccurrence &);
@@ -54,6 +55,8 @@ private:
     void requestRescanPwd(const ArgumentOccurrence &occurrence);
     void requestPausePwd(const ArgumentOccurrence &occurrence);
     void requestResumePwd(const ArgumentOccurrence &occurrence);
+    void initDirCompletion(Argument &arg, const ArgumentOccurrence &);
+    void initDevCompletion(Argument &arg, const ArgumentOccurrence &);
 
     Args m_args;
     Data::SyncthingConnectionSettings m_settings;
@@ -65,6 +68,7 @@ private:
     std::vector<const Data::SyncthingDev *> m_relevantDevs;
     const Data::SyncthingDir *m_pwd;
     QString m_relativePath;
+    bool m_argsRead;
 };
 
 } // namespace Cli

@@ -51,6 +51,7 @@ Application::Application()
     : m_expectedResponse(0)
     , m_preventDisconnect(false)
     , m_callbacksInvoked(false)
+    , m_argsRead(false)
 {
     // take ownership over the global QNetworkAccessManager
     networkAccessManager().setParent(this);
@@ -75,6 +76,10 @@ Application::Application()
     m_args.rescanPwd.setCallback(bind(&Application::requestRescanPwd, this, _1));
     m_args.pausePwd.setCallback(bind(&Application::requestPausePwd, this, _1));
     m_args.resumePwd.setCallback(bind(&Application::requestResumePwd, this, _1));
+    m_args.pauseDir.setCallback(bind(&Application::initDirCompletion, this, ref(m_args.pauseDir), _1));
+    m_args.statusDir.setCallback(bind(&Application::initDirCompletion, this, ref(m_args.statusDir), _1));
+    m_args.pauseDev.setCallback(bind(&Application::initDevCompletion, this, ref(m_args.pauseDev), _1));
+    m_args.statusDev.setCallback(bind(&Application::initDevCompletion, this, ref(m_args.statusDev), _1));
 
     // connect signals and slots
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &Application::handleStatusChanged);
@@ -97,83 +102,96 @@ int Application::exec(int argc, const char *const *argv)
         }
 
         m_args.parser.checkConstraints();
-
-        // handle help argument
-        if (m_args.help.isPresent()) {
-            m_args.parser.printHelp(cout);
-            return 0;
-        }
-
-        // locate and read Syncthing config file
-        QString configFile;
-        const char *configFileArgValue = m_args.configFile.firstValue();
-        if (configFileArgValue) {
-            configFile = fromNativeFileName(configFileArgValue);
-        } else {
-            configFile = SyncthingConfig::locateConfigFile();
-        }
-        SyncthingConfig config;
-        const char *apiKeyArgValue = m_args.apiKey.firstValue();
-        if (!config.restore(configFile)) {
-            if (configFileArgValue) {
-                cerr << Phrases::Error << "Unable to locate specified Syncthing config file \"" << configFileArgValue << "\"" << Phrases::End
-                     << flush;
-                return -1;
-            } else if (!apiKeyArgValue) {
-                cerr << Phrases::Error << "Unable to locate Syncthing config file and no API key specified" << Phrases::End << flush;
-                return -2;
-            }
-        }
-
-        // apply settings for connection
-        if (const char *urlArgValue = m_args.url.firstValue()) {
-            m_settings.syncthingUrl = argToQString(urlArgValue);
-        } else if (!config.guiAddress.isEmpty()) {
-            m_settings.syncthingUrl = config.syncthingUrl();
-        } else {
-            m_settings.syncthingUrl = QStringLiteral("http://localhost:8080");
-        }
-        if (m_args.credentials.isPresent()) {
-            m_settings.authEnabled = true;
-            m_settings.userName = argToQString(m_args.credentials.values(0)[0]);
-            m_settings.password = argToQString(m_args.credentials.values(0)[1]);
-        }
-        if (apiKeyArgValue) {
-            m_settings.apiKey.append(apiKeyArgValue);
-        } else {
-            m_settings.apiKey.append(config.guiApiKey);
-        }
-        if (const char *certArgValue = m_args.certificate.firstValue()) {
-            m_settings.httpsCertPath = argToQString(certArgValue);
-            if (m_settings.httpsCertPath.isEmpty() || !m_settings.loadHttpsCert()) {
-                cerr << Phrases::Error << "Unable to load specified certificate \"" << m_args.certificate.firstValue() << '\"' << Phrases::End
-                     << flush;
-                return -3;
-            }
-        }
-
-        // finally do the request or establish connection
-        if (m_args.status.isPresent() || m_args.rescanAll.isPresent() || m_args.pauseAllDirs.isPresent() || m_args.pauseAllDevs.isPresent()
-            || m_args.resumeAllDirs.isPresent() || m_args.resumeAllDevs.isPresent() || m_args.pause.isPresent() || m_args.resume.isPresent()
-            || m_args.waitForIdle.isPresent() || m_args.pwd.isPresent()) {
-            // those arguments rquire establishing a connection first, the actual handler is called by handleStatusChanged() when
-            // the connection has been established
-            m_connection.reconnect(m_settings);
-            cerr << "Connecting to " << m_settings.syncthingUrl.toLocal8Bit().data() << " ...";
-            cerr.flush();
-        } else {
-            // call handler for any other arguments directly
-            m_connection.applySettings(m_settings);
-            m_args.parser.invokeCallbacks();
-        }
-
-        // enter event loop
-        return QCoreApplication::exec();
+        m_argsRead = true;
 
     } catch (const Failure &failure) {
         cerr << failure;
         return 1;
     }
+
+    // handle help argument
+    if (m_args.help.isPresent()) {
+        m_args.parser.printHelp(cout);
+        return 0;
+    }
+
+    // load configuration
+    if (const int res = loadConfig()) {
+        return res;
+    }
+
+    // finally do the request or establish connection
+    if (m_args.status.isPresent() || m_args.rescanAll.isPresent() || m_args.pauseAllDirs.isPresent() || m_args.pauseAllDevs.isPresent()
+        || m_args.resumeAllDirs.isPresent() || m_args.resumeAllDevs.isPresent() || m_args.pause.isPresent() || m_args.resume.isPresent()
+        || m_args.waitForIdle.isPresent() || m_args.pwd.isPresent()) {
+        // those arguments rquire establishing a connection first, the actual handler is called by handleStatusChanged() when
+        // the connection has been established
+        m_connection.reconnect(m_settings);
+        cerr << "Connecting to " << m_settings.syncthingUrl.toLocal8Bit().data() << " ...";
+        cerr.flush();
+    } else {
+        // call handler for any other arguments directly
+        m_connection.applySettings(m_settings);
+        m_args.parser.invokeCallbacks();
+    }
+
+    // enter event loop
+    return QCoreApplication::exec();
+}
+            }
+        }
+
+int Application::loadConfig()
+{
+    // locate and read Syncthing config file
+    QString configFile;
+    const char *configFileArgValue = m_args.configFile.firstValue();
+    if (configFileArgValue) {
+        configFile = fromNativeFileName(configFileArgValue);
+    } else {
+        configFile = SyncthingConfig::locateConfigFile();
+    }
+    SyncthingConfig config;
+    const char *apiKeyArgValue = m_args.apiKey.firstValue();
+    if (!config.restore(configFile)) {
+        if (configFileArgValue) {
+            cerr << Phrases::Error << "Unable to locate specified Syncthing config file \"" << configFileArgValue << "\"" << Phrases::End << flush;
+            return -1;
+        } else if (!apiKeyArgValue) {
+            cerr << Phrases::Error << "Unable to locate Syncthing config file and no API key specified" << Phrases::End << flush;
+            return -2;
+        }
+    }
+
+    // apply settings for connection
+    if (const char *urlArgValue = m_args.url.firstValue()) {
+        m_settings.syncthingUrl = argToQString(urlArgValue);
+    } else if (!config.guiAddress.isEmpty()) {
+        m_settings.syncthingUrl = config.syncthingUrl();
+    } else {
+        m_settings.syncthingUrl = QStringLiteral("http://localhost:8080");
+    }
+    if (m_args.credentials.isPresent()) {
+        m_settings.authEnabled = true;
+        m_settings.userName = argToQString(m_args.credentials.values(0)[0]);
+        m_settings.password = argToQString(m_args.credentials.values(0)[1]);
+    }
+    if (apiKeyArgValue) {
+        m_settings.apiKey.append(apiKeyArgValue);
+    } else {
+        m_settings.apiKey.append(config.guiApiKey);
+    }
+    if (const char *certArgValue = m_args.certificate.firstValue()) {
+        m_settings.httpsCertPath = argToQString(certArgValue);
+        if (m_settings.httpsCertPath.isEmpty() || !m_settings.loadHttpsCert()) {
+            cerr << Phrases::Error << "Unable to load specified certificate \"" << m_args.certificate.firstValue() << '\"' << Phrases::End << flush;
+            return -3;
+        }
+
+    }
+
+    return 0;
+}
 }
 
 void Application::handleStatusChanged(SyncthingStatus newStatus)
@@ -254,6 +272,11 @@ void Application::requestRestart(const ArgumentOccurrence &)
 
 void Application::requestRescan(const ArgumentOccurrence &occurrence)
 {
+    if (!m_argsRead) {
+        initDirCompletion(m_args.rescan, occurrence);
+        return;
+    }
+
     m_expectedResponse = occurrence.values.size();
     if (!m_expectedResponse) {
         cerr << Phrases::Error << "No directories specified." << Phrases::End << flush;
@@ -660,6 +683,33 @@ void Application::requestResumePwd(const ArgumentOccurrence &)
         cerr << "Directory \"" << m_pwd->path.toLocal8Bit().data() << " not paused" << endl;
         QCoreApplication::quit();
     }
+}
+
+void Application::initDirCompletion(Argument &arg, const ArgumentOccurrence &)
+{
+    // load config and wait for connected
+    loadConfig();
+    waitForConnected(2000);
+    // set directory IDs as completion values
+    arg.setPreDefinedCompletionValues(m_connection.directoryIds().join(QChar(' ')).toUtf8().data());
+}
+
+void Application::initDevCompletion(Argument &arg, const ArgumentOccurrence &)
+{
+    // load config and wait for connected
+    loadConfig();
+    waitForConnected(2000);
+    // set device IDs and names as completion values
+    QStringList completionValues;
+    const size_t valueCount = m_connection.devInfo().size() << 2;
+    if (valueCount > numeric_limits<int>::max()) {
+        return;
+    }
+    completionValues.reserve(static_cast<int>(valueCount));
+    for (const SyncthingDev &dev : m_connection.devInfo()) {
+        completionValues << dev.id << dev.name;
+    }
+    arg.setPreDefinedCompletionValues(completionValues.join(QChar(' ')).toUtf8().data());
 }
 
 } // namespace Cli
