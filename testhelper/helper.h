@@ -14,6 +14,12 @@
 #include <functional>
 #include <ostream>
 
+#ifndef SYNCTHINGTESTHELPER_FOR_CLI
+#define SYNCTHINGTESTHELPER_TIMEOUT(timeout) static_cast<int>(timeout * timeoutFactor)
+#else
+#define SYNCTHINGTESTHELPER_TIMEOUT(timeout) timeout
+#endif
+
 using namespace ConversionUtilities;
 
 /*!
@@ -50,7 +56,7 @@ extern double timeoutFactor;
 inline void wait(int duration)
 {
     QEventLoop loop;
-    QTimer::singleShot(duration * timeoutFactor, &loop, &QEventLoop::quit);
+    QTimer::singleShot(SYNCTHINGTESTHELPER_TIMEOUT(duration), &loop, &QEventLoop::quit);
     loop.exec();
 }
 
@@ -113,15 +119,19 @@ public:
         // register handler if specified
         if (handler) {
             m_handlerConnection = QObject::connect(sender, signal, sender, handler, Qt::DirectConnection);
+#ifndef SYNCTHINGTESTHELPER_FOR_CLI
             if (!m_handlerConnection) {
                 CPPUNIT_FAIL(argsToString("Unable to connect signal ", signalName().data(), " to handler"));
             }
+#endif
         }
         // register own handler to detect whether signal has been emitted
         m_emittedConnection = QObject::connect(sender, signal, sender, [this] { m_signalEmitted = true; }, Qt::DirectConnection);
+#ifndef SYNCTHINGTESTHELPER_FOR_CLI
         if (!m_emittedConnection) {
             CPPUNIT_FAIL(argsToString("Unable to connect signal ", signalName().data(), " to check for signal emmitation"));
         }
+#endif
     }
 
     SignalInfo(const SignalInfo &other) = delete;
@@ -172,9 +182,11 @@ public:
     {
         QObject::disconnect(m_loopConnection);
         m_loopConnection = QObject::connect(m_sender, m_signal, loop, &QEventLoop::quit, Qt::DirectConnection);
+#ifndef SYNCTHINGTESTHELPER_FOR_CLI
         if (!m_loopConnection) {
             CPPUNIT_FAIL(argsToString("Unable to connect signal ", signalName().data(), " for waiting"));
         }
+#endif
     }
 
 private:
@@ -283,7 +295,7 @@ template <typename Action, typename... SignalInfos> void waitForSignals(Action a
     if (timeout) {
         QObject::connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit, Qt::DirectConnection);
         timer.setSingleShot(true);
-        timer.setInterval(timeout * timeoutFactor);
+        timer.setInterval(SYNCTHINGTESTHELPER_TIMEOUT(timeout));
         timer.start();
     }
 
@@ -293,11 +305,13 @@ template <typename Action, typename... SignalInfos> void waitForSignals(Action a
         loop.exec();
     } while (!(allSignalsEmitted = checkWhetherAllSignalsEmitted(signalInfos...)) && (!timeout || timer.isActive()));
 
-    // check whether a timeout occured
+// check whether a timeout occured
+#ifndef SYNCTHINGTESTHELPER_FOR_CLI
     if (!allSignalsEmitted && timeout && !timer.isActive()) {
         CPPUNIT_FAIL(argsToString("Signal(s) ", failedSignalNames(signalInfos...).data(), " has/have not emmitted within at least ", timer.interval(),
             " ms.", timeoutFactor != 1.0 ? argsToString(" (original timeout: ", timeout, " ms)") : std::string()));
     }
+#endif
 }
 } // namespace TestUtilities
 
