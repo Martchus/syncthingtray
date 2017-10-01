@@ -165,6 +165,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../settings/connectionoptionpage.ui" line="91"/>
+        <source>Move currently selected configuration up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../settings/connectionoptionpage.ui" line="107"/>
         <source>Add secondary instance</source>
         <translation type="unfinished"></translation>
@@ -172,11 +177,6 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="124"/>
         <source>Remove currently selected secondary instance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/connectionoptionpage.ui" line="91"/>
-        <source>Move currently selected configuration up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -353,18 +353,18 @@
         <source>Response:</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <location filename="../misc/errorviewdialog.cpp" line="101"/>
-        <source>%1 error(s) occured</source>
-        <translation>
-            <numerusform>%1 error occured</numerusform>
-            <numerusform>%1 errors occured</numerusform>
-        </translation>
-    </message>
     <message>
         <location filename="../misc/errorviewdialog.cpp" line="53"/>
         <source>Clear errors</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../misc/errorviewdialog.cpp" line="101"/>
+        <source>%1 error(s) occured</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -626,9 +626,9 @@
     <message numerus="yes">
         <location filename="../misc/statusinfo.cpp" line="88"/>
         <source>Conntected to %1 devices</source>
-        <translation>
-            <numerusform>Conntected to %1 device</numerusform>
-            <numerusform>Conntected to %1 devices</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -726,9 +726,9 @@
     <message numerus="yes">
         <location filename="../misc/textviewdialog.cpp" line="90"/>
         <source>%1 item(s) out-of-sync</source>
-        <translation>
-            <numerusform>%1 item out of sync</numerusform>
-            <numerusform>%1 items out of sync</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>

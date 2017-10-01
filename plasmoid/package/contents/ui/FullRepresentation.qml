@@ -318,6 +318,24 @@ ColumnLayout {
             Layout.fillWidth: true
         }
         TinyButton {
+            id: showNewNotifications
+            tooltip: qsTr("Show new notifications")
+            iconSource: "emblem-warning"
+            visible: plasmoid.nativeInterface.notificationsAvailable
+            onClicked: {
+                plasmoid.nativeInterface.showNotificationsDialog()
+                plasmoid.expanded = false
+            }
+            Shortcut {
+                sequence: "Ctrl+N"
+                onActivated: {
+                    if (showNewNotifications.visible) {
+                        showNewNotifications.clicked()
+                    }
+                }
+            }
+        }
+        TinyButton {
             id: showOwnIdButton
             tooltip: qsTr("Show own device ID")
             iconSource: "view-barcode"

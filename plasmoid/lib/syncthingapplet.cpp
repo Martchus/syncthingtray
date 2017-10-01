@@ -170,6 +170,11 @@ bool SyncthingApplet::isStartStopForServiceEnabled() const
     return Settings::values().systemd.showButton;
 }
 
+bool SyncthingApplet::areNotificationsAvailable() const
+{
+    return !m_notifications.empty();
+}
+
 void SyncthingApplet::showSettingsDlg()
 {
     if (!m_settingsDlg) {
@@ -245,13 +250,16 @@ void SyncthingApplet::showNotificationsDialog()
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
     centerWidget(dlg);
     dlg->show();
-    m_notifications.clear();
     dismissNotifications();
 }
 
 void SyncthingApplet::dismissNotifications()
 {
     m_connection.considerAllNotificationsRead();
+    if (!m_notifications.empty()) {
+        m_notifications.clear();
+        emit notificationsAvailableChanged(false);
+    }
 }
 
 void SyncthingApplet::showInternalErrorsDialog()
@@ -384,6 +392,9 @@ void SyncthingApplet::handleNewNotification(DateTime when, const QString &msg)
     m_notifications.emplace_back(QString::fromLocal8Bit(when.toString(DateTimeOutputFormat::DateAndTime, true).data()), msg);
     if (Settings::values().notifyOn.syncthingErrors) {
         m_dbusNotifier.showSyncthingNotification(when, msg);
+    }
+    if (m_notifications.size() == 1) {
+        emit notificationsAvailableChanged(true);
     }
 }
 

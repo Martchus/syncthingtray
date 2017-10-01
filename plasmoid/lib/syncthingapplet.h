@@ -56,6 +56,7 @@ class SyncthingApplet : public Plasma::Applet {
             currentConnectionConfigIndexChanged)
     Q_PROPERTY(bool startStopForServiceEnabled READ isStartStopForServiceEnabled NOTIFY settingsChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
+    Q_PROPERTY(bool notificationsAvailable READ areNotificationsAvailable NOTIFY notificationsAvailableChanged)
 
 public:
     SyncthingApplet(QObject *parent, const QVariantList &data);
@@ -82,6 +83,7 @@ public:
     bool isStartStopForServiceEnabled() const;
     QSize size() const;
     void setSize(const QSize &size);
+    bool areNotificationsAvailable() const;
 
 public Q_SLOTS:
     void init() Q_DECL_OVERRIDE;
@@ -113,6 +115,7 @@ Q_SIGNALS:
     void settingsChanged();
     void currentConnectionConfigIndexChanged(int index);
     void sizeChanged(const QSize &size);
+    void notificationsAvailableChanged(bool notificationsAvailable);
 
 private Q_SLOTS:
     void handleSettingsChanged();

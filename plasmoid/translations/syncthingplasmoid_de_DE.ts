@@ -12,12 +12,12 @@
 <context>
     <name>DevicesPage</name>
     <message>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="58"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="60"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="58"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="60"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
@@ -25,27 +25,27 @@
 <context>
     <name>DirectoriesPage</name>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="74"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="75"/>
         <source>Show errors</source>
         <translation>Zeige Fehler</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="87"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="88"/>
         <source>Rescan</source>
         <translation>Scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="95"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="96"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="95"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="96"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="105"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="106"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
@@ -53,8 +53,8 @@
 <context>
     <name>DownloadsPage</name>
     <message>
-        <location filename="../package/contents/ui/DownloadsPage.qml" line="62"/>
-        <location filename="../package/contents/ui/DownloadsPage.qml" line="119"/>
+        <location filename="../package/contents/ui/DownloadsPage.qml" line="64"/>
+        <location filename="../package/contents/ui/DownloadsPage.qml" line="120"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
@@ -88,36 +88,41 @@
     </message>
     <message>
         <location filename="../package/contents/ui/FullRepresentation.qml" line="322"/>
+        <source>Show new notifications</source>
+        <translation>Neue Benachrichtigungen anzeigen</translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="340"/>
         <source>Show own device ID</source>
         <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="335"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="353"/>
         <source>Show Syncthing log</source>
         <translation>Syncthing-Log anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="348"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="366"/>
         <source>Rescan all directories</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="358"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="376"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="371"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="389"/>
         <source>Web UI</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="408"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="426"/>
         <source>In</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="411"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="429"/>
         <source>Out</source>
         <translation></translation>
     </message>
@@ -199,29 +204,29 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="232"/>
+        <location filename="../lib/syncthingapplet.cpp" line="237"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="244"/>
+        <location filename="../lib/syncthingapplet.cpp" line="249"/>
         <source>New notifications</source>
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="339"/>
+        <location filename="../lib/syncthingapplet.cpp" line="347"/>
         <source>Synchronization of %1 complete</source>
         <translation>%1 wurde synchronisiert</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="346"/>
+        <location filename="../lib/syncthingapplet.cpp" line="354"/>
         <source>Synchronization of the following devices complete:
 </source>
         <translation>Die folgenden Geräte wurden synchronisiert:
 </translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="392"/>
+        <location filename="../lib/syncthingapplet.cpp" line="403"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
