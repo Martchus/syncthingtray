@@ -119,8 +119,15 @@ ColumnLayout {
             }
             break
         case Qt.Key_Escape:
-            // hide plasmoid
-            plasmoid.expanded = false
+            var filter = mainTabGroup.currentTab.item.filter
+            if (filter && filter.text !== "") {
+                // reset filter
+                filter.text = ""
+                event.accepted = true
+            } else {
+                // hide plasmoid
+                plasmoid.expanded = false
+            }
             break
         case Qt.Key_1:
             // select directories tab
@@ -138,7 +145,7 @@ ColumnLayout {
             // rescan/resume/pause selected item
             if ((currentItem = mainTabGroup.currentTab.item.view.currentItem)) {
                 switch (event.modifiers) {
-                case Qt.NoModifier:
+                case Qt.ControlModifier:
                     // rescan selected item if it has a rescan button
                     if (currentItem.rescanButton
                             && currentItem.rescanButton.enabled) {
@@ -151,20 +158,45 @@ ColumnLayout {
                         currentItem.resumePauseButton.clicked()
                     }
                     break
+                default:
+                    sendKeyEventToFilter(event)
                 }
+            } else {
+                sendKeyEventToFilter(event)
             }
             break
         case Qt.Key_O:
             // open selected item in file browser if it has an open button
-            if ((currentItem = mainTabGroup.currentTab.item.view.currentItem)
+            if (event.modifiers === Qt.ControlModifier
+                    && (currentItem = mainTabGroup.currentTab.item.view.currentItem)
                     && currentItem.openButton) {
                 currentItem.openButton.clicked()
+            } else {
+                sendKeyEventToFilter(event)
             }
             break
         default:
+            sendKeyEventToFilter(event)
             return
         }
         event.accepted = true
+    }
+
+    function sendKeyEventToFilter(event) {
+        var filter = mainTabGroup.currentTab.item.filter
+        if (!filter || event.text === "" || filter.activeFocus) {
+            return
+        }
+        if (event.key === Qt.Key_Backspace && filter.text === "") {
+            return
+        }
+        if (event.matches(StandardKey.Paste)) {
+            filter.paste()
+        } else {
+            filter.text = ""
+            filter.text += event.text
+        }
+        filter.forceActiveFocus()
     }
 
     // heading and right-corner buttons

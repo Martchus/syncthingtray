@@ -7,17 +7,25 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
 
-Item {
+ColumnLayout {
     property alias view: directoryView
+    property alias filter: filter
     anchors.fill: parent
     objectName: "DirectoriesPage"
 
     PlasmaExtras.ScrollArea {
-        anchors.fill: parent
+        Layout.fillWidth: true
+        Layout.fillHeight: true
 
         TopLevelView {
             id: directoryView
-            model: plasmoid.nativeInterface.dirModel
+
+            model: PlasmaCore.SortFilterModel {
+                id: directoryFilterModel
+                sourceModel: plasmoid.nativeInterface.dirModel
+                filterRole: "name"
+                filterRegExp: filter.text
+            }
 
             delegate: TopLevelItem {
                 id: item
@@ -25,6 +33,8 @@ Item {
                 property alias rescanButton: rescanButton
                 property alias resumePauseButton: resumePauseButton
                 property alias openButton: openButton
+                property int sourceIndex: directoryFilterModel.mapRowToSource(
+                                              index)
 
                 ColumnLayout {
                     width: parent.width
@@ -107,7 +117,7 @@ Item {
 
                         model: DelegateModel {
                             model: plasmoid.nativeInterface.dirModel
-                            rootIndex: detailsView.model.modelIndex(index)
+                            rootIndex: detailsView.model.modelIndex(sourceIndex)
                             delegate: DetailItem {
                             }
                         }
@@ -115,5 +125,12 @@ Item {
                 }
             }
         }
+    }
+
+    PlasmaComponents.TextField {
+        id: filter
+        clearButtonShown: true
+        Layout.fillWidth: true
+        visible: text !== ""
     }
 }
