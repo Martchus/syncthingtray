@@ -51,7 +51,7 @@ TextViewDialog::TextViewDialog(const QString &title, QWidget *parent)
     m_browser->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
 
     // setup layout
-    m_layout = new QVBoxLayout(this);
+    m_layout = new QVBoxLayout;
     m_layout->setAlignment(Qt::AlignCenter);
     m_layout->addWidget(m_browser);
     setLayout(m_layout);

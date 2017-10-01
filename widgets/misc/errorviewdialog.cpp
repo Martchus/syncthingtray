@@ -32,7 +32,7 @@ ErrorViewDialog::ErrorViewDialog()
     }
 
     // add layout to show status and additional buttons
-    auto *const buttonLayout = new QHBoxLayout(this);
+    auto *const buttonLayout = new QHBoxLayout;
     buttonLayout->setMargin(0);
 
     // add label for overall status
