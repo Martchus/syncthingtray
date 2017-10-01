@@ -94,6 +94,7 @@ public Q_SLOTS:
     void dismissNotifications();
     void showInternalErrorsDialog();
     void showDirectoryErrors(unsigned int directoryIndex) const;
+    void copyToClipboard(const QString &text);
 
 Q_SIGNALS:
     /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."

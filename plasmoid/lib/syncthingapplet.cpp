@@ -23,7 +23,9 @@
 
 #include <KConfigGroup>
 
+#include <QClipboard>
 #include <QDesktopServices>
+#include <QGuiApplication>
 #include <QNetworkReply>
 #include <QQmlEngine>
 #include <QStringBuilder>
@@ -269,6 +271,11 @@ void SyncthingApplet::showDirectoryErrors(unsigned int directoryIndex) const
         centerWidget(dlg);
         dlg->show();
     }
+}
+
+void SyncthingApplet::copyToClipboard(const QString &text)
+{
+    QGuiApplication::clipboard()->setText(text);
 }
 
 /*!
