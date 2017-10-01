@@ -80,7 +80,7 @@ void ErrorViewDialog::addError(InternalError &&newError)
 
 void ErrorViewDialog::internalAddError(const InternalError &error)
 {
-    const QString url(error.url.toString(QUrl::FullyDecoded));
+    const QString url(error.url.toString());
 
     browser()->append(QString::fromUtf8(error.when.toString(DateTimeOutputFormat::DateAndTime, true).data()) % QChar(':') % QChar(' ') % error.message
         % QChar('\n') % m_request % QChar(' ') % url % QChar('\n') % m_response % QChar('\n') % QString::fromLocal8Bit(error.response) % QChar('\n'));
