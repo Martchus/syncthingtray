@@ -58,6 +58,7 @@ Item {
                                 width: 3
                             }
                             TinyButton {
+                                id: openButton
                                 iconSource: "folder"
                                 tooltip: qsTr("Open in file browser")
                                 enabled: path !== undefined
@@ -114,7 +115,6 @@ Item {
                                     }
                                 }
                                 TinyButton {
-                                    id: openButton
                                     iconSource: "folder"
                                     tooltip: qsTr("Open in file browser")
                                     onClicked: {
