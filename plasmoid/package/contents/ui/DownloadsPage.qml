@@ -29,6 +29,7 @@ Item {
 
                     RowLayout {
                         id: itemSummary
+                        Layout.fillWidth: true
 
                         RowLayout {
                             spacing: units.smallSpacing
@@ -72,8 +73,8 @@ Item {
 
                     DetailView {
                         id: detailsView
-                        width: parent.width
                         visible: item.expanded
+                        Layout.fillWidth: true
 
                         model: DelegateModel {
                             model: plasmoid.nativeInterface.downloadModel

@@ -42,6 +42,7 @@ ColumnLayout {
 
                     RowLayout {
                         id: itemSummary
+                        Layout.fillWidth: true
 
                         PlasmaCore.IconItem {
                             Layout.preferredWidth: units.iconSizes.small
@@ -114,6 +115,7 @@ ColumnLayout {
                     DetailView {
                         id: detailsView
                         visible: item.expanded
+                        Layout.fillWidth: true
 
                         model: DelegateModel {
                             model: plasmoid.nativeInterface.dirModel

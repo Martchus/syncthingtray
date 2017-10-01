@@ -28,6 +28,8 @@ Item {
                     spacing: 0
 
                     RowLayout {
+                        Layout.fillWidth: true
+
                         PlasmaCore.IconItem {
                             Layout.preferredWidth: units.iconSizes.small
                             Layout.preferredHeight: units.iconSizes.small
@@ -68,6 +70,7 @@ Item {
                     DetailView {
                         id: detailsView
                         visible: item.expanded
+                        Layout.fillWidth: true
 
                         model: DelegateModel {
                             model: plasmoid.nativeInterface.devModel
