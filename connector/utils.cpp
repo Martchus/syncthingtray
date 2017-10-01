@@ -73,30 +73,63 @@ bool isLocal(const QUrl &url)
 }
 
 /*!
+ * \brief Sets the key "paused" of the specified \a object to \a paused.
+ * \returns Returns whether object has been altered.
+ */
+bool setPausedValue(QJsonObject &object, bool paused)
+{
+    const QJsonObject::Iterator pausedIterator(object.find(QLatin1String("paused")));
+    if (pausedIterator == object.end()) {
+        object.insert(QLatin1String("paused"), paused);
+    } else {
+        QJsonValueRef pausedValue = pausedIterator.value();
+        if (pausedValue.toBool(false) == paused) {
+            return false;
+        }
+        pausedValue = paused;
+    }
+    return true;
+}
+
+/*!
  * \brief Alters the specified \a syncthingConfig so that the dirs with specified IDs are paused or not.
  * \returns Returns whether the config has been altered (all dirs might have been already paused/unpaused).
  */
 bool setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused)
 {
+    // get reference to folders array
+    const QJsonObject::Iterator foldersIterator(syncthingConfig.find(QLatin1String("folders")));
+    if (foldersIterator == syncthingConfig.end()) {
+        return false;
+    }
+    QJsonValueRef folders = foldersIterator.value();
+    if (!folders.isArray()) {
+        return false;
+    }
+
+    // alter folders
     bool altered = false;
-    QJsonValueRef folders = syncthingConfig.find(QLatin1String("folders")).value();
-    if (folders.isArray()) {
-        QJsonArray foldersArray = folders.toArray();
-        for (QJsonValueRef folder : foldersArray) {
-            QJsonObject folderObj = folder.toObject();
-            if (dirIds.isEmpty() || dirIds.contains(folderObj.value(QLatin1String("id")).toString())) {
-                QJsonValueRef pausedValue = folderObj.find(QLatin1String("paused")).value();
-                if (pausedValue.toBool(false) != paused) {
-                    pausedValue = paused;
-                    folder = folderObj;
-                    altered = true;
-                }
-            }
+    QJsonArray foldersArray = folders.toArray();
+    for (QJsonValueRef folder : foldersArray) {
+        QJsonObject folderObj = folder.toObject();
+
+        // skip devices not matching the specified IDs or are already paused/unpaused
+        if (!dirIds.isEmpty() && !dirIds.contains(folderObj.value(QLatin1String("id")).toString())) {
+            continue;
         }
-        if (altered) {
-            folders = foldersArray;
+
+        // alter paused value
+        if (setPausedValue(folderObj, paused)) {
+            folder = folderObj;
+            altered = true;
         }
     }
+
+    // re-assign altered folders to array reference
+    if (altered) {
+        folders = foldersArray;
+    }
+
     return altered;
 }
 
@@ -106,25 +139,39 @@ bool setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirId
  */
 bool setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &devIds, bool paused)
 {
+    // get reference to devices array
+    const QJsonObject::Iterator devicesIterator(syncthingConfig.find(QLatin1String("devices")));
+    if (devicesIterator == syncthingConfig.end()) {
+        return false;
+    }
+    QJsonValueRef devices = devicesIterator.value();
+    if (!devices.isArray()) {
+        return false;
+    }
+
+    // alter devices
     bool altered = false;
-    QJsonValueRef devices = syncthingConfig.find(QLatin1String("devices")).value();
-    if (devices.isArray()) {
-        QJsonArray devicesArray = devices.toArray();
-        for (QJsonValueRef device : devicesArray) {
-            QJsonObject deviceObj = device.toObject();
-            if (devIds.isEmpty() || devIds.contains(deviceObj.value(QLatin1String("deviceID")).toString())) {
-                QJsonValueRef pausedValue = deviceObj.find(QLatin1String("paused")).value();
-                if (pausedValue.toBool(false) != paused) {
-                    pausedValue = paused;
-                    device = deviceObj;
-                    altered = true;
-                }
-            }
+    QJsonArray devicesArray = devices.toArray();
+    for (QJsonValueRef device : devicesArray) {
+        QJsonObject deviceObj = device.toObject();
+
+        // skip devices not matching the specified IDs
+        if (!devIds.isEmpty() && !devIds.contains(deviceObj.value(QLatin1String("deviceID")).toString())) {
+            continue;
         }
-        if (altered) {
-            devices = devicesArray;
+
+        // alter paused value
+        if (setPausedValue(deviceObj, paused)) {
+            device = deviceObj;
+            altered = true;
         }
     }
+
+    // re-assign altered devices to array reference
+    if (altered) {
+        devices = devicesArray;
+    }
+
     return altered;
 }
 } // namespace Data
