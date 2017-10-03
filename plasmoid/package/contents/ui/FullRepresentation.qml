@@ -50,11 +50,34 @@ ColumnLayout {
         onSizeChanged: updateSize()
     }
 
-    // shortcut handling
+    // define shortcuts to trigger actions for currently selected item
+    function clickCurrentItemButton(buttonName) {
+        var currentItem = currentItem = mainTabGroup.currentTab.item.view.currentItem
+        if (!currentItem) {
+            return
+        }
+        var button = currentItem[buttonName]
+        if (button && button.enabled) {
+            button.clicked()
+        }
+    }
+    Shortcut {
+        sequence: "Ctrl+R"
+        onActivated: clickCurrentItemButton("rescanButton")
+    }
+    Shortcut {
+        sequence: "Ctrl+P"
+        onActivated: clickCurrentItemButton("resumePauseButton")
+    }
+    Shortcut {
+        sequence: "Ctrl+O"
+        onActivated: clickCurrentItemButton("openButton")
+    }
+
+    // define custom key handling for switching tabs, selecting items and filtering
     Keys.onPressed: {
         // note: event only received after clicking the tab buttons in plasmoidviewer
         // but works as expected in plasmashell
-        var currentItem
         switch (event.key) {
         case Qt.Key_Up:
             switch (event.modifiers) {
@@ -114,7 +137,8 @@ ColumnLayout {
             // fallthrough
         case Qt.Key_Return:
             // toggle expanded state of current item
-            if ((currentItem = mainTabGroup.currentTab.item.view.currentItem)) {
+            var currentItem = mainTabGroup.currentTab.item.view.currentItem
+            if (currentItem) {
                 currentItem.expanded = !currentItem.expanded
             }
             break
@@ -140,40 +164,6 @@ ColumnLayout {
         case Qt.Key_3:
             // select downloads tab
             downloadsTabButton.clicked()
-            break
-        case Qt.Key_R:
-            // rescan/resume/pause selected item
-            if ((currentItem = mainTabGroup.currentTab.item.view.currentItem)) {
-                switch (event.modifiers) {
-                case Qt.ControlModifier:
-                    // rescan selected item if it has a rescan button
-                    if (currentItem.rescanButton
-                            && currentItem.rescanButton.enabled) {
-                        currentItem.rescanButton.clicked()
-                    }
-                    break
-                case Qt.ShiftModifier:
-                    // resume/pause selected item if it has a resume/pause button
-                    if (currentItem.resumePauseButton) {
-                        currentItem.resumePauseButton.clicked()
-                    }
-                    break
-                default:
-                    sendKeyEventToFilter(event)
-                }
-            } else {
-                sendKeyEventToFilter(event)
-            }
-            break
-        case Qt.Key_O:
-            // open selected item in file browser if it has an open button
-            if (event.modifiers === Qt.ControlModifier
-                    && (currentItem = mainTabGroup.currentTab.item.view.currentItem)
-                    && currentItem.openButton) {
-                currentItem.openButton.clicked()
-            } else {
-                sendKeyEventToFilter(event)
-            }
             break
         default:
             sendKeyEventToFilter(event)
@@ -261,6 +251,10 @@ ColumnLayout {
                     break
                 }
             }
+            Shortcut {
+                sequence: "Ctrl+Shift+P"
+                onActivated: connectButton.clicked()
+            }
         }
         TinyButton {
             id: startStopButton
@@ -312,6 +306,14 @@ ColumnLayout {
             }
             onClicked: plasmoid.nativeInterface.service.toggleRunning()
             style: TinyButtonStyle {
+            }
+            Shortcut {
+                sequence: "Ctrl+Shift+S"
+                onActivated: {
+                    if (startStopButton.visible) {
+                        startStopButton.clicked()
+                    }
+                }
             }
         }
         Item {
@@ -367,7 +369,7 @@ ColumnLayout {
             iconSource: "view-refresh"
             onClicked: plasmoid.nativeInterface.connection.rescanAllDirs()
             Shortcut {
-                sequence: "Ctrl+R"
+                sequence: "Ctrl+Shift+R"
                 onActivated: rescanAllDirsButton.clicked()
             }
         }
