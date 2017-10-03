@@ -47,15 +47,17 @@ to the list. Maybe someone could check whether it works under Mac OS X.
     * Rescan entire Syncthing directory
     * Pause/resume Syncthing directory
     * See also screenshots section
+* Also has an (experimental) implementation as Plasmoid for Plasma 5 desktop
 * English and German localization
 
 ## Planned features
 The tray is still under development; the following features are planned:
 
 * Show recently processed items
-* Create Plasmoid for Plasma 5 desktop
-    * An incomplete/experimental version is already available
-* Provide built-in support for file system watches
+* Make some notifications configurable on folder level
+* Optionally notify for single file updates (https://github.com/Martchus/syncthingtray/issues/7)
+* ~~Provide built-in support for file system watches~~ (canceled because this will be implemented in
+  Syncting itself)
 
 ## Screenshots
 
