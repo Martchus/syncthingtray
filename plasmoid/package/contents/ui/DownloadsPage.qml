@@ -119,7 +119,7 @@ Item {
                                     iconSource: "folder"
                                     tooltip: qsTr("Open in file browser")
                                     onClicked: {
-                                        Qt.openUrlExternally(path)
+                                        Qt.openUrlExternally(path + "/..")
                                         plasmoid.expanded = false
                                     }
                                 }
