@@ -305,7 +305,7 @@ ColumnLayout {
                 }
                 // show start/stop button only when the configured unit is available
                 var service = nativeInterface.service
-                if (!service || !service.unitAvailable) {
+                if (!service || !service.systemdAvailable) {
                     return "irrelevant"
                 }
                 return service.running ? "running" : "stopped"
