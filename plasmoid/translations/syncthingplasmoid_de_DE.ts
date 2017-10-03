@@ -135,55 +135,58 @@
         <translation>Erscheinungsbild</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="16"/>
-        <source>The following settings are specific to the current instance of the Plasmoid.</source>
-        <translation>Die folgenden Einstellungen sind spezifisch für die aktuelle Instanz des Plasmoids.</translation>
-    </message>
-    <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="32"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="18"/>
         <source>Size of full representation</source>
         <translation>Minimale Größe</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="82"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="68"/>
         <source> x </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="108"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="94"/>
         <source> grid units</source>
         <translation> Rastereinheiten</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="126"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="112"/>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop, in full screen mode or as entry of the system tray Plasmoid.</source>
         <translation>Die eingestellte Größe wird ignoriert, wenn das Plasmoid am Desktop, im Vollbild oder innerhalb des Systemtray-Plasmoids dargestellt wird.</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="39"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="25"/>
         <source>Colors</source>
         <translation>Farben</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="46"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="32"/>
         <source>Bright custom text colors (use for dark color scheme)</source>
         <translation>Helle benutzerdefinierte Schriftfarben (für dunkles Farbschema gedacht)</translation>
     </message>
 </context>
 <context>
+    <name>Plasmoid::Settings</name>
+    <message>
+        <location filename="../lib/settingsdialog.cpp" line="28"/>
+        <source>The settings on this page are specific to the current instance of the Plasmoid.</source>
+        <translation>Die Einstellungen auf dieser Seite sind spezifisch für die aktuelle Instanz des Plasmoids.</translation>
+    </message>
+</context>
+<context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="96"/>
+        <location filename="../lib/settingsdialog.cpp" line="120"/>
         <source>Plasmoid</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="105"/>
+        <location filename="../lib/settingsdialog.cpp" line="129"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="115"/>
+        <location filename="../lib/settingsdialog.cpp" line="139"/>
         <source>Extras</source>
         <translation></translation>
     </message>
@@ -191,12 +194,12 @@
 <context>
     <name>Plasmoid::ShortcutOptionPage</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="50"/>
+        <location filename="../lib/settingsdialog.cpp" line="65"/>
         <source>Shortcuts</source>
         <translation>Kurzbefehle</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="55"/>
+        <location filename="../lib/settingsdialog.cpp" line="71"/>
         <source>Global shortcut</source>
         <translation>Globales Tastenkürzel</translation>
     </message>

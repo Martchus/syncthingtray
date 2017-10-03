@@ -27,6 +27,7 @@ public:
 AppearanceOptionPage(SyncthingApplet &applet, QWidget *parentWidget = nullptr);
 
 private:
+DECLARE_SETUP_WIDGETS
 SyncthingApplet *m_applet;
 END_DECLARE_OPTION_PAGE
 

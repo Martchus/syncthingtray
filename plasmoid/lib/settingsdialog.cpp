@@ -22,6 +22,21 @@ using namespace QtGui;
 
 namespace Plasmoid {
 
+void addPlasmoidSpecificNote(QLayout *layout, QWidget *parent)
+{
+    auto *const infoLabel = new QLabel(
+        QCoreApplication::translate("Plasmoid::Settings", "The settings on this page are specific to the current instance of the Plasmoid."), parent);
+    infoLabel->setWordWrap(true);
+    QFont infoFont(infoLabel->font());
+    infoFont.setBold(true);
+    infoLabel->setFont(infoFont);
+    auto *const line = new QFrame(parent);
+    line->setFrameShape(QFrame::HLine);
+    line->setFrameShadow(QFrame::Sunken);
+    layout->addWidget(line);
+    layout->addWidget(infoLabel);
+}
+
 // ShortcutOptionPage
 ShortcutOptionPage::ShortcutOptionPage(SyncthingApplet &applet, QWidget *parentWidget)
     : ShortcutOptionPageBase(parentWidget)
@@ -46,15 +61,17 @@ void ShortcutOptionPage::reset()
 
 QWidget *ShortcutOptionPage::setupWidget()
 {
-    QWidget *widget = new QWidget();
+    auto *const widget = new QWidget();
     widget->setWindowTitle(QCoreApplication::translate("Plasmoid::ShortcutOptionPage", "Shortcuts"));
     widget->setWindowIcon(QIcon::fromTheme(QStringLiteral("configure-shortcuts")));
-    QVBoxLayout *mainLayout = new QVBoxLayout(widget);
-    QFormLayout *formLayout = new QFormLayout(widget);
+    widget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    auto *const mainLayout = new QVBoxLayout(widget);
+    auto *const formLayout = new QFormLayout;
     formLayout->addRow(
         QCoreApplication::translate("Plasmoid::ShortcutOptionPage", "Global shortcut"), m_globalShortcutEdit = new QKeySequenceEdit(widget));
     mainLayout->addLayout(formLayout);
-    widget->setLayout(mainLayout);
+    mainLayout->addStretch(1);
+    addPlasmoidSpecificNote(mainLayout, widget);
     return widget;
 }
 
@@ -84,6 +101,13 @@ void AppearanceOptionPage::reset()
     ui()->widthSpinBox->setValue(size.width());
     ui()->heightSpinBox->setValue(size.height());
     ui()->brightTextColorsCheckBox->setChecked(config.readEntry<bool>("brightColors", false));
+}
+
+QWidget *AppearanceOptionPage::setupWidget()
+{
+    auto *const widget = AppearanceOptionPageBase::setupWidget();
+    addPlasmoidSpecificNote(ui()->verticalLayout, widget);
+    return widget;
 }
 
 QtGui::SettingsDialog *setupSettingsDialog(SyncthingApplet &applet)
