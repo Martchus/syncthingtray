@@ -39,8 +39,11 @@ to the list. Maybe someone could check whether it works under Mac OS X.
     * Can be built without web view support as well (then the web UI is opened in the regular browser)
 * Allows quickly switching between multiple Syncthing instances
 * Shows notifications via Qt or uses D-Bus notification daemon directly
-* Also features a simple command line utility `syncthingctl` to check Syncthing status and trigger
-  rescan/pause/resume/restart
+* Also features a simple command line utility `syncthingctl`
+    * Check Syncthing status
+    * Trigger rescan/pause/resume/restart
+    * Wait for idle
+    * Supports Bash completion, even for directory and device names
 * Also bundles a KIO plugin which shows the status of a Syncthing directory
   and allows to trigger Syncthing actions in Dolphin file manager
     * Rescan selected items
@@ -57,7 +60,7 @@ The tray is still under development; the following features are planned:
 * Make some notifications configurable on folder level
 * Optionally notify for single file updates (https://github.com/Martchus/syncthingtray/issues/7)
 * ~~Provide built-in support for file system watches~~ (canceled because this will be implemented in
-  Syncting itself)
+  Syncthing itself)
 
 ## Screenshots
 
