@@ -21,8 +21,7 @@ if(ANDROID OR WIN32 OR APPLE)
     set(PLASMOID_DISABLED_BY_DEFAULT ON)
 else()
     set(FILE_ITEM_ACTION_PLUGIN_DISABLED_BY_DEFAULT OFF)
-    # plasmoid is still incomplete, so disable it by default
-    set(PLASMOID_DISABLED_BY_DEFAULT ON)
+    set(PLASMOID_DISABLED_BY_DEFAULT OFF)
 endif()
 
 # options for partial build
