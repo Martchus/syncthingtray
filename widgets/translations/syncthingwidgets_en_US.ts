@@ -564,67 +564,67 @@
 <context>
     <name>QtGui::StatusInfo</name>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="15"/>
+        <location filename="../misc/statusinfo.cpp" line="16"/>
         <source>Initializing ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="25"/>
+        <location filename="../misc/statusinfo.cpp" line="26"/>
         <source>Not connected to Syncthing - trying to reconnect every %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="28"/>
+        <location filename="../misc/statusinfo.cpp" line="29"/>
         <source>Not connected to Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="33"/>
+        <location filename="../misc/statusinfo.cpp" line="34"/>
         <source>Reconnecting ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="41"/>
+        <location filename="../misc/statusinfo.cpp" line="42"/>
         <source>Synchronization is ongoing but at least one directory is out of sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="45"/>
+        <location filename="../misc/statusinfo.cpp" line="46"/>
         <source>At least one directory is out of sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="49"/>
+        <location filename="../misc/statusinfo.cpp" line="50"/>
         <source>Notifications available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="54"/>
+        <location filename="../misc/statusinfo.cpp" line="55"/>
         <source>Syncthing is idling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="58"/>
+        <location filename="../misc/statusinfo.cpp" line="59"/>
         <source>Syncthing is scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="62"/>
+        <location filename="../misc/statusinfo.cpp" line="63"/>
         <source>At least one device is paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="66"/>
+        <location filename="../misc/statusinfo.cpp" line="67"/>
         <source>Synchronization is ongoing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="70"/>
+        <location filename="../misc/statusinfo.cpp" line="71"/>
         <source>Status is unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="88"/>
+        <location filename="../misc/statusinfo.cpp" line="87"/>
         <source>Conntected to %1 devices</source>
         <translation type="unfinished">
             <numerusform></numerusform>

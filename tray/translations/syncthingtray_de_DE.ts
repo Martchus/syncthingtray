@@ -83,17 +83,17 @@
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="174"/>
+        <location filename="../gui/trayicon.cpp" line="176"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="194"/>
+        <location filename="../gui/trayicon.cpp" line="196"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation>Neue Syncthing-Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="230"/>
+        <location filename="../gui/trayicon.cpp" line="232"/>
         <source>Disconnected from Syncthing</source>
         <translation>Verbindung zu Syncthing getrennt</translation>
     </message>
@@ -103,12 +103,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="250"/>
+        <location filename="../gui/trayicon.cpp" line="252"/>
         <source>Synchronization of %1 complete</source>
         <translation>%1 wurde synchronisiert</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="257"/>
+        <location filename="../gui/trayicon.cpp" line="259"/>
         <source>Synchronization of the following devices complete:
 </source>
         <translation>Folgende Verzeichnisse wurden synchronisiert:
