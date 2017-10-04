@@ -128,15 +128,24 @@ See the release section on GitHub.
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and [qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries. For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities). For building this straight, see the next section.
 
-The following Qt 5 modules are requried (version 5.7 or newer): core network gui widgets svg webenginewidgets/webkitwidgets
+The following Qt 5 modules are requried (version 5.7 or newer): core network dbus gui widgets svg webenginewidgets/webkitwidgets
 
 The built-in web view is optional (see section "Select Qt module for WebView").
 
 To build the plugin for Dolphin integration KIO is also requried. To skip building
-the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN=ON` to the CMake arguments.
+the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
 
-It is also possible to build only the CLI (syncthingctl) by adding `-DNO_MODEL=ON`
-to the CMake arguments. Then only core and network are required.
+To build the Plasmoid for the Plasma 5 desktop, the Qt 5 module QML and the KF5 module
+Plasma are required as well. Additionally, the Plasmoid requires Qt 5.8 or newer. To skip
+building the Plasmoid, add `-DNO_PLASMOID:BOOL=ON` to the CMake arguments.
+
+It is also possible to build only the CLI (syncthingctl) by adding `-DNO_MODEL:BOOL=ON` and
+`-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments. Then only the Qt modules core,
+network and dbus are required.
+
+To get rid of systemd support, add `-DENABLE_SYSTEMD_SUPPORT_BY_DEFAULT` to the CMake arguments.
+In this case the Qt module D-Bus is not required anymore. Note that there is no hard dependency
+to systemd in any case.
 
 #### Building this straight
 0. Install (preferably the latest version of) g++ or clang, the required Qt 5 modules and CMake.
