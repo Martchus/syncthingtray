@@ -86,6 +86,8 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     connect(connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
     connect(connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
     connect(connection, &SyncthingConnection::statusChanged, this, &TrayIcon::handleConnectionStatusChanged);
+    connect(connection, &SyncthingConnection::newDevices, this, &TrayIcon::updateStatusIconAndText);
+    connect(connection, &SyncthingConnection::devStatusChanged, this, &TrayIcon::updateStatusIconAndText);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, connection,
         static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));

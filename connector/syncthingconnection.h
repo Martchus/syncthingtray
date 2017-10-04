@@ -77,6 +77,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(int totalOutgoingTraffic READ totalOutgoingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(double totalIncomingRate READ totalIncomingRate NOTIFY trafficChanged)
     Q_PROPERTY(double totalOutgoingRate READ totalOutgoingRate NOTIFY trafficChanged)
+    Q_PROPERTY(bool connectedDevices READ connectedDevices)
 
 public:
     explicit SyncthingConnection(
@@ -123,6 +124,7 @@ public:
     const std::vector<SyncthingDir *> &completedDirs() const;
     QStringList directoryIds() const;
     QStringList deviceIds() const;
+    size_t connectedDevices() const;
 
 public Q_SLOTS:
     bool loadSelfSignedCertificate();

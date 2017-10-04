@@ -579,14 +579,37 @@ SyncthingDev *SyncthingConnection::findDevInfoByName(const QString &devName, int
     return nullptr;
 }
 
+/*!
+ * \brief Returns all directory IDs for the current configuration.
+ * \remarks Computed by looping dirInfo().
+ */
 QStringList SyncthingConnection::directoryIds() const
 {
     return ids(m_dirs);
 }
 
+/*!
+ * \brief Returns all device IDs for the current configuration.
+ * \remarks Computed by looping devInfo().
+ */
 QStringList SyncthingConnection::deviceIds() const
 {
     return ids(m_devs);
+}
+
+/*!
+ * \brief Returns the number of devices Syncthing is currently connected to.
+ * \remarks Computed by looping devInfo().
+ */
+size_t SyncthingConnection::connectedDevices() const
+{
+    size_t connectedDevs = 0;
+    for (const SyncthingDev &dev : devInfo()) {
+        if (dev.isConnected()) {
+            ++connectedDevs;
+        }
+    }
+    return connectedDevs;
 }
 
 /*!

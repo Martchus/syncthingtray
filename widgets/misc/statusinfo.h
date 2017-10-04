@@ -21,7 +21,8 @@ public:
     const QString &statusText() const;
     const QString &additionalStatusText() const;
     const QIcon &statusIcon() const;
-    void update(const Data::SyncthingConnection &connection);
+    void updateConnectionStatus(const Data::SyncthingConnection &connection);
+    void updateConnectedDevices(const Data::SyncthingConnection &connection);
 
 private:
     QString m_statusText;
@@ -31,7 +32,8 @@ private:
 
 inline StatusInfo::StatusInfo(const Data::SyncthingConnection &connection)
 {
-    update(connection);
+    updateConnectionStatus(connection);
+    updateConnectedDevices(connection);
 }
 
 inline const QString &StatusInfo::statusText() const

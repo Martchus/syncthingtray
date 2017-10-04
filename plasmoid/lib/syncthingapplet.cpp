@@ -75,6 +75,8 @@ void SyncthingApplet::init()
 
     // connect signals and slots
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &SyncthingApplet::handleConnectionStatusChanged);
+    connect(&m_connection, &SyncthingConnection::newDevices, this, &SyncthingApplet::handleDevicesChanged);
+    connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &SyncthingApplet::handleDevicesChanged);
     connect(&m_connection, &SyncthingConnection::error, this, &SyncthingApplet::handleInternalError);
     connect(&m_connection, &SyncthingConnection::trafficChanged, this, &SyncthingApplet::trafficChanged);
     connect(&m_connection, &SyncthingConnection::newNotification, this, &SyncthingApplet::handleNewNotification);
@@ -316,7 +318,8 @@ void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
     }
 
     // update status icon and tooltip text
-    m_statusInfo.update(m_connection);
+    m_statusInfo.updateConnectionStatus(m_connection);
+    m_statusInfo.updateConnectedDevices(m_connection);
 
     // show notifications (FIXME: reduce C&P from trayicon.cpp)
     const auto &settings = Settings::values();
@@ -361,6 +364,11 @@ void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
     // set status and emit signal
     m_status = status;
     emit connectionStatusChanged();
+}
+
+void SyncthingApplet::handleDevicesChanged()
+{
+    m_statusInfo.updateConnectedDevices(m_connection);
 }
 
 void SyncthingApplet::handleInternalError(

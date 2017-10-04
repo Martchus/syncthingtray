@@ -2,6 +2,7 @@
 
 #include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingdev.h"
+#include "../../connector/utils.h"
 #include "../../model/syncthingicons.h"
 
 #include <QCoreApplication>
@@ -17,7 +18,7 @@ StatusInfo::StatusInfo()
 {
 }
 
-void StatusInfo::update(const SyncthingConnection &connection)
+void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection)
 {
     switch (connection.status()) {
     case SyncthingStatus::Disconnected:
@@ -72,20 +73,19 @@ void StatusInfo::update(const SyncthingConnection &connection)
             }
         }
     }
-    size_t connectedDevices = 0;
+}
+
+void StatusInfo::updateConnectedDevices(const SyncthingConnection &connection)
+{
     switch (connection.status()) {
     case SyncthingStatus::Idle:
     case SyncthingStatus::OutOfSync:
     case SyncthingStatus::Scanning:
     case SyncthingStatus::Synchronizing:
-        for (const SyncthingDev &dev : connection.devInfo()) {
-            if (dev.isConnected()) {
-                ++connectedDevices;
-            }
-        }
-        if (connectedDevices) {
+        if (const size_t connectedDevices = connection.connectedDevices()) {
             m_additionalStatusText
-                = QCoreApplication::translate("QtGui::StatusInfo", "Conntected to %1 devices", nullptr, connectedDevices).arg(connectedDevices);
+                = QCoreApplication::translate("QtGui::StatusInfo", "Conntected to %1 devices", nullptr, trQuandity(connectedDevices))
+                      .arg(connectedDevices);
         } else {
             m_additionalStatusText = QCoreApplication::translate("QtGui::StatusInfo", "Not connected to other devices");
         }
