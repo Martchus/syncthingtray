@@ -7,12 +7,15 @@ RowLayout {
     property string detailName: name ? name : ""
     property string detailValue: detail ? detail : ""
 
+    spacing: theme.defaultFont.pointSize * 0.8
+
     PlasmaComponents.Label {
         Layout.preferredWidth: 100
         Layout.leftMargin: units.iconSizes.smallMedium
-        text: detailName
+        text: detailName + ":"
         font.pointSize: theme.defaultFont.pointSize * 0.8
-        elide: Text.ElideRight
+        font.weight: Font.DemiBold
+        horizontalAlignment: Qt.AlignRight
     }
     PlasmaComponents.Label {
         Layout.fillWidth: true
