@@ -184,7 +184,8 @@ to systemd in any case.
   regular web browser anyways.
 * It will be replaced by the compatible Qt WebKit revived/ng soon and hence no longer be deprecated.
 
-## Adding translations
+## Contributing
+### Adding translations
 Currently translations for English and German are available. Further translations
 can be added quite easily:
 
@@ -196,6 +197,14 @@ can be added quite easily:
 4. Open the files with Qt Linguist to add translations. Qt Linguist is part of
    the [Qt Tools repository](http://code.qt.io/cgit/qt/qttools.git/) and its usage
    is [well documented](http://doc.qt.io/qt-5/linguist-translators.html).
+
+### Using backend libraries
+Note that the contained backend libraries (which provide connecting to Syncthing, data models and more) are written for internal
+use whithin the components contained by this repository.
+
+Hence those libraries do *not* provide a stable ABI/API. If you like to
+use them to develop Syncthing integration or tooling with Qt and C++, it makes most sense to contribute it as an additional component
+directly to this repository. Then I will be able to take it into account when changeing the API.
 
 ## Known bugs
 The following bugs are caused by dependencies and hence tracked externally. For bugs of Syncthing Tray itself, checkout the issues
