@@ -3,7 +3,9 @@
 
 #include <c++utilities/conversion/stringbuilder.h>
 
+#ifndef SYNCTHINGTESTHELPER_FOR_CLI
 #include <cppunit/extensions/HelperMacros.h>
+#endif
 
 #include <QEventLoop>
 #include <QMetaMethod>
