@@ -65,6 +65,8 @@ set(REQUIRED_ICONS
     folder-download
     folder-open
     folder-sync
+    go-down
+    go-up
     help-about
     internet-web-browser
     list-add

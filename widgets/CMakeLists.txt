@@ -66,6 +66,8 @@ set(REQUIRED_ICONS
     emblem-checked
     network-connect
     emblem-remove
+    go-down
+    go-up
 )
 
 # find c++utilities
