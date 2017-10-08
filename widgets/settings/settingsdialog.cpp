@@ -216,7 +216,7 @@ void ConnectionOptionPage::removeSelectedConfig()
         return;
     }
     const int index = ui()->selectionComboBox->currentIndex();
-    if (index < 0 || static_cast<unsigned>(index) >= m_secondarySettings.size()) {
+    if (index < 0 || static_cast<unsigned>(index) > m_secondarySettings.size()) {
         return;
     }
 
