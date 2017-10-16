@@ -37,7 +37,12 @@ Args::Args()
     , credentials("credentials", 'c', "specifies user name and password", { "user name", "password" })
     , certificate("cert", '\0', "specifies the certificate used by the Syncthing instance", { "path" })
 {
-    for (Argument *arg : { &statusDir, &statusDev, &pauseDev, &pauseDir }) {
+    for (Argument *arg : { &statusDir, &pauseDir }) {
+        arg->setConstraints(0, Argument::varValueCount);
+        arg->setValueCompletionBehavior(
+            ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::Directories | ValueCompletionBehavior::InvokeCallback);
+    }
+    for (Argument *arg : { &statusDev, &pauseDev }) {
         arg->setConstraints(0, Argument::varValueCount);
         arg->setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
     }
@@ -50,7 +55,8 @@ Args::Args()
 
     rescan.setValueNames({ "dir ID" });
     rescan.setRequiredValueCount(Argument::varValueCount);
-    rescan.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
+    rescan.setValueCompletionBehavior(
+        ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::Directories | ValueCompletionBehavior::InvokeCallback);
     rescan.setExample(PROJECT_NAME " rescan dir1 dir2 dir4 dir5");
     pause.setSubArguments({ &pauseDir, &pauseDev });
     pause.setExample(PROJECT_NAME " pause --dir dir1 --dir dir2 --dev dev1 --dev dev2");

@@ -14,6 +14,26 @@ namespace Cli {
 
 enum class OperationType { Status, PauseResume };
 
+struct RelevantDir {
+    RelevantDir(const Data::SyncthingDir *dir = nullptr, const QString &subDir = QString());
+    operator bool() const;
+    void notifyAboutRescan() const;
+
+    const Data::SyncthingDir *dirObj;
+    QString subDir;
+};
+
+inline RelevantDir::RelevantDir(const Data::SyncthingDir *dir, const QString &subDir)
+    : dirObj(dir)
+    , subDir(subDir)
+{
+}
+
+inline RelevantDir::operator bool() const
+{
+    return dirObj != nullptr;
+}
+
 class Application : public QObject {
     Q_OBJECT
 
@@ -45,7 +65,7 @@ private:
     void requestPauseAllDirs(const ArgumentOccurrence &);
     void requestResumeAllDevs(const ArgumentOccurrence &);
     void requestResumeAllDirs(const ArgumentOccurrence &);
-    static void printDir(const Data::SyncthingDir *dir);
+    static void printDir(const RelevantDir &relevantDir);
     static void printDev(const Data::SyncthingDev *dev);
     void printStatus(const ArgumentOccurrence &);
     static void printLog(const std::vector<Data::SyncthingLogEntry> &logEntries);
@@ -58,6 +78,7 @@ private:
     void requestResumePwd(const ArgumentOccurrence &occurrence);
     void initDirCompletion(Argument &arg, const ArgumentOccurrence &);
     void initDevCompletion(Argument &arg, const ArgumentOccurrence &);
+    RelevantDir findDirectory(const QString &dirIdentifier);
 
     Args m_args;
     Data::SyncthingConnectionSettings m_settings;
@@ -65,10 +86,9 @@ private:
     size_t m_expectedResponse;
     bool m_preventDisconnect;
     bool m_callbacksInvoked;
-    std::vector<const Data::SyncthingDir *> m_relevantDirs;
+    std::vector<RelevantDir> m_relevantDirs;
     std::vector<const Data::SyncthingDev *> m_relevantDevs;
-    const Data::SyncthingDir *m_pwd;
-    QString m_relativePath;
+    RelevantDir m_pwd;
     int m_idleDuration;
     int m_idleTimeout;
     bool m_argsRead;
