@@ -119,6 +119,7 @@ public:
     QMetaObject::Connection requestLog(std::function<void(const std::vector<SyncthingLogEntry> &)> callback);
     const QList<QSslError> &expectedSslErrors();
     SyncthingDir *findDirInfo(const QString &dirId, int &row);
+    SyncthingDir *findDirInfoByPath(const QString &path, QString &relativePath, int &row);
     SyncthingDev *findDevInfo(const QString &devId, int &row);
     SyncthingDev *findDevInfoByName(const QString &devName, int &row);
     const std::vector<SyncthingDir *> &completedDirs() const;

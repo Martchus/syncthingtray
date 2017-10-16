@@ -520,7 +520,32 @@ SyncthingDir *SyncthingConnection::findDirInfo(const QString &dirId, int &row)
         }
         ++row;
     }
-    return nullptr; // TODO: dir is unknown, trigger refreshing the config
+    return nullptr;
+}
+
+/*!
+ * \brief Returns the directory info object for the directory with the specified \a path.
+ *
+ * If a corresponding Syncthing directory could be found, \a relativePath is set to the path of the item relative
+ * to the location of the corresponding Syncthing directory.
+ *
+ * \returns Returns a pointer to the object or nullptr if not found.
+ * \remarks The returned object becomes invalid when the newDirs() signal is emitted or the connection is destroyed.
+ */
+SyncthingDir *SyncthingConnection::findDirInfoByPath(const QString &path, QString &relativePath, int &row)
+{
+    row = 0;
+    for (SyncthingDir &dir : m_dirs) {
+        if (path == dir.pathWithoutTrailingSlash()) {
+            relativePath.clear();
+            return &dir;
+        } else if (path.startsWith(dir.path)) {
+            relativePath = path.mid(dir.path.size());
+            return &dir;
+        }
+        ++row;
+    }
+    return nullptr;
 }
 
 /*!
@@ -559,7 +584,7 @@ SyncthingDev *SyncthingConnection::findDevInfo(const QString &devId, int &row)
         }
         ++row;
     }
-    return nullptr; // TODO: dev is unknown, trigger refreshing the config
+    return nullptr;
 }
 
 /*!
