@@ -97,6 +97,7 @@ public Q_SLOTS:
     void showInternalErrorsDialog();
     void showDirectoryErrors(unsigned int directoryIndex) const;
     void copyToClipboard(const QString &text);
+    void updateStatusIconAndTooltip();
 
 Q_SIGNALS:
     /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."

@@ -177,6 +177,13 @@ bool SyncthingApplet::areNotificationsAvailable() const
     return !m_notifications.empty();
 }
 
+void SyncthingApplet::updateStatusIconAndTooltip()
+{
+    m_statusInfo.updateConnectionStatus(m_connection);
+    m_statusInfo.updateConnectedDevices(m_connection);
+    emit connectionStatusChanged();
+}
+
 void SyncthingApplet::showSettingsDlg()
 {
     if (!m_settingsDlg) {
@@ -261,6 +268,8 @@ void SyncthingApplet::dismissNotifications()
     if (!m_notifications.empty()) {
         m_notifications.clear();
         emit notificationsAvailableChanged(false);
+        // update status as well because having or not having notifications is relevant for status text/icon
+        updateStatusIconAndTooltip();
     }
 }
 
@@ -403,6 +412,8 @@ void SyncthingApplet::handleNewNotification(DateTime when, const QString &msg)
     }
     if (m_notifications.size() == 1) {
         emit notificationsAvailableChanged(true);
+        // update status as well because having or not having notifications is relevant for status text/icon
+        updateStatusIconAndTooltip();
     }
 }
 
