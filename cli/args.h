@@ -11,6 +11,7 @@ struct Args {
     Args();
     ArgumentParser parser;
     HelpArgument help;
+    NoColorArgument noColor;
     OperationArgument status, log, stop, restart, rescan, rescanAll, pause, pauseAllDevs, pauseAllDirs, resume, resumeAllDevs, resumeAllDirs,
         waitForIdle, pwd;
     OperationArgument statusPwd, rescanPwd, pausePwd, resumePwd;

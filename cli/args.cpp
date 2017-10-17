@@ -67,7 +67,7 @@ Args::Args()
     credentials.setExample(PROJECT_NAME " status --dir dir1 --credentials name supersecret");
 
     parser.setMainArguments({ &status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &pauseAllDevs, &pauseAllDirs, &resume, &resumeAllDevs,
-        &resumeAllDirs, &waitForIdle, &pwd, &configFile, &apiKey, &url, &credentials, &certificate, &help });
+        &resumeAllDirs, &waitForIdle, &pwd, &configFile, &apiKey, &url, &credentials, &certificate, &noColor, &help });
 
     // allow setting default values via environment
     configFile.setEnvironmentVariable("SYNCTHING_CTL_CONFIG_FILE");
