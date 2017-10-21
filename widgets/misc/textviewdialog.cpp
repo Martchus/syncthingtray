@@ -110,12 +110,23 @@ TextViewDialog *TextViewDialog::forDirectoryErrors(const Data::SyncthingDir &dir
                     printDirectories(tr("Do you really want to remove the following directories:"), nonEmptyDirs), QMessageBox::YesToAll,
                     QMessageBox::NoToAll | QMessageBox::Default | QMessageBox::Escape)
                 == QMessageBox::YesToAll) {
+                QStringList removedDirs;
                 QStringList failedDirs;
                 for (const QString &dirPath : nonEmptyDirs) {
+                    bool ok = false;
                     QDir dir(dirPath);
                     if (!dir.exists() || !dir.removeRecursively()) {
-                        failedDirs << dirPath;
+                        // check whether dir has already been removed by removing its parent
+                        for (const QString &removedDir : removedDirs) {
+                            if (dirPath.startsWith(removedDir)) {
+                                ok = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        ok = true;
                     }
+                    (ok ? removedDirs : failedDirs) << dirPath;
                 }
                 if (!failedDirs.isEmpty()) {
                     QMessageBox::critical(textViewDlg, title, printDirectories(tr("Unable to remove the following dirs:"), failedDirs));
