@@ -749,15 +749,23 @@
         <translation>Sollen die folgenden Verzeichnisse wirklich gelöscht werden?</translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="121"/>
+        <location filename="../misc/textviewdialog.cpp" line="132"/>
         <source>Unable to remove the following dirs:</source>
         <translation>Die folgenden Verzeichnisse konnten nicht gelöscht werden:</translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="133"/>
-        <location filename="../misc/textviewdialog.cpp" line="146"/>
+        <location filename="../misc/textviewdialog.cpp" line="144"/>
+        <location filename="../misc/textviewdialog.cpp" line="157"/>
         <source>Log</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>QtGui::WebPage</name>
+    <message>
+        <location filename="../webview/webpage.cpp" line="268"/>
+        <source>Select path for Syncthing directory ...</source>
+        <translation>Pfad für Syncthing-Verzeichnis auswählen ...</translation>
     </message>
 </context>
 <context>
