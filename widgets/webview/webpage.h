@@ -28,8 +28,11 @@ protected:
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
     bool certificateError(const QWebEngineCertificateError &certificateError);
     bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
+    void javaScriptConsoleMessage(
+        QWebEnginePage::JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID);
 #else
     bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type);
+    void javaScriptConsoleMessage(const QString &message, int lineNumber, const QString &sourceID);
 #endif
 
 private slots:
@@ -40,6 +43,10 @@ private slots:
 #ifdef SYNCTHINGWIDGETS_USE_WEBKIT
     void handleSslErrors(QNetworkReply *, const QList<QSslError> &errors);
 #endif
+    void injectJavaScripts(bool ok);
+    void processJavaScriptConsoleMessage(const QString &message);
+    void injectJavaScript(const QString &scriptSource);
+    void showFolderPathSelection(const QString &defaultDir);
 
 private:
     static bool handleNavigationRequest(const QUrl &currentUrl, const QUrl &url);
