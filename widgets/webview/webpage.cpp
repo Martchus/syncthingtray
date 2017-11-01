@@ -60,6 +60,7 @@ WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view)
         // -> there need to be a view, though
         m_view = new SYNCTHINGWIDGETS_WEB_VIEW;
         m_view->setPage(this);
+        setParent(m_view);
     }
 }
 
@@ -160,7 +161,6 @@ void WebPage::delegateNewWindowToExternalBrowser(const QUrl &url)
     QDesktopServices::openUrl(url);
     // this page and the associated view are useless
     m_view->deleteLater();
-    deleteLater();
 }
 
 /*!
