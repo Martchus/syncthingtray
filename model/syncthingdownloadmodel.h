@@ -46,12 +46,20 @@ private Q_SLOTS:
     void downloadProgressChanged();
 
 private:
+    struct PendingDir {
+        const SyncthingDir *syncthingDir;
+        std::size_t pendingItems;
+
+        PendingDir(const SyncthingDir *syncthingDir, unsigned int pendingItems);
+        bool operator==(const SyncthingDir *dir) const;
+    };
+
     static QHash<int, QByteArray> initRoleNames();
 
     const std::vector<SyncthingDir> &m_dirs;
     const QIcon m_unknownIcon;
     const QFileIconProvider m_fileIconProvider;
-    std::vector<const SyncthingDir *> m_pendingDirs;
+    std::vector<PendingDir> m_pendingDirs;
     unsigned int m_pendingDownloads;
     bool m_singleColumnMode;
 };

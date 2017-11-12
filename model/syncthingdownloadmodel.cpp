@@ -10,12 +10,23 @@ using namespace ChronoUtilities;
 
 namespace Data {
 
+SyncthingDownloadModel::PendingDir::PendingDir(const SyncthingDir *syncthingDir, unsigned int pendingItems)
+    : syncthingDir(syncthingDir)
+    , pendingItems(pendingItems)
+{
+}
+
+bool SyncthingDownloadModel::PendingDir::operator==(const SyncthingDir *dir) const
+{
+    return syncthingDir == dir;
+}
+
 SyncthingDownloadModel::SyncthingDownloadModel(SyncthingConnection &connection, QObject *parent)
     : SyncthingModel(connection, parent)
     , m_dirs(connection.dirInfo())
     , m_unknownIcon(
           QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))))
-    , m_pendingDirs(0)
+    , m_pendingDownloads(0)
     , m_singleColumnMode(true)
 {
     connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingDownloadModel::newConfig);
@@ -47,14 +58,14 @@ const SyncthingDir *SyncthingDownloadModel::dirInfo(const QModelIndex &index) co
 {
     return (index.parent().isValid()
             ? dirInfo(index.parent())
-            : (static_cast<size_t>(index.row()) < m_pendingDirs.size() ? m_pendingDirs[static_cast<size_t>(index.row())] : nullptr));
+            : (static_cast<size_t>(index.row()) < m_pendingDirs.size() ? m_pendingDirs[static_cast<size_t>(index.row())].syncthingDir : nullptr));
 }
 
 const SyncthingItemDownloadProgress *SyncthingDownloadModel::progressInfo(const QModelIndex &index) const
 {
     if (index.parent().isValid() && static_cast<size_t>(index.parent().row()) < m_pendingDirs.size()
-        && static_cast<size_t>(index.row()) < m_pendingDirs[static_cast<size_t>(index.parent().row())]->downloadingItems.size()) {
-        return &(m_pendingDirs[static_cast<size_t>(index.parent().row())]->downloadingItems[static_cast<size_t>(index.row())]);
+        && static_cast<size_t>(index.row()) < m_pendingDirs[static_cast<size_t>(index.parent().row())].syncthingDir->downloadingItems.size()) {
+        return &(m_pendingDirs[static_cast<size_t>(index.parent().row())].syncthingDir->downloadingItems[static_cast<size_t>(index.row())]);
     } else {
         return nullptr;
     }
@@ -108,7 +119,7 @@ QVariant SyncthingDownloadModel::data(const QModelIndex &index, int role) const
         if (index.parent().isValid()) {
             // downloading items (of dir)
             if (static_cast<size_t>(index.parent().row()) < m_pendingDirs.size()) {
-                const SyncthingDir &dir = *m_pendingDirs[static_cast<size_t>(index.parent().row())];
+                const SyncthingDir &dir = *m_pendingDirs[static_cast<size_t>(index.parent().row())].syncthingDir;
                 if (static_cast<size_t>(index.row()) < dir.downloadingItems.size()) {
                     const SyncthingItemDownloadProgress &progress = dir.downloadingItems[static_cast<size_t>(index.row())];
                     switch (role) {
@@ -142,7 +153,7 @@ QVariant SyncthingDownloadModel::data(const QModelIndex &index, int role) const
             }
         } else if (static_cast<size_t>(index.row()) < m_pendingDirs.size()) {
             // dir IDs and overall dir progress
-            const SyncthingDir &dir = *m_pendingDirs[static_cast<size_t>(index.row())];
+            const SyncthingDir &dir = *m_pendingDirs[static_cast<size_t>(index.row())].syncthingDir;
             switch (role) {
             case Qt::DisplayRole:
             case Qt::EditRole:
@@ -185,7 +196,7 @@ int SyncthingDownloadModel::rowCount(const QModelIndex &parent) const
     if (!parent.isValid()) {
         return static_cast<int>(m_pendingDirs.size());
     } else if (!parent.parent().isValid() && parent.row() >= 0 && static_cast<size_t>(parent.row()) < m_pendingDirs.size()) {
-        return static_cast<int>(m_pendingDirs[static_cast<size_t>(parent.row())]->downloadingItems.size());
+        return static_cast<int>(m_pendingDirs[static_cast<size_t>(parent.row())].pendingItems);
     } else {
         return 0;
     }
@@ -217,26 +228,56 @@ void SyncthingDownloadModel::newDirs()
 void SyncthingDownloadModel::downloadProgressChanged()
 {
     int row = 0;
+    // iterate through all directories ...
     for (const SyncthingDir &dirInfo : m_connection.dirInfo()) {
+        // ... and check whether the directory has been pending before
         const auto pendingIterator = find(m_pendingDirs.begin(), m_pendingDirs.end(), &dirInfo);
+
+        // check whether the directory has downloading items ("is pending")
         if (dirInfo.downloadingItems.empty()) {
+            // check whether the non-pending directory was pending before
             if (pendingIterator != m_pendingDirs.end()) {
+                // remove the row for the previously pending directory
                 beginRemoveRows(QModelIndex(), row, row);
                 m_pendingDirs.erase(pendingIterator);
                 endRemoveRows();
             }
+
         } else {
+            // check whether the pending directory was pending before
             if (pendingIterator != m_pendingDirs.end()) {
-                static const QVector<int> roles({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, Qt::ForegroundRole, Qt::ToolTipRole,
-                    ItemPercentage, ItemProgressLabel, ItemPath });
-                const QModelIndex parentIndex(index(row, 0));
-                emit dataChanged(parentIndex, index(row, 1), roles);
-                emit dataChanged(index(0, 0, parentIndex), index(static_cast<int>(dirInfo.downloadingItems.size()), 1, parentIndex), roles);
+                // get parent index and number of previous/new pending items
+                const auto parentIndex(index(row, 0));
+                const auto pendingItemCount(pendingIterator->pendingItems);
+                const auto newPendingItemCount(dirInfo.downloadingItems.size());
+
+                // insert/remove rows missing/surplus rows
+                if (pendingItemCount < newPendingItemCount) {
+                    beginInsertRows(parentIndex, static_cast<int>(pendingItemCount), static_cast<int>(newPendingItemCount - 1));
+                    pendingIterator->pendingItems = newPendingItemCount;
+                    endInsertRows();
+                } else if (pendingItemCount > newPendingItemCount) {
+                    beginRemoveRows(parentIndex, static_cast<int>(newPendingItemCount), static_cast<int>(pendingItemCount - 1));
+                    pendingIterator->pendingItems = newPendingItemCount;
+                    endRemoveRows();
+                }
+
+                // update the present items
+                if (newPendingItemCount) {
+                    static const QVector<int> roles({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, Qt::ForegroundRole, Qt::ToolTipRole,
+                        ItemPercentage, ItemProgressLabel, ItemPath });
+                    emit dataChanged(parentIndex, index(row, 1), roles);
+                    emit dataChanged(index(0, 0, parentIndex), index(static_cast<int>(newPendingItemCount - 1), 1, parentIndex), roles);
+                }
+
             } else {
+                // add the new directory
                 beginInsertRows(QModelIndex(), row, row);
-                beginInsertRows(index(row, row), 0, static_cast<int>(dirInfo.downloadingItems.size()));
-                m_pendingDirs.insert(pendingIterator, &dirInfo);
+                m_pendingDirs.emplace_back(&dirInfo, 0);
                 endInsertRows();
+                // add new pending items
+                beginInsertRows(index(row, row), 0, static_cast<int>(dirInfo.downloadingItems.size() - 1));
+                m_pendingDirs.back().pendingItems = dirInfo.downloadingItems.size();
                 endInsertRows();
             }
             ++row;
