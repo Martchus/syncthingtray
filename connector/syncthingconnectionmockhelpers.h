@@ -60,6 +60,7 @@ private:
     const string &m_buffer;
     const char *m_pos;
     qint64 m_bytesLeft;
+    static int s_eventIndex;
 };
 } // namespace Data
 

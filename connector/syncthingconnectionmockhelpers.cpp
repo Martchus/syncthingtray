@@ -18,6 +18,7 @@ using namespace std;
 using namespace IoUtilities;
 using namespace EscapeCodes;
 using namespace ConversionUtilities;
+using namespace TestUtilities;
 
 namespace Data {
 
@@ -34,43 +35,56 @@ static string errors;
 static string folderStatus;
 static string folderStatus2;
 static string connections;
-static string events;
+static string events[6];
 } // namespace TestData
 
 /*!
- * \brief Loads test files for mocked configuration from directory specified via environment variable TESTFILE_PATH.
- *
- * So TESTFILE_PATH must be set to "$synthingtray_checkout/connector/testfiles" which contains the required files.
- *
- * \remarks In the error case, the application will be terminated.
+ * \brief Returns the contents of the specified file and exits with an error message if an error occurs.
+ */
+string readMockFile(const string &filePath)
+{
+    try {
+        return readFile(filePath);
+    } catch (...) {
+        const char *const what = catchIoFailure();
+        cerr << Phrases::Error << "An IO error occured when reading mock config file \"" << filePath << "\": " << what << Phrases::EndFlush;
+        exit(-2);
+    }
+}
+
+/*!
+ * \brief Loads test files for mocked configuration using TestApplication::testFilePath().
+ * \remarks
+ * - So TEST_FILE_PATH must be set to "$synthingtray_checkout/connector/testfiles" so this function can
+ *   find the required files.
+ * - In the error case, the application will be terminated.
  */
 void setupTestData()
 {
+    // skip if already initialized
     using namespace TestData;
-
     if (initialized) {
         return;
     }
 
-    const char *testfilePath = getenv("TESTFILE_PATH");
-    if (!testfilePath || !*testfilePath) {
-        cerr << Phrases::Error << "TESTFILE_PATH is not set; unable to initialize mock config." << Phrases::End << flush;
-        exit(-1);
+    // use a TestApplication to locate the test files
+    const TestApplication testApp(0, nullptr);
+
+    // read mock files for REST-API
+    const char *const fileNames[]
+        = { "config", "status", "folderstats", "devicestats", "errors", "folderstatus-01", "folderstatus-02", "connections" };
+    const char *const *fileName = fileNames;
+    for (string *testDataVariable : { &config, &status, &folderStats, &deviceStats, &errors, &folderStatus, &folderStatus2, &connections }) {
+        *testDataVariable = readMockFile(testApp.testFilePath(argsToString("mocks/", *fileName, ".json")));
+        ++fileName;
     }
 
-    const char *const fileNames[]
-        = { "config", "status", "folderstats", "devicestats", "errors", "folderstatus", "folderstatus2", "connections", "events" };
-    const char *const *fileName = fileNames;
-    for (string *testDataVariable : { &config, &status, &folderStats, &deviceStats, &errors, &folderStatus, &folderStatus2, &connections, &events }) {
-        const string filePath(argsToString(testfilePath, "/mocks/", *fileName, ".json"));
-        try {
-            *testDataVariable = readFile(filePath);
-            ++fileName;
-        } catch (...) {
-            const char *const what = catchIoFailure();
-            cerr << "Error: An IO error occured when reading mock config file \"" << filePath << "\": " << what << endl;
-            exit(-2);
-        }
+    // read mock files for Event-API
+    unsigned int index = 1;
+    for (string &event : events) {
+        const char *const pad = index < 10 ? "0" : "";
+        event = readMockFile(testApp.testFilePath(argsToString("mocks/events-", pad, index, ".json")));
+        ++index;
     }
 
     initialized = true;
@@ -82,7 +96,6 @@ MockedReply::MockedReply(const string &buffer, int delay, QObject *parent)
     , m_pos(buffer.data())
     , m_bytesLeft(static_cast<qint64>(m_buffer.size()))
 {
-    delay = 5;
     setOpenMode(QIODevice::ReadOnly);
     QTimer::singleShot(delay, this, &MockedReply::emitFinished);
 }
@@ -130,6 +143,8 @@ qint64 MockedReply::readData(char *data, qint64 maxlen)
     return bytesToRead;
 }
 
+int MockedReply::s_eventIndex = 0;
+
 MockedReply *MockedReply::forRequest(const QString &method, const QString &path, const QUrlQuery &query, bool rest)
 {
     VAR_UNUSED(query)
@@ -142,7 +157,7 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
     // find the correct buffer for the request
     static const string emptyBuffer;
     const string *buffer = &emptyBuffer;
-    int delay = 0;
+    int delay = 5;
     {
         using namespace TestData;
         if (method == QLatin1String("GET")) {
@@ -166,8 +181,21 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
             } else if (path == QLatin1String("system/connections")) {
                 buffer = &connections;
             } else if (path == QLatin1String("events")) {
-                buffer = &events;
-                delay = 5000;
+                buffer = &events[s_eventIndex];
+                // "emit" the first event almost immediately and further events each 2.5 seconds
+                switch (s_eventIndex) {
+                case 0:
+                    delay = 200;
+                    ++s_eventIndex;
+                    break;
+                case 5:
+                    // continue emitting the last event every 10 seconds
+                    delay = 10000;
+                    break;
+                default:
+                    delay = 2500;
+                    ++s_eventIndex;
+                }
             }
         }
     }

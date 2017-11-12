@@ -1,0 +1,21 @@
+[
+    {
+        "id": 6,
+        "type": "DownloadProgress",
+        "time": "2018-12-13T00:32:12.9876937Z",
+        "data": {
+            "zX8xfl3ygn-": {
+                "dir\\file2": {
+                    "Total": 80,
+                    "Pulling": 2,
+                    "CopiedFromOrigin": 0,
+                    "Reused": 0,
+                    "CopiedFromElsewhere": 0,
+                    "Pulled": 32,
+                    "BytesTotal": 10420224,
+                    "BytesDone": 8128768
+                }
+            }
+        }
+    }
+]
