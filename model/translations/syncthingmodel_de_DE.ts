@@ -241,22 +241,27 @@
         <translation>Geteilt mit</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="393"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="395"/>
+        <source>Scanning (%1 %, %2)</source>
+        <translation>Scannen (%1 %, %2)</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="397"/>
         <source>Scanning (%1 %)</source>
         <translation>Scannen (%1 %)</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="393"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="399"/>
         <source>Scanning</source>
         <translation>Scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="395"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="401"/>
         <source>Synchronizing (%1 %)</source>
         <translation>Synchronisieren (%1 %)</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="395"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="401"/>
         <source>Synchronizing</source>
         <translation>Synchronisieren</translation>
     </message>
@@ -266,7 +271,7 @@
         <translation>Pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="397"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="403"/>
         <source>Out of sync</source>
         <translation>Nicht synchronisiert</translation>
     </message>
@@ -274,12 +279,12 @@
 <context>
     <name>Data::SyncthingDownloadModel</name>
     <message>
-        <location filename="../syncthingdownloadmodel.cpp" line="92"/>
+        <location filename="../syncthingdownloadmodel.cpp" line="103"/>
         <source>Dir/item</source>
         <translation>Verzeichnis/Element</translation>
     </message>
     <message>
-        <location filename="../syncthingdownloadmodel.cpp" line="94"/>
+        <location filename="../syncthingdownloadmodel.cpp" line="105"/>
         <source>Progress</source>
         <translation>Fortschritt</translation>
     </message>
