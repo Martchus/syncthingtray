@@ -1606,20 +1606,20 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
         } else if (eventType == QLatin1String("FolderSummary")) {
             readDirSummary(eventTime, eventData.value(QStringLiteral("summary")).toObject(), *dirInfo, index);
         } else if (eventType == QLatin1String("FolderCompletion")) {
-            //const QString device(eventData.value(QStringLiteral("device")).toString());
-            int percentage = eventData.value(QStringLiteral("completion")).toInt();
-            if (percentage > 0 && percentage < 100 && (dirInfo->progressPercentage <= 0 || percentage < dirInfo->progressPercentage)) {
-                // Syncthing provides progress percentage for each device
-                // just show the smallest percentage for now
-                dirInfo->progressPercentage = percentage;
+            const int percentage = static_cast<int>(eventData.value(QStringLiteral("completion")).toDouble());
+            dirInfo->globalBytes = static_cast<uint64>(eventData.value(QStringLiteral("globalBytes")).toDouble(dirInfo->globalBytes));
+            dirInfo->neededBytes = static_cast<uint64>(eventData.value(QStringLiteral("neededBytes")).toDouble(dirInfo->neededBytes));
+            if (percentage > 0 && percentage < 100) {
+                dirInfo->completionPercentage = percentage;
+                emit dirStatusChanged(*dirInfo, index);
             }
         } else if (eventType == QLatin1String("FolderScanProgress")) {
-            // FIXME: for some reason this is always 0
-            const int current = eventData.value(QStringLiteral("current")).toInt(0), total = eventData.value(QStringLiteral("total")).toInt(0),
-                      rate = eventData.value(QStringLiteral("rate")).toInt(0);
+            const double current = eventData.value(QStringLiteral("current")).toDouble(0);
+            const double total = eventData.value(QStringLiteral("total")).toDouble(0);
+            const double rate = eventData.value(QStringLiteral("rate")).toDouble(0);
             if (current > 0 && total > 0) {
-                dirInfo->progressPercentage = current * 100 / total;
-                dirInfo->progressRate = rate;
+                dirInfo->scanningPercentage = static_cast<int>(current * 100 / total);
+                dirInfo->scanningRate = rate;
                 dirInfo->assignStatus(SyncthingDirStatus::Scanning, eventTime); // ensure state is scanning
                 emit dirStatusChanged(*dirInfo, index);
             }
@@ -1876,7 +1876,7 @@ bool SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     dir.localDeleted = toUInt64(summary.value(QStringLiteral("localDeleted")));
     dir.localFiles = toUInt64(summary.value(QStringLiteral("localFiles")));
     dir.localDirs = toUInt64(summary.value(QStringLiteral("localDirectories")));
-    dir.neededByted = toUInt64(summary.value(QStringLiteral("needByted")));
+    dir.neededBytes = toUInt64(summary.value(QStringLiteral("needByted")));
     dir.neededFiles = toUInt64(summary.value(QStringLiteral("needFiles")));
     dir.ignorePatterns = summary.value(QStringLiteral("ignorePatterns")).toBool();
     dir.lastStatisticsUpdate = eventTime;

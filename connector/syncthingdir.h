@@ -72,14 +72,15 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     int minDiskFreePercentage = 0;
     SyncthingDirStatus status = SyncthingDirStatus::Idle;
     ChronoUtilities::DateTime lastStatusUpdate;
-    int progressPercentage = 0;
-    int progressRate = 0;
+    int completionPercentage = 0;
+    int scanningPercentage = 0;
+    double scanningRate = 0;
     QString globalError;
     std::vector<SyncthingItemError> itemErrors;
     std::vector<SyncthingItemError> previousItemErrors;
     quint64 globalBytes = 0, globalDeleted = 0, globalFiles = 0, globalDirs = 0;
     quint64 localBytes = 0, localDeleted = 0, localFiles = 0, localDirs = 0;
-    quint64 neededByted = 0, neededFiles = 0, neededDirs = 0;
+    quint64 neededBytes = 0, neededFiles = 0, neededDirs = 0;
     ChronoUtilities::DateTime lastStatisticsUpdate;
     ChronoUtilities::DateTime lastScanTime;
     ChronoUtilities::DateTime lastFileTime;

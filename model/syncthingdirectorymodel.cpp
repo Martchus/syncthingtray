@@ -390,9 +390,15 @@ QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
     case SyncthingDirStatus::Idle:
         return tr("Idle");
     case SyncthingDirStatus::Scanning:
-        return dir.progressPercentage > 0 ? tr("Scanning (%1 %)").arg(dir.progressPercentage) : tr("Scanning");
+        if (dir.scanningPercentage > 0) {
+            if (dir.scanningRate != 0.0) {
+                return tr("Scanning (%1 %, %2)").arg(dir.scanningPercentage).arg(bitrateToString(dir.scanningRate * 0.008, true).data());
+            }
+            return tr("Scanning (%1 %)").arg(dir.scanningPercentage);
+        }
+        return tr("Scanning");
     case SyncthingDirStatus::Synchronizing:
-        return dir.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dir.progressPercentage) : tr("Synchronizing");
+        return dir.completionPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dir.completionPercentage) : tr("Synchronizing");
     case SyncthingDirStatus::OutOfSync:
         return tr("Out of sync");
     }

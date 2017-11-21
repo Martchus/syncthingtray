@@ -87,7 +87,7 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
     // identify statusStr
     SyncthingDirStatus newStatus;
     if (statusStr == QLatin1String("idle")) {
-        progressPercentage = 0;
+        completionPercentage = 0;
         newStatus = SyncthingDirStatus::Idle;
     } else if (statusStr == QLatin1String("scanning")) {
         newStatus = SyncthingDirStatus::Scanning;
@@ -102,7 +102,7 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
         previousItemErrors.swap(itemErrors);
         newStatus = SyncthingDirStatus::Synchronizing;
     } else if (statusStr == QLatin1String("error")) {
-        progressPercentage = 0;
+        completionPercentage = 0;
         newStatus = SyncthingDirStatus::OutOfSync;
     } else {
         newStatus = SyncthingDirStatus::Idle;
