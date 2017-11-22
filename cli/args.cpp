@@ -72,7 +72,9 @@ Args::Args()
     // allow setting default values via environment
     configFile.setEnvironmentVariable("SYNCTHING_CTL_CONFIG_FILE");
     apiKey.setEnvironmentVariable("SYNCTHING_CTL_API_KEY");
+    apiKey.setValueCompletionBehavior(ValueCompletionBehavior::None);
     url.setEnvironmentVariable("SYNCTHING_CTL_URL");
+    url.setValueCompletionBehavior(ValueCompletionBehavior::None);
     certificate.setEnvironmentVariable("SYNCTHING_CTL_CERTIFICATE");
 }
 
