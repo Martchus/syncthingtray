@@ -14,6 +14,7 @@ set(HEADER_FILES
     syncthingdev.h
     syncthingconnection.h
     syncthingconnectionsettings.h
+    syncthingnotifier.h
     syncthingconfig.h
     syncthingprocess.h
     syncthingservice.h
@@ -24,6 +25,7 @@ set(SRC_FILES
     syncthingdev.cpp
     syncthingconnection.cpp
     syncthingconnectionsettings.cpp
+    syncthingnotifier.cpp
     syncthingconfig.cpp
     syncthingprocess.cpp
     syncthingservice.cpp
