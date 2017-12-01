@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de_DE">
+<TS version="2.0" language="de_DE">
 <context>
     <name>QtGui::AppearanceOptionPage</name>
     <message>
@@ -162,7 +162,7 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="75"/>
         <source>Move currently selected configuration down</source>
-        <translation>Aktuelle Konfiguration in der Liste noch unten schieben</translation>
+        <translation>Aktuelle Konfiguration in der Liste nach unten schieben</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="107"/>
@@ -250,7 +250,7 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="91"/>
         <source>Move currently selected configuration up</source>
-        <translation>Aktuelle Konfiguration in der Liste noch oben schieben</translation>
+        <translation>Aktuelle Konfiguration in der Liste nach oben schieben</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="154"/>
