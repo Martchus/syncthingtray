@@ -2,8 +2,7 @@
 <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
     <defs>
         <linearGradient id="grad" gradientUnits="userSpaceOnUse" x1="8" y1="0" x2="8" y2="16">
-            <stop offset="0" style="stop-color:#c9ce3b"/>
-            <stop offset="1" style="stop-color:#ebb83b"/>
+            <stop offset="0" style="stop-color:#3daee6"/>
         </linearGradient>
         <mask id="bitemask" maskUnits="userSpaceOnUse">
             <g>
@@ -24,8 +23,8 @@
         <circle id="node-br" cx="11.788756" cy="12.51107" r="1.22" style="fill:#ffffff"/>
     </g>
     <circle id="bubble" cx="11.5" cy="11.5" r="4.5" style="fill:#000000"/>
-    <g id="exclaim">
-        <rect id="exclaim-top" x="11" y="9" width="1" height="3" style="fill:#ffffff"/>
-        <rect id="exclaim-bottom" x="11" y="13" width="1" height="1" style="fill:#ffffff"/>
+    <g id="arrows" transform="rotate(0 11.5 11.5)">
+        <path id="arrow-left" d="m 11.5,14 0,-1 c -1.5,0 -1.5,0 -1.5,-2 l 1,0 -1.5,-2 -1.5,2 1,0 c 0,3 0,3 2.5,3 z" style="fill:#ffffff" />
+        <path id="arrow-right" d="m 11.5,9 0,1 c 1.5,0 1.5,0 1.5,2 l -1,0 1.5,2 1.5,-2 -1,0 C 14,9 14,9 11.5,9 Z" style="fill:#ffffff" />
     </g>
 </svg>

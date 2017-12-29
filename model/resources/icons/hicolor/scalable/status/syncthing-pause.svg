@@ -2,8 +2,8 @@
 <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
     <defs>
         <linearGradient id="grad" gradientUnits="userSpaceOnUse" x1="8" y1="0" x2="8" y2="16">
-            <stop offset="0" style="stop-color:#26B6DB"/>
-            <stop offset="1" style="stop-color:#0882C8"/>
+            <stop offset="0" style="stop-color:#A9A9A9"/>
+            <stop offset="1" style="stop-color:#58656C"/>
         </linearGradient>
         <mask id="bitemask" maskUnits="userSpaceOnUse">
             <g>
