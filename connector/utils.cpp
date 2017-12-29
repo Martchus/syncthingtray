@@ -62,6 +62,26 @@ QString directoryStatusString(quint64 files, quint64 dirs, quint64 size)
 }
 
 /*!
+ * \brief Returns the "sync complete" notication message for the specified directories.
+ */
+QString syncCompleteString(const std::vector<SyncthingDir *> &completedDirs)
+{
+    switch (completedDirs.size()) {
+    case 0:
+        return QString();
+    case 1:
+        return QCoreApplication::translate("Data::Utils", "Synchronization of %1 complete").arg(completedDirs.front()->displayName());
+    default:;
+    }
+    QStringList names;
+    names.reserve(static_cast<int>(completedDirs.size()));
+    for (const auto *dir : completedDirs) {
+        names << dir->displayName();
+    }
+    return QCoreApplication::translate("Data::Utils", "Synchronization of the following devices complete:\n") + names.join(QStringLiteral(", "));
+}
+
+/*!
  * \brief Returns whether the host specified by the given \a url is the local machine.
  */
 bool isLocal(const QUrl &url)
@@ -174,4 +194,5 @@ bool setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &devIds, b
 
     return altered;
 }
+
 } // namespace Data

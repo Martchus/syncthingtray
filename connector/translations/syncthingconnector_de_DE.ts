@@ -257,6 +257,18 @@
             <numerusform>%1 Verz.</numerusform>
         </translation>
     </message>
+    <message>
+        <location filename="../utils.cpp" line="73"/>
+        <source>Synchronization of %1 complete</source>
+        <translation>%1 wurde synchronisiert</translation>
+    </message>
+    <message>
+        <location filename="../utils.cpp" line="81"/>
+        <source>Synchronization of the following devices complete:
+</source>
+        <translation>Folgende Verzeichnisse wurden synchronisiert:
+</translation>
+    </message>
 </context>
 <context>
     <name>SyncthingDev</name>

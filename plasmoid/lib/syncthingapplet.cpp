@@ -352,19 +352,8 @@ void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
         break;
     default:
         if (m_status == SyncthingStatus::Synchronizing && settings.notifyOn.syncComplete) {
-            const vector<SyncthingDir *> &completedDirs = m_connection.completedDirs();
-            if (!completedDirs.empty()) {
-                QString message;
-                if (completedDirs.size() == 1) {
-                    message = tr("Synchronization of %1 complete").arg(completedDirs.front()->displayName());
-                } else {
-                    QStringList names;
-                    names.reserve(static_cast<int>(completedDirs.size()));
-                    for (const SyncthingDir *dir : completedDirs) {
-                        names << dir->displayName();
-                    }
-                    message = tr("Synchronization of the following devices complete:\n") + names.join(QStringLiteral(", "));
-                }
+            const auto message(syncCompleteString(m_connection.completedDirs()));
+            if (!message.isEmpty()) {
                 m_dbusNotifier.showSyncComplete(message);
             }
         }

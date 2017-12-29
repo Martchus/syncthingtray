@@ -257,6 +257,17 @@
             <numerusform>%1 dirs</numerusform>
         </translation>
     </message>
+    <message>
+        <location filename="../utils.cpp" line="73"/>
+        <source>Synchronization of %1 complete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../utils.cpp" line="81"/>
+        <source>Synchronization of the following devices complete:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SyncthingDev</name>

@@ -9,6 +9,7 @@
 #include <QStringList>
 
 #include <limits>
+#include <vector>
 
 QT_FORWARD_DECLARE_CLASS(QUrl)
 QT_FORWARD_DECLARE_CLASS(QJsonObject)
@@ -19,9 +20,12 @@ class DateTime;
 
 namespace Data {
 
+struct SyncthingDir;
+
 QString LIB_SYNCTHING_CONNECTOR_EXPORT agoString(ChronoUtilities::DateTime dateTime);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT trafficString(uint64 total, double rate);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT directoryStatusString(quint64 files, quint64 dirs, quint64 size);
+QString LIB_SYNCTHING_CONNECTOR_EXPORT syncCompleteString(const std::vector<SyncthingDir *> &completedDirs);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QUrl &url);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);
