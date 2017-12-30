@@ -102,17 +102,6 @@
         <source>Disconnected from Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="252"/>
-        <source>Synchronization of %1 complete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/trayicon.cpp" line="259"/>
-        <source>Synchronization of the following devices complete:
-</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>QtGui::TrayWidget</name>

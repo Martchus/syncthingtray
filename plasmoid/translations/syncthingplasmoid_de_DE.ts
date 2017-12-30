@@ -217,19 +217,7 @@
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="359"/>
-        <source>Synchronization of %1 complete</source>
-        <translation>%1 wurde synchronisiert</translation>
-    </message>
-    <message>
-        <location filename="../lib/syncthingapplet.cpp" line="366"/>
-        <source>Synchronization of the following devices complete:
-</source>
-        <translation>Die folgenden Geräte wurden synchronisiert:
-</translation>
-    </message>
-    <message>
-        <location filename="../lib/syncthingapplet.cpp" line="422"/>
+        <location filename="../lib/syncthingapplet.cpp" line="411"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
