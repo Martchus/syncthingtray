@@ -30,8 +30,13 @@ using namespace Data;
 
 namespace QtGui {
 
+#ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
+WebPage::WebPage(QWebEngineProfile *profile, WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view)
+    : SYNCTHINGWIDGETS_WEB_PAGE(profile, view)
+#else
 WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view)
     : SYNCTHINGWIDGETS_WEB_PAGE(view)
+#endif
     , m_dlg(dlg)
     , m_view(view)
 {

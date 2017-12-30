@@ -9,6 +9,7 @@
 #include <QMainWindow>
 
 QT_FORWARD_DECLARE_CLASS(WEB_VIEW_PROVIDER)
+QT_FORWARD_DECLARE_CLASS(QWebEngineProfile)
 
 namespace Settings {
 struct ConnectionSettings;
@@ -40,12 +41,16 @@ protected:
 private:
     SYNCTHINGWIDGETS_WEB_VIEW *m_view;
     Data::SyncthingConnectionSettings m_settings;
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
+    QWebEngineProfile *m_profile;
+#endif
 };
 
 inline const Data::SyncthingConnectionSettings &WebViewDialog::settings() const
 {
     return m_settings;
 }
+
 } // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_NO_WEBVIEW

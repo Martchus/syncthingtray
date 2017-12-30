@@ -1,6 +1,7 @@
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 #include "./webviewdialog.h"
 #include "./webpage.h"
+#include "./webviewinterceptor.h"
 
 #include "../settings/settings.h"
 
@@ -9,6 +10,9 @@
 #include <QCloseEvent>
 #include <QIcon>
 #include <QKeyEvent>
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
+#include <QWebEngineProfile>
+#endif
 
 using namespace Dialogs;
 
@@ -22,7 +26,13 @@ WebViewDialog::WebViewDialog(QWidget *parent)
     setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     setCentralWidget(m_view);
 
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
+    m_profile = new QWebEngineProfile(objectName(), this);
+    m_profile->setRequestInterceptor(new WebViewInterceptor(m_settings, m_profile));
+    m_view->setPage(new WebPage(m_profile, this, m_view));
+#else
     m_view->setPage(new WebPage(this, m_view));
+#endif
     connect(m_view, &SYNCTHINGWIDGETS_WEB_VIEW::titleChanged, this, &WebViewDialog::setWindowTitle);
 
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
@@ -122,6 +132,7 @@ bool WebViewDialog::eventFilter(QObject *watched, QEvent *event)
     return QMainWindow::eventFilter(watched, event);
 }
 #endif
+
 } // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_NO_WEBVIEW

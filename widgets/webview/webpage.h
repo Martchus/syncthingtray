@@ -19,7 +19,11 @@ class WebViewDialog;
 class SYNCTHINGWIDGETS_EXPORT WebPage : public SYNCTHINGWIDGETS_WEB_PAGE {
     Q_OBJECT
 public:
+#ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
+    WebPage(QWebEngineProfile *profile = nullptr, WebViewDialog *dlg = nullptr, SYNCTHINGWIDGETS_WEB_VIEW *view = nullptr);
+#else
     WebPage(WebViewDialog *dlg = nullptr, SYNCTHINGWIDGETS_WEB_VIEW *view = nullptr);
+#endif
 
     static bool isSamePage(const QUrl &url1, const QUrl &url2);
 

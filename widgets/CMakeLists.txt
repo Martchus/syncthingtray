@@ -27,6 +27,8 @@ set(WIDGETS_SRC_FILES
     settings/settingsdialog.cpp
     webview/webpage.cpp
     webview/webviewdialog.cpp
+    webview/webviewinterceptor.h
+    webview/webviewinterceptor.cpp
     misc/textviewdialog.cpp
     misc/errorviewdialog.cpp
     misc/statusinfo.cpp
