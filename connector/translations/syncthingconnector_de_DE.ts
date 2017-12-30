@@ -52,7 +52,7 @@
     <message>
         <location filename="../syncthingconnection.cpp" line="356"/>
         <source>Unable to rescan: No directory ID specified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Anfordern eines Scans: keine Verzeichnis-ID angegeben.</translation>
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="461"/>
