@@ -762,6 +762,10 @@ void Application::requestResumePwd(const ArgumentOccurrence &)
 
 void Application::initDirCompletion(Argument &arg, const ArgumentOccurrence &)
 {
+    // prevent this initialization if we're not in shell completion mode
+    if (m_argsRead) {
+        return;
+    }
     // load config and wait for connected
     loadConfig();
     waitForConnected(2000);
@@ -771,6 +775,10 @@ void Application::initDirCompletion(Argument &arg, const ArgumentOccurrence &)
 
 void Application::initDevCompletion(Argument &arg, const ArgumentOccurrence &)
 {
+    // prevent this initialization if we're not in shell completion mode
+    if (m_argsRead) {
+        return;
+    }
     // load config and wait for connected
     loadConfig();
     waitForConnected(2000);
