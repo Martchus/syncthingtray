@@ -11,8 +11,8 @@
 #include "../../connector/syncthingconnection.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "../../connector/syncthingservice.h"
-#include "../../connector/utils.h"
 #endif
+#include "../../connector/utils.h"
 
 #include <qtutilities/misc/dialogutils.h>
 
