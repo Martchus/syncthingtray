@@ -763,7 +763,7 @@
 <context>
     <name>QtGui::WebPage</name>
     <message>
-        <location filename="../webview/webpage.cpp" line="268"/>
+        <location filename="../webview/webpage.cpp" line="273"/>
         <source>Select path for Syncthing directory ...</source>
         <translation>Pfad für Syncthing-Verzeichnis auswählen ...</translation>
     </message>
@@ -771,7 +771,7 @@
 <context>
     <name>QtGui::WebViewDialog</name>
     <message>
-        <location filename="../webview/webviewdialog.cpp" line="21"/>
+        <location filename="../webview/webviewdialog.cpp" line="25"/>
         <source>Syncthing</source>
         <translation></translation>
     </message>
