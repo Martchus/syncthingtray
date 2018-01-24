@@ -51,6 +51,15 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemDownloadProgress {
     static constexpr unsigned int syncthingBlockSize = 128 * 1024;
 };
 
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingCompletion {
+    ChronoUtilities::DateTime lastUpdate;
+    quint64 globalBytes = 0;
+    quint64 neededBytes = 0;
+    quint64 neededItems = 0;
+    quint64 neededDeletes = 0;
+    int percentage = 0;
+};
+
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
     bool assignStatus(const QString &statusStr, ChronoUtilities::DateTime time);
@@ -75,6 +84,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     int completionPercentage = 0;
     int scanningPercentage = 0;
     double scanningRate = 0;
+    std::map<QString, SyncthingCompletion> completionByDevice;
     QString globalError;
     std::vector<SyncthingItemError> itemErrors;
     std::vector<SyncthingItemError> previousItemErrors;

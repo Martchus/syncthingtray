@@ -56,6 +56,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_status(SyncthingStatus::Disconnected)
     , m_keepPolling(false)
     , m_reconnecting(false)
+    , m_requestCompletion(true)
     , m_lastEventId(0)
     , m_autoReconnectTries(0)
     , m_totalIncomingTraffic(unknownTraffic)
@@ -671,6 +672,11 @@ void SyncthingConnection::continueConnecting()
         requestErrors();
         for (const SyncthingDir &dir : m_dirs) {
             requestDirStatus(dir.id);
+            if (m_requestCompletion) {
+                for (const QString &devId : dir.deviceIds) {
+                    requestCompletion(devId, dir.id);
+                }
+            }
         }
         // since config and status could be read successfully, let's poll for events
         m_lastEventId = 0;
@@ -771,9 +777,23 @@ void SyncthingConnection::requestDirStatus(const QString &dirId)
 {
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("folder"), dirId);
-    QNetworkReply *reply = requestData(QStringLiteral("db/status"), query);
+    auto *const reply = requestData(QStringLiteral("db/status"), query);
     reply->setProperty("dirId", dirId);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirStatus);
+}
+
+/*!
+ * \brief Requests completion for \a devId and \a dirId asynchronously.
+ */
+void SyncthingConnection::requestCompletion(const QString &devId, const QString &dirId)
+{
+    QUrlQuery query;
+    query.addQueryItem(QStringLiteral("device"), devId);
+    query.addQueryItem(QStringLiteral("folder"), dirId);
+    auto *const reply = requestData(QStringLiteral("db/completion"), query);
+    reply->setProperty("devId", devId);
+    reply->setProperty("dirId", dirId);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readCompletion);
 }
 
 /*!
@@ -1436,6 +1456,8 @@ void SyncthingConnection::readEvents()
                 readItemStarted(eventTime, eventData);
             } else if (eventType == QLatin1String("ItemFinished")) {
                 readItemFinished(eventTime, eventData);
+            } else if (eventType == QLatin1String("RemoteIndexUpdated")) {
+                readRemoteIndexUpdated(eventTime, eventData);
             } else if (eventType == QLatin1String("ConfigSaved")) {
                 requestConfig(); // just consider current config as invalidated
             }
@@ -1700,7 +1722,7 @@ void SyncthingConnection::readItemStarted(DateTime eventTime, const QJsonObject 
  */
 void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject &eventData)
 {
-    const QString dir(eventData.value(QStringLiteral("folder")).toString());
+    const auto dir(eventData.value(QLatin1String("folder")).toString());
     if (dir.isEmpty()) {
         return;
     }
@@ -1725,6 +1747,40 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
             emit dirStatusChanged(*dirInfo, index);
             emitNotification(eventTime, error);
         }
+    }
+}
+
+/*!
+ * \brief Reads results of requestEvents().
+ */
+void SyncthingConnection::readRemoteIndexUpdated(DateTime eventTime, const QJsonObject &eventData)
+{
+    // ignore those events if we're not updating completion automatically
+    if (!m_requestCompletion) {
+        return;
+    }
+
+    // find dev/dir
+    const auto devId(eventData.value(QLatin1String("device")).toString());
+    const auto dirId(eventData.value(QLatin1String("folder")).toString());
+    if (dirId.isEmpty()) {
+        return;
+    }
+    int index;
+    auto *const dirInfo = findDirInfo(dirId, index);
+    if (!dirInfo) {
+        return;
+    }
+
+    // ignore event if we don't share the directory with the device
+    if (!dirInfo->deviceIds.contains(devId)) {
+        return;
+    }
+
+    // request completion again if out-of-date
+    const auto &completion = dirInfo->completionByDevice[devId];
+    if (completion.lastUpdate < eventTime) {
+        requestCompletion(devId, dirId);
     }
 }
 
@@ -1894,6 +1950,52 @@ bool SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
 
     emit dirStatusChanged(dir, index);
     return stateChanged;
+}
+
+/*!
+ * \brief Reads data from requestCompletion().
+ */
+void SyncthingConnection::readCompletion()
+{
+    auto *const reply = static_cast<QNetworkReply *>(sender());
+    const auto devId(reply->property("devId").toString());
+    const auto dirId(reply->property("dirId").toString());
+    reply->deleteLater();
+
+    switch (reply->error()) {
+    case QNetworkReply::NoError: {
+        // determine relevant dev/dir
+        int index;
+        SyncthingDir *const dir = findDirInfo(dirId, index);
+        // discard status for unknown dirs
+        if (!dir) {
+            return;
+        }
+
+        // parse JSON
+        QJsonParseError jsonError;
+        const auto response(reply->readAll());
+        const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
+        if (jsonError.error != QJsonParseError::NoError) {
+            emitError(tr("Unable to parse completion for device/directory %1/%2: ").arg(devId, dirId), jsonError, reply, response);
+            return;
+        }
+
+        // update the relevant completion info
+        const auto replyObj(replyDoc.object());
+        auto &completion = dir->completionByDevice[devId];
+        completion.lastUpdate = DateTime::gmtNow();
+        completion.percentage = replyObj.value(QLatin1String("completion")).toInt();
+        completion.globalBytes = toUInt64(replyObj.value(QLatin1String("globalBytes")));
+        completion.neededBytes = toUInt64(replyObj.value(QLatin1String("needBytes")));
+        completion.neededItems = toUInt64(replyObj.value(QLatin1String("needItems")));
+        completion.neededDeletes = toUInt64(replyObj.value(QLatin1String("needDeletes")));
+        emit dirStatusChanged(*dir, index);
+        break;
+    }
+    default:
+        emitError(tr("Unable to request completion for device/directory %1/%2: ").arg(devId, dirId), SyncthingErrorCategory::SpecificRequest, reply);
+    }
 }
 
 /*!

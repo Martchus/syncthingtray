@@ -69,6 +69,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(bool connected READ isConnected NOTIFY statusChanged)
     Q_PROPERTY(bool hasUnreadNotifications READ hasUnreadNotifications)
     Q_PROPERTY(bool hasOutOfSyncDirs READ hasOutOfSyncDirs)
+    Q_PROPERTY(bool requestingCompletionEnabled READ isRequestingCompletionEnabled WRITE setRequestingCompletionEnabled)
     Q_PROPERTY(int trafficPollInterval READ trafficPollInterval WRITE setTrafficPollInterval)
     Q_PROPERTY(int devStatsPollInterval READ devStatsPollInterval WRITE setDevStatsPollInterval)
     Q_PROPERTY(QString configDir READ configDir NOTIFY configDirChanged)
@@ -97,6 +98,8 @@ public:
     bool isConnected() const;
     bool hasUnreadNotifications() const;
     bool hasOutOfSyncDirs() const;
+    bool isRequestingCompletionEnabled() const;
+    void setRequestingCompletionEnabled(bool requestingCompletionEnabled);
     int trafficPollInterval() const;
     void setTrafficPollInterval(int trafficPollInterval);
     int devStatsPollInterval() const;
@@ -180,6 +183,7 @@ private Q_SLOTS:
     void requestClearingErrors();
     void requestDirStatistics();
     void requestDirStatus(const QString &dirId);
+    void requestCompletion(const QString &devId, const QString &dirId);
 
     void requestDeviceStatistics();
     void requestEvents();
@@ -203,6 +207,7 @@ private Q_SLOTS:
     void readDeviceEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
     void readItemStarted(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readItemFinished(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
+    void readRemoteIndexUpdated(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readRescan();
     void readDevPauseResume();
     void readDirPauseResume();
@@ -210,6 +215,7 @@ private Q_SLOTS:
     void readShutdown();
     void readDirStatus();
     bool readDirSummary(ChronoUtilities::DateTime eventTime, const QJsonObject &summary, SyncthingDir &dirInfo, int index);
+    void readCompletion();
 
     void continueConnecting();
     void continueReconnecting();
@@ -238,6 +244,7 @@ private:
     SyncthingStatus m_status;
     bool m_keepPolling;
     bool m_reconnecting;
+    bool m_requestCompletion;
     int m_lastEventId;
     QTimer m_trafficPollTimer;
     QTimer m_devStatsPollTimer;
@@ -350,6 +357,24 @@ inline bool SyncthingConnection::isConnected() const
 inline bool SyncthingConnection::hasUnreadNotifications() const
 {
     return m_unreadNotifications;
+}
+
+/*!
+ * \brief Returns whether completion for all directories of all devices should be requested automatically.
+ * \remarks Completion can be requested manually using requestCompletion().
+ */
+inline bool SyncthingConnection::isRequestingCompletionEnabled() const
+{
+    return m_requestCompletion;
+}
+
+/*!
+ * \brief Sets whether completion for all directories of all devices should be requested automatically.
+ * \remarks Completion can be requested manually using requestCompletion().
+ */
+inline void SyncthingConnection::setRequestingCompletionEnabled(bool requestingCompletionEnabled)
+{
+    m_requestCompletion = requestingCompletionEnabled;
 }
 
 /*!
