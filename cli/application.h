@@ -60,8 +60,8 @@ private:
     void requestRescan(const ArgumentOccurrence &occurrence);
     void requestRescanAll(const ArgumentOccurrence &);
     void requestPauseResume(bool pause);
-    static void printDir(const RelevantDir &relevantDir);
-    static void printDev(const Data::SyncthingDev *dev);
+    void printDir(const RelevantDir &relevantDir) const;
+    void printDev(const Data::SyncthingDev *dev) const;
     void printStatus(const ArgumentOccurrence &);
     static void printLog(const std::vector<Data::SyncthingLogEntry> &logEntries);
     void waitForIdle(const ArgumentOccurrence &);

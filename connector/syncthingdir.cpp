@@ -132,6 +132,16 @@ QStringRef SyncthingDir::pathWithoutTrailingSlash() const
     return dirPath;
 }
 
+bool SyncthingDir::areRemotesUpToDate() const
+{
+    for (const auto &completionForDev : completionByDevice) {
+        if (completionForDev.second.neededBytes) {
+            return false;
+        }
+    }
+    return true;
+}
+
 SyncthingItemDownloadProgress::SyncthingItemDownloadProgress(
     const QString &containingDirPath, const QString &relativeItemPath, const QJsonObject &values)
     : relativePath(relativeItemPath)

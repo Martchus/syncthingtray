@@ -624,6 +624,19 @@ QStringList SyncthingConnection::deviceIds() const
 }
 
 /*!
+ * \brief Returns the device name for the specified \a deviceId if known; otherwise returns just the \a deviceId itself.
+ */
+QString SyncthingConnection::deviceNameOrId(const QString &deviceId) const
+{
+    for (const auto &dev : devInfo()) {
+        if (dev.id == deviceId) {
+            return dev.name;
+        }
+    }
+    return deviceId;
+}
+
+/*!
  * \brief Returns the number of devices Syncthing is currently connected to.
  * \remarks Computed by looping devInfo().
  */
@@ -1161,10 +1174,8 @@ void SyncthingConnection::readConnections()
         // read traffic, the conversion to double is neccassary because toInt() doesn't work for high values
         const QJsonValue totalIncomingTrafficValue(totalObj.value(QStringLiteral("inBytesTotal")));
         const QJsonValue totalOutgoingTrafficValue(totalObj.value(QStringLiteral("outBytesTotal")));
-        const uint64 totalIncomingTraffic
-            = totalIncomingTrafficValue.isDouble() ? static_cast<uint64>(totalIncomingTrafficValue.toDouble(0.0)) : unknownTraffic;
-        const uint64 totalOutgoingTraffic
-            = totalOutgoingTrafficValue.isDouble() ? static_cast<uint64>(totalOutgoingTrafficValue.toDouble(0.0)) : unknownTraffic;
+        const uint64 totalIncomingTraffic = totalIncomingTrafficValue.isDouble() ? jsonValueToInt(totalIncomingTrafficValue) : unknownTraffic;
+        const uint64 totalOutgoingTraffic = totalOutgoingTrafficValue.isDouble() ? jsonValueToInt(totalOutgoingTrafficValue) : unknownTraffic;
         double transferTime;
         const bool hasDelta
             = !m_lastConnectionsUpdate.isNull() && ((transferTime = (DateTime::gmtNow() - m_lastConnectionsUpdate).totalSeconds()) != 0.0);
@@ -1203,8 +1214,8 @@ void SyncthingConnection::readConnections()
                 }
             }
             dev.paused = connectionObj.value(QStringLiteral("paused")).toBool(false);
-            dev.totalIncomingTraffic = static_cast<uint64>(connectionObj.value(QStringLiteral("inBytesTotal")).toDouble(0));
-            dev.totalOutgoingTraffic = static_cast<uint64>(connectionObj.value(QStringLiteral("outBytesTotal")).toDouble(0));
+            dev.totalIncomingTraffic = jsonValueToInt(connectionObj.value(QStringLiteral("inBytesTotal")));
+            dev.totalOutgoingTraffic = jsonValueToInt(connectionObj.value(QStringLiteral("outBytesTotal")));
             dev.connectionAddress = connectionObj.value(QStringLiteral("address")).toString();
             dev.connectionType = connectionObj.value(QStringLiteral("type")).toString();
             dev.clientVersion = connectionObj.value(QStringLiteral("clientVersion")).toString();
@@ -1628,9 +1639,9 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
         } else if (eventType == QLatin1String("FolderSummary")) {
             readDirSummary(eventTime, eventData.value(QStringLiteral("summary")).toObject(), *dirInfo, index);
         } else if (eventType == QLatin1String("FolderCompletion")) {
-            const int percentage = static_cast<int>(eventData.value(QStringLiteral("completion")).toDouble());
-            dirInfo->globalBytes = static_cast<uint64>(eventData.value(QStringLiteral("globalBytes")).toDouble(dirInfo->globalBytes));
-            dirInfo->neededBytes = static_cast<uint64>(eventData.value(QStringLiteral("neededBytes")).toDouble(dirInfo->neededBytes));
+            const int percentage = jsonValueToInt<int>(eventData.value(QStringLiteral("completion")));
+            dirInfo->globalBytes = jsonValueToInt(eventData.value(QStringLiteral("globalBytes")), dirInfo->globalBytes);
+            dirInfo->neededBytes = jsonValueToInt(eventData.value(QStringLiteral("neededBytes")), dirInfo->neededBytes);
             if (percentage > 0 && percentage < 100) {
                 dirInfo->completionPercentage = percentage;
                 emit dirStatusChanged(*dirInfo, index);
@@ -1924,16 +1935,16 @@ bool SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     }
 
     // update statistics
-    dir.globalBytes = toUInt64(summary.value(QStringLiteral("globalBytes")));
-    dir.globalDeleted = toUInt64(summary.value(QStringLiteral("globalDeleted")));
-    dir.globalFiles = toUInt64(summary.value(QStringLiteral("globalFiles")));
-    dir.globalDirs = toUInt64(summary.value(QStringLiteral("globalDirectories")));
-    dir.localBytes = toUInt64(summary.value(QStringLiteral("localBytes")));
-    dir.localDeleted = toUInt64(summary.value(QStringLiteral("localDeleted")));
-    dir.localFiles = toUInt64(summary.value(QStringLiteral("localFiles")));
-    dir.localDirs = toUInt64(summary.value(QStringLiteral("localDirectories")));
-    dir.neededBytes = toUInt64(summary.value(QStringLiteral("needByted")));
-    dir.neededFiles = toUInt64(summary.value(QStringLiteral("needFiles")));
+    dir.globalBytes = jsonValueToInt(summary.value(QStringLiteral("globalBytes")));
+    dir.globalDeleted = jsonValueToInt(summary.value(QStringLiteral("globalDeleted")));
+    dir.globalFiles = jsonValueToInt(summary.value(QStringLiteral("globalFiles")));
+    dir.globalDirs = jsonValueToInt(summary.value(QStringLiteral("globalDirectories")));
+    dir.localBytes = jsonValueToInt(summary.value(QStringLiteral("localBytes")));
+    dir.localDeleted = jsonValueToInt(summary.value(QStringLiteral("localDeleted")));
+    dir.localFiles = jsonValueToInt(summary.value(QStringLiteral("localFiles")));
+    dir.localDirs = jsonValueToInt(summary.value(QStringLiteral("localDirectories")));
+    dir.neededBytes = jsonValueToInt(summary.value(QStringLiteral("needByted")));
+    dir.neededFiles = jsonValueToInt(summary.value(QStringLiteral("needFiles")));
     dir.ignorePatterns = summary.value(QStringLiteral("ignorePatterns")).toBool();
     dir.lastStatisticsUpdate = eventTime;
 
@@ -1985,11 +1996,11 @@ void SyncthingConnection::readCompletion()
         const auto replyObj(replyDoc.object());
         auto &completion = dir->completionByDevice[devId];
         completion.lastUpdate = DateTime::gmtNow();
-        completion.percentage = replyObj.value(QLatin1String("completion")).toInt();
-        completion.globalBytes = toUInt64(replyObj.value(QLatin1String("globalBytes")));
-        completion.neededBytes = toUInt64(replyObj.value(QLatin1String("needBytes")));
-        completion.neededItems = toUInt64(replyObj.value(QLatin1String("needItems")));
-        completion.neededDeletes = toUInt64(replyObj.value(QLatin1String("needDeletes")));
+        completion.percentage = replyObj.value(QLatin1String("completion")).toDouble();
+        completion.globalBytes = jsonValueToInt(replyObj.value(QLatin1String("globalBytes")));
+        completion.neededBytes = jsonValueToInt(replyObj.value(QLatin1String("needBytes")));
+        completion.neededItems = jsonValueToInt(replyObj.value(QLatin1String("needItems")));
+        completion.neededDeletes = jsonValueToInt(replyObj.value(QLatin1String("needDeletes")));
         emit dirStatusChanged(*dir, index);
         break;
     }

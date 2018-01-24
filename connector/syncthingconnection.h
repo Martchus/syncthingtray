@@ -128,6 +128,7 @@ public:
     const std::vector<SyncthingDir *> &completedDirs() const;
     QStringList directoryIds() const;
     QStringList deviceIds() const;
+    QString deviceNameOrId(const QString &deviceId) const;
     size_t connectedDevices() const;
 
 public Q_SLOTS:

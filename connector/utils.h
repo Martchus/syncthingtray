@@ -4,6 +4,7 @@
 #include "./global.h"
 
 #include <c++utilities/conversion/types.h>
+#include <c++utilities/misc/traits.h>
 
 #include <QJsonValue>
 #include <QStringList>
@@ -30,9 +31,10 @@ bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QUrl &url);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);
 
-inline quint64 LIB_SYNCTHING_CONNECTOR_EXPORT toUInt64(const QJsonValue &value, double defaultValue = 0.0)
+template <typename IntType = quint64, Traits::EnableIf<std::is_integral<IntType>>...>
+inline IntType LIB_SYNCTHING_CONNECTOR_EXPORT jsonValueToInt(const QJsonValue &value, double defaultValue = 0.0)
 {
-    return static_cast<quint64>(value.toDouble(defaultValue));
+    return static_cast<IntType>(value.toDouble(defaultValue));
 }
 
 constexpr int LIB_SYNCTHING_CONNECTOR_EXPORT trQuandity(quint64 quandity)

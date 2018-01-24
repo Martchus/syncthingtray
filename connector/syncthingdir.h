@@ -53,11 +53,11 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemDownloadProgress {
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingCompletion {
     ChronoUtilities::DateTime lastUpdate;
+    double percentage = 0;
     quint64 globalBytes = 0;
     quint64 neededBytes = 0;
     quint64 neededItems = 0;
     quint64 neededDeletes = 0;
-    int percentage = 0;
 };
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
@@ -67,6 +67,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     const QString &displayName() const;
     QString statusString() const;
     QStringRef pathWithoutTrailingSlash() const;
+    bool areRemotesUpToDate() const;
 
     QString id;
     QString label;

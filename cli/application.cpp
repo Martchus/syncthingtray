@@ -469,7 +469,7 @@ bool Application::findPwd()
     return false;
 }
 
-void Application::printDir(const RelevantDir &relevantDir)
+void Application::printDir(const RelevantDir &relevantDir) const
 {
     const SyncthingDir *const dir = relevantDir.dirObj;
     cout << " - ";
@@ -484,8 +484,18 @@ void Application::printDir(const RelevantDir &relevantDir)
     printProperty("Last scan time", dir->lastScanTime);
     printProperty("Last file time", dir->lastFileTime);
     printProperty("Last file name", dir->lastFileName);
-    printProperty("Download progress", dir->downloadLabel);
     printProperty("Shared with", dir->deviceNames.isEmpty() ? dir->deviceIds : dir->deviceNames);
+    printProperty("Download progress", dir->downloadLabel);
+    if (!dir->completionByDevice.empty()) {
+        printProperty("Remote progress", dir->areRemotesUpToDate() ? "all up-to-date" : "some need bytes");
+        for (const auto &completionForDev : dir->completionByDevice) {
+            printProperty(m_connection.deviceNameOrId(completionForDev.first).toLocal8Bit().data(),
+                argsToString(dataSizeToString(completionForDev.second.globalBytes - completionForDev.second.neededBytes), ' ', '/', ' ',
+                    dataSizeToString(completionForDev.second.globalBytes), ' ', '(', static_cast<int>(completionForDev.second.percentage), " %)")
+                    .data(),
+                nullptr, 6);
+        }
+    }
     printProperty("Read-only", dir->readOnly);
     printProperty("Ignore permissions", dir->ignorePermissions);
     printProperty("Auto-normalize", dir->autoNormalize);
@@ -502,7 +512,7 @@ void Application::printDir(const RelevantDir &relevantDir)
     cout << '\n';
 }
 
-void Application::printDev(const SyncthingDev *dev)
+void Application::printDev(const SyncthingDev *dev) const
 {
     cout << " - ";
     setStyle(cout, TextAttribute::Bold);
@@ -535,7 +545,7 @@ void Application::printStatus(const ArgumentOccurrence &)
         setStyle(cout, TextAttribute::Bold);
         cout << "Directories\n";
         setStyle(cout);
-        for_each(m_relevantDirs.cbegin(), m_relevantDirs.cend(), &Application::printDir);
+        for_each(m_relevantDirs.cbegin(), m_relevantDirs.cend(), bind(&Application::printDir, this, placeholders::_1));
     }
 
     // display devs
@@ -543,7 +553,7 @@ void Application::printStatus(const ArgumentOccurrence &)
         setStyle(cout, TextAttribute::Bold);
         cout << "Devices\n";
         setStyle(cout);
-        for_each(m_relevantDevs.cbegin(), m_relevantDevs.cend(), &Application::printDev);
+        for_each(m_relevantDevs.cbegin(), m_relevantDevs.cend(), bind(&Application::printDev, this, placeholders::_1));
     }
 
     cout.flush();
