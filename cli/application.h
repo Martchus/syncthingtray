@@ -61,10 +61,6 @@ private:
     void requestRescan(const ArgumentOccurrence &occurrence);
     void requestRescanAll(const ArgumentOccurrence &);
     void requestPauseResume(bool pause);
-    void requestPauseAllDevs(const ArgumentOccurrence &);
-    void requestPauseAllDirs(const ArgumentOccurrence &);
-    void requestResumeAllDevs(const ArgumentOccurrence &);
-    void requestResumeAllDirs(const ArgumentOccurrence &);
     static void printDir(const RelevantDir &relevantDir);
     static void printDev(const Data::SyncthingDev *dev);
     void printStatus(const ArgumentOccurrence &);

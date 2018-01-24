@@ -74,20 +74,14 @@ Application::Application()
     m_args.rescanAll.setCallback(bind(&Application::requestRescanAll, this, _1));
     m_args.pause.setCallback(bind(&Application::requestPauseResume, this, true));
     m_args.resume.setCallback(bind(&Application::requestPauseResume, this, false));
-    m_args.pauseAllDevs.setCallback(bind(&Application::requestPauseAllDevs, this, _1));
-    m_args.pauseAllDirs.setCallback(bind(&Application::requestPauseAllDirs, this, _1));
-    m_args.resumeAllDevs.setCallback(bind(&Application::requestResumeAllDevs, this, _1));
-    m_args.resumeAllDirs.setCallback(bind(&Application::requestResumeAllDirs, this, _1));
     m_args.waitForIdle.setCallback(bind(&Application::waitForIdle, this, _1));
     m_args.pwd.setCallback(bind(&Application::checkPwdOperationPresent, this, _1));
     m_args.statusPwd.setCallback(bind(&Application::printPwdStatus, this, _1));
     m_args.rescanPwd.setCallback(bind(&Application::requestRescanPwd, this, _1));
     m_args.pausePwd.setCallback(bind(&Application::requestPausePwd, this, _1));
     m_args.resumePwd.setCallback(bind(&Application::requestResumePwd, this, _1));
-    m_args.pauseDir.setCallback(bind(&Application::initDirCompletion, this, ref(m_args.pauseDir), _1));
-    m_args.statusDir.setCallback(bind(&Application::initDirCompletion, this, ref(m_args.statusDir), _1));
-    m_args.pauseDev.setCallback(bind(&Application::initDevCompletion, this, ref(m_args.pauseDev), _1));
-    m_args.statusDev.setCallback(bind(&Application::initDevCompletion, this, ref(m_args.statusDev), _1));
+    m_args.dir.setCallback(bind(&Application::initDirCompletion, this, ref(m_args.dir), _1));
+    m_args.dev.setCallback(bind(&Application::initDevCompletion, this, ref(m_args.dev), _1));
 
     // connect signals and slots
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &Application::handleStatusChanged);
@@ -129,8 +123,7 @@ int Application::exec(int argc, const char *const *argv)
     }
 
     // finally do the request or establish connection
-    if (m_args.status.isPresent() || m_args.rescan.isPresent() || m_args.rescanAll.isPresent() || m_args.pauseAllDirs.isPresent()
-        || m_args.pauseAllDevs.isPresent() || m_args.resumeAllDirs.isPresent() || m_args.resumeAllDevs.isPresent() || m_args.pause.isPresent()
+    if (m_args.status.isPresent() || m_args.rescan.isPresent() || m_args.rescanAll.isPresent() || m_args.pause.isPresent()
         || m_args.resume.isPresent() || m_args.waitForIdle.isPresent() || m_args.pwd.isPresent()) {
         // those arguments rquire establishing a connection first, the actual handler is called by handleStatusChanged() when
         // the connection has been established
@@ -406,102 +399,59 @@ void Application::requestPauseResume(bool pause)
     cerr << flush;
 }
 
-void Application::requestPauseAllDevs(const ArgumentOccurrence &)
-{
-    findRelevantDirsAndDevs(OperationType::PauseResume);
-    connect(&m_connection, &SyncthingConnection::devicePauseTriggered, this, &Application::handleResponse);
-    if (!m_connection.pauseAllDevs()) {
-        cerr << Phrases::Warning << "No devices to be paused." << Phrases::End << flush;
-        exit(0);
-    }
-    cerr << "Request pausing all devices ..." << endl;
-    m_expectedResponse = 1;
-}
-
-void Application::requestPauseAllDirs(const ArgumentOccurrence &)
-{
-    connect(&m_connection, &SyncthingConnection::directoryPauseTriggered, this, &Application::handleResponse);
-    if (!m_connection.pauseAllDirs()) {
-        cerr << Phrases::Warning << "No directories to be paused." << Phrases::End << flush;
-        exit(0);
-    }
-    cerr << "Request pausing all directories ..." << endl;
-    m_expectedResponse = 1;
-}
-
-void Application::requestResumeAllDevs(const ArgumentOccurrence &)
-{
-    connect(&m_connection, &SyncthingConnection::deviceResumeTriggered, this, &Application::handleResponse);
-    if (!m_connection.resumeAllDevs()) {
-        cerr << Phrases::Warning << "No devices to be resumed." << Phrases::End << flush;
-        exit(0);
-    }
-    cerr << "Request resuming all devices ..." << endl;
-    m_expectedResponse = 1;
-}
-
-void Application::requestResumeAllDirs(const ArgumentOccurrence &)
-{
-    connect(&m_connection, &SyncthingConnection::deviceResumeTriggered, this, &Application::handleResponse);
-    if (!m_connection.resumeAllDirs()) {
-        cerr << Phrases::Warning << "No directories to be resumed." << Phrases::End << flush;
-        exit(0);
-    }
-    cerr << "Request resuming all directories ..." << endl;
-    m_expectedResponse = 1;
-}
-
 void Application::findRelevantDirsAndDevs(OperationType operationType)
 {
     int dummy;
 
-    Argument *dirArg, *devArg;
-    switch (operationType) {
-    case OperationType::Status:
-        dirArg = &m_args.statusDir;
-        devArg = &m_args.statusDev;
-        break;
-    case OperationType::PauseResume:
-        dirArg = &m_args.pauseDir;
-        devArg = &m_args.pauseDev;
+    // find relevant dirs
+    const bool allDirs = m_args.allDirs.isPresent();
+    if (!allDirs) {
+        const Argument &dirArg = m_args.dir;
+        if (dirArg.isPresent()) {
+            m_relevantDirs.reserve(dirArg.occurrences());
+            for (size_t i = 0; i != dirArg.occurrences(); ++i) {
+                const QString dirIdentifier(argToQString(dirArg.values(i).front()));
+                const RelevantDir relevantDir(findDirectory(dirIdentifier));
+                if (relevantDir.dirObj) {
+                    m_relevantDirs.emplace_back(move(relevantDir));
+                }
+            }
+        }
     }
 
-    if (dirArg->isPresent()) {
-        m_relevantDirs.reserve(dirArg->occurrences());
-        for (size_t i = 0; i != dirArg->occurrences(); ++i) {
-            const QString dirIdentifier(argToQString(dirArg->values(i).front()));
-            const RelevantDir relevantDir(findDirectory(dirIdentifier));
-            if (relevantDir.dirObj) {
-                m_relevantDirs.emplace_back(move(relevantDir));
+    // find relevant devs
+    const bool allDevs = m_args.allDevs.isPresent();
+    if (!allDevs) {
+        Argument &devArg = m_args.dev;
+        if (devArg.isPresent()) {
+            m_relevantDevs.reserve(devArg.occurrences());
+            for (size_t i = 0; i != devArg.occurrences(); ++i) {
+                const SyncthingDev *dev = m_connection.findDevInfo(argToQString(devArg.values(i).front()), dummy);
+                if (!dev) {
+                    dev = m_connection.findDevInfoByName(argToQString(devArg.values(i).front()), dummy);
+                }
+                if (dev) {
+                    m_relevantDevs.emplace_back(dev);
+                } else {
+                    cerr << Phrases::Warning << "Specified device \"" << devArg.values(i).front() << "\" does not exist and will be ignored."
+                         << Phrases::End;
+                }
             }
         }
     }
-    if (devArg->isPresent()) {
-        m_relevantDevs.reserve(devArg->occurrences());
-        for (size_t i = 0; i != devArg->occurrences(); ++i) {
-            const SyncthingDev *dev = m_connection.findDevInfo(argToQString(devArg->values(i).front()), dummy);
-            if (!dev) {
-                dev = m_connection.findDevInfoByName(argToQString(devArg->values(i).front()), dummy);
-            }
-            if (dev) {
-                m_relevantDevs.emplace_back(dev);
-            } else {
-                cerr << Phrases::Warning << "Specified device \"" << devArg->values(i).front() << "\" does not exist and will be ignored."
-                     << Phrases::End;
-            }
+
+    // when displaying status information and no dirs/devs have been specified, just print information for all
+    const bool displayEverything = operationType == OperationType::Status && m_relevantDirs.empty() && m_relevantDevs.empty();
+    if (allDirs || (!allDevs && displayEverything)) {
+        m_relevantDirs.reserve(m_connection.dirInfo().size());
+        for (const SyncthingDir &dir : m_connection.dirInfo()) {
+            m_relevantDirs.emplace_back(&dir, QString());
         }
     }
-    if (operationType == OperationType::Status) {
-        // when displaying status information and no dirs/devs have been specified, just print information for all
-        if (m_relevantDirs.empty() && m_relevantDevs.empty()) {
-            m_relevantDirs.reserve(m_connection.dirInfo().size());
-            for (const SyncthingDir &dir : m_connection.dirInfo()) {
-                m_relevantDirs.emplace_back(&dir, QString());
-            }
-            m_relevantDevs.reserve(m_connection.devInfo().size());
-            for (const SyncthingDev &dev : m_connection.devInfo()) {
-                m_relevantDevs.emplace_back(&dev);
-            }
+    if (allDevs || (!allDirs && displayEverything)) {
+        m_relevantDevs.reserve(m_connection.devInfo().size());
+        for (const SyncthingDev &dev : m_connection.devInfo()) {
+            m_relevantDevs.emplace_back(&dev);
         }
     }
 }
