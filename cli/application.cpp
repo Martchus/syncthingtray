@@ -388,7 +388,7 @@ void Application::requestPauseResume(bool pause)
             cerr << "Request resuming devices ";
         }
         cerr << devIds.join(QStringLiteral(", ")).toLocal8Bit().data() << " ...\n";
-        if (pause ? m_connection.pauseDirectories(devIds) : m_connection.resumeDirectories(devIds)) {
+        if (pause ? m_connection.pauseDevice(devIds) : m_connection.resumeDevice(devIds)) {
             ++m_expectedResponse;
         }
     }
