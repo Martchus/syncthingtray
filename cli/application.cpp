@@ -283,11 +283,6 @@ void Application::handleError(
     QCoreApplication::exit(-3);
 }
 
-void Application::findRelevantDirsAndDevs()
-{
-    findRelevantDirsAndDevs(OperationType::Status);
-}
-
 void Application::requestLog(const ArgumentOccurrence &)
 {
     m_connection.requestLog(&Application::printLog);
@@ -533,7 +528,7 @@ void Application::printDev(const SyncthingDev *dev)
 
 void Application::printStatus(const ArgumentOccurrence &)
 {
-    findRelevantDirsAndDevs();
+    findRelevantDirsAndDevs(OperationType::Status);
 
     // display dirs
     if (!m_relevantDirs.empty()) {
@@ -600,7 +595,7 @@ void Application::waitForIdle(const ArgumentOccurrence &)
 
     // define handler for newDirs/newDevices to call findRelevantDirsAndDevs() in that case
     function<void(void)> handleNewDirsOrDevs([this, &handleStatusChange] {
-        findRelevantDirsAndDevs();
+        findRelevantDirsAndDevs(OperationType::WaitForIdle);
         handleStatusChange();
     });
 

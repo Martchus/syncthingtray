@@ -6,7 +6,7 @@ namespace Cli {
 
 Args::Args()
     : help(parser)
-    , status("status", 's', "shows the status")
+    , status("status", 's', "shows the status (for all dirs and devs if none specified)")
     , log("log", 'l', "shows the Syncthing log")
     , stop("stop", '\0', "stops Syncthing")
     , restart("restart", '\0', "restarts Syncthing")
@@ -40,7 +40,7 @@ Args::Args()
     dev.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
     status.setSubArguments({ &dir, &dev, &allDirs, &allDevs });
     status.setExample(PROJECT_NAME " status # shows all dirs and devs\n" PROJECT_NAME " status --dir dir1 --dir dir2 --dev dev1 --dev dev2");
-    waitForIdle.setSubArguments({ &dir, &dev, &atLeast, &timeout });
+    waitForIdle.setSubArguments({ &dir, &dev, &allDirs, &allDevs, &atLeast, &timeout });
     waitForIdle.setExample(PROJECT_NAME " wait-for-idle --timeout 1800000 --at-least 5000 && systemctl poweroff\n" PROJECT_NAME
                                         " wait-for-idle --dir dir1 --dir dir2 --dev dev1 --dev dev2 --at-least 5000");
     pwd.setSubArguments({ &statusPwd, &rescanPwd, &pausePwd, &resumePwd });

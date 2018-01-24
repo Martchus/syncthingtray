@@ -12,7 +12,7 @@
 
 namespace Cli {
 
-enum class OperationType { Status, PauseResume };
+enum class OperationType { Status, PauseResume, WaitForIdle };
 
 struct RelevantDir {
     RelevantDir(const Data::SyncthingDir *dir = nullptr, const QString &subDir = QString());
@@ -48,7 +48,6 @@ private slots:
     void handleResponse();
     void handleError(
         const QString &message, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);
-    void findRelevantDirsAndDevs();
     void findRelevantDirsAndDevs(OperationType operationType);
     bool findPwd();
 
