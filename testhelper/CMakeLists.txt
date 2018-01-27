@@ -8,6 +8,7 @@ set(META_APP_DESCRIPTION "Helper for testing compontents of Syncthing Tray")
 set(META_PUBLIC_QT_MODULES Core)
 set(META_NO_INSTALL_TARGETS ON)
 set(META_NO_CPP_UNIT ON)
+set(META_TEST_TARGET_IS_MANUAL ON)
 
 # add project files
 set(HEADER_FILES
