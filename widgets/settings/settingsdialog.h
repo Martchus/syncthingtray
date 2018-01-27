@@ -3,6 +3,8 @@
 
 #include "./settings.h"
 
+#include "../webview/webviewdefs.h"
+
 #include <qtutilities/settingsdialog/optionpage.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 #include <qtutilities/settingsdialog/settingsdialog.h>

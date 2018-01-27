@@ -2,6 +2,7 @@
 #define TRAY_WIDGET_H
 
 #include "../../widgets/settings/settings.h"
+#include "../../widgets/webview/webviewdefs.h"
 
 #include "../../model/syncthingdevicemodel.h"
 #include "../../model/syncthingdirectorymodel.h"

@@ -3,6 +3,7 @@
 
 #include "../../widgets/misc/dbusstatusnotifier.h"
 #include "../../widgets/misc/statusinfo.h"
+#include "../../widgets/webview/webviewdefs.h"
 
 #include "../../model/syncthingdevicemodel.h"
 #include "../../model/syncthingdirectorymodel.h"
