@@ -1,0 +1,29 @@
+#include "../syncthingtestinstance.h"
+
+#include <c++utilities/tests/testutils.h>
+
+#include <iostream>
+
+using namespace std;
+using namespace TestUtilities;
+
+/*!
+ * \brief Launches a Syncthing test instance for manual testing.
+ */
+int main(int argc, char **argv)
+{
+    TestApplication testApp(argc, argv);
+    if (!testApp) {
+        return -1;
+    }
+
+    SyncthingTestInstance testInstance;
+    auto &syncthingProcess(testInstance.syncthingProcess());
+    syncthingProcess.setReadChannelMode(QProcess::ForwardedChannels);
+    QObject::connect(&syncthingProcess, static_cast<void (QProcess::*)(int)>(&QProcess::finished), &QCoreApplication::exit);
+    testInstance.start();
+
+    const int res = testInstance.application().exec();
+    testInstance.stop();
+    return res;
+}

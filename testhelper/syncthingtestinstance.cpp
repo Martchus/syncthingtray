@@ -93,8 +93,14 @@ void SyncthingTestInstance::stop()
     }
     if (m_syncthingProcess.isOpen()) {
         cerr << "\n - Syncthing terminated with exit code " << m_syncthingProcess.exitCode() << ".\n";
-        cerr << "\n - Syncthing stdout during the testrun:\n" << m_syncthingProcess.readAllStandardOutput().data();
-        cerr << "\n - Syncthing stderr during the testrun:\n" << m_syncthingProcess.readAllStandardError().data();
+        const auto stdOut(m_syncthingProcess.readAllStandardOutput());
+        if (!stdOut.isEmpty()) {
+            cerr << "\n - Syncthing stdout during the testrun:\n" << stdOut.data();
+        }
+        const auto stdErr(m_syncthingProcess.readAllStandardError());
+        if (!stdErr.isEmpty()) {
+            cerr << "\n - Syncthing stderr during the testrun:\n" << stdErr.data();
+        }
     }
 }
 } // namespace TestUtilities

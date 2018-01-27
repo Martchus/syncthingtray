@@ -7,6 +7,7 @@ set(META_APP_NAME "Syncthing Tray Test Helper")
 set(META_APP_DESCRIPTION "Helper for testing compontents of Syncthing Tray")
 set(META_PUBLIC_QT_MODULES Core)
 set(META_NO_INSTALL_TARGETS ON)
+set(META_NO_CPP_UNIT ON)
 
 # add project files
 set(HEADER_FILES
@@ -21,6 +22,7 @@ set(SRC_FILES
 set(TEST_HEADER_FILES
 )
 set(TEST_SRC_FILES
+    tests/manualtesting.cpp
 )
 
 set(TS_FILES
@@ -48,6 +50,7 @@ include(BasicConfig)
 include(QtConfig)
 include(WindowsResources)
 include(LibraryTarget)
+include(TestTarget)
 include(Doxygen)
 include(ConfigHeader)
 

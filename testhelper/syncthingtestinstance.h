@@ -24,14 +24,12 @@ public:
 
     const QString &apiKey() const;
     const QString &syncthingPort() const;
+    QCoreApplication &application();
+    QProcess &syncthingProcess();
 
 public Q_SLOTS:
     void start();
     void stop();
-
-protected:
-    QCoreApplication &application();
-    QProcess &syncthingProcess();
 
 private:
     QString m_apiKey;
