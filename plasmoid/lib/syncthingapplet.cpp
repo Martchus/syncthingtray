@@ -45,6 +45,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     : Applet(parent, data)
     , m_aboutDlg(nullptr)
     , m_connection()
+    , m_notifier(m_connection)
     , m_dirModel(m_connection)
     , m_devModel(m_connection)
     , m_downloadModel(m_connection)
@@ -53,7 +54,6 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_webViewDlg(nullptr)
 #endif
     , m_currentConnectionConfig(-1)
-    , m_status(SyncthingStatus::Disconnected)
     , m_initialized(false)
 {
     qmlRegisterUncreatableMetaObject(Data::staticMetaObject, "martchus.syncthingplasmoid", 0, 6, "Data", QStringLiteral("only enums"));
@@ -74,7 +74,9 @@ void SyncthingApplet::init()
     Applet::init();
 
     // connect signals and slots
-    connect(&m_connection, &SyncthingConnection::statusChanged, this, &SyncthingApplet::handleConnectionStatusChanged);
+    connect(&m_notifier, &SyncthingNotifier::statusChanged, this, &SyncthingApplet::handleConnectionStatusChanged);
+    connect(&m_notifier, &SyncthingNotifier::syncComplete, &m_dbusNotifier, &DBusStatusNotifier::showSyncComplete);
+    connect(&m_notifier, &SyncthingNotifier::disconnected, &m_dbusNotifier, &DBusStatusNotifier::showDisconnect);
     connect(&m_connection, &SyncthingConnection::newDevices, this, &SyncthingApplet::handleDevicesChanged);
     connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &SyncthingApplet::handleDevicesChanged);
     connect(&m_connection, &SyncthingConnection::error, this, &SyncthingApplet::handleInternalError);
@@ -304,6 +306,17 @@ void SyncthingApplet::copyToClipboard(const QString &text)
 void SyncthingApplet::handleSettingsChanged()
 {
     const KConfigGroup config(this->config());
+    const auto &settings(Settings::values());
+
+    // apply notifiction settings
+    auto notifications(SyncthingHighLevelNotification::None);
+    if (settings.notifyOn.disconnect) {
+        notifications |= SyncthingHighLevelNotification::ConnectedDisconnected;
+    }
+    if (settings.notifyOn.syncComplete) {
+        notifications |= SyncthingHighLevelNotification::SyncComplete;
+    }
+    m_notifier.setEnabledNotifications(notifications);
 
     // apply appearance settings
     setSize(config.readEntry<QSize>("size", QSize(25, 25)));
@@ -322,7 +335,7 @@ void SyncthingApplet::handleSettingsChanged()
 
 void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
 {
-    if (m_initialized && m_status == status) {
+    if (m_initialized) {
         return;
     }
 
@@ -330,37 +343,7 @@ void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
     m_statusInfo.updateConnectionStatus(m_connection);
     m_statusInfo.updateConnectedDevices(m_connection);
 
-    // show notifications (FIXME: reduce C&P from trayicon.cpp)
-    const auto &settings = Settings::values();
-    switch (status) {
-    case SyncthingStatus::Disconnected:
-        if (m_initialized && settings.notifyOn.disconnect
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-            && !syncthingService().isManuallyStopped()
-#endif
-        ) {
-            m_dbusNotifier.showDisconnect();
-        }
-        break;
-    default:
-        m_dbusNotifier.hideDisconnect();
-    }
-    switch (status) {
-    case SyncthingStatus::Disconnected:
-    case SyncthingStatus::Reconnecting:
-    case SyncthingStatus::Synchronizing:
-        break;
-    default:
-        if (m_status == SyncthingStatus::Synchronizing && settings.notifyOn.syncComplete) {
-            const auto message(syncCompleteString(m_connection.completedDirs()));
-            if (!message.isEmpty()) {
-                m_dbusNotifier.showSyncComplete(message);
-            }
-        }
-    }
-
     // set status and emit signal
-    m_status = status;
     emit connectionStatusChanged();
 }
 

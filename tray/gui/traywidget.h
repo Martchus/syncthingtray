@@ -8,6 +8,7 @@
 #include "../../model/syncthingdownloadmodel.h"
 
 #include "../../connector/syncthingconnection.h"
+#include "../../connector/syncthingnotifier.h"
 #include "../../connector/syncthingprocess.h"
 
 #include <QWidget>
@@ -44,6 +45,7 @@ public:
     ~TrayWidget();
 
     Data::SyncthingConnection &connection();
+    Data::SyncthingNotifier &notifier();
     QMenu *connectionsMenu();
     static const std::vector<TrayWidget *> &instances();
 
@@ -91,6 +93,7 @@ private:
 #endif
     QFrame *m_cornerFrame;
     Data::SyncthingConnection m_connection;
+    Data::SyncthingNotifier m_notifier;
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingDownloadModel m_dlModel;
@@ -105,6 +108,11 @@ private:
 inline Data::SyncthingConnection &TrayWidget::connection()
 {
     return m_connection;
+}
+
+inline Data::SyncthingNotifier &TrayWidget::notifier()
+{
+    return m_notifier;
 }
 
 inline QMenu *TrayWidget::connectionsMenu()

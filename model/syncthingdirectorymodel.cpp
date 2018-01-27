@@ -148,9 +148,9 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 1:
                             return dir.path;
                         case 2:
-                            return directoryStatusString(dir.globalFiles, dir.globalDirs, dir.globalBytes);
+                            return directoryStatusString(dir.globalStats);
                         case 3:
-                            return directoryStatusString(dir.localFiles, dir.localDirs, dir.localBytes);
+                            return directoryStatusString(dir.localStats);
                         case 4:
                             if (!dir.deviceNames.isEmpty()) {
                                 return dir.deviceNames.join(QStringLiteral(", "));

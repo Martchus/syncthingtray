@@ -12,8 +12,7 @@ class TrayMenu : public QMenu {
     Q_OBJECT
 
 public:
-    TrayMenu(TrayIcon *trayIcon, const QString &connectionConfig = QString(), QWidget *parent = nullptr);
-    TrayMenu(const QString &connectionConfig = QString(), QWidget *parent = nullptr);
+    TrayMenu(const QString &connectionConfig = QString(), TrayIcon *trayIcon = nullptr, QWidget *parent = nullptr);
 
     QSize sizeHint() const;
     TrayWidget *widget();

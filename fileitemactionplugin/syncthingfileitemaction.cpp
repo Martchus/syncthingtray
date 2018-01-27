@@ -161,8 +161,8 @@ bool SyncthingDirActions::updateStatus(const SyncthingDir &dir)
             break;
         }
     }
-    m_globalStatusAction.setText(tr("Global: ") + directoryStatusString(dir.globalFiles, dir.globalDirs, dir.globalBytes));
-    m_localStatusAction.setText(tr("Local: ") + directoryStatusString(dir.localFiles, dir.localDirs, dir.localBytes));
+    m_globalStatusAction.setText(tr("Global: ") + directoryStatusString(dir.globalStats));
+    m_localStatusAction.setText(tr("Local: ") + directoryStatusString(dir.localStats));
     m_lastScanAction.setText(tr("Last scan time: ") + agoString(dir.lastScanTime));
     m_lastScanAction.setIcon(QIcon::fromTheme(QStringLiteral("accept_time_event")));
     m_rescanIntervalAction.setText(tr("Rescan interval: %1 seconds").arg(dir.rescanInterval));

@@ -38,9 +38,7 @@ namespace QtGui {
  */
 TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     : QSystemTrayIcon(parent)
-    , m_initialized(false)
-    , m_trayMenu(this, connectionConfig)
-    , m_status(SyncthingStatus::Disconnected)
+    , m_trayMenu(connectionConfig, this)
     , m_messageClickedAction(TrayIconMessageClickedAction::None)
 {
     // set context menu
@@ -76,26 +74,26 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
         &QAction::triggered, this, &TrayIcon::deleteLater);
     setContextMenu(&m_contextMenu);
 
-    // set initial status
-    handleConnectionStatusChanged(SyncthingStatus::Disconnected);
-
     // connect signals and slots
-    SyncthingConnection *connection = &(m_trayMenu.widget()->connection());
+    const SyncthingConnection &connection = m_trayMenu.widget()->connection();
+    const SyncthingNotifier &notifier = m_trayMenu.widget()->notifier();
     connect(this, &TrayIcon::activated, this, &TrayIcon::handleActivated);
     connect(this, &TrayIcon::messageClicked, this, &TrayIcon::handleMessageClicked);
-    connect(connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
-    connect(connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
-    connect(connection, &SyncthingConnection::statusChanged, this, &TrayIcon::handleConnectionStatusChanged);
-    connect(connection, &SyncthingConnection::newDevices, this, &TrayIcon::updateStatusIconAndText);
-    connect(connection, &SyncthingConnection::devStatusChanged, this, &TrayIcon::updateStatusIconAndText);
+    connect(&connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
+    connect(&connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
+    connect(&notifier, &SyncthingNotifier::disconnected, this, &TrayIcon::showDisconnected);
+    connect(&notifier, &SyncthingNotifier::syncComplete, this, &TrayIcon::showSyncComplete);
+    connect(&connection, &SyncthingConnection::statusChanged, this, &TrayIcon::updateStatusIconAndText);
+    connect(&connection, &SyncthingConnection::newDevices, this, &TrayIcon::updateStatusIconAndText);
+    connect(&connection, &SyncthingConnection::devStatusChanged, this, &TrayIcon::updateStatusIconAndText);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-    connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, connection,
+    connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, &connection,
         static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
     connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, m_trayMenu.widget(), &TrayWidget::dismissNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, m_trayMenu.widget(), &TrayWidget::showNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &TrayIcon::showInternalErrorsDialog);
+    connect(&notifier, &SyncthingNotifier::connected, &m_dbusNotifier, &DBusStatusNotifier::hideDisconnect);
 #endif
-    m_initialized = true;
 }
 
 /*!
@@ -146,14 +144,30 @@ void TrayIcon::handleMessageClicked()
     }
 }
 
-void TrayIcon::handleConnectionStatusChanged(SyncthingStatus status)
+void TrayIcon::showDisconnected()
 {
-    if (m_initialized && m_status == status) {
-        return;
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    if (Settings::values().dbusNotifications) {
+        m_dbusNotifier.showDisconnect();
+    } else
+#endif
+    {
+        m_messageClickedAction = TrayIconMessageClickedAction::None;
+        showMessage(QCoreApplication::applicationName(), tr("Disconnected from Syncthing"), QSystemTrayIcon::Warning);
     }
-    updateStatusIconAndText();
-    showStatusNotification(status);
-    m_status = status;
+}
+
+void TrayIcon::showSyncComplete(const QString &message)
+{
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    if (Settings::values().dbusNotifications) {
+        m_dbusNotifier.showSyncComplete(message);
+    } else
+#endif
+    {
+        m_messageClickedAction = TrayIconMessageClickedAction::None;
+        showMessage(QCoreApplication::applicationName(), message, QSystemTrayIcon::Information);
+    }
 }
 
 void TrayIcon::handleErrorsCleared()
@@ -182,7 +196,7 @@ void TrayIcon::showInternalError(
 
 void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message)
 {
-    const auto &settings = Settings::values();
+    const auto &settings(Settings::values());
     if (settings.notifyOn.syncthingErrors) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
         if (settings.dbusNotifications) {
@@ -208,57 +222,6 @@ void TrayIcon::updateStatusIconAndText()
         setToolTip(statusInfo.statusText() % QChar('\n') % statusInfo.additionalStatusText());
     }
     setIcon(statusInfo.statusIcon());
-}
-
-void TrayIcon::showStatusNotification(SyncthingStatus status)
-{
-    const SyncthingConnection &connection = trayMenu().widget()->connection();
-    const auto &settings = Settings::values();
-
-    switch (status) {
-    case SyncthingStatus::Disconnected:
-        if (m_initialized && settings.notifyOn.disconnect
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-            && !syncthingService().isManuallyStopped()
-#endif
-        ) {
-#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-            if (settings.dbusNotifications) {
-                m_dbusNotifier.showDisconnect();
-            } else
-#endif
-            {
-                m_messageClickedAction = TrayIconMessageClickedAction::None;
-                showMessage(QCoreApplication::applicationName(), tr("Disconnected from Syncthing"), QSystemTrayIcon::Warning);
-            }
-        }
-#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-        break;
-    default:
-        m_dbusNotifier.hideDisconnect();
-#endif
-    }
-    switch (status) {
-    case SyncthingStatus::Disconnected:
-    case SyncthingStatus::Reconnecting:
-    case SyncthingStatus::Synchronizing:
-        break;
-    default:
-        if (m_status == SyncthingStatus::Synchronizing && settings.notifyOn.syncComplete) {
-            const auto message(syncCompleteString(connection.completedDirs()));
-            if (!message.isEmpty()) {
-#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-                if (settings.dbusNotifications) {
-                    m_dbusNotifier.showSyncComplete(message);
-                } else
-#endif
-                {
-                    m_messageClickedAction = TrayIconMessageClickedAction::None;
-                    showMessage(QCoreApplication::applicationName(), message, QSystemTrayIcon::Information);
-                }
-            }
-        }
-    }
 }
 
 void TrayIcon::showInternalErrorsDialog()

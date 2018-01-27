@@ -60,6 +60,21 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingCompletion {
     quint64 neededDeletes = 0;
 };
 
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingStatistics {
+    quint64 bytes = 0;
+    quint64 deletes = 0;
+    quint64 dirs = 0;
+    quint64 files = 0;
+    quint64 symlinks = 0;
+
+    constexpr bool isNull() const;
+};
+
+constexpr bool SyncthingStatistics::isNull() const
+{
+    return bytes == 0 && deletes == 0 && dirs == 0 && files == 0 && symlinks == 0;
+}
+
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
     bool assignStatus(const QString &statusStr, ChronoUtilities::DateTime time);
@@ -67,6 +82,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     const QString &displayName() const;
     QString statusString() const;
     QStringRef pathWithoutTrailingSlash() const;
+    bool isLocallyUpToDate() const;
     bool areRemotesUpToDate() const;
 
     QString id;
@@ -89,9 +105,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     QString globalError;
     std::vector<SyncthingItemError> itemErrors;
     std::vector<SyncthingItemError> previousItemErrors;
-    quint64 globalBytes = 0, globalDeleted = 0, globalFiles = 0, globalDirs = 0;
-    quint64 localBytes = 0, localDeleted = 0, localFiles = 0, localDirs = 0;
-    quint64 neededBytes = 0, neededFiles = 0, neededDirs = 0;
+    SyncthingStatistics globalStats, localStats, neededStats;
     ChronoUtilities::DateTime lastStatisticsUpdate;
     ChronoUtilities::DateTime lastScanTime;
     ChronoUtilities::DateTime lastFileTime;
@@ -119,6 +133,11 @@ inline SyncthingDir::SyncthingDir(const QString &id, const QString &label, const
 inline const QString &SyncthingDir::displayName() const
 {
     return label.isEmpty() ? id : label;
+}
+
+inline bool SyncthingDir::isLocallyUpToDate() const
+{
+    return neededStats.isNull();
 }
 
 inline bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, ChronoUtilities::DateTime time)

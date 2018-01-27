@@ -9,6 +9,7 @@
 #include "../../model/syncthingdownloadmodel.h"
 
 #include "../../connector/syncthingconnection.h"
+#include "../../connector/syncthingnotifier.h"
 #include "../../connector/syncthingservice.h"
 
 #include <qtutilities/aboutdialog/aboutdialog.h>
@@ -135,6 +136,7 @@ private Q_SLOTS:
 private:
     Dialogs::AboutDialog *m_aboutDlg;
     Data::SyncthingConnection m_connection;
+    Data::SyncthingNotifier m_notifier;
     QtGui::StatusInfo m_statusInfo;
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
@@ -146,7 +148,6 @@ private:
     QtGui::WebViewDialog *m_webViewDlg;
 #endif
     int m_currentConnectionConfig;
-    Data::SyncthingStatus m_status;
     bool m_initialized;
     QSize m_size;
 };

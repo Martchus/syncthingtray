@@ -11,6 +11,7 @@ enum class SyncthingStatus;
 class SyncthingConnection;
 class SyncthingService;
 struct SyncthingDir;
+struct SyncthingDev;
 
 /*!
  * \brief The SyncthingHighLevelNotification enum specifies the high-level notifications provided by the SyncthingNotifier class.
@@ -26,6 +27,11 @@ enum class SyncthingHighLevelNotification {
 constexpr SyncthingHighLevelNotification operator|(SyncthingHighLevelNotification lhs, SyncthingHighLevelNotification rhs)
 {
     return static_cast<SyncthingHighLevelNotification>(static_cast<unsigned char>(lhs) | static_cast<unsigned char>(rhs));
+}
+
+constexpr SyncthingHighLevelNotification &operator|=(SyncthingHighLevelNotification &lhs, SyncthingHighLevelNotification rhs)
+{
+    return lhs = static_cast<SyncthingHighLevelNotification>(static_cast<unsigned char>(lhs) | static_cast<unsigned char>(rhs));
 }
 
 constexpr bool operator&(SyncthingHighLevelNotification lhs, SyncthingHighLevelNotification rhs)
@@ -47,21 +53,21 @@ public Q_SLOTS:
     void setEnabledNotifications(SyncthingHighLevelNotification enabledNotifications);
 
 Q_SIGNALS:
-    ///! \brief Emitted when the connection status changes. Also provided the previous status.
+    ///! \brief Emitted when the connection status changes. Also provides the previous status.
     void statusChanged(SyncthingStatus previousStatus, SyncthingStatus newStatus);
     ///! \brief Emitted when the connection to Syncthing has been established.
     void connected();
     ///! \brief Emitted when the connection to Syncthing has been interrupted.
     void disconnected();
     ///! \brief Emitted when the specified \a dirs have been completed synchronization.
-    void syncComplete(const std::vector<SyncthingDir *> &dirs);
+    void syncComplete(const QString &message);
 
 private Q_SLOTS:
     void handleStatusChangedEvent(SyncthingStatus newStatus);
 
 private:
     void emitConnectedAndDisconnected(SyncthingStatus newStatus);
-    void emitSyncComplete(SyncthingStatus newStatus);
+    void emitSyncComplete(const SyncthingDir &dir, int index, const SyncthingDev *remoteDev);
 
     const SyncthingConnection &m_connection;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

@@ -1,5 +1,6 @@
 #include "./syncthingnotifier.h"
 #include "./syncthingconnection.h"
+#include "./utils.h"
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "./syncthingservice.h"
@@ -33,6 +34,8 @@ SyncthingNotifier::SyncthingNotifier(const SyncthingConnection &connection, QObj
     , m_previousStatus(SyncthingStatus::Disconnected)
     , m_initialized(false)
 {
+    connect(&connection, &SyncthingConnection::statusChanged, this, &SyncthingNotifier::handleStatusChangedEvent);
+    connect(&connection, &SyncthingConnection::dirCompleted, this, &SyncthingNotifier::emitSyncComplete);
 }
 
 void SyncthingNotifier::handleStatusChangedEvent(SyncthingStatus newStatus)
@@ -45,7 +48,6 @@ void SyncthingNotifier::handleStatusChangedEvent(SyncthingStatus newStatus)
     // emit signals
     emit statusChanged(m_previousStatus, newStatus);
     emitConnectedAndDisconnected(newStatus);
-    emitSyncComplete(newStatus);
 
     // update status variables
     m_initialized = true;
@@ -85,24 +87,18 @@ void SyncthingNotifier::emitConnectedAndDisconnected(SyncthingStatus newStatus)
 /*!
  * \brief Emits the syncComplete() signal.
  */
-void SyncthingNotifier::emitSyncComplete(SyncthingStatus newStatus)
+void SyncthingNotifier::emitSyncComplete(const SyncthingDir &dir, int index, const SyncthingDev *remoteDev)
 {
-    if (!(m_enabledNotifications & SyncthingHighLevelNotification::SyncComplete)) {
+    VAR_UNUSED(index)
+    VAR_UNUSED(remoteDev)
+
+    if ((m_enabledNotifications & SyncthingHighLevelNotification::SyncComplete) == 0 || !m_initialized) {
         return;
     }
 
-    switch (newStatus) {
-    case SyncthingStatus::Disconnected:
-    case SyncthingStatus::Reconnecting:
-    case SyncthingStatus::Synchronizing:
-        break;
-    default:
-        if (m_previousStatus == SyncthingStatus::Synchronizing) {
-            const auto &completedDirs = m_connection.completedDirs();
-            if (!completedDirs.empty()) {
-                emit syncComplete(completedDirs);
-            }
-        }
+    const auto message(syncCompleteString(std::vector<const SyncthingDir *>{ &dir }));
+    if (!message.isEmpty()) {
+        emit syncComplete(message);
     }
 }
 

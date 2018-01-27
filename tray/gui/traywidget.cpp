@@ -59,12 +59,11 @@ TrayWidget::TrayWidget(const QString &connectionConfig, TrayMenu *parent)
     : QWidget(parent)
     , m_menu(parent)
     , m_ui(new Ui::TrayWidget)
-    ,
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-    m_webViewDlg(nullptr)
-    ,
+    , m_webViewDlg(nullptr)
 #endif
-    m_dirModel(m_connection)
+    , m_notifier(m_connection)
+    , m_dirModel(m_connection)
     , m_devModel(m_connection)
     , m_dlModel(m_connection)
     , m_selectedConnection(nullptr)
@@ -362,6 +361,16 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     }
     m_ui->connectionsPushButton->setText(m_selectedConnection->label);
     const bool reconnectRequired = m_connection.applySettings(*m_selectedConnection);
+
+    // apply notifiction settings
+    auto notifications(SyncthingHighLevelNotification::None);
+    if (settings.notifyOn.disconnect) {
+        notifications |= SyncthingHighLevelNotification::ConnectedDisconnected;
+    }
+    if (settings.notifyOn.syncComplete) {
+        notifications |= SyncthingHighLevelNotification::SyncComplete;
+    }
+    m_notifier.setEnabledNotifications(notifications);
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     // reconnect to apply settings considering systemd

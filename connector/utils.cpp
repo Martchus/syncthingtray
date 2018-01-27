@@ -54,17 +54,17 @@ QString trafficString(uint64 total, double rate)
 /*!
  * \brief Returns the string for global/local directory status, eg. "5 files, 1 directory, 23.7 MiB".
  */
-QString directoryStatusString(quint64 files, quint64 dirs, quint64 size)
+QString directoryStatusString(const SyncthingStatistics &stats)
 {
-    return QCoreApplication::translate("Data::Utils", "%1 file(s)", nullptr, trQuandity(files)).arg(files) % QChar(',') % QChar(' ')
-        % QCoreApplication::translate("Data::Utils", "%1 dir(s)", nullptr, trQuandity(dirs)).arg(dirs) % QChar(',') % QChar(' ')
-        % QString::fromUtf8(dataSizeToString(size).data());
+    return QCoreApplication::translate("Data::Utils", "%1 file(s)", nullptr, trQuandity(stats.files)).arg(stats.files) % QChar(',') % QChar(' ')
+        % QCoreApplication::translate("Data::Utils", "%1 dir(s)", nullptr, trQuandity(stats.dirs)).arg(stats.dirs) % QChar(',') % QChar(' ')
+        % QString::fromUtf8(dataSizeToString(stats.bytes).data());
 }
 
 /*!
  * \brief Returns the "sync complete" notication message for the specified directories.
  */
-QString syncCompleteString(const std::vector<SyncthingDir *> &completedDirs)
+QString syncCompleteString(const std::vector<const SyncthingDir *> &completedDirs)
 {
     switch (completedDirs.size()) {
     case 0:

@@ -640,7 +640,7 @@ QString SyncthingConnection::deviceNameOrId(const QString &deviceId) const
  * \brief Returns the number of devices Syncthing is currently connected to.
  * \remarks Computed by looping devInfo().
  */
-size_t SyncthingConnection::connectedDevices() const
+std::size_t SyncthingConnection::connectedDevices() const
 {
     size_t connectedDevs = 0;
     for (const SyncthingDev &dev : devInfo()) {
@@ -1028,8 +1028,10 @@ void SyncthingConnection::readConfig()
  */
 void SyncthingConnection::readDirs(const QJsonArray &dirs)
 {
+    // store the new dirs in a temporary list which is assigned to m_dirs later
     std::vector<SyncthingDir> newDirs;
     newDirs.reserve(static_cast<size_t>(dirs.size()));
+
     int dummy;
     for (const QJsonValue &dirVal : dirs) {
         const QJsonObject dirObj(dirVal.toObject());
@@ -1058,8 +1060,8 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
         dirItem->minDiskFreePercentage = dirObj.value(QStringLiteral("minDiskFreePct")).toInt(-1);
         dirItem->paused = dirObj.value(QStringLiteral("paused")).toBool(dirItem->paused);
     }
+
     m_dirs.swap(newDirs);
-    m_syncedDirs.reserve(m_dirs.size());
     emit this->newDirs(m_dirs);
 }
 
@@ -1068,8 +1070,10 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
  */
 void SyncthingConnection::readDevs(const QJsonArray &devs)
 {
+    // store the new devs in a temporary list which is assigned to m_devs later
     vector<SyncthingDev> newDevs;
     newDevs.reserve(static_cast<size_t>(devs.size()));
+
     for (const QJsonValue &devVal : devs) {
         const QJsonObject devObj(devVal.toObject());
         SyncthingDev *const devItem = addDevInfo(newDevs, devObj.value(QStringLiteral("deviceID")).toString());
@@ -1088,6 +1092,7 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
         devItem->status = devItem->id == m_myId ? SyncthingDevStatus::OwnDevice : SyncthingDevStatus::Unknown;
         devItem->paused = devObj.value(QStringLiteral("paused")).toBool(devItem->paused);
     }
+
     m_devs.swap(newDevs);
     emit this->newDevices(m_devs);
 }
@@ -1640,11 +1645,14 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
             readDirSummary(eventTime, eventData.value(QStringLiteral("summary")).toObject(), *dirInfo, index);
         } else if (eventType == QLatin1String("FolderCompletion")) {
             const int percentage = jsonValueToInt<int>(eventData.value(QStringLiteral("completion")));
-            dirInfo->globalBytes = jsonValueToInt(eventData.value(QStringLiteral("globalBytes")), dirInfo->globalBytes);
-            dirInfo->neededBytes = jsonValueToInt(eventData.value(QStringLiteral("neededBytes")), dirInfo->neededBytes);
-            if (percentage > 0 && percentage < 100) {
+            dirInfo->globalStats.bytes = jsonValueToInt(eventData.value(QStringLiteral("globalBytes")), dirInfo->globalStats.bytes);
+            dirInfo->neededStats.bytes = jsonValueToInt(eventData.value(QStringLiteral("needBytes")), dirInfo->neededStats.bytes);
+            if (percentage >= 0 && percentage <= 100) {
                 dirInfo->completionPercentage = percentage;
                 emit dirStatusChanged(*dirInfo, index);
+                if (percentage == 100) {
+                    emit dirCompleted(*dirInfo, index);
+                }
             }
         } else if (eventType == QLatin1String("FolderScanProgress")) {
             const double current = eventData.value(QStringLiteral("current")).toDouble(0);
@@ -1737,27 +1745,34 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
     if (dir.isEmpty()) {
         return;
     }
-
     int index;
-    if (SyncthingDir *dirInfo = findDirInfo(dir, index)) {
-        const QString error(eventData.value(QStringLiteral("error")).toString()), item(eventData.value(QStringLiteral("item")).toString());
-        if (error.isEmpty()) {
-            if (dirInfo->lastFileTime.isNull() || eventTime < dirInfo->lastFileTime) {
-                dirInfo->lastFileTime = eventTime, dirInfo->lastFileName = item,
-                dirInfo->lastFileDeleted = (eventData.value(QStringLiteral("action")) != QLatin1String("delete"));
-                if (eventTime > m_lastFileTime) {
-                    m_lastFileTime = dirInfo->lastFileTime, m_lastFileName = dirInfo->lastFileName, m_lastFileDeleted = dirInfo->lastFileDeleted;
-                }
-                emit dirStatusChanged(*dirInfo, index);
-            }
-        } else if (dirInfo->status == SyncthingDirStatus::OutOfSync) {
+    auto *const dirInfo = findDirInfo(dir, index);
+    if (!dirInfo) {
+        return;
+    }
+
+    // handle unsuccessfull operation
+    const auto error(eventData.value(QStringLiteral("error")).toString()), item(eventData.value(QStringLiteral("item")).toString());
+    if (!error.isEmpty()) {
+        if (dirInfo->status == SyncthingDirStatus::OutOfSync) {
             // FIXME: find better way to check whether the event is still relevant
             dirInfo->itemErrors.emplace_back(error, item);
-            dirInfo->status = SyncthingDirStatus::OutOfSync;
             // emitNotification will trigger status update, so no need to call setStatus(status())
             emit dirStatusChanged(*dirInfo, index);
             emitNotification(eventTime, error);
         }
+        return;
+    }
+
+    // update last file
+    if (dirInfo->lastFileTime.isNull() || eventTime < dirInfo->lastFileTime) {
+        dirInfo->lastFileTime = eventTime;
+        dirInfo->lastFileName = item;
+        dirInfo->lastFileDeleted = (eventData.value(QStringLiteral("action")) != QLatin1String("delete"));
+        if (eventTime > m_lastFileTime) {
+            m_lastFileTime = dirInfo->lastFileTime, m_lastFileName = dirInfo->lastFileName, m_lastFileDeleted = dirInfo->lastFileDeleted;
+        }
+        emit dirStatusChanged(*dirInfo, index);
     }
 }
 
@@ -1935,16 +1950,25 @@ bool SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     }
 
     // update statistics
-    dir.globalBytes = jsonValueToInt(summary.value(QStringLiteral("globalBytes")));
-    dir.globalDeleted = jsonValueToInt(summary.value(QStringLiteral("globalDeleted")));
-    dir.globalFiles = jsonValueToInt(summary.value(QStringLiteral("globalFiles")));
-    dir.globalDirs = jsonValueToInt(summary.value(QStringLiteral("globalDirectories")));
-    dir.localBytes = jsonValueToInt(summary.value(QStringLiteral("localBytes")));
-    dir.localDeleted = jsonValueToInt(summary.value(QStringLiteral("localDeleted")));
-    dir.localFiles = jsonValueToInt(summary.value(QStringLiteral("localFiles")));
-    dir.localDirs = jsonValueToInt(summary.value(QStringLiteral("localDirectories")));
-    dir.neededBytes = jsonValueToInt(summary.value(QStringLiteral("needByted")));
-    dir.neededFiles = jsonValueToInt(summary.value(QStringLiteral("needFiles")));
+    auto &globalStats(dir.globalStats);
+    globalStats.bytes = jsonValueToInt(summary.value(QStringLiteral("globalBytes")));
+    globalStats.deletes = jsonValueToInt(summary.value(QStringLiteral("globalDeleted")));
+    globalStats.files = jsonValueToInt(summary.value(QStringLiteral("globalFiles")));
+    globalStats.dirs = jsonValueToInt(summary.value(QStringLiteral("globalDirectories")));
+    globalStats.symlinks = jsonValueToInt(summary.value(QStringLiteral("globalSymlinks")));
+    auto &localStats(dir.localStats);
+    localStats.bytes = jsonValueToInt(summary.value(QStringLiteral("localBytes")));
+    localStats.deletes = jsonValueToInt(summary.value(QStringLiteral("localDeleted")));
+    localStats.files = jsonValueToInt(summary.value(QStringLiteral("localFiles")));
+    localStats.dirs = jsonValueToInt(summary.value(QStringLiteral("localDirectories")));
+    localStats.symlinks = jsonValueToInt(summary.value(QStringLiteral("localSymlinks")));
+    auto &neededStats(dir.neededStats);
+    neededStats.bytes = jsonValueToInt(summary.value(QStringLiteral("needBytes")));
+    neededStats.deletes = jsonValueToInt(summary.value(QStringLiteral("needDeletes")));
+    neededStats.files = jsonValueToInt(summary.value(QStringLiteral("needFiles")));
+    neededStats.dirs = jsonValueToInt(summary.value(QStringLiteral("needDirectories")));
+    neededStats.symlinks = jsonValueToInt(summary.value(QStringLiteral("needSymlinks")));
+
     dir.ignorePatterns = summary.value(QStringLiteral("ignorePatterns")).toBool();
     dir.lastStatisticsUpdate = eventTime;
 
@@ -2027,7 +2051,6 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
         m_devStatsPollTimer.stop();
         m_trafficPollTimer.stop();
         m_errorsPollTimer.stop();
-        m_syncedDirs.clear();
         break;
     default:
         // reset reconnect tries
@@ -2036,16 +2059,18 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
         // check whether at least one directory is scanning or synchronizing
         bool scanning = false;
         bool synchronizing = false;
-        for (SyncthingDir &dir : m_dirs) {
-            if (dir.status == SyncthingDirStatus::Synchronizing) {
-                if (find(m_syncedDirs.cbegin(), m_syncedDirs.cend(), &dir) == m_syncedDirs.cend()) {
-                    m_syncedDirs.push_back(&dir);
-                }
+        for (const SyncthingDir &dir : m_dirs) {
+            switch (dir.status) {
+            case SyncthingDirStatus::Synchronizing:
                 synchronizing = true;
-            } else if (dir.status == SyncthingDirStatus::Scanning) {
+                break;
+            case SyncthingDirStatus::Scanning:
                 scanning = true;
+                break;
+            default:;
             }
         }
+
         if (synchronizing) {
             status = SyncthingStatus::Synchronizing;
         } else if (scanning) {
@@ -2061,15 +2086,9 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
             }
             if (paused) {
                 status = SyncthingStatus::Paused;
-                // don't consider synchronization finished in this this case
-                m_syncedDirs.clear();
             } else {
                 status = SyncthingStatus::Idle;
             }
-        }
-        if (status != SyncthingStatus::Synchronizing) {
-            m_completedDirs.clear();
-            m_completedDirs.swap(m_syncedDirs);
         }
     }
     if (m_status != status) {

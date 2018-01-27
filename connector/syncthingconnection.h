@@ -78,7 +78,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(int totalOutgoingTraffic READ totalOutgoingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(double totalIncomingRate READ totalIncomingRate NOTIFY trafficChanged)
     Q_PROPERTY(double totalOutgoingRate READ totalOutgoingRate NOTIFY trafficChanged)
-    Q_PROPERTY(bool connectedDevices READ connectedDevices)
+    Q_PROPERTY(std::size_t connectedDevices READ connectedDevices)
 
 public:
     explicit SyncthingConnection(
@@ -125,11 +125,10 @@ public:
     SyncthingDir *findDirInfoByPath(const QString &path, QString &relativePath, int &row);
     SyncthingDev *findDevInfo(const QString &devId, int &row);
     SyncthingDev *findDevInfoByName(const QString &devName, int &row);
-    const std::vector<SyncthingDir *> &completedDirs() const;
     QStringList directoryIds() const;
     QStringList deviceIds() const;
     QString deviceNameOrId(const QString &deviceId) const;
-    size_t connectedDevices() const;
+    std::size_t connectedDevices() const;
 
 public Q_SLOTS:
     bool loadSelfSignedCertificate();
@@ -161,6 +160,7 @@ Q_SIGNALS:
     void dirStatusChanged(const SyncthingDir &dir, int index);
     void devStatusChanged(const SyncthingDev &dev, int index);
     void downloadProgressChanged();
+    void dirCompleted(const SyncthingDir &dir, int index, const SyncthingDev *remoteDev = nullptr);
     void newNotification(ChronoUtilities::DateTime when, const QString &message);
     void error(const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request = QNetworkRequest(),
         const QByteArray &response = QByteArray());
@@ -267,8 +267,6 @@ private:
     bool m_hasConfig;
     bool m_hasStatus;
     std::vector<SyncthingDir> m_dirs;
-    std::vector<SyncthingDir *> m_syncedDirs;
-    std::vector<SyncthingDir *> m_completedDirs;
     std::vector<SyncthingDev> m_devs;
     ChronoUtilities::DateTime m_lastConnectionsUpdate;
     ChronoUtilities::DateTime m_lastFileTime;
@@ -554,14 +552,6 @@ inline const std::vector<SyncthingDev> &SyncthingConnection::devInfo() const
 inline const QList<QSslError> &SyncthingConnection::expectedSslErrors()
 {
     return m_expectedSslErrors;
-}
-
-/*!
- * \brief Returns the directories which have been synchronized during the last synchronizing status().
- */
-inline const std::vector<SyncthingDir *> &SyncthingConnection::completedDirs() const
-{
-    return m_completedDirs;
 }
 }
 

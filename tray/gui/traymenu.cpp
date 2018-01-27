@@ -11,15 +11,9 @@
 
 namespace QtGui {
 
-TrayMenu::TrayMenu(TrayIcon *trayIcon, const QString &connectionConfig, QWidget *parent)
-    : TrayMenu(connectionConfig, parent)
-{
-    m_trayIcon = trayIcon;
-}
-
-TrayMenu::TrayMenu(const QString &connectionConfig, QWidget *parent)
+TrayMenu::TrayMenu(const QString &connectionConfig, TrayIcon *trayIcon, QWidget *parent)
     : QMenu(parent)
-    , m_trayIcon(nullptr)
+    , m_trayIcon(trayIcon)
 {
     auto *menuLayout = new QHBoxLayout;
     menuLayout->setMargin(0), menuLayout->setSpacing(0);
