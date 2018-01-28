@@ -335,15 +335,14 @@ void SyncthingApplet::handleSettingsChanged()
 
 void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
 {
-    if (m_initialized) {
+    VAR_UNUSED(status)
+    if (!m_initialized) {
         return;
     }
 
     // update status icon and tooltip text
     m_statusInfo.updateConnectionStatus(m_connection);
     m_statusInfo.updateConnectedDevices(m_connection);
-
-    // set status and emit signal
     emit connectionStatusChanged();
 }
 
