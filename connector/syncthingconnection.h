@@ -160,7 +160,7 @@ Q_SIGNALS:
     void dirStatusChanged(const SyncthingDir &dir, int index);
     void devStatusChanged(const SyncthingDev &dev, int index);
     void downloadProgressChanged();
-    void dirCompleted(const SyncthingDir &dir, int index, const SyncthingDev *remoteDev = nullptr);
+    void dirCompleted(ChronoUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev = nullptr);
     void newNotification(ChronoUtilities::DateTime when, const QString &message);
     void error(const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request = QNetworkRequest(),
         const QByteArray &response = QByteArray());

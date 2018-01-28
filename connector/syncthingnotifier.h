@@ -5,6 +5,10 @@
 
 #include <QObject>
 
+namespace ChronoUtilities {
+class DateTime;
+}
+
 namespace Data {
 
 enum class SyncthingStatus;
@@ -67,7 +71,7 @@ private Q_SLOTS:
 
 private:
     void emitConnectedAndDisconnected(SyncthingStatus newStatus);
-    void emitSyncComplete(const SyncthingDir &dir, int index, const SyncthingDev *remoteDev);
+    void emitSyncComplete(ChronoUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev);
 
     const SyncthingConnection &m_connection;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

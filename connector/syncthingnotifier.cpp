@@ -6,6 +6,10 @@
 #include "./syncthingservice.h"
 #endif
 
+#include <c++utilities/chrono/datetime.h>
+
+using namespace ChronoUtilities;
+
 namespace Data {
 
 /*!
@@ -14,10 +18,6 @@ namespace Data {
  *
  * In contrast to the signals provided by the SyncthingConnection class, these signals take further apply
  * further logic and take additional information into account (previous status, service status if known, ...).
- *
- * \remarks Not tested yet. Supposed to simplify
- * - SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
- * - and TrayIcon::showStatusNotification(SyncthingStatus status).
  */
 
 /*!
@@ -59,6 +59,7 @@ void SyncthingNotifier::handleStatusChangedEvent(SyncthingStatus newStatus)
  */
 void SyncthingNotifier::emitConnectedAndDisconnected(SyncthingStatus newStatus)
 {
+    // discard event if not enabled
     if (!(m_enabledNotifications & SyncthingHighLevelNotification::ConnectedDisconnected)) {
         return;
     }
@@ -87,15 +88,22 @@ void SyncthingNotifier::emitConnectedAndDisconnected(SyncthingStatus newStatus)
 /*!
  * \brief Emits the syncComplete() signal.
  */
-void SyncthingNotifier::emitSyncComplete(const SyncthingDir &dir, int index, const SyncthingDev *remoteDev)
+void SyncthingNotifier::emitSyncComplete(ChronoUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev)
 {
     VAR_UNUSED(index)
     VAR_UNUSED(remoteDev)
 
+    // discard event if not enabled
     if ((m_enabledNotifications & SyncthingHighLevelNotification::SyncComplete) == 0 || !m_initialized) {
         return;
     }
 
+    // discard event if too old so we don't get "sync complete" messages for all dirs on startup
+    if ((DateTime::gmtNow() - when) > TimeSpan::fromSeconds(5)) {
+        return;
+    }
+
+    // format the notification message
     const auto message(syncCompleteString(std::vector<const SyncthingDir *>{ &dir }));
     if (!message.isEmpty()) {
         emit syncComplete(message);

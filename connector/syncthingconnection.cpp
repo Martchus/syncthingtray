@@ -1651,7 +1651,7 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
                 dirInfo->completionPercentage = percentage;
                 emit dirStatusChanged(*dirInfo, index);
                 if (percentage == 100) {
-                    emit dirCompleted(*dirInfo, index);
+                    emit dirCompleted(eventTime, *dirInfo, index);
                 }
             }
         } else if (eventType == QLatin1String("FolderScanProgress")) {
