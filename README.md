@@ -4,9 +4,9 @@ Qt 5-based tray application for [Syncthing](https://github.com/syncthing/syncthi
 ## Supported platforms
 * Designed to work under any desktop environment supported by Qt 5 with tray icon
   support
-* No desktop environment specific libraries required
+* No desktop environment specific libraries required (only for optional features)
 * Tested under \*
-    * Plasma 5
+    * Plasma 5 (native "Plasmoid" provided)
     * Openbox/qt5ct/Tint2
     * Awesome/qt5ct
     * Cinnamon
@@ -68,7 +68,9 @@ The tray is still under development; the following features are planned:
 ![Openbox/Tint2](/tray/resources/screenshots/tint2.png?raw=true)
 
 ### Under Plasma 5
-![Plasma 5](/tray/resources/screenshots/plasma.png?raw=true)
+![Plasma 5 (Plasmoid)](/plasmoid/resources/screenshots/plasmoid-dark.png?raw=true)
+![Plasma 5 (Plasmoid and Dolphin integration)](/tray/resources/screenshots/under-construction-3.png?raw=true)
+![Plasma 5 (regular GUI)](/tray/resources/screenshots/plasma.png?raw=true)
 ![Plasma 5 (directory error)](/tray/resources/screenshots/plasma-2.png?raw=true)
 ![Plasma 5 (dark)](/tray/resources/screenshots/plasma-dark.png?raw=true)
 
@@ -122,8 +124,9 @@ See the release section on GitHub.
     * since GCC provided by Leap is too old, only Tumbleweed packages are up-to-date
 * Windows
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
-    * for binaries checkout [my website](http://martchus.no-ip.biz/website/page.php?name=programming) and the
-      release section on GitHub
+    * for statically linked binaries checkout the release section on GitHub
+    * [my website](http://martchus.no-ip.biz/website/page.php?name=programming) also contains an occasionally
+      updated archive with a dynamically linked executable
 
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and [qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries. For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities). For building this straight, see the next section.
@@ -208,6 +211,11 @@ use whithin the components contained by this repository.
 Hence those libraries do *not* provide a stable ABI/API. If you like to
 use them to develop Syncthing integration or tooling with Qt and C++, it makes most sense to contribute it as an additional component
 directly to this repository. Then I will be able to take it into account when changeing the API.
+
+### KDE integration
+Since the Dolphin integration and the Plasmoid are plugins, testing and debugging requires a few extra steps.
+See [Testing and debugging Dolphin/KIO plugin with Qt Creator](/fileitemactionplugin/testing.md)
+and [Testing and debugging Plasma 5 plasmoid with Qt Creator](/plasmoid/testing.md).
 
 ## Known bugs
 The following bugs are caused by dependencies and hence tracked externally. For bugs of Syncthing Tray itself, checkout the issues
