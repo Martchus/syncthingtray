@@ -217,7 +217,7 @@
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="394"/>
+        <location filename="../lib/syncthingapplet.cpp" line="393"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
