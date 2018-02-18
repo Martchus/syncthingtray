@@ -678,23 +678,25 @@ SyncthingDev *SyncthingConnection::addDevInfo(std::vector<SyncthingDev> &devs, c
  */
 void SyncthingConnection::continueConnecting()
 {
-    if (m_keepPolling && m_hasConfig && m_hasStatus) {
-        requestConnections();
-        requestDirStatistics();
-        requestDeviceStatistics();
-        requestErrors();
-        for (const SyncthingDir &dir : m_dirs) {
-            requestDirStatus(dir.id);
-            if (m_requestCompletion) {
-                for (const QString &devId : dir.deviceIds) {
-                    requestCompletion(devId, dir.id);
-                }
-            }
-        }
-        // since config and status could be read successfully, let's poll for events
-        m_lastEventId = 0;
-        requestEvents();
+    if (!m_keepPolling || !m_hasConfig || !m_hasStatus) {
+        return;
     }
+    requestConnections();
+    requestDirStatistics();
+    requestDeviceStatistics();
+    requestErrors();
+    for (const SyncthingDir &dir : m_dirs) {
+        requestDirStatus(dir.id);
+        if (!m_requestCompletion) {
+            continue;
+        }
+        for (const QString &devId : dir.deviceIds) {
+            requestCompletion(devId, dir.id);
+        }
+    }
+    // since config and status could be read successfully, let's poll for events
+    m_lastEventId = 0;
+    requestEvents();
 }
 
 /*!
