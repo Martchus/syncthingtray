@@ -1149,9 +1149,12 @@ void SyncthingConnection::concludeReadingConfigAndStatus()
     readDevs(m_rawConfig.value(QStringLiteral("devices")).toArray());
     readDirs(m_rawConfig.value(QStringLiteral("folders")).toArray());
 
-    if (!isConnected()) {
-        continueConnecting();
+    if (isConnected()) {
+        setStatus(SyncthingStatus::Idle);
+        return;
     }
+
+    continueConnecting();
 }
 
 /*!
