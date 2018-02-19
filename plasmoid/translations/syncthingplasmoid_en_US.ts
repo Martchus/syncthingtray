@@ -225,27 +225,37 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="53"/>
+        <location filename="../package/contents/ui/main.qml" line="57"/>
         <source>Web UI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="54"/>
+        <location filename="../package/contents/ui/main.qml" line="58"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="55"/>
+        <location filename="../package/contents/ui/main.qml" line="59"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="56"/>
+        <location filename="../package/contents/ui/main.qml" line="60"/>
         <source>Internal errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="58"/>
+        <location filename="../package/contents/ui/main.qml" line="62"/>
+        <source>Rescan all directories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/main.qml" line="64"/>
+        <source>Restart Syncthing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/main.qml" line="66"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>

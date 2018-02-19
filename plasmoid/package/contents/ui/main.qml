@@ -36,6 +36,10 @@ Item {
         plasmoid.nativeInterface.connection.rescanAllDirs()
     }
 
+    function action_restartSyncthing() {
+        plasmoid.nativeInterface.connection.restart()
+    }
+
     function action_showLog() {
         plasmoid.nativeInterface.showLog()
     }
@@ -55,6 +59,10 @@ Item {
         plasmoid.setAction("showLog", qsTr("Log"), "text-x-generic")
         plasmoid.setAction("showErrors", qsTr("Internal errors"),
                            "emblem-important")
+        plasmoid.setAction("rescanAllDirs", qsTr("Rescan all directories"),
+                           "folder-sync")
+        plasmoid.setAction("restartSyncthing", qsTr("Restart Syncthing"),
+                           "system-reboot")
         plasmoid.setAction("showAboutDialog", qsTr("About"), "help-about")
     }
 }
