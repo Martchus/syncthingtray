@@ -73,7 +73,7 @@ ConnectionOptionPage::~ConnectionOptionPage()
 
 QWidget *ConnectionOptionPage::setupWidget()
 {
-    auto *w = ConnectionOptionPageBase::setupWidget();
+    auto *const widget = ConnectionOptionPageBase::setupWidget();
     ui()->certPathSelection->provideCustomFileMode(QFileDialog::ExistingFile);
     ui()->certPathSelection->lineEdit()->setPlaceholderText(
         QCoreApplication::translate("QtGui::ConnectionOptionPage", "Auto-detected for local instance"));
@@ -89,12 +89,12 @@ QWidget *ConnectionOptionPage::setupWidget()
     QObject::connect(ui()->upPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::moveSelectedConfigUp, this));
     QObject::connect(ui()->addPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::addNewConfig, this));
     QObject::connect(ui()->removePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::removeSelectedConfig, this));
-    return w;
+    return widget;
 }
 
 void ConnectionOptionPage::insertFromConfigFile()
 {
-    QString configFile = SyncthingConfig::locateConfigFile();
+    auto configFile(SyncthingConfig::locateConfigFile());
     if (configFile.isEmpty()) {
         // allow user to select config file manually if it could not be located
         configFile = QFileDialog::getOpenFileName(
@@ -338,7 +338,7 @@ NotificationsOptionPage::~NotificationsOptionPage()
 
 QWidget *NotificationsOptionPage::setupWidget()
 {
-    auto *w = NotificationsOptionPageBase::setupWidget();
+    auto *const widget = NotificationsOptionPageBase::setupWidget();
     switch (m_guiType) {
     case GuiType::TrayWidget:
         break;
@@ -346,7 +346,7 @@ QWidget *NotificationsOptionPage::setupWidget()
         ui()->apiGroupBox->setHidden(true);
         break;
     }
-    return w;
+    return widget;
 }
 
 bool NotificationsOptionPage::apply()
@@ -503,7 +503,6 @@ QWidget *AutostartOptionPage::setupWidget()
  * \remarks
  * - Only implemented under Linux/Windows. Always returns false on other platforms.
  * - Does not check whether the startup entry is functional (eg. the specified path is still valid).
- * -
  */
 bool isAutostartEnabled()
 {
@@ -544,20 +543,21 @@ bool setAutostartEnabled(bool enabled)
     }
     QFile desktopFile(configPath + QStringLiteral("/autostart/" PROJECT_NAME ".desktop"));
     if (enabled) {
-        if (desktopFile.open(QFile::WriteOnly | QFile::Truncate)) {
-            desktopFile.write("[Desktop Entry]\n");
-            desktopFile.write("Name=" APP_NAME "\n");
-            desktopFile.write("Exec=");
-            desktopFile.write(qEnvironmentVariable("APPIMAGE", QCoreApplication::applicationFilePath()).toUtf8().data());
-            desktopFile.write("\nComment=" APP_DESCRIPTION "\n");
-            desktopFile.write("Icon=" PROJECT_NAME "\n");
-            desktopFile.write("Type=Application\n");
-            desktopFile.write("Terminal=false\n");
-            desktopFile.write("X-GNOME-Autostart-Delay=0\n");
-            desktopFile.write("X-GNOME-Autostart-enabled=true");
-            return desktopFile.error() == QFile::NoError && desktopFile.flush();
+        if (!desktopFile.open(QFile::WriteOnly | QFile::Truncate)) {
+            return false;
         }
-        return false;
+        desktopFile.write("[Desktop Entry]\n"
+                          "Name=" APP_NAME "\n"
+                          "Exec=");
+        desktopFile.write(qEnvironmentVariable("APPIMAGE", QCoreApplication::applicationFilePath()).toUtf8().data());
+        desktopFile.write("\nComment=" APP_DESCRIPTION "\n"
+                          "Icon=" PROJECT_NAME "\n"
+                          "Type=Application\n"
+                          "Terminal=false\n"
+                          "X-GNOME-Autostart-Delay=0\n"
+                          "X-GNOME-Autostart-enabled=true");
+        return desktopFile.error() == QFile::NoError && desktopFile.flush();
+
     } else {
         return !desktopFile.exists() || desktopFile.remove();
     }
@@ -615,7 +615,7 @@ LauncherOptionPage::~LauncherOptionPage()
 
 QWidget *LauncherOptionPage::setupWidget()
 {
-    auto *widget = LauncherOptionPageBase::setupWidget();
+    auto *const widget = LauncherOptionPageBase::setupWidget();
     // adjust labels to use name of additional tool instead of "Syncthing"
     if (!m_tool.isEmpty()) {
         widget->setWindowTitle(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1-launcher").arg(m_tool));
@@ -710,15 +710,16 @@ void LauncherOptionPage::launch()
         return;
     }
     apply();
-    if (m_process.state() == QProcess::NotRunning) {
-        ui()->launchNowPushButton->hide();
-        ui()->stopPushButton->show();
-        m_kill = false;
-        if (m_tool.isEmpty()) {
-            m_process.startSyncthing(values().launcher.syncthingCmd());
-        } else {
-            m_process.startSyncthing(values().launcher.toolCmd(m_tool));
-        }
+    if (m_process.state() != QProcess::NotRunning) {
+        return;
+    }
+    ui()->launchNowPushButton->hide();
+    ui()->stopPushButton->show();
+    m_kill = false;
+    if (m_tool.isEmpty()) {
+        m_process.startSyncthing(values().launcher.syncthingCmd());
+    } else {
+        m_process.startSyncthing(values().launcher.toolCmd(m_tool));
     }
 }
 
@@ -749,7 +750,7 @@ SystemdOptionPage::~SystemdOptionPage()
 
 QWidget *SystemdOptionPage::setupWidget()
 {
-    auto *widget = SystemdOptionPageBase::setupWidget();
+    auto *const widget = SystemdOptionPageBase::setupWidget();
     QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, &m_service, &SyncthingService::setUnitName);
     QObject::connect(ui()->startPushButton, &QPushButton::clicked, &m_service, &SyncthingService::start);
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, &m_service, &SyncthingService::stop);
