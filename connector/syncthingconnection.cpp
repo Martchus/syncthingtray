@@ -182,7 +182,7 @@ void SyncthingConnection::connect(SyncthingConnectionSettings &connectionSetting
  */
 void SyncthingConnection::disconnect()
 {
-    m_reconnecting = m_hasConfig = m_hasStatus = false;
+    m_reconnecting = m_hasConfig = m_hasStatus = m_keepPolling = false;
     m_autoReconnectTries = 0;
     abortAllRequests();
 }
@@ -1007,9 +1007,15 @@ void SyncthingConnection::readConfig()
         }
 
         m_rawConfig = replyDoc.object();
-        emit newConfig(m_rawConfig);
         m_hasConfig = true;
-        concludeReadingConfigAndStatus();
+        emit newConfig(m_rawConfig);
+
+        if (m_keepPolling) {
+            concludeReadingConfigAndStatus();
+        } else {
+            readDevs(m_rawConfig.value(QStringLiteral("devices")).toArray());
+            readDirs(m_rawConfig.value(QStringLiteral("folders")).toArray());
+        }
         break;
     }
     case QNetworkReply::OperationCanceledError:
@@ -1124,7 +1130,10 @@ void SyncthingConnection::readStatus()
         emitMyIdChanged(replyDoc.object().value(QStringLiteral("myID")).toString());
         // other values are currently not interesting
         m_hasStatus = true;
-        concludeReadingConfigAndStatus();
+
+        if (m_keepPolling) {
+            concludeReadingConfigAndStatus();
+        }
         break;
     }
     case QNetworkReply::OperationCanceledError:

@@ -152,6 +152,16 @@ public Q_SLOTS:
     void shutdown();
     void considerAllNotificationsRead();
 
+    void requestConfig();
+    void requestStatus();
+    void requestErrors();
+    void requestConnections();
+    void requestClearingErrors();
+    void requestDirStatistics();
+    void requestDirStatus(const QString &dirId);
+    void requestCompletion(const QString &devId, const QString &dirId);
+    void requestDeviceStatistics();
+
 Q_SIGNALS:
     void newConfig(const QJsonObject &config);
     void newDirs(const std::vector<SyncthingDir> &dirs);
@@ -177,16 +187,6 @@ Q_SIGNALS:
     void shutdownTriggered();
 
 private Q_SLOTS:
-    void requestConfig();
-    void requestStatus();
-    void requestConnections();
-    void requestErrors();
-    void requestClearingErrors();
-    void requestDirStatistics();
-    void requestDirStatus(const QString &dirId);
-    void requestCompletion(const QString &devId, const QString &dirId);
-
-    void requestDeviceStatistics();
     void requestEvents();
     void abortAllRequests();
 

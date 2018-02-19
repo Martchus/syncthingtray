@@ -104,6 +104,17 @@ private:
 template <typename Signal, typename Handler> class SignalInfo {
 public:
     /*!
+     * \brief Constructs a dummy SignalInfo which will never be considered emitted.
+     */
+    SignalInfo()
+        : m_sender(nullptr)
+        , m_signal(nullptr)
+        , m_correctSignalEmitted(nullptr)
+        , m_signalEmitted(false)
+    {
+    }
+
+    /*!
      * \brief Constructs a SignalInfo with handler and automatically connects the handler to the signal.
      * \param sender Specifies the object which will emit \a signal.
      * \param signal Specifies the signal.
@@ -182,6 +193,9 @@ public:
      */
     void connectToLoop(QEventLoop *loop) const
     {
+        if (!m_sender) {
+            return;
+        }
         QObject::disconnect(m_loopConnection);
         m_loopConnection = QObject::connect(m_sender, m_signal, loop, &QEventLoop::quit, Qt::DirectConnection);
 #ifndef SYNCTHINGTESTHELPER_FOR_CLI
@@ -205,10 +219,26 @@ private:
  * \brief Constructs a new SignalInfo.
  */
 template <typename Signal, typename Handler>
-inline SignalInfo<Signal, Handler> signalInfo(typename QtPrivate::FunctionPointer<Signal>::Object *sender, Signal signal,
-    const Handler &handler = Handler(), bool *correctSignalEmitted = nullptr)
+inline auto signalInfo(typename QtPrivate::FunctionPointer<Signal>::Object *sender, Signal signal, const Handler &handler = Handler(),
+    bool *correctSignalEmitted = nullptr)
 {
     return SignalInfo<Signal, Handler>(sender, signal, handler, correctSignalEmitted);
+}
+
+/*!
+ * \brief Constructs a new SignalInfo.
+ */
+template <typename Signal> inline auto signalInfo(typename QtPrivate::FunctionPointer<Signal>::Object *sender, Signal signal)
+{
+    return SignalInfo<Signal, std::function<void(void)>>(sender, signal, std::function<void(void)>(), nullptr);
+}
+
+/*!
+ * \brief Constructs a new SignalInfo.
+ */
+inline auto dummySignalInfo()
+{
+    return SignalInfo<decltype(&QObject::destroyed), std::function<void(void)>>();
 }
 
 /*!
@@ -275,13 +305,31 @@ inline QByteArray failedSignalNames(const SignalInfo &firstSignalInfo, const Sig
  * \arg signalInfos Specifies the signals to wait for.
  * \throws Fails if not all signals have been emitted in at least \a timeout milliseconds or when at least one of the
  *         required connections can not be established.
+ * \returns Returns true if all \a signalInfos have been omitted before the \a timeout exceeded.
  */
-template <typename Action, typename... SignalInfos> void waitForSignals(Action action, int timeout, const SignalInfos &... signalInfos)
+template <typename Action, typename... SignalInfos> bool waitForSignals(Action action, int timeout, const SignalInfos &... signalInfos)
+{
+    return waitForSignalsOrFail(action, timeout, dummySignalInfo(), signalInfos...);
+}
+
+/*!
+ * \brief Waits until the specified signals have been emitted when performing async operations triggered by \a action. Aborts when \a failure is emitted.
+ * \arg action Specifies a method to trigger the action to run when waiting.
+ * \arg timeout Specifies the max. time to wait. Set to zero to wait forever.
+ * \arg failure Specifies the signal indicating an error occured.
+ * \arg signalInfos Specifies the signals to wait for.
+ * \throws Fails if not all signals have been emitted in at least \a timeout milliseconds or when at least one of the
+ *         required connections can not be established.
+ * \returns Returns true if all \a signalInfos have been omitted before \a failure as been emitted or the \a timeout exceeded.
+ */
+template <typename Action, typename SignalInfo, typename... SignalInfos>
+bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure, const SignalInfos &... signalInfos)
 {
     // use loop for waiting
     QEventLoop loop;
 
     // connect all signals to loop so loop is interrupted when one of the signals is emitted
+    connectSignalInfosToLoop(&loop, failure);
     connectSignalInfosToLoop(&loop, signalInfos...);
 
     // perform specified action
@@ -289,7 +337,10 @@ template <typename Action, typename... SignalInfos> void waitForSignals(Action a
 
     // no reason to enter event loop when all signals have been emitted directly
     if (checkWhetherAllSignalsEmitted(signalInfos...)) {
-        return;
+        return true;
+    }
+    if (checkWhetherAllSignalsEmitted(failure)) {
+        return false;
     }
 
     // also connect and start a timer if a timeout has been specified
@@ -302,19 +353,26 @@ template <typename Action, typename... SignalInfos> void waitForSignals(Action a
     }
 
     // exec event loop as long as the right signal has not been emitted yet and there is still time
-    bool allSignalsEmitted = false;
+    bool allSignalsEmitted = false, failureEmitted = false;
     do {
         loop.exec();
-    } while (!(allSignalsEmitted = checkWhetherAllSignalsEmitted(signalInfos...)) && (!timeout || timer.isActive()));
+    } while (!(failureEmitted = checkWhetherAllSignalsEmitted(failure)) && !(allSignalsEmitted = checkWhetherAllSignalsEmitted(signalInfos...))
+        && (!timeout || timer.isActive()));
 
-// check whether a timeout occured
+    // check whether a timeout occured
+    const bool timeoutFailed(!allSignalsEmitted && timeout && !timer.isActive());
 #ifndef SYNCTHINGTESTHELPER_FOR_CLI
-    if (!allSignalsEmitted && timeout && !timer.isActive()) {
+    if (failureEmitted) {
+        CPPUNIT_FAIL(
+            argsToString("Signal(s) ", failedSignalNames(signalInfos...).data(), " has/have not emmitted before ", failure.signalName().data(), '.'));
+    } else if (timeoutFailed) {
         CPPUNIT_FAIL(argsToString("Signal(s) ", failedSignalNames(signalInfos...).data(), " has/have not emmitted within at least ", timer.interval(),
             " ms.", timeoutFactor != 1.0 ? argsToString(" (original timeout: ", timeout, " ms)") : std::string()));
     }
 #endif
+    return !failureEmitted && !timeoutFailed;
 }
+
 } // namespace TestUtilities
 
 #endif // SYNCTHINGTESTHELPER_H

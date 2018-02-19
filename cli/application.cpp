@@ -216,14 +216,23 @@ int Application::loadConfig()
     return 0;
 }
 
-void Application::waitForConnected(int timeout)
+bool Application::waitForConnected(int timeout)
 {
     using namespace TestUtilities;
     bool isConnected = m_connection.isConnected();
     const function<void(SyncthingStatus)> checkStatus([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
-    waitForSignals(bind(static_cast<void (SyncthingConnection::*)(SyncthingConnectionSettings &)>(&SyncthingConnection::reconnect), ref(m_connection),
-                       ref(m_settings)),
-        timeout, signalInfo(&m_connection, &SyncthingConnection::statusChanged, checkStatus, &isConnected));
+    return waitForSignalsOrFail(bind(static_cast<void (SyncthingConnection::*)(SyncthingConnectionSettings &)>(&SyncthingConnection::reconnect),
+                                    ref(m_connection), ref(m_settings)),
+        timeout, signalInfo(&m_connection, &SyncthingConnection::error),
+        signalInfo(&m_connection, &SyncthingConnection::statusChanged, checkStatus, &isConnected));
+}
+
+bool Application::waitForConfig(int timeout)
+{
+    using namespace TestUtilities;
+    return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfig, ref(m_connection)), timeout,
+        signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig),
+        signalInfo(&m_connection, &SyncthingConnection::newDirs), signalInfo(&m_connection, &SyncthingConnection::newDevices));
 }
 
 void Application::handleStatusChanged(SyncthingStatus newStatus)
@@ -723,9 +732,10 @@ void Application::initDirCompletion(Argument &arg, const ArgumentOccurrence &)
     }
     // load config and wait for connected
     loadConfig();
-    waitForConnected(2000);
+    waitForConfig(2000);
     // set directory IDs as completion values
-    arg.setPreDefinedCompletionValues(m_connection.directoryIds().join(QChar(' ')).toUtf8().data());
+    m_dirCompletion = m_connection.directoryIds().join(QChar(' ')).toUtf8();
+    arg.setPreDefinedCompletionValues(m_dirCompletion.data());
 }
 
 void Application::initDevCompletion(Argument &arg, const ArgumentOccurrence &)
@@ -736,7 +746,7 @@ void Application::initDevCompletion(Argument &arg, const ArgumentOccurrence &)
     }
     // load config and wait for connected
     loadConfig();
-    waitForConnected(2000);
+    waitForConfig(2000);
     // set device IDs and names as completion values
     QStringList completionValues;
     const size_t valueCount = m_connection.devInfo().size() << 2;
@@ -747,7 +757,8 @@ void Application::initDevCompletion(Argument &arg, const ArgumentOccurrence &)
     for (const SyncthingDev &dev : m_connection.devInfo()) {
         completionValues << dev.id << dev.name;
     }
-    arg.setPreDefinedCompletionValues(completionValues.join(QChar(' ')).toUtf8().data());
+    m_devCompletion = completionValues.join(QChar(' ')).toUtf8();
+    arg.setPreDefinedCompletionValues(m_devCompletion.data());
 }
 
 RelevantDir Application::findDirectory(const QString &dirIdentifier)

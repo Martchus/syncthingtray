@@ -53,7 +53,8 @@ private slots:
 
 private:
     int loadConfig();
-    void waitForConnected(int timeout);
+    bool waitForConnected(int timeout);
+    bool waitForConfig(int timeout);
     void requestLog(const ArgumentOccurrence &);
     void requestShutdown(const ArgumentOccurrence &);
     void requestRestart(const ArgumentOccurrence &);
@@ -84,6 +85,8 @@ private:
     std::vector<RelevantDir> m_relevantDirs;
     std::vector<const Data::SyncthingDev *> m_relevantDevs;
     RelevantDir m_pwd;
+    QByteArray m_dirCompletion;
+    QByteArray m_devCompletion;
     int m_idleDuration;
     int m_idleTimeout;
     bool m_argsRead;
