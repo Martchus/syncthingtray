@@ -35,7 +35,7 @@ struct SYNCTHINGWIDGETS_EXPORT Connection {
 struct SYNCTHINGWIDGETS_EXPORT NotifyOn {
     bool disconnect = true;
     bool internalErrors = true;
-    bool syncComplete = true;
+    bool syncComplete = false;
     bool syncthingErrors = true;
 };
 
