@@ -521,6 +521,17 @@ bool isAutostartEnabled()
 #endif
 }
 
+#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
+/*!
+ * \brief Provides a fallback for qEnvironmentVariable() when using old Qt version.
+ */
+QString qEnvironmentVariable(const char *varName, const QString &defaultValue)
+{
+    const auto val(qgetenv(varName));
+    return !val.isEmpty() ? QString::fromLocal8Bit(val) : defaultValue;
+}
+#endif
+
 /*!
  * \brief Sets whether the application is launchedc on startup.
  * \remarks
