@@ -559,9 +559,9 @@ bool setAutostartEnabled(bool enabled)
         }
         desktopFile.write("[Desktop Entry]\n"
                           "Name=" APP_NAME "\n"
-                          "Exec=");
+                          "Exec=\"");
         desktopFile.write(qEnvironmentVariable("APPIMAGE", QCoreApplication::applicationFilePath()).toUtf8().data());
-        desktopFile.write("\nComment=" APP_DESCRIPTION "\n"
+        desktopFile.write("\"\nComment=" APP_DESCRIPTION "\n"
                           "Icon=" PROJECT_NAME "\n"
                           "Type=Application\n"
                           "Terminal=false\n"
