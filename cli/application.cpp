@@ -230,6 +230,7 @@ bool Application::waitForConnected(int timeout)
 bool Application::waitForConfig(int timeout)
 {
     using namespace TestUtilities;
+    m_connection.applySettings(m_settings);
     return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfig, ref(m_connection)), timeout,
         signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig),
         signalInfo(&m_connection, &SyncthingConnection::newDirs), signalInfo(&m_connection, &SyncthingConnection::newDevices));
