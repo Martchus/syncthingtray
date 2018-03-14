@@ -116,13 +116,16 @@ See the release section on GitHub.
 * Arch Linux
     * for PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs) or
       [the AUR](https://aur.archlinux.org/packages?SeB=m&K=Martchus)
-    * for binary repository checkout [my website](http://martchus.no-ip.biz/website/page.php?name=programming)
+    * for a binary repository checkout [my website](http://martchus.no-ip.biz/website/page.php?name=programming)
 * Tumbleweed, Fedora 27
     * for RPM \*.spec files and binary repository checkout
       [openSUSE Build Servide](https://build.opensuse.org/project/show/home:mkittler)
 * Gentoo
-    * packages are provided by perfect7gentleman; checkout his
+    * packages for my other projects (which are built in the same way) are provided by perfect7gentleman; checkout his
       [repository](https://github.com/perfect7gentleman/pg_overlay)
+* Other GNU/Linux systems
+    * for an AppImage checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
+    * or my [AppImage repository on the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage/AppImage)
 * Windows
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
     * for statically linked binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
