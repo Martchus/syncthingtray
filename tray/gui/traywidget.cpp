@@ -24,6 +24,7 @@
 #include <qtutilities/resources/resources.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 
+#include <c++utilities/application/argumentparser.h>
 #include <c++utilities/conversion/stringconversion.h>
 
 #include <QClipboard>
@@ -188,8 +189,9 @@ void TrayWidget::showAboutDialog()
 {
     if (!m_aboutDlg) {
         m_aboutDlg = new AboutDialog(this, QString(),
-            QStringLiteral(APP_AUTHOR "\nfallback icons from KDE/Breeze project\nSyncthing icons from Syncthing project"), QString(), QString(),
-            QStringLiteral(APP_DESCRIPTION), QImage(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+            QStringLiteral(APP_AUTHOR "\nfallback icons from KDE/Breeze project\nSyncthing icons from Syncthing project"), QString(),
+            ApplicationUtilities::dependencyVersions, QString(), QStringLiteral(APP_DESCRIPTION),
+            QImage(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
         m_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         m_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     }
