@@ -18,6 +18,7 @@ struct StatusIcons {
     QIcon notify;
     QIcon pause;
     QIcon sync;
+    QIcon syncComplete;
     QIcon error;
     QIcon errorSync;
 };

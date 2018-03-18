@@ -9,5 +9,6 @@
         <file>icons/hicolor/scalable/status/syncthing-error.svg</file>
         <file>icons/hicolor/scalable/mimetypes/text-x-generic.svg</file>
         <file>icons/hicolor/scalable/status/syncthing-error-sync.svg</file>
+        <file>icons/hicolor/scalable/status/syncthing-sync-complete.svg</file>
     </qresource>
 </RCC>

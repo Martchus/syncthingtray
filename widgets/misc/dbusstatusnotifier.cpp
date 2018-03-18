@@ -1,10 +1,13 @@
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
 #include "./dbusstatusnotifier.h"
 
+#include "../../model/syncthingicons.h"
+
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
 
 #include <QCoreApplication>
+#include <QPixmap>
 
 using namespace Data;
 using namespace MiscUtils;
@@ -22,8 +25,11 @@ DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
     m_disconnectedNotification.setActions(QStringList({ QStringLiteral("reconnect"), tr("Try to reconnect") }));
     connect(&m_disconnectedNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::connectRequested);
     m_internalErrorNotification.setActions(QStringList({ QStringLiteral("details"), tr("View details") }));
+    m_syncthingNotification.setImage(statusIcons().error.pixmap(QSize(128, 128)).toImage());
     connect(&m_internalErrorNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::errorDetailsRequested);
     m_syncthingNotification.setActions(QStringList({ QStringLiteral("show"), tr("Show"), QStringLiteral("dismiss"), tr("Dismiss") }));
+    m_syncthingNotification.setImage(statusIcons().notify.pixmap(QSize(128, 128)).toImage());
+    m_syncCompleteNotification.setImage(statusIcons().syncComplete.pixmap(QSize(128, 128)).toImage());
     connect(&m_syncthingNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::handleSyncthingNotificationAction);
 }
 
