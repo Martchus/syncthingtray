@@ -55,8 +55,8 @@ WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view)
     connect(this, &SYNCTHINGWIDGETS_WEB_PAGE::loadFinished, this, &WebPage::injectJavaScripts);
 
     if (!m_view) {
-    // initialization for new window
-    // -> delegate to external browser if no view is assigned
+        // initialization for new window
+        // -> delegate to external browser if no view is assigned
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
         connect(this, &WebPage::urlChanged, this, &WebPage::delegateNewWindowToExternalBrowser);
 #else

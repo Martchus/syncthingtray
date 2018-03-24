@@ -553,7 +553,7 @@ inline const QList<QSslError> &SyncthingConnection::expectedSslErrors()
 {
     return m_expectedSslErrors;
 }
-}
+} // namespace Data
 
 Q_DECLARE_METATYPE(Data::SyncthingLogEntry)
 
