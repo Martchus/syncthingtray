@@ -142,7 +142,7 @@
         <translation>Diese Funktion wurde für die aktuelle Plattform nicht nicht implementiert.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="580"/>
+        <location filename="../settings/settingsdialog.cpp" line="591"/>
         <source>unable to modify startup entry</source>
         <translation>Fehler beim aktualisieren des Auto-Start-Eintrags</translation>
     </message>
@@ -301,37 +301,37 @@
 <context>
     <name>QtGui::DBusStatusNotifier</name>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="17"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="20"/>
         <source> - internal error</source>
         <translation> - interner Fehler</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="18"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="21"/>
         <source>Syncthing notification</source>
         <translation>Syncthing-Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="21"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="24"/>
         <source>Disconnected from Syncthing</source>
         <translation>Verbindung zu Syncthing getrennt</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="22"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="25"/>
         <source>Try to reconnect</source>
         <translation>Versuche Verbindung wieder herzustellen</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="24"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="27"/>
         <source>View details</source>
         <translation>Zeige details</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="26"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="30"/>
         <source>Show</source>
         <translation>Zeigen</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="26"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="30"/>
         <source>Dismiss</source>
         <translation>Ignorieren</translation>
     </message>
@@ -415,33 +415,33 @@
         <translation>Log folgen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="621"/>
+        <location filename="../settings/settingsdialog.cpp" line="632"/>
         <source>%1-launcher</source>
         <translation>%1-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="622"/>
+        <location filename="../settings/settingsdialog.cpp" line="633"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation>Starte %1 beim Starten des Tray-Icons</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="623"/>
+        <location filename="../settings/settingsdialog.cpp" line="634"/>
         <source>%1 executable</source>
         <translation>Ausführbare Datei von %1</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="624"/>
+        <location filename="../settings/settingsdialog.cpp" line="635"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation>%1-Log (stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="695"/>
+        <location filename="../settings/settingsdialog.cpp" line="706"/>
         <source>%1 exited with exit code %2
 </source>
         <translation>%1 wurde mit dem Statuscode %2 beendet</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="699"/>
+        <location filename="../settings/settingsdialog.cpp" line="710"/>
         <source>%1 crashed with exit code %2
 </source>
         <translation>%1 ist mit dem Statuscode %2 abgestürzt</translation>
@@ -541,22 +541,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="893"/>
+        <location filename="../settings/settingsdialog.cpp" line="905"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="900"/>
+        <location filename="../settings/settingsdialog.cpp" line="912"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="907"/>
+        <location filename="../settings/settingsdialog.cpp" line="919"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="929"/>
+        <location filename="../settings/settingsdialog.cpp" line="941"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -673,8 +673,8 @@
         <location filename="../settings/systemdoptionpage.ui" line="99"/>
         <location filename="../settings/systemdoptionpage.ui" line="154"/>
         <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="814"/>
         <location filename="../settings/settingsdialog.cpp" line="826"/>
+        <location filename="../settings/settingsdialog.cpp" line="838"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -708,12 +708,12 @@
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="787"/>
+        <location filename="../settings/settingsdialog.cpp" line="799"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit ist entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="809"/>
+        <location filename="../settings/settingsdialog.cpp" line="821"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -780,7 +780,7 @@
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="848"/>
+        <location filename="../settings/settingsdialog.cpp" line="860"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
@@ -810,7 +810,7 @@
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="850"/>
+        <location filename="../settings/settingsdialog.cpp" line="862"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.
