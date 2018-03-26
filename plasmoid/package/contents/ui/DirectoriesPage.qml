@@ -126,6 +126,39 @@ ColumnLayout {
                     }
                 }
             }
+
+            PlasmaComponents.Menu {
+                id: contextMenu
+
+                function init(item) {
+                    // use value for properties depending on paused state from buttons
+                    rescanItem.enabled = item.rescanButton.enabled
+                    resumePauseItem.text = item.resumePauseButton.tooltip
+                    resumePauseItem.icon = item.resumePauseButton.iconSource
+                }
+
+                PlasmaComponents.MenuItem {
+                    id: rescanItem
+                    text: qsTr('Rescan')
+                    icon: "view-refresh"
+                    onClicked: directoryView.clickCurrentItemButton(
+                                   "rescanButton")
+                }
+                PlasmaComponents.MenuItem {
+                    id: resumePauseItem
+                    text: qsTr("Pause")
+                    icon: "media-playback-pause"
+                    onClicked: directoryView.clickCurrentItemButton(
+                                   "resumePauseButton")
+                }
+                PlasmaComponents.MenuItem {
+                    id: openItem
+                    text: qsTr('Open in file browser')
+                    icon: "folder"
+                    onClicked: directoryView.clickCurrentItemButton(
+                                   "openButton")
+                }
+            }
         }
     }
 

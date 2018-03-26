@@ -81,6 +81,24 @@ Item {
                     }
                 }
             }
+
+            PlasmaComponents.Menu {
+                id: contextMenu
+
+                function init(item) {
+                    // use value for properties depending on paused state from buttons
+                    resumePauseItem.text = item.resumePauseButton.tooltip
+                    resumePauseItem.icon = item.resumePauseButton.iconSource
+                }
+
+                PlasmaComponents.MenuItem {
+                    id: resumePauseItem
+                    text: qsTr("Pause")
+                    icon: "media-playback-pause"
+                    onClicked: deviceView.clickCurrentItemButton(
+                                   "resumePauseButton")
+                }
+            }
         }
     }
 }

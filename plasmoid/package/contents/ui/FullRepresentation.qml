@@ -20,13 +20,9 @@ ColumnLayout {
     function updateSize() {
         switch (plasmoid.location) {
         case PlasmaCore.Types.Floating:
-
         case PlasmaCore.Types.TopEdge:
-
         case PlasmaCore.Types.BottomEdge:
-
         case PlasmaCore.Types.LeftEdge:
-
         case PlasmaCore.Types.RightEdge:
             var size = plasmoid.nativeInterface.size
             parent.width = units.gridUnit * size.width
@@ -52,14 +48,7 @@ ColumnLayout {
 
     // define shortcuts to trigger actions for currently selected item
     function clickCurrentItemButton(buttonName) {
-        var currentItem = currentItem = mainTabGroup.currentTab.item.view.currentItem
-        if (!currentItem) {
-            return
-        }
-        var button = currentItem[buttonName]
-        if (button && button.enabled) {
-            button.clicked()
-        }
+        mainTabGroup.currentTab.item.view.clickCurrentItemButton(buttonName)
     }
     Shortcut {
         sequence: "Ctrl+R"
@@ -132,7 +121,6 @@ ColumnLayout {
             }
             break
         case Qt.Key_Enter:
-
 
             // fallthrough
         case Qt.Key_Return:
@@ -226,7 +214,6 @@ ColumnLayout {
             state: {
                 switch (plasmoid.nativeInterface.connection.status) {
                 case SyncthingPlasmoid.Data.Disconnected:
-
                 case SyncthingPlasmoid.Data.Reconnecting:
                     return "disconnected"
                 case SyncthingPlasmoid.Data.Paused:
@@ -239,7 +226,6 @@ ColumnLayout {
             onClicked: {
                 switch (plasmoid.nativeInterface.connection.status) {
                 case SyncthingPlasmoid.Data.Disconnected:
-
                 case SyncthingPlasmoid.Data.Reconnecting:
                     plasmoid.nativeInterface.connection.connect()
                     break

@@ -128,6 +128,17 @@ Item {
                     }
                 }
             }
+
+            PlasmaComponents.Menu {
+                id: contextMenu
+
+                PlasmaComponents.MenuItem {
+                    id: openItem
+                    text: qsTr('Open in file browser')
+                    icon: "folder"
+                    onClicked: downloadView.clickCurrentItemButton("openButton")
+                }
+            }
         }
     }
 }
