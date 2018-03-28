@@ -5,17 +5,22 @@ namespace Data {
 bool SyncthingConnectionSettings::loadHttpsCert()
 {
     expectedSslErrors.clear();
-    if (!httpsCertPath.isEmpty()) {
-        const QList<QSslCertificate> cert = QSslCertificate::fromPath(httpsCertPath);
-        if (cert.isEmpty()) {
-            return false;
-        }
-        expectedSslErrors.reserve(4);
-        expectedSslErrors << QSslError(QSslError::UnableToGetLocalIssuerCertificate, cert.at(0));
-        expectedSslErrors << QSslError(QSslError::UnableToVerifyFirstCertificate, cert.at(0));
-        expectedSslErrors << QSslError(QSslError::SelfSignedCertificate, cert.at(0));
-        expectedSslErrors << QSslError(QSslError::HostNameMismatch, cert.at(0));
+    if (httpsCertPath.isEmpty()) {
+        return true;
     }
+    const auto certs(QSslCertificate::fromPath(httpsCertPath));
+    if (certs.isEmpty()) {
+        return false;
+    }
+    const auto &cert(certs.front());
+    // clang-format off
+    expectedSslErrors = {
+        QSslError(QSslError::UnableToGetLocalIssuerCertificate, cert),
+        QSslError(QSslError::UnableToVerifyFirstCertificate, cert),
+        QSslError(QSslError::SelfSignedCertificate, cert),
+        QSslError(QSslError::HostNameMismatch, cert)
+    };
+    // clang-format on
     return true;
 }
 } // namespace Data
