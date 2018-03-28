@@ -500,7 +500,7 @@ void Application::printDir(const RelevantDir &relevantDir) const
         printProperty("Remote progress", dir->areRemotesUpToDate() ? "all up-to-date" : "some need bytes");
         for (const auto &completionForDev : dir->completionByDevice) {
             printProperty(m_connection.deviceNameOrId(completionForDev.first).toLocal8Bit().data(),
-                argsToString(dataSizeToString(completionForDev.second.globalBytes - completionForDev.second.neededBytes), ' ', '/', ' ',
+                argsToString(dataSizeToString(completionForDev.second.globalBytes - completionForDev.second.needed.bytes), ' ', '/', ' ',
                     dataSizeToString(completionForDev.second.globalBytes), ' ', '(', static_cast<int>(completionForDev.second.percentage), " %)")
                     .data(),
                 nullptr, 6);

@@ -90,21 +90,16 @@ void SyncthingNotifier::emitConnectedAndDisconnected(SyncthingStatus newStatus)
  */
 void SyncthingNotifier::emitSyncComplete(ChronoUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev)
 {
+    VAR_UNUSED(when)
     VAR_UNUSED(index)
-    VAR_UNUSED(remoteDev)
 
     // discard event if not enabled
     if ((m_enabledNotifications & SyncthingHighLevelNotification::SyncComplete) == 0 || !m_initialized) {
         return;
     }
 
-    // discard event if too old so we don't get "sync complete" messages for all dirs on startup
-    if ((DateTime::gmtNow() - when) > TimeSpan::fromSeconds(5)) {
-        return;
-    }
-
     // format the notification message
-    const auto message(syncCompleteString(std::vector<const SyncthingDir *>{ &dir }));
+    const auto message(syncCompleteString(std::vector<const SyncthingDir *>{ &dir }, remoteDev));
     if (!message.isEmpty()) {
         emit syncComplete(message);
     }

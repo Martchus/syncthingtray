@@ -19,6 +19,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
     SyncthingDev(const QString &id = QString(), const QString &name = QString());
     QString statusString() const;
     bool isConnected() const;
+    const QString displayName() const;
 
     QString id;
     QString name;
@@ -54,6 +55,11 @@ inline bool SyncthingDev::isConnected() const
     default:
         return true;
     }
+}
+
+inline const QString SyncthingDev::displayName() const
+{
+    return name.isEmpty() ? id : name;
 }
 
 } // namespace Data

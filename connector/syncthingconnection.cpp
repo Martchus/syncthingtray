@@ -1657,16 +1657,24 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
             emit dirStatusChanged(*dirInfo, index);
         } else if (eventType == QLatin1String("FolderSummary")) {
             readDirSummary(eventTime, eventData.value(QStringLiteral("summary")).toObject(), *dirInfo, index);
-        } else if (eventType == QLatin1String("FolderCompletion")) {
-            const int percentage = jsonValueToInt<int>(eventData.value(QStringLiteral("completion")));
-            dirInfo->globalStats.bytes = jsonValueToInt(eventData.value(QStringLiteral("globalBytes")), dirInfo->globalStats.bytes);
-            dirInfo->neededStats.bytes = jsonValueToInt(eventData.value(QStringLiteral("needBytes")), dirInfo->neededStats.bytes);
-            if (percentage >= 0 && percentage <= 100) {
-                dirInfo->completionPercentage = percentage;
-                emit dirStatusChanged(*dirInfo, index);
-                if (percentage == 100) {
-                    emit dirCompleted(eventTime, *dirInfo, index);
-                }
+        } else if (eventType == QLatin1String("FolderCompletion") && dirInfo->lastStatisticsUpdate < eventTime) {
+            auto &neededStats(dirInfo->neededStats);
+            auto &globalStats(dirInfo->globalStats);
+            // backup previous statistics -> if there's no difference after all, don't emit completed event
+            const auto previouslyUpdated(!dirInfo->lastStatisticsUpdate.isNull());
+            const auto previouslyNeeded(neededStats);
+            const auto previouslyGlobal(globalStats);
+            // read values from event data
+            globalStats.bytes = jsonValueToInt(eventData.value(QStringLiteral("globalBytes")), globalStats.bytes);
+            neededStats.bytes = jsonValueToInt(eventData.value(QStringLiteral("needBytes")), neededStats.bytes);
+            neededStats.deletes = jsonValueToInt(eventData.value(QStringLiteral("needDeletes")), neededStats.deletes);
+            neededStats.deletes = jsonValueToInt(eventData.value(QStringLiteral("needItems")), neededStats.files);
+            dirInfo->lastStatisticsUpdate = eventTime;
+            dirInfo->completionPercentage
+                = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
+            emit dirStatusChanged(*dirInfo, index);
+            if (neededStats.isNull() && previouslyUpdated && (neededStats != previouslyNeeded || globalStats != previouslyGlobal)) {
+                emit dirCompleted(eventTime, *dirInfo, index);
             }
         } else if (eventType == QLatin1String("FolderScanProgress")) {
             const double current = eventData.value(QStringLiteral("current")).toDouble(0);
@@ -1963,20 +1971,25 @@ bool SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
         return false;
     }
 
-    // update statistics
+    // backup previous statistics -> if there's no difference after all, don't emit completed event
     auto &globalStats(dir.globalStats);
+    auto &localStats(dir.localStats);
+    auto &neededStats(dir.neededStats);
+    const auto previouslyUpdated(!dir.lastStatisticsUpdate.isNull());
+    const auto previouslyGlobal(globalStats);
+    const auto previouslyNeeded(neededStats);
+
+    // update statistics
     globalStats.bytes = jsonValueToInt(summary.value(QStringLiteral("globalBytes")));
     globalStats.deletes = jsonValueToInt(summary.value(QStringLiteral("globalDeleted")));
     globalStats.files = jsonValueToInt(summary.value(QStringLiteral("globalFiles")));
     globalStats.dirs = jsonValueToInt(summary.value(QStringLiteral("globalDirectories")));
     globalStats.symlinks = jsonValueToInt(summary.value(QStringLiteral("globalSymlinks")));
-    auto &localStats(dir.localStats);
     localStats.bytes = jsonValueToInt(summary.value(QStringLiteral("localBytes")));
     localStats.deletes = jsonValueToInt(summary.value(QStringLiteral("localDeleted")));
     localStats.files = jsonValueToInt(summary.value(QStringLiteral("localFiles")));
     localStats.dirs = jsonValueToInt(summary.value(QStringLiteral("localDirectories")));
     localStats.symlinks = jsonValueToInt(summary.value(QStringLiteral("localSymlinks")));
-    auto &neededStats(dir.neededStats);
     neededStats.bytes = jsonValueToInt(summary.value(QStringLiteral("needBytes")));
     neededStats.deletes = jsonValueToInt(summary.value(QStringLiteral("needDeletes")));
     neededStats.files = jsonValueToInt(summary.value(QStringLiteral("needFiles")));
@@ -1997,7 +2010,12 @@ bool SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
         }
     }
 
+    dir.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
+
     emit dirStatusChanged(dir, index);
+    if (neededStats.isNull() && previouslyUpdated && (neededStats != previouslyNeeded || globalStats != previouslyGlobal)) {
+        emit dirCompleted(eventTime, dir, index);
+    }
     return stateChanged;
 }
 
@@ -2033,13 +2051,23 @@ void SyncthingConnection::readCompletion()
         // update the relevant completion info
         const auto replyObj(replyDoc.object());
         auto &completion = dir->completionByDevice[devId];
+        auto &needed(completion.needed);
+        const auto previouslyUpdated = !completion.lastUpdate.isNull();
+        const auto previouslyNeeded = !needed.isNull();
+        const auto previousGlobalBytes = completion.globalBytes;
         completion.lastUpdate = DateTime::gmtNow();
         completion.percentage = replyObj.value(QLatin1String("completion")).toDouble();
         completion.globalBytes = jsonValueToInt(replyObj.value(QLatin1String("globalBytes")));
-        completion.neededBytes = jsonValueToInt(replyObj.value(QLatin1String("needBytes")));
-        completion.neededItems = jsonValueToInt(replyObj.value(QLatin1String("needItems")));
-        completion.neededDeletes = jsonValueToInt(replyObj.value(QLatin1String("needDeletes")));
+        needed.bytes = jsonValueToInt(replyObj.value(QLatin1String("needBytes")), needed.bytes);
+        needed.items = jsonValueToInt(replyObj.value(QLatin1String("needItems")), needed.items);
+        needed.deletes = jsonValueToInt(replyObj.value(QLatin1String("needDeletes")), needed.deletes);
         emit dirStatusChanged(*dir, index);
+        if (needed.isNull() && previouslyUpdated && (previouslyNeeded || previousGlobalBytes != completion.globalBytes)) {
+            int devIndex;
+            if (const auto *devInfo = findDevInfo(devId, devIndex)) {
+                emit dirCompleted(DateTime::gmtNow(), *dir, index, devInfo);
+            }
+        }
         break;
     }
     default:

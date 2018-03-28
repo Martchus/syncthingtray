@@ -135,7 +135,7 @@ QStringRef SyncthingDir::pathWithoutTrailingSlash() const
 bool SyncthingDir::areRemotesUpToDate() const
 {
     for (const auto &completionForDev : completionByDevice) {
-        if (completionForDev.second.neededBytes) {
+        if (!completionForDev.second.needed.isNull()) {
             return false;
         }
     }

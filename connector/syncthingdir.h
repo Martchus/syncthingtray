@@ -55,10 +55,30 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingCompletion {
     ChronoUtilities::DateTime lastUpdate;
     double percentage = 0;
     quint64 globalBytes = 0;
-    quint64 neededBytes = 0;
-    quint64 neededItems = 0;
-    quint64 neededDeletes = 0;
+    struct Needed {
+        quint64 bytes = 0;
+        quint64 items = 0;
+        quint64 deletes = 0;
+        constexpr bool isNull() const;
+        constexpr bool operator==(const Needed &other) const;
+        constexpr bool operator!=(const Needed &other) const;
+    } needed;
 };
+
+constexpr bool SyncthingCompletion::Needed::isNull() const
+{
+    return bytes == 0 && items == 0 && deletes == 0;
+}
+
+constexpr bool SyncthingCompletion::Needed::operator==(const SyncthingCompletion::Needed &other) const
+{
+    return bytes == other.bytes && items == other.items && deletes == other.deletes;
+}
+
+constexpr bool SyncthingCompletion::Needed::operator!=(const SyncthingCompletion::Needed &other) const
+{
+    return !(*this == other);
+}
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingStatistics {
     quint64 bytes = 0;
@@ -68,11 +88,23 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingStatistics {
     quint64 symlinks = 0;
 
     constexpr bool isNull() const;
+    constexpr bool operator==(const SyncthingStatistics &other) const;
+    constexpr bool operator!=(const SyncthingStatistics &other) const;
 };
 
 constexpr bool SyncthingStatistics::isNull() const
 {
     return bytes == 0 && deletes == 0 && dirs == 0 && files == 0 && symlinks == 0;
+}
+
+constexpr bool SyncthingStatistics::operator==(const SyncthingStatistics &other) const
+{
+    return bytes == other.bytes && deletes == other.deletes && dirs == other.dirs && files == other.files && symlinks == other.symlinks;
+}
+
+constexpr bool SyncthingStatistics::operator!=(const SyncthingStatistics &other) const
+{
+    return !(*this == other);
 }
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {

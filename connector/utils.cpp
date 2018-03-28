@@ -64,21 +64,26 @@ QString directoryStatusString(const SyncthingStatistics &stats)
 /*!
  * \brief Returns the "sync complete" notication message for the specified directories.
  */
-QString syncCompleteString(const std::vector<const SyncthingDir *> &completedDirs)
+QString syncCompleteString(const std::vector<const SyncthingDir *> &completedDirs, const SyncthingDev *remoteDevice)
 {
+    const auto devName(remoteDevice ? remoteDevice->displayName() : QString());
     switch (completedDirs.size()) {
     case 0:
         return QString();
     case 1:
-        return QCoreApplication::translate("Data::Utils", "Synchronization of %1 complete").arg(completedDirs.front()->displayName());
+        if (devName.isEmpty()) {
+            return QCoreApplication::translate("Data::Utils", "Synchronization of %1 complete").arg(completedDirs.front()->displayName());
+        }
+        return QCoreApplication::translate("Data::Utils", "Synchronization of %1 on %2 complete").arg(completedDirs.front()->displayName(), devName);
     default:;
     }
-    QStringList names;
-    names.reserve(static_cast<int>(completedDirs.size()));
-    for (const auto *dir : completedDirs) {
-        names << dir->displayName();
+    const auto names(things(completedDirs, [](const auto *dir) { return dir->displayName(); }));
+    if (devName.isEmpty()) {
+        return QCoreApplication::translate("Data::Utils", "Synchronization of the following directories complete:\n")
+            + names.join(QStringLiteral(", "));
     }
-    return QCoreApplication::translate("Data::Utils", "Synchronization of the following devices complete:\n") + names.join(QStringLiteral(", "));
+    return QCoreApplication::translate("Data::Utils", "Synchronization of the following directories on %1 complete:\n").arg(devName)
+        + names.join(QStringLiteral(", "));
 }
 
 /*!

@@ -23,11 +23,13 @@ namespace Data {
 
 struct SyncthingStatistics;
 struct SyncthingDir;
+struct SyncthingDev;
 
 QString LIB_SYNCTHING_CONNECTOR_EXPORT agoString(ChronoUtilities::DateTime dateTime);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT trafficString(uint64 total, double rate);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT directoryStatusString(const Data::SyncthingStatistics &stats);
-QString LIB_SYNCTHING_CONNECTOR_EXPORT syncCompleteString(const std::vector<const SyncthingDir *> &completedDirs);
+QString LIB_SYNCTHING_CONNECTOR_EXPORT syncCompleteString(
+    const std::vector<const SyncthingDir *> &completedDirs, const SyncthingDev *remoteDevice = nullptr);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QUrl &url);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);
@@ -43,14 +45,19 @@ constexpr int LIB_SYNCTHING_CONNECTOR_EXPORT trQuandity(quint64 quandity)
     return quandity > std::numeric_limits<int>::max() ? std::numeric_limits<int>::max() : static_cast<int>(quandity);
 }
 
+template <class Objects, class Accessor> QStringList LIB_SYNCTHING_CONNECTOR_EXPORT things(const Objects &objects, Accessor accessor)
+{
+    QStringList things;
+    things.reserve(objects.size());
+    for (const auto &object : objects) {
+        things << accessor(object);
+    }
+    return things;
+}
+
 template <class Objects> QStringList LIB_SYNCTHING_CONNECTOR_EXPORT ids(const Objects &objects)
 {
-    QStringList ids;
-    ids.reserve(objects.size());
-    for (const auto &object : objects) {
-        ids << object.id;
-    }
-    return ids;
+    return things(objects, [](const auto &object) { return object.id; });
 }
 } // namespace Data
 
