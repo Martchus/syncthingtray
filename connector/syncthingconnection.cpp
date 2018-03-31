@@ -10,6 +10,10 @@
 #include <c++utilities/conversion/conversionexception.h>
 #include <c++utilities/conversion/stringconversion.h>
 
+#ifdef LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
+#include <c++utilities/io/ansiescapecodes.h>
+#endif
+
 #include <QAuthenticator>
 #include <QHostAddress>
 #include <QJsonArray>
@@ -28,6 +32,9 @@
 using namespace std;
 using namespace ChronoUtilities;
 using namespace ConversionUtilities;
+#ifdef LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
+using namespace EscapeCodes;
+#endif
 
 namespace Data {
 
@@ -1492,6 +1499,13 @@ void SyncthingConnection::readEvents()
                 requestConfig(); // just consider current config as invalidated
             }
         }
+
+#ifdef LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
+        if (!replyArray.isEmpty()) {
+            cout << Phrases::Info << "Received " << replyArray.size() << " Syncthing events:" << Phrases::End
+                 << replyDoc.toJson(QJsonDocument::Indented).data() << endl;
+        }
+#endif
         break;
     }
     case QNetworkReply::TimeoutError:

@@ -102,6 +102,16 @@ if(SYNCTHING_CONNECTION_MOCKED)
     message(WARNING "SyncthingConnection class will be mocked")
 endif()
 
+# configure whether events should be logged
+option(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS "enables logging event data" OFF)
+if(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS)
+    set_source_files_properties(
+        syncthingconnection.cpp
+        PROPERTIES COMPILE_DEFINITIONS LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
+    )
+    message(WARNING "SyncthingConnection class will be mocked")
+endif()
+
 # include modules to apply configuration
 include(BasicConfig)
 include(QtConfig)
