@@ -18,6 +18,7 @@
     </message>
     <message>
         <location filename="../package/contents/ui/DevicesPage.qml" line="60"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="96"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
@@ -31,6 +32,7 @@
     </message>
     <message>
         <location filename="../package/contents/ui/DirectoriesPage.qml" line="88"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="142"/>
         <source>Rescan</source>
         <translation>Scannen</translation>
     </message>
@@ -41,11 +43,13 @@
     </message>
     <message>
         <location filename="../package/contents/ui/DirectoriesPage.qml" line="96"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="149"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
         <location filename="../package/contents/ui/DirectoriesPage.qml" line="106"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="156"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
@@ -55,6 +59,7 @@
     <message>
         <location filename="../package/contents/ui/DownloadsPage.qml" line="64"/>
         <location filename="../package/contents/ui/DownloadsPage.qml" line="120"/>
+        <location filename="../package/contents/ui/DownloadsPage.qml" line="137"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
@@ -62,67 +67,67 @@
 <context>
     <name>FullRepresentation</name>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="205"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="193"/>
         <source>Connect</source>
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="213"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="201"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="221"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="209"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="268"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="254"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="279"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="265"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="324"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="310"/>
         <source>Show new notifications</source>
         <translation>Neue Benachrichtigungen anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="342"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="328"/>
         <source>Show own device ID</source>
         <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="355"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="341"/>
         <source>Show Syncthing log</source>
         <translation>Syncthing-Log anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="368"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="354"/>
         <source>Rescan all directories</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="378"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="364"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="391"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="377"/>
         <source>Web UI</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="428"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="414"/>
         <source>In</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="431"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="417"/>
         <source>Out</source>
         <translation></translation>
     </message>
@@ -217,7 +222,7 @@
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="395"/>
+        <location filename="../lib/syncthingapplet.cpp" line="388"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>

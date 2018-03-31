@@ -129,7 +129,7 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="113"/>
-        <location filename="../gui/traywidget.cpp" line="525"/>
+        <location filename="../gui/traywidget.cpp" line="518"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -268,22 +268,22 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="421"/>
+        <location filename="../gui/traywidget.cpp" line="414"/>
         <source>The specified connection configuration &lt;em&gt;%1&lt;/em&gt; is not defined and hence ignored.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="440"/>
+        <location filename="../gui/traywidget.cpp" line="433"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="451"/>
+        <location filename="../gui/traywidget.cpp" line="444"/>
         <source>The containing directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="520"/>
+        <location filename="../gui/traywidget.cpp" line="513"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
