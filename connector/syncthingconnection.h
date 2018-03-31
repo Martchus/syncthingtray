@@ -208,6 +208,8 @@ private Q_SLOTS:
     void readDeviceEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
     void readItemStarted(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readItemFinished(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
+    void readFolderErrors(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
+    void readFolderCompletion(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
     void readRemoteIndexUpdated(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readRescan();
     void readDevPauseResume();

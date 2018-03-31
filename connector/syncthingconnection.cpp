@@ -1633,6 +1633,7 @@ void SyncthingConnection::readDownloadProgressEvent(DateTime eventTime, const QJ
  */
 void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
 {
+    // find related dir info
     QString dir(eventData.value(QStringLiteral("folder")).toString());
     if (dir.isEmpty()) {
         dir = eventData.value(QStringLiteral("id")).toString();
@@ -1640,76 +1641,38 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
     if (dir.isEmpty()) {
         return;
     }
-
     int index;
-    if (SyncthingDir *dirInfo = findDirInfo(dir, index)) {
-        if (eventType == QLatin1String("FolderErrors")) {
-            const QJsonArray errors(eventData.value(QStringLiteral("errors")).toArray());
-            if (errors.isEmpty()) {
-                return;
-            }
+    SyncthingDir *const dirInfo = findDirInfo(dir, index);
+    if (!dirInfo) {
+        return;
+    }
 
-            for (const QJsonValue &errorVal : errors) {
-                const QJsonObject error(errorVal.toObject());
-                if (error.isEmpty()) {
-                    continue;
-                }
-                auto &errors = dirInfo->itemErrors;
-                SyncthingItemError dirError(error.value(QStringLiteral("error")).toString(), error.value(QStringLiteral("path")).toString());
-                if (find(errors.cbegin(), errors.cend(), dirError) != errors.cend()) {
-                    continue;
-                }
-                errors.emplace_back(move(dirError));
-                dirInfo->assignStatus(SyncthingDirStatus::OutOfSync, eventTime);
-
-                // emit newNotification() for new errors
-                const auto &previousErrors = dirInfo->previousItemErrors;
-                if (find(previousErrors.cbegin(), previousErrors.cend(), dirInfo->itemErrors.back()) == previousErrors.cend()) {
-                    emitNotification(eventTime, dirInfo->itemErrors.back().message);
-                }
-            }
+    // read specific events
+    if (eventType == QLatin1String("FolderErrors")) {
+        readFolderErrors(eventTime, eventData, *dirInfo, index);
+    } else if (eventType == QLatin1String("FolderSummary")) {
+        readDirSummary(eventTime, eventData.value(QStringLiteral("summary")).toObject(), *dirInfo, index);
+    } else if (eventType == QLatin1String("FolderCompletion") && dirInfo->lastStatisticsUpdate < eventTime) {
+        readFolderCompletion(eventTime, eventData, *dirInfo, index);
+    } else if (eventType == QLatin1String("FolderScanProgress")) {
+        const double current = eventData.value(QStringLiteral("current")).toDouble(0);
+        const double total = eventData.value(QStringLiteral("total")).toDouble(0);
+        const double rate = eventData.value(QStringLiteral("rate")).toDouble(0);
+        if (current > 0 && total > 0) {
+            dirInfo->scanningPercentage = static_cast<int>(current * 100 / total);
+            dirInfo->scanningRate = rate;
+            dirInfo->assignStatus(SyncthingDirStatus::Scanning, eventTime); // ensure state is scanning
             emit dirStatusChanged(*dirInfo, index);
-        } else if (eventType == QLatin1String("FolderSummary")) {
-            readDirSummary(eventTime, eventData.value(QStringLiteral("summary")).toObject(), *dirInfo, index);
-        } else if (eventType == QLatin1String("FolderCompletion") && dirInfo->lastStatisticsUpdate < eventTime) {
-            auto &neededStats(dirInfo->neededStats);
-            auto &globalStats(dirInfo->globalStats);
-            // backup previous statistics -> if there's no difference after all, don't emit completed event
-            const auto previouslyUpdated(!dirInfo->lastStatisticsUpdate.isNull());
-            const auto previouslyNeeded(neededStats);
-            const auto previouslyGlobal(globalStats);
-            // read values from event data
-            globalStats.bytes = jsonValueToInt(eventData.value(QStringLiteral("globalBytes")), globalStats.bytes);
-            neededStats.bytes = jsonValueToInt(eventData.value(QStringLiteral("needBytes")), neededStats.bytes);
-            neededStats.deletes = jsonValueToInt(eventData.value(QStringLiteral("needDeletes")), neededStats.deletes);
-            neededStats.deletes = jsonValueToInt(eventData.value(QStringLiteral("needItems")), neededStats.files);
-            dirInfo->lastStatisticsUpdate = eventTime;
-            dirInfo->completionPercentage
-                = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
+        }
+    } else if (eventType == QLatin1String("FolderPaused")) {
+        if (!dirInfo->paused) {
+            dirInfo->paused = true;
             emit dirStatusChanged(*dirInfo, index);
-            if (neededStats.isNull() && previouslyUpdated && (neededStats != previouslyNeeded || globalStats != previouslyGlobal)) {
-                emit dirCompleted(eventTime, *dirInfo, index);
-            }
-        } else if (eventType == QLatin1String("FolderScanProgress")) {
-            const double current = eventData.value(QStringLiteral("current")).toDouble(0);
-            const double total = eventData.value(QStringLiteral("total")).toDouble(0);
-            const double rate = eventData.value(QStringLiteral("rate")).toDouble(0);
-            if (current > 0 && total > 0) {
-                dirInfo->scanningPercentage = static_cast<int>(current * 100 / total);
-                dirInfo->scanningRate = rate;
-                dirInfo->assignStatus(SyncthingDirStatus::Scanning, eventTime); // ensure state is scanning
-                emit dirStatusChanged(*dirInfo, index);
-            }
-        } else if (eventType == QLatin1String("FolderPaused")) {
-            if (!dirInfo->paused) {
-                dirInfo->paused = true;
-                emit dirStatusChanged(*dirInfo, index);
-            }
-        } else if (eventType == QLatin1String("FolderResumed")) {
-            if (dirInfo->paused) {
-                dirInfo->paused = false;
-                emit dirStatusChanged(*dirInfo, index);
-            }
+        }
+    } else if (eventType == QLatin1String("FolderResumed")) {
+        if (dirInfo->paused) {
+            dirInfo->paused = false;
+            emit dirStatusChanged(*dirInfo, index);
         }
     }
 }
@@ -1809,6 +1772,56 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
             m_lastFileTime = dirInfo->lastFileTime, m_lastFileName = dirInfo->lastFileName, m_lastFileDeleted = dirInfo->lastFileDeleted;
         }
         emit dirStatusChanged(*dirInfo, index);
+    }
+}
+
+void SyncthingConnection::readFolderErrors(DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index)
+{
+    const QJsonArray errors(eventData.value(QStringLiteral("errors")).toArray());
+    if (errors.isEmpty()) {
+        return;
+    }
+
+    for (const QJsonValue &errorVal : errors) {
+        const QJsonObject error(errorVal.toObject());
+        if (error.isEmpty()) {
+            continue;
+        }
+        auto &errors = dirInfo.itemErrors;
+        SyncthingItemError dirError(error.value(QStringLiteral("error")).toString(), error.value(QStringLiteral("path")).toString());
+        if (find(errors.cbegin(), errors.cend(), dirError) != errors.cend()) {
+            continue;
+        }
+        errors.emplace_back(move(dirError));
+        dirInfo.assignStatus(SyncthingDirStatus::OutOfSync, eventTime);
+
+        // emit newNotification() for new errors
+        const auto &previousErrors = dirInfo.previousItemErrors;
+        if (find(previousErrors.cbegin(), previousErrors.cend(), dirInfo.itemErrors.back()) == previousErrors.cend()) {
+            emitNotification(eventTime, dirInfo.itemErrors.back().message);
+        }
+    }
+    emit dirStatusChanged(dirInfo, index);
+}
+
+void SyncthingConnection::readFolderCompletion(DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index)
+{
+    auto &neededStats(dirInfo.neededStats);
+    auto &globalStats(dirInfo.globalStats);
+    // backup previous statistics -> if there's no difference after all, don't emit completed event
+    const auto previouslyUpdated(!dirInfo.lastStatisticsUpdate.isNull());
+    const auto previouslyNeeded(neededStats);
+    const auto previouslyGlobal(globalStats);
+    // read values from event data
+    globalStats.bytes = jsonValueToInt(eventData.value(QStringLiteral("globalBytes")), globalStats.bytes);
+    neededStats.bytes = jsonValueToInt(eventData.value(QStringLiteral("needBytes")), neededStats.bytes);
+    neededStats.deletes = jsonValueToInt(eventData.value(QStringLiteral("needDeletes")), neededStats.deletes);
+    neededStats.deletes = jsonValueToInt(eventData.value(QStringLiteral("needItems")), neededStats.files);
+    dirInfo.lastStatisticsUpdate = eventTime;
+    dirInfo.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
+    emit dirStatusChanged(dirInfo, index);
+    if (neededStats.isNull() && previouslyUpdated && (neededStats != previouslyNeeded || globalStats != previouslyGlobal)) {
+        emit dirCompleted(eventTime, dirInfo, index);
     }
 }
 
