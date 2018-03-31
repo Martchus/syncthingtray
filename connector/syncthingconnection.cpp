@@ -63,7 +63,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_status(SyncthingStatus::Disconnected)
     , m_keepPolling(false)
     , m_reconnecting(false)
-    , m_requestCompletion(true)
+    , m_requestCompletion(false)
     , m_lastEventId(0)
     , m_autoReconnectTries(0)
     , m_totalIncomingTraffic(unknownTraffic)
@@ -1806,6 +1806,21 @@ void SyncthingConnection::readFolderErrors(DateTime eventTime, const QJsonObject
 
 void SyncthingConnection::readFolderCompletion(DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index)
 {
+    readFolderCompletion(eventTime, eventData, dirInfo, index, eventData.value(QLatin1String("device")).toString());
+}
+
+void SyncthingConnection::readFolderCompletion(
+    DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index, const QString &devId)
+{
+    if (devId.isEmpty() || devId == myId()) {
+        readLocalFolderCompletion(eventTime, eventData, dirInfo, index);
+    } else {
+        readRemoteFolderCompletion(eventTime, eventData, dirInfo, index, devId);
+    }
+}
+
+void SyncthingConnection::readLocalFolderCompletion(DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index)
+{
     auto &neededStats(dirInfo.neededStats);
     auto &globalStats(dirInfo.globalStats);
     // backup previous statistics -> if there's no difference after all, don't emit completed event
@@ -1813,15 +1828,38 @@ void SyncthingConnection::readFolderCompletion(DateTime eventTime, const QJsonOb
     const auto previouslyNeeded(neededStats);
     const auto previouslyGlobal(globalStats);
     // read values from event data
-    globalStats.bytes = jsonValueToInt(eventData.value(QStringLiteral("globalBytes")), globalStats.bytes);
-    neededStats.bytes = jsonValueToInt(eventData.value(QStringLiteral("needBytes")), neededStats.bytes);
-    neededStats.deletes = jsonValueToInt(eventData.value(QStringLiteral("needDeletes")), neededStats.deletes);
-    neededStats.deletes = jsonValueToInt(eventData.value(QStringLiteral("needItems")), neededStats.files);
+    globalStats.bytes = jsonValueToInt(eventData.value(QLatin1String("globalBytes")), globalStats.bytes);
+    neededStats.bytes = jsonValueToInt(eventData.value(QLatin1String("needBytes")), neededStats.bytes);
+    neededStats.deletes = jsonValueToInt(eventData.value(QLatin1String("needDeletes")), neededStats.deletes);
+    neededStats.deletes = jsonValueToInt(eventData.value(QLatin1String("needItems")), neededStats.files);
     dirInfo.lastStatisticsUpdate = eventTime;
     dirInfo.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
     emit dirStatusChanged(dirInfo, index);
     if (neededStats.isNull() && previouslyUpdated && (neededStats != previouslyNeeded || globalStats != previouslyGlobal)) {
         emit dirCompleted(eventTime, dirInfo, index);
+    }
+}
+
+void SyncthingConnection::readRemoteFolderCompletion(
+    DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index, const QString &devId)
+{
+    auto &completion = dirInfo.completionByDevice[devId];
+    auto &needed(completion.needed);
+    const auto previouslyUpdated = !completion.lastUpdate.isNull();
+    const auto previouslyNeeded = !needed.isNull();
+    const auto previousGlobalBytes = completion.globalBytes;
+    completion.lastUpdate = eventTime;
+    completion.percentage = eventData.value(QLatin1String("completion")).toDouble();
+    completion.globalBytes = jsonValueToInt(eventData.value(QLatin1String("globalBytes")));
+    needed.bytes = jsonValueToInt(eventData.value(QLatin1String("needBytes")), needed.bytes);
+    needed.items = jsonValueToInt(eventData.value(QLatin1String("needItems")), needed.items);
+    needed.deletes = jsonValueToInt(eventData.value(QLatin1String("needDeletes")), needed.deletes);
+    emit dirStatusChanged(dirInfo, index);
+    if (needed.isNull() && previouslyUpdated && (previouslyNeeded || previousGlobalBytes != completion.globalBytes)) {
+        int devIndex;
+        if (const auto *const devInfo = findDevInfo(devId, devIndex)) {
+            emit dirCompleted(DateTime::gmtNow(), dirInfo, index, devInfo);
+        }
     }
 }
 
@@ -2060,7 +2098,7 @@ void SyncthingConnection::readCompletion()
     case QNetworkReply::NoError: {
         // determine relevant dev/dir
         int index;
-        SyncthingDir *const dir = findDirInfo(dirId, index);
+        auto *const dir = findDirInfo(dirId, index);
         // discard status for unknown dirs
         if (!dir) {
             return;
@@ -2076,25 +2114,7 @@ void SyncthingConnection::readCompletion()
         }
 
         // update the relevant completion info
-        const auto replyObj(replyDoc.object());
-        auto &completion = dir->completionByDevice[devId];
-        auto &needed(completion.needed);
-        const auto previouslyUpdated = !completion.lastUpdate.isNull();
-        const auto previouslyNeeded = !needed.isNull();
-        const auto previousGlobalBytes = completion.globalBytes;
-        completion.lastUpdate = DateTime::gmtNow();
-        completion.percentage = replyObj.value(QLatin1String("completion")).toDouble();
-        completion.globalBytes = jsonValueToInt(replyObj.value(QLatin1String("globalBytes")));
-        needed.bytes = jsonValueToInt(replyObj.value(QLatin1String("needBytes")), needed.bytes);
-        needed.items = jsonValueToInt(replyObj.value(QLatin1String("needItems")), needed.items);
-        needed.deletes = jsonValueToInt(replyObj.value(QLatin1String("needDeletes")), needed.deletes);
-        emit dirStatusChanged(*dir, index);
-        if (needed.isNull() && previouslyUpdated && (previouslyNeeded || previousGlobalBytes != completion.globalBytes)) {
-            int devIndex;
-            if (const auto *devInfo = findDevInfo(devId, devIndex)) {
-                emit dirCompleted(DateTime::gmtNow(), *dir, index, devInfo);
-            }
-        }
+        readRemoteFolderCompletion(DateTime::gmtNow(), replyDoc.object(), *dir, index, devId);
         break;
     }
     default:
