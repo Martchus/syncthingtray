@@ -355,7 +355,8 @@ bool NotificationsOptionPage::apply()
     auto &notifyOn = values().notifyOn;
     notifyOn.disconnect = ui()->notifyOnDisconnectCheckBox->isChecked();
     notifyOn.internalErrors = ui()->notifyOnErrorsCheckBox->isChecked();
-    notifyOn.syncComplete = ui()->notifyOnSyncCompleteCheckBox->isChecked();
+    notifyOn.localSyncComplete = ui()->notifyOnLocalSyncCompleteCheckBox->isChecked();
+    notifyOn.remoteSyncComplete = ui()->notifyOnRemoteSyncCompleteCheckBox->isChecked();
     notifyOn.syncthingErrors = ui()->showSyncthingNotificationsCheckBox->isChecked();
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     if ((values().dbusNotifications = ui()->dbusRadioButton->isChecked()) && !DBusNotification::isAvailable()) {
@@ -373,7 +374,8 @@ void NotificationsOptionPage::reset()
     const auto &notifyOn = values().notifyOn;
     ui()->notifyOnDisconnectCheckBox->setChecked(notifyOn.disconnect);
     ui()->notifyOnErrorsCheckBox->setChecked(notifyOn.internalErrors);
-    ui()->notifyOnSyncCompleteCheckBox->setChecked(notifyOn.syncComplete);
+    ui()->notifyOnLocalSyncCompleteCheckBox->setChecked(notifyOn.localSyncComplete);
+    ui()->notifyOnRemoteSyncCompleteCheckBox->setChecked(notifyOn.remoteSyncComplete);
     ui()->showSyncthingNotificationsCheckBox->setChecked(notifyOn.syncthingErrors);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     (values().dbusNotifications ? ui()->dbusRadioButton : ui()->qtRadioButton)->setChecked(true);

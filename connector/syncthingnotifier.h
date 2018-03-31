@@ -24,7 +24,8 @@ struct SyncthingDev;
 enum class SyncthingHighLevelNotification {
     None = 0x0,
     ConnectedDisconnected = 0x1,
-    SyncComplete = 0x2,
+    LocalSyncComplete = 0x2,
+    RemoteSyncComplete = 0x4,
 };
 
 /// \cond

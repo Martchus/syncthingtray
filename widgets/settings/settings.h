@@ -23,7 +23,8 @@ class QtSettings;
 
 namespace Data {
 class SyncthingProcess;
-}
+class SyncthingNotifier;
+} // namespace Data
 
 namespace Settings {
 
@@ -35,8 +36,11 @@ struct SYNCTHINGWIDGETS_EXPORT Connection {
 struct SYNCTHINGWIDGETS_EXPORT NotifyOn {
     bool disconnect = true;
     bool internalErrors = true;
-    bool syncComplete = false;
+    bool localSyncComplete = false;
+    bool remoteSyncComplete = false;
     bool syncthingErrors = true;
+
+    void apply(Data::SyncthingNotifier &notifier) const;
 };
 
 struct SYNCTHINGWIDGETS_EXPORT Appearance {

@@ -72,14 +72,15 @@ QString syncCompleteString(const std::vector<const SyncthingDir *> &completedDir
         return QString();
     case 1:
         if (devName.isEmpty()) {
-            return QCoreApplication::translate("Data::Utils", "Synchronization of %1 complete").arg(completedDirs.front()->displayName());
+            return QCoreApplication::translate("Data::Utils", "Synchronization of local directory %1 complete")
+                .arg(completedDirs.front()->displayName());
         }
         return QCoreApplication::translate("Data::Utils", "Synchronization of %1 on %2 complete").arg(completedDirs.front()->displayName(), devName);
     default:;
     }
     const auto names(things(completedDirs, [](const auto *dir) { return dir->displayName(); }));
     if (devName.isEmpty()) {
-        return QCoreApplication::translate("Data::Utils", "Synchronization of the following directories complete:\n")
+        return QCoreApplication::translate("Data::Utils", "Synchronization of the following local directories complete:\n")
             + names.join(QStringLiteral(", "));
     }
     return QCoreApplication::translate("Data::Utils", "Synchronization of the following directories on %1 complete:\n").arg(devName)

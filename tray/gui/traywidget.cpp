@@ -365,14 +365,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     const bool reconnectRequired = m_connection.applySettings(*m_selectedConnection);
 
     // apply notifiction settings
-    auto notifications(SyncthingHighLevelNotification::None);
-    if (settings.notifyOn.disconnect) {
-        notifications |= SyncthingHighLevelNotification::ConnectedDisconnected;
-    }
-    if (settings.notifyOn.syncComplete) {
-        notifications |= SyncthingHighLevelNotification::SyncComplete;
-    }
-    m_notifier.setEnabledNotifications(notifications);
+    settings.notifyOn.apply(m_notifier);
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     // reconnect to apply settings considering systemd

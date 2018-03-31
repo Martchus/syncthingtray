@@ -311,14 +311,7 @@ void SyncthingApplet::handleSettingsChanged()
     const auto &settings(Settings::values());
 
     // apply notifiction settings
-    auto notifications(SyncthingHighLevelNotification::None);
-    if (settings.notifyOn.disconnect) {
-        notifications |= SyncthingHighLevelNotification::ConnectedDisconnected;
-    }
-    if (settings.notifyOn.syncComplete) {
-        notifications |= SyncthingHighLevelNotification::SyncComplete;
-    }
-    m_notifier.setEnabledNotifications(notifications);
+    settings.notifyOn.apply(m_notifier);
 
     // apply appearance settings
     setSize(config.readEntry<QSize>("size", QSize(25, 25)));

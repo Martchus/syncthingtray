@@ -1,4 +1,5 @@
 #include "./settings.h"
+#include "../../connector/syncthingnotifier.h"
 #include "../../connector/syncthingprocess.h"
 
 // use meta-data of syncthingtray application here
@@ -155,7 +156,8 @@ void restore()
     auto &notifyOn = v.notifyOn;
     notifyOn.disconnect = settings.value(QStringLiteral("notifyOnDisconnect"), notifyOn.disconnect).toBool();
     notifyOn.internalErrors = settings.value(QStringLiteral("notifyOnErrors"), notifyOn.internalErrors).toBool();
-    notifyOn.syncComplete = settings.value(QStringLiteral("notifyOnSyncComplete"), notifyOn.syncComplete).toBool();
+    notifyOn.localSyncComplete = settings.value(QStringLiteral("notifyOnLocalSyncComplete"), notifyOn.localSyncComplete).toBool();
+    notifyOn.remoteSyncComplete = settings.value(QStringLiteral("notifyOnRemoteSyncComplete"), notifyOn.remoteSyncComplete).toBool();
     notifyOn.syncthingErrors = settings.value(QStringLiteral("showSyncthingNotifications"), notifyOn.syncthingErrors).toBool();
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     v.dbusNotifications = settings.value(QStringLiteral("dbusNotifications"), DBusNotification::isAvailable()).toBool();
@@ -239,7 +241,8 @@ void save()
     const auto &notifyOn = v.notifyOn;
     settings.setValue(QStringLiteral("notifyOnDisconnect"), notifyOn.disconnect);
     settings.setValue(QStringLiteral("notifyOnErrors"), notifyOn.internalErrors);
-    settings.setValue(QStringLiteral("notifyOnSyncComplete"), notifyOn.syncComplete);
+    settings.setValue(QStringLiteral("notifyOnLocalSyncComplete"), notifyOn.localSyncComplete);
+    settings.setValue(QStringLiteral("notifyOnRemoteSyncComplete"), notifyOn.remoteSyncComplete);
     settings.setValue(QStringLiteral("showSyncthingNotifications"), notifyOn.syncthingErrors);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     settings.setValue(QStringLiteral("dbusNotifications"), v.dbusNotifications);
@@ -288,4 +291,23 @@ void save()
 
     v.qt.save(settings);
 }
+
+/*!
+ * \brief Applies the notification settings on the specified \a notifier.
+ */
+void NotifyOn::apply(SyncthingNotifier &notifier) const
+{
+    auto notifications(SyncthingHighLevelNotification::None);
+    if (disconnect) {
+        notifications |= SyncthingHighLevelNotification::ConnectedDisconnected;
+    }
+    if (localSyncComplete) {
+        notifications |= SyncthingHighLevelNotification::LocalSyncComplete;
+    }
+    if (remoteSyncComplete) {
+        notifications |= SyncthingHighLevelNotification::RemoteSyncComplete;
+    }
+    notifier.setEnabledNotifications(notifications);
+}
+
 } // namespace Settings

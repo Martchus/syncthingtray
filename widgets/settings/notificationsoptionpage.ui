@@ -38,9 +38,16 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="notifyOnSyncCompleteCheckBox">
+       <widget class="QCheckBox" name="notifyOnLocalSyncCompleteCheckBox">
         <property name="text">
-         <string>sync complete</string>
+         <string>sync of local directory complete</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="notifyOnRemoteSyncCompleteCheckBox">
+        <property name="text">
+         <string>sync of remote directory complete</string>
         </property>
        </widget>
       </item>

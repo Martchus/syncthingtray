@@ -94,7 +94,8 @@ void SyncthingNotifier::emitSyncComplete(ChronoUtilities::DateTime when, const S
     VAR_UNUSED(index)
 
     // discard event if not enabled
-    if ((m_enabledNotifications & SyncthingHighLevelNotification::SyncComplete) == 0 || !m_initialized) {
+    if (!m_initialized || (!remoteDev && (m_enabledNotifications & SyncthingHighLevelNotification::LocalSyncComplete) == 0)
+        || (remoteDev && (m_enabledNotifications & SyncthingHighLevelNotification::LocalSyncComplete) == 0)) {
         return;
     }
 
