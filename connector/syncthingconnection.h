@@ -79,6 +79,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(double totalIncomingRate READ totalIncomingRate NOTIFY trafficChanged)
     Q_PROPERTY(double totalOutgoingRate READ totalOutgoingRate NOTIFY trafficChanged)
     Q_PROPERTY(std::size_t connectedDevices READ connectedDevices)
+    Q_PROPERTY(QJsonObject rawConfig READ rawConfig NOTIFY newConfig)
 
 public:
     explicit SyncthingConnection(
@@ -162,9 +163,10 @@ public Q_SLOTS:
     void requestDirStatus(const QString &dirId);
     void requestCompletion(const QString &devId, const QString &dirId);
     void requestDeviceStatistics();
+    void postConfig(const QJsonObject &rawConfig);
 
 Q_SIGNALS:
-    void newConfig(const QJsonObject &config);
+    void newConfig(const QJsonObject &rawConfig);
     void newDirs(const std::vector<SyncthingDir> &dirs);
     void newDevices(const std::vector<SyncthingDev> &devs);
     void newEvents(const QJsonArray &events);
@@ -179,6 +181,7 @@ Q_SIGNALS:
     void configDirChanged(const QString &newConfigDir);
     void myIdChanged(const QString &myNewId);
     void trafficChanged(uint64 totalIncomingTraffic, uint64 totalOutgoingTraffic);
+    void newConfigTriggered();
     void rescanTriggered(const QString &dirId);
     void devicePauseTriggered(const QStringList &devIds);
     void deviceResumeTriggered(const QStringList &devIds);
@@ -217,6 +220,7 @@ private Q_SLOTS:
     void readRemoteFolderCompletion(
         ChronoUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index, const QString &devId);
     void readRemoteIndexUpdated(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
+    void readPostConfig();
     void readRescan();
     void readDevPauseResume();
     void readDirPauseResume();

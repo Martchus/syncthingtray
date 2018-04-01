@@ -19,7 +19,9 @@
 #include <QDir>
 #include <QJsonDocument>
 #include <QNetworkAccessManager>
+#include <QProcess>
 #include <QStringBuilder>
+#include <QTemporaryFile>
 #include <QTimer>
 
 #include <functional>
@@ -79,6 +81,7 @@ Application::Application()
     m_args.waitForIdle.setCallback(bind(&Application::waitForIdle, this, _1));
     m_args.pwd.setCallback(bind(&Application::checkPwdOperationPresent, this, _1));
     m_args.cat.setCallback(bind(&Application::printConfig, this, _1));
+    m_args.edit.setCallback(bind(&Application::editConfig, this, _1));
     m_args.statusPwd.setCallback(bind(&Application::printPwdStatus, this, _1));
     m_args.rescanPwd.setCallback(bind(&Application::requestRescanPwd, this, _1));
     m_args.pausePwd.setCallback(bind(&Application::requestPausePwd, this, _1));
@@ -576,11 +579,114 @@ void Application::printLog(const std::vector<SyncthingLogEntry> &logEntries)
 
 void Application::printConfig(const ArgumentOccurrence &)
 {
-    waitForConfig();
-    eraseLine(cout);
-    cout << '\r' << QJsonDocument(m_connection.rawConfig()).toJson().data() << flush;
-    // disable main event loop since this method is invoked directly as argument callback and we've done all async operations during the waitForConfig() call already
+    // disable main event loop since this method is invoked directly as argument callback and we're doing all required async operations during the waitForConfig() call already
     m_requiresMainEventLoop = false;
+
+    if (!waitForConfig()) {
+        return;
+    }
+    cerr << Phrases::Override;
+
+    cout << QJsonDocument(m_connection.rawConfig()).toJson(QJsonDocument::Indented).data() << flush;
+}
+
+void Application::editConfig(const ArgumentOccurrence &)
+{
+    // disable main event loop since this method is invoked directly as argument callback and we're doing all required async operations during the waitForConfig() call already
+    m_requiresMainEventLoop = false;
+
+    // read editor command and options
+    const auto *const editorArgValue(m_args.editor.firstValue());
+    const auto editorCommand(editorArgValue ? QString::fromLocal8Bit(editorArgValue) : QString());
+    if (editorCommand.isEmpty()) {
+        cerr << Phrases::Error << "No editor command specified. It must be either passed via --editor argument or EDITOR environment variable."
+             << Phrases::EndFlush;
+        return;
+    }
+    QStringList editorOptions;
+    if (m_args.editor.isPresent()) {
+        const auto &editorArgValues(m_args.editor.values());
+        if (!editorArgValues.empty()) {
+            editorOptions.reserve(trQuandity(editorArgValues.size()));
+            for (auto i = editorArgValues.cbegin() + 1, end = editorArgValues.cend(); i != end; ++i) {
+                editorOptions << QString::fromLocal8Bit(*i);
+            }
+        }
+    }
+
+    // wait until config is available
+    if (!waitForConfig()) {
+        return;
+    }
+    cerr << Phrases::Override;
+
+    // write config to temporary file
+    QTemporaryFile tempFile(QStringLiteral("syncthing-config-XXXXXX.json"));
+    if (!tempFile.open() || !tempFile.write(QJsonDocument(m_connection.rawConfig()).toJson(QJsonDocument::Indented))) {
+        cerr << Phrases::Error << "Unable to write the configuration to a temporary file." << Phrases::EndFlush;
+        return;
+    }
+    editorOptions << tempFile.fileName();
+    tempFile.close();
+
+    // open editor and wait until it has finished
+    cerr << Phrases::Info << "Waiting till editor closed ..." << TextAttribute::Reset << flush;
+    QProcess editor;
+    editor.setProcessChannelMode(QProcess::ForwardedChannels);
+    editor.setInputChannelMode(QProcess::ForwardedInputChannel);
+    editor.start(editorCommand, editorOptions);
+    editor.waitForFinished(-1);
+    cerr << Phrases::Override;
+
+    // handle editor crash
+    if (editor.exitStatus() == QProcess::CrashExit) {
+        cerr << Phrases::Error << "Editor crashed with exit code " << editor.exitCode() << Phrases::End << "invocation command: " << editorArgValue;
+        if (m_args.editor.isPresent()) {
+            const auto &editorArgValues(m_args.editor.values());
+            if (!editorArgValues.empty()) {
+                for (auto i = editorArgValues.cbegin() + 1, end = editorArgValues.cend(); i != end; ++i) {
+                    cerr << ' ' << *i;
+                }
+            }
+        }
+        cerr << endl;
+        return;
+    }
+
+    // read (altered) configuration again
+    QFile tempFile2(editorOptions.back());
+    if (!tempFile2.open(QIODevice::ReadOnly)) {
+        cerr << Phrases::Error << "Unable to open temporary file containing the configuration again." << Phrases::EndFlush;
+        return;
+    }
+    const auto newConfig(tempFile2.readAll());
+    if (newConfig.isEmpty()) {
+        cerr << Phrases::Error << "Unable to read any bytes from temporary file containing the configuration." << Phrases::EndFlush;
+        return;
+    }
+
+    // convert the config to JSON again (could send it to Syncthing as it is, but this allows us to check whether the JSON is valid)
+    QJsonParseError error;
+    const auto configDoc(QJsonDocument::fromJson(newConfig, &error));
+    if (error.error != QJsonParseError::NoError) {
+        cerr << Phrases::Error << "Unable to parse new configuration" << Phrases::End << "reason: " << error.errorString().toLocal8Bit().data()
+             << " at character " << error.offset << endl;
+        return;
+    }
+    const auto configObj(configDoc.object());
+    if (configObj.isEmpty()) {
+        cerr << Phrases::Error << "New config object seems empty." << Phrases::EndFlush;
+        return;
+    }
+
+    // post new config
+    using namespace TestUtilities;
+    cerr << Phrases::Info << "Posting new configuration ..." << TextAttribute::Reset << flush;
+    if (!waitForSignalsOrFail(bind(&SyncthingConnection::postConfig, ref(m_connection), ref(configObj)), 0,
+            signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfigTriggered))) {
+        return;
+    }
+    cerr << Phrases::Override << Phrases::Info << "Configuration posted successfully" << Phrases::EndFlush;
 }
 
 void Application::waitForIdle(const ArgumentOccurrence &)

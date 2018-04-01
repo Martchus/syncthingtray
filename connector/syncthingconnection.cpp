@@ -828,6 +828,17 @@ void SyncthingConnection::requestDeviceStatistics()
 }
 
 /*!
+ * \brief Posts the specified \a rawConfig.
+ * \remarks The signal newConfigTriggered() is emitted when the config has been posted sucessfully. In the error case, error() is emitted.
+ *          Besides, the newConfig() signal should be emitted as well, indicating Syncthing has actually applied the new configuration.
+ */
+void SyncthingConnection::postConfig(const QJsonObject &rawConfig)
+{
+    QObject::connect(postData(QStringLiteral("system/config"), QUrlQuery(), QJsonDocument(rawConfig).toJson(QJsonDocument::Compact)),
+        &QNetworkReply::finished, this, &SyncthingConnection::readPostConfig);
+}
+
+/*!
  * \brief Requests the Syncthing events (since the last successful call) asynchronously.
  *
  * The signal newEvents() is emitted on success; otherwise error() is emitted.
@@ -1897,6 +1908,19 @@ void SyncthingConnection::readRemoteIndexUpdated(DateTime eventTime, const QJson
     }
 }
 
+void SyncthingConnection::readPostConfig()
+{
+    auto *const reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+    switch (reply->error()) {
+    case QNetworkReply::NoError:
+        emit newConfigTriggered();
+        break;
+    default:
+        emitError(tr("Unable to post config: "), SyncthingErrorCategory::SpecificRequest, reply);
+    }
+}
+
 /*!
  * \brief Reads results of rescan().
  */
@@ -2338,6 +2362,12 @@ void SyncthingConnection::recalculateStatus()
 /*!
  * \fn SyncthingConnection::trafficChanged()
  * \brief Indicates totalIncomingTraffic() or totalOutgoingTraffic() has changed.
+ */
+
+/*!
+ * \fn SyncthingConnection::newConfigTriggered()
+ * \brief Indicates a new configuration has posted sucessfully via postConfig().
+ * \remarks In contrast to newConfig(), this signal is only emitted for configuration changes internally posted via postConfig().
  */
 
 /*!

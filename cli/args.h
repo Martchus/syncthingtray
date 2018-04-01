@@ -12,10 +12,11 @@ struct Args {
     ArgumentParser parser;
     HelpArgument help;
     NoColorArgument noColor;
-    OperationArgument status, log, stop, restart, rescan, rescanAll, pause, resume, waitForIdle, pwd, cat;
+    OperationArgument status, log, stop, restart, rescan, rescanAll, pause, resume, waitForIdle, pwd, cat, edit;
     OperationArgument statusPwd, rescanPwd, pausePwd, resumePwd;
     ConfigValueArgument dir, dev, allDirs, allDevs;
     ConfigValueArgument atLeast, timeout;
+    ConfigValueArgument editor;
     ConfigValueArgument configFile, apiKey, url, credentials, certificate;
 };
 

@@ -66,6 +66,7 @@ private:
     void printStatus(const ArgumentOccurrence &);
     static void printLog(const std::vector<Data::SyncthingLogEntry> &logEntries);
     void printConfig(const ArgumentOccurrence &);
+    void editConfig(const ArgumentOccurrence &);
     void waitForIdle(const ArgumentOccurrence &);
     bool checkWhetherIdle() const;
     void checkPwdOperationPresent(const ArgumentOccurrence &occurrence);
