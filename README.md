@@ -133,14 +133,15 @@ See the release section on GitHub.
       updated archive with a dynamically linked executable
 
 ## Build instructions
-The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and [qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries. For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities). For building this straight, see the next section.
+The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and [qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries. For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities). For building this straight, see the section above.
 
-The following Qt 5 modules are requried (version 5.7 or newer): core network dbus gui widgets svg webenginewidgets/webkitwidgets
+### Further dependencies
+The following Qt 5 modules are requried (version 5.6 or newer): core network dbus gui widgets svg webenginewidgets/webkitwidgets
 
 The built-in web view is optional (see section "Select Qt module for WebView").
 
-To build the plugin for Dolphin integration KIO is also requried. To skip building
-the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
+To build the plugin for Dolphin integration KIO is also requried. Additionally, the Dolphin plugin requires Qt 5.8 or newer. To skip
+building the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
 
 To build the Plasmoid for the Plasma 5 desktop, the Qt 5 module QML and the KF5 module
 Plasma are required as well. Additionally, the Plasmoid requires Qt 5.8 or newer. To skip
@@ -154,7 +155,9 @@ To get rid of systemd support, add `-DENABLE_SYSTEMD_SUPPORT_BY_DEFAULT` to the 
 In this case the Qt module D-Bus is not required anymore. Note that there is no hard dependency
 to systemd in any case.
 
-#### Building this straight
+Building the testsuite requires CppUnit and Qt 5.8 or higher.
+
+### Building this straight
 0. Install (preferably the latest version of) g++ or clang, the required Qt 5 modules and CMake.
 1. Get the sources. For the lastest version from Git clone the following repositories:
    ```
@@ -174,12 +177,12 @@ to systemd in any case.
    make install -j$(nproc)
    ```
 
-#### Select Qt module for WebView
+### Select Qt module for WebView
 * If Qt WebKitWidgets is installed on the system, the tray will link against it. Otherwise it will link against Qt WebEngineWidgets.
 * To force usage of Qt WebKit/Qt WebEngine or to disable both add `-DWEBVIEW_PROVIDER=webkit/webengine/none` to the CMake arguments.
 * To use Qt WebKit revived/ng, set the web view provider to `webkit`. It works already without any (known) issues.
 
-#### BTW: I still prefer the deprecated Qt WebKit because
+### BTW: I still prefer the deprecated Qt WebKit because
 * Currently there is no way to allow a particular self-signed certificate in Qt
   WebEngine. Currently any self-signed certificate is accepted! See:
   https://bugreports.qt.io/browse/QTBUG-51176
@@ -209,7 +212,7 @@ can be added quite easily:
 Note that the CLI `syncthingctl` currently does not support translations.
 
 ### Using backend libraries
-Note that the contained backend libraries (which provide connecting to Syncthing, data models and more) are written for internal
+The contained backend libraries (which provide connecting to Syncthing, data models and more) are written for internal
 use whithin the components contained by this repository.
 
 Hence those libraries do *not* provide a stable ABI/API. If you like to
