@@ -315,7 +315,7 @@ template <typename Action, typename... SignalInfos> bool waitForSignals(Action a
 /*!
  * \brief Waits until the specified signals have been emitted when performing async operations triggered by \a action. Aborts when \a failure is emitted.
  * \arg action Specifies a method to trigger the action to run when waiting.
- * \arg timeout Specifies the max. time to wait. Set to zero to wait forever.
+ * \arg timeout Specifies the max. time to wait in ms. Set to zero to wait forever.
  * \arg failure Specifies the signal indicating an error occured.
  * \arg signalInfos Specifies the signals to wait for.
  * \throws Fails if not all signals have been emitted in at least \a timeout milliseconds or when at least one of the

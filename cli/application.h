@@ -53,8 +53,8 @@ private slots:
 
 private:
     int loadConfig();
-    bool waitForConnected(int timeout);
-    bool waitForConfig(int timeout);
+    bool waitForConnected(int timeout = 2000);
+    bool waitForConfig(int timeout = 2000);
     void requestLog(const ArgumentOccurrence &);
     void requestShutdown(const ArgumentOccurrence &);
     void requestRestart(const ArgumentOccurrence &);
@@ -65,6 +65,7 @@ private:
     void printDev(const Data::SyncthingDev *dev) const;
     void printStatus(const ArgumentOccurrence &);
     static void printLog(const std::vector<Data::SyncthingLogEntry> &logEntries);
+    void printConfig(const ArgumentOccurrence &);
     void waitForIdle(const ArgumentOccurrence &);
     bool checkWhetherIdle() const;
     void checkPwdOperationPresent(const ArgumentOccurrence &occurrence);
@@ -82,6 +83,7 @@ private:
     size_t m_expectedResponse;
     bool m_preventDisconnect;
     bool m_callbacksInvoked;
+    bool m_requiresMainEventLoop;
     std::vector<RelevantDir> m_relevantDirs;
     std::vector<const Data::SyncthingDev *> m_relevantDevs;
     RelevantDir m_pwd;

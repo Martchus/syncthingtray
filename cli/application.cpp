@@ -17,6 +17,7 @@
 
 #include <QCoreApplication>
 #include <QDir>
+#include <QJsonDocument>
 #include <QNetworkAccessManager>
 #include <QStringBuilder>
 #include <QTimer>
@@ -57,6 +58,7 @@ Application::Application()
     : m_expectedResponse(0)
     , m_preventDisconnect(false)
     , m_callbacksInvoked(false)
+    , m_requiresMainEventLoop(true)
     , m_idleDuration(0)
     , m_idleTimeout(0)
     , m_argsRead(false)
@@ -76,6 +78,7 @@ Application::Application()
     m_args.resume.setCallback(bind(&Application::requestPauseResume, this, false));
     m_args.waitForIdle.setCallback(bind(&Application::waitForIdle, this, _1));
     m_args.pwd.setCallback(bind(&Application::checkPwdOperationPresent, this, _1));
+    m_args.cat.setCallback(bind(&Application::printConfig, this, _1));
     m_args.statusPwd.setCallback(bind(&Application::printPwdStatus, this, _1));
     m_args.rescanPwd.setCallback(bind(&Application::requestRescanPwd, this, _1));
     m_args.pausePwd.setCallback(bind(&Application::requestPausePwd, this, _1));
@@ -125,7 +128,7 @@ int Application::exec(int argc, const char *const *argv)
     // finally do the request or establish connection
     if (m_args.status.isPresent() || m_args.rescan.isPresent() || m_args.rescanAll.isPresent() || m_args.pause.isPresent()
         || m_args.resume.isPresent() || m_args.waitForIdle.isPresent() || m_args.pwd.isPresent()) {
-        // those arguments rquire establishing a connection first, the actual handler is called by handleStatusChanged() when
+        // those arguments require establishing a connection first, the actual handler is called by handleStatusChanged() when
         // the connection has been established
         m_connection.reconnect(m_settings);
         cerr << "Connecting to " << m_settings.syncthingUrl.toLocal8Bit().data() << " ...";
@@ -136,23 +139,26 @@ int Application::exec(int argc, const char *const *argv)
         m_args.parser.invokeCallbacks();
     }
 
-    // enter event loop
+    // enter main event loop
+    if (!m_requiresMainEventLoop) {
+        return 0;
+    }
     return QCoreApplication::exec();
 }
 
 int assignIntegerFromArg(const Argument &arg, int &integer)
 {
-    if (arg.isPresent()) {
-        try {
-            integer = stringToNumber<int>(arg.firstValue());
-            if (integer < 0) {
-                throw ConversionException();
-            }
-        } catch (const ConversionException &) {
-            cerr << Phrases::Error << "The specified number of milliseconds \"" << arg.firstValue() << "\" is no unsigned integer." << Phrases::End
-                 << flush;
-            return -4;
+    if (!arg.isPresent()) {
+        return 0;
+    }
+    try {
+        integer = stringToNumber<int>(arg.firstValue());
+        if (integer < 0) {
+            throw ConversionException();
         }
+    } catch (const ConversionException &) {
+        cerr << Phrases::Error << "The specified number of milliseconds \"" << arg.firstValue() << "\" is no unsigned integer." << Phrases::EndFlush;
+        return -4;
     }
     return 0;
 }
@@ -171,10 +177,10 @@ int Application::loadConfig()
     const char *apiKeyArgValue = m_args.apiKey.firstValue();
     if (!config.restore(configFile)) {
         if (configFileArgValue) {
-            cerr << Phrases::Error << "Unable to locate specified Syncthing config file \"" << configFileArgValue << "\"" << Phrases::End << flush;
+            cerr << Phrases::Error << "Unable to locate specified Syncthing config file \"" << configFileArgValue << "\"" << Phrases::EndFlush;
             return -1;
         } else if (!apiKeyArgValue) {
-            cerr << Phrases::Error << "Unable to locate Syncthing config file and no API key specified" << Phrases::End << flush;
+            cerr << Phrases::Error << "Unable to locate Syncthing config file and no API key specified" << Phrases::EndFlush;
             return -2;
         }
     }
@@ -583,6 +589,15 @@ void Application::printLog(const std::vector<SyncthingLogEntry> &logEntries)
     QCoreApplication::exit();
 }
 
+void Application::printConfig(const ArgumentOccurrence &)
+{
+    waitForConfig();
+    eraseLine(cout);
+    cout << '\r' << QJsonDocument(m_connection.rawConfig()).toJson().data() << flush;
+    // disable main event loop since this method is invoked directly as argument callback and we've done all async operations during the waitForConfig() call already
+    m_requiresMainEventLoop = false;
+}
+
 void Application::waitForIdle(const ArgumentOccurrence &)
 {
     m_preventDisconnect = true;
@@ -733,7 +748,7 @@ void Application::initDirCompletion(Argument &arg, const ArgumentOccurrence &)
     }
     // load config and wait for connected
     loadConfig();
-    waitForConfig(2000);
+    waitForConfig();
     // set directory IDs as completion values
     m_dirCompletion = m_connection.directoryIds().join(QChar(' ')).toUtf8();
     arg.setPreDefinedCompletionValues(m_dirCompletion.data());
@@ -747,7 +762,7 @@ void Application::initDevCompletion(Argument &arg, const ArgumentOccurrence &)
     }
     // load config and wait for connected
     loadConfig();
-    waitForConfig(2000);
+    waitForConfig();
     // set device IDs and names as completion values
     QStringList completionValues;
     const size_t valueCount = m_connection.devInfo().size() << 2;

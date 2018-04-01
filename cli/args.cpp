@@ -16,6 +16,7 @@ Args::Args()
     , resume("resume", '\0', "resumes the specified directories and devices")
     , waitForIdle("wait-for-idle", 'w', "waits until the specified dirs/devs are idling")
     , pwd("pwd", 'p', "operates in the current working directory")
+    , cat("cat", '\0', "prints the current configuration")
     , statusPwd("status", 's', "prints the status of the current working directory")
     , rescanPwd("rescan", 'r', "rescans the current working directory")
     , pausePwd("pause", 'p', "pauses the current working directory")
@@ -58,8 +59,8 @@ Args::Args()
     configFile.setExample(PROJECT_NAME " status --dir dir1 --config-file ~/.config/syncthing/config.xml");
     credentials.setExample(PROJECT_NAME " status --dir dir1 --credentials name supersecret");
 
-    parser.setMainArguments({ &status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &resume, &waitForIdle, &pwd, &configFile, &apiKey, &url,
-        &credentials, &certificate, &noColor, &help });
+    parser.setMainArguments({ &status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &resume, &waitForIdle, &pwd, &cat, &configFile, &apiKey,
+        &url, &credentials, &certificate, &noColor, &help });
 
     // allow setting default values via environment
     configFile.setEnvironmentVariable("SYNCTHING_CTL_CONFIG_FILE");

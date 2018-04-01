@@ -129,6 +129,7 @@ public:
     QStringList deviceIds() const;
     QString deviceNameOrId(const QString &deviceId) const;
     std::size_t connectedDevices() const;
+    const QJsonObject &rawConfig() const;
 
 public Q_SLOTS:
     bool loadSelfSignedCertificate();
@@ -559,6 +560,15 @@ inline const std::vector<SyncthingDev> &SyncthingConnection::devInfo() const
 inline const QList<QSslError> &SyncthingConnection::expectedSslErrors()
 {
     return m_expectedSslErrors;
+}
+
+/*!
+ * \brief Returns the raw Syncthing configuration.
+ * \remarks The referenced object is updated when newConfig() is emitted.
+ */
+inline const QJsonObject &SyncthingConnection::rawConfig() const
+{
+    return m_rawConfig;
 }
 } // namespace Data
 
