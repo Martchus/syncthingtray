@@ -131,8 +131,7 @@ int Application::exec(int argc, const char *const *argv)
         // those arguments require establishing a connection first, the actual handler is called by handleStatusChanged() when
         // the connection has been established
         m_connection.reconnect(m_settings);
-        cerr << "Connecting to " << m_settings.syncthingUrl.toLocal8Bit().data() << " ...";
-        cerr.flush();
+        cerr << Phrases::Info << "Connecting to " << m_settings.syncthingUrl.toLocal8Bit().data() << " ..." << Phrases::EndFlush;
     } else {
         // call handler for any other arguments directly
         m_connection.applySettings(m_settings);
@@ -250,8 +249,7 @@ void Application::handleStatusChanged(SyncthingStatus newStatus)
         return;
     }
     // erase current line
-    eraseLine(cout);
-    cout << '\r';
+    cerr << Phrases::Override;
     // invoke callbacks
     m_callbacksInvoked = true;
     m_args.parser.invokeCallbacks();
@@ -263,13 +261,13 @@ void Application::handleStatusChanged(SyncthingStatus newStatus)
 
 void Application::handleResponse()
 {
-    if (m_expectedResponse) {
-        if (!--m_expectedResponse) {
-            QCoreApplication::quit();
-        }
-    } else {
+    if (!m_expectedResponse) {
         cerr << Phrases::Error << "Unexpected response" << Phrases::End << flush;
         QCoreApplication::exit(-4);
+        return;
+    }
+    if (!--m_expectedResponse) {
+        QCoreApplication::quit();
     }
 }
 
@@ -285,10 +283,8 @@ void Application::handleError(
     }
 
     // print error message and relevant request and response if present
-    eraseLine(cout);
-    cerr << '\n' << '\r' << Phrases::Error;
-    cerr << message.toLocal8Bit().data() << Phrases::End;
-    const QUrl url(request.url());
+    cerr << Phrases::Override << Phrases::Error << message.toLocal8Bit().data() << Phrases::End;
+    const auto url(request.url());
     if (!url.isEmpty()) {
         cerr << "\nRequest: " << url.toString(QUrl::PrettyDecoded).toLocal8Bit().data() << '\n';
     }
@@ -373,7 +369,7 @@ void Application::requestPauseResume(bool pause)
     }
     if (!m_relevantDirs.empty()) {
         QStringList dirIds;
-        dirIds.reserve(m_relevantDirs.size());
+        dirIds.reserve(trQuandity(m_relevantDirs.size()));
         for (const RelevantDir &dir : m_relevantDirs) {
             dirIds << dir.dirObj->id;
         }
@@ -389,7 +385,7 @@ void Application::requestPauseResume(bool pause)
     }
     if (!m_relevantDevs.empty()) {
         QStringList devIds;
-        devIds.reserve(m_relevantDirs.size());
+        devIds.reserve(trQuandity(m_relevantDirs.size()));
         for (const SyncthingDev *dev : m_relevantDevs) {
             devIds << dev->id;
         }
@@ -441,12 +437,12 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
                 if (!dev) {
                     dev = m_connection.findDevInfoByName(argToQString(devArg.values(i).front()), dummy);
                 }
-                if (dev) {
-                    m_relevantDevs.emplace_back(dev);
-                } else {
+                if (!dev) {
                     cerr << Phrases::Warning << "Specified device \"" << devArg.values(i).front() << "\" does not exist and will be ignored."
                          << Phrases::End;
+                    continue;
                 }
+                m_relevantDevs.emplace_back(dev);
             }
         }
     }
@@ -488,10 +484,7 @@ bool Application::findPwd()
 void Application::printDir(const RelevantDir &relevantDir) const
 {
     const SyncthingDir *const dir = relevantDir.dirObj;
-    cout << " - ";
-    setStyle(cout, TextAttribute::Bold);
-    cout << dir->id.toLocal8Bit().data() << '\n';
-    setStyle(cout);
+    cout << " - " << TextAttribute::Bold << dir->id.toLocal8Bit().data() << '\n' << TextAttribute::Reset;
     printProperty("Label", dir->label);
     printProperty("Path", dir->path);
     printProperty("Status", dir->statusString());
@@ -530,10 +523,7 @@ void Application::printDir(const RelevantDir &relevantDir) const
 
 void Application::printDev(const SyncthingDev *dev) const
 {
-    cout << " - ";
-    setStyle(cout, TextAttribute::Bold);
-    cout << dev->name.toLocal8Bit().data() << '\n';
-    setStyle(cout);
+    cout << " - " << TextAttribute::Bold << dev->name.toLocal8Bit().data() << '\n' << TextAttribute::Reset;
     printProperty("ID", dev->id);
     printProperty("Status", dev->statusString());
     printProperty("Addresses", dev->addresses);
@@ -558,17 +548,13 @@ void Application::printStatus(const ArgumentOccurrence &)
 
     // display dirs
     if (!m_relevantDirs.empty()) {
-        setStyle(cout, TextAttribute::Bold);
-        cout << "Directories\n";
-        setStyle(cout);
+        cout << TextAttribute::Bold << "Directories\n" << TextAttribute::Reset;
         for_each(m_relevantDirs.cbegin(), m_relevantDirs.cend(), bind(&Application::printDir, this, placeholders::_1));
     }
 
     // display devs
     if (!m_relevantDevs.empty()) {
-        setStyle(cout, TextAttribute::Bold);
-        cout << "Devices\n";
-        setStyle(cout);
+        cout << TextAttribute::Bold << "Devices\n" << TextAttribute::Reset;
         for_each(m_relevantDevs.cbegin(), m_relevantDevs.cend(), bind(&Application::printDev, this, placeholders::_1));
     }
 
@@ -578,8 +564,7 @@ void Application::printStatus(const ArgumentOccurrence &)
 
 void Application::printLog(const std::vector<SyncthingLogEntry> &logEntries)
 {
-    eraseLine(cout);
-    cout << '\r';
+    cerr << Phrases::Override;
 
     for (const SyncthingLogEntry &entry : logEntries) {
         cout << DateTime::fromIsoStringLocal(entry.when.toLocal8Bit().data()).toString(DateTimeOutputFormat::DateAndTime, true).data() << ':' << ' '
