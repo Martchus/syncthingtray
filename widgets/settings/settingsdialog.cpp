@@ -728,6 +728,7 @@ void LauncherOptionPage::launch()
     }
     ui()->launchNowPushButton->hide();
     ui()->stopPushButton->show();
+    ui()->stopPushButton->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Stop launched instance"));
     m_kill = false;
     if (m_tool.isEmpty()) {
         m_process.startSyncthing(values().launcher.syncthingCmd());
@@ -744,6 +745,7 @@ void LauncherOptionPage::stop()
     if (m_kill) {
         m_process.kill();
     } else {
+        ui()->stopPushButton->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Kill launched instance"));
         m_kill = true;
         m_process.terminate();
     }

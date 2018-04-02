@@ -21,6 +21,7 @@ set(WIDGETS_HEADER_FILES
     misc/dbusstatusnotifier.h
     misc/internalerror.h
     misc/otherdialogs.h
+    misc/syncthingkiller.h
 )
 set(WIDGETS_SRC_FILES
     settings/settings.cpp
@@ -35,6 +36,7 @@ set(WIDGETS_SRC_FILES
     misc/dbusstatusnotifier.cpp
     misc/internalerror.cpp
     misc/otherdialogs.cpp
+    misc/syncthingkiller.cpp
 )
 set(RES_FILES
     resources/${META_PROJECT_NAME}icons.qrc

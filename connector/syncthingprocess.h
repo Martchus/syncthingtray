@@ -6,6 +6,7 @@
 #include <c++utilities/chrono/datetime.h>
 
 #include <QProcess>
+#include <QTimer>
 
 namespace Data {
 
@@ -22,10 +23,14 @@ public:
     bool isActiveFor(unsigned int atLeastSeconds) const;
     bool isManuallyStopped() const;
 
+Q_SIGNALS:
+    void confirmKill();
+
 public Q_SLOTS:
     void restartSyncthing(const QString &cmd);
     void startSyncthing(const QString &cmd);
     void stopSyncthing();
+    void killSyncthing();
 
 private Q_SLOTS:
     void handleStarted();
@@ -35,6 +40,7 @@ private Q_SLOTS:
 private:
     QString m_cmd;
     ChronoUtilities::DateTime m_activeSince;
+    QTimer m_killTimer;
     bool m_manuallyStopped;
 };
 

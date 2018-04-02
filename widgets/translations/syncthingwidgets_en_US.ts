@@ -401,6 +401,7 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="120"/>
+        <location filename="../settings/settingsdialog.cpp" line="731"/>
         <source>Stop launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -444,6 +445,11 @@
         <location filename="../settings/settingsdialog.cpp" line="712"/>
         <source>%1 crashed with exit code %2
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="748"/>
+        <source>Kill launched instance</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -546,22 +552,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="907"/>
+        <location filename="../settings/settingsdialog.cpp" line="909"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="914"/>
+        <location filename="../settings/settingsdialog.cpp" line="916"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="921"/>
+        <location filename="../settings/settingsdialog.cpp" line="923"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="943"/>
+        <location filename="../settings/settingsdialog.cpp" line="945"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -643,6 +649,26 @@
     </message>
 </context>
 <context>
+    <name>QtGui::SyncthingKiller</name>
+    <message>
+        <location filename="../misc/syncthingkiller.cpp" line="45"/>
+        <source>The process %1 (PID: %2) has been requested to terminate but hasn&apos;t reacted yet. Kill the process?
+
+This dialog closes automatically when the process finally terminates.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthingkiller.cpp" line="51"/>
+        <source>Keep running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthingkiller.cpp" line="52"/>
+        <source>Kill process</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QtGui::SystemdOptionPage</name>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="6"/>
@@ -675,8 +701,8 @@
         <location filename="../settings/systemdoptionpage.ui" line="99"/>
         <location filename="../settings/systemdoptionpage.ui" line="154"/>
         <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="828"/>
-        <location filename="../settings/settingsdialog.cpp" line="840"/>
+        <location filename="../settings/settingsdialog.cpp" line="830"/>
+        <location filename="../settings/settingsdialog.cpp" line="842"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -711,12 +737,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="801"/>
+        <location filename="../settings/settingsdialog.cpp" line="803"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="823"/>
+        <location filename="../settings/settingsdialog.cpp" line="825"/>
         <source>since </source>
         <translation type="unfinished"></translation>
     </message>
@@ -783,7 +809,7 @@
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="862"/>
+        <location filename="../settings/settingsdialog.cpp" line="864"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -813,7 +839,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="864"/>
+        <location filename="../settings/settingsdialog.cpp" line="866"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
@@ -822,7 +848,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="150"/>
+        <location filename="../settings/settings.cpp" line="159"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation type="unfinished"></translation>
     </message>

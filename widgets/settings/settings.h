@@ -71,6 +71,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
     QString syncthingCmd() const;
     QString toolCmd(const QString &tool) const;
     static Data::SyncthingProcess &toolProcess(const QString &tool);
+    static std::vector<Data::SyncthingProcess *> allProcesses();
     void autostart() const;
     static void terminate();
 };

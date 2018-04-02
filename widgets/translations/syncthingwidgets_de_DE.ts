@@ -401,6 +401,7 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="120"/>
+        <location filename="../settings/settingsdialog.cpp" line="731"/>
         <source>Stop launched instance</source>
         <translation>Stoppen</translation>
     </message>
@@ -445,6 +446,11 @@
         <source>%1 crashed with exit code %2
 </source>
         <translation>%1 ist mit dem Statuscode %2 abgestürzt</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="748"/>
+        <source>Kill launched instance</source>
+        <translation>Töten</translation>
     </message>
 </context>
 <context>
@@ -546,22 +552,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="907"/>
+        <location filename="../settings/settingsdialog.cpp" line="909"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="914"/>
+        <location filename="../settings/settingsdialog.cpp" line="916"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="921"/>
+        <location filename="../settings/settingsdialog.cpp" line="923"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="943"/>
+        <location filename="../settings/settingsdialog.cpp" line="945"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -643,6 +649,28 @@
     </message>
 </context>
 <context>
+    <name>QtGui::SyncthingKiller</name>
+    <message>
+        <location filename="../misc/syncthingkiller.cpp" line="45"/>
+        <source>The process %1 (PID: %2) has been requested to terminate but hasn&apos;t reacted yet. Kill the process?
+
+This dialog closes automatically when the process finally terminates.</source>
+        <translation>Der Prozess %1 (PID: %2) wurde aufgefordert sich zu beenden, reagiert aber nicht. Soll der Prozess getötet werden?
+
+Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthingkiller.cpp" line="51"/>
+        <source>Keep running</source>
+        <translation>Prozess laufen lassen</translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthingkiller.cpp" line="52"/>
+        <source>Kill process</source>
+        <translation>Prozess töten</translation>
+    </message>
+</context>
+<context>
     <name>QtGui::SystemdOptionPage</name>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="6"/>
@@ -678,8 +706,8 @@
         <location filename="../settings/systemdoptionpage.ui" line="99"/>
         <location filename="../settings/systemdoptionpage.ui" line="154"/>
         <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="828"/>
-        <location filename="../settings/settingsdialog.cpp" line="840"/>
+        <location filename="../settings/settingsdialog.cpp" line="830"/>
+        <location filename="../settings/settingsdialog.cpp" line="842"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -713,12 +741,12 @@
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="801"/>
+        <location filename="../settings/settingsdialog.cpp" line="803"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit ist entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="823"/>
+        <location filename="../settings/settingsdialog.cpp" line="825"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -785,7 +813,7 @@
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="862"/>
+        <location filename="../settings/settingsdialog.cpp" line="864"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
@@ -815,7 +843,7 @@
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="864"/>
+        <location filename="../settings/settingsdialog.cpp" line="866"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.
@@ -825,7 +853,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="150"/>
+        <location filename="../settings/settings.cpp" line="159"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Fehler beim laden des Zertifikats &quot;%1&quot; beim wiederherstellen der Einstellungen.</translation>
     </message>

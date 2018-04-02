@@ -10,10 +10,13 @@ SyncthingProcess::SyncthingProcess(QObject *parent)
     : QProcess(parent)
     , m_manuallyStopped(false)
 {
+    m_killTimer.setInterval(3000);
+    m_killTimer.setSingleShot(true);
     setProcessChannelMode(QProcess::MergedChannels);
     connect(this, &SyncthingProcess::started, this, &SyncthingProcess::handleStarted);
     connect(this, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
         &SyncthingProcess::handleFinished);
+    connect(&m_killTimer, &QTimer::timeout, this, &SyncthingProcess::confirmKill);
 }
 
 void SyncthingProcess::restartSyncthing(const QString &cmd)
@@ -22,11 +25,9 @@ void SyncthingProcess::restartSyncthing(const QString &cmd)
         startSyncthing(cmd);
         return;
     }
-
     m_cmd = cmd;
     m_manuallyStopped = true;
-    // give Syncthing 5 seconds to terminate, otherwise kill it
-    QTimer::singleShot(5000, this, &SyncthingProcess::killToRestart);
+    m_killTimer.start();
     terminate();
 }
 
@@ -36,6 +37,7 @@ void SyncthingProcess::startSyncthing(const QString &cmd)
         return;
     }
     m_manuallyStopped = false;
+    m_killTimer.stop();
     if (cmd.isEmpty()) {
         start(QProcess::ReadOnly);
     } else {
@@ -49,9 +51,18 @@ void SyncthingProcess::stopSyncthing()
         return;
     }
     m_manuallyStopped = true;
-    // give Syncthing 5 seconds to terminate, otherwise kill it
-    QTimer::singleShot(5000, this, &SyncthingProcess::kill);
+    m_killTimer.start();
     terminate();
+}
+
+void SyncthingProcess::killSyncthing()
+{
+    if (!isRunning()) {
+        return;
+    }
+    m_manuallyStopped = true;
+    m_killTimer.stop();
+    kill();
 }
 
 void SyncthingProcess::handleStarted()
@@ -64,6 +75,7 @@ void SyncthingProcess::handleFinished(int exitCode, QProcess::ExitStatus exitSta
     Q_UNUSED(exitCode)
     Q_UNUSED(exitStatus)
     m_activeSince = DateTime();
+    m_killTimer.stop();
     if (!m_cmd.isEmpty()) {
         startSyncthing(m_cmd);
         m_cmd.clear();

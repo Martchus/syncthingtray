@@ -1,6 +1,7 @@
 #include "./settings.h"
 #include "../../connector/syncthingnotifier.h"
 #include "../../connector/syncthingprocess.h"
+#include "../misc/syncthingkiller.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingservice.h"
@@ -67,6 +68,17 @@ SyncthingProcess &Launcher::toolProcess(const QString &tool)
     return toolProcesses[tool];
 }
 
+std::vector<SyncthingProcess *> Launcher::allProcesses()
+{
+    vector<SyncthingProcess *> processes;
+    processes.reserve(1 + toolProcesses.size());
+    processes.push_back(&syncthingProcess());
+    for (auto &process : toolProcesses) {
+        processes.push_back(&process.second);
+    }
+    return processes;
+}
+
 /*!
  * \brief Starts all processes (Syncthing and tools) if autostart is enabled.
  */
@@ -83,16 +95,13 @@ void Launcher::autostart() const
     }
 }
 
+/*!
+ * \brief Terminates all launched processes.
+ * \remarks Waits until all processes have terminated. If a process hangs, the user is asked to kill.
+ */
 void Launcher::terminate()
 {
-    syncthingProcess().stopSyncthing();
-    for (auto &process : toolProcesses) {
-        process.second.stopSyncthing();
-    }
-    syncthingProcess().waitForFinished();
-    for (auto &process : toolProcesses) {
-        process.second.waitForFinished();
-    }
+    QtGui::SyncthingKiller(allProcesses()).waitForFinished();
 }
 
 Settings &values()
