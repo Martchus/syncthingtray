@@ -491,7 +491,12 @@
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="74"/>
-        <source>D-Bus notifi&amp;cations (org.freedesktop.Notifications)</source>
+        <source>D-Bus &amp;notifications (org.freedesktop.Notifications)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/notificationsoptionpage.ui" line="97"/>
+        <source>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance started via Systemd or the internal launcher.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -502,11 +507,6 @@
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="91"/>
         <source>Misc</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="97"/>
-        <source>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance by checking Systemd unit status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -822,7 +822,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="146"/>
+        <location filename="../settings/settings.cpp" line="150"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation type="unfinished"></translation>
     </message>

@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>QtGui::NotificationsOptionPage</class>
  <widget class="QWidget" name="QtGui::NotificationsOptionPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>345</width>
+    <height>400</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Notifications</string>
   </property>

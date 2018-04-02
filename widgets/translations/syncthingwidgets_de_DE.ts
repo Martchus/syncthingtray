@@ -491,8 +491,13 @@
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="74"/>
-        <source>D-Bus notifi&amp;cations (org.freedesktop.Notifications)</source>
-        <translation>D-Bus (org.freedesktop.Notifications)</translation>
+        <source>D-Bus &amp;notifications (org.freedesktop.Notifications)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../settings/notificationsoptionpage.ui" line="97"/>
+        <source>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance started via Systemd or the internal launcher.</source>
+        <translation>Ignoriere, dass Syncthing ein paar Sekunden nach dem Start noch nicht verfügbar ist. Hat nur Auswirkungen, wenn der Syncthing-Startzeitpunkt ermittelt werden kann. Dies wird aktuell nur für die lokale Instanz unterstützt. Diese muss hierfür über Systemd oder die Tray-Anwendung gestartet wurde.</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="81"/>
@@ -503,11 +508,6 @@
         <location filename="../settings/notificationsoptionpage.ui" line="91"/>
         <source>Misc</source>
         <translation>Verschiedenes</translation>
-    </message>
-    <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="97"/>
-        <source>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance by checking Systemd unit status</source>
-        <translation>Ignoriere, dass Syncthing ein paar Sekunden nach dem Start noch nicht verfügbar ist. Hat nur Auswirkungen, wenn der Syncthing-Startzeitpunkt ermittelt werden kann, was aktuell nur für die lokale Instanz via Systemd unterstützt wird.</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="107"/>
@@ -825,7 +825,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="146"/>
+        <location filename="../settings/settings.cpp" line="150"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Fehler beim laden des Zertifikats &quot;%1&quot; beim wiederherstellen der Einstellungen.</translation>
     </message>
