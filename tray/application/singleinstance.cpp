@@ -1,6 +1,7 @@
 #include "./singleinstance.h"
 
 #include <c++utilities/conversion/binaryconversion.h>
+#include <c++utilities/io/ansiescapecodes.h>
 
 #include <QCoreApplication>
 #include <QLocalServer>
@@ -12,6 +13,7 @@
 
 using namespace std;
 using namespace ConversionUtilities;
+using namespace EscapeCodes;
 
 namespace QtGui {
 
@@ -25,7 +27,7 @@ SingleInstance::SingleInstance(int argc, const char *const *argv, QObject *paren
     QLocalSocket socket;
     socket.connectToServer(appId, QLocalSocket::ReadWrite);
     if (socket.waitForConnected(1000)) {
-        cerr << "Info: Application already running, sending args to previous instance" << endl;
+        cerr << Phrases::Info << "Application already running, sending args to previous instance" << Phrases::EndFlush;
         if (argc >= 0 && argc <= 0xFFFF) {
             char buffer[2];
             BE::getBytes(static_cast<uint16>(argc), buffer);
@@ -36,7 +38,7 @@ SingleInstance::SingleInstance(int argc, const char *const *argv, QObject *paren
                 socket.write(buffer, 1);
             }
         } else {
-            cerr << "Error: Unable to pass the specified number of arguments" << endl;
+            cerr << Phrases::Error << "Unable to pass the specified number of arguments" << Phrases::EndFlush;
         }
         socket.flush();
         socket.close();
@@ -50,24 +52,24 @@ SingleInstance::SingleInstance(int argc, const char *const *argv, QObject *paren
     m_server = new QLocalServer(this);
     connect(m_server, &QLocalServer::newConnection, this, &SingleInstance::handleNewConnection);
     if (!m_server->listen(appId)) {
-        cerr << "Error: Unable to launch as single instance application" << endl;
+        cerr << Phrases::Error << "Unable to launch as single instance application" << Phrases::EndFlush;
     }
 }
 
 void SingleInstance::handleNewConnection()
 {
-    QLocalSocket *socket = m_server->nextPendingConnection();
+    const QLocalSocket *const socket = m_server->nextPendingConnection();
     connect(socket, &QLocalSocket::readChannelFinished, this, &SingleInstance::readArgs);
 }
 
 void SingleInstance::readArgs()
 {
-    auto *socket = static_cast<QLocalSocket *>(sender());
+    auto *const socket = static_cast<QLocalSocket *>(sender());
 
     // check arg data size
     const auto argDataSize = socket->bytesAvailable();
     if (argDataSize < 2 && argDataSize > (1024 * 1024)) {
-        cerr << "Error: Another application instance sent invalid argument data." << endl;
+        cerr << Phrases::Error << "Another application instance sent invalid argument data." << Phrases::EndFlush;
         return;
     }
 
@@ -78,7 +80,7 @@ void SingleInstance::readArgs()
     socket->deleteLater();
 
     // reconstruct argc and argv array
-    uint16 argc = BE::toUInt16(argData.get());
+    const auto argc = BE::toUInt16(argData.get());
     vector<const char *> args;
     args.reserve(argc + 1);
     for (const char *argv = argData.get() + 2, *end = argData.get() + argDataSize, *i = argv; i != end && *argv;) {
