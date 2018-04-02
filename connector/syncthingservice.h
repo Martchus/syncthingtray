@@ -56,6 +56,7 @@ public:
     ChronoUtilities::DateTime activeSince() const;
     bool isActiveFor(unsigned int atLeastSeconds) const;
     bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
+    static bool isActiveWithoutSleepFor(ChronoUtilities::DateTime activeSince, unsigned int atLeastSeconds);
     static ChronoUtilities::DateTime lastWakeUp();
     const QString &unitFileState() const;
     const QString &description() const;
@@ -186,6 +187,11 @@ inline ChronoUtilities::DateTime SyncthingService::activeSince() const
 inline bool SyncthingService::isActiveFor(unsigned int atLeastSeconds) const
 {
     return !m_activeSince.isNull() && (ChronoUtilities::DateTime::gmtNow() - m_activeSince).totalSeconds() > atLeastSeconds;
+}
+
+inline bool SyncthingService::isActiveWithoutSleepFor(unsigned int atLeastSeconds) const
+{
+    return isActiveWithoutSleepFor(m_activeSince, atLeastSeconds);
 }
 
 inline ChronoUtilities::DateTime SyncthingService::lastWakeUp()

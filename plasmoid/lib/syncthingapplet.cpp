@@ -101,6 +101,7 @@ void SyncthingApplet::init()
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     SyncthingService &service = syncthingService();
     service.setUnitName(Settings::values().systemd.syncthingUnit);
+    connect(&service, &SyncthingService::systemdAvailableChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
     connect(&service, &SyncthingService::errorOccurred, this, &SyncthingApplet::handleSystemdServiceError);
 #endif
 
@@ -156,10 +157,11 @@ Data::SyncthingConnectionSettings *SyncthingApplet::connectionConfig(int index)
 
 void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
 {
-    auto &settings = Settings::values().connection;
-    if (index != m_currentConnectionConfig && index >= 0 && static_cast<unsigned>(index) <= settings.secondary.size()) {
-        auto &selectedConfig = index == 0 ? settings.primary : settings.secondary[static_cast<unsigned>(index) - 1];
-        m_connection.connect(selectedConfig);
+    auto &settings = Settings::values();
+    bool reconnectRequired = false;
+    if (index != m_currentConnectionConfig && index >= 0 && static_cast<unsigned>(index) <= settings.connection.secondary.size()) {
+        auto &selectedConfig = index == 0 ? settings.connection.primary : settings.connection.secondary[static_cast<unsigned>(index) - 1];
+        reconnectRequired = m_connection.applySettings(selectedConfig);
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
         if (m_webViewDlg) {
             m_webViewDlg->applySettings(selectedConfig);
@@ -169,9 +171,18 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
         emit currentConnectionConfigIndexChanged(m_currentConnectionConfig = index);
         emit localChanged();
     }
+
+    // apply systemd settings, reconnect if required and possible
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    settings.systemd.apply(m_connection, currentConnectionConfig(), reconnectRequired);
+#else
+    if (reconnectRequired || !m_connection.isConnected()) {
+        m_connection.reconnect();
+    }
+#endif
 }
 
-bool SyncthingApplet::isStartStopForServiceEnabled() const
+bool SyncthingApplet::isStartStopEnabled() const
 {
     return Settings::values().systemd.showButton;
 }
@@ -311,7 +322,7 @@ void SyncthingApplet::handleSettingsChanged()
     const auto &settings(Settings::values());
 
     // apply notifiction settings
-    settings.notifyOn.apply(m_notifier);
+    settings.apply(m_notifier);
 
     // apply appearance settings
     setSize(config.readEntry<QSize>("size", QSize(25, 25)));
@@ -349,11 +360,12 @@ void SyncthingApplet::handleDevicesChanged()
 void SyncthingApplet::handleInternalError(
     const QString &errorMsg, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    if (InternalError::isRelevant(m_connection, category, networkError)) {
-        InternalError error(errorMsg, request.url(), response);
-        m_dbusNotifier.showInternalError(error);
-        ErrorViewDialog::addError(move(error));
+    if (!InternalError::isRelevant(m_connection, category, networkError)) {
+        return;
     }
+    InternalError error(errorMsg, request.url(), response);
+    m_dbusNotifier.showInternalError(error);
+    ErrorViewDialog::addError(move(error));
 }
 
 void SyncthingApplet::handleErrorsCleared()
@@ -388,6 +400,14 @@ void SyncthingApplet::handleSystemdServiceError(const QString &context, const QS
     handleInternalError(tr("D-Bus error - unable to ") % context % QChar('\n') % name % QChar(':') % message, SyncthingErrorCategory::SpecificRequest,
         QNetworkReply::NoError, QNetworkRequest(), QByteArray());
 }
+
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+void SyncthingApplet::handleSystemdStatusChanged()
+{
+    Settings::values().systemd.apply(m_connection, currentConnectionConfig());
+}
+#endif
+
 } // namespace Plasmoid
 
 K_EXPORT_PLASMA_APPLET_WITH_JSON(syncthing, Plasmoid::SyncthingApplet, "metadata.json")

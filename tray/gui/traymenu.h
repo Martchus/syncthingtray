@@ -15,7 +15,7 @@ public:
     TrayMenu(const QString &connectionConfig = QString(), TrayIcon *trayIcon = nullptr, QWidget *parent = nullptr);
 
     QSize sizeHint() const;
-    TrayWidget *widget();
+    TrayWidget &widget();
     TrayIcon *icon();
 
 public slots:
@@ -26,9 +26,9 @@ private:
     TrayIcon *m_trayIcon;
 };
 
-inline TrayWidget *TrayMenu::widget()
+inline TrayWidget &TrayMenu::widget()
 {
-    return m_trayWidget;
+    return *m_trayWidget;
 }
 
 inline TrayIcon *TrayMenu::icon()

@@ -184,6 +184,15 @@ void SyncthingConnection::connect(SyncthingConnectionSettings &connectionSetting
     }
 }
 
+void SyncthingConnection::connectLater(int milliSeconds)
+{
+    // skip if conneting via auto-reconnect anyways
+    if (autoReconnectInterval() > 0 && milliSeconds < autoReconnectInterval()) {
+        return;
+    }
+    QTimer::singleShot(milliSeconds, this, static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
+}
+
 /*!
  * \brief Disconnects. Does nothing if not connected.
  */
@@ -221,6 +230,11 @@ void SyncthingConnection::reconnect(SyncthingConnectionSettings &connectionSetti
 {
     applySettings(connectionSettings);
     reconnect();
+}
+
+void SyncthingConnection::reconnectLater(int milliSeconds)
+{
+    QTimer::singleShot(milliSeconds, this, static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::reconnect));
 }
 
 /*!

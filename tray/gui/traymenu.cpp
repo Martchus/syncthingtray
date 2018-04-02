@@ -15,8 +15,9 @@ TrayMenu::TrayMenu(const QString &connectionConfig, TrayIcon *trayIcon, QWidget 
     : QMenu(parent)
     , m_trayIcon(trayIcon)
 {
-    auto *menuLayout = new QHBoxLayout;
-    menuLayout->setMargin(0), menuLayout->setSpacing(0);
+    auto *const menuLayout = new QHBoxLayout;
+    menuLayout->setMargin(0);
+    menuLayout->setSpacing(0);
     menuLayout->addWidget(m_trayWidget = new TrayWidget(connectionConfig, this));
     setLayout(menuLayout);
     setPlatformMenu(nullptr);

@@ -48,68 +48,72 @@ void handleSystemdServiceError(const QString &context, const QString &name, cons
 
 int initSyncthingTray(bool windowed, bool waitForTray, const char *connectionConfig)
 {
-    auto &v = Settings::values();
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    SyncthingService &service = syncthingService();
-    service.setUnitName(v.systemd.syncthingUnit);
-    QObject::connect(&service, &SyncthingService::errorOccurred, &handleSystemdServiceError);
-#endif
-    const QString connectionConfigQStr = connectionConfig ? QString::fromLocal8Bit(connectionConfig) : QString();
+    // get settings
+    auto &settings = Settings::values();
+    const auto connectionConfigQStr(connectionConfig ? QString::fromLocal8Bit(connectionConfig) : QString());
+
+    // handle "windowed" case
     if (windowed) {
-        v.launcher.autostart();
-        auto *trayWidget = new TrayWidget(connectionConfigQStr);
+        settings.launcher.autostart();
+        auto *const trayWidget = new TrayWidget(connectionConfigQStr);
         trayWidget->setAttribute(Qt::WA_DeleteOnClose);
         trayWidget->show();
-    } else {
-#ifndef QT_NO_SYSTEMTRAYICON
-        if (QSystemTrayIcon::isSystemTrayAvailable() || waitForTray) {
-            v.launcher.autostart();
-            auto *trayIcon = new TrayIcon(connectionConfigQStr);
-            trayIcon->show();
-            if (v.firstLaunch) {
-                QMessageBox msgBox;
-                msgBox.setIcon(QMessageBox::Information);
-                msgBox.setText(
-                    QCoreApplication::translate("main", "You must configure how to connect to Syncthing when using Syncthing Tray the first time."));
-                msgBox.setInformativeText(QCoreApplication::translate(
-                    "main", "Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration."));
-                msgBox.exec();
-                trayIcon->trayMenu().widget()->showSettingsDialog();
-            }
-        } else {
-            QMessageBox::critical(nullptr, QApplication::applicationName(),
-                QApplication::translate("main",
-                    "The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though."));
-            return -1;
-        }
-#else
-        QMessageBox::critical(nullptr, QApplication::applicationName(),
-            QApplication::translate("main",
-                "The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular "
-                "window using the -w flag, though."));
-        return -2;
-#endif
+        return 0;
     }
+
+#ifndef QT_NO_SYSTEMTRAYICON
+    // check whether system tray is available
+    if (!QSystemTrayIcon::isSystemTrayAvailable() && !waitForTray) {
+        QMessageBox::critical(nullptr, QApplication::applicationName(),
+            QApplication::translate(
+                "main", "The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though."));
+        return -1;
+    }
+
+    // show tray icon
+    settings.launcher.autostart();
+    auto *const trayIcon = new TrayIcon(connectionConfigQStr, QApplication::instance());
+    trayIcon->show();
+    if (!settings.firstLaunch) {
+        return 0;
+    }
+
+    // show "first launch" message box
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setText(QCoreApplication::translate("main", "You must configure how to connect to Syncthing when using Syncthing Tray the first time."));
+    msgBox.setInformativeText(QCoreApplication::translate(
+        "main", "Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration."));
+    msgBox.exec();
+    trayIcon->trayMenu().widget().showSettingsDialog();
     return 0;
+
+#else
+    // show error if system tray is not supported by Qt
+    QMessageBox::critical(nullptr, QApplication::applicationName(),
+        QApplication::translate("main",
+            "The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular "
+            "window using the -w flag, though."));
+    return -2;
+#endif
 }
 
 void trigger(bool tray, bool webUi)
 {
-    if (!TrayWidget::instances().empty() && (tray || webUi)) {
-        TrayWidget *trayWidget = TrayWidget::instances().front();
-        if (webUi) {
-            trayWidget->showWebUi();
-        }
-        if (tray) {
-            trayWidget->showAtCursor();
-        }
+    if (TrayWidget::instances().empty() || !(tray || webUi)) {
+        return;
+    }
+    auto *const trayWidget = TrayWidget::instances().front();
+    if (webUi) {
+        trayWidget->showWebUi();
+    }
+    if (tray) {
+        trayWidget->showAtCursor();
     }
 }
 
 int runApplication(int argc, const char *const *argv)
 {
-    static bool firstRun = true;
-
     // setup argument parser
     SET_APPLICATION_INFO;
     CMD_UTILS_CONVERT_ARGS_TO_UTF8;
@@ -140,44 +144,54 @@ int runApplication(int argc, const char *const *argv)
     if (!qtConfigArgs.qtWidgetsGuiArg().isPresent()) {
         return 0;
     }
+
+    // check whether runApplication() has been called for the first time
+    static auto firstRun = true;
     if (firstRun) {
         firstRun = false;
 
+        // do first-time initializations
         SET_QT_APPLICATION_INFO;
         QApplication application(argc, const_cast<char **>(argv));
         QGuiApplication::setQuitOnLastWindowClosed(false);
         SingleInstance singleInstance(argc, argv);
         networkAccessManager().setParent(&singleInstance);
         QObject::connect(&singleInstance, &SingleInstance::newInstance, &runApplication);
-
         Settings::restore();
         Settings::values().qt.apply();
         qtConfigArgs.applySettings(true);
         LOAD_QT_TRANSLATIONS;
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        SyncthingService &service = syncthingService();
+        service.setUnitName(Settings::values().systemd.syncthingUnit);
+        QObject::connect(&service, &SyncthingService::errorOccurred, &handleSystemdServiceError);
+#endif
 
-        int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue());
+        // show (first) tray icon and enter main event loop
+        auto res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue());
         if (!res) {
             trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
             res = application.exec();
         }
 
+        // perform cleanup, then terminate
         Settings::Launcher::terminate();
         Settings::save();
         return res;
-    } else {
-        if (!TrayWidget::instances().empty() && (showWebUiArg.isPresent() || triggerArg.isPresent())) {
-            // if --webui or --trigger is present don't create a new tray icon, just trigger actions
-            trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
-        } else {
-            const int res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue());
-            if (!res) {
-                trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
-            }
-            return res;
-        }
     }
 
-    return 0;
+    // trigger actions if --webui or --trigger is present but don't create a new tray icon
+    if (!TrayWidget::instances().empty() && (showWebUiArg.isPresent() || triggerArg.isPresent())) {
+        trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
+        return 0;
+    }
+
+    // create new/additional tray icon
+    const auto res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue());
+    if (!res) {
+        trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
+    }
+    return res;
 }
 
 int main(int argc, char *argv[])

@@ -109,18 +109,17 @@ bool SyncthingService::isUnitAvailable() const
     return m_unit && m_unit->isValid();
 }
 
-bool SyncthingService::isActiveWithoutSleepFor(unsigned int atLeastSeconds) const
+bool SyncthingService::isActiveWithoutSleepFor(DateTime activeSince, unsigned int atLeastSeconds)
 {
     if (!atLeastSeconds) {
         return true;
     }
-    if (m_activeSince.isNull() || s_fallingAsleep) {
+    if (activeSince.isNull() || s_fallingAsleep) {
         return false;
     }
 
     const DateTime now(DateTime::gmtNow());
-    return ((now - m_activeSince).totalSeconds() > atLeastSeconds)
-        && (s_lastWakeUp.isNull() || ((now - s_lastWakeUp).totalSeconds() > atLeastSeconds));
+    return ((now - activeSince).totalSeconds() > atLeastSeconds) && (s_lastWakeUp.isNull() || ((now - s_lastWakeUp).totalSeconds() > atLeastSeconds));
 }
 
 void SyncthingService::setRunning(bool running)

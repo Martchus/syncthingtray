@@ -365,15 +365,13 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     const bool reconnectRequired = m_connection.applySettings(*m_selectedConnection);
 
     // apply notifiction settings
-    settings.notifyOn.apply(m_notifier);
+    settings.apply(m_notifier);
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    // reconnect to apply settings considering systemd
-    const bool couldReconnect = handleSystemdStatusChanged();
-    if (reconnectRequired && couldReconnect) {
-        m_connection.reconnect();
-    }
+    // apply systemd settings, also enforce reconnect if required and possible
+    applySystemdSettings(reconnectRequired);
 #else
+    // reconnect if required, not checking whether possible
     if (reconnectRequired) {
         m_connection.reconnect();
     }
@@ -500,56 +498,43 @@ void TrayWidget::updateTraffic()
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 bool TrayWidget::handleSystemdStatusChanged()
 {
-    const SyncthingService &service = syncthingService();
-    const Settings::Systemd &settings = Settings::values().systemd;
-    const bool serviceRelevant = service.isSystemdAvailable() && isLocal(QUrl(m_connection.syncthingUrl()));
-    bool couldConnectNow = true;
+    return applySystemdSettings();
+}
 
-    if (serviceRelevant) {
-        const bool isRunning = service.isRunning();
-        if (settings.showButton) {
+bool TrayWidget::applySystemdSettings(bool reconnectRequired)
+{
+    // update connection
+    const Settings::Systemd &systemdSettings(Settings::values().systemd);
+    bool isServiceRelevant, isServiceRunning;
+    tie(isServiceRelevant, isServiceRunning) = systemdSettings.apply(m_connection, m_selectedConnection, reconnectRequired);
+
+    if (isServiceRelevant) {
+        // update start/stop button
+        if (systemdSettings.showButton) {
             m_ui->startStopPushButton->setVisible(true);
-            if (isRunning) {
+            const auto &unitName(syncthingService().unitName());
+            if (isServiceRunning) {
                 m_ui->startStopPushButton->setText(tr("Stop"));
-                m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user stop ") + service.unitName());
+                m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user stop ") + unitName);
                 m_ui->startStopPushButton->setIcon(
                     QIcon::fromTheme(QStringLiteral("process-stop"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/process-stop.svg"))));
             } else {
                 m_ui->startStopPushButton->setText(tr("Start"));
-                m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user start ") + service.unitName());
+                m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user start ") + unitName);
                 m_ui->startStopPushButton->setIcon(
                     QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
             }
         }
-        if (settings.considerForReconnect) {
-            if (isRunning && m_selectedConnection) {
-                // auto-reconnect might have been disabled when unit was inactive before, so re-enable it according current connection settings
-                m_connection.setAutoReconnectInterval(m_selectedConnection->reconnectInterval);
-                if (!m_connection.isConnected()) {
-                    // FIXME: This will fail if Syncthing has just been started and isn't ready yet
-                    m_connection.connect();
-                }
-            } else {
-                // disable auto-reconnect if unit isn't running
-                m_connection.setAutoReconnectInterval(0);
-                couldConnectNow = false;
-            }
-        }
     }
-
-    if (!settings.showButton || !serviceRelevant) {
+    if (!systemdSettings.showButton || !isServiceRelevant) {
         m_ui->startStopPushButton->setVisible(false);
     }
-    if ((!settings.considerForReconnect || !serviceRelevant) && m_selectedConnection) {
-        m_connection.setAutoReconnectInterval(m_selectedConnection->reconnectInterval);
-    }
-
-    return couldConnectNow;
+    return isServiceRelevant && isServiceRunning;
 }
 
 void TrayWidget::connectIfServiceRunning()
 {
-    if (Settings::values().systemd.considerForReconnect && isLocal(QUrl(m_connection.syncthingUrl())) && syncthingService().isRunning()) {
+    if (Settings::values().systemd.considerForReconnect && m_connection.isLocal() && syncthingService().isRunning()) {
         m_connection.connect();
     }
 }

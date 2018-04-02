@@ -137,9 +137,11 @@ public Q_SLOTS:
     bool applySettings(SyncthingConnectionSettings &connectionSettings);
     void connect();
     void connect(SyncthingConnectionSettings &connectionSettings);
+    void connectLater(int milliSeconds);
     void disconnect();
     void reconnect();
     void reconnect(SyncthingConnectionSettings &connectionSettings);
+    void reconnectLater(int milliSeconds);
     bool pauseDevice(const QStringList &devIds);
     bool pauseAllDevs();
     bool resumeDevice(const QStringList &devIds);

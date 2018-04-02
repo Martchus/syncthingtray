@@ -1,5 +1,6 @@
 #include "./syncthingnotifier.h"
 #include "./syncthingconnection.h"
+#include "./syncthingprocess.h"
 #include "./utils.h"
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -30,8 +31,10 @@ SyncthingNotifier::SyncthingNotifier(const SyncthingConnection &connection, QObj
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     , m_service(syncthingService())
 #endif
+    , m_process(syncthingProcess())
     , m_enabledNotifications(SyncthingHighLevelNotification::None)
     , m_previousStatus(SyncthingStatus::Disconnected)
+    , m_ignoreInavailabilityAfterStart(15)
     , m_initialized(false)
 {
     connect(&connection, &SyncthingConnection::statusChanged, this, &SyncthingNotifier::handleStatusChangedEvent);
@@ -54,6 +57,41 @@ void SyncthingNotifier::handleStatusChangedEvent(SyncthingStatus newStatus)
     m_previousStatus = newStatus;
 }
 
+bool SyncthingNotifier::isDisconnectRelevant() const
+{
+    // skip disconnect if not initialized
+    if (!m_initialized) {
+        return false;
+    }
+
+    // skip further considerations if connection is remote
+    if (!m_connection.isLocal()) {
+        return true;
+    }
+
+    // consider process/launcher or systemd unit status
+    if (m_process.isManuallyStopped()) {
+        return false;
+    }
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    if (m_service.isManuallyStopped()) {
+        return false;
+    }
+
+    // ignore inavailability after start or standby-wakeup
+    if (m_ignoreInavailabilityAfterStart) {
+        if (m_process.isRunning() && !m_service.isActiveWithoutSleepFor(m_process.activeSince(), m_ignoreInavailabilityAfterStart)) {
+            return false;
+        }
+        if (m_service.isRunning() && !m_service.isActiveWithoutSleepFor(m_ignoreInavailabilityAfterStart)) {
+            return false;
+        }
+    }
+#endif
+
+    return true;
+}
+
 /*!
  * \brief Emits the connected() or disconnected() signal.
  */
@@ -66,11 +104,7 @@ void SyncthingNotifier::emitConnectedAndDisconnected(SyncthingStatus newStatus)
 
     switch (newStatus) {
     case SyncthingStatus::Disconnected:
-        if (m_initialized
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-            && m_service.isManuallyStopped()
-#endif
-        ) {
+        if (isDisconnectRelevant()) {
             emit disconnected();
         }
         break;

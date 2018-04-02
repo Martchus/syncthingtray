@@ -280,7 +280,7 @@ ColumnLayout {
                 var nativeInterface = plasmoid.nativeInterface
                 // the systemd unit status is only relevant when connected to the local instance
                 if (!nativeInterface.local
-                        || !nativeInterface.startStopForServiceEnabled) {
+                        || !nativeInterface.startStopEnabled) {
                     return "irrelevant"
                 }
                 // show start/stop button only when the configured unit is available

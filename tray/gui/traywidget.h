@@ -75,6 +75,7 @@ private slots:
     void updateTraffic();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     bool handleSystemdStatusChanged();
+    bool applySystemdSettings(bool reconnectRequired = false);
     void connectIfServiceRunning();
 #endif
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW

@@ -1,6 +1,10 @@
 #include "./settings.h"
 #include "../../connector/syncthingnotifier.h"
 #include "../../connector/syncthingprocess.h"
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#include "../../connector/syncthingconnection.h"
+#include "../../connector/syncthingservice.h"
+#endif
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
@@ -295,19 +299,70 @@ void save()
 /*!
  * \brief Applies the notification settings on the specified \a notifier.
  */
-void NotifyOn::apply(SyncthingNotifier &notifier) const
+void Settings::apply(SyncthingNotifier &notifier) const
 {
     auto notifications(SyncthingHighLevelNotification::None);
-    if (disconnect) {
+    if (notifyOn.disconnect) {
         notifications |= SyncthingHighLevelNotification::ConnectedDisconnected;
     }
-    if (localSyncComplete) {
+    if (notifyOn.localSyncComplete) {
         notifications |= SyncthingHighLevelNotification::LocalSyncComplete;
     }
-    if (remoteSyncComplete) {
+    if (notifyOn.remoteSyncComplete) {
         notifications |= SyncthingHighLevelNotification::RemoteSyncComplete;
     }
     notifier.setEnabledNotifications(notifications);
+    notifier.setIgnoreInavailabilityAfterStart(ignoreInavailabilityAfterStart);
 }
+
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+/*!
+ * \brief Applies the systemd settings to the specified \a connection considering the status of the global SyncthingService instance.
+ * \remarks
+ * - Called by SyncthingApplet and TrayWidget when the status of the SyncthingService changes.
+ * - \a currentConnectionSettings might be nullptr.
+ * - Currently this is only about the auto-reconnect interval and connecting instantly.
+ * \returns Returns whether the service is relevant and running.
+ */
+std::tuple<bool, bool> Systemd::apply(
+    Data::SyncthingConnection &connection, const SyncthingConnectionSettings *currentConnectionSettings, bool reconnectRequired) const
+{
+    const SyncthingService &service(syncthingService());
+    const auto isRelevant = service.isSystemdAvailable() && connection.isLocal();
+    const auto isRunning = service.isRunning();
+
+    if (currentConnectionSettings && (!considerForReconnect || !isRelevant || isRunning)) {
+        // ensure auto-reconnect is configured according to settings
+        connection.setAutoReconnectInterval(currentConnectionSettings->reconnectInterval);
+    } else {
+        // disable auto-reconnect regardless of the overall settings
+        connection.setAutoReconnectInterval(0);
+    }
+
+    // connect instantly if service is running
+    if (considerForReconnect && isRelevant) {
+        constexpr auto minActiveTimeInSeconds(5);
+        if (reconnectRequired) {
+            if (service.isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
+                connection.reconnect();
+            } else {
+                // give the service (which has just started) a few seconds to initialize
+                connection.reconnectLater(minActiveTimeInSeconds * 1000);
+            }
+        } else if (isRunning && !connection.isConnected()) {
+            if (service.isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
+                connection.connect();
+            } else {
+                // give the service (which has just started) a few seconds to initialize
+                connection.connectLater(minActiveTimeInSeconds * 1000);
+            }
+        }
+    } else if (reconnectRequired) {
+        connection.reconnect();
+    }
+
+    return make_tuple(isRelevant, isRunning);
+}
+#endif
 
 } // namespace Settings

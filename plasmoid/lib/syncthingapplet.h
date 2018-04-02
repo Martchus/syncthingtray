@@ -56,7 +56,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(QString currentConnectionConfigName READ currentConnectionConfigName NOTIFY currentConnectionConfigIndexChanged)
     Q_PROPERTY(int currentConnectionConfigIndex READ currentConnectionConfigIndex WRITE setCurrentConnectionConfigIndex NOTIFY
             currentConnectionConfigIndexChanged)
-    Q_PROPERTY(bool startStopForServiceEnabled READ isStartStopForServiceEnabled NOTIFY settingsChanged)
+    Q_PROPERTY(bool startStopEnabled READ isStartStopEnabled NOTIFY settingsChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(bool notificationsAvailable READ areNotificationsAvailable NOTIFY notificationsAvailableChanged)
 
@@ -82,7 +82,7 @@ public:
     Data::SyncthingConnectionSettings *currentConnectionConfig();
     Data::SyncthingConnectionSettings *connectionConfig(int index);
     void setCurrentConnectionConfigIndex(int index);
-    bool isStartStopForServiceEnabled() const;
+    bool isStartStopEnabled() const;
     QSize size() const;
     void setSize(const QSize &size);
     bool areNotificationsAvailable() const;
@@ -133,6 +133,9 @@ private Q_SLOTS:
 #endif
     void handleNewNotification(ChronoUtilities::DateTime when, const QString &msg);
     void handleSystemdServiceError(const QString &context, const QString &name, const QString &message);
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    void handleSystemdStatusChanged();
+#endif
 
 private:
     Dialogs::AboutDialog *m_aboutDlg;

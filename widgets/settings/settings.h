@@ -15,6 +15,7 @@
 #include <QString>
 #include <QTabWidget>
 
+#include <tuple>
 #include <vector>
 
 namespace Dialogs {
@@ -24,6 +25,7 @@ class QtSettings;
 namespace Data {
 class SyncthingProcess;
 class SyncthingNotifier;
+class SyncthingConnection;
 } // namespace Data
 
 namespace Settings {
@@ -39,8 +41,6 @@ struct SYNCTHINGWIDGETS_EXPORT NotifyOn {
     bool localSyncComplete = false;
     bool remoteSyncComplete = false;
     bool syncthingErrors = true;
-
-    void apply(Data::SyncthingNotifier &notifier) const;
 };
 
 struct SYNCTHINGWIDGETS_EXPORT Appearance {
@@ -67,6 +67,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
 #endif
     QString syncthingArgs;
     QHash<QString, ToolParameter> tools;
+    bool considerForReconnect = false;
     QString syncthingCmd() const;
     QString toolCmd(const QString &tool) const;
     static Data::SyncthingProcess &toolProcess(const QString &tool);
@@ -79,6 +80,11 @@ struct SYNCTHINGWIDGETS_EXPORT Systemd {
     QString syncthingUnit = QStringLiteral("syncthing.service");
     bool showButton = false;
     bool considerForReconnect = false;
+
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    std::tuple<bool, bool> apply(Data::SyncthingConnection &connection, const Data::SyncthingConnectionSettings *currentConnectionSettings,
+        bool preventReconnect = false) const;
+#endif
 };
 #endif
 
@@ -108,6 +114,8 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
     WebView webView;
 #endif
     Dialogs::QtSettings qt;
+
+    void apply(Data::SyncthingNotifier &notifier) const;
 };
 
 Settings SYNCTHINGWIDGETS_EXPORT &values();

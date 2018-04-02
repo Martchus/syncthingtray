@@ -45,28 +45,28 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("internet-web-browser"),
                                         QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))),
                 tr("Web UI")),
-        &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showWebUi);
+        &QAction::triggered, &m_trayMenu.widget(), &TrayWidget::showWebUi);
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))),
                 tr("Settings")),
-        &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showSettingsDialog);
+        &QAction::triggered, &m_trayMenu.widget(), &TrayWidget::showSettingsDialog);
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("folder-sync"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/folder-sync.svg"))),
                 tr("Rescan all")),
-        &QAction::triggered, &m_trayMenu.widget()->connection(), &SyncthingConnection::rescanAllDirs);
+        &QAction::triggered, &m_trayMenu.widget().connection(), &SyncthingConnection::rescanAllDirs);
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))),
                 tr("Log")),
-        &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showLog);
+        &QAction::triggered, &m_trayMenu.widget(), &TrayWidget::showLog);
     m_errorsAction = m_contextMenu.addAction(
         QIcon::fromTheme(QStringLiteral("emblem-error"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-error.svg"))),
         tr("Show internal errors"));
     m_errorsAction->setVisible(false);
     connect(m_errorsAction, &QAction::triggered, this, &TrayIcon::showInternalErrorsDialog);
-    m_contextMenu.addMenu(m_trayMenu.widget()->connectionsMenu());
+    m_contextMenu.addMenu(m_trayMenu.widget().connectionsMenu());
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("help-about"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/help-about.svg"))), tr("About")),
-        &QAction::triggered, m_trayMenu.widget(), &TrayWidget::showAboutDialog);
+        &QAction::triggered, &m_trayMenu.widget(), &TrayWidget::showAboutDialog);
     m_contextMenu.addSeparator();
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("window-close"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))),
@@ -75,8 +75,8 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     setContextMenu(&m_contextMenu);
 
     // connect signals and slots
-    const SyncthingConnection &connection = m_trayMenu.widget()->connection();
-    const SyncthingNotifier &notifier = m_trayMenu.widget()->notifier();
+    const SyncthingConnection &connection = m_trayMenu.widget().connection();
+    const SyncthingNotifier &notifier = m_trayMenu.widget().notifier();
     connect(this, &TrayIcon::activated, this, &TrayIcon::handleActivated);
     connect(this, &TrayIcon::messageClicked, this, &TrayIcon::handleMessageClicked);
     connect(&connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
@@ -89,8 +89,8 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, &connection,
         static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
-    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, m_trayMenu.widget(), &TrayWidget::dismissNotifications);
-    connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, m_trayMenu.widget(), &TrayWidget::showNotifications);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, &m_trayMenu.widget(), &TrayWidget::dismissNotifications);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, &m_trayMenu.widget(), &TrayWidget::showNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &TrayIcon::showInternalErrorsDialog);
     connect(&notifier, &SyncthingNotifier::connected, &m_dbusNotifier, &DBusStatusNotifier::hideDisconnect);
 #endif
@@ -120,7 +120,7 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
         // can't catch that event on Plasma 5 anyways
         break;
     case QSystemTrayIcon::MiddleClick:
-        m_trayMenu.widget()->showWebUi();
+        m_trayMenu.widget().showWebUi();
         break;
     case QSystemTrayIcon::Trigger: {
         m_trayMenu.showAtCursor();
@@ -136,7 +136,7 @@ void TrayIcon::handleMessageClicked()
     case TrayIconMessageClickedAction::None:
         return;
     case TrayIconMessageClickedAction::DismissNotification:
-        m_trayMenu.widget()->dismissNotifications();
+        m_trayMenu.widget().dismissNotifications();
         break;
     case TrayIconMessageClickedAction::ShowInternalErrors:
         showInternalErrorsDialog();
@@ -178,20 +178,21 @@ void TrayIcon::handleErrorsCleared()
 void TrayIcon::showInternalError(
     const QString &errorMsg, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    if (InternalError::isRelevant(m_trayMenu.widget()->connection(), category, networkError)) {
-        InternalError error(errorMsg, request.url(), response);
-#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-        if (Settings::values().dbusNotifications) {
-            m_dbusNotifier.showInternalError(error);
-        } else
-#endif
-        {
-            m_messageClickedAction = TrayIconMessageClickedAction::ShowInternalErrors;
-            showMessage(tr("Error"), errorMsg, QSystemTrayIcon::Critical);
-        }
-        ErrorViewDialog::addError(move(error));
-        m_errorsAction->setVisible(true);
+    if (!InternalError::isRelevant(m_trayMenu.widget().connection(), category, networkError)) {
+        return;
     }
+    InternalError error(errorMsg, request.url(), response);
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    if (Settings::values().dbusNotifications) {
+        m_dbusNotifier.showInternalError(error);
+    } else
+#endif
+    {
+        m_messageClickedAction = TrayIconMessageClickedAction::ShowInternalErrors;
+        showMessage(tr("Error"), errorMsg, QSystemTrayIcon::Critical);
+    }
+    ErrorViewDialog::addError(move(error));
+    m_errorsAction->setVisible(true);
 }
 
 void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message)
@@ -215,7 +216,7 @@ void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const Q
 
 void TrayIcon::updateStatusIconAndText()
 {
-    const StatusInfo statusInfo(trayMenu().widget()->connection());
+    const StatusInfo statusInfo(trayMenu().widget().connection());
     if (statusInfo.additionalStatusText().isEmpty()) {
         setToolTip(statusInfo.statusText());
     } else {
