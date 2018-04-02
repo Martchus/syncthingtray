@@ -63,7 +63,7 @@
       <item>
        <widget class="QRadioButton" name="dbusRadioButton">
         <property name="text">
-         <string>D-Bus notifi&amp;cations (org.freedesktop.Notifications)</string>
+         <string>D-Bus &amp;notifications (org.freedesktop.Notifications)</string>
         </property>
        </widget>
       </item>
@@ -86,7 +86,7 @@
       <item>
        <widget class="QLabel" name="ignoreInavailabilityAfterStartLabel">
         <property name="text">
-         <string>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance by checking Systemd unit status</string>
+         <string>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance started via Systemd or the internal launcher.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

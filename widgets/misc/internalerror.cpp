@@ -14,6 +14,7 @@ namespace QtGui {
 
 /*!
  * \brief Returns whether the error is relevant. Only in this case a notification for the error should be shown.
+ * \todo Unify with SyncthingNotifier::isDisconnectRelevant().
  */
 bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingErrorCategory category, int networkError)
 {
@@ -45,17 +46,24 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
     if (settings.systemd.considerForReconnect && remoteHostClosed && service.isManuallyStopped()) {
         return false;
     }
+#endif
 
     // ignore inavailability after start or standby-wakeup
     if (settings.ignoreInavailabilityAfterStart && networkError == QNetworkReply::ConnectionRefusedError) {
-        if (process.isRunning() && !service.isActiveWithoutSleepFor(process.activeSince(), settings.ignoreInavailabilityAfterStart)) {
+        if (process.isRunning()
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+            && ((service.isSystemdAvailable() && !service.isActiveWithoutSleepFor(process.activeSince(), settings.ignoreInavailabilityAfterStart))
+                   || !process.isActiveFor(settings.ignoreInavailabilityAfterStart))
+#else
+            && !process.isActiveFor(settings.ignoreInavailabilityAfterStart)
+#endif
+        ) {
             return false;
         }
         if (service.isRunning() && !service.isActiveWithoutSleepFor(settings.ignoreInavailabilityAfterStart)) {
             return false;
         }
     }
-#endif
 
     return true;
 }

@@ -57,6 +57,10 @@ void SyncthingNotifier::handleStatusChangedEvent(SyncthingStatus newStatus)
     m_previousStatus = newStatus;
 }
 
+/*!
+ * \brief Returns whether a "disconnected" notification should be shown.
+ * \todo Unify with InternalError::isRelevant().
+ */
 bool SyncthingNotifier::isDisconnectRelevant() const
 {
     // skip disconnect if not initialized
@@ -74,20 +78,28 @@ bool SyncthingNotifier::isDisconnectRelevant() const
         return false;
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    const SyncthingService &service(syncthingService());
     if (m_service.isManuallyStopped()) {
         return false;
     }
+#endif
 
     // ignore inavailability after start or standby-wakeup
     if (m_ignoreInavailabilityAfterStart) {
-        if (m_process.isRunning() && !m_service.isActiveWithoutSleepFor(m_process.activeSince(), m_ignoreInavailabilityAfterStart)) {
+        if (m_process.isRunning()
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+            && ((m_service.isSystemdAvailable() && !service.isActiveWithoutSleepFor(m_process.activeSince(), m_ignoreInavailabilityAfterStart))
+                   || !m_process.isActiveFor(m_ignoreInavailabilityAfterStart))
+#else
+            && !m_process.isActiveFor(m_ignoreInavailabilityAfterStart)
+#endif
+        ) {
             return false;
         }
         if (m_service.isRunning() && !m_service.isActiveWithoutSleepFor(m_ignoreInavailabilityAfterStart)) {
             return false;
         }
     }
-#endif
 
     return true;
 }
