@@ -134,7 +134,7 @@ int Application::exec(int argc, const char *const *argv)
         // those arguments require establishing a connection first, the actual handler is called by handleStatusChanged() when
         // the connection has been established
         m_connection.reconnect(m_settings);
-        cerr << Phrases::Info << "Connecting to " << m_settings.syncthingUrl.toLocal8Bit().data() << " ..." << Phrases::EndFlush;
+        cerr << Phrases::Info << "Connecting to " << m_settings.syncthingUrl.toLocal8Bit().data() << " ..." << TextAttribute::Reset << flush;
     } else {
         // call handler for any other arguments directly
         m_connection.applySettings(m_settings);
@@ -898,12 +898,13 @@ RelevantDir Application::findDirectory(const QString &dirIdentifier)
 
 void RelevantDir::notifyAboutRescan() const
 {
+    cerr << Phrases::Info;
     if (subDir.isEmpty()) {
-        cerr << "Request rescanning directory \"" << dirObj->path.toLocal8Bit().data() << "\" ..." << endl;
+        cerr << "Request rescanning directory \"" << dirObj->path.toLocal8Bit().data() << "\" ...";
     } else {
-        cerr << "Request rescanning item \"" << subDir.toLocal8Bit().data() << "\" in directory \"" << dirObj->path.toLocal8Bit().data() << "\" ..."
-             << endl;
+        cerr << "Request rescanning item \"" << subDir.toLocal8Bit().data() << "\" in directory \"" << dirObj->path.toLocal8Bit().data() << "\" ...";
     }
+    cerr << Phrases::EndFlush;
 }
 
 } // namespace Cli
