@@ -370,48 +370,57 @@
 <context>
     <name>QtGui::LauncherOptionPage</name>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="6"/>
+        <location filename="../settings/launcheroptionpage.ui" line="14"/>
         <source>Syncthing launcher</source>
         <translation>Syncthing-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="18"/>
+        <location filename="../settings/launcheroptionpage.ui" line="26"/>
         <source>Launch Syncthing when starting the tray icon</source>
         <translation>Starte Syncthing beim Starten des Tray-Icons</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="43"/>
+        <location filename="../settings/launcheroptionpage.ui" line="51"/>
         <source>Syncthing executable</source>
         <translation>Ausführbare Datei von Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="53"/>
+        <location filename="../settings/launcheroptionpage.ui" line="61"/>
         <source>Arguments</source>
         <translation>Argumente</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="87"/>
+        <location filename="../settings/launcheroptionpage.ui" line="74"/>
+        <source>Consider process status for reconnect attempts to local instance
+ • Don&apos;t reconnect when the process is not running
+ • Try to reconnect when starting the process</source>
+        <translation>Verwende den Status des Starters für Neuverbindungsversuche zur lokalen Instanz
+ • Nicht versuchen neu zu verbinden, wenn Syncthing nicht läuft
+ • Automatisch neu verbinden, wenn Syncthing gestartet wird</translation>
+    </message>
+    <message>
+        <location filename="../settings/launcheroptionpage.ui" line="104"/>
         <source>Syncthing log (interleaved stdout/stderr)</source>
         <translation>Syncthing-Log (stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="103"/>
+        <location filename="../settings/launcheroptionpage.ui" line="120"/>
         <source>Apply and launch now</source>
         <translation>Jetzt starten</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="120"/>
-        <location filename="../settings/settingsdialog.cpp" line="731"/>
+        <location filename="../settings/launcheroptionpage.ui" line="137"/>
+        <location filename="../settings/settingsdialog.cpp" line="735"/>
         <source>Stop launched instance</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="139"/>
+        <location filename="../settings/launcheroptionpage.ui" line="156"/>
         <source>No log messages available yet</source>
         <translation>Bisher keine Log-Meldungen</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="146"/>
+        <location filename="../settings/launcheroptionpage.ui" line="163"/>
         <source>Ensure latest log is visible</source>
         <translation>Log folgen</translation>
     </message>
@@ -436,19 +445,19 @@
         <translation>%1-Log (stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="708"/>
+        <location filename="../settings/settingsdialog.cpp" line="712"/>
         <source>%1 exited with exit code %2
 </source>
         <translation>%1 wurde mit dem Statuscode %2 beendet</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="712"/>
+        <location filename="../settings/settingsdialog.cpp" line="716"/>
         <source>%1 crashed with exit code %2
 </source>
         <translation>%1 ist mit dem Statuscode %2 abgestürzt</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="748"/>
+        <location filename="../settings/settingsdialog.cpp" line="752"/>
         <source>Kill launched instance</source>
         <translation>Töten</translation>
     </message>
@@ -552,22 +561,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="909"/>
+        <location filename="../settings/settingsdialog.cpp" line="913"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="916"/>
+        <location filename="../settings/settingsdialog.cpp" line="920"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="923"/>
+        <location filename="../settings/settingsdialog.cpp" line="927"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="945"/>
+        <location filename="../settings/settingsdialog.cpp" line="949"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -706,8 +715,8 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <location filename="../settings/systemdoptionpage.ui" line="99"/>
         <location filename="../settings/systemdoptionpage.ui" line="154"/>
         <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="830"/>
-        <location filename="../settings/settingsdialog.cpp" line="842"/>
+        <location filename="../settings/settingsdialog.cpp" line="834"/>
+        <location filename="../settings/settingsdialog.cpp" line="846"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -741,12 +750,12 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="803"/>
+        <location filename="../settings/settingsdialog.cpp" line="807"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit ist entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="825"/>
+        <location filename="../settings/settingsdialog.cpp" line="829"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -813,7 +822,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="864"/>
+        <location filename="../settings/settingsdialog.cpp" line="868"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
@@ -843,7 +852,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="866"/>
+        <location filename="../settings/settingsdialog.cpp" line="870"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.

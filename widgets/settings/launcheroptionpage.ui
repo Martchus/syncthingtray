@@ -61,6 +61,15 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="considerForReconnectCheckBox">
+     <property name="text">
+      <string>Consider process status for reconnect attempts to local instance
+ • Don't reconnect when the process is not running
+ • Try to reconnect when starting the process</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="Line" name="line">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">

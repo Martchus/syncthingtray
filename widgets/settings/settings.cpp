@@ -189,6 +189,7 @@ void restore()
     launcher.enabled = settings.value(QStringLiteral("syncthingAutostart"), launcher.enabled).toBool();
     launcher.syncthingPath = settings.value(QStringLiteral("syncthingPath"), launcher.syncthingPath).toString();
     launcher.syncthingArgs = settings.value(QStringLiteral("syncthingArgs"), launcher.syncthingArgs).toString();
+    launcher.considerForReconnect = settings.value(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect).toBool();
     settings.beginGroup(QStringLiteral("tools"));
     for (const QString &tool : settings.childGroups()) {
         settings.beginGroup(tool);
@@ -274,6 +275,7 @@ void save()
     settings.setValue(QStringLiteral("syncthingAutostart"), launcher.enabled);
     settings.setValue(QStringLiteral("syncthingPath"), launcher.syncthingPath);
     settings.setValue(QStringLiteral("syncthingArgs"), launcher.syncthingArgs);
+    settings.setValue(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect);
     settings.beginGroup(QStringLiteral("tools"));
     for (auto i = launcher.tools.cbegin(), end = launcher.tools.cend(); i != end; ++i) {
         const ToolParameter &toolParams = i.value();

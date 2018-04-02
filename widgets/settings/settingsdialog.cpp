@@ -636,6 +636,8 @@ QWidget *LauncherOptionPage::setupWidget()
         ui()->syncthingPathLabel->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 executable").arg(m_tool));
         ui()->logLabel->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 log (interleaved stdout/stderr)").arg(m_tool));
     }
+    // hide "consider for reconnect" checkbox for tools
+    ui()->considerForReconnectCheckBox->setVisible(m_tool.isEmpty());
     // setup other widgets
     ui()->syncthingPathSelection->provideCustomFileMode(QFileDialog::ExistingFile);
     ui()->logTextEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
@@ -659,6 +661,7 @@ bool LauncherOptionPage::apply()
         settings.enabled = ui()->enabledCheckBox->isChecked();
         settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
         settings.syncthingArgs = ui()->argumentsLineEdit->text();
+        settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
     } else {
         ToolParameter &params = settings.tools[m_tool];
         params.autostart = ui()->enabledCheckBox->isChecked();
@@ -675,6 +678,7 @@ void LauncherOptionPage::reset()
         ui()->enabledCheckBox->setChecked(settings.enabled);
         ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
         ui()->argumentsLineEdit->setText(settings.syncthingArgs);
+        ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
     } else {
         const ToolParameter params = settings.tools.value(m_tool);
         ui()->enabledCheckBox->setChecked(params.autostart);
