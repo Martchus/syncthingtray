@@ -370,27 +370,27 @@
 <context>
     <name>QtGui::LauncherOptionPage</name>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="14"/>
+        <location filename="../settings/launcheroptionpage.ui" line="6"/>
         <source>Syncthing launcher</source>
         <translation>Syncthing-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="26"/>
+        <location filename="../settings/launcheroptionpage.ui" line="18"/>
         <source>Launch Syncthing when starting the tray icon</source>
         <translation>Starte Syncthing beim Starten des Tray-Icons</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="51"/>
+        <location filename="../settings/launcheroptionpage.ui" line="43"/>
         <source>Syncthing executable</source>
         <translation>Ausführbare Datei von Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="61"/>
+        <location filename="../settings/launcheroptionpage.ui" line="53"/>
         <source>Arguments</source>
         <translation>Argumente</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="74"/>
+        <location filename="../settings/launcheroptionpage.ui" line="66"/>
         <source>Consider process status for reconnect attempts to local instance
  • Don&apos;t reconnect when the process is not running
  • Try to reconnect when starting the process</source>
@@ -399,28 +399,28 @@
  • Automatisch neu verbinden, wenn Syncthing gestartet wird</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="104"/>
+        <location filename="../settings/launcheroptionpage.ui" line="96"/>
         <source>Syncthing log (interleaved stdout/stderr)</source>
         <translation>Syncthing-Log (stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="120"/>
+        <location filename="../settings/launcheroptionpage.ui" line="112"/>
         <source>Apply and launch now</source>
         <translation>Jetzt starten</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="137"/>
+        <location filename="../settings/launcheroptionpage.ui" line="129"/>
         <location filename="../settings/settingsdialog.cpp" line="735"/>
         <source>Stop launched instance</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="156"/>
+        <location filename="../settings/launcheroptionpage.ui" line="148"/>
         <source>No log messages available yet</source>
         <translation>Bisher keine Log-Meldungen</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="163"/>
+        <location filename="../settings/launcheroptionpage.ui" line="155"/>
         <source>Ensure latest log is visible</source>
         <translation>Log folgen</translation>
     </message>
@@ -512,7 +512,7 @@
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="97"/>
         <source>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance started via Systemd or the internal launcher.</source>
-        <translation>Ignoriere, dass Syncthing ein paar Sekunden nach dem Start noch nicht verfügbar ist. Hat nur Auswirkungen, wenn der Syncthing-Startzeitpunkt ermittelt werden kann. Dies wird aktuell nur für die lokale Instanz unterstützt. Diese muss hierfür über Systemd oder die Tray-Anwendung gestartet wurde.</translation>
+        <translation type="unfinished">Ignoriere, dass Syncthing ein paar Sekunden nach dem Start noch nicht verfügbar ist. Hat nur Auswirkungen, wenn der Syncthing-Startzeitpunkt ermittelt werden kann. Dies wird aktuell nur für die lokale Instanz unterstützt. Diese muss hierfür über Systemd oder die Tray-Anwendung gestartet worden sein.</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="81"/>

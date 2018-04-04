@@ -370,55 +370,55 @@
 <context>
     <name>QtGui::LauncherOptionPage</name>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="14"/>
+        <location filename="../settings/launcheroptionpage.ui" line="6"/>
         <source>Syncthing launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="26"/>
+        <location filename="../settings/launcheroptionpage.ui" line="18"/>
         <source>Launch Syncthing when starting the tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="51"/>
+        <location filename="../settings/launcheroptionpage.ui" line="43"/>
         <source>Syncthing executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="61"/>
+        <location filename="../settings/launcheroptionpage.ui" line="53"/>
         <source>Arguments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="74"/>
+        <location filename="../settings/launcheroptionpage.ui" line="66"/>
         <source>Consider process status for reconnect attempts to local instance
  • Don&apos;t reconnect when the process is not running
  • Try to reconnect when starting the process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="104"/>
+        <location filename="../settings/launcheroptionpage.ui" line="96"/>
         <source>Syncthing log (interleaved stdout/stderr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="120"/>
+        <location filename="../settings/launcheroptionpage.ui" line="112"/>
         <source>Apply and launch now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="137"/>
+        <location filename="../settings/launcheroptionpage.ui" line="129"/>
         <location filename="../settings/settingsdialog.cpp" line="735"/>
         <source>Stop launched instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="156"/>
+        <location filename="../settings/launcheroptionpage.ui" line="148"/>
         <source>No log messages available yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="163"/>
+        <location filename="../settings/launcheroptionpage.ui" line="155"/>
         <source>Ensure latest log is visible</source>
         <translation type="unfinished"></translation>
     </message>
