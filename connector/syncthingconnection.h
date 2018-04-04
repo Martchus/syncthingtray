@@ -64,21 +64,28 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(QString syncthingUrl READ syncthingUrl WRITE setSyncthingUrl)
     Q_PROPERTY(QByteArray apiKey READ apiKey WRITE setApiKey)
     Q_PROPERTY(bool isLocal READ isLocal)
+    Q_PROPERTY(QString user READ user)
+    Q_PROPERTY(QString password READ password)
     Q_PROPERTY(Data::SyncthingStatus status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString statusText READ statusText NOTIFY statusChanged)
     Q_PROPERTY(bool connected READ isConnected NOTIFY statusChanged)
     Q_PROPERTY(bool hasUnreadNotifications READ hasUnreadNotifications)
     Q_PROPERTY(bool hasOutOfSyncDirs READ hasOutOfSyncDirs)
     Q_PROPERTY(bool requestingCompletionEnabled READ isRequestingCompletionEnabled WRITE setRequestingCompletionEnabled)
+    Q_PROPERTY(int autoReconnectInterval READ autoReconnectInterval WRITE setAutoReconnectInterval)
+    Q_PROPERTY(unsigned int autoReconnectTries READ autoReconnectTries)
     Q_PROPERTY(int trafficPollInterval READ trafficPollInterval WRITE setTrafficPollInterval)
     Q_PROPERTY(int devStatsPollInterval READ devStatsPollInterval WRITE setDevStatsPollInterval)
-    Q_PROPERTY(QString configDir READ configDir NOTIFY configDirChanged)
     Q_PROPERTY(QString myId READ myId NOTIFY myIdChanged)
+    Q_PROPERTY(QString configDir READ configDir NOTIFY configDirChanged)
     Q_PROPERTY(int totalIncomingTraffic READ totalIncomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(int totalOutgoingTraffic READ totalOutgoingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(double totalIncomingRate READ totalIncomingRate NOTIFY trafficChanged)
     Q_PROPERTY(double totalOutgoingRate READ totalOutgoingRate NOTIFY trafficChanged)
+    Q_PROPERTY(QList<QSslError> expectedSslErrors READ expectedSslErrors)
     Q_PROPERTY(std::size_t connectedDevices READ connectedDevices)
+    Q_PROPERTY(QStringList directoryIds READ directoryIds)
+    Q_PROPERTY(QStringList deviceIds READ deviceIds)
     Q_PROPERTY(QJsonObject rawConfig READ rawConfig NOTIFY newConfig)
 
 public:
@@ -121,7 +128,7 @@ public:
     const std::vector<SyncthingDev> &devInfo() const;
     QMetaObject::Connection requestQrCode(const QString &text, std::function<void(const QByteArray &)> callback);
     QMetaObject::Connection requestLog(std::function<void(const std::vector<SyncthingLogEntry> &)> callback);
-    const QList<QSslError> &expectedSslErrors();
+    const QList<QSslError> &expectedSslErrors() const;
     SyncthingDir *findDirInfo(const QString &dirId, int &row);
     SyncthingDir *findDirInfoByPath(const QString &path, QString &relativePath, int &row);
     SyncthingDev *findDevInfo(const QString &devId, int &row);
@@ -563,7 +570,7 @@ inline const std::vector<SyncthingDev> &SyncthingConnection::devInfo() const
  * \brief Returns a list of all expected certificate errors. This is meant to allow self-signed certificates.
  * \remarks This list is updated via loadSelfSignedCertificate().
  */
-inline const QList<QSslError> &SyncthingConnection::expectedSslErrors()
+inline const QList<QSslError> &SyncthingConnection::expectedSslErrors() const
 {
     return m_expectedSslErrors;
 }
