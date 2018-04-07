@@ -678,6 +678,11 @@ void Application::editConfig(const ArgumentOccurrence &)
         cerr << Phrases::Error << "New config object seems empty." << Phrases::EndFlush;
         return;
     }
+    // handle "dry-run" case
+    if (m_args.dryRun.isPresent()) {
+        cout << newConfig.data() << flush;
+        return;
+    }
 
     // post new config
     using namespace TestUtilities;
