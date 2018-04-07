@@ -10,8 +10,8 @@ var folders = config.folders;
 for (var i = 0, count = folders.length; i !== count; ++i) {
     var folder = folders[i];
     if (folder.id.indexOf("docs-") === 0) {
-        //folder.fsWatcherDelayS = 50;
-        //folder.fsWatcherEnabled = true;
+        folder.fsWatcherDelayS = 50;
+        folder.fsWatcherEnabled = true;
         console.log("enabling file system watcher for folder " + folder.id);
     }
 }
