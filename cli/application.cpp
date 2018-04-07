@@ -799,6 +799,21 @@ QByteArray Application::editConfigViaScript() const
     JSConsole console;
     engine.globalObject().setProperty("console", engine.newQObject(&console));
 
+    // provide helper
+    QFile helperFile(":/js/helper.js");
+    helperFile.open(QFile::ReadOnly);
+    const auto helperScript(helperFile.readAll());
+    if (helperScript.isEmpty()) {
+        cerr << Phrases::Error << "Unable to load internal helper script." << Phrases::EndFlush;
+        return QByteArray();
+    }
+    const auto helperRes(engine.evaluate(QString::fromUtf8(helperScript)));
+    if (helperRes.isError()) {
+        cerr << Phrases::Error << "Unable to evaluate internal helper script." << Phrases::End;
+        printError(helperRes);
+        return QByteArray();
+    }
+
     // evaluate the user provided script
     const auto res(engine.evaluate(QString::fromUtf8(script), scriptFileName));
     if (res.isError()) {
