@@ -673,11 +673,26 @@ void Application::editConfig(const ArgumentOccurrence &)
              << " at character " << error.offset << endl;
         return;
     }
+
+    // perform at least some checks before sending the configuration
     const auto configObj(configDoc.object());
     if (configObj.isEmpty()) {
         cerr << Phrases::Error << "New config object seems empty." << Phrases::EndFlush;
         return;
     }
+    for (const auto &arrayName : {QStringLiteral("devices"), QStringLiteral("folders")}) {
+        if (!configObj.value(arrayName).isArray()) {
+            cerr << Phrases::Error << "Array \"" << arrayName.toLocal8Bit().data() << "\" is not present." << Phrases::EndFlush;
+            return;
+        }
+    }
+    for (const auto &objectName : {QStringLiteral("options"), QStringLiteral("gui")}) {
+        if (!configObj.value(objectName).isObject()) {
+            cerr << Phrases::Error << "Object \"" << objectName.toLocal8Bit().data() << "\" is not present." << Phrases::EndFlush;
+            return;
+        }
+    }
+
     // handle "dry-run" case
     if (m_args.dryRun.isPresent()) {
         cout << newConfig.data() << flush;
