@@ -5,6 +5,7 @@ set(META_PROJECT_NAME syncthingctl)
 set(META_APP_NAME "Syncthing control")
 set(META_APP_DESCRIPTION "Command line app to control Syncthing")
 set(META_PROJECT_TYPE application)
+set(META_JS_SRC_DIR .)
 
 # add project files
 set(HEADER_FILES
@@ -32,6 +33,11 @@ use_syncthingconnector()
 
 # include modules to apply configuration
 include(BasicConfig)
+include(JsProviderConfig)
+if(JS_PROVIDER)
+    list(APPEND HEADER_FILES jsconsole.h)
+    list(APPEND SRC_FILES jsconsole.cpp)
+endif()
 include(QtConfig)
 include(WindowsResources)
 include(AppTarget)

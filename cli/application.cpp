@@ -1,5 +1,8 @@
 #include "./application.h"
 #include "./helper.h"
+#include "./jsconsole.h"
+#include "./jsdefs.h"
+#include "./jsincludes.h"
 
 #include "../connector/syncthingconfig.h"
 #include "../connector/utils.h"
@@ -7,6 +10,8 @@
 // use header-only functions waitForSignals() and signalInfo() from test utilities; disable assertions via macro
 #define SYNCTHINGTESTHELPER_FOR_CLI
 #include "../testhelper/helper.h"
+
+#include "resources/config.h"
 
 #include <c++utilities/application/failure.h>
 #include <c++utilities/chrono/timespan.h>
@@ -242,6 +247,16 @@ bool Application::waitForConfig(int timeout)
     return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfig, ref(m_connection)), timeout,
         signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig),
         signalInfo(&m_connection, &SyncthingConnection::newDirs), signalInfo(&m_connection, &SyncthingConnection::newDevices));
+}
+
+bool Application::waitForConfigAndStatus(int timeout)
+{
+    using namespace TestUtilities;
+    m_connection.applySettings(m_settings);
+    return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfigAndStatus, ref(m_connection)), timeout,
+        signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig),
+        signalInfo(&m_connection, &SyncthingConnection::newDirs), signalInfo(&m_connection, &SyncthingConnection::newDevices),
+        signalInfo(&m_connection, &SyncthingConnection::myIdChanged));
 }
 
 void Application::handleStatusChanged(SyncthingStatus newStatus)
@@ -586,7 +601,6 @@ void Application::printConfig(const ArgumentOccurrence &)
         return;
     }
     cerr << Phrases::Override;
-
     cout << QJsonDocument(m_connection.rawConfig()).toJson(QJsonDocument::Indented).data() << flush;
 }
 
@@ -595,13 +609,47 @@ void Application::editConfig(const ArgumentOccurrence &)
     // disable main event loop since this method is invoked directly as argument callback and we're doing all required async operations during the waitForConfig() call already
     m_requiresMainEventLoop = false;
 
+    // wait until config is available
+    if (!(m_args.script.isPresent() ? waitForConfigAndStatus() : waitForConfig())) {
+        return;
+    }
+    cerr << Phrases::Override;
+
+    const auto newConfig(m_args.script.isPresent() ? editConfigViaScript() : editConfigViaEditor());
+    if (newConfig.isEmpty()) {
+        // just return here; an error message should have already been printed by editConfigVia*()
+        return;
+    }
+
+    // handle "dry-run" case
+    if (m_args.dryRun.isPresent()) {
+        cout << newConfig.data();
+        if (!newConfig.endsWith('\n')) {
+            cout << '\n';
+        }
+        cout << flush;
+        return;
+    }
+
+    // post new config
+    using namespace TestUtilities;
+    cerr << Phrases::Info << "Posting new configuration ..." << TextAttribute::Reset << flush;
+    if (!waitForSignalsOrFail(bind(&SyncthingConnection::postConfigFromByteArray, ref(m_connection), ref(newConfig)), 0,
+            signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfigTriggered))) {
+        return;
+    }
+    cerr << Phrases::Override << Phrases::Info << "Configuration posted successfully" << Phrases::EndFlush;
+}
+
+QByteArray Application::editConfigViaEditor() const
+{
     // read editor command and options
     const auto *const editorArgValue(m_args.editor.firstValue());
     const auto editorCommand(editorArgValue ? QString::fromLocal8Bit(editorArgValue) : QString());
     if (editorCommand.isEmpty()) {
         cerr << Phrases::Error << "No editor command specified. It must be either passed via --editor argument or EDITOR environment variable."
              << Phrases::EndFlush;
-        return;
+        return QByteArray();
     }
     QStringList editorOptions;
     if (m_args.editor.isPresent()) {
@@ -614,17 +662,11 @@ void Application::editConfig(const ArgumentOccurrence &)
         }
     }
 
-    // wait until config is available
-    if (!waitForConfig()) {
-        return;
-    }
-    cerr << Phrases::Override;
-
     // write config to temporary file
     QTemporaryFile tempFile(QStringLiteral("syncthing-config-XXXXXX.json"));
     if (!tempFile.open() || !tempFile.write(QJsonDocument(m_connection.rawConfig()).toJson(QJsonDocument::Indented))) {
         cerr << Phrases::Error << "Unable to write the configuration to a temporary file." << Phrases::EndFlush;
-        return;
+        return QByteArray();
     }
     editorOptions << tempFile.fileName();
     tempFile.close();
@@ -650,19 +692,19 @@ void Application::editConfig(const ArgumentOccurrence &)
             }
         }
         cerr << endl;
-        return;
+        return QByteArray();
     }
 
     // read (altered) configuration again
     QFile tempFile2(editorOptions.back());
     if (!tempFile2.open(QIODevice::ReadOnly)) {
         cerr << Phrases::Error << "Unable to open temporary file containing the configuration again." << Phrases::EndFlush;
-        return;
+        return QByteArray();
     }
     const auto newConfig(tempFile2.readAll());
     if (newConfig.isEmpty()) {
         cerr << Phrases::Error << "Unable to read any bytes from temporary file containing the configuration." << Phrases::EndFlush;
-        return;
+        return QByteArray();
     }
 
     // convert the config to JSON again (could send it to Syncthing as it is, but this allows us to check whether the JSON is valid)
@@ -671,42 +713,113 @@ void Application::editConfig(const ArgumentOccurrence &)
     if (error.error != QJsonParseError::NoError) {
         cerr << Phrases::Error << "Unable to parse new configuration" << Phrases::End << "reason: " << error.errorString().toLocal8Bit().data()
              << " at character " << error.offset << endl;
-        return;
+        return QByteArray();
     }
 
     // perform at least some checks before sending the configuration
     const auto configObj(configDoc.object());
     if (configObj.isEmpty()) {
         cerr << Phrases::Error << "New config object seems empty." << Phrases::EndFlush;
-        return;
+        return QByteArray();
     }
-    for (const auto &arrayName : {QStringLiteral("devices"), QStringLiteral("folders")}) {
+    for (const auto &arrayName : { QStringLiteral("devices"), QStringLiteral("folders") }) {
         if (!configObj.value(arrayName).isArray()) {
             cerr << Phrases::Error << "Array \"" << arrayName.toLocal8Bit().data() << "\" is not present." << Phrases::EndFlush;
-            return;
+            return QByteArray();
         }
     }
-    for (const auto &objectName : {QStringLiteral("options"), QStringLiteral("gui")}) {
+    for (const auto &objectName : { QStringLiteral("options"), QStringLiteral("gui") }) {
         if (!configObj.value(objectName).isObject()) {
             cerr << Phrases::Error << "Object \"" << objectName.toLocal8Bit().data() << "\" is not present." << Phrases::EndFlush;
-            return;
+            return QByteArray();
+        }
+    }
+    return newConfig;
+}
+
+QByteArray Application::editConfigViaScript() const
+{
+#if defined(SYNCTHINGCTL_USE_SCRIPT) || defined(SYNCTHINGCTL_USE_JSENGINE)
+    // read script file
+    QFile scriptFile(QString::fromLocal8Bit(m_args.script.firstValue()));
+    if (!scriptFile.open(QFile::ReadOnly)) {
+        cerr << Phrases::Error << "Unable to open specified script file \"" << m_args.script.firstValue() << "\"." << Phrases::EndFlush;
+        return QByteArray();
+    }
+    const auto script(scriptFile.readAll());
+    if (script.isEmpty()) {
+        cerr << Phrases::Error << "Unable to read any bytes from specified script file \"" << m_args.script.firstValue() << "\"."
+             << Phrases::EndFlush;
+        return QByteArray();
+    }
+
+    // define function to print error
+    const auto printError([](const auto &object) {
+        cerr << object.toString().toLocal8Bit().data() << "\nin line " << SYNCTHINGCTL_JS_INT(object.property(QStringLiteral("lineNumber"))) << endl;
+    });
+
+    // evaluate config via JSON.parse()
+    SYNCTHINGCTL_JS_ENGINE engine;
+    auto globalObject(engine.globalObject());
+    const auto configString(QJsonDocument(m_connection.rawConfig()).toJson(QJsonDocument::Indented));
+    globalObject.setProperty(QStringLiteral("configStr"), SYNCTHINGCTL_JS_VALUE(QString::fromUtf8(configString)) SYNCTHINGCTL_JS_READONLY);
+    const auto configObj(engine.evaluate(QStringLiteral("JSON.parse(configStr)")));
+    if (configObj.isError()) {
+        cerr << Phrases::Error << "Unable to evaluate the current Syncthing configuration." << Phrases::End;
+        printError(configObj);
+        cerr << "Syncthing configuration: " << configString.data() << flush;
+        return QByteArray();
+    }
+    globalObject.setProperty(QStringLiteral("config"), configObj SYNCTHINGCTL_JS_UNDELETABLE);
+
+    // provide additional values
+    globalObject.setProperty(QStringLiteral("ownID"), m_connection.myId() SYNCTHINGCTL_JS_UNDELETABLE);
+    globalObject.setProperty(QStringLiteral("url"), m_connection.syncthingUrl() SYNCTHINGCTL_JS_UNDELETABLE);
+
+    // provide console.log() which is not available in QJSEngine and QScriptEngine by default (note that print() is only available when using Qt Script)
+    JSConsole console;
+    engine.globalObject().setProperty("console", engine.newQObject(&console));
+
+    // evaluate the user provided script
+    const auto res(engine.evaluate(QString::fromUtf8(script), scriptFile.fileName()));
+    if (res.isError()) {
+        cerr << Phrases::Error << "Unable to evaluate the specified script file \"" << m_args.script.firstValue() << "\"." << Phrases::End;
+        printError(res);
+        return QByteArray();
+    }
+
+    // validate the altered configuration
+    const auto newConfigObj(globalObject.property(QStringLiteral("config")));
+    if (!newConfigObj.isObject()) {
+        cerr << Phrases::Error << "New config object seems empty." << Phrases::EndFlush;
+        return QByteArray();
+    }
+    for (const auto &arrayName : { QStringLiteral("devices"), QStringLiteral("folders") }) {
+        if (!newConfigObj.property(arrayName).isArray()) {
+            cerr << Phrases::Error << "Array \"" << arrayName.toLocal8Bit().data() << "\" is not present." << Phrases::EndFlush;
+            return QByteArray();
+        }
+    }
+    for (const auto &objectName : { QStringLiteral("options"), QStringLiteral("gui") }) {
+        if (!newConfigObj.property(objectName).isObject()) {
+            cerr << Phrases::Error << "Object \"" << objectName.toLocal8Bit().data() << "\" is not present." << Phrases::EndFlush;
+            return QByteArray();
         }
     }
 
-    // handle "dry-run" case
-    if (m_args.dryRun.isPresent()) {
-        cout << newConfig.data() << flush;
-        return;
+    // serilaize the altered configuration via JSON.stringify()
+    const auto newConfigJson(engine.evaluate(QStringLiteral("JSON.stringify(config, null, 4)")));
+    if (!newConfigJson.isString()) {
+        cerr << Phrases::Error << "Unable to convert the config object to JSON via JSON.stringify()." << Phrases::End;
+        cerr << configObj.toString().toLocal8Bit().data() << endl;
+        return QByteArray();
     }
+    return newConfigJson.toString().toUtf8();
 
-    // post new config
-    using namespace TestUtilities;
-    cerr << Phrases::Info << "Posting new configuration ..." << TextAttribute::Reset << flush;
-    if (!waitForSignalsOrFail(bind(&SyncthingConnection::postConfig, ref(m_connection), ref(configObj)), 0,
-            signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfigTriggered))) {
-        return;
-    }
-    cerr << Phrases::Override << Phrases::Info << "Configuration posted successfully" << Phrases::EndFlush;
+#else
+    cerr << Phrases::Error << PROJECT_NAME " has not been built with JavaScript support." << Phrases::EndFlush;
+    return QByteArray();
+#endif
 }
 
 void Application::waitForIdle(const ArgumentOccurrence &)

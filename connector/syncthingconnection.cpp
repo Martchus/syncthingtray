@@ -756,12 +756,23 @@ void SyncthingConnection::requestConfig()
 /*!
  * \brief Requests the Syncthing status asynchronously.
  *
- * The signal configDirChanged() and myIdChanged() emitted when those values have changed; error() is emitted in the error case.
+ * The signals configDirChanged() and myIdChanged() are emitted when those values have changed; error() is emitted in the error case.
  */
 void SyncthingConnection::requestStatus()
 {
     QObject::connect(
         m_statusReply = requestData(QStringLiteral("system/status"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readStatus);
+}
+
+/*!
+ * \brief Requests the Syncthing configuration and status asynchronously.
+ *
+ * \sa requestConfig() and requestStatus() for emitted signals.
+ */
+void SyncthingConnection::requestConfigAndStatus()
+{
+    requestConfig();
+    requestStatus();
 }
 
 /*!
@@ -846,10 +857,22 @@ void SyncthingConnection::requestDeviceStatistics()
  * \remarks The signal newConfigTriggered() is emitted when the config has been posted sucessfully. In the error case, error() is emitted.
  *          Besides, the newConfig() signal should be emitted as well, indicating Syncthing has actually applied the new configuration.
  */
-void SyncthingConnection::postConfig(const QJsonObject &rawConfig)
+void SyncthingConnection::postConfigFromJsonObject(const QJsonObject &rawConfig)
 {
     QObject::connect(postData(QStringLiteral("system/config"), QUrlQuery(), QJsonDocument(rawConfig).toJson(QJsonDocument::Compact)),
         &QNetworkReply::finished, this, &SyncthingConnection::readPostConfig);
+}
+
+/*!
+ * \brief Posts the specified \a rawConfig.
+ * \param rawConfig A valid JSON document containing the configuration. It is directly passed to Syncthing.
+ * \remarks The signal newConfigTriggered() is emitted when the config has been posted sucessfully. In the error case, error() is emitted.
+ *          Besides, the newConfig() signal should be emitted as well, indicating Syncthing has actually applied the new configuration.
+ */
+void SyncthingConnection::postConfigFromByteArray(const QByteArray &rawConfig)
+{
+    QObject::connect(
+        postData(QStringLiteral("system/config"), QUrlQuery(), rawConfig), &QNetworkReply::finished, this, &SyncthingConnection::readPostConfig);
 }
 
 /*!

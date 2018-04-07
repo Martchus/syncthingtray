@@ -165,6 +165,7 @@ public Q_SLOTS:
 
     void requestConfig();
     void requestStatus();
+    void requestConfigAndStatus();
     void requestErrors();
     void requestConnections();
     void requestClearingErrors();
@@ -172,7 +173,8 @@ public Q_SLOTS:
     void requestDirStatus(const QString &dirId);
     void requestCompletion(const QString &devId, const QString &dirId);
     void requestDeviceStatistics();
-    void postConfig(const QJsonObject &rawConfig);
+    void postConfigFromJsonObject(const QJsonObject &rawConfig);
+    void postConfigFromByteArray(const QByteArray &rawConfig);
 
 Q_SIGNALS:
     void newConfig(const QJsonObject &rawConfig);

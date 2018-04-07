@@ -55,6 +55,7 @@ private:
     int loadConfig();
     bool waitForConnected(int timeout = 2000);
     bool waitForConfig(int timeout = 2000);
+    bool waitForConfigAndStatus(int timeout = 2000);
     void requestLog(const ArgumentOccurrence &);
     void requestShutdown(const ArgumentOccurrence &);
     void requestRestart(const ArgumentOccurrence &);
@@ -67,6 +68,8 @@ private:
     static void printLog(const std::vector<Data::SyncthingLogEntry> &logEntries);
     void printConfig(const ArgumentOccurrence &);
     void editConfig(const ArgumentOccurrence &);
+    QByteArray editConfigViaEditor() const;
+    QByteArray editConfigViaScript() const;
     void waitForIdle(const ArgumentOccurrence &);
     bool checkWhetherIdle() const;
     void checkPwdOperationPresent(const ArgumentOccurrence &occurrence);
