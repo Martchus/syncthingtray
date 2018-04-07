@@ -14,7 +14,7 @@ struct Args {
     NoColorArgument noColor;
     OperationArgument status, log, stop, restart, rescan, rescanAll, pause, resume, waitForIdle, pwd, cat, edit;
     OperationArgument statusPwd, rescanPwd, pausePwd, resumePwd;
-    ConfigValueArgument script, dryRun;
+    ConfigValueArgument script, jsLines, dryRun;
     ConfigValueArgument dir, dev, allDirs, allDevs;
     ConfigValueArgument atLeast, timeout;
     ConfigValueArgument editor;

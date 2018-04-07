@@ -23,6 +23,7 @@ Args::Args()
     , pausePwd("pause", 'p', "pauses the current working directory")
     , resumePwd("resume", '\0', "resumes the current working directory")
     , script("script", '\0', "runs the specified UTF-8 encoded ECMAScript on the configuration rather than opening an editor", { "path" })
+    , jsLines("js-lines", '\0', "runs the specified ECMAScript lines on the configuration rather than opening an editor", { "line" })
     , dryRun("dry-run", '\0', "writes the altered configuration to stdout instead of posting it to Syncthing")
     , dir("dir", 'd', "specifies a directory by ID", { "ID" })
     , dev("dev", '\0', "specifies a device by ID or name", { "ID/name" })
@@ -49,7 +50,12 @@ Args::Args()
     waitForIdle.setExample(PROJECT_NAME " wait-for-idle --timeout 1800000 --at-least 5000 && systemctl poweroff\n" PROJECT_NAME
                                         " wait-for-idle --dir dir1 --dir dir2 --dev dev1 --dev dev2 --at-least 5000");
     pwd.setSubArguments({ &statusPwd, &rescanPwd, &pausePwd, &resumePwd });
-    edit.setSubArguments({ &editor, &script, &dryRun });
+
+    for (auto *arg : { &editor, &script, &jsLines }) {
+        arg->setCombinable(false);
+    }
+    jsLines.setRequiredValueCount(Argument::varValueCount);
+    edit.setSubArguments({ &editor, &script, &jsLines, &dryRun });
 
     rescan.setValueNames({ "dir ID" });
     rescan.setRequiredValueCount(Argument::varValueCount);

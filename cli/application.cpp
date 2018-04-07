@@ -610,12 +610,13 @@ void Application::editConfig(const ArgumentOccurrence &)
     m_requiresMainEventLoop = false;
 
     // wait until config is available
-    if (!(m_args.script.isPresent() ? waitForConfigAndStatus() : waitForConfig())) {
+    const bool viaJavaScript(m_args.script.isPresent() || m_args.jsLines.isPresent());
+    if (!(viaJavaScript ? waitForConfigAndStatus() : waitForConfig())) {
         return;
     }
     cerr << Phrases::Override;
 
-    const auto newConfig(m_args.script.isPresent() ? editConfigViaScript() : editConfigViaEditor());
+    const auto newConfig(viaJavaScript ? editConfigViaScript() : editConfigViaEditor());
     if (newConfig.isEmpty()) {
         // just return here; an error message should have already been printed by editConfigVia*()
         return;
@@ -740,17 +741,35 @@ QByteArray Application::editConfigViaEditor() const
 QByteArray Application::editConfigViaScript() const
 {
 #if defined(SYNCTHINGCTL_USE_SCRIPT) || defined(SYNCTHINGCTL_USE_JSENGINE)
-    // read script file
-    QFile scriptFile(QString::fromLocal8Bit(m_args.script.firstValue()));
-    if (!scriptFile.open(QFile::ReadOnly)) {
-        cerr << Phrases::Error << "Unable to open specified script file \"" << m_args.script.firstValue() << "\"." << Phrases::EndFlush;
-        return QByteArray();
-    }
-    const auto script(scriptFile.readAll());
-    if (script.isEmpty()) {
-        cerr << Phrases::Error << "Unable to read any bytes from specified script file \"" << m_args.script.firstValue() << "\"."
-             << Phrases::EndFlush;
-        return QByteArray();
+    // get script
+    QByteArray script;
+    QString scriptFileName;
+    if (m_args.script.isPresent()) {
+        // read script file
+        QFile scriptFile(QString::fromLocal8Bit(m_args.script.firstValue()));
+        if (!scriptFile.open(QFile::ReadOnly)) {
+            cerr << Phrases::Error << "Unable to open specified script file \"" << m_args.script.firstValue() << "\"." << Phrases::EndFlush;
+            return QByteArray();
+        }
+        script = scriptFile.readAll();
+        scriptFileName = scriptFile.fileName();
+        if (script.isEmpty()) {
+            cerr << Phrases::Error << "Unable to read any bytes from specified script file \"" << m_args.script.firstValue() << "\"."
+                 << Phrases::EndFlush;
+            return QByteArray();
+        }
+    } else if (m_args.jsLines.isPresent()) {
+        // construct script from CLI arguments
+        int requiredSize = 0;
+        for (const auto *line : m_args.jsLines.values()) {
+            requiredSize += strlen(line);
+            requiredSize += 1;
+        }
+        script.reserve(requiredSize);
+        for (const auto *line : m_args.jsLines.values()) {
+            script += line;
+            script += '\n';
+        }
     }
 
     // define function to print error
@@ -781,7 +800,7 @@ QByteArray Application::editConfigViaScript() const
     engine.globalObject().setProperty("console", engine.newQObject(&console));
 
     // evaluate the user provided script
-    const auto res(engine.evaluate(QString::fromUtf8(script), scriptFile.fileName()));
+    const auto res(engine.evaluate(QString::fromUtf8(script), scriptFileName));
     if (res.isError()) {
         cerr << Phrases::Error << "Unable to evaluate the specified script file \"" << m_args.script.firstValue() << "\"." << Phrases::End;
         printError(res);
