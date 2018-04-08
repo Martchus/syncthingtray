@@ -797,10 +797,10 @@ QByteArray Application::editConfigViaScript() const
 
     // provide console.log() which is not available in QJSEngine and QScriptEngine by default (note that print() is only available when using Qt Script)
     JSConsole console;
-    engine.globalObject().setProperty("console", engine.newQObject(&console));
+    globalObject.setProperty(QStringLiteral("console"), engine.newQObject(&console));
 
     // provide helper
-    QFile helperFile(":/js/helper.js");
+    QFile helperFile(QStringLiteral(":/js/helper.js"));
     helperFile.open(QFile::ReadOnly);
     const auto helperScript(helperFile.readAll());
     if (helperScript.isEmpty()) {
