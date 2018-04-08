@@ -1,4 +1,4 @@
-#include "syncthingconfig.h"
+#include "./syncthingconfig.h"
 
 #include <QFile>
 #include <QHostAddress>
