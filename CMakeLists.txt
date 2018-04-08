@@ -25,6 +25,7 @@ else()
 endif()
 
 # options for partial build
+option(NO_LIBSYNCTHING "whether building Syncthing itself as a library should be skipped" ON)
 option(NO_CLI "whether building CLI should be skipped" OFF)
 option(NO_TRAY "whether building the tray should be skipped" OFF)
 option(NO_FILE_ITEM_ACTION_PLUGIN "whether building the file item action plugin should be skipped" "${FILE_ITEM_ACTION_PLUGIN_DISABLED_BY_DEFAULT}")
@@ -36,6 +37,10 @@ option(NO_PLASMOID "whether building the Plasma 5 plasmoid should be skipped" "$
 enable_testing()
 add_subdirectory(connector)
 add_subdirectory(testhelper)
+
+if (NOT NO_LIBSYNCTHING)
+    add_subdirectory(libsyncthing)
+endif()
 
 link_directories(${LIB_SYNCTHING_CONNECTOR_BINARY_DIR})
 if(NOT NO_CLI)

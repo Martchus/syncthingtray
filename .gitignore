@@ -47,6 +47,7 @@ testfiles/output.*
 scripts/
 
 # clang-format
+/libsyncthing/.clang-format
 /cli/.clang-format
 /connector/.clang-format
 /fileitemactionplugin/.clang-format

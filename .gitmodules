@@ -1,0 +1,4 @@
+[submodule "libsyncthing/go/src/github.com/syncthing/syncthing"]
+	path = libsyncthing/go/src/github.com/syncthing/syncthing
+	url = https://github.com/Martchus/syncthing.git
+	branch = libsyncthing
