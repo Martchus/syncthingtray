@@ -114,6 +114,7 @@ add_custom_command(
         "${GO_BIN}" build -v -buildmode c-archive
         -o "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
         ./cmd/syncthing
+        && "${CMAKE_RANLIB}" "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
     DEPENDS ${SRC_FILES_SYNCTHING}
     WORKING_DIRECTORY "${SYNCTHING_PATH}"
     COMMENT "Building Syncthing itself"
