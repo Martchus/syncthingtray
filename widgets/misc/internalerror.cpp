@@ -60,9 +60,11 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
         ) {
             return false;
         }
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         if (service.isRunning() && !service.isActiveWithoutSleepFor(settings.ignoreInavailabilityAfterStart)) {
             return false;
         }
+#endif
     }
 
     return true;
