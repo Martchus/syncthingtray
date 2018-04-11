@@ -103,13 +103,13 @@ if(SYNCTHING_CONNECTION_MOCKED)
 endif()
 
 # configure whether events should be logged
-option(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS "enables logging event data" OFF)
+option(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS "enables logging event data to stdout (enable only for debugging!)" OFF)
 if(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS)
     set_source_files_properties(
         syncthingconnection.cpp
         PROPERTIES COMPILE_DEFINITIONS LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
     )
-    message(WARNING "SyncthingConnection class will be mocked")
+    message(WARNING "SyncthingConnection class will log event data to stdout")
 endif()
 
 # include modules to apply configuration
