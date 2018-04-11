@@ -81,9 +81,9 @@ private:
 
     const SyncthingConnection &m_connection;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    const SyncthingService &m_service;
+    const SyncthingService *const m_service;
 #endif
-    const SyncthingProcess &m_process;
+    const SyncthingProcess *const m_process;
     SyncthingHighLevelNotification m_enabledNotifications;
     SyncthingStatus m_previousStatus;
     unsigned int m_ignoreInavailabilityAfterStart;

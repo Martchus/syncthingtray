@@ -20,6 +20,7 @@ namespace Data {
 class SyncthingConnection;
 class SyncthingService;
 class SyncthingProcess;
+class SyncthingLauncher;
 } // namespace Data
 
 namespace QtGui {
@@ -79,10 +80,13 @@ LauncherOptionPage(const QString &tool, QWidget *parentWidget = nullptr);
 private:
 DECLARE_SETUP_WIDGETS
 void handleSyncthingReadyRead();
+void handleSyncthingOutputAvailable(const QByteArray &output);
 void handleSyncthingExited(int exitCode, QProcess::ExitStatus exitStatus);
+bool isRunning() const;
 void launch();
 void stop();
-Data::SyncthingProcess &m_process;
+Data::SyncthingProcess *const m_process;
+Data::SyncthingLauncher *const m_launcher;
 QList<QMetaObject::Connection> m_connections;
 bool m_kill;
 QString m_tool;
@@ -95,7 +99,7 @@ DECLARE_SETUP_WIDGETS
 void handleDescriptionChanged(const QString &description);
 void handleStatusChanged(const QString &activeState, const QString &subState, ChronoUtilities::DateTime activeSince);
 void handleEnabledChanged(const QString &unitFileState);
-Data::SyncthingService &m_service;
+Data::SyncthingService *const m_service;
 END_DECLARE_OPTION_PAGE
 #endif
 

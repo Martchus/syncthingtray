@@ -67,6 +67,9 @@ SyncthingApplet::~SyncthingApplet()
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     delete m_webViewDlg;
 #endif
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    SyncthingService::setMainInstance(nullptr);
+#endif
 }
 
 void SyncthingApplet::init()
@@ -99,10 +102,10 @@ void SyncthingApplet::init()
 
 // initialize systemd service support
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    SyncthingService &service = syncthingService();
-    service.setUnitName(Settings::values().systemd.syncthingUnit);
-    connect(&service, &SyncthingService::systemdAvailableChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
-    connect(&service, &SyncthingService::errorOccurred, this, &SyncthingApplet::handleSystemdServiceError);
+    SyncthingService::setMainInstance(&m_service);
+    m_service.setUnitName(Settings::values().systemd.syncthingUnit);
+    connect(&m_service, &SyncthingService::systemdAvailableChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
+    connect(&m_service, &SyncthingService::errorOccurred, this, &SyncthingApplet::handleSystemdServiceError);
 #endif
 
     m_initialized = true;

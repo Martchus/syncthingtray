@@ -1,9 +1,9 @@
 #include "./internalerror.h"
+#include "./syncthinglauncher.h"
 
 #include "../settings/settings.h"
 
 #include "../../connector/syncthingconnection.h"
-#include "../../connector/syncthingprocess.h"
 #include "../../connector/syncthingservice.h"
 
 #include <QNetworkReply>
@@ -37,23 +37,24 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
     // consider process/launcher or systemd unit status
     const auto remoteHostClosed(networkError == QNetworkReply::RemoteHostClosedError);
     // ignore "remote host closed" error if we've just stopped Syncthing ourselves
-    const SyncthingProcess &process(syncthingProcess());
-    if (settings.launcher.considerForReconnect && remoteHostClosed && process.isManuallyStopped()) {
+    const auto *launcher(SyncthingLauncher::mainInstance());
+    if (settings.launcher.considerForReconnect && remoteHostClosed && launcher && launcher->isManuallyStopped()) {
         return false;
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    const SyncthingService &service(syncthingService());
-    if (settings.systemd.considerForReconnect && remoteHostClosed && service.isManuallyStopped()) {
+    const auto *const service(SyncthingService::mainInstance());
+    if (settings.systemd.considerForReconnect && remoteHostClosed && service && service->isManuallyStopped()) {
         return false;
     }
 #endif
 
     // ignore inavailability after start or standby-wakeup
     if (settings.ignoreInavailabilityAfterStart && networkError == QNetworkReply::ConnectionRefusedError) {
-        if (process.isRunning()
+        if ((launcher && launcher->isRunning())
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-            && ((service.isSystemdAvailable() && !service.isActiveWithoutSleepFor(process.activeSince(), settings.ignoreInavailabilityAfterStart))
-                   || !process.isActiveFor(settings.ignoreInavailabilityAfterStart))
+            && ((service && service->isSystemdAvailable()
+                    && !service->isActiveWithoutSleepFor(launcher->activeSince(), settings.ignoreInavailabilityAfterStart))
+                   || !launcher->isActiveFor(settings.ignoreInavailabilityAfterStart))
 #else
             && !process.isActiveFor(settings.ignoreInavailabilityAfterStart)
 #endif
@@ -61,7 +62,7 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
             return false;
         }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        if (service.isRunning() && !service.isActiveWithoutSleepFor(settings.ignoreInavailabilityAfterStart)) {
+        if (service && !service->isActiveWithoutSleepFor(settings.ignoreInavailabilityAfterStart)) {
             return false;
         }
 #endif

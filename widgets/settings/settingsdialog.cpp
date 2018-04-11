@@ -1,5 +1,7 @@
 #include "./settingsdialog.h"
 
+#include "../misc/syncthinglauncher.h"
+
 #include "../../connector/syncthingconfig.h"
 #include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingprocess.h"
@@ -606,14 +608,16 @@ void AutostartOptionPage::reset()
 // LauncherOptionPage
 LauncherOptionPage::LauncherOptionPage(QWidget *parentWidget)
     : LauncherOptionPageBase(parentWidget)
-    , m_process(syncthingProcess())
+    , m_process(nullptr)
+    , m_launcher(SyncthingLauncher::mainInstance())
     , m_kill(false)
 {
 }
 
 LauncherOptionPage::LauncherOptionPage(const QString &tool, QWidget *parentWidget)
     : LauncherOptionPageBase(parentWidget)
-    , m_process(Launcher::toolProcess(tool))
+    , m_process(&Launcher::toolProcess(tool))
+    , m_launcher(nullptr)
     , m_kill(false)
     , m_tool(tool)
 {
@@ -641,14 +645,20 @@ QWidget *LauncherOptionPage::setupWidget()
     // setup other widgets
     ui()->syncthingPathSelection->provideCustomFileMode(QFileDialog::ExistingFile);
     ui()->logTextEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
-    const bool running = m_process.state() != QProcess::NotRunning;
+    const auto running(isRunning());
     ui()->launchNowPushButton->setHidden(running);
     ui()->stopPushButton->setHidden(!running);
     // connect signals & slots
-    m_connections << QObject::connect(&m_process, &SyncthingProcess::readyRead, bind(&LauncherOptionPage::handleSyncthingReadyRead, this));
-    m_connections << QObject::connect(&m_process,
-        static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished),
-        bind(&LauncherOptionPage::handleSyncthingExited, this, _1, _2));
+    if (m_process) {
+        m_connections << QObject::connect(m_process, &SyncthingProcess::readyRead, bind(&LauncherOptionPage::handleSyncthingReadyRead, this));
+        m_connections << QObject::connect(m_process,
+            static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished),
+            bind(&LauncherOptionPage::handleSyncthingExited, this, _1, _2));
+    } else if (m_launcher) {
+        m_connections << QObject::connect(
+            m_launcher, &SyncthingLauncher::outputAvailable, bind(&LauncherOptionPage::handleSyncthingOutputAvailable, this, _1));
+        m_connections << QObject::connect(m_launcher, &SyncthingLauncher::exited, bind(&LauncherOptionPage::handleSyncthingExited, this, _1, _2));
+    }
     QObject::connect(ui()->launchNowPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::launch, this));
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::stop, this));
     return widget;
@@ -689,12 +699,17 @@ void LauncherOptionPage::reset()
 
 void LauncherOptionPage::handleSyncthingReadyRead()
 {
+    handleSyncthingOutputAvailable(m_process->readAll());
+}
+
+void LauncherOptionPage::handleSyncthingOutputAvailable(const QByteArray &output)
+{
     if (!hasBeenShown()) {
         return;
     }
-    QTextCursor cursor = ui()->logTextEdit->textCursor();
+    QTextCursor cursor(ui()->logTextEdit->textCursor());
     cursor.movePosition(QTextCursor::End);
-    cursor.insertText(QString::fromLocal8Bit(m_process.readAll()));
+    cursor.insertText(QString::fromLocal8Bit(output));
     if (ui()->ensureCursorVisibleCheckBox->isChecked()) {
         ui()->logTextEdit->ensureCursorVisible();
     }
@@ -721,13 +736,18 @@ void LauncherOptionPage::handleSyncthingExited(int exitCode, QProcess::ExitStatu
     ui()->launchNowPushButton->show();
 }
 
+bool LauncherOptionPage::isRunning() const
+{
+    return (m_process && m_process->isRunning()) || (m_launcher && m_launcher->isRunning());
+}
+
 void LauncherOptionPage::launch()
 {
     if (!hasBeenShown()) {
         return;
     }
     apply();
-    if (m_process.state() != QProcess::NotRunning) {
+    if (isRunning()) {
         return;
     }
     ui()->launchNowPushButton->hide();
@@ -735,23 +755,34 @@ void LauncherOptionPage::launch()
     ui()->stopPushButton->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Stop launched instance"));
     m_kill = false;
     if (m_tool.isEmpty()) {
-        m_process.startSyncthing(values().launcher.syncthingCmd());
+        // TODO: allow using libsyncthing
+        m_launcher->launch(values().launcher.syncthingCmd());
     } else {
-        m_process.startSyncthing(values().launcher.toolCmd(m_tool));
+        m_process->startSyncthing(values().launcher.toolCmd(m_tool));
     }
 }
 
 void LauncherOptionPage::stop()
 {
-    if (!hasBeenShown() || m_process.state() == QProcess::NotRunning) {
+    if (!hasBeenShown()) {
         return;
     }
     if (m_kill) {
-        m_process.kill();
+        if (m_process) {
+            m_process->killSyncthing();
+        }
+        if (m_launcher) {
+            m_launcher->kill();
+        }
     } else {
         ui()->stopPushButton->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Kill launched instance"));
         m_kill = true;
-        m_process.terminate();
+        if (m_process) {
+            m_process->stopSyncthing();
+        }
+        if (m_launcher) {
+            m_launcher->terminate();
+        }
     }
 }
 
@@ -759,7 +790,7 @@ void LauncherOptionPage::stop()
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 SystemdOptionPage::SystemdOptionPage(QWidget *parentWidget)
     : SystemdOptionPageBase(parentWidget)
-    , m_service(syncthingService())
+    , m_service(SyncthingService::mainInstance())
 {
 }
 
@@ -770,14 +801,17 @@ SystemdOptionPage::~SystemdOptionPage()
 QWidget *SystemdOptionPage::setupWidget()
 {
     auto *const widget = SystemdOptionPageBase::setupWidget();
-    QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, &m_service, &SyncthingService::setUnitName);
-    QObject::connect(ui()->startPushButton, &QPushButton::clicked, &m_service, &SyncthingService::start);
-    QObject::connect(ui()->stopPushButton, &QPushButton::clicked, &m_service, &SyncthingService::stop);
-    QObject::connect(ui()->enablePushButton, &QPushButton::clicked, &m_service, &SyncthingService::enable);
-    QObject::connect(ui()->disablePushButton, &QPushButton::clicked, &m_service, &SyncthingService::disable);
-    QObject::connect(&m_service, &SyncthingService::descriptionChanged, bind(&SystemdOptionPage::handleDescriptionChanged, this, _1));
-    QObject::connect(&m_service, &SyncthingService::stateChanged, bind(&SystemdOptionPage::handleStatusChanged, this, _1, _2, _3));
-    QObject::connect(&m_service, &SyncthingService::unitFileStateChanged, bind(&SystemdOptionPage::handleEnabledChanged, this, _1));
+    if (!m_service) {
+        return widget;
+    }
+    QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, m_service, &SyncthingService::setUnitName);
+    QObject::connect(ui()->startPushButton, &QPushButton::clicked, m_service, &SyncthingService::start);
+    QObject::connect(ui()->stopPushButton, &QPushButton::clicked, m_service, &SyncthingService::stop);
+    QObject::connect(ui()->enablePushButton, &QPushButton::clicked, m_service, &SyncthingService::enable);
+    QObject::connect(ui()->disablePushButton, &QPushButton::clicked, m_service, &SyncthingService::disable);
+    QObject::connect(m_service, &SyncthingService::descriptionChanged, bind(&SystemdOptionPage::handleDescriptionChanged, this, _1));
+    QObject::connect(m_service, &SyncthingService::stateChanged, bind(&SystemdOptionPage::handleStatusChanged, this, _1, _2, _3));
+    QObject::connect(m_service, &SyncthingService::unitFileStateChanged, bind(&SystemdOptionPage::handleEnabledChanged, this, _1));
     return widget;
 }
 
@@ -796,9 +830,12 @@ void SystemdOptionPage::reset()
     ui()->syncthingUnitLineEdit->setText(settings.syncthingUnit);
     ui()->showButtonCheckBox->setChecked(settings.showButton);
     ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
-    handleDescriptionChanged(m_service.description());
-    handleStatusChanged(m_service.activeState(), m_service.subState(), m_service.activeSince());
-    handleEnabledChanged(m_service.unitFileState());
+    if (!m_service) {
+        return;
+    }
+    handleDescriptionChanged(m_service->description());
+    handleStatusChanged(m_service->activeState(), m_service->subState(), m_service->activeSince());
+    handleEnabledChanged(m_service->unitFileState());
 }
 
 void SystemdOptionPage::handleDescriptionChanged(const QString &description)
@@ -823,7 +860,7 @@ void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QS
         status << subState;
     }
 
-    const bool isRunning = m_service.isRunning();
+    const bool isRunning = m_service && m_service->isRunning();
     QString timeStamp;
     if (isRunning && !activeSince.isNull()) {
         timeStamp = QLatin1Char('\n') % QCoreApplication::translate("QtGui::SystemdOptionPage", "since ")
@@ -841,7 +878,7 @@ void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QS
 
 void SystemdOptionPage::handleEnabledChanged(const QString &unitFileState)
 {
-    const bool isEnabled = m_service.isEnabled();
+    const bool isEnabled = m_service && m_service->isEnabled();
     ui()->unitFileStateValueLabel->setText(
         unitFileState.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown") : unitFileState);
     setIndicatorColor(

@@ -45,6 +45,7 @@ constexpr DateTime dateTimeFromSystemdTimeStamp(qulonglong timeStamp)
     return DateTime(DateTime::unixEpochStart().totalTicks() + timeStamp * 10);
 }
 
+SyncthingService *SyncthingService::s_mainInstance = nullptr;
 OrgFreedesktopSystemd1ManagerInterface *SyncthingService::s_manager = nullptr;
 OrgFreedesktopLogin1ManagerInterface *SyncthingService::s_loginManager = nullptr;
 DateTime SyncthingService::s_lastWakeUp = DateTime();
@@ -322,12 +323,6 @@ void SyncthingService::setProperties(
     if (m_description != description) {
         emit descriptionChanged(m_description = description);
     }
-}
-
-SyncthingService &syncthingService()
-{
-    static SyncthingService service;
-    return service;
 }
 
 } // namespace Data

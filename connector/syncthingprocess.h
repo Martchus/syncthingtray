@@ -22,6 +22,8 @@ public:
     ChronoUtilities::DateTime activeSince() const;
     bool isActiveFor(unsigned int atLeastSeconds) const;
     bool isManuallyStopped() const;
+    static SyncthingProcess *mainInstance();
+    static void setMainInstance(SyncthingProcess *mainInstance);
 
 Q_SIGNALS:
     void confirmKill();
@@ -42,6 +44,7 @@ private:
     ChronoUtilities::DateTime m_activeSince;
     QTimer m_killTimer;
     bool m_manuallyStopped;
+    static SyncthingProcess *s_mainInstance;
 };
 
 inline bool SyncthingProcess::isRunning() const
@@ -64,7 +67,15 @@ inline bool SyncthingProcess::isManuallyStopped() const
     return m_manuallyStopped;
 }
 
-SyncthingProcess LIB_SYNCTHING_CONNECTOR_EXPORT &syncthingProcess();
+inline SyncthingProcess *SyncthingProcess::mainInstance()
+{
+    return s_mainInstance;
+}
+
+inline void SyncthingProcess::setMainInstance(SyncthingProcess *mainInstance)
+{
+    s_mainInstance = mainInstance;
+}
 
 } // namespace Data
 

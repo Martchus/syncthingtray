@@ -29,9 +29,9 @@ SyncthingNotifier::SyncthingNotifier(const SyncthingConnection &connection, QObj
     : QObject(parent)
     , m_connection(connection)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    , m_service(syncthingService())
+    , m_service(SyncthingService::mainInstance())
 #endif
-    , m_process(syncthingProcess())
+    , m_process(SyncthingProcess::mainInstance())
     , m_enabledNotifications(SyncthingHighLevelNotification::None)
     , m_previousStatus(SyncthingStatus::Disconnected)
     , m_ignoreInavailabilityAfterStart(15)
@@ -74,22 +74,22 @@ bool SyncthingNotifier::isDisconnectRelevant() const
     }
 
     // consider process/launcher or systemd unit status
-    if (m_process.isManuallyStopped()) {
+    if (m_process && m_process->isManuallyStopped()) {
         return false;
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    const SyncthingService &service(syncthingService());
-    if (m_service.isManuallyStopped()) {
+    if (m_service && m_service->isManuallyStopped()) {
         return false;
     }
 #endif
 
     // ignore inavailability after start or standby-wakeup
     if (m_ignoreInavailabilityAfterStart) {
-        if (m_process.isRunning()
+        if ((m_process && m_process->isRunning())
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-            && ((m_service.isSystemdAvailable() && !service.isActiveWithoutSleepFor(m_process.activeSince(), m_ignoreInavailabilityAfterStart))
-                   || !m_process.isActiveFor(m_ignoreInavailabilityAfterStart))
+            && ((m_service && m_service->isSystemdAvailable()
+                    && !m_service->isActiveWithoutSleepFor(m_process->activeSince(), m_ignoreInavailabilityAfterStart))
+                   || !m_process->isActiveFor(m_ignoreInavailabilityAfterStart))
 #else
             && !m_process.isActiveFor(m_ignoreInavailabilityAfterStart)
 #endif
@@ -97,7 +97,7 @@ bool SyncthingNotifier::isDisconnectRelevant() const
             return false;
         }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        if (m_service.isRunning() && !m_service.isActiveWithoutSleepFor(m_ignoreInavailabilityAfterStart)) {
+        if (m_service->isRunning() && !m_service->isActiveWithoutSleepFor(m_ignoreInavailabilityAfterStart)) {
             return false;
         }
 #endif

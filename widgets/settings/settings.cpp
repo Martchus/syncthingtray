@@ -1,7 +1,10 @@
 #include "./settings.h"
+
+#include "../misc/syncthingkiller.h"
+#include "../misc/syncthinglauncher.h"
+
 #include "../../connector/syncthingnotifier.h"
 #include "../../connector/syncthingprocess.h"
-#include "../misc/syncthingkiller.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingservice.h"
@@ -72,7 +75,9 @@ std::vector<SyncthingProcess *> Launcher::allProcesses()
 {
     vector<SyncthingProcess *> processes;
     processes.reserve(1 + toolProcesses.size());
-    processes.push_back(&syncthingProcess());
+    if (auto *const syncthingProcess = SyncthingProcess::mainInstance()) {
+        processes.push_back(syncthingProcess);
+    }
     for (auto &process : toolProcesses) {
         processes.push_back(&process.second);
     }
@@ -84,8 +89,10 @@ std::vector<SyncthingProcess *> Launcher::allProcesses()
  */
 void Launcher::autostart() const
 {
-    if (enabled && !syncthingPath.isEmpty()) {
-        syncthingProcess().startSyncthing(syncthingCmd());
+    auto *const launcher(SyncthingLauncher::mainInstance());
+    // TODO: allow using libsyncthing
+    if (enabled && !syncthingPath.isEmpty() && launcher) {
+        launcher->launch(syncthingCmd());
     }
     for (auto i = tools.cbegin(), end = tools.cend(); i != end; ++i) {
         const ToolParameter &toolParams = i.value();
@@ -338,9 +345,12 @@ void Settings::apply(SyncthingNotifier &notifier) const
 std::tuple<bool, bool> Systemd::apply(
     Data::SyncthingConnection &connection, const SyncthingConnectionSettings *currentConnectionSettings, bool reconnectRequired) const
 {
-    const SyncthingService &service(syncthingService());
-    const auto isRelevant = service.isSystemdAvailable() && connection.isLocal();
-    const auto isRunning = service.isRunning();
+    auto *const service(SyncthingService::mainInstance());
+    if (!service) {
+        return make_tuple(false, false);
+    }
+    const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
+    const auto isRunning = service->isRunning();
 
     if (currentConnectionSettings && (!considerForReconnect || !isRelevant || isRunning)) {
         // ensure auto-reconnect is configured according to settings
@@ -354,14 +364,14 @@ std::tuple<bool, bool> Systemd::apply(
     if (considerForReconnect && isRelevant) {
         constexpr auto minActiveTimeInSeconds(5);
         if (reconnectRequired) {
-            if (service.isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
+            if (service->isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
                 connection.reconnect();
             } else {
                 // give the service (which has just started) a few seconds to initialize
                 connection.reconnectLater(minActiveTimeInSeconds * 1000);
             }
         } else if (isRunning && !connection.isConnected()) {
-            if (service.isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
+            if (service->isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
                 connection.connect();
             } else {
                 // give the service (which has just started) a few seconds to initialize

@@ -21,6 +21,7 @@ set(WIDGETS_HEADER_FILES
     misc/dbusstatusnotifier.h
     misc/internalerror.h
     misc/otherdialogs.h
+    misc/syncthinglauncher.h
     misc/syncthingkiller.h
 )
 set(WIDGETS_SRC_FILES
@@ -36,6 +37,7 @@ set(WIDGETS_SRC_FILES
     misc/dbusstatusnotifier.cpp
     misc/internalerror.cpp
     misc/otherdialogs.cpp
+    misc/syncthinglauncher.cpp
     misc/syncthingkiller.cpp
 )
 set(RES_FILES
@@ -87,6 +89,17 @@ find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector()
 find_package(syncthingmodel ${META_APP_VERSION} REQUIRED)
 use_syncthingmodel()
+
+option(USE_LIBSYNCTHING "whether libsyncthing should be included for the launcher" OFF)
+if(USE_LIBSYNCTHING)
+    find_package(syncthing ${META_APP_VERSION} REQUIRED)
+    use_syncthing()
+    set_source_files_properties(
+        misc/syncthinglauncher.cpp
+        PROPERTIES COMPILE_DEFINITIONS SYNCTHING_WIDGETS_USE_LIBSYNCTHING
+    )
+    list(APPEND ADDITIONAL_QT_MODULES Concurrent)
+endif()
 
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES Network)

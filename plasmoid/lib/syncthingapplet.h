@@ -141,6 +141,9 @@ private:
     Dialogs::AboutDialog *m_aboutDlg;
     Data::SyncthingConnection m_connection;
     Data::SyncthingNotifier m_notifier;
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    Data::SyncthingService m_service;
+#endif
     QtGui::StatusInfo m_statusInfo;
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
@@ -179,7 +182,7 @@ inline Data::SyncthingDownloadModel *SyncthingApplet::downloadModel() const
 inline Data::SyncthingService *SyncthingApplet::service() const
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    return &Data::syncthingService();
+    return const_cast<Data::SyncthingService *>(&m_service);
 #else
     return nullptr;
 #endif

@@ -3,6 +3,7 @@
 #include "../gui/trayicon.h"
 #include "../gui/traywidget.h"
 
+#include "../../widgets/misc/syncthinglauncher.h"
 #include "../../widgets/settings/settings.h"
 
 #include "../../connector/syncthingprocess.h"
@@ -161,8 +162,11 @@ int runApplication(int argc, const char *const *argv)
         Settings::values().qt.apply();
         qtConfigArgs.applySettings(true);
         LOAD_QT_TRANSLATIONS;
+        SyncthingLauncher launcher;
+        SyncthingLauncher::setMainInstance(&launcher);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        SyncthingService &service = syncthingService();
+        SyncthingService service;
+        SyncthingService::setMainInstance(&service);
         service.setUnitName(Settings::values().systemd.syncthingUnit);
         QObject::connect(&service, &SyncthingService::errorOccurred, &handleSystemdServiceError);
 #endif

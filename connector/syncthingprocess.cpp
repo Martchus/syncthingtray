@@ -6,6 +6,8 @@ using namespace ChronoUtilities;
 
 namespace Data {
 
+SyncthingProcess *SyncthingProcess::s_mainInstance = nullptr;
+
 SyncthingProcess::SyncthingProcess(QObject *parent)
     : QProcess(parent)
     , m_manuallyStopped(false)
@@ -87,12 +89,6 @@ void SyncthingProcess::killToRestart()
     if (!m_cmd.isEmpty()) {
         kill();
     }
-}
-
-SyncthingProcess &syncthingProcess()
-{
-    static SyncthingProcess process;
-    return process;
 }
 
 } // namespace Data

@@ -63,6 +63,8 @@ public:
     bool isRunning() const;
     bool isEnabled() const;
     bool isManuallyStopped() const;
+    static SyncthingService *mainInstance();
+    static void setMainInstance(SyncthingService *mainInstance);
 
 public Q_SLOTS:
     void setUnitName(const QString &unitName);
@@ -110,6 +112,7 @@ private:
     static OrgFreedesktopLogin1ManagerInterface *s_loginManager;
     static bool s_fallingAsleep;
     static ChronoUtilities::DateTime s_lastWakeUp;
+    static SyncthingService *s_mainInstance;
     QString m_unitName;
     QDBusServiceWatcher *m_serviceWatcher;
     OrgFreedesktopSystemd1UnitInterface *m_unit;
@@ -209,7 +212,15 @@ inline void SyncthingService::disable()
     setEnabled(false);
 }
 
-SyncthingService &syncthingService();
+inline SyncthingService *SyncthingService::mainInstance()
+{
+    return s_mainInstance;
+}
+
+inline void SyncthingService::setMainInstance(SyncthingService *mainInstance)
+{
+    s_mainInstance = mainInstance;
+}
 
 } // namespace Data
 

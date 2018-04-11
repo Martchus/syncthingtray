@@ -157,10 +157,11 @@ TrayWidget::TrayWidget(const QString &connectionConfig, TrayMenu *parent)
     connect(m_ui->actionShowNotifications, &QAction::triggered, this, &TrayWidget::showNotifications);
     connect(m_ui->actionDismissNotifications, &QAction::triggered, this, &TrayWidget::dismissNotifications);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    const SyncthingService &service = syncthingService();
-    connect(m_ui->startStopPushButton, &QPushButton::clicked, &service, &SyncthingService::toggleRunning);
-    connect(&service, &SyncthingService::systemdAvailableChanged, this, &TrayWidget::handleSystemdStatusChanged);
-    connect(&service, &SyncthingService::stateChanged, this, &TrayWidget::handleSystemdStatusChanged);
+    if (const auto *const service = SyncthingService::mainInstance()) {
+        connect(m_ui->startStopPushButton, &QPushButton::clicked, service, &SyncthingService::toggleRunning);
+        connect(service, &SyncthingService::systemdAvailableChanged, this, &TrayWidget::handleSystemdStatusChanged);
+        connect(service, &SyncthingService::stateChanged, this, &TrayWidget::handleSystemdStatusChanged);
+    }
 #endif
 }
 
@@ -508,22 +509,19 @@ bool TrayWidget::applySystemdSettings(bool reconnectRequired)
     bool isServiceRelevant, isServiceRunning;
     tie(isServiceRelevant, isServiceRunning) = systemdSettings.apply(m_connection, m_selectedConnection, reconnectRequired);
 
-    if (isServiceRelevant) {
-        // update start/stop button
-        if (systemdSettings.showButton) {
-            m_ui->startStopPushButton->setVisible(true);
-            const auto &unitName(syncthingService().unitName());
-            if (isServiceRunning) {
-                m_ui->startStopPushButton->setText(tr("Stop"));
-                m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user stop ") + unitName);
-                m_ui->startStopPushButton->setIcon(
-                    QIcon::fromTheme(QStringLiteral("process-stop"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/process-stop.svg"))));
-            } else {
-                m_ui->startStopPushButton->setText(tr("Start"));
-                m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user start ") + unitName);
-                m_ui->startStopPushButton->setIcon(
-                    QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
-            }
+    // update start/stop button
+    if (isServiceRelevant && systemdSettings.showButton) {
+        m_ui->startStopPushButton->setVisible(true);
+        if (isServiceRunning) {
+            m_ui->startStopPushButton->setText(tr("Stop"));
+            m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user stop ") + systemdSettings.syncthingUnit);
+            m_ui->startStopPushButton->setIcon(
+                QIcon::fromTheme(QStringLiteral("process-stop"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/process-stop.svg"))));
+        } else {
+            m_ui->startStopPushButton->setText(tr("Start"));
+            m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user start ") + systemdSettings.syncthingUnit);
+            m_ui->startStopPushButton->setIcon(
+                QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
         }
     }
     if (!systemdSettings.showButton || !isServiceRelevant) {
@@ -534,7 +532,8 @@ bool TrayWidget::applySystemdSettings(bool reconnectRequired)
 
 void TrayWidget::connectIfServiceRunning()
 {
-    if (Settings::values().systemd.considerForReconnect && m_connection.isLocal() && syncthingService().isRunning()) {
+    const auto *const service(SyncthingService::mainInstance());
+    if (Settings::values().systemd.considerForReconnect && m_connection.isLocal() && service && service->isRunning()) {
         m_connection.connect();
     }
 }
