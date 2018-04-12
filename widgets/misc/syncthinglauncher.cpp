@@ -88,7 +88,11 @@ void SyncthingLauncher::handleProcessFinished(int exitCode, QProcess::ExitStatus
 
 void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions)
 {
+#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
     LibSyncthing::runSyncthing(runtimeOptions);
+#else
+    VAR_UNUSED(runtimeOptions)
+#endif
 }
 
 SyncthingLauncher &syncthingLauncher()
