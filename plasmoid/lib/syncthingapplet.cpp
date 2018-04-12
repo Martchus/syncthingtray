@@ -95,18 +95,20 @@ void SyncthingApplet::init()
 
     // restore settings
     Settings::restore();
-    handleSettingsChanged();
-
     // load primary connection config
     setCurrentConnectionConfigIndex(config().readEntry<int>("selectedConfig", 0));
 
-// initialize systemd service support
+    // initialize systemd service support
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     SyncthingService::setMainInstance(&m_service);
     m_service.setUnitName(Settings::values().systemd.syncthingUnit);
     connect(&m_service, &SyncthingService::systemdAvailableChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
+    connect(&m_service, &SyncthingService::stateChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
     connect(&m_service, &SyncthingService::errorOccurred, this, &SyncthingApplet::handleSystemdServiceError);
 #endif
+
+    // apply settings and connect according to settings
+    handleSettingsChanged();
 
     m_initialized = true;
 }
