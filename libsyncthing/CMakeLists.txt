@@ -16,6 +16,13 @@ set(SRC_FILES
     interface.cpp
 )
 
+set(TEST_HEADER_FILES
+)
+set(TEST_SRC_FILES
+    tests/cppunit.cpp
+    tests/interfacetests.cpp
+)
+
 # find the go binary
 find_program(GO_BIN go)
 if(NOT GO_BIN)
@@ -79,6 +86,8 @@ file(GLOB_RECURSE SRC_FILES_SYNCTHING
     LIST_DIRECTORIES false
     RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
     "${SYNCTHING_PATH}/cmd/*.go"
+    "${SYNCTHING_PATH}/cmd/*.h"
+    "${SYNCTHING_PATH}/cmd/*.c"
 )
 if(NOT SRC_FILES_SYNCTHING)
     message(FATAL_ERROR "No *.go files found in Syncthing checkout \"${CMAKE_CURRENT_SOURCE_DIR}/go/src/github.com/syncthing/syncthing\".")
@@ -122,10 +131,16 @@ add_custom_command(
 
 # do not use this library directly but depend on it
 list(APPEND PRIVATE_LIBRARIES "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a")
+# add additional libraries (not sure if go build could provide this list somehow to make this more generic)
 if(WIN32)
-    # add additional libraries for Windows (not sure if go build could provide this list somehow to make this more generic)
     list(APPEND PRIVATE_LIBRARIES -lws2_32 -lwinmm)
+elseif(UNIX)
+    list(APPEND PRIVATE_LIBRARIES -lpthread)
 endif()
+
+# ensure we can find libsyncthing.h from Syncthing's source tree when building the interface
+list(APPEND PRIVATE_SHARED_INCLUDE_DIRS "${SYNCTHING_PATH}/cmd/syncthing")
+list(APPEND PRIVATE_STATIC_INCLUDE_DIRS "${SYNCTHING_PATH}/cmd/syncthing")
 
 # find c++utilities
 find_package(c++utilities 4.9.0 REQUIRED)
@@ -137,6 +152,7 @@ list(APPEND PRIVATE_STATIC_INCLUDE_DIRS ${CPP_UTILITIES_INCLUDE_DIRS})
 include(BasicConfig)
 include(WindowsResources)
 include(LibraryTarget)
+include(TestTarget)
 include(ConfigHeader)
 
 # create install target for static libsyncthinginternal.a if we're also creating a static libsyncthing.a

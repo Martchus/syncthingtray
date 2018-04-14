@@ -3,6 +3,7 @@
 
 #include "./global.h"
 
+#include <functional>
 #include <string>
 
 namespace LibSyncthing {
@@ -15,8 +16,27 @@ struct RuntimeOptions {
     bool verbose = false;
 };
 
-void LIB_SYNCTHING_EXPORT runSyncthing(const RuntimeOptions &options);
-void LIB_SYNCTHING_EXPORT generate(const std::string &generateDir);
+enum class LogLevel : int {
+    Debug,
+    Verbose,
+    Info,
+    Warning,
+    Fatal,
+};
+constexpr auto lowestLogLevel = LogLevel::Debug;
+constexpr auto highestLogLevel = LogLevel::Fatal;
+
+using LoggingCallback = std::function<void(LogLevel, const char *message, std::size_t messageSize)>;
+
+void LIB_SYNCTHING_EXPORT setLoggingCallback(const LoggingCallback &callback);
+void LIB_SYNCTHING_EXPORT setLoggingCallback(LoggingCallback &&callback);
+long long runSyncthing(const RuntimeOptions &options);
+void LIB_SYNCTHING_EXPORT stopSyncthing();
+void LIB_SYNCTHING_EXPORT restartSyncthing();
+void LIB_SYNCTHING_EXPORT generateCertFiles(const std::string &generateDir);
+void LIB_SYNCTHING_EXPORT openGUI();
+std::string LIB_SYNCTHING_EXPORT syncthingVersion();
+std::string LIB_SYNCTHING_EXPORT longSyncthingVersion();
 
 } // namespace LibSyncthing
 
