@@ -98,11 +98,10 @@ if(USE_LIBSYNCTHING)
         misc/syncthinglauncher.cpp
         PROPERTIES COMPILE_DEFINITIONS SYNCTHING_WIDGETS_USE_LIBSYNCTHING
     )
-    list(APPEND ADDITIONAL_QT_MODULES Concurrent)
 endif()
 
 # link also explicitely against the following Qt 5 modules
-list(APPEND ADDITIONAL_QT_MODULES Network)
+list(APPEND ADDITIONAL_QT_MODULES Network Concurrent)
 
 # include modules to apply configuration
 include(BasicConfig)

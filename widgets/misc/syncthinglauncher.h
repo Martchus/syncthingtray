@@ -4,6 +4,7 @@
 #include "../global.h"
 
 #include "../../connector/syncthingprocess.h"
+#include "../../libsyncthing/interface.h"
 
 #include <QFuture>
 
@@ -45,6 +46,7 @@ public Q_SLOTS:
 private Q_SLOTS:
     void handleProcessReadyRead();
     void handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void handleLoggingCallback(LibSyncthing::LogLevel, const char *message, std::size_t messageSize);
     void runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions);
 
 private:

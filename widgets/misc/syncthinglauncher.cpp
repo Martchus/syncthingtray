@@ -1,10 +1,12 @@
 #include "./syncthinglauncher.h"
 
-#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
-#include "../../libsyncthing/interface.h"
 #include <QtConcurrentRun>
-#endif
 
+#include <algorithm>
+#include <limits>
+
+using namespace std;
+using namespace std::placeholders;
 using namespace ChronoUtilities;
 
 namespace Data {
@@ -44,13 +46,7 @@ void SyncthingLauncher::launch(const LibSyncthing::RuntimeOptions &runtimeOption
         return;
     }
     m_manuallyStopped = false;
-#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
     m_future = QtConcurrent::run(this, &SyncthingLauncher::runLibSyncthing, runtimeOptions);
-#else
-    VAR_UNUSED(runtimeOptions)
-    emit outputAvailable("libsyncthing support not enabled");
-    emit exited(-1, QProcess::CrashExit);
-#endif
 }
 
 void SyncthingLauncher::terminate()
@@ -60,7 +56,9 @@ void SyncthingLauncher::terminate()
         m_process.stopSyncthing();
     } else if (m_future.isRunning()) {
         m_manuallyStopped = true;
-        m_future.cancel(); // FIXME: this will not work of course
+#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
+        LibSyncthing::stopSyncthing();
+#endif
     }
 }
 
@@ -71,7 +69,10 @@ void SyncthingLauncher::kill()
         m_process.stopSyncthing();
     } else if (m_future.isRunning()) {
         m_manuallyStopped = true;
-        // FIXME
+#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
+        // FIXME: any change to try harder?
+        LibSyncthing::stopSyncthing();
+#endif
     }
 }
 
@@ -86,12 +87,30 @@ void SyncthingLauncher::handleProcessFinished(int exitCode, QProcess::ExitStatus
     emit exited(exitCode, exitStatus);
 }
 
+void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, const char *message, size_t messageSize)
+{
+#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
+    if (level < LibSyncthing::LogLevel::Info) {
+        return;
+    }
+    emit outputAvailable(QByteArray(message, static_cast<int>(max<size_t>(numeric_limits<int>::max(), messageSize))));
+#else
+    VAR_UNUSED(level)
+    VAR_UNUSED(message)
+    VAR_UNUSED(messageSize)
+#endif
+}
+
 void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions)
 {
 #ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
-    LibSyncthing::runSyncthing(runtimeOptions);
+    LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
+    const auto exitCode = LibSyncthing::runSyncthing(runtimeOptions);
+    emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
 #else
     VAR_UNUSED(runtimeOptions)
+    emit outputAvailable("libsyncthing support not enabled");
+    emit exited(-1, QProcess::CrashExit);
 #endif
 }
 
