@@ -153,6 +153,7 @@ include(BasicConfig)
 include(WindowsResources)
 include(LibraryTarget)
 include(TestTarget)
+include(Doxygen)
 include(ConfigHeader)
 
 # create install target for static libsyncthinginternal.a if we're also creating a static libsyncthing.a

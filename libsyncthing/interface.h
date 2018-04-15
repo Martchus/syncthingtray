@@ -30,7 +30,9 @@ using LoggingCallback = std::function<void(LogLevel, const char *message, std::s
 
 void LIB_SYNCTHING_EXPORT setLoggingCallback(const LoggingCallback &callback);
 void LIB_SYNCTHING_EXPORT setLoggingCallback(LoggingCallback &&callback);
-long long runSyncthing(const RuntimeOptions &options);
+long long LIB_SYNCTHING_EXPORT runSyncthing(const RuntimeOptions &options);
+long long LIB_SYNCTHING_EXPORT runSyncthing(const std::string &configDir);
+bool LIB_SYNCTHING_EXPORT isSyncthingRunning();
 void LIB_SYNCTHING_EXPORT stopSyncthing();
 void LIB_SYNCTHING_EXPORT restartSyncthing();
 void LIB_SYNCTHING_EXPORT generateCertFiles(const std::string &generateDir);

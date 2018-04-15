@@ -58,14 +58,23 @@ void InterfaceTests::tearDown()
  */
 void InterfaceTests::testRun()
 {
+    CPPUNIT_ASSERT_MESSAGE("initially not running", !isSyncthingRunning());
+
+    // stopping and restarting Syncthing when not running should not cause any trouble
+    stopSyncthing();
+    restartSyncthing();
+
+    // setup Syncthing config (currently using same config as in connector test)
     const auto configFilePath(workingCopyPath("testconfig/config.xml"));
     if (configFilePath.empty()) {
         throw runtime_error("Unable to setup Syncthing config directory.");
     }
 
+    // setup runtime options
     RuntimeOptions options;
     options.configDir = directory(configFilePath);
 
+    // keep track of certain log messages
     const auto startTime(DateTime::gmtNow());
     bool myIdAnnounced = false, performanceAnnounced = false;
     bool testDir1Ready = false, testDir2Ready = false;
@@ -77,6 +86,8 @@ void InterfaceTests::testRun()
         if (logLevel < LogLevel::Info) {
             return;
         }
+
+        CPPUNIT_ASSERT_MESSAGE("Syncthing should be running right now", isSyncthingRunning());
 
         // check whether the usual log messages appear
         const string msg(message, messageSize);
@@ -113,8 +124,9 @@ void InterfaceTests::testRun()
         }
     });
 
-    CPPUNIT_ASSERT_EQUAL(0ll, runSyncthing(options));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Syncthing exited without error", 0ll, runSyncthing(options));
 
+    // assert whether all expected log messages were present
     CPPUNIT_ASSERT(myIdAnnounced);
     CPPUNIT_ASSERT(performanceAnnounced);
     CPPUNIT_ASSERT(testDir1Ready);
