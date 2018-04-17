@@ -9,6 +9,8 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
+#include <unistd.h>
+
 using namespace std;
 using namespace ChronoUtilities;
 using namespace ConversionUtilities;
@@ -134,6 +136,11 @@ void InterfaceTests::testRun()
     CPPUNIT_ASSERT(testDev1Ready);
     CPPUNIT_ASSERT(testDev2Ready);
     CPPUNIT_ASSERT(shutDownLogged);
+
+    // keep running to check whether we don't crash in the next few seconds
+    // FIXME: make this test pass, stop Syncthing correctly
+    sleep(5);
+}
 }
 
 /*!
