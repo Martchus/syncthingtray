@@ -168,8 +168,8 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction)
     CPPUNIT_ASSERT(testDev2Ready);
     CPPUNIT_ASSERT(shutDownLogged);
 
-    // keep running to check whether we don't crash in the next few seconds
-    // FIXME: make this test pass, stop Syncthing correctly
+    // keep running a bit longer to check whether would not crash in the next few seconds
+    // (could happen if Syncthing's extra threads haven't been stopped correctly)
     sleep(5);
 }
 
