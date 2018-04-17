@@ -45,6 +45,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(InterfaceTests);
 
 InterfaceTests::InterfaceTests()
 {
+    setenv("STNOUPGRADE", "1", 1);
 }
 
 void InterfaceTests::setUp()

@@ -76,7 +76,7 @@
         <urPostInsecurely>false</urPostInsecurely>
         <urInitialDelayS>1800</urInitialDelayS>
         <restartOnWakeup>true</restartOnWakeup>
-        <autoUpgradeIntervalH>12</autoUpgradeIntervalH>
+        <autoUpgradeIntervalH>0</autoUpgradeIntervalH>
         <upgradeToPreReleases>true</upgradeToPreReleases>
         <keepTemporariesH>24</keepTemporariesH>
         <cacheIgnoredFiles>false</cacheIgnoredFiles>
