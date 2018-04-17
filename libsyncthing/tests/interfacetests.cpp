@@ -2,6 +2,7 @@
 
 #include <c++utilities/chrono/datetime.h>
 #include <c++utilities/chrono/timespan.h>
+#include <c++utilities/conversion/stringbuilder.h>
 #include <c++utilities/conversion/stringconversion.h>
 #include <c++utilities/io/path.h>
 #include <c++utilities/tests/testutils.h>
@@ -45,7 +46,7 @@ public:
     void tearDown();
 
 private:
-    static std::string setupConfigDir();
+    std::string setupConfigDir();
     void testRun(const std::function<long long(void)> &runFunction);
 };
 
@@ -75,7 +76,18 @@ string InterfaceTests::setupConfigDir()
     if (configFilePath.empty()) {
         throw runtime_error("Unable to setup Syncthing config directory.");
     }
-    return directory(configFilePath);
+    // clean database
+    const auto configDir(directory(configFilePath));
+    for (const auto &dir : directoryEntries(configDir.data(), DirectoryEntryType::Directory)) {
+        if (dir == "." || dir == "..") {
+            continue;
+        }
+        for (const auto &file : directoryEntries((configDir % '/' + dir).data(), DirectoryEntryType::File)) {
+            const auto toRemove(configDir % '/' % dir % '/' + file);
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("removing " + toRemove, 0, remove(toRemove.data()));
+        }
+    }
+    return configDir;
 }
 
 /*!
