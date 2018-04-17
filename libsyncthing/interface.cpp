@@ -8,6 +8,8 @@ using namespace std;
 
 namespace LibSyncthing {
 
+///! \cond
+
 /*!
  * \brief Holds the user provided logging callback which is assigned via setLoggingCallback().
  */
@@ -63,6 +65,38 @@ void handleLoggingCallback(int logLevelInt, const char *msg, size_t msgSize)
     loggingCallback(logLevel, msg, msgSize);
 }
 
+class RunningState {
+public:
+    RunningState();
+    ~RunningState();
+    operator bool() const;
+
+private:
+    bool m_invalid;
+};
+
+inline RunningState::RunningState()
+{
+    if ((m_invalid = syncthingRunning.load())) {
+        return;
+    }
+    ::libst_loggingCallbackFunction = handleLoggingCallback;
+    syncthingRunning.store(true);
+}
+
+inline RunningState::~RunningState()
+{
+    ::libst_loggingCallbackFunction = nullptr;
+    syncthingRunning.store(false);
+}
+
+inline RunningState::operator bool() const
+{
+    return !m_invalid;
+}
+
+///! \endcond
+
 /*!
  * \brief Sets the callback function for logging. It will be called when a new log message becomes available.
  * \remarks The callback is not necessarily invoked in the same thread it was registered.
@@ -91,15 +125,12 @@ void setLoggingCallback(LoggingCallback &&callback)
  */
 long long runSyncthing(const RuntimeOptions &options)
 {
-    if (syncthingRunning.load()) {
+    const RunningState runningState;
+    if (!runningState) {
         return -1;
     }
-    syncthingRunning.store(true);
-    ::libst_loggingCallbackFunction = handleLoggingCallback;
-    const auto exitCode = ::libst_runSyncthing(
+    return ::libst_runSyncthingWithConfig(
         gostr(options.configDir), gostr(options.guiAddress), gostr(options.guiApiKey), gostr(options.logFile), options.verbose);
-    syncthingRunning.store(false);
-    return exitCode;
 }
 
 /*!
@@ -112,15 +143,35 @@ long long runSyncthing(const RuntimeOptions &options)
  */
 long long runSyncthing(const std::string &configDir)
 {
-    if (syncthingRunning.load()) {
+    const RunningState runningState;
+    if (!runningState) {
         return -1;
     }
-    syncthingRunning.store(true);
-    ::libst_loggingCallbackFunction = handleLoggingCallback;
     const string empty;
-    const auto exitCode = ::libst_runSyncthing(gostr(configDir), gostr(empty), gostr(empty), gostr(empty), false);
-    syncthingRunning.store(false);
-    return exitCode;
+    return ::libst_runSyncthingWithConfig(gostr(configDir), gostr(empty), gostr(empty), gostr(empty), false);
+}
+
+/*!
+ * \brief Runs a Syncthing instance using the specified raw \a cliArguments.
+ * \return Returns the exit code (as usual, zero means no error).
+ * \remark
+ * - Does nothing if Syncthing is already running.
+ * - Blocks the current thread as long as the instance is running.
+ *   Use eg. std::thread(runSyncthing, options) to run it in another thread.
+ */
+long long runSyncthing(const std::vector<string> &cliArguments)
+{
+    const RunningState runningState;
+    if (!runningState) {
+        return -1;
+    }
+    vector<const char *> argsAsGoStrings;
+    argsAsGoStrings.reserve(cliArguments.size());
+    for (const auto &arg : cliArguments) {
+        argsAsGoStrings.emplace_back(arg.data());
+    }
+    const GoSlice slice{ argsAsGoStrings.data(), static_cast<GoInt>(argsAsGoStrings.size()), static_cast<GoInt>(argsAsGoStrings.capacity()) };
+    return ::libst_runSyncthingWithArgs(slice);
 }
 
 /*!

@@ -9,6 +9,9 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
+#include <cstdlib>
+#include <functional>
+
 #include <unistd.h>
 
 using namespace std;
@@ -25,20 +28,25 @@ using namespace CPPUNIT_NS;
  */
 class InterfaceTests : public TestFixture {
     CPPUNIT_TEST_SUITE(InterfaceTests);
-    CPPUNIT_TEST(testRun);
+    CPPUNIT_TEST(testRunWidthConfig);
+    CPPUNIT_TEST(testRunWithArgs);
     CPPUNIT_TEST(testVersion);
     CPPUNIT_TEST_SUITE_END();
 
 public:
     InterfaceTests();
 
-    void testRun();
+    void testInitialState();
+    void testRunWidthConfig();
+    void testRunWithArgs();
     void testVersion();
 
     void setUp();
     void tearDown();
 
 private:
+    static std::string setupConfigDir();
+    void testRun(const std::function<long long(void)> &runFunction);
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(InterfaceTests);
@@ -57,26 +65,36 @@ void InterfaceTests::tearDown()
 }
 
 /*!
- * \brief Tests running Syncthing.
+ * \brief Initializes the Syncthing config for this fixture (currently using same config as in connector test).
+ * \returns Returns the config directory.
  */
-void InterfaceTests::testRun()
+string InterfaceTests::setupConfigDir()
+{
+    // setup Syncthing config (currently using same config as in connector test)
+    const auto configFilePath(workingCopyPath("testconfig/config.xml"));
+    if (configFilePath.empty()) {
+        throw runtime_error("Unable to setup Syncthing config directory.");
+    }
+    return directory(configFilePath);
+}
+
+/*!
+ * \brief Tests behavior in initial state, when Syncthing isn't supposed to be running.
+ */
+void InterfaceTests::testInitialState()
 {
     CPPUNIT_ASSERT_MESSAGE("initially not running", !isSyncthingRunning());
 
     // stopping and restarting Syncthing when not running should not cause any trouble
     stopSyncthing();
     restartSyncthing();
+}
 
-    // setup Syncthing config (currently using same config as in connector test)
-    const auto configFilePath(workingCopyPath("testconfig/config.xml"));
-    if (configFilePath.empty()) {
-        throw runtime_error("Unable to setup Syncthing config directory.");
-    }
-
-    // setup runtime options
-    RuntimeOptions options;
-    options.configDir = directory(configFilePath);
-
+/*!
+ * \brief Tests running Syncthing.
+ */
+void InterfaceTests::testRun(const std::function<long long()> &runFunction)
+{
     // keep track of certain log messages
     const auto startTime(DateTime::gmtNow());
     bool myIdAnnounced = false, performanceAnnounced = false;
@@ -127,7 +145,7 @@ void InterfaceTests::testRun()
         }
     });
 
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Syncthing exited without error", 0ll, runSyncthing(options));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Syncthing exited without error", 0ll, runFunction());
 
     // assert whether all expected log messages were present
     CPPUNIT_ASSERT(myIdAnnounced);
@@ -142,6 +160,23 @@ void InterfaceTests::testRun()
     // FIXME: make this test pass, stop Syncthing correctly
     sleep(5);
 }
+
+void InterfaceTests::testRunWidthConfig()
+{
+    RuntimeOptions options;
+    options.configDir = setupConfigDir();
+    testRun(bind(static_cast<long long (*)(const RuntimeOptions &)>(&runSyncthing), cref(options)));
+}
+
+void InterfaceTests::testRunWithArgs()
+{
+    const std::vector<std::string> args{
+        "-no-restart",
+        "-no-browser",
+        "-home",
+        setupConfigDir(),
+    };
+    testRun(bind(static_cast<long long (*)(const decltype(args) &)>(&runSyncthing), cref(args)));
 }
 
 /*!

@@ -5,6 +5,7 @@
 
 #include <functional>
 #include <string>
+#include <vector>
 
 namespace LibSyncthing {
 
@@ -32,6 +33,7 @@ void LIB_SYNCTHING_EXPORT setLoggingCallback(const LoggingCallback &callback);
 void LIB_SYNCTHING_EXPORT setLoggingCallback(LoggingCallback &&callback);
 long long LIB_SYNCTHING_EXPORT runSyncthing(const RuntimeOptions &options);
 long long LIB_SYNCTHING_EXPORT runSyncthing(const std::string &configDir);
+long long LIB_SYNCTHING_EXPORT runSyncthing(const std::vector<std::string> &cliArguments);
 bool LIB_SYNCTHING_EXPORT isSyncthingRunning();
 void LIB_SYNCTHING_EXPORT stopSyncthing();
 void LIB_SYNCTHING_EXPORT restartSyncthing();
