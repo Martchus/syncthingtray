@@ -54,7 +54,9 @@ QStringList SyncthingProcess::splitArguments(const QString &arguments)
         case ' ':
             switch (lastInput) {
             case Slash:
-                currentArg += c;
+                if (!currentArg.isEmpty()) {
+                    currentArg += c;
+                }
                 lastInput = Any;
                 break;
             case Space:
@@ -68,8 +70,10 @@ QStringList SyncthingProcess::splitArguments(const QString &arguments)
                     currentArg += c;
                     lastInput = Any;
                 } else {
-                    result << currentArg;
-                    currentArg.clear();
+                    if (!currentArg.isEmpty()) {
+                        result << currentArg;
+                        currentArg.clear();
+                    }
                     lastInput = Space;
                 }
             }

@@ -102,12 +102,26 @@ void MiscTests::testParsingConfig()
  */
 void MiscTests::testSplittingArguments()
 {
-    CPPUNIT_ASSERT_EQUAL(QStringList(), SyncthingProcess::splitArguments(QString()));
-    CPPUNIT_ASSERT_EQUAL(QStringList({ QStringLiteral("-simple") }), SyncthingProcess::splitArguments(QStringLiteral("-simple")));
-    CPPUNIT_ASSERT_EQUAL(QStringList({ QStringLiteral("-home"), QStringLiteral("some dir"), QStringLiteral("-no-restart") }),
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("empty arguments", QStringList(), SyncthingProcess::splitArguments(QString()));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("one argument without special characters", QStringList({ QStringLiteral("-simple") }),
+        SyncthingProcess::splitArguments(QStringLiteral("-simple")));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("multiple arguments without special characters",
+        QStringList({ QStringLiteral("-home"), QStringLiteral("some dir"), QStringLiteral("-no-restart") }),
         SyncthingProcess::splitArguments(QStringLiteral("-home \"some dir\" -no-restart")));
-    CPPUNIT_ASSERT_EQUAL(QStringList({ QStringLiteral("-home"), QStringLiteral("\"some"), QStringLiteral("dir\""), QStringLiteral("-no-restart") }),
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("quotation", QStringList({ QStringLiteral("-home"), QStringLiteral("some  dir"), QStringLiteral("-no-restart") }),
+        SyncthingProcess::splitArguments(QStringLiteral(" -home \"some  dir\"   -no-restart ")));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("escaped quotation",
+        QStringList({ QStringLiteral("-home"), QStringLiteral("\"some"), QStringLiteral("dir\""), QStringLiteral("-no-restart") }),
         SyncthingProcess::splitArguments(QStringLiteral("-home \\\"some dir\\\" -no-restart")));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("escaped spaces",
+        QStringList({ QStringLiteral("-home"), QStringLiteral("some dir"), QStringLiteral("-no-restart") }),
+        SyncthingProcess::splitArguments(QStringLiteral("-home \\ some\\ dir  -no-restart")));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("spaces at the beginning through quotes", QStringList({ QStringLiteral("foo"), QStringLiteral(" bar") }),
+        SyncthingProcess::splitArguments(QStringLiteral("foo \" bar\"")));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("spaces at the end through quotes", QStringList({ QStringLiteral("-home"), QStringLiteral("-no-restart ") }),
+        SyncthingProcess::splitArguments(QStringLiteral("-home \"-no-restart \"")));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("don't care about missing quote at the end", QStringList({ QStringLiteral("foo"), QStringLiteral(" bar") }),
+        SyncthingProcess::splitArguments(QStringLiteral("foo \" bar")));
 }
 
 /*!
