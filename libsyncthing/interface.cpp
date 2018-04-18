@@ -186,6 +186,8 @@ bool isSyncthingRunning()
 /*!
  * \brief Stops Syncthing if it is running; otherwise does nothing.
  * \returns Might be called from any thread.
+ * \todo Make this actually work. Currently crashes happen after stopping Syncthing.
+ * \sa https://github.com/syncthing/syncthing/issues/4085
  */
 void stopSyncthing()
 {
@@ -198,6 +200,8 @@ void stopSyncthing()
 /*!
  * \brief Restarts Syncthing if it is running; otherwise does nothing.
  * \returns Might be called from any thread.
+ * \todo Make this actually work. Currently crashes happen after stopping Syncthing.
+ * \sa https://github.com/syncthing/syncthing/issues/4085
  */
 void restartSyncthing()
 {
