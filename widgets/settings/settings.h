@@ -59,6 +59,7 @@ struct SYNCTHINGWIDGETS_EXPORT ToolParameter {
 
 struct SYNCTHINGWIDGETS_EXPORT Launcher {
     bool enabled = false;
+    bool useLibSyncthing = false;
     QString syncthingPath =
 #ifdef PLATFORM_WINDOWS
         QStringLiteral("syncthing.exe");
@@ -68,8 +69,6 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
     QString syncthingArgs;
     QHash<QString, ToolParameter> tools;
     bool considerForReconnect = false;
-    QString syncthingCmd() const;
-    QString toolCmd(const QString &tool) const;
     static Data::SyncthingProcess &toolProcess(const QString &tool);
     static std::vector<Data::SyncthingProcess *> allProcesses();
     void autostart() const;

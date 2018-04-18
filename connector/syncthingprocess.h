@@ -24,13 +24,14 @@ public:
     bool isManuallyStopped() const;
     static SyncthingProcess *mainInstance();
     static void setMainInstance(SyncthingProcess *mainInstance);
+    static QStringList splitArguments(const QString &arguments);
 
 Q_SIGNALS:
     void confirmKill();
 
 public Q_SLOTS:
-    void restartSyncthing(const QString &cmd);
-    void startSyncthing(const QString &cmd);
+    void restartSyncthing(const QString &program, const QStringList &arguments);
+    void startSyncthing(const QString &program, const QStringList &arguments);
     void stopSyncthing();
     void killSyncthing();
 
@@ -40,7 +41,8 @@ private Q_SLOTS:
     void killToRestart();
 
 private:
-    QString m_cmd;
+    QString m_program;
+    QStringList m_arguments;
     ChronoUtilities::DateTime m_activeSince;
     QTimer m_killTimer;
     bool m_manuallyStopped;

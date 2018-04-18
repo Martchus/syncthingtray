@@ -15,6 +15,7 @@ SyncthingLauncher *SyncthingLauncher::s_mainInstance = nullptr;
 
 SyncthingLauncher::SyncthingLauncher(QObject *parent)
     : QObject(parent)
+    , m_useLibSyncthing(false)
 {
     connect(&m_process, &SyncthingProcess::readyRead, this, &SyncthingLauncher::handleProcessReadyRead);
     connect(&m_process, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
@@ -31,22 +32,41 @@ bool SyncthingLauncher::isLibSyncthingAvailable()
 #endif
 }
 
-void SyncthingLauncher::launch(const QString &cmd)
+/*!
+ * \brief Launches a Syncthing instance using the specified \a arguments.
+ * \remarks To use the internal library, leave \a program empty. Otherwise it must be the path the external Syncthing executable.
+ */
+void SyncthingLauncher::launch(const QString &program, const QStringList &arguments)
 {
     if (isRunning()) {
         return;
     }
     m_manuallyStopped = false;
-    m_process.startSyncthing(cmd);
+    if (!program.isEmpty()) {
+        m_process.startSyncthing(program, arguments);
+    } else {
+        vector<string> utf8Arguments{ "-no-restart", "-no-browser" };
+        utf8Arguments.reserve(utf8Arguments.size() + static_cast<size_t>(arguments.size()));
+        for (const auto &arg : arguments) {
+            const auto utf8Data(arg.toUtf8());
+            utf8Arguments.emplace_back(utf8Data.data(), utf8Data.size());
+        }
+        m_future = QtConcurrent::run(
+            this, static_cast<void (SyncthingLauncher::*)(const std::vector<std::string> &)>(&SyncthingLauncher::runLibSyncthing), utf8Arguments);
+    }
 }
 
+/*!
+ * \brief Launches a Syncthing instance using the internal library with the specified \a runtimeOptions.
+ */
 void SyncthingLauncher::launch(const LibSyncthing::RuntimeOptions &runtimeOptions)
 {
     if (isRunning()) {
         return;
     }
     m_manuallyStopped = false;
-    m_future = QtConcurrent::run(this, &SyncthingLauncher::runLibSyncthing, runtimeOptions);
+    m_future = QtConcurrent::run(
+        this, static_cast<void (SyncthingLauncher::*)(const LibSyncthing::RuntimeOptions &)>(&SyncthingLauncher::runLibSyncthing), runtimeOptions);
 }
 
 void SyncthingLauncher::terminate()
@@ -87,13 +107,28 @@ void SyncthingLauncher::handleProcessFinished(int exitCode, QProcess::ExitStatus
     emit exited(exitCode, exitStatus);
 }
 
+static const char *const logLevelStrings[] = {
+    "[DEBUG]   ",
+    "[VERBOSE] ",
+    "[INFO]    ",
+    "[WARNING] ",
+    "[FATAL]   ",
+};
+
 void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, const char *message, size_t messageSize)
 {
 #ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
     if (level < LibSyncthing::LogLevel::Info) {
         return;
     }
-    emit outputAvailable(QByteArray(message, static_cast<int>(max<size_t>(numeric_limits<int>::max(), messageSize))));
+    QByteArray messageData;
+    messageSize = min<size_t>(numeric_limits<int>::max() - 20, messageSize);
+    messageData.reserve(static_cast<int>(messageSize) + 20);
+    messageData.append(logLevelStrings[static_cast<int>(level)]);
+    messageData.append(message, static_cast<int>(messageSize));
+    messageData.append('\n');
+
+    emit outputAvailable(move(messageData));
 #else
     VAR_UNUSED(level)
     VAR_UNUSED(message)
@@ -109,6 +144,19 @@ void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runt
     emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
 #else
     VAR_UNUSED(runtimeOptions)
+    emit outputAvailable("libsyncthing support not enabled");
+    emit exited(-1, QProcess::CrashExit);
+#endif
+}
+
+void SyncthingLauncher::runLibSyncthing(const std::vector<string> &arguments)
+{
+#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
+    LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
+    const auto exitCode = LibSyncthing::runSyncthing(arguments);
+    emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
+#else
+    VAR_UNUSED(arguments)
     emit outputAvailable("libsyncthing support not enabled");
     emit exited(-1, QProcess::CrashExit);
 #endif

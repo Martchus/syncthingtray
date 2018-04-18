@@ -52,20 +52,6 @@ namespace Settings {
  */
 static unordered_map<QString, SyncthingProcess> toolProcesses;
 
-QString Launcher::syncthingCmd() const
-{
-    return syncthingPath % QChar(' ') % syncthingArgs;
-}
-
-QString Launcher::toolCmd(const QString &tool) const
-{
-    const ToolParameter toolParams = tools.value(tool);
-    if (toolParams.path.isEmpty()) {
-        return QString();
-    }
-    return toolParams.path % QChar(' ') % toolParams.args;
-}
-
 SyncthingProcess &Launcher::toolProcess(const QString &tool)
 {
     return toolProcesses[tool];
@@ -92,12 +78,12 @@ void Launcher::autostart() const
     auto *const launcher(SyncthingLauncher::mainInstance());
     // TODO: allow using libsyncthing
     if (enabled && !syncthingPath.isEmpty() && launcher) {
-        launcher->launch(syncthingCmd());
+        launcher->launch(useLibSyncthing ? QString() : syncthingPath, SyncthingProcess::splitArguments(syncthingArgs));
     }
     for (auto i = tools.cbegin(), end = tools.cend(); i != end; ++i) {
         const ToolParameter &toolParams = i.value();
         if (toolParams.autostart && !toolParams.path.isEmpty()) {
-            toolProcesses[i.key()].startSyncthing(toolParams.path % QChar(' ') % toolParams.args);
+            toolProcesses[i.key()].startSyncthing(toolParams.path, SyncthingProcess::splitArguments(toolParams.args));
         }
     }
 }
@@ -194,6 +180,7 @@ void restore()
     settings.beginGroup(QStringLiteral("startup"));
     auto &launcher = v.launcher;
     launcher.enabled = settings.value(QStringLiteral("syncthingAutostart"), launcher.enabled).toBool();
+    launcher.useLibSyncthing = settings.value(QStringLiteral("useLibSyncthing"), launcher.useLibSyncthing).toBool();
     launcher.syncthingPath = settings.value(QStringLiteral("syncthingPath"), launcher.syncthingPath).toString();
     launcher.syncthingArgs = settings.value(QStringLiteral("syncthingArgs"), launcher.syncthingArgs).toString();
     launcher.considerForReconnect = settings.value(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect).toBool();
@@ -205,8 +192,6 @@ void restore()
         toolParams.path = settings.value(QStringLiteral("path"), toolParams.path).toString();
         toolParams.args = settings.value(QStringLiteral("args"), toolParams.args).toString();
         settings.endGroup();
-    }
-    for (auto i = launcher.tools.cbegin(), end = launcher.tools.cend(); i != end; ++i) {
     }
     settings.endGroup();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -280,6 +265,7 @@ void save()
     settings.beginGroup(QStringLiteral("startup"));
     const auto &launcher = v.launcher;
     settings.setValue(QStringLiteral("syncthingAutostart"), launcher.enabled);
+    settings.setValue(QStringLiteral("useLibSyncthing"), launcher.useLibSyncthing);
     settings.setValue(QStringLiteral("syncthingPath"), launcher.syncthingPath);
     settings.setValue(QStringLiteral("syncthingArgs"), launcher.syncthingArgs);
     settings.setValue(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect);

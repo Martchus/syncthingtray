@@ -19,6 +19,7 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
     Q_PROPERTY(bool running READ isRunning NOTIFY runningChanged)
     Q_PROPERTY(ChronoUtilities::DateTime activeSince READ activeSince)
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
+    Q_PROPERTY(bool useLibSyncthing READ isUseLibSyncthing WRITE setUseLibSyncthing)
 
 public:
     explicit SyncthingLauncher(QObject *parent = nullptr);
@@ -27,6 +28,7 @@ public:
     ChronoUtilities::DateTime activeSince() const;
     bool isActiveFor(unsigned int atLeastSeconds) const;
     bool isManuallyStopped() const;
+    bool isUseLibSyncthing() const;
     static bool isLibSyncthingAvailable();
     static SyncthingLauncher *mainInstance();
     static void setMainInstance(SyncthingLauncher *mainInstance);
@@ -38,7 +40,8 @@ Q_SIGNALS:
     void exited(int exitCode, QProcess::ExitStatus exitStatus);
 
 public Q_SLOTS:
-    void launch(const QString &cmd);
+    void setUseLibSyncthing(bool useLibSyncthing);
+    void launch(const QString &program, const QStringList &arguments);
     void launch(const LibSyncthing::RuntimeOptions &runtimeOptions);
     void terminate();
     void kill();
@@ -48,12 +51,14 @@ private Q_SLOTS:
     void handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void handleLoggingCallback(LibSyncthing::LogLevel, const char *message, std::size_t messageSize);
     void runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions);
+    void runLibSyncthing(const std::vector<std::string> &arguments);
 
 private:
     SyncthingProcess m_process;
     QFuture<void> m_future;
     ChronoUtilities::DateTime m_futureStarted;
     bool m_manuallyStopped;
+    bool m_useLibSyncthing;
     static SyncthingLauncher *s_mainInstance;
 };
 
@@ -81,6 +86,16 @@ inline bool SyncthingLauncher::isActiveFor(unsigned int atLeastSeconds) const
 inline bool SyncthingLauncher::isManuallyStopped() const
 {
     return m_manuallyStopped;
+}
+
+inline bool SyncthingLauncher::isUseLibSyncthing() const
+{
+    return m_useLibSyncthing;
+}
+
+inline void SyncthingLauncher::setUseLibSyncthing(bool useLibSyncthing)
+{
+    m_useLibSyncthing = useLibSyncthing;
 }
 
 inline SyncthingLauncher *SyncthingLauncher::mainInstance()

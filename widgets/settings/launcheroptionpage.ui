@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>QtGui::LauncherOptionPage</class>
  <widget class="QWidget" name="QtGui::LauncherOptionPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>507</width>
+    <height>391</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Syncthing launcher</string>
   </property>
@@ -47,15 +55,22 @@
       <item row="0" column="1">
        <widget class="Widgets::PathSelection" name="syncthingPathSelection" native="true"/>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="argumentsLabel">
         <property name="text">
          <string>Arguments</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="Widgets::ClearLineEdit" name="argumentsLineEdit"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="useBuiltInVersionCheckBox">
+        <property name="text">
+         <string>Use built-in Syncthing library (experimental)</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -212,6 +227,22 @@
     <hint type="destinationlabel">
      <x>257</x>
      <y>130</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useBuiltInVersionCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>syncthingPathSelection</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>320</x>
+     <y>58</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>320</x>
+     <y>36</y>
     </hint>
    </hints>
   </connection>

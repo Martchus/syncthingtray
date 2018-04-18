@@ -648,6 +648,7 @@ QWidget *LauncherOptionPage::setupWidget()
     const auto running(isRunning());
     ui()->launchNowPushButton->setHidden(running);
     ui()->stopPushButton->setHidden(!running);
+    ui()->useBuiltInVersionCheckBox->setHidden(!SyncthingLauncher::isLibSyncthingAvailable());
     // connect signals & slots
     if (m_process) {
         m_connections << QObject::connect(m_process, &SyncthingProcess::readyRead, bind(&LauncherOptionPage::handleSyncthingReadyRead, this));
@@ -655,8 +656,8 @@ QWidget *LauncherOptionPage::setupWidget()
             static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished),
             bind(&LauncherOptionPage::handleSyncthingExited, this, _1, _2));
     } else if (m_launcher) {
-        m_connections << QObject::connect(
-            m_launcher, &SyncthingLauncher::outputAvailable, bind(&LauncherOptionPage::handleSyncthingOutputAvailable, this, _1));
+        m_connections << QObject::connect(m_launcher, &SyncthingLauncher::outputAvailable, ui()->logTextEdit,
+            bind(&LauncherOptionPage::handleSyncthingOutputAvailable, this, _1), Qt::QueuedConnection);
         m_connections << QObject::connect(m_launcher, &SyncthingLauncher::exited, bind(&LauncherOptionPage::handleSyncthingExited, this, _1, _2));
     }
     QObject::connect(ui()->launchNowPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::launch, this));
@@ -669,6 +670,7 @@ bool LauncherOptionPage::apply()
     auto &settings = values().launcher;
     if (m_tool.isEmpty()) {
         settings.enabled = ui()->enabledCheckBox->isChecked();
+        settings.useLibSyncthing = ui()->useBuiltInVersionCheckBox->isChecked();
         settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
         settings.syncthingArgs = ui()->argumentsLineEdit->text();
         settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
@@ -686,11 +688,15 @@ void LauncherOptionPage::reset()
     const auto &settings = values().launcher;
     if (m_tool.isEmpty()) {
         ui()->enabledCheckBox->setChecked(settings.enabled);
+        ui()->useBuiltInVersionCheckBox->setChecked(settings.useLibSyncthing);
+        ui()->useBuiltInVersionCheckBox->setVisible(settings.useLibSyncthing || SyncthingLauncher::isLibSyncthingAvailable());
         ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
         ui()->argumentsLineEdit->setText(settings.syncthingArgs);
         ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
     } else {
         const ToolParameter params = settings.tools.value(m_tool);
+        ui()->useBuiltInVersionCheckBox->setChecked(false);
+        ui()->useBuiltInVersionCheckBox->setVisible(false);
         ui()->enabledCheckBox->setChecked(params.autostart);
         ui()->syncthingPathSelection->lineEdit()->setText(params.path);
         ui()->argumentsLineEdit->setText(params.args);
@@ -709,7 +715,7 @@ void LauncherOptionPage::handleSyncthingOutputAvailable(const QByteArray &output
     }
     QTextCursor cursor(ui()->logTextEdit->textCursor());
     cursor.movePosition(QTextCursor::End);
-    cursor.insertText(QString::fromLocal8Bit(output));
+    cursor.insertText(QString::fromUtf8(output));
     if (ui()->ensureCursorVisibleCheckBox->isChecked()) {
         ui()->logTextEdit->ensureCursorVisible();
     }
@@ -754,11 +760,13 @@ void LauncherOptionPage::launch()
     ui()->stopPushButton->show();
     ui()->stopPushButton->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Stop launched instance"));
     m_kill = false;
+    const auto launcherSettings(values().launcher);
     if (m_tool.isEmpty()) {
-        // TODO: allow using libsyncthing
-        m_launcher->launch(values().launcher.syncthingCmd());
+        m_launcher->launch(launcherSettings.useLibSyncthing ? QString() : launcherSettings.syncthingPath,
+            SyncthingProcess::splitArguments(launcherSettings.syncthingArgs));
     } else {
-        m_process->startSyncthing(values().launcher.toolCmd(m_tool));
+        const auto toolParams(launcherSettings.tools.value(m_tool));
+        m_process->startSyncthing(toolParams.path, SyncthingProcess::splitArguments(toolParams.args));
     }
 }
 

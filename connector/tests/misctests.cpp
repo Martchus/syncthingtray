@@ -1,6 +1,7 @@
 #include "../syncthingconfig.h"
 #include "../syncthingconnection.h"
 #include "../syncthingconnectionsettings.h"
+#include "../syncthingprocess.h"
 #include "../syncthingservice.h"
 #include "../utils.h"
 
@@ -29,6 +30,7 @@ using namespace CPPUNIT_NS;
 class MiscTests : public TestFixture {
     CPPUNIT_TEST_SUITE(MiscTests);
     CPPUNIT_TEST(testParsingConfig);
+    CPPUNIT_TEST(testSplittingArguments);
     CPPUNIT_TEST(testUtils);
     CPPUNIT_TEST(testService);
     CPPUNIT_TEST(testConnectionSettingsAndLoadingSelfSignedCert);
@@ -39,6 +41,7 @@ public:
     MiscTests();
 
     void testParsingConfig();
+    void testSplittingArguments();
     void testUtils();
     void testService();
     void testConnectionSettingsAndLoadingSelfSignedCert();
@@ -92,6 +95,19 @@ void MiscTests::testParsingConfig()
     CPPUNIT_ASSERT(configFile.isEmpty() || QFile::exists(configFile));
     const QString httpsCert(SyncthingConfig::locateHttpsCertificate());
     CPPUNIT_ASSERT(httpsCert.isEmpty() || QFile::exists(httpsCert));
+}
+
+/*!
+ * \brief Test splitting arguments via SyncthingProcess::splitArguments().
+ */
+void MiscTests::testSplittingArguments()
+{
+    CPPUNIT_ASSERT_EQUAL(QStringList(), SyncthingProcess::splitArguments(QString()));
+    CPPUNIT_ASSERT_EQUAL(QStringList({ QStringLiteral("-simple") }), SyncthingProcess::splitArguments(QStringLiteral("-simple")));
+    CPPUNIT_ASSERT_EQUAL(QStringList({ QStringLiteral("-home"), QStringLiteral("some dir"), QStringLiteral("-no-restart") }),
+        SyncthingProcess::splitArguments(QStringLiteral("-home \"some dir\" -no-restart")));
+    CPPUNIT_ASSERT_EQUAL(QStringList({ QStringLiteral("-home"), QStringLiteral("\"some"), QStringLiteral("dir\""), QStringLiteral("-no-restart") }),
+        SyncthingProcess::splitArguments(QStringLiteral("-home \\\"some dir\\\" -no-restart")));
 }
 
 /*!
