@@ -59,6 +59,7 @@ SyncthingService::SyncthingService(QObject *parent)
     , m_manuallyStopped(false)
     , m_unitAvailable(false)
 {
+#ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
     if (!s_manager) {
         // register custom data types
         qDBusRegisterMetaType<ManagerDBusUnitFileChange>();
@@ -80,34 +81,55 @@ SyncthingService::SyncthingService(QObject *parent)
     m_serviceWatcher = new QDBusServiceWatcher(s_manager->service(), s_manager->connection());
     connect(m_serviceWatcher, &QDBusServiceWatcher::serviceRegistered, this, &SyncthingService::handleServiceRegisteredChanged);
     connect(m_serviceWatcher, &QDBusServiceWatcher::serviceUnregistered, this, &SyncthingService::handleServiceRegisteredChanged);
+#else
+    // let the mocked service initially be stopped and simulate start after 5 seconds
+    QTimer::singleShot(5000, this, [this] {
+        m_activeSince = DateTime::gmtNow() - TimeSpan::fromMilliseconds(250);
+        handlePropertiesChanged(QStringLiteral("syncthing.mocked-service"),
+            QVariantMap{ { QStringLiteral("ActiveState"), QStringLiteral("active") }, { QStringLiteral("SubState"), QStringLiteral("running") },
+                { QStringLiteral("Description"), QStringLiteral("This service is fake.") } },
+            QStringList());
+    });
+#endif
 }
 
 void SyncthingService::setUnitName(const QString &unitName)
 {
-    if (m_unitName != unitName) {
-        m_unitName = unitName;
-
-        delete m_service, delete m_unit, delete m_properties;
-        m_service = nullptr, m_unit = nullptr, m_properties = nullptr;
-        setProperties(false, QString(), QString(), QString(), QString());
-
-        if (s_manager->isValid()) {
-            connect(new QDBusPendingCallWatcher(s_manager->GetUnit(m_unitName), this), &QDBusPendingCallWatcher::finished, this,
-                &SyncthingService::handleUnitGet);
-        }
-
-        emit unitNameChanged(unitName);
+    if (m_unitName == unitName) {
+        return;
     }
+    m_unitName = unitName;
+
+    delete m_service, delete m_unit, delete m_properties;
+    m_service = nullptr, m_unit = nullptr, m_properties = nullptr;
+    setProperties(false, QString(), QString(), QString(), QString());
+
+#ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
+    if (s_manager->isValid()) {
+        connect(new QDBusPendingCallWatcher(s_manager->GetUnit(m_unitName), this), &QDBusPendingCallWatcher::finished, this,
+            &SyncthingService::handleUnitGet);
+    }
+#endif
+
+    emit unitNameChanged(unitName);
 }
 
 bool SyncthingService::isSystemdAvailable() const
 {
+#ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
     return s_manager && s_manager->isValid();
+#else
+    return true;
+#endif
 }
 
 bool SyncthingService::isUnitAvailable() const
 {
+#ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
     return m_unit && m_unit->isValid();
+#else
+    return true;
+#endif
 }
 
 bool SyncthingService::isActiveWithoutSleepFor(DateTime activeSince, unsigned int atLeastSeconds)
@@ -125,21 +147,25 @@ bool SyncthingService::isActiveWithoutSleepFor(DateTime activeSince, unsigned in
 
 void SyncthingService::setRunning(bool running)
 {
+#ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
     m_manuallyStopped = !running;
     if (running) {
         registerErrorHandler(s_manager->StartUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("start unit"));
     } else {
         registerErrorHandler(s_manager->StopUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("stop unit"));
     }
+#endif
 }
 
 void SyncthingService::setEnabled(bool enabled)
 {
+#ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
     if (enabled) {
         registerErrorHandler(s_manager->EnableUnitFiles(QStringList(m_unitName), false, true), QT_TR_NOOP_UTF8("enable unit"));
     } else {
         registerErrorHandler(s_manager->DisableUnitFiles(QStringList(m_unitName), false), QT_TR_NOOP_UTF8("disable unit"));
     }
+#endif
 }
 
 void SyncthingService::handleUnitAdded(const QString &unitName, const QDBusObjectPath &unitPath)
@@ -172,34 +198,41 @@ void SyncthingService::handleUnitGet(QDBusPendingCallWatcher *watcher)
 void SyncthingService::handlePropertiesChanged(
     const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
-    if (interface == m_unit->interface()) {
-        handlePropertyChanged(m_activeSince, QStringLiteral("ActiveEnterTimestamp"), changedProperties, invalidatedProperties);
-
-        const bool wasRunningBefore = isRunning();
-        if (handlePropertyChanged(
-                m_activeState, &SyncthingService::activeStateChanged, QStringLiteral("ActiveState"), changedProperties, invalidatedProperties)
-            | handlePropertyChanged(
-                  m_subState, &SyncthingService::subStateChanged, QStringLiteral("SubState"), changedProperties, invalidatedProperties)) {
-            emit stateChanged(m_activeState, m_subState, m_activeSince);
-        }
-        const bool currentlyRunning = isRunning();
-        if (currentlyRunning) {
-            m_manuallyStopped = false;
-        }
-        if (wasRunningBefore != currentlyRunning) {
-            emit runningChanged(currentlyRunning);
-        }
-
-        const bool wasEnabledBefore = isEnabled();
-        handlePropertyChanged(
-            m_unitFileState, &SyncthingService::unitFileStateChanged, QStringLiteral("UnitFileState"), changedProperties, invalidatedProperties);
-        if (wasEnabledBefore != isEnabled()) {
-            emit enabledChanged(isEnabled());
-        }
-
-        handlePropertyChanged(
-            m_description, &SyncthingService::descriptionChanged, QStringLiteral("Description"), changedProperties, invalidatedProperties);
+#ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
+    if (interface != m_unit->interface()) {
+        return;
     }
+#else
+    if (interface != QStringLiteral("syncthing.mocked-service")) {
+        return;
+    }
+#endif
+    handlePropertyChanged(m_activeSince, QStringLiteral("ActiveEnterTimestamp"), changedProperties, invalidatedProperties);
+
+    const bool wasRunningBefore = isRunning();
+    if (handlePropertyChanged(
+            m_activeState, &SyncthingService::activeStateChanged, QStringLiteral("ActiveState"), changedProperties, invalidatedProperties)
+        | handlePropertyChanged(
+              m_subState, &SyncthingService::subStateChanged, QStringLiteral("SubState"), changedProperties, invalidatedProperties)) {
+        emit stateChanged(m_activeState, m_subState, m_activeSince);
+    }
+    const bool currentlyRunning = isRunning();
+    if (currentlyRunning) {
+        m_manuallyStopped = false;
+    }
+    if (wasRunningBefore != currentlyRunning) {
+        emit runningChanged(currentlyRunning);
+    }
+
+    const bool wasEnabledBefore = isEnabled();
+    handlePropertyChanged(
+        m_unitFileState, &SyncthingService::unitFileStateChanged, QStringLiteral("UnitFileState"), changedProperties, invalidatedProperties);
+    if (wasEnabledBefore != isEnabled()) {
+        emit enabledChanged(isEnabled());
+    }
+
+    handlePropertyChanged(
+        m_description, &SyncthingService::descriptionChanged, QStringLiteral("Description"), changedProperties, invalidatedProperties);
 }
 
 void SyncthingService::handleError(const char *context, QDBusPendingCallWatcher *watcher)

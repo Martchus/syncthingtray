@@ -102,6 +102,16 @@ if(SYNCTHING_CONNECTION_MOCKED)
     message(WARNING "SyncthingConnection class will be mocked")
 endif()
 
+# configure whether the service should be mocked for test purposes
+option(SYNCTHING_SERVICE_MOCKED "enables mocking the SyncthingService class so it will provide some fake status" OFF)
+if(SYNCTHING_SERVICE_MOCKED)
+    set_source_files_properties(
+        syncthingservice.cpp
+        PROPERTIES COMPILE_DEFINITIONS LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
+    )
+    message(WARNING "SyncthingService class will be mocked")
+endif()
+
 # configure whether events should be logged
 option(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS "enables logging event data to stdout (enable only for debugging!)" OFF)
 if(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS)
