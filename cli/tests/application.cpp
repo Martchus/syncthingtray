@@ -88,7 +88,8 @@ void ApplicationTests::test()
     setenv("ENABLE_ESCAPE_CODES", "0", true);
 
     // load expected status
-    const regex expectedStatus(readFile(testFilePath("expected-status.txt"), 2048));
+    const auto expectedStatusData(readFile(testFilePath("expected-status.txt"), 2048));
+    const regex expectedStatus(expectedStatusData);
 
     // save cwd (to restore later)
     char cwd[1024];
@@ -114,7 +115,10 @@ void ApplicationTests::test()
     const char *const statusArgs[] = { "syncthingctl", "status", "--api-key", apiKey.data(), "--url", url.data(), nullptr };
     TESTUTILS_ASSERT_EXEC(statusArgs);
     cout << stdout;
-    CPPUNIT_ASSERT(regex_search(stdout, expectedStatus));
+    if (!regex_search(stdout, expectedStatus)) {
+        cout << "expected status: " << expectedStatusData << '\n';
+        CPPUNIT_FAIL("Actual status does not match expected status.");
+    }
 
     // test log
     const char *const logArgs[] = { "syncthingctl", "log", "--api-key", apiKey.data(), "--url", url.data(), nullptr };
@@ -125,17 +129,21 @@ void ApplicationTests::test()
     CPPUNIT_ASSERT(stdout.find("Startup complete") != string::npos);
     CPPUNIT_ASSERT(stdout.find("Access the GUI via the following URL") != string::npos);
 
+    // use environment variables to specify API-key and URL
+    setenv("SYNCTHING_CTL_API_KEY", apiKey.data(), true);
+    setenv("SYNCTHING_CTL_URL", url.data(), true);
+
     // test resume, verify via status for dirs only
-    const char *const resumeArgs[] = { "syncthingctl", "resume", "--dir", "test2", "--api-key", apiKey.data(), "--url", url.data(), nullptr };
-    const char *const statusDirsOnlyArgs[] = { "syncthingctl", "status", "--all-dirs", "--api-key", apiKey.data(), "--url", url.data(), nullptr };
+    const char *const resumeArgs[] = { "syncthingctl", "resume", "--dir", "test2", nullptr };
+    const char *const statusDirsOnlyArgs[] = { "syncthingctl", "status", "--all-dirs", nullptr };
     TESTUTILS_ASSERT_EXEC(resumeArgs);
     TESTUTILS_ASSERT_EXEC(statusDirsOnlyArgs);
     CPPUNIT_ASSERT(stdout.find("test2") != string::npos);
     CPPUNIT_ASSERT(stdout.find("paused") == string::npos);
 
     // test pause, verify via status on specific dir
-    const char *const pauseArgs[] = { "syncthingctl", "pause", "--dir", "test2", "--api-key", apiKey.data(), "--url", url.data(), nullptr };
-    const char *const statusTest2Args[] = { "syncthingctl", "status", "--dir", "test2", "--api-key", apiKey.data(), "--url", url.data(), nullptr };
+    const char *const pauseArgs[] = { "syncthingctl", "pause", "--dir", "test2", nullptr };
+    const char *const statusTest2Args[] = { "syncthingctl", "status", "--dir", "test2", nullptr };
     TESTUTILS_ASSERT_EXEC(pauseArgs);
     TESTUTILS_ASSERT_EXEC(statusTest2Args);
     CPPUNIT_ASSERT(stdout.find("test1") == string::npos);
@@ -156,9 +164,8 @@ void ApplicationTests::test()
 
     // test edit
 #if defined(SYNCTHINGCTL_USE_JSENGINE) || defined(SYNCTHINGCTL_USE_SCRIPT)
-    const char *const editArgs[] = { "syncthingctl", "edit", "--js-lines", "assignIfPresent(findFolder('test1'), 'rescanIntervalS', 0);", "--api-key",
-        apiKey.data(), "--url", url.data(), nullptr };
-    const char *const statusTest1Args[] = { "syncthingctl", "status", "--dir", "test1", "--api-key", apiKey.data(), "--url", url.data(), nullptr };
+    const char *const editArgs[] = { "syncthingctl", "edit", "--js-lines", "assignIfPresent(findFolder('test1'), 'rescanIntervalS', 0);", nullptr };
+    const char *const statusTest1Args[] = { "syncthingctl", "status", "--dir", "test1", nullptr };
     TESTUTILS_ASSERT_EXEC(editArgs);
     cout << stdout;
     TESTUTILS_ASSERT_EXEC(statusTest1Args);
@@ -170,7 +177,7 @@ void ApplicationTests::test()
 
     // test rescan: create new file, trigger rescan, check status
     CPPUNIT_ASSERT(ofstream("/tmp/some/path/1/new-file.txt") << "foo");
-    const char *const rescanArgs[] = { "syncthingctl", "rescan", "test1", "--api-key", apiKey.data(), "--url", url.data(), nullptr };
+    const char *const rescanArgs[] = { "syncthingctl", "rescan", "test1", nullptr };
     TESTUTILS_ASSERT_EXEC(rescanArgs);
     cout << stdout;
     TESTUTILS_ASSERT_EXEC(statusTest1Args);
@@ -188,7 +195,7 @@ void ApplicationTests::test()
     const char *const llvmProfileFile(getenv("LLVM_PROFILE_FILE"));
     setenv("LLVM_PROFILE_FILE", "/tmp/syncthingctl-%p.profraw", true);
     // -> do actual test
-    const char *const pwdRescanArgs[] = { "syncthingctl", "pwd", "rescan", "--api-key", apiKey.data(), "--url", url.data(), nullptr };
+    const char *const pwdRescanArgs[] = { "syncthingctl", "pwd", "rescan", nullptr };
     TESTUTILS_ASSERT_EXEC(pwdRescanArgs);
     cout << stdout;
     // -> restore LLVM_PROFILE_FILE
@@ -198,7 +205,7 @@ void ApplicationTests::test()
         unsetenv("LLVM_PROFILE_FILE");
     }
     // -> verify result
-    const char *const pwdStatusArgs[] = { "syncthingctl", "pwd", "status", "--api-key", apiKey.data(), "--url", url.data(), nullptr };
+    const char *const pwdStatusArgs[] = { "syncthingctl", "pwd", "status", nullptr };
     TESTUTILS_ASSERT_EXEC(pwdStatusArgs);
     cout << stdout;
     CPPUNIT_ASSERT(stdout.find("test1") != string::npos);
