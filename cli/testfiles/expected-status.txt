@@ -37,7 +37,7 @@ Devices
    Addresses                     tcp://.*22000
    Compression                   metadata
 
- - martchus-arch
+ - .*
    ID                            \w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w
    Status                        own device
    Addresses                     dynamic
