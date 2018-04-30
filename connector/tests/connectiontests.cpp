@@ -1,8 +1,8 @@
 #include "../syncthingconnection.h"
 #include "../syncthingconnectionsettings.h"
 
-#include "../testhelper/helper.h"
-#include "../testhelper/syncthingtestinstance.h"
+#include "../../testhelper/helper.h"
+#include "../../testhelper/syncthingtestinstance.h"
 
 #include <c++utilities/tests/testutils.h>
 

@@ -10,7 +10,7 @@
 #include <c++utilities/chrono/timespan.h>
 #include <c++utilities/tests/testutils.h>
 
-#include "../testhelper/helper.h"
+#include "../../testhelper/helper.h"
 
 #include <cppunit/TestFixture.h>
 

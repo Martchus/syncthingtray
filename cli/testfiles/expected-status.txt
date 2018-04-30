@@ -1,0 +1,44 @@
+Directories
+ - test2
+   Label                         Test dir 2
+   Path                          /tmp/some/path/2/
+   Status                        paused
+      Global                        0 file\(s\), 0 dir\(s\), 0 bytes
+      Local                         0 file\(s\), 0 dir\(s\), 0 bytes
+   Shared with                   Test dev 2
+   Read-only                     no
+   Ignore permissions            no
+   Auto-normalize                yes
+   Rescan interval               365 d
+
+ - test1
+   Path                          /tmp/some/path/1/
+   Status                        (idle|scanning)
+      Global                        0 file\(s\), 0 dir\(s\), 0 bytes
+      Local                         0 file\(s\), 0 dir\(s\), 0 bytes
+   Last scan time                \d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.*
+   Shared with                   Test dev 2
+                                 Test dev 1
+   Read-only                     no
+   Ignore permissions            no
+   Auto-normalize                yes
+   Rescan interval               2 h
+
+Devices
+ - Test dev 1
+   ID                            6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4
+   Status                        disconnected
+   Addresses                     dynamic
+   Compression                   metadata
+
+ - Test dev 2
+   ID                            MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7
+   Status                        paused
+   Addresses                     tcp://.*22000
+   Compression                   metadata
+
+ - martchus-arch
+   ID                            \w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w
+   Status                        own device
+   Addresses                     dynamic
+   Compression                   metadata

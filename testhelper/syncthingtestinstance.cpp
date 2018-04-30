@@ -71,14 +71,16 @@ void SyncthingTestInstance::start()
 
     // start st
     cerr << "\n - Launching Syncthing ..." << endl;
-    QStringList args;
-    args.reserve(2);
-    args << QStringLiteral("-gui-address=http://localhost:") + m_syncthingPort;
-    args << QStringLiteral("-gui-apikey=") + m_apiKey;
-    args << QStringLiteral("-home=") + configFile.absolutePath();
-    args << QStringLiteral("-no-browser");
-    args << QStringLiteral("-verbose");
+    // clang-format off
+    const QStringList args{
+        QStringLiteral("-gui-address=http://localhost:") + m_syncthingPort,
+        QStringLiteral("-gui-apikey=") + m_apiKey,
+        QStringLiteral("-home=") + configFile.absolutePath(),
+        QStringLiteral("-no-browser"),
+        QStringLiteral("-verbose"),
+    };
     m_syncthingProcess.start(syncthingPath, args);
+    // clang-format on
 }
 
 /*!

@@ -18,6 +18,12 @@ set(SRC_FILES
     args.cpp
     application.cpp
 )
+set(TEST_HEADER_FILES
+)
+set(TEST_SRC_FILES
+    tests/cppunit.cpp
+    tests/application.cpp
+)
 
 # find c++utilities
 find_package(c++utilities 4.14.0 REQUIRED)
@@ -31,6 +37,15 @@ list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector()
 
+find_package(syncthingtesthelper ${META_APP_VERSION} REQUIRED)
+if(SYNCTHINGTESTHELPER_HAS_SHARED_LIB)
+    list(APPEND TEST_LIBRARIES syncthingtesthelper)
+elseif(SYNCTHINGTESTHELPER_HAS_STATIC_LIB)
+    list(APPEND TEST_LIBRARIES syncthingtesthelper_static)
+else()
+    message(WARNING "Unable to build tests. Testhelper not found.")
+endif()
+
 # include modules to apply configuration
 include(BasicConfig)
 include(JsProviderConfig)
@@ -42,6 +57,9 @@ endif()
 include(QtConfig)
 include(WindowsResources)
 include(AppTarget)
+if(SYNCTHINGTESTHELPER_HAS_SHARED_LIB OR SYNCTHINGTESTHELPER_HAS_STATIC_LIB)
+    include(TestTarget)
+endif()
 include(ShellCompletion)
 include(Doxygen)
 include(ConfigHeader)
