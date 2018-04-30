@@ -77,6 +77,7 @@ public:
     void testDisconnecting();
     void testConnectingWithSettings();
     void testRequestingRescan();
+    void testDealingWithArbitraryConfig();
 
     void setUp();
     void tearDown();
@@ -228,6 +229,7 @@ void ConnectionTests::testConnection()
     testDisconnecting();
     testConnectingWithSettings();
     testRequestingRescan();
+    testDealingWithArbitraryConfig();
 }
 
 void ConnectionTests::testErrorCases()
@@ -572,4 +574,36 @@ void ConnectionTests::testRequestingRescan()
     };
     waitForSignals(bind(&SyncthingConnection::rescan, &m_connection, QStringLiteral("non-existing-dir"), QStringLiteral("sub/path")), 5000,
         connectionSignal(&SyncthingConnection::error, errorHandler, &errorOccured));
+}
+
+void ConnectionTests::testDealingWithArbitraryConfig()
+{
+    cerr << "\n - Changing arbitrary config ..." << endl;
+
+    // read some value, eg. options.relayReconnectIntervalM
+    auto rawConfig(m_connection.rawConfig());
+    auto optionsIterator(rawConfig.find(QLatin1String("options")));
+    CPPUNIT_ASSERT(optionsIterator != rawConfig.end());
+    auto optionsRef(optionsIterator.value());
+    CPPUNIT_ASSERT_EQUAL(QJsonValue::Object, optionsRef.type());
+    auto options(optionsRef.toObject());
+    CPPUNIT_ASSERT_EQUAL(10, options.value(QLatin1String("relayReconnectIntervalM")).toInt());
+
+    // change a value
+    options.insert(QLatin1String("relayReconnectIntervalM"), 75);
+    optionsRef = options;
+
+    // expect the change via newConfig() signal
+    bool hasNewConfig = false;
+    function<void(const QJsonObject &newConfig)> handleNewConfig([&hasNewConfig](const QJsonObject &newConfig) {
+        const auto newIntervall(newConfig.value(QLatin1String("options")).toObject().value(QLatin1String("relayReconnectIntervalM")).toInt());
+        if (newIntervall == 75) {
+            hasNewConfig = true;
+        }
+    });
+
+    // post new config
+    waitForSignalsOrFail(bind(&SyncthingConnection::postConfigFromJsonObject, &m_connection, ref(rawConfig)), 5000,
+        connectionSignal(&SyncthingConnection::error), connectionSignal(&SyncthingConnection::newConfigTriggered),
+        connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig));
 }
