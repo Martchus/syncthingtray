@@ -46,7 +46,9 @@ public:
     ~TrayWidget();
 
     Data::SyncthingConnection &connection();
+    const Data::SyncthingConnection &connection() const;
     Data::SyncthingNotifier &notifier();
+    const Data::SyncthingNotifier &notifier() const;
     QMenu *connectionsMenu();
     static const std::vector<TrayWidget *> &instances();
 
@@ -112,7 +114,17 @@ inline Data::SyncthingConnection &TrayWidget::connection()
     return m_connection;
 }
 
+inline const Data::SyncthingConnection &TrayWidget::connection() const
+{
+    return m_connection;
+}
+
 inline Data::SyncthingNotifier &TrayWidget::notifier()
+{
+    return m_notifier;
+}
+
+inline const Data::SyncthingNotifier &TrayWidget::notifier() const
 {
     return m_notifier;
 }

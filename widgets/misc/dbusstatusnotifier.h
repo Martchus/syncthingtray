@@ -27,12 +27,15 @@ public Q_SLOTS:
     void showInternalError(const InternalError &error);
     void showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message);
     void showSyncComplete(const QString &message);
+    void showNewDev(const QString &devId, const QString &message);
+    void showNewDir(const QString &devId, const QString &dirId, const QString &message);
 
 Q_SIGNALS:
     void connectRequested();
     void dismissNotificationsRequested();
     void showNotificationsRequested();
     void errorDetailsRequested();
+    void webUiRequested();
 
 private Q_SLOTS:
     void handleSyncthingNotificationAction(const QString &action);
@@ -42,6 +45,8 @@ private:
     MiscUtils::DBusNotification m_internalErrorNotification;
     MiscUtils::DBusNotification m_syncthingNotification;
     MiscUtils::DBusNotification m_syncCompleteNotification;
+    MiscUtils::DBusNotification m_newDevNotification;
+    MiscUtils::DBusNotification m_newDirNotification;
 };
 
 inline void DBusStatusNotifier::showDisconnect()
@@ -69,6 +74,20 @@ inline void DBusStatusNotifier::showSyncComplete(const QString &message)
 {
     m_syncCompleteNotification.update(message);
 }
+
+inline void DBusStatusNotifier::showNewDev(const QString &devId, const QString &message)
+{
+    Q_UNUSED(devId)
+    m_newDevNotification.update(message);
+}
+
+inline void DBusStatusNotifier::showNewDir(const QString &devId, const QString &dirId, const QString &message)
+{
+    Q_UNUSED(devId)
+    Q_UNUSED(dirId)
+    m_newDirNotification.update(message);
+}
+
 } // namespace QtGui
 
 #endif // !defined(SYNCTHINGWIDGETS_DBUSSTATUSNOTIFIER_H) && defined(QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS)

@@ -41,6 +41,8 @@ struct SYNCTHINGWIDGETS_EXPORT NotifyOn {
     bool localSyncComplete = false;
     bool remoteSyncComplete = false;
     bool syncthingErrors = true;
+    bool newDeviceConnects = false;
+    bool newDirectoryShared = false;
 };
 
 struct SYNCTHINGWIDGETS_EXPORT Appearance {

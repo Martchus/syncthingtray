@@ -39,25 +39,32 @@ namespace QtGui {
 TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     : QSystemTrayIcon(parent)
     , m_trayMenu(connectionConfig, this)
+    , m_dbusNotificationsEnabled(Settings::values().dbusNotifications)
+    , m_notifyOnSyncthingErrors(Settings::values().notifyOn.syncthingErrors)
     , m_messageClickedAction(TrayIconMessageClickedAction::None)
 {
+    // get widget, connection and notifier
+    const auto &widget(m_trayMenu.widget());
+    const auto &connection(widget.connection());
+    const auto &notifier(widget.notifier());
+
     // set context menu
     connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("internet-web-browser"),
                                         QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))),
                 tr("Web UI")),
-        &QAction::triggered, &m_trayMenu.widget(), &TrayWidget::showWebUi);
+        &QAction::triggered, &widget, &TrayWidget::showWebUi);
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))),
                 tr("Settings")),
-        &QAction::triggered, &m_trayMenu.widget(), &TrayWidget::showSettingsDialog);
+        &QAction::triggered, &widget, &TrayWidget::showSettingsDialog);
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("folder-sync"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/folder-sync.svg"))),
                 tr("Rescan all")),
-        &QAction::triggered, &m_trayMenu.widget().connection(), &SyncthingConnection::rescanAllDirs);
+        &QAction::triggered, &widget.connection(), &SyncthingConnection::rescanAllDirs);
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))),
                 tr("Log")),
-        &QAction::triggered, &m_trayMenu.widget(), &TrayWidget::showLog);
+        &QAction::triggered, &widget, &TrayWidget::showLog);
     m_errorsAction = m_contextMenu.addAction(
         QIcon::fromTheme(QStringLiteral("emblem-error"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-error.svg"))),
         tr("Show internal errors"));
@@ -66,7 +73,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     m_contextMenu.addMenu(m_trayMenu.widget().connectionsMenu());
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("help-about"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/help-about.svg"))), tr("About")),
-        &QAction::triggered, &m_trayMenu.widget(), &TrayWidget::showAboutDialog);
+        &QAction::triggered, &widget, &TrayWidget::showAboutDialog);
     m_contextMenu.addSeparator();
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("window-close"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))),
@@ -75,23 +82,24 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     setContextMenu(&m_contextMenu);
 
     // connect signals and slots
-    const SyncthingConnection &connection = m_trayMenu.widget().connection();
-    const SyncthingNotifier &notifier = m_trayMenu.widget().notifier();
     connect(this, &TrayIcon::activated, this, &TrayIcon::handleActivated);
     connect(this, &TrayIcon::messageClicked, this, &TrayIcon::handleMessageClicked);
     connect(&connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
     connect(&connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
     connect(&notifier, &SyncthingNotifier::disconnected, this, &TrayIcon::showDisconnected);
     connect(&notifier, &SyncthingNotifier::syncComplete, this, &TrayIcon::showSyncComplete);
+    connect(&notifier, &SyncthingNotifier::newDevice, this, &TrayIcon::showNewDev);
+    connect(&notifier, &SyncthingNotifier::newDir, this, &TrayIcon::showNewDir);
     connect(&connection, &SyncthingConnection::statusChanged, this, &TrayIcon::updateStatusIconAndText);
     connect(&connection, &SyncthingConnection::newDevices, this, &TrayIcon::updateStatusIconAndText);
     connect(&connection, &SyncthingConnection::devStatusChanged, this, &TrayIcon::updateStatusIconAndText);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, &connection,
         static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
-    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, &m_trayMenu.widget(), &TrayWidget::dismissNotifications);
-    connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, &m_trayMenu.widget(), &TrayWidget::showNotifications);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, &widget, &TrayWidget::dismissNotifications);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, &widget, &TrayWidget::showNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &TrayIcon::showInternalErrorsDialog);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, &widget, &TrayWidget::showWebUi);
     connect(&notifier, &SyncthingNotifier::connected, &m_dbusNotifier, &DBusStatusNotifier::hideDisconnect);
 #endif
 }
@@ -141,13 +149,16 @@ void TrayIcon::handleMessageClicked()
     case TrayIconMessageClickedAction::ShowInternalErrors:
         showInternalErrorsDialog();
         break;
+    case TrayIconMessageClickedAction::ShowWebUi:
+        m_trayMenu.widget().showWebUi();
+        break;
     }
 }
 
 void TrayIcon::showDisconnected()
 {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-    if (Settings::values().dbusNotifications) {
+    if (m_dbusNotificationsEnabled) {
         m_dbusNotifier.showDisconnect();
     } else
 #endif
@@ -160,7 +171,7 @@ void TrayIcon::showDisconnected()
 void TrayIcon::showSyncComplete(const QString &message)
 {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-    if (Settings::values().dbusNotifications) {
+    if (m_dbusNotificationsEnabled) {
         m_dbusNotifier.showSyncComplete(message);
     } else
 #endif
@@ -183,7 +194,7 @@ void TrayIcon::showInternalError(
     }
     InternalError error(errorMsg, request.url(), response);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-    if (Settings::values().dbusNotifications) {
+    if (m_dbusNotificationsEnabled) {
         m_dbusNotifier.showInternalError(error);
     } else
 #endif
@@ -197,10 +208,9 @@ void TrayIcon::showInternalError(
 
 void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message)
 {
-    const auto &settings(Settings::values());
-    if (settings.notifyOn.syncthingErrors) {
+    if (m_notifyOnSyncthingErrors) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-        if (settings.dbusNotifications) {
+        if (m_dbusNotificationsEnabled) {
             m_dbusNotifier.showSyncthingNotification(when, message);
         } else
 #else
@@ -223,6 +233,37 @@ void TrayIcon::updateStatusIconAndText()
         setToolTip(statusInfo.statusText() % QChar('\n') % statusInfo.additionalStatusText());
     }
     setIcon(statusInfo.statusIcon());
+}
+
+void TrayIcon::showNewDev(const QString &devId, const QString &message)
+{
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    if (m_dbusNotificationsEnabled) {
+        m_dbusNotifier.showNewDev(devId, message);
+    } else
+#else
+    Q_UNUSED(devId)
+#endif
+    {
+        m_messageClickedAction = TrayIconMessageClickedAction::ShowWebUi;
+        showMessage(tr("Syncthing device wants to connect - click for web UI"), message, QSystemTrayIcon::Information);
+    }
+}
+
+void TrayIcon::showNewDir(const QString &devId, const QString &dirId, const QString &message)
+{
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    if (m_dbusNotificationsEnabled) {
+        m_dbusNotifier.showNewDir(devId, dirId, message);
+    } else
+#else
+    Q_UNUSED(devId)
+    Q_UNUSED(dirId)
+#endif
+    {
+        m_messageClickedAction = TrayIconMessageClickedAction::ShowWebUi;
+        showMessage(tr("New Syncthing directory - click for web UI"), message, QSystemTrayIcon::Information);
+    }
 }
 
 void TrayIcon::showInternalErrorsDialog()

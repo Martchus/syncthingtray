@@ -16,6 +16,7 @@ public:
 
     QSize sizeHint() const;
     TrayWidget &widget();
+    const TrayWidget &widget() const;
     TrayIcon *icon();
 
 public slots:
@@ -27,6 +28,11 @@ private:
 };
 
 inline TrayWidget &TrayMenu::widget()
+{
+    return *m_trayWidget;
+}
+
+inline const TrayWidget &TrayMenu::widget() const
 {
     return *m_trayWidget;
 }

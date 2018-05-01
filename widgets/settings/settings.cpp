@@ -165,6 +165,8 @@ void restore()
     notifyOn.localSyncComplete = settings.value(QStringLiteral("notifyOnLocalSyncComplete"), notifyOn.localSyncComplete).toBool();
     notifyOn.remoteSyncComplete = settings.value(QStringLiteral("notifyOnRemoteSyncComplete"), notifyOn.remoteSyncComplete).toBool();
     notifyOn.syncthingErrors = settings.value(QStringLiteral("showSyncthingNotifications"), notifyOn.syncthingErrors).toBool();
+    notifyOn.newDeviceConnects = settings.value(QStringLiteral("notifyOnNewDeviceConnects"), notifyOn.newDeviceConnects).toBool();
+    notifyOn.newDirectoryShared = settings.value(QStringLiteral("notifyOnNewDirectoryShared"), notifyOn.newDirectoryShared).toBool();
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     v.dbusNotifications = settings.value(QStringLiteral("dbusNotifications"), DBusNotification::isAvailable()).toBool();
 #endif
@@ -250,6 +252,8 @@ void save()
     settings.setValue(QStringLiteral("notifyOnLocalSyncComplete"), notifyOn.localSyncComplete);
     settings.setValue(QStringLiteral("notifyOnRemoteSyncComplete"), notifyOn.remoteSyncComplete);
     settings.setValue(QStringLiteral("showSyncthingNotifications"), notifyOn.syncthingErrors);
+    settings.setValue(QStringLiteral("notifyOnNewDeviceConnects"), notifyOn.newDeviceConnects);
+    settings.setValue(QStringLiteral("notifyOnNewDirectoryShared"), notifyOn.newDirectoryShared);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     settings.setValue(QStringLiteral("dbusNotifications"), v.dbusNotifications);
 #endif
@@ -314,6 +318,12 @@ void Settings::apply(SyncthingNotifier &notifier) const
     }
     if (notifyOn.remoteSyncComplete) {
         notifications |= SyncthingHighLevelNotification::RemoteSyncComplete;
+    }
+    if (notifyOn.newDeviceConnects) {
+        notifications |= SyncthingHighLevelNotification::NewDevice;
+    }
+    if (notifyOn.newDirectoryShared) {
+        notifications |= SyncthingHighLevelNotification::NewDir;
     }
     notifier.setEnabledNotifications(notifications);
     notifier.setIgnoreInavailabilityAfterStart(ignoreInavailabilityAfterStart);

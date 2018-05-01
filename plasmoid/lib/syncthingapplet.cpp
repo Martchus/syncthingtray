@@ -87,11 +87,14 @@ void SyncthingApplet::init()
     connect(&m_connection, &SyncthingConnection::error, this, &SyncthingApplet::handleInternalError);
     connect(&m_connection, &SyncthingConnection::trafficChanged, this, &SyncthingApplet::trafficChanged);
     connect(&m_connection, &SyncthingConnection::newNotification, this, &SyncthingApplet::handleNewNotification);
+    connect(&m_notifier, &SyncthingNotifier::newDevice, &m_dbusNotifier, &DBusStatusNotifier::showNewDev);
+    connect(&m_notifier, &SyncthingNotifier::newDir, &m_dbusNotifier, &DBusStatusNotifier::showNewDir);
     connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, &m_connection,
         static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
     connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, this, &SyncthingApplet::dismissNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, this, &SyncthingApplet::showNotificationsDialog);
     connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &SyncthingApplet::showInternalErrorsDialog);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, this, &SyncthingApplet::showWebUI);
 
     // restore settings
     Settings::restore();

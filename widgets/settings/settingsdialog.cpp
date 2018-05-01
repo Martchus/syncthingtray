@@ -354,14 +354,17 @@ QWidget *NotificationsOptionPage::setupWidget()
 bool NotificationsOptionPage::apply()
 {
     bool ok = true;
-    auto &notifyOn = values().notifyOn;
+    auto &settings(values());
+    auto &notifyOn(settings.notifyOn);
     notifyOn.disconnect = ui()->notifyOnDisconnectCheckBox->isChecked();
     notifyOn.internalErrors = ui()->notifyOnErrorsCheckBox->isChecked();
     notifyOn.localSyncComplete = ui()->notifyOnLocalSyncCompleteCheckBox->isChecked();
     notifyOn.remoteSyncComplete = ui()->notifyOnRemoteSyncCompleteCheckBox->isChecked();
     notifyOn.syncthingErrors = ui()->showSyncthingNotificationsCheckBox->isChecked();
+    notifyOn.newDeviceConnects = ui()->notifyOnNewDevConnectsCheckBox->isChecked();
+    notifyOn.newDirectoryShared = ui()->notifyOnNewDirSharedCheckBox->isChecked();
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-    if ((values().dbusNotifications = ui()->dbusRadioButton->isChecked()) && !DBusNotification::isAvailable()) {
+    if ((settings.dbusNotifications = ui()->dbusRadioButton->isChecked()) && !DBusNotification::isAvailable()) {
         errors() << QCoreApplication::translate(
             "QtGui::NotificationsOptionPage", "Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.");
         ok = false;
@@ -379,6 +382,8 @@ void NotificationsOptionPage::reset()
     ui()->notifyOnLocalSyncCompleteCheckBox->setChecked(notifyOn.localSyncComplete);
     ui()->notifyOnRemoteSyncCompleteCheckBox->setChecked(notifyOn.remoteSyncComplete);
     ui()->showSyncthingNotificationsCheckBox->setChecked(notifyOn.syncthingErrors);
+    ui()->notifyOnNewDevConnectsCheckBox->setChecked(notifyOn.newDeviceConnects);
+    ui()->notifyOnNewDirSharedCheckBox->setChecked(notifyOn.newDirectoryShared);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     (values().dbusNotifications ? ui()->dbusRadioButton : ui()->qtRadioButton)->setChecked(true);
 #else

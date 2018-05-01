@@ -22,7 +22,7 @@ struct SyncthingDev;
 
 namespace QtGui {
 
-enum class TrayIconMessageClickedAction { None, DismissNotification, ShowInternalErrors };
+enum class TrayIconMessageClickedAction { None, DismissNotification, ShowInternalErrors, ShowWebUi };
 
 class TrayIcon : public QSystemTrayIcon {
     Q_OBJECT
@@ -37,6 +37,8 @@ public slots:
     void showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message);
     void showInternalErrorsDialog();
     void updateStatusIconAndText();
+    void showNewDev(const QString &devId, const QString &message);
+    void showNewDir(const QString &devId, const QString &dirId, const QString &message);
 
 private slots:
     void handleActivated(QSystemTrayIcon::ActivationReason reason);
@@ -51,6 +53,8 @@ private:
     QAction *m_errorsAction;
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     DBusStatusNotifier m_dbusNotifier;
+    bool &m_dbusNotificationsEnabled;
+    bool &m_notifyOnSyncthingErrors;
 #endif
     TrayIconMessageClickedAction m_messageClickedAction;
 };
