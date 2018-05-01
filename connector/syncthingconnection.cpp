@@ -2183,7 +2183,7 @@ void SyncthingConnection::readDirRejected(DateTime eventTime, const QString &dir
     }
 
     // emit newDirAvailable() signal
-    const auto dirLabel(eventData.value(QLatin1String("label")).toString());
+    const auto dirLabel(eventData.value(QLatin1String("folderLabel")).toString());
     const auto devId(eventData.value(QLatin1String("device")).toString());
     const auto *const device(findDevInfo(devId, row));
     emit newDirAvailable(eventTime, devId, device, dirId, dirLabel);
