@@ -186,6 +186,9 @@ Q_SIGNALS:
     void downloadProgressChanged();
     void dirCompleted(ChronoUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev = nullptr);
     void newNotification(ChronoUtilities::DateTime when, const QString &message);
+    void newDevAvailable(ChronoUtilities::DateTime when, const QString &devId, const QString &address);
+    void newDirAvailable(
+        ChronoUtilities::DateTime when, const QString &devId, const SyncthingDev *dev, const QString &dirId, const QString &dirLabel);
     void error(const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request = QNetworkRequest(),
         const QByteArray &response = QByteArray());
     void statusChanged(SyncthingStatus newStatus);
@@ -239,6 +242,8 @@ private Q_SLOTS:
     void readShutdown();
     void readDirStatus();
     bool readDirSummary(ChronoUtilities::DateTime eventTime, const QJsonObject &summary, SyncthingDir &dirInfo, int index);
+    void readDirRejected(ChronoUtilities::DateTime eventTime, const QString &dirId, const QJsonObject &eventData);
+    void readDevRejected(ChronoUtilities::DateTime eventTime, const QString &devId, const QJsonObject &eventData);
     void readCompletion();
 
     void continueConnecting();

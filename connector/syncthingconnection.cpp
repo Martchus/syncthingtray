@@ -1681,21 +1681,32 @@ void SyncthingConnection::readDownloadProgressEvent(DateTime eventTime, const QJ
  */
 void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
 {
-    // find related dir info
-    QString dir(eventData.value(QStringLiteral("folder")).toString());
-    if (dir.isEmpty()) {
-        dir = eventData.value(QStringLiteral("id")).toString();
-    }
-    if (dir.isEmpty()) {
+    // read dir ID
+    const auto dirId([&eventData] {
+        const auto folder(eventData.value(QLatin1String("folder")).toString());
+        if (!folder.isEmpty()) {
+            return folder;
+        }
+        return eventData.value(QLatin1String("id")).toString();
+    }());
+    if (dirId.isEmpty()) {
         return;
     }
+
+    // handle "FolderRejected"-event which is a bit special because here the dir ID is supposed to be unknown
+    if (eventType == QLatin1String("FolderRejected")) {
+        readDirRejected(eventTime, dirId, eventData);
+        return;
+    }
+
+    // find related dir info for other events (which are about well-known dirs)
     int index;
-    SyncthingDir *const dirInfo = findDirInfo(dir, index);
+    auto *const dirInfo = findDirInfo(dirId, index);
     if (!dirInfo) {
         return;
     }
 
-    // read specific events
+    // distinguish specific events
     if (eventType == QLatin1String("FolderErrors")) {
         readFolderErrors(eventTime, eventData, *dirInfo, index);
     } else if (eventType == QLatin1String("FolderSummary")) {
@@ -1730,46 +1741,60 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
  */
 void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
 {
+    // ignore device events happened before the last connections update
     if (eventTime.isNull() && m_lastConnectionsUpdate.isNull() && eventTime < m_lastConnectionsUpdate) {
-        return; // ignore device events happened before the last connections update
+        return;
     }
     const QString dev(eventData.value(QStringLiteral("device")).toString());
     if (dev.isEmpty()) {
         return;
     }
 
-    // dev status changed, depending on event type
+    // handle "FolderRejected"-event which is a bit special because here the dir ID is supposed to be unknown
+    if (eventType == QLatin1String("DeviceRejected")) {
+        readDevRejected(eventTime, dev, eventData);
+        return;
+    }
+
+    // find relevant device info
     int index;
-    if (SyncthingDev *devInfo = findDevInfo(dev, index)) {
-        SyncthingDevStatus status = devInfo->status;
-        bool paused = devInfo->paused;
-        if (eventType == QLatin1String("DeviceConnected")) {
-            status = SyncthingDevStatus::Idle; // TODO: figure out when dev is actually syncing
-        } else if (eventType == QLatin1String("DeviceDisconnected")) {
+    auto *const devInfo(findDevInfo(dev, index));
+    if (!devInfo) {
+        return;
+    }
+
+    // distinguish specific events
+    SyncthingDevStatus status = devInfo->status;
+    bool paused = devInfo->paused;
+    if (eventType == QLatin1String("DeviceConnected")) {
+        status = SyncthingDevStatus::Idle; // TODO: figure out when dev is actually syncing
+    } else if (eventType == QLatin1String("DeviceDisconnected")) {
+        status = SyncthingDevStatus::Disconnected;
+    } else if (eventType == QLatin1String("DevicePaused")) {
+        paused = true;
+    } else if (eventType == QLatin1String("DeviceRejected")) {
+        status = SyncthingDevStatus::Rejected;
+    } else if (eventType == QLatin1String("DeviceResumed")) {
+        paused = false;
+        // FIXME: correct to assume device which has just been resumed is still disconnected?
+        status = SyncthingDevStatus::Disconnected;
+    } else if (eventType == QLatin1String("DeviceDiscovered")) {
+        // we know about this device already, set status anyways because it might still be unknown
+        if (status == SyncthingDevStatus::Unknown) {
             status = SyncthingDevStatus::Disconnected;
-        } else if (eventType == QLatin1String("DevicePaused")) {
-            paused = true;
-        } else if (eventType == QLatin1String("DeviceRejected")) {
-            status = SyncthingDevStatus::Rejected;
-        } else if (eventType == QLatin1String("DeviceResumed")) {
-            paused = false;
-            // FIXME: correct to assume device which has just been resumed is still disconnected?
-            status = SyncthingDevStatus::Disconnected;
-        } else if (eventType == QLatin1String("DeviceDiscovered")) {
-            // we know about this device already, set status anyways because it might still be unknown
-            if (status == SyncthingDevStatus::Unknown) {
-                status = SyncthingDevStatus::Disconnected;
-            }
-        } else {
-            return; // can't handle other event types currently
         }
-        if (devInfo->status != status || devInfo->paused != paused) {
-            if (devInfo->status != SyncthingDevStatus::OwnDevice) { // don't mess with the status of the own device
-                devInfo->status = status;
-            }
-            devInfo->paused = paused;
-            emit devStatusChanged(*devInfo, index);
+    } else {
+        return; // can't handle other event types currently
+    }
+
+    // assign new status
+    if (devInfo->status != status || devInfo->paused != paused) {
+        // don't mess with the status of the own device
+        if (devInfo->status != SyncthingDevStatus::OwnDevice) {
+            devInfo->status = status;
         }
+        devInfo->paused = paused;
+        emit devStatusChanged(*devInfo, index);
     }
 }
 
@@ -2146,6 +2171,38 @@ bool SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
 }
 
 /*!
+ * \brief Reads data from "FolderRejected"-event.
+ */
+void SyncthingConnection::readDirRejected(DateTime eventTime, const QString &dirId, const QJsonObject &eventData)
+{
+    // ignore if dir has already been added
+    int row;
+    const auto *const dir(findDirInfo(dirId, row));
+    if (dir) {
+        return;
+    }
+
+    // emit newDirAvailable() signal
+    const auto dirLabel(eventData.value(QLatin1String("label")).toString());
+    const auto devId(eventData.value(QLatin1String("device")).toString());
+    const auto *const device(findDevInfo(devId, row));
+    emit newDirAvailable(eventTime, devId, device, dirId, dirLabel);
+}
+
+void SyncthingConnection::readDevRejected(DateTime eventTime, const QString &devId, const QJsonObject &eventData)
+{
+    // ignore if dev has already been added
+    int row;
+    const auto *const dev(findDevInfo(devId, row));
+    if (dev) {
+        return;
+    }
+
+    // emit newDevAvailable() signal
+    emit newDevAvailable(eventTime, devId, eventData.value(QLatin1String("address")).toString());
+}
+
+/*!
  * \brief Reads data from requestCompletion().
  */
 void SyncthingConnection::readCompletion()
@@ -2374,6 +2431,17 @@ void SyncthingConnection::recalculateStatus()
 /*!
  * \fn SyncthingConnection::newNotification()
  * \brief Indicates a new Syncthing notification is available.
+ */
+
+/*!
+ * \fn SyncthingConnection::newDevAvailable()
+ * \brief Indicates another device wants to talk to us.
+ */
+
+/*!
+ * \fn SyncthingConnection::newDirAvailable()
+ * \brief Indicates a device wants to share an so far unknown directory with us.
+ * \remarks \a dev might be nullptr. In this case the device which wants to share the directory is unknown as well.
  */
 
 /*!
