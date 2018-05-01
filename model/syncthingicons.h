@@ -21,6 +21,7 @@ struct StatusIcons {
     QIcon syncComplete;
     QIcon error;
     QIcon errorSync;
+    QIcon newItem;
 };
 
 const StatusIcons LIB_SYNCTHING_MODEL_EXPORT &statusIcons();

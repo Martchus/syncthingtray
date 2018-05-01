@@ -30,6 +30,7 @@ StatusIcons::StatusIcons()
     , syncComplete(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-sync-complete.svg"))))
     , error(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-error.svg"))))
     , errorSync(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-error-sync.svg"))))
+    , newItem(QIcon(renderSvgImage(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-new.svg"))))
 {
 }
 
