@@ -39,5 +39,25 @@
                 }
             }
         }
+    },
+    {
+        "id": 27,
+        "type": "FolderRejected",
+        "time": "2014-08-19T10:41:06.761751399+02:00",
+        "data": {
+            "device": "53STGR7-YBM6FCX-PAZ2RHM-YPY6OEJ-WYHVZO7-PCKQRCK-PZLTP7T",
+            "folder": "GXWxf-3zgnU",
+            "folderLabel": "Will be ignored because already known"
+        }
+    },
+    {
+        "id": 28,
+        "type": "FolderRejected",
+        "time": "2014-08-19T10:41:06.761751399+02:00",
+        "data": {
+            "device": "53STGR7-YBM6FCX-PAZ2RHM-YPY6OEJ-WYHVZO7-PCKQRCK-PZLTP7T",
+            "folder": "new-directory",
+            "folderLabel": "New directory"
+        }
     }
 ]
