@@ -19,7 +19,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     int trafficPollInterval = 2000;
     int devStatsPollInterval = 60000;
     int errorsPollInterval = 30000;
-    int reconnectInterval = 0;
+    int reconnectInterval = 30000;
     QString httpsCertPath;
     QList<QSslError> expectedSslErrors;
     bool loadHttpsCert();
