@@ -39,6 +39,8 @@ SyncthingNotifier::SyncthingNotifier(const SyncthingConnection &connection, QObj
 {
     connect(&connection, &SyncthingConnection::statusChanged, this, &SyncthingNotifier::handleStatusChangedEvent);
     connect(&connection, &SyncthingConnection::dirCompleted, this, &SyncthingNotifier::emitSyncComplete);
+    connect(&connection, &SyncthingConnection::newDevAvailable, this, &SyncthingNotifier::handleNewDevEvent);
+    connect(&connection, &SyncthingConnection::newDirAvailable, this, &SyncthingNotifier::handleNewDirEvent);
 }
 
 void SyncthingNotifier::handleStatusChangedEvent(SyncthingStatus newStatus)
@@ -55,6 +57,39 @@ void SyncthingNotifier::handleStatusChangedEvent(SyncthingStatus newStatus)
     // update status variables
     m_initialized = true;
     m_previousStatus = newStatus;
+}
+
+void SyncthingNotifier::handleNewDevEvent(DateTime when, const QString &devId, const QString &address)
+{
+    VAR_UNUSED(when)
+
+    // ignore if not enabled
+    if (!(m_enabledNotifications & SyncthingHighLevelNotification::NewDevice)) {
+        return;
+    }
+
+    emit newDevice(devId, tr("Device %1 (%2) wants to connect.").arg(devId, address));
+}
+
+void SyncthingNotifier::handleNewDirEvent(DateTime when, const QString &devId, const SyncthingDev *dev, const QString &dirId, const QString &dirLabel)
+{
+    VAR_UNUSED(when)
+
+    // ignore if not enabled
+    if (!(m_enabledNotifications & SyncthingHighLevelNotification::NewDir)) {
+        return;
+    }
+
+    // format message
+    const auto message([&devId, dev, &dirId, &dirLabel] {
+        const auto devPrefix(dev ? (tr("Device ") + dev->displayName()) : (tr("Unknown device ") + devId));
+        if (dirLabel.isEmpty()) {
+            return devPrefix + tr(" wants to share directory %1.").arg(dirId);
+        } else {
+            return devPrefix + tr(" wants to share directory %1 (%2).").arg(dirLabel, dirId);
+        }
+    }());
+    emit newDir(devId, dirId, message);
 }
 
 /*!

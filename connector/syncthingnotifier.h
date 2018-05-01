@@ -27,6 +27,8 @@ enum class SyncthingHighLevelNotification {
     ConnectedDisconnected = 0x1,
     LocalSyncComplete = 0x2,
     RemoteSyncComplete = 0x4,
+    NewDevice = 0x8,
+    NewDir = 0x10,
 };
 
 /// \cond
@@ -68,11 +70,19 @@ Q_SIGNALS:
     void connected();
     ///! \brief Emitted when the connection to Syncthing has been interrupted.
     void disconnected();
-    ///! \brief Emitted when the specified \a dirs have been completed synchronization.
+    ///! \brief Emitted when one or more directories have completed synchronization.
+    ///! \remarks Both, local and remote devices, are taken into account.
     void syncComplete(const QString &message);
+    ///! \brief Emitted when a new device talks to us.
+    void newDevice(const QString &devId, const QString &message);
+    ///! \brief Emitted when a new directory is shared with us.
+    void newDir(const QString &devId, const QString &dirId, const QString &message);
 
 private Q_SLOTS:
     void handleStatusChangedEvent(SyncthingStatus newStatus);
+    void handleNewDevEvent(ChronoUtilities::DateTime when, const QString &devId, const QString &address);
+    void handleNewDirEvent(
+        ChronoUtilities::DateTime when, const QString &devId, const SyncthingDev *dev, const QString &dirId, const QString &dirLabel);
 
 private:
     bool isDisconnectRelevant() const;
