@@ -264,7 +264,7 @@ void SyncthingApplet::showAboutDialog()
 {
     if (!m_aboutDlg) {
         m_aboutDlg = new AboutDialog(nullptr, QStringLiteral(APP_NAME), QStringLiteral(APP_AUTHOR "\nSyncthing icons from Syncthing project"),
-            QStringLiteral(APP_VERSION), ApplicationUtilities::dependencyVersions, QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION),
+            QStringLiteral(APP_VERSION), ApplicationUtilities::dependencyVersions2, QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION),
             QImage(statusIcons().scanninig.pixmap(128).toImage()));
         m_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         m_aboutDlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("syncthingtray")));
