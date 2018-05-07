@@ -61,7 +61,7 @@ inline void printProperty(const char *propName, bool value, const char *suffix =
     printProperty(propName, value ? "yes" : "no", suffix, indentation);
 }
 
-template <typename NumberType, Traits::EnableIfAny<std::is_floating_point<NumberType>, std::is_integral<NumberType>>* = nullptr>
+template <typename NumberType, Traits::EnableIfAny<std::is_floating_point<NumberType>, std::is_integral<NumberType>> * = nullptr>
 inline void printProperty(
     const char *propName, const NumberType value, const char *suffix = nullptr, bool force = false, ApplicationUtilities::Indentation indentation = 3)
 {
