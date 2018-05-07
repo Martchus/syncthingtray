@@ -127,22 +127,22 @@
         <translation>Tray-Icon beim Starten der Desktopumgebung automatisch starten</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="489"/>
+        <location filename="../settings/settingsdialog.cpp" line="496"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Durch das Hinzufügen einer *.desktop-Datei unter &lt;i&gt;~/.config/autostart&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="492"/>
+        <location filename="../settings/settingsdialog.cpp" line="499"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation>Durch das Hinzufügen eines Registry-Schlüssels unter &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="497"/>
+        <location filename="../settings/settingsdialog.cpp" line="504"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation>Diese Funktion wurde für die aktuelle Plattform nicht nicht implementiert.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="593"/>
+        <location filename="../settings/settingsdialog.cpp" line="600"/>
         <source>unable to modify startup entry</source>
         <translation>Fehler beim aktualisieren des Auto-Start-Eintrags</translation>
     </message>
@@ -273,27 +273,27 @@
         <translation>nicht neu verbinden</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="79"/>
+        <location filename="../settings/settingsdialog.cpp" line="81"/>
         <source>Auto-detected for local instance</source>
         <translation>Kann für lokale Instanz automatisch ermittelt werden</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="101"/>
+        <location filename="../settings/settingsdialog.cpp" line="103"/>
         <source>Select Syncthing config file</source>
         <translation>Wähle die Syncthing-Konfigurationsdatei</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="109"/>
+        <location filename="../settings/settingsdialog.cpp" line="111"/>
         <source>Unable to parse the Syncthing config file.</source>
         <translation>Fehler beim Auslesen der Syncthing-Konfigurationsdatei.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="182"/>
+        <location filename="../settings/settingsdialog.cpp" line="184"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
         <translation>Fehler beim Auslesen des angegebenen Zertifikats: %1</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="207"/>
+        <location filename="../settings/settingsdialog.cpp" line="209"/>
         <source>Instance %1</source>
         <translation>Instanz %1</translation>
     </message>
@@ -301,39 +301,54 @@
 <context>
     <name>QtGui::DBusStatusNotifier</name>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="20"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="25"/>
         <source> - internal error</source>
         <translation> - interner Fehler</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="21"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="26"/>
         <source>Syncthing notification</source>
         <translation>Syncthing-Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="24"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="28"/>
+        <source> - new device</source>
+        <translation>- neues Gerät</translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="29"/>
+        <source> - new directory</source>
+        <translation>- neues Verzeichnis</translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="33"/>
         <source>Disconnected from Syncthing</source>
         <translation>Verbindung zu Syncthing getrennt</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="25"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="34"/>
         <source>Try to reconnect</source>
         <translation>Versuche Verbindung wieder herzustellen</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="27"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="39"/>
         <source>View details</source>
         <translation>Zeige details</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="30"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="42"/>
         <source>Show</source>
         <translation>Zeigen</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="30"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="42"/>
         <source>Dismiss</source>
         <translation>Ignorieren</translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="48"/>
+        <source>Open web UI</source>
+        <translation>Öffne Web-UI</translation>
     </message>
 </context>
 <context>
@@ -370,27 +385,32 @@
 <context>
     <name>QtGui::LauncherOptionPage</name>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="6"/>
+        <location filename="../settings/launcheroptionpage.ui" line="14"/>
         <source>Syncthing launcher</source>
         <translation>Syncthing-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="18"/>
+        <location filename="../settings/launcheroptionpage.ui" line="26"/>
         <source>Launch Syncthing when starting the tray icon</source>
         <translation>Starte Syncthing beim Starten des Tray-Icons</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="43"/>
+        <location filename="../settings/launcheroptionpage.ui" line="51"/>
         <source>Syncthing executable</source>
         <translation>Ausführbare Datei von Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="53"/>
+        <location filename="../settings/launcheroptionpage.ui" line="61"/>
         <source>Arguments</source>
         <translation>Argumente</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="66"/>
+        <location filename="../settings/launcheroptionpage.ui" line="71"/>
+        <source>Use built-in Syncthing library (experimental)</source>
+        <translation>Verwende eingebaute Syncthing-Bibliothek (experimentell)</translation>
+    </message>
+    <message>
+        <location filename="../settings/launcheroptionpage.ui" line="81"/>
         <source>Consider process status for reconnect attempts to local instance
  • Don&apos;t reconnect when the process is not running
  • Try to reconnect when starting the process</source>
@@ -399,65 +419,65 @@
  • Automatisch neu verbinden, wenn Syncthing gestartet wird</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="96"/>
+        <location filename="../settings/launcheroptionpage.ui" line="111"/>
         <source>Syncthing log (interleaved stdout/stderr)</source>
         <translation>Syncthing-Log (stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="112"/>
+        <location filename="../settings/launcheroptionpage.ui" line="127"/>
         <source>Apply and launch now</source>
         <translation>Jetzt starten</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="129"/>
-        <location filename="../settings/settingsdialog.cpp" line="735"/>
+        <location filename="../settings/launcheroptionpage.ui" line="144"/>
+        <location filename="../settings/settingsdialog.cpp" line="766"/>
         <source>Stop launched instance</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="148"/>
+        <location filename="../settings/launcheroptionpage.ui" line="163"/>
         <source>No log messages available yet</source>
         <translation>Bisher keine Log-Meldungen</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="155"/>
+        <location filename="../settings/launcheroptionpage.ui" line="170"/>
         <source>Ensure latest log is visible</source>
         <translation>Log folgen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="634"/>
+        <location filename="../settings/settingsdialog.cpp" line="643"/>
         <source>%1-launcher</source>
         <translation>%1-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="635"/>
+        <location filename="../settings/settingsdialog.cpp" line="644"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation>Starte %1 beim Starten des Tray-Icons</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="636"/>
+        <location filename="../settings/settingsdialog.cpp" line="645"/>
         <source>%1 executable</source>
         <translation>Ausführbare Datei von %1</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="637"/>
+        <location filename="../settings/settingsdialog.cpp" line="646"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation>%1-Log (stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="712"/>
+        <location filename="../settings/settingsdialog.cpp" line="738"/>
         <source>%1 exited with exit code %2
 </source>
         <translation>%1 wurde mit dem Statuscode %2 beendet</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="716"/>
+        <location filename="../settings/settingsdialog.cpp" line="742"/>
         <source>%1 crashed with exit code %2
 </source>
         <translation>%1 ist mit dem Statuscode %2 abgestürzt</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="752"/>
+        <location filename="../settings/settingsdialog.cpp" line="791"/>
         <source>Kill launched instance</source>
         <translation>Töten</translation>
     </message>
@@ -465,77 +485,87 @@
 <context>
     <name>QtGui::NotificationsOptionPage</name>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="14"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="6"/>
         <source>Notifications</source>
         <translation>Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="24"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="16"/>
         <source>Notify on</source>
         <translation>Benachrichtigen, wenn</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="30"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="22"/>
         <source>disconnect</source>
         <translation>die Verbindung zu Syncthing getrennt wird</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="37"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="29"/>
         <source>internal errors</source>
         <translation>interne Fehler auftreten</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="44"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="36"/>
         <source>errors/notifications from Syncthing</source>
         <translation>Fehler/Warnungen von Syncthing gemeldet werden</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="51"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="43"/>
         <source>sync of local directory complete</source>
         <translation>die Synchronisation lokaler Verzeichnisse abgeschlossen wurde</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="58"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="50"/>
         <source>sync of remote directory complete</source>
         <translation>die Synchronisation von Verzeichnissen auf anderen Geräten abgeschlossen wurde</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="68"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="57"/>
+        <source>new/unknown device connects</source>
+        <translation>ein neues/unbekanntes Gerät versucht zu verbinden</translation>
+    </message>
+    <message>
+        <location filename="../settings/notificationsoptionpage.ui" line="64"/>
+        <source>remote device shares new/unknown directory</source>
+        <translation>ein anderes Geräte ein neues/unbekanntes Verzeichnis teilen möchte</translation>
+    </message>
+    <message>
+        <location filename="../settings/notificationsoptionpage.ui" line="74"/>
         <source>Notification API</source>
         <translation>Benachrichtigungs-API</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="74"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="80"/>
         <source>D-Bus &amp;notifications (org.freedesktop.Notifications)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="97"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="103"/>
         <source>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance started via Systemd or the internal launcher.</source>
-        <translation type="unfinished">Ignoriere, dass Syncthing ein paar Sekunden nach dem Start noch nicht verfügbar ist. Hat nur Auswirkungen, wenn der Syncthing-Startzeitpunkt ermittelt werden kann. Dies wird aktuell nur für die lokale Instanz unterstützt. Diese muss hierfür über Systemd oder die Tray-Anwendung gestartet worden sein.</translation>
+        <translation>Ignoriere, dass Syncthing ein paar Sekunden nach dem Start noch nicht verfügbar ist. Hat nur Auswirkungen, wenn der Syncthing-Startzeitpunkt ermittelt werden kann. Dies wird aktuell nur für die lokale Instanz unterstützt. Diese muss hierfür über Systemd oder die Tray-Anwendung gestartet worden sein.</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="81"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="87"/>
         <source>&amp;Method provided by Qt (might be overridden by QPA plugin)</source>
         <translation>Methode die von Qt verwendet wird (kann vom QPA-Plugin überschrieben werden)</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="91"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="97"/>
         <source>Misc</source>
         <translation>Verschiedenes</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="107"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="113"/>
         <source>don&apos;t ignore</source>
         <translation>nicht ignorieren</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="110"/>
+        <location filename="../settings/notificationsoptionpage.ui" line="116"/>
         <source> s</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="363"/>
+        <location filename="../settings/settingsdialog.cpp" line="368"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation>Benachrichtigungen via D-Bus wurden eingestellt, aber es scheint kein Daemon zu laufen der den Dienst bereitstellt.</translation>
     </message>
@@ -561,22 +591,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="913"/>
+        <location filename="../settings/settingsdialog.cpp" line="963"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="920"/>
+        <location filename="../settings/settingsdialog.cpp" line="970"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="927"/>
+        <location filename="../settings/settingsdialog.cpp" line="977"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="949"/>
+        <location filename="../settings/settingsdialog.cpp" line="999"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -715,8 +745,8 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <location filename="../settings/systemdoptionpage.ui" line="99"/>
         <location filename="../settings/systemdoptionpage.ui" line="154"/>
         <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="834"/>
-        <location filename="../settings/settingsdialog.cpp" line="846"/>
+        <location filename="../settings/settingsdialog.cpp" line="884"/>
+        <location filename="../settings/settingsdialog.cpp" line="896"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -750,12 +780,12 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="807"/>
+        <location filename="../settings/settingsdialog.cpp" line="857"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit ist entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="829"/>
+        <location filename="../settings/settingsdialog.cpp" line="879"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -822,7 +852,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="868"/>
+        <location filename="../settings/settingsdialog.cpp" line="918"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
@@ -852,7 +882,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="870"/>
+        <location filename="../settings/settingsdialog.cpp" line="920"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.
@@ -862,7 +892,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="159"/>
+        <location filename="../settings/settings.cpp" line="152"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Fehler beim laden des Zertifikats &quot;%1&quot; beim wiederherstellen der Einstellungen.</translation>
     </message>
