@@ -34,7 +34,7 @@ bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QUrl &url);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);
 
-template <typename IntType = quint64, Traits::EnableIf<std::is_integral<IntType>>...>
+template <typename IntType = quint64, Traits::EnableIf<std::is_integral<IntType>>* = nullptr>
 inline IntType LIB_SYNCTHING_CONNECTOR_EXPORT jsonValueToInt(const QJsonValue &value, double defaultValue = 0.0)
 {
     return static_cast<IntType>(value.toDouble(defaultValue));
