@@ -39,7 +39,7 @@ find_package(c++utilities 4.10.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 
 # find qtutilities
-find_package(qtutilities 5.8.0 REQUIRED)
+find_package(qtutilities 5.10.0 REQUIRED)
 use_qt_utilities()
 
 # check whether qtutilities supports DBus notifications
