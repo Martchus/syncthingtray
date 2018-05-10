@@ -54,8 +54,8 @@ private:
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     DBusStatusNotifier m_dbusNotifier;
     bool &m_dbusNotificationsEnabled;
-    bool &m_notifyOnSyncthingErrors;
 #endif
+    bool &m_notifyOnSyncthingErrors;
     TrayIconMessageClickedAction m_messageClickedAction;
 };
 

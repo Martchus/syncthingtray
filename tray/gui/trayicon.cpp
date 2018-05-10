@@ -39,7 +39,9 @@ namespace QtGui {
 TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     : QSystemTrayIcon(parent)
     , m_trayMenu(connectionConfig, this)
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     , m_dbusNotificationsEnabled(Settings::values().dbusNotifications)
+#endif
     , m_notifyOnSyncthingErrors(Settings::values().notifyOn.syncthingErrors)
     , m_messageClickedAction(TrayIconMessageClickedAction::None)
 {
