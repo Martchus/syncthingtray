@@ -56,7 +56,7 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
                     && !service->isActiveWithoutSleepFor(launcher->activeSince(), settings.ignoreInavailabilityAfterStart))
                    || !launcher->isActiveFor(settings.ignoreInavailabilityAfterStart))
 #else
-            && !process.isActiveFor(settings.ignoreInavailabilityAfterStart)
+            && !launcher->isActiveFor(settings.ignoreInavailabilityAfterStart)
 #endif
         ) {
             return false;

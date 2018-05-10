@@ -126,7 +126,7 @@ bool SyncthingNotifier::isDisconnectRelevant() const
                     && !m_service->isActiveWithoutSleepFor(m_process->activeSince(), m_ignoreInavailabilityAfterStart))
                    || !m_process->isActiveFor(m_ignoreInavailabilityAfterStart))
 #else
-            && !m_process.isActiveFor(m_ignoreInavailabilityAfterStart)
+            && !m_process->isActiveFor(m_ignoreInavailabilityAfterStart)
 #endif
         ) {
             return false;
