@@ -6,7 +6,7 @@ Directories
       Global                        0 file\(s\), 0 dir\(s\), 0 bytes
       Local                         0 file\(s\), 0 dir\(s\), 0 bytes
    Shared with                   Test dev 2
-   Read-only                     no
+   Type                          Send & Receive
    Ignore permissions            no
    Auto-normalize                yes
    Rescan interval               365 d
@@ -19,7 +19,7 @@ Directories
    Last scan time                \d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.*
    Shared with                   Test dev 2
                                  Test dev 1
-   Read-only                     no
+   Type                          Send & Receive
    Ignore permissions            no
    Auto-normalize                yes
    Rescan interval               2 h
