@@ -26,9 +26,9 @@ QString statusString(SyncthingDirStatus status)
         return QCoreApplication::translate("SyncthingDirStatus", "synchronizing");
     case SyncthingDirStatus::OutOfSync:
         return QCoreApplication::translate("SyncthingDirStatus", "out of sync");
-    default:
-        return QString();
     }
+    return QString();
+}
 
 QString dirTypeString(SyncthingDirType dirType)
 {
@@ -175,17 +175,17 @@ SyncthingItemDownloadProgress::SyncthingItemDownloadProgress(
     const QString &containingDirPath, const QString &relativeItemPath, const QJsonObject &values)
     : relativePath(relativeItemPath)
     , fileInfo(containingDirPath % QChar('/') % QString(relativeItemPath).replace(QChar('\\'), QChar('/')))
-    , blocksCurrentlyDownloading(values.value(QStringLiteral("Pulling")).toInt())
-    , blocksAlreadyDownloaded(values.value(QStringLiteral("Pulled")).toInt())
-    , totalNumberOfBlocks(values.value(QStringLiteral("Total")).toInt())
+    , blocksCurrentlyDownloading(values.value(QLatin1String("Pulling")).toInt())
+    , blocksAlreadyDownloaded(values.value(QLatin1String("Pulled")).toInt())
+    , totalNumberOfBlocks(values.value(QLatin1String("Total")).toInt())
     , downloadPercentage((blocksAlreadyDownloaded > 0 && totalNumberOfBlocks > 0)
               ? (static_cast<unsigned int>(blocksAlreadyDownloaded) * 100 / static_cast<unsigned int>(totalNumberOfBlocks))
               : 0)
-    , blocksCopiedFromOrigin(values.value(QStringLiteral("CopiedFromOrigin")).toInt())
-    , blocksCopiedFromElsewhere(values.value(QStringLiteral("CopiedFromElsewhere")).toInt())
-    , blocksReused(values.value(QStringLiteral("Reused")).toInt())
-    , bytesAlreadyHandled(values.value(QStringLiteral("BytesDone")).toInt())
-    , totalNumberOfBytes(values.value(QStringLiteral("BytesTotal")).toInt())
+    , blocksCopiedFromOrigin(values.value(QLatin1String("CopiedFromOrigin")).toInt())
+    , blocksCopiedFromElsewhere(values.value(QLatin1String("CopiedFromElsewhere")).toInt())
+    , blocksReused(values.value(QLatin1String("Reused")).toInt())
+    , bytesAlreadyHandled(values.value(QLatin1String("BytesDone")).toInt())
+    , totalNumberOfBytes(values.value(QLatin1String("BytesTotal")).toInt())
     , label(
           QStringLiteral("%1 / %2 - %3 %")
               .arg(QString::fromLatin1(
