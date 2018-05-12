@@ -124,11 +124,6 @@
         <translation>Pfad</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="128"/>
-        <source>Read-only</source>
-        <translation>Schreibgeschützt</translation>
-    </message>
-    <message>
         <location filename="../syncthingdirectorymodel.cpp" line="130"/>
         <source>Rescan interval</source>
         <translation>Scanintervall</translation>
@@ -152,16 +147,6 @@
         <location filename="../syncthingdirectorymodel.cpp" line="160"/>
         <source>not shared</source>
         <translation>nicht geteilt</translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="163"/>
-        <source>yes</source>
-        <translation>ja</translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="163"/>
-        <source>no</source>
-        <translation>nein</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="169"/>
@@ -239,6 +224,11 @@
         <location filename="../syncthingdirectorymodel.cpp" line="126"/>
         <source>Shared with</source>
         <translation>Geteilt mit</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="128"/>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="395"/>

@@ -124,11 +124,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="128"/>
-        <source>Read-only</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../syncthingdirectorymodel.cpp" line="130"/>
         <source>Rescan interval</source>
         <translation type="unfinished"></translation>
@@ -146,16 +141,6 @@
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="136"/>
         <source>Errors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="163"/>
-        <source>yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="163"/>
-        <source>no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -190,6 +175,11 @@
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="126"/>
         <source>Shared with</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="128"/>
+        <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
