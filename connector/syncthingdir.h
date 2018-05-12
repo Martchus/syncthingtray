@@ -14,7 +14,11 @@ namespace Data {
 
 enum class SyncthingDirStatus { Unknown, Idle, Unshared, Scanning, Synchronizing, OutOfSync };
 
-QString statusString(SyncthingDirStatus status);
+QString LIB_SYNCTHING_CONNECTOR_EXPORT statusString(SyncthingDirStatus status);
+
+enum class SyncthingDirType { Unknown, SendReceive, SendOnly, ReceiveOnly };
+
+QString LIB_SYNCTHING_CONNECTOR_EXPORT dirTypeString(SyncthingDirType dirType);
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemError {
     SyncthingItemError(const QString &message = QString(), const QString &path = QString())
@@ -111,8 +115,10 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
     bool assignStatus(const QString &statusStr, ChronoUtilities::DateTime time);
     bool assignStatus(SyncthingDirStatus newStatus, ChronoUtilities::DateTime time);
+    bool assignDirType(const QString &dirType);
     const QString &displayName() const;
     QString statusString() const;
+    QString dirTypeString() const;
     QStringRef pathWithoutTrailingSlash() const;
     bool isLocallyUpToDate() const;
     bool areRemotesUpToDate() const;
@@ -122,10 +128,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     QString path;
     QStringList deviceIds;
     QStringList deviceNames;
-    bool readOnly = false;
-    bool ignorePermissions = false;
-    bool ignorePatterns = false;
-    bool autoNormalize = false;
+    SyncthingDirType dirType = SyncthingDirType::Unknown;
     int rescanInterval = 0;
     int minDiskFreePercentage = 0;
     SyncthingDirStatus status = SyncthingDirStatus::Idle;
@@ -147,6 +150,9 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     int blocksToBeDownloaded = 0;
     QString downloadLabel;
     unsigned int downloadPercentage = 0;
+    bool ignorePermissions = false;
+    bool ignorePatterns = false;
+    bool autoNormalize = false;
     bool paused = false;
     bool lastFileDeleted = false;
 
@@ -165,6 +171,11 @@ inline SyncthingDir::SyncthingDir(const QString &id, const QString &label, const
 inline const QString &SyncthingDir::displayName() const
 {
     return label.isEmpty() ? id : label;
+}
+
+inline QString SyncthingDir::dirTypeString() const
+{
+    return ::Data::dirTypeString(dirType);
 }
 
 inline bool SyncthingDir::isLocallyUpToDate() const

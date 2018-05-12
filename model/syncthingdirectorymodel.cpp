@@ -125,7 +125,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 4:
                             return tr("Shared with");
                         case 5:
-                            return tr("Read-only");
+                            return tr("Type");
                         case 6:
                             return tr("Rescan interval");
                         case 7:
@@ -160,7 +160,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                                 return tr("not shared");
                             }
                         case 5:
-                            return dir.readOnly ? tr("yes") : tr("no");
+                            return dir.dirTypeString();
                         case 6:
                             return QString::fromLatin1(
                                 TimeSpan::fromSeconds(dir.rescanInterval).toString(TimeSpanOutputFormat::WithMeasures, true).data());

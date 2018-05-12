@@ -390,7 +390,7 @@ void ConnectionTests::checkDirectories() const
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("test1"), dir1.displayName());
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("/tmp/some/path/1/"), dir1.path);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("idle"), dir1.statusString());
-    CPPUNIT_ASSERT(!dir1.readOnly);
+    CPPUNIT_ASSERT_EQUAL(SyncthingDirType::SendReceive, dir1.dirType);
     CPPUNIT_ASSERT(!dir1.paused);
     CPPUNIT_ASSERT_EQUAL(QSet<QString>({ QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"),
                              QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4") }),
@@ -403,7 +403,7 @@ void ConnectionTests::checkDirectories() const
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("/tmp/some/path/2/"), dir2.path);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("/tmp/some/path/2"), dir2.pathWithoutTrailingSlash().toString());
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("paused"), dir2.statusString());
-    CPPUNIT_ASSERT(!dir2.readOnly);
+    CPPUNIT_ASSERT_EQUAL(SyncthingDirType::SendReceive, dir2.dirType);
     CPPUNIT_ASSERT(dir2.paused);
     CPPUNIT_ASSERT_EQUAL(
         QSet<QString>({ QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7") }), dir2.deviceIds.toSet());

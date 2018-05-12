@@ -523,7 +523,7 @@ void Application::printDir(const RelevantDir &relevantDir) const
                 nullptr, 6);
         }
     }
-    printProperty("Read-only", dir->readOnly);
+    printProperty("Type", dir->dirTypeString());
     printProperty("Ignore permissions", dir->ignorePermissions);
     printProperty("Auto-normalize", dir->autoNormalize);
     printProperty("Rescan interval", TimeSpan::fromSeconds(dir->rescanInterval));

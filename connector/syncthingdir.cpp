@@ -29,6 +29,20 @@ QString statusString(SyncthingDirStatus status)
     default:
         return QString();
     }
+
+QString dirTypeString(SyncthingDirType dirType)
+{
+    switch (dirType) {
+    case SyncthingDirType::Unknown:
+        return QCoreApplication::translate("SyncthingDirType", "unknown");
+    case SyncthingDirType::SendReceive:
+        return QCoreApplication::translate("SyncthingDirType", "Send & Receive");
+    case SyncthingDirType::SendOnly:
+        return QCoreApplication::translate("SyncthingDirType", "Send only");
+    case SyncthingDirType::ReceiveOnly:
+        return QCoreApplication::translate("SyncthingDirType", "Receive only");
+    }
+    return QString();
 }
 
 bool SyncthingDir::checkWhetherStatusUpdateRelevant(DateTime time)
@@ -108,6 +122,21 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
         newStatus = SyncthingDirStatus::Idle;
     }
     return finalizeStatusUpdate(newStatus);
+}
+
+bool SyncthingDir::assignDirType(const QString &dirTypeStr)
+{
+    if (dirTypeStr == QLatin1String("sendreceive") || dirTypeStr == QLatin1String("readwrite")) {
+        dirType = SyncthingDirType::SendReceive;
+    } else if (dirTypeStr == QLatin1String("sendonly") || dirTypeStr == QLatin1String("readonly")) {
+        dirType = SyncthingDirType::SendOnly;
+    } else if (dirTypeStr == QLatin1String("receiveonly")) {
+        dirType = SyncthingDirType::ReceiveOnly;
+    } else {
+        dirType = SyncthingDirType::Unknown;
+        return false;
+    }
+    return true;
 }
 
 QString SyncthingDir::statusString() const
