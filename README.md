@@ -1,5 +1,9 @@
-# Syncthing Tray
-Qt 5-based tray application for [Syncthing](https://github.com/syncthing/syncthing)
+# [Syncthing](https://github.com/syncthing/syncthing) Tray
+* Qt 5-based tray application
+* [Dolphin](https://www.kde.org/applications/system/dolphin)/[Plasma](https://www.kde.org/plasma-desktop)
+  integration
+* command-line interface
+* Qt-ish C++ interface to control Syncthing
 
 ## Supported platforms
 * Designed to work under any desktop environment supported by Qt 5 with tray icon
@@ -54,13 +58,13 @@ to the list. Maybe someone could check whether it works under Mac OS X.
 * English and German localization
 
 ## Planned features
-The tray is still under development; the following features are planned:
+The tray is still under development; the following features are under construction or planned:
 
+* Build Syncthing as a library to run it in the same process as the tray/GUI
+* Create Qt Quick Controls 2 and Kirigami 2 based frontend for mobile devices (focusing on Android)
 * Show recently processed items
 * Make some notifications configurable on folder level
 * Optionally notify for single file updates (https://github.com/Martchus/syncthingtray/issues/7)
-* ~~Provide built-in support for file system watches~~ (canceled because this will be implemented in
-  Syncthing itself)
 
 ## Screenshots
 
@@ -120,12 +124,14 @@ See the release section on GitHub.
 * Tumbleweed, Fedora 27
     * for RPM \*.spec files and binary repository checkout
       [openSUSE Build Servide](https://build.opensuse.org/project/show/home:mkittler)
+    * there's also a [repo with the latest Git master](https://build.opensuse.org/project/show/home:mkittler:vcs)
 * Gentoo
     * packages for my other projects (which are built in the same way) are provided by perfect7gentleman; checkout his
       [repository](https://github.com/perfect7gentleman/pg_overlay)
-* Other GNU/Linux systems
-    * for an AppImage checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
-    * or my [AppImage repository on the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage/AppImage)
+* AppImage for other GNU/Linux systems
+    * [local builds](https://martchus.no-ip.biz/repo/AppImage)
+    * [OBS repo supposed to contain stable releases](https://download.opensuse.org/repositories/home:/mkittler:/appimage/AppImage)
+    * [OBS repo supposed to contain latest Git master](https://build.opensuse.org/project/show/home:mkittler:appimage:vcs)
 * Windows
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
     * for statically linked binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
