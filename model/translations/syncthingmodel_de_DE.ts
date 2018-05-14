@@ -228,7 +228,7 @@
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="128"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="395"/>
