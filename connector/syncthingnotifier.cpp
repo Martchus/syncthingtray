@@ -132,7 +132,7 @@ bool SyncthingNotifier::isDisconnectRelevant() const
             return false;
         }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        if (m_service->isRunning() && !m_service->isActiveWithoutSleepFor(m_ignoreInavailabilityAfterStart)) {
+        if (m_service && m_service->isRunning() && !m_service->isActiveWithoutSleepFor(m_ignoreInavailabilityAfterStart)) {
             return false;
         }
 #endif
