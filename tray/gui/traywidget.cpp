@@ -55,8 +55,11 @@ vector<TrayWidget *> TrayWidget::m_instances;
 
 /*!
  * \brief Instantiates a new tray widget.
+ * \remarks Doesn't apply the settings (and won't connect according to settings). This must be done manually by calling
+ *          TrayWidget::applySettings(). This allows postponing connecting until all signals of the TrayWidget::connection()
+ *          are connected as required.
  */
-TrayWidget::TrayWidget(const QString &connectionConfig, TrayMenu *parent)
+TrayWidget::TrayWidget(TrayMenu *parent)
     : QWidget(parent)
     , m_menu(parent)
     , m_ui(new Ui::TrayWidget)
@@ -121,9 +124,6 @@ TrayWidget::TrayWidget(const QString &connectionConfig, TrayMenu *parent)
     m_notificationsMenu->addAction(m_ui->actionShowNotifications);
     m_notificationsMenu->addAction(m_ui->actionDismissNotifications);
     m_ui->notificationsPushButton->setMenu(m_notificationsMenu);
-
-    // apply settings, this also establishes the connection to Syncthing (according to settings)
-    applySettings(connectionConfig);
 
     // setup other widgets
     m_ui->notificationsPushButton->setHidden(true);

@@ -56,9 +56,10 @@ int initSyncthingTray(bool windowed, bool waitForTray, const char *connectionCon
     // handle "windowed" case
     if (windowed) {
         settings.launcher.autostart();
-        auto *const trayWidget = new TrayWidget(connectionConfigQStr);
+        auto *const trayWidget = new TrayWidget();
         trayWidget->setAttribute(Qt::WA_DeleteOnClose);
         trayWidget->show();
+        trayWidget->applySettings(connectionConfigQStr);
         return 0;
     }
 

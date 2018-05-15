@@ -38,7 +38,7 @@ namespace QtGui {
  */
 TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     : QSystemTrayIcon(parent)
-    , m_trayMenu(connectionConfig, this)
+    , m_trayMenu(this)
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     , m_dbusNotificationsEnabled(Settings::values().dbusNotifications)
 #endif
@@ -104,6 +104,10 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, &widget, &TrayWidget::showWebUi);
     connect(&notifier, &SyncthingNotifier::connected, &m_dbusNotifier, &DBusStatusNotifier::hideDisconnect);
 #endif
+
+    // apply settings, this also establishes the connection to Syncthing (according to settings)
+    // note: it is important to apply settings after all Signals & Slots have been connected (eg. to handle SyncthingConnection::error())
+    m_trayMenu.widget().applySettings(connectionConfig);
 }
 
 /*!
