@@ -58,6 +58,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_currentConnectionConfig(-1)
     , m_initialized(false)
 {
+    m_notifier.setService(&m_service);
     qmlRegisterUncreatableMetaObject(Data::staticMetaObject, "martchus.syncthingplasmoid", 0, 6, "Data", QStringLiteral("only enums"));
 }
 

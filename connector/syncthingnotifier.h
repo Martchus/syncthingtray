@@ -52,16 +52,28 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingNotifier : public QObject {
     Q_OBJECT
     Q_PROPERTY(SyncthingHighLevelNotification enabledNotifications READ enabledNotifications WRITE setEnabledNotifications)
     Q_PROPERTY(bool ignoreInavailabilityAfterStart READ ignoreInavailabilityAfterStart WRITE setIgnoreInavailabilityAfterStart)
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    Q_PROPERTY(const SyncthingService *service READ service WRITE setService)
+#endif
+    Q_PROPERTY(const SyncthingProcess *process READ process WRITE setProcess)
 
 public:
     SyncthingNotifier(const SyncthingConnection &connection, QObject *parent = nullptr);
 
     SyncthingHighLevelNotification enabledNotifications() const;
     unsigned int ignoreInavailabilityAfterStart() const;
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    const SyncthingService *service() const;
+#endif
+    const SyncthingProcess *process() const;
 
 public Q_SLOTS:
     void setEnabledNotifications(SyncthingHighLevelNotification enabledNotifications);
     void setIgnoreInavailabilityAfterStart(unsigned int seconds);
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    void setService(const SyncthingService *service);
+#endif
+    void setProcess(const SyncthingProcess *process);
 
 Q_SIGNALS:
     ///! \brief Emitted when the connection status changes. Also provides the previous status.
@@ -91,9 +103,9 @@ private:
 
     const SyncthingConnection &m_connection;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    const SyncthingService *const m_service;
+    const SyncthingService *m_service;
 #endif
-    const SyncthingProcess *const m_process;
+    const SyncthingProcess *m_process;
     SyncthingHighLevelNotification m_enabledNotifications;
     SyncthingStatus m_previousStatus;
     unsigned int m_ignoreInavailabilityAfterStart;
@@ -130,6 +142,40 @@ inline unsigned int SyncthingNotifier::ignoreInavailabilityAfterStart() const
 inline void SyncthingNotifier::setIgnoreInavailabilityAfterStart(unsigned int seconds)
 {
     m_ignoreInavailabilityAfterStart = seconds;
+}
+
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+/*!
+ * \brief Returns the SyncthingService to be taken into account. Might be nullptr.
+ */
+inline const SyncthingService *SyncthingNotifier::service() const
+{
+    return m_service;
+}
+
+/*!
+ * \brief Sets the SyncthingService to be taken into account. Might be nullptr.
+ */
+inline void SyncthingNotifier::setService(const SyncthingService *service)
+{
+    m_service = service;
+}
+#endif
+
+/*!
+ * \brief Returns the SyncthingProcess to be taken into account. Might be nullptr.
+ */
+inline const SyncthingProcess *SyncthingNotifier::process() const
+{
+    return m_process;
+}
+
+/*!
+ * \brief Sets the SyncthingProcess to be taken into account. Might be nullptr.
+ */
+inline void SyncthingNotifier::setProcess(const SyncthingProcess *process)
+{
+    m_process = process;
 }
 
 } // namespace Data
