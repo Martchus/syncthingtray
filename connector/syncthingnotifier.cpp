@@ -176,6 +176,11 @@ void SyncthingNotifier::emitSyncComplete(ChronoUtilities::DateTime when, const S
     VAR_UNUSED(when)
     VAR_UNUSED(index)
 
+    // discard event for paused directories/devices
+    if (dir.paused || (remoteDev && remoteDev->paused)) {
+        return;
+    }
+
     // discard event if not enabled
     if (!m_initialized || (!remoteDev && (m_enabledNotifications & SyncthingHighLevelNotification::LocalSyncComplete) == 0)
         || (remoteDev && (m_enabledNotifications & SyncthingHighLevelNotification::LocalSyncComplete) == 0)) {
