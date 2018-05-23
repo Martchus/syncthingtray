@@ -1905,7 +1905,8 @@ void SyncthingConnection::readLocalFolderCompletion(DateTime eventTime, const QJ
     dirInfo.lastStatisticsUpdate = eventTime;
     dirInfo.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
     emit dirStatusChanged(dirInfo, index);
-    if (neededStats.isNull() && previouslyUpdated && (neededStats != previouslyNeeded || globalStats != previouslyGlobal)) {
+    if (neededStats.isNull() && previouslyUpdated && (neededStats != previouslyNeeded || globalStats != previouslyGlobal)
+        && dirInfo.status != SyncthingDirStatus::Scanning) {
         emit dirCompleted(eventTime, dirInfo, index);
     }
 }
