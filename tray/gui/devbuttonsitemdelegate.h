@@ -2,6 +2,7 @@
 #define DEVBUTTONSITEMDELEGATE_H
 
 #include <QPixmap>
+#include <QStyleOptionViewItem>
 #include <QStyledItemDelegate>
 
 namespace QtGui {
