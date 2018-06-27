@@ -674,15 +674,39 @@
         <translation>Status ist unbekannt</translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="87"/>
+        <location filename="../misc/statusinfo.cpp" line="116"/>
         <source>Conntected to %1 devices</source>
         <translation>
             <numerusform>Mit %1 Gerät verbunden</numerusform>
             <numerusform>Mit %1 Geräten verbunden</numerusform>
         </translation>
     </message>
+    <message numerus="yes">
+        <location filename="../misc/statusinfo.cpp" line="119"/>
+        <source>Conntected to %1 and %2 other devices</source>
+        <translation>
+            <numerusform>Mit %1 und einem weiteren Gerät verbunden</numerusform>
+            <numerusform>Mit %1 und %2 weiteren Geräten verbunden</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../misc/statusinfo.cpp" line="123"/>
+        <source>Conntected to %1 and %2</source>
+        <translation>
+            <numerusform>Mit %1 und %2 verbunden</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../misc/statusinfo.cpp" line="126"/>
+        <source>Conntected to %1</source>
+        <translation>
+            <numerusform>Mit %1 verbunden</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="90"/>
+        <location filename="../misc/statusinfo.cpp" line="92"/>
         <source>Not connected to other devices</source>
         <translation>Nicht mit anderen Geräten verbunden</translation>
     </message>

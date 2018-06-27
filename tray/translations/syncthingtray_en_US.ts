@@ -88,27 +88,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="205"/>
+        <location filename="../gui/trayicon.cpp" line="209"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="223"/>
+        <location filename="../gui/trayicon.cpp" line="227"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="251"/>
+        <location filename="../gui/trayicon.cpp" line="255"/>
         <source>Syncthing device wants to connect - click for web UI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="267"/>
+        <location filename="../gui/trayicon.cpp" line="271"/>
         <source>New Syncthing directory - click for web UI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="169"/>
+        <location filename="../gui/trayicon.cpp" line="173"/>
         <source>Disconnected from Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -192,7 +192,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="311"/>
-        <location filename="../gui/traywidget.cpp" line="120"/>
+        <location filename="../gui/traywidget.cpp" line="123"/>
         <location filename="../gui/traywidget.cpp" line="241"/>
         <source>New notifications</source>
         <translation type="unfinished"></translation>
@@ -223,27 +223,27 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="88"/>
+        <location filename="../gui/traywidget.cpp" line="91"/>
         <source>View own device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="94"/>
+        <location filename="../gui/traywidget.cpp" line="97"/>
         <source>Restart Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="100"/>
+        <location filename="../gui/traywidget.cpp" line="103"/>
         <source>Show Syncthing log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="106"/>
+        <location filename="../gui/traywidget.cpp" line="109"/>
         <source>Rescan all directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="114"/>
+        <location filename="../gui/traywidget.cpp" line="117"/>
         <source>Connection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -306,22 +306,22 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="85"/>
+        <location filename="../application/main.cpp" line="86"/>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="86"/>
+        <location filename="../application/main.cpp" line="87"/>
         <source>Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="69"/>
+        <location filename="../application/main.cpp" line="70"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="95"/>
+        <location filename="../application/main.cpp" line="96"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation type="unfinished"></translation>
     </message>

@@ -77,21 +77,57 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection)
 
 void StatusInfo::updateConnectedDevices(const SyncthingConnection &connection)
 {
+    m_additionalStatusText.clear();
+
     switch (connection.status()) {
     case SyncthingStatus::Idle:
     case SyncthingStatus::OutOfSync:
     case SyncthingStatus::Scanning:
-    case SyncthingStatus::Synchronizing:
-        if (const size_t connectedDevices = connection.connectedDevices()) {
-            m_additionalStatusText
-                = QCoreApplication::translate("QtGui::StatusInfo", "Conntected to %1 devices", nullptr, trQuandity(connectedDevices))
-                      .arg(connectedDevices);
-        } else {
+    case SyncthingStatus::Synchronizing: {
+        // find devices we're currently connected to
+        const auto connectedDevices(connection.connectedDevices());
+
+        // handle case when not connected to other devices
+        if (connectedDevices.empty()) {
             m_additionalStatusText = QCoreApplication::translate("QtGui::StatusInfo", "Not connected to other devices");
+            return;
         }
-        break;
-    default:
-        m_additionalStatusText.clear();
+
+        // get up to 2 device names
+        const auto deviceCount = trQuandity(connectedDevices.size());
+        const auto deviceNames = [&] {
+            QStringList deviceNames;
+            deviceNames.reserve(2);
+            for (const auto *dev : connectedDevices) {
+                if (dev->name.isEmpty()) {
+                    continue;
+                }
+                deviceNames << dev->name;
+                if (deviceNames.size() > 2) {
+                    break;
+                }
+            }
+            return deviceNames;
+        }();
+
+        // update status text
+        if (deviceNames.empty()) {
+            m_additionalStatusText
+                = QCoreApplication::translate("QtGui::StatusInfo", "Conntected to %1 devices", nullptr, deviceCount).arg(deviceCount);
+        } else if (deviceNames.size() < deviceCount) {
+            m_additionalStatusText
+                = QCoreApplication::translate("QtGui::StatusInfo", "Conntected to %1 and %2 other devices", nullptr, deviceCount - deviceNames.size())
+                      .arg(deviceNames.join(QStringLiteral(", ")))
+                      .arg(deviceCount - deviceNames.size());
+        } else if (deviceNames.size() == 2) {
+            m_additionalStatusText = QCoreApplication::translate("QtGui::StatusInfo", "Conntected to %1 and %2", nullptr, deviceCount)
+                                         .arg(deviceNames[0], deviceNames[1]);
+        } else if (deviceNames.size() == 1) {
+            m_additionalStatusText = QCoreApplication::translate("QtGui::StatusInfo", "Conntected to %1", nullptr, deviceCount).arg(deviceNames[0]);
+        }
+        return;
+    }
+    default:;
     }
 }
 } // namespace QtGui

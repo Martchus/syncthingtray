@@ -661,12 +661,13 @@ QString SyncthingConnection::deviceNameOrId(const QString &deviceId) const
  * \brief Returns the number of devices Syncthing is currently connected to.
  * \remarks Computed by looping devInfo().
  */
-std::size_t SyncthingConnection::connectedDevices() const
+std::vector<const SyncthingDev *> SyncthingConnection::connectedDevices() const
 {
-    size_t connectedDevs = 0;
+    std::vector<const SyncthingDev *> connectedDevs;
+    connectedDevs.reserve(devInfo().size());
     for (const SyncthingDev &dev : devInfo()) {
         if (dev.isConnected()) {
-            ++connectedDevs;
+            connectedDevs.emplace_back(&dev);
         }
     }
     return connectedDevs;

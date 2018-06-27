@@ -83,7 +83,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(double totalIncomingRate READ totalIncomingRate NOTIFY trafficChanged)
     Q_PROPERTY(double totalOutgoingRate READ totalOutgoingRate NOTIFY trafficChanged)
     Q_PROPERTY(QList<QSslError> expectedSslErrors READ expectedSslErrors)
-    Q_PROPERTY(std::size_t connectedDevices READ connectedDevices)
+    Q_PROPERTY(std::vector<const SyncthingDev *> connectedDevices READ connectedDevices)
     Q_PROPERTY(QStringList directoryIds READ directoryIds)
     Q_PROPERTY(QStringList deviceIds READ deviceIds)
     Q_PROPERTY(QJsonObject rawConfig READ rawConfig NOTIFY newConfig)
@@ -136,7 +136,7 @@ public:
     QStringList directoryIds() const;
     QStringList deviceIds() const;
     QString deviceNameOrId(const QString &deviceId) const;
-    std::size_t connectedDevices() const;
+    std::vector<const SyncthingDev *> connectedDevices() const;
     const QJsonObject &rawConfig() const;
 
 public Q_SLOTS:
