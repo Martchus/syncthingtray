@@ -1,4 +1,3 @@
-
 // This is a simplified and adjusted version of Plasma's ToolButtonStyle.
 // It will make the button only as big as required and allows to disable
 // padding. This makes the button a little bit more compact. Additionally,
@@ -52,7 +51,7 @@ QtQuickControlStyle.ButtonStyle {
 
         PlasmaComponents.Label {
             id: label
-            anchors.verticalCenter: parent.verticalCenter
+            Layout.alignment: Qt.AlignVCenter
             text: control.text
             textFormat: Text.StyledText
             font: control.font || theme.defaultFont

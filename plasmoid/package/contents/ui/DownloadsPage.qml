@@ -34,7 +34,7 @@ Item {
                         RowLayout {
                             spacing: units.smallSpacing
                             PlasmaComponents.Label {
-                                anchors.verticalCenter: parent.verticalCenter
+                                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                                 elide: Text.ElideRight
                                 text: name ? name : "?"
                             }
@@ -53,7 +53,7 @@ Item {
                             PlasmaComponents.Label {
                                 height: implicitHeight
                                 text: progressLabel ? progressLabel : ""
-                                anchors.verticalCenter: parent.verticalCenter
+                                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             }
                             Item {
                                 width: 3
@@ -85,7 +85,7 @@ Item {
                                 PlasmaCore.IconItem {
                                     Layout.preferredWidth: units.iconSizes.medium
                                     Layout.preferredHeight: units.iconSizes.medium
-                                    anchors.verticalCenter: parent.verticalCenter
+                                    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                                     source: fileIcon
                                 }
                                 ColumnLayout {

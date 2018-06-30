@@ -481,7 +481,7 @@ ColumnLayout {
         PlasmaComponents.TabBar {
             id: tabBar
             tabPosition: Qt.LeftEdge
-            anchors.top: parent.top
+            Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 
             PlasmaComponents.TabButton {
                 id: dirsTabButton

@@ -47,12 +47,12 @@ ColumnLayout {
                         PlasmaCore.IconItem {
                             Layout.preferredWidth: units.iconSizes.small
                             Layout.preferredHeight: units.iconSizes.small
-                            anchors.verticalCenter: parent.verticalCenter
+                            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             source: statusIcon
                         }
                         PlasmaComponents.Label {
                             Layout.fillWidth: true
-                            anchors.verticalCenter: parent.verticalCenter
+                            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             elide: Text.ElideRight
                             text: name
                         }
@@ -64,7 +64,7 @@ ColumnLayout {
                                 height: implicitHeight
                                 text: statusString
                                 color: statusColor ? statusColor : PlasmaCore.ColorScope.textColor
-                                anchors.verticalCenter: parent.verticalCenter
+                                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             }
                             Item {
                                 width: units.smallSpacing
