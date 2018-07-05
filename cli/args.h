@@ -15,7 +15,7 @@ struct Args {
     OperationArgument status, log, stop, restart, rescan, rescanAll, pause, resume, waitForIdle, pwd, cat, edit;
     OperationArgument statusPwd, rescanPwd, pausePwd, resumePwd;
     ConfigValueArgument script, jsLines, dryRun;
-    ConfigValueArgument dir, dev, allDirs, allDevs;
+    ConfigValueArgument stats, dir, dev, allDirs, allDevs;
     ConfigValueArgument atLeast, timeout;
     ConfigValueArgument editor;
     ConfigValueArgument configFile, apiKey, url, credentials, certificate;

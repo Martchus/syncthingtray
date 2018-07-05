@@ -15,6 +15,7 @@
 
 #include <c++utilities/application/failure.h>
 #include <c++utilities/chrono/timespan.h>
+#include <c++utilities/conversion/stringbuilder.h>
 #include <c++utilities/conversion/stringconversion.h>
 #include <c++utilities/io/ansiescapecodes.h>
 
@@ -465,8 +466,9 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
         }
     }
 
-    // when displaying status information and no dirs/devs have been specified, just print information for all
-    const bool displayEverything = operationType == OperationType::Status && m_relevantDirs.empty() && m_relevantDevs.empty();
+    // when displaying status information and no stats and no dirs/devs have been specified, just print information for all
+    const bool displayEverything
+        = operationType == OperationType::Status && !m_args.stats.isPresent() && m_relevantDirs.empty() && m_relevantDevs.empty();
     if (allDirs || (!allDevs && displayEverything)) {
         m_relevantDirs.reserve(m_connection.dirInfo().size());
         for (const SyncthingDir &dir : m_connection.dirInfo()) {
@@ -563,6 +565,17 @@ void Application::printDev(const SyncthingDev *dev) const
 void Application::printStatus(const ArgumentOccurrence &)
 {
     findRelevantDirsAndDevs(OperationType::Status);
+
+    // display stats
+    if (m_args.stats.isPresent() || (!m_args.dir.isPresent() && !m_args.dev.isPresent())) {
+        cout << TextAttribute::Bold << "Overall statistics\n" << TextAttribute::Reset;
+        printProperty("Incoming traffic", trafficString(m_connection.totalIncomingTraffic(), m_connection.totalIncomingRate()));
+        printProperty("Outgoing traffic", trafficString(m_connection.totalOutgoingTraffic(), m_connection.totalOutgoingRate()));
+        const auto &connectedDevices(m_connection.connectedDevices());
+        printProperty("Connected to", argsToString(connectedDevices.size(), ' ', connectedDevices.size() == 1 ? "device" : "devices", ':'));
+        printProperty("", displayNames(connectedDevices));
+        cout << '\n';
+    }
 
     // display dirs
     if (!m_relevantDirs.empty()) {

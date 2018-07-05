@@ -6,7 +6,7 @@ namespace Cli {
 
 Args::Args()
     : help(parser)
-    , status("status", 's', "shows the status (for all dirs and devs if none specified)")
+    , status("status", 's', "shows the overall status and/or directory/device specific status")
     , log("log", 'l', "shows the Syncthing log")
     , stop("stop", '\0', "stops Syncthing")
     , restart("restart", '\0', "restarts Syncthing")
@@ -25,6 +25,7 @@ Args::Args()
     , script("script", '\0', "runs the specified UTF-8 encoded ECMAScript on the configuration rather than opening an editor", { "path" })
     , jsLines("js-lines", '\0', "runs the specified ECMAScript lines on the configuration rather than opening an editor", { "line" })
     , dryRun("dry-run", '\0', "writes the altered configuration to stdout instead of posting it to Syncthing")
+    , stats("stats", '\0', "shows overall statistics")
     , dir("dir", 'd', "specifies a directory by ID", { "ID" })
     , dev("dev", '\0', "specifies a device by ID or name", { "ID/name" })
     , allDirs("all-dirs", '\0', "applies the operation for all directories")
@@ -44,7 +45,7 @@ Args::Args()
         ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::Directories | ValueCompletionBehavior::InvokeCallback);
     dev.setConstraints(0, Argument::varValueCount);
     dev.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
-    status.setSubArguments({ &dir, &dev, &allDirs, &allDevs });
+    status.setSubArguments({ &stats, &dir, &dev, &allDirs, &allDevs });
     status.setExample(PROJECT_NAME " status # shows all dirs and devs\n" PROJECT_NAME " status --dir dir1 --dir dir2 --dev dev1 --dev dev2");
     waitForIdle.setSubArguments({ &dir, &dev, &allDirs, &allDevs, &atLeast, &timeout });
     waitForIdle.setExample(PROJECT_NAME " wait-for-idle --timeout 1800000 --at-least 5000 && systemctl poweroff\n" PROJECT_NAME

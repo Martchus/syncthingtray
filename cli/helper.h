@@ -32,6 +32,12 @@ inline void printProperty(const char *propName, const QString &value, const char
 }
 
 inline void printProperty(
+    const char *propName, const std::string &value, const char *suffix = nullptr, ApplicationUtilities::Indentation indentation = 3)
+{
+    printProperty(propName, value.data(), suffix, indentation);
+}
+
+inline void printProperty(
     const char *propName, const QStringList &value, const char *suffix = nullptr, ApplicationUtilities::Indentation indentation = 3)
 {
     for (const QString &str : value) {

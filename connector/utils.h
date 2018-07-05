@@ -57,8 +57,14 @@ template <class Objects, class Accessor> QStringList LIB_SYNCTHING_CONNECTOR_EXP
 
 template <class Objects> QStringList LIB_SYNCTHING_CONNECTOR_EXPORT ids(const Objects &objects)
 {
-    return things(objects, [](const auto &object) { return object.id; });
+    return things(objects, [](const auto &object) { return Traits::dereferenceMaybe(object).id; });
 }
+
+template <class Objects> QStringList LIB_SYNCTHING_CONNECTOR_EXPORT displayNames(const Objects &objects)
+{
+    return things(objects, [](const auto &object) { return Traits::dereferenceMaybe(object).displayName(); });
+}
+
 } // namespace Data
 
 #endif // DATA_UTILS_H
