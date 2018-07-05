@@ -88,6 +88,17 @@ QString syncCompleteString(const std::vector<const SyncthingDir *> &completedDir
 }
 
 /*!
+ * \brief Returns the string representation of the specified \a rescanInterval.
+ */
+QString rescanIntervalString(int rescanInterval)
+{
+    if (!rescanInterval) {
+        return QCoreApplication::translate("Data::Utils", "rescan disabled");
+    }
+    return QString::fromLatin1(TimeSpan::fromSeconds(rescanInterval).toString(TimeSpanOutputFormat::WithMeasures, true).data());
+}
+
+/*!
  * \brief Returns whether the host specified by the given \a url is the local machine.
  */
 bool isLocal(const QUrl &url)

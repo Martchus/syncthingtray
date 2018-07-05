@@ -172,7 +172,7 @@ void ApplicationTests::test()
     cout << stdout;
     CPPUNIT_ASSERT(stdout.find("test1") != string::npos);
     CPPUNIT_ASSERT(stdout.find("test2") == string::npos);
-    CPPUNIT_ASSERT(stdout.find("Rescan interval") == string::npos);
+    CPPUNIT_ASSERT(stdout.find("Rescan interval               rescan disabled") != string::npos);
 #endif
 
     // test rescan: create new file, trigger rescan, check status

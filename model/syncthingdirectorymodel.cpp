@@ -162,8 +162,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 5:
                             return dir.dirTypeString();
                         case 6:
-                            return QString::fromLatin1(
-                                TimeSpan::fromSeconds(dir.rescanInterval).toString(TimeSpanOutputFormat::WithMeasures, true).data());
+                            return rescanIntervalString(dir.rescanInterval);
                         case 7:
                             return dir.lastScanTime.isNull()
                                 ? tr("unknown")
