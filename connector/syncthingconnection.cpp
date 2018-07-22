@@ -1254,7 +1254,7 @@ void SyncthingConnection::readConnections()
         m_totalIncomingRate = (hasDelta && totalIncomingTraffic != unknownTraffic && m_totalIncomingTraffic != unknownTraffic)
             ? (totalIncomingTraffic - m_totalIncomingTraffic) * 0.008 / transferTime
             : 0.0;
-        m_totalOutgoingRate = (hasDelta && totalOutgoingTraffic != unknownTraffic && m_totalOutgoingRate != unknownTraffic)
+        m_totalOutgoingRate = (hasDelta && totalOutgoingTraffic != unknownTraffic && m_totalOutgoingTraffic != unknownTraffic)
             ? (totalOutgoingTraffic - m_totalOutgoingTraffic) * 0.008 / transferTime
             : 0.0;
         emit trafficChanged(m_totalIncomingTraffic = totalIncomingTraffic, m_totalOutgoingTraffic = totalOutgoingTraffic);
