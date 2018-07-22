@@ -584,7 +584,7 @@ SyncthingDir *SyncthingConnection::addDirInfo(std::vector<SyncthingDir> &dirs, c
         return nullptr;
     }
     int row;
-    if (SyncthingDir *existingDirInfo = findDirInfo(dirId, row)) {
+    if (auto *const existingDirInfo = findDirInfo(dirId, row)) {
         dirs.emplace_back(move(*existingDirInfo));
     } else {
         dirs.emplace_back(dirId);
@@ -1251,7 +1251,7 @@ void SyncthingConnection::readConnections()
         const QJsonValue totalOutgoingTrafficValue(totalObj.value(QLatin1String("outBytesTotal")));
         const uint64 totalIncomingTraffic = totalIncomingTrafficValue.isDouble() ? jsonValueToInt(totalIncomingTrafficValue) : unknownTraffic;
         const uint64 totalOutgoingTraffic = totalOutgoingTrafficValue.isDouble() ? jsonValueToInt(totalOutgoingTrafficValue) : unknownTraffic;
-        double transferTime;
+        double transferTime = 0.0;
         const bool hasDelta
             = !m_lastConnectionsUpdate.isNull() && ((transferTime = (DateTime::gmtNow() - m_lastConnectionsUpdate).totalSeconds()) != 0.0);
         m_totalIncomingRate = (hasDelta && totalIncomingTraffic != unknownTraffic && m_totalIncomingTraffic != unknownTraffic)
@@ -1357,7 +1357,9 @@ void SyncthingConnection::readDirStatistics()
                     try {
                         dirInfo.lastFileTime = DateTime::fromIsoStringLocal(lastFileObj.value(QLatin1String("at")).toString().toUtf8().data());
                         if (dirInfo.lastFileTime > m_lastFileTime) {
-                            m_lastFileTime = dirInfo.lastFileTime, m_lastFileName = dirInfo.lastFileName, m_lastFileDeleted = dirInfo.lastFileDeleted;
+                            m_lastFileTime = dirInfo.lastFileTime;
+                            m_lastFileName = dirInfo.lastFileName;
+                            m_lastFileDeleted = dirInfo.lastFileDeleted;
                         }
                     } catch (const ConversionException &) {
                         dirInfo.lastFileTime = DateTime();
@@ -1843,7 +1845,9 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
         dirInfo->lastFileName = item;
         dirInfo->lastFileDeleted = (eventData.value(QLatin1String("action")) != QLatin1String("delete"));
         if (eventTime > m_lastFileTime) {
-            m_lastFileTime = dirInfo->lastFileTime, m_lastFileName = dirInfo->lastFileName, m_lastFileDeleted = dirInfo->lastFileDeleted;
+            m_lastFileTime = dirInfo->lastFileTime;
+            m_lastFileName = dirInfo->lastFileName;
+            m_lastFileDeleted = dirInfo->lastFileDeleted;
         }
         emit dirStatusChanged(*dirInfo, index);
     }
