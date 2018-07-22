@@ -24,24 +24,21 @@ SyncthingDirectoryModel::SyncthingDirectoryModel(SyncthingConnection &connection
     connect(&m_connection, &SyncthingConnection::dirStatusChanged, this, &SyncthingDirectoryModel::dirStatusChanged);
 }
 
-QHash<int, QByteArray> SyncthingDirectoryModel::initRoleNames()
-{
-    QHash<int, QByteArray> roles;
-    roles[Qt::DisplayRole] = "name";
-    roles[DirectoryStatus] = "status";
-    roles[Qt::DecorationRole] = "statusIcon";
-    roles[DirectoryStatusString] = "statusString";
-    roles[DirectoryStatusColor] = "statusColor";
-    roles[DirectoryPaused] = "paused";
-    roles[DirectoryId] = "dirId";
-    roles[DirectoryPath] = "path";
-    roles[DirectoryDetail] = "detail";
-    return roles;
-}
-
 QHash<int, QByteArray> SyncthingDirectoryModel::roleNames() const
 {
-    const static QHash<int, QByteArray> roles(initRoleNames());
+    const static auto roles([] {
+        QHash<int, QByteArray> roles;
+        roles[Qt::DisplayRole] = "name";
+        roles[DirectoryStatus] = "status";
+        roles[Qt::DecorationRole] = "statusIcon";
+        roles[DirectoryStatusString] = "statusString";
+        roles[DirectoryStatusColor] = "statusColor";
+        roles[DirectoryPaused] = "paused";
+        roles[DirectoryId] = "dirId";
+        roles[DirectoryPath] = "path";
+        roles[DirectoryDetail] = "detail";
+        return roles;
+    }());
     return roles;
 }
 

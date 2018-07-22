@@ -19,23 +19,20 @@ SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObj
     connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &SyncthingDeviceModel::devStatusChanged);
 }
 
-QHash<int, QByteArray> SyncthingDeviceModel::initRoleNames()
-{
-    QHash<int, QByteArray> roles;
-    roles[Qt::DisplayRole] = "name";
-    roles[DeviceStatus] = "status";
-    roles[Qt::DecorationRole] = "statusIcon";
-    roles[DevicePaused] = "paused";
-    roles[DeviceStatusString] = "statusString";
-    roles[DeviceStatusColor] = "statusColor";
-    roles[DeviceId] = "devId";
-    roles[DeviceDetail] = "detail";
-    return roles;
-}
-
 QHash<int, QByteArray> SyncthingDeviceModel::roleNames() const
 {
-    const static QHash<int, QByteArray> roles(initRoleNames());
+    const static auto roles([] {
+        QHash<int, QByteArray> roles;
+        roles[Qt::DisplayRole] = "name";
+        roles[DeviceStatus] = "status";
+        roles[Qt::DecorationRole] = "statusIcon";
+        roles[DevicePaused] = "paused";
+        roles[DeviceStatusString] = "statusString";
+        roles[DeviceStatusColor] = "statusColor";
+        roles[DeviceId] = "devId";
+        roles[DeviceDetail] = "detail";
+        return roles;
+    }());
     return roles;
 }
 

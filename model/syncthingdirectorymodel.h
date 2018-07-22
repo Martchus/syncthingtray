@@ -44,7 +44,6 @@ private Q_SLOTS:
     void dirStatusChanged(const SyncthingDir &, int index);
 
 private:
-    static QHash<int, QByteArray> initRoleNames();
     static QString dirStatusString(const SyncthingDir &dir);
     QVariant dirStatusColor(const SyncthingDir &dir) const;
 

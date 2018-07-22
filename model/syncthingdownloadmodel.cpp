@@ -34,20 +34,17 @@ SyncthingDownloadModel::SyncthingDownloadModel(SyncthingConnection &connection, 
     connect(&m_connection, &SyncthingConnection::downloadProgressChanged, this, &SyncthingDownloadModel::downloadProgressChanged);
 }
 
-QHash<int, QByteArray> SyncthingDownloadModel::initRoleNames()
-{
-    QHash<int, QByteArray> roles;
-    roles[Qt::DisplayRole] = "name";
-    roles[Qt::DecorationRole] = "fileIcon";
-    roles[ItemPercentage] = "percentage";
-    roles[ItemProgressLabel] = "progressLabel";
-    roles[ItemPath] = "path";
-    return roles;
-}
-
 QHash<int, QByteArray> SyncthingDownloadModel::roleNames() const
 {
-    const static QHash<int, QByteArray> roles(initRoleNames());
+    const static auto roles([] {
+        QHash<int, QByteArray> roles;
+        roles[Qt::DisplayRole] = "name";
+        roles[Qt::DecorationRole] = "fileIcon";
+        roles[ItemPercentage] = "percentage";
+        roles[ItemProgressLabel] = "progressLabel";
+        roles[ItemPath] = "path";
+        return roles;
+    }());
     return roles;
 }
 

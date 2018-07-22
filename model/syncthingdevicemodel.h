@@ -44,7 +44,6 @@ private Q_SLOTS:
     void devStatusChanged(const SyncthingDev &, int index);
 
 private:
-    static QHash<int, QByteArray> initRoleNames();
     static QString devStatusString(const SyncthingDev &dev);
     QVariant devStatusColor(const SyncthingDev &dev) const;
 

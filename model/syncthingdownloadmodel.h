@@ -54,8 +54,6 @@ private:
         bool operator==(const SyncthingDir *dir) const;
     };
 
-    static QHash<int, QByteArray> initRoleNames();
-
     const std::vector<SyncthingDir> &m_dirs;
     const QIcon m_unknownIcon;
     const QFileIconProvider m_fileIconProvider;
