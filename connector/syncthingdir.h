@@ -137,6 +137,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     int completionPercentage = 0;
     int scanningPercentage = 0;
     double scanningRate = 0;
+    double fileSystemWatcherDelay = 0.0;
     std::map<QString, SyncthingCompletion> completionByDevice;
     QString globalError;
     std::vector<SyncthingItemError> itemErrors;
@@ -152,10 +153,12 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     QString downloadLabel;
     unsigned int downloadPercentage = 0;
     bool ignorePermissions = false;
+    bool ignoreDelete = false;
     bool ignorePatterns = false;
     bool autoNormalize = false;
-    bool paused = false;
     bool lastFileDeleted = false;
+    bool fileSystemWatcherEnabled = false;
+    bool paused = false;
 
 private:
     bool checkWhetherStatusUpdateRelevant(ChronoUtilities::DateTime time);

@@ -1120,9 +1120,12 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
         dirItem->assignDirType(dirObj.value(QLatin1String("type")).toString());
         dirItem->rescanInterval = dirObj.value(QLatin1String("rescanIntervalS")).toInt(-1);
         dirItem->ignorePermissions = dirObj.value(QLatin1String("ignorePerms")).toBool(false);
+        dirItem->ignoreDelete = dirObj.value(QLatin1String("ignoreDelete")).toBool(false);
         dirItem->autoNormalize = dirObj.value(QLatin1String("autoNormalize")).toBool(false);
         dirItem->minDiskFreePercentage = dirObj.value(QLatin1String("minDiskFreePct")).toInt(-1);
         dirItem->paused = dirObj.value(QLatin1String("paused")).toBool(dirItem->paused);
+        dirItem->fileSystemWatcherEnabled = dirObj.value(QLatin1String("fsWatcherEnabled")).toBool(false);
+        dirItem->fileSystemWatcherDelay = dirObj.value(QLatin1String("fsWatcherDelayS")).toDouble(0.0);
     }
 
     m_dirs.swap(newDirs);
