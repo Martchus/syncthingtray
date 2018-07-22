@@ -362,14 +362,14 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &, int index)
 {
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
     static const QVector<int> modelRoles1(
-        { Qt::DecorationRole, DirectoryPaused, DirectoryStatus, DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath });
+        { Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, DirectoryPaused, DirectoryStatus, DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath });
     emit dataChanged(modelIndex1, modelIndex1, modelRoles1);
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
-    static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::ForegroundRole });
+    static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::EditRole, Qt::ForegroundRole });
     emit dataChanged(modelIndex2, modelIndex2, modelRoles2);
-    static const QVector<int> modelRoles3({ Qt::DisplayRole, Qt::ToolTipRole });
+    static const QVector<int> modelRoles3({ Qt::DisplayRole, Qt::EditRole, Qt::ToolTipRole });
     emit dataChanged(this->index(0, 1, modelIndex1), this->index(9, 1, modelIndex1), modelRoles3);
-    static const QVector<int> modelRoles4({ DirectoryDetail });
+    static const QVector<int> modelRoles4({ Qt::DisplayRole, Qt::EditRole, DirectoryDetail });
     emit dataChanged(this->index(0, 0, modelIndex1), this->index(9, 0, modelIndex1), modelRoles4);
 }
 
