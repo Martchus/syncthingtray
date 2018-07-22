@@ -931,7 +931,6 @@ bool Application::checkWhetherIdle() const
         switch (dir.dirObj->status) {
         case SyncthingDirStatus::Unknown:
         case SyncthingDirStatus::Idle:
-        case SyncthingDirStatus::Unshared:
             break;
         default:
             return false;

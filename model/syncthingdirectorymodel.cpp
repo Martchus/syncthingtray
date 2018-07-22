@@ -268,10 +268,11 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case 0:
                     if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
                         return statusIcons().pause;
+                    } else if (dir.deviceIds.empty()) {
+                        return statusIcons().disconnected; // "unshared" status
                     } else {
                         switch (dir.status) {
                         case SyncthingDirStatus::Unknown:
-                        case SyncthingDirStatus::Unshared:
                             return statusIcons().disconnected;
                         case SyncthingDirStatus::Idle:
                             return statusIcons().idling;
@@ -378,11 +379,12 @@ QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
     if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
         return tr("Paused");
     }
+    if (dir.isUnshared()) {
+        return tr("Unshared");
+    }
     switch (dir.status) {
     case SyncthingDirStatus::Unknown:
         return tr("Unknown status");
-    case SyncthingDirStatus::Unshared:
-        return tr("Unshared");
     case SyncthingDirStatus::Idle:
         return tr("Idle");
     case SyncthingDirStatus::Scanning:
@@ -406,13 +408,14 @@ QVariant SyncthingDirectoryModel::dirStatusColor(const SyncthingDir &dir) const
     if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
         return QVariant();
     }
+    if (dir.isUnshared()) {
+        return Colors::orange(m_brightColors);
+    }
     switch (dir.status) {
     case SyncthingDirStatus::Unknown:
         break;
     case SyncthingDirStatus::Idle:
         return Colors::green(m_brightColors);
-    case SyncthingDirStatus::Unshared:
-        return Colors::orange(m_brightColors);
     case SyncthingDirStatus::Scanning:
     case SyncthingDirStatus::Synchronizing:
         return Colors::blue(m_brightColors);

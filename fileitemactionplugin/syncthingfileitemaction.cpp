@@ -143,10 +143,11 @@ bool SyncthingDirActions::updateStatus(const SyncthingDir &dir)
     m_statusAction.setText(tr("Status: ") + dir.statusString());
     if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
         m_statusAction.setIcon(statusIcons().pause);
+    } else if (dir.isUnshared()) {
+        m_statusAction.setIcon(statusIcons().disconnected);
     } else {
         switch (dir.status) {
         case SyncthingDirStatus::Unknown:
-        case SyncthingDirStatus::Unshared:
             m_statusAction.setIcon(statusIcons().disconnected);
             break;
         case SyncthingDirStatus::Idle:

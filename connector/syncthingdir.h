@@ -12,7 +12,7 @@
 
 namespace Data {
 
-enum class SyncthingDirStatus { Unknown, Idle, Unshared, Scanning, Synchronizing, OutOfSync };
+enum class SyncthingDirStatus { Unknown, Idle, Scanning, Synchronizing, OutOfSync };
 
 QString LIB_SYNCTHING_CONNECTOR_EXPORT statusString(SyncthingDirStatus status);
 
@@ -122,6 +122,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     QStringRef pathWithoutTrailingSlash() const;
     bool isLocallyUpToDate() const;
     bool areRemotesUpToDate() const;
+    bool isUnshared() const;
 
     QString id;
     QString label;
@@ -181,6 +182,11 @@ inline QString SyncthingDir::dirTypeString() const
 inline bool SyncthingDir::isLocallyUpToDate() const
 {
     return neededStats.isNull();
+}
+
+inline bool SyncthingDir::isUnshared() const
+{
+    return deviceIds.empty() && (status == SyncthingDirStatus::Idle || status == SyncthingDirStatus::Unknown);
 }
 
 inline bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, ChronoUtilities::DateTime time)

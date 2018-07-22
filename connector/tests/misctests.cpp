@@ -182,16 +182,18 @@ void MiscTests::testConnectionSettingsAndLoadingSelfSignedCert()
 void MiscTests::testSyncthingDir()
 {
     SyncthingDir dir;
-    dir.deviceIds << QStringLiteral("dev1") << QStringLiteral("dev2");
+    dir.status = SyncthingDirStatus::Unknown;
 
     DateTime updateTime(DateTime::fromDate(2005, 2, 3));
-    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Unshared, updateTime));
+    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Idle, updateTime));
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("unshared"), dir.statusString());
     CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastStatusUpdate);
+
+    dir.deviceIds << QStringLiteral("dev1") << QStringLiteral("dev2");
 
     CPPUNIT_ASSERT(!dir.assignStatus(SyncthingDirStatus::Scanning, DateTime::fromDate(2003, 6, 7)));
     CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastStatusUpdate);
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("unshared"), dir.statusString());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("idle"), dir.statusString());
 
     const DateTime lastScanTime(DateTime::now());
     updateTime += TimeSpan::fromSeconds(5);

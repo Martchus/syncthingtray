@@ -18,8 +18,6 @@ QString statusString(SyncthingDirStatus status)
         return QCoreApplication::translate("SyncthingDirStatus", "unknown");
     case SyncthingDirStatus::Idle:
         return QCoreApplication::translate("SyncthingDirStatus", "idle");
-    case SyncthingDirStatus::Unshared:
-        return QCoreApplication::translate("SyncthingDirStatus", "unshared");
     case SyncthingDirStatus::Scanning:
         return QCoreApplication::translate("SyncthingDirStatus", "scanning");
     case SyncthingDirStatus::Synchronizing:
@@ -57,15 +55,12 @@ bool SyncthingDir::checkWhetherStatusUpdateRelevant(DateTime time)
 
 bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus)
 {
-    // check whether out-of-sync or unshared
+    // check whether out-of-sync
     switch (newStatus) {
     case SyncthingDirStatus::Unknown:
     case SyncthingDirStatus::Idle:
-    case SyncthingDirStatus::Unshared:
         if (!itemErrors.empty()) {
             newStatus = SyncthingDirStatus::OutOfSync;
-        } else if (deviceIds.empty()) {
-            newStatus = SyncthingDirStatus::Unshared;
         }
         break;
     default:;
@@ -143,6 +138,8 @@ QString SyncthingDir::statusString() const
 {
     if (paused) {
         return QCoreApplication::translate("SyncthingDir", "paused");
+    } else if (isUnshared()) {
+        return QCoreApplication::translate("SyncthingDir", "unshared");
     } else {
         return ::Data::statusString(status);
     }
