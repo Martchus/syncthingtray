@@ -75,6 +75,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_connectionsReply(nullptr)
     , m_errorsReply(nullptr)
     , m_eventsReply(nullptr)
+    , m_versionReply(nullptr)
     , m_unreadNotifications(false)
     , m_hasConfig(false)
     , m_hasStatus(false)
@@ -265,6 +266,7 @@ void SyncthingConnection::continueReconnecting()
     m_startTime = DateTime();
     m_lastFileName.clear();
     m_lastFileDeleted = false;
+    m_syncthingVersion.clear();
     if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
         emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return;
@@ -688,7 +690,7 @@ SyncthingDev *SyncthingConnection::addDevInfo(std::vector<SyncthingDev> &devs, c
         return nullptr;
     }
     int row;
-    if (SyncthingDev *existingDevInfo = findDevInfo(devId, row)) {
+    if (SyncthingDev *const existingDevInfo = findDevInfo(devId, row)) {
         devs.emplace_back(move(*existingDevInfo));
     } else {
         devs.emplace_back(devId);
@@ -708,6 +710,7 @@ void SyncthingConnection::continueConnecting()
     requestDirStatistics();
     requestDeviceStatistics();
     requestErrors();
+    requestVersion();
     for (const SyncthingDir &dir : m_dirs) {
         requestDirStatus(dir.id);
         if (!m_requestCompletion) {
@@ -741,6 +744,9 @@ void SyncthingConnection::abortAllRequests()
     }
     if (m_eventsReply) {
         m_eventsReply->abort();
+    }
+    if (m_versionReply) {
+        m_versionReply->abort();
     }
 }
 
@@ -851,7 +857,13 @@ void SyncthingConnection::requestCompletion(const QString &devId, const QString 
 void SyncthingConnection::requestDeviceStatistics()
 {
     QObject::connect(
-        requestData(QStringLiteral("stats/device"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readDeviceStatistics);
+                requestData(QStringLiteral("stats/device"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readDeviceStatistics);
+}
+
+void SyncthingConnection::requestVersion()
+{
+    QObject::connect(
+        m_versionReply = requestData(QStringLiteral("system/version"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readVersion);
 }
 
 /*!
@@ -2245,6 +2257,36 @@ void SyncthingConnection::readCompletion()
     }
     default:
         emitError(tr("Unable to request completion for device/directory %1/%2: ").arg(devId, dirId), SyncthingErrorCategory::SpecificRequest, reply);
+    }
+}
+
+void SyncthingConnection::readVersion()
+{
+    auto *const reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+    if (reply == m_versionReply) {
+        m_versionReply = nullptr;
+    }
+
+    switch (reply->error()) {
+    case QNetworkReply::NoError: {
+        const QByteArray response(reply->readAll());
+        QJsonParseError jsonError;
+        const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
+        if (jsonError.error != QJsonParseError::NoError) {
+            emitError(tr("Unable to parse version: "), jsonError, reply, response);
+            return;
+        }
+
+        const auto replyObj(replyDoc.object());
+        m_syncthingVersion = replyObj.value(QLatin1String("longVersion")).toString();
+
+        break;
+    }
+    case QNetworkReply::OperationCanceledError:
+        return; // intended, not an error
+    default:
+        emitError(tr("Unable to request version: "), SyncthingErrorCategory::OverallConnection, reply);
     }
 }
 

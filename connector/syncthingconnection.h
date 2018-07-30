@@ -83,6 +83,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(double totalIncomingRate READ totalIncomingRate NOTIFY trafficChanged)
     Q_PROPERTY(double totalOutgoingRate READ totalOutgoingRate NOTIFY trafficChanged)
     Q_PROPERTY(QString lastSyncedFile READ lastSyncedFile)
+    Q_PROPERTY(QString syncthingVersion READ syncthingVersion)
     Q_PROPERTY(ChronoUtilities::DateTime lastSyncTime READ lastSyncTime)
     Q_PROPERTY(QList<QSslError> expectedSslErrors READ expectedSslErrors)
     Q_PROPERTY(std::vector<const SyncthingDev *> connectedDevices READ connectedDevices)
@@ -133,6 +134,7 @@ public:
     ChronoUtilities::DateTime lastSyncTime() const;
     ChronoUtilities::DateTime startTime() const;
     ChronoUtilities::TimeSpan uptime() const;
+    const QString &syncthingVersion() const;
     QMetaObject::Connection requestQrCode(const QString &text, std::function<void(const QByteArray &)> callback);
     QMetaObject::Connection requestLog(std::function<void(const std::vector<SyncthingLogEntry> &)> callback);
     const QList<QSslError> &expectedSslErrors() const;
@@ -180,6 +182,7 @@ public Q_SLOTS:
     void requestDirStatus(const QString &dirId);
     void requestCompletion(const QString &devId, const QString &dirId);
     void requestDeviceStatistics();
+    void requestVersion();
     void postConfigFromJsonObject(const QJsonObject &rawConfig);
     void postConfigFromByteArray(const QByteArray &rawConfig);
 
@@ -252,6 +255,7 @@ private Q_SLOTS:
     void readDirRejected(ChronoUtilities::DateTime eventTime, const QString &dirId, const QJsonObject &eventData);
     void readDevRejected(ChronoUtilities::DateTime eventTime, const QString &devId, const QJsonObject &eventData);
     void readCompletion();
+    void readVersion();
 
     void continueConnecting();
     void continueReconnecting();
@@ -298,6 +302,7 @@ private:
     QNetworkReply *m_connectionsReply;
     QNetworkReply *m_errorsReply;
     QNetworkReply *m_eventsReply;
+    QNetworkReply *m_versionReply;
     bool m_unreadNotifications;
     bool m_hasConfig;
     bool m_hasStatus;
@@ -308,6 +313,7 @@ private:
     ChronoUtilities::DateTime m_lastErrorTime;
     ChronoUtilities::DateTime m_startTime;
     QString m_lastFileName;
+    QString m_syncthingVersion;
     bool m_lastFileDeleted;
     QList<QSslError> m_expectedSslErrors;
     QJsonObject m_rawConfig;
@@ -619,6 +625,14 @@ inline ChronoUtilities::DateTime SyncthingConnection::startTime() const
 inline ChronoUtilities::TimeSpan SyncthingConnection::uptime() const
 {
     return ChronoUtilities::DateTime::gmtNow() - m_startTime;
+}
+
+/*!
+ * \brief Returns the Syncthing version.
+ */
+inline const QString &SyncthingConnection::syncthingVersion() const
+{
+    return m_syncthingVersion;
 }
 
 /*!
