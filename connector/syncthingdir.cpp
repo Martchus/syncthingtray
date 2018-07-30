@@ -193,4 +193,26 @@ SyncthingItemDownloadProgress::SyncthingItemDownloadProgress(
 {
 }
 
+SyncthingStatistics &SyncthingStatistics::operator+=(const SyncthingStatistics &other)
+{
+    bytes += other.bytes;
+    deletes += other.deletes;
+    dirs += other.dirs;
+    files += other.files;
+    symlinks += other.symlinks;
+    return *this;
+}
+
+/*!
+ * \brief Computes overall statistics for the specified \a directories.
+ */
+SyncthingOverallDirStatistics::SyncthingOverallDirStatistics(const std::vector<SyncthingDir> &directories)
+{
+    for (const auto &dir : directories) {
+        local += dir.localStats;
+        global += dir.globalStats;
+        needed += dir.neededStats;
+    }
+}
+
 } // namespace Data

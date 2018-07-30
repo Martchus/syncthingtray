@@ -94,6 +94,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingStatistics {
     constexpr bool isNull() const;
     constexpr bool operator==(const SyncthingStatistics &other) const;
     constexpr bool operator!=(const SyncthingStatistics &other) const;
+    SyncthingStatistics &operator+=(const SyncthingStatistics &other);
 };
 
 constexpr bool SyncthingStatistics::isNull() const
@@ -197,10 +198,32 @@ inline bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, ChronoUtili
     return checkWhetherStatusUpdateRelevant(time) && finalizeStatusUpdate(newStatus);
 }
 
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingOverallDirStatistics {
+    SyncthingOverallDirStatistics();
+    SyncthingOverallDirStatistics(const std::vector<SyncthingDir> &directories);
+
+    SyncthingStatistics local;
+    SyncthingStatistics global;
+    SyncthingStatistics needed;
+
+    bool isNull() const;
+};
+
+inline SyncthingOverallDirStatistics::SyncthingOverallDirStatistics()
+{
+}
+
+inline bool SyncthingOverallDirStatistics::isNull() const
+{
+    return local.isNull() && global.isNull();
+}
+
 } // namespace Data
 
 Q_DECLARE_METATYPE(Data::SyncthingItemError)
 Q_DECLARE_METATYPE(Data::SyncthingItemDownloadProgress)
+Q_DECLARE_METATYPE(Data::SyncthingStatistics)
+Q_DECLARE_METATYPE(Data::SyncthingOverallDirStatistics)
 Q_DECLARE_METATYPE(Data::SyncthingDir)
 
 #endif // DATA_SYNCTHINGDIR_H

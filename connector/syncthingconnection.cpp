@@ -262,6 +262,7 @@ void SyncthingConnection::continueReconnecting()
     m_lastConnectionsUpdate = DateTime();
     m_lastFileTime = DateTime();
     m_lastErrorTime = DateTime();
+    m_startTime = DateTime();
     m_lastFileName.clear();
     m_lastFileDeleted = false;
     if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
@@ -1176,15 +1177,16 @@ void SyncthingConnection::readStatus()
     case QNetworkReply::NoError: {
         const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse Syncthing status: "), jsonError, reply, response);
             handleFatalConnectionError();
             return;
         }
 
-        emitMyIdChanged(replyDoc.object().value(QLatin1String("myID")).toString());
-        // other values are currently not interesting
+        const auto replyObj(replyDoc.object());
+        emitMyIdChanged(replyObj.value(QLatin1String("myID")).toString());
+        m_startTime = DateTime::fromIsoStringGmt(replyObj.value(QLatin1String("startTime")).toString().toLocal8Bit().data());
         m_hasStatus = true;
 
         if (m_keepPolling) {
@@ -1826,7 +1828,7 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
         return;
     }
 
-    // handle unsuccessfull operation
+    // handle unsuccessful operation
     const auto error(eventData.value(QLatin1String("error")).toString()), item(eventData.value(QLatin1String("item")).toString());
     if (!error.isEmpty()) {
         if (dirInfo->status == SyncthingDirStatus::OutOfSync) {

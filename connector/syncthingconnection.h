@@ -82,6 +82,8 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(int totalOutgoingTraffic READ totalOutgoingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(double totalIncomingRate READ totalIncomingRate NOTIFY trafficChanged)
     Q_PROPERTY(double totalOutgoingRate READ totalOutgoingRate NOTIFY trafficChanged)
+    Q_PROPERTY(QString lastSyncedFile READ lastSyncedFile)
+    Q_PROPERTY(ChronoUtilities::DateTime lastSyncTime READ lastSyncTime)
     Q_PROPERTY(QList<QSslError> expectedSslErrors READ expectedSslErrors)
     Q_PROPERTY(std::vector<const SyncthingDev *> connectedDevices READ connectedDevices)
     Q_PROPERTY(QStringList directoryIds READ directoryIds)
@@ -126,6 +128,11 @@ public:
     static constexpr uint64 unknownTraffic = std::numeric_limits<uint64>::max();
     const std::vector<SyncthingDir> &dirInfo() const;
     const std::vector<SyncthingDev> &devInfo() const;
+    SyncthingOverallDirStatistics computeOverallDirStatistics() const;
+    const QString &lastSyncedFile() const;
+    ChronoUtilities::DateTime lastSyncTime() const;
+    ChronoUtilities::DateTime startTime() const;
+    ChronoUtilities::TimeSpan uptime() const;
     QMetaObject::Connection requestQrCode(const QString &text, std::function<void(const QByteArray &)> callback);
     QMetaObject::Connection requestLog(std::function<void(const std::vector<SyncthingLogEntry> &)> callback);
     const QList<QSslError> &expectedSslErrors() const;
@@ -299,6 +306,7 @@ private:
     ChronoUtilities::DateTime m_lastConnectionsUpdate;
     ChronoUtilities::DateTime m_lastFileTime;
     ChronoUtilities::DateTime m_lastErrorTime;
+    ChronoUtilities::DateTime m_startTime;
     QString m_lastFileName;
     bool m_lastFileDeleted;
     QList<QSslError> m_expectedSslErrors;
@@ -571,6 +579,46 @@ inline const std::vector<SyncthingDir> &SyncthingConnection::dirInfo() const
 inline const std::vector<SyncthingDev> &SyncthingConnection::devInfo() const
 {
     return m_devs;
+}
+
+/*!
+ * \brief Computes overall directory statistics based on the currently available directory information.
+ */
+inline SyncthingOverallDirStatistics SyncthingConnection::computeOverallDirStatistics() const
+{
+    return SyncthingOverallDirStatistics(dirInfo());
+}
+
+/*!
+ * \brief Returns the name of the file which has been synced most recently.
+ */
+inline const QString &SyncthingConnection::lastSyncedFile() const
+{
+    return m_lastFileName;
+}
+
+/*!
+ * \brief Returns the time of the most recent sync.
+ */
+inline ChronoUtilities::DateTime SyncthingConnection::lastSyncTime() const
+{
+    return m_lastFileTime;
+}
+
+/*!
+ * \brief Returns when Syncthing has been started.
+ */
+inline ChronoUtilities::DateTime SyncthingConnection::startTime() const
+{
+    return m_startTime;
+}
+
+/*!
+ * \brief Returns how long Syncthing has been running.
+ */
+inline ChronoUtilities::TimeSpan SyncthingConnection::uptime() const
+{
+    return ChronoUtilities::DateTime::gmtNow() - m_startTime;
 }
 
 /*!
