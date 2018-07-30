@@ -25,7 +25,11 @@ public:
     void updateConnectedDevices(const Data::SyncthingConnection &connection);
 
 private:
+    void recomputeAdditionalStatusText();
+
     QString m_statusText;
+    QString m_additionalStatusInfo;
+    QString m_additionalDeviceInfo;
     QString m_additionalStatusText;
     const QIcon *m_statusIcon;
 };
