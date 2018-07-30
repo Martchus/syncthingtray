@@ -569,11 +569,35 @@ void Application::printStatus(const ArgumentOccurrence &)
     // display stats
     if (m_args.stats.isPresent() || (!m_args.dir.isPresent() && !m_args.dev.isPresent())) {
         cout << TextAttribute::Bold << "Overall statistics\n" << TextAttribute::Reset;
+        const auto &overallStats(m_connection.computeOverallDirStatistics());
+        const auto *statusString = "\e[32midle\e[0m";
+        switch(m_connection.status()) {
+        case SyncthingStatus::Synchronizing:
+            statusString = "\e[34msynchronizing\e[0m";
+            break;
+        case SyncthingStatus::Scanning:
+            statusString = "\e[34mscanning\e[0m";
+            break;
+        case SyncthingStatus::OutOfSync:
+            statusString = "\e[31mout-of-sync\e[0m";
+            break;
+        default:
+            ;
+        }
+        printProperty("Status", statusString);
+        printProperty("Global", directoryStatusString(overallStats.global), nullptr, 6);
+        printProperty("Local", directoryStatusString(overallStats.local), nullptr, 6);
         printProperty("Incoming traffic", trafficString(m_connection.totalIncomingTraffic(), m_connection.totalIncomingRate()));
         printProperty("Outgoing traffic", trafficString(m_connection.totalOutgoingTraffic(), m_connection.totalOutgoingRate()));
         const auto &connectedDevices(m_connection.connectedDevices());
-        printProperty("Connected to", argsToString(connectedDevices.size(), ' ', connectedDevices.size() == 1 ? "device" : "devices", ':'));
-        printProperty("", displayNames(connectedDevices));
+        if (connectedDevices.empty()) {
+            printProperty("Connected to", "no other devices");
+        } else {
+            printProperty("Connected to", argsToString(connectedDevices.size(), ' ', connectedDevices.size() == 1 ? "device" : "devices", ':'));
+            printProperty("", displayNames(connectedDevices), nullptr, 6);
+        }
+        printProperty("Uptime", m_connection.uptime().toString(TimeSpanOutputFormat::WithMeasures, true));
+        printProperty("Version", m_connection.syncthingVersion());
         cout << '\n';
     }
 
