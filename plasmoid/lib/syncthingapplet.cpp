@@ -365,6 +365,7 @@ void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
 void SyncthingApplet::handleDevicesChanged()
 {
     m_statusInfo.updateConnectedDevices(m_connection);
+    emit connectionStatusChanged();
 }
 
 void SyncthingApplet::handleInternalError(
