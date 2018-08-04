@@ -857,13 +857,13 @@ void SyncthingConnection::requestCompletion(const QString &devId, const QString 
 void SyncthingConnection::requestDeviceStatistics()
 {
     QObject::connect(
-                requestData(QStringLiteral("stats/device"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readDeviceStatistics);
+        requestData(QStringLiteral("stats/device"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readDeviceStatistics);
 }
 
 void SyncthingConnection::requestVersion()
 {
-    QObject::connect(
-        m_versionReply = requestData(QStringLiteral("system/version"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readVersion);
+    QObject::connect(m_versionReply = requestData(QStringLiteral("system/version"), QUrlQuery()), &QNetworkReply::finished, this,
+        &SyncthingConnection::readVersion);
 }
 
 /*!

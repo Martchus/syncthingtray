@@ -571,7 +571,7 @@ void Application::printStatus(const ArgumentOccurrence &)
         cout << TextAttribute::Bold << "Overall statistics\n" << TextAttribute::Reset;
         const auto &overallStats(m_connection.computeOverallDirStatistics());
         const auto *statusString = "\e[32midle\e[0m";
-        switch(m_connection.status()) {
+        switch (m_connection.status()) {
         case SyncthingStatus::Synchronizing:
             statusString = "\e[34msynchronizing\e[0m";
             break;
@@ -581,8 +581,7 @@ void Application::printStatus(const ArgumentOccurrence &)
         case SyncthingStatus::OutOfSync:
             statusString = "\e[31mout-of-sync\e[0m";
             break;
-        default:
-            ;
+        default:;
         }
         printProperty("Status", statusString);
         printProperty("Global", directoryStatusString(overallStats.global), nullptr, 6);

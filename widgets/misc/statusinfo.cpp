@@ -6,8 +6,8 @@
 #include "../../model/syncthingicons.h"
 
 #include <QCoreApplication>
-#include <QStringBuilder>
 #include <QIcon>
+#include <QStringBuilder>
 
 using namespace Data;
 
@@ -40,7 +40,8 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection)
     case SyncthingStatus::Disconnected:
         if (connection.autoReconnectInterval() > 0) {
             m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Not connected to Syncthing");
-            m_additionalStatusInfo = QCoreApplication::translate("QtGui::StatusInfo", "Trying to reconnect every %1 ms").arg(connection.autoReconnectInterval());
+            m_additionalStatusInfo
+                = QCoreApplication::translate("QtGui::StatusInfo", "Trying to reconnect every %1 ms").arg(connection.autoReconnectInterval());
         } else {
             m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Not connected to Syncthing");
         }
@@ -54,8 +55,7 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection)
         if (connection.hasOutOfSyncDirs()) {
             switch (connection.status()) {
             case SyncthingStatus::Synchronizing:
-                m_statusText
-                    = QCoreApplication::translate("QtGui::StatusInfo", "Synchronization is ongoing");
+                m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Synchronization is ongoing");
                 m_additionalStatusInfo = QCoreApplication::translate("QtGui::StatusInfo", "At least one directory is out of sync");
                 m_statusIcon = &statusIcons().errorSync;
                 break;
