@@ -5,8 +5,11 @@
 #include "../connector/syncthingconnection.h"
 #include "../connector/utils.h"
 
+#include <c++utilities/conversion/stringconversion.h>
+
 using namespace std;
 using namespace ChronoUtilities;
+using namespace ConversionUtilities;
 
 namespace Data {
 
@@ -117,6 +120,12 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                             return tr("Certificate");
                         case 5:
                             return tr("Introducer");
+                        case 6:
+                            return tr("Incoming traffic");
+                        case 7:
+                            return tr("Outgoing traffic");
+                        case 8:
+                            return tr("Version");
                         }
                         break;
                     }
@@ -139,6 +148,12 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                             return dev.certName.isEmpty() ? tr("none") : dev.certName;
                         case 5:
                             return dev.introducer ? tr("yes") : tr("no");
+                        case 6:
+                            return QString::fromStdString(dataSizeToString(dev.totalIncomingTraffic));
+                        case 7:
+                            return QString::fromStdString(dataSizeToString(dev.totalOutgoingTraffic));
+                        case 8:
+                            return dev.clientVersion;
                         }
                     }
                     break;
@@ -256,7 +271,9 @@ int SyncthingDeviceModel::rowCount(const QModelIndex &parent) const
     if (!parent.isValid()) {
         return static_cast<int>(m_devs.size());
     } else if (!parent.parent().isValid()) {
-        return 6;
+        // hide everything after introducer (eg. traffic) unless connected
+        const auto *const dev(devInfo(parent));
+        return dev && dev->isConnected() ? 9 : 6;
     } else {
         return 0;
     }
