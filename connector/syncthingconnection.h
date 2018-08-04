@@ -139,6 +139,7 @@ public:
     QMetaObject::Connection requestLog(std::function<void(const std::vector<SyncthingLogEntry> &)> callback);
     const QList<QSslError> &expectedSslErrors() const;
     SyncthingDir *findDirInfo(const QString &dirId, int &row);
+    SyncthingDir *findDirInfo(QLatin1String key, const QJsonObject &object, int *row = nullptr);
     SyncthingDir *findDirInfoByPath(const QString &path, QString &relativePath, int &row);
     SyncthingDev *findDevInfo(const QString &devId, int &row);
     SyncthingDev *findDevInfoByName(const QString &devName, int &row);
@@ -183,6 +184,7 @@ public Q_SLOTS:
     void requestCompletion(const QString &devId, const QString &dirId);
     void requestDeviceStatistics();
     void requestVersion();
+    void requestDiskEvents(int limit = 25);
     void postConfigFromJsonObject(const QJsonObject &rawConfig);
     void postConfigFromByteArray(const QByteArray &rawConfig);
 
@@ -229,6 +231,7 @@ private Q_SLOTS:
     void readErrors();
     void readClearingErrors();
     void readEvents();
+    void readEventsFromJsonArray(const QJsonArray &events, int &idVariable);
     void readStartingEvent(const QJsonObject &eventData);
     void readStatusChangedEvent(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readDownloadProgressEvent(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
@@ -256,6 +259,8 @@ private Q_SLOTS:
     void readDevRejected(ChronoUtilities::DateTime eventTime, const QString &devId, const QJsonObject &eventData);
     void readCompletion();
     void readVersion();
+    void readDiskEvents();
+    void readChangeEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
 
     void continueConnecting();
     void continueReconnecting();
@@ -286,6 +291,7 @@ private:
     bool m_reconnecting;
     bool m_requestCompletion;
     int m_lastEventId;
+    int m_lastDiskEventId;
     QTimer m_trafficPollTimer;
     QTimer m_devStatsPollTimer;
     QTimer m_errorsPollTimer;
@@ -303,6 +309,7 @@ private:
     QNetworkReply *m_errorsReply;
     QNetworkReply *m_eventsReply;
     QNetworkReply *m_versionReply;
+    QNetworkReply *m_diskEventsReply;
     bool m_unreadNotifications;
     bool m_hasConfig;
     bool m_hasStatus;

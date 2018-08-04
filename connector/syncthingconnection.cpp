@@ -65,6 +65,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_reconnecting(false)
     , m_requestCompletion(false)
     , m_lastEventId(0)
+    , m_lastDiskEventId(0)
     , m_autoReconnectTries(0)
     , m_totalIncomingTraffic(unknownTraffic)
     , m_totalOutgoingTraffic(unknownTraffic)
@@ -76,6 +77,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_errorsReply(nullptr)
     , m_eventsReply(nullptr)
     , m_versionReply(nullptr)
+    , m_diskEventsReply(nullptr)
     , m_unreadNotifications(false)
     , m_hasConfig(false)
     , m_hasStatus(false)
@@ -248,6 +250,7 @@ void SyncthingConnection::continueReconnecting()
     m_keepPolling = true;
     m_reconnecting = false;
     m_lastEventId = 0;
+    m_lastDiskEventId = 0;
     m_configDir.clear();
     m_myId.clear();
     m_totalIncomingTraffic = unknownTraffic;
@@ -549,6 +552,20 @@ SyncthingDir *SyncthingConnection::findDirInfo(const QString &dirId, int &row)
 }
 
 /*!
+ * \brief Returns the directory info object for the directory with the ID stored in the specified \a object with the specified \a key.
+ */
+SyncthingDir *SyncthingConnection::findDirInfo(QLatin1String key, const QJsonObject &object, int *row)
+{
+    const auto dirId(object.value(key).toString());
+    if (dirId.isEmpty()) {
+        return nullptr;
+    }
+    int dummyRow;
+    auto &rowRef(row ? *row : dummyRow);
+    return findDirInfo(dirId, rowRef);
+}
+
+/*!
  * \brief Returns the directory info object for the directory with the specified \a path.
  *
  * If a corresponding Syncthing directory could be found, \a relativePath is set to the path of the item relative
@@ -721,8 +738,9 @@ void SyncthingConnection::continueConnecting()
         }
     }
     // since config and status could be read successfully, let's poll for events
-    m_lastEventId = 0;
+    m_lastEventId = m_lastDiskEventId = 0;
     requestEvents();
+    requestDiskEvents();
 }
 
 /*!
@@ -747,6 +765,9 @@ void SyncthingConnection::abortAllRequests()
     }
     if (m_versionReply) {
         m_versionReply->abort();
+    }
+    if (m_diskEventsReply) {
+        m_diskEventsReply->abort();
     }
 }
 
@@ -864,6 +885,17 @@ void SyncthingConnection::requestVersion()
 {
     QObject::connect(m_versionReply = requestData(QStringLiteral("system/version"), QUrlQuery()), &QNetworkReply::finished, this,
         &SyncthingConnection::readVersion);
+}
+
+void SyncthingConnection::requestDiskEvents(int limit)
+{
+    QUrlQuery query;
+    query.addQueryItem(QStringLiteral("limit"), QString::number(limit));
+    if (m_lastDiskEventId) {
+        query.addQueryItem(QStringLiteral("since"), QString::number(m_lastDiskEventId));
+    }
+    QObject::connect(
+        m_diskEventsReply = requestData(QStringLiteral("events/disk"), query), &QNetworkReply::finished, this, &SyncthingConnection::readDiskEvents);
 }
 
 /*!
@@ -1530,40 +1562,9 @@ void SyncthingConnection::readEvents()
             return;
         }
 
-        const QJsonArray replyArray = replyDoc.array();
+        const auto replyArray(replyDoc.array());
         emit newEvents(replyArray);
-        // search the array for interesting events
-        for (const QJsonValue &eventVal : replyArray) {
-            const QJsonObject event = eventVal.toObject();
-            m_lastEventId = event.value(QLatin1String("id")).toInt(m_lastEventId);
-            DateTime eventTime;
-            try {
-                eventTime = DateTime::fromIsoStringGmt(event.value(QLatin1String("time")).toString().toLocal8Bit().data());
-            } catch (const ConversionException &) {
-                // ignore conversion error
-            }
-            const QString eventType(event.value(QLatin1String("type")).toString());
-            const QJsonObject eventData(event.value(QLatin1String("data")).toObject());
-            if (eventType == QLatin1String("Starting")) {
-                readStartingEvent(eventData);
-            } else if (eventType == QLatin1String("StateChanged")) {
-                readStatusChangedEvent(eventTime, eventData);
-            } else if (eventType == QLatin1String("DownloadProgress")) {
-                readDownloadProgressEvent(eventTime, eventData);
-            } else if (eventType.startsWith(QLatin1String("Folder"))) {
-                readDirEvent(eventTime, eventType, eventData);
-            } else if (eventType.startsWith(QLatin1String("Device"))) {
-                readDeviceEvent(eventTime, eventType, eventData);
-            } else if (eventType == QLatin1String("ItemStarted")) {
-                readItemStarted(eventTime, eventData);
-            } else if (eventType == QLatin1String("ItemFinished")) {
-                readItemFinished(eventTime, eventData);
-            } else if (eventType == QLatin1String("RemoteIndexUpdated")) {
-                readRemoteIndexUpdated(eventTime, eventData);
-            } else if (eventType == QLatin1String("ConfigSaved")) {
-                requestConfig(); // just consider current config as invalidated
-            }
-        }
+        readEventsFromJsonArray(replyArray, m_lastEventId);
 
 #ifdef LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
         if (!replyArray.isEmpty()) {
@@ -1597,6 +1598,46 @@ void SyncthingConnection::readEvents()
         setStatus(SyncthingStatus::Idle);
     } else {
         setStatus(SyncthingStatus::Disconnected);
+    }
+}
+
+void SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, int &idVariable)
+{
+    for (const auto &eventVal : events) {
+        const auto event(eventVal.toObject());
+        const auto eventTime([&] {
+            try {
+                return DateTime::fromIsoStringGmt(event.value(QLatin1String("time")).toString().toLocal8Bit().data());
+            } catch (const ConversionException &) {
+                return DateTime(); // ignore conversion error
+            }
+        }());
+        const auto eventType(event.value(QLatin1String("type")).toString());
+        const auto eventData(event.value(QLatin1String("data")).toObject());
+
+        idVariable = event.value(QLatin1String("id")).toInt(idVariable);
+
+        if (eventType == QLatin1String("Starting")) {
+            readStartingEvent(eventData);
+        } else if (eventType == QLatin1String("StateChanged")) {
+            readStatusChangedEvent(eventTime, eventData);
+        } else if (eventType == QLatin1String("DownloadProgress")) {
+            readDownloadProgressEvent(eventTime, eventData);
+        } else if (eventType.startsWith(QLatin1String("Folder"))) {
+            readDirEvent(eventTime, eventType, eventData);
+        } else if (eventType.startsWith(QLatin1String("Device"))) {
+            readDeviceEvent(eventTime, eventType, eventData);
+        } else if (eventType == QLatin1String("ItemStarted")) {
+            readItemStarted(eventTime, eventData);
+        } else if (eventType == QLatin1String("ItemFinished")) {
+            readItemFinished(eventTime, eventData);
+        } else if (eventType == QLatin1String("RemoteIndexUpdated")) {
+            readRemoteIndexUpdated(eventTime, eventData);
+        } else if (eventType == QLatin1String("ConfigSaved")) {
+            requestConfig(); // just consider current config as invalidated
+        } else if (eventType.endsWith(QLatin1String("ChangeDetected"))) {
+            readChangeEvent(eventTime, eventType, eventData);
+        }
     }
 }
 
@@ -1830,12 +1871,8 @@ void SyncthingConnection::readItemStarted(DateTime eventTime, const QJsonObject 
  */
 void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject &eventData)
 {
-    const auto dir(eventData.value(QLatin1String("folder")).toString());
-    if (dir.isEmpty()) {
-        return;
-    }
     int index;
-    auto *const dirInfo = findDirInfo(dir, index);
+    auto *const dirInfo = findDirInfo(QLatin1String("folder"), eventData, &index);
     if (!dirInfo) {
         return;
     }
@@ -2260,6 +2297,9 @@ void SyncthingConnection::readCompletion()
     }
 }
 
+/*!
+ * \brief Reads data from requestVersion().
+ */
 void SyncthingConnection::readVersion()
 {
     auto *const reply = static_cast<QNetworkReply *>(sender());
@@ -2288,6 +2328,65 @@ void SyncthingConnection::readVersion()
     default:
         emitError(tr("Unable to request version: "), SyncthingErrorCategory::OverallConnection, reply);
     }
+}
+
+/*!
+ * \brief Reads data from requestDiskEvents().
+ */
+void SyncthingConnection::readDiskEvents()
+{
+    auto *const reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+    if (reply == m_diskEventsReply) {
+        m_diskEventsReply = nullptr;
+    }
+
+    switch (reply->error()) {
+    case QNetworkReply::NoError: {
+        const QByteArray response(reply->readAll());
+        QJsonParseError jsonError;
+        const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
+        if (jsonError.error != QJsonParseError::NoError) {
+            emitError(tr("Unable to parse disk events: "), jsonError, reply, response);
+            return;
+        }
+
+        readEventsFromJsonArray(replyDoc.array(), m_lastDiskEventId);
+        break;
+    }
+    case QNetworkReply::TimeoutError:
+        break; // no new events available, keep polling
+    case QNetworkReply::OperationCanceledError:
+        return; // intended, not an error
+    default:
+        emitError(tr("Unable to request disk events: "), SyncthingErrorCategory::OverallConnection, reply);
+    }
+
+    if (m_keepPolling) {
+        requestDiskEvents();
+    }
+}
+
+/*!
+ * \brief Reads "LocalChangeDetected" and "RemoveChangeDetected" events from requestEvents() and requestDiskEvents().
+ */
+void SyncthingConnection::readChangeEvent(DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
+{
+    int index;
+    auto *const dirInfo(findDirInfo(QLatin1String("folderID"), eventData, &index));
+    if (!dirInfo) {
+        return;
+    }
+
+    SyncthingFileChange change;
+    change.local = eventType.startsWith("Local");
+    change.eventTime = eventTime;
+    change.action = eventData.value(QLatin1String("action")).toString();
+    change.type = eventData.value(QLatin1String("type")).toString();
+    change.modifiedBy = eventData.value(QLatin1String("modifiedBy")).toString();
+    change.path = eventData.value(QLatin1String("path")).toString();
+    dirInfo->recentChanges.emplace_back(move(change));
+    emit dirStatusChanged(*dirInfo, index);
 }
 
 /*!

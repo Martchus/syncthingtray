@@ -36,6 +36,15 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemError {
     QString path;
 };
 
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingFileChange {
+    QString action;
+    QString type;
+    QString modifiedBy;
+    QString path;
+    ChronoUtilities::DateTime eventTime;
+    bool local = false;
+};
+
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemDownloadProgress {
     SyncthingItemDownloadProgress(
         const QString &containingDirPath = QString(), const QString &relativeItemPath = QString(), const QJsonObject &values = QJsonObject());
@@ -143,6 +152,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     QString globalError;
     std::vector<SyncthingItemError> itemErrors;
     std::vector<SyncthingItemError> previousItemErrors;
+    std::vector<SyncthingFileChange> recentChanges;
     SyncthingStatistics globalStats, localStats, neededStats;
     ChronoUtilities::DateTime lastStatisticsUpdate;
     ChronoUtilities::DateTime lastScanTime;
