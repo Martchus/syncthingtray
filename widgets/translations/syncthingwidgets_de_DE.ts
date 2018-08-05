@@ -620,12 +620,12 @@
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="42"/>
-        <location filename="../misc/statusinfo.cpp" line="45"/>
+        <location filename="../misc/statusinfo.cpp" line="46"/>
         <source>Not connected to Syncthing</source>
         <translation>Nicht mit Syncthing verbunden</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="50"/>
+        <location filename="../misc/statusinfo.cpp" line="51"/>
         <source>Reconnecting ...</source>
         <translation>Neu verbinden ...</translation>
     </message>
@@ -662,9 +662,9 @@
         <translation>Syncthing synchronisiert</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="43"/>
+        <location filename="../misc/statusinfo.cpp" line="44"/>
         <source>Trying to reconnect every %1 ms</source>
-        <translation type="unfinished">Versuche alle %1 ms zu verbinden</translation>
+        <translation>Versuche alle %1 ms zu verbinden</translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="88"/>

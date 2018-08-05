@@ -222,9 +222,9 @@
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="410"/>
+        <location filename="../lib/syncthingapplet.cpp" line="411"/>
         <source>D-Bus error - unable to </source>
-        <translation type="unfinished"></translation>
+        <translation>D-Bus-Fehler bei Aktion </translation>
     </message>
 </context>
 <context>

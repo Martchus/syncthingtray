@@ -222,7 +222,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="410"/>
+        <location filename="../lib/syncthingapplet.cpp" line="411"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
