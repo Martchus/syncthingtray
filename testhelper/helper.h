@@ -17,7 +17,7 @@
 #include <ostream>
 
 #ifndef SYNCTHINGTESTHELPER_FOR_CLI
-#define SYNCTHINGTESTHELPER_TIMEOUT(timeout) static_cast<int>(timeout * timeoutFactor)
+#define SYNCTHINGTESTHELPER_TIMEOUT(timeout) static_cast<int>(timeout * ::TestUtilities::timeoutFactor)
 #else
 #define SYNCTHINGTESTHELPER_TIMEOUT(timeout) timeout
 #endif

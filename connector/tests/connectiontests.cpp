@@ -489,7 +489,7 @@ void ConnectionTests::testRequestingLog()
     // timeout after 1 second
     QTimer timeout;
     timeout.setSingleShot(true);
-    timeout.setInterval(1000);
+    timeout.setInterval(SYNCTHINGTESTHELPER_TIMEOUT(5000));
     QEventLoop loop;
     QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit);
 
@@ -515,7 +515,7 @@ void ConnectionTests::testRequestingQrCode()
     // timeout after 2 seconds
     QTimer timeout;
     timeout.setSingleShot(true);
-    timeout.setInterval(2000);
+    timeout.setInterval(SYNCTHINGTESTHELPER_TIMEOUT(5000));
     QEventLoop loop;
     QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit);
 
