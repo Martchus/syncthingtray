@@ -388,10 +388,12 @@ void SyncthingApplet::handleAboutDialogDeleted()
     m_aboutDlg = nullptr;
 }
 
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 void SyncthingApplet::handleWebViewDeleted()
 {
     m_webViewDlg = nullptr;
 }
+#endif
 
 void SyncthingApplet::handleNewNotification(DateTime when, const QString &msg)
 {
