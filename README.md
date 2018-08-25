@@ -44,9 +44,10 @@ to the list. Maybe someone could check whether it works under Mac OS X.
 * Allows quickly switching between multiple Syncthing instances
 * Shows notifications via Qt or uses D-Bus notification daemon directly
 * Also features a simple command line utility `syncthingctl`
-    * Check Syncthing status
+    * Check status
     * Trigger rescan/pause/resume/restart
     * Wait for idle
+    * View and modify configuration
     * Supports Bash completion, even for directory and device names
 * Also bundles a KIO plugin which shows the status of a Syncthing directory
   and allows to trigger Syncthing actions in Dolphin file manager
@@ -54,7 +55,7 @@ to the list. Maybe someone could check whether it works under Mac OS X.
     * Rescan entire Syncthing directory
     * Pause/resume Syncthing directory
     * See also screenshots section
-* Also has an (experimental) implementation as Plasmoid for Plasma 5 desktop
+* Also has an implementation as Plasmoid for Plasma 5 desktop
 * English and German localization
 
 ## Planned features
@@ -188,7 +189,7 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
 * To force usage of Qt WebKit/Qt WebEngine or to disable both add `-DWEBVIEW_PROVIDER=webkit/webengine/none` to the CMake arguments.
 * To use Qt WebKit revived/ng, set the web view provider to `webkit`. It works already without any (known) issues.
 
-### BTW: I still prefer the deprecated Qt WebKit because
+### BTW: I prefer Qt WebKit (revived/ng version) because
 * Currently there is no way to allow a particular self-signed certificate in Qt
   WebEngine. Currently any self-signed certificate is accepted! See:
   https://bugreports.qt.io/browse/QTBUG-51176
@@ -198,7 +199,6 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
 * Security issues are not a concern because no other website than the
   Syncthing web UI is shown. Any external links will be opened in the
   regular web browser anyways.
-* It will be replaced by the compatible Qt WebKit revived/ng soon and hence no longer be deprecated.
 
 ## Contributing
 ### Adding translations
