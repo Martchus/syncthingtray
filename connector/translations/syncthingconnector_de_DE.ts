@@ -256,12 +256,12 @@
     <message>
         <location filename="../syncthingnotifier.cpp" line="87"/>
         <source> wants to share directory %1.</source>
-        <translation>möchte das Verzeichnis %1 teilen.</translation>
+        <translation> möchte das Verzeichnis %1 teilen.</translation>
     </message>
     <message>
         <location filename="../syncthingnotifier.cpp" line="89"/>
         <source> wants to share directory %1 (%2).</source>
-        <translation>möchte das Verzeichnis %1 (%2) teilen.</translation>
+        <translation> möchte das Verzeichnis %1 (%2) teilen.</translation>
     </message>
 </context>
 <context>
