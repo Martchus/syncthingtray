@@ -34,7 +34,7 @@ void StatusInfo::recomputeAdditionalStatusText()
 
 void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection)
 {
-    m_additionalStatusText.clear();
+    m_additionalStatusInfo.clear();
 
     switch (connection.status()) {
     case SyncthingStatus::Disconnected:
