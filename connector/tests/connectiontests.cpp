@@ -603,7 +603,7 @@ void ConnectionTests::testDealingWithArbitraryConfig()
     });
 
     // post new config
-    waitForSignalsOrFail(bind(&SyncthingConnection::postConfigFromJsonObject, &m_connection, ref(rawConfig)), 5000,
+    waitForSignalsOrFail(bind(&SyncthingConnection::postConfigFromJsonObject, &m_connection, ref(rawConfig)), 10000,
         connectionSignal(&SyncthingConnection::error), connectionSignal(&SyncthingConnection::newConfigTriggered),
         connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig));
 }
