@@ -367,7 +367,8 @@ bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure,
             argsToString("Signal(s) ", failedSignalNames(signalInfos...).data(), " has/have not emmitted before ", failure.signalName().data(), '.'));
     } else if (timeoutFailed) {
         CPPUNIT_FAIL(argsToString("Signal(s) ", failedSignalNames(signalInfos...).data(), " has/have not emmitted within at least ", timer.interval(),
-            " ms.", timeoutFactor != 1.0 ? argsToString(" (original timeout: ", timeout, " ms)") : std::string()));
+            " ms (set environment variable SYNCTHING_TEST_TIMEOUT_FACTOR to increase the timeout).",
+            timeoutFactor != 1.0 ? argsToString(" (original timeout: ", timeout, " ms)") : std::string()));
     }
 #endif
     return !failureEmitted && !timeoutFailed;

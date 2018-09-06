@@ -36,8 +36,12 @@ void SyncthingTestInstance::start()
             timeoutFactor = stringToNumber<double>(string(timeoutFactorEnv.data()));
             cerr << " - Using timeout factor " << timeoutFactor << endl;
         } catch (const ConversionException &) {
-            cerr << " - Specified SYNCTHING_TEST_TIMEOUT_FACTOR \"" << timeoutFactorEnv.data() << "\" is no valid double and hence ignored" << endl;
+            cerr << " - Specified SYNCTHING_TEST_TIMEOUT_FACTOR \"" << timeoutFactorEnv.data()
+                 << "\" is no valid double and hence ignored\n   (defaulting to " << timeoutFactor << ')' << endl;
         }
+    } else {
+        cerr << " - No timeout factor set, defaulting to " << timeoutFactor
+             << ("\n   (set environment variable SYNCTHING_TEST_TIMEOUT_FACTOR to specify a factor to run tests on a slow machine)") << endl;
     }
 
     // setup st config

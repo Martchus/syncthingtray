@@ -505,7 +505,9 @@ void ConnectionTests::testRequestingLog()
     timeout.start();
     loop.exec();
     QObject::disconnect(request); // ensure callback is not called after return (in error case)
-    CPPUNIT_ASSERT_MESSAGE("log entries returned before timeout", callbackOk);
+    CPPUNIT_ASSERT_MESSAGE(
+        argsToString("log entries returned before timeout of ", timeout.interval(), " ms (set SYNCTHING_TEST_TIMEOUT_FACTOR to increase timeout)"),
+        callbackOk);
 }
 
 void ConnectionTests::testRequestingQrCode()
@@ -529,7 +531,9 @@ void ConnectionTests::testRequestingQrCode()
     timeout.start();
     loop.exec();
     QObject::disconnect(request); // ensure callback is not called after return (in error case)
-    CPPUNIT_ASSERT_MESSAGE("QR code returned before timeout", callbackOk);
+    CPPUNIT_ASSERT_MESSAGE(
+        argsToString("QR code returned before timeout of ", timeout.interval(), " ms (set SYNCTHING_TEST_TIMEOUT_FACTOR to increase timeout)"),
+        callbackOk);
 }
 
 void ConnectionTests::testDisconnecting()
