@@ -529,6 +529,9 @@ void Application::printDir(const RelevantDir &relevantDir) const
     printProperty("Ignore permissions", dir->ignorePermissions);
     printProperty("Auto-normalize", dir->autoNormalize);
     printProperty("Rescan interval", rescanIntervalString(dir->rescanInterval, dir->fileSystemWatcherEnabled));
+    if (dir->fileSystemWatcherEnabled) {
+        printProperty("File watcher delay", dir->fileSystemWatcherDelay, " seconds");
+    }
     printProperty("Min. free disk percentage", dir->minDiskFreePercentage);
     printProperty("Error", dir->globalError);
     if (!dir->itemErrors.empty()) {
