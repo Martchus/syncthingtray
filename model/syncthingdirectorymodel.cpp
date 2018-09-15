@@ -159,7 +159,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 5:
                             return dir.dirTypeString();
                         case 6:
-                            return rescanIntervalString(dir.rescanInterval);
+                            return rescanIntervalString(dir.rescanInterval, dir.fileSystemWatcherEnabled);
                         case 7:
                             return dir.lastScanTime.isNull()
                                 ? tr("unknown")

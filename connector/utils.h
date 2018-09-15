@@ -30,7 +30,7 @@ QString LIB_SYNCTHING_CONNECTOR_EXPORT trafficString(uint64 total, double rate);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT directoryStatusString(const Data::SyncthingStatistics &stats);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT syncCompleteString(
     const std::vector<const SyncthingDir *> &completedDirs, const SyncthingDev *remoteDevice = nullptr);
-QString LIB_SYNCTHING_CONNECTOR_EXPORT rescanIntervalString(int rescanInterval);
+QString LIB_SYNCTHING_CONNECTOR_EXPORT rescanIntervalString(int rescanInterval, bool fileSystemWatcherEnabled);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QUrl &url);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);

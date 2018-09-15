@@ -332,8 +332,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="96"/>
-        <source>rescan disabled</source>
+        <location filename="../utils.cpp" line="97"/>
+        <source>file system watcher and periodic rescan disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../utils.cpp" line="99"/>
+        <source>file system watcher active, periodic rescan disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../utils.cpp" line="102"/>
+        <source>, file system watcher enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../utils.cpp" line="103"/>
+        <source>, file system watcher disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

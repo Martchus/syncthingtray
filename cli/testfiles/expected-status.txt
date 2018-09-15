@@ -9,7 +9,7 @@ Directories
    Type                          Send & Receive
    Ignore permissions            no
    Auto-normalize                yes
-   Rescan interval               365 d
+   Rescan interval               365 d, file system watcher disabled
 
  - test1
    Path                          /tmp/some/path/1/
@@ -22,7 +22,7 @@ Directories
    Type                          Send & Receive
    Ignore permissions            no
    Auto-normalize                yes
-   Rescan interval               2 h
+   Rescan interval               2 h, file system watcher disabled
 
 Devices
  - Test dev 1

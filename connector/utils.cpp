@@ -90,12 +90,17 @@ QString syncCompleteString(const std::vector<const SyncthingDir *> &completedDir
 /*!
  * \brief Returns the string representation of the specified \a rescanInterval.
  */
-QString rescanIntervalString(int rescanInterval)
+QString rescanIntervalString(int rescanInterval, bool fileSystemWatcherEnabled)
 {
     if (!rescanInterval) {
-        return QCoreApplication::translate("Data::Utils", "rescan disabled");
+        if (!fileSystemWatcherEnabled) {
+            return QCoreApplication::translate("Data::Utils", "file system watcher and periodic rescan disabled");
+        }
+        return QCoreApplication::translate("Data::Utils", "file system watcher active, periodic rescan disabled");
     }
-    return QString::fromLatin1(TimeSpan::fromSeconds(rescanInterval).toString(TimeSpanOutputFormat::WithMeasures, true).data());
+    return QString::fromLatin1(TimeSpan::fromSeconds(rescanInterval).toString(TimeSpanOutputFormat::WithMeasures, true).data())
+        + (fileSystemWatcherEnabled ? QCoreApplication::translate("Data::Utils", ", file system watcher enabled")
+                                    : QCoreApplication::translate("Data::Utils", ", file system watcher disabled"));
 }
 
 /*!
