@@ -766,6 +766,10 @@ QByteArray Application::editConfigViaEditor() const
         cerr << Phrases::Error << "New config object seems empty." << Phrases::EndFlush;
         return QByteArray();
     }
+    if (configObj == m_connection.rawConfig()) {
+        cerr << Phrases::Warning << "Editing aborted; config hasn't changed." << Phrases::EndFlush;
+        return QByteArray();
+    }
     for (const auto &arrayName : { QStringLiteral("devices"), QStringLiteral("folders") }) {
         if (!configObj.value(arrayName).isArray()) {
             cerr << Phrases::Error << "Array \"" << arrayName.toLocal8Bit().data() << "\" is not present." << Phrases::EndFlush;
