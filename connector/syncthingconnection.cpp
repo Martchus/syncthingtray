@@ -2360,6 +2360,8 @@ void SyncthingConnection::readDiskEvents()
         return; // intended, not an error
     default:
         emitError(tr("Unable to request disk events: "), SyncthingErrorCategory::OverallConnection, reply);
+        handleFatalConnectionError();
+        return;
     }
 
     if (m_keepPolling) {
@@ -2403,7 +2405,8 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
     switch (status) {
     case SyncthingStatus::Disconnected:
     case SyncthingStatus::Reconnecting:
-        // don't consider synchronization finished in this this case
+        // disable (long) polling
+        m_keepPolling = false;
         m_devStatsPollTimer.stop();
         m_trafficPollTimer.stop();
         m_errorsPollTimer.stop();
