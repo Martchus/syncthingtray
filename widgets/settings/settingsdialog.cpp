@@ -952,6 +952,12 @@ SettingsDialog::SettingsDialog(const QList<OptionCategory *> &categories, QWidge
     init();
 }
 
+SettingsDialog::SettingsDialog(QWidget *parent)
+    : Dialogs::SettingsDialog(parent)
+{
+    init();
+}
+
 SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *parent)
     : Dialogs::SettingsDialog(parent)
 {

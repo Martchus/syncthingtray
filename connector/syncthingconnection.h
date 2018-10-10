@@ -106,6 +106,7 @@ public:
     void setCredentials(const QString &user, const QString &password);
     SyncthingStatus status() const;
     QString statusText() const;
+    static QString statusText(SyncthingStatus status);
     bool isConnected() const;
     bool hasUnreadNotifications() const;
     bool hasOutOfSyncDirs() const;
@@ -379,7 +380,16 @@ inline const QString &SyncthingConnection::password() const
  */
 inline void SyncthingConnection::setCredentials(const QString &user, const QString &password)
 {
-    m_user = user, m_password = password;
+    m_user = user;
+    m_password = password;
+}
+
+/*!
+ * \brief Returns the string representation of the current status().
+ */
+inline QString SyncthingConnection::statusText() const
+{
+    return statusText(m_status);
 }
 
 /*!

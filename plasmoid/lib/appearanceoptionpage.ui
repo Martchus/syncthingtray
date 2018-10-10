@@ -19,14 +19,14 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
+     <item row="2" column="0">
       <widget class="QLabel" name="colorsLabel">
        <property name="text">
         <string>Colors</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item row="2" column="1">
       <widget class="QCheckBox" name="brightTextColorsCheckBox">
        <property name="text">
         <string>Bright custom text colors (use for dark color scheme)</string>
@@ -117,6 +117,23 @@
         </widget>
        </item>
       </layout>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="passiveLabel">
+       <property name="text">
+        <string>States to enable passive mode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QListView" name="passiveListView">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::NoSelection</enum>
+       </property>
+       <property name="layoutMode">
+        <enum>QListView::Batched</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

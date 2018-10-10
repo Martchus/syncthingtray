@@ -117,11 +117,11 @@ bool SyncthingConnection::isLocal() const
 }
 
 /*!
- * \brief Returns the string representation of the current status().
+ * \brief Returns the string representation of the specified \a status.
  */
-QString SyncthingConnection::statusText() const
+QString SyncthingConnection::statusText(SyncthingStatus status)
 {
-    switch (m_status) {
+    switch (status) {
     case SyncthingStatus::Disconnected:
         return tr("disconnected");
     case SyncthingStatus::Reconnecting:

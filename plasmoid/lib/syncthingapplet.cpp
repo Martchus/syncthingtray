@@ -202,6 +202,13 @@ bool SyncthingApplet::areNotificationsAvailable() const
     return !m_notifications.empty();
 }
 
+void SyncthingApplet::setPassiveStates(const QList<Models::ChecklistItem> &passiveStates)
+{
+    m_passiveSelectionModel.setItems(passiveStates);
+    const auto currentState = static_cast<int>(m_connection.status());
+    setPassive(currentState >= 0 && currentState < passiveStates.size() && passiveStates.at(currentState).isChecked());
+}
+
 void SyncthingApplet::updateStatusIconAndTooltip()
 {
     m_statusInfo.updateConnectionStatus(m_connection);
@@ -212,7 +219,7 @@ void SyncthingApplet::updateStatusIconAndTooltip()
 void SyncthingApplet::showSettingsDlg()
 {
     if (!m_settingsDlg) {
-        m_settingsDlg = setupSettingsDialog(*this);
+        m_settingsDlg = new SettingsDialog(*this);
         // ensure settings take effect when applied
         connect(m_settingsDlg, &Dialogs::SettingsDialog::applied, this, &SyncthingApplet::handleSettingsChanged);
         // save plasmoid specific settings to disk when applied
@@ -341,6 +348,16 @@ void SyncthingApplet::handleSettingsChanged()
     m_devModel.setBrightColors(brightColors);
     m_downloadModel.setBrightColors(brightColors);
 
+    // restore selected states
+    // note: The settings dialog writes this to the Plasmoid's config like the other settings. However, it
+    //       is simpler and more efficient to assign the states directly. Of course this is only possible if
+    //       the dialog has already been shown.
+    if (m_settingsDlg) {
+        setPassiveStates(m_settingsDlg->appearanceOptionPage()->passiveStatusSelection()->items());
+    } else {
+        AppearanceOptionPage::restoreSelectedStates(m_passiveSelectionModel, config, "passiveStates");
+    }
+
     // apply connection config
     const int currentConfig = m_currentConnectionConfig;
     m_currentConnectionConfig = -1; // force update
@@ -351,10 +368,12 @@ void SyncthingApplet::handleSettingsChanged()
 
 void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
 {
-    VAR_UNUSED(status)
     if (!m_initialized) {
         return;
     }
+
+    // update whether passive
+    setPassive(static_cast<int>(status) < passiveStates().size() && passiveStates().at(static_cast<int>(status)).isChecked());
 
     // update status icon and tooltip text
     m_statusInfo.updateConnectionStatus(m_connection);

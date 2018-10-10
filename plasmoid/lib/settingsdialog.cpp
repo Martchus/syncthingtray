@@ -6,6 +6,7 @@
 #include "../../widgets/settings/settingsdialog.h"
 
 #include <qtutilities/settingsdialog/optioncategory.h>
+#include <qtutilities/settingsdialog/optioncategorymodel.h>
 #include <qtutilities/settingsdialog/optionpage.h>
 #include <qtutilities/settingsdialog/settingsdialog.h>
 
@@ -86,40 +87,62 @@ AppearanceOptionPage::~AppearanceOptionPage()
 {
 }
 
+void AppearanceOptionPage::restoreSelectedStates(SyncthingStatusSelectionModel &statusSelectionModel, const KConfigGroup &config, const char *key)
+{
+    const auto states = config.readEntry(key, QVariantList());
+    int row = 0;
+    for (auto &item : statusSelectionModel.items()) {
+        statusSelectionModel.setChecked(row++, states.contains(item.id()));
+    }
+}
+
 bool AppearanceOptionPage::apply()
 {
     KConfigGroup config = m_applet->config();
     config.writeEntry<QSize>("size", QSize(ui()->widthSpinBox->value(), ui()->heightSpinBox->value()));
     config.writeEntry<bool>("brightColors", ui()->brightTextColorsCheckBox->isChecked());
+
+    QVariantList passiveStates;
+    passiveStates.reserve(m_passiveStatusSelection.items().size());
+    for (auto &item : m_passiveStatusSelection.items()) {
+        if (item.isChecked()) {
+            passiveStates << item.id();
+        }
+    }
+    config.writeEntry("passiveStates", passiveStates);
+
     return true;
 }
 
 void AppearanceOptionPage::reset()
 {
     const KConfigGroup config = m_applet->config();
-    const QSize size(config.readEntry<QSize>("size", QSize(25, 25)));
+    const auto size(config.readEntry<>("size", QSize(25, 25)));
     ui()->widthSpinBox->setValue(size.width());
     ui()->heightSpinBox->setValue(size.height());
-    ui()->brightTextColorsCheckBox->setChecked(config.readEntry<bool>("brightColors", false));
+    ui()->brightTextColorsCheckBox->setChecked(config.readEntry<>("brightColors", false));
+    restoreSelectedStates(m_passiveStatusSelection, config, "passiveStates");
 }
 
 QWidget *AppearanceOptionPage::setupWidget()
 {
     auto *const widget = AppearanceOptionPageBase::setupWidget();
     addPlasmoidSpecificNote(ui()->verticalLayout, widget);
+    ui()->passiveListView->setModel(&m_passiveStatusSelection);
     return widget;
 }
 
-QtGui::SettingsDialog *setupSettingsDialog(SyncthingApplet &applet)
+SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
 {
     // setup categories
     QList<Dialogs::OptionCategory *> categories;
     Dialogs::OptionCategory *category;
 
     category = new OptionCategory;
+    m_appearanceOptionPage = new AppearanceOptionPage(applet);
     category->setDisplayName(QCoreApplication::translate("Plasmoid::SettingsDialog", "Plasmoid"));
     category->assignPages(QList<Dialogs::OptionPage *>()
-        << new ConnectionOptionPage(applet.connection()) << new NotificationsOptionPage(GuiType::Plasmoid) << new AppearanceOptionPage(applet)
+        << new ConnectionOptionPage(applet.connection()) << new NotificationsOptionPage(GuiType::Plasmoid) << m_appearanceOptionPage
         << new ShortcutOptionPage(applet));
     category->setIcon(QIcon::fromTheme(QStringLiteral("plasma")));
     categories << category;
@@ -145,7 +168,7 @@ QtGui::SettingsDialog *setupSettingsDialog(SyncthingApplet &applet)
     category->setIcon(
         QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
     categories << category;
-
-    return new ::QtGui::SettingsDialog(categories);
+    categoryModel()->setCategories(categories);
 }
+
 } // namespace Plasmoid

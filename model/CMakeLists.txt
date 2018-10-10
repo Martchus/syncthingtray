@@ -16,6 +16,7 @@ set(HEADER_FILES
     syncthingdirectorymodel.h
     syncthingdevicemodel.h
     syncthingdownloadmodel.h
+    syncthingstatusselectionmodel.h
     syncthingicons.h
     colors.h
 )
@@ -24,6 +25,7 @@ set(SRC_FILES
     syncthingdirectorymodel.cpp
     syncthingdevicemodel.cpp
     syncthingdownloadmodel.cpp
+    syncthingstatusselectionmodel.cpp
     syncthingicons.cpp
 )
 set(RES_FILES
@@ -41,7 +43,7 @@ use_cpp_utilities()
 
 # find qtutilities (only CMake modules used)
 find_package(qtutilities 5.0.0 REQUIRED)
-list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
+use_qt_utilities()
 
 # find backend libraries
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)

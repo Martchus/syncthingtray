@@ -8,20 +8,18 @@
 #include "../../model/syncthingdevicemodel.h"
 #include "../../model/syncthingdirectorymodel.h"
 #include "../../model/syncthingdownloadmodel.h"
+#include "../../model/syncthingstatusselectionmodel.h"
 
 #include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingnotifier.h"
 #include "../../connector/syncthingservice.h"
 
 #include <qtutilities/aboutdialog/aboutdialog.h>
+#include <qtutilities/models/checklistmodel.h>
 
 #include <Plasma/Applet>
 
 #include <QSize>
-
-namespace Dialogs {
-class SettingsDialog;
-}
 
 namespace Data {
 class SyncthingConnection;
@@ -39,12 +37,15 @@ class WebViewDialog;
 
 namespace Plasmoid {
 
+class SettingsDialog;
+
 class SyncthingApplet : public Plasma::Applet {
     Q_OBJECT
     Q_PROPERTY(Data::SyncthingConnection *connection READ connection NOTIFY connectionChanged)
     Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel NOTIFY dirModelChanged)
     Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel NOTIFY devModelChanged)
     Q_PROPERTY(Data::SyncthingDownloadModel *downloadModel READ downloadModel NOTIFY downloadModelChanged)
+    Q_PROPERTY(Data::SyncthingStatusSelectionModel *passiveSelectionModel READ passiveSelectionModel NOTIFY passiveSelectionModelChanged)
     Q_PROPERTY(Data::SyncthingService *service READ service NOTIFY serviceChanged)
     Q_PROPERTY(bool local READ isLocal NOTIFY localChanged)
     Q_PROPERTY(QString statusText READ statusText NOTIFY connectionStatusChanged)
@@ -59,6 +60,8 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(bool startStopEnabled READ isStartStopEnabled NOTIFY settingsChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(bool notificationsAvailable READ areNotificationsAvailable NOTIFY notificationsAvailableChanged)
+    Q_PROPERTY(bool passive READ isPassive NOTIFY passiveChanged)
+    Q_PROPERTY(QList<Models::ChecklistItem> passiveStates READ passiveStates WRITE setPassiveStates)
 
 public:
     SyncthingApplet(QObject *parent, const QVariantList &data);
@@ -69,6 +72,7 @@ public:
     Data::SyncthingDirectoryModel *dirModel() const;
     Data::SyncthingDeviceModel *devModel() const;
     Data::SyncthingDownloadModel *downloadModel() const;
+    Data::SyncthingStatusSelectionModel *passiveSelectionModel() const;
     Data::SyncthingService *service() const;
     bool isLocal() const;
     QString statusText() const;
@@ -86,6 +90,9 @@ public:
     QSize size() const;
     void setSize(const QSize &size);
     bool areNotificationsAvailable() const;
+    bool isPassive() const;
+    const QList<Models::ChecklistItem> &passiveStates() const;
+    void setPassiveStates(const QList<Models::ChecklistItem> &passiveStates);
 
 public Q_SLOTS:
     void init() Q_DECL_OVERRIDE;
@@ -111,6 +118,8 @@ Q_SIGNALS:
     /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
     void downloadModelChanged();
     /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
+    void passiveSelectionModelChanged();
+    /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
     void serviceChanged();
     void localChanged();
     void connectionStatusChanged();
@@ -119,6 +128,7 @@ Q_SIGNALS:
     void currentConnectionConfigIndexChanged(int index);
     void sizeChanged(const QSize &size);
     void notificationsAvailableChanged(bool notificationsAvailable);
+    void passiveChanged(bool passive);
 
 private Q_SLOTS:
     void handleSettingsChanged();
@@ -136,6 +146,7 @@ private Q_SLOTS:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     void handleSystemdStatusChanged();
 #endif
+    void setPassive(bool passive);
 
 private:
     Dialogs::AboutDialog *m_aboutDlg;
@@ -148,7 +159,8 @@ private:
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingDownloadModel m_downloadModel;
-    Dialogs::SettingsDialog *m_settingsDlg;
+    Data::SyncthingStatusSelectionModel m_passiveSelectionModel;
+    SettingsDialog *m_settingsDlg;
     QtGui::DBusStatusNotifier m_dbusNotifier;
     std::vector<Data::SyncthingLogEntry> m_notifications;
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
@@ -177,6 +189,11 @@ inline Data::SyncthingDeviceModel *SyncthingApplet::devModel() const
 inline Data::SyncthingDownloadModel *SyncthingApplet::downloadModel() const
 {
     return const_cast<Data::SyncthingDownloadModel *>(&m_downloadModel);
+}
+
+inline Data::SyncthingStatusSelectionModel *SyncthingApplet::passiveSelectionModel() const
+{
+    return const_cast<Data::SyncthingStatusSelectionModel *>(&m_passiveSelectionModel);
 }
 
 inline Data::SyncthingService *SyncthingApplet::service() const
@@ -222,6 +239,24 @@ inline void SyncthingApplet::setSize(const QSize &size)
 {
     if (size != m_size) {
         emit sizeChanged(m_size = size);
+    }
+}
+
+inline bool SyncthingApplet::isPassive() const
+{
+    return status() == Plasma::Types::PassiveStatus;
+}
+
+inline const QList<Models::ChecklistItem> &SyncthingApplet::passiveStates() const
+{
+    return m_passiveSelectionModel.items();
+}
+
+inline void SyncthingApplet::setPassive(bool passive)
+{
+    if (passive != isPassive()) {
+        setStatus(passive ? Plasma::Types::PassiveStatus : Plasma::Types::ActiveStatus);
+        emit passiveChanged(passive);
     }
 }
 } // namespace Plasmoid

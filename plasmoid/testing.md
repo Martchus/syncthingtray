@@ -18,6 +18,12 @@ rather than the regular home to separate testing from production.
 6. Ignore warning that executable is no debug build, it is sufficiant when
    the plugin is a debug build (see next section for QML debugging)
 
+## Saving/restoring settings
+
+Be aware that `plasmoidviewer` will revert Plasmoid-specific settings to the defaults on
+startup. So it is not possible to test restoring/saving settings using it.
+For this use case, `plasmawindowed` can be used instead.
+
 ## Enable QML debugging
 
 To enable QML debugging, it is required to rebuild `plasmoidviewer` with QML debugging
