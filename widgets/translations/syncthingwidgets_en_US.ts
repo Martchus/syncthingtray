@@ -589,22 +589,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="963"/>
+        <location filename="../settings/settingsdialog.cpp" line="969"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="970"/>
+        <location filename="../settings/settingsdialog.cpp" line="976"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="977"/>
+        <location filename="../settings/settingsdialog.cpp" line="983"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="999"/>
+        <location filename="../settings/settingsdialog.cpp" line="1005"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>

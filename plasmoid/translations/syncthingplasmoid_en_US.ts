@@ -160,6 +160,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="124"/>
+        <source>States to enable passive mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../lib/appearanceoptionpage.ui" line="25"/>
         <source>Colors</source>
         <translation type="unfinished"></translation>
@@ -173,7 +178,7 @@
 <context>
     <name>Plasmoid::Settings</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="28"/>
+        <location filename="../lib/settingsdialog.cpp" line="29"/>
         <source>The settings on this page are specific to the current instance of the Plasmoid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -181,17 +186,17 @@
 <context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="120"/>
+        <location filename="../lib/settingsdialog.cpp" line="126"/>
         <source>Plasmoid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="129"/>
+        <location filename="../lib/settingsdialog.cpp" line="135"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="139"/>
+        <location filename="../lib/settingsdialog.cpp" line="145"/>
         <source>Extras</source>
         <translation type="unfinished"></translation>
     </message>
@@ -199,12 +204,12 @@
 <context>
     <name>Plasmoid::ShortcutOptionPage</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="65"/>
+        <location filename="../lib/settingsdialog.cpp" line="66"/>
         <source>Shortcuts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="71"/>
+        <location filename="../lib/settingsdialog.cpp" line="72"/>
         <source>Global shortcut</source>
         <translation type="unfinished"></translation>
     </message>
@@ -212,17 +217,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="271"/>
+        <location filename="../lib/syncthingapplet.cpp" line="278"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="283"/>
+        <location filename="../lib/syncthingapplet.cpp" line="290"/>
         <source>New notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="411"/>
+        <location filename="../lib/syncthingapplet.cpp" line="432"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
