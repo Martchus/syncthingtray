@@ -28,12 +28,12 @@ public:
     static bool isSamePage(const QUrl &url1, const QUrl &url2);
 
 protected:
-    SYNCTHINGWIDGETS_WEB_PAGE *createWindow(WebWindowType type);
+    SYNCTHINGWIDGETS_WEB_PAGE *createWindow(WebWindowType type) override;
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
-    bool certificateError(const QWebEngineCertificateError &certificateError);
-    bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
+    bool certificateError(const QWebEngineCertificateError &certificateError) override;
+    bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame) override;
     void javaScriptConsoleMessage(
-        QWebEnginePage::JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID);
+        QWebEnginePage::JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID) override;
 #else
     bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type);
     void javaScriptConsoleMessage(const QString &message, int lineNumber, const QString &sourceID);

@@ -20,7 +20,7 @@ Q_SIGNALS:
     void pauseResumeDir(const Data::SyncthingDir &dir);
 
 protected:
-    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 private Q_SLOTS:
     void showContextMenu();

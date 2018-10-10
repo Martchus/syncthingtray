@@ -27,15 +27,15 @@ public:
     explicit SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent = nullptr);
 
 public Q_SLOTS:
-    QHash<int, QByteArray> roleNames() const;
-    const QVector<int> &colorRoles() const;
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-    QModelIndex parent(const QModelIndex &child) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role);
-    int rowCount(const QModelIndex &parent) const;
-    int columnCount(const QModelIndex &parent) const;
+    QHash<int, QByteArray> roleNames() const override;
+    const QVector<int> &colorRoles() const override;
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &child) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
+    int rowCount(const QModelIndex &parent) const override;
+    int columnCount(const QModelIndex &parent) const override;
     const SyncthingDev *devInfo(const QModelIndex &index) const;
 
 private Q_SLOTS:

@@ -30,7 +30,7 @@ Q_SIGNALS:
     void reload();
 
 protected:
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent *event) override;
 
 private:
     void showLogEntries(const std::vector<Data::SyncthingLogEntry> &logEntries);

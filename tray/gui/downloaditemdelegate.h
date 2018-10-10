@@ -11,8 +11,8 @@ class DownloadItemDelegate : public QStyledItemDelegate {
 public:
     DownloadItemDelegate(QObject *parent);
 
-    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const;
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
     const QPixmap m_folderIcon;

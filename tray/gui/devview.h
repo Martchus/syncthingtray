@@ -18,7 +18,7 @@ Q_SIGNALS:
     void pauseResumeDev(const Data::SyncthingDev &dev);
 
 protected:
-    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 private Q_SLOTS:
     void showContextMenu();

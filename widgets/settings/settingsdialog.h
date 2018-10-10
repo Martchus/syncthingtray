@@ -115,7 +115,7 @@ public:
     explicit SettingsDialog(Data::SyncthingConnection *connection, QWidget *parent = nullptr);
     explicit SettingsDialog(const QList<Dialogs::OptionCategory *> &categories, QWidget *parent = nullptr);
     explicit SettingsDialog(QWidget *parent = nullptr);
-    ~SettingsDialog();
+    ~SettingsDialog() override;
 
 private:
     void init();

@@ -11,7 +11,7 @@ class DirButtonsItemDelegate : public QStyledItemDelegate {
 public:
     DirButtonsItemDelegate(QObject *parent);
 
-    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const;
+    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
 
 private:
     const QPixmap m_refreshIcon;

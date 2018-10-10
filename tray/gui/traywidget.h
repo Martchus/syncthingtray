@@ -43,7 +43,7 @@ class TrayWidget : public QWidget {
 
 public:
     TrayWidget(TrayMenu *parent = nullptr);
-    ~TrayWidget();
+    ~TrayWidget() override;
 
     Data::SyncthingConnection &connection();
     const Data::SyncthingConnection &connection() const;

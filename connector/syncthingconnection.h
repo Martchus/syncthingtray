@@ -94,7 +94,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
 public:
     explicit SyncthingConnection(
         const QString &syncthingUrl = QStringLiteral("http://localhost:8080"), const QByteArray &apiKey = QByteArray(), QObject *parent = nullptr);
-    ~SyncthingConnection();
+    ~SyncthingConnection() override;
 
     const QString &syncthingUrl() const;
     void setSyncthingUrl(const QString &url);

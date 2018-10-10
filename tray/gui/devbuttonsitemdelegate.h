@@ -12,7 +12,7 @@ class DevButtonsItemDelegate : public QStyledItemDelegate {
 public:
     DevButtonsItemDelegate(QObject *parent);
 
-    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const;
+    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
 
 private:
     const QPixmap m_pauseIcon;

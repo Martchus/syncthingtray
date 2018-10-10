@@ -13,7 +13,7 @@ namespace QtGui {
 class SYNCTHINGWIDGETS_EXPORT ErrorViewDialog : public TextViewDialog {
     Q_OBJECT
 public:
-    ~ErrorViewDialog();
+    ~ErrorViewDialog() override;
     static ErrorViewDialog *instance();
     static void addError(InternalError &&newError);
 

@@ -33,7 +33,7 @@ public:
     SyncthingInfoAction(QObject *parent = nullptr);
 
 protected:
-    QWidget *createWidget(QWidget *parent);
+    QWidget *createWidget(QWidget *parent) override;
 };
 
 class SyncthingDirActions : public QObject {

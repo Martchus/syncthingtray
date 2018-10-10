@@ -95,7 +95,7 @@ public:
     void setPassiveStates(const QList<Models::ChecklistItem> &passiveStates);
 
 public Q_SLOTS:
-    void init() Q_DECL_OVERRIDE;
+    void init() override;
     void showSettingsDlg();
     void showWebUI();
     void showLog();

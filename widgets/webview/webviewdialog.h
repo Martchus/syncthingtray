@@ -21,7 +21,7 @@ class SYNCTHINGWIDGETS_EXPORT WebViewDialog : public QMainWindow {
     Q_OBJECT
 public:
     WebViewDialog(QWidget *parent = nullptr);
-    ~WebViewDialog();
+    ~WebViewDialog() override;
 
 public slots:
     void applySettings(const Data::SyncthingConnectionSettings &connectionSettings);
@@ -32,10 +32,10 @@ public slots:
     void closeUnlessModalVisible();
 
 protected:
-    void closeEvent(QCloseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
+    void closeEvent(QCloseEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
-    bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event) override;
 #endif
 
 private:
