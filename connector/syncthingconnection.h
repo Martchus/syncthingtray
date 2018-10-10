@@ -177,6 +177,7 @@ public Q_SLOTS:
     void requestConfig();
     void requestStatus();
     void requestConfigAndStatus();
+    void requestEvents();
     void requestErrors();
     void requestConnections();
     void requestClearingErrors();
@@ -218,7 +219,6 @@ Q_SIGNALS:
     void shutdownTriggered();
 
 private Q_SLOTS:
-    void requestEvents();
     void abortAllRequests();
 
     void readConfig();
