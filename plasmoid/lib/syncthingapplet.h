@@ -132,7 +132,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void handleSettingsChanged();
-    void handleConnectionStatusChanged(Data::SyncthingStatus status);
+    void handleConnectionStatusChanged(Data::SyncthingStatus previousStatus, Data::SyncthingStatus newStatus);
     void handleDevicesChanged();
     void handleInternalError(
         const QString &errorMsg, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);

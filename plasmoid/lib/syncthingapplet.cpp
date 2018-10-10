@@ -366,14 +366,15 @@ void SyncthingApplet::handleSettingsChanged()
     emit settingsChanged();
 }
 
-void SyncthingApplet::handleConnectionStatusChanged(SyncthingStatus status)
+void SyncthingApplet::handleConnectionStatusChanged(Data::SyncthingStatus previousStatus, Data::SyncthingStatus newStatus)
 {
+    Q_UNUSED(previousStatus)
     if (!m_initialized) {
         return;
     }
 
     // update whether passive
-    setPassive(static_cast<int>(status) < passiveStates().size() && passiveStates().at(static_cast<int>(status)).isChecked());
+    setPassive(static_cast<int>(newStatus) < passiveStates().size() && passiveStates().at(static_cast<int>(newStatus)).isChecked());
 
     // update status icon and tooltip text
     m_statusInfo.updateConnectionStatus(m_connection);
