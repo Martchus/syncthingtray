@@ -87,29 +87,12 @@ AppearanceOptionPage::~AppearanceOptionPage()
 {
 }
 
-void AppearanceOptionPage::restoreSelectedStates(SyncthingStatusSelectionModel &statusSelectionModel, const KConfigGroup &config, const char *key)
-{
-    const auto states = config.readEntry(key, QVariantList());
-    int row = 0;
-    for (auto &item : statusSelectionModel.items()) {
-        statusSelectionModel.setChecked(row++, states.contains(item.id()));
-    }
-}
-
 bool AppearanceOptionPage::apply()
 {
     KConfigGroup config = m_applet->config();
     config.writeEntry<QSize>("size", QSize(ui()->widthSpinBox->value(), ui()->heightSpinBox->value()));
     config.writeEntry<bool>("brightColors", ui()->brightTextColorsCheckBox->isChecked());
-
-    QVariantList passiveStates;
-    passiveStates.reserve(m_passiveStatusSelection.items().size());
-    for (auto &item : m_passiveStatusSelection.items()) {
-        if (item.isChecked()) {
-            passiveStates << item.id();
-        }
-    }
-    config.writeEntry("passiveStates", passiveStates);
+    config.writeEntry("passiveStates", m_passiveStatusSelection.toVariantList());
 
     return true;
 }
@@ -121,7 +104,7 @@ void AppearanceOptionPage::reset()
     ui()->widthSpinBox->setValue(size.width());
     ui()->heightSpinBox->setValue(size.height());
     ui()->brightTextColorsCheckBox->setChecked(config.readEntry<>("brightColors", false));
-    restoreSelectedStates(m_passiveStatusSelection, config, "passiveStates");
+    m_passiveStatusSelection.applyVariantList(config.readEntry("passiveStates", QVariantList()));
 }
 
 QWidget *AppearanceOptionPage::setupWidget()

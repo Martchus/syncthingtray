@@ -355,7 +355,7 @@ void SyncthingApplet::handleSettingsChanged()
     if (m_settingsDlg) {
         setPassiveStates(m_settingsDlg->appearanceOptionPage()->passiveStatusSelection()->items());
     } else {
-        AppearanceOptionPage::restoreSelectedStates(m_passiveSelectionModel, config, "passiveStates");
+        m_passiveSelectionModel.applyVariantList(config.readEntry("passiveStates", QVariantList()));
     }
 
     // apply connection config

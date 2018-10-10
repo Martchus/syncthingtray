@@ -7,8 +7,6 @@
 
 #include <qtutilities/settingsdialog/optionpage.h>
 
-#include <KConfigGroup>
-
 QT_FORWARD_DECLARE_CLASS(QKeySequenceEdit)
 
 namespace QtGui {
@@ -36,7 +34,6 @@ BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(AppearanceOptionPage)
 public:
 AppearanceOptionPage(SyncthingApplet &applet, QWidget *parentWidget = nullptr);
 Data::SyncthingStatusSelectionModel *passiveStatusSelection();
-static void restoreSelectedStates(Data::SyncthingStatusSelectionModel &statusSelectionModel, const KConfigGroup &config, const char *key);
 
 private:
 DECLARE_SETUP_WIDGETS
