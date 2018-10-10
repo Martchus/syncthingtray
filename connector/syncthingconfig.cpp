@@ -1,7 +1,7 @@
 #include "./syncthingconfig.h"
+#include "./utils.h"
 
 #include <QFile>
-#include <QHostAddress>
 #include <QStandardPaths>
 #include <QXmlStreamReader>
 
@@ -83,9 +83,7 @@ bool SyncthingConfig::restore(const QString &configFilePath)
 
 QString SyncthingConfig::syncthingUrl() const
 {
-    return (guiEnforcesSecureConnection || !QHostAddress(guiAddress.mid(0, guiAddress.indexOf(QChar(':')))).isLoopback() ? QStringLiteral("https://")
-                                                                                                                         : QStringLiteral("http://"))
-        + guiAddress;
+    return (guiEnforcesSecureConnection || isLocal(guiAddress) ? QStringLiteral("https://") : QStringLiteral("http://")) + guiAddress;
 }
 
 } // namespace Data

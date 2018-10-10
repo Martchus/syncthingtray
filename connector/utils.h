@@ -8,11 +8,11 @@
 
 #include <QJsonValue>
 #include <QStringList>
+#include <QUrl>
 
 #include <limits>
 #include <vector>
 
-QT_FORWARD_DECLARE_CLASS(QUrl)
 QT_FORWARD_DECLARE_CLASS(QJsonObject)
 
 namespace ChronoUtilities {
@@ -31,9 +31,17 @@ QString LIB_SYNCTHING_CONNECTOR_EXPORT directoryStatusString(const Data::Syncthi
 QString LIB_SYNCTHING_CONNECTOR_EXPORT syncCompleteString(
     const std::vector<const SyncthingDir *> &completedDirs, const SyncthingDev *remoteDevice = nullptr);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT rescanIntervalString(int rescanInterval, bool fileSystemWatcherEnabled);
-bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QUrl &url);
+bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QString &hostname);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);
+
+/*!
+ * \brief Returns whether the host specified by the given \a url is the local machine.
+ */
+inline bool isLocal(const QUrl &url)
+{
+    return isLocal(url.host());
+}
 
 template <typename IntType = quint64, Traits::EnableIf<std::is_integral<IntType>> * = nullptr>
 inline IntType LIB_SYNCTHING_CONNECTOR_EXPORT jsonValueToInt(const QJsonValue &value, double defaultValue = 0.0)

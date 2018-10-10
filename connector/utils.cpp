@@ -104,13 +104,12 @@ QString rescanIntervalString(int rescanInterval, bool fileSystemWatcherEnabled)
 }
 
 /*!
- * \brief Returns whether the host specified by the given \a url is the local machine.
+ * \brief Returns whether the specified \a hostname is the local machine.
  */
-bool isLocal(const QUrl &url)
+bool isLocal(const QString &hostname)
 {
-    const QString host(url.host());
-    const QHostAddress hostAddress(host);
-    return host.compare(QLatin1String("localhost"), Qt::CaseInsensitive) == 0 || hostAddress.isLoopback()
+    const QHostAddress hostAddress(hostname);
+    return hostname.compare(QLatin1String("localhost"), Qt::CaseInsensitive) == 0 || hostAddress.isLoopback()
         || QNetworkInterface::allAddresses().contains(hostAddress);
 }
 
