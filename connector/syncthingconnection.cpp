@@ -10,7 +10,7 @@
 #include <c++utilities/conversion/conversionexception.h>
 #include <c++utilities/conversion/stringconversion.h>
 
-#ifdef LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
+#if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_POSTS)
 #include <c++utilities/io/ansiescapecodes.h>
 #endif
 
@@ -32,7 +32,7 @@
 using namespace std;
 using namespace ChronoUtilities;
 using namespace ConversionUtilities;
-#ifdef LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
+#if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_POSTS)
 using namespace EscapeCodes;
 #endif
 
@@ -470,6 +470,9 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
 {
     auto *reply = networkAccessManager().post(prepareRequest(path, query), data);
     reply->ignoreSslErrors(m_expectedSslErrors);
+#ifdef LIB_SYNCTHING_CONNECTOR_LOG_POSTS
+    cout << Phrases::Info << "POSTing:" << Phrases::End << data.data() << endl;
+#endif
     return reply;
 }
 

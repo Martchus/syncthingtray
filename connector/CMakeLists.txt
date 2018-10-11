@@ -80,7 +80,7 @@ if(SYSTEMD_SUPPORT)
         org.freedesktop.systemd1.Manager.xml
         PROPERTIES INCLUDE syncthingservice.h
     )
-    list(APPEND META_PUBLIC_COMPILE_DEFINITIONS LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
+    list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SUPPORT_SYSTEMD)
     message(STATUS "systemd support enabled")
 else()
     message(STATUS "systemd support disabled")
@@ -97,7 +97,7 @@ if(SYNCTHING_CONNECTION_MOCKED)
         syncthingconnection.cpp
         syncthingconnectionmockhelpers.h
         syncthingconnectionmockhelpers.cpp
-        PROPERTIES COMPILE_DEFINITIONS LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
+        PROPERTIES COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_CONNECTION_MOCKED
     )
     message(WARNING "SyncthingConnection class will be mocked")
 endif()
@@ -107,7 +107,7 @@ option(SYNCTHING_SERVICE_MOCKED "enables mocking the SyncthingService class so i
 if(SYNCTHING_SERVICE_MOCKED)
     set_source_files_properties(
         syncthingservice.cpp
-        PROPERTIES COMPILE_DEFINITIONS LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
+        PROPERTIES COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SERVICE_MOCKED
     )
     message(WARNING "SyncthingService class will be mocked")
 endif()
@@ -117,7 +117,17 @@ option(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS "enables logging event data to 
 if(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS)
     set_source_files_properties(
         syncthingconnection.cpp
-        PROPERTIES COMPILE_DEFINITIONS LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
+        PROPERTIES COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_LOG_SYNCTHING_EVENTS
+    )
+    message(WARNING "SyncthingConnection class will log event data to stdout")
+endif()
+
+# configure whether POSTs should be logged
+option(SYNCTHING_CONNECTION_LOG_POSTS "enables logging POSTs done by the SyncthingConnector (enable only for debugging!)" OFF)
+if(SYNCTHING_CONNECTION_LOG_POSTS)
+    set_source_files_properties(
+        syncthingconnection.cpp
+        PROPERTIES COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_LOG_POSTS
     )
     message(WARNING "SyncthingConnection class will log event data to stdout")
 endif()
