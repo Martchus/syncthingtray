@@ -32,10 +32,7 @@ private:
 };
 
 WaitForConnected::WaitForConnected(const SyncthingConnection &connection)
-    : function<void(void)>([this] {
-        m_connectedAgain
-            |= m_connection.statusText() == QStringLiteral("connected") || m_connection.statusText() == QStringLiteral("connected, scanning");
-    })
+    : function<void(void)>([this] { m_connectedAgain = m_connectedAgain || m_connection.isConnected(); })
     , SignalInfo<decltype(&SyncthingConnection::statusChanged), function<void(void)>>(
           &connection, &SyncthingConnection::statusChanged, (*static_cast<const function<void(void)> *>(this)), &m_connectedAgain)
     , m_connection(connection)
@@ -65,7 +62,6 @@ public:
     void testErrorCases();
     void testInitialConnection();
     void testSendingError();
-    void waitForAllDirsAndDevsReady(bool initialConfig = false);
     void checkDevices();
     void checkDirectories() const;
     void testReconnecting();
@@ -93,7 +89,9 @@ private:
 
     template <typename Handler> TemporaryConnection handleNewDevices(Handler handler);
     template <typename Handler> TemporaryConnection handleNewDirs(Handler handler);
-    WaitForConnected waitForConnected() const;
+    WaitForConnected connectedSignal() const;
+    void waitForConnected(int timeout = 5000);
+    void waitForAllDirsAndDevsReady(bool initialConfig = false);
 
     SyncthingConnection m_connection;
     QString m_ownDevId;
@@ -156,30 +154,100 @@ void ConnectionTests::waitForConnection(Action action, int timeout, const Signal
     waitForSignals(bind(action, &m_connection), timeout, signalInfos...);
 }
 
+/*!
+ * \brief Returns a SignalInfo for the test's connection.
+ */
 template <typename Signal, typename Handler>
 SignalInfo<Signal, Handler> ConnectionTests::connectionSignal(Signal signal, const Handler &handler, bool *correctSignalEmitted)
 {
     return SignalInfo<Signal, Handler>(&m_connection, signal, handler, correctSignalEmitted);
 }
 
+/*!
+ * \brief Returns the default connect() signal (no args) for the test's connection.
+ */
 void (SyncthingConnection::*ConnectionTests::defaultConnect())(void)
 {
     return static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect);
 }
 
+/*!
+ * \brief Returns the default reconnect() signal (no args) for the test's connection.
+ */
 void (SyncthingConnection::*ConnectionTests::defaultReconnect())(void)
 {
     return static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::reconnect);
 }
 
+/*!
+ * \brief Returns the default disconnect() signal (no args) for the test's connection.
+ */
 void (SyncthingConnection::*ConnectionTests::defaultDisconnect())(void)
 {
     return static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::disconnect);
 }
 
-WaitForConnected ConnectionTests::waitForConnected() const
+/*!
+ * \brief Returns a SignalInfo to wait until the connected (again).
+ */
+WaitForConnected ConnectionTests::connectedSignal() const
 {
     return WaitForConnected(m_connection);
+}
+
+/*!
+ * \brief Waits until connected (again).
+ * \remarks
+ * - Does nothing if already connected.
+ * - Used to keep tests passing even though Syncthing dies and restarts during the testrun.
+ */
+void ConnectionTests::waitForConnected(int timeout)
+{
+    waitForConnection(defaultConnect(), timeout, connectedSignal());
+}
+
+/*!
+ * \brief Ensures the connection is established and waits till all dirs and devs are ready.
+ * \param initialConfig Whether to check for initial config (at least one dir and one dev is paused).
+ */
+void ConnectionTests::waitForAllDirsAndDevsReady(const bool initialConfig)
+{
+    bool allDirsReady, allDevsReady;
+    bool oneDirPaused = false, oneDevPaused = false;
+    bool isConnected = m_connection.isConnected();
+    const function<void()> checkAllDirsReady([this, &allDirsReady, &initialConfig, &oneDirPaused] {
+        for (const SyncthingDir &dir : m_connection.dirInfo()) {
+            if (dir.status == SyncthingDirStatus::Unknown) {
+                allDirsReady = false;
+                return;
+            }
+            oneDirPaused |= dir.paused;
+        }
+        allDirsReady = !initialConfig || oneDirPaused;
+    });
+    const function<void()> checkAllDevsReady([this, &allDevsReady, &initialConfig, &oneDevPaused] {
+        for (const SyncthingDev &dev : m_connection.devInfo()) {
+            if (dev.status == SyncthingDevStatus::Unknown) {
+                allDevsReady = false;
+                return;
+            }
+            oneDevPaused |= dev.paused;
+        }
+        allDevsReady = !initialConfig || oneDevPaused;
+    });
+    const function<void(SyncthingStatus)> checkStatus([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
+    checkAllDirsReady();
+    checkAllDevsReady();
+    if (allDirsReady && allDevsReady) {
+        return;
+    }
+
+    waitForSignalsOrFail(bind(defaultConnect(), &m_connection), 5000, connectionSignal(&SyncthingConnection::error),
+        connectionSignal(&SyncthingConnection::statusChanged, checkStatus, &isConnected),
+        connectionSignal(&SyncthingConnection::dirStatusChanged, checkAllDirsReady, &allDirsReady),
+        connectionSignal(&SyncthingConnection::newDirs, checkAllDirsReady, &allDirsReady),
+        connectionSignal(&SyncthingConnection::devStatusChanged, checkAllDevsReady, &allDevsReady),
+        connectionSignal(&SyncthingConnection::newDevices, checkAllDevsReady, &allDevsReady));
 }
 
 /*!
@@ -239,42 +307,65 @@ void ConnectionTests::testErrorCases()
         CPPUNIT_ASSERT_EQUAL(QStringLiteral("Connection configuration is insufficient."), errorMessage);
     }));
 
-    cerr << "\n - Error handling in case of inavailability, wrong credentials and API key  ..." << endl;
     m_connection.setApiKey(QByteArray("wrong API key"));
-    bool syncthingAvailable = false, authError = false, apiKeyError = false;
-    const function<void(const QString &errorMessage)> errorHandler
-        = [this, &syncthingAvailable, &authError, &apiKeyError](const QString &errorMessage) {
-              if (errorMessage == QStringLiteral("Unable to request Syncthing config: Connection refused")
-                  || errorMessage == QStringLiteral("Unable to request Syncthing status: Connection refused")) {
-                  // Syncthing not ready yet, wait 100 ms till next connection attempt
-                  wait(100);
-                  return;
-              }
-              syncthingAvailable = true;
-              if (errorMessage == QStringLiteral("Unable to request Syncthing status: Host requires authentication")
-                  || errorMessage == QStringLiteral("Unable to request Syncthing config: Host requires authentication")) {
-                  m_connection.setCredentials(QStringLiteral("nobody"), QStringLiteral("supersecret"));
-                  authError = true;
-                  return;
-              }
-              if ((errorMessage.startsWith(QStringLiteral("Unable to request Syncthing status: Error transferring "))
-                      && errorMessage.endsWith(QStringLiteral("/rest/system/status - server replied: Forbidden")))
-                  || (errorMessage.startsWith(QStringLiteral("Unable to request Syncthing config: Error transferring "))
-                         && errorMessage.endsWith(QStringLiteral("/rest/system/config - server replied: Forbidden")))) {
-                  m_connection.setApiKey(apiKey().toUtf8());
-                  apiKeyError = true;
-                  return;
-              }
-              CPPUNIT_FAIL(argsToString("wrong error message: ", errorMessage.toLocal8Bit().data()));
-          };
-    while (!syncthingAvailable || !authError || !apiKeyError) {
+    bool syncthingAvailable = false;
+    bool authErrorStatus = false, authErrorConfig = false;
+    bool apiKeyErrorStatus = false, apiKeyErrorConfig = false;
+    bool allErrorsEmitted = false;
+    const function<void(const QString &errorMessage)> errorHandler = [&](const QString &errorMessage) {
+        if ((errorMessage == QStringLiteral("Unable to request Syncthing status: Connection refused"))
+            || (errorMessage == QStringLiteral("Unable to request Syncthing config: Connection refused"))) {
+            // Syncthing not ready yet, wait 100 ms till next connection attempt
+            wait(100);
+            return;
+        }
+        syncthingAvailable = true;
+        if (errorMessage == QStringLiteral("Unable to request Syncthing status: Host requires authentication")) {
+            authErrorStatus = true;
+            return;
+        }
+        if (errorMessage == QStringLiteral("Unable to request Syncthing config: Host requires authentication")) {
+            authErrorConfig = true;
+            return;
+        }
+        if ((errorMessage.startsWith(QStringLiteral("Unable to request Syncthing status: Error transferring "))
+                && errorMessage.endsWith(QStringLiteral("/rest/system/status - server replied: Forbidden")))) {
+            m_connection.setApiKey(apiKey().toUtf8());
+            apiKeyErrorStatus = true;
+            return;
+        }
+        if ((errorMessage.startsWith(QStringLiteral("Unable to request Syncthing config: Error transferring "))
+                && errorMessage.endsWith(QStringLiteral("/rest/system/config - server replied: Forbidden")))) {
+            apiKeyErrorConfig = true;
+            return;
+        }
+        allErrorsEmitted = authErrorStatus && authErrorConfig && apiKeyErrorStatus && apiKeyErrorConfig;
+        CPPUNIT_FAIL(argsToString("wrong error message: ", errorMessage.toLocal8Bit().data()));
+    };
+
+    cerr << "\n - Error handling in case of inavailability ..." << endl;
+    while (!syncthingAvailable) {
         waitForConnection(defaultConnect(), 5000, connectionSignal(&SyncthingConnection::error, errorHandler));
+    }
+
+    cerr << "\n - Error handling in case of wrong credentials ..." << endl;
+    waitForConnection(defaultConnect(), 5000, connectionSignal(&SyncthingConnection::error, errorHandler));
+    while (!authErrorStatus || !authErrorConfig) {
+        waitForSignals(noop, 5000, connectionSignal(&SyncthingConnection::error, errorHandler));
+    }
+
+    cerr << "\n - Error handling in case of wrong API key  ..." << endl;
+    m_connection.setCredentials(QStringLiteral("nobody"), QStringLiteral("supersecret"));
+    waitForConnection(defaultConnect(), 5000, connectionSignal(&SyncthingConnection::error, errorHandler));
+    while (!apiKeyErrorStatus || !apiKeyErrorConfig) {
+        waitForSignals(noop, 5000, connectionSignal(&SyncthingConnection::error, errorHandler));
     }
 }
 
 void ConnectionTests::testInitialConnection()
 {
     cerr << "\n - Connecting initially ..." << endl;
+    m_connection.setApiKey(apiKey().toUtf8());
     waitForAllDirsAndDevsReady(true);
     CPPUNIT_ASSERT_EQUAL_MESSAGE(
         "connected and paused (one dev is initially paused)", QStringLiteral("connected, paused"), m_connection.statusText());
@@ -292,48 +383,6 @@ void ConnectionTests::testSendingError()
           };
     waitForSignals([this, sentTime, &sentMessage] { m_connection.emitNotification(sentTime, sentMessage); }, 500,
         connectionSignal(&SyncthingConnection::newNotification, newNotificationHandler, &newNotificationEmitted));
-}
-
-/*!
- * \brief Ensures the connection is established and waits till all dirs and devs are ready.
- * \param initialConfig Whether to check for initial config (at least one dir and one dev is paused).
- */
-void ConnectionTests::waitForAllDirsAndDevsReady(const bool initialConfig)
-{
-    bool allDirsReady, allDevsReady;
-    bool oneDirPaused = false, oneDevPaused = false;
-    bool isConnected = m_connection.isConnected();
-    const function<void()> checkAllDirsReady([this, &allDirsReady, &initialConfig, &oneDirPaused] {
-        for (const SyncthingDir &dir : m_connection.dirInfo()) {
-            if (dir.status == SyncthingDirStatus::Unknown) {
-                allDirsReady = false;
-                return;
-            }
-            oneDirPaused |= dir.paused;
-        }
-        allDirsReady = !initialConfig || oneDirPaused;
-    });
-    const function<void()> checkAllDevsReady([this, &allDevsReady, &initialConfig, &oneDevPaused] {
-        for (const SyncthingDev &dev : m_connection.devInfo()) {
-            if (dev.status == SyncthingDevStatus::Unknown) {
-                allDevsReady = false;
-                return;
-            }
-            oneDevPaused |= dev.paused;
-        }
-        allDevsReady = !initialConfig || oneDevPaused;
-    });
-    const function<void(SyncthingStatus)> checkStatus([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
-    checkAllDirsReady();
-    checkAllDevsReady();
-    if (allDirsReady && allDevsReady) {
-        return;
-    }
-    waitForSignals(bind(defaultConnect(), &m_connection), 5000, connectionSignal(&SyncthingConnection::statusChanged, checkStatus, &isConnected),
-        connectionSignal(&SyncthingConnection::dirStatusChanged, checkAllDirsReady, &allDirsReady),
-        connectionSignal(&SyncthingConnection::newDirs, checkAllDirsReady, &allDirsReady),
-        connectionSignal(&SyncthingConnection::devStatusChanged, checkAllDevsReady, &allDevsReady),
-        connectionSignal(&SyncthingConnection::newDevices, checkAllDevsReady, &allDevsReady));
 }
 
 void ConnectionTests::checkDevices()
@@ -427,14 +476,21 @@ void ConnectionTests::testResumingAllDevices()
             devResumed = true;
         }
     };
+    const function<void(const std::vector<SyncthingDev>)> newDevsHandler = [&devResumedHandler](const std::vector<SyncthingDev> &devs) {
+        for (const auto &dev : devs) {
+            devResumedHandler(dev, 0);
+        }
+    };
     const function<void(const QStringList &)> devResumedTriggeredHandler
         = [this](const QStringList &devIds) { CPPUNIT_ASSERT_EQUAL(m_connection.deviceIds(), devIds); };
     const auto newDevsConnection = handleNewDevices(devResumedHandler);
-    waitForConnection(&SyncthingConnection::resumeAllDevs, 7500, waitForConnected(),
+    waitForConnected();
+    waitForConnection(&SyncthingConnection::resumeAllDevs, 7500, connectedSignal(),
         connectionSignal(&SyncthingConnection::devStatusChanged, devResumedHandler, &devResumed),
+        connectionSignal(&SyncthingConnection::newDevices, newDevsHandler, &devResumed),
         connectionSignal(&SyncthingConnection::deviceResumeTriggered, devResumedTriggeredHandler));
     CPPUNIT_ASSERT(devResumed);
-    for (const QJsonValue &devValue : m_connection.m_rawConfig.value(QStringLiteral("devices")).toArray()) {
+    for (const QJsonValueRef devValue : m_connection.m_rawConfig.value(QStringLiteral("devices")).toArray()) {
         const QJsonObject &devObj(devValue.toObject());
         CPPUNIT_ASSERT(!devObj.isEmpty());
         CPPUNIT_ASSERT_MESSAGE("raw config updated accordingly", !devObj.value(QStringLiteral("paused")).toBool(true));
@@ -451,11 +507,18 @@ void ConnectionTests::testResumingDirectory()
             dirResumed = true;
         }
     };
+    const function<void(const std::vector<SyncthingDir>)> newDirsHandler = [&dirResumedHandler](const std::vector<SyncthingDir> &dirs) {
+        for (const auto &dir : dirs) {
+            dirResumedHandler(dir, 0);
+        }
+    };
     const function<void(const QStringList &)> dirResumedTriggeredHandler
         = [this](const QStringList &devIds) { CPPUNIT_ASSERT_EQUAL(m_connection.directoryIds(), devIds); };
     const auto newDirsConnection = handleNewDirs(dirResumedHandler);
-    waitForConnection(&SyncthingConnection::resumeAllDirs, 7500, waitForConnected(),
+    waitForConnected();
+    waitForConnection(&SyncthingConnection::resumeAllDirs, 7500, connectedSignal(),
         connectionSignal(&SyncthingConnection::dirStatusChanged, dirResumedHandler, &dirResumed),
+        connectionSignal(&SyncthingConnection::newDirs, newDirsHandler, &dirResumed),
         connectionSignal(&SyncthingConnection::directoryResumeTriggered, dirResumedTriggeredHandler));
     CPPUNIT_ASSERT(dirResumed);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("still 2 dirs present", 2_st, m_connection.dirInfo().size());
@@ -474,7 +537,8 @@ void ConnectionTests::testPausingDirectory()
     const QStringList ids({ QStringLiteral("test1") });
     const function<void(const QStringList &)> dirPausedTriggeredHandler = [&ids](const QStringList &devIds) { CPPUNIT_ASSERT_EQUAL(ids, devIds); };
     const auto newDirsConnection = handleNewDirs(dirPausedHandler);
-    waitForSignals(bind(&SyncthingConnection::pauseDirectories, &m_connection, ids), 7500, waitForConnected(),
+    waitForConnected();
+    waitForSignals(bind(&SyncthingConnection::pauseDirectories, &m_connection, ids), 7500, connectedSignal(),
         connectionSignal(&SyncthingConnection::dirStatusChanged, dirPausedHandler, &dirPaused),
         connectionSignal(&SyncthingConnection::directoryPauseTriggered, dirPausedTriggeredHandler));
     CPPUNIT_ASSERT(dirPaused);
@@ -485,6 +549,7 @@ void ConnectionTests::testPausingDirectory()
 void ConnectionTests::testRequestingLog()
 {
     cerr << "\n - Requesting log ..." << endl;
+    waitForConnected();
 
     // timeout after 1 second
     QTimer timeout;
@@ -513,6 +578,7 @@ void ConnectionTests::testRequestingLog()
 void ConnectionTests::testRequestingQrCode()
 {
     cerr << "\n - Requesting QR-Code for own device ID ..." << endl;
+    waitForConnected();
 
     // timeout after 2 seconds
     QTimer timeout;
@@ -520,6 +586,7 @@ void ConnectionTests::testRequestingQrCode()
     timeout.setInterval(SYNCTHINGTESTHELPER_TIMEOUT(5000));
     QEventLoop loop;
     QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit);
+    QObject::connect(&m_connection, &SyncthingConnection::error, &loop, &QEventLoop::quit);
 
     bool callbackOk = false;
     const auto request = m_connection.requestQrCode(m_ownDevId, [&callbackOk, &loop](const QByteArray &data) {
@@ -531,8 +598,8 @@ void ConnectionTests::testRequestingQrCode()
     timeout.start();
     loop.exec();
     QObject::disconnect(request); // ensure callback is not called after return (in error case)
-    CPPUNIT_ASSERT_MESSAGE(
-        argsToString("QR code returned before timeout of ", timeout.interval(), " ms (set SYNCTHING_TEST_TIMEOUT_FACTOR to increase timeout)"),
+    CPPUNIT_ASSERT_MESSAGE(argsToString("QR code returned before an error occurred or timeout of ", timeout.interval(),
+                               " ms (set SYNCTHING_TEST_TIMEOUT_FACTOR to increase timeout)"),
         callbackOk);
 }
 
@@ -562,6 +629,7 @@ void ConnectionTests::testConnectingWithSettings()
 void ConnectionTests::testRequestingRescan()
 {
     cerr << "\n - Requesting rescan ..." << endl;
+    waitForConnected();
 
     bool rescanTriggered = false;
     function<void(const QString &)> rescanTriggeredHandler = [&rescanTriggered](const QString &dir) {
@@ -583,6 +651,7 @@ void ConnectionTests::testRequestingRescan()
 void ConnectionTests::testDealingWithArbitraryConfig()
 {
     cerr << "\n - Changing arbitrary config ..." << endl;
+    waitForConnected();
 
     // read some value, eg. options.relayReconnectIntervalM
     auto rawConfig(m_connection.rawConfig());
@@ -607,6 +676,7 @@ void ConnectionTests::testDealingWithArbitraryConfig()
     });
 
     // post new config
+    waitForConnected();
     waitForSignalsOrFail(bind(&SyncthingConnection::postConfigFromJsonObject, &m_connection, ref(rawConfig)), 10000,
         connectionSignal(&SyncthingConnection::error), connectionSignal(&SyncthingConnection::newConfigTriggered),
         connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig));

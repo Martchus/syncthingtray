@@ -107,6 +107,9 @@ void SyncthingTestInstance::stop()
         if (!stdErr.isEmpty()) {
             cerr << "\n - Syncthing stderr during the testrun:\n" << stdErr.data();
         }
+        cerr << "\n - Syncthing (re)started: " << stdOut.count("INFO: Starting syncthing") << " times";
+        cerr << "\n - Syncthing exited:      " << stdOut.count("INFO: Syncthing exited: exit status") << " times";
+        cerr << "\n - Syncthing panicked:    " << stdOut.count("WARNING: Panic detected") << " times";
     }
 }
 } // namespace TestUtilities
