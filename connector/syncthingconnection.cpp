@@ -1156,7 +1156,7 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
         dirItem->path = dirObj.value(QLatin1String("path")).toString();
         dirItem->deviceIds.clear();
         dirItem->deviceNames.clear();
-        for (const QJsonValue &dev : dirObj.value(QLatin1String("devices")).toArray()) {
+        for (const QJsonValueRef dev : dirObj.value(QLatin1String("devices")).toArray()) {
             const QString devId = dev.toObject().value(QLatin1String("deviceID")).toString();
             if (!devId.isEmpty() && devId != m_myId) {
                 dirItem->deviceIds << devId;
@@ -1500,7 +1500,7 @@ void SyncthingConnection::readErrors()
             return;
         }
 
-        for (const QJsonValue &errorVal : replyDoc.object().value(QLatin1String("errors")).toArray()) {
+        for (const QJsonValueRef errorVal : replyDoc.object().value(QLatin1String("errors")).toArray()) {
             const QJsonObject errorObj(errorVal.toObject());
             if (errorObj.isEmpty()) {
                 continue;
