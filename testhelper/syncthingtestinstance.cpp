@@ -73,8 +73,12 @@ void SyncthingTestInstance::start()
     const int syncthingPortFromEnv(qEnvironmentVariableIntValue("SYNCTHING_PORT"));
     m_syncthingPort = !syncthingPortFromEnv ? QStringLiteral("4001") : QString::number(syncthingPortFromEnv);
 
+    // forward Syncthing's output to see what Syncthing is doing and what the test is doing at the same time
+    if (qEnvironmentVariableIsEmpty("SYNCTHING_TEST_NO_INTERLEAVED_OUTPUT")) {
+        m_syncthingProcess.setReadChannelMode(QProcess::ForwardedChannels);
+    }
+
     // start st
-    cerr << "\n - Launching Syncthing ..." << endl;
     // clang-format off
     const QStringList args{
         QStringLiteral("-gui-address=http://localhost:") + m_syncthingPort,
@@ -83,6 +87,9 @@ void SyncthingTestInstance::start()
         QStringLiteral("-no-browser"),
         QStringLiteral("-verbose"),
     };
+    cerr << "\n - Launching Syncthing: "
+         << syncthingPath.toStdString()
+         << ' ' << args.join(QChar(' ')).toStdString() << endl;
     m_syncthingProcess.start(syncthingPath, args);
     // clang-format on
 }
@@ -107,9 +114,11 @@ void SyncthingTestInstance::stop()
         if (!stdErr.isEmpty()) {
             cerr << "\n - Syncthing stderr during the testrun:\n" << stdErr.data();
         }
-        cerr << "\n - Syncthing (re)started: " << stdOut.count("INFO: Starting syncthing") << " times";
-        cerr << "\n - Syncthing exited:      " << stdOut.count("INFO: Syncthing exited: exit status") << " times";
-        cerr << "\n - Syncthing panicked:    " << stdOut.count("WARNING: Panic detected") << " times";
+        if (!stdOut.isEmpty()) {
+            cerr << "\n - Syncthing (re)started: " << stdOut.count("INFO: Starting syncthing") << " times";
+            cerr << "\n - Syncthing exited:      " << stdOut.count("INFO: Syncthing exited: exit status") << " times";
+            cerr << "\n - Syncthing panicked:    " << stdOut.count("WARNING: Panic detected") << " times";
+        }
     }
 }
 } // namespace TestUtilities
