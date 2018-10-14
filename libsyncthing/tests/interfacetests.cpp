@@ -134,7 +134,7 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction)
             testDir2Ready = true;
         } else if (msg == "Device 6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4 is \"Test dev 1\" at [dynamic]") {
             testDev1Ready = true;
-        } else if (msg == "Device MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7 is \"Test dev 2\" at [tcp://192.168.2.2:22000]") {
+        } else if (msg == "Device MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7 is \"Test dev 2\" at [tcp://192.168.2.2:22001]") {
             testDev2Ready = true;
         } else if (msg == "Shutting down") {
             shutDownLogged = true;
