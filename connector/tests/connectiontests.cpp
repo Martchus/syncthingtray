@@ -350,14 +350,14 @@ void ConnectionTests::testErrorCases()
 
     cerr << "\n - Error handling in case of wrong credentials ..." << endl;
     waitForConnection(defaultConnect(), 5000, connectionSignal(&SyncthingConnection::error, errorHandler));
-    while (!authErrorStatus || !authErrorConfig) {
+    while (!authErrorStatus && !authErrorConfig) {
         waitForSignals(noop, 5000, connectionSignal(&SyncthingConnection::error, errorHandler));
     }
 
     cerr << "\n - Error handling in case of wrong API key  ..." << endl;
     m_connection.setCredentials(QStringLiteral("nobody"), QStringLiteral("supersecret"));
     waitForConnection(defaultConnect(), 5000, connectionSignal(&SyncthingConnection::error, errorHandler));
-    while (!apiKeyErrorStatus || !apiKeyErrorConfig) {
+    while (!apiKeyErrorStatus && !apiKeyErrorConfig) {
         waitForSignals(noop, 5000, connectionSignal(&SyncthingConnection::error, errorHandler));
     }
 }
@@ -636,7 +636,7 @@ void ConnectionTests::testRequestingRescan()
         CPPUNIT_ASSERT_EQUAL(QStringLiteral("test2"), dir);
         rescanTriggered = true;
     };
-    waitForSignals(bind(&SyncthingConnection::rescanAllDirs, &m_connection), 5000,
+    waitForSignalsOrFail(bind(&SyncthingConnection::rescanAllDirs, &m_connection), 5000, connectionSignal(&SyncthingConnection::error),
         connectionSignal(&SyncthingConnection::rescanTriggered, rescanTriggeredHandler, &rescanTriggered));
 
     bool errorOccured = false;

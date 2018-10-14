@@ -123,11 +123,11 @@ if(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS)
 endif()
 
 # configure whether POSTs should be logged
-option(SYNCTHING_CONNECTION_LOG_POSTS "enables logging POSTs done by the SyncthingConnector (enable only for debugging!)" OFF)
-if(SYNCTHING_CONNECTION_LOG_POSTS)
+option(SYNCTHING_CONNECTION_LOG_API_CALLS "enables logging API calls done by the SyncthingConnector (enable only for debugging!)" OFF)
+if(SYNCTHING_CONNECTION_LOG_API_CALLS)
     set_source_files_properties(
         syncthingconnection.cpp
-        PROPERTIES COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_LOG_POSTS
+        PROPERTIES COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_LOG_API_CALLS
     )
     message(WARNING "SyncthingConnection class will log event data to stdout")
 endif()

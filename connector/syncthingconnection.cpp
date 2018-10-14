@@ -10,7 +10,7 @@
 #include <c++utilities/conversion/conversionexception.h>
 #include <c++utilities/conversion/stringconversion.h>
 
-#if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_POSTS)
+#if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS)
 #include <c++utilities/io/ansiescapecodes.h>
 #endif
 
@@ -32,7 +32,7 @@
 using namespace std;
 using namespace ChronoUtilities;
 using namespace ConversionUtilities;
-#if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_POSTS)
+#if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS)
 using namespace EscapeCodes;
 #endif
 
@@ -455,7 +455,10 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
 QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQuery &query, bool rest)
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
-    auto *reply = networkAccessManager().get(prepareRequest(path, query, rest));
+    auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest));
+#ifdef LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS
+    cout << Phrases::Info << "GETing: " << reply->url().toString().toStdString() << Phrases::EndFlush;
+#endif
     reply->ignoreSslErrors(m_expectedSslErrors);
     return reply;
 #else
@@ -468,11 +471,11 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
  */
 QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuery &query, const QByteArray &data)
 {
-    auto *reply = networkAccessManager().post(prepareRequest(path, query), data);
-    reply->ignoreSslErrors(m_expectedSslErrors);
-#ifdef LIB_SYNCTHING_CONNECTOR_LOG_POSTS
-    cout << Phrases::Info << "POSTing:" << Phrases::End << data.data() << endl;
+    auto *const reply = networkAccessManager().post(prepareRequest(path, query), data);
+#ifdef LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS
+    cout << Phrases::Info << "POSTing: " << reply->url().toString().toStdString() << Phrases::End << data.data() << endl;
 #endif
+    reply->ignoreSslErrors(m_expectedSslErrors);
     return reply;
 }
 
@@ -2520,6 +2523,7 @@ void SyncthingConnection::emitMyIdChanged(const QString &newId)
 void SyncthingConnection::handleFatalConnectionError()
 {
     setStatus(SyncthingStatus::Disconnected);
+    abortAllRequests();
     if (m_autoReconnectTimer.interval()) {
         m_autoReconnectTimer.start();
     }
