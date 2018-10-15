@@ -130,7 +130,6 @@ See the release section on GitHub.
     * packages for my other projects (which are built in the same way) are provided by perfect7gentleman; checkout his
       [repository](https://github.com/perfect7gentleman/pg_overlay)
 * AppImage for other GNU/Linux systems
-    * [local builds](https://martchus.no-ip.biz/repo/AppImage)
     * [OBS repo supposed to contain stable releases](https://download.opensuse.org/repositories/home:/mkittler:/appimage/AppImage)
     * [OBS repo supposed to contain latest Git master](https://build.opensuse.org/project/show/home:mkittler:appimage:vcs)
 * Windows
@@ -140,7 +139,12 @@ See the release section on GitHub.
       updated archive with a dynamically linked executable
 
 ## Build instructions
-The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and [qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries. For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities). For building this straight, see the section above.
+The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and
+[qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries.
+For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities).
+For building this straight, see the section below. There's also documentation about
+[various build variables](https://github.com/Martchus/cpp-utilities/blob/master/doc/buildvariables.md) which
+can be passed to CMake to influence the build.
 
 ### Further dependencies
 The following Qt 5 modules are requried (version 5.6 or newer): core network dbus gui widgets svg webenginewidgets/webkitwidgets
@@ -165,7 +169,7 @@ to systemd in any case.
 Building the testsuite requires CppUnit and Qt 5.8 or higher.
 
 ### Building this straight
-0. Install (preferably the latest version of) g++ or clang, the required Qt 5 modules and CMake.
+0. Install (preferably the latest version of) the CGG toolchain or Clang, the required Qt 5 modules and CMake.
 1. Get the sources. For the lastest version from Git clone the following repositories:
    ```
    cd $SOURCES
