@@ -35,14 +35,14 @@
         <maxConflicts>-1</maxConflicts>
         <disableSparseFiles>false</disableSparseFiles>
         <disableTempIndexes>false</disableTempIndexes>
-        <paused>false</paused>
+        <paused>true</paused>
         <weakHashThresholdPct>25</weakHashThresholdPct>
         <markerName>.stfolder</markerName>
         <useLargeBlocks>false</useLargeBlocks>
     </folder>
     <device id="MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7" name="Test dev 2" compression="metadata" introducer="false" skipIntroductionRemovals="false" introducedBy="">
         <address>tcp://192.168.2.2:22001</address>
-        <paused>false</paused>
+        <paused>true</paused>
         <autoAcceptFolders>false</autoAcceptFolders>
         <maxSendKbps>0</maxSendKbps>
         <maxRecvKbps>0</maxRecvKbps>

@@ -131,6 +131,9 @@ void ConnectionTests::setUp()
     // log errors
     QObject::connect(&m_connection, &SyncthingConnection::error,
         [](const QString &message) { cerr << " - Connection error: " << message.toLocal8Bit().data() << endl; });
+
+    // reduce traffic poll interval to 10 seconds
+    m_connection.setTrafficPollInterval(10000);
 }
 
 /*!
@@ -213,25 +216,26 @@ void ConnectionTests::waitForConnected(int timeout)
 void ConnectionTests::waitForAllDirsAndDevsReady(const bool initialConfig)
 {
     bool allDirsReady, allDevsReady;
-    bool oneDirPaused = false, oneDevPaused = false;
     bool isConnected = m_connection.isConnected();
-    const function<void()> checkAllDirsReady([this, &allDirsReady, &initialConfig, &oneDirPaused] {
+    const function<void()> checkAllDirsReady([this, &allDirsReady, &initialConfig] {
+        bool oneDirPaused = false;
         for (const SyncthingDir &dir : m_connection.dirInfo()) {
             if (dir.status == SyncthingDirStatus::Unknown) {
                 allDirsReady = false;
                 return;
             }
-            oneDirPaused |= dir.paused;
+            oneDirPaused = oneDirPaused || dir.paused;
         }
         allDirsReady = !initialConfig || oneDirPaused;
     });
-    const function<void()> checkAllDevsReady([this, &allDevsReady, &initialConfig, &oneDevPaused] {
+    const function<void()> checkAllDevsReady([this, &allDevsReady, &initialConfig] {
+        bool oneDevPaused = false;
         for (const SyncthingDev &dev : m_connection.devInfo()) {
             if (dev.status == SyncthingDevStatus::Unknown) {
                 allDevsReady = false;
                 return;
             }
-            oneDevPaused |= dev.paused;
+            oneDevPaused = oneDevPaused || dev.paused;
         }
         allDevsReady = !initialConfig || oneDevPaused;
     });
@@ -242,7 +246,7 @@ void ConnectionTests::waitForAllDirsAndDevsReady(const bool initialConfig)
         return;
     }
 
-    waitForSignalsOrFail(bind(defaultConnect(), &m_connection), 5000, connectionSignal(&SyncthingConnection::error),
+    waitForSignalsOrFail(bind(defaultConnect(), &m_connection), 10000, connectionSignal(&SyncthingConnection::error),
         connectionSignal(&SyncthingConnection::statusChanged, checkStatus, &isConnected),
         connectionSignal(&SyncthingConnection::dirStatusChanged, checkAllDirsReady, &allDirsReady),
         connectionSignal(&SyncthingConnection::newDirs, checkAllDirsReady, &allDirsReady),
@@ -556,7 +560,8 @@ void ConnectionTests::testRequestingLog()
     timeout.setSingleShot(true);
     timeout.setInterval(SYNCTHINGTESTHELPER_TIMEOUT(5000));
     QEventLoop loop;
-    QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit);
+    CPPUNIT_ASSERT(QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit));
+    CPPUNIT_ASSERT(QObject::connect(&m_connection, &SyncthingConnection::error, &loop, &QEventLoop::quit));
 
     bool callbackOk = false;
     const auto request = m_connection.requestLog([&callbackOk, &loop](const std::vector<SyncthingLogEntry> &logEntries) {
@@ -566,6 +571,7 @@ void ConnectionTests::testRequestingLog()
         CPPUNIT_ASSERT(!logEntries[0].message.isEmpty());
         loop.quit();
     });
+    CPPUNIT_ASSERT(request);
 
     timeout.start();
     loop.exec();
@@ -585,8 +591,8 @@ void ConnectionTests::testRequestingQrCode()
     timeout.setSingleShot(true);
     timeout.setInterval(SYNCTHINGTESTHELPER_TIMEOUT(5000));
     QEventLoop loop;
-    QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit);
-    QObject::connect(&m_connection, &SyncthingConnection::error, &loop, &QEventLoop::quit);
+    CPPUNIT_ASSERT(QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit));
+    CPPUNIT_ASSERT(QObject::connect(&m_connection, &SyncthingConnection::error, &loop, &QEventLoop::quit));
 
     bool callbackOk = false;
     const auto request = m_connection.requestQrCode(m_ownDevId, [&callbackOk, &loop](const QByteArray &data) {
@@ -594,6 +600,7 @@ void ConnectionTests::testRequestingQrCode()
         CPPUNIT_ASSERT(!data.isEmpty());
         loop.quit();
     });
+    CPPUNIT_ASSERT(request);
 
     timeout.start();
     loop.exec();
