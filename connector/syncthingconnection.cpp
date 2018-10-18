@@ -946,12 +946,12 @@ void SyncthingConnection::requestEvents()
  *
  * The specified \a callback is called on success; otherwise error() is emitted.
  */
-QMetaObject::Connection SyncthingConnection::requestQrCode(const QString &text, std::function<void(const QByteArray &)> callback)
+QMetaObject::Connection SyncthingConnection::requestQrCode(const QString &text, const std::function<void(const QByteArray &)> &callback)
 {
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("text"), text);
-    QNetworkReply *reply = requestData(QStringLiteral("/qr/"), query, false);
-    return QObject::connect(reply, &QNetworkReply::finished, [this, reply, callback] {
+    QNetworkReply *const reply = requestData(QStringLiteral("/qr/"), query, false);
+    return QObject::connect(reply, &QNetworkReply::finished, [this, reply, &callback] {
         reply->deleteLater();
         switch (reply->error()) {
         case QNetworkReply::NoError:
@@ -968,10 +968,10 @@ QMetaObject::Connection SyncthingConnection::requestQrCode(const QString &text, 
  *
  * The specified \a callback is called on success; otherwise error() is emitted.
  */
-QMetaObject::Connection SyncthingConnection::requestLog(std::function<void(const std::vector<SyncthingLogEntry> &)> callback)
+QMetaObject::Connection SyncthingConnection::requestLog(const std::function<void(const std::vector<SyncthingLogEntry> &)> &callback)
 {
     QNetworkReply *const reply = requestData(QStringLiteral("system/log"), QUrlQuery());
-    return QObject::connect(reply, &QNetworkReply::finished, [this, reply, callback] {
+    return QObject::connect(reply, &QNetworkReply::finished, [this, reply, &callback] {
         reply->deleteLater();
         switch (reply->error()) {
         case QNetworkReply::NoError: {

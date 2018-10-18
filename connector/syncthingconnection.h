@@ -136,8 +136,8 @@ public:
     ChronoUtilities::DateTime startTime() const;
     ChronoUtilities::TimeSpan uptime() const;
     const QString &syncthingVersion() const;
-    QMetaObject::Connection requestQrCode(const QString &text, std::function<void(const QByteArray &)> callback);
-    QMetaObject::Connection requestLog(std::function<void(const std::vector<SyncthingLogEntry> &)> callback);
+    QMetaObject::Connection requestQrCode(const QString &text, const std::function<void(const QByteArray &)> &callback);
+    QMetaObject::Connection requestLog(const std::function<void(const std::vector<SyncthingLogEntry> &)> &callback);
     const QList<QSslError> &expectedSslErrors() const;
     SyncthingDir *findDirInfo(const QString &dirId, int &row);
     SyncthingDir *findDirInfo(QLatin1String key, const QJsonObject &object, int *row = nullptr);
