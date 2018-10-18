@@ -336,11 +336,11 @@ bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure,
     action();
 
     // no reason to enter event loop when all signals have been emitted directly
-    if (checkWhetherAllSignalsEmitted(signalInfos...)) {
-        return true;
-    }
     if (checkWhetherAllSignalsEmitted(failure)) {
         return false;
+    }
+    if (checkWhetherAllSignalsEmitted(signalInfos...)) {
+        return true;
     }
 
     // also connect and start a timer if a timeout has been specified
