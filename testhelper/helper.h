@@ -242,21 +242,21 @@ inline auto dummySignalInfo()
 }
 
 /*!
- * \brief Connects the specified signal infos the \a loop via SignalInfo::connectToLoop().
+ * \brief Connects the specified signal info the \a loop via SignalInfo::connectToLoop().
  */
-template <typename SignalInfo> inline void connectSignalInfosToLoop(QEventLoop *loop, const SignalInfo &signalInfo)
+template <typename SignalInfo> inline void connectSignalInfoToLoop(QEventLoop *loop, const SignalInfo &signalInfo)
 {
     signalInfo.connectToLoop(loop);
 }
 
 /*!
- * \brief Connects the specified signal infos the \a loop via SignalInfo::connectToLoop().
+ * \brief Connects the specified signal info the \a loop via SignalInfo::connectToLoop().
  */
-template <typename SignalInfo, typename... SignalInfos>
-inline void connectSignalInfosToLoop(QEventLoop *loop, const SignalInfo &firstSignalInfo, const SignalInfos &... remainingSignalInfos)
+template <typename SignalInfo, typename... Signalinfo>
+inline void connectSignalInfoToLoop(QEventLoop *loop, const SignalInfo &firstSignalInfo, const Signalinfo &... remainingSignalinfo)
 {
-    connectSignalInfosToLoop(loop, firstSignalInfo);
-    connectSignalInfosToLoop(loop, remainingSignalInfos...);
+    connectSignalInfoToLoop(loop, firstSignalInfo);
+    connectSignalInfoToLoop(loop, remainingSignalinfo...);
 }
 
 /*!
@@ -270,14 +270,14 @@ template <typename SignalInfo> inline bool checkWhetherAllSignalsEmitted(const S
 /*!
  * \brief Checks whether all specified signals have been emitted.
  */
-template <typename SignalInfo, typename... SignalInfos>
-inline bool checkWhetherAllSignalsEmitted(const SignalInfo &firstSignalInfo, const SignalInfos &... remainingSignalInfos)
+template <typename SignalInfo, typename... Signalinfo>
+inline bool checkWhetherAllSignalsEmitted(const SignalInfo &firstSignalInfo, const Signalinfo &... remainingSignalinfo)
 {
-    return firstSignalInfo && checkWhetherAllSignalsEmitted(remainingSignalInfos...);
+    return firstSignalInfo && checkWhetherAllSignalsEmitted(remainingSignalinfo...);
 }
 
 /*!
- * \brief Returns the names of all specified signal infos which haven't been emitted yet as comma-separated string.
+ * \brief Returns the names of all specified signal info which haven't been emitted yet as comma-separated string.
  */
 template <typename SignalInfo> inline QByteArray failedSignalNames(const SignalInfo &signalInfo)
 {
@@ -285,16 +285,16 @@ template <typename SignalInfo> inline QByteArray failedSignalNames(const SignalI
 }
 
 /*!
- * \brief Returns the names of all specified signal infos which haven't been emitted yet as comma-separated string.
+ * \brief Returns the names of all specified signal info which haven't been emitted yet as comma-separated string.
  */
-template <typename SignalInfo, typename... SignalInfos>
-inline QByteArray failedSignalNames(const SignalInfo &firstSignalInfo, const SignalInfos &... remainingSignalInfos)
+template <typename SignalInfo, typename... Signalinfo>
+inline QByteArray failedSignalNames(const SignalInfo &firstSignalInfo, const Signalinfo &... remainingSignalinfo)
 {
     const QByteArray firstSignalName = failedSignalNames(firstSignalInfo);
     if (!firstSignalName.isEmpty()) {
-        return firstSignalName + ", " + failedSignalNames(remainingSignalInfos...);
+        return firstSignalName + ", " + failedSignalNames(remainingSignalinfo...);
     } else {
-        return failedSignalNames(remainingSignalInfos...);
+        return failedSignalNames(remainingSignalinfo...);
     }
 }
 
@@ -302,14 +302,14 @@ inline QByteArray failedSignalNames(const SignalInfo &firstSignalInfo, const Sig
  * \brief Waits until the specified signals have been emitted when performing async operations triggered by \a action.
  * \arg action Specifies a method to trigger the action to run when waiting.
  * \arg timeout Specifies the max. time to wait. Set to zero to wait forever.
- * \arg signalInfos Specifies the signals to wait for.
+ * \arg signalinfo Specifies the signals to wait for.
  * \throws Fails if not all signals have been emitted in at least \a timeout milliseconds or when at least one of the
  *         required connections can not be established.
- * \returns Returns true if all \a signalInfos have been omitted before the \a timeout exceeded.
+ * \returns Returns true if all \a signalinfo have been omitted before the \a timeout exceeded.
  */
-template <typename Action, typename... SignalInfos> bool waitForSignals(Action action, int timeout, const SignalInfos &... signalInfos)
+template <typename Action, typename... Signalinfo> bool waitForSignals(Action action, int timeout, const Signalinfo &... signalinfo)
 {
-    return waitForSignalsOrFail(action, timeout, dummySignalInfo(), signalInfos...);
+    return waitForSignalsOrFail(action, timeout, dummySignalInfo(), signalinfo...);
 }
 
 /*!
@@ -317,20 +317,20 @@ template <typename Action, typename... SignalInfos> bool waitForSignals(Action a
  * \arg action Specifies a method to trigger the action to run when waiting.
  * \arg timeout Specifies the max. time to wait in ms. Set to zero to wait forever.
  * \arg failure Specifies the signal indicating an error occured.
- * \arg signalInfos Specifies the signals to wait for.
+ * \arg signalinfo Specifies the signals to wait for.
  * \throws Fails if not all signals have been emitted in at least \a timeout milliseconds or when at least one of the
  *         required connections can not be established.
- * \returns Returns true if all \a signalInfos have been omitted before \a failure as been emitted or the \a timeout exceeded.
+ * \returns Returns true if all \a signalinfo have been omitted before \a failure as been emitted or the \a timeout exceeded.
  */
-template <typename Action, typename SignalInfo, typename... SignalInfos>
-bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure, const SignalInfos &... signalInfos)
+template <typename Action, typename SignalInfo, typename... Signalinfo>
+bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure, const Signalinfo &... signalinfo)
 {
     // use loop for waiting
     QEventLoop loop;
 
     // connect all signals to loop so loop is interrupted when one of the signals is emitted
-    connectSignalInfosToLoop(&loop, failure);
-    connectSignalInfosToLoop(&loop, signalInfos...);
+    connectSignalInfoToLoop(&loop, failure);
+    connectSignalInfoToLoop(&loop, signalinfo...);
 
     // perform specified action
     action();
@@ -339,7 +339,7 @@ bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure,
     if (checkWhetherAllSignalsEmitted(failure)) {
         return false;
     }
-    if (checkWhetherAllSignalsEmitted(signalInfos...)) {
+    if (checkWhetherAllSignalsEmitted(signalinfo...)) {
         return true;
     }
 
@@ -356,7 +356,7 @@ bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure,
     bool allSignalsEmitted = false, failureEmitted = false;
     do {
         loop.exec();
-    } while (!(failureEmitted = checkWhetherAllSignalsEmitted(failure)) && !(allSignalsEmitted = checkWhetherAllSignalsEmitted(signalInfos...))
+    } while (!(failureEmitted = checkWhetherAllSignalsEmitted(failure)) && !(allSignalsEmitted = checkWhetherAllSignalsEmitted(signalinfo...))
         && (!timeout || timer.isActive()));
 
     // check whether a timeout occured
@@ -364,9 +364,9 @@ bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure,
 #ifndef SYNCTHINGTESTHELPER_FOR_CLI
     if (failureEmitted) {
         CPPUNIT_FAIL(
-            argsToString("Signal(s) ", failedSignalNames(signalInfos...).data(), " has/have not emmitted before ", failure.signalName().data(), '.'));
+            argsToString("Signal(s) ", failedSignalNames(signalinfo...).data(), " has/have not emmitted before ", failure.signalName().data(), '.'));
     } else if (timeoutFailed) {
-        CPPUNIT_FAIL(argsToString("Signal(s) ", failedSignalNames(signalInfos...).data(), " has/have not emmitted within at least ", timer.interval(),
+        CPPUNIT_FAIL(argsToString("Signal(s) ", failedSignalNames(signalinfo...).data(), " has/have not emmitted within at least ", timer.interval(),
             " ms (set environment variable SYNCTHING_TEST_TIMEOUT_FACTOR to increase the timeout).",
             timeoutFactor != 1.0 ? argsToString(" (original timeout: ", timeout, " ms)") : std::string()));
     }

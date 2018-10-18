@@ -79,7 +79,7 @@ public:
     void tearDown();
 
 private:
-    template <typename Action, typename... SignalInfos> void waitForConnection(Action action, int timeout, const SignalInfos &... signalInfos);
+    template <typename Action, typename... Signalinfo> void waitForConnection(Action action, int timeout, const Signalinfo &... signalinfo);
     template <typename Signal, typename Handler = function<void(void)>>
     SignalInfo<Signal, Handler> connectionSignal(
         Signal signal, const Handler &handler = function<void(void)>(), bool *correctSignalEmitted = nullptr);
@@ -148,10 +148,10 @@ void ConnectionTests::tearDown()
 /*!
  * \brief Variant of waitForSignal() where sender is the connection and the action is a method of the connection.
  */
-template <typename Action, typename... SignalInfos>
-void ConnectionTests::waitForConnection(Action action, int timeout, const SignalInfos &... signalInfos)
+template <typename Action, typename... Signalinfo>
+void ConnectionTests::waitForConnection(Action action, int timeout, const Signalinfo &... signalinfo)
 {
-    waitForSignals(bind(action, &m_connection), timeout, signalInfos...);
+    waitForSignals(bind(action, &m_connection), timeout, signalinfo...);
 }
 
 /*!
