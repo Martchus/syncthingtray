@@ -574,20 +574,28 @@ void Application::printStatus(const ArgumentOccurrence &)
     if (m_args.stats.isPresent() || (!m_args.dir.isPresent() && !m_args.dev.isPresent())) {
         cout << TextAttribute::Bold << "Overall statistics\n" << TextAttribute::Reset;
         const auto &overallStats(m_connection.computeOverallDirStatistics());
-        const auto *statusString = "\e[32midle\e[0m";
+        const auto *statusString = "idle";
+        const auto *statusColor = "32";
         switch (m_connection.status()) {
         case SyncthingStatus::Synchronizing:
-            statusString = "\e[34msynchronizing\e[0m";
+            statusString = "synchronizing";
+            statusColor = "34";
             break;
         case SyncthingStatus::Scanning:
-            statusString = "\e[34mscanning\e[0m";
+            statusString = "scanning";
+            statusColor = "34";
             break;
         case SyncthingStatus::OutOfSync:
-            statusString = "\e[31mout-of-sync\e[0m";
+            statusString = "out-of-sync";
+            statusColor = "31";
             break;
         default:;
         }
-        printProperty("Status", statusString);
+        if (!EscapeCodes::enabled) {
+            printProperty("Status", statusString);
+        } else {
+            printProperty("Status", argsToString('\e', '[', statusColor, 'm', statusString, "\e[0m"));
+        }
         printProperty("Global", directoryStatusString(overallStats.global), nullptr, 6);
         printProperty("Local", directoryStatusString(overallStats.local), nullptr, 6);
         printProperty("Incoming traffic", trafficString(m_connection.totalIncomingTraffic(), m_connection.totalIncomingRate()));
