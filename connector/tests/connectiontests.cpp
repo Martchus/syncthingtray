@@ -79,7 +79,9 @@ public:
     void tearDown();
 
 private:
-    template <typename Action, typename... Signalinfo> void waitForConnection(Action action, int timeout, const Signalinfo &... signalinfo);
+    template <typename Action, typename... Signalinfo> void waitForConnection(Action action, int timeout, const Signalinfo &... signalInfo);
+    template <typename Action, typename FailureSignalInfo, typename... Signalinfo>
+    void waitForConnectionOrFail(Action action, int timeout, const FailureSignalInfo &failureSignalInfo, const Signalinfo &... signalInfo);
     template <typename Signal, typename Handler = function<void(void)>>
     SignalInfo<Signal, Handler> connectionSignal(
         Signal signal, const Handler &handler = function<void(void)>(), bool *correctSignalEmitted = nullptr);
@@ -149,12 +151,22 @@ void ConnectionTests::tearDown()
 //
 
 /*!
- * \brief Variant of waitForSignal() where sender is the connection and the action is a method of the connection.
+ * \brief Variant of waitForSignal() where the sender is the connection and the action is a method of the connection.
  */
-template <typename Action, typename... Signalinfo>
-void ConnectionTests::waitForConnection(Action action, int timeout, const Signalinfo &... signalinfo)
+template <typename Action, typename... SignalInfo>
+void ConnectionTests::waitForConnection(Action action, int timeout, const SignalInfo &... signalInfo)
 {
-    waitForSignals(bind(action, &m_connection), timeout, signalinfo...);
+    waitForSignals(bind(action, &m_connection), timeout, signalInfo...);
+}
+
+/*!
+ * \brief Variant of waitForSignalOrFail() where the sender is the connection and the action is a method of the connection.
+ */
+template <typename Action, typename FailureSignalInfo, typename... SignalInfo>
+void ConnectionTests::waitForConnectionOrFail(
+    Action action, int timeout, const FailureSignalInfo &failureSignalInfo, const SignalInfo &... signalInfo)
+{
+    waitForSignalsOrFail(bind(action, &m_connection), timeout, failureSignalInfo, signalInfo...);
 }
 
 /*!
@@ -555,30 +567,13 @@ void ConnectionTests::testRequestingLog()
     cerr << "\n - Requesting log ..." << endl;
     waitForConnected();
 
-    // timeout after 1 second
-    QTimer timeout;
-    timeout.setSingleShot(true);
-    timeout.setInterval(SYNCTHINGTESTHELPER_TIMEOUT(5000));
-    QEventLoop loop;
-    CPPUNIT_ASSERT(QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit));
-    CPPUNIT_ASSERT(QObject::connect(&m_connection, &SyncthingConnection::error, &loop, &QEventLoop::quit));
-
-    bool callbackOk = false;
-    const auto request = m_connection.requestLog([&callbackOk, &loop](const std::vector<SyncthingLogEntry> &logEntries) {
-        callbackOk = true;
+    const function<void(const vector<SyncthingLogEntry> &)> handleLogAvailable = [&](const vector<SyncthingLogEntry> &logEntries) {
         CPPUNIT_ASSERT(!logEntries.empty());
         CPPUNIT_ASSERT(!logEntries[0].when.isEmpty());
         CPPUNIT_ASSERT(!logEntries[0].message.isEmpty());
-        loop.quit();
-    });
-    CPPUNIT_ASSERT(request);
-
-    timeout.start();
-    loop.exec();
-    QObject::disconnect(request); // ensure callback is not called after return (in error case)
-    CPPUNIT_ASSERT_MESSAGE(
-        argsToString("log entries returned before timeout of ", timeout.interval(), " ms (set SYNCTHING_TEST_TIMEOUT_FACTOR to increase timeout)"),
-        callbackOk);
+    };
+    waitForConnectionOrFail(&SyncthingConnection::requestLog, 5000, connectionSignal(&SyncthingConnection::error),
+        connectionSignal(&SyncthingConnection::logAvailable, handleLogAvailable));
 }
 
 void ConnectionTests::testRequestingQrCode()
@@ -586,28 +581,12 @@ void ConnectionTests::testRequestingQrCode()
     cerr << "\n - Requesting QR-Code for own device ID ..." << endl;
     waitForConnected();
 
-    // timeout after 2 seconds
-    QTimer timeout;
-    timeout.setSingleShot(true);
-    timeout.setInterval(SYNCTHINGTESTHELPER_TIMEOUT(5000));
-    QEventLoop loop;
-    CPPUNIT_ASSERT(QObject::connect(&timeout, &QTimer::timeout, &loop, &QEventLoop::quit));
-    CPPUNIT_ASSERT(QObject::connect(&m_connection, &SyncthingConnection::error, &loop, &QEventLoop::quit));
-
-    bool callbackOk = false;
-    const auto request = m_connection.requestQrCode(m_ownDevId, [&callbackOk, &loop](const QByteArray &data) {
-        callbackOk = true;
+    const function<void(const QString &, const QByteArray &)> handleQrCodeAvailable = [&](const QString &qrText, const QByteArray &data) {
+        CPPUNIT_ASSERT_EQUAL(QStringLiteral("some text"), qrText);
         CPPUNIT_ASSERT(!data.isEmpty());
-        loop.quit();
-    });
-    CPPUNIT_ASSERT(request);
-
-    timeout.start();
-    loop.exec();
-    QObject::disconnect(request); // ensure callback is not called after return (in error case)
-    CPPUNIT_ASSERT_MESSAGE(argsToString("QR code returned before an error occurred or timeout of ", timeout.interval(),
-                               " ms (set SYNCTHING_TEST_TIMEOUT_FACTOR to increase timeout)"),
-        callbackOk);
+    };
+    waitForSignalsOrFail(bind(&SyncthingConnection::requestQrCode, &m_connection, QStringLiteral("some text")), 5000,
+        connectionSignal(&SyncthingConnection::error), connectionSignal(&SyncthingConnection::qrCodeAvailable, handleQrCodeAvailable));
 }
 
 void ConnectionTests::testDisconnecting()

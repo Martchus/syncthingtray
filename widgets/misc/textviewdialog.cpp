@@ -142,13 +142,9 @@ TextViewDialog *TextViewDialog::forDirectoryErrors(const Data::SyncthingDir &dir
 TextViewDialog *TextViewDialog::forLogEntries(SyncthingConnection &connection)
 {
     auto *const dlg = new TextViewDialog(tr("Log"));
-    const auto loadLog = [dlg, &connection] {
-        connect(dlg, &QWidget::destroyed,
-            bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
-                connection.requestLog(bind(&TextViewDialog::showLogEntries, dlg, _1))));
-    };
-    connect(dlg, &TextViewDialog::reload, loadLog);
-    loadLog();
+    QObject::connect(&connection, &SyncthingConnection::logAvailable, dlg, &TextViewDialog::showLogEntries);
+    connect(dlg, &TextViewDialog::reload, &connection, &SyncthingConnection::requestLog);
+    connection.requestLog();
     return dlg;
 }
 

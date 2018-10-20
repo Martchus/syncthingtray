@@ -136,8 +136,8 @@ public:
     ChronoUtilities::DateTime startTime() const;
     ChronoUtilities::TimeSpan uptime() const;
     const QString &syncthingVersion() const;
-    QMetaObject::Connection requestQrCode(const QString &text, const std::function<void(const QByteArray &)> &callback);
-    QMetaObject::Connection requestLog(const std::function<void(const std::vector<SyncthingLogEntry> &)> &callback);
+    void requestQrCode(const QString &text);
+    void requestLog();
     const QList<QSslError> &expectedSslErrors() const;
     SyncthingDir *findDirInfo(const QString &dirId, int &row);
     SyncthingDir *findDirInfo(QLatin1String key, const QJsonObject &object, int *row = nullptr);
@@ -217,6 +217,8 @@ Q_SIGNALS:
     void directoryResumeTriggered(const QStringList &dirIds);
     void restartTriggered();
     void shutdownTriggered();
+    void logAvailable(const std::vector<SyncthingLogEntry> &logEntries);
+    void qrCodeAvailable(const QString &text, const QByteArray &qrCodeData);
 
 private Q_SLOTS:
     void abortAllRequests();
@@ -262,6 +264,8 @@ private Q_SLOTS:
     void readVersion();
     void readDiskEvents();
     void readChangeEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
+    void readLog();
+    void readQrCode();
 
     void continueConnecting();
     void continueReconnecting();
@@ -311,6 +315,7 @@ private:
     QNetworkReply *m_eventsReply;
     QNetworkReply *m_versionReply;
     QNetworkReply *m_diskEventsReply;
+    QNetworkReply *m_logReply;
     bool m_unreadNotifications;
     bool m_hasConfig;
     bool m_hasStatus;

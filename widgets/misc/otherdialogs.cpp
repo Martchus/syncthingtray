@@ -46,13 +46,18 @@ QDialog *ownDeviceIdDialog(Data::SyncthingConnection &connection)
     QObject::connect(
         copyPushButton, &QPushButton::clicked, bind(&QClipboard::setText, QGuiApplication::clipboard(), connection.myId(), QClipboard::Clipboard));
     layout->addWidget(copyPushButton);
-    QObject::connect(dlg, &QWidget::destroyed,
+    connection.requestQrCode(connection.myId());
+    QObject::connect(dlg, &QObject::destroyed,
         bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
-            connection.requestQrCode(connection.myId(), [pixmapLabel](const QByteArray &data) {
-                QPixmap pixmap;
-                pixmap.loadFromData(data);
-                pixmapLabel->setPixmap(pixmap);
-            })));
+            QObject::connect(&connection, &SyncthingConnection::qrCodeAvailable,
+                [pixmapLabel, devId = connection.myId()](const QString &text, const QByteArray &data) {
+                    if (text != devId) {
+                        return;
+                    }
+                    QPixmap pixmap;
+                    pixmap.loadFromData(data);
+                    pixmapLabel->setPixmap(pixmap);
+                })));
     dlg->setLayout(layout);
     return dlg;
 }

@@ -316,7 +316,8 @@ void Application::handleError(
 
 void Application::requestLog(const ArgumentOccurrence &)
 {
-    m_connection.requestLog(&Application::printLog);
+    connect(&m_connection, &SyncthingConnection::logAvailable, printLog);
+    m_connection.requestLog();
     cerr << "Request log from " << m_settings.syncthingUrl.toLocal8Bit().data() << " ...";
     cerr.flush();
 }

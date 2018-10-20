@@ -78,6 +78,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_eventsReply(nullptr)
     , m_versionReply(nullptr)
     , m_diskEventsReply(nullptr)
+    , m_logReply(nullptr)
     , m_unreadNotifications(false)
     , m_hasConfig(false)
     , m_hasStatus(false)
@@ -775,6 +776,9 @@ void SyncthingConnection::abortAllRequests()
     if (m_diskEventsReply) {
         m_diskEventsReply->abort();
     }
+    if (m_logReply) {
+        m_logReply->abort();
+    }
 }
 
 /*!
@@ -944,58 +948,30 @@ void SyncthingConnection::requestEvents()
 /*!
  * \brief Requests a QR code for the specified \a text.
  *
- * The specified \a callback is called on success; otherwise error() is emitted.
+ * qrCodeAvailable() is emitted on success; otherwise error() is emitted.
  */
-QMetaObject::Connection SyncthingConnection::requestQrCode(const QString &text, const std::function<void(const QByteArray &)> &callback)
+void SyncthingConnection::requestQrCode(const QString &text)
 {
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("text"), text);
-    QNetworkReply *const reply = requestData(QStringLiteral("/qr/"), query, false);
-    return QObject::connect(reply, &QNetworkReply::finished, [this, reply, &callback] {
-        reply->deleteLater();
-        switch (reply->error()) {
-        case QNetworkReply::NoError:
-            callback(reply->readAll());
-            break;
-        default:
-            emit error(tr("Unable to request QR-Code: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
-        }
-    });
+    QNetworkReply *reply = requestData(QStringLiteral("/qr/"), query, false);
+    reply->setProperty("qrText", text);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readQrCode);
 }
 
 /*!
  * \brief Requests the Syncthing log.
  *
- * The specified \a callback is called on success; otherwise error() is emitted.
+ * logAvailable() is emitted on success; otherwise error() is emitted.
  */
-QMetaObject::Connection SyncthingConnection::requestLog(const std::function<void(const std::vector<SyncthingLogEntry> &)> &callback)
+void SyncthingConnection::requestLog()
 {
-    QNetworkReply *const reply = requestData(QStringLiteral("system/log"), QUrlQuery());
-    return QObject::connect(reply, &QNetworkReply::finished, [this, reply, &callback] {
-        reply->deleteLater();
-        switch (reply->error()) {
-        case QNetworkReply::NoError: {
-            QJsonParseError jsonError;
-            const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
-            if (jsonError.error != QJsonParseError::NoError) {
-                emit error(tr("Unable to parse Syncthing log: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
-                return;
-            }
-
-            const QJsonArray log(replyDoc.object().value(QLatin1String("messages")).toArray());
-            vector<SyncthingLogEntry> logEntries;
-            logEntries.reserve(static_cast<size_t>(log.size()));
-            for (const QJsonValue &logVal : log) {
-                const QJsonObject logObj(logVal.toObject());
-                logEntries.emplace_back(logObj.value(QLatin1String("when")).toString(), logObj.value(QLatin1String("message")).toString());
-            }
-            callback(logEntries);
-            break;
-        }
-        default:
-            emit error(tr("Unable to request Syncthing log: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
-        }
-    });
+    // skip if already requesting log
+    if (m_logReply != nullptr) {
+        return;
+    }
+    m_logReply = requestData(QStringLiteral("system/log"), QUrlQuery());
+    QObject::connect(m_logReply, &QNetworkReply::finished, this, &SyncthingConnection::readLog);
 }
 
 /*!
@@ -2395,6 +2371,62 @@ void SyncthingConnection::readChangeEvent(DateTime eventTime, const QString &eve
     change.path = eventData.value(QLatin1String("path")).toString();
     dirInfo->recentChanges.emplace_back(move(change));
     emit dirStatusChanged(*dirInfo, index);
+}
+
+/*!
+ * \brief Reads log entries queried via requestLog().
+ */
+void SyncthingConnection::readLog()
+{
+    auto *const reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+    if (reply == m_logReply) {
+        m_logReply = nullptr;
+    }
+
+    switch (reply->error()) {
+    case QNetworkReply::NoError: {
+        QJsonParseError jsonError;
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
+        if (jsonError.error != QJsonParseError::NoError) {
+            emit error(tr("Unable to parse Syncthing log: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
+            return;
+        }
+
+        const QJsonArray log(replyDoc.object().value(QLatin1String("messages")).toArray());
+        vector<SyncthingLogEntry> logEntries;
+        logEntries.reserve(static_cast<size_t>(log.size()));
+        for (const QJsonValue &logVal : log) {
+            const QJsonObject logObj(logVal.toObject());
+            logEntries.emplace_back(logObj.value(QLatin1String("when")).toString(), logObj.value(QLatin1String("message")).toString());
+        }
+        emit logAvailable(logEntries);
+        break;
+    }
+    case QNetworkReply::OperationCanceledError:
+        break;
+    default:
+        emit error(tr("Unable to request Syncthing log: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
+    }
+}
+
+/*!
+ * \brief Reads the QR code queried via requestQrCode().
+ */
+void SyncthingConnection::readQrCode()
+{
+    auto *const reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+
+    switch (reply->error()) {
+    case QNetworkReply::NoError:
+        emit qrCodeAvailable(reply->property("qrText").toString(), reply->readAll());
+        break;
+    case QNetworkReply::OperationCanceledError:
+        break;
+    default:
+        emit error(tr("Unable to request QR-Code: ") + reply->errorString(), SyncthingErrorCategory::SpecificRequest, reply->error());
+    }
 }
 
 /*!
