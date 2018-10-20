@@ -100,13 +100,14 @@ void ApplicationTests::test()
     QByteArray syncthingOutput;
     do {
         // wait for output
+        const auto timeout = static_cast<int>(15000 * TestUtilities::timeoutFactor);
         if (!syncthingProcess().bytesAvailable()) {
             // fail when already waiting for over 15 seconds
             const auto waitingTime(DateTime::gmtNow() - m_startTime);
-            if (waitingTime.seconds() > 15) {
-                CPPUNIT_FAIL("Syncthing needs longer than 15 seconds to become available.");
+            if (waitingTime.milliseconds() > timeout) {
+                CPPUNIT_FAIL(argsToString("Syncthing needs longer than ", (timeout / 1000), " seconds to become available."));
             }
-            syncthingProcess().waitForReadyRead(15000 - waitingTime.milliseconds());
+            syncthingProcess().waitForReadyRead(timeout - waitingTime.milliseconds());
         }
         syncthingOutput.append(syncthingProcess().readAll());
     } while (!syncthingOutput.contains("Access the GUI via the following URL"));
