@@ -11,6 +11,7 @@
 * No desktop environment specific libraries required (only for optional features)
 * Tested under \*
     * Plasma 5 (native "Plasmoid" provided)
+    * Openbox/lxqt/LXDE
     * Openbox/qt5ct/Tint2
     * Awesome/qt5ct
     * Cinnamon
