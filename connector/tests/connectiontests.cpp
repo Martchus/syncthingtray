@@ -115,6 +115,7 @@ ConnectionTests::ConnectionTests()
  */
 void ConnectionTests::setUp()
 {
+    setInterleavedOutputEnabledFromEnv();
     SyncthingTestInstance::start();
 
     cerr << "\n - Preparing connection ..." << endl;

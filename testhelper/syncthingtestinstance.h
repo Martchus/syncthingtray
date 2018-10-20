@@ -30,12 +30,16 @@ public:
 public Q_SLOTS:
     void start();
     void stop();
+    bool isInterleavedOutputEnabled() const;
+    void setInterleavedOutputEnabled(bool interleavedOutputEnabled);
+    void setInterleavedOutputEnabledFromEnv();
 
 private:
     QString m_apiKey;
     QString m_syncthingPort;
     QCoreApplication m_app;
     Data::SyncthingProcess m_syncthingProcess;
+    bool m_interleavedOutput;
 };
 
 inline const QString &SyncthingTestInstance::apiKey() const
@@ -56,6 +60,14 @@ inline QCoreApplication &SyncthingTestInstance::application()
 inline QProcess &SyncthingTestInstance::syncthingProcess()
 {
     return m_syncthingProcess;
+}
+
+/*!
+ * \brief Whether Syncthing's output should be forwarded to see what Syncthing and the test is doing at the same time.
+ */
+inline bool SyncthingTestInstance::isInterleavedOutputEnabled() const
+{
+    return m_interleavedOutput;
 }
 } // namespace TestUtilities
 

@@ -1,3 +1,12 @@
+Overall statistics
+   Status                        idle
+      Global                        0 file\(s\), 0 dir\(s\), 0 bytes
+      Local                         0 file\(s\), 0 dir\(s\), 0 bytes
+   Incoming traffic              0 bytes
+   Outgoing traffic              0 bytes
+   Connected to                  no other devices
+   Version                       syncthing v.*
+
 Directories
  - test2
    Label                         Test dir 2
@@ -34,7 +43,7 @@ Devices
  - Test dev 2
    ID                            MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7
    Status                        paused
-   Addresses                     tcp://.*22000
+   Addresses                     tcp://.*22001
    Compression                   metadata
 
  - .*

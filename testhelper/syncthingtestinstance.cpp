@@ -19,6 +19,7 @@ static char *dummy2;
 SyncthingTestInstance::SyncthingTestInstance()
     : m_apiKey(QStringLiteral("syncthingtestinstance"))
     , m_app(dummy1, &dummy2)
+    , m_interleavedOutput(false)
 {
 }
 
@@ -73,11 +74,6 @@ void SyncthingTestInstance::start()
     const int syncthingPortFromEnv(qEnvironmentVariableIntValue("SYNCTHING_PORT"));
     m_syncthingPort = !syncthingPortFromEnv ? QStringLiteral("4001") : QString::number(syncthingPortFromEnv);
 
-    // forward Syncthing's output to see what Syncthing is doing and what the test is doing at the same time
-    if (qEnvironmentVariableIsEmpty("SYNCTHING_TEST_NO_INTERLEAVED_OUTPUT")) {
-        m_syncthingProcess.setReadChannelMode(QProcess::ForwardedChannels);
-    }
-
     // start st
     // clang-format off
     const QStringList args{
@@ -119,6 +115,28 @@ void SyncthingTestInstance::stop()
             cerr << "\n - Syncthing exited:      " << stdOut.count("INFO: Syncthing exited: exit status") << " times";
             cerr << "\n - Syncthing panicked:    " << stdOut.count("WARNING: Panic detected") << " times";
         }
+    }
+}
+
+/*!
+ * \brief Sets whether Syncthing's output should be forwarded to see what Syncthing and the test is doing at the same time.
+ */
+void SyncthingTestInstance::setInterleavedOutputEnabled(bool interleavedOutputEnabled)
+{
+    if (interleavedOutputEnabled == m_interleavedOutput) {
+        return;
+    }
+    m_interleavedOutput = interleavedOutputEnabled;
+    m_syncthingProcess.setReadChannelMode(interleavedOutputEnabled ? QProcess::ForwardedChannels : QProcess::SeparateChannels);
+}
+
+/*!
+ * \brief Applies the default for isInterleavedOutputEnabled() considering environment variable SYNCTHING_TEST_NO_INTERLEAVED_OUTPUT.
+ */
+void SyncthingTestInstance::setInterleavedOutputEnabledFromEnv()
+{
+    if (qEnvironmentVariableIsEmpty("SYNCTHING_TEST_NO_INTERLEAVED_OUTPUT")) {
+        setInterleavedOutputEnabled(true);
     }
 }
 } // namespace TestUtilities

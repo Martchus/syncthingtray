@@ -458,7 +458,7 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 #ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest));
 #ifdef LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS
-    cout << Phrases::Info << "GETing: " << reply->url().toString().toStdString() << Phrases::EndFlush;
+    cerr << Phrases::Info << "GETing: " << reply->url().toString().toStdString() << Phrases::EndFlush;
 #endif
     reply->ignoreSslErrors(m_expectedSslErrors);
     return reply;
@@ -474,7 +474,7 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
 {
     auto *const reply = networkAccessManager().post(prepareRequest(path, query), data);
 #ifdef LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS
-    cout << Phrases::Info << "POSTing: " << reply->url().toString().toStdString() << Phrases::End << data.data() << endl;
+    cerr << Phrases::Info << "POSTing: " << reply->url().toString().toStdString() << Phrases::End << data.data() << endl;
 #endif
     reply->ignoreSslErrors(m_expectedSslErrors);
     return reply;
@@ -1550,7 +1550,7 @@ void SyncthingConnection::readEvents()
 
 #ifdef LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
         if (!replyArray.isEmpty()) {
-            cout << Phrases::Info << "Received " << replyArray.size() << " Syncthing events:" << Phrases::End
+            cerr << Phrases::Info << "Received " << replyArray.size() << " Syncthing events:" << Phrases::End
                  << replyDoc.toJson(QJsonDocument::Indented).data() << endl;
         }
 #endif
