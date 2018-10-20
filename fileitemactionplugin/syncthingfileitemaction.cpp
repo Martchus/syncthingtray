@@ -190,44 +190,45 @@ SyncthingConnection SyncthingFileItemAction::s_connection;
 SyncthingFileItemAction::SyncthingFileItemAction(QObject *parent, const QVariantList &)
     : KAbstractFileItemActionPlugin(parent)
 {
-    if (s_connection.apiKey().isEmpty()) {
-        // first initialization: load translations, determine config, establish connection
-
-        LOAD_QT_TRANSLATIONS;
-
-        // determine path of Syncthing config file
-        const QByteArray configPathFromEnv(qgetenv("KIO_SYNCTHING_CONFIG_PATH"));
-        const QString configPath = !configPathFromEnv.isEmpty() ? QString::fromLocal8Bit(configPathFromEnv) : SyncthingConfig::locateConfigFile();
-        if (configPath.isEmpty()) {
-            cerr << "Unable to determine location of Syncthing config. Set KIO_SYNCTHING_CONFIG_PATH to specify location." << endl;
-            return;
-        }
-
-        // load Syncthing config
-        SyncthingConfig config;
-        if (!config.restore(configPath)) {
-            cerr << "Unable to load Syncthing config from \"" << configPath.toLocal8Bit().data() << "\"" << endl;
-            if (configPathFromEnv.isEmpty()) {
-                cerr << "Note: Set KIO_SYNCTHING_CONFIG_PATH to specify config file explicitely." << endl;
-            }
-            return;
-        }
-        cerr << "Syncthing config loaded from \"" << configPath.toLocal8Bit().data() << "\"" << endl;
-        SyncthingConnectionSettings settings;
-        settings.syncthingUrl = config.syncthingUrl();
-        settings.apiKey.append(config.guiApiKey);
-
-        // establish connection
-        bool ok;
-        int reconnectInterval = qEnvironmentVariableIntValue("KIO_SYNCTHING_RECONNECT_INTERVAL", &ok);
-        if (!ok || reconnectInterval < 0) {
-            reconnectInterval = 10000;
-        }
-        s_connection.setAutoReconnectInterval(reconnectInterval);
-        s_connection.reconnect(settings);
-        connect(&s_connection, &SyncthingConnection::error, &SyncthingFileItemAction::logConnectionError);
-        connect(&s_connection, &SyncthingConnection::statusChanged, &SyncthingFileItemAction::logConnectionStatus);
+    // skip initialization if not the first instantiation
+    if (!s_connection.apiKey().isEmpty()) {
+        return;
     }
+
+    LOAD_QT_TRANSLATIONS;
+
+    // determine path of Syncthing config file
+    const QByteArray configPathFromEnv(qgetenv("KIO_SYNCTHING_CONFIG_PATH"));
+    const QString configPath = !configPathFromEnv.isEmpty() ? QString::fromLocal8Bit(configPathFromEnv) : SyncthingConfig::locateConfigFile();
+    if (configPath.isEmpty()) {
+        cerr << "Unable to determine location of Syncthing config. Set KIO_SYNCTHING_CONFIG_PATH to specify location." << endl;
+        return;
+    }
+
+    // load Syncthing config
+    SyncthingConfig config;
+    if (!config.restore(configPath)) {
+        cerr << "Unable to load Syncthing config from \"" << configPath.toLocal8Bit().data() << "\"" << endl;
+        if (configPathFromEnv.isEmpty()) {
+            cerr << "Note: Set KIO_SYNCTHING_CONFIG_PATH to specify config file explicitely." << endl;
+        }
+        return;
+    }
+    cerr << "Syncthing config loaded from \"" << configPath.toLocal8Bit().data() << "\"" << endl;
+    SyncthingConnectionSettings settings;
+    settings.syncthingUrl = config.syncthingUrl();
+    settings.apiKey.append(config.guiApiKey);
+
+    // establish connection
+    bool ok;
+    int reconnectInterval = qEnvironmentVariableIntValue("KIO_SYNCTHING_RECONNECT_INTERVAL", &ok);
+    if (!ok || reconnectInterval < 0) {
+        reconnectInterval = 10000;
+    }
+    s_connection.setAutoReconnectInterval(reconnectInterval);
+    s_connection.reconnect(settings);
+    connect(&s_connection, &SyncthingConnection::error, &SyncthingFileItemAction::logConnectionError);
+    connect(&s_connection, &SyncthingConnection::statusChanged, &SyncthingFileItemAction::logConnectionStatus);
 }
 
 QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties &fileItemInfo, QWidget *parentWidget)
