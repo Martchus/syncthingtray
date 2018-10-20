@@ -319,8 +319,8 @@ void ConnectionTests::testConnection()
     testConnectingWithSettings();
 #ifdef DEBUG_BUILD
     testRequestingRescan();
-#endif
     testDealingWithArbitraryConfig();
+#endif
 }
 
 void ConnectionTests::testErrorCases()
