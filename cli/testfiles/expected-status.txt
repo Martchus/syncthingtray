@@ -5,7 +5,6 @@ Overall statistics
    Incoming traffic              0 bytes
    Outgoing traffic              0 bytes
    Connected to                  no other devices
-   Version                       syncthing v.*
 
 Directories
  - test2
