@@ -228,7 +228,10 @@ SyncthingFileItemAction::SyncthingFileItemAction(QObject *parent, const QVariant
     s_connection.setAutoReconnectInterval(reconnectInterval);
     s_connection.reconnect(settings);
     connect(&s_connection, &SyncthingConnection::error, &SyncthingFileItemAction::logConnectionError);
-    connect(&s_connection, &SyncthingConnection::statusChanged, &SyncthingFileItemAction::logConnectionStatus);
+
+    if (qEnvironmentVariableIsSet("KIO_SYNCTHING_LOG_STATUS")) {
+        connect(&s_connection, &SyncthingConnection::statusChanged, &SyncthingFileItemAction::logConnectionStatus);
+    }
 }
 
 QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties &fileItemInfo, QWidget *parentWidget)
