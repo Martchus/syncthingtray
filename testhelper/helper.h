@@ -96,6 +96,28 @@ private:
 };
 
 /*!
+ * \brief Returns whether the \a object is actually callable.
+ *
+ * This is supposed to be the case if \a object evaluates to true in boolean context (eg. std::function) or
+ * if there's no conversion to bool (eg. lambda).
+ */
+template <typename T, Traits::EnableIf<Traits::HasOperatorBool<T>> * = nullptr> inline bool isActuallyCallable(const T &object)
+{
+    return object ? true : false;
+}
+
+/*!
+ * \brief Returns whether the \a object is actually callable.
+ *
+ * This is supposed to be the case if \a object evaluates to true in boolean context (eg. std::function) or
+ * if there's no conversion to bool (eg. lambda).
+ */
+template <typename T, Traits::DisableIf<Traits::HasOperatorBool<T>> * = nullptr> inline bool isActuallyCallable(const T &)
+{
+    return true;
+}
+
+/*!
  * \brief The SignalInfo class represents a connection of a signal with a handler.
  *
  * SignalInfo objects are meant to be passed to waitForSignals() so the function can keep track
@@ -130,7 +152,7 @@ public:
         , m_signalEmitted(false)
     {
         // register handler if specified
-        if (handler) {
+        if (isActuallyCallable(handler)) {
             m_handlerConnection = QObject::connect(sender, signal, sender, handler, Qt::DirectConnection);
 #ifndef SYNCTHINGTESTHELPER_FOR_CLI
             if (!m_handlerConnection) {

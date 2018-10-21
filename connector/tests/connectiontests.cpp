@@ -89,8 +89,8 @@ private:
     static void (SyncthingConnection::*defaultReconnect())(void);
     static void (SyncthingConnection::*defaultDisconnect())(void);
 
-    template <typename Handler> TemporaryConnection handleNewDevices(Handler handler);
-    template <typename Handler> TemporaryConnection handleNewDirs(Handler handler);
+    template <typename Handler> TemporaryConnection handleNewDevices(const Handler &handler);
+    template <typename Handler> TemporaryConnection handleNewDirs(const Handler &handler);
     WaitForConnected connectedSignal() const;
     void waitForConnected(int timeout = 5000);
     void waitForAllDirsAndDevsReady(bool initialConfig = false);
@@ -230,7 +230,7 @@ void ConnectionTests::waitForAllDirsAndDevsReady(const bool initialConfig)
 {
     bool allDirsReady, allDevsReady;
     bool isConnected = m_connection.isConnected();
-    const function<void()> checkAllDirsReady([this, &allDirsReady, &initialConfig] {
+    const auto checkAllDirsReady([this, &allDirsReady, &initialConfig] {
         bool oneDirPaused = false;
         for (const SyncthingDir &dir : m_connection.dirInfo()) {
             if (dir.status == SyncthingDirStatus::Unknown) {
@@ -241,7 +241,7 @@ void ConnectionTests::waitForAllDirsAndDevsReady(const bool initialConfig)
         }
         allDirsReady = !initialConfig || oneDirPaused;
     });
-    const function<void()> checkAllDevsReady([this, &allDevsReady, &initialConfig] {
+    const auto checkAllDevsReady([this, &allDevsReady, &initialConfig] {
         bool oneDevPaused = false;
         for (const SyncthingDev &dev : m_connection.devInfo()) {
             if (dev.status == SyncthingDevStatus::Unknown) {
@@ -252,7 +252,7 @@ void ConnectionTests::waitForAllDirsAndDevsReady(const bool initialConfig)
         }
         allDevsReady = !initialConfig || oneDevPaused;
     });
-    const function<void(SyncthingStatus)> checkStatus([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
+    auto checkStatus([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
     checkAllDirsReady();
     checkAllDevsReady();
     if (allDirsReady && allDevsReady) {
@@ -270,7 +270,7 @@ void ConnectionTests::waitForAllDirsAndDevsReady(const bool initialConfig)
 /*!
  * \brief Helps handling newDevices() signal when waiting for device change.
  */
-template <typename Handler> TemporaryConnection ConnectionTests::handleNewDevices(Handler handler)
+template <typename Handler> TemporaryConnection ConnectionTests::handleNewDevices(const Handler &handler)
 {
     return QObject::connect(&m_connection, &SyncthingConnection::newDevices, [&handler](const std::vector<SyncthingDev> &devs) {
         for (const SyncthingDev &dev : devs) {
@@ -282,7 +282,7 @@ template <typename Handler> TemporaryConnection ConnectionTests::handleNewDevice
 /*!
  * \brief Helps handling newDirs() signal when waiting for directory change.
  */
-template <typename Handler> TemporaryConnection ConnectionTests::handleNewDirs(Handler handler)
+template <typename Handler> TemporaryConnection ConnectionTests::handleNewDirs(const Handler &handler)
 {
     return QObject::connect(&m_connection, &SyncthingConnection::newDirs, [&handler](const std::vector<SyncthingDir> &dirs) {
         for (const SyncthingDir &dir : dirs) {
@@ -335,7 +335,7 @@ void ConnectionTests::testErrorCases()
     bool authErrorStatus = false, authErrorConfig = false;
     bool apiKeyErrorStatus = false, apiKeyErrorConfig = false;
     bool allErrorsEmitted = false;
-    const function<void(const QString &errorMessage)> errorHandler = [&](const QString &errorMessage) {
+    const auto errorHandler = [&](const QString &errorMessage) {
         if ((errorMessage == QStringLiteral("Unable to request Syncthing status: Connection refused"))
             || (errorMessage == QStringLiteral("Unable to request Syncthing config: Connection refused"))) {
             // Syncthing not ready yet, wait 100 ms till next connection attempt
@@ -400,10 +400,9 @@ void ConnectionTests::testSendingError()
     bool newNotificationEmitted = false;
     const DateTime sentTime(DateTime::now());
     const QString sentMessage(QStringLiteral("test notification"));
-    const function<void(ChronoUtilities::DateTime receivedTime, const QString &receivedMessage)> newNotificationHandler
-        = [&](ChronoUtilities::DateTime receivedTime, const QString &receivedMessage) {
-              newNotificationEmitted |= receivedTime == sentTime && receivedMessage == sentMessage;
-          };
+    const auto newNotificationHandler = [&](ChronoUtilities::DateTime receivedTime, const QString &receivedMessage) {
+        newNotificationEmitted |= receivedTime == sentTime && receivedMessage == sentMessage;
+    };
     waitForSignals([this, sentTime, &sentMessage] { m_connection.emitNotification(sentTime, sentMessage); }, 500,
         connectionSignal(&SyncthingConnection::newNotification, newNotificationHandler, &newNotificationEmitted));
 }
@@ -494,18 +493,17 @@ void ConnectionTests::testResumingAllDevices()
 {
     cerr << "\n - Resuming all devices ..." << endl;
     bool devResumed = false;
-    const function<void(const SyncthingDev &, int)> devResumedHandler = [&devResumed](const SyncthingDev &dev, int) {
+    const auto devResumedHandler = [&devResumed](const SyncthingDev &dev, int) {
         if (dev.name == QStringLiteral("Test dev 2") && !dev.paused) {
             devResumed = true;
         }
     };
-    const function<void(const std::vector<SyncthingDev>)> newDevsHandler = [&devResumedHandler](const std::vector<SyncthingDev> &devs) {
+    const auto newDevsHandler = [&devResumedHandler](const std::vector<SyncthingDev> &devs) {
         for (const auto &dev : devs) {
             devResumedHandler(dev, 0);
         }
     };
-    const function<void(const QStringList &)> devResumedTriggeredHandler
-        = [this](const QStringList &devIds) { CPPUNIT_ASSERT_EQUAL(m_connection.deviceIds(), devIds); };
+    const auto devResumedTriggeredHandler = [this](const QStringList &devIds) { CPPUNIT_ASSERT_EQUAL(m_connection.deviceIds(), devIds); };
     const auto newDevsConnection = handleNewDevices(devResumedHandler);
     waitForConnected();
     waitForConnection(&SyncthingConnection::resumeAllDevs, 7500, connectedSignal(),
@@ -525,18 +523,17 @@ void ConnectionTests::testResumingDirectory()
 {
     cerr << "\n - Resuming all dirs ..." << endl;
     bool dirResumed = false;
-    const function<void(const SyncthingDir &, int)> dirResumedHandler = [&dirResumed](const SyncthingDir &dir, int) {
+    const auto dirResumedHandler = [&dirResumed](const SyncthingDir &dir, int) {
         if (dir.id == QStringLiteral("test2") && !dir.paused) {
             dirResumed = true;
         }
     };
-    const function<void(const std::vector<SyncthingDir>)> newDirsHandler = [&dirResumedHandler](const std::vector<SyncthingDir> &dirs) {
+    const auto newDirsHandler = [&dirResumedHandler](const std::vector<SyncthingDir> &dirs) {
         for (const auto &dir : dirs) {
             dirResumedHandler(dir, 0);
         }
     };
-    const function<void(const QStringList &)> dirResumedTriggeredHandler
-        = [this](const QStringList &devIds) { CPPUNIT_ASSERT_EQUAL(m_connection.directoryIds(), devIds); };
+    const auto dirResumedTriggeredHandler = [this](const QStringList &devIds) { CPPUNIT_ASSERT_EQUAL(m_connection.directoryIds(), devIds); };
     const auto newDirsConnection = handleNewDirs(dirResumedHandler);
     waitForConnected();
     waitForConnection(&SyncthingConnection::resumeAllDirs, 7500, connectedSignal(),
@@ -552,13 +549,13 @@ void ConnectionTests::testPausingDirectory()
 {
     cerr << "\n - Pause dir 1 ..." << endl;
     bool dirPaused = false;
-    const function<void(const SyncthingDir &, int)> dirPausedHandler = [&dirPaused](const SyncthingDir &dir, int) {
+    const auto dirPausedHandler = [&dirPaused](const SyncthingDir &dir, int) {
         if (dir.id == QStringLiteral("test1") && dir.paused) {
             dirPaused = true;
         }
     };
     const QStringList ids({ QStringLiteral("test1") });
-    const function<void(const QStringList &)> dirPausedTriggeredHandler = [&ids](const QStringList &devIds) { CPPUNIT_ASSERT_EQUAL(ids, devIds); };
+    const auto dirPausedTriggeredHandler = [&ids](const QStringList &devIds) { CPPUNIT_ASSERT_EQUAL(ids, devIds); };
     const auto newDirsConnection = handleNewDirs(dirPausedHandler);
     waitForConnected();
     waitForSignals(bind(&SyncthingConnection::pauseDirectories, &m_connection, ids), 7500, connectedSignal(),
@@ -574,7 +571,7 @@ void ConnectionTests::testRequestingLog()
     cerr << "\n - Requesting log ..." << endl;
     waitForConnected();
 
-    const function<void(const vector<SyncthingLogEntry> &)> handleLogAvailable = [&](const vector<SyncthingLogEntry> &logEntries) {
+    const auto handleLogAvailable = [](const vector<SyncthingLogEntry> &logEntries) {
         CPPUNIT_ASSERT(!logEntries.empty());
         CPPUNIT_ASSERT(!logEntries[0].when.isEmpty());
         CPPUNIT_ASSERT(!logEntries[0].message.isEmpty());
@@ -588,7 +585,7 @@ void ConnectionTests::testRequestingQrCode()
     cerr << "\n - Requesting QR-Code for own device ID ..." << endl;
     waitForConnected();
 
-    const function<void(const QString &, const QByteArray &)> handleQrCodeAvailable = [&](const QString &qrText, const QByteArray &data) {
+    const auto handleQrCodeAvailable = [](const QString &qrText, const QByteArray &data) {
         CPPUNIT_ASSERT_EQUAL(QStringLiteral("some text"), qrText);
         CPPUNIT_ASSERT(!data.isEmpty());
     };
@@ -613,7 +610,7 @@ void ConnectionTests::testConnectingWithSettings()
     settings.password = m_connection.password();
 
     bool isConnected;
-    const function<void(SyncthingStatus)> checkStatus([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
+    const auto checkStatus([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
     waitForSignals(
         bind(static_cast<void (SyncthingConnection::*)(SyncthingConnectionSettings &)>(&SyncthingConnection::connect), &m_connection, ref(settings)),
         5000, connectionSignal(&SyncthingConnection::statusChanged, checkStatus, &isConnected));
@@ -625,7 +622,7 @@ void ConnectionTests::testRequestingRescan()
     waitForConnected();
 
     bool rescanTriggered = false;
-    function<void(const QString &)> rescanTriggeredHandler = [&rescanTriggered](const QString &dir) {
+    const auto rescanTriggeredHandler = [&rescanTriggered](const QString &dir) {
         CPPUNIT_ASSERT_EQUAL(QStringLiteral("test2"), dir);
         rescanTriggered = true;
     };
@@ -633,7 +630,7 @@ void ConnectionTests::testRequestingRescan()
         connectionSignal(&SyncthingConnection::rescanTriggered, rescanTriggeredHandler, &rescanTriggered));
 
     bool errorOccured = false;
-    function<void(const QString &)> errorHandler = [&errorOccured](const QString &message) {
+    const auto errorHandler = [&errorOccured](const QString &message) {
         errorOccured |= message.startsWith(QStringLiteral("Unable to request rescan: Error transferring"))
             && message.endsWith(QStringLiteral("/rest/db/scan?folder=non-existing-dir&sub=sub/path - server replied: Internal Server Error"));
     };
@@ -661,7 +658,7 @@ void ConnectionTests::testDealingWithArbitraryConfig()
 
     // expect the change via newConfig() signal
     bool hasNewConfig = false;
-    function<void(const QJsonObject &newConfig)> handleNewConfig([&hasNewConfig](const QJsonObject &newConfig) {
+    const auto handleNewConfig([&hasNewConfig](const QJsonObject &newConfig) {
         const auto newIntervall(newConfig.value(QLatin1String("options")).toObject().value(QLatin1String("relayReconnectIntervalM")).toInt());
         if (newIntervall == 75) {
             hasNewConfig = true;
