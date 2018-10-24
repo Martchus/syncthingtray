@@ -13,6 +13,8 @@
 namespace Data {
 
 enum class SyncthingDirStatus { Unknown, Idle, Scanning, Synchronizing, OutOfSync };
+// note: update "visible: status === 4" in DirectoriesPage.qml (which references OutOfSync by
+//       its raw value due to limitations of Qt/Qml) when updating this enum
 
 QString LIB_SYNCTHING_CONNECTOR_EXPORT statusString(SyncthingDirStatus status);
 
