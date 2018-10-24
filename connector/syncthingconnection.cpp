@@ -49,8 +49,22 @@ QNetworkAccessManager &networkAccessManager()
 
 /*!
  * \class SyncthingConnection
- * \brief The SyncthingConnection class allows Qt applications to access Syncthing.
+ * \brief The SyncthingConnection class allows Qt applications to access Syncthing via its REST API.
  * \remarks All requests are performed asynchronously.
+ *
+ * The first thing to do when working with that class is setting the URL to connect to and the API key
+ * via the constructor or setSyncthingUrl() and setApiKey(). Credentials for the HTTP authentification
+ * can be set via setCredentials() if not included in the URL.
+ *
+ * Requests can then be done via the request...() methods, eg. requestConfig(). This would emit the
+ * newConfig() signal on success and the error() signal when an error occured. The other request...()
+ * methods work in a similar way.
+ *
+ * However, usually it is best to simply call the connect() method. It will do all required requests
+ * to populate dirInfo(), devInfo(), myId(), totalIncomingTraffic(), totalOutgoingTraffic() and all
+ * the other variables. It will also use Syncthing's event API to listen for changes. The signals
+ * newDirs() and newDevs() are can be used to know when dirInfo() and devInfo() become available.
+ * Note that in this case the previous dirInfo()/devInfo() is invalidated.
  */
 
 /*!
@@ -75,6 +89,8 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_statusReply(nullptr)
     , m_connectionsReply(nullptr)
     , m_errorsReply(nullptr)
+    , m_dirStatsReply(nullptr)
+    , m_devStatsReply(nullptr)
     , m_eventsReply(nullptr)
     , m_versionReply(nullptr)
     , m_diskEventsReply(nullptr)
@@ -82,6 +98,8 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_unreadNotifications(false)
     , m_hasConfig(false)
     , m_hasStatus(false)
+    , m_hasEvents(false)
+    , m_hasDiskEvents(false)
     , m_lastFileDeleted(false)
 {
     m_trafficPollTimer.setInterval(2000);
@@ -112,6 +130,9 @@ SyncthingConnection::~SyncthingConnection()
     disconnect();
 }
 
+/*!
+ * \brief Returns whether the currently assigned syncthingUrl() refers to the Syncthing instance on the local machine.
+ */
 bool SyncthingConnection::isLocal() const
 {
     return ::Data::isLocal(QUrl(m_syncthingUrl));
@@ -166,7 +187,7 @@ void SyncthingConnection::connect()
         return;
     }
 
-    m_reconnecting = m_hasConfig = m_hasStatus = false;
+    m_reconnecting = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
     if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
         emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return;
@@ -217,13 +238,15 @@ void SyncthingConnection::reconnect()
 {
     m_autoReconnectTimer.stop();
     m_autoReconnectTries = 0;
-    if (isConnected()) {
-        m_reconnecting = true;
-        m_hasConfig = m_hasStatus = false;
-        abortAllRequests();
-    } else {
+    // reconnect right now if not connected and no pending requests
+    if (!isConnected() && !hasPendingRequests()) {
         continueReconnecting();
+        return;
     }
+    // abort pending requests before connecting again
+    m_keepPolling = m_reconnecting = true;
+    m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
+    abortAllRequests();
 }
 
 /*!
@@ -236,6 +259,9 @@ void SyncthingConnection::reconnect(SyncthingConnectionSettings &connectionSetti
     reconnect();
 }
 
+/*!
+ * \brief Reconnects after the specified number of \a milliSeconds.
+ */
 void SyncthingConnection::reconnectLater(int milliSeconds)
 {
     QTimer::singleShot(milliSeconds, this, static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::reconnect));
@@ -246,8 +272,15 @@ void SyncthingConnection::reconnectLater(int milliSeconds)
  */
 void SyncthingConnection::continueReconnecting()
 {
-    emit newConfig(QJsonObject()); // configuration will be invalidated
-    setStatus(SyncthingStatus::Reconnecting);
+    // postpone if there are still pending requests
+    if (hasPendingRequests()) {
+        return;
+    }
+
+    // invalidate configuration
+    emit newConfig(QJsonObject());
+
+    // cleanup information from previous connection
     m_keepPolling = true;
     m_reconnecting = false;
     m_lastEventId = 0;
@@ -262,6 +295,8 @@ void SyncthingConnection::continueReconnecting()
     m_unreadNotifications = false;
     m_hasConfig = false;
     m_hasStatus = false;
+    m_hasEvents = false;
+    m_hasDiskEvents = false;
     m_dirs.clear();
     m_devs.clear();
     m_lastConnectionsUpdate = DateTime();
@@ -271,12 +306,16 @@ void SyncthingConnection::continueReconnecting()
     m_lastFileName.clear();
     m_lastFileDeleted = false;
     m_syncthingVersion.clear();
+
     if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
         emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return;
     }
+
     requestConfig();
     requestStatus();
+
+    setStatus(SyncthingStatus::Reconnecting);
 }
 
 void SyncthingConnection::autoReconnect()
@@ -727,9 +766,13 @@ SyncthingDev *SyncthingConnection::addDevInfo(std::vector<SyncthingDev> &devs, c
  */
 void SyncthingConnection::continueConnecting()
 {
+    // skip if config and status are missing or we're not supposed to actually connect
     if (!m_keepPolling || !m_hasConfig || !m_hasStatus) {
         return;
     }
+
+    // read additional information (beside config and status)
+    // FIXME: make those requests configurable (eg. flag enum)
     requestConnections();
     requestDirStatistics();
     requestDeviceStatistics();
@@ -744,7 +787,8 @@ void SyncthingConnection::continueConnecting()
             requestCompletion(devId, dir.id);
         }
     }
-    // since config and status could be read successfully, let's poll for events
+
+    // poll for events
     m_lastEventId = m_lastDiskEventId = 0;
     requestEvents();
     requestDiskEvents();
@@ -767,6 +811,12 @@ void SyncthingConnection::abortAllRequests()
     if (m_errorsReply) {
         m_errorsReply->abort();
     }
+    if (m_dirStatsReply) {
+        m_dirStatsReply->abort();
+    }
+    if (m_devStatsReply) {
+        m_devStatsReply->abort();
+    }
     if (m_eventsReply) {
         m_eventsReply->abort();
     }
@@ -779,6 +829,9 @@ void SyncthingConnection::abortAllRequests()
     if (m_logReply) {
         m_logReply->abort();
     }
+    for (auto *const reply : m_otherReplies) {
+        reply->abort();
+    }
 }
 
 /*!
@@ -788,6 +841,9 @@ void SyncthingConnection::abortAllRequests()
  */
 void SyncthingConnection::requestConfig()
 {
+    if (m_configReply) {
+        return;
+    }
     QObject::connect(
         m_configReply = requestData(QStringLiteral("system/config"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readConfig);
 }
@@ -795,10 +851,13 @@ void SyncthingConnection::requestConfig()
 /*!
  * \brief Requests the Syncthing status asynchronously.
  *
- * The signals configDirChanged() and myIdChanged() are emitted when those values have changed; error() is emitted in the error case.
+ * The signals myIdChanged() are emitted when those values have changed; error() is emitted in the error case.
  */
 void SyncthingConnection::requestStatus()
 {
+    if (m_statusReply) {
+        return;
+    }
     QObject::connect(
         m_statusReply = requestData(QStringLiteral("system/status"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readStatus);
 }
@@ -821,6 +880,9 @@ void SyncthingConnection::requestConfigAndStatus()
  */
 void SyncthingConnection::requestConnections()
 {
+    if (m_connectionsReply) {
+        return;
+    }
     QObject::connect(m_connectionsReply = requestData(QStringLiteral("system/connections"), QUrlQuery()), &QNetworkReply::finished, this,
         &SyncthingConnection::readConnections);
 }
@@ -832,6 +894,9 @@ void SyncthingConnection::requestConnections()
  */
 void SyncthingConnection::requestErrors()
 {
+    if (m_errorsReply) {
+        return;
+    }
     QObject::connect(
         m_errorsReply = requestData(QStringLiteral("system/error"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readErrors);
 }
@@ -852,8 +917,11 @@ void SyncthingConnection::requestClearingErrors()
  */
 void SyncthingConnection::requestDirStatistics()
 {
-    QObject::connect(
-        requestData(QStringLiteral("stats/folder"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readDirStatistics);
+    if (m_dirStatsReply) {
+        return;
+    }
+    QObject::connect(m_dirStatsReply = requestData(QStringLiteral("stats/folder"), QUrlQuery()), &QNetworkReply::finished, this,
+        &SyncthingConnection::readDirStatistics);
 }
 
 /*!
@@ -865,6 +933,7 @@ void SyncthingConnection::requestDirStatus(const QString &dirId)
     query.addQueryItem(QStringLiteral("folder"), dirId);
     auto *const reply = requestData(QStringLiteral("db/status"), query);
     reply->setProperty("dirId", dirId);
+    m_otherReplies << reply;
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirStatus);
 }
 
@@ -879,6 +948,7 @@ void SyncthingConnection::requestCompletion(const QString &devId, const QString 
     auto *const reply = requestData(QStringLiteral("db/completion"), query);
     reply->setProperty("devId", devId);
     reply->setProperty("dirId", dirId);
+    m_otherReplies << reply;
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readCompletion);
 }
 
@@ -887,18 +957,27 @@ void SyncthingConnection::requestCompletion(const QString &devId, const QString 
  */
 void SyncthingConnection::requestDeviceStatistics()
 {
+    if (m_devStatsReply) {
+        return;
+    }
     QObject::connect(
         requestData(QStringLiteral("stats/device"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readDeviceStatistics);
 }
 
 void SyncthingConnection::requestVersion()
 {
+    if (m_versionReply) {
+        return;
+    }
     QObject::connect(m_versionReply = requestData(QStringLiteral("system/version"), QUrlQuery()), &QNetworkReply::finished, this,
         &SyncthingConnection::readVersion);
 }
 
 void SyncthingConnection::requestDiskEvents(int limit)
 {
+    if (m_diskEventsReply) {
+        return;
+    }
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("limit"), QString::number(limit));
     if (m_lastDiskEventId) {
@@ -938,6 +1017,9 @@ void SyncthingConnection::postConfigFromByteArray(const QByteArray &rawConfig)
  */
 void SyncthingConnection::requestEvents()
 {
+    if (m_eventsReply) {
+        return;
+    }
     QUrlQuery query;
     if (m_lastEventId) {
         query.addQueryItem(QStringLiteral("since"), QString::number(m_lastEventId));
@@ -966,12 +1048,11 @@ void SyncthingConnection::requestQrCode(const QString &text)
  */
 void SyncthingConnection::requestLog()
 {
-    // skip if already requesting log
-    if (m_logReply != nullptr) {
+    if (m_logReply) {
         return;
     }
-    m_logReply = requestData(QStringLiteral("system/log"), QUrlQuery());
-    QObject::connect(m_logReply, &QNetworkReply::finished, this, &SyncthingConnection::readLog);
+    QObject::connect(
+        m_logReply = requestData(QStringLiteral("system/log"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readLog);
 }
 
 /*!
@@ -1095,14 +1176,15 @@ void SyncthingConnection::readConfig()
 
         if (m_keepPolling) {
             concludeReadingConfigAndStatus();
-        } else {
-            readDevs(m_rawConfig.value(QLatin1String("devices")).toArray());
-            readDirs(m_rawConfig.value(QLatin1String("folders")).toArray());
+            return;
         }
+
+        readDevs(m_rawConfig.value(QLatin1String("devices")).toArray());
+        readDirs(m_rawConfig.value(QLatin1String("folders")).toArray());
         break;
     }
     case QNetworkReply::OperationCanceledError:
-        return; // intended, not an error
+        return;
     default:
         emitError(tr("Unable to request Syncthing config: "), SyncthingErrorCategory::OverallConnection, reply);
         handleFatalConnectionError();
@@ -1221,7 +1303,7 @@ void SyncthingConnection::readStatus()
         break;
     }
     case QNetworkReply::OperationCanceledError:
-        return; // intended, not an error
+        return;
     default:
         emitError(tr("Unable to request Syncthing status: "), SyncthingErrorCategory::OverallConnection, reply);
         handleFatalConnectionError();
@@ -1241,13 +1323,20 @@ void SyncthingConnection::concludeReadingConfigAndStatus()
 
     readDevs(m_rawConfig.value(QLatin1String("devices")).toArray());
     readDirs(m_rawConfig.value(QLatin1String("folders")).toArray());
+    continueConnecting();
+}
 
-    if (isConnected()) {
-        setStatus(SyncthingStatus::Idle);
+/*!
+ * \brief Sets the state from (re)connecting to Syncthing's actual state if polling but there are no more pending requests.
+ * \remarks Called by read...() handlers for requests started in continueConnecting().
+ * \sa hasPendingRequests()
+ */
+void SyncthingConnection::concludeConnection()
+{
+    if (!m_keepPolling || hasPendingRequests()) {
         return;
     }
-
-    continueConnecting();
+    setStatus(SyncthingStatus::Idle);
 }
 
 /*!
@@ -1329,14 +1418,18 @@ void SyncthingConnection::readConnections()
         m_lastConnectionsUpdate = DateTime::gmtNow();
 
         // since there seems no event for this data, keep polling
-        if (m_keepPolling && m_trafficPollTimer.interval()) {
-            m_trafficPollTimer.start();
+        if (m_keepPolling) {
+            concludeConnection();
+            if (m_trafficPollTimer.interval()) {
+                m_trafficPollTimer.start();
+            }
         }
 
         break;
     }
     case QNetworkReply::OperationCanceledError:
-        return; // intended, not an error
+        handleAdditionalRequestCanceled();
+        return;
     default:
         emitError(tr("Unable to request connections: "), SyncthingErrorCategory::OverallConnection, reply);
     }
@@ -1349,6 +1442,9 @@ void SyncthingConnection::readDirStatistics()
 {
     auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
+    if (reply == m_dirStatsReply) {
+        m_dirStatsReply = nullptr;
+    }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
@@ -1399,10 +1495,15 @@ void SyncthingConnection::readDirStatistics()
             }
             ++index;
         }
+
+        if (m_keepPolling) {
+            concludeConnection();
+        }
         break;
     }
     case QNetworkReply::OperationCanceledError:
-        return; // intended, not an error
+        handleAdditionalRequestCanceled();
+        return;
     default:
         emitError(tr("Unable to request directory statistics: "), SyncthingErrorCategory::OverallConnection, reply);
     }
@@ -1415,6 +1516,9 @@ void SyncthingConnection::readDeviceStatistics()
 {
     auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
+    if (reply == m_devStatsReply) {
+        m_devStatsReply = nullptr;
+    }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
@@ -1441,13 +1545,17 @@ void SyncthingConnection::readDeviceStatistics()
             ++index;
         }
         // since there seems no event for this data, keep polling
-        if (m_keepPolling && m_devStatsPollTimer.interval()) {
-            m_devStatsPollTimer.start();
+        if (m_keepPolling) {
+            concludeConnection();
+            if (m_devStatsPollTimer.interval()) {
+                m_devStatsPollTimer.start();
+            }
         }
         break;
     }
     case QNetworkReply::OperationCanceledError:
-        return; // intended, not an error
+        handleAdditionalRequestCanceled();
+        return;
     default:
         emitError(tr("Unable to request device statistics: "), SyncthingErrorCategory::OverallConnection, reply);
     }
@@ -1494,13 +1602,17 @@ void SyncthingConnection::readErrors()
         }
 
         // since there seems no event for this data, keep polling
-        if (m_keepPolling && m_errorsPollTimer.interval()) {
-            m_errorsPollTimer.start();
+        if (m_keepPolling) {
+            concludeConnection();
+            if (m_errorsPollTimer.interval()) {
+                m_errorsPollTimer.start();
+            }
         }
         break;
     }
     case QNetworkReply::OperationCanceledError:
-        return; // intended, not an error
+        handleAdditionalRequestCanceled();
+        return;
     default:
         emitError(tr("Unable to request errors: "), SyncthingErrorCategory::SpecificRequest, reply);
     }
@@ -1544,6 +1656,7 @@ void SyncthingConnection::readEvents()
             return;
         }
 
+        m_hasEvents = true;
         const auto replyArray(replyDoc.array());
         emit newEvents(replyArray);
         readEventsFromJsonArray(replyArray, m_lastEventId);
@@ -1560,14 +1673,7 @@ void SyncthingConnection::readEvents()
         // no new events available, keep polling
         break;
     case QNetworkReply::OperationCanceledError:
-        // intended disconnect, not an error
-        if (m_reconnecting) {
-            // if reconnection flag is set, instantly etstablish a new connection ...
-            continueReconnecting();
-        } else {
-            // ... otherwise keep disconnected
-            setStatus(SyncthingStatus::Disconnected);
-        }
+        handleAdditionalRequestCanceled();
         return;
     default:
         emitError(tr("Unable to request Syncthing events: "), SyncthingErrorCategory::OverallConnection, reply);
@@ -1577,7 +1683,7 @@ void SyncthingConnection::readEvents()
 
     if (m_keepPolling) {
         requestEvents();
-        setStatus(SyncthingStatus::Idle);
+        concludeConnection();
     } else {
         setStatus(SyncthingStatus::Disconnected);
     }
@@ -2122,6 +2228,8 @@ void SyncthingConnection::readDirStatus()
 {
     auto *const reply = static_cast<QNetworkReply *>(sender());
     reply->deleteLater();
+    m_otherReplies.removeAll(reply);
+
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         // determine relevant dir
@@ -2145,8 +2253,15 @@ void SyncthingConnection::readDirStatus()
         if (readDirSummary(DateTime::gmtNow(), replyDoc.object(), *dir, index)) {
             recalculateStatus();
         }
+
+        if (m_keepPolling) {
+            concludeConnection();
+        }
         break;
     }
+    case QNetworkReply::OperationCanceledError:
+        handleAdditionalRequestCanceled();
+        return;
     default:
         emitError(tr("Unable to request directory statistics: "), SyncthingErrorCategory::SpecificRequest, reply);
     }
@@ -2250,6 +2365,7 @@ void SyncthingConnection::readCompletion()
     const auto devId(reply->property("devId").toString());
     const auto dirId(reply->property("dirId").toString());
     reply->deleteLater();
+    m_otherReplies.removeAll(reply);
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
@@ -2272,8 +2388,13 @@ void SyncthingConnection::readCompletion()
 
         // update the relevant completion info
         readRemoteFolderCompletion(DateTime::gmtNow(), replyDoc.object(), *dir, index, devId);
+
+        concludeConnection();
         break;
     }
+    case QNetworkReply::OperationCanceledError:
+        handleAdditionalRequestCanceled();
+        return;
     default:
         emitError(tr("Unable to request completion for device/directory %1/%2: ").arg(devId, dirId), SyncthingErrorCategory::SpecificRequest, reply);
     }
@@ -2303,10 +2424,14 @@ void SyncthingConnection::readVersion()
         const auto replyObj(replyDoc.object());
         m_syncthingVersion = replyObj.value(QLatin1String("longVersion")).toString();
 
+        if (m_keepPolling) {
+            concludeConnection();
+        }
         break;
     }
     case QNetworkReply::OperationCanceledError:
-        return; // intended, not an error
+        handleAdditionalRequestCanceled();
+        return;
     default:
         emitError(tr("Unable to request version: "), SyncthingErrorCategory::OverallConnection, reply);
     }
@@ -2333,13 +2458,16 @@ void SyncthingConnection::readDiskEvents()
             return;
         }
 
+        m_hasDiskEvents = true;
         readEventsFromJsonArray(replyDoc.array(), m_lastDiskEventId);
         break;
     }
     case QNetworkReply::TimeoutError:
-        break; // no new events available, keep polling
+        // no new events available, keep polling
+        break;
     case QNetworkReply::OperationCanceledError:
-        return; // intended, not an error
+        handleAdditionalRequestCanceled();
+        return;
     default:
         emitError(tr("Unable to request disk events: "), SyncthingErrorCategory::OverallConnection, reply);
         handleFatalConnectionError();
@@ -2348,6 +2476,7 @@ void SyncthingConnection::readDiskEvents()
 
     if (m_keepPolling) {
         requestDiskEvents();
+        concludeConnection();
     }
 }
 
@@ -2442,9 +2571,10 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
     }
     switch (status) {
     case SyncthingStatus::Disconnected:
-    case SyncthingStatus::Reconnecting:
         // disable (long) polling
         m_keepPolling = false;
+        FALLTHROUGH;
+    case SyncthingStatus::Reconnecting:
         m_devStatsPollTimer.stop();
         m_trafficPollTimer.stop();
         m_errorsPollTimer.stop();
@@ -2558,6 +2688,20 @@ void SyncthingConnection::handleFatalConnectionError()
     abortAllRequests();
     if (m_autoReconnectTimer.interval()) {
         m_autoReconnectTimer.start();
+    }
+}
+
+/*!
+ * \brief Handles cancelation of additional requests done via continueConnecting() method.
+ */
+void SyncthingConnection::handleAdditionalRequestCanceled()
+{
+    if (m_reconnecting) {
+        // if reconnection flag is set, instantly etstablish a new connection ...
+        continueReconnecting();
+    } else if (hasPendingRequests()) {
+        // ... otherwise declare we're disconnected if that was the last pending request
+        setStatus(SyncthingStatus::Disconnected);
     }
 }
 

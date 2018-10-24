@@ -96,6 +96,7 @@ public:
         const QString &syncthingUrl = QStringLiteral("http://localhost:8080"), const QByteArray &apiKey = QByteArray(), QObject *parent = nullptr);
     ~SyncthingConnection() override;
 
+    // getter/setter for
     const QString &syncthingUrl() const;
     void setSyncthingUrl(const QString &url);
     bool isLocal() const;
@@ -104,12 +105,17 @@ public:
     const QString &user() const;
     const QString &password() const;
     void setCredentials(const QString &user, const QString &password);
+
+    // getter for the status of the connection to Syncthing and of Syncthing itself
     SyncthingStatus status() const;
     QString statusText() const;
     static QString statusText(SyncthingStatus status);
     bool isConnected() const;
+    bool hasPendingRequests() const;
     bool hasUnreadNotifications() const;
     bool hasOutOfSyncDirs() const;
+
+    // getter/setter to configure connection behavior
     bool isRequestingCompletionEnabled() const;
     void setRequestingCompletionEnabled(bool requestingCompletionEnabled);
     int trafficPollInterval() const;
@@ -121,6 +127,8 @@ public:
     int autoReconnectInterval() const;
     unsigned int autoReconnectTries() const;
     void setAutoReconnectInterval(int interval);
+
+    // getter for information retrieved from Syncthing
     const QString &configDir() const;
     const QString &myId() const;
     uint64 totalIncomingTraffic() const;
@@ -136,23 +144,24 @@ public:
     ChronoUtilities::DateTime startTime() const;
     ChronoUtilities::TimeSpan uptime() const;
     const QString &syncthingVersion() const;
-    void requestQrCode(const QString &text);
-    void requestLog();
-    const QList<QSslError> &expectedSslErrors() const;
-    SyncthingDir *findDirInfo(const QString &dirId, int &row);
-    SyncthingDir *findDirInfo(QLatin1String key, const QJsonObject &object, int *row = nullptr);
-    SyncthingDir *findDirInfoByPath(const QString &path, QString &relativePath, int &row);
-    SyncthingDev *findDevInfo(const QString &devId, int &row);
-    SyncthingDev *findDevInfoByName(const QString &devName, int &row);
     QStringList directoryIds() const;
     QStringList deviceIds() const;
     QString deviceNameOrId(const QString &deviceId) const;
     std::vector<const SyncthingDev *> connectedDevices() const;
     const QJsonObject &rawConfig() const;
+    SyncthingDir *findDirInfo(const QString &dirId, int &row);
+    SyncthingDir *findDirInfo(QLatin1String key, const QJsonObject &object, int *row = nullptr);
+    SyncthingDir *findDirInfoByPath(const QString &path, QString &relativePath, int &row);
+    SyncthingDev *findDevInfo(const QString &devId, int &row);
+    SyncthingDev *findDevInfoByName(const QString &devName, int &row);
+
+    const QList<QSslError> &expectedSslErrors() const;
 
 public Q_SLOTS:
     bool loadSelfSignedCertificate();
     bool applySettings(SyncthingConnectionSettings &connectionSettings);
+
+    // methods to initiate/close connection
     void connect();
     void connect(SyncthingConnectionSettings &connectionSettings);
     void connectLater(int milliSeconds);
@@ -160,6 +169,9 @@ public Q_SLOTS:
     void reconnect();
     void reconnect(SyncthingConnectionSettings &connectionSettings);
     void reconnectLater(int milliSeconds);
+    void abortAllRequests();
+
+    // methods to trigger certain actions (resume, rescan, restart, ...)
     bool pauseDevice(const QStringList &devIds);
     bool pauseAllDevs();
     bool resumeDevice(const QStringList &devIds);
@@ -174,6 +186,7 @@ public Q_SLOTS:
     void shutdown();
     void considerAllNotificationsRead();
 
+    // methods to GET or POST information from/to Syncthing
     void requestConfig();
     void requestStatus();
     void requestConfigAndStatus();
@@ -187,6 +200,8 @@ public Q_SLOTS:
     void requestDeviceStatistics();
     void requestVersion();
     void requestDiskEvents(int limit = 25);
+    void requestQrCode(const QString &text);
+    void requestLog();
     void postConfigFromJsonObject(const QJsonObject &rawConfig);
     void postConfigFromByteArray(const QByteArray &rawConfig);
 
@@ -221,13 +236,13 @@ Q_SIGNALS:
     void qrCodeAvailable(const QString &text, const QByteArray &qrCodeData);
 
 private Q_SLOTS:
-    void abortAllRequests();
-
+    // handler to evaluate results from request...() methods
     void readConfig();
     void readDirs(const QJsonArray &dirs);
     void readDevs(const QJsonArray &devs);
     void readStatus();
     void concludeReadingConfigAndStatus();
+    void concludeConnection();
     void readConnections();
     void readDirStatistics();
     void readDeviceStatistics();
@@ -267,6 +282,7 @@ private Q_SLOTS:
     void readLog();
     void readQrCode();
 
+    // internal helper methods
     void continueConnecting();
     void continueReconnecting();
     void autoReconnect();
@@ -276,9 +292,11 @@ private Q_SLOTS:
     void emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply);
     void emitMyIdChanged(const QString &newId);
     void handleFatalConnectionError();
+    void handleAdditionalRequestCanceled();
     void recalculateStatus();
 
 private:
+    // internal helper methods
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
@@ -312,13 +330,18 @@ private:
     QNetworkReply *m_statusReply;
     QNetworkReply *m_connectionsReply;
     QNetworkReply *m_errorsReply;
+    QNetworkReply *m_dirStatsReply;
+    QNetworkReply *m_devStatsReply;
     QNetworkReply *m_eventsReply;
     QNetworkReply *m_versionReply;
     QNetworkReply *m_diskEventsReply;
     QNetworkReply *m_logReply;
+    QList<QNetworkReply *> m_otherReplies;
     bool m_unreadNotifications;
     bool m_hasConfig;
     bool m_hasStatus;
+    bool m_hasEvents;
+    bool m_hasDiskEvents;
     std::vector<SyncthingDir> m_dirs;
     std::vector<SyncthingDev> m_devs;
     ChronoUtilities::DateTime m_lastConnectionsUpdate;
@@ -406,11 +429,29 @@ inline SyncthingStatus SyncthingConnection::status() const
 }
 
 /*!
- * \brief Returns whether the connection has been established.
+ * \brief Returns whether the connection to Syncthing has been established.
+ *
+ * If ture, all information like dirInfo() and devInfo() has been populated and will be updated if it changes.
  */
 inline bool SyncthingConnection::isConnected() const
 {
     return m_status != SyncthingStatus::Disconnected && m_status != SyncthingStatus::Reconnecting;
+}
+
+/*!
+ * \brief Returns whether the SyncthingConnector instance is waiting for Syncthing to respond to a request.
+ * \remarks
+ * - Requests for (disk) events are excluded because those are long polling requests and therefore always pending.
+ *   Instead, we take only into account whether those requests have been at least concluded once (since the last
+ *   reconnect).
+ * - Only requests which contribute to the overall state and population of myId(), dirInfo(), devInfo(), traffic
+ *   statistics, ... are considered. So requests for QR code, logs, clearing errors, rescan, ... are not taken
+ *   into account.
+ */
+inline bool SyncthingConnection::hasPendingRequests() const
+{
+    return m_configReply || m_statusReply || (m_eventsReply && !m_hasEvents) || (m_diskEventsReply && !m_hasDiskEvents) || m_connectionsReply
+        || m_dirStatsReply || m_devStatsReply || m_errorsReply || m_versionReply || !m_otherReplies.isEmpty();
 }
 
 /*!
