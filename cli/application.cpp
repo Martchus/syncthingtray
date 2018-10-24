@@ -608,7 +608,6 @@ void Application::printStatus(const ArgumentOccurrence &)
             printProperty("", displayNames(connectedDevices), nullptr, 6);
         }
         printProperty("Uptime", m_connection.uptime().toString(TimeSpanOutputFormat::WithMeasures, true));
-        // FIXME: the version might not be known at this time
         printProperty("Version", m_connection.syncthingVersion());
         cout << '\n';
     }
