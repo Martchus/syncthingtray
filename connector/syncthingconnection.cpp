@@ -235,7 +235,7 @@ void SyncthingConnection::connectLater(int milliSeconds)
  */
 void SyncthingConnection::disconnect()
 {
-    m_reconnecting = m_hasConfig = m_hasStatus = m_keepPolling = false;
+    m_reconnecting = m_keepPolling = false;
     m_autoReconnectTries = 0;
     abortAllRequests();
 }
