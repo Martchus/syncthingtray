@@ -995,6 +995,10 @@ void SyncthingConnection::requestDiskEvents(int limit)
     if (m_lastDiskEventId) {
         query.addQueryItem(QStringLiteral("since"), QString::number(m_lastDiskEventId));
     }
+    // force to return immediately after the first call
+    if (!m_hasDiskEvents) {
+        query.addQueryItem(QStringLiteral("timeout"), QStringLiteral("0"));
+    }
     QObject::connect(
         m_diskEventsReply = requestData(QStringLiteral("events/disk"), query), &QNetworkReply::finished, this, &SyncthingConnection::readDiskEvents);
 }
@@ -1035,6 +1039,10 @@ void SyncthingConnection::requestEvents()
     QUrlQuery query;
     if (m_lastEventId) {
         query.addQueryItem(QStringLiteral("since"), QString::number(m_lastEventId));
+    }
+    // force to return immediately after the first call
+    if (!m_hasEvents) {
+        query.addQueryItem(QStringLiteral("timeout"), QStringLiteral("0"));
     }
     QObject::connect(m_eventsReply = requestData(QStringLiteral("events"), query), &QNetworkReply::finished, this, &SyncthingConnection::readEvents);
 }
