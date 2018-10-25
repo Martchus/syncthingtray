@@ -103,27 +103,32 @@ void ApplicationTests::test()
     const bool hasCwd(getcwd(cwd, sizeof(cwd)));
 
     // wait till Syncthing GUI becomes available
-    cerr << "\nWaiting till Syncthing GUI becomes available ...";
-    QByteArray syncthingOutput;
-    do {
-        // wait for output
-        const auto timeout = static_cast<int>(15000 * TestUtilities::timeoutFactor);
-        if (!syncthingProcess().bytesAvailable()) {
-            // fail when already waiting for over 15 seconds
-            const auto waitingTime(DateTime::gmtNow() - m_startTime);
-            if (waitingTime.milliseconds() > timeout) {
-                CPPUNIT_FAIL(argsToString("Syncthing needs longer than ", (timeout / 1000), " seconds to become available."));
+    {
+        cerr << "\nWaiting till Syncthing GUI becomes available ...";
+        QByteArray syncthingOutput;
+        do {
+            // wait for output
+            const auto timeout = static_cast<int>(15000 * TestUtilities::timeoutFactor);
+            if (!syncthingProcess().bytesAvailable()) {
+                // fail when already waiting for over 15 seconds
+                const auto waitingTime(DateTime::gmtNow() - m_startTime);
+                if (waitingTime.milliseconds() > timeout) {
+                    CPPUNIT_FAIL(argsToString("Syncthing needs longer than ", (timeout / 1000), " seconds to become available."));
+                }
+                syncthingProcess().waitForReadyRead(timeout - waitingTime.milliseconds());
             }
-            syncthingProcess().waitForReadyRead(timeout - waitingTime.milliseconds());
-        }
-        syncthingOutput.append(syncthingProcess().readAll());
-    } while (!syncthingOutput.contains("Access the GUI via the following URL"));
+            syncthingOutput.append(syncthingProcess().readAll());
+        } while (!syncthingOutput.contains("Access the GUI via the following URL"));
 
-    setInterleavedOutputEnabledFromEnv();
+        setInterleavedOutputEnabledFromEnv();
+        cout.write(syncthingOutput.data(), syncthingOutput.size());
+        cout.flush();
+    }
 
     // test status for all dirs and devs
     const char *const statusArgs[] = { "syncthingctl", "status", "--api-key", apiKey.data(), "--url", url.data(), "--no-color", nullptr };
     TESTUTILS_ASSERT_EXEC(statusArgs);
+    cout << stderr;
     cout << stdout;
     const auto statusLines(splitString(stdout, "\n"));
     auto currentStatusLine = statusLines.cbegin();
