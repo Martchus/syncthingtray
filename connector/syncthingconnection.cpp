@@ -102,19 +102,20 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_hasDiskEvents(false)
     , m_lastFileDeleted(false)
 {
-    m_trafficPollTimer.setInterval(2000);
+    m_trafficPollTimer.setInterval(SyncthingConnectionSettings::defaultTrafficPollInterval);
     m_trafficPollTimer.setTimerType(Qt::VeryCoarseTimer);
     m_trafficPollTimer.setSingleShot(true);
     QObject::connect(&m_trafficPollTimer, &QTimer::timeout, this, &SyncthingConnection::requestConnections);
-    m_devStatsPollTimer.setInterval(60000);
+    m_devStatsPollTimer.setInterval(SyncthingConnectionSettings::defaultDevStatusPollInterval);
     m_devStatsPollTimer.setTimerType(Qt::VeryCoarseTimer);
     m_devStatsPollTimer.setSingleShot(true);
     QObject::connect(&m_devStatsPollTimer, &QTimer::timeout, this, &SyncthingConnection::requestDeviceStatistics);
-    m_errorsPollTimer.setInterval(30000);
+    m_errorsPollTimer.setInterval(SyncthingConnectionSettings::defaultErrorsPollInterval);
     m_errorsPollTimer.setTimerType(Qt::VeryCoarseTimer);
     m_errorsPollTimer.setSingleShot(true);
     QObject::connect(&m_errorsPollTimer, &QTimer::timeout, this, &SyncthingConnection::requestErrors);
     m_autoReconnectTimer.setTimerType(Qt::VeryCoarseTimer);
+    m_autoReconnectTimer.setInterval(SyncthingConnectionSettings::defaultReconnectInterval);
     QObject::connect(&m_autoReconnectTimer, &QTimer::timeout, this, &SyncthingConnection::autoReconnect);
 #ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     setupTestData();
@@ -174,6 +175,17 @@ bool SyncthingConnection::hasOutOfSyncDirs() const
         }
     }
     return false;
+}
+
+/*!
+ * \brief Sets all polling intervals (traffic, device statistics, errors) to 0 so polling is disabled.
+ * \remarks Does not affect the auto-reconnect and does not affect the *long* polling for the event API.
+ */
+void SyncthingConnection::disablePolling()
+{
+    setTrafficPollInterval(0);
+    setDevStatsPollInterval(0);
+    setErrorsPollInterval(0);
 }
 
 /*!

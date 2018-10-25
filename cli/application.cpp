@@ -227,6 +227,11 @@ int Application::loadConfig()
         return res;
     }
 
+    // disable polling for information which is not used by any CLI operation so far
+    m_settings.trafficPollInterval = 0;
+    m_settings.devStatsPollInterval = 0;
+    m_settings.errorsPollInterval = 0;
+
     return 0;
 }
 

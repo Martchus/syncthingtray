@@ -127,6 +127,7 @@ public:
     int autoReconnectInterval() const;
     unsigned int autoReconnectTries() const;
     void setAutoReconnectInterval(int interval);
+    void disablePolling();
 
     // getter for information retrieved from Syncthing
     const QString &configDir() const;
@@ -491,8 +492,8 @@ inline void SyncthingConnection::considerAllNotificationsRead()
 }
 
 /*!
- * \brief Returns the interval for polling traffic status (which currently can not be received via event API) in milliseconds.
- * \remarks Default value is 2000 milliseconds.
+ * \brief Returns the interval for polling traffic status (which can not be received via event API) in milliseconds.
+ * \remarks For default value see SyncthingConnectionSettings. Zero means polling is disabled.
  */
 inline int SyncthingConnection::trafficPollInterval() const
 {
@@ -500,8 +501,8 @@ inline int SyncthingConnection::trafficPollInterval() const
 }
 
 /*!
- * \brief Sets the interval for polling traffic status (which currently can not be received via event API) in milliseconds.
- * \remarks Default value is 2000 milliseconds.
+ * \brief Sets the interval for polling traffic status (which can not be received via event API) in milliseconds.
+ * \remarks For default value see SyncthingConnectionSettings. Zero means polling is disabled.
  */
 inline void SyncthingConnection::setTrafficPollInterval(int trafficPollInterval)
 {
@@ -512,8 +513,8 @@ inline void SyncthingConnection::setTrafficPollInterval(int trafficPollInterval)
 }
 
 /*!
- * \brief Returns the interval for polling device statistics (which currently can not be received via event API) in milliseconds.
- * \remarks Default value is 60000 milliseconds.
+ * \brief Returns the interval for polling device statistics (which can not be received via event API) in milliseconds.
+ * \remarks For default value see SyncthingConnectionSettings. Zero means polling is disabled.
  */
 inline int SyncthingConnection::devStatsPollInterval() const
 {
@@ -521,8 +522,8 @@ inline int SyncthingConnection::devStatsPollInterval() const
 }
 
 /*!
- * \brief Sets the interval for polling device statistics (which currently can not be received via event API) in milliseconds.
- * \remarks Default value is 60000 milliseconds.
+ * \brief Sets the interval for polling device statistics (which can not be received via event API) in milliseconds.
+ * \remarks For default value see SyncthingConnectionSettings. Zero means polling is disabled.
  */
 inline void SyncthingConnection::setDevStatsPollInterval(int devStatsPollInterval)
 {
@@ -533,8 +534,8 @@ inline void SyncthingConnection::setDevStatsPollInterval(int devStatsPollInterva
 }
 
 /*!
- * \brief Returns the interval for polling Syncthing errors (which currently can not be received via event API) in milliseconds.
- * \remarks Default value is 30000 milliseconds.
+ * \brief Returns the interval for polling Syncthing errors (which can not be received via event API) in milliseconds.
+ * \remarks For default value see SyncthingConnectionSettings. Zero means polling is disabled.
  */
 inline int SyncthingConnection::errorsPollInterval() const
 {
@@ -542,8 +543,8 @@ inline int SyncthingConnection::errorsPollInterval() const
 }
 
 /*!
- * \brief Sets the interval for polling Syncthing errors (which currently can not be received via event API) in milliseconds.
- * \remarks Default value is 30000 milliseconds.
+ * \brief Sets the interval for polling Syncthing errors (which can not be received via event API) in milliseconds.
+ * \remarks For default value see SyncthingConnectionSettings. Zero means polling is disabled.
  */
 inline void SyncthingConnection::setErrorsPollInterval(int errorPollInterval)
 {
@@ -555,7 +556,7 @@ inline void SyncthingConnection::setErrorsPollInterval(int errorPollInterval)
 
 /*!
  * \brief Returns the reconnect interval in milliseconds.
- * \remarks Default value is 0 which indicates disabled auto-reconnect.
+ * \remarks For default value see SyncthingConnectionSettings. A value of 0 indicates that auto-reconnect is disabled.
  */
 inline int SyncthingConnection::autoReconnectInterval() const
 {
@@ -572,7 +573,7 @@ inline unsigned int SyncthingConnection::autoReconnectTries() const
 
 /*!
  * \brief Sets the reconnect interval in milliseconds.
- * \remarks Default value is 0 which indicates disabled auto-reconnect.
+ * \remarks For default value see SyncthingConnectionSettings. A value of 0 indicates that auto-reconnect is disabled.
  */
 inline void SyncthingConnection::setAutoReconnectInterval(int interval)
 {

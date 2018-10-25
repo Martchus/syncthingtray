@@ -16,13 +16,18 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     QString userName;
     QString password;
     QByteArray apiKey;
-    int trafficPollInterval = 2000;
-    int devStatsPollInterval = 60000;
-    int errorsPollInterval = 30000;
-    int reconnectInterval = 30000;
+    int trafficPollInterval = defaultTrafficPollInterval;
+    int devStatsPollInterval = defaultDevStatusPollInterval;
+    int errorsPollInterval = defaultErrorsPollInterval;
+    int reconnectInterval = defaultReconnectInterval;
     QString httpsCertPath;
     QList<QSslError> expectedSslErrors;
     bool loadHttpsCert();
+
+    static constexpr int defaultTrafficPollInterval = 5000;
+    static constexpr int defaultDevStatusPollInterval = 60000;
+    static constexpr int defaultErrorsPollInterval = 30000;
+    static constexpr int defaultReconnectInterval = 0;
 };
 } // namespace Data
 
