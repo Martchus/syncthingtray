@@ -206,7 +206,6 @@ void ApplicationTests::test()
 #endif
 
     // test rescan: create new file, trigger rescan, check status
-#ifdef DEBUG_BUILD
     CPPUNIT_ASSERT(ofstream("/tmp/some/path/1/new-file.txt") << "foo");
     const char *const rescanArgs[] = { "syncthingctl", "rescan", "test1", nullptr };
     TESTUTILS_ASSERT_EXEC(rescanArgs);
@@ -246,6 +245,5 @@ void ApplicationTests::test()
     if (hasCwd) {
         chdir(cwd);
     }
-#endif
 }
 #endif
