@@ -251,11 +251,15 @@ void WebPage::injectJavaScripts(bool ok)
 {
     Q_UNUSED(ok)
     // show folder path selection when double-clicking input
-    injectJavaScript(QStringLiteral("jQuery('#folderPath').dblclick(function(event) {"
-                                    "    if (event.target && !event.target.getAttribute('readonly')) {"
+    injectJavaScript(QStringLiteral("var button = jQuery('<button type=\"button\" class=\"btn btn-sm\" "
+                                    "style=\"float: right;\">Select directory ...</button>');"
+                                    "button.click(function(event) {"
+                                    "    if (!document.getElementById('folderPath').getAttribute('readonly')) {"
                                     "        console.log('nativeInterface.showFolderPathSelection: ' + event.target.value);"
                                     "    }"
-                                    "});"));
+                                    "});"
+                                    "var help = jQuery('#folderPath + * + .help-block');"
+                                    "help.prepend(button);"));
 }
 
 /*!
