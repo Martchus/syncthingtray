@@ -56,7 +56,6 @@ WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view)
     connect(&Data::networkAccessManager(), &QNetworkAccessManager::sslErrors, this,
         static_cast<void (WebPage::*)(QNetworkReply *, const QList<QSslError> &errors)>(&WebPage::handleSslErrors));
 #endif
-    connect(this, &SYNCTHINGWIDGETS_WEB_PAGE::loadFinished, this, &WebPage::injectJavaScripts);
 
     if (!m_view) {
         // initialization for new window
@@ -269,6 +268,8 @@ void WebPage::processJavaScriptConsoleMessage(const QString &message)
 #endif
     if (message.startsWith(QLatin1String("nativeInterface.showFolderPathSelection: "))) {
         showFolderPathSelection(message.mid(41));
+    } else if (message == QLatin1String("UIOnline")) {
+        injectJavaScripts(true);
     }
 }
 
