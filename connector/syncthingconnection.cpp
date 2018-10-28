@@ -176,20 +176,41 @@ void SyncthingConnection::disablePolling()
 
 /*!
  * \brief Connects asynchronously to Syncthing. Does nothing if already connected.
+ *
+ * Use this to connect the first time or to connect to the same Syncthing instance again or to ensure
+ * the connection to the currently configured instance is established. Use reconnect() to connect to
+ * a different instance.
+ *
+ * \remarks Does not clear data from a previous connection (except error items). Use reconnect() if that
+ *          is required.
  */
 void SyncthingConnection::connect()
 {
+    // reset auto-reconnect
     m_autoReconnectTimer.stop();
     m_autoReconnectTries = 0;
+
+    // skip if already connected (see reconnect() to force reconnecting)
     if (isConnected()) {
         return;
     }
 
+    // reset status
     m_reconnecting = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
+
+    // remove error items (might have been invalidated)
+    for (SyncthingDir &dir : m_dirs) {
+        dir.itemErrors.swap(dir.previousItemErrors);
+        dir.itemErrors.clear();
+    }
+
+    // check configuration
     if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
         emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return;
     }
+
+    // start by requesting config and status; if both are available request further info and events
     requestConfig();
     requestStatus();
     m_keepPolling = true;
