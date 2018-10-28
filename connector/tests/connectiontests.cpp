@@ -312,15 +312,11 @@ void ConnectionTests::testConnection()
     testResumingDirectory();
     testPausingDirectory();
     testRequestingLog();
-#ifdef DEBUG_BUILD
     testRequestingQrCode();
-#endif
     testDisconnecting();
     testConnectingWithSettings();
-#ifdef DEBUG_BUILD
     testRequestingRescan();
     testDealingWithArbitraryConfig();
-#endif
 }
 
 void ConnectionTests::testErrorCases()
