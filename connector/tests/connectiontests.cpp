@@ -592,6 +592,7 @@ void ConnectionTests::testRequestingQrCode()
 void ConnectionTests::testDisconnecting()
 {
     cerr << "\n - Disconnecting ..." << endl;
+    waitForConnected();
     waitForConnection(defaultDisconnect(), 1000, connectionSignal(&SyncthingConnection::statusChanged));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("disconnected", QStringLiteral("disconnected"), m_connection.statusText());
 }

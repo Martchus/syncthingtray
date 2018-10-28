@@ -846,7 +846,7 @@ void SyncthingConnection::handleAdditionalRequestCanceled()
     if (m_reconnecting) {
         // if reconnection flag is set, instantly etstablish a new connection ...
         continueReconnecting();
-    } else if (hasPendingRequests()) {
+    } else if (!hasPendingRequests()) {
         // ... otherwise declare we're disconnected if that was the last pending request
         setStatus(SyncthingStatus::Disconnected);
     }
