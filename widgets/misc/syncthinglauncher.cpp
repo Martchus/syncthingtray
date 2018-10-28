@@ -25,7 +25,7 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
 
 bool SyncthingLauncher::isLibSyncthingAvailable()
 {
-#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     return true;
 #else
     return false;
@@ -76,7 +76,7 @@ void SyncthingLauncher::terminate()
         m_process.stopSyncthing();
     } else if (m_future.isRunning()) {
         m_manuallyStopped = true;
-#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
         LibSyncthing::stopSyncthing();
 #endif
     }
@@ -89,7 +89,7 @@ void SyncthingLauncher::kill()
         m_process.stopSyncthing();
     } else if (m_future.isRunning()) {
         m_manuallyStopped = true;
-#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
         // FIXME: any change to try harder?
         LibSyncthing::stopSyncthing();
 #endif
@@ -117,7 +117,7 @@ static const char *const logLevelStrings[] = {
 
 void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, const char *message, size_t messageSize)
 {
-#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     if (level < LibSyncthing::LogLevel::Info) {
         return;
     }
@@ -138,7 +138,7 @@ void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, cons
 
 void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions)
 {
-#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
     const auto exitCode = LibSyncthing::runSyncthing(runtimeOptions);
     emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
@@ -151,7 +151,7 @@ void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runt
 
 void SyncthingLauncher::runLibSyncthing(const std::vector<string> &arguments)
 {
-#ifdef SYNCTHING_WIDGETS_USE_LIBSYNCTHING
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
     const auto exitCode = LibSyncthing::runSyncthing(arguments);
     emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);

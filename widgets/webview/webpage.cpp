@@ -26,6 +26,10 @@
 #include <QWebView>
 #endif
 
+#ifdef SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE
+#include <iostream>
+#endif
+
 using namespace Data;
 
 namespace QtGui {
@@ -260,6 +264,9 @@ void WebPage::injectJavaScripts(bool ok)
  */
 void WebPage::processJavaScriptConsoleMessage(const QString &message)
 {
+#ifdef SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE
+    std::cerr << "JS console: " << message.toLocal8Bit().data() << std::endl;
+#endif
     if (message.startsWith(QLatin1String("nativeInterface.showFolderPathSelection: "))) {
         showFolderPathSelection(message.mid(41));
     }
