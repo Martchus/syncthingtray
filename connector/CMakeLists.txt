@@ -24,6 +24,7 @@ set(SRC_FILES
     syncthingdir.cpp
     syncthingdev.cpp
     syncthingconnection.cpp
+    syncthingconnection_requests.cpp
     syncthingconnectionsettings.cpp
     syncthingnotifier.cpp
     syncthingconfig.cpp
@@ -94,7 +95,7 @@ if(SYNCTHING_CONNECTION_MOCKED)
         syncthingconnectionmockhelpers.cpp
     )
     set_property(
-        SOURCE syncthingconnection.cpp
+        SOURCE syncthingconnection_requests.cpp
                syncthingconnectionmockhelpers.h
                syncthingconnectionmockhelpers.cpp
         APPEND PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_CONNECTION_MOCKED
@@ -116,7 +117,7 @@ endif()
 option(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS "enables logging event data to stdout (enable only for debugging!)" OFF)
 if(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS)
     set_property(
-        SOURCE syncthingconnection.cpp
+        SOURCE syncthingconnection_requests.cpp
         APPEND PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_LOG_SYNCTHING_EVENTS
     )
     message(WARNING "SyncthingConnection class will log event data to stdout")
@@ -126,7 +127,7 @@ endif()
 option(SYNCTHING_CONNECTION_LOG_API_CALLS "enables logging API calls done by the SyncthingConnector (enable only for debugging!)" OFF)
 if(SYNCTHING_CONNECTION_LOG_API_CALLS)
     set_property(
-        SOURCE syncthingconnection.cpp
+        SOURCE syncthingconnection_requests.cpp
         APPEND PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_LOG_API_CALLS
     )
     message(WARNING "SyncthingConnection class will log API calls data to stdout")
