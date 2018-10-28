@@ -28,7 +28,7 @@ WebViewDialog::WebViewDialog(QWidget *parent)
 
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
     m_profile = new QWebEngineProfile(objectName(), this);
-    m_profile->setRequestInterceptor(new WebViewInterceptor(m_settings, m_profile));
+    m_profile->setRequestInterceptor(new WebViewInterceptor(m_connectionSettings, m_profile));
     m_view->setPage(new WebPage(m_profile, this, m_view));
 #else
     m_view->setPage(new WebPage(this, m_view));
@@ -55,13 +55,21 @@ QtGui::WebViewDialog::~WebViewDialog()
     Settings::values().webView.geometry = saveGeometry();
 }
 
-void QtGui::WebViewDialog::applySettings(const Data::SyncthingConnectionSettings &connectionSettings)
+void QtGui::WebViewDialog::applySettings(const Data::SyncthingConnectionSettings &connectionSettings, bool aboutToShow)
 {
-    m_settings = connectionSettings;
-    if (!WebPage::isSamePage(m_view->url(), connectionSettings.syncthingUrl)) {
+    // delete the web view if currently hidden and the configuration to keep it running in the backround isn't enabled
+    const auto &settings(Settings::values());
+    if (!aboutToShow && !settings.webView.keepRunning && isHidden()) {
+        deleteLater();
+        return;
+    }
+
+    // apply settings to the view
+    m_connectionSettings = connectionSettings;
+    if (!WebPage::isSamePage(m_view->url(), connectionSettings.syncthingUrl)) { // prevent reload if the URL remains the same
         m_view->setUrl(connectionSettings.syncthingUrl);
     }
-    m_view->setZoomFactor(Settings::values().webView.zoomFactor);
+    m_view->setZoomFactor(settings.webView.zoomFactor);
 }
 
 #if defined(SYNCTHINGWIDGETS_USE_WEBKIT)

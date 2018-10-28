@@ -191,9 +191,9 @@ void WebPage::supplyCredentials(QNetworkReply *reply, QAuthenticator *authentica
  */
 void WebPage::supplyCredentials(QAuthenticator *authenticator)
 {
-    if (m_dlg && m_dlg->settings().authEnabled) {
-        authenticator->setUser(m_dlg->settings().userName);
-        authenticator->setPassword(m_dlg->settings().password);
+    if (m_dlg && m_dlg->connectionSettings().authEnabled) {
+        authenticator->setUser(m_dlg->connectionSettings().userName);
+        authenticator->setPassword(m_dlg->connectionSettings().password);
     }
 }
 

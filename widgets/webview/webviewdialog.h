@@ -24,8 +24,8 @@ public:
     ~WebViewDialog() override;
 
 public slots:
-    void applySettings(const Data::SyncthingConnectionSettings &connectionSettings);
-    const Data::SyncthingConnectionSettings &settings() const;
+    void applySettings(const Data::SyncthingConnectionSettings &connectionSettings, bool aboutToShow);
+    const Data::SyncthingConnectionSettings &connectionSettings() const;
 #if defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     bool isModalVisible() const;
 #endif
@@ -40,15 +40,15 @@ protected:
 
 private:
     SYNCTHINGWIDGETS_WEB_VIEW *m_view;
-    Data::SyncthingConnectionSettings m_settings;
+    Data::SyncthingConnectionSettings m_connectionSettings;
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
     QWebEngineProfile *m_profile;
 #endif
 };
 
-inline const Data::SyncthingConnectionSettings &WebViewDialog::settings() const
+inline const Data::SyncthingConnectionSettings &WebViewDialog::connectionSettings() const
 {
-    return m_settings;
+    return m_connectionSettings;
 }
 
 } // namespace QtGui

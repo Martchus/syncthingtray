@@ -84,7 +84,8 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     // setup sync-all button
     m_cornerFrame = new QFrame(this);
     auto *cornerFrameLayout = new QHBoxLayout(m_cornerFrame);
-    cornerFrameLayout->setSpacing(0), cornerFrameLayout->setMargin(0);
+    cornerFrameLayout->setSpacing(0);
+    cornerFrameLayout->setMargin(0);
     //cornerFrameLayout->addStretch();
     m_cornerFrame->setLayout(cornerFrameLayout);
     auto *viewIdButton = new QPushButton(m_cornerFrame);
@@ -211,7 +212,7 @@ void TrayWidget::showWebUi()
         if (!m_webViewDlg) {
             m_webViewDlg = new WebViewDialog(this);
             if (m_selectedConnection) {
-                m_webViewDlg->applySettings(*m_selectedConnection);
+                m_webViewDlg->applySettings(*m_selectedConnection, true);
             }
             connect(m_webViewDlg, &WebViewDialog::destroyed, this, &TrayWidget::handleWebViewDeleted);
         }
@@ -381,7 +382,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     // web view
     if (m_webViewDlg) {
-        m_webViewDlg->applySettings(*m_selectedConnection);
+        m_webViewDlg->applySettings(*m_selectedConnection, false);
     }
 #endif
 
@@ -565,7 +566,7 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
 #endif
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
         if (m_webViewDlg) {
-            m_webViewDlg->applySettings(*m_selectedConnection);
+            m_webViewDlg->applySettings(*m_selectedConnection, false);
         }
 #endif
     }

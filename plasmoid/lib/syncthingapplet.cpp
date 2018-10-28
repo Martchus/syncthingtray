@@ -174,7 +174,7 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
         reconnectRequired = m_connection.applySettings(selectedConfig);
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
         if (m_webViewDlg) {
-            m_webViewDlg->applySettings(selectedConfig);
+            m_webViewDlg->applySettings(selectedConfig, false);
         }
 #endif
         config().writeEntry<int>("selectedConfig", index);
@@ -243,7 +243,7 @@ void SyncthingApplet::showWebUI()
         if (!m_webViewDlg) {
             m_webViewDlg = new WebViewDialog;
             if (const auto *connectionConfig = currentConnectionConfig()) {
-                m_webViewDlg->applySettings(*connectionConfig);
+                m_webViewDlg->applySettings(*connectionConfig, true);
             }
             connect(m_webViewDlg, &WebViewDialog::destroyed, this, &SyncthingApplet::handleWebViewDeleted);
         }
