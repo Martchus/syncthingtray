@@ -223,7 +223,7 @@ void WebPage::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &erro
 {
     Q_UNUSED(errors)
     if (m_dlg && reply->request().url().host() == m_view->url().host()) {
-        reply->ignoreSslErrors(m_dlg->settings().expectedSslErrors);
+        reply->ignoreSslErrors(m_dlg->connectionSettings().expectedSslErrors);
     }
 }
 #endif

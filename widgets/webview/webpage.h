@@ -35,8 +35,8 @@ protected:
     void javaScriptConsoleMessage(
         QWebEnginePage::JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID) override;
 #else
-    bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type);
-    void javaScriptConsoleMessage(const QString &message, int lineNumber, const QString &sourceID);
+    bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type) override;
+    void javaScriptConsoleMessage(const QString &message, int lineNumber, const QString &sourceID) override;
 #endif
 
 private slots:
