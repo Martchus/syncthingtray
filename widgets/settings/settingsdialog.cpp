@@ -5,6 +5,7 @@
 #include "../../connector/syncthingconfig.h"
 #include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingprocess.h"
+#include "../../connector/utils.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "../../connector/syncthingservice.h"
 #include "../../model/colors.h"
@@ -111,13 +112,25 @@ void ConnectionOptionPage::insertFromConfigFile()
             QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to parse the Syncthing config file."));
         return;
     }
+
     if (!config.guiAddress.isEmpty()) {
+        const auto portStart(config.guiAddress.indexOf(QChar(':')));
+        QString guiHost(config.guiAddress.mid(0, portStart));
+        const QStringRef guiPort(portStart > 0 ? config.guiAddress.midRef(portStart) : QStringRef());
+        const QHostAddress guiAddress(guiHost);
+        // assume local connection if address is eg. 0.0.0.0
+        auto localConnection = true;
+        if (guiAddress == QHostAddress::AnyIPv4) {
+            guiHost = QStringLiteral("127.0.0.1");
+        } else if (guiAddress == QHostAddress::AnyIPv6) {
+            guiHost = QStringLiteral("[::1]");
+        } else if (!isLocal(guiHost, guiAddress)) {
+            localConnection = false;
+        }
+        const QString guiProtocol((config.guiEnforcesSecureConnection || !localConnection) ? QStringLiteral("https://") : QStringLiteral("http://"));
+
         ui()->urlLineEdit->selectAll();
-        ui()->urlLineEdit->insert(
-            ((config.guiEnforcesSecureConnection || !QHostAddress(config.guiAddress.mid(0, config.guiAddress.indexOf(QChar(':')))).isLoopback())
-                    ? QStringLiteral("https://")
-                    : QStringLiteral("http://"))
-            + config.guiAddress);
+        ui()->urlLineEdit->insert(guiProtocol % guiHost % guiPort);
     }
     if (!config.guiUser.isEmpty() || !config.guiPasswordHash.isEmpty()) {
         ui()->authCheckBox->setChecked(true);

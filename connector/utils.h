@@ -14,6 +14,7 @@
 #include <vector>
 
 QT_FORWARD_DECLARE_CLASS(QJsonObject)
+QT_FORWARD_DECLARE_CLASS(QHostAddress)
 
 namespace ChronoUtilities {
 class DateTime;
@@ -31,7 +32,8 @@ QString LIB_SYNCTHING_CONNECTOR_EXPORT directoryStatusString(const Data::Syncthi
 QString LIB_SYNCTHING_CONNECTOR_EXPORT syncCompleteString(
     const std::vector<const SyncthingDir *> &completedDirs, const SyncthingDev *remoteDevice = nullptr);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT rescanIntervalString(int rescanInterval, bool fileSystemWatcherEnabled);
-bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QString &hostname);
+bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QString &hostName);
+bool LIB_SYNCTHING_CONNECTOR_EXPORT isLocal(const QString &hostName, const QHostAddress &hostAddress);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused);
 bool LIB_SYNCTHING_CONNECTOR_EXPORT setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);
 
