@@ -26,7 +26,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
     QStringList addresses;
     QString compression;
     QString certName;
-    SyncthingDevStatus status;
+    SyncthingDevStatus status = SyncthingDevStatus::Unknown;
     int progressPercentage = 0;
     int progressRate = 0;
     bool introducer = false;
