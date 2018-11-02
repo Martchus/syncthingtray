@@ -1768,12 +1768,6 @@ void SyncthingConnection::readFolderErrors(DateTime eventTime, const QJsonObject
         }
         errors.emplace_back(move(dirError));
         dirInfo.assignStatus(SyncthingDirStatus::OutOfSync, eventTime);
-
-        // emit newNotification() for new errors
-        const auto &previousErrors = dirInfo.previousItemErrors;
-        if (find(previousErrors.cbegin(), previousErrors.cend(), dirInfo.itemErrors.back()) == previousErrors.cend()) {
-            emitNotification(eventTime, dirInfo.itemErrors.back().message);
-        }
     }
     emit dirStatusChanged(dirInfo, index);
 }
