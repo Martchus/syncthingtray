@@ -233,7 +233,7 @@ void ConnectionTests::waitForAllDirsAndDevsReady(const bool initialConfig)
     const auto checkAllDirsReady([this, &allDirsReady, &initialConfig] {
         bool oneDirPaused = false;
         for (const SyncthingDir &dir : m_connection.dirInfo()) {
-            if (dir.status == SyncthingDirStatus::Unknown) {
+            if (dir.status == SyncthingDirStatus::Unknown && !dir.paused) {
                 allDirsReady = false;
                 return;
             }
@@ -244,7 +244,7 @@ void ConnectionTests::waitForAllDirsAndDevsReady(const bool initialConfig)
     const auto checkAllDevsReady([this, &allDevsReady, &initialConfig] {
         bool oneDevPaused = false;
         for (const SyncthingDev &dev : m_connection.devInfo()) {
-            if (dev.status == SyncthingDevStatus::Unknown) {
+            if (dev.status == SyncthingDevStatus::Unknown && !dev.paused) {
                 allDevsReady = false;
                 return;
             }
