@@ -937,9 +937,7 @@ void SyncthingConnection::readDirStatus()
             return;
         }
 
-        if (readDirSummary(DateTime::gmtNow(), replyDoc.object(), *dir, index)) {
-            recalculateStatus();
-        }
+        readDirSummary(DateTime::gmtNow(), replyDoc.object(), *dir, index);
 
         if (m_keepPolling) {
             concludeConnection();
@@ -1251,10 +1249,10 @@ void SyncthingConnection::readPostConfig()
 /*!
  * \brief Reads data from requestDirStatus() and FolderSummary-event and stores them to \a dir.
  */
-bool SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &summary, SyncthingDir &dir, int index)
+void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &summary, SyncthingDir &dir, int index)
 {
     if (summary.isEmpty() || dir.lastStatisticsUpdate > eventTime) {
-        return false;
+        return;
     }
 
     // backup previous statistics -> if there's no difference after all, don't emit completed event
@@ -1286,12 +1284,10 @@ bool SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     dir.lastStatisticsUpdate = eventTime;
 
     // update status
-    bool stateChanged = false;
     const QString state(summary.value(QLatin1String("state")).toString());
     if (!state.isEmpty()) {
         try {
-            stateChanged
-                |= dir.assignStatus(state, DateTime::fromIsoStringGmt(summary.value(QLatin1String("stateChanged")).toString().toUtf8().data()));
+            dir.assignStatus(state, DateTime::fromIsoStringGmt(summary.value(QLatin1String("stateChanged")).toString().toUtf8().data()));
         } catch (const ConversionException &) {
             // FIXME: warning about invalid stateChanged
         }
@@ -1303,7 +1299,6 @@ bool SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     if (neededStats.isNull() && previouslyUpdated && (neededStats != previouslyNeeded || globalStats != previouslyGlobal)) {
         emit dirCompleted(eventTime, dir, index);
     }
-    return stateChanged;
 }
 
 /*!

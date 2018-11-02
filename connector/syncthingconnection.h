@@ -273,7 +273,7 @@ private Q_SLOTS:
     void readRestart();
     void readShutdown();
     void readDirStatus();
-    bool readDirSummary(ChronoUtilities::DateTime eventTime, const QJsonObject &summary, SyncthingDir &dirInfo, int index);
+    void readDirSummary(ChronoUtilities::DateTime eventTime, const QJsonObject &summary, SyncthingDir &dirInfo, int index);
     void readDirRejected(ChronoUtilities::DateTime eventTime, const QString &dirId, const QJsonObject &eventData);
     void readDevRejected(ChronoUtilities::DateTime eventTime, const QString &devId, const QJsonObject &eventData);
     void readCompletion();

@@ -82,20 +82,20 @@ bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus, DateTime t
         globalError.clear();
     }
 
-    // update the status ...
-    if (newStatus != status) {
-        // ... and also update last scan time
-        switch (status) {
-        case SyncthingDirStatus::Scanning:
-            // FIXME: better use \a time and convert it from GMT to local time
-            lastScanTime = DateTime::now();
-            break;
-        default:;
-        }
-        status = newStatus;
-        return true;
+    if (newStatus == status) {
+        return false;
     }
-    return false;
+
+    // update last scan time and status
+    switch (status) {
+    case SyncthingDirStatus::Scanning:
+        // FIXME: better use \a time and convert it from GMT to local time
+        lastScanTime = DateTime::now();
+        break;
+    default:;
+    }
+    status = newStatus;
+    return true;
 }
 
 /*!
