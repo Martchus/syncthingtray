@@ -144,8 +144,9 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     SyncthingDirType dirType = SyncthingDirType::Unknown;
     int rescanInterval = 0;
     int minDiskFreePercentage = 0;
-    SyncthingDirStatus status = SyncthingDirStatus::Idle;
+    SyncthingDirStatus status = SyncthingDirStatus::Unknown;
     ChronoUtilities::DateTime lastStatusUpdate;
+    ChronoUtilities::DateTime lastSyncStarted;
     int completionPercentage = 0;
     int scanningPercentage = 0;
     double scanningRate = 0;
@@ -175,7 +176,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
 
 private:
     bool checkWhetherStatusUpdateRelevant(ChronoUtilities::DateTime time);
-    bool finalizeStatusUpdate(SyncthingDirStatus newStatus);
+    bool finalizeStatusUpdate(SyncthingDirStatus newStatus, ChronoUtilities::DateTime time);
 };
 
 inline SyncthingDir::SyncthingDir(const QString &id, const QString &label, const QString &path)
@@ -207,7 +208,7 @@ inline bool SyncthingDir::isUnshared() const
 
 inline bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, ChronoUtilities::DateTime time)
 {
-    return checkWhetherStatusUpdateRelevant(time) && finalizeStatusUpdate(newStatus);
+    return checkWhetherStatusUpdateRelevant(time) && finalizeStatusUpdate(newStatus, time);
 }
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingOverallDirStatistics {

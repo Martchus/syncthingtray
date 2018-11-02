@@ -53,27 +53,41 @@ bool SyncthingDir::checkWhetherStatusUpdateRelevant(DateTime time)
     return true;
 }
 
-bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus)
+bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus, DateTime time)
 {
-    // check whether out-of-sync
+    // clear out-of-sync items
     switch (newStatus) {
     case SyncthingDirStatus::Unknown:
-    case SyncthingDirStatus::Idle:
-        if (!itemErrors.empty()) {
-            newStatus = SyncthingDirStatus::OutOfSync;
+    case SyncthingDirStatus::OutOfSync:
+        break;
+    default:
+        if (newStatus == SyncthingDirStatus::Synchronizing || lastSyncStarted.isNull()) {
+            // errors become obsolete; however errors must be kept as previous errors to be able
+            // to identify "new errors" as known errors
+            previousItemErrors.clear();
+            previousItemErrors.swap(itemErrors);
         }
+    }
+
+    // set time of the last "sync" state (used internally and not displayed, hence keep it GMT)
+    switch (newStatus) {
+    case SyncthingDirStatus::Synchronizing:
+        lastSyncStarted = time;
         break;
     default:;
     }
+
     // clear global error if not out-of-sync anymore
     if (newStatus != SyncthingDirStatus::OutOfSync) {
         globalError.clear();
     }
-    // actuall update the status ...
+
+    // update the status ...
     if (newStatus != status) {
         // ... and also update last scan time
         switch (status) {
         case SyncthingDirStatus::Scanning:
+            // FIXME: better use \a time and convert it from GMT to local time
             lastScanTime = DateTime::now();
             break;
         default:;
@@ -105,10 +119,6 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
         if (!itemErrors.empty()) {
             status = SyncthingDirStatus::Unknown;
         }
-        // errors become obsolete; however errors must be kept as previous errors to be able
-        // to identify new errors occuring during this sync attempt as known errors
-        previousItemErrors.clear();
-        previousItemErrors.swap(itemErrors);
         newStatus = SyncthingDirStatus::Synchronizing;
     } else if (statusStr == QLatin1String("error")) {
         completionPercentage = 0;
@@ -116,7 +126,7 @@ bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateT
     } else {
         newStatus = SyncthingDirStatus::Idle;
     }
-    return finalizeStatusUpdate(newStatus);
+    return finalizeStatusUpdate(newStatus, time);
 }
 
 bool SyncthingDir::assignDirType(const QString &dirTypeStr)

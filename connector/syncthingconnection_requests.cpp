@@ -507,11 +507,12 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
         dirItem->deviceNames.clear();
         for (const QJsonValueRef dev : dirObj.value(QLatin1String("devices")).toArray()) {
             const QString devId = dev.toObject().value(QLatin1String("deviceID")).toString();
-            if (!devId.isEmpty() && devId != m_myId) {
-                dirItem->deviceIds << devId;
-                if (const SyncthingDev *const dev = findDevInfo(devId, dummy)) {
-                    dirItem->deviceNames << dev->name;
-                }
+            if (devId.isEmpty() || devId == m_myId) {
+                continue;
+            }
+            dirItem->deviceIds << devId;
+            if (const SyncthingDev *const dev = findDevInfo(devId, dummy)) {
+                dirItem->deviceNames << dev->name;
             }
         }
         dirItem->assignDirType(dirObj.value(QLatin1String("type")).toString());
@@ -1749,6 +1750,9 @@ void SyncthingConnection::readFolderErrors(DateTime eventTime, const QJsonObject
 {
     const QJsonArray errors(eventData.value(QLatin1String("errors")).toArray());
     if (errors.isEmpty()) {
+        return;
+    }
+    if (dirInfo.lastSyncStarted > eventTime) {
         return;
     }
 
