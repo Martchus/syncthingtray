@@ -214,8 +214,7 @@ void MiscTests::testSyncthingDir()
     CPPUNIT_ASSERT_EQUAL(1_st, dir.itemErrors.size());
     dir.lastSyncStarted = DateTime();
     CPPUNIT_ASSERT(!dir.assignStatus(SyncthingDirStatus::Idle, updateTime += TimeSpan::fromMinutes(1.5)));
-    CPPUNIT_ASSERT_EQUAL(0_st, dir.itemErrors.size());
-    dir.itemErrors.emplace_back(QStringLiteral("message"), QStringLiteral("path"));
+    CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastSyncStarted);
     const auto lastSyncTime(updateTime += TimeSpan::fromMinutes(1.5));
     CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Synchronizing, lastSyncTime));
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("synchronizing"), dir.statusString());
