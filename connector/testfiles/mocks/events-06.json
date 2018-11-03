@@ -1,6 +1,24 @@
 [
     {
         "id": 8,
+        "type": "FolderErrors",
+        "time": "2018-12-13T00:34:12.9876937Z",
+        "data": {
+            "errors": [
+                {
+                    "error": "some error",
+                    "path": "some file"
+                },
+                {
+                    "error": "another error",
+                    "path": "another file"
+                }
+            ],
+            "folder": "zX8xfl3ygn-"
+        }
+    },
+    {
+        "id": 9,
         "type": "DownloadProgress",
         "time": "2018-12-13T00:34:12.9876937Z",
         "data": {

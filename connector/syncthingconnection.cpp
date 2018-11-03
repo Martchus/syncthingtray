@@ -3,6 +3,10 @@
 #include "./syncthingconnectionsettings.h"
 #include "./utils.h"
 
+#ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
+#include "./syncthingconnectionmockhelpers.h"
+#endif
+
 #include <c++utilities/conversion/stringconversion.h>
 
 #include <QAuthenticator>
@@ -103,6 +107,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     m_autoReconnectTimer.setTimerType(Qt::VeryCoarseTimer);
     m_autoReconnectTimer.setInterval(SyncthingConnectionSettings::defaultReconnectInterval);
     QObject::connect(&m_autoReconnectTimer, &QTimer::timeout, this, &SyncthingConnection::autoReconnect);
+
 #ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     setupTestData();
 #endif

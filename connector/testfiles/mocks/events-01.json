@@ -73,6 +73,20 @@
     {
         "id": 3,
         "type": "FolderErrors",
+        "time": "2000-06-26T13:39:24.697401384+02:00",
+        "data": {
+            "errors": [
+                {
+                    "error": "should be ignored",
+                    "path": "some path"
+                }
+            ],
+            "folder": "GXWxf-3zgnU"
+        }
+    },
+    {
+        "id": 3,
+        "type": "FolderErrors",
         "time": "2018-06-26T13:39:24.697401384+02:00",
         "data": {
             "errors": [

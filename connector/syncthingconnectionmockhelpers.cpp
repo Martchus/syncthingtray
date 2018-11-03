@@ -27,15 +27,8 @@ namespace Data {
  */
 namespace TestData {
 static bool initialized = false;
-static string config;
-static string status;
-static string folderStats;
-static string deviceStats;
-static string errors;
-static string folderStatus;
-static string folderStatus2;
-static string connections;
-static string events[6];
+static string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty;
+static string events[7];
 } // namespace TestData
 
 /*!
@@ -71,10 +64,11 @@ void setupTestData()
     const TestApplication testApp(0, nullptr);
 
     // read mock files for REST-API
-    const char *const fileNames[]
-        = { "config", "status", "folderstats", "devicestats", "errors", "folderstatus-01", "folderstatus-02", "connections" };
+    const char *const fileNames[] = { "config", "status", "folderstats", "devicestats", "errors", "folderstatus-01", "folderstatus-02",
+        "folderstatus-03", "pullerrors-01", "connections", "version", "empty" };
     const char *const *fileName = fileNames;
-    for (string *testDataVariable : { &config, &status, &folderStats, &deviceStats, &errors, &folderStatus, &folderStatus2, &connections }) {
+    for (string *testDataVariable : { &config, &status, &folderStats, &deviceStats, &errors, &folderStatus, &folderStatus2, &folderStatus3,
+             &pullErrors, &connections, &version, &empty }) {
         *testDataVariable = readMockFile(testApp.testFilePath(argsToString("mocks/", *fileName, ".json")));
         ++fileName;
     }
@@ -177,25 +171,38 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
                     buffer = &folderStatus;
                 } else if (folder == QLatin1String("zX8xfl3ygn-")) {
                     buffer = &folderStatus2;
+                } else if (folder == QLatin1String("forever-alone")) {
+                    buffer = &folderStatus3;
+                }
+            } else if (path == QLatin1String("folder/pullerrors")) {
+                const QString folder(query.queryItemValue(QStringLiteral("folder")));
+                if (folder == QLatin1String("GXWxf-3zgnU")) {
+                    buffer = &pullErrors;
                 }
             } else if (path == QLatin1String("system/connections")) {
                 buffer = &connections;
+            } else if (path == QLatin1String("system/version")) {
+                buffer = &version;
             } else if (path == QLatin1String("events")) {
                 buffer = &events[s_eventIndex];
+                cerr << "mocking: at event index " << s_eventIndex << endl;
                 // "emit" the first event almost immediately and further events each 2.5 seconds
                 switch (s_eventIndex) {
                 case 0:
                     delay = 200;
                     ++s_eventIndex;
                     break;
-                case 5:
+                case 6:
                     // continue emitting the last event every 10 seconds
                     delay = 10000;
                     break;
                 default:
-                    delay = 2500;
+                    delay = 2000;
                     ++s_eventIndex;
                 }
+            } else if (path == QLatin1String("events/disk")) {
+                buffer = &empty;
+                delay = 5000;
             }
         }
     }

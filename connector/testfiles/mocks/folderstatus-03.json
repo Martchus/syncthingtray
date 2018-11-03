@@ -1,0 +1,15 @@
+{
+  "globalBytes": 1,
+  "globalDeleted": 2,
+  "globalFiles": 3,
+  "globalFolders": 4,
+  "localBytes": 1,
+  "localDeleted": 2,
+  "localFiles": 3,
+  "localFolders": 4,
+  "ignorePatterns": true,
+  "invalid": "",
+  "state": "idle",
+  "stateChanged": "2018-03-16T21:47:28.750853241+01:00",
+  "version": 21
+}

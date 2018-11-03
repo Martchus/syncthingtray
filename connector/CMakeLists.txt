@@ -95,7 +95,8 @@ if(SYNCTHING_CONNECTION_MOCKED)
         syncthingconnectionmockhelpers.cpp
     )
     set_property(
-        SOURCE syncthingconnection_requests.cpp
+        SOURCE syncthingconnection.cpp
+               syncthingconnection_requests.cpp
                syncthingconnectionmockhelpers.h
                syncthingconnectionmockhelpers.cpp
         APPEND PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_CONNECTION_MOCKED

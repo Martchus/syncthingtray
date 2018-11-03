@@ -1,0 +1,67 @@
+[
+    {
+        "id": 10,
+        "globalID": 8,
+        "type": "StateChanged",
+        "time": "2018-12-13T00:34:12.9876937Z",
+        "data": {
+            "folder": "zX8xfl3ygn-",
+            "from": "error",
+            "duration": 0.19782869900000002,
+            "to": "syncing"
+        }
+    },
+    {
+        "id": 10,
+        "globalID": 8,
+        "type": "FolderSummary",
+        "time": "2018-12-13T00:34:12.9876937Z",
+        "data": {
+            "folder": "zX8xfl3ygn-",
+            "globalBytes": 24525452,
+            "globalDeleted": 8,
+            "globalFiles": 543,
+            "globalFolders": 3,
+            "localBytes": 24525452,
+            "localDeleted": 8,
+            "localFiles": 343,
+            "localFolders": 4,
+            "inSyncBytes": 13173473780,
+            "inSyncFiles": 42106,
+            "needBytes": 0,
+            "needFiles": 0,
+            "ignorePatterns": true,
+            "invalid": "",
+            "state": "syncing",
+            "stateChanged": "2018-12-13T00:34:12.9876937Z",
+            "version": 71989,
+            "pullErrors": 25
+        }
+    },
+    {
+        "id": 11,
+        "type": "FolderSummary",
+        "time": "2018-12-13T00:34:12.9876937Z",
+        "data": {
+            "folder": "GXWxf-3zgnU",
+            "summary": {
+            "globalBytes": 23173473780,
+            "globalDeleted": 2847,
+            "globalFiles": 82106,
+            "localBytes": 23173471732,
+            "localDeleted": 2847,
+            "localFiles": 82081,
+            "inSyncBytes": 23173473780,
+            "inSyncFiles": 82081,
+            "needBytes": 2048,
+            "needFiles": 25,
+            "ignorePatterns": true,
+            "invalid": "",
+            "state": "error",
+            "stateChanged": "2016-03-16T21:47:28.750853241+01:00",
+            "version": 71989,
+            "pullErrors": 25
+            }
+        }
+    }
+]

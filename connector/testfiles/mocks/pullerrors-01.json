@@ -1,0 +1,9 @@
+{
+    "folder": "GXWxf-3zgnU",
+    "errors": [
+        {
+            "error": "open /Users/jb/src/github.com/syncthing/syncthing/test/s2/h2j/.syncthing.aslkjd.tmp: permission denied",
+            "path": "h2j/aslkjd"
+        }
+    ]
+}
