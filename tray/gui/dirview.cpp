@@ -29,32 +29,41 @@ DirView::DirView(QWidget *parent)
 void DirView::mouseReleaseEvent(QMouseEvent *event)
 {
     QTreeView::mouseReleaseEvent(event);
-    if (const SyncthingDirectoryModel *dirModel = qobject_cast<const SyncthingDirectoryModel *>(model())) {
-        const QPoint pos(event->pos());
-        const QModelIndex clickedIndex(indexAt(event->pos()));
-        if (clickedIndex.isValid() && clickedIndex.column() == 1) {
-            if (const SyncthingDir *dir = dirModel->dirInfo(clickedIndex)) {
-                if (!clickedIndex.parent().isValid()) {
-                    // open/scan dir buttons
-                    const QRect itemRect(visualRect(clickedIndex));
-                    if (pos.x() > itemRect.right() - 58) {
-                        if (pos.x() < itemRect.right() - 34) {
-                            if (!dir->paused) {
-                                emit scanDir(*dir);
-                            }
-                        } else if (pos.x() < itemRect.right() - 17) {
-                            emit pauseResumeDir(*dir);
-                        } else {
-                            emit openDir(*dir);
-                        }
-                    }
-                } else if (clickedIndex.row() == 9 && !dir->itemErrors.empty()) {
-                    auto *const textViewDlg = TextViewDialog::forDirectoryErrors(*dir);
-                    textViewDlg->setAttribute(Qt::WA_DeleteOnClose);
-                    textViewDlg->show();
-                }
-            }
+
+    // get SyncthingDir object
+    const SyncthingDirectoryModel *dirModel = qobject_cast<const SyncthingDirectoryModel *>(model());
+    if (!dirModel) {
+        return;
+    }
+    const QPoint pos(event->pos());
+    const QModelIndex clickedIndex(indexAt(event->pos()));
+    if (!clickedIndex.isValid() || clickedIndex.column() != 1) {
+        return;
+    }
+    const SyncthingDir *const dir = dirModel->dirInfo(clickedIndex);
+    if (!dir) {
+        return;
+    }
+
+    if (!clickedIndex.parent().isValid()) {
+        // open/scan dir buttons
+        const QRect itemRect(visualRect(clickedIndex));
+        if (pos.x() <= itemRect.right() - 58) {
+            return;
         }
+        if (pos.x() < itemRect.right() - 34) {
+            if (!dir->paused) {
+                emit scanDir(*dir);
+            }
+        } else if (pos.x() < itemRect.right() - 17) {
+            emit pauseResumeDir(*dir);
+        } else {
+            emit openDir(*dir);
+        }
+    } else if (clickedIndex.row() == 9 && !dir->itemErrors.empty()) {
+        auto *const textViewDlg = TextViewDialog::forDirectoryErrors(*dir);
+        textViewDlg->setAttribute(Qt::WA_DeleteOnClose);
+        textViewDlg->show();
     }
 }
 
