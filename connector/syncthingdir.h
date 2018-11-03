@@ -13,8 +13,6 @@
 namespace Data {
 
 enum class SyncthingDirStatus { Unknown, Idle, Scanning, Synchronizing, OutOfSync };
-// note: update "visible: status === 4" in DirectoriesPage.qml (which references OutOfSync by
-//       its raw value due to limitations of Qt/Qml) when updating this enum
 
 QString LIB_SYNCTHING_CONNECTOR_EXPORT statusString(SyncthingDirStatus status);
 
@@ -153,8 +151,8 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     double fileSystemWatcherDelay = 0.0;
     std::map<QString, SyncthingCompletion> completionByDevice;
     QString globalError;
+    quint64 pullErrorCount = 0;
     std::vector<SyncthingItemError> itemErrors;
-    std::vector<SyncthingItemError> previousItemErrors;
     std::vector<SyncthingFileChange> recentChanges;
     SyncthingStatistics globalStats, localStats, neededStats;
     ChronoUtilities::DateTime lastStatisticsUpdate;

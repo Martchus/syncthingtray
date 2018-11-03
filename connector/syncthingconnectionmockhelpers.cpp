@@ -176,7 +176,7 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
                 }
             } else if (path == QLatin1String("folder/pullerrors")) {
                 const QString folder(query.queryItemValue(QStringLiteral("folder")));
-                if (folder == QLatin1String("GXWxf-3zgnU")) {
+                if (folder == QLatin1String("GXWxf-3zgnU") && s_eventIndex >= 6) {
                     buffer = &pullErrors;
                 }
             } else if (path == QLatin1String("system/connections")) {

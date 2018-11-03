@@ -151,9 +151,11 @@ public:
     std::vector<const SyncthingDev *> connectedDevices() const;
     const QJsonObject &rawConfig() const;
     SyncthingDir *findDirInfo(const QString &dirId, int &row);
+    const SyncthingDir *findDirInfo(const QString &dirId, int &row) const;
     SyncthingDir *findDirInfo(QLatin1String key, const QJsonObject &object, int *row = nullptr);
     SyncthingDir *findDirInfoByPath(const QString &path, QString &relativePath, int &row);
     SyncthingDev *findDevInfo(const QString &devId, int &row);
+    const SyncthingDev *findDevInfo(const QString &devId, int &row) const;
     SyncthingDev *findDevInfoByName(const QString &devName, int &row);
 
     const QList<QSslError> &expectedSslErrors() const;
@@ -197,6 +199,7 @@ public Q_SLOTS:
     void requestClearingErrors();
     void requestDirStatistics();
     void requestDirStatus(const QString &dirId);
+    void requestDirPullErrors(const QString &dirId, int page = 0, int perPage = 0);
     void requestCompletion(const QString &devId, const QString &dirId);
     void requestDeviceStatistics();
     void requestVersion();
@@ -273,6 +276,7 @@ private Q_SLOTS:
     void readRestart();
     void readShutdown();
     void readDirStatus();
+    void readDirPullErrors();
     void readDirSummary(ChronoUtilities::DateTime eventTime, const QJsonObject &summary, SyncthingDir &dirInfo, int index);
     void readDirRejected(ChronoUtilities::DateTime eventTime, const QString &dirId, const QJsonObject &eventData);
     void readDevRejected(ChronoUtilities::DateTime eventTime, const QString &devId, const QJsonObject &eventData);
@@ -716,6 +720,27 @@ inline const QJsonObject &SyncthingConnection::rawConfig() const
 {
     return m_rawConfig;
 }
+
+/*!
+ * \brief Returns the directory info object for the directory with the specified ID.
+ * \returns Returns a pointer to the object or nullptr if not found.
+ * \remarks The returned object becomes invalid when the newDirs() signal is emitted or the connection is destroyed.
+ */
+inline const SyncthingDir *SyncthingConnection::findDirInfo(const QString &dirId, int &row) const
+{
+    return const_cast<SyncthingConnection *>(this)->findDirInfo(dirId, row);
+}
+
+/*!
+ * \brief Returns the device info object for the device with the specified ID.
+ * \returns Returns a pointer to the object or nullptr if not found.
+ * \remarks The returned object becomes invalid when the newConfig() signal is emitted or the connection is destroyed.
+ */
+inline const SyncthingDev *SyncthingConnection::findDevInfo(const QString &devId, int &row) const
+{
+    return const_cast<SyncthingConnection *>(this)->findDevInfo(devId, row);
+}
+
 } // namespace Data
 
 Q_DECLARE_METATYPE(Data::SyncthingLogEntry)

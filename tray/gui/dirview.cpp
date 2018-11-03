@@ -3,7 +3,7 @@
 
 #include "../../connector/syncthingconnection.h"
 #include "../../model/syncthingdirectorymodel.h"
-#include "../../widgets/misc/textviewdialog.h"
+#include "../../widgets/misc/direrrorsdialog.h"
 
 #include <QClipboard>
 #include <QCursor>
@@ -31,7 +31,7 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
     QTreeView::mouseReleaseEvent(event);
 
     // get SyncthingDir object
-    const SyncthingDirectoryModel *dirModel = qobject_cast<const SyncthingDirectoryModel *>(model());
+    auto *const dirModel = qobject_cast<SyncthingDirectoryModel *>(model());
     if (!dirModel) {
         return;
     }
@@ -40,7 +40,7 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
     if (!clickedIndex.isValid() || clickedIndex.column() != 1) {
         return;
     }
-    const SyncthingDir *const dir = dirModel->dirInfo(clickedIndex);
+    const auto *const dir = dirModel->dirInfo(clickedIndex);
     if (!dir) {
         return;
     }
@@ -60,8 +60,11 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
         } else {
             emit openDir(*dir);
         }
-    } else if (clickedIndex.row() == 9 && !dir->itemErrors.empty()) {
-        auto *const textViewDlg = TextViewDialog::forDirectoryErrors(*dir);
+    } else if (clickedIndex.row() == 9 && dir->pullErrorCount) {
+        auto &connection(*dirModel->connection());
+        connection.requestDirPullErrors(dir->id);
+
+        auto *const textViewDlg = new DirectoryErrorsDialog(connection, *dir);
         textViewDlg->setAttribute(Qt::WA_DeleteOnClose);
         textViewDlg->show();
     }

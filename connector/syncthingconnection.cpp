@@ -203,12 +203,6 @@ void SyncthingConnection::connect()
     // reset status
     m_reconnecting = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
 
-    // remove error items (might have been invalidated)
-    for (SyncthingDir &dir : m_dirs) {
-        dir.itemErrors.swap(dir.previousItemErrors);
-        dir.itemErrors.clear();
-    }
-
     // check configuration
     if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
         emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);

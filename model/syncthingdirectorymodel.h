@@ -21,6 +21,7 @@ public:
         DirectoryStatusColor,
         DirectoryId,
         DirectoryPath,
+        DirectoryPullErrorCount,
         DirectoryDetail,
     };
 

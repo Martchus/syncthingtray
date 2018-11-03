@@ -55,26 +55,15 @@ bool SyncthingDir::checkWhetherStatusUpdateRelevant(DateTime time)
 
 bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus, DateTime time)
 {
-    // clear out-of-sync items
-    switch (newStatus) {
-    case SyncthingDirStatus::Unknown:
-    case SyncthingDirStatus::OutOfSync:
-        break;
-    default:
-        if (newStatus == SyncthingDirStatus::Synchronizing || lastSyncStarted.isNull()) {
-            // errors become obsolete; however errors must be kept as previous errors to be able
-            // to identify "new errors" as known errors
-            previousItemErrors.clear();
-            previousItemErrors.swap(itemErrors);
-        }
-    }
-
-    // set time of the last "sync" state (used internally and not displayed, hence keep it GMT)
-    switch (newStatus) {
-    case SyncthingDirStatus::Synchronizing:
+    // handle obsoletion of out-of-sync items: no FolderErrors are accepted older than the last "sync" state are accepted
+    if (newStatus == SyncthingDirStatus::Synchronizing) {
+        // update time of last "sync" state and obsolete currently assigned errors
+        lastSyncStarted = time; // used internally and not displayed, hence keep it GMT
+        itemErrors.clear();
+        pullErrorCount = 0;
+    } else if (lastSyncStarted.isNull() && newStatus != SyncthingDirStatus::OutOfSync) {
+        // prevent adding new errors from "before the first status" if the time of the last "sync" state is unknown
         lastSyncStarted = time;
-        break;
-    default:;
     }
 
     // clear global error if not out-of-sync anymore
@@ -86,14 +75,12 @@ bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus, DateTime t
         return false;
     }
 
-    // update last scan time and status
-    switch (status) {
-    case SyncthingDirStatus::Scanning:
+    // update last scan time if the previous status was scanning
+    if (status == SyncthingDirStatus::Scanning) {
         // FIXME: better use \a time and convert it from GMT to local time
         lastScanTime = DateTime::now();
-        break;
-    default:;
     }
+
     status = newStatus;
     return true;
 }

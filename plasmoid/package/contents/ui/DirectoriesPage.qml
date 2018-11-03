@@ -73,9 +73,7 @@ ColumnLayout {
                                 id: errorsButton
                                 iconSource: "emblem-important"
                                 tooltip: qsTr("Show errors")
-                                // 4 stands for SyncthingDirStatus::OutOfSync, unfortunately there is currently
-                                // no way to expose this to QML without conflicting SyncthingStatus
-                                visible: status === 4
+                                visible: pullErrorCount > 0
                                 onClicked: {
                                     plasmoid.nativeInterface.showDirectoryErrors(
                                                 index)

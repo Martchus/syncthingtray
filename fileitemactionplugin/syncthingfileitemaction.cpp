@@ -169,12 +169,12 @@ bool SyncthingDirActions::updateStatus(const SyncthingDir &dir)
     m_lastScanAction.setText(tr("Last scan time: ") + agoString(dir.lastScanTime));
     m_lastScanAction.setIcon(QIcon::fromTheme(QStringLiteral("accept_time_event")));
     m_rescanIntervalAction.setText(tr("Rescan interval: %1 seconds").arg(dir.rescanInterval));
-    if (dir.itemErrors.empty()) {
+    if (!dir.pullErrorCount) {
         m_errorsAction.setVisible(false);
     } else {
         m_errorsAction.setVisible(true);
         m_errorsAction.setIcon(QIcon::fromTheme(QStringLiteral("dialog-error")));
-        m_errorsAction.setText(tr("%1 item(s) out-of-sync", nullptr, trQuandity(dir.itemErrors.size())).arg(dir.itemErrors.size()));
+        m_errorsAction.setText(tr("%1 item(s) out-of-sync", nullptr, trQuandity(dir.pullErrorCount)).arg(dir.pullErrorCount));
     }
     return true;
 }

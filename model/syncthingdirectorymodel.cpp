@@ -36,6 +36,7 @@ QHash<int, QByteArray> SyncthingDirectoryModel::roleNames() const
         roles[DirectoryPaused] = "paused";
         roles[DirectoryId] = "dirId";
         roles[DirectoryPath] = "path";
+        roles[DirectoryPullErrorCount] = "pullErrorCount";
         roles[DirectoryDetail] = "detail";
         return roles;
     }());
@@ -167,19 +168,18 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         case 8:
                             return dir.lastFileName.isEmpty() ? tr("unknown") : dir.lastFileName;
                         case 9:
-                            if (!dir.globalError.isEmpty() || !dir.itemErrors.empty()) {
-                                if (dir.itemErrors.empty()) {
-                                    return dir.globalError;
-                                }
-                                if (dir.globalError.isEmpty()) {
-                                    return tr("%1 item(s) out of sync", nullptr, static_cast<int>(dir.itemErrors.size())).arg(dir.itemErrors.size());
-                                }
-                                return tr("%1 and %2 item(s) out of sync", nullptr, static_cast<int>(dir.itemErrors.size()))
-                                    .arg(dir.globalError)
-                                    .arg(dir.itemErrors.size());
-                            } else {
+                            if (dir.globalError.isEmpty() && !dir.pullErrorCount) {
                                 return tr("none");
                             }
+                            if (!dir.pullErrorCount) {
+                                return dir.globalError;
+                            }
+                            if (dir.globalError.isEmpty()) {
+                                return tr("%1 item(s) out of sync", nullptr, trQuandity(dir.pullErrorCount)).arg(dir.pullErrorCount);
+                            }
+                            return tr("%1 and %2 item(s) out of sync", nullptr, trQuandity(dir.pullErrorCount))
+                                .arg(dir.globalError)
+                                .arg(dir.pullErrorCount);
                         }
                     }
                     break;
@@ -202,7 +202,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                             return dir.lastFileName.isEmpty() ? Colors::gray(m_brightColors)
                                                               : (dir.lastFileDeleted ? Colors::red(m_brightColors) : QVariant());
                         case 9:
-                            return dir.globalError.isEmpty() && dir.itemErrors.empty() ? Colors::gray(m_brightColors) : Colors::red(m_brightColors);
+                            return dir.globalError.isEmpty() && !dir.pullErrorCount ? Colors::gray(m_brightColors) : Colors::red(m_brightColors);
                         }
                     }
                     break;
@@ -315,6 +315,8 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 return dir.id;
             case DirectoryPath:
                 return dir.path;
+            case DirectoryPullErrorCount:
+                return dir.pullErrorCount;
             default:;
             }
         }
@@ -363,7 +365,7 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &, int index)
 {
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
     static const QVector<int> modelRoles1({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, DirectoryPaused, DirectoryStatus,
-        DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath });
+        DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath, DirectoryPullErrorCount });
     emit dataChanged(modelIndex1, modelIndex1, modelRoles1);
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::EditRole, Qt::ForegroundRole });

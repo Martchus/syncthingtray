@@ -8,7 +8,6 @@
 
 #include <qtutilities/misc/dialogutils.h>
 
-#include <QDir>
 #include <QFontDatabase>
 #include <QHBoxLayout>
 #include <QIcon>
@@ -19,10 +18,6 @@
 #include <QStringBuilder>
 #include <QTextBrowser>
 #include <QVBoxLayout>
-
-#include <algorithm>
-#include <functional>
-#include <limits>
 
 using namespace std;
 using namespace std::placeholders;
@@ -59,84 +54,6 @@ TextViewDialog::TextViewDialog(const QString &title, QWidget *parent)
     // default position and size
     resize(600, 500);
     centerWidget(this);
-}
-
-QString printDirectories(const QString &message, const QStringList &dirs)
-{
-    return QStringLiteral("<p>") % message % QStringLiteral("</p><ul><li>") % dirs.join(QStringLiteral("</li><li>")) % QStringLiteral("</ul>");
-}
-
-TextViewDialog *TextViewDialog::forDirectoryErrors(const Data::SyncthingDir &dir)
-{
-    // create TextViewDialog
-    auto *const textViewDlg = new TextViewDialog(tr("Errors of %1").arg(dir.displayName()));
-    auto *const browser = textViewDlg->browser();
-
-    // add errors to text view and find errors about non-empty directories to be removed
-    QStringList nonEmptyDirs;
-    for (const SyncthingItemError &error : dir.itemErrors) {
-        browser->append(error.path % QChar(':') % QChar('\n') % error.message % QChar('\n'));
-        if (error.message.endsWith(QStringLiteral("directory not empty"))) {
-            nonEmptyDirs << dir.path + error.path;
-        }
-    }
-
-    // add layout to show status and additional buttons
-    auto *const buttonLayout = new QHBoxLayout;
-    buttonLayout->setMargin(0);
-
-    // add label for overall status
-    auto *const statusLabel = new QLabel(textViewDlg);
-    statusLabel->setText(tr("%1 item(s) out-of-sync", nullptr, static_cast<int>(min<size_t>(dir.itemErrors.size(), numeric_limits<int>::max())))
-                             .arg(dir.itemErrors.size()));
-    QFont boldFont(statusLabel->font());
-    boldFont.setBold(true);
-    statusLabel->setFont(boldFont);
-    buttonLayout->addWidget(statusLabel);
-
-    // add a button for removing all non-empty directories
-    if (!nonEmptyDirs.isEmpty()) {
-        auto *const rmNonEmptyDirsButton = new QPushButton(textViewDlg);
-        rmNonEmptyDirsButton->setText(tr("Remove non-empty directories"));
-        rmNonEmptyDirsButton->setIcon(QIcon::fromTheme(QStringLiteral("remove")));
-        buttonLayout->setMargin(0);
-        buttonLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
-        buttonLayout->addWidget(rmNonEmptyDirsButton);
-
-        // define directory removal function
-        const QString title(tr("Remove non-empty directories for folder \"%1\"").arg(dir.displayName()));
-        connect(rmNonEmptyDirsButton, &QPushButton::clicked, [textViewDlg, nonEmptyDirs, title] {
-            if (QMessageBox::warning(textViewDlg, title,
-                    printDirectories(tr("Do you really want to remove the following directories:"), nonEmptyDirs), QMessageBox::YesToAll,
-                    QMessageBox::NoToAll | QMessageBox::Default | QMessageBox::Escape)
-                == QMessageBox::YesToAll) {
-                QStringList removedDirs;
-                QStringList failedDirs;
-                for (const QString &dirPath : nonEmptyDirs) {
-                    bool ok = false;
-                    QDir dir(dirPath);
-                    if (!dir.exists() || !dir.removeRecursively()) {
-                        // check whether dir has already been removed by removing its parent
-                        for (const QString &removedDir : removedDirs) {
-                            if (dirPath.startsWith(removedDir)) {
-                                ok = true;
-                                break;
-                            }
-                        }
-                    } else {
-                        ok = true;
-                    }
-                    (ok ? removedDirs : failedDirs) << dirPath;
-                }
-                if (!failedDirs.isEmpty()) {
-                    QMessageBox::critical(textViewDlg, title, printDirectories(tr("Unable to remove the following dirs:"), failedDirs));
-                }
-            }
-        });
-    }
-
-    textViewDlg->m_layout->addLayout(buttonLayout);
-    return textViewDlg;
 }
 
 TextViewDialog *TextViewDialog::forLogEntries(SyncthingConnection &connection)

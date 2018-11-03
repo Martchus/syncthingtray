@@ -4,6 +4,7 @@
 #include "../../connector/syncthingservice.h"
 #include "../../connector/utils.h"
 
+#include "../../widgets/misc/direrrorsdialog.h"
 #include "../../widgets/misc/internalerrorsdialog.h"
 #include "../../widgets/misc/otherdialogs.h"
 #include "../../widgets/misc/textviewdialog.h"
@@ -313,15 +314,20 @@ void SyncthingApplet::showInternalErrorsDialog()
     errorViewDlg->show();
 }
 
-void SyncthingApplet::showDirectoryErrors(unsigned int directoryIndex) const
+void SyncthingApplet::showDirectoryErrors(unsigned int directoryIndex)
 {
     const auto &dirs = m_connection.dirInfo();
-    if (directoryIndex < dirs.size()) {
-        auto *const dlg = TextViewDialog::forDirectoryErrors(dirs[directoryIndex]);
-        dlg->setAttribute(Qt::WA_DeleteOnClose, true);
-        centerWidget(dlg);
-        dlg->show();
+    if (directoryIndex >= dirs.size()) {
+        return;
     }
+
+    const auto &dir(dirs[directoryIndex]);
+    m_connection.requestDirPullErrors(dir.id);
+
+    auto *const dlg = new DirectoryErrorsDialog(m_connection, dir);
+    dlg->setAttribute(Qt::WA_DeleteOnClose, true);
+    centerWidget(dlg);
+    dlg->show();
 }
 
 void SyncthingApplet::copyToClipboard(const QString &text)

@@ -104,7 +104,7 @@ public Q_SLOTS:
     void showNotificationsDialog();
     void dismissNotifications();
     void showInternalErrorsDialog();
-    void showDirectoryErrors(unsigned int directoryIndex) const;
+    void showDirectoryErrors(unsigned int directoryIndex);
     void copyToClipboard(const QString &text);
     void updateStatusIconAndTooltip();
 

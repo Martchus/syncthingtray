@@ -953,6 +953,62 @@ void SyncthingConnection::readDirStatus()
 }
 
 /*!
+ * \brief Requests pull errors for \a dirId asynchronously.
+ *
+ * The dirStatusChanged() signal is emitted on success and error() in the error case.
+ */
+void SyncthingConnection::requestDirPullErrors(const QString &dirId, int page, int perPage)
+{
+    QUrlQuery query;
+    query.addQueryItem(QStringLiteral("folder"), dirId);
+    if (page > 0 && perPage > 0) {
+        query.addQueryItem(QStringLiteral("page"), QString::number(page));
+        query.addQueryItem(QStringLiteral("perpage"), QString::number(perPage));
+    }
+    auto *const reply = requestData(QStringLiteral("folder/pullerrors"), query);
+    reply->setProperty("dirId", dirId);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirPullErrors);
+}
+
+/*!
+ * \brief Reads data from requestDirPullErrors().
+ */
+void SyncthingConnection::readDirPullErrors()
+{
+    auto *const reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+
+    // determine relevant dir
+    int index;
+    const QString dirId(reply->property("dirId").toString());
+    SyncthingDir *const dir = findDirInfo(dirId, index);
+    if (!dir) {
+        // discard errors for unknown dirs
+        return;
+    }
+
+    switch (reply->error()) {
+    case QNetworkReply::NoError: {
+        // parse JSON
+        const QByteArray response(reply->readAll());
+        QJsonParseError jsonError;
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        if (jsonError.error != QJsonParseError::NoError) {
+            emitError(tr("Unable to parse pull errors for directory %1: ").arg(dirId), jsonError, reply, response);
+            return;
+        }
+
+        readFolderErrors(DateTime::gmtNow(), replyDoc.object(), *dir, index);
+        break;
+    }
+    case QNetworkReply::OperationCanceledError:
+        return;
+    default:
+        emitError(tr("Unable to request pull errors for directory %1: ").arg(dirId), SyncthingErrorCategory::SpecificRequest, reply);
+    }
+}
+
+/*!
  * \brief Requests completion for \a devId and \a dirId asynchronously.
  */
 void SyncthingConnection::requestCompletion(const QString &devId, const QString &dirId)
@@ -1279,6 +1335,7 @@ void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     neededStats.files = jsonValueToInt(summary.value(QLatin1String("needFiles")));
     neededStats.dirs = jsonValueToInt(summary.value(QLatin1String("needDirectories")));
     neededStats.symlinks = jsonValueToInt(summary.value(QLatin1String("needSymlinks")));
+    dir.pullErrorCount = jsonValueToInt(summary.value(QLatin1String("pullErrors")));
 
     dir.ignorePatterns = summary.value(QLatin1String("ignorePatterns")).toBool();
     dir.lastStatisticsUpdate = eventTime;
@@ -1715,13 +1772,24 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
     // handle unsuccessful operation
     const auto error(eventData.value(QLatin1String("error")).toString()), item(eventData.value(QLatin1String("item")).toString());
     if (!error.isEmpty()) {
-        if (dirInfo->status == SyncthingDirStatus::OutOfSync) {
+        // add error item if not already present
+        if (dirInfo->status != SyncthingDirStatus::OutOfSync) {
             // FIXME: find better way to check whether the event is still relevant
-            dirInfo->itemErrors.emplace_back(error, item);
-            // emitNotification will trigger status update, so no need to call setStatus(status())
-            emit dirStatusChanged(*dirInfo, index);
-            emitNotification(eventTime, error);
+            return;
         }
+        for (const auto &itemError : dirInfo->itemErrors) {
+            if (itemError.message == error && itemError.path == item) {
+                return;
+            }
+        }
+        dirInfo->itemErrors.emplace_back(error, item);
+        if (dirInfo->pullErrorCount < dirInfo->itemErrors.size()) {
+            dirInfo->pullErrorCount = dirInfo->itemErrors.size();
+        }
+
+        // emitNotification will trigger status update, so no need to call setStatus(status())
+        emit dirStatusChanged(*dirInfo, index);
+        emitNotification(eventTime, error);
         return;
     }
 
@@ -1740,31 +1808,38 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
 }
 
 /*!
- * \brief Reads results of requestEvents().
+ * \brief Reads results of requestEvents() and requestDirPullErrors().
  */
 void SyncthingConnection::readFolderErrors(DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index)
 {
-    const QJsonArray errors(eventData.value(QLatin1String("errors")).toArray());
-    if (errors.isEmpty()) {
-        return;
-    }
+    // ignore errors occurred before the last time the directory was in "sync" state (Syncthing re-emits recurring errors)
     if (dirInfo.lastSyncStarted > eventTime) {
         return;
     }
 
-    for (const QJsonValue &errorVal : errors) {
+    // clear previous errors (considering syncthing/lib/model/rwfolder.go it seems that also the event API always returns a
+    // full list of events and not only new ones)
+    dirInfo.itemErrors.clear();
+
+    // add errors
+    for (const QJsonValueRef errorVal : eventData.value(QLatin1String("errors")).toArray()) {
         const QJsonObject error(errorVal.toObject());
         if (error.isEmpty()) {
             continue;
         }
-        auto &errors = dirInfo.itemErrors;
-        SyncthingItemError dirError(error.value(QLatin1String("error")).toString(), error.value(QLatin1String("path")).toString());
-        if (find(errors.cbegin(), errors.cend(), dirError) != errors.cend()) {
-            continue;
-        }
-        errors.emplace_back(move(dirError));
+        dirInfo.itemErrors.emplace_back(error.value(QLatin1String("error")).toString(), error.value(QLatin1String("path")).toString());
+    }
+
+    // set pullErrorCount in case it has not already been populated from the FolderSummary event
+    if (dirInfo.pullErrorCount < dirInfo.itemErrors.size()) {
+        dirInfo.pullErrorCount = dirInfo.itemErrors.size();
+    }
+
+    // ensure the directory is considered out-of-sync
+    if (dirInfo.pullErrorCount) {
         dirInfo.assignStatus(SyncthingDirStatus::OutOfSync, eventTime);
     }
+
     emit dirStatusChanged(dirInfo, index);
 }
 

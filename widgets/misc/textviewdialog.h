@@ -22,7 +22,7 @@ public:
     TextViewDialog(const QString &title = QString(), QWidget *parent = nullptr);
 
     QTextBrowser *browser();
-    static TextViewDialog *forDirectoryErrors(const Data::SyncthingDir &dir);
+    QVBoxLayout *layout();
     static TextViewDialog *forLogEntries(Data::SyncthingConnection &connection);
     static TextViewDialog *forLogEntries(const std::vector<Data::SyncthingLogEntry> &logEntries, const QString &title = QString());
 
@@ -43,6 +43,12 @@ inline QTextBrowser *TextViewDialog::browser()
 {
     return m_browser;
 }
+
+inline QVBoxLayout *TextViewDialog::layout()
+{
+    return m_layout;
+}
+
 } // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_TEXTVIEWDIALOG_H
