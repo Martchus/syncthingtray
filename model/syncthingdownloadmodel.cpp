@@ -36,15 +36,13 @@ SyncthingDownloadModel::SyncthingDownloadModel(SyncthingConnection &connection, 
 
 QHash<int, QByteArray> SyncthingDownloadModel::roleNames() const
 {
-    const static auto roles([] {
-        QHash<int, QByteArray> roles;
-        roles[Qt::DisplayRole] = "name";
-        roles[Qt::DecorationRole] = "fileIcon";
-        roles[ItemPercentage] = "percentage";
-        roles[ItemProgressLabel] = "progressLabel";
-        roles[ItemPath] = "path";
-        return roles;
-    }());
+    const static QHash<int, QByteArray> roles{
+        { Qt::DisplayRole, "name" },
+        { Qt::DecorationRole, "fileIcon" },
+        { ItemPercentage, "percentage" },
+        { ItemProgressLabel, "progressLabel" },
+        { ItemPath, "path" },
+    };
     return roles;
 }
 
