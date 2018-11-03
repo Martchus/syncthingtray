@@ -1,7 +1,7 @@
 #include "./trayicon.h"
 #include "./traywidget.h"
 
-#include "../../widgets/misc/errorviewdialog.h"
+#include "../../widgets/misc/internalerrorsdialog.h"
 #include "../../widgets/misc/statusinfo.h"
 #include "../../widgets/misc/textviewdialog.h"
 #include "../../widgets/settings/settings.h"
@@ -208,7 +208,7 @@ void TrayIcon::showInternalError(
         m_messageClickedAction = TrayIconMessageClickedAction::ShowInternalErrors;
         showMessage(tr("Error"), errorMsg, QSystemTrayIcon::Critical);
     }
-    ErrorViewDialog::addError(move(error));
+    InternalErrorsDialog::addError(move(error));
     m_errorsAction->setVisible(true);
 }
 
@@ -274,8 +274,8 @@ void TrayIcon::showNewDir(const QString &devId, const QString &dirId, const QStr
 
 void TrayIcon::showInternalErrorsDialog()
 {
-    auto *const errorViewDlg = ErrorViewDialog::instance();
-    connect(errorViewDlg, &ErrorViewDialog::errorsCleared, this, &TrayIcon::handleErrorsCleared);
+    auto *const errorViewDlg = InternalErrorsDialog::instance();
+    connect(errorViewDlg, &InternalErrorsDialog::errorsCleared, this, &TrayIcon::handleErrorsCleared);
     centerWidget(errorViewDlg);
     errorViewDlg->show();
 }

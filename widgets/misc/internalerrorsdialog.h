@@ -1,5 +1,5 @@
-#ifndef SYNCTHINGWIDGETS_ERRORVIEWDIALOG_H
-#define SYNCTHINGWIDGETS_ERRORVIEWDIALOG_H
+#ifndef SYNCTHINGWIDGETS_INTERNAL_ERRORS_DIALOG_H
+#define SYNCTHINGWIDGETS_INTERNAL_ERRORS_DIALOG_H
 
 #include "./internalerror.h"
 #include "./textviewdialog.h"
@@ -10,11 +10,11 @@ QT_FORWARD_DECLARE_CLASS(QLabel)
 
 namespace QtGui {
 
-class SYNCTHINGWIDGETS_EXPORT ErrorViewDialog : public TextViewDialog {
+class SYNCTHINGWIDGETS_EXPORT InternalErrorsDialog : public TextViewDialog {
     Q_OBJECT
 public:
-    ~ErrorViewDialog() override;
-    static ErrorViewDialog *instance();
+    ~InternalErrorsDialog() override;
+    static InternalErrorsDialog *instance();
     static void addError(InternalError &&newError);
 
 Q_SIGNALS:
@@ -29,24 +29,24 @@ private Q_SLOTS:
     void updateStatusLabel();
 
 private:
-    ErrorViewDialog();
+    InternalErrorsDialog();
 
     const QString m_request;
     const QString m_response;
     QLabel *const m_statusLabel;
-    static ErrorViewDialog *s_instance;
+    static InternalErrorsDialog *s_instance;
     static std::vector<InternalError> s_internalErrors;
 };
 
-inline ErrorViewDialog *ErrorViewDialog::instance()
+inline InternalErrorsDialog *InternalErrorsDialog::instance()
 {
-    return s_instance ? s_instance : (s_instance = new ErrorViewDialog);
+    return s_instance ? s_instance : (s_instance = new InternalErrorsDialog);
 }
 
-inline void ErrorViewDialog::showInstance()
+inline void InternalErrorsDialog::showInstance()
 {
     instance()->show();
 }
 } // namespace QtGui
 
-#endif // SYNCTHINGWIDGETS_ERRORVIEWDIALOG_H
+#endif // SYNCTHINGWIDGETS_INTERNAL_ERRORS_DIALOG_H

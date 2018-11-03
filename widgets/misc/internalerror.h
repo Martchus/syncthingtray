@@ -1,5 +1,5 @@
-#ifndef SYNCTHINGWIDGETS_INTERNALERROR_H
-#define SYNCTHINGWIDGETS_INTERNALERROR_H
+#ifndef SYNCTHINGWIDGETS_INTERNAL_ERROR_H
+#define SYNCTHINGWIDGETS_INTERNAL_ERROR_H
 
 #include "../global.h"
 
@@ -36,4 +36,4 @@ inline InternalError::InternalError(const QString &message, const QUrl &url, con
 }
 } // namespace QtGui
 
-#endif // SYNCTHINGWIDGETS_INTERNALERROR_H
+#endif // SYNCTHINGWIDGETS_INTERNAL_ERROR_H

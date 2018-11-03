@@ -4,7 +4,7 @@
 #include "../../connector/syncthingservice.h"
 #include "../../connector/utils.h"
 
-#include "../../widgets/misc/errorviewdialog.h"
+#include "../../widgets/misc/internalerrorsdialog.h"
 #include "../../widgets/misc/otherdialogs.h"
 #include "../../widgets/misc/textviewdialog.h"
 #include "../../widgets/settings/settings.h"
@@ -307,8 +307,8 @@ void SyncthingApplet::dismissNotifications()
 
 void SyncthingApplet::showInternalErrorsDialog()
 {
-    auto *const errorViewDlg = ErrorViewDialog::instance();
-    connect(errorViewDlg, &ErrorViewDialog::errorsCleared, this, &SyncthingApplet::handleErrorsCleared);
+    auto *const errorViewDlg = InternalErrorsDialog::instance();
+    connect(errorViewDlg, &InternalErrorsDialog::errorsCleared, this, &SyncthingApplet::handleErrorsCleared);
     centerWidget(errorViewDlg);
     errorViewDlg->show();
 }
@@ -396,7 +396,7 @@ void SyncthingApplet::handleInternalError(
     }
     InternalError error(errorMsg, request.url(), response);
     m_dbusNotifier.showInternalError(error);
-    ErrorViewDialog::addError(move(error));
+    InternalErrorsDialog::addError(move(error));
 }
 
 void SyncthingApplet::handleErrorsCleared()

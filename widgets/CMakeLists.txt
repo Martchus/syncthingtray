@@ -16,7 +16,7 @@ set(WIDGETS_HEADER_FILES
     webview/webpage.h
     webview/webviewdialog.h
     misc/textviewdialog.h
-    misc/errorviewdialog.h
+    misc/internalerrorsdialog.h
     misc/statusinfo.h
     misc/dbusstatusnotifier.h
     misc/internalerror.h
@@ -32,7 +32,7 @@ set(WIDGETS_SRC_FILES
     webview/webviewinterceptor.h
     webview/webviewinterceptor.cpp
     misc/textviewdialog.cpp
-    misc/errorviewdialog.cpp
+    misc/internalerrorsdialog.cpp
     misc/statusinfo.cpp
     misc/dbusstatusnotifier.cpp
     misc/internalerror.cpp

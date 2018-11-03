@@ -1,4 +1,4 @@
-#include "./errorviewdialog.h"
+#include "./internalerrorsdialog.h"
 
 #include <QHBoxLayout>
 #include <QIcon>
@@ -18,10 +18,10 @@ using namespace Data;
 
 namespace QtGui {
 
-ErrorViewDialog *ErrorViewDialog::s_instance = nullptr;
-std::vector<InternalError> ErrorViewDialog::s_internalErrors;
+InternalErrorsDialog *InternalErrorsDialog::s_instance = nullptr;
+std::vector<InternalError> InternalErrorsDialog::s_internalErrors;
 
-ErrorViewDialog::ErrorViewDialog()
+InternalErrorsDialog::InternalErrorsDialog()
     : TextViewDialog(tr("Internal errors"))
     , m_request(tr("Request URL:"))
     , m_response(tr("Response:"))
@@ -55,21 +55,21 @@ ErrorViewDialog::ErrorViewDialog()
         buttonLayout->setMargin(0);
         buttonLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
         buttonLayout->addWidget(clearButton);
-        connect(clearButton, &QPushButton::clicked, &ErrorViewDialog::clearErrors);
-        connect(clearButton, &QPushButton::clicked, this, &ErrorViewDialog::errorsCleared);
+        connect(clearButton, &QPushButton::clicked, &InternalErrorsDialog::clearErrors);
+        connect(clearButton, &QPushButton::clicked, this, &InternalErrorsDialog::errorsCleared);
     }
 
     layout()->addItem(buttonLayout);
 }
 
-ErrorViewDialog::~ErrorViewDialog()
+InternalErrorsDialog::~InternalErrorsDialog()
 {
     if (s_instance == this) {
         s_instance = nullptr;
     }
 }
 
-void ErrorViewDialog::addError(InternalError &&newError)
+void InternalErrorsDialog::addError(InternalError &&newError)
 {
     s_internalErrors.emplace_back(newError);
     if (s_instance) {
@@ -78,7 +78,7 @@ void ErrorViewDialog::addError(InternalError &&newError)
     }
 }
 
-void ErrorViewDialog::internalAddError(const InternalError &error)
+void InternalErrorsDialog::internalAddError(const InternalError &error)
 {
     const QString url(error.url.toString());
 
@@ -96,13 +96,13 @@ void ErrorViewDialog::internalAddError(const InternalError &error)
     cerr << endl;
 }
 
-void ErrorViewDialog::updateStatusLabel()
+void InternalErrorsDialog::updateStatusLabel()
 {
     m_statusLabel->setText(tr("%1 error(s) occured", nullptr, static_cast<int>(min<size_t>(s_internalErrors.size(), numeric_limits<int>::max())))
                                .arg(s_internalErrors.size()));
 }
 
-void ErrorViewDialog::clearErrors()
+void InternalErrorsDialog::clearErrors()
 {
     s_internalErrors.clear();
     if (s_instance) {
