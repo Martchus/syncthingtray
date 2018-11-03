@@ -127,22 +127,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="496"/>
+        <location filename="../settings/settingsdialog.cpp" line="509"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="499"/>
+        <location filename="../settings/settingsdialog.cpp" line="512"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="504"/>
+        <location filename="../settings/settingsdialog.cpp" line="517"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="600"/>
+        <location filename="../settings/settingsdialog.cpp" line="613"/>
         <source>unable to modify startup entry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -273,27 +273,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="81"/>
+        <location filename="../settings/settingsdialog.cpp" line="82"/>
         <source>Auto-detected for local instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="103"/>
+        <location filename="../settings/settingsdialog.cpp" line="104"/>
         <source>Select Syncthing config file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="111"/>
+        <location filename="../settings/settingsdialog.cpp" line="112"/>
         <source>Unable to parse the Syncthing config file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="184"/>
+        <location filename="../settings/settingsdialog.cpp" line="197"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="209"/>
+        <location filename="../settings/settingsdialog.cpp" line="222"/>
         <source>Instance %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -352,29 +352,65 @@
     </message>
 </context>
 <context>
-    <name>QtGui::ErrorViewDialog</name>
+    <name>QtGui::DirectoryErrorsDialog</name>
     <message>
-        <location filename="../misc/errorviewdialog.cpp" line="25"/>
+        <location filename="../misc/direrrorsdialog.cpp" line="28"/>
+        <source>Errors for directory %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/direrrorsdialog.cpp" line="46"/>
+        <source>Remove non-empty directories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../misc/direrrorsdialog.cpp" line="83"/>
+        <source>%1 item(s) out-of-sync</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../misc/direrrorsdialog.cpp" line="113"/>
+        <source>Remove non-empty directories for folder &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/direrrorsdialog.cpp" line="114"/>
+        <source>Do you really want to remove the following directories:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/direrrorsdialog.cpp" line="137"/>
+        <source>Unable to remove the following dirs:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QtGui::InternalErrorsDialog</name>
+    <message>
+        <location filename="../misc/internalerrorsdialog.cpp" line="25"/>
         <source>Internal errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/errorviewdialog.cpp" line="26"/>
+        <location filename="../misc/internalerrorsdialog.cpp" line="26"/>
         <source>Request URL:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/errorviewdialog.cpp" line="27"/>
+        <location filename="../misc/internalerrorsdialog.cpp" line="27"/>
         <source>Response:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/errorviewdialog.cpp" line="53"/>
+        <location filename="../misc/internalerrorsdialog.cpp" line="53"/>
         <source>Clear errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/errorviewdialog.cpp" line="101"/>
+        <location filename="../misc/internalerrorsdialog.cpp" line="101"/>
         <source>%1 error(s) occured</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -428,7 +464,7 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="144"/>
-        <location filename="../settings/settingsdialog.cpp" line="766"/>
+        <location filename="../settings/settingsdialog.cpp" line="779"/>
         <source>Stop launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -443,39 +479,39 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="643"/>
+        <location filename="../settings/settingsdialog.cpp" line="656"/>
         <source>%1-launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="644"/>
+        <location filename="../settings/settingsdialog.cpp" line="657"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="645"/>
+        <location filename="../settings/settingsdialog.cpp" line="658"/>
         <source>%1 executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="646"/>
+        <location filename="../settings/settingsdialog.cpp" line="659"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="738"/>
+        <location filename="../settings/settingsdialog.cpp" line="751"/>
         <source>%1 exited with exit code %2
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="742"/>
+        <location filename="../settings/settingsdialog.cpp" line="755"/>
         <source>%1 crashed with exit code %2
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="791"/>
+        <location filename="../settings/settingsdialog.cpp" line="804"/>
         <source>Kill launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -563,7 +599,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="368"/>
+        <location filename="../settings/settingsdialog.cpp" line="381"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -589,22 +625,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="969"/>
+        <location filename="../settings/settingsdialog.cpp" line="982"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="976"/>
+        <location filename="../settings/settingsdialog.cpp" line="989"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="983"/>
+        <location filename="../settings/settingsdialog.cpp" line="996"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1005"/>
+        <location filename="../settings/settingsdialog.cpp" line="1018"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -760,8 +796,8 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../settings/systemdoptionpage.ui" line="99"/>
         <location filename="../settings/systemdoptionpage.ui" line="154"/>
         <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="884"/>
-        <location filename="../settings/settingsdialog.cpp" line="896"/>
+        <location filename="../settings/settingsdialog.cpp" line="897"/>
+        <location filename="../settings/settingsdialog.cpp" line="909"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -796,12 +832,12 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="857"/>
+        <location filename="../settings/settingsdialog.cpp" line="870"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="879"/>
+        <location filename="../settings/settingsdialog.cpp" line="892"/>
         <source>since </source>
         <translation type="unfinished"></translation>
     </message>
@@ -809,41 +845,8 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>QtGui::TextViewDialog</name>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="72"/>
-        <source>Errors of %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../misc/textviewdialog.cpp" line="90"/>
-        <source>%1 item(s) out-of-sync</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message>
-        <location filename="../misc/textviewdialog.cpp" line="100"/>
-        <source>Remove non-empty directories</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/textviewdialog.cpp" line="107"/>
-        <source>Remove non-empty directories for folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/textviewdialog.cpp" line="110"/>
-        <source>Do you really want to remove the following directories:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/textviewdialog.cpp" line="132"/>
-        <source>Unable to remove the following dirs:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/textviewdialog.cpp" line="144"/>
-        <location filename="../misc/textviewdialog.cpp" line="157"/>
+        <location filename="../misc/textviewdialog.cpp" line="61"/>
+        <location filename="../misc/textviewdialog.cpp" line="70"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
@@ -851,7 +854,7 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>QtGui::WebPage</name>
     <message>
-        <location filename="../webview/webpage.cpp" line="273"/>
+        <location filename="../webview/webpage.cpp" line="285"/>
         <source>Select path for Syncthing directory ...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -868,7 +871,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="918"/>
+        <location filename="../settings/settingsdialog.cpp" line="931"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -898,7 +901,7 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="920"/>
+        <location filename="../settings/settingsdialog.cpp" line="933"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>

@@ -31,25 +31,25 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="88"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="142"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="86"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="140"/>
         <source>Rescan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="96"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="94"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="96"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="149"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="94"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="147"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="106"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="156"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="104"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="154"/>
         <source>Open in file browser</source>
         <translation type="unfinished"></translation>
     </message>
@@ -217,17 +217,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="278"/>
+        <location filename="../lib/syncthingapplet.cpp" line="279"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="290"/>
+        <location filename="../lib/syncthingapplet.cpp" line="291"/>
         <source>New notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="432"/>
+        <location filename="../lib/syncthingapplet.cpp" line="439"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
