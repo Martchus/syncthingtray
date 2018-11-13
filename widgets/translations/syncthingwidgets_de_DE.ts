@@ -691,6 +691,38 @@
         <source>At least one device is paused</source>
         <translation>Mind. ein Gerät ist pausiert</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../misc/statusinfo.cpp" line="135"/>
+        <source>Connected to %1 devices</source>
+        <translation>
+            <numerusform>Mit %1 Gerät verbunden</numerusform>
+            <numerusform>Mit %1 Geräten verbunden</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../misc/statusinfo.cpp" line="138"/>
+        <source>Connected to %1 and %2 other devices</source>
+        <translation>
+            <numerusform>Mit %1 und einem weiteren Gerät verbunden</numerusform>
+            <numerusform>Mit %1 und %2 weiteren Geräten verbunden</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../misc/statusinfo.cpp" line="142"/>
+        <source>Connected to %1 and %2</source>
+        <translation>
+            <numerusform>Mit %1 und %2 verbunden</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../misc/statusinfo.cpp" line="145"/>
+        <source>Connected to %1</source>
+        <translation>
+            <numerusform>Mit %1 verbunden</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="58"/>
         <location filename="../misc/statusinfo.cpp" line="84"/>
@@ -708,33 +740,29 @@
         <translation>Status ist unbekannt</translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="135"/>
         <source>Conntected to %1 devices</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Mit %1 Gerät verbunden</numerusform>
             <numerusform>Mit %1 Geräten verbunden</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="138"/>
         <source>Conntected to %1 and %2 other devices</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Mit %1 und einem weiteren Gerät verbunden</numerusform>
             <numerusform>Mit %1 und %2 weiteren Geräten verbunden</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="142"/>
         <source>Conntected to %1 and %2</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Mit %1 und %2 verbunden</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="145"/>
         <source>Conntected to %1</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Mit %1 verbunden</numerusform>
             <numerusform></numerusform>
         </translation>
