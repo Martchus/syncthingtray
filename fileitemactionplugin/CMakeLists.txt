@@ -7,10 +7,18 @@ set(META_QT5_VERSION 5.8)
 
 # add project files
 set(HEADER_FILES
-    ${META_PROJECT_NAME}.h
+    syncthingmenuaction.h
+    syncthinginfoaction.h
+    syncthingdiractions.h
+    syncthingfileitemactionstaticdata.h
+    syncthingfileitemaction.h
 )
 set(SRC_FILES
-    ${META_PROJECT_NAME}.cpp
+    syncthingmenuaction.cpp
+    syncthinginfoaction.cpp
+    syncthingdiractions.cpp
+    syncthingfileitemactionstaticdata.cpp
+    syncthingfileitemaction.cpp
 )
 
 set(TS_FILES
