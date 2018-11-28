@@ -9,6 +9,9 @@ namespace Data {
 enum class SyncthingStatus;
 }
 
+/*!
+ * \brief The SyncthingMenuAction class provides the top-level menu "Syncthing" entry for the context menu.
+ */
 class SyncthingMenuAction : public QAction {
     Q_OBJECT
 

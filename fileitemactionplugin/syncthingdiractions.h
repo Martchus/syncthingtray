@@ -5,6 +5,9 @@
 
 #include "./syncthinginfoaction.h"
 
+/*!
+ * \brief The SyncthingDirActions class provides the read-only directory info actions.
+ */
 class SyncthingDirActions : public QObject {
     Q_OBJECT
     friend QList<QAction *> &operator<<(QList<QAction *> &, SyncthingDirActions &);

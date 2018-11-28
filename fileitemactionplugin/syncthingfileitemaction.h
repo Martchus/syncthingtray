@@ -7,6 +7,10 @@
 
 class KFileItemListProperties;
 
+/*!
+ * \brief The SyncthingFileItemAction class implements the plugin interface.
+ * \remarks This is the only class directly used by Dolphin.
+ */
 class SyncthingFileItemAction : public KAbstractFileItemActionPlugin {
     Q_OBJECT
 

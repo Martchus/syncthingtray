@@ -3,6 +3,12 @@
 
 #include "../connector/syncthingconnection.h"
 
+/*!
+ * \brief The SyncthingFileItemActionStaticData class holds objects required during the whole application's live time.
+ *
+ * For instance the connection to Syncthing is kept alive until Dolphin is closed to prevent re-establishing it on each and
+ * every time the context menu is shown.
+ */
 class SyncthingFileItemActionStaticData : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString configPath READ configPath)
