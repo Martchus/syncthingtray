@@ -29,7 +29,8 @@ void SyncthingInfoWidget::updateFromSender()
 void SyncthingInfoWidget::updateFromAction(const SyncthingInfoAction *action)
 {
     auto text(action->text());
-    m_textLabel->setText(text.startsWith(QChar('&')) ? text.mid(1) : std::move(text));
+    text.replace(QChar('&'), QString()); // FIXME: find a better way to get rid of '&' in QAction::text()
+    m_textLabel->setText(std::move(text));
     m_iconLabel->setPixmap(action->icon().pixmap(16));
     setVisible(action->isVisible());
 }
