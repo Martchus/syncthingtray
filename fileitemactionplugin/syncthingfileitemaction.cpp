@@ -109,7 +109,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     actions.reserve(32);
     if (!detectedItems.isEmpty()) {
         actions << new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")),
-            detectedItems.size() == 1 ? tr("Rescan %1 (in %2)").arg(detectedItems.front().name, detectedItems.front().dir->displayName())
+            detectedItems.size() == 1 ? tr("Rescan \"%1\" (in \"%2\")").arg(detectedItems.front().name, detectedItems.front().dir->displayName())
                                       : tr("Rescan selected items"),
             parentWidget);
         if (connection.isConnected()) {
@@ -125,7 +125,8 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     if (!detectedDirs.isEmpty()) {
         // rescan item
         actions << new QAction(QIcon::fromTheme(QStringLiteral("folder-sync")),
-            detectedDirs.size() == 1 ? tr("Rescan %1").arg(detectedDirs.front()->displayName()) : tr("Rescan selected directories"), parentWidget);
+            detectedDirs.size() == 1 ? tr("Rescan \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Rescan selected directories"),
+            parentWidget);
         if (connection.isConnected()) {
             for (const SyncthingDir *dir : detectedDirs) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, dir->id, QString()));
@@ -148,11 +149,12 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         }
         if (isPaused) {
             actions << new QAction(QIcon::fromTheme(QStringLiteral("media-playback-start")),
-                detectedDirs.size() == 1 ? tr("Resume %1").arg(detectedDirs.front()->displayName()) : tr("Resume selected directories"),
+                detectedDirs.size() == 1 ? tr("Resume \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Resume selected directories"),
                 parentWidget);
         } else {
             actions << new QAction(QIcon::fromTheme(QStringLiteral("media-playback-pause")),
-                detectedDirs.size() == 1 ? tr("Pause %1").arg(detectedDirs.front()->displayName()) : tr("Pause selected directories"), parentWidget);
+                detectedDirs.size() == 1 ? tr("Pause \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Pause selected directories"),
+                parentWidget);
         }
         if (connection.isConnected()) {
             connect(actions.back(), &QAction::triggered,
@@ -166,7 +168,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     if (!containingDirs.isEmpty()) {
         // rescan item
         actions << new QAction(QIcon::fromTheme(QStringLiteral("folder-sync")),
-            containingDirs.size() == 1 ? tr("Rescan %1").arg(containingDirs.front()->displayName()) : tr("Rescan containing directories"),
+            containingDirs.size() == 1 ? tr("Rescan \"%1\"").arg(containingDirs.front()->displayName()) : tr("Rescan containing directories"),
             parentWidget);
         if (connection.isConnected()) {
             for (const SyncthingDir *dir : containingDirs) {
@@ -189,11 +191,11 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         }
         if (isPaused) {
             actions << new QAction(QIcon::fromTheme(QStringLiteral("media-playback-start")),
-                containingDirs.size() == 1 ? tr("Resume %1").arg(containingDirs.front()->displayName()) : tr("Resume containing directories"),
+                containingDirs.size() == 1 ? tr("Resume \"%1\"").arg(containingDirs.front()->displayName()) : tr("Resume containing directories"),
                 parentWidget);
         } else {
             actions << new QAction(QIcon::fromTheme(QStringLiteral("media-playback-pause")),
-                containingDirs.size() == 1 ? tr("Pause %1").arg(containingDirs.front()->displayName()) : tr("Pause containing directories"),
+                containingDirs.size() == 1 ? tr("Pause \"%1\"").arg(containingDirs.front()->displayName()) : tr("Pause containing directories"),
                 parentWidget);
         }
         if (connection.isConnected()) {
