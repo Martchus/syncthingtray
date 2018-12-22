@@ -50,90 +50,66 @@
 <context>
     <name>SyncthingFileItemAction</name>
     <message>
-        <source>Rescan %1 (in %2)</source>
-        <translation type="vanished">&quot;%1&quot; neu scannen (in &quot;%2&quot;)</translation>
-    </message>
-    <message>
         <location filename="../syncthingfileitemaction.cpp" line="113"/>
         <source>Rescan selected items</source>
         <translation>Auswahl neu scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="128"/>
+        <location filename="../syncthingfileitemaction.cpp" line="131"/>
         <source>Rescan selected directories</source>
         <translation>Ausgewählte Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="152"/>
+        <location filename="../syncthingfileitemaction.cpp" line="155"/>
         <source>Resume selected directories</source>
         <translation>Ausgewählte verzeichnisse fortsetzen</translation>
     </message>
     <message>
-        <source>Rescan %1</source>
-        <translation type="vanished">&quot;%1&quot; neu scannen</translation>
-    </message>
-    <message>
-        <source>Syncthing connection error</source>
-        <translation type="vanished">Fehler beim Verbinden mit Syncthing</translation>
-    </message>
-    <message>
-        <location filename="../syncthingfileitemaction.cpp" line="112"/>
-        <source>Rescan &quot;%1&quot; (in &quot;%2&quot;)</source>
-        <translation>&quot;%1&quot; neu scannen (in &quot;%1&quot;)</translation>
-    </message>
-    <message>
-        <location filename="../syncthingfileitemaction.cpp" line="128"/>
-        <location filename="../syncthingfileitemaction.cpp" line="171"/>
+        <location filename="../syncthingfileitemaction.cpp" line="115"/>
+        <location filename="../syncthingfileitemaction.cpp" line="131"/>
+        <location filename="../syncthingfileitemaction.cpp" line="174"/>
         <source>Rescan &quot;%1&quot;</source>
         <translation>&quot;%1&quot; neu scannen</translation>
     </message>
     <message>
-        <source>Resume %1</source>
-        <translation type="vanished">&quot;%1&quot; fortsetzen</translation>
-    </message>
-    <message>
-        <source>Pause %1</source>
-        <translation type="vanished">&quot;%1&quot; pausieren</translation>
-    </message>
-    <message>
-        <location filename="../syncthingfileitemaction.cpp" line="156"/>
+        <location filename="../syncthingfileitemaction.cpp" line="159"/>
         <source>Pause selected directories</source>
         <translation>Ausgewählte Verzeichnisse pausieren</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="171"/>
+        <location filename="../syncthingfileitemaction.cpp" line="174"/>
         <source>Rescan containing directories</source>
         <translation>Beinhaltendes Verzeichnis neu scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="194"/>
+        <location filename="../syncthingfileitemaction.cpp" line="197"/>
         <source>Resume containing directories</source>
         <translation>Beinhaltendes Verzeichnis fortsetzen</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="152"/>
-        <location filename="../syncthingfileitemaction.cpp" line="194"/>
+        <location filename="../syncthingfileitemaction.cpp" line="155"/>
+        <location filename="../syncthingfileitemaction.cpp" line="197"/>
         <source>Resume &quot;%1&quot;</source>
         <translation>&quot;%1&quot; fortsetzen (in &quot;%1&quot;)</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="198"/>
+        <location filename="../syncthingfileitemaction.cpp" line="201"/>
         <source>Pause containing directories</source>
         <translation>Beinhaltendes Verzeichnis pausieren</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="156"/>
-        <location filename="../syncthingfileitemaction.cpp" line="198"/>
+        <location filename="../syncthingfileitemaction.cpp" line="159"/>
+        <location filename="../syncthingfileitemaction.cpp" line="201"/>
         <source>Pause &quot;%1&quot;</source>
         <translation>&quot;%1&quot; pausieren (in &quot;%1&quot;)</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="237"/>
+        <location filename="../syncthingfileitemaction.cpp" line="240"/>
         <source>Select Syncthing config ...</source>
         <translation>Syncthing-Konfiguration wählen ...</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="242"/>
+        <location filename="../syncthingfileitemaction.cpp" line="245"/>
         <source>About</source>
         <translation>Über</translation>
     </message>

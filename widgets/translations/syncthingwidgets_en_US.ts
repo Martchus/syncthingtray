@@ -737,20 +737,6 @@
         <source>Status is unknown</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <source>Conntected to %1 devices</source>
-        <translation type="vanished">
-            <numerusform>Conntected to %1 device</numerusform>
-            <numerusform>Conntected to %1 devices</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>Conntected to %1 and %2 other devices</source>
-        <translation type="vanished">
-            <numerusform>Conntected to %1 and %2 other device</numerusform>
-            <numerusform>Conntected to %1 and %2 other devices</numerusform>
-        </translation>
-    </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="111"/>
         <source>Not connected to other devices</source>

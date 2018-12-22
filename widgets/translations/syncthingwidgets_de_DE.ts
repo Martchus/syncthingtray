@@ -739,34 +739,6 @@
         <source>Status is unknown</source>
         <translation>Status ist unbekannt</translation>
     </message>
-    <message numerus="yes">
-        <source>Conntected to %1 devices</source>
-        <translation type="vanished">
-            <numerusform>Mit %1 Gerät verbunden</numerusform>
-            <numerusform>Mit %1 Geräten verbunden</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>Conntected to %1 and %2 other devices</source>
-        <translation type="vanished">
-            <numerusform>Mit %1 und einem weiteren Gerät verbunden</numerusform>
-            <numerusform>Mit %1 und %2 weiteren Geräten verbunden</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>Conntected to %1 and %2</source>
-        <translation type="vanished">
-            <numerusform>Mit %1 und %2 verbunden</numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>Conntected to %1</source>
-        <translation type="vanished">
-            <numerusform>Mit %1 verbunden</numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="111"/>
         <source>Not connected to other devices</source>
