@@ -29,8 +29,8 @@ SyncthingItem::SyncthingItem(const SyncthingDir *dir, const QString &path)
     : dir(dir)
     , path(path)
 {
-    int lastSep = path.lastIndexOf(QChar('/'));
-    if (lastSep > 0) {
+    const auto lastSep = path.lastIndexOf(QChar('/'));
+    if (lastSep >= 0) {
         name = path.mid(lastSep + 1);
     } else {
         name = path;
@@ -108,10 +108,13 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     // add actions for the selected items itself
     actions.reserve(32);
     if (!detectedItems.isEmpty()) {
-        actions << new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")),
-            detectedItems.size() == 1 ? tr("Rescan \"%1\" (in \"%2\")").arg(detectedItems.front().name, detectedItems.front().dir->displayName())
-                                      : tr("Rescan selected items"),
-            parentWidget);
+        QString rescanLabel;
+        if (detectedItems.size() > 1) {
+            rescanLabel = tr("Rescan selected items");
+        } else {
+            rescanLabel = tr("Rescan \"%1\"").arg(detectedItems.front().name);
+        }
+        actions << new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")), rescanLabel, parentWidget);
         if (connection.isConnected()) {
             for (const SyncthingItem &item : detectedItems) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, item.dir->id, item.path));
