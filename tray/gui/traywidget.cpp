@@ -366,7 +366,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     m_ui->connectionsPushButton->setText(m_selectedConnection->label);
     const bool reconnectRequired = m_connection.applySettings(*m_selectedConnection);
 
-    // apply notifiction settings
+    // apply notification settings
     settings.apply(m_notifier);
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
