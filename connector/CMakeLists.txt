@@ -108,7 +108,7 @@ endif()
 option(SYNCTHING_SERVICE_MOCKED "enables mocking the SyncthingService class so it will provide some fake status" OFF)
 if(SYNCTHING_SERVICE_MOCKED)
     set_property(
-        SORUCE syncthingservice.cpp
+        SOURCE syncthingservice.cpp
         APPEND PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SERVICE_MOCKED
     )
     message(WARNING "SyncthingService class will be mocked")
