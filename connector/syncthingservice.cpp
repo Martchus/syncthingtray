@@ -82,12 +82,26 @@ SyncthingService::SyncthingService(QObject *parent)
     connect(m_serviceWatcher, &QDBusServiceWatcher::serviceRegistered, this, &SyncthingService::handleServiceRegisteredChanged);
     connect(m_serviceWatcher, &QDBusServiceWatcher::serviceUnregistered, this, &SyncthingService::handleServiceRegisteredChanged);
 #else
-    // let the mocked service initially be stopped and simulate start after 5 seconds
+    // let the mocked service initially be stopped and simulate start after 5 seconds, then stop after 10 seconds and start after 15 seconds
     QTimer::singleShot(5000, this, [this] {
         m_activeSince = DateTime::gmtNow() - TimeSpan::fromMilliseconds(250);
         handlePropertiesChanged(QStringLiteral("syncthing.mocked-service"),
             QVariantMap{ { QStringLiteral("ActiveState"), QStringLiteral("active") }, { QStringLiteral("SubState"), QStringLiteral("running") },
                 { QStringLiteral("Description"), QStringLiteral("This service is fake.") } },
+            QStringList());
+    });
+    QTimer::singleShot(10000, this, [this] {
+        m_activeSince = DateTime();
+        handlePropertiesChanged(QStringLiteral("syncthing.mocked-service"),
+            QVariantMap{ { QStringLiteral("ActiveState"), QStringLiteral("inactive") }, { QStringLiteral("SubState"), QStringLiteral("dead") },
+                { QStringLiteral("Description"), QStringLiteral("This service is still fake.") } },
+            QStringList());
+    });
+    QTimer::singleShot(15000, this, [this] {
+        m_activeSince = DateTime::gmtNow();
+        handlePropertiesChanged(QStringLiteral("syncthing.mocked-service"),
+            QVariantMap{ { QStringLiteral("ActiveState"), QStringLiteral("active") }, { QStringLiteral("SubState"), QStringLiteral("running") },
+                { QStringLiteral("Description"), QStringLiteral("This service is alive again!") } },
             QStringList());
     });
 #endif
