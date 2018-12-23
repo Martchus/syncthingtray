@@ -50,6 +50,9 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     const auto &connection(widget.connection());
     const auto &notifier(widget.notifier());
 
+    // update status icon and text so the icon is immediately visible also when the connection isn't
+    updateStatusIconAndText();
+
     // set context menu
     connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("internet-web-browser"),
                                         QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))),
