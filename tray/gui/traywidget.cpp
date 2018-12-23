@@ -530,14 +530,6 @@ bool TrayWidget::applySystemdSettings(bool reconnectRequired)
     }
     return isServiceRelevant && isServiceRunning;
 }
-
-void TrayWidget::connectIfServiceRunning()
-{
-    const auto *const service(SyncthingService::mainInstance());
-    if (Settings::values().systemd.considerForReconnect && m_connection.isLocal() && service && service->isRunning()) {
-        m_connection.connect();
-    }
-}
 #endif
 
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
