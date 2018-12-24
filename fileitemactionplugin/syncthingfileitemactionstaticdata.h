@@ -41,6 +41,8 @@ Q_SIGNALS:
     void hasErrorChanged(bool hasError);
 
 private:
+    void appendNoteToError(QString &errorMessage, const QString &newSyncthingConfigFilePath) const;
+
     Data::SyncthingConnection m_connection;
     QString m_configFilePath;
     QString m_currentError;

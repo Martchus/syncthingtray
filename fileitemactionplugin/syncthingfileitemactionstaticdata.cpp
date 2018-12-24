@@ -12,6 +12,7 @@
 #include <qtutilities/resources/resources.h>
 
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QSettings>
 
@@ -107,6 +108,14 @@ void SyncthingFileItemActionStaticData::selectSyncthingConfig()
     }
 }
 
+void SyncthingFileItemActionStaticData::appendNoteToError(QString &errorMessage, const QString &newSyncthingConfigFilePath) const
+{
+    if (!m_configFilePath.isEmpty() && m_configFilePath != newSyncthingConfigFilePath) {
+        errorMessage += QChar('\n');
+        errorMessage += tr("(still using config from \"%1\")").arg(m_configFilePath);
+    }
+}
+
 bool SyncthingFileItemActionStaticData::applySyncthingConfiguration(const QString &syncthingConfigFilePath)
 {
     clearCurrentError();
@@ -121,14 +130,31 @@ bool SyncthingFileItemActionStaticData::applySyncthingConfiguration(const QStrin
     SyncthingConfig config;
     if (!config.restore(syncthingConfigFilePath)) {
         auto errorMessage = tr("Unable to load Syncthing config from \"%1\"").arg(syncthingConfigFilePath);
-        if (!m_configFilePath.isEmpty() && m_configFilePath != syncthingConfigFilePath) {
-            errorMessage += QChar('\n');
-            errorMessage += tr("(still using config from \"%1\")").arg(m_configFilePath);
-        }
+        appendNoteToError(errorMessage, syncthingConfigFilePath);
         setCurrentError(errorMessage);
         return false;
     }
     cerr << "Syncthing config loaded from \"" << syncthingConfigFilePath.toLocal8Bit().data() << "\"" << endl;
+
+    // check whether the URL is present
+    if (config.guiAddress.isEmpty()) {
+        auto errorMessage = tr("Syncthing config from \"%1\" does not contain GUI address.").arg(syncthingConfigFilePath);
+        appendNoteToError(errorMessage, syncthingConfigFilePath);
+        setCurrentError(errorMessage);
+        return false;
+    }
+
+    // check whether the API key is present
+    if (config.guiApiKey.isEmpty()) {
+        config.guiApiKey = QInputDialog::getText(
+            nullptr, tr("Enter API key"), tr("The selected config file does not contain an API key. Please enter the API key manually:"));
+        if (config.guiApiKey.isEmpty()) {
+            auto errorMessage = tr("No API key supplied for \"%1\".").arg(config.guiAddress);
+            appendNoteToError(errorMessage, syncthingConfigFilePath);
+            setCurrentError(errorMessage);
+            return false;
+        }
+    }
 
     // make connection settings
     SyncthingConnectionSettings settings;

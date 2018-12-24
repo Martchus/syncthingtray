@@ -1,0 +1,9 @@
+<configuration version="28">
+    <gui enabled="true" tls="false" debugging="false">
+        <address>localhost:4001</address>
+        <user>nobody</user>
+        <password>$2a$12$35MnbsQgQNn1hzPYK/lWXOaP.U5D2TO0nuuQy2M4gsqJB4ff4q2RK</password>
+        <apikey></apikey>
+        <theme>default</theme>
+    </gui>
+</configuration>
