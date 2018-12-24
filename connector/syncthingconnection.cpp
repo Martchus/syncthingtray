@@ -816,7 +816,7 @@ void SyncthingConnection::emitError(const QString &message, const QJsonParseErro
  */
 void SyncthingConnection::emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply)
 {
-    emit error(message + reply->errorString(), category, reply->error(), reply->request(), reply->readAll());
+    emit error(message + reply->errorString(), category, reply->error(), reply->request(), reply->bytesAvailable() ? reply->readAll() : QByteArray());
 }
 
 /*!
