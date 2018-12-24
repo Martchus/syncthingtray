@@ -27,7 +27,7 @@ public:
 
 public Q_SLOTS:
     void initialize();
-    bool applySyncthingConfiguration(const QString &syncthingConfigFilePath);
+    bool applySyncthingConfiguration(const QString &syncthingConfigFilePath, const QString &syncthingApiKey, bool skipSavingConfig);
     void logConnectionStatus();
     void logConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory errorCategory);
     void rescanDir(const QString &dirId, const QString &relpath = QString());

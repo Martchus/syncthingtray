@@ -52,7 +52,7 @@ void SyncthingFileItemActionStaticData::initialize()
         }
         return SyncthingConfig::locateConfigFile();
     }();
-    applySyncthingConfiguration(m_configFilePath);
+    applySyncthingConfiguration(m_configFilePath, settingsFile.value(QStringLiteral("syncthingApiKey")).toString(), true);
 
     // prevent unnecessary API calls (for the purpose of the context menu)
     m_connection.disablePolling();
@@ -102,9 +102,8 @@ void SyncthingFileItemActionStaticData::showAboutDialog()
 void SyncthingFileItemActionStaticData::selectSyncthingConfig()
 {
     const auto configFilePath = QFileDialog::getOpenFileName(nullptr, tr("Select Syncthing config file") + QStringLiteral(" - " APP_NAME));
-    if (!configFilePath.isEmpty() && applySyncthingConfiguration(configFilePath)) {
-        QSettings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral(PROJECT_NAME))
-            .setValue(QStringLiteral("syncthingConfigPath"), m_configFilePath = configFilePath);
+    if (!configFilePath.isEmpty()) {
+        applySyncthingConfiguration(configFilePath, QString(), false);
     }
 }
 
@@ -116,7 +115,8 @@ void SyncthingFileItemActionStaticData::appendNoteToError(QString &errorMessage,
     }
 }
 
-bool SyncthingFileItemActionStaticData::applySyncthingConfiguration(const QString &syncthingConfigFilePath)
+bool SyncthingFileItemActionStaticData::applySyncthingConfiguration(
+    const QString &syncthingConfigFilePath, const QString &syncthingApiKey, bool skipSavingConfig)
 {
     clearCurrentError();
 
@@ -146,6 +146,9 @@ bool SyncthingFileItemActionStaticData::applySyncthingConfiguration(const QStrin
 
     // check whether the API key is present
     if (config.guiApiKey.isEmpty()) {
+        config.guiApiKey = syncthingApiKey;
+    }
+    if (config.guiApiKey.isEmpty()) {
         config.guiApiKey = QInputDialog::getText(
             nullptr, tr("Enter API key"), tr("The selected config file does not contain an API key. Please enter the API key manually:"));
         if (config.guiApiKey.isEmpty()) {
@@ -157,9 +160,9 @@ bool SyncthingFileItemActionStaticData::applySyncthingConfiguration(const QStrin
     }
 
     // make connection settings
-    SyncthingConnectionSettings settings;
-    settings.syncthingUrl = config.syncthingUrl();
-    settings.apiKey.append(config.guiApiKey);
+    SyncthingConnectionSettings connectionSettings;
+    connectionSettings.syncthingUrl = config.syncthingUrl();
+    connectionSettings.apiKey.append(config.guiApiKey);
 
     // establish connection
     bool ok;
@@ -168,7 +171,15 @@ bool SyncthingFileItemActionStaticData::applySyncthingConfiguration(const QStrin
         reconnectInterval = 10000;
     }
     m_connection.setAutoReconnectInterval(reconnectInterval);
-    m_connection.reconnect(settings);
+    m_connection.reconnect(connectionSettings);
+
+    // save new config persistently
+    if (!skipSavingConfig) {
+        QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral(PROJECT_NAME));
+        settings.setValue(QStringLiteral("syncthingConfigPath"), m_configFilePath = syncthingConfigFilePath);
+        settings.setValue(QStringLiteral("syncthingApiKey"), config.guiApiKey);
+    }
+
     return true;
 }
 
