@@ -1,6 +1,8 @@
 #ifndef SYNCTHINGMENUACTION_H
 #define SYNCTHINGMENUACTION_H
 
+#include "../connector/syncthingnotifier.h"
+
 #include <KFileItemListProperties>
 
 #include <QAction>
@@ -19,11 +21,15 @@ public:
     explicit SyncthingMenuAction(const KFileItemListProperties &properties = KFileItemListProperties(),
         const QList<QAction *> &actions = QList<QAction *>(), QWidget *parentWidget = nullptr);
 
-public Q_SLOTS:
-    void updateStatus(Data::SyncthingStatus status);
+private Q_SLOTS:
+    void handleConnectedChanged();
+    void updateActionStatus();
 
 private:
+    void createMenu(const QList<QAction *> &actions);
+
     KFileItemListProperties m_properties;
+    Data::SyncthingNotifier m_notifier;
 };
 
 #endif // SYNCTHINGMENUACTION_H

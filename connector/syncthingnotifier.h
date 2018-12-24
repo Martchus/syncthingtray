@@ -60,6 +60,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingNotifier : public QObject {
 public:
     SyncthingNotifier(const SyncthingConnection &connection, QObject *parent = nullptr);
 
+    const SyncthingConnection &connection() const;
     SyncthingHighLevelNotification enabledNotifications() const;
     unsigned int ignoreInavailabilityAfterStart() const;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -111,6 +112,14 @@ private:
     unsigned int m_ignoreInavailabilityAfterStart;
     bool m_initialized;
 };
+
+/*!
+ * \brief Returns the associated connection.
+ */
+inline const SyncthingConnection &SyncthingNotifier::connection() const
+{
+    return m_connection;
+}
 
 /*!
  * \brief Returns which notifications are enabled (by default none).

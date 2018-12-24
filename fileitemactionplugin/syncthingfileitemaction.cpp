@@ -47,18 +47,11 @@ SyncthingFileItemAction::SyncthingFileItemAction(QObject *parent, const QVariant
 
 QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties &fileItemInfo, QWidget *parentWidget)
 {
-    // handle case when not connected yet
-    if (!s_data.connection().isConnected()) {
-        s_data.connection().connect();
-        auto *menuAction = new SyncthingMenuAction(fileItemInfo, QList<QAction *>(), parentWidget);
-        connect(&s_data.connection(), &SyncthingConnection::statusChanged, menuAction, &SyncthingMenuAction::updateStatus);
-        return QList<QAction *>() << menuAction;
-    }
-
     const QList<QAction *> actions = createActions(fileItemInfo, parentWidget);
+
     // don't show anything if no relevant actions could be determined
-    if (actions.isEmpty()) {
-        return actions;
+    if (s_data.connection().isConnected() && actions.isEmpty()) {
+        return QList<QAction *>();
     }
 
     return QList<QAction *>({ new SyncthingMenuAction(fileItemInfo, actions, parentWidget) });
