@@ -81,6 +81,65 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
     return reply;
 }
 
+/*!
+ * \brief Prepares the current reply.
+ */
+QNetworkReply *SyncthingConnection::prepareReply()
+{
+    auto *const reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+
+    // skip further processing if aborting to reconnect
+    if (m_abortingToReconnect) {
+        handleAdditionalRequestCanceled();
+        return nullptr;
+    }
+
+    return reply;
+}
+
+/*!
+ * \brief Prepares the current reply.
+ */
+QNetworkReply *SyncthingConnection::prepareReply(QNetworkReply *&expectedReply)
+{
+    auto *const reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+
+    // unset the expected reply so it is no longer considered pending
+    if (reply == expectedReply) {
+        expectedReply = nullptr;
+    }
+
+    // skip further processing if aborting to reconnect
+    if (m_abortingToReconnect) {
+        handleAdditionalRequestCanceled();
+        return nullptr;
+    }
+
+    return reply;
+}
+
+/*!
+ * \brief Prepares the current reply.
+ */
+QNetworkReply *SyncthingConnection::prepareReply(QList<QNetworkReply *> &expectedReplies)
+{
+    auto *const reply = static_cast<QNetworkReply *>(sender());
+    reply->deleteLater();
+
+    // unset the expected reply so it is no longer considered pending
+    expectedReplies.removeAll(reply);
+
+    // skip further processing if aborting to reconnect
+    if (m_abortingToReconnect) {
+        handleAdditionalRequestCanceled();
+        return nullptr;
+    }
+
+    return reply;
+}
+
 // pause/resume devices
 
 /*!
@@ -159,8 +218,11 @@ bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paus
  */
 void SyncthingConnection::readDevPauseResume()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
+    auto *const reply = prepareReply();
+    if (!reply) {
+        return;
+    }
+
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         const QStringList devIds(reply->property("devIds").toStringList());
@@ -260,8 +322,11 @@ bool SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool p
 
 void SyncthingConnection::readDirPauseResume()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
+    auto *const reply = prepareReply();
+    if (!reply) {
+        return;
+    }
+
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         const QStringList dirIds(reply->property("dirIds").toStringList());
@@ -326,8 +391,11 @@ void SyncthingConnection::rescan(const QString &dirId, const QString &relpath)
  */
 void SyncthingConnection::readRescan()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
+    auto *const reply = prepareReply();
+    if (!reply) {
+        return;
+    }
+
     switch (reply->error()) {
     case QNetworkReply::NoError:
         emit rescanTriggered(reply->property("dirId").toString());
@@ -354,8 +422,11 @@ void SyncthingConnection::restart()
  */
 void SyncthingConnection::readRestart()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
+    auto *const reply = prepareReply();
+    if (!reply) {
+        return;
+    }
+
     switch (reply->error()) {
     case QNetworkReply::NoError:
         emit restartTriggered();
@@ -380,8 +451,11 @@ void SyncthingConnection::shutdown()
  */
 void SyncthingConnection::readShutdown()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
+    auto *const reply = prepareReply();
+    if (!reply) {
+        return;
+    }
+
     switch (reply->error()) {
     case QNetworkReply::NoError:
         emit shutdownTriggered();
@@ -409,8 +483,10 @@ void SyncthingConnection::requestClearingErrors()
  */
 void SyncthingConnection::readClearingErrors()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
+    auto *const reply = prepareReply();
+    if (!reply) {
+        return;
+    }
 
     switch (reply->error()) {
     case QNetworkReply::NoError:
@@ -441,10 +517,9 @@ void SyncthingConnection::requestConfig()
  */
 void SyncthingConnection::readConfig()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-    if (reply == m_configReply) {
-        m_configReply = nullptr;
+    auto *const reply = prepareReply(m_configReply);
+    if (!reply) {
+        return;
     }
 
     switch (reply->error()) {
@@ -469,6 +544,7 @@ void SyncthingConnection::readConfig()
 
         readDevs(m_rawConfig.value(QLatin1String("devices")).toArray());
         readDirs(m_rawConfig.value(QLatin1String("folders")).toArray());
+        emit newConfigApplied();
         break;
     }
     case QNetworkReply::OperationCanceledError:
@@ -580,10 +656,9 @@ void SyncthingConnection::requestStatus()
  */
 void SyncthingConnection::readStatus()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-    if (reply == m_statusReply) {
-        m_statusReply = nullptr;
+    auto *const reply = prepareReply(m_statusReply);
+    if (!reply) {
+        return;
     }
 
     switch (reply->error()) {
@@ -647,10 +722,9 @@ void SyncthingConnection::requestConnections()
  */
 void SyncthingConnection::readConnections()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-    if (reply == m_connectionsReply) {
-        m_connectionsReply = nullptr;
+    auto *const reply = prepareReply(m_connectionsReply);
+    if (!reply) {
+        return;
     }
 
     switch (reply->error()) {
@@ -757,10 +831,9 @@ void SyncthingConnection::requestErrors()
  */
 void SyncthingConnection::readErrors()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-    if (reply == m_errorsReply) {
-        m_errorsReply = nullptr;
+    auto *const reply = prepareReply(m_errorsReply);
+    if (!reply) {
+        return;
     }
 
     // ignore any errors occured before connecting
@@ -826,10 +899,9 @@ void SyncthingConnection::requestDirStatistics()
  */
 void SyncthingConnection::readDirStatistics()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-    if (reply == m_dirStatsReply) {
-        m_dirStatsReply = nullptr;
+    auto *const reply = prepareReply(m_dirStatsReply);
+    if (!reply) {
+        return;
     }
 
     switch (reply->error()) {
@@ -913,9 +985,10 @@ void SyncthingConnection::requestDirStatus(const QString &dirId)
  */
 void SyncthingConnection::readDirStatus()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-    m_otherReplies.removeAll(reply);
+    auto *const reply = prepareReply(m_otherReplies);
+    if (!reply) {
+        return;
+    }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
@@ -975,8 +1048,10 @@ void SyncthingConnection::requestDirPullErrors(const QString &dirId, int page, i
  */
 void SyncthingConnection::readDirPullErrors()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
+    auto *const reply = prepareReply();
+    if (!reply) {
+        return;
+    }
 
     // determine relevant dir
     int index;
@@ -1028,11 +1103,12 @@ void SyncthingConnection::requestCompletion(const QString &devId, const QString 
  */
 void SyncthingConnection::readCompletion()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
+    auto *const reply = prepareReply(m_otherReplies);
+    if (!reply) {
+        return;
+    }
     const auto devId(reply->property("devId").toString());
     const auto dirId(reply->property("dirId").toString());
-    reply->deleteLater();
-    m_otherReplies.removeAll(reply);
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
@@ -1084,10 +1160,9 @@ void SyncthingConnection::requestDeviceStatistics()
  */
 void SyncthingConnection::readDeviceStatistics()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-    if (reply == m_devStatsReply) {
-        m_devStatsReply = nullptr;
+    auto *const reply = prepareReply(m_devStatsReply);
+    if (!reply) {
+        return;
     }
 
     switch (reply->error()) {
@@ -1145,10 +1220,9 @@ void SyncthingConnection::requestVersion()
  */
 void SyncthingConnection::readVersion()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-    if (reply == m_versionReply) {
-        m_versionReply = nullptr;
+    auto *const reply = prepareReply(m_versionReply);
+    if (!reply) {
+        return;
     }
 
     switch (reply->error()) {
@@ -1196,8 +1270,10 @@ void SyncthingConnection::requestQrCode(const QString &text)
  */
 void SyncthingConnection::readQrCode()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
+    auto *const reply = prepareReply();
+    if (!reply) {
+        return;
+    }
 
     switch (reply->error()) {
     case QNetworkReply::NoError:
@@ -1229,10 +1305,9 @@ void SyncthingConnection::requestLog()
  */
 void SyncthingConnection::readLog()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-    if (reply == m_logReply) {
-        m_logReply = nullptr;
+    auto *const reply = prepareReply(m_logReply);
+    if (!reply) {
+        return;
     }
 
     switch (reply->error()) {
@@ -1440,10 +1515,9 @@ void SyncthingConnection::requestEvents()
  */
 void SyncthingConnection::readEvents()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-    if (reply == m_eventsReply) {
-        m_eventsReply = nullptr;
+    auto *const reply = prepareReply(m_eventsReply);
+    if (!reply) {
+        return;
     }
 
     switch (reply->error()) {
@@ -1975,10 +2049,9 @@ void SyncthingConnection::requestDiskEvents(int limit)
  */
 void SyncthingConnection::readDiskEvents()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-    if (reply == m_diskEventsReply) {
-        m_diskEventsReply = nullptr;
+    auto *const reply = prepareReply(m_diskEventsReply);
+    if (!reply) {
+        return;
     }
 
     switch (reply->error()) {

@@ -112,6 +112,7 @@ public:
     static QString statusText(SyncthingStatus status);
     bool isConnected() const;
     bool hasPendingRequests() const;
+    bool hasPendingRequestsIncludingEvents() const;
     bool hasUnreadNotifications() const;
     bool hasOutOfSyncDirs() const;
 
@@ -213,6 +214,7 @@ Q_SIGNALS:
     void newConfig(const QJsonObject &rawConfig);
     void newDirs(const std::vector<SyncthingDir> &dirs);
     void newDevices(const std::vector<SyncthingDev> &devs);
+    void newConfigApplied();
     void newEvents(const QJsonArray &events);
     void dirStatusChanged(const SyncthingDir &dir, int index);
     void devStatusChanged(const SyncthingDev &dev, int index);
@@ -305,6 +307,9 @@ private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
+    QNetworkReply *prepareReply();
+    QNetworkReply *prepareReply(QNetworkReply *&expectedReply);
+    QNetworkReply *prepareReply(QList<QNetworkReply *> &expectedReplies);
     bool pauseResumeDevice(const QStringList &devIds, bool paused);
     bool pauseResumeDirectory(const QStringList &dirIds, bool paused);
     SyncthingDir *addDirInfo(std::vector<SyncthingDir> &dirs, const QString &dirId);
@@ -316,7 +321,7 @@ private:
     QString m_password;
     SyncthingStatus m_status;
     bool m_keepPolling;
-    bool m_reconnecting;
+    bool m_abortingToReconnect;
     bool m_requestCompletion;
     int m_lastEventId;
     int m_lastDiskEventId;

@@ -66,7 +66,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_apiKey(apiKey)
     , m_status(SyncthingStatus::Disconnected)
     , m_keepPolling(false)
-    , m_reconnecting(false)
+    , m_abortingToReconnect(false)
     , m_requestCompletion(false)
     , m_lastEventId(0)
     , m_lastDiskEventId(0)
@@ -201,7 +201,7 @@ void SyncthingConnection::connect()
     }
 
     // reset status
-    m_reconnecting = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
+    m_abortingToReconnect = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
 
     // check configuration
     if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
@@ -241,7 +241,7 @@ void SyncthingConnection::connectLater(int milliSeconds)
  */
 void SyncthingConnection::disconnect()
 {
-    m_reconnecting = m_keepPolling = false;
+    m_abortingToReconnect = m_keepPolling = false;
     m_autoReconnectTries = 0;
     abortAllRequests();
 }
@@ -296,16 +296,22 @@ void SyncthingConnection::abortAllRequests()
  */
 void SyncthingConnection::reconnect()
 {
+    // reset reconnect timer
     m_autoReconnectTimer.stop();
     m_autoReconnectTries = 0;
-    // reconnect right now if not connected and no pending requests
-    if (!isConnected() && !hasPendingRequests()) {
+
+    // reset variables to track connection progress
+    // note: especially resetting events is important as it influences the subsequent hasPendingRequests() call
+    m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
+
+    // reconnect right now if no pending requests to be aborted
+    if (!hasPendingRequests()) {
         continueReconnecting();
         return;
     }
+
     // abort pending requests before connecting again
-    m_keepPolling = m_reconnecting = true;
-    m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
+    m_keepPolling = m_abortingToReconnect = true;
     abortAllRequests();
 }
 
@@ -332,17 +338,15 @@ void SyncthingConnection::reconnectLater(int milliSeconds)
  */
 void SyncthingConnection::continueReconnecting()
 {
-    // postpone if there are still pending requests
-    if (hasPendingRequests()) {
-        return;
+    // notify that we're about to invalidate the configuration if not already invalidated anyways
+    const auto isConfigInvalidated = m_rawConfig.isEmpty();
+    if (!isConfigInvalidated) {
+        emit newConfig(m_rawConfig = QJsonObject());
     }
-
-    // invalidate configuration
-    emit newConfig(QJsonObject());
 
     // cleanup information from previous connection
     m_keepPolling = true;
-    m_reconnecting = false;
+    m_abortingToReconnect = false;
     m_lastEventId = 0;
     m_lastDiskEventId = 0;
     m_configDir.clear();
@@ -366,6 +370,11 @@ void SyncthingConnection::continueReconnecting()
     m_lastFileName.clear();
     m_lastFileDeleted = false;
     m_syncthingVersion.clear();
+
+    // notify that the configuration has been invalidated
+    if (!isConfigInvalidated) {
+        emit newConfigApplied();
+    }
 
     if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
         emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
@@ -391,6 +400,8 @@ void SyncthingConnection::concludeReadingConfigAndStatus()
 
     readDevs(m_rawConfig.value(QLatin1String("devices")).toArray());
     readDirs(m_rawConfig.value(QLatin1String("folders")).toArray());
+    emit newConfigApplied();
+
     continueConnecting();
 }
 
@@ -863,10 +874,14 @@ void SyncthingConnection::handleFatalConnectionError()
  */
 void SyncthingConnection::handleAdditionalRequestCanceled()
 {
-    if (m_reconnecting) {
+    // postpone handling if there are still other requests pending
+    if (hasPendingRequests()) {
+        return;
+    }
+    if (m_abortingToReconnect) {
         // if reconnection flag is set, instantly etstablish a new connection ...
         continueReconnecting();
-    } else if (!hasPendingRequests()) {
+    } else {
         // ... otherwise declare we're disconnected if that was the last pending request
         setStatus(SyncthingStatus::Disconnected);
     }

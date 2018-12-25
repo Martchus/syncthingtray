@@ -479,8 +479,9 @@ void ConnectionTests::checkDirectories() const
 
 void ConnectionTests::testReconnecting()
 {
-    cerr << "\n - Reconnecting ..." << endl;
+    cerr << "\n - Reconnecting ...\n";
     waitForConnection(defaultReconnect(), 1000, connectionSignal(&SyncthingConnection::statusChanged));
+    cerr << "\n - Waiting for dirs/devs after reconnect ...\n";
     waitForAllDirsAndDevsReady(true);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("connected again", QStringLiteral("connected, paused"), m_connection.statusText());
 }
