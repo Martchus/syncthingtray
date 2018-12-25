@@ -206,6 +206,7 @@ void SyncthingConnection::connect()
     // check configuration
     if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
         emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
+        setStatus(SyncthingStatus::Disconnected);
         return;
     }
 
@@ -378,6 +379,7 @@ void SyncthingConnection::continueReconnecting()
 
     if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
         emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
+        setStatus(SyncthingStatus::Disconnected);
         return;
     }
 
