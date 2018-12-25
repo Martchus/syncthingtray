@@ -39,8 +39,6 @@ public Q_SLOTS:
     const SyncthingDev *devInfo(const QModelIndex &index) const;
 
 private Q_SLOTS:
-    void newConfig();
-    void newDevices();
     void devStatusChanged(const SyncthingDev &, int index);
 
 private:

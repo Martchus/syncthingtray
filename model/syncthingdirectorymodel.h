@@ -40,8 +40,6 @@ public Q_SLOTS:
     const SyncthingDir *dirInfo(const QModelIndex &index) const;
 
 private Q_SLOTS:
-    void newConfig();
-    void newDirs();
     void dirStatusChanged(const SyncthingDir &, int index);
 
 private:

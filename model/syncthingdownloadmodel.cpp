@@ -29,8 +29,6 @@ SyncthingDownloadModel::SyncthingDownloadModel(SyncthingConnection &connection, 
     , m_pendingDownloads(0)
     , m_singleColumnMode(true)
 {
-    connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingDownloadModel::newConfig);
-    connect(&m_connection, &SyncthingConnection::newDirs, this, &SyncthingDownloadModel::newDirs);
     connect(&m_connection, &SyncthingConnection::downloadProgressChanged, this, &SyncthingDownloadModel::downloadProgressChanged);
 }
 
@@ -208,14 +206,14 @@ int SyncthingDownloadModel::columnCount(const QModelIndex &parent) const
     }
 }
 
-void SyncthingDownloadModel::newConfig()
+void SyncthingDownloadModel::handleConfigInvalidated()
 {
     beginResetModel();
     m_pendingDirs.clear();
     endResetModel();
 }
 
-void SyncthingDownloadModel::newDirs()
+void SyncthingDownloadModel::handleNewConfigAvailable()
 {
     m_pendingDirs.reserve(m_connection.dirInfo().size());
 }

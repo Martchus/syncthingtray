@@ -41,8 +41,8 @@ Q_SIGNALS:
     void pendingDownloadsChanged(unsigned int pendingDownloads);
 
 private Q_SLOTS:
-    void newConfig();
-    void newDirs();
+    void handleConfigInvalidated() override;
+    void handleNewConfigAvailable() override;
     void downloadProgressChanged();
 
 private:

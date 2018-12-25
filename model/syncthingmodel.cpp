@@ -1,5 +1,7 @@
 #include "./syncthingmodel.h"
 
+#include "../connector/syncthingconnection.h"
+
 namespace Data {
 
 SyncthingModel::SyncthingModel(SyncthingConnection &connection, QObject *parent)
@@ -7,6 +9,8 @@ SyncthingModel::SyncthingModel(SyncthingConnection &connection, QObject *parent)
     , m_connection(connection)
     , m_brightColors(false)
 {
+    connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingModel::handleConfigInvalidated);
+    connect(&m_connection, &SyncthingConnection::newConfigApplied, this, &SyncthingModel::handleNewConfigAvailable);
 }
 
 const QVector<int> &SyncthingModel::colorRoles() const
@@ -24,6 +28,16 @@ void SyncthingModel::setBrightColors(bool brightColors)
             emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1), affectedRoles);
         }
     }
+}
+
+void SyncthingModel::handleConfigInvalidated()
+{
+    beginResetModel();
+}
+
+void SyncthingModel::handleNewConfigAvailable()
+{
+    endResetModel();
 }
 
 } // namespace Data

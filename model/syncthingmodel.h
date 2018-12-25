@@ -24,6 +24,11 @@ public:
 protected:
     virtual const QVector<int> &colorRoles() const;
 
+private Q_SLOTS:
+    virtual void handleConfigInvalidated();
+    virtual void handleNewConfigAvailable();
+
+protected:
     Data::SyncthingConnection &m_connection;
     bool m_brightColors;
 };

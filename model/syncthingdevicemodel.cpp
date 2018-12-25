@@ -17,8 +17,6 @@ SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObj
     : SyncthingModel(connection, parent)
     , m_devs(connection.devInfo())
 {
-    connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingDeviceModel::newConfig);
-    connect(&m_connection, &SyncthingConnection::newDevices, this, &SyncthingDeviceModel::newDevices);
     connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &SyncthingDeviceModel::devStatusChanged);
 }
 
@@ -286,16 +284,6 @@ int SyncthingDeviceModel::columnCount(const QModelIndex &parent) const
     } else {
         return 0;
     }
-}
-
-void SyncthingDeviceModel::newConfig()
-{
-    beginResetModel();
-}
-
-void SyncthingDeviceModel::newDevices()
-{
-    endResetModel();
 }
 
 void SyncthingDeviceModel::devStatusChanged(const SyncthingDev &, int index)

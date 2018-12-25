@@ -19,8 +19,6 @@ SyncthingDirectoryModel::SyncthingDirectoryModel(SyncthingConnection &connection
     : SyncthingModel(connection, parent)
     , m_dirs(connection.dirInfo())
 {
-    connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingDirectoryModel::newConfig);
-    connect(&m_connection, &SyncthingConnection::newDirs, this, &SyncthingDirectoryModel::newDirs);
     connect(&m_connection, &SyncthingConnection::dirStatusChanged, this, &SyncthingDirectoryModel::dirStatusChanged);
 }
 
@@ -347,16 +345,6 @@ int SyncthingDirectoryModel::columnCount(const QModelIndex &parent) const
     } else {
         return 0;
     }
-}
-
-void SyncthingDirectoryModel::newConfig()
-{
-    beginResetModel();
-}
-
-void SyncthingDirectoryModel::newDirs()
-{
-    endResetModel();
 }
 
 void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &, int index)
