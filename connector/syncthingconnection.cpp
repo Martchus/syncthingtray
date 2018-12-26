@@ -66,6 +66,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_apiKey(apiKey)
     , m_status(SyncthingStatus::Disconnected)
     , m_keepPolling(false)
+    , m_abortingAllRequests(false)
     , m_abortingToReconnect(false)
     , m_requestCompletion(false)
     , m_lastEventId(0)
@@ -254,6 +255,7 @@ void SyncthingConnection::disconnect()
  */
 void SyncthingConnection::abortAllRequests()
 {
+    m_abortingAllRequests = true;
     if (m_configReply) {
         m_configReply->abort();
     }
@@ -287,6 +289,9 @@ void SyncthingConnection::abortAllRequests()
     for (auto *const reply : m_otherReplies) {
         reply->abort();
     }
+
+    m_abortingAllRequests = false;
+    handleAdditionalRequestCanceled();
 }
 
 /*!

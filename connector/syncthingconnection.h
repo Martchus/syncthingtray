@@ -321,6 +321,7 @@ private:
     QString m_password;
     SyncthingStatus m_status;
     bool m_keepPolling;
+    bool m_abortingAllRequests;
     bool m_abortingToReconnect;
     bool m_requestCompletion;
     int m_lastEventId;
@@ -457,11 +458,12 @@ inline bool SyncthingConnection::isConnected() const
  * - Only requests which contribute to the overall state and population of myId(), dirInfo(), devInfo(), traffic
  *   statistics, ... are considered. So requests for QR code, logs, clearing errors, rescan, ... are not taken
  *   into account.
+ * - This function will also return true as long as the method abortAllRequests() is executed.
  */
 inline bool SyncthingConnection::hasPendingRequests() const
 {
-    return m_configReply || m_statusReply || (m_eventsReply && !m_hasEvents) || (m_diskEventsReply && !m_hasDiskEvents) || m_connectionsReply
-        || m_dirStatsReply || m_devStatsReply || m_errorsReply || m_versionReply || !m_otherReplies.isEmpty();
+    return m_abortingAllRequests || m_configReply || m_statusReply || (m_eventsReply && !m_hasEvents) || (m_diskEventsReply && !m_hasDiskEvents)
+        || m_connectionsReply || m_dirStatsReply || m_devStatsReply || m_errorsReply || m_versionReply || !m_otherReplies.isEmpty();
 }
 
 /*!
