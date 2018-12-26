@@ -29,8 +29,8 @@ void SyncthingMenuAction::handleConnectedChanged()
 {
     // update the current menu
     if (QMenu *const menu = this->menu()) {
+        menu->deleteLater();
         setMenu(nullptr);
-        delete menu;
     }
     createMenu(SyncthingFileItemAction::createActions(m_properties, parentWidget()));
 
