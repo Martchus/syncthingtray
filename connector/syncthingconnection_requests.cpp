@@ -1452,6 +1452,9 @@ void SyncthingConnection::readDirRejected(DateTime eventTime, const QString &dir
     emit newDirAvailable(eventTime, devId, device, dirId, dirLabel);
 }
 
+/*!
+ * \brief Reads data from "DeviceRejected"-event.
+ */
 void SyncthingConnection::readDevRejected(DateTime eventTime, const QString &devId, const QJsonObject &eventData)
 {
     // ignore if dev has already been added
