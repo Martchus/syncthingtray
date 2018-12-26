@@ -47,17 +47,22 @@ SyncthingFileItemAction::SyncthingFileItemAction(QObject *parent, const QVariant
 
 QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties &fileItemInfo, QWidget *parentWidget)
 {
-    const QList<QAction *> actions = createActions(fileItemInfo, parentWidget);
+    Q_UNUSED(parentWidget)
 
-    // don't show anything if no relevant actions could be determined
-    if (s_data.connection().isConnected() && actions.isEmpty()) {
-        return QList<QAction *>();
+    // create actions
+    const QList<QAction *> subActions = createActions(fileItemInfo, this);
+    QList<QAction *> topLevelActions;
+
+    // don't show anything if no relevant actions could be determined but successfully connected
+    if (s_data.connection().isConnected() && !s_data.hasError() && subActions.isEmpty()) {
+        return topLevelActions;
     }
 
-    return QList<QAction *>({ new SyncthingMenuAction(fileItemInfo, actions, parentWidget) });
+    topLevelActions << new SyncthingMenuAction(fileItemInfo, subActions, this);
+    return topLevelActions;
 }
 
-QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListProperties &fileItemInfo, QWidget *parentWidget)
+QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListProperties &fileItemInfo, QObject *parent)
 {
     QList<QAction *> actions;
     auto &data = s_data;
@@ -107,7 +112,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         } else {
             rescanLabel = tr("Rescan \"%1\"").arg(detectedItems.front().name);
         }
-        actions << new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")), rescanLabel, parentWidget);
+        actions << new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")), rescanLabel, parent);
         if (connection.isConnected()) {
             for (const SyncthingItem &item : detectedItems) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, item.dir->id, item.path));
@@ -121,8 +126,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     if (!detectedDirs.isEmpty()) {
         // rescan item
         actions << new QAction(QIcon::fromTheme(QStringLiteral("folder-sync")),
-            detectedDirs.size() == 1 ? tr("Rescan \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Rescan selected directories"),
-            parentWidget);
+            detectedDirs.size() == 1 ? tr("Rescan \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Rescan selected directories"), parent);
         if (connection.isConnected()) {
             for (const SyncthingDir *dir : detectedDirs) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, dir->id, QString()));
@@ -145,12 +149,10 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         }
         if (isPaused) {
             actions << new QAction(QIcon::fromTheme(QStringLiteral("media-playback-start")),
-                detectedDirs.size() == 1 ? tr("Resume \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Resume selected directories"),
-                parentWidget);
+                detectedDirs.size() == 1 ? tr("Resume \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Resume selected directories"), parent);
         } else {
             actions << new QAction(QIcon::fromTheme(QStringLiteral("media-playback-pause")),
-                detectedDirs.size() == 1 ? tr("Pause \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Pause selected directories"),
-                parentWidget);
+                detectedDirs.size() == 1 ? tr("Pause \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Pause selected directories"), parent);
         }
         if (connection.isConnected()) {
             connect(actions.back(), &QAction::triggered,
@@ -165,7 +167,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         // rescan item
         actions << new QAction(QIcon::fromTheme(QStringLiteral("folder-sync")),
             containingDirs.size() == 1 ? tr("Rescan \"%1\"").arg(containingDirs.front()->displayName()) : tr("Rescan containing directories"),
-            parentWidget);
+            parent);
         if (connection.isConnected()) {
             for (const SyncthingDir *dir : containingDirs) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, dir->id, QString()));
@@ -188,11 +190,11 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         if (isPaused) {
             actions << new QAction(QIcon::fromTheme(QStringLiteral("media-playback-start")),
                 containingDirs.size() == 1 ? tr("Resume \"%1\"").arg(containingDirs.front()->displayName()) : tr("Resume containing directories"),
-                parentWidget);
+                parent);
         } else {
             actions << new QAction(QIcon::fromTheme(QStringLiteral("media-playback-pause")),
                 containingDirs.size() == 1 ? tr("Pause \"%1\"").arg(containingDirs.front()->displayName()) : tr("Pause containing directories"),
-                parentWidget);
+                parent);
         }
         if (connection.isConnected()) {
             connect(actions.back(), &QAction::triggered,
@@ -204,7 +206,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
 
     // add actions to show further information about directory if the selection is only about one particular Syncthing dir
     if (lastDir && detectedDirs.size() + containingDirs.size() == 1) {
-        auto *statusActions = new SyncthingDirActions(*lastDir, parentWidget);
+        auto *statusActions = new SyncthingDirActions(*lastDir, parent);
         connect(&connection, &SyncthingConnection::newDirs, statusActions,
             static_cast<void (SyncthingDirActions::*)(const vector<SyncthingDir> &)>(&SyncthingDirActions::updateStatus));
         connect(&connection, &SyncthingConnection::dirStatusChanged, statusActions,
@@ -214,13 +216,13 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
 
     // add separator
     if (!actions.isEmpty()) {
-        QAction *const separator = new QAction(parentWidget);
+        QAction *const separator = new QAction(parent);
         separator->setSeparator(true);
         actions << separator;
     }
 
     // add error action
-    QAction *const errorAction = new SyncthingInfoAction(parentWidget);
+    QAction *const errorAction = new SyncthingInfoAction(parent);
     errorAction->setText(data.currentError());
     errorAction->setIcon(QIcon::fromTheme(QStringLiteral("state-error")));
     errorAction->setVisible(data.hasError());
@@ -230,12 +232,12 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     actions << errorAction;
 
     // add config file selection
-    QAction *const configFileAction = new QAction(QIcon::fromTheme(QStringLiteral("settings-configure")), tr("Select Syncthing config ..."));
+    QAction *const configFileAction = new QAction(QIcon::fromTheme(QStringLiteral("settings-configure")), tr("Select Syncthing config ..."), parent);
     connect(configFileAction, &QAction::triggered, &data, &SyncthingFileItemActionStaticData::selectSyncthingConfig);
     actions << configFileAction;
 
     // about about action
-    QAction *const aboutAction = new QAction(QIcon::fromTheme(QStringLiteral("help-about")), tr("About"));
+    QAction *const aboutAction = new QAction(QIcon::fromTheme(QStringLiteral("help-about")), tr("About"), parent);
     connect(aboutAction, &QAction::triggered, &SyncthingFileItemActionStaticData::showAboutDialog);
     actions << aboutAction;
 

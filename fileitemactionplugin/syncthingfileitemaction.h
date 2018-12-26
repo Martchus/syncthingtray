@@ -17,7 +17,7 @@ class SyncthingFileItemAction : public KAbstractFileItemActionPlugin {
 public:
     SyncthingFileItemAction(QObject *parent, const QVariantList &args);
     QList<QAction *> actions(const KFileItemListProperties &fileItemInfo, QWidget *parentWidget) override;
-    static QList<QAction *> createActions(const KFileItemListProperties &fileItemInfo, QWidget *parentWidget);
+    static QList<QAction *> createActions(const KFileItemListProperties &fileItemInfo, QObject *parent);
     static SyncthingFileItemActionStaticData &staticData();
 
 private:

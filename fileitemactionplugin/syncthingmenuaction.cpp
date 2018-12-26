@@ -18,8 +18,8 @@
 
 using namespace Data;
 
-SyncthingMenuAction::SyncthingMenuAction(const KFileItemListProperties &properties, const QList<QAction *> &actions, QWidget *parentWidget)
-    : QAction(parentWidget)
+SyncthingMenuAction::SyncthingMenuAction(const KFileItemListProperties &properties, const QList<QAction *> &actions, QObject *parent)
+    : QAction(parent)
     , m_properties(properties)
     , m_notifier(SyncthingFileItemAction::staticData().connection())
 {
@@ -51,7 +51,7 @@ void SyncthingMenuAction::handleConnectedChanged()
         menu->deleteLater();
         setMenu(nullptr);
     }
-    createMenu(SyncthingFileItemAction::createActions(m_properties, parentWidget()));
+    createMenu(SyncthingFileItemAction::createActions(m_properties, parent()));
 
     // update status of action itself
     updateActionStatus();
