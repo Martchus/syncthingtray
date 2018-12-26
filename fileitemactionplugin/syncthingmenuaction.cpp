@@ -5,8 +5,16 @@
 
 #include "../connector/syncthingconnection.h"
 
+#ifdef DEBUG_BUILD
+#include <c++utilities/io/ansiescapecodes.h>
+#endif
+
 #include <QAction>
 #include <QMenu>
+
+#ifdef DEBUG_BUILD
+#include <iostream>
+#endif
 
 using namespace Data;
 
@@ -15,6 +23,10 @@ SyncthingMenuAction::SyncthingMenuAction(const KFileItemListProperties &properti
     , m_properties(properties)
     , m_notifier(SyncthingFileItemAction::staticData().connection())
 {
+#ifdef DEBUG_BUILD
+    std::cerr << EscapeCodes::Phrases::Info << "Creating SyncthingMenuAction: " << this << EscapeCodes::Phrases::EndFlush;
+#endif
+
     // init according to current state
     createMenu(actions);
     updateActionStatus();
@@ -24,6 +36,13 @@ SyncthingMenuAction::SyncthingMenuAction(const KFileItemListProperties &properti
     connect(&m_notifier, &SyncthingNotifier::connected, this, &SyncthingMenuAction::handleConnectedChanged);
     connect(&m_notifier, &SyncthingNotifier::disconnected, this, &SyncthingMenuAction::handleConnectedChanged);
 }
+
+#ifdef DEBUG_BUILD
+SyncthingMenuAction::~SyncthingMenuAction()
+{
+    std::cerr << EscapeCodes::Phrases::Info << "Destroying SyncthingMenuAction: " << this << EscapeCodes::Phrases::EndFlush;
+}
+#endif
 
 void SyncthingMenuAction::handleConnectedChanged()
 {

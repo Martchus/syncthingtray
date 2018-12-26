@@ -20,6 +20,9 @@ class SyncthingMenuAction : public QAction {
 public:
     explicit SyncthingMenuAction(const KFileItemListProperties &properties = KFileItemListProperties(),
         const QList<QAction *> &actions = QList<QAction *>(), QWidget *parentWidget = nullptr);
+#ifdef DEBUG_BUILD
+    ~SyncthingMenuAction() override;
+#endif
 
 private Q_SLOTS:
     void handleConnectedChanged();

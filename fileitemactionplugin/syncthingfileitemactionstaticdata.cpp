@@ -7,6 +7,7 @@
 #include "../connector/syncthingconnectionsettings.h"
 
 #include <c++utilities/application/argumentparser.h>
+#include <c++utilities/io/ansiescapecodes.h>
 
 #include <qtutilities/aboutdialog/aboutdialog.h>
 #include <qtutilities/resources/resources.h>
@@ -23,6 +24,7 @@
 using namespace std;
 using namespace Dialogs;
 using namespace Data;
+using namespace EscapeCodes;
 
 SyncthingFileItemActionStaticData::SyncthingFileItemActionStaticData()
     : m_initialized(false)
@@ -134,7 +136,7 @@ bool SyncthingFileItemActionStaticData::applySyncthingConfiguration(
         setCurrentError(errorMessage);
         return false;
     }
-    cerr << "Syncthing config loaded from \"" << syncthingConfigFilePath.toLocal8Bit().data() << "\"" << endl;
+    cerr << Phrases::Info << "Syncthing config loaded from \"" << syncthingConfigFilePath.toLocal8Bit().data() << "\"" << Phrases::End;
 
     // check whether the URL is present
     if (config.guiAddress.isEmpty()) {
