@@ -53,62 +53,62 @@
 <context>
     <name>QtGui::TrayIcon</name>
     <message>
-        <location filename="../gui/trayicon.cpp" line="56"/>
+        <location filename="../gui/trayicon.cpp" line="59"/>
         <source>Web UI</source>
         <translation>Weboberfäche</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="60"/>
+        <location filename="../gui/trayicon.cpp" line="63"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="64"/>
+        <location filename="../gui/trayicon.cpp" line="67"/>
         <source>Rescan all</source>
         <translation>Alle neu scannen</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="72"/>
+        <location filename="../gui/trayicon.cpp" line="75"/>
         <source>Show internal errors</source>
         <translation>Interne Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="77"/>
+        <location filename="../gui/trayicon.cpp" line="80"/>
         <source>About</source>
         <translation>Über Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="82"/>
+        <location filename="../gui/trayicon.cpp" line="85"/>
         <source>Close</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="209"/>
+        <location filename="../gui/trayicon.cpp" line="212"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="227"/>
+        <location filename="../gui/trayicon.cpp" line="230"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation>Neue Syncthing-Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="255"/>
+        <location filename="../gui/trayicon.cpp" line="258"/>
         <source>Syncthing device wants to connect - click for web UI</source>
         <translation>Neues Gerät möchte verbinden</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="271"/>
+        <location filename="../gui/trayicon.cpp" line="274"/>
         <source>New Syncthing directory - click for web UI</source>
         <translation>Neues Syncthing-Verzeichnis</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="173"/>
+        <location filename="../gui/trayicon.cpp" line="176"/>
         <source>Disconnected from Syncthing</source>
         <translation>Verbindung zu Syncthing getrennt</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="68"/>
+        <location filename="../gui/trayicon.cpp" line="71"/>
         <source>Log</source>
         <translation></translation>
     </message>
