@@ -19,7 +19,6 @@ set(SRC_FILES
 set(TEST_HEADER_FILES
 )
 set(TEST_SRC_FILES
-    tests/cppunit.cpp
     tests/interfacetests.cpp
 )
 
@@ -143,7 +142,7 @@ list(APPEND PRIVATE_SHARED_INCLUDE_DIRS "${SYNCTHING_PATH}/cmd/syncthing")
 list(APPEND PRIVATE_STATIC_INCLUDE_DIRS "${SYNCTHING_PATH}/cmd/syncthing")
 
 # find c++utilities
-find_package(c++utilities 4.9.0 REQUIRED)
+find_package(c++utilities 4.17.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 list(APPEND PRIVATE_SHARED_INCLUDE_DIRS ${CPP_UTILITIES_INCLUDE_DIRS})
 list(APPEND PRIVATE_STATIC_INCLUDE_DIRS ${CPP_UTILITIES_INCLUDE_DIRS})

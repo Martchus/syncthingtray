@@ -21,12 +21,11 @@ set(SRC_FILES
 set(TEST_HEADER_FILES
 )
 set(TEST_SRC_FILES
-    tests/cppunit.cpp
     tests/application.cpp
 )
 
 # find c++utilities
-find_package(c++utilities 4.14.0 REQUIRED)
+find_package(c++utilities 4.17.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities
