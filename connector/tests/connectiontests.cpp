@@ -326,19 +326,37 @@ void ConnectionTests::testErrorCases()
         CPPUNIT_ASSERT_EQUAL(QStringLiteral("Connection configuration is insufficient."), errorMessage);
     }));
 
+    // setup/define test for error handling
     m_connection.setApiKey(QByteArray("wrong API key"));
     bool syncthingAvailable = false;
+    constexpr auto syncthingCheckInterval = TimeSpan::fromMilliseconds(200.0);
+    const auto maxSyncthingStartupTime = TimeSpan::fromSeconds(15.0 * max(timeoutFactor, 5.0));
+    auto remainingTimeForSyncthingToComeUp = maxSyncthingStartupTime;
     bool authErrorStatus = false, authErrorConfig = false;
     bool apiKeyErrorStatus = false, apiKeyErrorConfig = false;
     bool allErrorsEmitted = false;
     const auto errorHandler = [&](const QString &errorMessage) {
+        // check whether Syncthing is available
         if ((errorMessage == QStringLiteral("Unable to request Syncthing status: Connection refused"))
             || (errorMessage == QStringLiteral("Unable to request Syncthing config: Connection refused"))) {
-            // Syncthing not ready yet, wait 100 ms till next connection attempt
-            wait(100);
+            // consider test failed if we receive "Connection refused" when another error has already occured
+            if (syncthingAvailable) {
+                CPPUNIT_FAIL("Syncthing became unavailable after another error had already occured");
+            }
+
+            // consider test failed if Syncthing takes too long to come up (or we fail to connect)
+            if ((remainingTimeForSyncthingToComeUp -= syncthingCheckInterval).isNegative()) {
+                CPPUNIT_FAIL(
+                    argsToString("unable to connect to Syncthing within ", maxSyncthingStartupTime.toString(TimeSpanOutputFormat::WithMeasures)));
+            }
+
+            // give Syncthing a bit more time and check again
+            wait(static_cast<int>(syncthingCheckInterval.totalMilliseconds()));
             return;
         }
         syncthingAvailable = true;
+
+        // check for HTTP authentication error
         if (errorMessage == QStringLiteral("Unable to request Syncthing status: Host requires authentication")) {
             authErrorStatus = true;
             return;
@@ -347,6 +365,8 @@ void ConnectionTests::testErrorCases()
             authErrorConfig = true;
             return;
         }
+
+        // check API key error
         if ((errorMessage.startsWith(QStringLiteral("Unable to request Syncthing status: Error transferring "))
                 && errorMessage.endsWith(QStringLiteral("/rest/system/status - server replied: Forbidden")))) {
             m_connection.setApiKey(apiKey().toUtf8());
@@ -358,6 +378,8 @@ void ConnectionTests::testErrorCases()
             apiKeyErrorConfig = true;
             return;
         }
+
+        // fail on unexpected error messages
         allErrorsEmitted = authErrorStatus && authErrorConfig && apiKeyErrorStatus && apiKeyErrorConfig;
         CPPUNIT_FAIL(argsToString("wrong error message: ", errorMessage.toLocal8Bit().data()));
     };
