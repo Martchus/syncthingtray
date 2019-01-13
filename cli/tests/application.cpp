@@ -106,16 +106,18 @@ void ApplicationTests::test()
     {
         cerr << "\nWaiting till Syncthing GUI becomes available ...";
         QByteArray syncthingOutput;
+        constexpr auto syncthingCheckInterval = TimeSpan::fromMilliseconds(200.0);
+        const auto maxSyncthingStartupTime = TimeSpan::fromSeconds(15.0 * max(timeoutFactor, 5.0));
+        auto remainingTimeForSyncthingToComeUp = maxSyncthingStartupTime;
         do {
             // wait for output
-            const auto timeout = static_cast<int>(15000 * TestUtilities::timeoutFactor);
             if (!syncthingProcess().bytesAvailable()) {
-                // fail when already waiting for over 15 seconds
-                const auto waitingTime(DateTime::gmtNow() - m_startTime);
-                if (waitingTime.milliseconds() > timeout) {
-                    CPPUNIT_FAIL(argsToString("Syncthing needs longer than ", (timeout / 1000), " seconds to become available."));
+                // consider test failed if Syncthing takes too long to come up (or we fail to connect)
+                if ((remainingTimeForSyncthingToComeUp -= syncthingCheckInterval).isNegative()) {
+                    CPPUNIT_FAIL(
+                        argsToString("unable to connect to Syncthing within ", maxSyncthingStartupTime.toString(TimeSpanOutputFormat::WithMeasures)));
                 }
-                syncthingProcess().waitForReadyRead(timeout - waitingTime.milliseconds());
+                syncthingProcess().waitForReadyRead(static_cast<int>(syncthingCheckInterval.totalMilliseconds()));
             }
             syncthingOutput.append(syncthingProcess().readAll());
         } while (!syncthingOutput.contains("Access the GUI via the following URL"));
