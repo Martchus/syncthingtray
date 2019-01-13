@@ -782,7 +782,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="62"/>
         <source>Syncthing unit</source>
-        <translation></translation>
+        <translation>Syncthing-Unit</translation>
     </message>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="78"/>
@@ -814,8 +814,8 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
  • Don&apos;t reconnect when unit not active/running
  • Try to reconnect when unit becomes active/running</source>
         <translation>Verwende den systemd-Status für Neuverbindungsversuche zur lokalen Instanz
- • Nicht versuchen neu zu verbinden, wenn die Syncthing unit nicht läuft
- • Automatisch neu verbinden, wenn die Syncthing unit gestartet wird</translation>
+ • Nicht versuchen neu zu verbinden, wenn die Syncthing-Unit nicht läuft
+ • Automatisch neu verbinden, wenn die Syncthing-Unit gestartet wird</translation>
     </message>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="238"/>
@@ -840,7 +840,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <message>
         <location filename="../settings/settingsdialog.cpp" line="870"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
-        <translation>angegebene Unit ist entweder nicht geladen oder existiert nicht</translation>
+        <translation>angegebene Unit entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="892"/>
