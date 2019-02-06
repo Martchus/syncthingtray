@@ -23,8 +23,7 @@ set(WIDGETS_HEADER_FILES
     misc/internalerror.h
     misc/otherdialogs.h
     misc/syncthinglauncher.h
-    misc/syncthingkiller.h
-)
+    misc/syncthingkiller.h)
 set(WIDGETS_SRC_FILES
     settings/settings.cpp
     settings/settingsdialog.cpp
@@ -40,11 +39,8 @@ set(WIDGETS_SRC_FILES
     misc/internalerror.cpp
     misc/otherdialogs.cpp
     misc/syncthinglauncher.cpp
-    misc/syncthingkiller.cpp
-)
-set(RES_FILES
-    resources/${META_PROJECT_NAME}icons.qrc
-)
+    misc/syncthingkiller.cpp)
+set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 set(WIDGETS_UI_FILES
     settings/connectionoptionpage.ui
     settings/notificationsoptionpage.ui
@@ -52,13 +48,9 @@ set(WIDGETS_UI_FILES
     settings/autostartoptionpage.ui
     settings/launcheroptionpage.ui
     settings/systemdoptionpage.ui
-    settings/webviewoptionpage.ui
-)
+    settings/webviewoptionpage.ui)
 
-set(TS_FILES
-    translations/${META_PROJECT_NAME}_de_DE.ts
-    translations/${META_PROJECT_NAME}_en_US.ts
-)
+set(TS_FILES translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
 set(REQUIRED_ICONS
     preferences-other
@@ -75,8 +67,7 @@ set(REQUIRED_ICONS
     network-connect
     emblem-remove
     go-down
-    go-up
-)
+    go-up)
 
 # find c++utilities
 find_package(c++utilities 4.6.0 REQUIRED)
@@ -94,24 +85,18 @@ use_syncthingmodel()
 
 # configure libsyncthing
 option(USE_LIBSYNCTHING "whether libsyncthing should be included for the launcher" OFF)
-if(USE_LIBSYNCTHING)
+if (USE_LIBSYNCTHING)
     find_package(syncthing ${META_APP_VERSION} REQUIRED)
     use_syncthing()
-    set_source_files_properties(
-        misc/syncthinglauncher.cpp
-        PROPERTIES COMPILE_DEFINITIONS SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    )
-endif()
+    set_source_files_properties(misc/syncthinglauncher.cpp PROPERTIES COMPILE_DEFINITIONS SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
+endif ()
 
 # configure logging JavaScript events to stderr
 option(SYNCTHING_WIDGETS_LOG_JAVASCRIPT_CONSOLE "enables logging JavaScript events of webview to stderr" OFF)
-if(SYNCTHING_WIDGETS_LOG_JAVASCRIPT_CONSOLE)
-    set_property(
-        SOURCE webview/webpage.cpp
-        APPEND PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE
-    )
+if (SYNCTHING_WIDGETS_LOG_JAVASCRIPT_CONSOLE)
+    set_property(SOURCE webview/webpage.cpp APPEND PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE)
     message(WARNING "JavaScript console of web view will be logged to stderr")
-endif()
+endif ()
 
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES Network Concurrent)

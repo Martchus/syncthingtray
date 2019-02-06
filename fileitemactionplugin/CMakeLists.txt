@@ -11,20 +11,15 @@ set(HEADER_FILES
     syncthinginfoaction.h
     syncthingdiractions.h
     syncthingfileitemactionstaticdata.h
-    syncthingfileitemaction.h
-)
+    syncthingfileitemaction.h)
 set(SRC_FILES
     syncthingmenuaction.cpp
     syncthinginfoaction.cpp
     syncthingdiractions.cpp
     syncthingfileitemactionstaticdata.cpp
-    syncthingfileitemaction.cpp
-)
+    syncthingfileitemaction.cpp)
 
-set(TS_FILES
-    translations/${META_PROJECT_NAME}_de_DE.ts
-    translations/${META_PROJECT_NAME}_en_US.ts
-)
+set(TS_FILES translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
 find_package(c++utilities 4.6.0 REQUIRED)
@@ -51,12 +46,12 @@ include(QtConfig)
 include(WindowsResources)
 # KIO libs can not be determined automatically
 list(REMOVE_ITEM PRIVATE_LIBRARIES KF5::KIO)
-list(APPEND PRIVATE_LIBRARIES KF5::KIOCore KF5::KIOFileWidgets KF5::KIOWidgets KF5::KIONTLM)
+list(APPEND PRIVATE_LIBRARIES
+            KF5::KIOCore
+            KF5::KIOFileWidgets
+            KF5::KIOWidgets
+            KF5::KIONTLM)
 include(LibraryTarget)
 include(ConfigHeader)
 
-install(
-    FILES ${META_PROJECT_NAME}.desktop
-    DESTINATION "share/kservices5"
-    COMPONENT desktop
-)
+install(FILES ${META_PROJECT_NAME}.desktop DESTINATION "share/kservices5" COMPONENT desktop)

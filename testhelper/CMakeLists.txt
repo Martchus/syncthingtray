@@ -12,23 +12,13 @@ set(META_TEST_TARGET_IS_MANUAL ON)
 set(META_ADD_DEFAULT_CPP_UNIT_TEST_APPLICATION OFF)
 
 # add project files
-set(HEADER_FILES
-    helper.h
-    syncthingtestinstance.h
-)
-set(SRC_FILES
-    helper.cpp
-    syncthingtestinstance.cpp
-)
+set(HEADER_FILES helper.h syncthingtestinstance.h)
+set(SRC_FILES helper.cpp syncthingtestinstance.cpp)
 
-set(TEST_HEADER_FILES
-)
-set(TEST_SRC_FILES
-    tests/manualtesting.cpp
-)
+set(TEST_HEADER_FILES)
+set(TEST_SRC_FILES tests/manualtesting.cpp)
 
-set(TS_FILES
-)
+set(TS_FILES)
 
 # find c++utilities
 find_package(c++utilities 4.16.0 REQUIRED)
@@ -57,8 +47,9 @@ include(Doxygen)
 include(ConfigHeader)
 
 # exclude the targets from 'all' target so it is only built when tests are built
-foreach(TESTHELPER_TARGET "${TARGET_PREFIX}${META_PROJECT_NAME}${TARGET_SUFFIX}" "${TARGET_PREFIX}${META_PROJECT_NAME}${TARGET_SUFFIX}_static")
-    if(TARGET "${TESTHELPER_TARGET}")
+foreach (TESTHELPER_TARGET "${TARGET_PREFIX}${META_PROJECT_NAME}${TARGET_SUFFIX}"
+         "${TARGET_PREFIX}${META_PROJECT_NAME}${TARGET_SUFFIX}_static")
+    if (TARGET "${TESTHELPER_TARGET}")
         set_target_properties("${TESTHELPER_TARGET}" PROPERTIES EXCLUDE_FROM_ALL ON)
-    endif()
-endforeach()
+    endif ()
+endforeach ()

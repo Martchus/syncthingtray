@@ -18,24 +18,17 @@ set(HEADER_FILES
     syncthingdownloadmodel.h
     syncthingstatusselectionmodel.h
     syncthingicons.h
-    colors.h
-)
+    colors.h)
 set(SRC_FILES
     syncthingmodel.cpp
     syncthingdirectorymodel.cpp
     syncthingdevicemodel.cpp
     syncthingdownloadmodel.cpp
     syncthingstatusselectionmodel.cpp
-    syncthingicons.cpp
-)
-set(RES_FILES
-    resources/${META_PROJECT_NAME}icons.qrc
-)
+    syncthingicons.cpp)
+set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 
-set(TS_FILES
-    translations/${META_PROJECT_NAME}_de_DE.ts
-    translations/${META_PROJECT_NAME}_en_US.ts
-)
+set(TS_FILES translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
 find_package(c++utilities 4.0.0 REQUIRED)
@@ -50,7 +43,11 @@ find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector()
 
 # link also explicitely against the following Qt 5 modules
-list(APPEND ADDITIONAL_QT_MODULES Network Gui Widgets Svg)
+list(APPEND ADDITIONAL_QT_MODULES
+            Network
+            Gui
+            Widgets
+            Svg)
 
 # include modules to apply configuration
 include(BasicConfig)

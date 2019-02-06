@@ -18,8 +18,7 @@ set(HEADER_FILES
     syncthingconfig.h
     syncthingprocess.h
     syncthingservice.h
-    utils.h
-)
+    utils.h)
 set(SRC_FILES
     syncthingdir.cpp
     syncthingdev.cpp
@@ -30,20 +29,12 @@ set(SRC_FILES
     syncthingconfig.cpp
     syncthingprocess.cpp
     syncthingservice.cpp
-    utils.cpp
-)
+    utils.cpp)
 
-set(TEST_HEADER_FILES
-)
-set(TEST_SRC_FILES
-    tests/connectiontests.cpp
-    tests/misctests.cpp
-)
+set(TEST_HEADER_FILES)
+set(TEST_SRC_FILES tests/connectiontests.cpp tests/misctests.cpp)
 
-set(TS_FILES
-    translations/${META_PROJECT_NAME}_de_DE.ts
-    translations/${META_PROJECT_NAME}_en_US.ts
-)
+set(TS_FILES translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
 find_package(c++utilities 4.17.0 REQUIRED)
@@ -62,76 +53,67 @@ list(APPEND ADDITIONAL_QT_MODULES Network)
 set(META_PUBLIC_QT_MODULES Core ${ADDITIONAL_QT_MODULES})
 
 # configure support for controlling Syncthing via systemd service
-if(UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE)
     set(ENABLE_SYSTEMD_SUPPORT_BY_DEFAULT ON)
-else()
+else ()
     set(ENABLE_SYSTEMD_SUPPORT_BY_DEFAULT OFF)
-endif()
+endif ()
 option(SYSTEMD_SUPPORT "enables support for controlling Syncthing systemd service" ${ENABLE_SYSTEMD_SUPPORT_BY_DEFAULT})
-if(SYSTEMD_SUPPORT)
+if (SYSTEMD_SUPPORT)
     list(APPEND DBUS_FILES
-        org.freedesktop.DBus.Properties.xml
-        org.freedesktop.login1.LoginManager.xml
-        org.freedesktop.systemd1.Manager.xml
-        org.freedesktop.systemd1.Service.xml
-        org.freedesktop.systemd1.Unit.xml
-    )
-    set_source_files_properties(
-        org.freedesktop.systemd1.Manager.xml
-        PROPERTIES INCLUDE syncthingservice.h
-    )
+                org.freedesktop.DBus.Properties.xml
+                org.freedesktop.login1.LoginManager.xml
+                org.freedesktop.systemd1.Manager.xml
+                org.freedesktop.systemd1.Service.xml
+                org.freedesktop.systemd1.Unit.xml)
+    set_source_files_properties(org.freedesktop.systemd1.Manager.xml PROPERTIES INCLUDE syncthingservice.h)
     list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SUPPORT_SYSTEMD)
     message(STATUS "systemd support enabled")
-else()
+else ()
     message(STATUS "systemd support disabled")
-endif()
+endif ()
 
 # configure whether the connection should be mocked for test purposes
-option(SYNCTHING_CONNECTION_MOCKED "enables mocking the SyncthingConnection class so it will provide only some fixed test data" OFF)
-if(SYNCTHING_CONNECTION_MOCKED)
-    list(APPEND SRC_FILES
-        syncthingconnectionmockhelpers.h
-        syncthingconnectionmockhelpers.cpp
-    )
-    set_property(
-        SOURCE syncthingconnection.cpp
-               syncthingconnection_requests.cpp
-               syncthingconnectionmockhelpers.h
-               syncthingconnectionmockhelpers.cpp
-        APPEND PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_CONNECTION_MOCKED
-    )
+option(SYNCTHING_CONNECTION_MOCKED
+       "enables mocking the SyncthingConnection class so it will provide only some fixed test data" OFF)
+if (SYNCTHING_CONNECTION_MOCKED)
+    list(APPEND SRC_FILES syncthingconnectionmockhelpers.h syncthingconnectionmockhelpers.cpp)
+    set_property(SOURCE syncthingconnection.cpp
+                        syncthingconnection_requests.cpp
+                        syncthingconnectionmockhelpers.h
+                        syncthingconnectionmockhelpers.cpp
+                 APPEND
+                 PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_CONNECTION_MOCKED)
     message(WARNING "SyncthingConnection class will be mocked")
-endif()
+endif ()
 
 # configure whether the service should be mocked for test purposes
 option(SYNCTHING_SERVICE_MOCKED "enables mocking the SyncthingService class so it will provide some fake status" OFF)
-if(SYNCTHING_SERVICE_MOCKED)
-    set_property(
-        SOURCE syncthingservice.cpp
-        APPEND PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SERVICE_MOCKED
-    )
+if (SYNCTHING_SERVICE_MOCKED)
+    set_property(SOURCE syncthingservice.cpp
+                 APPEND
+                 PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SERVICE_MOCKED)
     message(WARNING "SyncthingService class will be mocked")
-endif()
+endif ()
 
 # configure whether events should be logged
 option(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS "enables logging event data to stdout (enable only for debugging!)" OFF)
-if(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS)
-    set_property(
-        SOURCE syncthingconnection_requests.cpp
-        APPEND PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_LOG_SYNCTHING_EVENTS
-    )
+if (SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS)
+    set_property(SOURCE syncthingconnection_requests.cpp
+                 APPEND
+                 PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_LOG_SYNCTHING_EVENTS)
     message(WARNING "SyncthingConnection class will log event data to stdout")
-endif()
+endif ()
 
 # configure whether POSTs should be logged
-option(SYNCTHING_CONNECTION_LOG_API_CALLS "enables logging API calls done by the SyncthingConnector (enable only for debugging!)" OFF)
-if(SYNCTHING_CONNECTION_LOG_API_CALLS)
-    set_property(
-        SOURCE syncthingconnection_requests.cpp
-        APPEND PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_LOG_API_CALLS
-    )
+option(SYNCTHING_CONNECTION_LOG_API_CALLS
+       "enables logging API calls done by the SyncthingConnector (enable only for debugging!)" OFF)
+if (SYNCTHING_CONNECTION_LOG_API_CALLS)
+    set_property(SOURCE syncthingconnection_requests.cpp
+                 APPEND
+                 PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_LOG_API_CALLS)
     message(WARNING "SyncthingConnection class will log API calls data to stdout")
-endif()
+endif ()
 
 # include modules to apply configuration
 include(BasicConfig)
@@ -139,13 +121,12 @@ include(QtConfig)
 include(WindowsResources)
 include(LibraryTarget)
 
-# link tests against test helper (can't use find_package because testhelper target is not
-# present at this point)
-if(BUILD_SHARED_LIBS)
+# link tests against test helper (can't use find_package because testhelper target is not present at this point)
+if (BUILD_SHARED_LIBS)
     list(APPEND TEST_LIBRARIES syncthingtesthelper)
-else()
+else ()
     list(APPEND TEST_LIBRARIES syncthingtesthelper_static)
-endif()
+endif ()
 include(TestTarget)
 
 include(Doxygen)

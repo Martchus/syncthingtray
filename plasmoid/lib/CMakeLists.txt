@@ -1,15 +1,7 @@
 # source files
-set(HEADER_FILES
-    syncthingapplet.h
-    settingsdialog.h
-)
-set(SRC_FILES
-    syncthingapplet.cpp
-    settingsdialog.cpp
-)
-set(WIDGETS_UI_FILES
-    appearanceoptionpage.ui
-)
+set(HEADER_FILES syncthingapplet.h settingsdialog.h)
+set(SRC_FILES syncthingapplet.cpp settingsdialog.cpp)
+set(WIDGETS_UI_FILES appearanceoptionpage.ui)
 set(PLASMOID_FILES
     ../package/metadata.desktop
     ../package/contents/ui/CompactRepresentation.qml
@@ -25,14 +17,10 @@ set(PLASMOID_FILES
     ../package/contents/ui/TinyButton.qml
     ../package/contents/ui/TinyButtonStyle.qml
     ../package/contents/ui/ButtonShadow.qml
-    ../package/contents/ui/main.qml
-)
+    ../package/contents/ui/main.qml)
 list(APPEND QML_SRC_FILES ${PLASMOID_FILES})
 
-set(TS_FILES
-    ../translations/${META_PROJECT_NAME}_de_DE.ts
-    ../translations/${META_PROJECT_NAME}_en_US.ts
-)
+set(TS_FILES ../translations/${META_PROJECT_NAME}_de_DE.ts ../translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
 find_package(c++utilities 4.10.0 REQUIRED)
@@ -45,9 +33,11 @@ use_qt_utilities()
 # check whether qtutilities supports DBus notifications
 get_target_property(QT_UTILITIES_COMPILE_DEFINITIONS ${QT_UTILITIES_LIB} INTERFACE_COMPILE_DEFINITIONS)
 list(FIND QT_UTILITIES_COMPILE_DEFINITIONS QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS)
-if(QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS LESS 0)
-    message(FATAL_ERROR "The provided build of Qt Utilities does not support D-Bus notifications which is required for the Plasmoid.")
-endif()
+if (QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS LESS 0)
+    message(
+        FATAL_ERROR
+            "The provided build of Qt Utilities does not support D-Bus notifications which is required for the Plasmoid.")
+endif ()
 
 # find backend libraries
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)

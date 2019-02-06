@@ -17,8 +17,7 @@ set(WIDGETS_HEADER_FILES
     gui/downloaditemdelegate.h
     gui/dirview.h
     gui/devview.h
-    gui/downloadview.h
-)
+    gui/downloadview.h)
 set(WIDGETS_SRC_FILES
     application/main.cpp
     application/singleinstance.cpp
@@ -30,29 +29,17 @@ set(WIDGETS_SRC_FILES
     gui/downloaditemdelegate.cpp
     gui/dirview.cpp
     gui/devview.cpp
-    gui/downloadview.cpp
-)
-set(RES_FILES
-    resources/${META_PROJECT_NAME}icons.qrc
-)
-set(WIDGETS_UI_FILES
-    gui/traywidget.ui
-)
+    gui/downloadview.cpp)
+set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
+set(WIDGETS_UI_FILES gui/traywidget.ui)
 
-set(TS_FILES
-    translations/${META_PROJECT_NAME}_de_DE.ts
-    translations/${META_PROJECT_NAME}_en_US.ts
-)
+set(TS_FILES translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
-set(ICON_FILES
-    resources/icons/hicolor/scalable/app/${META_PROJECT_NAME}.svg
-)
+set(ICON_FILES resources/icons/hicolor/scalable/app/${META_PROJECT_NAME}.svg)
 set(PNG_ICON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/resources/icons/hicolor/scalable/app/${META_PROJECT_NAME}.png")
 set(PNG_ICON_NO_CROP ON)
 
-set(DOC_FILES
-    README.md
-)
+set(DOC_FILES README.md)
 
 set(REQUIRED_ICONS
     dialog-cancel
@@ -89,10 +76,8 @@ set(REQUIRED_ICONS
     text-plain
     view-barcode
     view-refresh
-    window-close
-)
-# fallback icons can not replace built-in Breeze icons (yet)
-#set(FALLBACK_ICON_THEME breeze)
+    window-close)
+# fallback icons can not replace built-in Breeze icons (yet) set(FALLBACK_ICON_THEME breeze)
 
 # find c++utilities
 find_package(c++utilities 4.11.0 REQUIRED)
