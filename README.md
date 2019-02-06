@@ -123,16 +123,19 @@ See the release section on GitHub.
     * for PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs) or
       [the AUR](https://aur.archlinux.org/packages?SeB=m&K=Martchus)
     * for a binary repository checkout [my website](http://martchus.no-ip.biz/website/page.php?name=programming)
-* Tumbleweed, Fedora 27
+* Tumbleweed, Leap, Fedora
     * for RPM \*.spec files and binary repository checkout
       [openSUSE Build Servide](https://build.opensuse.org/project/show/home:mkittler)
-    * there's also a [repo with the latest Git master](https://build.opensuse.org/project/show/home:mkittler:vcs)
+    * there's also a [repo with builds of Git master](https://build.opensuse.org/project/show/home:mkittler:vcs)
+* Exherbo
+    * packages for my other project "Tageditor" and dependencies could serve as a base and are provided
+      by [the platypus repository](https://git.exherbo.org/summer/packages/media-sound/tageditor)
 * Gentoo
     * packages for my other projects (which are built in the same way) are provided by perfect7gentleman; checkout his
       [repository](https://github.com/perfect7gentleman/pg_overlay)
-* AppImage for other GNU/Linux systems
-    * [OBS repo supposed to contain stable releases](https://download.opensuse.org/repositories/home:/mkittler:/appimage/AppImage)
-    * [OBS repo supposed to contain latest Git master](https://build.opensuse.org/project/show/home:mkittler:appimage:vcs)
+* Other GNU/Linux systems
+    * [AppImage repository for releases on the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage/AppImage)
+    * [AppImage repository for builds from Git master the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage:/vcs/AppImage/)
 * Windows
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
     * for statically linked binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
