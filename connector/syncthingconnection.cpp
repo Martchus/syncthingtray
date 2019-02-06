@@ -229,10 +229,14 @@ void SyncthingConnection::connect(SyncthingConnectionSettings &connectionSetting
     }
 }
 
+/*!
+ * \brief Connects in \a milliSeconds. Useful to "schedule" another attempt in case of a failure.
+ * \remarks Does nothing if the connection attempt would happen anyways though auto-reconnect.
+ */
 void SyncthingConnection::connectLater(int milliSeconds)
 {
     // skip if conneting via auto-reconnect anyways
-    if (autoReconnectInterval() > 0 && milliSeconds < autoReconnectInterval()) {
+    if (autoReconnectInterval() > 0 && milliSeconds > autoReconnectInterval()) {
         return;
     }
     QTimer::singleShot(milliSeconds, this, static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
