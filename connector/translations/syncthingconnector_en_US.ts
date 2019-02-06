@@ -45,7 +45,7 @@
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="209"/>
-        <location filename="../syncthingconnection.cpp" line="386"/>
+        <location filename="../syncthingconnection.cpp" line="390"/>
         <source>Connection configuration is insufficient.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -80,12 +80,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="682"/>
+        <location filename="../syncthingconnection.cpp" line="686"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="688"/>
+        <location filename="../syncthingconnection.cpp" line="692"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -241,7 +241,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="828"/>
+        <location filename="../syncthingconnection.cpp" line="832"/>
         <source>at offset %1</source>
         <translation type="unfinished"></translation>
     </message>

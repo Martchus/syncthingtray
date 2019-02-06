@@ -45,7 +45,7 @@
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="209"/>
-        <location filename="../syncthingconnection.cpp" line="386"/>
+        <location filename="../syncthingconnection.cpp" line="390"/>
         <source>Connection configuration is insufficient.</source>
         <translation>Verbindungskonfiguration is ungenügend</translation>
     </message>
@@ -80,12 +80,12 @@
         <translation>Fehler beim Abfragen des Syncthing-Logs: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="682"/>
+        <location filename="../syncthingconnection.cpp" line="686"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="688"/>
+        <location filename="../syncthingconnection.cpp" line="692"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht ausgelesen werden.</translation>
     </message>
@@ -241,7 +241,7 @@
         <translation>Fehler beim Anfordern der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="828"/>
+        <location filename="../syncthingconnection.cpp" line="832"/>
         <source>at offset %1</source>
         <translation>bei Zeichen %1</translation>
     </message>
