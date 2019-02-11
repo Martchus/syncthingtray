@@ -11,8 +11,9 @@ Item {
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
     Plasmoid.compactRepresentation: CompactRepresentation {
     }
-    Plasmoid.fullRepresentation: FullRepresentation {
-        focus: true
+    Plasmoid.fullRepresentation: Loader {
+        source: "FullRepresentation.qml"
+        onLoaded: item.updateSize()
     }
 
     Plasmoid.icon: "syncthingtray"

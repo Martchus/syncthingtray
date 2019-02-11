@@ -16,7 +16,7 @@ ColumnLayout {
     Layout.minimumHeight: units.gridUnit * 15
 
     // define function to update the size according to the settings
-    // when "floating" (shown as popup)
+    // when "floating" (shown as popup) or tied to an edge
     function updateSize() {
         switch (plasmoid.location) {
         case PlasmaCore.Types.Floating:
@@ -30,13 +30,6 @@ ColumnLayout {
             break
         default:
             ;
-        }
-    }
-
-    // update the size when becoming visible
-    onVisibleChanged: {
-        if (visible) {
-            updateSize()
         }
     }
 
