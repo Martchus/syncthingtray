@@ -102,12 +102,14 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
         if (index.parent().isValid()) {
             // dir attributes
             if (static_cast<size_t>(index.parent().row()) < m_dirs.size()) {
+                const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
+                const auto row = dir.paused && index.row() > 1 ? index.row() + 2 : index.row();
                 switch (role) {
                 case Qt::DisplayRole:
                 case Qt::EditRole:
                     if (index.column() == 0) {
                         // attribute names
-                        switch (index.row()) {
+                        switch (row) {
                         case 0:
                             return tr("ID");
                         case 1:
@@ -135,8 +137,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case DirectoryDetail:
                     if (index.column() == 1 || role == DirectoryDetail) {
                         // attribute values
-                        const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
-                        switch (index.row()) {
+                        switch (row) {
                         case 0:
                             return dir.id;
                         case 1:
@@ -183,7 +184,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     switch (index.column()) {
                     case 1:
                         const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
-                        switch (index.row()) {
+                        switch (row) {
                         case 4:
                             if (dir.deviceIds.isEmpty()) {
                                 return Colors::gray(m_brightColors);
@@ -206,7 +207,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     switch (index.column()) {
                     case 1:
                         const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
-                        switch (index.row()) {
+                        switch (row) {
                         case 3:
                             if (dir.deviceNames.isEmpty()) {
                                 return dir.deviceIds.join(QChar('\n'));
@@ -329,8 +330,9 @@ int SyncthingDirectoryModel::rowCount(const QModelIndex &parent) const
 {
     if (!parent.isValid()) {
         return static_cast<int>(m_dirs.size());
-    } else if (!parent.parent().isValid()) {
-        return 10;
+    } else if (!parent.parent().isValid() && static_cast<size_t>(parent.row()) < m_dirs.size()) {
+        const SyncthingDir &dir = m_dirs[static_cast<size_t>(parent.row())];
+        return dir.paused ? 8 : 10;
     } else {
         return 0;
     }
