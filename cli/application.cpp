@@ -514,8 +514,10 @@ void Application::printDir(const RelevantDir &relevantDir) const
     printProperty("Label", dir->label);
     printProperty("Path", dir->path);
     printProperty("Status", dir->statusString());
-    printProperty("Global", directoryStatusString(dir->globalStats), nullptr, 6);
-    printProperty("Local", directoryStatusString(dir->localStats), nullptr, 6);
+    if (!dir->paused) {
+        printProperty("Global", directoryStatusString(dir->globalStats), nullptr, 6);
+        printProperty("Local", directoryStatusString(dir->localStats), nullptr, 6);
+    }
     printProperty("Last scan time", dir->lastScanTime);
     printProperty("Last file time", dir->lastFileTime);
     printProperty("Last file name", dir->lastFileName);

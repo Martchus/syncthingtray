@@ -12,8 +12,6 @@ Directories
    Label                         Test dir 2
    Path                          /tmp/some/path/2/
    Status                        paused
-      Global                        0 file\(s\), 0 dir\(s\), 0 bytes
-      Local                         0 file\(s\), 0 dir\(s\), 0 bytes
    Shared with                   Test dev 2
    Type                          Send & Receive
    Ignore permissions            no
