@@ -94,165 +94,172 @@ QVariant SyncthingDeviceModel::headerData(int section, Qt::Orientation orientati
 
 QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
 {
-    if (index.isValid()) {
-        if (index.parent().isValid()) {
-            // dir attributes
-            if (static_cast<size_t>(index.parent().row()) < m_devs.size()) {
-                switch (role) {
-                case Qt::DisplayRole:
-                case Qt::EditRole:
-                    if (index.column() == 0) {
-                        // attribute names
-                        switch (index.row()) {
-                        case 0:
-                            return tr("ID");
-                        case 1:
-                            return tr("Addresses");
-                        case 2:
-                            return tr("Last seen");
-                        case 3:
-                            return tr("Compression");
-                        case 4:
-                            return tr("Certificate");
-                        case 5:
-                            return tr("Introducer");
-                        case 6:
-                            return tr("Incoming traffic");
-                        case 7:
-                            return tr("Outgoing traffic");
-                        case 8:
-                            return tr("Version");
-                        }
-                        break;
-                    }
-                    FALLTHROUGH;
-                case DeviceDetail:
-                    if (index.column() == 1 || role == DeviceDetail) {
-                        // attribute values
-                        const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
-                        switch (index.row()) {
-                        case 0:
-                            return dev.id;
-                        case 1:
-                            return dev.addresses.join(QStringLiteral(", "));
-                        case 2:
-                            return dev.lastSeen.isNull() ? tr("unknown or own device")
-                                                         : QString::fromLatin1(dev.lastSeen.toString(DateTimeOutputFormat::DateAndTime, true).data());
-                        case 3:
-                            return dev.compression;
-                        case 4:
-                            return dev.certName.isEmpty() ? tr("none") : dev.certName;
-                        case 5:
-                            return dev.introducer ? tr("yes") : tr("no");
-                        case 6:
-                            return QString::fromStdString(dataSizeToString(dev.totalIncomingTraffic));
-                        case 7:
-                            return QString::fromStdString(dataSizeToString(dev.totalOutgoingTraffic));
-                        case 8:
-                            return dev.clientVersion;
-                        }
-                    }
-                    break;
-                case Qt::ForegroundRole:
-                    switch (index.column()) {
-                    case 1:
-                        const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
-                        switch (index.row()) {
-                        case 2:
-                            if (dev.lastSeen.isNull()) {
-                                return Colors::gray(m_brightColors);
-                            }
-                            break;
-                        case 4:
-                            if (dev.certName.isEmpty()) {
-                                return Colors::gray(m_brightColors);
-                            }
-                            break;
-                        }
-                    }
-                    break;
-                case Qt::ToolTipRole:
-                    switch (index.column()) {
-                    case 1:
-                        switch (index.row()) {
-                        case 2:
-                            const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
-                            if (!dev.lastSeen.isNull()) {
-                                return agoString(dev.lastSeen);
-                            }
-                            break;
-                        }
-                    }
-                    break;
-                default:;
-                }
-            }
-        } else if (static_cast<size_t>(index.row()) < m_devs.size()) {
-            // dir IDs and status
-            const SyncthingDev &dev = m_devs[static_cast<size_t>(index.row())];
-            switch (role) {
-            case Qt::DisplayRole:
-            case Qt::EditRole:
-                switch (index.column()) {
-                case 0:
-                    return dev.name.isEmpty() ? dev.id : dev.name;
-                case 1:
-                    return devStatusString(dev);
-                }
-            case Qt::DecorationRole:
-                switch (index.column()) {
-                case 0:
-                    if (dev.paused) {
-                        return statusIcons().pause;
-                    } else {
-                        switch (dev.status) {
-                        case SyncthingDevStatus::Unknown:
-                        case SyncthingDevStatus::Disconnected:
-                            return statusIcons().disconnected;
-                        case SyncthingDevStatus::OwnDevice:
-                        case SyncthingDevStatus::Idle:
-                            return statusIcons().idling;
-                        case SyncthingDevStatus::Synchronizing:
-                            return statusIcons().sync;
-                        case SyncthingDevStatus::OutOfSync:
-                        case SyncthingDevStatus::Rejected:
-                            return statusIcons().error;
-                        }
-                    }
-                    break;
-                }
-                break;
-            case Qt::TextAlignmentRole:
-                switch (index.column()) {
-                case 0:
-                    break;
-                case 1:
-                    return static_cast<int>(Qt::AlignRight | Qt::AlignVCenter);
-                }
-                break;
-            case Qt::ForegroundRole:
-                switch (index.column()) {
-                case 0:
-                    break;
-                case 1:
-                    return devStatusColor(dev);
-                }
-                break;
-            case DeviceStatus:
-                return static_cast<int>(dev.status);
-            case DevicePaused:
-                return dev.paused;
-            case IsOwnDevice:
-                return dev.status == SyncthingDevStatus::OwnDevice;
-            case DeviceStatusString:
-                return devStatusString(dev);
-            case DeviceStatusColor:
-                return devStatusColor(dev);
-            case DeviceId:
-                return dev.id;
-            default:;
-            }
+    if (!index.isValid()) {
+        return QVariant();
+    }
+    if (index.parent().isValid()) {
+        // dir attributes
+        if (static_cast<size_t>(index.parent().row()) >= m_devs.size()) {
+            return QVariant();
         }
+        switch (role) {
+        case Qt::DisplayRole:
+        case Qt::EditRole:
+            if (index.column() == 0) {
+                // attribute names
+                switch (index.row()) {
+                case 0:
+                    return tr("ID");
+                case 1:
+                    return tr("Addresses");
+                case 2:
+                    return tr("Last seen");
+                case 3:
+                    return tr("Compression");
+                case 4:
+                    return tr("Certificate");
+                case 5:
+                    return tr("Introducer");
+                case 6:
+                    return tr("Incoming traffic");
+                case 7:
+                    return tr("Outgoing traffic");
+                case 8:
+                    return tr("Version");
+                }
+                break;
+            }
+            FALLTHROUGH;
+        case DeviceDetail:
+            if (index.column() == 1 || role == DeviceDetail) {
+                // attribute values
+                const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
+                switch (index.row()) {
+                case 0:
+                    return dev.id;
+                case 1:
+                    return dev.addresses.join(QStringLiteral(", "));
+                case 2:
+                    return dev.lastSeen.isNull() ? tr("unknown or own device")
+                                                 : QString::fromLatin1(dev.lastSeen.toString(DateTimeOutputFormat::DateAndTime, true).data());
+                case 3:
+                    return dev.compression;
+                case 4:
+                    return dev.certName.isEmpty() ? tr("none") : dev.certName;
+                case 5:
+                    return dev.introducer ? tr("yes") : tr("no");
+                case 6:
+                    return QString::fromStdString(dataSizeToString(dev.totalIncomingTraffic));
+                case 7:
+                    return QString::fromStdString(dataSizeToString(dev.totalOutgoingTraffic));
+                case 8:
+                    return dev.clientVersion;
+                }
+            }
+            break;
+        case Qt::ForegroundRole:
+            switch (index.column()) {
+            case 1:
+                const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
+                switch (index.row()) {
+                case 2:
+                    if (dev.lastSeen.isNull()) {
+                        return Colors::gray(m_brightColors);
+                    }
+                    break;
+                case 4:
+                    if (dev.certName.isEmpty()) {
+                        return Colors::gray(m_brightColors);
+                    }
+                    break;
+                }
+            }
+            break;
+        case Qt::ToolTipRole:
+            switch (index.column()) {
+            case 1:
+                switch (index.row()) {
+                case 2:
+                    const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
+                    if (!dev.lastSeen.isNull()) {
+                        return agoString(dev.lastSeen);
+                    }
+                    break;
+                }
+            }
+            break;
+        default:;
+        }
+        return QVariant();
+    }
+
+    if (static_cast<size_t>(index.row()) >= m_devs.size()) {
+        return QVariant();
+    }
+
+    // dir IDs and status
+    const SyncthingDev &dev = m_devs[static_cast<size_t>(index.row())];
+    switch (role) {
+    case Qt::DisplayRole:
+    case Qt::EditRole:
+        switch (index.column()) {
+        case 0:
+            return dev.name.isEmpty() ? dev.id : dev.name;
+        case 1:
+            return devStatusString(dev);
+        }
+    case Qt::DecorationRole:
+        switch (index.column()) {
+        case 0:
+            if (dev.paused) {
+                return statusIcons().pause;
+            } else {
+                switch (dev.status) {
+                case SyncthingDevStatus::Unknown:
+                case SyncthingDevStatus::Disconnected:
+                    return statusIcons().disconnected;
+                case SyncthingDevStatus::OwnDevice:
+                case SyncthingDevStatus::Idle:
+                    return statusIcons().idling;
+                case SyncthingDevStatus::Synchronizing:
+                    return statusIcons().sync;
+                case SyncthingDevStatus::OutOfSync:
+                case SyncthingDevStatus::Rejected:
+                    return statusIcons().error;
+                }
+            }
+            break;
+        }
+        break;
+    case Qt::TextAlignmentRole:
+        switch (index.column()) {
+        case 0:
+            break;
+        case 1:
+            return static_cast<int>(Qt::AlignRight | Qt::AlignVCenter);
+        }
+        break;
+    case Qt::ForegroundRole:
+        switch (index.column()) {
+        case 0:
+            break;
+        case 1:
+            return devStatusColor(dev);
+        }
+        break;
+    case DeviceStatus:
+        return static_cast<int>(dev.status);
+    case DevicePaused:
+        return dev.paused;
+    case IsOwnDevice:
+        return dev.status == SyncthingDevStatus::OwnDevice;
+    case DeviceStatusString:
+        return devStatusString(dev);
+    case DeviceStatusColor:
+        return devStatusColor(dev);
+    case DeviceId:
+        return dev.id;
+    default:;
     }
     return QVariant();
 }

@@ -108,73 +108,81 @@ QVariant SyncthingDownloadModel::headerData(int section, Qt::Orientation orienta
 
 QVariant SyncthingDownloadModel::data(const QModelIndex &index, int role) const
 {
-    if (index.isValid()) {
-        if (index.parent().isValid()) {
-            // downloading items (of dir)
-            if (static_cast<size_t>(index.parent().row()) < m_pendingDirs.size()) {
-                const SyncthingDir &dir = *m_pendingDirs[static_cast<size_t>(index.parent().row())].syncthingDir;
-                if (static_cast<size_t>(index.row()) < dir.downloadingItems.size()) {
-                    const SyncthingItemDownloadProgress &progress = dir.downloadingItems[static_cast<size_t>(index.row())];
-                    switch (role) {
-                    case Qt::DisplayRole:
-                    case Qt::EditRole:
-                        switch (index.column()) {
-                        case 0: // file names
-                            return progress.relativePath;
-                        case 1: // progress information
-                            return progress.label;
-                        }
-                        break;
-                    case Qt::ToolTipRole:
-                        break;
-                    case Qt::DecorationRole:
-                        switch (index.column()) {
-                        case 0: // file icon
-                            return progress.fileInfo.exists() ? m_fileIconProvider.icon(progress.fileInfo) : m_unknownIcon;
-                        default:;
-                        }
-                        break;
-                    case ItemPercentage:
-                        return progress.downloadPercentage;
-                    case ItemProgressLabel:
-                        return progress.label;
-                    case ItemPath:
-                        return dir.path + progress.relativePath;
-                    default:;
-                    }
-                }
-            }
-        } else if (static_cast<size_t>(index.row()) < m_pendingDirs.size()) {
-            // dir IDs and overall dir progress
-            const SyncthingDir &dir = *m_pendingDirs[static_cast<size_t>(index.row())].syncthingDir;
+    if (!index.isValid()) {
+        return QVariant();
+    }
+
+    if (index.parent().isValid()) {
+        // downloading items (of dir)
+        if (static_cast<size_t>(index.parent().row()) >= m_pendingDirs.size()) {
+            return QVariant();
+        }
+        const SyncthingDir &dir = *m_pendingDirs[static_cast<size_t>(index.parent().row())].syncthingDir;
+        if (static_cast<size_t>(index.row()) < dir.downloadingItems.size()) {
+            const SyncthingItemDownloadProgress &progress = dir.downloadingItems[static_cast<size_t>(index.row())];
             switch (role) {
             case Qt::DisplayRole:
             case Qt::EditRole:
                 switch (index.column()) {
-                case 0:
-                    return QVariant((dir.label.isEmpty() ? dir.id : dir.label) % QChar(' ') % QChar('(')
-                        % QString::number(dir.downloadingItems.size()) % QChar(')'));
-                case 1:
-                    return dir.downloadLabel;
+                case 0: // file names
+                    return progress.relativePath;
+                case 1: // progress information
+                    return progress.label;
                 }
                 break;
-            case Qt::TextAlignmentRole:
+            case Qt::ToolTipRole:
+                break;
+            case Qt::DecorationRole:
                 switch (index.column()) {
-                case 0:
-                    break;
-                case 1:
-                    return static_cast<int>(Qt::AlignRight | Qt::AlignVCenter);
+                case 0: // file icon
+                    return progress.fileInfo.exists() ? m_fileIconProvider.icon(progress.fileInfo) : m_unknownIcon;
+                default:;
                 }
                 break;
             case ItemPercentage:
-                return dir.downloadPercentage;
+                return progress.downloadPercentage;
             case ItemProgressLabel:
-                return dir.downloadLabel;
+                return progress.label;
             case ItemPath:
-                return dir.path;
+                return dir.path + progress.relativePath;
             default:;
             }
         }
+        return QVariant();
+    }
+
+    if (static_cast<size_t>(index.row()) >= m_pendingDirs.size()) {
+        return QVariant();
+    }
+
+    // dir IDs and overall dir progress
+    const SyncthingDir &dir = *m_pendingDirs[static_cast<size_t>(index.row())].syncthingDir;
+    switch (role) {
+    case Qt::DisplayRole:
+    case Qt::EditRole:
+        switch (index.column()) {
+        case 0:
+            return QVariant(
+                (dir.label.isEmpty() ? dir.id : dir.label) % QChar(' ') % QChar('(') % QString::number(dir.downloadingItems.size()) % QChar(')'));
+        case 1:
+            return dir.downloadLabel;
+        }
+        break;
+    case Qt::TextAlignmentRole:
+        switch (index.column()) {
+        case 0:
+            break;
+        case 1:
+            return static_cast<int>(Qt::AlignRight | Qt::AlignVCenter);
+        }
+        break;
+    case ItemPercentage:
+        return dir.downloadPercentage;
+    case ItemProgressLabel:
+        return dir.downloadLabel;
+    case ItemPath:
+        return dir.path;
+    default:;
     }
     return QVariant();
 }
