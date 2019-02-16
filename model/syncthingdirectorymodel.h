@@ -40,13 +40,17 @@ public Q_SLOTS:
     const SyncthingDir *dirInfo(const QModelIndex &index) const;
 
 private Q_SLOTS:
-    void dirStatusChanged(const SyncthingDir &, int index);
+    void dirStatusChanged(const SyncthingDir &dir, int index);
+    void handleConfigInvalidated() override;
+    void handleNewConfigAvailable() override;
 
 private:
     static QString dirStatusString(const SyncthingDir &dir);
     QVariant dirStatusColor(const SyncthingDir &dir) const;
+    void updateRowCount();
 
     const std::vector<SyncthingDir> &m_dirs;
+    std::vector<int> m_rowCount;
 };
 
 } // namespace Data

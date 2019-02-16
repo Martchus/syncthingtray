@@ -15,10 +15,16 @@ using namespace ConversionUtilities;
 
 namespace Data {
 
+int computeDirectoryRowCount(const SyncthingDir &dir)
+{
+    return dir.paused ? 8 : 10;
+}
+
 SyncthingDirectoryModel::SyncthingDirectoryModel(SyncthingConnection &connection, QObject *parent)
     : SyncthingModel(connection, parent)
     , m_dirs(connection.dirInfo())
 {
+    updateRowCount();
     connect(&m_connection, &SyncthingConnection::dirStatusChanged, this, &SyncthingDirectoryModel::dirStatusChanged);
 }
 
@@ -335,9 +341,8 @@ int SyncthingDirectoryModel::rowCount(const QModelIndex &parent) const
 {
     if (!parent.isValid()) {
         return static_cast<int>(m_dirs.size());
-    } else if (!parent.parent().isValid() && static_cast<size_t>(parent.row()) < m_dirs.size()) {
-        const SyncthingDir &dir = m_dirs[static_cast<size_t>(parent.row())];
-        return dir.paused ? 8 : 10;
+    } else if (!parent.parent().isValid() && static_cast<size_t>(parent.row()) < m_rowCount.size()) {
+        return m_rowCount[static_cast<size_t>(parent.row())];
     } else {
         return 0;
     }
@@ -354,8 +359,13 @@ int SyncthingDirectoryModel::columnCount(const QModelIndex &parent) const
     }
 }
 
-void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &, int index)
+void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &dir, int index)
 {
+    if (index < 0 || static_cast<size_t>(index) >= m_rowCount.size()) {
+        return;
+    }
+
+    // update top-level indizes
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
     static const QVector<int> modelRoles1({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, DirectoryPaused, DirectoryStatus,
         DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath, DirectoryPullErrorCount });
@@ -363,10 +373,39 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &, int index)
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::EditRole, Qt::ForegroundRole });
     emit dataChanged(modelIndex2, modelIndex2, modelRoles2);
+
+    // remove/insert detail rows
+    const auto oldRowCount = m_rowCount[static_cast<size_t>(index)];
+    const auto newRowCount = computeDirectoryRowCount(dir);
+    const auto newLastRow = newRowCount - 1;
+    if (oldRowCount > newRowCount) {
+        // begin removing rows for statistics
+        beginRemoveRows(modelIndex1, 2, 3);
+        m_rowCount[static_cast<size_t>(index)] = newRowCount;
+        endRemoveRows();
+    } else if (newRowCount > oldRowCount) {
+        // begin inserting rows for statistics
+        beginInsertRows(modelIndex1, 2, 3);
+        m_rowCount[static_cast<size_t>(index)] = newRowCount;
+        endInsertRows();
+    }
+
+    // update detail rows
     static const QVector<int> modelRoles3({ Qt::DisplayRole, Qt::EditRole, Qt::ToolTipRole });
-    emit dataChanged(this->index(0, 1, modelIndex1), this->index(9, 1, modelIndex1), modelRoles3);
+    emit dataChanged(this->index(0, 1, modelIndex1), this->index(newLastRow, 1, modelIndex1), modelRoles3);
     static const QVector<int> modelRoles4({ Qt::DisplayRole, Qt::EditRole, DirectoryDetail });
-    emit dataChanged(this->index(0, 0, modelIndex1), this->index(9, 0, modelIndex1), modelRoles4);
+    emit dataChanged(this->index(0, 0, modelIndex1), this->index(newLastRow, 0, modelIndex1), modelRoles4);
+}
+
+void SyncthingDirectoryModel::handleConfigInvalidated()
+{
+    beginResetModel();
+}
+
+void SyncthingDirectoryModel::handleNewConfigAvailable()
+{
+    updateRowCount();
+    endResetModel();
 }
 
 QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
@@ -418,6 +457,15 @@ QVariant SyncthingDirectoryModel::dirStatusColor(const SyncthingDir &dir) const
         return Colors::red(m_brightColors);
     }
     return QVariant();
+}
+
+void SyncthingDirectoryModel::updateRowCount()
+{
+    m_rowCount.clear();
+    m_rowCount.reserve(m_dirs.size());
+    for (const auto &dir : m_dirs) {
+        m_rowCount.emplace_back(computeDirectoryRowCount(dir));
+    }
 }
 
 } // namespace Data
