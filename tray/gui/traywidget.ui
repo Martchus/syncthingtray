@@ -6,7 +6,7 @@
    <string>Syncthing Tray</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources/syncthingtrayicons.qrc">
+   <iconset resource="../../widgets/resources/syncthingwidgetsicons.qrc">
     <normaloff>:/icons/hicolor/scalable/app/syncthingtray.svg</normaloff>:/icons/hicolor/scalable/app/syncthingtray.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -151,11 +151,11 @@
       <item>
        <widget class="QPushButton" name="webUiPushButton">
         <property name="toolTip">
-         <string>Web UI</string>
+         <string>Open Syncthing</string>
         </property>
         <property name="icon">
-         <iconset theme="internet-web-browser" resource="../../widgets/resources/syncthingwidgetsicons.qrc">
-          <normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</iconset>
+         <iconset resource="../../model/resources/syncthingmodelicons.qrc">
+          <normaloff>:/icons/hicolor/scalable/status/syncthing-default.svg</normaloff>:/icons/hicolor/scalable/status/syncthing-default.svg</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>

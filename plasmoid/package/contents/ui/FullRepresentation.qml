@@ -367,8 +367,8 @@ ColumnLayout {
         }
         TinyButton {
             id: webUIButton
-            tooltip: qsTr("Web UI")
-            iconSource: "internet-web-browser"
+            tooltip: qsTr("Open Syncthing")
+            iconSource: ":/icons/hicolor/scalable/status/syncthing-default.svg"
             onClicked: {
                 plasmoid.nativeInterface.showWebUI()
                 plasmoid.expanded = false
