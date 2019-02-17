@@ -317,6 +317,14 @@ ColumnLayout {
             }
         }
         TinyButton {
+            tooltip: qsTr("About Syncthing Tray")
+            iconSource: "help-about"
+            onClicked: {
+                plasmoid.nativeInterface.showAboutDialog()
+                plasmoid.expanded = false
+            }
+        }
+        TinyButton {
             id: showOwnIdButton
             tooltip: qsTr("Show own device ID")
             iconSource: "view-barcode"
