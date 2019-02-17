@@ -378,53 +378,6 @@ ColumnLayout {
                 onActivated: webUIButton.clicked()
             }
         }
-    }
-
-    PlasmaCore.SvgItem {
-        Layout.preferredWidth: parent.width
-        Layout.preferredHeight: 2
-        elementId: "horizontal-line"
-        svg: PlasmaCore.Svg {
-            imagePath: "widgets/line"
-        }
-    }
-
-    // traffic and connection selection
-    RowLayout {
-        Layout.fillWidth: true
-        Layout.fillHeight: false
-
-        PlasmaCore.IconItem {
-            source: "network-card"
-            Layout.preferredWidth: 32
-            Layout.preferredHeight: 32
-        }
-        ColumnLayout {
-            Layout.fillHeight: true
-            spacing: 1
-
-            PlasmaComponents.Label {
-                text: qsTr("In")
-            }
-            PlasmaComponents.Label {
-                text: qsTr("Out")
-            }
-        }
-        ColumnLayout {
-            Layout.fillHeight: true
-            spacing: 1
-
-            PlasmaComponents.Label {
-                text: plasmoid.nativeInterface.incomingTraffic
-            }
-            PlasmaComponents.Label {
-                text: plasmoid.nativeInterface.outgoingTraffic
-            }
-        }
-        Item {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-        }
         TinyButton {
             text: plasmoid.nativeInterface.currentConnectionConfigName
             iconSource: "network-connect"
@@ -455,6 +408,64 @@ ColumnLayout {
                     onObjectRemoved: connectionConfigsMenu.removeItem(object)
                 }
             }
+        }
+    }
+
+    PlasmaCore.SvgItem {
+        Layout.preferredWidth: parent.width
+        Layout.preferredHeight: 2
+        elementId: "horizontal-line"
+        svg: PlasmaCore.Svg {
+            imagePath: "widgets/line"
+        }
+    }
+
+    // global statistics and traffic
+    GridLayout {
+        Layout.fillWidth: true
+        Layout.fillHeight: false
+        columns: 4
+        rowSpacing: 1
+        columnSpacing: 4
+
+        PlasmaCore.IconItem {
+            Layout.preferredWidth: 16
+            Layout.preferredHeight: 16
+            source: "globe"
+        }
+        PlasmaComponents.Label {
+            text: plasmoid.nativeInterface.globalStatistics
+        }
+
+        PlasmaCore.IconItem {
+            Layout.preferredWidth: 16
+            Layout.preferredHeight: 16
+            Layout.leftMargin: 10
+            source: "://icons/hicolor/scalable/fa/cloud-download-alt-solid.svg"
+            opacity: plasmoid.nativeInterface.hasIncomingTraffic ? 1.0 : 0.5
+        }
+        PlasmaComponents.Label {
+            text: plasmoid.nativeInterface.incomingTraffic
+        }
+
+        PlasmaCore.IconItem {
+            Layout.preferredWidth: 16
+            Layout.preferredHeight: 16
+            source: "user-home-symbolic"
+        }
+        PlasmaComponents.Label {
+            text: plasmoid.nativeInterface.localStatistics
+        }
+
+        PlasmaCore.IconItem {
+            Layout.preferredWidth: 16
+            Layout.preferredHeight: 16
+            Layout.leftMargin: 10
+            source: "://icons/hicolor/scalable/fa/cloud-upload-alt-solid.svg"
+            opacity: plasmoid.nativeInterface.hasOutgoingTraffic ? 1.0 : 0.5
+        }
+        PlasmaComponents.Label {
+            text: plasmoid.nativeInterface.outgoingTraffic
         }
     }
 

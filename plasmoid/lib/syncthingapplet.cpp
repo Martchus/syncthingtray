@@ -88,6 +88,7 @@ void SyncthingApplet::init()
     connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &SyncthingApplet::handleDevicesChanged);
     connect(&m_connection, &SyncthingConnection::error, this, &SyncthingApplet::handleInternalError);
     connect(&m_connection, &SyncthingConnection::trafficChanged, this, &SyncthingApplet::trafficChanged);
+    connect(&m_connection, &SyncthingConnection::dirStatisticsChanged, this, &SyncthingApplet::handleDirStatisticsChanged);
     connect(&m_connection, &SyncthingConnection::newNotification, this, &SyncthingApplet::handleNewNotification);
     connect(&m_notifier, &SyncthingNotifier::newDevice, &m_dbusNotifier, &DBusStatusNotifier::showNewDev);
     connect(&m_notifier, &SyncthingNotifier::newDir, &m_dbusNotifier, &DBusStatusNotifier::showNewDir);
@@ -129,9 +130,29 @@ QString SyncthingApplet::incomingTraffic() const
     return trafficString(m_connection.totalIncomingTraffic(), m_connection.totalIncomingRate());
 }
 
+bool SyncthingApplet::hasIncomingTraffic() const
+{
+    return m_connection.totalIncomingRate() > 0.0;
+}
+
 QString SyncthingApplet::outgoingTraffic() const
 {
     return trafficString(m_connection.totalOutgoingTraffic(), m_connection.totalOutgoingRate());
+}
+
+bool SyncthingApplet::hasOutgoingTraffic() const
+{
+    return m_connection.totalOutgoingRate() > 0.0;
+}
+
+QString SyncthingApplet::globalStatistics() const
+{
+    return directoryStatusString(m_overallStats.global);
+}
+
+QString SyncthingApplet::localStatistics() const
+{
+    return directoryStatusString(m_overallStats.local);
 }
 
 QStringList SyncthingApplet::connectionConfigNames() const
@@ -273,7 +294,10 @@ void SyncthingApplet::showOwnDeviceId()
 void SyncthingApplet::showAboutDialog()
 {
     if (!m_aboutDlg) {
-        m_aboutDlg = new AboutDialog(nullptr, QStringLiteral(APP_NAME), QStringLiteral(APP_AUTHOR "\nSyncthing icons from Syncthing project"),
+        m_aboutDlg = new AboutDialog(nullptr, QStringLiteral(APP_NAME),
+            QStringLiteral("<p>Developed by " APP_AUTHOR "<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "
+                           "icons from <a href=\"https://fontawesome.com\">Font "
+                           "Awesome</a> (see <a href=\"https://fontawesome.com/license\">their license</a>)</p>"),
             QStringLiteral(APP_VERSION), ApplicationUtilities::dependencyVersions2, QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION),
             QImage(statusIcons().scanninig.pixmap(128).toImage()));
         m_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
@@ -403,6 +427,12 @@ void SyncthingApplet::handleInternalError(
     InternalError error(errorMsg, request.url(), response);
     m_dbusNotifier.showInternalError(error);
     InternalErrorsDialog::addError(move(error));
+}
+
+void SyncthingApplet::handleDirStatisticsChanged()
+{
+    m_overallStats = m_connection.computeOverallDirStatistics();
+    emit statisticsChanged();
 }
 
 void SyncthingApplet::handleErrorsCleared()

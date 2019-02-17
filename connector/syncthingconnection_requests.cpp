@@ -1411,6 +1411,7 @@ void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     neededStats.dirs = jsonValueToInt(summary.value(QLatin1String("needDirectories")));
     neededStats.symlinks = jsonValueToInt(summary.value(QLatin1String("needSymlinks")));
     dir.pullErrorCount = jsonValueToInt(summary.value(QLatin1String("pullErrors")));
+    m_dirStatsAltered = true;
 
     dir.ignorePatterns = summary.value(QLatin1String("ignorePatterns")).toBool();
     dir.lastStatisticsUpdate = eventTime;
@@ -1608,6 +1609,7 @@ void SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, int 
             readChangeEvent(eventTime, eventType, eventData);
         }
     }
+    emitDirStatisticsChanged();
 }
 
 /*!

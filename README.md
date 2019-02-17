@@ -251,3 +251,7 @@ on GitHub.
 * The tray disconnects from the local instance when the network connection goes down.
   The network connection must be restored or the tray restarted to be able to connect to local
   Syncthing again. This is caused by Qt bug https://bugreports.qt.io/browse/QTBUG-60949.
+
+## Attribution for 3rd party content
+* This project uses icons from the Syncthing project.
+* This project uses some icons from [Font Awesome](https://fontawesome.com) (see [their license](https://fontawesome.com/license)).

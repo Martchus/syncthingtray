@@ -9,5 +9,7 @@
         <file>icons/hicolor/scalable/actions/list-remove.svg</file>
         <file>icons/hicolor/scalable/actions/edit-paste.svg</file>
         <file>icons/hicolor/scalable/app/syncthingtray.svg</file>
+        <file>icons/hicolor/scalable/fa/cloud-download-alt-solid.svg</file>
+        <file>icons/hicolor/scalable/fa/cloud-upload-alt-solid.svg</file>
     </qresource>
 </RCC>

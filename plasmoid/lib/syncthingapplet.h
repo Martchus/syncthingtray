@@ -52,7 +52,11 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(QString additionalStatusText READ additionalStatusText NOTIFY connectionStatusChanged)
     Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY connectionStatusChanged)
     Q_PROPERTY(QString incomingTraffic READ incomingTraffic NOTIFY trafficChanged)
+    Q_PROPERTY(bool hasIncomingTraffic READ hasIncomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(QString outgoingTraffic READ outgoingTraffic NOTIFY trafficChanged)
+    Q_PROPERTY(bool hasOutgoingTraffic READ hasOutgoingTraffic NOTIFY trafficChanged)
+    Q_PROPERTY(QString globalStatistics READ globalStatistics NOTIFY statisticsChanged)
+    Q_PROPERTY(QString localStatistics READ localStatistics NOTIFY statisticsChanged)
     Q_PROPERTY(QStringList connectionConfigNames READ connectionConfigNames NOTIFY settingsChanged)
     Q_PROPERTY(QString currentConnectionConfigName READ currentConnectionConfigName NOTIFY currentConnectionConfigIndexChanged)
     Q_PROPERTY(int currentConnectionConfigIndex READ currentConnectionConfigIndex WRITE setCurrentConnectionConfigIndex NOTIFY
@@ -79,7 +83,11 @@ public:
     QString additionalStatusText() const;
     QIcon statusIcon() const;
     QString incomingTraffic() const;
+    bool hasIncomingTraffic() const;
     QString outgoingTraffic() const;
+    bool hasOutgoingTraffic() const;
+    QString globalStatistics() const;
+    QString localStatistics() const;
     QStringList connectionConfigNames() const;
     QString currentConnectionConfigName() const;
     int currentConnectionConfigIndex() const;
@@ -124,6 +132,7 @@ Q_SIGNALS:
     void localChanged();
     void connectionStatusChanged();
     void trafficChanged();
+    void statisticsChanged();
     void settingsChanged();
     void currentConnectionConfigIndexChanged(int index);
     void sizeChanged(const QSize &size);
@@ -136,6 +145,7 @@ private Q_SLOTS:
     void handleDevicesChanged();
     void handleInternalError(
         const QString &errorMsg, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);
+    void handleDirStatisticsChanged();
     void handleErrorsCleared();
     void handleAboutDialogDeleted();
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
@@ -151,6 +161,7 @@ private Q_SLOTS:
 private:
     Dialogs::AboutDialog *m_aboutDlg;
     Data::SyncthingConnection m_connection;
+    Data::SyncthingOverallDirStatistics m_overallStats;
     Data::SyncthingNotifier m_notifier;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Data::SyncthingService m_service;

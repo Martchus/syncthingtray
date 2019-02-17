@@ -92,6 +92,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_hasEvents(false)
     , m_hasDiskEvents(false)
     , m_lastFileDeleted(false)
+    , m_dirStatsAltered(false)
 {
     m_trafficPollTimer.setInterval(SyncthingConnectionSettings::defaultTrafficPollInterval);
     m_trafficPollTimer.setTimerType(Qt::VeryCoarseTimer);
@@ -380,6 +381,8 @@ void SyncthingConnection::continueReconnecting()
     m_lastFileName.clear();
     m_lastFileDeleted = false;
     m_syncthingVersion.clear();
+    m_dirStatsAltered = false;
+    emit dirStatisticsChanged();
 
     // notify that the configuration has been invalidated
     if (!isConfigInvalidated) {
@@ -427,6 +430,7 @@ void SyncthingConnection::concludeConnection()
         return;
     }
     setStatus(SyncthingStatus::Idle);
+    emitDirStatisticsChanged();
 }
 
 /*!
@@ -866,6 +870,17 @@ void SyncthingConnection::emitMyIdChanged(const QString &newId)
     }
 
     emit myIdChanged(m_myId = newId);
+}
+
+/*!
+ * \brief Internally called to emit dirStatisticsChanged() event.
+ */
+void SyncthingConnection::emitDirStatisticsChanged()
+{
+    if (m_dirStatsAltered) {
+        m_dirStatsAltered = false;
+        emit dirStatisticsChanged();
+    }
 }
 
 /*!

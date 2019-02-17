@@ -219,6 +219,7 @@ Q_SIGNALS:
     void dirStatusChanged(const SyncthingDir &dir, int index);
     void devStatusChanged(const SyncthingDev &dev, int index);
     void downloadProgressChanged();
+    void dirStatisticsChanged();
     void dirCompleted(ChronoUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev = nullptr);
     void newNotification(ChronoUtilities::DateTime when, const QString &message);
     void newDevAvailable(ChronoUtilities::DateTime when, const QString &devId, const QString &address);
@@ -298,6 +299,7 @@ private Q_SLOTS:
     void emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response = QByteArray());
     void emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply);
     void emitMyIdChanged(const QString &newId);
+    void emitDirStatisticsChanged();
     void handleFatalConnectionError();
     void handleAdditionalRequestCanceled();
     void recalculateStatus();
@@ -364,6 +366,7 @@ private:
     bool m_lastFileDeleted;
     QList<QSslError> m_expectedSslErrors;
     QJsonObject m_rawConfig;
+    bool m_dirStatsAltered;
 };
 
 /*!
