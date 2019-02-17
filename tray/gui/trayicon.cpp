@@ -54,9 +54,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     updateStatusIconAndText();
 
     // set context menu
-    connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("internet-web-browser"),
-                                        QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))),
-                tr("Web UI")),
+    connect(m_contextMenu.addAction(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-default.svg")), tr("Open Syncthing")),
         &QAction::triggered, &widget, &TrayWidget::showWebUi);
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))),

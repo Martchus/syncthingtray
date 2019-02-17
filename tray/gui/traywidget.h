@@ -75,6 +75,7 @@ private slots:
     void pauseResumeDir(const Data::SyncthingDir &dir);
     void changeStatus();
     void updateTraffic();
+    void updateOverallStatistics();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     bool handleSystemdStatusChanged();
     bool applySystemdSettings(bool reconnectRequired = false);

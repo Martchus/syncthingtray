@@ -128,20 +128,24 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 
     // setup other widgets
     m_ui->notificationsPushButton->setHidden(true);
-    m_ui->trafficIconLabel->setPixmap(
-        QIcon::fromTheme(QStringLiteral("network-card"), QIcon(QStringLiteral(":/icons/hicolor/scalable/devices/network-card.svg"))).pixmap(32));
+    m_ui->globalTextLabel->setPixmap(
+        QIcon::fromTheme(QStringLiteral("globe"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/globe.svg"))).pixmap(16));
+    m_ui->localTextLabel->setPixmap(
+        QIcon::fromTheme(QStringLiteral("user-home"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/user-home.svg"))).pixmap(16));
+    m_ui->trafficInTextLabel->setPixmap(QIcon(QStringLiteral(":/icons/hicolor/scalable/fa/cloud-download-alt-solid.svg")).pixmap(16));
+    m_ui->trafficOutTextLabel->setPixmap(QIcon(QStringLiteral(":/icons/hicolor/scalable/fa/cloud-upload-alt-solid.svg")).pixmap(16));
 #ifndef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     delete m_ui->startStopPushButton;
 #endif
 
     // connect signals and slots
     connect(m_ui->statusPushButton, &QPushButton::clicked, this, &TrayWidget::changeStatus);
-    connect(m_ui->closePushButton, &QPushButton::clicked, this, &TrayWidget::quitTray);
     connect(m_ui->aboutPushButton, &QPushButton::clicked, this, &TrayWidget::showAboutDialog);
     connect(m_ui->webUiPushButton, &QPushButton::clicked, this, &TrayWidget::showWebUi);
     connect(m_ui->settingsPushButton, &QPushButton::clicked, this, &TrayWidget::showSettingsDialog);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &TrayWidget::handleStatusChanged);
     connect(&m_connection, &SyncthingConnection::trafficChanged, this, &TrayWidget::updateTraffic);
+    connect(&m_connection, &SyncthingConnection::dirStatisticsChanged, this, &TrayWidget::updateOverallStatistics);
     connect(&m_connection, &SyncthingConnection::newNotification, this, &TrayWidget::handleNewNotification);
     connect(m_ui->dirsTreeView, &DirView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->dirsTreeView, &DirView::scanDir, this, &TrayWidget::scanDir);
@@ -191,8 +195,12 @@ void TrayWidget::showAboutDialog()
 {
     if (!m_aboutDlg) {
         m_aboutDlg = new AboutDialog(this, QString(),
-            QStringLiteral(APP_AUTHOR "\nfallback icons from KDE/Breeze project\nSyncthing icons from Syncthing project"), QString(),
-            ApplicationUtilities::dependencyVersions2, QString(), QStringLiteral(APP_DESCRIPTION),
+            QStringLiteral(
+                "<p>Developed by " APP_AUTHOR
+                "<br>Fallback icons from KDE/Breeze project<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "
+                "icons from <a href=\"https://fontawesome.com\">Font "
+                "Awesome</a> (see <a href=\"https://fontawesome.com/license\">their license</a>)</p>"),
+            QString(), ApplicationUtilities::dependencyVersions2, QString(), QStringLiteral(APP_DESCRIPTION),
             QImage(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
         m_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         m_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
@@ -388,7 +396,6 @@ void TrayWidget::applySettings(const QString &connectionConfig)
 
     // update visual appearance
     m_ui->trafficFormWidget->setVisible(settings.appearance.showTraffic);
-    m_ui->trafficIconLabel->setVisible(settings.appearance.showTraffic);
     m_ui->trafficHorizontalSpacer->changeSize(
         0, 20, settings.appearance.showTraffic ? QSizePolicy::Expanding : QSizePolicy::Ignored, QSizePolicy::Minimum);
     if (settings.appearance.showTraffic) {
@@ -495,6 +502,16 @@ void TrayWidget::updateTraffic()
     }
     m_ui->inTrafficLabel->setText(trafficString(m_connection.totalIncomingTraffic(), m_connection.totalIncomingRate()));
     m_ui->outTrafficLabel->setText(trafficString(m_connection.totalOutgoingTraffic(), m_connection.totalOutgoingRate()));
+    // FIXME: decrease opacity if rate is zero (the following code doesn't work)
+    //m_ui->trafficInTextLabel->setStyleSheet(m_connection.totalIncomingRate() > 0.0 ? QString() : QStringLiteral("opacity: 0.5;"));
+    //m_ui->trafficOutTextLabel->setStyleSheet(m_connection.totalOutgoingRate() > 0.0 ? QString() : QStringLiteral("opacity: 0.5;"));
+}
+
+void TrayWidget::updateOverallStatistics()
+{
+    const auto overallStats = m_connection.computeOverallDirStatistics();
+    m_ui->globalStatisticsLabel->setText(directoryStatusString(overallStats.global));
+    m_ui->localStatisticsLabel->setText(directoryStatusString(overallStats.local));
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

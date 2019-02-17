@@ -253,5 +253,6 @@ on GitHub.
   Syncthing again. This is caused by Qt bug https://bugreports.qt.io/browse/QTBUG-60949.
 
 ## Attribution for 3rd party content
-* This project uses icons from the Syncthing project.
-* This project uses some icons from [Font Awesome](https://fontawesome.com) (see [their license](https://fontawesome.com/license)).
+* Some icons are taken from the Syncthing project.
+* Some icons are taken from [Font Awesome](https://fontawesome.com) (see [their license](https://fontawesome.com/license)).
+* Fallback icons are taken from KDE/Breeze project.

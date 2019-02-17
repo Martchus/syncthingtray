@@ -53,47 +53,6 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QPushButton" name="closePushButton">
-        <property name="toolTip">
-         <string>Close</string>
-        </property>
-        <property name="icon">
-         <iconset theme="window-close" resource="../resources/syncthingtrayicons.qrc">
-          <normaloff>:/icons/hicolor/scalable/actions/window-close.svg</normaloff>:/icons/hicolor/scalable/actions/window-close.svg</iconset>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="aboutPushButton">
-        <property name="toolTip">
-         <string>About</string>
-        </property>
-        <property name="icon">
-         <iconset theme="help-about" resource="../resources/syncthingtrayicons.qrc">
-          <normaloff>:/icons/hicolor/scalable/actions/help-about.svg</normaloff>:/icons/hicolor/scalable/actions/help-about.svg</iconset>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
        <widget class="QPushButton" name="statusPushButton">
         <property name="text">
          <string>Connect</string>
@@ -135,6 +94,20 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="aboutPushButton">
+        <property name="toolTip">
+         <string>About</string>
+        </property>
+        <property name="icon">
+         <iconset theme="help-about" resource="../resources/syncthingtrayicons.qrc">
+          <normaloff>:/icons/hicolor/scalable/actions/help-about.svg</normaloff>:/icons/hicolor/scalable/actions/help-about.svg</iconset>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="settingsPushButton">
         <property name="toolTip">
          <string>Settings</string>
@@ -162,6 +135,27 @@
         </property>
        </widget>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="connectionsPushButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="icon">
+           <iconset theme="network-connect" resource="../resources/syncthingtrayicons.qrc">
+            <normaloff>:/icons/hicolor/scalable/actions/network-connect.svg</normaloff>:/icons/hicolor/scalable/actions/network-connect.svg</iconset>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -174,6 +168,9 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="spacing">
+       <number>8</number>
+      </property>
       <property name="sizeConstraint">
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
@@ -190,26 +187,78 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="trafficHorizontalLayout">
+       <layout class="QHBoxLayout" name="statisticsHorizontalLayout">
         <item>
-         <widget class="QLabel" name="trafficIconLabel">
+         <widget class="QWidget" name="statisticsFormWidget" native="true">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Traffic</string>
-          </property>
+          <layout class="QFormLayout" name="statisticsFormLayout">
+           <property name="verticalSpacing">
+            <number>2</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="globalTextLabel">
+             <property name="text">
+              <string>Global</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="globalStatisticsLabel">
+             <property name="toolTip">
+              <string>Global overall statistics</string>
+             </property>
+             <property name="text">
+              <string>unknown</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="localTextLabel">
+             <property name="text">
+              <string>Local</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="localStatisticsLabel">
+             <property name="toolTip">
+              <string>Local overall statistics</string>
+             </property>
+             <property name="text">
+              <string>unknown</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="trafficHorizontalLayout">
+        <property name="leftMargin">
+         <number>6</number>
+        </property>
         <item>
          <widget class="QWidget" name="trafficFormWidget" native="true">
           <property name="sizePolicy">
@@ -318,43 +367,6 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
          <bool>true</bool>
         </property>
        </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <spacer name="connectionHorizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="connectionsPushButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="icon">
-           <iconset theme="network-connect" resource="../resources/syncthingtrayicons.qrc">
-            <normaloff>:/icons/hicolor/scalable/actions/network-connect.svg</normaloff>:/icons/hicolor/scalable/actions/network-connect.svg</iconset>
-          </property>
-          <property name="flat">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </item>
      </layout>
     </widget>

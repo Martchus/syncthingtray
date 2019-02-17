@@ -52,6 +52,7 @@ set(REQUIRED_ICONS
     folder-download
     folder-open
     folder-sync
+    globe
     go-down
     go-up
     help-about
@@ -60,7 +61,6 @@ set(REQUIRED_ICONS
     list-remove
     media-playback-pause
     media-playback-start
-    network-card
     network-connect
     network-disconnect
     network-server
@@ -74,6 +74,7 @@ set(REQUIRED_ICONS
     system-search
     system-file-manager
     text-plain
+    user-home
     view-barcode
     view-refresh
     window-close)
@@ -84,7 +85,7 @@ find_package(c++utilities 4.11.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities
-find_package(qtutilities 5.10.0 REQUIRED)
+find_package(qtutilities 5.13.0 REQUIRED)
 use_qt_utilities()
 
 # find backend libraries
