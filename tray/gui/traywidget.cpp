@@ -7,6 +7,8 @@
 #include "../../widgets/settings/settingsdialog.h"
 #include "../../widgets/webview/webviewdialog.h"
 
+#include "../../model/syncthingicons.h"
+
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "../../connector/syncthingservice.h"
 #endif
@@ -33,7 +35,9 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QFontDatabase>
+#include <QGuiApplication>
 #include <QMessageBox>
+#include <QPalette>
 #include <QStringBuilder>
 #include <QTextBrowser>
 
@@ -132,8 +136,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
         QIcon::fromTheme(QStringLiteral("globe"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/globe.svg"))).pixmap(16));
     m_ui->localTextLabel->setPixmap(
         QIcon::fromTheme(QStringLiteral("user-home"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/user-home.svg"))).pixmap(16));
-    m_ui->trafficInTextLabel->setPixmap(QIcon(QStringLiteral(":/icons/hicolor/scalable/fa/cloud-download-alt-solid.svg")).pixmap(16));
-    m_ui->trafficOutTextLabel->setPixmap(QIcon(QStringLiteral(":/icons/hicolor/scalable/fa/cloud-upload-alt-solid.svg")).pixmap(16));
+    updateTraffic();
 #ifndef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     delete m_ui->startStopPushButton;
 #endif
@@ -500,11 +503,35 @@ void TrayWidget::updateTraffic()
     if (m_ui->trafficFormWidget->isHidden()) {
         return;
     }
+
+    // render traffic icons the first time the function is called
+    static const auto trafficIcons = [this]() {
+        const auto size = QSize(16, 13);
+        const auto &palette = m_ui->trafficFormWidget->palette(); // FIXME: make this aware of palette changes
+        const auto colorBackground = palette.color(QPalette::Background);
+        const auto colorActive = palette.color(QPalette::Foreground);
+        const auto colorInactive = QColor((colorActive.red() + colorBackground.red()) / 2, (colorActive.green() + colorBackground.green()) / 2,
+            (colorActive.blue() + colorBackground.blue()) / 2);
+        const auto renderIcon
+            = [&size](const QString &name, const QColor &color) { return Data::renderSvgImage(Data::loadFontAwesomeIcon(name, color), size); };
+        struct {
+            QPixmap uploadIconActive;
+            QPixmap uploadIconInactive;
+            QPixmap downloadIconActive;
+            QPixmap downloadIconInactive;
+        } icons;
+        icons.uploadIconActive = renderIcon(QStringLiteral("cloud-upload-alt-solid"), colorActive);
+        icons.uploadIconInactive = renderIcon(QStringLiteral("cloud-upload-alt-solid"), colorInactive);
+        icons.downloadIconActive = renderIcon(QStringLiteral("cloud-download-alt-solid"), colorActive);
+        icons.downloadIconInactive = renderIcon(QStringLiteral("cloud-download-alt-solid"), colorInactive);
+        return icons;
+    }();
+
+    // update text and whether to use active/inactive icons
     m_ui->inTrafficLabel->setText(trafficString(m_connection.totalIncomingTraffic(), m_connection.totalIncomingRate()));
     m_ui->outTrafficLabel->setText(trafficString(m_connection.totalOutgoingTraffic(), m_connection.totalOutgoingRate()));
-    // FIXME: decrease opacity if rate is zero (the following code doesn't work)
-    //m_ui->trafficInTextLabel->setStyleSheet(m_connection.totalIncomingRate() > 0.0 ? QString() : QStringLiteral("opacity: 0.5;"));
-    //m_ui->trafficOutTextLabel->setStyleSheet(m_connection.totalOutgoingRate() > 0.0 ? QString() : QStringLiteral("opacity: 0.5;"));
+    m_ui->trafficInTextLabel->setPixmap(m_connection.totalIncomingRate() > 0.0 ? trafficIcons.downloadIconActive : trafficIcons.downloadIconInactive);
+    m_ui->trafficOutTextLabel->setPixmap(m_connection.totalOutgoingRate() > 0.0 ? trafficIcons.uploadIconActive : trafficIcons.uploadIconInactive);
 }
 
 void TrayWidget::updateOverallStatistics()

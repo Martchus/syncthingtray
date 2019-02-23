@@ -30,6 +30,7 @@
 #include <QDesktopServices>
 #include <QGuiApplication>
 #include <QNetworkReply>
+#include <QPalette>
 #include <QQmlEngine>
 #include <QStringBuilder>
 
@@ -236,6 +237,11 @@ void SyncthingApplet::updateStatusIconAndTooltip()
     m_statusInfo.updateConnectionStatus(m_connection);
     m_statusInfo.updateConnectedDevices(m_connection);
     emit connectionStatusChanged();
+}
+
+QIcon SyncthingApplet::loadFontAwesomeIcon(const QString &name)
+{
+    return Data::renderSvgImage(Data::loadFontAwesomeIcon(name, QGuiApplication::palette().color(QPalette::Foreground)), QSize(16, 13));
 }
 
 void SyncthingApplet::showSettingsDlg()

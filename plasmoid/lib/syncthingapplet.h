@@ -115,6 +115,7 @@ public Q_SLOTS:
     void showDirectoryErrors(unsigned int directoryIndex);
     void copyToClipboard(const QString &text);
     void updateStatusIconAndTooltip();
+    QIcon loadFontAwesomeIcon(const QString &name);
 
 Q_SIGNALS:
     /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."

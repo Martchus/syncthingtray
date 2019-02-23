@@ -1,9 +1,25 @@
 #include "./syncthingicons.h"
 
+#include <QFile>
 #include <QPainter>
+#include <QStringBuilder>
 #include <QSvgRenderer>
 
 namespace Data {
+
+/// \cond
+namespace Detail {
+template <typename SourceType> QPixmap renderSvgImage(const SourceType &source, const QSize &size)
+{
+    QSvgRenderer renderer(source);
+    QPixmap pm(size);
+    pm.fill(QColor(Qt::transparent));
+    QPainter painter(&pm);
+    renderer.render(&painter, pm.rect());
+    return pm;
+}
+} // namespace Detail
+/// \endcond
 
 /*!
  * \brief Renders an SVG image to a QPixmap.
@@ -12,12 +28,30 @@ namespace Data {
  */
 QPixmap renderSvgImage(const QString &path, const QSize &size)
 {
-    QSvgRenderer renderer(path);
-    QPixmap pm(size);
-    pm.fill(QColor(Qt::transparent));
-    QPainter painter(&pm);
-    renderer.render(&painter, pm.rect());
-    return pm;
+    return Detail::renderSvgImage(path, size);
+}
+
+/*!
+ * \brief Renders an SVG image to a QPixmap.
+ */
+QPixmap renderSvgImage(const QByteArray &contents, const QSize &size)
+{
+    return Detail::renderSvgImage(contents, size);
+}
+
+/*!
+ * \brief Returns the font awesome icon with the specified \a iconName and \a color.
+ */
+QByteArray loadFontAwesomeIcon(const QString &iconName, const QColor &color)
+{
+    QByteArray result;
+    QFile icon(QStringLiteral(":/icons/hicolor/scalable/fa/") % iconName % QStringLiteral(".svg"));
+    if (!icon.open(QFile::ReadOnly)) {
+        return result;
+    }
+    result = icon.readAll();
+    result.replace("currentColor", color.name(QColor::HexRgb).toUtf8());
+    return result;
 }
 
 StatusIcons::StatusIcons()

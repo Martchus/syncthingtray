@@ -449,7 +449,8 @@ ColumnLayout {
             Layout.preferredWidth: 16
             Layout.preferredHeight: 16
             Layout.leftMargin: 10
-            source: "://icons/hicolor/scalable/fa/cloud-download-alt-solid.svg"
+            source: plasmoid.nativeInterface.loadFontAwesomeIcon(
+                        "cloud-download-alt-solid")
             opacity: plasmoid.nativeInterface.hasIncomingTraffic ? 1.0 : 0.5
         }
         PlasmaComponents.Label {
@@ -469,7 +470,8 @@ ColumnLayout {
             Layout.preferredWidth: 16
             Layout.preferredHeight: 16
             Layout.leftMargin: 10
-            source: "://icons/hicolor/scalable/fa/cloud-upload-alt-solid.svg"
+            source: plasmoid.nativeInterface.loadFontAwesomeIcon(
+                        "cloud-upload-alt-solid")
             opacity: plasmoid.nativeInterface.hasOutgoingTraffic ? 1.0 : 0.5
         }
         PlasmaComponents.Label {
