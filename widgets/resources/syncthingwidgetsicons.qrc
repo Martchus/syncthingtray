@@ -13,5 +13,6 @@
         <file>icons/hicolor/scalable/fa/cloud-upload-alt-solid.svg</file>
         <file>icons/hicolor/scalable/actions/globe.svg</file>
         <file>icons/hicolor/scalable/places/user-home.svg</file>
+        <file>icons/hicolor/scalable/emblems/emblem-important-old.svg</file>
     </qresource>
 </RCC>

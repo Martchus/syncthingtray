@@ -71,7 +71,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: errorsButton
-                                iconSource: "emblem-important"
+                                iconSource: ":/icons/hicolor/scalable/emblems/emblem-important-old.svg"
                                 tooltip: qsTr("Show errors")
                                 visible: pullErrorCount > 0
                                 onClicked: {

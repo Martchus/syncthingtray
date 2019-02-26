@@ -58,8 +58,9 @@ Item {
         plasmoid.setAction("showWebUI", qsTr("Web UI"), "internet-web-browser")
         plasmoid.setAction("showSettings", qsTr("Settings"), "configure")
         plasmoid.setAction("showLog", qsTr("Log"), "text-x-generic")
-        plasmoid.setAction("showErrors", qsTr("Internal errors"),
-                           "emblem-important")
+        plasmoid.setAction(
+                    "showErrors", qsTr("Internal errors"),
+                    ":/icons/hicolor/scalable/emblems/emblem-important-old.svg")
         plasmoid.setAction("rescanAllDirs", qsTr("Rescan all directories"),
                            "folder-sync")
         plasmoid.setAction("restartSyncthing", qsTr("Restart Syncthing"),
