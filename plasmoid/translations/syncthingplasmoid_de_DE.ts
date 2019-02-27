@@ -18,7 +18,7 @@
     </message>
     <message>
         <location filename="../package/contents/ui/DevicesPage.qml" line="60"/>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="96"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="97"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
@@ -32,7 +32,7 @@
     </message>
     <message>
         <location filename="../package/contents/ui/DirectoriesPage.qml" line="86"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="140"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="141"/>
         <source>Rescan</source>
         <translation>Scannen</translation>
     </message>
@@ -43,13 +43,13 @@
     </message>
     <message>
         <location filename="../package/contents/ui/DirectoriesPage.qml" line="94"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="147"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="148"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
         <location filename="../package/contents/ui/DirectoriesPage.qml" line="104"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="154"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="155"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
@@ -213,17 +213,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="303"/>
+        <location filename="../lib/syncthingapplet.cpp" line="316"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="315"/>
+        <location filename="../lib/syncthingapplet.cpp" line="328"/>
         <source>New notifications</source>
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="469"/>
+        <location filename="../lib/syncthingapplet.cpp" line="482"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
     </message>
@@ -246,22 +246,22 @@
         <translation>Log</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="61"/>
+        <location filename="../package/contents/ui/main.qml" line="62"/>
         <source>Internal errors</source>
         <translation>Interne Fehler</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="63"/>
+        <location filename="../package/contents/ui/main.qml" line="64"/>
         <source>Rescan all directories</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="65"/>
+        <location filename="../package/contents/ui/main.qml" line="66"/>
         <source>Restart Syncthing</source>
         <translation>Syncthing neustarten</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="67"/>
+        <location filename="../package/contents/ui/main.qml" line="68"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
