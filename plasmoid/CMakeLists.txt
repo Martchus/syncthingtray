@@ -6,6 +6,7 @@ set(META_APP_NAME "Syncthing Plasmoid")
 set(META_APP_AUTHOR "Martchus")
 set(META_APP_DESCRIPTION "Plasmoid to interact with Syncthing")
 set(META_PROJECT_TYPE qtplugin)
+set(META_PLUGIN_CATEGORY plasma/applets)
 set(META_ID "martchus.${META_PROJECT_NAME}")
 set(META_QT5_VERSION 5.8)
 
