@@ -21,7 +21,8 @@ public:
         DeviceStatusString,
         DeviceStatusColor,
         DeviceId,
-        DeviceDetail
+        DeviceDetail,
+        DeviceDetailIcon,
     };
 
     explicit SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent = nullptr);

@@ -114,6 +114,7 @@ ColumnLayout {
                         id: detailsView
                         visible: item.expanded
                         Layout.fillWidth: true
+                        Layout.topMargin: 3
 
                         model: DelegateModel {
                             model: plasmoid.nativeInterface.dirModel

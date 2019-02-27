@@ -450,7 +450,7 @@ ColumnLayout {
             Layout.preferredHeight: 16
             Layout.leftMargin: 10
             source: plasmoid.nativeInterface.loadFontAwesomeIcon(
-                        "cloud-download-alt-solid")
+                        "cloud-download-alt")
             opacity: plasmoid.nativeInterface.hasIncomingTraffic ? 1.0 : 0.5
         }
         PlasmaComponents.Label {
@@ -471,7 +471,7 @@ ColumnLayout {
             Layout.preferredHeight: 16
             Layout.leftMargin: 10
             source: plasmoid.nativeInterface.loadFontAwesomeIcon(
-                        "cloud-upload-alt-solid")
+                        "cloud-upload-alt")
             opacity: plasmoid.nativeInterface.hasOutgoingTraffic ? 1.0 : 0.5
         }
         PlasmaComponents.Label {

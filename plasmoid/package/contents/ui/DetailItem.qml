@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.1
+import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 Item {
@@ -13,21 +14,26 @@ Item {
 
     RowLayout {
         id: detailRow
-        spacing: theme.defaultFont.pointSize * 0.8
+        width: parent.width
 
-        PlasmaComponents.Label {
-            Layout.preferredWidth: 100
-            Layout.leftMargin: units.iconSizes.smallMedium
-            text: detailName + ":"
-            font.pointSize: theme.defaultFont.pointSize * 0.8
-            font.weight: Font.DemiBold
-            horizontalAlignment: Qt.AlignRight
+        PlasmaCore.IconItem {
+            source: detailIcon
+            Layout.leftMargin: units.iconSizes.small * 1.1
+            Layout.preferredWidth: units.iconSizes.small
+            Layout.preferredHeight: units.iconSizes.small
+            opacity: 0.8
         }
         PlasmaComponents.Label {
+            Layout.preferredWidth: 100
+            text: detailName
+            font.weight: Font.DemiBold
+        }
+        PlasmaComponents.Label {
+            Layout.leftMargin: theme.defaultFont.pointSize * 0.9
             Layout.fillWidth: true
             text: detailValue
-            font.pointSize: theme.defaultFont.pointSize * 0.8
             elide: Text.ElideRight
+            horizontalAlignment: Qt.AlignRight
         }
     }
 

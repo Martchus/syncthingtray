@@ -23,6 +23,7 @@ public:
         DirectoryPath,
         DirectoryPullErrorCount,
         DirectoryDetail,
+        DirectoryDetailIcon,
     };
 
     explicit SyncthingDirectoryModel(SyncthingConnection &connection, QObject *parent = nullptr);

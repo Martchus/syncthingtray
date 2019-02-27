@@ -55,15 +55,19 @@ QPixmap renderSvgImage(const QByteArray &contents, const QSize &size, int margin
 /*!
  * \brief Returns the font awesome icon with the specified \a iconName and \a color.
  */
-QByteArray loadFontAwesomeIcon(const QString &iconName, const QColor &color)
+QByteArray loadFontAwesomeIcon(const QString &iconName, const QColor &color, bool solid)
 {
     QByteArray result;
-    QFile icon(QStringLiteral(":/icons/hicolor/scalable/fa/") % iconName % QStringLiteral(".svg"));
+    QFile icon((solid ? QStringLiteral(":/icons/hicolor/scalable/fa/") : QStringLiteral(":/icons/hicolor/scalable/fa-non-solid/")) % iconName
+        % QStringLiteral(".svg"));
     if (!icon.open(QFile::ReadOnly)) {
         return result;
     }
     result = icon.readAll();
-    result.replace("currentColor", color.name(QColor::HexRgb).toUtf8());
+    const auto pathBegin = result.indexOf("<path ");
+    if (pathBegin > 0) {
+        result.insert(pathBegin + 6, QStringLiteral("fill=\"") % color.name(QColor::HexRgb) % QStringLiteral("\" "));
+    }
     return result;
 }
 
@@ -81,9 +85,44 @@ StatusIcons::StatusIcons()
 {
 }
 
-const StatusIcons LIB_SYNCTHING_MODEL_EXPORT &statusIcons()
+FontAwesomeIcons::FontAwesomeIcons(const QColor &color, const QSize &size, int margin)
+    : hashtag(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("hashtag"), color), size, margin))
+    , folderOpen(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("folder-open"), color), size, margin))
+    , globe(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("globe"), color), size, margin))
+    , home(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("home"), color), size, margin))
+    , shareAlt(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("share-alt"), color), size, margin))
+    , refresh(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("redo"), color), size, margin))
+    , clock(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("clock"), color), size, margin))
+    , exchangeAlt(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("exchange-alt"), color), size, margin))
+    , exclamationTriangle(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("exclamation-triangle"), color), size, margin))
+    , cogs(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("cogs"), color), size, margin))
+    , link(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("link"), color), size, margin))
+    , eye(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("eye"), color), size, margin))
+    , fileArchive(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("file-archive"), color), size, margin))
+    , folder(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("folder"), color), size, margin))
+    , certificate(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("certificate"), color), size, margin))
+    , networkWired(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("network-wired"), color), size, margin))
+    , cloudDownloadAlt(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("cloud-download-alt"), color), size, margin))
+    , cloudUploadAlt(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("cloud-upload-alt"), color), size, margin))
+    , tag(renderSvgImage(loadFontAwesomeIcon(QStringLiteral("tag"), color), size, margin))
+{
+}
+
+const StatusIcons &statusIcons()
 {
     static const StatusIcons icons;
+    return icons;
+}
+
+const FontAwesomeIcons &fontAwesomeIconsForLightTheme()
+{
+    static const FontAwesomeIcons icons(QColor(10, 10, 10), QSize(64, 64), 8);
+    return icons;
+}
+
+const FontAwesomeIcons &fontAwesomeIconsForDarkTheme()
+{
+    static const FontAwesomeIcons icons(Qt::white, QSize(64, 64), 8);
     return icons;
 }
 

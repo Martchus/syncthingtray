@@ -31,13 +31,14 @@ QHash<int, QByteArray> SyncthingDeviceModel::roleNames() const
         { DeviceStatusColor, "statusColor" },
         { DeviceId, "devId" },
         { DeviceDetail, "detail" },
+        { DeviceDetailIcon, "detailIcon" },
     };
     return roles;
 }
 
 const QVector<int> &SyncthingDeviceModel::colorRoles() const
 {
-    static const QVector<int> colorRoles({ Qt::ForegroundRole, DeviceStatusColor });
+    static const QVector<int> colorRoles({ Qt::DecorationRole, Qt::ForegroundRole, DeviceStatusColor, DeviceDetailIcon });
     return colorRoles;
 }
 
@@ -154,6 +155,33 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                     return QString::fromStdString(dataSizeToString(dev.totalOutgoingTraffic));
                 case 8:
                     return dev.clientVersion;
+                }
+            }
+            break;
+        case Qt::DecorationRole:
+        case DeviceDetailIcon:
+            if (index.column() == 0) {
+                // attribute icons
+                const auto &icons = m_brightColors ? fontAwesomeIconsForDarkTheme() : fontAwesomeIconsForLightTheme();
+                switch (index.row()) {
+                case 0:
+                    return icons.hashtag;
+                case 1:
+                    return icons.link;
+                case 2:
+                    return icons.eye;
+                case 3:
+                    return icons.fileArchive;
+                case 4:
+                    return icons.certificate;
+                case 5:
+                    return icons.networkWired;
+                case 6:
+                    return icons.cloudDownloadAlt;
+                case 7:
+                    return icons.cloudUploadAlt;
+                case 8:
+                    return icons.tag;
                 }
             }
             break;

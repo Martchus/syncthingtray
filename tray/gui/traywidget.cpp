@@ -520,10 +520,10 @@ void TrayWidget::updateTraffic()
             QPixmap downloadIconActive;
             QPixmap downloadIconInactive;
         } icons;
-        icons.uploadIconActive = renderIcon(QStringLiteral("cloud-upload-alt-solid"), colorActive);
-        icons.uploadIconInactive = renderIcon(QStringLiteral("cloud-upload-alt-solid"), colorInactive);
-        icons.downloadIconActive = renderIcon(QStringLiteral("cloud-download-alt-solid"), colorActive);
-        icons.downloadIconInactive = renderIcon(QStringLiteral("cloud-download-alt-solid"), colorInactive);
+        icons.uploadIconActive = renderIcon(QStringLiteral("cloud-upload-alt"), colorActive);
+        icons.uploadIconInactive = renderIcon(QStringLiteral("cloud-upload-alt"), colorInactive);
+        icons.downloadIconActive = renderIcon(QStringLiteral("cloud-download-alt"), colorActive);
+        icons.downloadIconInactive = renderIcon(QStringLiteral("cloud-download-alt"), colorInactive);
         return icons;
     }();
 

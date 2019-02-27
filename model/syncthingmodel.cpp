@@ -21,11 +21,26 @@ const QVector<int> &SyncthingModel::colorRoles() const
 
 void SyncthingModel::setBrightColors(bool brightColors)
 {
-    if (m_brightColors != brightColors) {
-        m_brightColors = brightColors;
-        const QVector<int> &affectedRoles = colorRoles();
-        if (!affectedRoles.isEmpty()) {
-            emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1), affectedRoles);
+    if (m_brightColors == brightColors) {
+        return;
+    }
+    m_brightColors = brightColors;
+
+    const QVector<int> &affectedRoles = colorRoles();
+    if (affectedRoles.isEmpty()) {
+        return;
+    }
+
+    // update top-level indices
+    const auto rows = rowCount();
+    emit dataChanged(index(0, 0), index(rows - 1, columnCount() - 1), affectedRoles);
+
+    // update nested indices
+    for (auto i = 0; i != rows; ++i) {
+        const auto parentIndex = index(i, 0);
+        const auto childRows = rowCount(parentIndex);
+        if (childRows > 0) {
+            emit dataChanged(index(0, 0, parentIndex), index(childRows - 1, columnCount(parentIndex) - 1), affectedRoles);
         }
     }
 }

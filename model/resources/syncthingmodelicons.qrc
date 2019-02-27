@@ -11,5 +11,27 @@
         <file>icons/hicolor/scalable/status/syncthing-error-sync.svg</file>
         <file>icons/hicolor/scalable/status/syncthing-sync-complete.svg</file>
         <file>icons/hicolor/scalable/status/syncthing-new.svg</file>
+        <file>icons/hicolor/scalable/fa/certificate.svg</file>
+        <file>icons/hicolor/scalable/fa/clock.svg</file>
+        <file>icons/hicolor/scalable/fa/cloud-download-alt.svg</file>
+        <file>icons/hicolor/scalable/fa/cloud-upload-alt.svg</file>
+        <file>icons/hicolor/scalable/fa/cogs.svg</file>
+        <file>icons/hicolor/scalable/fa/exchange-alt.svg</file>
+        <file>icons/hicolor/scalable/fa/exclamation-triangle.svg</file>
+        <file>icons/hicolor/scalable/fa/eye.svg</file>
+        <file>icons/hicolor/scalable/fa/file-archive.svg</file>
+        <file>icons/hicolor/scalable/fa/folder-open.svg</file>
+        <file>icons/hicolor/scalable/fa/folder.svg</file>
+        <file>icons/hicolor/scalable/fa/globe.svg</file>
+        <file>icons/hicolor/scalable/fa/hashtag.svg</file>
+        <file>icons/hicolor/scalable/fa/home.svg</file>
+        <file>icons/hicolor/scalable/fa/link.svg</file>
+        <file>icons/hicolor/scalable/fa/network-wired.svg</file>
+        <file>icons/hicolor/scalable/fa/redo.svg</file>
+        <file>icons/hicolor/scalable/fa/share-alt.svg</file>
+        <file>icons/hicolor/scalable/fa/tag.svg</file>
+        <file>icons/hicolor/scalable/fa-non-solid/file.svg</file>
+        <file>icons/hicolor/scalable/fa-non-solid/folder.svg</file>
+        <file>icons/hicolor/scalable/fa-non-solid/hdd.svg</file>
     </qresource>
 </RCC>

@@ -41,13 +41,14 @@ QHash<int, QByteArray> SyncthingDirectoryModel::roleNames() const
         { DirectoryPath, "path" },
         { DirectoryPullErrorCount, "pullErrorCount" },
         { DirectoryDetail, "detail" },
+        { DirectoryDetailIcon, "detailIcon" },
     };
     return roles;
 }
 
 const QVector<int> &SyncthingDirectoryModel::colorRoles() const
 {
-    static const QVector<int> colorRoles({ Qt::ForegroundRole, DirectoryStatusColor });
+    static const QVector<int> colorRoles({ Qt::DecorationRole, Qt::ForegroundRole, DirectoryStatusColor, DirectoryDetailIcon });
     return colorRoles;
 }
 
@@ -184,6 +185,35 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         return tr("%1 item(s) out of sync", nullptr, trQuandity(dir.pullErrorCount)).arg(dir.pullErrorCount);
                     }
                     return tr("%1 and %2 item(s) out of sync", nullptr, trQuandity(dir.pullErrorCount)).arg(dir.globalError).arg(dir.pullErrorCount);
+                }
+            }
+            break;
+        case Qt::DecorationRole:
+        case DirectoryDetailIcon:
+            if (index.column() == 0) {
+                // attribute icons
+                const auto &icons = m_brightColors ? fontAwesomeIconsForDarkTheme() : fontAwesomeIconsForLightTheme();
+                switch (row) {
+                case 0:
+                    return icons.hashtag;
+                case 1:
+                    return icons.folderOpen;
+                case 2:
+                    return icons.globe;
+                case 3:
+                    return icons.home;
+                case 4:
+                    return icons.shareAlt;
+                case 5:
+                    return icons.cogs;
+                case 6:
+                    return icons.refresh;
+                case 7:
+                    return icons.clock;
+                case 8:
+                    return icons.exchangeAlt;
+                case 9:
+                    return icons.exclamationTriangle;
                 }
             }
             break;
