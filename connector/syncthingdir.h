@@ -94,6 +94,14 @@ constexpr bool SyncthingCompletion::Needed::operator!=(const SyncthingCompletion
 }
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingStatistics {
+    Q_GADGET
+    Q_PROPERTY(quint64 bytes MEMBER bytes)
+    Q_PROPERTY(quint64 deletes MEMBER deletes)
+    Q_PROPERTY(quint64 dirs MEMBER dirs)
+    Q_PROPERTY(quint64 files MEMBER files)
+    Q_PROPERTY(quint64 symlinks MEMBER symlinks)
+
+public:
     quint64 bytes = 0;
     quint64 deletes = 0;
     quint64 dirs = 0;
@@ -210,6 +218,12 @@ inline bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, ChronoUtili
 }
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingOverallDirStatistics {
+    Q_GADGET
+    Q_PROPERTY(SyncthingStatistics local MEMBER local)
+    Q_PROPERTY(SyncthingStatistics global MEMBER global)
+    Q_PROPERTY(SyncthingStatistics needed MEMBER needed)
+
+public:
     SyncthingOverallDirStatistics();
     SyncthingOverallDirStatistics(const std::vector<SyncthingDir> &directories);
 
