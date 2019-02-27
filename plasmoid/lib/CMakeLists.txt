@@ -17,6 +17,7 @@ set(PLASMOID_FILES
     ../package/contents/ui/TinyButton.qml
     ../package/contents/ui/TinyButtonStyle.qml
     ../package/contents/ui/ButtonShadow.qml
+    ../package/contents/ui/StatisticsView.qml
     ../package/contents/ui/main.qml)
 list(APPEND QML_SRC_FILES ${PLASMOID_FILES})
 

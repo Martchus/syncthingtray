@@ -55,8 +55,8 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(bool hasIncomingTraffic READ hasIncomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(QString outgoingTraffic READ outgoingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(bool hasOutgoingTraffic READ hasOutgoingTraffic NOTIFY trafficChanged)
-    Q_PROPERTY(QString globalStatistics READ globalStatistics NOTIFY statisticsChanged)
-    Q_PROPERTY(QString localStatistics READ localStatistics NOTIFY statisticsChanged)
+    Q_PROPERTY(Data::SyncthingStatistics globalStatistics READ globalStatistics NOTIFY statisticsChanged)
+    Q_PROPERTY(Data::SyncthingStatistics localStatistics READ localStatistics NOTIFY statisticsChanged)
     Q_PROPERTY(QStringList connectionConfigNames READ connectionConfigNames NOTIFY settingsChanged)
     Q_PROPERTY(QString currentConnectionConfigName READ currentConnectionConfigName NOTIFY currentConnectionConfigIndexChanged)
     Q_PROPERTY(int currentConnectionConfigIndex READ currentConnectionConfigIndex WRITE setCurrentConnectionConfigIndex NOTIFY
@@ -86,8 +86,8 @@ public:
     bool hasIncomingTraffic() const;
     QString outgoingTraffic() const;
     bool hasOutgoingTraffic() const;
-    QString globalStatistics() const;
-    QString localStatistics() const;
+    Data::SyncthingStatistics globalStatistics() const;
+    Data::SyncthingStatistics localStatistics() const;
     QStringList connectionConfigNames() const;
     QString currentConnectionConfigName() const;
     int currentConnectionConfigIndex() const;
@@ -115,7 +115,8 @@ public Q_SLOTS:
     void showDirectoryErrors(unsigned int directoryIndex);
     void copyToClipboard(const QString &text);
     void updateStatusIconAndTooltip();
-    QIcon loadFontAwesomeIcon(const QString &name);
+    QIcon loadFontAwesomeIcon(const QString &name, bool solid = true) const;
+    QString formatFileSize(quint64 fileSizeInByte) const;
 
 Q_SIGNALS:
     /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."

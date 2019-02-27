@@ -23,6 +23,7 @@
 #include <qtutilities/resources/resources.h>
 
 #include <c++utilities/application/argumentparser.h>
+#include <c++utilities/conversion/stringconversion.h>
 
 #include <KConfigGroup>
 
@@ -41,6 +42,7 @@ using namespace Data;
 using namespace Plasma;
 using namespace Dialogs;
 using namespace QtGui;
+using namespace ConversionUtilities;
 using namespace ChronoUtilities;
 
 namespace Plasmoid {
@@ -146,14 +148,14 @@ bool SyncthingApplet::hasOutgoingTraffic() const
     return m_connection.totalOutgoingRate() > 0.0;
 }
 
-QString SyncthingApplet::globalStatistics() const
+SyncthingStatistics SyncthingApplet::globalStatistics() const
 {
-    return directoryStatusString(m_overallStats.global);
+    return m_overallStats.global;
 }
 
-QString SyncthingApplet::localStatistics() const
+SyncthingStatistics SyncthingApplet::localStatistics() const
 {
-    return directoryStatusString(m_overallStats.local);
+    return m_overallStats.local;
 }
 
 QStringList SyncthingApplet::connectionConfigNames() const
@@ -239,9 +241,14 @@ void SyncthingApplet::updateStatusIconAndTooltip()
     emit connectionStatusChanged();
 }
 
-QIcon SyncthingApplet::loadFontAwesomeIcon(const QString &name)
+QIcon SyncthingApplet::loadFontAwesomeIcon(const QString &name, bool solid) const
 {
-    return Data::renderSvgImage(Data::loadFontAwesomeIcon(name, QGuiApplication::palette().color(QPalette::Foreground)), QSize(16, 13));
+    return Data::renderSvgImage(Data::loadFontAwesomeIcon(name, QGuiApplication::palette().color(QPalette::Foreground), solid), QSize(32, 32), 8);
+}
+
+QString SyncthingApplet::formatFileSize(quint64 fileSizeInByte) const
+{
+    return QString::fromStdString(dataSizeToString(fileSizeInByte));
 }
 
 void SyncthingApplet::showSettingsDlg()

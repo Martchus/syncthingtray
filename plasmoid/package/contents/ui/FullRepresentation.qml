@@ -430,6 +430,7 @@ ColumnLayout {
 
     // global statistics and traffic
     GridLayout {
+        Layout.leftMargin: 5
         Layout.fillWidth: true
         Layout.fillHeight: false
         columns: 4
@@ -441,8 +442,9 @@ ColumnLayout {
             Layout.preferredHeight: 16
             source: "globe"
         }
-        PlasmaComponents.Label {
-            text: plasmoid.nativeInterface.globalStatistics
+        StatisticsView {
+            Layout.leftMargin: 4
+            statistics: plasmoid.nativeInterface.globalStatistics
         }
 
         PlasmaCore.IconItem {
@@ -462,8 +464,9 @@ ColumnLayout {
             Layout.preferredHeight: 16
             source: "user-home-symbolic"
         }
-        PlasmaComponents.Label {
-            text: plasmoid.nativeInterface.localStatistics
+        StatisticsView {
+            Layout.leftMargin: 4
+            statistics: plasmoid.nativeInterface.localStatistics
         }
 
         PlasmaCore.IconItem {
