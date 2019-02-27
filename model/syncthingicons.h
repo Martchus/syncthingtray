@@ -10,9 +10,6 @@ QT_FORWARD_DECLARE_CLASS(QColor)
 
 namespace Data {
 
-QPixmap LIB_SYNCTHING_MODEL_EXPORT renderSvgImage(const QString &path, const QSize &size = QSize(128, 128));
-QPixmap LIB_SYNCTHING_MODEL_EXPORT renderSvgImage(const QByteArray &contents, const QSize &size = QSize(128, 128));
-
 QByteArray LIB_SYNCTHING_MODEL_EXPORT loadFontAwesomeIcon(const QString &iconName, const QColor &color);
 
 struct StatusIcons {
@@ -29,6 +26,8 @@ struct StatusIcons {
     QIcon newItem;
 };
 
+QPixmap LIB_SYNCTHING_MODEL_EXPORT renderSvgImage(const QString &path, const QSize &size = QSize(128, 128), int margin = 0);
+QPixmap LIB_SYNCTHING_MODEL_EXPORT renderSvgImage(const QByteArray &contents, const QSize &size = QSize(128, 128), int margin = 0);
 const StatusIcons LIB_SYNCTHING_MODEL_EXPORT &statusIcons();
 
 } // namespace Data

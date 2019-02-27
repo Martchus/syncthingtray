@@ -9,13 +9,26 @@ namespace Data {
 
 /// \cond
 namespace Detail {
-template <typename SourceType> QPixmap renderSvgImage(const SourceType &source, const QSize &size)
+template <typename SourceType> QPixmap renderSvgImage(const SourceType &source, const QSize &size, int margin)
 {
     QSvgRenderer renderer(source);
+    QSize renderSize(renderer.defaultSize());
+    renderSize.scale(size.width() - margin, size.height() - margin, Qt::KeepAspectRatio);
+    QRect renderBounds(QPoint(), size);
+    if (renderSize.width() < renderBounds.width()) {
+        const auto diff = (renderBounds.width() - renderSize.width()) / 2;
+        renderBounds.setX(diff);
+        renderBounds.setWidth(renderSize.width());
+    }
+    if (renderSize.height() < renderBounds.height()) {
+        const auto diff = (renderBounds.height() - renderSize.height()) / 2;
+        renderBounds.setY(diff);
+        renderBounds.setHeight(renderSize.height());
+    }
     QPixmap pm(size);
     pm.fill(QColor(Qt::transparent));
     QPainter painter(&pm);
-    renderer.render(&painter, pm.rect());
+    renderer.render(&painter, renderBounds);
     return pm;
 }
 } // namespace Detail
@@ -26,17 +39,17 @@ template <typename SourceType> QPixmap renderSvgImage(const SourceType &source, 
  * \remarks If instantiating QIcon directly from SVG image the icon is not displayed in the tray under Plasma 5. It works
  *          with Tint2, however.
  */
-QPixmap renderSvgImage(const QString &path, const QSize &size)
+QPixmap renderSvgImage(const QString &path, const QSize &size, int margin)
 {
-    return Detail::renderSvgImage(path, size);
+    return Detail::renderSvgImage(path, size, margin);
 }
 
 /*!
  * \brief Renders an SVG image to a QPixmap.
  */
-QPixmap renderSvgImage(const QByteArray &contents, const QSize &size)
+QPixmap renderSvgImage(const QByteArray &contents, const QSize &size, int margin)
 {
-    return Detail::renderSvgImage(contents, size);
+    return Detail::renderSvgImage(contents, size, margin);
 }
 
 /*!
