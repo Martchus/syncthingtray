@@ -198,7 +198,7 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
 * To force usage of Qt WebKit/Qt WebEngine or to disable both add `-DWEBVIEW_PROVIDER=webkit/webengine/none` to the CMake arguments.
 * To use Qt WebKit revived/ng, set the web view provider to `webkit`. It works already without any (known) issues.
 
-### BTW: I prefer Qt WebKit (revived/ng version) because
+#### Limitations of Qt WebEngine compared to Qt WebKit
 * Currently there is no way to allow a particular self-signed certificate in Qt
   WebEngine. Currently any self-signed certificate is accepted! See:
   https://bugreports.qt.io/browse/QTBUG-51176
@@ -208,6 +208,49 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
 * Security issues are not a concern because no other website than the
   Syncthing web UI is shown. Any external links will be opened in the
   regular web browser anyways.
+
+### Troubleshooting KDE integration
+If the Dolphin integration or the Plasmoid don't work, check whether the files for those components
+have been installed in the right directories.
+
+For instance, under Tumbleweed it looks like this for the Plasmoid:
+```
+/usr/lib64/qt5/plugins/plasma/applets/libsyncthingplasmoid.so
+/usr/share/kservices5/plasma-applet-martchus.syncthingplasmoid.desktop
+/usr/share/plasma/plasmoids/martchus.syncthingplasmoid/contents/ui/*.qml
+/usr/share/plasma/plasmoids/martchus.syncthingplasmoid/metadata.desktop
+/usr/share/plasma/plasmoids/martchus.syncthingplasmoid/metadata.json
+
+```
+
+The files for the Dolphin integration look like this under Tumbleweed:
+```
+/usr/lib64/qt5/plugins/libsyncthingfileitemaction.so
+/usr/share/kservices5/syncthingfileitemaction.desktop
+```
+
+The directory the `*.so` file needs to be installed to seems to differ from distribution to
+distribution. The right directory for your distribution can be queried from qmake using
+`qmake-qt5 -query QT_INSTALL_PLUGINS`. In doubt, just look where other Qt 5 plugins are stored.
+
+Actually the build system should be able to do that query automatically. It is also possible to
+specify the directory manually, e.g. for Tumbleweed one would add
+`-DQT_PLUGIN_DIR=/usr/lib64/qt5/plugins` to the CMake arguments.
+
+---
+
+Also be sure that the version of the plasma framework the plasmoid was built against is *not* newer
+than the version actually installed on the system. That can for instance easily happen when using
+`tumbleweed-cli` for sticking to a previous snapshot but having the lastest version of the plasmoid
+from my home repository installed.
+
+---
+
+If the Plasmoid still won't load, checkout the log of `plasmashell`/`plasmoidviewer`/`plasmawindowed`.
+Also consider using strace to find out at which paths the shell is looking for `*.desktop` and
+`*.so` files.
+
+For a development setup of the KDE integration, continue reading the subsequent section.
 
 ## Contributing
 ### Adding translations
