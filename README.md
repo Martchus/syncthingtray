@@ -71,15 +71,12 @@ The tray is still under development; the following features are under constructi
 ## Screenshots
 The screenshots might not be up-to-date.
 
-### Under Openbox/Tint2
-![Openbox/Tint2](/tray/resources/screenshots/tint2.png?raw=true)
+### Qt Widgets based GUI under Openbox/Tint2 with dark Breeze theme
+![Qt Widgets based GUI under Openbox/Tint2](/tray/resources/screenshots/tint2-dark.png?raw=true)
 
 ### Under Plasma 5
-![Plasma 5 (Plasmoid)](/plasmoid/resources/screenshots/plasmoid-1.png?raw=true)
-![Plasma 5 (Plasmoid and Dolphin integration)](/tray/resources/screenshots/under-construction-3.png?raw=true)
-![Plasma 5 (regular GUI)](/tray/resources/screenshots/plasma.png?raw=true)
-![Plasma 5 (directory error)](/tray/resources/screenshots/plasma-2.png?raw=true)
-![Plasma 5 (dark)](/tray/resources/screenshots/plasma-dark.png?raw=true)
+![Plasmoid (light theme)](/plasmoid/resources/screenshots/plasmoid-1.png?raw=true)
+![Plasmoid (dark theme)](/plasmoid/resources/screenshots/plasmoid-2.png?raw=true)
 
 ### Settings dialog
 ![Settings dialog](/tray/resources/screenshots/settings.png?raw=true)
