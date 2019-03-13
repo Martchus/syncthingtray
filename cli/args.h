@@ -10,8 +10,6 @@ using namespace ApplicationUtilities;
 struct Args {
     Args();
     ArgumentParser parser;
-    HelpArgument help;
-    NoColorArgument noColor;
     OperationArgument status, log, stop, restart, rescan, rescanAll, pause, resume, waitForIdle, pwd, cat, edit;
     OperationArgument statusPwd, rescanPwd, pausePwd, resumePwd;
     ConfigValueArgument script, jsLines, dryRun;

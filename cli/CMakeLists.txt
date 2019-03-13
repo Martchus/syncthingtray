@@ -14,29 +14,24 @@ set(TEST_HEADER_FILES)
 set(TEST_SRC_FILES tests/application.cpp)
 
 # find c++utilities
-find_package(c++utilities 4.17.0 REQUIRED)
+find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities
-find_package(qtutilities 5.0.0 REQUIRED)
+find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX} 6.0.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
+list(APPEND PRIVATE_INCLUDE_DIRS ${QT_UTILITIES_INCLUDE_DIRS})
 
 # find backend libraries
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector()
 
 find_package(syncthingtesthelper ${META_APP_VERSION} REQUIRED)
-if (SYNCTHINGTESTHELPER_HAS_SHARED_LIB)
-    list(APPEND TEST_LIBRARIES syncthingtesthelper)
-elseif (SYNCTHINGTESTHELPER_HAS_STATIC_LIB)
-    list(APPEND TEST_LIBRARIES syncthingtesthelper_static)
-else ()
-    message(WARNING "Unable to build tests. Testhelper not found.")
-endif ()
+list(APPEND TEST_LIBRARIES ${SYNCTHINGTESTHELPER_LIB})
 
 # include modules to apply configuration
 include(BasicConfig)
-include(JsProviderConfig)
+include(QtJsProviderConfig)
 if (JS_PROVIDER)
     list(APPEND HEADER_FILES jsconsole.h)
     list(APPEND SRC_FILES jsconsole.cpp)
@@ -45,9 +40,7 @@ endif ()
 include(QtConfig)
 include(WindowsResources)
 include(AppTarget)
-if (SYNCTHINGTESTHELPER_HAS_SHARED_LIB OR SYNCTHINGTESTHELPER_HAS_STATIC_LIB)
-    include(TestTarget)
-endif ()
+include(TestTarget)
 include(ShellCompletion)
 include(Doxygen)
 include(ConfigHeader)

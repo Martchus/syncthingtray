@@ -34,6 +34,9 @@ option(NO_MODEL "whether building models should be skipped, implies NO_TRAY" OFF
 option(NO_WIDGETS "whether building widgets should be skipped, implies NO_TRAY" OFF)
 option(NO_PLASMOID "whether building the Plasma 5 plasmoid should be skipped" "${PLASMOID_DISABLED_BY_DEFAULT}")
 
+# allow using non-default configuration
+set(CONFIGURATION_PACKAGE_SUFFIX "" CACHE STRING "sets the suffix for find_package() calls to packages configured via c++utilities")
+
 # add subdirectories
 enable_testing()
 add_subdirectory(connector)

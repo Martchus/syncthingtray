@@ -31,8 +31,8 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
     int progressRate = 0;
     bool introducer = false;
     bool paused = false;
-    uint64 totalIncomingTraffic = 0;
-    uint64 totalOutgoingTraffic = 0;
+    std::uint64_t totalIncomingTraffic = 0;
+    std::uint64_t totalOutgoingTraffic = 0;
     QString connectionAddress;
     QString connectionType;
     QString clientVersion;

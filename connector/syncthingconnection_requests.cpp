@@ -743,8 +743,8 @@ void SyncthingConnection::readConnections()
         // read traffic, the conversion to double is neccassary because toInt() doesn't work for high values
         const QJsonValue totalIncomingTrafficValue(totalObj.value(QLatin1String("inBytesTotal")));
         const QJsonValue totalOutgoingTrafficValue(totalObj.value(QLatin1String("outBytesTotal")));
-        const uint64 totalIncomingTraffic = totalIncomingTrafficValue.isDouble() ? jsonValueToInt(totalIncomingTrafficValue) : unknownTraffic;
-        const uint64 totalOutgoingTraffic = totalOutgoingTrafficValue.isDouble() ? jsonValueToInt(totalOutgoingTrafficValue) : unknownTraffic;
+        const std::uint64_t totalIncomingTraffic = totalIncomingTrafficValue.isDouble() ? jsonValueToInt(totalIncomingTrafficValue) : unknownTraffic;
+        const std::uint64_t totalOutgoingTraffic = totalOutgoingTrafficValue.isDouble() ? jsonValueToInt(totalOutgoingTrafficValue) : unknownTraffic;
         double transferTime = 0.0;
         const bool hasDelta
             = !m_lastConnectionsUpdate.isNull() && ((transferTime = (DateTime::gmtNow() - m_lastConnectionsUpdate).totalSeconds()) != 0.0);
@@ -1693,11 +1693,11 @@ void SyncthingConnection::readDownloadProgressEvent(DateTime eventTime, const QJ
         dirInfo.downloadLabel
             = QStringLiteral("%1 / %2 - %3 %")
                   .arg(QString::fromLatin1(dataSizeToString(dirInfo.blocksAlreadyDownloaded > 0
-                               ? static_cast<uint64>(dirInfo.blocksAlreadyDownloaded) * SyncthingItemDownloadProgress::syncthingBlockSize
+                               ? static_cast<std::uint64_t>(dirInfo.blocksAlreadyDownloaded) * SyncthingItemDownloadProgress::syncthingBlockSize
                                : 0)
                                                .data()),
                       QString::fromLatin1(dataSizeToString(dirInfo.blocksToBeDownloaded > 0
-                              ? static_cast<uint64>(dirInfo.blocksToBeDownloaded) * SyncthingItemDownloadProgress::syncthingBlockSize
+                              ? static_cast<std::uint64_t>(dirInfo.blocksToBeDownloaded) * SyncthingItemDownloadProgress::syncthingBlockSize
                               : 0)
                                               .data()),
                       QString::number(dirInfo.downloadPercentage));

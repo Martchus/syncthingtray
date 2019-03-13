@@ -5,8 +5,7 @@
 namespace Cli {
 
 Args::Args()
-    : help(parser)
-    , status("status", 's', "shows the overall status and/or directory/device specific status")
+    : status("status", 's', "shows the overall status and/or directory/device specific status")
     , log("log", 'l', "shows the Syncthing log")
     , stop("stop", '\0', "stops Syncthing")
     , restart("restart", '\0', "restarts Syncthing")
@@ -75,7 +74,7 @@ Args::Args()
     credentials.setExample(PROJECT_NAME " status --dir dir1 --credentials name supersecret");
 
     parser.setMainArguments({ &status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &resume, &waitForIdle, &pwd, &cat, &edit, &configFile,
-        &apiKey, &url, &credentials, &certificate, &noColor, &help });
+        &apiKey, &url, &credentials, &certificate, &parser.noColorArg(), &parser.helpArg() });
 
     // allow setting default values via environment
     configFile.setEnvironmentVariable("SYNCTHING_CTL_CONFIG_FILE");

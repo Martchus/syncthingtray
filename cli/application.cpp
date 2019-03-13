@@ -73,9 +73,9 @@ Application::Application()
 {
     // take ownership over the global QNetworkAccessManager
     networkAccessManager().setParent(this);
-    exitFunction = &exitApplication;
 
-    // setup argument callbacks
+    // setup callbacks
+    m_args.parser.setExitFunction(&exitApplication);
     m_args.status.setCallback(bind(&Application::printStatus, this, _1));
     m_args.log.setCallback(bind(&Application::requestLog, this, _1));
     m_args.stop.setCallback(bind(&Application::requestShutdown, this, _1));
@@ -124,7 +124,7 @@ int Application::exec(int argc, const char *const *argv)
     }
 
     // handle help argument
-    if (m_args.help.isPresent()) {
+    if (m_args.parser.helpArg().isPresent()) {
         m_args.parser.printHelp(cout);
         return 0;
     }
@@ -565,10 +565,10 @@ void Application::printDev(const SyncthingDev *dev) const
     printProperty("Client version", dev->clientVersion);
     printProperty("Last seen", dev->lastSeen);
     if (dev->totalIncomingTraffic > 0) {
-        printProperty("Incoming traffic", dataSizeToString(static_cast<uint64>(dev->totalIncomingTraffic)).data());
+        printProperty("Incoming traffic", dataSizeToString(static_cast<std::uint64_t>(dev->totalIncomingTraffic)).data());
     }
     if (dev->totalOutgoingTraffic > 0) {
-        printProperty("Outgoing traffic", dataSizeToString(static_cast<uint64>(dev->totalOutgoingTraffic)).data());
+        printProperty("Outgoing traffic", dataSizeToString(static_cast<std::uint64_t>(dev->totalOutgoingTraffic)).data());
     }
     cout << '\n';
 }

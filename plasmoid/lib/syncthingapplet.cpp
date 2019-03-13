@@ -17,6 +17,7 @@
 #include "../../connector/utils.h"
 
 #include "resources/config.h"
+#include "resources/qtconfig.h"
 
 #include <qtutilities/misc/desktoputils.h>
 #include <qtutilities/misc/dialogutils.h>

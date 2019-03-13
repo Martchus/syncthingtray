@@ -133,11 +133,11 @@ public:
     // getter for information retrieved from Syncthing
     const QString &configDir() const;
     const QString &myId() const;
-    uint64 totalIncomingTraffic() const;
-    uint64 totalOutgoingTraffic() const;
+    std::uint64_t totalIncomingTraffic() const;
+    std::uint64_t totalOutgoingTraffic() const;
     double totalIncomingRate() const;
     double totalOutgoingRate() const;
-    static constexpr uint64 unknownTraffic = std::numeric_limits<uint64>::max();
+    static constexpr std::uint64_t unknownTraffic = std::numeric_limits<std::uint64_t>::max();
     const std::vector<SyncthingDir> &dirInfo() const;
     const std::vector<SyncthingDev> &devInfo() const;
     SyncthingOverallDirStatistics computeOverallDirStatistics() const;
@@ -230,7 +230,7 @@ Q_SIGNALS:
     void statusChanged(SyncthingStatus newStatus);
     void configDirChanged(const QString &newConfigDir);
     void myIdChanged(const QString &myNewId);
-    void trafficChanged(uint64 totalIncomingTraffic, uint64 totalOutgoingTraffic);
+    void trafficChanged(std::uint64_t totalIncomingTraffic, std::uint64_t totalOutgoingTraffic);
     void newConfigTriggered();
     void rescanTriggered(const QString &dirId);
     void devicePauseTriggered(const QStringList &devIds);
@@ -335,8 +335,8 @@ private:
     unsigned int m_autoReconnectTries;
     QString m_configDir;
     QString m_myId;
-    uint64 m_totalIncomingTraffic;
-    uint64 m_totalOutgoingTraffic;
+    std::uint64_t m_totalIncomingTraffic;
+    std::uint64_t m_totalOutgoingTraffic;
     double m_totalIncomingRate;
     double m_totalOutgoingRate;
     QNetworkReply *m_configReply;
@@ -616,7 +616,7 @@ inline const QString &SyncthingConnection::myId() const
 /*!
  * \brief Returns the total incoming traffic in byte.
  */
-inline uint64 SyncthingConnection::totalIncomingTraffic() const
+inline std::uint64_t SyncthingConnection::totalIncomingTraffic() const
 {
     return m_totalIncomingTraffic;
 }
@@ -624,7 +624,7 @@ inline uint64 SyncthingConnection::totalIncomingTraffic() const
 /*!
  * \brief Returns the total outgoing traffic in byte.
  */
-inline uint64 SyncthingConnection::totalOutgoingTraffic() const
+inline std::uint64_t SyncthingConnection::totalOutgoingTraffic() const
 {
     return m_totalOutgoingTraffic;
 }

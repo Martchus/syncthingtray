@@ -180,13 +180,13 @@ SyncthingItemDownloadProgress::SyncthingItemDownloadProgress(
     , blocksReused(values.value(QLatin1String("Reused")).toInt())
     , bytesAlreadyHandled(values.value(QLatin1String("BytesDone")).toInt())
     , totalNumberOfBytes(values.value(QLatin1String("BytesTotal")).toInt())
-    , label(
-          QStringLiteral("%1 / %2 - %3 %")
-              .arg(QString::fromLatin1(
-                       dataSizeToString(blocksAlreadyDownloaded > 0 ? static_cast<uint64>(blocksAlreadyDownloaded) * syncthingBlockSize : 0).data()),
-                  QString::fromLatin1(
-                      dataSizeToString(totalNumberOfBlocks > 0 ? static_cast<uint64>(totalNumberOfBlocks) * syncthingBlockSize : 0).data()),
-                  QString::number(downloadPercentage)))
+    , label(QStringLiteral("%1 / %2 - %3 %")
+                .arg(QString::fromLatin1(
+                         dataSizeToString(blocksAlreadyDownloaded > 0 ? static_cast<std::uint64_t>(blocksAlreadyDownloaded) * syncthingBlockSize : 0)
+                             .data()),
+                    QString::fromLatin1(
+                        dataSizeToString(totalNumberOfBlocks > 0 ? static_cast<std::uint64_t>(totalNumberOfBlocks) * syncthingBlockSize : 0).data()),
+                    QString::number(downloadPercentage)))
 {
 }
 

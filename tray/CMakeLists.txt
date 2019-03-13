@@ -81,11 +81,11 @@ set(REQUIRED_ICONS
 # fallback icons can not replace built-in Breeze icons (yet) set(FALLBACK_ICON_THEME breeze)
 
 # find c++utilities
-find_package(c++utilities 4.11.0 REQUIRED)
+find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities
-find_package(qtutilities 5.13.0 REQUIRED)
+find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX} 6.0.0 REQUIRED)
 use_qt_utilities()
 
 # find backend libraries

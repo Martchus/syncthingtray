@@ -138,11 +138,10 @@ elseif(UNIX)
 endif()
 
 # ensure we can find libsyncthing.h from Syncthing's source tree when building the interface
-list(APPEND PRIVATE_SHARED_INCLUDE_DIRS "${SYNCTHING_PATH}/cmd/syncthing")
-list(APPEND PRIVATE_STATIC_INCLUDE_DIRS "${SYNCTHING_PATH}/cmd/syncthing")
+list(APPEND PRIVATE_INCLUDE_DIRS "${SYNCTHING_PATH}/cmd/syncthing")
 
 # find c++utilities
-find_package(c++utilities 4.17.0 REQUIRED)
+find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 list(APPEND PRIVATE_SHARED_INCLUDE_DIRS ${CPP_UTILITIES_INCLUDE_DIRS})
 list(APPEND PRIVATE_STATIC_INCLUDE_DIRS ${CPP_UTILITIES_INCLUDE_DIRS})

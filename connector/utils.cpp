@@ -25,7 +25,7 @@ namespace Data {
 QString agoString(DateTime dateTime)
 {
     const TimeSpan delta(DateTime::now() - dateTime);
-    if (!delta.isNegative() && static_cast<uint64>(delta.totalTicks()) > (TimeSpan::ticksPerMinute / 4uL)) {
+    if (!delta.isNegative() && static_cast<std::uint64_t>(delta.totalTicks()) > (TimeSpan::ticksPerMinute / 4uL)) {
         return QCoreApplication::translate("Data::Utils", "%1 ago")
             .arg(QString::fromUtf8(delta.toString(TimeSpanOutputFormat::WithMeasures, true).data()));
     } else {
@@ -38,7 +38,7 @@ QString agoString(DateTime dateTime)
  *
  * Eg. "10.2 GiB (45 kib/s)" or only "10.2 GiB" if rate is unknown or "unknown" if both values are unknown.
  */
-QString trafficString(uint64 total, double rate)
+QString trafficString(std::uint64_t total, double rate)
 {
     static const QString unknownStr(QCoreApplication::translate("Data::Utils", "unknown"));
     if (rate != 0.0) {

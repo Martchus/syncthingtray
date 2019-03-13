@@ -21,13 +21,11 @@ set(TEST_SRC_FILES tests/manualtesting.cpp)
 set(TS_FILES)
 
 # find c++utilities
-find_package(c++utilities 4.16.0 REQUIRED)
+find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 use_cpp_utilities()
-set(META_PUBLIC_SHARED_LIB_DEPENDS c++utilities)
-set(META_PUBLIC_STATIC_LIB_DEPENDS c++utilities_static)
 
 # find qtutilities (only CMake modules used)
-find_package(qtutilities 5.0.0 REQUIRED)
+find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX} 6.0.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
 
 # find syncthingconnector
@@ -46,10 +44,5 @@ include(TestTarget)
 include(Doxygen)
 include(ConfigHeader)
 
-# exclude the targets from 'all' target so it is only built when tests are built
-foreach (TESTHELPER_TARGET "${TARGET_PREFIX}${META_PROJECT_NAME}${TARGET_SUFFIX}"
-         "${TARGET_PREFIX}${META_PROJECT_NAME}${TARGET_SUFFIX}_static")
-    if (TARGET "${TESTHELPER_TARGET}")
-        set_target_properties("${TESTHELPER_TARGET}" PROPERTIES EXCLUDE_FROM_ALL ON)
-    endif ()
-endforeach ()
+# exclude the target from 'all' target so it is only built when tests are built
+set_target_properties("${META_TARGET_NAME}" PROPERTIES EXCLUDE_FROM_ALL ON)

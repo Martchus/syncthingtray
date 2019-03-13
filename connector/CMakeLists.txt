@@ -37,16 +37,13 @@ set(TEST_SRC_FILES tests/connectiontests.cpp tests/misctests.cpp)
 set(TS_FILES translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
-find_package(c++utilities 4.17.0 REQUIRED)
-use_cpp_utilities()
-set(META_PUBLIC_SHARED_LIB_DEPENDS c++utilities)
-set(META_PUBLIC_STATIC_LIB_DEPENDS c++utilities_static)
+find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
+use_cpp_utilities(VISIBILITY PUBLIC)
 
 # find qtutilities (only headers and CMake modules used)
-find_package(qtutilities 5.0.0 REQUIRED)
+find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX} 6.0.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
-list(APPEND PRIVATE_SHARED_INCLUDE_DIRS ${QT_UTILITIES_INCLUDE_DIRS})
-list(APPEND PRIVATE_STATIC_INCLUDE_DIRS ${QT_UTILITIES_INCLUDE_DIRS})
+list(APPEND PRIVATE_INCLUDE_DIRS ${QT_UTILITIES_INCLUDE_DIRS})
 
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
@@ -122,11 +119,7 @@ include(WindowsResources)
 include(LibraryTarget)
 
 # link tests against test helper (can't use find_package because testhelper target is not present at this point)
-if (BUILD_SHARED_LIBS)
-    list(APPEND TEST_LIBRARIES syncthingtesthelper)
-else ()
-    list(APPEND TEST_LIBRARIES syncthingtesthelper_static)
-endif ()
+list(APPEND TEST_LIBRARIES syncthingtesthelper)
 include(TestTarget)
 
 include(Doxygen)

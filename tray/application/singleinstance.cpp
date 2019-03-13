@@ -30,7 +30,7 @@ SingleInstance::SingleInstance(int argc, const char *const *argv, QObject *paren
         cerr << Phrases::Info << "Application already running, sending args to previous instance" << Phrases::EndFlush;
         if (argc >= 0 && argc <= 0xFFFF) {
             char buffer[2];
-            BE::getBytes(static_cast<uint16>(argc), buffer);
+            BE::getBytes(static_cast<std::uint16_t>(argc), buffer);
             socket.write(buffer, 2);
             *buffer = '\0';
             for (const char *const *end = argv + argc; argv != end; ++argv) {

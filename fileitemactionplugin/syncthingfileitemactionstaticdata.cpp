@@ -20,6 +20,7 @@
 #include <iostream>
 
 #include "resources/config.h"
+#include "resources/qtconfig.h"
 
 using namespace std;
 using namespace Dialogs;

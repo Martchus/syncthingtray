@@ -6,8 +6,6 @@
 
 #include <qtutilities/settingsdialog/qtsettings.h>
 
-#include <c++utilities/conversion/types.h>
-
 #include <QByteArray>
 #include <QFrame>
 #include <QHash>

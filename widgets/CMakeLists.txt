@@ -6,8 +6,6 @@ set(META_PROJECT_TYPE library)
 set(META_APP_NAME "Widgets of Syncthing Tray")
 set(META_PUBLIC_QT_MODULES Gui Widgets)
 set(META_WEBVIEW_SRC_DIR webview)
-set(META_PUBLIC_SHARED_LIB_DEPENDS syncthingconnector syncthingmodel)
-set(META_PUBLIC_STATIC_LIB_DEPENDS syncthingconnector_static syncthingmodel_static)
 
 # add project files
 set(WIDGETS_HEADER_FILES
@@ -70,18 +68,18 @@ set(REQUIRED_ICONS
     go-up)
 
 # find c++utilities
-find_package(c++utilities 4.6.0 REQUIRED)
+find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities
-find_package(qtutilities 5.9.0 REQUIRED)
+find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX} 6.0.0 REQUIRED)
 use_qt_utilities()
 
 # find backend libraries
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
-use_syncthingconnector()
+use_syncthingconnector(VISIBILITY PUBLIC)
 find_package(syncthingmodel ${META_APP_VERSION} REQUIRED)
-use_syncthingmodel()
+use_syncthingmodel(VISIBILITY PUBLIC)
 
 # configure libsyncthing
 option(USE_LIBSYNCTHING "whether libsyncthing should be included for the launcher" OFF)
@@ -104,9 +102,9 @@ list(APPEND ADDITIONAL_QT_MODULES Network Concurrent)
 # include modules to apply configuration
 include(BasicConfig)
 include(QtGuiConfig)
+include(QtWebViewProviderConfig)
 include(QtConfig)
 include(WindowsResources)
-include(WebViewProviderConfig)
 include(LibraryTarget)
 include(Doxygen)
 include(ConfigHeader)

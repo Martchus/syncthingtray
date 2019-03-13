@@ -7,8 +7,6 @@ set(META_APP_NAME "Data models of Syncthing Tray")
 set(META_APP_DESCRIPTION "Data models of Syncthing Tray")
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING_MODEL)
 set(META_PUBLIC_QT_MODULES Gui Widgets)
-set(META_PUBLIC_SHARED_LIB_DEPENDS syncthingconnector)
-set(META_PUBLIC_STATIC_LIB_DEPENDS syncthingconnector_static)
 
 # add project files
 set(HEADER_FILES
@@ -31,16 +29,16 @@ set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 set(TS_FILES translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
-find_package(c++utilities 4.0.0 REQUIRED)
+find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities (only CMake modules used)
-find_package(qtutilities 5.0.0 REQUIRED)
+find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX} 6.0.0 REQUIRED)
 use_qt_utilities()
 
 # find backend libraries
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
-use_syncthingconnector()
+use_syncthingconnector(VISIBILITY PUBLIC)
 
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES

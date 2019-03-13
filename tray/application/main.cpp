@@ -120,8 +120,6 @@ int runApplication(int argc, const char *const *argv)
     SET_APPLICATION_INFO;
     CMD_UTILS_CONVERT_ARGS_TO_UTF8;
     ArgumentParser parser;
-    HelpArgument helpArg(parser);
-    NoColorArgument noColor;
     // Qt configuration arguments
     QT_CONFIG_ARGUMENTS qtConfigArgs;
     Argument windowedArg("windowed", 'w', "opens the tray menu as a regular window");
@@ -141,7 +139,7 @@ int runApplication(int argc, const char *const *argv)
     widgetsGuiArg.addSubArgument(&waitForTrayArg);
     widgetsGuiArg.addSubArgument(&connectionArg);
 
-    parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(), &noColor, &helpArg });
+    parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(), &parser.noColorArg(), &parser.helpArg() });
     parser.parseArgsOrExit(argc, argv);
     if (!qtConfigArgs.qtWidgetsGuiArg().isPresent()) {
         return 0;

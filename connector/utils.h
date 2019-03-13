@@ -3,7 +3,6 @@
 
 #include "./global.h"
 
-#include <c++utilities/conversion/types.h>
 #include <c++utilities/misc/traits.h>
 
 #include <QJsonValue>
@@ -27,7 +26,7 @@ struct SyncthingDir;
 struct SyncthingDev;
 
 QString LIB_SYNCTHING_CONNECTOR_EXPORT agoString(ChronoUtilities::DateTime dateTime);
-QString LIB_SYNCTHING_CONNECTOR_EXPORT trafficString(uint64 total, double rate);
+QString LIB_SYNCTHING_CONNECTOR_EXPORT trafficString(std::uint64_t total, double rate);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT directoryStatusString(const Data::SyncthingStatistics &stats);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT syncCompleteString(
     const std::vector<const SyncthingDir *> &completedDirs, const SyncthingDev *remoteDevice = nullptr);
