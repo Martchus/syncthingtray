@@ -77,6 +77,7 @@ Item {
                             model: plasmoid.nativeInterface.devModel
                             rootIndex: detailsView.model.modelIndex(index)
                             delegate: DetailItem {
+                                width: detailsView.width
                             }
                         }
                     }

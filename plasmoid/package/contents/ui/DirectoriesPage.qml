@@ -120,6 +120,7 @@ ColumnLayout {
                             model: plasmoid.nativeInterface.dirModel
                             rootIndex: detailsView.model.modelIndex(sourceIndex)
                             delegate: DetailItem {
+                                width: detailsView.width
                             }
                         }
                     }

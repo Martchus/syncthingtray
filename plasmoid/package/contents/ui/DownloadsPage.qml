@@ -80,7 +80,7 @@ Item {
                             model: plasmoid.nativeInterface.downloadModel
                             rootIndex: detailsView.model.modelIndex(index)
                             delegate: RowLayout {
-                                width: parent.width
+                                width: detailsView.width
 
                                 PlasmaCore.IconItem {
                                     Layout.preferredWidth: units.iconSizes.medium
