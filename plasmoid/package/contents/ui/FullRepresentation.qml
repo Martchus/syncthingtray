@@ -124,9 +124,10 @@ ColumnLayout {
             }
             break
         case Qt.Key_Escape:
-            var filter = mainTabGroup.currentTab.item.filter
+            var filter = findCurrentFilter()
             if (filter && filter.text !== "") {
                 // reset filter
+                filter.explicitelyShown = false
                 filter.text = ""
                 event.accepted = true
             } else {
@@ -153,12 +154,17 @@ ColumnLayout {
         event.accepted = true
     }
 
+    function findCurrentFilter() {
+        return mainTabGroup.currentTab.item.filter
+    }
+
     function sendKeyEventToFilter(event) {
-        var filter = mainTabGroup.currentTab.item.filter
+        var filter = findCurrentFilter()
         if (!filter || event.text === "" || filter.activeFocus) {
             return
         }
         if (event.key === Qt.Key_Backspace && filter.text === "") {
+            filter.explicitelyShown = false
             return
         }
         if (event.matches(StandardKey.Paste)) {
@@ -495,30 +501,58 @@ ColumnLayout {
     RowLayout {
         spacing: 0
 
-        PlasmaComponents.TabBar {
-            id: tabBar
-            tabPosition: Qt.LeftEdge
+        ColumnLayout {
+            spacing: 0
             Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 
-            PlasmaComponents.TabButton {
-                id: dirsTabButton
-                //text: qsTr("Directories")
-                iconSource: "folder-symbolic"
-                tab: dirsPage
+            PlasmaComponents.TabBar {
+                id: tabBar
+                tabPosition: Qt.LeftEdge
+                Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+
+                PlasmaComponents.TabButton {
+                    id: dirsTabButton
+                    //text: qsTr("Directories")
+                    iconSource: "folder-symbolic"
+                    tab: dirsPage
+                }
+                PlasmaComponents.TabButton {
+                    id: devsTabButton
+                    //text: qsTr("Devices")
+                    iconSource: "network-server-symbolic"
+                    tab: devicesPage
+                }
+                PlasmaComponents.TabButton {
+                    id: downloadsTabButton
+                    //text: qsTr("Downloads")
+                    iconSource: "folder-download-symbolic"
+                    tab: downloadsPage
+                }
             }
-            PlasmaComponents.TabButton {
-                id: devsTabButton
-                //text: qsTr("Devices")
-                iconSource: "network-server-symbolic"
-                tab: devicesPage
+            Item {
+                Layout.fillHeight: true
             }
-            PlasmaComponents.TabButton {
-                id: downloadsTabButton
-                //text: qsTr("Downloads")
-                iconSource: "folder-download-symbolic"
-                tab: downloadsPage
+            PlasmaComponents.Button {
+                id: searchButton
+                iconSource: "search"
+                enabled: mainTabGroup.currentTab === dirsPage
+                tooltip: qsTr("Toggle filter")
+                onClicked: {
+                    var filter = findCurrentFilter()
+                    if (!filter) {
+                        return
+                    }
+                    if (!filter.explicitelyShown) {
+                        filter.explicitelyShown = true
+                        filter.forceActiveFocus()
+                    } else {
+                        filter.explicitelyShown = false
+                        filter.text = ""
+                    }
+                }
             }
         }
+
         PlasmaCore.SvgItem {
             Layout.preferredWidth: 2
             Layout.fillHeight: true

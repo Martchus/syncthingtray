@@ -162,9 +162,10 @@ ColumnLayout {
     }
 
     PlasmaComponents.TextField {
+        property bool explicitelyShown: false
         id: filter
         clearButtonShown: true
         Layout.fillWidth: true
-        visible: text !== ""
+        visible: explicitelyShown || text !== ""
     }
 }
