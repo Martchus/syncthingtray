@@ -532,7 +532,7 @@ ColumnLayout {
             Item {
                 Layout.fillHeight: true
             }
-            PlasmaComponents.Button {
+            TinyButton {
                 id: searchButton
                 iconSource: "search"
                 enabled: mainTabGroup.currentTab === dirsPage
