@@ -7,6 +7,8 @@
 
 #include <c++utilities/conversion/stringconversion.h>
 
+#include <QStringBuilder>
+
 using namespace std;
 using namespace ChronoUtilities;
 using namespace ConversionUtilities;
@@ -112,7 +114,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 case 0:
                     return tr("ID");
                 case 1:
-                    return tr("Addresses");
+                    return tr("Address");
                 case 2:
                     return tr("Last seen");
                 case 3:
@@ -139,7 +141,12 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 case 0:
                     return dev.id;
                 case 1:
-                    return dev.addresses.join(QStringLiteral(", "));
+                    if (dev.connectionAddress.isEmpty()) {
+                        return dev.addresses.join(QStringLiteral(", "));
+                    } else {
+                        return QVariant(
+                            dev.connectionAddress % QStringLiteral(" (") % dev.addresses.join(QStringLiteral(", ")) % QStringLiteral(")"));
+                    }
                 case 2:
                     return dev.lastSeen.isNull() ? tr("unknown or own device")
                                                  : QString::fromLatin1(dev.lastSeen.toString(DateTimeOutputFormat::DateAndTime, true).data());
@@ -206,9 +213,14 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
         case Qt::ToolTipRole:
             switch (index.column()) {
             case 1:
+                const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
                 switch (index.row()) {
+                case 1:
+                    if (!dev.connectionType.isEmpty()) {
+                        return dev.connectionType;
+                    }
+                    break;
                 case 2:
-                    const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
                     if (!dev.lastSeen.isNull()) {
                         return agoString(dev.lastSeen);
                     }
