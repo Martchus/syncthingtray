@@ -195,9 +195,9 @@ void ApplicationTests::test()
     CPPUNIT_ASSERT(object.value(QLatin1String("folders")).isArray());
 
     // test edit
+    const char *const statusTest1Args[] = { "syncthingctl", "status", "--dir", "test1", nullptr };
 #if defined(SYNCTHINGCTL_USE_JSENGINE) || defined(SYNCTHINGCTL_USE_SCRIPT)
     const char *const editArgs[] = { "syncthingctl", "edit", "--js-lines", "assignIfPresent(findFolder('test1'), 'rescanIntervalS', 0);", nullptr };
-    const char *const statusTest1Args[] = { "syncthingctl", "status", "--dir", "test1", nullptr };
     TESTUTILS_ASSERT_EXEC(editArgs);
     cout << stdout;
     TESTUTILS_ASSERT_EXEC(statusTest1Args);
