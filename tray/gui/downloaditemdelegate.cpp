@@ -58,7 +58,11 @@ void DownloadItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         progressBarOption.rect.setX(opt.rect.x() + opt.rect.height() + 4);
         progressBarOption.rect.setY(opt.rect.y() + opt.rect.height() / 2);
     } else {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0))
+        progressBarOption.rect.setX(opt.rect.x() + opt.fontMetrics.horizontalAdvance(opt.text) + 6);
+#else
         progressBarOption.rect.setX(opt.rect.x() + opt.fontMetrics.width(opt.text) + 6);
+#endif
         progressBarOption.rect.setWidth(progressBarOption.rect.width() - 18);
     }
     progressBarOption.textAlignment = Qt::AlignCenter;

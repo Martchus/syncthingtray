@@ -4,6 +4,8 @@
 
 #include "../../widgets/settings/settings.h"
 
+#include <qtutilities/misc/dialogutils.h>
+
 #include <QApplication>
 #include <QCursor>
 #include <QDesktopWidget>
@@ -50,7 +52,7 @@ void TrayMenu::showAtCursor()
 {
     resize(sizeHint());
     QPoint pos(QCursor::pos());
-    moveInside(pos, size(), QApplication::desktop()->availableGeometry(pos));
+    moveInside(pos, size(), Dialogs::availableScreenGeometryAtPoint(pos));
     popup(pos);
 }
 } // namespace QtGui
