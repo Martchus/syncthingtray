@@ -2,7 +2,6 @@
 
 #include <c++utilities/conversion/stringbuilder.h>
 #include <c++utilities/io/ansiescapecodes.h>
-#include <c++utilities/io/catchiofailure.h>
 #include <c++utilities/io/misc.h>
 #include <c++utilities/tests/testutils.h>
 
@@ -38,9 +37,8 @@ string readMockFile(const string &filePath)
 {
     try {
         return readFile(filePath);
-    } catch (...) {
-        const char *const what = catchIoFailure();
-        cerr << Phrases::Error << "An IO error occured when reading mock config file \"" << filePath << "\": " << what << Phrases::EndFlush;
+    } catch (const std::ios_base::failure &failure) {
+        cerr << Phrases::Error << "An IO error occured when reading mock config file \"" << filePath << "\": " << failure.what() << Phrases::EndFlush;
         exit(-2);
     }
 }
