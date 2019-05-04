@@ -8,7 +8,6 @@
  */
 
 #include <c++utilities/conversion/stringbuilder.h>
-#include <c++utilities/io/catchiofailure.h>
 #include <c++utilities/io/misc.h>
 #include <c++utilities/tests/testutils.h>
 
@@ -18,10 +17,6 @@
 #include <iostream>
 #include <limits>
 #include <string>
-
-using namespace std;
-using namespace IoUtilities;
-using namespace ConversionUtilities;
 
 namespace Data {
 
@@ -34,30 +29,30 @@ class MockedReply : public QNetworkReply {
     Q_OBJECT
 
 public:
-    ~MockedReply();
+    ~MockedReply() override;
 
 public Q_SLOTS:
-    void abort() Q_DECL_OVERRIDE;
+    void abort() override;
 
 public:
     // reimplemented from QNetworkReply
-    void close() Q_DECL_OVERRIDE;
-    qint64 bytesAvailable() const Q_DECL_OVERRIDE;
-    bool isSequential() const Q_DECL_OVERRIDE;
-    qint64 size() const Q_DECL_OVERRIDE;
+    void close() override;
+    qint64 bytesAvailable() const override;
+    bool isSequential() const override;
+    qint64 size() const override;
 
-    qint64 readData(char *data, qint64 maxlen) Q_DECL_OVERRIDE;
+    qint64 readData(char *data, qint64 maxlen) override;
 
     static MockedReply *forRequest(const QString &method, const QString &path, const QUrlQuery &query, bool rest);
 
 protected:
-    MockedReply(const string &buffer, int delay, QObject *parent = nullptr);
+    MockedReply(const std::string &buffer, int delay, QObject *parent = nullptr);
 
 private Q_SLOTS:
     void emitFinished();
 
 private:
-    const string &m_buffer;
+    const std::string &m_buffer;
     const char *m_pos;
     qint64 m_bytesLeft;
     static int s_eventIndex;
