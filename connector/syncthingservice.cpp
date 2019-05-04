@@ -227,7 +227,7 @@ void SyncthingService::handlePropertiesChanged(
     if (handlePropertyChanged(
             m_activeState, &SyncthingService::activeStateChanged, QStringLiteral("ActiveState"), changedProperties, invalidatedProperties)
         | handlePropertyChanged(
-              m_subState, &SyncthingService::subStateChanged, QStringLiteral("SubState"), changedProperties, invalidatedProperties)) {
+            m_subState, &SyncthingService::subStateChanged, QStringLiteral("SubState"), changedProperties, invalidatedProperties)) {
         emit stateChanged(m_activeState, m_subState, m_activeSince);
     }
     const bool currentlyRunning = isRunning();

@@ -364,7 +364,10 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
 
 bool SyncthingDirectoryModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    Q_UNUSED(index) Q_UNUSED(value) Q_UNUSED(role) return false;
+    Q_UNUSED(index)
+    Q_UNUSED(value)
+    Q_UNUSED(role)
+    return false;
 }
 
 int SyncthingDirectoryModel::rowCount(const QModelIndex &parent) const

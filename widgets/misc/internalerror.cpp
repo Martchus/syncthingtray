@@ -54,7 +54,7 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
             && ((service && service->isSystemdAvailable()
                     && !service->isActiveWithoutSleepFor(launcher->activeSince(), settings.ignoreInavailabilityAfterStart))
-                   || !launcher->isActiveFor(settings.ignoreInavailabilityAfterStart))
+                || !launcher->isActiveFor(settings.ignoreInavailabilityAfterStart))
 #else
             && !launcher->isActiveFor(settings.ignoreInavailabilityAfterStart)
 #endif
