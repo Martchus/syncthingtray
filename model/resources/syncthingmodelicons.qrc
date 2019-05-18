@@ -1,16 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>icons/hicolor/scalable/status/syncthing-default.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-notify.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-pause.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-sync.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-disconnected.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-ok.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-error.svg</file>
         <file>icons/hicolor/scalable/mimetypes/text-x-generic.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-error-sync.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-sync-complete.svg</file>
-        <file>icons/hicolor/scalable/status/syncthing-new.svg</file>
         <file>icons/hicolor/scalable/fa/certificate.svg</file>
         <file>icons/hicolor/scalable/fa/clock.svg</file>
         <file>icons/hicolor/scalable/fa/cloud-download-alt.svg</file>
