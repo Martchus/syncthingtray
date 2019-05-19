@@ -27,6 +27,7 @@ protected:
 private Q_SLOTS:
     virtual void handleConfigInvalidated();
     virtual void handleNewConfigAvailable();
+    virtual void handleStatusIconsChanged();
 
 protected:
     Data::SyncthingConnection &m_connection;

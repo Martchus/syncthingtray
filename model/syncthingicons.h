@@ -81,7 +81,8 @@ struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
 };
 
 struct StatusIcons {
-    StatusIcons(const StatusIconSettings &settings = StatusIconSettings());
+    StatusIcons();
+    StatusIcons(const StatusIconSettings &settings);
     QIcon disconnected;
     QIcon idling;
     QIcon scanninig;
@@ -93,6 +94,10 @@ struct StatusIcons {
     QIcon errorSync;
     QIcon newItem;
 };
+
+inline StatusIcons::StatusIcons()
+{
+}
 
 struct FontAwesomeIcons {
     FontAwesomeIcons(const QColor &color, const QSize &size, int margin);
@@ -117,17 +122,21 @@ struct FontAwesomeIcons {
     QIcon tag;
 };
 
-class LIB_SYNCTHING_MODEL_EXPORT IconManager {
+class LIB_SYNCTHING_MODEL_EXPORT IconManager : public QObject {
+    Q_OBJECT
 public:
-    static IconManager &instance(const StatusIconSettings *settingsForFirstTimeSetup = nullptr);
+    static IconManager &instance();
 
     void applySettings(const StatusIconSettings &settings);
     const StatusIcons &statusIcons() const;
     const FontAwesomeIcons &fontAwesomeIconsForLightTheme() const;
     const FontAwesomeIcons &fontAwesomeIconsForDarkTheme() const;
 
+Q_SIGNALS:
+    void statusIconsChanged();
+
 private:
-    IconManager(const StatusIconSettings *settings = nullptr);
+    IconManager();
 
     StatusIcons m_statusIcons;
     FontAwesomeIcons m_fontAwesomeIconsForLightTheme;
@@ -137,6 +146,7 @@ private:
 inline void IconManager::applySettings(const StatusIconSettings &settings)
 {
     m_statusIcons = StatusIcons(settings);
+    emit statusIconsChanged();
 }
 
 inline const StatusIcons &IconManager::statusIcons() const

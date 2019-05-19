@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>390</width>
+    <width>538</width>
     <height>167</height>
    </rect>
   </property>
@@ -71,13 +71,6 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLabel" name="infoLabel">
-          <property name="text">
-           <string>Requires (so far) a restart to be applied.</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -96,7 +89,8 @@
            <string>Restore previous settings</string>
           </property>
           <property name="icon">
-           <iconset theme="edit-undo"/>
+           <iconset theme="edit-undo">
+            <normaloff>.</normaloff>.</iconset>
           </property>
          </widget>
         </item>

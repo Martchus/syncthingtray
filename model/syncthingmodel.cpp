@@ -1,4 +1,5 @@
 #include "./syncthingmodel.h"
+#include "./syncthingicons.h"
 
 #include "../connector/syncthingconnection.h"
 
@@ -11,6 +12,7 @@ SyncthingModel::SyncthingModel(SyncthingConnection &connection, QObject *parent)
 {
     connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingModel::handleConfigInvalidated);
     connect(&m_connection, &SyncthingConnection::newConfigApplied, this, &SyncthingModel::handleNewConfigAvailable);
+    connect(&IconManager::instance(), &IconManager::statusIconsChanged, this, &SyncthingModel::handleStatusIconsChanged);
 }
 
 const QVector<int> &SyncthingModel::colorRoles() const
@@ -53,6 +55,10 @@ void SyncthingModel::handleConfigInvalidated()
 void SyncthingModel::handleNewConfigAvailable()
 {
     endResetModel();
+}
+
+void SyncthingModel::handleStatusIconsChanged()
+{
 }
 
 } // namespace Data

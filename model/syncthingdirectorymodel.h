@@ -44,6 +44,7 @@ private Q_SLOTS:
     void dirStatusChanged(const SyncthingDir &dir, int index);
     void handleConfigInvalidated() override;
     void handleNewConfigAvailable() override;
+    void handleStatusIconsChanged() override;
 
 private:
     static QString dirStatusString(const SyncthingDir &dir);

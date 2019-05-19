@@ -41,6 +41,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void devStatusChanged(const SyncthingDev &, int index);
+    void handleStatusIconsChanged() override;
 
 private:
     static QString devStatusString(const SyncthingDev &dev);

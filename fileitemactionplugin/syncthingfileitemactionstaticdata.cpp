@@ -66,6 +66,9 @@ void SyncthingFileItemActionStaticData::initialize()
         connect(&m_connection, &SyncthingConnection::statusChanged, this, &SyncthingFileItemActionStaticData::logConnectionStatus);
     }
 
+    // use default icon settings
+    IconManager::instance().applySettings(StatusIconSettings());
+
     m_initialized = true;
 }
 

@@ -351,6 +351,11 @@ void SyncthingDeviceModel::devStatusChanged(const SyncthingDev &, int index)
     emit dataChanged(this->index(0, 0, modelIndex1), this->index(5, 0, modelIndex1), modelRoles4);
 }
 
+void SyncthingDeviceModel::handleStatusIconsChanged()
+{
+    emit dataChanged(index(0, 0), index(static_cast<int>(m_devs.size()) - 1, 0), QVector<int>({ Qt::DecorationRole }));
+}
+
 QString SyncthingDeviceModel::devStatusString(const SyncthingDev &dev)
 {
     if (dev.paused) {

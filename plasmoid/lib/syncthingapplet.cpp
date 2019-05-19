@@ -102,6 +102,7 @@ void SyncthingApplet::init()
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, this, &SyncthingApplet::showNotificationsDialog);
     connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &SyncthingApplet::showInternalErrorsDialog);
     connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, this, &SyncthingApplet::showWebUI);
+    connect(&IconManager::instance(), &IconManager::statusIconsChanged, this, &SyncthingApplet::connectionStatusChanged);
 
     // restore settings
     Settings::restore();

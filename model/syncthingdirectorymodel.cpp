@@ -441,6 +441,11 @@ void SyncthingDirectoryModel::handleNewConfigAvailable()
     endResetModel();
 }
 
+void SyncthingDirectoryModel::handleStatusIconsChanged()
+{
+    emit dataChanged(index(0, 0), index(static_cast<int>(m_dirs.size()) - 1, 0), QVector<int>({ Qt::DecorationRole }));
+}
+
 QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
 {
     if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
