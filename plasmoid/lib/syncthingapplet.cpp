@@ -391,6 +391,7 @@ void SyncthingApplet::handleSettingsChanged()
     m_dirModel.setBrightColors(brightColors);
     m_devModel.setBrightColors(brightColors);
     m_downloadModel.setBrightColors(brightColors);
+    IconManager::instance().applySettings(settings.statusIcons);
 
     // restore selected states
     // note: The settings dialog writes this to the Plasmoid's config like the other settings. However, it

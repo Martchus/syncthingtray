@@ -2,6 +2,7 @@
 #define SETTINGS_H
 
 #include "../../connector/syncthingconnectionsettings.h"
+#include "../../model/syncthingicons.h"
 #include "../global.h"
 
 #include <qtutilities/settingsdialog/qtsettings.h>
@@ -106,6 +107,7 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
 #endif
     unsigned int ignoreInavailabilityAfterStart = 15;
     Appearance appearance;
+    Data::StatusIconSettings statusIcons;
     Launcher launcher;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Systemd systemd;

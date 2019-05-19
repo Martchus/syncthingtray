@@ -126,7 +126,7 @@ SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
     category->setDisplayName(QCoreApplication::translate("Plasmoid::SettingsDialog", "Plasmoid"));
     category->assignPages(QList<Dialogs::OptionPage *>()
         << new ConnectionOptionPage(applet.connection()) << new NotificationsOptionPage(GuiType::Plasmoid) << m_appearanceOptionPage
-        << new ShortcutOptionPage(applet));
+        << new IconsOptionPage << new ShortcutOptionPage(applet));
     category->setIcon(QIcon::fromTheme(QStringLiteral("plasma")));
     categories << category;
 

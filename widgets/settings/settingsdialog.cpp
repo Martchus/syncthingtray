@@ -9,11 +9,13 @@
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "../../connector/syncthingservice.h"
 #include "../../model/colors.h"
+#include "../../model/syncthingicons.h"
 #endif
 
 #include "ui_appearanceoptionpage.h"
 #include "ui_autostartoptionpage.h"
 #include "ui_connectionoptionpage.h"
+#include "ui_iconsoptionpage.h"
 #include "ui_launcheroptionpage.h"
 #include "ui_notificationsoptionpage.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -24,6 +26,7 @@
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
 
+#include <qtutilities/paletteeditor/colorbutton.h>
 #include <qtutilities/settingsdialog/optioncategory.h>
 #include <qtutilities/settingsdialog/optioncategorymodel.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
@@ -487,6 +490,93 @@ void AppearanceOptionPage::reset()
     ui()->frameShadowComboBox->setCurrentIndex(index);
     ui()->tabPosComboBox->setCurrentIndex(settings.tabPosition);
     ui()->brightTextColorsCheckBox->setChecked(settings.brightTextColors);
+}
+
+// IconsOptionPage
+IconsOptionPage::IconsOptionPage(QWidget *parentWidget)
+    : IconsOptionPageBase(parentWidget)
+{
+}
+
+IconsOptionPage::~IconsOptionPage()
+{
+}
+
+QWidget *IconsOptionPage::setupWidget()
+{
+    auto *const widget = IconsOptionPageBase::setupWidget();
+
+    // populate form for status icon colors
+    auto *const gridLayout = ui()->gridLayout;
+    auto *const statusColorsGroupBox = ui()->statusColorsGroupBox;
+    int index = 0;
+    for (auto &colorMapping : m_settings.colorMapping()) {
+        // populate widgets array
+        auto &widgetsForColor = m_widgets[index++] = {
+            {
+                new Widgets::ColorButton(statusColorsGroupBox),
+                new Widgets::ColorButton(statusColorsGroupBox),
+            },
+            new QLabel(statusColorsGroupBox),
+            &colorMapping.setting,
+            colorMapping.defaultEmblem,
+        };
+
+        // add label for color name
+        gridLayout->addWidget(new QLabel(colorMapping.colorName, statusColorsGroupBox), index, 0, Qt::AlignRight | Qt::AlignVCenter);
+
+        // setup preview
+        gridLayout->addWidget(widgetsForColor.previewLabel, index, 3, Qt::AlignCenter);
+        const auto updatePreview = [&widgetsForColor] {
+            widgetsForColor.previewLabel->setPixmap(
+                renderSvgImage(makeSyncthingIcon(*widgetsForColor.setting, widgetsForColor.statusEmblem), QSize(32, 32)));
+        };
+        for (const auto &colorButton : widgetsForColor.colorButtons) {
+            QObject::connect(colorButton, &Widgets::ColorButton::colorChanged, updatePreview);
+        }
+
+        // setup color buttons
+        widgetsForColor.colorButtons[0]->setColor(colorMapping.setting.start);
+        widgetsForColor.colorButtons[1]->setColor(colorMapping.setting.end);
+        gridLayout->addWidget(widgetsForColor.colorButtons[0], index, 1);
+        gridLayout->addWidget(widgetsForColor.colorButtons[1], index, 2);
+
+        if (index >= StatusIconSettings::distinguishableColorCount) {
+            break;
+        }
+    }
+
+    // setup additional buttons
+    QObject::connect(ui()->restoreDefaultsPushButton, &QPushButton::clicked, [this] {
+        m_settings = Data::StatusIconSettings();
+        update();
+    });
+    QObject::connect(ui()->restorePreviousPushButton, &QPushButton::clicked, [this] { reset(); });
+
+    return widget;
+}
+
+bool IconsOptionPage::apply()
+{
+    for (auto &widgetsForColor : m_widgets) {
+        *widgetsForColor.setting = GradientColor{ widgetsForColor.colorButtons[0]->color(), widgetsForColor.colorButtons[1]->color() };
+    }
+    values().statusIcons = m_settings;
+    return true;
+}
+
+void IconsOptionPage::update()
+{
+    for (auto &widgetsForColor : m_widgets) {
+        widgetsForColor.colorButtons[0]->setColor(widgetsForColor.setting->start);
+        widgetsForColor.colorButtons[1]->setColor(widgetsForColor.setting->end);
+    }
+}
+
+void IconsOptionPage::reset()
+{
+    m_settings = values().statusIcons;
+    update();
 }
 
 // AutostartOptionPage
@@ -980,8 +1070,8 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Tray"));
-    category->assignPages(
-        QList<Dialogs::OptionPage *>() << new ConnectionOptionPage(connection) << new NotificationsOptionPage << new AppearanceOptionPage);
+    category->assignPages(QList<Dialogs::OptionPage *>()
+        << new ConnectionOptionPage(connection) << new NotificationsOptionPage << new AppearanceOptionPage << new IconsOptionPage);
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     categories << category;
 
@@ -1027,6 +1117,7 @@ void SettingsDialog::init()
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, ConnectionOptionPage)
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, NotificationsOptionPage)
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, AppearanceOptionPage)
+INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, IconsOptionPage)
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, AutostartOptionPage)
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, LauncherOptionPage)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

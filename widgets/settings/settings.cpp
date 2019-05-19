@@ -177,6 +177,7 @@ void restore()
     appearance.frameStyle = settings.value(QStringLiteral("frameStyle"), appearance.frameStyle).toInt();
     appearance.tabPosition = settings.value(QStringLiteral("tabPos"), appearance.tabPosition).toInt();
     appearance.brightTextColors = settings.value(QStringLiteral("brightTextColors"), appearance.brightTextColors).toBool();
+    v.statusIcons = StatusIconSettings(settings.value(QStringLiteral("statusIcons")).toString());
     settings.endGroup();
 
     settings.beginGroup(QStringLiteral("startup"));
@@ -264,6 +265,7 @@ void save()
     settings.setValue(QStringLiteral("frameStyle"), appearance.frameStyle);
     settings.setValue(QStringLiteral("tabPos"), appearance.tabPosition);
     settings.setValue(QStringLiteral("brightTextColors"), appearance.brightTextColors);
+    settings.setValue(QStringLiteral("statusIcons"), v.statusIcons.toString());
     settings.endGroup();
 
     settings.beginGroup(QStringLiteral("startup"));

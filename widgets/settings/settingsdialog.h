@@ -5,12 +5,16 @@
 
 #include "../webview/webviewdefs.h"
 
+#include "../../model/syncthingicons.h"
+
 #include <qtutilities/settingsdialog/optionpage.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 #include <qtutilities/settingsdialog/settingsdialog.h>
 
 #include <QProcess>
 #include <QWidget>
+
+QT_FORWARD_DECLARE_CLASS(QLabel)
 
 namespace ChronoUtilities {
 class DateTime;
@@ -22,6 +26,10 @@ class SyncthingService;
 class SyncthingProcess;
 class SyncthingLauncher;
 } // namespace Data
+
+namespace Widgets {
+class ColorButton;
+}
 
 namespace QtGui {
 
@@ -69,6 +77,19 @@ const GuiType m_guiType;
 END_DECLARE_OPTION_PAGE
 
 DECLARE_UI_FILE_BASED_OPTION_PAGE(AppearanceOptionPage)
+
+BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(IconsOptionPage)
+DECLARE_SETUP_WIDGETS
+private:
+void update();
+Data::StatusIconSettings m_settings;
+struct {
+    Widgets::ColorButton *colorButtons[2] = {};
+    QLabel *previewLabel = nullptr;
+    Data::GradientColor *setting = nullptr;
+    Data::StatusEmblem statusEmblem = Data::StatusEmblem::None;
+} m_widgets[Data::StatusIconSettings::distinguishableColorCount];
+END_DECLARE_OPTION_PAGE
 
 DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_SETUP(AutostartOptionPage)
 
@@ -125,6 +146,7 @@ private:
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, ConnectionOptionPage)
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, NotificationsOptionPage)
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, AppearanceOptionPage)
+DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, IconsOptionPage)
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, AutostartOptionPage)
 DECLARE_EXTERN_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, LauncherOptionPage)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

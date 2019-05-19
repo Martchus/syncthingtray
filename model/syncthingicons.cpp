@@ -161,17 +161,67 @@ StatusIconSettings::StatusIconSettings()
     , errorColor({ QStringLiteral("#DB3C26"), QStringLiteral("#C80828") })
     , warningColor({ QStringLiteral("#c9ce3b"), QStringLiteral("#ebb83b") })
     , idleColor({ QStringLiteral("#2D9D69"), QStringLiteral("#2D9D69") })
+    , scanningColor({ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8") })
+    , synchronizingColor({ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8") })
+    , pausedColor({ QStringLiteral("#A9A9A9"), QStringLiteral("#58656C") })
     , disconnectedColor({ QStringLiteral("#A9A9A9"), QStringLiteral("#58656C") })
 {
 }
 
+std::vector<StatusIconSettings::ColorMapping> StatusIconSettings::colorMapping()
+{
+    return std::vector<ColorMapping>({
+        { QStringLiteral("Default"), StatusEmblem::None, defaultColor },
+        { QStringLiteral("Error"), StatusEmblem::Alert, errorColor },
+        { QStringLiteral("Warning"), StatusEmblem::Alert, warningColor },
+        { QStringLiteral("Idle"), StatusEmblem::None, idleColor },
+        { QStringLiteral("Scanning"), StatusEmblem::Scanning, scanningColor },
+        { QStringLiteral("Synchronizing"), StatusEmblem::Synchronizing, synchronizingColor },
+        { QStringLiteral("Paused"), StatusEmblem::Paused, pausedColor },
+        { QStringLiteral("Disconnected"), StatusEmblem::None, disconnectedColor },
+    });
+}
+
+StatusIconSettings::StatusIconSettings(const QString &str)
+    : StatusIconSettings()
+{
+    const auto parts = str.splitRef(QChar(';'));
+    int index = 0;
+    for (auto *field :
+        { &defaultColor, &errorColor, &warningColor, &idleColor, &scanningColor, &synchronizingColor, &pausedColor, &disconnectedColor }) {
+        if (index >= parts.size()) {
+            break;
+        }
+        const auto colors = parts[index].split(QChar(','));
+        if (colors.size() >= 2) {
+            field->start = colors[0].toString();
+            field->end = colors[1].toString();
+        }
+        ++index;
+    }
+}
+
+QString StatusIconSettings::toString() const
+{
+    QString res;
+    res.reserve(128);
+    for (auto *field :
+        { &defaultColor, &errorColor, &warningColor, &idleColor, &scanningColor, &synchronizingColor, &pausedColor, &disconnectedColor }) {
+        if (!res.isEmpty()) {
+            res += QChar(';');
+        }
+        res += field->start % QChar(',') % field->end;
+    }
+    return res;
+}
+
 StatusIcons::StatusIcons(const StatusIconSettings &settings)
     : disconnected(QIcon(renderSvgImage(makeSyncthingIcon(settings.disconnectedColor, StatusEmblem::None))))
-    , idling(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::None))))
-    , scanninig(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Scanning))))
+    , idling(QIcon(renderSvgImage(makeSyncthingIcon(settings.idleColor, StatusEmblem::None))))
+    , scanninig(QIcon(renderSvgImage(makeSyncthingIcon(settings.scanningColor, StatusEmblem::Scanning))))
     , notify(QIcon(renderSvgImage(makeSyncthingIcon(settings.warningColor, StatusEmblem::Alert))))
-    , pause(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Paused))))
-    , sync(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Synchronizing))))
+    , pause(QIcon(renderSvgImage(makeSyncthingIcon(settings.pausedColor, StatusEmblem::Paused))))
+    , sync(QIcon(renderSvgImage(makeSyncthingIcon(settings.synchronizingColor, StatusEmblem::Synchronizing))))
     , syncComplete(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Complete))))
     , error(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Alert))))
     , errorSync(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Synchronizing))))

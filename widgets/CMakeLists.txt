@@ -43,6 +43,7 @@ set(WIDGETS_UI_FILES
     settings/connectionoptionpage.ui
     settings/notificationsoptionpage.ui
     settings/appearanceoptionpage.ui
+    settings/iconsoptionpage.ui
     settings/autostartoptionpage.ui
     settings/launcheroptionpage.ui
     settings/systemdoptionpage.ui
