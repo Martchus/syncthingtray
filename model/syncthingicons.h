@@ -23,28 +23,29 @@ enum class StatusEmblem {
 };
 
 struct GradientColor {
-    GradientColor(const QString &start, const QString &end);
-    GradientColor(QString &&start, QString &&end);
     GradientColor(const QColor &start, const QColor &end);
+    GradientColor(QColor &&start, QColor &&end);
+    GradientColor(const QString &start, const QString &end);
 
-    QString start;
-    QString end;
+    QColor start;
+    QColor end;
 };
+
+inline GradientColor::GradientColor(const QColor &start, const QColor &end)
+    : start(start)
+    , end(end)
+{
+}
+
+inline GradientColor::GradientColor(QColor &&start, QColor &&end)
+    : start(start)
+    , end(end)
+{
+}
 
 inline GradientColor::GradientColor(const QString &start, const QString &end)
     : start(start)
     , end(end)
-{
-}
-
-inline GradientColor::GradientColor(QString &&start, QString &&end)
-    : start(start)
-    , end(end)
-{
-}
-
-inline GradientColor::GradientColor(const QColor &start, const QColor &end)
-    : GradientColor(start.name(), end.name())
 {
 }
 

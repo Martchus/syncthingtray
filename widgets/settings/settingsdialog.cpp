@@ -529,7 +529,9 @@ QWidget *IconsOptionPage::setupWidget()
         gridLayout->addWidget(widgetsForColor.previewLabel, index, 3, Qt::AlignCenter);
         const auto updatePreview = [&widgetsForColor] {
             widgetsForColor.previewLabel->setPixmap(
-                renderSvgImage(makeSyncthingIcon(*widgetsForColor.setting, widgetsForColor.statusEmblem), QSize(32, 32)));
+                renderSvgImage(makeSyncthingIcon(GradientColor{ widgetsForColor.colorButtons[0]->color(), widgetsForColor.colorButtons[1]->color() },
+                                   widgetsForColor.statusEmblem),
+                    QSize(32, 32)));
         };
         for (const auto &colorButton : widgetsForColor.colorButtons) {
             QObject::connect(colorButton, &Widgets::ColorButton::colorChanged, updatePreview);

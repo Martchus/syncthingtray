@@ -60,13 +60,21 @@ QByteArray makeSyncthingIcon(const GradientColor &gradientColor, StatusEmblem st
         ),
     };
     const auto &emblemData = emblems[static_cast<int>(statusEmblem)];
+    auto gradientStart = gradientColor.start.name(QColor::HexRgb);
+    auto gradientEnd = gradientColor.end.name(QColor::HexRgb);
+    if (gradientColor.start.alphaF() < 1.0) {
+        gradientStart += QStringLiteral(";stop-opacity:") + QString::number(gradientColor.start.alphaF());
+    }
+    if (gradientColor.end.alphaF() < 1.0) {
+        gradientEnd += QStringLiteral(";stop-opacity:") + QString::number(gradientColor.end.alphaF());
+    }
     return (QStringLiteral(
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
       "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 16 16\">"
           "<defs>"
               "<linearGradient id=\"grad\" gradientUnits=\"userSpaceOnUse\" x1=\"8\" y1=\"0\" x2=\"8\" y2=\"16\">"
-                  "<stop offset=\"0\" style=\"stop-color:") % gradientColor.start % QStringLiteral("\"/>"
-                  "<stop offset=\"1\" style=\"stop-color:") % gradientColor.end % QStringLiteral("\"/>"
+                  "<stop offset=\"0\" style=\"stop-color:") % gradientStart % QStringLiteral("\"/>"
+                  "<stop offset=\"1\" style=\"stop-color:") % gradientEnd % QStringLiteral("\"/>"
               "</linearGradient>"
               "<mask id=\"bitemask\" maskUnits=\"userSpaceOnUse\">"
                   "<g>"
@@ -210,7 +218,7 @@ QString StatusIconSettings::toString() const
         if (!res.isEmpty()) {
             res += QChar(';');
         }
-        res += field->start % QChar(',') % field->end;
+        res += field->start.name(QColor::HexArgb) % QChar(',') % field->end.name(QColor::HexArgb);
     }
     return res;
 }
