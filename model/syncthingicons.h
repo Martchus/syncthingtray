@@ -48,7 +48,9 @@ inline GradientColor::GradientColor(const QColor &start, const QColor &end)
 {
 }
 
-QByteArray LIB_SYNCTHING_MODEL_EXPORT makeSyncthingIcon(const GradientColor &gradientColor, StatusEmblem statusEmblem);
+QByteArray LIB_SYNCTHING_MODEL_EXPORT makeSyncthingIcon(
+    const GradientColor &gradientColor = GradientColor{ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8") },
+    StatusEmblem statusEmblem = StatusEmblem::None);
 QPixmap LIB_SYNCTHING_MODEL_EXPORT renderSvgImage(const QString &path, const QSize &size = QSize(128, 128), int margin = 0);
 QPixmap LIB_SYNCTHING_MODEL_EXPORT renderSvgImage(const QByteArray &contents, const QSize &size = QSize(128, 128), int margin = 0);
 QByteArray LIB_SYNCTHING_MODEL_EXPORT loadFontAwesomeIcon(const QString &iconName, const QColor &color, bool solid = true);

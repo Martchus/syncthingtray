@@ -313,7 +313,7 @@ void SyncthingApplet::showAboutDialog()
                            "icons from <a href=\"https://fontawesome.com\">Font "
                            "Awesome</a> (see <a href=\"https://fontawesome.com/license\">their license</a>)</p>"),
             QStringLiteral(APP_VERSION), ApplicationUtilities::applicationInfo.dependencyVersions, QStringLiteral(APP_URL),
-            QStringLiteral(APP_DESCRIPTION), QImage(statusIcons().scanninig.pixmap(128).toImage()));
+            QStringLiteral(APP_DESCRIPTION), renderSvgImage(makeSyncthingIcon()).toImage());
         m_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         m_aboutDlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("syncthingtray")));
         m_aboutDlg->setAttribute(Qt::WA_DeleteOnClose);
