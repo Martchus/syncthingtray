@@ -84,9 +84,9 @@ private:
 void update();
 Data::StatusIconSettings m_settings;
 struct {
-    Widgets::ColorButton *colorButtons[2] = {};
+    Widgets::ColorButton *colorButtons[3] = {};
     QLabel *previewLabel = nullptr;
-    Data::GradientColor *setting = nullptr;
+    Data::StatusIconColorSet *setting = nullptr;
     Data::StatusEmblem statusEmblem = Data::StatusEmblem::None;
 } m_widgets[Data::StatusIconSettings::distinguishableColorCount];
 END_DECLARE_OPTION_PAGE

@@ -508,40 +508,47 @@ QWidget *IconsOptionPage::setupWidget()
 
     // populate form for status icon colors
     auto *const gridLayout = ui()->gridLayout;
-    auto *const statusColorsGroupBox = ui()->statusColorsGroupBox;
+    auto *const statusIconsGroupBox = ui()->statusIconsGroupBox;
     int index = 0;
     for (auto &colorMapping : m_settings.colorMapping()) {
         // populate widgets array
         auto &widgetsForColor = m_widgets[index++] = {
             {
-                new Widgets::ColorButton(statusColorsGroupBox),
-                new Widgets::ColorButton(statusColorsGroupBox),
+                new Widgets::ColorButton(statusIconsGroupBox),
+                new Widgets::ColorButton(statusIconsGroupBox),
+                new Widgets::ColorButton(statusIconsGroupBox),
             },
-            new QLabel(statusColorsGroupBox),
+            new QLabel(statusIconsGroupBox),
             &colorMapping.setting,
             colorMapping.defaultEmblem,
         };
 
         // add label for color name
-        gridLayout->addWidget(new QLabel(colorMapping.colorName, statusColorsGroupBox), index, 0, Qt::AlignRight | Qt::AlignVCenter);
+        gridLayout->addWidget(new QLabel(colorMapping.colorName, statusIconsGroupBox), index, 0, Qt::AlignRight | Qt::AlignVCenter);
 
         // setup preview
-        gridLayout->addWidget(widgetsForColor.previewLabel, index, 3, Qt::AlignCenter);
+        gridLayout->addWidget(widgetsForColor.previewLabel, index, 4, Qt::AlignCenter);
         const auto updatePreview = [&widgetsForColor] {
-            widgetsForColor.previewLabel->setPixmap(
-                renderSvgImage(makeSyncthingIcon(GradientColor{ widgetsForColor.colorButtons[0]->color(), widgetsForColor.colorButtons[1]->color() },
-                                   widgetsForColor.statusEmblem),
-                    QSize(32, 32)));
+            widgetsForColor.previewLabel->setPixmap(renderSvgImage(makeSyncthingIcon(
+                                                                       StatusIconColorSet{
+                                                                           widgetsForColor.colorButtons[0]->color(),
+                                                                           widgetsForColor.colorButtons[1]->color(),
+                                                                           widgetsForColor.colorButtons[2]->color(),
+                                                                       },
+                                                                       widgetsForColor.statusEmblem),
+                QSize(32, 32)));
         };
         for (const auto &colorButton : widgetsForColor.colorButtons) {
             QObject::connect(colorButton, &Widgets::ColorButton::colorChanged, updatePreview);
         }
 
         // setup color buttons
-        widgetsForColor.colorButtons[0]->setColor(colorMapping.setting.start);
-        widgetsForColor.colorButtons[1]->setColor(colorMapping.setting.end);
+        widgetsForColor.colorButtons[0]->setColor(colorMapping.setting.backgroundStart);
+        widgetsForColor.colorButtons[1]->setColor(colorMapping.setting.backgroundEnd);
+        widgetsForColor.colorButtons[2]->setColor(colorMapping.setting.foreground);
         gridLayout->addWidget(widgetsForColor.colorButtons[0], index, 1);
         gridLayout->addWidget(widgetsForColor.colorButtons[1], index, 2);
+        gridLayout->addWidget(widgetsForColor.colorButtons[2], index, 3);
 
         if (index >= StatusIconSettings::distinguishableColorCount) {
             break;
@@ -561,7 +568,11 @@ QWidget *IconsOptionPage::setupWidget()
 bool IconsOptionPage::apply()
 {
     for (auto &widgetsForColor : m_widgets) {
-        *widgetsForColor.setting = GradientColor{ widgetsForColor.colorButtons[0]->color(), widgetsForColor.colorButtons[1]->color() };
+        *widgetsForColor.setting = StatusIconColorSet{
+            widgetsForColor.colorButtons[0]->color(),
+            widgetsForColor.colorButtons[1]->color(),
+            widgetsForColor.colorButtons[2]->color(),
+        };
     }
     values().statusIcons = m_settings;
     return true;
@@ -570,8 +581,9 @@ bool IconsOptionPage::apply()
 void IconsOptionPage::update()
 {
     for (auto &widgetsForColor : m_widgets) {
-        widgetsForColor.colorButtons[0]->setColor(widgetsForColor.setting->start);
-        widgetsForColor.colorButtons[1]->setColor(widgetsForColor.setting->end);
+        widgetsForColor.colorButtons[0]->setColor(widgetsForColor.setting->backgroundStart);
+        widgetsForColor.colorButtons[1]->setColor(widgetsForColor.setting->backgroundEnd);
+        widgetsForColor.colorButtons[2]->setColor(widgetsForColor.setting->foreground);
     }
 }
 

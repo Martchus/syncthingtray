@@ -22,35 +22,39 @@ enum class StatusEmblem {
     Add,
 };
 
-struct GradientColor {
-    GradientColor(const QColor &start, const QColor &end);
-    GradientColor(QColor &&start, QColor &&end);
-    GradientColor(const QString &start, const QString &end);
+struct StatusIconColorSet {
+    StatusIconColorSet(const QColor &backgroundStart, const QColor &backgroundEnd, const QColor &foreground);
+    StatusIconColorSet(QColor &&backgroundStart, QColor &&backgroundEnd, QColor &&foreground);
+    StatusIconColorSet(const QString &backgroundStart, const QString &backgroundEnd, const QString &foreground);
 
-    QColor start;
-    QColor end;
+    QColor backgroundStart;
+    QColor backgroundEnd;
+    QColor foreground;
 };
 
-inline GradientColor::GradientColor(const QColor &start, const QColor &end)
-    : start(start)
-    , end(end)
+inline StatusIconColorSet::StatusIconColorSet(const QColor &backgroundStart, const QColor &backgroundEnd, const QColor &foreground)
+    : backgroundStart(backgroundStart)
+    , backgroundEnd(backgroundEnd)
+    , foreground(foreground)
 {
 }
 
-inline GradientColor::GradientColor(QColor &&start, QColor &&end)
-    : start(start)
-    , end(end)
+inline StatusIconColorSet::StatusIconColorSet(QColor &&backgroundStart, QColor &&backgroundEnd, QColor &&foreground)
+    : backgroundStart(backgroundStart)
+    , backgroundEnd(backgroundEnd)
+    , foreground(foreground)
 {
 }
 
-inline GradientColor::GradientColor(const QString &start, const QString &end)
-    : start(start)
-    , end(end)
+inline StatusIconColorSet::StatusIconColorSet(const QString &backgroundStart, const QString &backgroundEnd, const QString &foreground)
+    : backgroundStart(backgroundStart)
+    , backgroundEnd(backgroundEnd)
+    , foreground(foreground)
 {
 }
 
 QByteArray LIB_SYNCTHING_MODEL_EXPORT makeSyncthingIcon(
-    const GradientColor &gradientColor = GradientColor{ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8") },
+    const StatusIconColorSet &colors = StatusIconColorSet{ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8"), QStringLiteral("#FFFFFF") },
     StatusEmblem statusEmblem = StatusEmblem::None);
 QPixmap LIB_SYNCTHING_MODEL_EXPORT renderSvgImage(const QString &path, const QSize &size = QSize(128, 128), int margin = 0);
 QPixmap LIB_SYNCTHING_MODEL_EXPORT renderSvgImage(const QByteArray &contents, const QSize &size = QSize(128, 128), int margin = 0);
@@ -60,21 +64,21 @@ struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
     explicit StatusIconSettings();
     explicit StatusIconSettings(const QString &str);
 
-    GradientColor defaultColor;
-    GradientColor errorColor;
-    GradientColor warningColor;
-    GradientColor idleColor;
-    GradientColor scanningColor;
-    GradientColor synchronizingColor;
-    GradientColor pausedColor;
-    GradientColor disconnectedColor;
+    StatusIconColorSet defaultColor;
+    StatusIconColorSet errorColor;
+    StatusIconColorSet warningColor;
+    StatusIconColorSet idleColor;
+    StatusIconColorSet scanningColor;
+    StatusIconColorSet synchronizingColor;
+    StatusIconColorSet pausedColor;
+    StatusIconColorSet disconnectedColor;
 
     static constexpr auto distinguishableColorCount = 8;
 
     struct ColorMapping {
         QString colorName;
         StatusEmblem defaultEmblem;
-        GradientColor &setting;
+        StatusIconColorSet &setting;
     };
     std::vector<ColorMapping> colorMapping();
     QString toString() const;

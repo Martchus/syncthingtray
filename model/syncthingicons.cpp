@@ -8,10 +8,28 @@
 namespace Data {
 
 /*!
- * \brief Generates the SVG code for the Syncthing icon with the specified colors and status emblem.
+ * \brief Generates the SVG code for the Syncthing icon with the specified \a colors and status emblem.
  */
-QByteArray makeSyncthingIcon(const GradientColor &gradientColor, StatusEmblem statusEmblem)
+QByteArray makeSyncthingIcon(const StatusIconColorSet &colors, StatusEmblem statusEmblem)
 {
+    // serialize colors
+    auto gradientStartColor = colors.backgroundStart.name(QColor::HexRgb);
+    auto gradientEndColor = colors.backgroundEnd.name(QColor::HexRgb);
+    if (colors.backgroundStart.alphaF() < 1.0) {
+        gradientStartColor += QStringLiteral(";stop-opacity:") + QString::number(colors.backgroundStart.alphaF());
+    }
+    if (colors.backgroundEnd.alphaF() < 1.0) {
+        gradientEndColor += QStringLiteral(";stop-opacity:") + QString::number(colors.backgroundEnd.alphaF());
+    }
+    auto fillColor = colors.foreground.name(QColor::HexRgb);
+    auto strokeColor = fillColor;
+    if (colors.foreground.alphaF() < 1.0) {
+        const auto alpha = QString::number(colors.foreground.alphaF());
+        fillColor += QStringLiteral(";fill-opacity:") + alpha;
+        strokeColor += QStringLiteral(";stroke-opacity:") + alpha;
+    }
+
+    // make SVG document
     // clang-format off
     static const QString emblems[] = {
         QString(),
@@ -60,21 +78,13 @@ QByteArray makeSyncthingIcon(const GradientColor &gradientColor, StatusEmblem st
         ),
     };
     const auto &emblemData = emblems[static_cast<int>(statusEmblem)];
-    auto gradientStart = gradientColor.start.name(QColor::HexRgb);
-    auto gradientEnd = gradientColor.end.name(QColor::HexRgb);
-    if (gradientColor.start.alphaF() < 1.0) {
-        gradientStart += QStringLiteral(";stop-opacity:") + QString::number(gradientColor.start.alphaF());
-    }
-    if (gradientColor.end.alphaF() < 1.0) {
-        gradientEnd += QStringLiteral(";stop-opacity:") + QString::number(gradientColor.end.alphaF());
-    }
     return (QStringLiteral(
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
       "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 16 16\">"
           "<defs>"
               "<linearGradient id=\"grad\" gradientUnits=\"userSpaceOnUse\" x1=\"8\" y1=\"0\" x2=\"8\" y2=\"16\">"
-                  "<stop offset=\"0\" style=\"stop-color:") % gradientStart % QStringLiteral("\"/>"
-                  "<stop offset=\"1\" style=\"stop-color:") % gradientEnd % QStringLiteral("\"/>"
+                  "<stop offset=\"0\" style=\"stop-color:") % gradientStartColor % QStringLiteral("\"/>"
+                  "<stop offset=\"1\" style=\"stop-color:") % gradientEndColor % QStringLiteral("\"/>"
               "</linearGradient>"
               "<mask id=\"bitemask\" maskUnits=\"userSpaceOnUse\">"
                   "<g>"
@@ -85,14 +95,14 @@ QByteArray makeSyncthingIcon(const GradientColor &gradientColor, StatusEmblem st
           "</defs>"
           "<g id=\"syncthing-logo\" mask=\"url(#bitemask)\">"
               "<circle id=\"outer\" cx=\"8\" cy=\"8\" r=\"8\" style=\"fill:url(#grad)\"/>"
-              "<circle id=\"inner\" cx=\"8\" cy=\"7.9727402\" r=\"5.9557071\" style=\"fill:none;stroke:#ffffff;stroke-width:0.81771719\"/>"
-              "<line id=\"arm-l\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"2.262351\" y2=\"9.4173737\" style=\"stroke:#ffffff;stroke-width:0.81771719\"/>"
-              "<line id=\"arm-tr\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"13.301533\" y2=\"5.3696747\" style=\"stroke:#ffffff;stroke-width:0.81771719\"/>"
-              "<line id=\"arm-br\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"11.788756\" y2=\"12.51107\" style=\"stroke:#ffffff;stroke-width:0.81771719\"/>"
-              "<circle id=\"node-c\" cx=\"9.1993189\" cy=\"8.776825\" r=\"1.22\" style=\"fill:#ffffff\"/>"
-              "<circle id=\"node-l\" cx=\"2.262351\" cy=\"9.4173737\" r=\"1.22\" style=\"fill:#ffffff\"/>"
-              "<circle id=\"node-tr\" cx=\"13.301533\" cy=\"5.3696747\" r=\"1.22\" style=\"fill:#ffffff\"/>"
-              "<circle id=\"node-br\" cx=\"11.788756\" cy=\"12.51107\" r=\"1.22\" style=\"fill:#ffffff\"/>"
+              "<circle id=\"inner\" cx=\"8\" cy=\"7.9727402\" r=\"5.9557071\" style=\"fill:none;stroke:") % strokeColor % QStringLiteral(";stroke-width:0.81771719\"/>"
+              "<line id=\"arm-l\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"2.262351\" y2=\"9.4173737\" style=\"stroke:") % strokeColor % QStringLiteral(";stroke-width:0.81771719\"/>"
+              "<line id=\"arm-tr\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"13.301533\" y2=\"5.3696747\" style=\"stroke:") % strokeColor % QStringLiteral(";stroke-width:0.81771719\"/>"
+              "<line id=\"arm-br\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"11.788756\" y2=\"12.51107\" style=\"stroke:") % strokeColor % QStringLiteral(";stroke-width:0.81771719\"/>"
+              "<circle id=\"node-c\" cx=\"9.1993189\" cy=\"8.776825\" r=\"1.22\" style=\"fill:") % fillColor % QStringLiteral("\"/>"
+              "<circle id=\"node-l\" cx=\"2.262351\" cy=\"9.4173737\" r=\"1.22\" style=\"fill:") % fillColor % QStringLiteral("\"/>"
+              "<circle id=\"node-tr\" cx=\"13.301533\" cy=\"5.3696747\" r=\"1.22\" style=\"fill:") % fillColor % QStringLiteral("\"/>"
+              "<circle id=\"node-br\" cx=\"11.788756\" cy=\"12.51107\" r=\"1.22\" style=\"fill:") % fillColor % QStringLiteral("\"/>"
           "</g>") %
           (emblemData.isEmpty() ? QString() : emblemData) % QStringLiteral(
       "</svg>"
@@ -165,14 +175,14 @@ QByteArray loadFontAwesomeIcon(const QString &iconName, const QColor &color, boo
 }
 
 StatusIconSettings::StatusIconSettings()
-    : defaultColor({ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8") })
-    , errorColor({ QStringLiteral("#DB3C26"), QStringLiteral("#C80828") })
-    , warningColor({ QStringLiteral("#c9ce3b"), QStringLiteral("#ebb83b") })
-    , idleColor({ QStringLiteral("#2D9D69"), QStringLiteral("#2D9D69") })
-    , scanningColor({ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8") })
-    , synchronizingColor({ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8") })
-    , pausedColor({ QStringLiteral("#A9A9A9"), QStringLiteral("#58656C") })
-    , disconnectedColor({ QStringLiteral("#A9A9A9"), QStringLiteral("#58656C") })
+    : defaultColor({ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8"), QStringLiteral("#FFFFFF") })
+    , errorColor({ QStringLiteral("#DB3C26"), QStringLiteral("#C80828"), QStringLiteral("#FFFFFF") })
+    , warningColor({ QStringLiteral("#c9ce3b"), QStringLiteral("#ebb83b"), QStringLiteral("#FFFFFF") })
+    , idleColor({ QStringLiteral("#2D9D69"), QStringLiteral("#2D9D69"), QStringLiteral("#FFFFFF") })
+    , scanningColor({ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8"), QStringLiteral("#FFFFFF") })
+    , synchronizingColor({ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8"), QStringLiteral("#FFFFFF") })
+    , pausedColor({ QStringLiteral("#A9A9A9"), QStringLiteral("#58656C"), QStringLiteral("#FFFFFF") })
+    , disconnectedColor({ QStringLiteral("#A9A9A9"), QStringLiteral("#58656C"), QStringLiteral("#FFFFFF") })
 {
 }
 
@@ -202,8 +212,11 @@ StatusIconSettings::StatusIconSettings(const QString &str)
         }
         const auto colors = parts[index].split(QChar(','));
         if (colors.size() >= 2) {
-            field->start = colors[0].toString();
-            field->end = colors[1].toString();
+            field->backgroundStart = colors[0].toString();
+            field->backgroundEnd = colors[1].toString();
+        }
+        if (colors.size() >= 3) {
+            field->foreground = colors[2].toString();
         }
         ++index;
     }
@@ -218,7 +231,8 @@ QString StatusIconSettings::toString() const
         if (!res.isEmpty()) {
             res += QChar(';');
         }
-        res += field->start.name(QColor::HexArgb) % QChar(',') % field->end.name(QColor::HexArgb);
+        res += field->backgroundStart.name(QColor::HexArgb) % QChar(',') % field->backgroundEnd.name(QColor::HexArgb) % QChar(',')
+            % field->foreground.name(QColor::HexArgb);
     }
     return res;
 }
