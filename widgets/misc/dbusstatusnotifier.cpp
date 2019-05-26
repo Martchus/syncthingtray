@@ -28,29 +28,37 @@ DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
     , m_newDevNotification(QStringLiteral(APP_NAME) + tr(" - new device"), NotificationIcon::Information, 5000)
     , m_newDirNotification(QStringLiteral(APP_NAME) + tr(" - new directory"), NotificationIcon::Information, 5000)
 {
-    const auto icons(statusIcons());
-
     m_disconnectedNotification.setMessage(tr("Disconnected from Syncthing"));
     m_disconnectedNotification.setActions(QStringList({ QStringLiteral("reconnect"), tr("Try to reconnect") }));
     connect(&m_disconnectedNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::connectRequested);
-
-    m_syncthingNotification.setImage(makeImage(icons.error));
 
     m_internalErrorNotification.setActions(QStringList({ QStringLiteral("details"), tr("View details") }));
     connect(&m_internalErrorNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::errorDetailsRequested);
 
     m_syncthingNotification.setActions(QStringList({ QStringLiteral("show"), tr("Show"), QStringLiteral("dismiss"), tr("Dismiss") }));
-    m_syncthingNotification.setImage(makeImage(icons.notify));
-    m_syncCompleteNotification.setImage(makeImage(icons.syncComplete));
     connect(&m_syncthingNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::handleSyncthingNotificationAction);
 
-    m_newDevNotification.setImage(makeImage(icons.newItem));
     m_newDevNotification.setActions(QStringList({ QStringLiteral("webui"), tr("Open web UI") }));
     connect(&m_newDevNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::webUiRequested);
 
-    m_newDirNotification.setImage(m_newDevNotification.image());
     m_newDirNotification.setActions(m_newDevNotification.actions());
     connect(&m_newDirNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::webUiRequested);
+
+    const auto &iconManager = IconManager::instance();
+    connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &DBusStatusNotifier::setIcons);
+    setIcons(iconManager.statusIcons());
+}
+
+void DBusStatusNotifier::setIcons(const StatusIcons &icons)
+{
+    if (!icons.isValid) {
+        return;
+    }
+    m_syncthingNotification.setImage(makeImage(icons.error));
+    m_syncthingNotification.setImage(makeImage(icons.notify));
+    m_syncCompleteNotification.setImage(makeImage(icons.syncComplete));
+    m_newDevNotification.setImage(makeImage(icons.newItem));
+    m_newDirNotification.setImage(m_newDevNotification.image());
 }
 
 void DBusStatusNotifier::handleSyncthingNotificationAction(const QString &action)

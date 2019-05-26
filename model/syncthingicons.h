@@ -97,9 +97,11 @@ struct StatusIcons {
     QIcon error;
     QIcon errorSync;
     QIcon newItem;
+    bool isValid;
 };
 
 inline StatusIcons::StatusIcons()
+    : isValid(false)
 {
 }
 
@@ -137,7 +139,7 @@ public:
     const FontAwesomeIcons &fontAwesomeIconsForDarkTheme() const;
 
 Q_SIGNALS:
-    void statusIconsChanged();
+    void statusIconsChanged(const StatusIcons &newStatusIcons);
 
 private:
     IconManager();
@@ -149,8 +151,7 @@ private:
 
 inline void IconManager::applySettings(const StatusIconSettings &settings)
 {
-    m_statusIcons = StatusIcons(settings);
-    emit statusIconsChanged();
+    emit statusIconsChanged(m_statusIcons = StatusIcons(settings));
 }
 
 inline const StatusIcons &IconManager::statusIcons() const

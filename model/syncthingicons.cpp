@@ -248,6 +248,7 @@ StatusIcons::StatusIcons(const StatusIconSettings &settings)
     , error(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Alert))))
     , errorSync(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Synchronizing))))
     , newItem(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Add))))
+    , isValid(true)
 {
 }
 
