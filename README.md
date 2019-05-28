@@ -75,8 +75,12 @@ The screenshots might not be up-to-date.
 ![Qt Widgets based GUI under Openbox/Tint2](/tray/resources/screenshots/tint2-dark.png?raw=true)
 
 ### Under Plasma 5
+#### Light theme
 ![Plasmoid (light theme)](/plasmoid/resources/screenshots/plasmoid-1.png?raw=true)
+#### Dark theme
 ![Plasmoid (dark theme)](/plasmoid/resources/screenshots/plasmoid-2.png?raw=true)
+#### Customized icons
+![Plasmoid (customized icons)](/plasmoid/resources/screenshots/plasmoid-3-custom-icons.png?raw=true)
 
 ### Settings dialog
 ![Settings dialog](/tray/resources/screenshots/settings.png?raw=true)
