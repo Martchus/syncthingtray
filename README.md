@@ -190,10 +190,12 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
    make install -j$(nproc)
    ```
 
-### Select Qt module for WebView
-* If Qt WebKitWidgets is installed on the system, the tray will link against it. Otherwise it will link against Qt WebEngineWidgets.
-* To force usage of Qt WebKit/Qt WebEngine or to disable both add `-DWEBVIEW_PROVIDER=webkit/webengine/none` to the CMake arguments.
-* To use Qt WebKit revived/ng, set the web view provider to `webkit`. It works already without any (known) issues.
+### Select Qt module for web view and JavaScript
+* Add `-DWEBVIEW_PROVIDER:STRING=webkit/webengine/none` to the CMake arguments to use either Qt WebKit (works with
+  'revived' version as well), Qt WebEngine or no web view at all. If no web view is used, the Syncthing web UI is
+  opened in the default web browser. Otherwise the user can choose between the built-in web view and the web browser.
+* Add `-DJS_PROVIDER:STRING=script/qml/none` to the CMake arguments to use either Qt Script, Qt QML or no JavaScript
+  engine at all. If no JavaScript engine is used, the CLI does not support scripting configuration changes.
 
 #### Limitations of Qt WebEngine compared to Qt WebKit
 * Currently there is no way to allow a particular self-signed certificate in Qt
