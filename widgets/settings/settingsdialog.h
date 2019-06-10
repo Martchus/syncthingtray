@@ -16,8 +16,12 @@
 
 QT_FORWARD_DECLARE_CLASS(QLabel)
 
-namespace ChronoUtilities {
+namespace CppUtilities {
 class DateTime;
+}
+
+namespace QtUtilities {
+class ColorButton;
 }
 
 namespace Data {
@@ -26,10 +30,6 @@ class SyncthingService;
 class SyncthingProcess;
 class SyncthingLauncher;
 } // namespace Data
-
-namespace Widgets {
-class ColorButton;
-}
 
 namespace QtGui {
 
@@ -84,7 +84,7 @@ private:
 void update();
 Data::StatusIconSettings m_settings;
 struct {
-    Widgets::ColorButton *colorButtons[3] = {};
+    QtUtilities::ColorButton *colorButtons[3] = {};
     QLabel *previewLabel = nullptr;
     Data::StatusIconColorSet *setting = nullptr;
     Data::StatusEmblem statusEmblem = Data::StatusEmblem::None;
@@ -118,7 +118,7 @@ BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(SystemdOptionPage)
 private:
 DECLARE_SETUP_WIDGETS
 void handleDescriptionChanged(const QString &description);
-void handleStatusChanged(const QString &activeState, const QString &subState, ChronoUtilities::DateTime activeSince);
+void handleStatusChanged(const QString &activeState, const QString &subState, CppUtilities::DateTime activeSince);
 void handleEnabledChanged(const QString &unitFileState);
 Data::SyncthingService *const m_service;
 END_DECLARE_OPTION_PAGE
@@ -130,11 +130,11 @@ DECLARE_UI_FILE_BASED_OPTION_PAGE(WebViewOptionPage)
 DECLARE_OPTION_PAGE(WebViewOptionPage)
 #endif
 
-class SYNCTHINGWIDGETS_EXPORT SettingsDialog : public Dialogs::SettingsDialog {
+class SYNCTHINGWIDGETS_EXPORT SettingsDialog : public QtUtilities::SettingsDialog {
     Q_OBJECT
 public:
     explicit SettingsDialog(Data::SyncthingConnection *connection, QWidget *parent = nullptr);
-    explicit SettingsDialog(const QList<Dialogs::OptionCategory *> &categories, QWidget *parent = nullptr);
+    explicit SettingsDialog(const QList<QtUtilities::OptionCategory *> &categories, QWidget *parent = nullptr);
     explicit SettingsDialog(QWidget *parent = nullptr);
     ~SettingsDialog() override;
 

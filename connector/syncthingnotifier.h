@@ -5,7 +5,7 @@
 
 #include <QObject>
 
-namespace ChronoUtilities {
+namespace CppUtilities {
 class DateTime;
 }
 
@@ -93,14 +93,13 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void handleStatusChangedEvent(SyncthingStatus newStatus);
-    void handleNewDevEvent(ChronoUtilities::DateTime when, const QString &devId, const QString &address);
-    void handleNewDirEvent(
-        ChronoUtilities::DateTime when, const QString &devId, const SyncthingDev *dev, const QString &dirId, const QString &dirLabel);
+    void handleNewDevEvent(CppUtilities::DateTime when, const QString &devId, const QString &address);
+    void handleNewDirEvent(CppUtilities::DateTime when, const QString &devId, const SyncthingDev *dev, const QString &dirId, const QString &dirLabel);
 
 private:
     bool isDisconnectRelevant() const;
     void emitConnectedAndDisconnected(SyncthingStatus newStatus);
-    void emitSyncComplete(ChronoUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev);
+    void emitSyncComplete(CppUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev);
 
     const SyncthingConnection &m_connection;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

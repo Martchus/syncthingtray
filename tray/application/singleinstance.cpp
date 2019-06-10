@@ -12,8 +12,8 @@
 #include <memory>
 
 using namespace std;
-using namespace ConversionUtilities;
-using namespace EscapeCodes;
+using namespace CppUtilities;
+using namespace CppUtilities::EscapeCodes;
 
 namespace QtGui {
 

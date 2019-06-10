@@ -17,9 +17,9 @@
 #include <QKeySequenceEdit>
 #include <QVBoxLayout>
 
-using namespace Dialogs;
 using namespace Data;
 using namespace QtGui;
+using namespace QtUtilities;
 
 namespace Plasmoid {
 
@@ -118,15 +118,14 @@ QWidget *AppearanceOptionPage::setupWidget()
 SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
 {
     // setup categories
-    QList<Dialogs::OptionCategory *> categories;
-    Dialogs::OptionCategory *category;
+    QList<OptionCategory *> categories;
+    OptionCategory *category;
 
     category = new OptionCategory;
     m_appearanceOptionPage = new AppearanceOptionPage(applet);
     category->setDisplayName(QCoreApplication::translate("Plasmoid::SettingsDialog", "Plasmoid"));
-    category->assignPages(QList<Dialogs::OptionPage *>()
-        << new ConnectionOptionPage(applet.connection()) << new NotificationsOptionPage(GuiType::Plasmoid) << m_appearanceOptionPage
-        << new IconsOptionPage << new ShortcutOptionPage(applet));
+    category->assignPages(QList<OptionPage *>() << new ConnectionOptionPage(applet.connection()) << new NotificationsOptionPage(GuiType::Plasmoid)
+                                                << m_appearanceOptionPage << new IconsOptionPage << new ShortcutOptionPage(applet));
     category->setIcon(QIcon::fromTheme(QStringLiteral("plasma")));
     categories << category;
 
@@ -143,9 +142,9 @@ SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
 
     category = new OptionCategory;
     category->setDisplayName(QCoreApplication::translate("Plasmoid::SettingsDialog", "Extras"));
-    category->assignPages(QList<Dialogs::OptionPage *>() << webViewPage
+    category->assignPages(QList<OptionPage *>() << webViewPage
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-                                                         << systemdPage
+                                                << systemdPage
 #endif
     );
     category->setIcon(

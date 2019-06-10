@@ -15,17 +15,19 @@
 QT_FORWARD_DECLARE_CLASS(QJsonObject)
 QT_FORWARD_DECLARE_CLASS(QHostAddress)
 
-namespace ChronoUtilities {
+namespace CppUtilities {
 class DateTime;
 }
 
 namespace Data {
 
+namespace Traits = CppUtilities::Traits;
+
 struct SyncthingStatistics;
 struct SyncthingDir;
 struct SyncthingDev;
 
-QString LIB_SYNCTHING_CONNECTOR_EXPORT agoString(ChronoUtilities::DateTime dateTime);
+QString LIB_SYNCTHING_CONNECTOR_EXPORT agoString(CppUtilities::DateTime dateTime);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT trafficString(std::uint64_t total, double rate);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT directoryStatusString(const Data::SyncthingStatistics &stats);
 QString LIB_SYNCTHING_CONNECTOR_EXPORT syncCompleteString(

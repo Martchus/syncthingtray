@@ -23,8 +23,7 @@
 #include <utility>
 
 using namespace std;
-using namespace ChronoUtilities;
-using namespace ConversionUtilities;
+using namespace CppUtilities;
 
 namespace Data {
 

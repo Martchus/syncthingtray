@@ -16,6 +16,7 @@
 #include <iostream>
 #endif
 
+using namespace CppUtilities;
 using namespace Data;
 
 SyncthingMenuAction::SyncthingMenuAction(const KFileItemListProperties &properties, const QList<QAction *> &actions, QObject *parent)

@@ -11,15 +11,13 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include <cstdlib>
+#include <filesystem>
 #include <functional>
 
 #include <unistd.h>
 
 using namespace std;
-using namespace ChronoUtilities;
-using namespace ConversionUtilities;
-using namespace IoUtilities;
-using namespace TestUtilities;
+using namespace CppUtilities;
 using namespace LibSyncthing;
 
 using namespace CPPUNIT_NS;
@@ -76,16 +74,28 @@ string InterfaceTests::setupConfigDir()
     if (configFilePath.empty()) {
         throw runtime_error("Unable to setup Syncthing config directory.");
     }
+
     // clean database
     const auto configDir(directory(configFilePath));
-    for (const auto &dir : directoryEntries(configDir.data(), DirectoryEntryType::Directory)) {
-        if (dir == "." || dir == "..") {
-            continue;
+    try {
+        const auto dirIterator = filesystem::directory_iterator(configDir);
+        for (const auto &dir : dirIterator) {
+            if (!dir.is_directory() || dir == "." || dir == "..") {
+                continue;
+            }
+            const auto dirPath = dir.path();
+            const auto subdirIterator = filesystem::directory_iterator(configDir % '/' + dirPath);
+            for (const auto &file : subdirIterator) {
+                if (file.is_directory()) {
+                    continue;
+                }
+                const auto toRemove = configDir % '/' % dirPath % '/' + file.path();
+                CPPUNIT_ASSERT_EQUAL_MESSAGE("removing " + toRemove, 0, remove(toRemove.data()));
+            }
         }
-        for (const auto &file : directoryEntries((configDir % '/' + dir).data(), DirectoryEntryType::File)) {
-            const auto toRemove(configDir % '/' % dir % '/' + file);
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("removing " + toRemove, 0, remove(toRemove.data()));
-        }
+
+    } catch (const filesystem::filesystem_error &error) {
+        CPPUNIT_FAIL(argsToString("Unable to clean config dir ", configDir, ": ", error.what()));
     }
     return configDir;
 }

@@ -10,7 +10,7 @@
 #include <QPixmap>
 
 using namespace Data;
-using namespace MiscUtils;
+using namespace QtUtilities;
 
 namespace QtGui {
 

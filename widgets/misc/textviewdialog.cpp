@@ -21,7 +21,7 @@
 
 using namespace std;
 using namespace std::placeholders;
-using namespace Dialogs;
+using namespace QtUtilities;
 using namespace Data;
 
 namespace QtGui {

@@ -53,7 +53,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Widgets::PathSelection" name="syncthingPathSelection" native="true"/>
+       <widget class="QtUtilities::PathSelection" name="syncthingPathSelection" native="true"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="argumentsLabel">
@@ -63,7 +63,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Widgets::ClearLineEdit" name="argumentsLineEdit"/>
+       <widget class="QtUtilities::ClearLineEdit" name="argumentsLineEdit"/>
       </item>
       <item row="1" column="1">
        <widget class="QCheckBox" name="useBuiltInVersionCheckBox">
@@ -152,7 +152,7 @@
     </layout>
    </item>
    <item>
-    <widget class="Widgets::ClearPlainTextEdit" name="logTextEdit">
+    <widget class="QtUtilities::ClearPlainTextEdit" name="logTextEdit">
      <property name="undoRedoEnabled">
       <bool>false</bool>
      </property>
@@ -178,18 +178,18 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Widgets::PathSelection</class>
+   <class>QtUtilities::PathSelection</class>
    <extends>QWidget</extends>
    <header location="global">qtutilities/widgets/pathselection.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>Widgets::ClearLineEdit</class>
+   <class>QtUtilities::ClearLineEdit</class>
    <extends>QLineEdit</extends>
    <header location="global">qtutilities/widgets/clearlineedit.h</header>
   </customwidget>
   <customwidget>
-   <class>Widgets::ClearPlainTextEdit</class>
+   <class>QtUtilities::ClearPlainTextEdit</class>
    <extends>QPlainTextEdit</extends>
    <header location="global">qtutilities/widgets/clearplaintextedit.h</header>
   </customwidget>

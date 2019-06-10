@@ -15,7 +15,7 @@
 
 #include <c++utilities/application/argumentparser.h>
 #include <c++utilities/application/commandlineutils.h>
-#include <c++utilities/application/failure.h>
+#include <c++utilities/misc/parseerror.h>
 
 #include <qtutilities/resources/importplugin.h>
 #include <qtutilities/resources/qtconfigarguments.h>
@@ -30,7 +30,7 @@
 #include <iostream>
 
 using namespace std;
-using namespace ApplicationUtilities;
+using namespace CppUtilities;
 using namespace QtGui;
 using namespace Data;
 
@@ -140,7 +140,7 @@ int runApplication(int argc, const char *const *argv)
     widgetsGuiArg.addSubArgument(&connectionArg);
 
     parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(), &parser.noColorArg(), &parser.helpArg() });
-    parser.parseArgsOrExit(argc, argv);
+    parser.parseArgs(argc, argv);
     if (!qtConfigArgs.qtWidgetsGuiArg().isPresent()) {
         return 0;
     }

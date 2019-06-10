@@ -57,11 +57,9 @@
 using namespace std;
 using namespace std::placeholders;
 using namespace Settings;
-using namespace Dialogs;
 using namespace Data;
-#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-using namespace MiscUtils;
-#endif
+using namespace CppUtilities;
+using namespace QtUtilities;
 
 namespace QtGui {
 
@@ -514,9 +512,9 @@ QWidget *IconsOptionPage::setupWidget()
         // populate widgets array
         auto &widgetsForColor = m_widgets[index++] = {
             {
-                new Widgets::ColorButton(statusIconsGroupBox),
-                new Widgets::ColorButton(statusIconsGroupBox),
-                new Widgets::ColorButton(statusIconsGroupBox),
+                new ColorButton(statusIconsGroupBox),
+                new ColorButton(statusIconsGroupBox),
+                new ColorButton(statusIconsGroupBox),
             },
             new QLabel(statusIconsGroupBox),
             &colorMapping.setting,
@@ -539,7 +537,7 @@ QWidget *IconsOptionPage::setupWidget()
                 QSize(32, 32)));
         };
         for (const auto &colorButton : widgetsForColor.colorButtons) {
-            QObject::connect(colorButton, &Widgets::ColorButton::colorChanged, updatePreview);
+            QObject::connect(colorButton, &ColorButton::colorChanged, updatePreview);
         }
 
         // setup color buttons
@@ -980,7 +978,7 @@ void setIndicatorColor(QWidget *indicator, const QColor &color)
     indicator->setStyleSheet(QStringLiteral("border-radius:8px;background-color:") + color.name());
 }
 
-void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QString &subState, ChronoUtilities::DateTime activeSince)
+void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QString &subState, DateTime activeSince)
 {
     QStringList status;
     if (!activeState.isEmpty()) {
@@ -994,7 +992,7 @@ void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QS
     QString timeStamp;
     if (isRunning && !activeSince.isNull()) {
         timeStamp = QLatin1Char('\n') % QCoreApplication::translate("QtGui::SystemdOptionPage", "since ")
-            % QString::fromUtf8(activeSince.toString(ChronoUtilities::DateTimeOutputFormat::DateAndTime).data());
+            % QString::fromUtf8(activeSince.toString(DateTimeOutputFormat::DateAndTime).data());
     }
 
     ui()->statusValueLabel->setText(
@@ -1063,35 +1061,35 @@ void WebViewOptionPage::reset()
 }
 
 SettingsDialog::SettingsDialog(const QList<OptionCategory *> &categories, QWidget *parent)
-    : Dialogs::SettingsDialog(parent)
+    : QtUtilities::SettingsDialog(parent)
 {
     categoryModel()->setCategories(categories);
     init();
 }
 
 SettingsDialog::SettingsDialog(QWidget *parent)
-    : Dialogs::SettingsDialog(parent)
+    : QtUtilities::SettingsDialog(parent)
 {
     init();
 }
 
 SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *parent)
-    : Dialogs::SettingsDialog(parent)
+    : QtUtilities::SettingsDialog(parent)
 {
     // setup categories
-    QList<Dialogs::OptionCategory *> categories;
-    Dialogs::OptionCategory *category;
+    QList<OptionCategory *> categories;
+    OptionCategory *category;
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Tray"));
-    category->assignPages(QList<Dialogs::OptionPage *>()
-        << new ConnectionOptionPage(connection) << new NotificationsOptionPage << new AppearanceOptionPage << new IconsOptionPage);
+    category->assignPages(QList<OptionPage *>() << new ConnectionOptionPage(connection) << new NotificationsOptionPage << new AppearanceOptionPage
+                                                << new IconsOptionPage);
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     categories << category;
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Web view"));
-    category->assignPages(QList<Dialogs::OptionPage *>() << new WebViewOptionPage);
+    category->assignPages(QList<OptionPage *>() << new WebViewOptionPage);
     category->setIcon(
         QIcon::fromTheme(QStringLiteral("internet-web-browser"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))));
     categories << category;
@@ -1099,9 +1097,9 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     category = new OptionCategory(this);
     category->setDisplayName(tr("Startup"));
     category->assignPages(
-        QList<Dialogs::OptionPage *>() << new AutostartOptionPage << new LauncherOptionPage << new LauncherOptionPage(QStringLiteral("Inotify"))
+        QList<OptionPage *>() << new AutostartOptionPage << new LauncherOptionPage << new LauncherOptionPage(QStringLiteral("Inotify"))
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-                                       << new SystemdOptionPage
+                              << new SystemdOptionPage
 #endif
     );
     category->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));

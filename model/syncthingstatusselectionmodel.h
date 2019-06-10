@@ -7,14 +7,12 @@
 
 namespace Data {
 
-class LIB_SYNCTHING_MODEL_EXPORT SyncthingStatusSelectionModel : public Models::ChecklistModel {
+class LIB_SYNCTHING_MODEL_EXPORT SyncthingStatusSelectionModel : public QtUtilities::ChecklistModel {
     Q_OBJECT
 
 public:
     explicit SyncthingStatusSelectionModel(QObject *parent = nullptr);
     QString labelForId(const QVariant &id) const override;
-
-protected:
 };
 
 } // namespace Data

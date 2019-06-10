@@ -84,7 +84,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(double totalOutgoingRate READ totalOutgoingRate NOTIFY trafficChanged)
     Q_PROPERTY(QString lastSyncedFile READ lastSyncedFile)
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion)
-    Q_PROPERTY(ChronoUtilities::DateTime lastSyncTime READ lastSyncTime)
+    Q_PROPERTY(CppUtilities::DateTime lastSyncTime READ lastSyncTime)
     Q_PROPERTY(QList<QSslError> expectedSslErrors READ expectedSslErrors)
     Q_PROPERTY(std::vector<const SyncthingDev *> connectedDevices READ connectedDevices)
     Q_PROPERTY(QStringList directoryIds READ directoryIds)
@@ -142,9 +142,9 @@ public:
     const std::vector<SyncthingDev> &devInfo() const;
     SyncthingOverallDirStatistics computeOverallDirStatistics() const;
     const QString &lastSyncedFile() const;
-    ChronoUtilities::DateTime lastSyncTime() const;
-    ChronoUtilities::DateTime startTime() const;
-    ChronoUtilities::TimeSpan uptime() const;
+    CppUtilities::DateTime lastSyncTime() const;
+    CppUtilities::DateTime startTime() const;
+    CppUtilities::TimeSpan uptime() const;
     const QString &syncthingVersion() const;
     QStringList directoryIds() const;
     QStringList deviceIds() const;
@@ -220,11 +220,10 @@ Q_SIGNALS:
     void devStatusChanged(const SyncthingDev &dev, int index);
     void downloadProgressChanged();
     void dirStatisticsChanged();
-    void dirCompleted(ChronoUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev = nullptr);
-    void newNotification(ChronoUtilities::DateTime when, const QString &message);
-    void newDevAvailable(ChronoUtilities::DateTime when, const QString &devId, const QString &address);
-    void newDirAvailable(
-        ChronoUtilities::DateTime when, const QString &devId, const SyncthingDev *dev, const QString &dirId, const QString &dirLabel);
+    void dirCompleted(CppUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev = nullptr);
+    void newNotification(CppUtilities::DateTime when, const QString &message);
+    void newDevAvailable(CppUtilities::DateTime when, const QString &devId, const QString &address);
+    void newDirAvailable(CppUtilities::DateTime when, const QString &devId, const SyncthingDev *dev, const QString &dirId, const QString &dirLabel);
     void error(const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request = QNetworkRequest(),
         const QByteArray &response = QByteArray());
     void statusChanged(SyncthingStatus newStatus);
@@ -258,20 +257,19 @@ private Q_SLOTS:
     void readEvents();
     void readEventsFromJsonArray(const QJsonArray &events, int &idVariable);
     void readStartingEvent(const QJsonObject &eventData);
-    void readStatusChangedEvent(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
-    void readDownloadProgressEvent(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
-    void readDirEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
-    void readDeviceEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
-    void readItemStarted(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
-    void readItemFinished(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
-    void readFolderErrors(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
-    void readFolderCompletion(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
-    void readFolderCompletion(
-        ChronoUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index, const QString &devId);
-    void readLocalFolderCompletion(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
+    void readStatusChangedEvent(CppUtilities::DateTime eventTime, const QJsonObject &eventData);
+    void readDownloadProgressEvent(CppUtilities::DateTime eventTime, const QJsonObject &eventData);
+    void readDirEvent(CppUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
+    void readDeviceEvent(CppUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
+    void readItemStarted(CppUtilities::DateTime eventTime, const QJsonObject &eventData);
+    void readItemFinished(CppUtilities::DateTime eventTime, const QJsonObject &eventData);
+    void readFolderErrors(CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
+    void readFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
+    void readFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index, const QString &devId);
+    void readLocalFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
     void readRemoteFolderCompletion(
-        ChronoUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index, const QString &devId);
-    void readRemoteIndexUpdated(ChronoUtilities::DateTime eventTime, const QJsonObject &eventData);
+        CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index, const QString &devId);
+    void readRemoteIndexUpdated(CppUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readPostConfig();
     void readRescan();
     void readDevPauseResume();
@@ -280,13 +278,13 @@ private Q_SLOTS:
     void readShutdown();
     void readDirStatus();
     void readDirPullErrors();
-    void readDirSummary(ChronoUtilities::DateTime eventTime, const QJsonObject &summary, SyncthingDir &dirInfo, int index);
-    void readDirRejected(ChronoUtilities::DateTime eventTime, const QString &dirId, const QJsonObject &eventData);
-    void readDevRejected(ChronoUtilities::DateTime eventTime, const QString &devId, const QJsonObject &eventData);
+    void readDirSummary(CppUtilities::DateTime eventTime, const QJsonObject &summary, SyncthingDir &dirInfo, int index);
+    void readDirRejected(CppUtilities::DateTime eventTime, const QString &dirId, const QJsonObject &eventData);
+    void readDevRejected(CppUtilities::DateTime eventTime, const QString &devId, const QJsonObject &eventData);
     void readCompletion();
     void readVersion();
     void readDiskEvents();
-    void readChangeEvent(ChronoUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
+    void readChangeEvent(CppUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
     void readLog();
     void readQrCode();
 
@@ -295,7 +293,7 @@ private Q_SLOTS:
     void continueReconnecting();
     void autoReconnect();
     void setStatus(SyncthingStatus status);
-    void emitNotification(ChronoUtilities::DateTime when, const QString &message);
+    void emitNotification(CppUtilities::DateTime when, const QString &message);
     void emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response = QByteArray());
     void emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply);
     void emitMyIdChanged(const QString &newId);
@@ -357,10 +355,10 @@ private:
     bool m_hasDiskEvents;
     std::vector<SyncthingDir> m_dirs;
     std::vector<SyncthingDev> m_devs;
-    ChronoUtilities::DateTime m_lastConnectionsUpdate;
-    ChronoUtilities::DateTime m_lastFileTime;
-    ChronoUtilities::DateTime m_lastErrorTime;
-    ChronoUtilities::DateTime m_startTime;
+    CppUtilities::DateTime m_lastConnectionsUpdate;
+    CppUtilities::DateTime m_lastFileTime;
+    CppUtilities::DateTime m_lastErrorTime;
+    CppUtilities::DateTime m_startTime;
     QString m_lastFileName;
     QString m_syncthingVersion;
     bool m_lastFileDeleted;
@@ -684,7 +682,7 @@ inline const QString &SyncthingConnection::lastSyncedFile() const
 /*!
  * \brief Returns the time of the most recent sync.
  */
-inline ChronoUtilities::DateTime SyncthingConnection::lastSyncTime() const
+inline CppUtilities::DateTime SyncthingConnection::lastSyncTime() const
 {
     return m_lastFileTime;
 }
@@ -692,7 +690,7 @@ inline ChronoUtilities::DateTime SyncthingConnection::lastSyncTime() const
 /*!
  * \brief Returns when Syncthing has been started.
  */
-inline ChronoUtilities::DateTime SyncthingConnection::startTime() const
+inline CppUtilities::DateTime SyncthingConnection::startTime() const
 {
     return m_startTime;
 }
@@ -700,9 +698,9 @@ inline ChronoUtilities::DateTime SyncthingConnection::startTime() const
 /*!
  * \brief Returns how long Syncthing has been running.
  */
-inline ChronoUtilities::TimeSpan SyncthingConnection::uptime() const
+inline CppUtilities::TimeSpan SyncthingConnection::uptime() const
 {
-    return ChronoUtilities::DateTime::gmtNow() - m_startTime;
+    return CppUtilities::DateTime::gmtNow() - m_startTime;
 }
 
 /*!

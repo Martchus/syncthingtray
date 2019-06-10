@@ -34,7 +34,7 @@ public:
 public slots:
     void showInternalError(
         const QString &errorMsg, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);
-    void showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message);
+    void showSyncthingNotification(CppUtilities::DateTime when, const QString &message);
     void showInternalErrorsDialog();
     void updateStatusIconAndText();
     void showNewDev(const QString &devId, const QString &message);

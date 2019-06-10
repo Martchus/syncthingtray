@@ -17,7 +17,7 @@
 #include <tuple>
 #include <vector>
 
-namespace Dialogs {
+namespace QtUtilities {
 class QtSettings;
 }
 
@@ -115,7 +115,7 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     WebView webView;
 #endif
-    Dialogs::QtSettings qt;
+    QtUtilities::QtSettings qt;
 
     void apply(Data::SyncthingNotifier &notifier) const;
 };

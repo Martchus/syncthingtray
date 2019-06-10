@@ -20,7 +20,7 @@
 
 using namespace std;
 using namespace std::placeholders;
-using namespace ChronoUtilities;
+using namespace CppUtilities;
 
 namespace Data {
 

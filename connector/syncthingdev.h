@@ -36,7 +36,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
     QString connectionAddress;
     QString connectionType;
     QString clientVersion;
-    ChronoUtilities::DateTime lastSeen;
+    CppUtilities::DateTime lastSeen;
 };
 
 inline SyncthingDev::SyncthingDev(const QString &id, const QString &name)

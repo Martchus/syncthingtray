@@ -26,7 +26,7 @@ public Q_SLOTS:
     void showDisconnect();
     void hideDisconnect();
     void showInternalError(const InternalError &error);
-    void showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message);
+    void showSyncthingNotification(CppUtilities::DateTime when, const QString &message);
     void showSyncComplete(const QString &message);
     void showNewDev(const QString &devId, const QString &message);
     void showNewDir(const QString &devId, const QString &dirId, const QString &message);
@@ -43,12 +43,12 @@ private Q_SLOTS:
     void handleSyncthingNotificationAction(const QString &action);
 
 private:
-    MiscUtils::DBusNotification m_disconnectedNotification;
-    MiscUtils::DBusNotification m_internalErrorNotification;
-    MiscUtils::DBusNotification m_syncthingNotification;
-    MiscUtils::DBusNotification m_syncCompleteNotification;
-    MiscUtils::DBusNotification m_newDevNotification;
-    MiscUtils::DBusNotification m_newDirNotification;
+    QtUtilities::DBusNotification m_disconnectedNotification;
+    QtUtilities::DBusNotification m_internalErrorNotification;
+    QtUtilities::DBusNotification m_syncthingNotification;
+    QtUtilities::DBusNotification m_syncCompleteNotification;
+    QtUtilities::DBusNotification m_newDevNotification;
+    QtUtilities::DBusNotification m_newDirNotification;
 };
 
 inline void DBusStatusNotifier::showDisconnect()
@@ -66,7 +66,7 @@ inline void DBusStatusNotifier::showInternalError(const InternalError &error)
     m_internalErrorNotification.update(error.message);
 }
 
-inline void DBusStatusNotifier::showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message)
+inline void DBusStatusNotifier::showSyncthingNotification(CppUtilities::DateTime when, const QString &message)
 {
     Q_UNUSED(when)
     m_syncthingNotification.update(message);

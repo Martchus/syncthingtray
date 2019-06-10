@@ -13,13 +13,13 @@ namespace Data {
 class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingProcess : public QProcess {
     Q_OBJECT
     Q_PROPERTY(bool running READ isRunning)
-    Q_PROPERTY(ChronoUtilities::DateTime activeSince READ activeSince)
+    Q_PROPERTY(CppUtilities::DateTime activeSince READ activeSince)
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
 
 public:
     explicit SyncthingProcess(QObject *parent = nullptr);
     bool isRunning() const;
-    ChronoUtilities::DateTime activeSince() const;
+    CppUtilities::DateTime activeSince() const;
     bool isActiveFor(unsigned int atLeastSeconds) const;
     bool isManuallyStopped() const;
     static SyncthingProcess *mainInstance();
@@ -43,7 +43,7 @@ private Q_SLOTS:
 private:
     QString m_program;
     QStringList m_arguments;
-    ChronoUtilities::DateTime m_activeSince;
+    CppUtilities::DateTime m_activeSince;
     QTimer m_killTimer;
     bool m_manuallyStopped;
     static SyncthingProcess *s_mainInstance;
@@ -54,14 +54,14 @@ inline bool SyncthingProcess::isRunning() const
     return state() != QProcess::NotRunning;
 }
 
-inline ChronoUtilities::DateTime SyncthingProcess::activeSince() const
+inline CppUtilities::DateTime SyncthingProcess::activeSince() const
 {
     return m_activeSince;
 }
 
 inline bool SyncthingProcess::isActiveFor(unsigned int atLeastSeconds) const
 {
-    return !m_activeSince.isNull() && (ChronoUtilities::DateTime::gmtNow() - m_activeSince).totalSeconds() > atLeastSeconds;
+    return !m_activeSince.isNull() && (CppUtilities::DateTime::gmtNow() - m_activeSince).totalSeconds() > atLeastSeconds;
 }
 
 inline bool SyncthingProcess::isManuallyStopped() const

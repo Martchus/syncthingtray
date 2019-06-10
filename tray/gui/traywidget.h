@@ -20,11 +20,11 @@ QT_FORWARD_DECLARE_CLASS(QFrame)
 QT_FORWARD_DECLARE_CLASS(QMenu)
 QT_FORWARD_DECLARE_CLASS(QActionGroup)
 
-namespace ApplicationUtilities {
+namespace CppUtilities {
 class QtConfigArguments;
 }
 
-namespace Dialogs {
+namespace QtUtilities {
 class AboutDialog;
 }
 
@@ -83,7 +83,7 @@ private slots:
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     void handleWebViewDeleted();
 #endif
-    void handleNewNotification(ChronoUtilities::DateTime when, const QString &msg);
+    void handleNewNotification(CppUtilities::DateTime when, const QString &msg);
     void handleConnectionSelected(QAction *connectionAction);
     void showDialog(QWidget *dlg);
 
@@ -91,7 +91,7 @@ private:
     TrayMenu *m_menu;
     std::unique_ptr<Ui::TrayWidget> m_ui;
     static SettingsDialog *m_settingsDlg;
-    static Dialogs::AboutDialog *m_aboutDlg;
+    static QtUtilities::AboutDialog *m_aboutDlg;
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     WebViewDialog *m_webViewDlg;
 #endif

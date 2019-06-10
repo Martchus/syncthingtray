@@ -44,17 +44,15 @@
 #include <algorithm>
 #include <functional>
 
-using namespace ApplicationUtilities;
-using namespace ConversionUtilities;
-using namespace ChronoUtilities;
-using namespace Dialogs;
+using namespace CppUtilities;
+using namespace QtUtilities;
 using namespace Data;
 using namespace std;
 
 namespace QtGui {
 
 SettingsDialog *TrayWidget::m_settingsDlg = nullptr;
-Dialogs::AboutDialog *TrayWidget::m_aboutDlg = nullptr;
+QtUtilities::AboutDialog *TrayWidget::m_aboutDlg = nullptr;
 vector<TrayWidget *> TrayWidget::m_instances;
 
 /*!
@@ -437,7 +435,7 @@ void TrayWidget::applySettingsOnAllInstances()
 void TrayWidget::openDir(const SyncthingDir &dir)
 {
     if (QDir(dir.path).exists()) {
-        DesktopUtils::openLocalFileOrDir(dir.path);
+        openLocalFileOrDir(dir.path);
     } else {
         QMessageBox::warning(
             this, QCoreApplication::applicationName(), tr("The directory <i>%1</i> does not exist on the local machine.").arg(dir.path));
@@ -448,7 +446,7 @@ void TrayWidget::openItemDir(const SyncthingItemDownloadProgress &item)
 {
     const QDir containingDir(item.fileInfo.absoluteDir());
     if (containingDir.exists()) {
-        DesktopUtils::openLocalFileOrDir(containingDir.path());
+        openLocalFileOrDir(containingDir.path());
     } else {
         QMessageBox::warning(this, QCoreApplication::applicationName(),
             tr("The containing directory <i>%1</i> does not exist on the local machine.").arg(item.fileInfo.filePath()));

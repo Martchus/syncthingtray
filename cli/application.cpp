@@ -13,11 +13,11 @@
 
 #include "resources/config.h"
 
-#include <c++utilities/application/failure.h>
 #include <c++utilities/chrono/timespan.h>
 #include <c++utilities/conversion/stringbuilder.h>
 #include <c++utilities/conversion/stringconversion.h>
 #include <c++utilities/io/ansiescapecodes.h>
+#include <c++utilities/misc/parseerror.h>
 
 #include <qtutilities/misc/conversion.h>
 
@@ -35,10 +35,9 @@
 
 using namespace std;
 using namespace std::placeholders;
-using namespace ApplicationUtilities;
-using namespace EscapeCodes;
-using namespace ChronoUtilities;
-using namespace ConversionUtilities;
+using namespace CppUtilities;
+using namespace CppUtilities::EscapeCodes;
+using namespace QtUtilities;
 using namespace Data;
 
 namespace Cli {
@@ -118,7 +117,7 @@ int Application::exec(int argc, const char *const *argv)
         m_args.parser.checkConstraints();
         m_argsRead = true;
 
-    } catch (const Failure &failure) {
+    } catch (const ParseError &failure) {
         cerr << failure;
         return 1;
     }
@@ -237,7 +236,6 @@ int Application::loadConfig()
 
 bool Application::waitForConnected(int timeout)
 {
-    using namespace TestUtilities;
     bool isConnected = m_connection.isConnected();
     const function<void(SyncthingStatus)> checkStatus([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
     return waitForSignalsOrFail(bind(static_cast<void (SyncthingConnection::*)(SyncthingConnectionSettings &)>(&SyncthingConnection::reconnect),
@@ -248,7 +246,6 @@ bool Application::waitForConnected(int timeout)
 
 bool Application::waitForConfig(int timeout)
 {
-    using namespace TestUtilities;
     m_connection.applySettings(m_settings);
     return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfig, ref(m_connection)), timeout,
         signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig),
@@ -257,7 +254,6 @@ bool Application::waitForConfig(int timeout)
 
 bool Application::waitForConfigAndStatus(int timeout)
 {
-    using namespace TestUtilities;
     m_connection.applySettings(m_settings);
     return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfigAndStatus, ref(m_connection)), timeout,
         signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig),
@@ -692,7 +688,6 @@ void Application::editConfig(const ArgumentOccurrence &)
     }
 
     // post new config
-    using namespace TestUtilities;
     cerr << Phrases::Info << "Posting new configuration ..." << TextAttribute::Reset << flush;
     if (!waitForSignalsOrFail(bind(&SyncthingConnection::postConfigFromByteArray, ref(m_connection), ref(newConfig)), 0,
             signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfigTriggered))) {
@@ -958,7 +953,6 @@ void Application::waitForIdle(const ArgumentOccurrence &)
     // invoke handler manually because Syncthing could already be idling
     handleNewDirsOrDevs();
 
-    using namespace TestUtilities;
     waitForSignals(&noop, m_idleTimeout, signalInfo(&m_connection, &SyncthingConnection::dirStatusChanged, handleStatusChange, &isLongEnoughIdle),
         signalInfo(&m_connection, &SyncthingConnection::devStatusChanged, handleStatusChange, &isLongEnoughIdle),
         signalInfo(&m_connection, &SyncthingConnection::newDirs, handleNewDirsOrDevs, &isLongEnoughIdle),

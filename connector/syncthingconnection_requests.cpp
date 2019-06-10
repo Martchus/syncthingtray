@@ -25,10 +25,9 @@
 #include <utility>
 
 using namespace std;
-using namespace ChronoUtilities;
-using namespace ConversionUtilities;
+using namespace CppUtilities;
 #if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS)
-using namespace EscapeCodes;
+using namespace CppUtilities::EscapeCodes;
 #endif
 
 namespace Data {

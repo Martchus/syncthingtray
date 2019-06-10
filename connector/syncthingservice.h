@@ -38,7 +38,7 @@ class SyncthingService : public QObject {
     Q_PROPERTY(bool unitAvailable READ isUnitAvailable NOTIFY unitAvailableChanged)
     Q_PROPERTY(QString activeState READ activeState NOTIFY activeStateChanged)
     Q_PROPERTY(QString subState READ subState NOTIFY subStateChanged)
-    Q_PROPERTY(ChronoUtilities::DateTime activeSince READ activeSince NOTIFY activeStateChanged)
+    Q_PROPERTY(CppUtilities::DateTime activeSince READ activeSince NOTIFY activeStateChanged)
     Q_PROPERTY(QString unitFileState READ unitFileState NOTIFY unitFileStateChanged)
     Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
     Q_PROPERTY(bool running READ isRunning WRITE setRunning NOTIFY runningChanged)
@@ -53,11 +53,11 @@ public:
     bool isUnitAvailable() const;
     const QString &activeState() const;
     const QString &subState() const;
-    ChronoUtilities::DateTime activeSince() const;
+    CppUtilities::DateTime activeSince() const;
     bool isActiveFor(unsigned int atLeastSeconds) const;
     bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
-    static bool isActiveWithoutSleepFor(ChronoUtilities::DateTime activeSince, unsigned int atLeastSeconds);
-    static ChronoUtilities::DateTime lastWakeUp();
+    static bool isActiveWithoutSleepFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds);
+    static CppUtilities::DateTime lastWakeUp();
     const QString &unitFileState() const;
     const QString &description() const;
     bool isRunning() const;
@@ -80,7 +80,7 @@ Q_SIGNALS:
     void unitNameChanged(const QString &unitName);
     void systemdAvailableChanged(bool available);
     void unitAvailableChanged(bool available);
-    void stateChanged(const QString &activeState, const QString &subState, ChronoUtilities::DateTime activeSince);
+    void stateChanged(const QString &activeState, const QString &subState, CppUtilities::DateTime activeSince);
     void activeStateChanged(const QString &activeState);
     void subStateChanged(const QString &subState);
     void unitFileStateChanged(const QString &unitFileState);
@@ -104,14 +104,14 @@ private Q_SLOTS:
 private:
     bool handlePropertyChanged(QString &variable, void (SyncthingService::*signal)(const QString &), const QString &propertyName,
         const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
-    bool handlePropertyChanged(ChronoUtilities::DateTime &variable, const QString &propertyName, const QVariantMap &changedProperties,
+    bool handlePropertyChanged(CppUtilities::DateTime &variable, const QString &propertyName, const QVariantMap &changedProperties,
         const QStringList &invalidatedProperties);
     void registerErrorHandler(const QDBusPendingCall &call, const char *context);
 
     static OrgFreedesktopSystemd1ManagerInterface *s_manager;
     static OrgFreedesktopLogin1ManagerInterface *s_loginManager;
     static bool s_fallingAsleep;
-    static ChronoUtilities::DateTime s_lastWakeUp;
+    static CppUtilities::DateTime s_lastWakeUp;
     static SyncthingService *s_mainInstance;
     QString m_unitName;
     QDBusServiceWatcher *m_serviceWatcher;
@@ -122,7 +122,7 @@ private:
     QString m_activeState;
     QString m_subState;
     QString m_unitFileState;
-    ChronoUtilities::DateTime m_activeSince;
+    CppUtilities::DateTime m_activeSince;
     bool m_manuallyStopped;
     bool m_unitAvailable;
 };
@@ -182,14 +182,14 @@ inline bool SyncthingService::isManuallyStopped() const
     return m_manuallyStopped;
 }
 
-inline ChronoUtilities::DateTime SyncthingService::activeSince() const
+inline CppUtilities::DateTime SyncthingService::activeSince() const
 {
     return m_activeSince;
 }
 
 inline bool SyncthingService::isActiveFor(unsigned int atLeastSeconds) const
 {
-    return !m_activeSince.isNull() && (ChronoUtilities::DateTime::gmtNow() - m_activeSince).totalSeconds() > atLeastSeconds;
+    return !m_activeSince.isNull() && (CppUtilities::DateTime::gmtNow() - m_activeSince).totalSeconds() > atLeastSeconds;
 }
 
 inline bool SyncthingService::isActiveWithoutSleepFor(unsigned int atLeastSeconds) const
@@ -197,7 +197,7 @@ inline bool SyncthingService::isActiveWithoutSleepFor(unsigned int atLeastSecond
     return isActiveWithoutSleepFor(m_activeSince, atLeastSeconds);
 }
 
-inline ChronoUtilities::DateTime SyncthingService::lastWakeUp()
+inline CppUtilities::DateTime SyncthingService::lastWakeUp()
 {
     return s_lastWakeUp;
 }

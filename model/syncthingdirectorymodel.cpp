@@ -10,8 +10,7 @@
 #include <QStringBuilder>
 
 using namespace std;
-using namespace ChronoUtilities;
-using namespace ConversionUtilities;
+using namespace CppUtilities;
 
 namespace Data {
 

@@ -11,6 +11,8 @@
 #include <QDesktopWidget>
 #include <QHBoxLayout>
 
+using namespace QtUtilities;
+
 namespace QtGui {
 
 TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
@@ -52,7 +54,7 @@ void TrayMenu::showAtCursor()
 {
     resize(sizeHint());
     QPoint pos(QCursor::pos());
-    moveInside(pos, size(), Dialogs::availableScreenGeometryAtPoint(pos));
+    moveInside(pos, size(), availableScreenGeometryAtPoint(pos));
     popup(pos);
 }
 } // namespace QtGui

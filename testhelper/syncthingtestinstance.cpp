@@ -9,9 +9,8 @@
 #include <QFileInfo>
 
 using namespace std;
-using namespace ConversionUtilities;
 
-namespace TestUtilities {
+namespace CppUtilities {
 
 static int dummy1 = 0;
 static char *dummy2;
@@ -139,4 +138,4 @@ void SyncthingTestInstance::setInterleavedOutputEnabledFromEnv()
         setInterleavedOutputEnabled(true);
     }
 }
-} // namespace TestUtilities
+} // namespace CppUtilities

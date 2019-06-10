@@ -14,10 +14,8 @@
 #include <string>
 
 using namespace std;
-using namespace IoUtilities;
-using namespace EscapeCodes;
-using namespace ConversionUtilities;
-using namespace TestUtilities;
+using namespace CppUtilities;
+using namespace CppUtilities::EscapeCodes;
 
 namespace Data {
 

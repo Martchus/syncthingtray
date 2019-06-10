@@ -9,7 +9,7 @@
 
 using namespace std;
 using namespace Data;
-using namespace TestUtilities;
+using namespace CppUtilities;
 
 namespace QtGui {
 

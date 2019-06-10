@@ -2,7 +2,7 @@
 
 #include "../connector/syncthingconnection.h"
 
-using namespace Models;
+using namespace QtUtilities;
 
 namespace Data {
 

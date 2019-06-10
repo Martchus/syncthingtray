@@ -23,9 +23,9 @@
 #include "resources/qtconfig.h"
 
 using namespace std;
-using namespace Dialogs;
+using namespace CppUtilities::EscapeCodes;
+using namespace QtUtilities;
 using namespace Data;
-using namespace EscapeCodes;
 
 SyncthingFileItemActionStaticData::SyncthingFileItemActionStaticData()
     : m_initialized(false)
@@ -98,8 +98,8 @@ void SyncthingFileItemActionStaticData::showAboutDialog()
 {
     auto *const aboutDialog
         = new AboutDialog(nullptr, QStringLiteral(APP_NAME), QStringLiteral(APP_AUTHOR "\nSyncthing icons from Syncthing project"),
-            QStringLiteral(APP_VERSION), ApplicationUtilities::applicationInfo.dependencyVersions, QStringLiteral(APP_URL),
-            QStringLiteral(APP_DESCRIPTION), renderSvgImage(makeSyncthingIcon()).toImage());
+            QStringLiteral(APP_VERSION), CppUtilities::applicationInfo.dependencyVersions, QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION),
+            renderSvgImage(makeSyncthingIcon()).toImage());
     aboutDialog->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
     aboutDialog->setWindowIcon(QIcon::fromTheme(QStringLiteral("syncthingtray")));
     aboutDialog->setAttribute(Qt::WA_DeleteOnClose);

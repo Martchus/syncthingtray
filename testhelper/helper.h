@@ -17,12 +17,12 @@
 #include <ostream>
 
 #ifndef SYNCTHINGTESTHELPER_FOR_CLI
-#define SYNCTHINGTESTHELPER_TIMEOUT(timeout) static_cast<int>(timeout * ::TestUtilities::timeoutFactor)
+#define SYNCTHINGTESTHELPER_TIMEOUT(timeout) static_cast<int>(timeout * ::CppUtilities::timeoutFactor)
 #else
 #define SYNCTHINGTESTHELPER_TIMEOUT(timeout) timeout
 #endif
 
-using namespace ConversionUtilities;
+using namespace CppUtilities;
 
 /*!
  * \brief Prints a QString; required to use QString with CPPUNIT_ASSERT_EQUAL_MESSAGE.
@@ -48,7 +48,7 @@ inline std::ostream &operator<<(std::ostream &o, const QSet<QString> &qstringset
     return o << qstringset.toList().join(QStringLiteral(", ")).toLocal8Bit().data();
 }
 
-namespace TestUtilities {
+namespace CppUtilities {
 
 extern double timeoutFactor;
 
@@ -397,6 +397,6 @@ bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure,
     return !failureEmitted && !timeoutFailed;
 }
 
-} // namespace TestUtilities
+} // namespace CppUtilities
 
 #endif // SYNCTHINGTESTHELPER_H

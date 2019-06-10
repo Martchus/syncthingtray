@@ -6,8 +6,7 @@
 #include <QJsonObject>
 #include <QStringBuilder>
 
-using namespace ChronoUtilities;
-using namespace ConversionUtilities;
+using namespace CppUtilities;
 
 namespace Data {
 
@@ -89,7 +88,7 @@ bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus, DateTime t
  * \brief Assigns the status from the specified status string.
  * \returns Returns whether the status has actually changed.
  */
-bool SyncthingDir::assignStatus(const QString &statusStr, ChronoUtilities::DateTime time)
+bool SyncthingDir::assignStatus(const QString &statusStr, CppUtilities::DateTime time)
 {
     if (!checkWhetherStatusUpdateRelevant(time)) {
         return false;

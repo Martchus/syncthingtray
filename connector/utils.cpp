@@ -14,8 +14,7 @@
 #include <QStringBuilder>
 #include <QUrl>
 
-using namespace ChronoUtilities;
-using namespace ConversionUtilities;
+using namespace CppUtilities;
 
 namespace Data {
 

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-namespace TestUtilities {
+namespace CppUtilities {
 
 /*!
  * \brief The SyncthingTestInstance class provides running a test instance of Syncthing.
@@ -69,6 +69,6 @@ inline bool SyncthingTestInstance::isInterleavedOutputEnabled() const
 {
     return m_interleavedOutput;
 }
-} // namespace TestUtilities
+} // namespace CppUtilities
 
 #endif // SYNCTHINGTESTHELPER_SYNCTHINGTESTINSTANCE_H

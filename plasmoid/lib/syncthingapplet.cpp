@@ -41,10 +41,9 @@
 using namespace std;
 using namespace Data;
 using namespace Plasma;
-using namespace Dialogs;
+using namespace CppUtilities;
+using namespace QtUtilities;
 using namespace QtGui;
-using namespace ConversionUtilities;
-using namespace ChronoUtilities;
 
 namespace Plasmoid {
 
@@ -229,7 +228,7 @@ bool SyncthingApplet::areNotificationsAvailable() const
     return !m_notifications.empty();
 }
 
-void SyncthingApplet::setPassiveStates(const QList<Models::ChecklistItem> &passiveStates)
+void SyncthingApplet::setPassiveStates(const QList<QtUtilities::ChecklistItem> &passiveStates)
 {
     m_passiveSelectionModel.setItems(passiveStates);
     const auto currentState = static_cast<int>(m_connection.status());
@@ -258,13 +257,13 @@ void SyncthingApplet::showSettingsDlg()
     if (!m_settingsDlg) {
         m_settingsDlg = new SettingsDialog(*this);
         // ensure settings take effect when applied
-        connect(m_settingsDlg, &Dialogs::SettingsDialog::applied, this, &SyncthingApplet::handleSettingsChanged);
+        connect(m_settingsDlg, &SettingsDialog::applied, this, &SyncthingApplet::handleSettingsChanged);
         // save plasmoid specific settings to disk when applied
-        connect(m_settingsDlg, &Dialogs::SettingsDialog::applied, this, &SyncthingApplet::configChanged);
+        connect(m_settingsDlg, &SettingsDialog::applied, this, &SyncthingApplet::configChanged);
         // save global/general settings to disk when applied
-        connect(m_settingsDlg, &Dialogs::SettingsDialog::applied, &Settings::save);
+        connect(m_settingsDlg, &SettingsDialog::applied, &Settings::save);
     }
-    Dialogs::centerWidget(m_settingsDlg);
+    centerWidget(m_settingsDlg);
     m_settingsDlg->show();
     m_settingsDlg->activateWindow();
 }
@@ -313,8 +312,8 @@ void SyncthingApplet::showAboutDialog()
             QStringLiteral("<p>Developed by " APP_AUTHOR "<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "
                            "icons from <a href=\"https://fontawesome.com\">Font "
                            "Awesome</a> (see <a href=\"https://fontawesome.com/license\">their license</a>)</p>"),
-            QStringLiteral(APP_VERSION), ApplicationUtilities::applicationInfo.dependencyVersions, QStringLiteral(APP_URL),
-            QStringLiteral(APP_DESCRIPTION), renderSvgImage(makeSyncthingIcon()).toImage());
+            QStringLiteral(APP_VERSION), CppUtilities::applicationInfo.dependencyVersions, QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION),
+            renderSvgImage(makeSyncthingIcon()).toImage());
         m_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         m_aboutDlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("syncthingtray")));
         m_aboutDlg->setAttribute(Qt::WA_DeleteOnClose);

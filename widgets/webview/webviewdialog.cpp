@@ -14,7 +14,7 @@
 #include <QWebEngineProfile>
 #endif
 
-using namespace Dialogs;
+using namespace QtUtilities;
 
 namespace QtGui {
 

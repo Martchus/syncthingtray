@@ -5,7 +5,7 @@
 #include <iostream>
 
 using namespace std;
-using namespace TestUtilities;
+using namespace CppUtilities;
 
 /*!
  * \brief Launches a Syncthing test instance for manual testing.

@@ -15,9 +15,8 @@
 
 using namespace std;
 using namespace Data;
-using namespace ChronoUtilities;
-using namespace TestUtilities;
-using namespace TestUtilities::Literals;
+using namespace CppUtilities;
+using namespace CppUtilities::Literals;
 
 using namespace CPPUNIT_NS;
 
@@ -415,10 +414,10 @@ void ConnectionTests::testInitialConnection()
 
 void ConnectionTests::testSendingError()
 {
-    bool newNotificationEmitted = false;
-    const DateTime sentTime(DateTime::now());
-    const QString sentMessage(QStringLiteral("test notification"));
-    const auto newNotificationHandler = [&](ChronoUtilities::DateTime receivedTime, const QString &receivedMessage) {
+    auto newNotificationEmitted = false;
+    const auto sentTime(DateTime::now());
+    const auto sentMessage(QStringLiteral("test notification"));
+    const auto newNotificationHandler = [&](DateTime receivedTime, const QString &receivedMessage) {
         newNotificationEmitted |= receivedTime == sentTime && receivedMessage == sentMessage;
     };
     waitForSignals([this, sentTime, &sentMessage] { m_connection.emitNotification(sentTime, sentMessage); }, 500,

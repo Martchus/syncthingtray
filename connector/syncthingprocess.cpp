@@ -2,7 +2,7 @@
 
 #include <QTimer>
 
-using namespace ChronoUtilities;
+using namespace CppUtilities;
 
 namespace Data {
 

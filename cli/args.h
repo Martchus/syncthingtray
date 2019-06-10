@@ -5,7 +5,7 @@
 
 namespace Cli {
 
-using namespace ApplicationUtilities;
+using namespace CppUtilities;
 
 struct Args {
     Args();

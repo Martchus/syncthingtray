@@ -24,14 +24,14 @@ struct SYNCTHINGWIDGETS_EXPORT InternalError {
     QString message;
     QUrl url;
     QByteArray response;
-    ChronoUtilities::DateTime when;
+    CppUtilities::DateTime when;
 };
 
 inline InternalError::InternalError(const QString &message, const QUrl &url, const QByteArray &response)
     : message(message)
     , url(url)
     , response(response)
-    , when(ChronoUtilities::DateTime::now())
+    , when(CppUtilities::DateTime::now())
 {
 }
 } // namespace QtGui

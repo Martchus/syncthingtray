@@ -25,11 +25,8 @@
 #endif
 
 using namespace std;
-using namespace Dialogs;
+using namespace QtUtilities;
 using namespace Data;
-#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-using namespace MiscUtils;
-#endif
 
 namespace QtGui {
 
@@ -214,7 +211,7 @@ void TrayIcon::showInternalError(
     m_errorsAction->setVisible(true);
 }
 
-void TrayIcon::showSyncthingNotification(ChronoUtilities::DateTime when, const QString &message)
+void TrayIcon::showSyncthingNotification(CppUtilities::DateTime when, const QString &message)
 {
     if (m_notifyOnSyncthingErrors) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS

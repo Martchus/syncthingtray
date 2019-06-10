@@ -65,7 +65,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(bool notificationsAvailable READ areNotificationsAvailable NOTIFY notificationsAvailableChanged)
     Q_PROPERTY(bool passive READ isPassive NOTIFY passiveChanged)
-    Q_PROPERTY(QList<Models::ChecklistItem> passiveStates READ passiveStates WRITE setPassiveStates)
+    Q_PROPERTY(QList<QtUtilities::ChecklistItem> passiveStates READ passiveStates WRITE setPassiveStates)
 
 public:
     SyncthingApplet(QObject *parent, const QVariantList &data);
@@ -99,8 +99,8 @@ public:
     void setSize(const QSize &size);
     bool areNotificationsAvailable() const;
     bool isPassive() const;
-    const QList<Models::ChecklistItem> &passiveStates() const;
-    void setPassiveStates(const QList<Models::ChecklistItem> &passiveStates);
+    const QList<QtUtilities::ChecklistItem> &passiveStates() const;
+    void setPassiveStates(const QList<QtUtilities::ChecklistItem> &passiveStates);
 
 public Q_SLOTS:
     void init() override;
@@ -153,7 +153,7 @@ private Q_SLOTS:
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     void handleWebViewDeleted();
 #endif
-    void handleNewNotification(ChronoUtilities::DateTime when, const QString &msg);
+    void handleNewNotification(CppUtilities::DateTime when, const QString &msg);
     void handleSystemdServiceError(const QString &context, const QString &name, const QString &message);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     void handleSystemdStatusChanged();
@@ -161,7 +161,7 @@ private Q_SLOTS:
     void setPassive(bool passive);
 
 private:
-    Dialogs::AboutDialog *m_aboutDlg;
+    QtUtilities::AboutDialog *m_aboutDlg;
     Data::SyncthingConnection m_connection;
     Data::SyncthingOverallDirStatistics m_overallStats;
     Data::SyncthingNotifier m_notifier;
@@ -260,7 +260,7 @@ inline bool SyncthingApplet::isPassive() const
     return status() == Plasma::Types::PassiveStatus;
 }
 
-inline const QList<Models::ChecklistItem> &SyncthingApplet::passiveStates() const
+inline const QList<QtUtilities::ChecklistItem> &SyncthingApplet::passiveStates() const
 {
     return m_passiveSelectionModel.items();
 }

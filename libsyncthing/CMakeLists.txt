@@ -122,6 +122,9 @@ list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 list(APPEND PRIVATE_SHARED_INCLUDE_DIRS ${CPP_UTILITIES_INCLUDE_DIRS})
 list(APPEND PRIVATE_STATIC_INCLUDE_DIRS ${CPP_UTILITIES_INCLUDE_DIRS})
 
+# use std::filesystem
+use_standard_filesystem()
+
 # include modules to apply configuration
 include(BasicConfig)
 include(WindowsResources)

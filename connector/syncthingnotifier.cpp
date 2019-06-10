@@ -9,7 +9,7 @@
 
 #include <c++utilities/chrono/datetime.h>
 
-using namespace ChronoUtilities;
+using namespace CppUtilities;
 
 namespace Data {
 
@@ -171,7 +171,7 @@ void SyncthingNotifier::emitConnectedAndDisconnected(SyncthingStatus newStatus)
 /*!
  * \brief Emits the syncComplete() signal.
  */
-void SyncthingNotifier::emitSyncComplete(ChronoUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev)
+void SyncthingNotifier::emitSyncComplete(CppUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev)
 {
     VAR_UNUSED(when)
     VAR_UNUSED(index)

@@ -19,7 +19,7 @@
 #include <limits>
 
 using namespace std;
-using namespace ChronoUtilities;
+using namespace CppUtilities;
 using namespace Data;
 
 namespace QtGui {

@@ -30,9 +30,7 @@
 
 using namespace std;
 using namespace Data;
-#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-using namespace MiscUtils;
-#endif
+using namespace QtUtilities;
 
 namespace std {
 
