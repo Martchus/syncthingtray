@@ -20,7 +20,7 @@ class SyncthingMenuAction : public QAction {
 public:
     explicit SyncthingMenuAction(const KFileItemListProperties &properties = KFileItemListProperties(),
         const QList<QAction *> &actions = QList<QAction *>(), QObject *parent = nullptr);
-#ifdef DEBUG_BUILD
+#ifdef CPP_UTILITIES_DEBUG_BUILD
     ~SyncthingMenuAction() override;
 #endif
 

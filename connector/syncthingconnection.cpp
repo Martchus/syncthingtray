@@ -765,7 +765,7 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
     case SyncthingStatus::Disconnected:
         // disable (long) polling
         m_keepPolling = false;
-        FALLTHROUGH;
+        [[fallthrough]];
     case SyncthingStatus::Reconnecting:
         m_devStatsPollTimer.stop();
         m_trafficPollTimer.stop();

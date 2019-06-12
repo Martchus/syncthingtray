@@ -294,8 +294,8 @@ void Application::handleResponse()
 void Application::handleError(
     const QString &message, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    VAR_UNUSED(category)
-    VAR_UNUSED(networkError)
+    CPP_UTILITIES_UNUSED(category)
+    CPP_UTILITIES_UNUSED(networkError)
 
     // skip error handling for shell completion
     if (!m_argsRead) {

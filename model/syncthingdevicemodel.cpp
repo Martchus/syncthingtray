@@ -131,7 +131,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 }
                 break;
             }
-            FALLTHROUGH;
+            [[fallthrough]];
         case DeviceDetail:
             if (index.column() == 1 || role == DeviceDetail) {
                 // attribute values

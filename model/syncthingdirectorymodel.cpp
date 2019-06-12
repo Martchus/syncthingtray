@@ -143,7 +143,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 }
                 break;
             }
-            FALLTHROUGH;
+            [[fallthrough]];
         case DirectoryDetail:
             if (index.column() == 1 || role == DirectoryDetail) {
                 // attribute values

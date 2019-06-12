@@ -61,7 +61,7 @@ void SyncthingNotifier::handleStatusChangedEvent(SyncthingStatus newStatus)
 
 void SyncthingNotifier::handleNewDevEvent(DateTime when, const QString &devId, const QString &address)
 {
-    VAR_UNUSED(when)
+    CPP_UTILITIES_UNUSED(when)
 
     // ignore if not enabled
     if (!(m_enabledNotifications & SyncthingHighLevelNotification::NewDevice)) {
@@ -73,7 +73,7 @@ void SyncthingNotifier::handleNewDevEvent(DateTime when, const QString &devId, c
 
 void SyncthingNotifier::handleNewDirEvent(DateTime when, const QString &devId, const SyncthingDev *dev, const QString &dirId, const QString &dirLabel)
 {
-    VAR_UNUSED(when)
+    CPP_UTILITIES_UNUSED(when)
 
     // ignore if not enabled
     if (!(m_enabledNotifications & SyncthingHighLevelNotification::NewDir)) {
@@ -173,8 +173,8 @@ void SyncthingNotifier::emitConnectedAndDisconnected(SyncthingStatus newStatus)
  */
 void SyncthingNotifier::emitSyncComplete(CppUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev)
 {
-    VAR_UNUSED(when)
-    VAR_UNUSED(index)
+    CPP_UTILITIES_UNUSED(when)
+    CPP_UTILITIES_UNUSED(index)
 
     // discard event for paused directories/devices
     if (dir.paused || (remoteDev && remoteDev->paused)) {

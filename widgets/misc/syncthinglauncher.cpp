@@ -130,9 +130,9 @@ void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, cons
 
     emit outputAvailable(move(messageData));
 #else
-    VAR_UNUSED(level)
-    VAR_UNUSED(message)
-    VAR_UNUSED(messageSize)
+    CPP_UTILITIES_UNUSED(level)
+    CPP_UTILITIES_UNUSED(message)
+    CPP_UTILITIES_UNUSED(messageSize)
 #endif
 }
 
@@ -143,7 +143,7 @@ void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runt
     const auto exitCode = LibSyncthing::runSyncthing(runtimeOptions);
     emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
 #else
-    VAR_UNUSED(runtimeOptions)
+    CPP_UTILITIES_UNUSED(runtimeOptions)
     emit outputAvailable("libsyncthing support not enabled");
     emit exited(-1, QProcess::CrashExit);
 #endif
@@ -156,7 +156,7 @@ void SyncthingLauncher::runLibSyncthing(const std::vector<string> &arguments)
     const auto exitCode = LibSyncthing::runSyncthing(arguments);
     emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
 #else
-    VAR_UNUSED(arguments)
+    CPP_UTILITIES_UNUSED(arguments)
     emit outputAvailable("libsyncthing support not enabled");
     emit exited(-1, QProcess::CrashExit);
 #endif

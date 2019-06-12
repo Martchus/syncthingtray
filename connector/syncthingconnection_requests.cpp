@@ -1669,7 +1669,7 @@ void SyncthingConnection::readStatusChangedEvent(DateTime eventTime, const QJson
  */
 void SyncthingConnection::readDownloadProgressEvent(DateTime eventTime, const QJsonObject &eventData)
 {
-    VAR_UNUSED(eventTime)
+    CPP_UTILITIES_UNUSED(eventTime)
     for (SyncthingDir &dirInfo : m_dirs) {
         // disappearing implies that the download has been finished so just wipe old entries
         dirInfo.downloadingItems.clear();
@@ -1832,8 +1832,8 @@ void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eve
  */
 void SyncthingConnection::readItemStarted(DateTime eventTime, const QJsonObject &eventData)
 {
-    VAR_UNUSED(eventTime)
-    VAR_UNUSED(eventData)
+    CPP_UTILITIES_UNUSED(eventTime)
+    CPP_UTILITIES_UNUSED(eventData)
 }
 
 /*!
