@@ -117,52 +117,52 @@
 <context>
     <name>SyncthingFileItemActionStaticData</name>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="81"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="85"/>
         <source>Syncthing connection error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="98"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="103"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="106"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="111"/>
         <source>Select Syncthing config file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="127"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="132"/>
         <source>Syncthing config file can not be automatically located</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="134"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="139"/>
         <source>Unable to load Syncthing config from &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="143"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="148"/>
         <source>Syncthing config from &quot;%1&quot; does not contain GUI address.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="155"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="160"/>
         <source>Enter API key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="155"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="160"/>
         <source>The selected config file does not contain an API key. Please enter the API key manually:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="157"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="162"/>
         <source>No API key supplied for &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="116"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="121"/>
         <source>(still using config from &quot;%1&quot;)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -170,17 +170,17 @@
 <context>
     <name>SyncthingMenuAction</name>
     <message>
-        <location filename="../syncthingmenuaction.cpp" line="67"/>
+        <location filename="../syncthingmenuaction.cpp" line="68"/>
         <source>Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingmenuaction.cpp" line="78"/>
+        <location filename="../syncthingmenuaction.cpp" line="79"/>
         <source>Syncthing - connecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingmenuaction.cpp" line="80"/>
+        <location filename="../syncthingmenuaction.cpp" line="81"/>
         <source>Syncthing - not connected</source>
         <translation type="unfinished"></translation>
     </message>

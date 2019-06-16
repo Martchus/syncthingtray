@@ -127,22 +127,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="509"/>
+        <location filename="../settings/settingsdialog.cpp" line="611"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="512"/>
+        <location filename="../settings/settingsdialog.cpp" line="614"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="517"/>
+        <location filename="../settings/settingsdialog.cpp" line="619"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="613"/>
+        <location filename="../settings/settingsdialog.cpp" line="715"/>
         <source>unable to modify startup entry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -273,27 +273,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="82"/>
+        <location filename="../settings/settingsdialog.cpp" line="83"/>
         <source>Auto-detected for local instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="104"/>
+        <location filename="../settings/settingsdialog.cpp" line="105"/>
         <source>Select Syncthing config file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="112"/>
+        <location filename="../settings/settingsdialog.cpp" line="113"/>
         <source>Unable to parse the Syncthing config file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="197"/>
+        <location filename="../settings/settingsdialog.cpp" line="198"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="222"/>
+        <location filename="../settings/settingsdialog.cpp" line="223"/>
         <source>Instance %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -321,32 +321,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="33"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="31"/>
         <source>Disconnected from Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="34"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="32"/>
         <source>Try to reconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="39"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="35"/>
         <source>View details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="42"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="38"/>
         <source>Show</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="42"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="38"/>
         <source>Dismiss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="48"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="41"/>
         <source>Open web UI</source>
         <translation type="unfinished"></translation>
     </message>
@@ -384,6 +384,49 @@
     <message>
         <location filename="../misc/direrrorsdialog.cpp" line="137"/>
         <source>Unable to remove the following dirs:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QtGui::IconsOptionPage</name>
+    <message>
+        <location filename="../settings/iconsoptionpage.ui" line="6"/>
+        <source>Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/iconsoptionpage.ui" line="16"/>
+        <source>Status icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/iconsoptionpage.ui" line="24"/>
+        <source>Background color 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/iconsoptionpage.ui" line="34"/>
+        <source>Background color 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/iconsoptionpage.ui" line="44"/>
+        <source>Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/iconsoptionpage.ui" line="57"/>
+        <source>Foreground color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/iconsoptionpage.ui" line="91"/>
+        <source>Restore previous settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/iconsoptionpage.ui" line="102"/>
+        <source>Restore defaults</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -464,7 +507,7 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="144"/>
-        <location filename="../settings/settingsdialog.cpp" line="779"/>
+        <location filename="../settings/settingsdialog.cpp" line="881"/>
         <source>Stop launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -479,39 +522,39 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="656"/>
+        <location filename="../settings/settingsdialog.cpp" line="758"/>
         <source>%1-launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="657"/>
+        <location filename="../settings/settingsdialog.cpp" line="759"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="658"/>
+        <location filename="../settings/settingsdialog.cpp" line="760"/>
         <source>%1 executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="659"/>
+        <location filename="../settings/settingsdialog.cpp" line="761"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="751"/>
+        <location filename="../settings/settingsdialog.cpp" line="853"/>
         <source>%1 exited with exit code %2
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="755"/>
+        <location filename="../settings/settingsdialog.cpp" line="857"/>
         <source>%1 crashed with exit code %2
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="804"/>
+        <location filename="../settings/settingsdialog.cpp" line="906"/>
         <source>Kill launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -599,7 +642,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="381"/>
+        <location filename="../settings/settingsdialog.cpp" line="382"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -625,22 +668,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="982"/>
+        <location filename="../settings/settingsdialog.cpp" line="1084"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="989"/>
+        <location filename="../settings/settingsdialog.cpp" line="1091"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="996"/>
+        <location filename="../settings/settingsdialog.cpp" line="1098"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1018"/>
+        <location filename="../settings/settingsdialog.cpp" line="1120"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -796,8 +839,8 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../settings/systemdoptionpage.ui" line="99"/>
         <location filename="../settings/systemdoptionpage.ui" line="154"/>
         <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="897"/>
-        <location filename="../settings/settingsdialog.cpp" line="909"/>
+        <location filename="../settings/settingsdialog.cpp" line="999"/>
+        <location filename="../settings/settingsdialog.cpp" line="1011"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -832,12 +875,12 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="870"/>
+        <location filename="../settings/settingsdialog.cpp" line="972"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="892"/>
+        <location filename="../settings/settingsdialog.cpp" line="994"/>
         <source>since </source>
         <translation type="unfinished"></translation>
     </message>
@@ -871,7 +914,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="931"/>
+        <location filename="../settings/settingsdialog.cpp" line="1033"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -901,7 +944,7 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="933"/>
+        <location filename="../settings/settingsdialog.cpp" line="1035"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
@@ -910,7 +953,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="152"/>
+        <location filename="../settings/settings.cpp" line="150"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation type="unfinished"></translation>
     </message>
