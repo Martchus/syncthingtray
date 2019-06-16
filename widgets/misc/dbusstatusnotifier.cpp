@@ -28,19 +28,26 @@ DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
     , m_newDevNotification(QStringLiteral(APP_NAME) + tr(" - new device"), NotificationIcon::Information, 5000)
     , m_newDirNotification(QStringLiteral(APP_NAME) + tr(" - new directory"), NotificationIcon::Information, 5000)
 {
+    m_disconnectedNotification.setApplicationName(QStringLiteral(APP_NAME));
     m_disconnectedNotification.setMessage(tr("Disconnected from Syncthing"));
     m_disconnectedNotification.setActions(QStringList({ QStringLiteral("reconnect"), tr("Try to reconnect") }));
     connect(&m_disconnectedNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::connectRequested);
 
+    m_internalErrorNotification.setApplicationName(QStringLiteral(APP_NAME));
     m_internalErrorNotification.setActions(QStringList({ QStringLiteral("details"), tr("View details") }));
     connect(&m_internalErrorNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::errorDetailsRequested);
 
+    m_syncthingNotification.setApplicationName(QStringLiteral(APP_NAME));
     m_syncthingNotification.setActions(QStringList({ QStringLiteral("show"), tr("Show"), QStringLiteral("dismiss"), tr("Dismiss") }));
     connect(&m_syncthingNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::handleSyncthingNotificationAction);
 
+    m_syncCompleteNotification.setApplicationName(QStringLiteral(APP_NAME));
+
+    m_newDevNotification.setApplicationName(QStringLiteral(APP_NAME));
     m_newDevNotification.setActions(QStringList({ QStringLiteral("webui"), tr("Open web UI") }));
     connect(&m_newDevNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::webUiRequested);
 
+    m_newDirNotification.setApplicationName(QStringLiteral(APP_NAME));
     m_newDirNotification.setActions(m_newDevNotification.actions());
     connect(&m_newDirNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::webUiRequested);
 
