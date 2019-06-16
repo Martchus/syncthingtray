@@ -63,7 +63,10 @@ if (SYSTEMD_SUPPORT)
                 org.freedesktop.systemd1.Manager.xml
                 org.freedesktop.systemd1.Service.xml
                 org.freedesktop.systemd1.Unit.xml)
-    set_source_files_properties(org.freedesktop.systemd1.Manager.xml PROPERTIES INCLUDE syncthingservice.h)
+    set_source_files_properties(org.freedesktop.systemd1.Manager.xml
+                                PROPERTIES
+                                INCLUDE
+                                syncthingservice.h)
     list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SUPPORT_SYSTEMD)
     message(STATUS "systemd support enabled")
 else ()

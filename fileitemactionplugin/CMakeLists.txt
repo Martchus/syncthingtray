@@ -38,7 +38,11 @@ use_syncthingmodel()
 # link also explicitely against the following Qt and KF modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 list(APPEND ADDITIONAL_KF_MODULES KIO)
-set(KIO_MODULE_TARGETS KF5::KIOCore KF5::KIOFileWidgets KF5::KIOWidgets KF5::KIONTLM)
+set(KIO_MODULE_TARGETS
+    KF5::KIOCore
+    KF5::KIOFileWidgets
+    KF5::KIOWidgets
+    KF5::KIONTLM)
 
 # include modules to apply configuration
 include(BasicConfig)

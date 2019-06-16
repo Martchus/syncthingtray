@@ -58,12 +58,15 @@ message(STATUS "Using GOOS=${GO_TARGET_OS} and GOARCH=${GO_TARGET_ARCH}")
 
 # locate the Syncthing checkout
 set(GO_DEVELOPMENT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/go" CACHE PATH "the 'GOPATH'")
-set(SYNCTHING_PATH "${CMAKE_CURRENT_SOURCE_DIR}/go/src/github.com/syncthing/syncthing"
+set(SYNCTHING_PATH
+    "${CMAKE_CURRENT_SOURCE_DIR}/go/src/github.com/syncthing/syncthing"
     CACHE PATH "path of Syncthing checkout")
 
 # find Syncthing's assets caveat: newly added assets will not cause CMake to automatically regenerate
-file(GLOB_RECURSE SRC_FILES_SYNCTHING_ASSETS LIST_DIRECTORIES false
-     RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${SYNCTHING_PATH}/gui/*")
+file(GLOB_RECURSE SRC_FILES_SYNCTHING_ASSETS
+     LIST_DIRECTORIES false
+     RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+     "${SYNCTHING_PATH}/gui/*")
 if (NOT SRC_FILES_SYNCTHING_ASSETS)
     message(
         FATAL_ERROR
@@ -72,11 +75,10 @@ if (NOT SRC_FILES_SYNCTHING_ASSETS)
 endif ()
 
 # find Syncthing's source code caveat: newly added files will not cause CMake to automatically regenerate
-file(GLOB_RECURSE SRC_FILES_SYNCTHING LIST_DIRECTORIES false
+file(GLOB_RECURSE SRC_FILES_SYNCTHING
+     LIST_DIRECTORIES false
      RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-              "${SYNCTHING_PATH}/cmd/*.go"
-              "${SYNCTHING_PATH}/cmd/*.h"
-              "${SYNCTHING_PATH}/cmd/*.c")
+     "${SYNCTHING_PATH}/cmd/*.go" "${SYNCTHING_PATH}/cmd/*.h" "${SYNCTHING_PATH}/cmd/*.c")
 if (NOT SRC_FILES_SYNCTHING)
     message(
         FATAL_ERROR
@@ -88,7 +90,13 @@ message(STATUS "Syncthing's go files: ${SRC_FILES_SYNCTHING}")
 
 # generate Syncthing's assets: don't set GOARCH/GOOS here, this is supposed to run on the host
 add_custom_command(OUTPUT "${SYNCTHING_PATH}/lib/auto/gui.files.go"
-                   COMMAND "GOPATH=${GO_DEVELOPMENT_PATH}" "${GO_BIN}" run ./script/genassets.go gui > lib/auto/gui.files.go
+                   COMMAND "GOPATH=${GO_DEVELOPMENT_PATH}"
+                           "${GO_BIN}"
+                           run
+                           ./script/genassets.go
+                           gui
+                           >
+                           lib/auto/gui.files.go
                    DEPENDS ${SRC_FILES_SYNCTHING_ASSETS}
                    WORKING_DIRECTORY "${SYNCTHING_PATH}"
                    COMMENT "Building Syncthing's assets")
@@ -96,10 +104,23 @@ add_custom_command(OUTPUT "${SYNCTHING_PATH}/lib/auto/gui.files.go"
 # compile Syncthing as static library
 add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
                           "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.h"
-                   COMMAND "CC=${CMAKE_C_COMPILER}" "CXX=${CMAKE_CXX_COMPILER}" "AR=${CMAKE_C_COMPILER_AR}"
-                           "GOOS=${GO_TARGET_OS}" "GOARCH=${GO_TARGET_ARCH}" "CGO_ENABLED=1" "GOPATH=${GO_DEVELOPMENT_PATH}"
-                           "${GO_BIN}" build -v -buildmode c-archive -o "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
-                           ./cmd/syncthing && "${CMAKE_RANLIB}" "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
+                   COMMAND "CC=${CMAKE_C_COMPILER}"
+                           "CXX=${CMAKE_CXX_COMPILER}"
+                           "AR=${CMAKE_C_COMPILER_AR}"
+                           "GOOS=${GO_TARGET_OS}"
+                           "GOARCH=${GO_TARGET_ARCH}"
+                           "CGO_ENABLED=1"
+                           "GOPATH=${GO_DEVELOPMENT_PATH}"
+                           "${GO_BIN}"
+                           build
+                           -v -buildmode
+                           c-archive
+                           -o
+                           "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
+                           ./cmd/syncthing
+                           &&
+                           "${CMAKE_RANLIB}"
+                           "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
                    DEPENDS ${SRC_FILES_SYNCTHING}
                    WORKING_DIRECTORY "${SYNCTHING_PATH}"
                    COMMENT "Building Syncthing itself")
@@ -120,10 +141,8 @@ list(APPEND PRIVATE_INCLUDE_DIRS "${SYNCTHING_PATH}/cmd/syncthing")
 find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 if (CPP_UTILITIES_SOURCE_DIR)
-    list(APPEND PRIVATE_INCLUDE_DIRS
-        $<BUILD_INTERFACE:${CPP_UTILITIES_SOURCE_DIR}/..>
-        $<INSTALL_INTERFACE:${CPP_UTILITIES_INCLUDE_DIRS}>
-    )
+    list(APPEND PRIVATE_INCLUDE_DIRS $<BUILD_INTERFACE:${CPP_UTILITIES_SOURCE_DIR}/..>
+                $<INSTALL_INTERFACE:${CPP_UTILITIES_INCLUDE_DIRS}>)
 else ()
     list(APPEND PRIVATE_INCLUDE_DIRS ${CPP_UTILITIES_INCLUDE_DIRS})
 endif ()
