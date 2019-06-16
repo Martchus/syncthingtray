@@ -1,5 +1,6 @@
 #include "./syncthingicons.h"
 
+#include <QCoreApplication>
 #include <QFile>
 #include <QPainter>
 #include <QStringBuilder>
@@ -189,14 +190,14 @@ StatusIconSettings::StatusIconSettings()
 std::vector<StatusIconSettings::ColorMapping> StatusIconSettings::colorMapping()
 {
     return std::vector<ColorMapping>({
-        { QStringLiteral("Default"), StatusEmblem::None, defaultColor },
-        { QStringLiteral("Error"), StatusEmblem::Alert, errorColor },
-        { QStringLiteral("Warning"), StatusEmblem::Alert, warningColor },
-        { QStringLiteral("Idle"), StatusEmblem::None, idleColor },
-        { QStringLiteral("Scanning"), StatusEmblem::Scanning, scanningColor },
-        { QStringLiteral("Synchronizing"), StatusEmblem::Synchronizing, synchronizingColor },
-        { QStringLiteral("Paused"), StatusEmblem::Paused, pausedColor },
-        { QStringLiteral("Disconnected"), StatusEmblem::None, disconnectedColor },
+        { QCoreApplication::translate("Data::StatusIconSettings", "Misc. notifications"), StatusEmblem::Complete, defaultColor },
+        { QCoreApplication::translate("Data::StatusIconSettings", "Error"), StatusEmblem::Alert, errorColor },
+        { QCoreApplication::translate("Data::StatusIconSettings", "Warning"), StatusEmblem::Alert, warningColor },
+        { QCoreApplication::translate("Data::StatusIconSettings", "Idle"), StatusEmblem::None, idleColor },
+        { QCoreApplication::translate("Data::StatusIconSettings", "Scanning"), StatusEmblem::Scanning, scanningColor },
+        { QCoreApplication::translate("Data::StatusIconSettings", "Synchronizing"), StatusEmblem::Synchronizing, synchronizingColor },
+        { QCoreApplication::translate("Data::StatusIconSettings", "Paused"), StatusEmblem::Paused, pausedColor },
+        { QCoreApplication::translate("Data::StatusIconSettings", "Disconnected"), StatusEmblem::None, disconnectedColor },
     });
 }
 
