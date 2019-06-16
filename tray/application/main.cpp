@@ -12,6 +12,7 @@
 #endif
 
 #include "resources/config.h"
+#include "resources/qtconfig.h"
 
 #include <c++utilities/application/argumentparser.h>
 #include <c++utilities/application/commandlineutils.h>
