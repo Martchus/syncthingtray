@@ -19,6 +19,7 @@
 #endif
 
 #include <QApplication>
+#include <QCursor>
 #include <QFile>
 #include <QMessageBox>
 #include <QSettings>
@@ -50,6 +51,14 @@ namespace Settings {
  * Because the REST-API is not instantly available after startup and we want to prevent connection errors.
  */
 constexpr auto minActiveTimeInSeconds = 5;
+
+/*!
+ * \brief Returns the position to use.
+ */
+QPoint Appearance::Positioning::positionToUse() const
+{
+    return useCursorPosition ? QCursor::pos() : assumedIconPosition;
+}
 
 /*!
  * \brief Contains the processes for launching extra tools.
@@ -245,6 +254,11 @@ void restore()
     appearance.tabPosition = settings.value(QStringLiteral("tabPos"), appearance.tabPosition).toInt();
     appearance.brightTextColors = settings.value(QStringLiteral("brightTextColors"), appearance.brightTextColors).toBool();
     v.statusIcons = StatusIconSettings(settings.value(QStringLiteral("statusIcons")).toString());
+    settings.beginGroup(QStringLiteral("positioning"));
+    auto &positioning = appearance.positioning;
+    positioning.useCursorPosition = settings.value(QStringLiteral("useCursorPos"), positioning.useCursorPosition).toBool();
+    positioning.assumedIconPosition = settings.value(QStringLiteral("assumedIconPos"), positioning.assumedIconPosition).toPoint();
+    settings.endGroup();
     settings.endGroup();
 
     settings.beginGroup(QStringLiteral("startup"));
@@ -336,6 +350,10 @@ void save()
     settings.setValue(QStringLiteral("tabPos"), appearance.tabPosition);
     settings.setValue(QStringLiteral("brightTextColors"), appearance.brightTextColors);
     settings.setValue(QStringLiteral("statusIcons"), v.statusIcons.toString());
+    settings.beginGroup(QStringLiteral("positioning"));
+    settings.setValue(QStringLiteral("useCursorPos"), appearance.positioning.useCursorPosition);
+    settings.setValue(QStringLiteral("assumedIconPos"), appearance.positioning.assumedIconPosition);
+    settings.endGroup();
     settings.endGroup();
 
     settings.beginGroup(QStringLiteral("startup"));
@@ -469,6 +487,7 @@ Systemd::ServiceStatus Systemd::status(SyncthingConnection &connection) const
     const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
     return ServiceStatus{ isRelevant, service->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant };
 }
+
 #endif
 
 } // namespace Settings

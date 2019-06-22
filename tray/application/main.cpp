@@ -111,7 +111,7 @@ void trigger(bool tray, bool webUi)
         trayWidget->showWebUi();
     }
     if (tray) {
-        trayWidget->showAtCursor();
+        trayWidget->showUsingPositioningSettings();
     }
 }
 

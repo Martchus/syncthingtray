@@ -7,7 +7,6 @@
 #include <qtutilities/misc/dialogutils.h>
 
 #include <QApplication>
-#include <QCursor>
 #include <QDesktopWidget>
 #include <QHBoxLayout>
 
@@ -25,6 +24,7 @@ TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     menuLayout->addWidget(m_trayWidget = new TrayWidget(this));
     setLayout(menuLayout);
     setPlatformMenu(nullptr);
+    setWindowFlags(Qt::ToolTip | Qt::FramelessWindowHint | Qt::Popup);
 }
 
 QSize TrayMenu::sizeHint() const
@@ -50,10 +50,10 @@ void moveInside(QPoint &point, const QSize &innerRect, const QRect &outerRect)
     }
 }
 
-void TrayMenu::showAtCursor()
+void TrayMenu::showUsingPositioningSettings()
 {
     resize(sizeHint());
-    QPoint pos(QCursor::pos());
+    auto pos = Settings::values().appearance.positioning.positionToUse();
     moveInside(pos, size(), availableScreenGeometryAtPoint(pos));
     popup(pos);
 }

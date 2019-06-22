@@ -20,7 +20,7 @@ public:
     TrayIcon *icon();
 
 public slots:
-    void showAtCursor();
+    void showUsingPositioningSettings();
 
 private:
     TrayWidget *m_trayWidget;

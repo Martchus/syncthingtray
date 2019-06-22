@@ -10,6 +10,7 @@
 #include <QByteArray>
 #include <QFrame>
 #include <QHash>
+#include <QPoint>
 #include <QSize>
 #include <QString>
 #include <QTabWidget>
@@ -51,6 +52,11 @@ struct SYNCTHINGWIDGETS_EXPORT Appearance {
     int frameStyle = QFrame::NoFrame | QFrame::Plain;
     int tabPosition = QTabWidget::South;
     bool brightTextColors = false;
+    struct Positioning {
+        QPoint assumedIconPosition;
+        bool useCursorPosition = true;
+        QPoint positionToUse() const;
+    } positioning;
 };
 
 struct SYNCTHINGWIDGETS_EXPORT ToolParameter {

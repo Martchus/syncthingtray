@@ -49,7 +49,8 @@ private slots:
     void handleErrorsCleared();
 
 private:
-    TrayMenu m_trayMenu;
+    QWidget m_parentWidget;
+    TrayMenu *m_trayMenu;
 #ifndef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     QMenu m_contextMenu;
     QAction *m_errorsAction;
@@ -64,7 +65,7 @@ private:
 
 inline TrayMenu &TrayIcon::trayMenu()
 {
-    return m_trayMenu;
+    return *m_trayMenu;
 }
 
 } // namespace QtGui

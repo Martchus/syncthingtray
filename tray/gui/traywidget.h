@@ -60,7 +60,7 @@ public slots:
     void showOwnDeviceId();
     void showLog();
     void showNotifications();
-    void showAtCursor();
+    void showUsingPositioningSettings();
 #ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     void showInternalErrorsButton();
     void showInternalErrorsDialog();

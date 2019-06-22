@@ -36,7 +36,6 @@
 
 #include <QClipboard>
 #include <QCoreApplication>
-#include <QCursor>
 #include <QDesktopServices>
 #include <QDir>
 #include <QFontDatabase>
@@ -278,12 +277,12 @@ void TrayWidget::showNotifications()
     dismissNotifications();
 }
 
-void TrayWidget::showAtCursor()
+void TrayWidget::showUsingPositioningSettings()
 {
     if (m_menu) {
-        m_menu->showAtCursor();
+        m_menu->showUsingPositioningSettings();
     } else {
-        move(QCursor::pos());
+        move(Settings::values().appearance.positioning.positionToUse());
         show();
     }
 }
