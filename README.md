@@ -9,16 +9,19 @@
 * Designed to work under any desktop environment supported by Qt 5 with tray icon
   support
 * No desktop environment specific libraries required (only for optional features)
-* Tested under \*
-    * Plasma 5 (native "Plasmoid" provided)
-    * Openbox/lxqt/LXDE
-    * Openbox/qt5ct/Tint2
-    * Awesome/qt5ct
-    * Cinnamon
+* Tested under
+    * X Window System
+        * Plasma 5 (beside Qt Widgets based version there is a native "Plasmoid")
+        * Openbox/lxqt/LXDE
+        * Openbox/qt5ct/Tint2
+        * Awesome/qt5ct
+        * Cinnamon
+    * Wayland
+        * Plasma 5 (native "Plasmoid" provided, positioning issues with Qt Widgets based version)
     * Windows 10
 * Can be shown as regular window if tray icon support is not available
 
-\* If you can confirm it works under other desktop environments, please add it
+If you can confirm it works under other desktop environments, please add it
 to the list. Maybe someone could check whether it works under Mac OS X.
 
 ## Features
