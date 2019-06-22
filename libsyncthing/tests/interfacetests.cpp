@@ -80,10 +80,10 @@ string InterfaceTests::setupConfigDir()
     try {
         const auto dirIterator = filesystem::directory_iterator(configDir);
         for (const auto &dir : dirIterator) {
-            if (!dir.is_directory() || dir == "." || dir == "..") {
+            const auto dirPath = dir.path();
+            if (!dir.is_directory() || dirPath == "." || dirPath == "..") {
                 continue;
             }
-            const auto dirPath = dir.path();
             const auto subdirIterator = filesystem::directory_iterator(configDir % '/' + dirPath);
             for (const auto &file : subdirIterator) {
                 if (file.is_directory()) {
