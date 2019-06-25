@@ -22,7 +22,7 @@ enum class StatusEmblem {
     Add,
 };
 
-struct StatusIconColorSet {
+struct LIB_SYNCTHING_MODEL_EXPORT StatusIconColorSet {
     StatusIconColorSet(const QColor &backgroundStart, const QColor &backgroundEnd, const QColor &foreground);
     StatusIconColorSet(QColor &&backgroundStart, QColor &&backgroundEnd, QColor &&foreground);
     StatusIconColorSet(const QString &backgroundStart, const QString &backgroundEnd, const QString &foreground);
@@ -84,7 +84,7 @@ struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
     QString toString() const;
 };
 
-struct StatusIcons {
+struct LIB_SYNCTHING_MODEL_EXPORT StatusIcons {
     StatusIcons();
     StatusIcons(const StatusIconSettings &settings);
     QIcon disconnected;
@@ -105,7 +105,7 @@ inline StatusIcons::StatusIcons()
 {
 }
 
-struct FontAwesomeIcons {
+struct LIB_SYNCTHING_MODEL_EXPORT FontAwesomeIcons {
     FontAwesomeIcons(const QColor &color, const QSize &size, int margin);
     QIcon hashtag;
     QIcon folderOpen;
