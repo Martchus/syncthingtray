@@ -68,7 +68,7 @@ void DownloadItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     progressBarOption.textAlignment = Qt::AlignCenter;
     progressBarOption.textVisible = true;
     if (option.state & QStyle::State_Selected) {
-        progressBarOption.palette.setBrush(QPalette::Foreground, option.palette.brush(QPalette::HighlightedText));
+        progressBarOption.palette.setBrush(QPalette::WindowText, option.palette.brush(QPalette::HighlightedText));
     }
     progressBarOption.progress = model->data(index, SyncthingDownloadModel::ItemPercentage).toInt();
     progressBarOption.minimum = 0;

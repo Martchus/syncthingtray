@@ -27,7 +27,7 @@ QDialog *ownDeviceIdDialog(Data::SyncthingConnection &connection)
     dlg->setWindowTitle(QCoreApplication::translate("QtGui::OtherDialogs", "Own device ID") + QStringLiteral(" - " APP_NAME));
     dlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->setBackgroundRole(QPalette::Background);
+    dlg->setBackgroundRole(QPalette::Window);
     auto *layout = new QVBoxLayout(dlg);
     layout->setAlignment(Qt::AlignCenter);
     auto *pixmapLabel = new QLabel(dlg);

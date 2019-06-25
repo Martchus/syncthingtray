@@ -31,7 +31,7 @@ DirectoryErrorsDialog::DirectoryErrorsDialog(const Data::SyncthingConnection &co
 {
     // add layout to show status and additional buttons
     auto *const buttonLayout = new QHBoxLayout;
-    buttonLayout->setMargin(0);
+    buttonLayout->setContentsMargins(0, 0, 0, 0);
     layout()->addLayout(buttonLayout);
 
     // add label for overall status
@@ -45,7 +45,7 @@ DirectoryErrorsDialog::DirectoryErrorsDialog(const Data::SyncthingConnection &co
     m_rmNonEmptyDirsButton = new QPushButton(this);
     m_rmNonEmptyDirsButton->setText(tr("Remove non-empty directories"));
     m_rmNonEmptyDirsButton->setIcon(QIcon::fromTheme(QStringLiteral("remove")));
-    buttonLayout->setMargin(0);
+    buttonLayout->setContentsMargins(0, 0, 0, 0);
     buttonLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
     buttonLayout->addWidget(m_rmNonEmptyDirsButton);
 

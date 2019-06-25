@@ -87,8 +87,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     m_cornerFrame = new QFrame(this);
     auto *cornerFrameLayout = new QHBoxLayout(m_cornerFrame);
     cornerFrameLayout->setSpacing(0);
-    cornerFrameLayout->setMargin(0);
-    //cornerFrameLayout->addStretch();
+    cornerFrameLayout->setContentsMargins(0, 0, 0, 0);
     m_cornerFrame->setLayout(cornerFrameLayout);
     auto *viewIdButton = new QPushButton(m_cornerFrame);
     viewIdButton->setToolTip(tr("View own device ID"));
@@ -506,8 +505,8 @@ void TrayWidget::updateTraffic()
     static const auto trafficIcons = [this]() {
         const auto size = QSize(16, 13);
         const auto &palette = m_ui->trafficFormWidget->palette(); // FIXME: make this aware of palette changes
-        const auto colorBackground = palette.color(QPalette::Background);
-        const auto colorActive = palette.color(QPalette::Foreground);
+        const auto colorBackground = palette.color(QPalette::Window);
+        const auto colorActive = palette.color(QPalette::WindowText);
         const auto colorInactive = QColor((colorActive.red() + colorBackground.red()) / 2, (colorActive.green() + colorBackground.green()) / 2,
             (colorActive.blue() + colorBackground.blue()) / 2);
         const auto renderIcon

@@ -20,7 +20,7 @@ TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     , m_trayIcon(trayIcon)
 {
     auto *const menuLayout = new QHBoxLayout;
-    menuLayout->setMargin(0);
+    menuLayout->setContentsMargins(0, 0, 0, 0);
     menuLayout->setSpacing(0);
     menuLayout->addWidget(m_trayWidget = new TrayWidget(this));
     setLayout(menuLayout);

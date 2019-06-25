@@ -10,7 +10,7 @@ SyncthingInfoWidget::SyncthingInfoWidget(const SyncthingInfoAction *action, QWid
     , m_iconLabel(new QLabel(parent))
 {
     auto *const layout = new QHBoxLayout(parent);
-    layout->setMargin(4);
+    layout->setContentsMargins(4, 4, 4, 4);
     layout->setSpacing(5);
     m_iconLabel->setFixedWidth(16);
     m_iconLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);

@@ -244,7 +244,7 @@ void SyncthingApplet::updateStatusIconAndTooltip()
 
 QIcon SyncthingApplet::loadFontAwesomeIcon(const QString &name, bool solid) const
 {
-    return Data::renderSvgImage(Data::loadFontAwesomeIcon(name, QGuiApplication::palette().color(QPalette::Foreground), solid), QSize(32, 32), 8);
+    return Data::renderSvgImage(Data::loadFontAwesomeIcon(name, QGuiApplication::palette().color(QPalette::WindowText), solid), QSize(32, 32), 8);
 }
 
 QString SyncthingApplet::formatFileSize(quint64 fileSizeInByte) const

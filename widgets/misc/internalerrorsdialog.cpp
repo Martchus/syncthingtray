@@ -33,7 +33,7 @@ InternalErrorsDialog::InternalErrorsDialog()
 
     // add layout to show status and additional buttons
     auto *const buttonLayout = new QHBoxLayout;
-    buttonLayout->setMargin(0);
+    buttonLayout->setContentsMargins(0, 0, 0, 0);
 
     // add label for overall status
     QFont boldFont(m_statusLabel->font());
@@ -52,7 +52,7 @@ InternalErrorsDialog::InternalErrorsDialog()
         auto *const clearButton = new QPushButton(this);
         clearButton->setText(tr("Clear errors"));
         clearButton->setIcon(QIcon::fromTheme(QStringLiteral("edit-clear")));
-        buttonLayout->setMargin(0);
+        buttonLayout->setContentsMargins(0, 0, 0, 0);
         buttonLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
         buttonLayout->addWidget(clearButton);
         connect(clearButton, &QPushButton::clicked, &InternalErrorsDialog::clearErrors);

@@ -29,7 +29,15 @@ void SyncthingKiller::waitForFinished()
             continue;
         }
         if (!waitForSignalsOrFail(noop, 0, signalInfo(this, &SyncthingKiller::ignored),
-                signalInfo(process, static_cast<void (SyncthingProcess::*)(int)>(&SyncthingProcess::finished)))) {
+                signalInfo(process,
+#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13)
+                           static_cast<void (SyncthingProcess::*)(int)>(
+#endif
+                           &SyncthingProcess::finished
+#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13)
+                           )
+#endif
+                           ))) {
             return;
         }
     }
@@ -50,7 +58,15 @@ void SyncthingKiller::confirmKill() const
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->addButton(tr("Keep running"), QMessageBox::RejectRole);
     msgBox->addButton(tr("Kill process"), QMessageBox::AcceptRole);
-    connect(process, static_cast<void (QProcess::*)(int)>(&SyncthingProcess::finished), msgBox, &QMessageBox::close);
+    connect(process,
+#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13)
+            static_cast<void (QProcess::*)(int)>(
+#endif
+            &SyncthingProcess::finished
+#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13)
+            )
+#endif
+            , msgBox, &QMessageBox::close);
     connect(msgBox, &QMessageBox::accepted, process, &SyncthingProcess::killSyncthing);
     // FIXME: can not really ignore, just keep the process running
     //connect(msgBox, &QMessageBox::rejected, this, &SyncthingKiller::ignored);
