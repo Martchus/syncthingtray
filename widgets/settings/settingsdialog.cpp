@@ -758,10 +758,10 @@ QWidget *LauncherOptionPage::setupWidget()
 
     // adjust labels to use name of additional tool instead of "Syncthing"
     if (!m_tool.isEmpty()) {
-        widget->setWindowTitle(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1-launcher").arg(m_tool));
-        ui()->enabledCheckBox->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Launch %1 when starting the tray icon").arg(m_tool));
-        ui()->syncthingPathLabel->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 executable").arg(m_tool));
-        ui()->logLabel->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 log (interleaved stdout/stderr)").arg(m_tool));
+        widget->setWindowTitle(tr("%1-launcher").arg(m_tool));
+        ui()->enabledCheckBox->setText(tr("Launch %1 when starting the tray icon").arg(m_tool));
+        ui()->syncthingPathLabel->setText(tr("%1 executable").arg(m_tool));
+        ui()->logLabel->setText(tr("%1 log (interleaved stdout/stderr)").arg(m_tool));
     }
 
     // hide "consider for reconnect" checkbox for tools
@@ -772,7 +772,7 @@ QWidget *LauncherOptionPage::setupWidget()
         m_restoreArgsButton = new IconButton(ui()->argumentsLineEdit);
         m_restoreArgsButton->setPixmap(
             QIcon::fromTheme(QStringLiteral("edit-undo"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-paste.svg"))).pixmap(16));
-        m_restoreArgsButton->setToolTip(QCoreApplication::translate("QtGui::LauncherOptionPage", "Restore default"));
+        m_restoreArgsButton->setToolTip(tr("Restore default"));
         connect(m_restoreArgsButton, &IconButton::clicked, this, &LauncherOptionPage::restoreDefaultArguments);
         ui()->argumentsLineEdit->insertCustomButton(0, m_restoreArgsButton);
     }
@@ -871,12 +871,10 @@ void LauncherOptionPage::handleSyncthingExited(int exitCode, QProcess::ExitStatu
 
     switch (exitStatus) {
     case QProcess::NormalExit:
-        cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 exited with exit code %2")
-                              .arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
+        cursor.insertText(tr("%1 exited with exit code %2").arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
         break;
     case QProcess::CrashExit:
-        cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 crashed with exit code %2")
-                              .arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
+        cursor.insertText(tr("%1 crashed with exit code %2").arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
         break;
     }
     cursor.insertBlock();
@@ -903,26 +901,24 @@ void LauncherOptionPage::handleSyncthingError(QProcess::ProcessError error)
     QString errorString;
     switch (error) {
     case QProcess::FailedToStart:
-        errorString
-            = QCoreApplication::translate("QtGui::LauncherOptionPage", "failed to start (e.g. executable does not exist or not permission error)");
+        errorString = tr("failed to start (e.g. executable does not exist or not permission error)");
         break;
     case QProcess::Crashed:
-        errorString = QCoreApplication::translate("QtGui::LauncherOptionPage", "process crashed");
+        errorString = tr("process crashed");
         break;
     case QProcess::Timedout:
-        errorString = QCoreApplication::translate("QtGui::LauncherOptionPage", "timeout error");
+        errorString = tr("timeout error");
         break;
     case QProcess::ReadError:
-        errorString = QCoreApplication::translate("QtGui::LauncherOptionPage", "read error");
+        errorString = tr("read error");
         break;
     case QProcess::WriteError:
-        errorString = QCoreApplication::translate("QtGui::LauncherOptionPage", "write error");
+        errorString = tr("write error");
         break;
     default:
-        errorString = QCoreApplication::translate("QtGui::LauncherOptionPage", "unknown process error");
+        errorString = tr("unknown process error");
     }
-    cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "An error occurred when running %1: %2")
-                          .arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, errorString));
+    cursor.insertText(tr("An error occurred when running %1: %2").arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, errorString));
     cursor.insertBlock();
 
     if ((m_launcher && !m_launcher->isRunning()) || (m_process && !m_process->isRunning())) {
@@ -947,7 +943,7 @@ void LauncherOptionPage::launch()
     }
     ui()->launchNowPushButton->hide();
     ui()->stopPushButton->show();
-    ui()->stopPushButton->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Stop launched instance"));
+    ui()->stopPushButton->setText(tr("Stop launched instance"));
     m_kill = false;
     const auto launcherSettings(values().launcher);
     if (m_tool.isEmpty()) {
@@ -972,7 +968,7 @@ void LauncherOptionPage::stop()
             m_launcher->kill();
         }
     } else {
-        ui()->stopPushButton->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "Kill launched instance"));
+        ui()->stopPushButton->setText(tr("Kill launched instance"));
         m_kill = true;
         if (m_process) {
             m_process->stopSyncthing();
