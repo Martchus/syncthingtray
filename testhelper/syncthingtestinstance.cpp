@@ -126,7 +126,7 @@ void SyncthingTestInstance::setInterleavedOutputEnabled(bool interleavedOutputEn
         return;
     }
     m_interleavedOutput = interleavedOutputEnabled;
-    m_syncthingProcess.setReadChannelMode(interleavedOutputEnabled ? QProcess::ForwardedChannels : QProcess::SeparateChannels);
+    m_syncthingProcess.setProcessChannelMode(interleavedOutputEnabled ? QProcess::ForwardedChannels : QProcess::SeparateChannels);
 }
 
 /*!

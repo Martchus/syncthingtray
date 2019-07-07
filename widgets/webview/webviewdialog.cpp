@@ -28,7 +28,7 @@ WebViewDialog::WebViewDialog(QWidget *parent)
 
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
     m_profile = new QWebEngineProfile(objectName(), this);
-    m_profile->setRequestInterceptor(new WebViewInterceptor(m_connectionSettings, m_profile));
+    m_profile->setUrlRequestInterceptor(new WebViewInterceptor(m_connectionSettings, m_profile));
     m_view->setPage(new WebPage(m_profile, this, m_view));
 #else
     m_view->setPage(new WebPage(this, m_view));

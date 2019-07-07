@@ -19,8 +19,8 @@ int main(int argc, char **argv)
 
     SyncthingTestInstance testInstance;
     auto &syncthingProcess(testInstance.syncthingProcess());
-    syncthingProcess.setReadChannelMode(QProcess::ForwardedChannels);
-    QObject::connect(&syncthingProcess, static_cast<void (QProcess::*)(int)>(&QProcess::finished), &QCoreApplication::exit);
+    syncthingProcess.setProcessChannelMode(QProcess::ForwardedChannels);
+    QObject::connect(&syncthingProcess, static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), &QCoreApplication::exit);
     testInstance.start();
 
     const int res = testInstance.application().exec();
