@@ -750,9 +750,6 @@ LauncherOptionPage::LauncherOptionPage(const QString &tool, QWidget *parentWidge
 
 LauncherOptionPage::~LauncherOptionPage()
 {
-    for (const QMetaObject::Connection &connection : m_connections) {
-        QObject::disconnect(connection);
-    }
 }
 
 QWidget *LauncherOptionPage::setupWidget()
@@ -776,7 +773,7 @@ QWidget *LauncherOptionPage::setupWidget()
         m_restoreArgsButton->setPixmap(
             QIcon::fromTheme(QStringLiteral("edit-undo"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-paste.svg"))).pixmap(16));
         m_restoreArgsButton->setToolTip(QCoreApplication::translate("QtGui::LauncherOptionPage", "Restore default"));
-        QObject::connect(m_restoreArgsButton, &IconButton::clicked, this, &LauncherOptionPage::restoreDefaultArguments);
+        connect(m_restoreArgsButton, &IconButton::clicked, this, &LauncherOptionPage::restoreDefaultArguments);
         ui()->argumentsLineEdit->insertCustomButton(0, m_restoreArgsButton);
     }
 
@@ -790,20 +787,17 @@ QWidget *LauncherOptionPage::setupWidget()
 
     // connect signals & slots
     if (m_process) {
-        m_connections << connect(m_process, &SyncthingProcess::readyRead, this, &LauncherOptionPage::handleSyncthingReadyRead, Qt::QueuedConnection);
-        m_connections << connect(m_process,
-            static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
+        connect(m_process, &SyncthingProcess::readyRead, this, &LauncherOptionPage::handleSyncthingReadyRead, Qt::QueuedConnection);
+        connect(m_process, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
             &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
-        m_connections << connect(m_process, &SyncthingProcess::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
+        connect(m_process, &SyncthingProcess::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
     } else if (m_launcher) {
-        m_connections << connect(
-            m_launcher, &SyncthingLauncher::outputAvailable, this, &LauncherOptionPage::handleSyncthingOutputAvailable, Qt::QueuedConnection);
-        m_connections << connect(m_launcher, &SyncthingLauncher::exited, this, &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
-        m_connections << connect(
-            m_launcher, &SyncthingLauncher::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
+        connect(m_launcher, &SyncthingLauncher::outputAvailable, this, &LauncherOptionPage::handleSyncthingOutputAvailable, Qt::QueuedConnection);
+        connect(m_launcher, &SyncthingLauncher::exited, this, &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
+        connect(m_launcher, &SyncthingLauncher::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
     }
-    QObject::connect(ui()->launchNowPushButton, &QPushButton::clicked, this, &LauncherOptionPage::launch);
-    QObject::connect(ui()->stopPushButton, &QPushButton::clicked, this, &LauncherOptionPage::stop);
+    connect(ui()->launchNowPushButton, &QPushButton::clicked, this, &LauncherOptionPage::launch);
+    connect(ui()->stopPushButton, &QPushButton::clicked, this, &LauncherOptionPage::stop);
 
     return widget;
 }
