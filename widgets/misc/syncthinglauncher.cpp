@@ -20,6 +20,7 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     connect(&m_process, &SyncthingProcess::readyRead, this, &SyncthingLauncher::handleProcessReadyRead);
     connect(&m_process, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
         &SyncthingLauncher::handleProcessFinished);
+    connect(&m_process, &SyncthingProcess::errorOccurred, this, &SyncthingLauncher::errorOccurred);
     connect(&m_process, &SyncthingProcess::confirmKill, this, &SyncthingLauncher::confirmKill);
 }
 

@@ -38,6 +38,7 @@ Q_SIGNALS:
     void runningChanged(bool isRunning);
     void outputAvailable(const QByteArray &data);
     void exited(int exitCode, QProcess::ExitStatus exitStatus);
+    void errorOccurred(QProcess::ProcessError error);
 
 public Q_SLOTS:
     void setUseLibSyncthing(bool useLibSyncthing);

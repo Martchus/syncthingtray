@@ -109,6 +109,7 @@ private slots:
     void handleSyncthingReadyRead();
     void handleSyncthingOutputAvailable(const QByteArray &output);
     void handleSyncthingExited(int exitCode, QProcess::ExitStatus exitStatus);
+    void handleSyncthingError(QProcess::ProcessError error);
     bool isRunning() const;
     void launch();
     void stop();

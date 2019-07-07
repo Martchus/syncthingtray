@@ -51,6 +51,7 @@
 #include <QFontDatabase>
 #include <QStringBuilder>
 #include <QStyle>
+#include <QTextBlock>
 #include <QTextCursor>
 
 #include <functional>
@@ -793,10 +794,13 @@ QWidget *LauncherOptionPage::setupWidget()
         m_connections << connect(m_process,
             static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
             &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
+        m_connections << connect(m_process, &SyncthingProcess::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
     } else if (m_launcher) {
         m_connections << connect(
             m_launcher, &SyncthingLauncher::outputAvailable, this, &LauncherOptionPage::handleSyncthingOutputAvailable, Qt::QueuedConnection);
         m_connections << connect(m_launcher, &SyncthingLauncher::exited, this, &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
+        m_connections << connect(
+            m_launcher, &SyncthingLauncher::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
     }
     QObject::connect(ui()->launchNowPushButton, &QPushButton::clicked, this, &LauncherOptionPage::launch);
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, this, &LauncherOptionPage::stop);
@@ -856,6 +860,7 @@ void LauncherOptionPage::handleSyncthingOutputAvailable(const QByteArray &output
     cursor.movePosition(QTextCursor::End);
     cursor.insertText(QString::fromUtf8(output));
     if (ui()->ensureCursorVisibleCheckBox->isChecked()) {
+        ui()->logTextEdit->moveCursor(QTextCursor::End);
         ui()->logTextEdit->ensureCursorVisible();
     }
 }
@@ -865,23 +870,71 @@ void LauncherOptionPage::handleSyncthingExited(int exitCode, QProcess::ExitStatu
     if (!hasBeenShown()) {
         return;
     }
+
     QTextCursor cursor(ui()->logTextEdit->textCursor());
     cursor.movePosition(QTextCursor::End);
-    if (cursor.positionInBlock()) {
-        cursor.insertBlock();
-    }
+    cursor.insertBlock();
+
     switch (exitStatus) {
     case QProcess::NormalExit:
-        cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 exited with exit code %2\n")
+        cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 exited with exit code %2")
                               .arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
         break;
     case QProcess::CrashExit:
-        cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 crashed with exit code %2\n")
+        cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 crashed with exit code %2")
                               .arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, QString::number(exitCode)));
         break;
     }
+    cursor.insertBlock();
+
+    if (ui()->ensureCursorVisibleCheckBox->isChecked()) {
+        ui()->logTextEdit->moveCursor(QTextCursor::End);
+        ui()->logTextEdit->ensureCursorVisible();
+    }
+
     ui()->stopPushButton->hide();
     ui()->launchNowPushButton->show();
+}
+
+void LauncherOptionPage::handleSyncthingError(QProcess::ProcessError error)
+{
+    if (!hasBeenShown()) {
+        return;
+    }
+
+    QTextCursor cursor(ui()->logTextEdit->textCursor());
+    cursor.movePosition(QTextCursor::End);
+    cursor.insertBlock();
+
+    QString errorString;
+    switch (error) {
+    case QProcess::FailedToStart:
+        errorString
+            = QCoreApplication::translate("QtGui::LauncherOptionPage", "failed to start (e.g. executable does not exist or not permission error)");
+        break;
+    case QProcess::Crashed:
+        errorString = QCoreApplication::translate("QtGui::LauncherOptionPage", "process crashed");
+        break;
+    case QProcess::Timedout:
+        errorString = QCoreApplication::translate("QtGui::LauncherOptionPage", "timeout error");
+        break;
+    case QProcess::ReadError:
+        errorString = QCoreApplication::translate("QtGui::LauncherOptionPage", "read error");
+        break;
+    case QProcess::WriteError:
+        errorString = QCoreApplication::translate("QtGui::LauncherOptionPage", "write error");
+        break;
+    default:
+        errorString = QCoreApplication::translate("QtGui::LauncherOptionPage", "unknown process error");
+    }
+    cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "An error occurred when running %1: %2")
+                          .arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, errorString));
+    cursor.insertBlock();
+
+    if ((m_launcher && !m_launcher->isRunning()) || (m_process && !m_process->isRunning())) {
+        ui()->stopPushButton->hide();
+        ui()->launchNowPushButton->show();
+    }
 }
 
 bool LauncherOptionPage::isRunning() const
