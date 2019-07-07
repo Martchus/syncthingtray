@@ -728,7 +728,8 @@ void AutostartOptionPage::reset()
 
 // LauncherOptionPage
 LauncherOptionPage::LauncherOptionPage(QWidget *parentWidget)
-    : LauncherOptionPageBase(parentWidget)
+    : QObject(parentWidget)
+    , LauncherOptionPageBase(parentWidget)
     , m_process(nullptr)
     , m_launcher(SyncthingLauncher::mainInstance())
     , m_kill(false)
@@ -736,7 +737,8 @@ LauncherOptionPage::LauncherOptionPage(QWidget *parentWidget)
 }
 
 LauncherOptionPage::LauncherOptionPage(const QString &tool, QWidget *parentWidget)
-    : LauncherOptionPageBase(parentWidget)
+    : QObject(parentWidget)
+    , LauncherOptionPageBase(parentWidget)
     , m_process(&Launcher::toolProcess(tool))
     , m_launcher(nullptr)
     , m_restoreArgsButton(nullptr)
@@ -773,7 +775,7 @@ QWidget *LauncherOptionPage::setupWidget()
         m_restoreArgsButton->setPixmap(
             QIcon::fromTheme(QStringLiteral("edit-undo"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-paste.svg"))).pixmap(16));
         m_restoreArgsButton->setToolTip(QCoreApplication::translate("QtGui::LauncherOptionPage", "Restore default"));
-        QObject::connect(m_restoreArgsButton, &IconButton::clicked, bind(&LauncherOptionPage::restoreDefaultArguments, this));
+        QObject::connect(m_restoreArgsButton, &IconButton::clicked, this, &LauncherOptionPage::restoreDefaultArguments);
         ui()->argumentsLineEdit->insertCustomButton(0, m_restoreArgsButton);
     }
 
@@ -787,17 +789,17 @@ QWidget *LauncherOptionPage::setupWidget()
 
     // connect signals & slots
     if (m_process) {
-        m_connections << QObject::connect(m_process, &SyncthingProcess::readyRead, bind(&LauncherOptionPage::handleSyncthingReadyRead, this));
-        m_connections << QObject::connect(m_process,
-            static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished),
-            bind(&LauncherOptionPage::handleSyncthingExited, this, _1, _2));
+        m_connections << connect(m_process, &SyncthingProcess::readyRead, this, &LauncherOptionPage::handleSyncthingReadyRead, Qt::QueuedConnection);
+        m_connections << connect(m_process,
+            static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
+            &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
     } else if (m_launcher) {
-        m_connections << QObject::connect(m_launcher, &SyncthingLauncher::outputAvailable, ui()->logTextEdit,
-            bind(&LauncherOptionPage::handleSyncthingOutputAvailable, this, _1), Qt::QueuedConnection);
-        m_connections << QObject::connect(m_launcher, &SyncthingLauncher::exited, bind(&LauncherOptionPage::handleSyncthingExited, this, _1, _2));
+        m_connections << connect(
+            m_launcher, &SyncthingLauncher::outputAvailable, this, &LauncherOptionPage::handleSyncthingOutputAvailable, Qt::QueuedConnection);
+        m_connections << connect(m_launcher, &SyncthingLauncher::exited, this, &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
     }
-    QObject::connect(ui()->launchNowPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::launch, this));
-    QObject::connect(ui()->stopPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::stop, this));
+    QObject::connect(ui()->launchNowPushButton, &QPushButton::clicked, this, &LauncherOptionPage::launch);
+    QObject::connect(ui()->stopPushButton, &QPushButton::clicked, this, &LauncherOptionPage::stop);
 
     return widget;
 }

@@ -94,27 +94,36 @@ END_DECLARE_OPTION_PAGE
 
 DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_SETUP(AutostartOptionPage)
 
-BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(LauncherOptionPage)
+BEGIN_DECLARE_TYPEDEF_UI_FILE_BASED_OPTION_PAGE(LauncherOptionPage)
+class QT_UTILITIES_EXPORT LauncherOptionPage : public QObject, public ::QtUtilities::UiFileBasedOptionPage<Ui::LauncherOptionPage> {
+    Q_OBJECT
+
 public:
-LauncherOptionPage(QWidget *parentWidget = nullptr);
-LauncherOptionPage(const QString &tool, QWidget *parentWidget = nullptr);
+    LauncherOptionPage(QWidget *parentWidget = nullptr);
+    LauncherOptionPage(const QString &tool, QWidget *parentWidget = nullptr);
+    ~LauncherOptionPage() override;
+    bool apply() override;
+    void reset() override;
+
+private slots:
+    void handleSyncthingReadyRead();
+    void handleSyncthingOutputAvailable(const QByteArray &output);
+    void handleSyncthingExited(int exitCode, QProcess::ExitStatus exitStatus);
+    bool isRunning() const;
+    void launch();
+    void stop();
+    void restoreDefaultArguments();
 
 private:
-DECLARE_SETUP_WIDGETS
-void handleSyncthingReadyRead();
-void handleSyncthingOutputAvailable(const QByteArray &output);
-void handleSyncthingExited(int exitCode, QProcess::ExitStatus exitStatus);
-bool isRunning() const;
-void launch();
-void stop();
-void restoreDefaultArguments();
-Data::SyncthingProcess *const m_process;
-Data::SyncthingLauncher *const m_launcher;
-QtUtilities::IconButton *m_restoreArgsButton;
-QList<QMetaObject::Connection> m_connections;
-bool m_kill;
-QString m_tool;
-END_DECLARE_OPTION_PAGE
+    DECLARE_SETUP_WIDGETS
+
+    Data::SyncthingProcess *const m_process;
+    Data::SyncthingLauncher *const m_launcher;
+    QtUtilities::IconButton *m_restoreArgsButton;
+    QList<QMetaObject::Connection> m_connections;
+    bool m_kill;
+    QString m_tool;
+};
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(SystemdOptionPage)
