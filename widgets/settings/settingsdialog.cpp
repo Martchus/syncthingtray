@@ -865,8 +865,11 @@ void LauncherOptionPage::handleSyncthingExited(int exitCode, QProcess::ExitStatu
     if (!hasBeenShown()) {
         return;
     }
-    QTextCursor cursor = ui()->logTextEdit->textCursor();
+    QTextCursor cursor(ui()->logTextEdit->textCursor());
     cursor.movePosition(QTextCursor::End);
+    if (cursor.positionInBlock()) {
+        cursor.insertBlock();
+    }
     switch (exitStatus) {
     case QProcess::NormalExit:
         cursor.insertText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 exited with exit code %2\n")
