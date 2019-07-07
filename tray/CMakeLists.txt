@@ -46,7 +46,11 @@ set(REQUIRED_ICONS
     dialog-ok
     dialog-ok-apply
     edit-copy
+    edit-cut
+    edit-delete
     edit-paste
+    edit-redo
+    edit-undo
     emblem-error
     folder
     folder-download
@@ -78,7 +82,6 @@ set(REQUIRED_ICONS
     view-barcode
     view-refresh
     window-close)
-# fallback icons can not replace built-in Breeze icons (yet) set(FALLBACK_ICON_THEME breeze)
 
 # find c++utilities
 find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
