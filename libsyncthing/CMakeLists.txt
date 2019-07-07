@@ -91,6 +91,7 @@ message(STATUS "Syncthing's go files: ${SRC_FILES_SYNCTHING}")
 # generate Syncthing's assets: don't set GOARCH/GOOS here, this is supposed to run on the host
 add_custom_command(OUTPUT "${SYNCTHING_PATH}/lib/auto/gui.files.go"
                    COMMAND "GOPATH=${GO_DEVELOPMENT_PATH}"
+                           "GO111MODULE=on"
                            "${GO_BIN}"
                            run
                            ./script/genassets.go
@@ -110,6 +111,7 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
                            "GOOS=${GO_TARGET_OS}"
                            "GOARCH=${GO_TARGET_ARCH}"
                            "CGO_ENABLED=1"
+                           "GO111MODULE=on"
                            "GOPATH=${GO_DEVELOPMENT_PATH}"
                            "${GO_BIN}"
                            build
