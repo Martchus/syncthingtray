@@ -107,6 +107,7 @@ void SyncthingLauncher::handleProcessFinished(int exitCode, QProcess::ExitStatus
     emit exited(exitCode, exitStatus);
 }
 
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 static const char *const logLevelStrings[] = {
     "[DEBUG]   ",
     "[VERBOSE] ",
@@ -114,6 +115,7 @@ static const char *const logLevelStrings[] = {
     "[WARNING] ",
     "[FATAL]   ",
 };
+#endif
 
 void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, const char *message, size_t messageSize)
 {
