@@ -67,7 +67,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
 #else
         QStringLiteral("syncthing");
 #endif
-    QString syncthingArgs;
+    QString syncthingArgs = QStringLiteral("-no-browser -no-restart -logflags=3");
     QHash<QString, ToolParameter> tools;
     bool considerForReconnect = false;
     static Data::SyncthingProcess &toolProcess(const QString &tool);

@@ -30,6 +30,7 @@
 #include <qtutilities/settingsdialog/optioncategory.h>
 #include <qtutilities/settingsdialog/optioncategorymodel.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
+#include <qtutilities/widgets/iconbutton.h>
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
 #include <qtutilities/misc/dbusnotification.h>
 #endif
@@ -738,6 +739,7 @@ LauncherOptionPage::LauncherOptionPage(const QString &tool, QWidget *parentWidge
     : LauncherOptionPageBase(parentWidget)
     , m_process(&Launcher::toolProcess(tool))
     , m_launcher(nullptr)
+    , m_restoreArgsButton(nullptr)
     , m_kill(false)
     , m_tool(tool)
 {
@@ -753,6 +755,7 @@ LauncherOptionPage::~LauncherOptionPage()
 QWidget *LauncherOptionPage::setupWidget()
 {
     auto *const widget = LauncherOptionPageBase::setupWidget();
+
     // adjust labels to use name of additional tool instead of "Syncthing"
     if (!m_tool.isEmpty()) {
         widget->setWindowTitle(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1-launcher").arg(m_tool));
@@ -760,8 +763,20 @@ QWidget *LauncherOptionPage::setupWidget()
         ui()->syncthingPathLabel->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 executable").arg(m_tool));
         ui()->logLabel->setText(QCoreApplication::translate("QtGui::LauncherOptionPage", "%1 log (interleaved stdout/stderr)").arg(m_tool));
     }
+
     // hide "consider for reconnect" checkbox for tools
     ui()->considerForReconnectCheckBox->setVisible(m_tool.isEmpty());
+
+    // add "restore to defaults" action for arguments
+    if (m_tool.isEmpty()) {
+        m_restoreArgsButton = new IconButton(ui()->argumentsLineEdit);
+        m_restoreArgsButton->setPixmap(
+            QIcon::fromTheme(QStringLiteral("edit-undo"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-paste.svg"))).pixmap(16));
+        m_restoreArgsButton->setToolTip(QCoreApplication::translate("QtGui::LauncherOptionPage", "Restore default"));
+        QObject::connect(m_restoreArgsButton, &IconButton::clicked, bind(&LauncherOptionPage::restoreDefaultArguments, this));
+        ui()->argumentsLineEdit->insertCustomButton(0, m_restoreArgsButton);
+    }
+
     // setup other widgets
     ui()->syncthingPathSelection->provideCustomFileMode(QFileDialog::ExistingFile);
     ui()->logTextEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
@@ -769,6 +784,7 @@ QWidget *LauncherOptionPage::setupWidget()
     ui()->launchNowPushButton->setHidden(running);
     ui()->stopPushButton->setHidden(!running);
     ui()->useBuiltInVersionCheckBox->setHidden(!SyncthingLauncher::isLibSyncthingAvailable());
+
     // connect signals & slots
     if (m_process) {
         m_connections << QObject::connect(m_process, &SyncthingProcess::readyRead, bind(&LauncherOptionPage::handleSyncthingReadyRead, this));
@@ -782,6 +798,7 @@ QWidget *LauncherOptionPage::setupWidget()
     }
     QObject::connect(ui()->launchNowPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::launch, this));
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, bind(&LauncherOptionPage::stop, this));
+
     return widget;
 }
 
@@ -912,6 +929,12 @@ void LauncherOptionPage::stop()
             m_launcher->terminate();
         }
     }
+}
+
+void LauncherOptionPage::restoreDefaultArguments()
+{
+    static const ::Settings::Launcher defaults;
+    ui()->argumentsLineEdit->setText(defaults.syncthingArgs);
 }
 
 // SystemdOptionPage

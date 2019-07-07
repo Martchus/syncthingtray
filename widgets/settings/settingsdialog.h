@@ -22,7 +22,8 @@ class DateTime;
 
 namespace QtUtilities {
 class ColorButton;
-}
+class IconButton;
+} // namespace QtUtilities
 
 namespace Data {
 class SyncthingConnection;
@@ -106,8 +107,10 @@ void handleSyncthingExited(int exitCode, QProcess::ExitStatus exitStatus);
 bool isRunning() const;
 void launch();
 void stop();
+void restoreDefaultArguments();
 Data::SyncthingProcess *const m_process;
 Data::SyncthingLauncher *const m_launcher;
+QtUtilities::IconButton *m_restoreArgsButton;
 QList<QMetaObject::Connection> m_connections;
 bool m_kill;
 QString m_tool;

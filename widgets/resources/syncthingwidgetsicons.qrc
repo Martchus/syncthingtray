@@ -12,5 +12,6 @@
         <file>icons/hicolor/scalable/actions/globe.svg</file>
         <file>icons/hicolor/scalable/places/user-home.svg</file>
         <file>icons/hicolor/scalable/emblems/emblem-important-old.svg</file>
+        <file>icons/hicolor/scalable/actions/edit-undo.svg</file>
     </qresource>
 </RCC>
