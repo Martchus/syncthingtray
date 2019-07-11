@@ -87,11 +87,11 @@ void SyncthingLauncher::kill()
 {
     if (m_process.isRunning()) {
         m_manuallyStopped = true;
-        m_process.stopSyncthing();
+        m_process.killSyncthing();
     } else if (m_future.isRunning()) {
         m_manuallyStopped = true;
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-        // FIXME: any change to try harder?
+        // FIXME: any chance to try harder?
         LibSyncthing::stopSyncthing();
 #endif
     }
