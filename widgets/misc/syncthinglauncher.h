@@ -12,6 +12,10 @@ namespace LibSyncthing {
 struct RuntimeOptions;
 }
 
+namespace Settings {
+struct Launcher;
+}
+
 namespace Data {
 
 class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
@@ -43,12 +47,14 @@ Q_SIGNALS:
 public Q_SLOTS:
     void setUseLibSyncthing(bool useLibSyncthing);
     void launch(const QString &program, const QStringList &arguments);
+    void launch(const Settings::Launcher &launcherSettings);
     void launch(const LibSyncthing::RuntimeOptions &runtimeOptions);
     void terminate();
     void kill();
 
 private Q_SLOTS:
     void handleProcessReadyRead();
+    void handleProcessStateChanged(QProcess::ProcessState newState);
     void handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void handleLoggingCallback(LibSyncthing::LogLevel, const char *message, std::size_t messageSize);
     void runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions);

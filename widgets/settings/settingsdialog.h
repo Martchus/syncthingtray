@@ -106,6 +106,7 @@ public:
     void reset() override;
 
 private slots:
+    void handleSyncthingLaunched(bool running);
     void handleSyncthingReadyRead();
     void handleSyncthingOutputAvailable(const QByteArray &output);
     void handleSyncthingExited(int exitCode, QProcess::ExitStatus exitStatus);

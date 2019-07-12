@@ -37,6 +37,7 @@ struct SYNCTHINGWIDGETS_EXPORT Connection {
 struct SYNCTHINGWIDGETS_EXPORT NotifyOn {
     bool disconnect = true;
     bool internalErrors = true;
+    bool launcherErrors = true;
     bool localSyncComplete = false;
     bool remoteSyncComplete = false;
     bool syncthingErrors = true;
@@ -59,7 +60,7 @@ struct SYNCTHINGWIDGETS_EXPORT ToolParameter {
 };
 
 struct SYNCTHINGWIDGETS_EXPORT Launcher {
-    bool enabled = false;
+    bool autostartEnabled = false;
     bool useLibSyncthing = false;
     QString syncthingPath =
 #ifdef PLATFORM_WINDOWS
@@ -70,10 +71,21 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
     QString syncthingArgs = QStringLiteral("-no-browser -no-restart -logflags=3");
     QHash<QString, ToolParameter> tools;
     bool considerForReconnect = false;
+    bool showButton = false;
+
     static Data::SyncthingProcess &toolProcess(const QString &tool);
     static std::vector<Data::SyncthingProcess *> allProcesses();
     void autostart() const;
     static void terminate();
+    struct LauncherStatus {
+        bool relevant = false;
+        bool running = false;
+        bool consideredForReconnect = false;
+        bool showStartStopButton = false;
+    };
+    LauncherStatus apply(Data::SyncthingConnection &connection, const Data::SyncthingConnectionSettings *currentConnectionSettings,
+        bool preventReconnect = false) const;
+    LauncherStatus status(Data::SyncthingConnection &connection) const;
 };
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -82,10 +94,15 @@ struct SYNCTHINGWIDGETS_EXPORT Systemd {
     bool showButton = false;
     bool considerForReconnect = false;
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    std::tuple<bool, bool> apply(Data::SyncthingConnection &connection, const Data::SyncthingConnectionSettings *currentConnectionSettings,
+    struct ServiceStatus {
+        bool relevant = false;
+        bool running = false;
+        bool consideredForReconnect = false;
+        bool showStartStopButton = false;
+    };
+    ServiceStatus apply(Data::SyncthingConnection &connection, const Data::SyncthingConnectionSettings *currentConnectionSettings,
         bool preventReconnect = false) const;
-#endif
+    ServiceStatus status(Data::SyncthingConnection &connection) const;
 };
 #endif
 

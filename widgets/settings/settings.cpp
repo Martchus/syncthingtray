@@ -74,9 +74,8 @@ std::vector<SyncthingProcess *> Launcher::allProcesses()
 void Launcher::autostart() const
 {
     auto *const launcher(SyncthingLauncher::mainInstance());
-    // TODO: allow using libsyncthing
-    if (enabled && !syncthingPath.isEmpty() && launcher) {
-        launcher->launch(useLibSyncthing ? QString() : syncthingPath, SyncthingProcess::splitArguments(syncthingArgs));
+    if (autostartEnabled && launcher) {
+        launcher->launch(*this);
     }
     for (auto i = tools.cbegin(), end = tools.cend(); i != end; ++i) {
         const ToolParameter &toolParams = i.value();
@@ -93,6 +92,62 @@ void Launcher::autostart() const
 void Launcher::terminate()
 {
     QtGui::SyncthingKiller(allProcesses()).waitForFinished();
+}
+
+/*!
+ * \brief Applies the launcher settings to the specified \a connection considering the status of the main SyncthingLauncher instance.
+ * \remarks
+ * - Called by TrayWidget when the launcher settings have been changed.
+ * - \a currentConnectionSettings might be nullptr.
+ * - Currently this is only about the auto-reconnect interval and connecting instantly.
+ * \returns Returns the launcher status with respect to the specified \a connection.
+ */
+Launcher::LauncherStatus Launcher::apply(
+    Data::SyncthingConnection &connection, const SyncthingConnectionSettings *currentConnectionSettings, bool reconnectRequired) const
+{
+    auto *const launcher(SyncthingLauncher::mainInstance());
+    if (!launcher) {
+        return LauncherStatus{};
+    }
+    const auto isRelevant = connection.isLocal();
+    const auto isRunning = launcher->isRunning();
+    const auto consideredForReconnect = considerForReconnect && isRelevant;
+
+    if (currentConnectionSettings && (!considerForReconnect || !isRelevant || isRunning)) {
+        // ensure auto-reconnect is configured according to settings
+        connection.setAutoReconnectInterval(currentConnectionSettings->reconnectInterval);
+    } else {
+        // disable auto-reconnect regardless of the overall settings
+        connection.setAutoReconnectInterval(0);
+    }
+
+    // connect instantly if service is running
+    if (consideredForReconnect) {
+        // give the service (which has just started) a few seconds to initialize
+        constexpr auto minActiveTimeInSeconds(5);
+        if (reconnectRequired) {
+            connection.reconnectLater(minActiveTimeInSeconds * 1000);
+        } else if (isRunning && !connection.isConnected()) {
+            connection.connectLater(minActiveTimeInSeconds * 1000);
+        }
+    }
+
+    return LauncherStatus{isRelevant, isRunning, consideredForReconnect, showButton && isRelevant};
+}
+
+/*!
+ * \brief Returns the launcher status with respect to the specified \a connection.
+ */
+Launcher::LauncherStatus Launcher::status(SyncthingConnection &connection) const
+{
+    auto *const launcher(SyncthingLauncher::mainInstance());
+    if (!launcher) {
+        return LauncherStatus{};
+    }
+    const auto isRelevant = connection.isLocal();
+    return LauncherStatus{
+        isRelevant, launcher->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant
+    };
 }
 
 Settings &values()
@@ -181,11 +236,12 @@ void restore()
 
     settings.beginGroup(QStringLiteral("startup"));
     auto &launcher = v.launcher;
-    launcher.enabled = settings.value(QStringLiteral("syncthingAutostart"), launcher.enabled).toBool();
+    launcher.autostartEnabled = settings.value(QStringLiteral("syncthingAutostart"), launcher.autostartEnabled).toBool();
     launcher.useLibSyncthing = settings.value(QStringLiteral("useLibSyncthing"), launcher.useLibSyncthing).toBool();
     launcher.syncthingPath = settings.value(QStringLiteral("syncthingPath"), launcher.syncthingPath).toString();
     launcher.syncthingArgs = settings.value(QStringLiteral("syncthingArgs"), launcher.syncthingArgs).toString();
     launcher.considerForReconnect = settings.value(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect).toBool();
+    launcher.showButton = settings.value(QStringLiteral("showLauncherButton"), launcher.showButton).toBool();
     settings.beginGroup(QStringLiteral("tools"));
     for (const QString &tool : settings.childGroups()) {
         settings.beginGroup(tool);
@@ -270,11 +326,12 @@ void save()
 
     settings.beginGroup(QStringLiteral("startup"));
     const auto &launcher = v.launcher;
-    settings.setValue(QStringLiteral("syncthingAutostart"), launcher.enabled);
+    settings.setValue(QStringLiteral("syncthingAutostart"), launcher.autostartEnabled);
     settings.setValue(QStringLiteral("useLibSyncthing"), launcher.useLibSyncthing);
     settings.setValue(QStringLiteral("syncthingPath"), launcher.syncthingPath);
     settings.setValue(QStringLiteral("syncthingArgs"), launcher.syncthingArgs);
     settings.setValue(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect);
+    settings.setValue(QStringLiteral("showLauncherButton"), launcher.showButton);
     settings.beginGroup(QStringLiteral("tools"));
     for (auto i = launcher.tools.cbegin(), end = launcher.tools.cend(); i != end; ++i) {
         const ToolParameter &toolParams = i.value();
@@ -338,20 +395,21 @@ void Settings::apply(SyncthingNotifier &notifier) const
 /*!
  * \brief Applies the systemd settings to the specified \a connection considering the status of the global SyncthingService instance.
  * \remarks
- * - Called by SyncthingApplet and TrayWidget when the status of the SyncthingService changes.
+ * - Called by SyncthingApplet and TrayWidget when the status of the SyncthingService changes or the systemd settings have been changed.
  * - \a currentConnectionSettings might be nullptr.
  * - Currently this is only about the auto-reconnect interval and connecting instantly.
- * \returns Returns whether the service is relevant and running.
+ * \returns Returns the service status with respect to the specified \a connection.
  */
-std::tuple<bool, bool> Systemd::apply(
+Systemd::ServiceStatus Systemd::apply(
     Data::SyncthingConnection &connection, const SyncthingConnectionSettings *currentConnectionSettings, bool reconnectRequired) const
 {
     auto *const service(SyncthingService::mainInstance());
     if (!service) {
-        return make_tuple(false, false);
+        return ServiceStatus{};
     }
     const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
     const auto isRunning = service->isRunning();
+    const auto consideredForReconnect = considerForReconnect && isRelevant;
 
     if (currentConnectionSettings && (!considerForReconnect || !isRelevant || isRunning)) {
         // ensure auto-reconnect is configured according to settings
@@ -362,7 +420,7 @@ std::tuple<bool, bool> Systemd::apply(
     }
 
     // connect instantly if service is running
-    if (considerForReconnect && isRelevant) {
+    if (consideredForReconnect) {
         constexpr auto minActiveTimeInSeconds(5);
         if (reconnectRequired) {
             if (service->isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
@@ -379,11 +437,22 @@ std::tuple<bool, bool> Systemd::apply(
                 connection.connectLater(minActiveTimeInSeconds * 1000);
             }
         }
-    } else if (reconnectRequired) {
-        connection.reconnect();
     }
 
-    return make_tuple(isRelevant, isRunning);
+    return ServiceStatus{isRelevant, isRunning, consideredForReconnect, showButton && isRelevant};
+}
+
+/*!
+ * \brief Returns the service status with respect to the specified \a connection.
+ */
+Systemd::ServiceStatus Systemd::status(SyncthingConnection &connection) const
+{
+    auto *const service(SyncthingService::mainInstance());
+    if (!service) {
+        return ServiceStatus{};
+    }
+    const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
+    return ServiceStatus{isRelevant, service->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant};
 }
 #endif
 

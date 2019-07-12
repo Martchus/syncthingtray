@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>QtGui::LauncherOptionPage</class>
  <widget class="QWidget" name="QtGui::LauncherOptionPage">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>507</width>
-    <height>391</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Syncthing launcher</string>
   </property>
@@ -29,9 +21,6 @@
    </item>
    <item>
     <widget class="QWidget" name="launcherFormWidget" native="true">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
      <layout class="QFormLayout" name="formLayout">
       <property name="leftMargin">
        <number>30</number>
@@ -73,6 +62,13 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="showButtonCheckBox">
+     <property name="text">
+      <string>Show start/stop button on tray for local instance</string>
+     </property>
     </widget>
    </item>
    <item>
@@ -198,22 +194,6 @@
   <include location="../resources/syncthingwidgetsicons.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>enabledCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>launcherFormWidget</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>142</x>
-     <y>17</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>142</x>
-     <y>65</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>enabledCheckBox</sender>
    <signal>toggled(bool)</signal>

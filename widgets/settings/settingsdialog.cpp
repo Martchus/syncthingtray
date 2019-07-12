@@ -759,18 +759,20 @@ QWidget *LauncherOptionPage::setupWidget()
     auto *const widget = LauncherOptionPageBase::setupWidget();
 
     // adjust labels to use name of additional tool instead of "Syncthing"
-    if (!m_tool.isEmpty()) {
+    const auto isSyncthing = m_tool.isEmpty();
+    if (!isSyncthing) {
         widget->setWindowTitle(tr("%1-launcher").arg(m_tool));
         ui()->enabledCheckBox->setText(tr("Launch %1 when starting the tray icon").arg(m_tool));
         ui()->syncthingPathLabel->setText(tr("%1 executable").arg(m_tool));
         ui()->logLabel->setText(tr("%1 log (interleaved stdout/stderr)").arg(m_tool));
+
+        // hide "consider for reconnect" and "show start/stop button on tray" checkboxes for tools
+        ui()->considerForReconnectCheckBox->setVisible(false);
+        ui()->showButtonCheckBox->setVisible(false);
     }
 
-    // hide "consider for reconnect" checkbox for tools
-    ui()->considerForReconnectCheckBox->setVisible(m_tool.isEmpty());
-
-    // add "restore to defaults" action for arguments
-    if (m_tool.isEmpty()) {
+    // add "restore to defaults" action for Syncthing arguments
+    if (isSyncthing) {
         m_restoreArgsButton = new IconButton(ui()->argumentsLineEdit);
         m_restoreArgsButton->setPixmap(
             QIcon::fromTheme(QStringLiteral("edit-undo"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-paste.svg"))).pixmap(16));
@@ -794,6 +796,7 @@ QWidget *LauncherOptionPage::setupWidget()
             &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
         connect(m_process, &SyncthingProcess::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
     } else if (m_launcher) {
+        connect(m_launcher, &SyncthingLauncher::runningChanged, this, &LauncherOptionPage::handleSyncthingLaunched);
         connect(m_launcher, &SyncthingLauncher::outputAvailable, this, &LauncherOptionPage::handleSyncthingOutputAvailable, Qt::QueuedConnection);
         connect(m_launcher, &SyncthingLauncher::exited, this, &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
         connect(m_launcher, &SyncthingLauncher::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
@@ -808,11 +811,12 @@ bool LauncherOptionPage::apply()
 {
     auto &settings = values().launcher;
     if (m_tool.isEmpty()) {
-        settings.enabled = ui()->enabledCheckBox->isChecked();
+        settings.autostartEnabled = ui()->enabledCheckBox->isChecked();
         settings.useLibSyncthing = ui()->useBuiltInVersionCheckBox->isChecked();
         settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
         settings.syncthingArgs = ui()->argumentsLineEdit->text();
         settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
+        settings.showButton = ui()->showButtonCheckBox->isChecked();
     } else {
         ToolParameter &params = settings.tools[m_tool];
         params.autostart = ui()->enabledCheckBox->isChecked();
@@ -826,12 +830,13 @@ void LauncherOptionPage::reset()
 {
     const auto &settings = values().launcher;
     if (m_tool.isEmpty()) {
-        ui()->enabledCheckBox->setChecked(settings.enabled);
+        ui()->enabledCheckBox->setChecked(settings.autostartEnabled);
         ui()->useBuiltInVersionCheckBox->setChecked(settings.useLibSyncthing);
         ui()->useBuiltInVersionCheckBox->setVisible(settings.useLibSyncthing || SyncthingLauncher::isLibSyncthingAvailable());
         ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
         ui()->argumentsLineEdit->setText(settings.syncthingArgs);
         ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
+        ui()->showButtonCheckBox->setChecked(settings.showButton);
     } else {
         const ToolParameter params = settings.tools.value(m_tool);
         ui()->useBuiltInVersionCheckBox->setChecked(false);
@@ -840,6 +845,17 @@ void LauncherOptionPage::reset()
         ui()->syncthingPathSelection->lineEdit()->setText(params.path);
         ui()->argumentsLineEdit->setText(params.args);
     }
+}
+
+void LauncherOptionPage::handleSyncthingLaunched(bool running)
+{
+    if (!running) {
+        return; // Syncthing being stopped is handled elsewhere
+    }
+    ui()->launchNowPushButton->hide();
+    ui()->stopPushButton->show();
+    ui()->stopPushButton->setText(tr("Stop launched instance"));
+    m_kill = false;
 }
 
 void LauncherOptionPage::handleSyncthingReadyRead()
@@ -943,10 +959,6 @@ void LauncherOptionPage::launch()
     if (isRunning()) {
         return;
     }
-    ui()->launchNowPushButton->hide();
-    ui()->stopPushButton->show();
-    ui()->stopPushButton->setText(tr("Stop launched instance"));
-    m_kill = false;
     const auto launcherSettings(values().launcher);
     if (m_tool.isEmpty()) {
         m_launcher->launch(launcherSettings.useLibSyncthing ? QString() : launcherSettings.syncthingPath,
@@ -954,6 +966,7 @@ void LauncherOptionPage::launch()
     } else {
         const auto toolParams(launcherSettings.tools.value(m_tool));
         m_process->startSyncthing(toolParams.path, SyncthingProcess::splitArguments(toolParams.args));
+        handleSyncthingLaunched(true);
     }
 }
 
@@ -1018,11 +1031,22 @@ QWidget *SystemdOptionPage::setupWidget()
 
 bool SystemdOptionPage::apply()
 {
-    auto &settings = values().systemd;
-    settings.syncthingUnit = ui()->syncthingUnitLineEdit->text();
-    settings.showButton = ui()->showButtonCheckBox->isChecked();
-    settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
-    return true;
+    auto &settings = values();
+    auto &systemdSettings = settings.systemd;
+    auto &launcherSettings = settings.launcher;
+    systemdSettings.syncthingUnit = ui()->syncthingUnitLineEdit->text();
+    systemdSettings.showButton = ui()->showButtonCheckBox->isChecked();
+    systemdSettings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
+    auto result = true;
+    if (systemdSettings.showButton && launcherSettings.showButton) {
+        errors().append(QCoreApplication::translate("QtGui::SystemdOptionPage", "It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes."));
+        result = false;
+    }
+    if (systemdSettings.considerForReconnect && launcherSettings.considerForReconnect) {
+        errors().append(QCoreApplication::translate("QtGui::SystemdOptionPage", "It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes."));
+        result = false;
+    }
+    return result;
 }
 
 void SystemdOptionPage::reset()

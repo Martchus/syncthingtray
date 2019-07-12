@@ -1,5 +1,7 @@
 #include "./syncthinglauncher.h"
 
+#include "../settings/settings.h"
+
 #include <QtConcurrentRun>
 
 #include <algorithm>
@@ -20,6 +22,7 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     connect(&m_process, &SyncthingProcess::readyRead, this, &SyncthingLauncher::handleProcessReadyRead);
     connect(&m_process, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
         &SyncthingLauncher::handleProcessFinished);
+    connect(&m_process, &SyncthingProcess::stateChanged, this, &SyncthingLauncher::handleProcessStateChanged);
     connect(&m_process, &SyncthingProcess::errorOccurred, this, &SyncthingLauncher::errorOccurred);
     connect(&m_process, &SyncthingProcess::confirmKill, this, &SyncthingLauncher::confirmKill);
 }
@@ -55,6 +58,15 @@ void SyncthingLauncher::launch(const QString &program, const QStringList &argume
         m_future = QtConcurrent::run(
             this, static_cast<void (SyncthingLauncher::*)(const std::vector<std::string> &)>(&SyncthingLauncher::runLibSyncthing), utf8Arguments);
     }
+}
+
+void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
+{
+    if (!launcherSettings.useLibSyncthing && launcherSettings.syncthingPath.isEmpty()) {
+        emit errorOccurred(QProcess::FailedToStart);
+        return;
+    }
+    launch(launcherSettings.useLibSyncthing ? QString() : launcherSettings.syncthingPath, SyncthingProcess::splitArguments(launcherSettings.syncthingArgs));
 }
 
 /*!
@@ -102,9 +114,22 @@ void SyncthingLauncher::handleProcessReadyRead()
     emit outputAvailable(m_process.readAll());
 }
 
+void SyncthingLauncher::handleProcessStateChanged(QProcess::ProcessState newState)
+{
+    switch(newState) {
+    case QProcess::NotRunning:
+        emit runningChanged(false);
+        break;
+    case QProcess::Starting:
+        emit runningChanged(true);
+        break;
+    default:
+        ;
+    }
+}
+
 void SyncthingLauncher::handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    emit runningChanged(false);
     emit exited(exitCode, exitStatus);
 }
 
@@ -143,8 +168,10 @@ void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runt
 {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
+    emit runningChanged(true);
     const auto exitCode = LibSyncthing::runSyncthing(runtimeOptions);
     emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
+    emit runningChanged(false);
 #else
     CPP_UTILITIES_UNUSED(runtimeOptions)
     emit outputAvailable("libsyncthing support not enabled");
@@ -156,8 +183,10 @@ void SyncthingLauncher::runLibSyncthing(const std::vector<string> &arguments)
 {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
+    emit runningChanged(true);
     const auto exitCode = LibSyncthing::runSyncthing(arguments);
     emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
+    emit runningChanged(false);
 #else
     CPP_UTILITIES_UNUSED(arguments)
     emit outputAvailable("libsyncthing support not enabled");
