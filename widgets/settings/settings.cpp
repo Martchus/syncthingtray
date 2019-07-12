@@ -160,6 +160,7 @@ void restore()
     auto &notifyOn = v.notifyOn;
     notifyOn.disconnect = settings.value(QStringLiteral("notifyOnDisconnect"), notifyOn.disconnect).toBool();
     notifyOn.internalErrors = settings.value(QStringLiteral("notifyOnErrors"), notifyOn.internalErrors).toBool();
+    notifyOn.launcherErrors = settings.value(QStringLiteral("notifyOnLauncherErrors"), notifyOn.launcherErrors).toBool();
     notifyOn.localSyncComplete = settings.value(QStringLiteral("notifyOnLocalSyncComplete"), notifyOn.localSyncComplete).toBool();
     notifyOn.remoteSyncComplete = settings.value(QStringLiteral("notifyOnRemoteSyncComplete"), notifyOn.remoteSyncComplete).toBool();
     notifyOn.syncthingErrors = settings.value(QStringLiteral("showSyncthingNotifications"), notifyOn.syncthingErrors).toBool();
@@ -248,6 +249,7 @@ void save()
     const auto &notifyOn = v.notifyOn;
     settings.setValue(QStringLiteral("notifyOnDisconnect"), notifyOn.disconnect);
     settings.setValue(QStringLiteral("notifyOnErrors"), notifyOn.internalErrors);
+    settings.setValue(QStringLiteral("notifyOnLauncherErrors"), notifyOn.launcherErrors);
     settings.setValue(QStringLiteral("notifyOnLocalSyncComplete"), notifyOn.localSyncComplete);
     settings.setValue(QStringLiteral("notifyOnRemoteSyncComplete"), notifyOn.remoteSyncComplete);
     settings.setValue(QStringLiteral("showSyncthingNotifications"), notifyOn.syncthingErrors);
@@ -324,6 +326,9 @@ void Settings::apply(SyncthingNotifier &notifier) const
     }
     if (notifyOn.newDirectoryShared) {
         notifications |= SyncthingHighLevelNotification::NewDir;
+    }
+    if (notifyOn.launcherErrors) {
+        notifications |= SyncthingHighLevelNotification::SyncthingProcessError;
     }
     notifier.setEnabledNotifications(notifications);
     notifier.setIgnoreInavailabilityAfterStart(ignoreInavailabilityAfterStart);

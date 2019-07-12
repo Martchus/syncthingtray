@@ -86,6 +86,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     connect(this, &TrayIcon::messageClicked, this, &TrayIcon::handleMessageClicked);
     connect(&connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
     connect(&connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
+    connect(&notifier, &SyncthingNotifier::syncthingProcessError, this, &TrayIcon::showLauncherError);
     connect(&notifier, &SyncthingNotifier::disconnected, this, &TrayIcon::showDisconnected);
     connect(&notifier, &SyncthingNotifier::syncComplete, this, &TrayIcon::showSyncComplete);
     connect(&notifier, &SyncthingNotifier::newDevice, this, &TrayIcon::showNewDev);
@@ -191,13 +192,12 @@ void TrayIcon::handleErrorsCleared()
     m_errorsAction->setVisible(false);
 }
 
-void TrayIcon::showInternalError(
-    const QString &errorMsg, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
+void TrayIcon::showInternalError(const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
     if (!InternalError::isRelevant(m_trayMenu.widget().connection(), category, networkError)) {
         return;
     }
-    InternalError error(errorMsg, request.url(), response);
+    InternalError error(errorMessage, request.url(), response);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     if (m_dbusNotificationsEnabled) {
         m_dbusNotifier.showInternalError(error);
@@ -205,10 +205,23 @@ void TrayIcon::showInternalError(
 #endif
     {
         m_messageClickedAction = TrayIconMessageClickedAction::ShowInternalErrors;
-        showMessage(tr("Error"), errorMsg, QSystemTrayIcon::Critical);
+        showMessage(tr("Error"), errorMessage, QSystemTrayIcon::Critical);
     }
     InternalErrorsDialog::addError(move(error));
     m_errorsAction->setVisible(true);
+}
+
+void TrayIcon::showLauncherError(const QString &errorMessage, const QString &additionalInfo)
+{
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    if (m_dbusNotificationsEnabled) {
+        m_dbusNotifier.showLauncherError(errorMessage, additionalInfo);
+    } else
+#endif
+    {
+        m_messageClickedAction = TrayIconMessageClickedAction::None;
+        showMessage(tr("Launcher error"), QStringList({errorMessage, additionalInfo}).join(QChar('\n')), QSystemTrayIcon::Critical);
+    }
 }
 
 void TrayIcon::showSyncthingNotification(CppUtilities::DateTime when, const QString &message)

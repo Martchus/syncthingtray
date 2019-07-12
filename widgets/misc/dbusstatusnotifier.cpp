@@ -23,6 +23,7 @@ DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
     : QObject(parent)
     , m_disconnectedNotification(QStringLiteral(APP_NAME), QStringLiteral("network-disconnect"), 5000)
     , m_internalErrorNotification(QStringLiteral(APP_NAME) + tr(" - internal error"), NotificationIcon::Critical, 5000)
+    , m_launcherErrorNotification(QStringLiteral(APP_NAME) + tr(" - launcher error"), NotificationIcon::Critical, 5000)
     , m_syncthingNotification(tr("Syncthing notification"), NotificationIcon::Warning, 10000)
     , m_syncCompleteNotification(QStringLiteral(APP_NAME), NotificationIcon::Information, 5000)
     , m_newDevNotification(QStringLiteral(APP_NAME) + tr(" - new device"), NotificationIcon::Information, 5000)
@@ -32,6 +33,10 @@ DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
     m_disconnectedNotification.setMessage(tr("Disconnected from Syncthing"));
     m_disconnectedNotification.setActions(QStringList({ QStringLiteral("reconnect"), tr("Try to reconnect") }));
     connect(&m_disconnectedNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::connectRequested);
+
+    m_internalErrorNotification.setApplicationName(QStringLiteral(APP_NAME));
+    m_internalErrorNotification.setActions(QStringList({ QStringLiteral("details"), tr("View details") }));
+    connect(&m_internalErrorNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::errorDetailsRequested);
 
     m_internalErrorNotification.setApplicationName(QStringLiteral(APP_NAME));
     m_internalErrorNotification.setActions(QStringList({ QStringLiteral("details"), tr("View details") }));
@@ -61,7 +66,8 @@ void DBusStatusNotifier::setIcons(const StatusIcons &icons)
     if (!icons.isValid) {
         return;
     }
-    m_syncthingNotification.setImage(makeImage(icons.error));
+    m_launcherErrorNotification.setImage(makeImage(icons.error));
+    m_syncthingNotification.setImage(m_launcherErrorNotification.image());
     m_syncthingNotification.setImage(makeImage(icons.notify));
     m_syncCompleteNotification.setImage(makeImage(icons.syncComplete));
     m_newDevNotification.setImage(makeImage(icons.newItem));
@@ -76,6 +82,7 @@ void DBusStatusNotifier::handleSyncthingNotificationAction(const QString &action
         emit showNotificationsRequested();
     }
 }
+
 } // namespace QtGui
 
 #endif

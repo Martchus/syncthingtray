@@ -41,6 +41,9 @@ SyncthingNotifier::SyncthingNotifier(const SyncthingConnection &connection, QObj
     connect(&connection, &SyncthingConnection::dirCompleted, this, &SyncthingNotifier::emitSyncComplete);
     connect(&connection, &SyncthingConnection::newDevAvailable, this, &SyncthingNotifier::handleNewDevEvent);
     connect(&connection, &SyncthingConnection::newDirAvailable, this, &SyncthingNotifier::handleNewDirEvent);
+    if (m_process) {
+        connect(m_process, &QProcess::errorOccurred, this, &SyncthingNotifier::handleSyncthingProcessError);
+    }
 }
 
 void SyncthingNotifier::handleStatusChangedEvent(SyncthingStatus newStatus)
@@ -90,6 +93,24 @@ void SyncthingNotifier::handleNewDirEvent(DateTime when, const QString &devId, c
         }
     }());
     emit newDir(devId, dirId, message);
+}
+
+void SyncthingNotifier::handleSyncthingProcessError(QProcess::ProcessError processError)
+{
+    if (!(m_enabledNotifications & SyncthingHighLevelNotification::SyncthingProcessError)) {
+        return;
+    }
+
+    switch(processError) {
+    case QProcess::FailedToStart:
+        emit syncthingProcessError(tr("Failed to start Syncthing"), tr("Maybe the configured binary path is wrong or the binary is not marked as executable."));
+        break;
+    case QProcess::Crashed:
+        emit syncthingProcessError(tr("Syncthing crashed with exit code %1").arg(m_process->exitCode()), QString());
+        break;
+    default:
+        emit syncthingProcessError(tr("Syncthing launcher error occurred"), m_process->errorString());
+    }
 }
 
 /*!

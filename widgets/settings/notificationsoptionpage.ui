@@ -65,6 +65,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="notifyOnLauncherErrorsCheckBox">
+        <property name="text">
+         <string>errors of Syncthing launcher</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

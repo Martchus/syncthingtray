@@ -4,6 +4,7 @@
 #include "./global.h"
 
 #include <QObject>
+#include <QProcess>
 
 namespace CppUtilities {
 class DateTime;
@@ -29,6 +30,7 @@ enum class SyncthingHighLevelNotification {
     RemoteSyncComplete = 0x4,
     NewDevice = 0x8,
     NewDir = 0x10,
+    SyncthingProcessError = 0x20,
 };
 
 /// \cond
@@ -90,11 +92,14 @@ Q_SIGNALS:
     void newDevice(const QString &devId, const QString &message);
     ///! \brief Emitted when a new directory is shared with us.
     void newDir(const QString &devId, const QString &dirId, const QString &message);
+    ///! \brief Emitted when the Syncthing process fails to start or crashes.
+    void syncthingProcessError(const QString &message, const QString &additionalInfo);
 
 private Q_SLOTS:
     void handleStatusChangedEvent(SyncthingStatus newStatus);
     void handleNewDevEvent(CppUtilities::DateTime when, const QString &devId, const QString &address);
     void handleNewDirEvent(CppUtilities::DateTime when, const QString &devId, const SyncthingDev *dev, const QString &dirId, const QString &dirLabel);
+    void handleSyncthingProcessError(QProcess::ProcessError syncthingProcessError);
 
 private:
     bool isDisconnectRelevant() const;

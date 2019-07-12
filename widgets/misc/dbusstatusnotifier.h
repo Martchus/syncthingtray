@@ -8,6 +8,7 @@
 #include <c++utilities/chrono/datetime.h>
 
 #include <QObject>
+#include <QStringList>
 
 namespace Data {
 enum class SyncthingErrorCategory;
@@ -26,6 +27,7 @@ public Q_SLOTS:
     void showDisconnect();
     void hideDisconnect();
     void showInternalError(const InternalError &error);
+    void showLauncherError(const QString &errorMessage, const QString &additionalInfo);
     void showSyncthingNotification(CppUtilities::DateTime when, const QString &message);
     void showSyncComplete(const QString &message);
     void showNewDev(const QString &devId, const QString &message);
@@ -45,6 +47,7 @@ private Q_SLOTS:
 private:
     QtUtilities::DBusNotification m_disconnectedNotification;
     QtUtilities::DBusNotification m_internalErrorNotification;
+    QtUtilities::DBusNotification m_launcherErrorNotification;
     QtUtilities::DBusNotification m_syncthingNotification;
     QtUtilities::DBusNotification m_syncCompleteNotification;
     QtUtilities::DBusNotification m_newDevNotification;
@@ -64,6 +67,11 @@ inline void DBusStatusNotifier::hideDisconnect()
 inline void DBusStatusNotifier::showInternalError(const InternalError &error)
 {
     m_internalErrorNotification.update(error.message);
+}
+
+inline void QtGui::DBusStatusNotifier::showLauncherError(const QString &errorMessage, const QString &additionalInfo)
+{
+    m_launcherErrorNotification.update(QStringList({errorMessage, additionalInfo}).join(QStringLiteral("\n    ")));
 }
 
 inline void DBusStatusNotifier::showSyncthingNotification(CppUtilities::DateTime when, const QString &message)

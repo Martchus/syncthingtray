@@ -33,7 +33,8 @@ public:
 
 public slots:
     void showInternalError(
-        const QString &errorMsg, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);
+        const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);
+    void showLauncherError(const QString &errorMessage, const QString &additionalInfo);
     void showSyncthingNotification(CppUtilities::DateTime when, const QString &message);
     void showInternalErrorsDialog();
     void updateStatusIconAndText();

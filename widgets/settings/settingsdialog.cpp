@@ -374,6 +374,7 @@ bool NotificationsOptionPage::apply()
     auto &notifyOn(settings.notifyOn);
     notifyOn.disconnect = ui()->notifyOnDisconnectCheckBox->isChecked();
     notifyOn.internalErrors = ui()->notifyOnErrorsCheckBox->isChecked();
+    notifyOn.launcherErrors = ui()->notifyOnLauncherErrorsCheckBox->isChecked();
     notifyOn.localSyncComplete = ui()->notifyOnLocalSyncCompleteCheckBox->isChecked();
     notifyOn.remoteSyncComplete = ui()->notifyOnRemoteSyncCompleteCheckBox->isChecked();
     notifyOn.syncthingErrors = ui()->showSyncthingNotificationsCheckBox->isChecked();
@@ -395,6 +396,7 @@ void NotificationsOptionPage::reset()
     const auto &notifyOn = values().notifyOn;
     ui()->notifyOnDisconnectCheckBox->setChecked(notifyOn.disconnect);
     ui()->notifyOnErrorsCheckBox->setChecked(notifyOn.internalErrors);
+    ui()->notifyOnLauncherErrorsCheckBox->setChecked(notifyOn.launcherErrors);
     ui()->notifyOnLocalSyncCompleteCheckBox->setChecked(notifyOn.localSyncComplete);
     ui()->notifyOnRemoteSyncCompleteCheckBox->setChecked(notifyOn.remoteSyncComplete);
     ui()->showSyncthingNotificationsCheckBox->setChecked(notifyOn.syncthingErrors);
