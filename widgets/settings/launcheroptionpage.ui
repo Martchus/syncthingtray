@@ -195,22 +195,6 @@
  </resources>
  <connections>
   <connection>
-   <sender>enabledCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>launchNowPushButton</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>259</x>
-     <y>19</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>257</x>
-     <y>130</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>useBuiltInVersionCheckBox</sender>
    <signal>toggled(bool)</signal>
    <receiver>syncthingPathSelection</receiver>
