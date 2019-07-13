@@ -8,6 +8,17 @@ namespace Data {
 
 SyncthingProcess *SyncthingProcess::s_mainInstance = nullptr;
 
+/*!
+ * \class SyncthingProcess
+ * \brief The SyncthingProcess class starts a Syncthing instance or additional tools as an external process.
+ *
+ * This class is actually not Syncthing-specific. It is just an extension of QProcess for some use-cases within
+ * Syncthing Tray.
+ */
+
+/*!
+ * \brief Constructs a new Syncthing process.
+ */
 SyncthingProcess::SyncthingProcess(QObject *parent)
     : QProcess(parent)
     , m_manuallyStopped(false)
@@ -21,6 +32,9 @@ SyncthingProcess::SyncthingProcess(QObject *parent)
     connect(&m_killTimer, &QTimer::timeout, this, &SyncthingProcess::confirmKill);
 }
 
+/*!
+ * \brief Splits the given arguments similar to how a shell would split it. So whitespaces are considered seperators unless quotes are used.
+ */
 QStringList SyncthingProcess::splitArguments(const QString &arguments)
 {
     enum { Any, Quote, Slash, Space } lastInput = Any;
@@ -89,6 +103,9 @@ QStringList SyncthingProcess::splitArguments(const QString &arguments)
     return result;
 }
 
+/*!
+ * \brief Stops the currently running process. If it has been stopped, starts the specified \a program with the specified \a arguments.
+ */
 void SyncthingProcess::restartSyncthing(const QString &program, const QStringList &arguments)
 {
     if (!isRunning()) {
@@ -102,6 +119,9 @@ void SyncthingProcess::restartSyncthing(const QString &program, const QStringLis
     terminate();
 }
 
+/*!
+ * \brief Starts the specified \a program with the specified \a arguments.
+ */
 void SyncthingProcess::startSyncthing(const QString &program, const QStringList &arguments)
 {
     if (isRunning()) {
@@ -112,6 +132,9 @@ void SyncthingProcess::startSyncthing(const QString &program, const QStringList 
     start(program, arguments, QProcess::ReadOnly);
 }
 
+/*!
+ * \brief Stops the currently running process gracefully. If it doesn't stop after 3 seconds, attempts to kill the process.
+ */
 void SyncthingProcess::stopSyncthing()
 {
     if (!isRunning()) {
@@ -122,6 +145,9 @@ void SyncthingProcess::stopSyncthing()
     terminate();
 }
 
+/*!
+ * \brief Kills the currently running process.
+ */
 void SyncthingProcess::killSyncthing()
 {
     if (!isRunning()) {

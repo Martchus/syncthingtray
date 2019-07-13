@@ -15,9 +15,21 @@ namespace Data {
 
 SyncthingLauncher *SyncthingLauncher::s_mainInstance = nullptr;
 
+/*!
+ * \class SyncthingLauncher
+ * \brief The SyncthingLauncher class starts a Syncthing instance either as an external process or using a library version of Syncthing.
+ * \remarks
+ * - This is *not* strictly a singleton class. However, one instance is supposed to be the "main instance" (see SyncthingLauncher::setMainInstance()).
+ * - A SyncthingLauncher instance can only launch one Syncthing instance at a time.
+ * - Using Syncthing as library is still under development and must be explicitely enabled by setting the CMake variable USE_LIBSYNCTHING.
+ */
+
+/*!
+ * \brief Constructs a new Syncthing launcher.
+ */
 SyncthingLauncher::SyncthingLauncher(QObject *parent)
     : QObject(parent)
-    , m_useLibSyncthing(false)
+    , m_manuallyStopped(true)
 {
     connect(&m_process, &SyncthingProcess::readyRead, this, &SyncthingLauncher::handleProcessReadyRead);
     connect(&m_process, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
@@ -27,6 +39,9 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     connect(&m_process, &SyncthingProcess::confirmKill, this, &SyncthingLauncher::confirmKill);
 }
 
+/*!
+ * \brief Returns whether the built-in Syncthing library is available.
+ */
 bool SyncthingLauncher::isLibSyncthingAvailable()
 {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
@@ -38,7 +53,9 @@ bool SyncthingLauncher::isLibSyncthingAvailable()
 
 /*!
  * \brief Launches a Syncthing instance using the specified \a arguments.
- * \remarks To use the internal library, leave \a program empty. Otherwise it must be the path the external Syncthing executable.
+ * \remarks
+ * - Does nothing if already running an instance.
+ * - To use the internal library, leave \a program empty. Otherwise it must be the path the external Syncthing executable.
  */
 void SyncthingLauncher::launch(const QString &program, const QStringList &arguments)
 {
@@ -46,22 +63,33 @@ void SyncthingLauncher::launch(const QString &program, const QStringList &argume
         return;
     }
     m_manuallyStopped = false;
+
+    // start external process
     if (!program.isEmpty()) {
         m_process.startSyncthing(program, arguments);
-    } else {
-        vector<string> utf8Arguments{ "-no-restart", "-no-browser" };
-        utf8Arguments.reserve(utf8Arguments.size() + static_cast<size_t>(arguments.size()));
-        for (const auto &arg : arguments) {
-            const auto utf8Data(arg.toUtf8());
-            utf8Arguments.emplace_back(utf8Data.data(), utf8Data.size());
-        }
-        m_future = QtConcurrent::run(
-            this, static_cast<void (SyncthingLauncher::*)(const std::vector<std::string> &)>(&SyncthingLauncher::runLibSyncthing), utf8Arguments);
+        return;
     }
+
+    // use libsyncthing
+    vector<string> utf8Arguments{ "-no-restart", "-no-browser" };
+    utf8Arguments.reserve(utf8Arguments.size() + static_cast<size_t>(arguments.size()));
+    for (const auto &arg : arguments) {
+        const auto utf8Data(arg.toUtf8());
+        utf8Arguments.emplace_back(utf8Data.data(), utf8Data.size());
+    }
+    m_future = QtConcurrent::run(
+        this, static_cast<void (SyncthingLauncher::*)(const std::vector<std::string> &)>(&SyncthingLauncher::runLibSyncthing), utf8Arguments);
 }
 
+/*!
+ * \brief Launches a Syncthing instance according to the specified \a launcherSettings.
+ * \remarks Does nothing if already running an instance.
+ */
 void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
 {
+    if (isRunning()) {
+        return;
+    }
     if (!launcherSettings.useLibSyncthing && launcherSettings.syncthingPath.isEmpty()) {
         emit errorOccurred(QProcess::FailedToStart);
         return;
@@ -72,6 +100,7 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
 
 /*!
  * \brief Launches a Syncthing instance using the internal library with the specified \a runtimeOptions.
+ * \remarks Does nothing if already running an instance.
  */
 void SyncthingLauncher::launch(const LibSyncthing::RuntimeOptions &runtimeOptions)
 {
@@ -192,12 +221,6 @@ void SyncthingLauncher::runLibSyncthing(const std::vector<string> &arguments)
     emit outputAvailable("libsyncthing support not enabled");
     emit exited(-1, QProcess::CrashExit);
 #endif
-}
-
-SyncthingLauncher &syncthingLauncher()
-{
-    static SyncthingLauncher launcher;
-    return launcher;
 }
 
 } // namespace Data

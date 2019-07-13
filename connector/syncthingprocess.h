@@ -49,31 +49,43 @@ private:
     static SyncthingProcess *s_mainInstance;
 };
 
+/// \brief Returns whether the process is running.
 inline bool SyncthingProcess::isRunning() const
 {
     return state() != QProcess::NotRunning;
 }
 
+/// \brief Returns the last time when QProcess::started() has been emitted.
 inline CppUtilities::DateTime SyncthingProcess::activeSince() const
 {
     return m_activeSince;
 }
 
+/// \brief Checks whether the process already runs for the specified number of seconds.
 inline bool SyncthingProcess::isActiveFor(unsigned int atLeastSeconds) const
 {
     return !m_activeSince.isNull() && (CppUtilities::DateTime::gmtNow() - m_activeSince).totalSeconds() > atLeastSeconds;
 }
 
+/// \brief Returns whether the process has been manually stopped via SyncthingProcess::stopSyncthing(), SyncthingProcess::killSyncthing()
+/// or SyncthingProcess::restartSyncthing().
+/// \remarks Resetted on SyncthingProcess::startSyncthing() and SyncthingProcess::restartSyncthing().
 inline bool SyncthingProcess::isManuallyStopped() const
 {
     return m_manuallyStopped;
 }
 
+/*!
+ * \brief Returns the "main" instance assigned via SyncthingProcess::setMainInstance().
+ */
 inline SyncthingProcess *SyncthingProcess::mainInstance()
 {
     return s_mainInstance;
 }
 
+/*!
+ * \brief Sets the "main" instance.
+ */
 inline void SyncthingProcess::setMainInstance(SyncthingProcess *mainInstance)
 {
     s_mainInstance = mainInstance;

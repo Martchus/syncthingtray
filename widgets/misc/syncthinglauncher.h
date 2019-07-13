@@ -23,7 +23,6 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
     Q_PROPERTY(bool running READ isRunning NOTIFY runningChanged)
     Q_PROPERTY(CppUtilities::DateTime activeSince READ activeSince)
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
-    Q_PROPERTY(bool useLibSyncthing READ isUseLibSyncthing WRITE setUseLibSyncthing)
 
 public:
     explicit SyncthingLauncher(QObject *parent = nullptr);
@@ -32,7 +31,6 @@ public:
     CppUtilities::DateTime activeSince() const;
     bool isActiveFor(unsigned int atLeastSeconds) const;
     bool isManuallyStopped() const;
-    bool isUseLibSyncthing() const;
     static bool isLibSyncthingAvailable();
     static SyncthingLauncher *mainInstance();
     static void setMainInstance(SyncthingLauncher *mainInstance);
@@ -45,7 +43,6 @@ Q_SIGNALS:
     void errorOccurred(QProcess::ProcessError error);
 
 public Q_SLOTS:
-    void setUseLibSyncthing(bool useLibSyncthing);
     void launch(const QString &program, const QStringList &arguments);
     void launch(const Settings::Launcher &launcherSettings);
     void launch(const LibSyncthing::RuntimeOptions &runtimeOptions);
@@ -69,11 +66,13 @@ private:
     static SyncthingLauncher *s_mainInstance;
 };
 
+/// \brief Returns whether Syncthing is running.
 inline bool SyncthingLauncher::isRunning() const
 {
     return m_process.isRunning() || m_future.isRunning();
 }
 
+/// \brief Returns when the Syncthing instance has been started.
 inline CppUtilities::DateTime SyncthingLauncher::activeSince() const
 {
     if (m_process.isRunning()) {
@@ -84,40 +83,34 @@ inline CppUtilities::DateTime SyncthingLauncher::activeSince() const
     return CppUtilities::DateTime();
 }
 
+/// \brief Checks whether Syncthing is already running for the specified number of seconds.
 inline bool SyncthingLauncher::isActiveFor(unsigned int atLeastSeconds) const
 {
     const auto activeSince(this->activeSince());
     return !activeSince.isNull() && (CppUtilities::DateTime::gmtNow() - activeSince).totalSeconds() > atLeastSeconds;
 }
 
+/// \brief Returns whether the Syncthing instance has been manually stopped using SyncthingLauncher::terminate()
+/// or SyncthingLauncher::kill().
+/// \remarks This is resetted when calling SyncthingLauncher::launch().
 inline bool SyncthingLauncher::isManuallyStopped() const
 {
     return m_manuallyStopped;
 }
 
-inline bool SyncthingLauncher::isUseLibSyncthing() const
-{
-    return m_useLibSyncthing;
-}
-
-inline void SyncthingLauncher::setUseLibSyncthing(bool useLibSyncthing)
-{
-    m_useLibSyncthing = useLibSyncthing;
-}
-
+/// \brief Returns the SyncthingLauncher instance previously assigned via SyncthingLauncher::setMainInstance().
 inline SyncthingLauncher *SyncthingLauncher::mainInstance()
 {
     return s_mainInstance;
 }
 
+/// \brief Sets the "main" SyncthingLauncher instance and SyncthingProcess::mainInstance() if not already assigned.
 inline void SyncthingLauncher::setMainInstance(SyncthingLauncher *mainInstance)
 {
     if ((s_mainInstance = mainInstance) && !SyncthingProcess::mainInstance()) {
         SyncthingProcess::setMainInstance(&mainInstance->m_process);
     }
 }
-
-SyncthingLauncher SYNCTHINGWIDGETS_EXPORT &syncthingLauncher();
 
 } // namespace Data
 
