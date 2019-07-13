@@ -604,7 +604,7 @@ Settings::Launcher::LauncherStatus TrayWidget::applyLauncherSettings(bool reconn
             QIcon::fromTheme(QStringLiteral("process-stop"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/process-stop.svg"))));
     } else {
         m_ui->startStopPushButton->setText(tr("Start"));
-        m_ui->startStopPushButton->setToolTip(tr("Launch Syncthing instance via tray icon"));
+        m_ui->startStopPushButton->setToolTip(tr("Start Syncthing with the built-in launcher configured in the settings"));
         m_ui->startStopPushButton->setIcon(
             QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
     }

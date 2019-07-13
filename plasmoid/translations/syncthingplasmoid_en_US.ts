@@ -18,7 +18,7 @@
     </message>
     <message>
         <location filename="../package/contents/ui/DevicesPage.qml" line="60"/>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="97"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="98"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
@@ -32,7 +32,7 @@
     </message>
     <message>
         <location filename="../package/contents/ui/DirectoriesPage.qml" line="86"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="141"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="142"/>
         <source>Rescan</source>
         <translation type="unfinished"></translation>
     </message>
@@ -43,13 +43,13 @@
     </message>
     <message>
         <location filename="../package/contents/ui/DirectoriesPage.qml" line="94"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="148"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="149"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package/contents/ui/DirectoriesPage.qml" line="104"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="155"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="156"/>
         <source>Open in file browser</source>
         <translation type="unfinished"></translation>
     </message>
@@ -67,62 +67,67 @@
 <context>
     <name>FullRepresentation</name>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="186"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="192"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="194"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="200"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="202"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="208"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="247"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="253"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="258"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="264"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="303"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="309"/>
         <source>Show new notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="329"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="335"/>
         <source>Show own device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="342"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="348"/>
         <source>Show Syncthing log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="355"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="361"/>
         <source>Rescan all directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="365"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="371"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="378"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="384"/>
         <source>Open Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="320"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="539"/>
+        <source>Toggle filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="326"/>
         <source>About Syncthing Tray</source>
         <translation type="unfinished"></translation>
     </message>
@@ -186,12 +191,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="135"/>
+        <location filename="../lib/settingsdialog.cpp" line="134"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="145"/>
+        <location filename="../lib/settingsdialog.cpp" line="144"/>
         <source>Extras</source>
         <translation type="unfinished"></translation>
     </message>
@@ -212,17 +217,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="316"/>
+        <location filename="../lib/syncthingapplet.cpp" line="324"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="328"/>
+        <location filename="../lib/syncthingapplet.cpp" line="336"/>
         <source>New notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="482"/>
+        <location filename="../lib/syncthingapplet.cpp" line="491"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
