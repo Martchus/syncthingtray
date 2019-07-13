@@ -45,6 +45,13 @@ template <> struct hash<QString> {
 namespace Settings {
 
 /*!
+ * \brief The minimum number of seconds the Syncthing service should be active before we try to connect.
+ *
+ * Because the REST-API is not instantly available after startup and we want to prevent connection errors.
+ */
+constexpr auto minActiveTimeInSeconds = 5;
+
+/*!
  * \brief Contains the processes for launching extra tools.
  * \remarks Using std::unordered_map instead of QHash because SyncthingProcess can not be copied.
  */
@@ -123,12 +130,20 @@ Launcher::LauncherStatus Launcher::apply(
 
     // connect instantly if service is running
     if (consideredForReconnect) {
-        // give the service (which has just started) a few seconds to initialize
-        constexpr auto minActiveTimeInSeconds(5);
         if (reconnectRequired) {
-            connection.reconnectLater(minActiveTimeInSeconds * 1000);
+            if (launcher->isActiveFor(minActiveTimeInSeconds)) {
+                connection.reconnect();
+            } else {
+                // give the service (which has just started) a few seconds to initialize
+                connection.reconnectLater(minActiveTimeInSeconds * 1000);
+            }
         } else if (isRunning && !connection.isConnected()) {
-            connection.connectLater(minActiveTimeInSeconds * 1000);
+            if (launcher->isActiveFor(minActiveTimeInSeconds)) {
+                connection.connect();
+            } else {
+                // give the service (which has just started) a few seconds to initialize
+                connection.connectLater(minActiveTimeInSeconds * 1000);
+            }
         }
     }
 
@@ -419,7 +434,6 @@ Systemd::ServiceStatus Systemd::apply(
 
     // connect instantly if service is running
     if (consideredForReconnect) {
-        constexpr auto minActiveTimeInSeconds(5);
         if (reconnectRequired) {
             if (service->isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
                 connection.reconnect();

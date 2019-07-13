@@ -381,7 +381,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     // apply systemd and launcher settings enforcing a reconnect if required and possible
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     const auto systemdStatus = applySystemdSettings(reconnectRequired);
-    const auto launcherStatus = applyLauncherSettings(reconnectRequired, systemdStatus.relevant, systemdStatus.showStartStopButton);
+    const auto launcherStatus = applyLauncherSettings(reconnectRequired, systemdStatus.consideredForReconnect, systemdStatus.showStartStopButton);
     const auto showStartStopButton = systemdStatus.showStartStopButton || launcherStatus.showStartStopButton;
     const auto systemdOrLauncherRelevantForReconnect = systemdStatus.relevant || launcherStatus.relevant;
 #else
@@ -574,7 +574,7 @@ Settings::Launcher::LauncherStatus TrayWidget::handleLauncherStatusChanged()
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     const auto systemdStatus = Settings::values().systemd.status(m_connection);
-    const auto launcherStatus = applyLauncherSettings(false, systemdStatus.relevant, systemdStatus.showStartStopButton);
+    const auto launcherStatus = applyLauncherSettings(false, systemdStatus.consideredForReconnect, systemdStatus.showStartStopButton);
     const auto showStartStopButton = systemdStatus.showStartStopButton || launcherStatus.showStartStopButton;
 #else
     const auto launcherStatus = applyLauncherSettings(false);
