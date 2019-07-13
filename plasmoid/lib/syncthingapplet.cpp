@@ -62,7 +62,9 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_currentConnectionConfig(-1)
     , m_initialized(false)
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     m_notifier.setService(&m_service);
+#endif
     qmlRegisterUncreatableMetaObject(Data::staticMetaObject, "martchus.syncthingplasmoid", 0, 6, "Data", QStringLiteral("only enums"));
 }
 
@@ -221,7 +223,11 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
 
 bool SyncthingApplet::isStartStopEnabled() const
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     return Settings::values().systemd.showButton;
+#else
+    return false;
+#endif
 }
 
 bool SyncthingApplet::areNotificationsAvailable() const

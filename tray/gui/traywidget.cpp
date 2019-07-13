@@ -578,7 +578,7 @@ Settings::Launcher::LauncherStatus TrayWidget::handleLauncherStatusChanged()
     const auto launcherStatus = applyLauncherSettings(false, systemdStatus.relevant, systemdStatus.showStartStopButton);
     const auto showStartStopButton = systemdStatus.showStartStopButton || launcherStatus.showStartStopButton;
 #else
-    const auto launcherStatus = applyLauncherSettings(reconnectRequired);
+    const auto launcherStatus = applyLauncherSettings(false);
     const auto showStartStopButton = launcherStatus.showStartStopButton;
 #endif
     m_ui->startStopPushButton->setVisible(showStartStopButton);

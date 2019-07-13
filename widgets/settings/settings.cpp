@@ -5,8 +5,8 @@
 
 #include "../../connector/syncthingnotifier.h"
 #include "../../connector/syncthingprocess.h"
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "../../connector/syncthingconnection.h"
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "../../connector/syncthingservice.h"
 #endif
 

@@ -32,7 +32,9 @@ class MiscTests : public TestFixture {
     CPPUNIT_TEST(testParsingConfig);
     CPPUNIT_TEST(testSplittingArguments);
     CPPUNIT_TEST(testUtils);
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     CPPUNIT_TEST(testService);
+#endif
     CPPUNIT_TEST(testConnectionSettingsAndLoadingSelfSignedCert);
     CPPUNIT_TEST(testSyncthingDir);
     CPPUNIT_TEST_SUITE_END();
@@ -43,7 +45,9 @@ public:
     void testParsingConfig();
     void testSplittingArguments();
     void testUtils();
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     void testService();
+#endif
     void testConnectionSettingsAndLoadingSelfSignedCert();
     void testSyncthingDir();
 
@@ -137,6 +141,7 @@ void MiscTests::testUtils()
     CPPUNIT_ASSERT(!isLocal(QUrl(QStringLiteral("http://157.3.52.34"))));
 }
 
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 /*!
  * \brief Tests SyncthingService class, but error case with non-existant service so far.
  */
@@ -152,6 +157,7 @@ void MiscTests::testService()
     service.toggleRunning();
     service.setEnabled(true);
 }
+#endif
 
 void MiscTests::testConnectionSettingsAndLoadingSelfSignedCert()
 {
