@@ -3,9 +3,9 @@
 #include "../misc/syncthingkiller.h"
 #include "../misc/syncthinglauncher.h"
 
+#include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingnotifier.h"
 #include "../../connector/syncthingprocess.h"
-#include "../../connector/syncthingconnection.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "../../connector/syncthingservice.h"
 #endif
@@ -132,7 +132,7 @@ Launcher::LauncherStatus Launcher::apply(
         }
     }
 
-    return LauncherStatus{isRelevant, isRunning, consideredForReconnect, showButton && isRelevant};
+    return LauncherStatus{ isRelevant, isRunning, consideredForReconnect, showButton && isRelevant };
 }
 
 /*!
@@ -145,9 +145,7 @@ Launcher::LauncherStatus Launcher::status(SyncthingConnection &connection) const
         return LauncherStatus{};
     }
     const auto isRelevant = connection.isLocal();
-    return LauncherStatus{
-        isRelevant, launcher->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant
-    };
+    return LauncherStatus{ isRelevant, launcher->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant };
 }
 
 Settings &values()
@@ -439,7 +437,7 @@ Systemd::ServiceStatus Systemd::apply(
         }
     }
 
-    return ServiceStatus{isRelevant, isRunning, consideredForReconnect, showButton && isRelevant};
+    return ServiceStatus{ isRelevant, isRunning, consideredForReconnect, showButton && isRelevant };
 }
 
 /*!
@@ -452,7 +450,7 @@ Systemd::ServiceStatus Systemd::status(SyncthingConnection &connection) const
         return ServiceStatus{};
     }
     const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
-    return ServiceStatus{isRelevant, service->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant};
+    return ServiceStatus{ isRelevant, service->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant };
 }
 #endif
 

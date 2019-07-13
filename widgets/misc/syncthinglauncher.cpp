@@ -66,7 +66,8 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
         emit errorOccurred(QProcess::FailedToStart);
         return;
     }
-    launch(launcherSettings.useLibSyncthing ? QString() : launcherSettings.syncthingPath, SyncthingProcess::splitArguments(launcherSettings.syncthingArgs));
+    launch(launcherSettings.useLibSyncthing ? QString() : launcherSettings.syncthingPath,
+        SyncthingProcess::splitArguments(launcherSettings.syncthingArgs));
 }
 
 /*!
@@ -116,15 +117,14 @@ void SyncthingLauncher::handleProcessReadyRead()
 
 void SyncthingLauncher::handleProcessStateChanged(QProcess::ProcessState newState)
 {
-    switch(newState) {
+    switch (newState) {
     case QProcess::NotRunning:
         emit runningChanged(false);
         break;
     case QProcess::Starting:
         emit runningChanged(true);
         break;
-    default:
-        ;
+    default:;
     }
 }
 

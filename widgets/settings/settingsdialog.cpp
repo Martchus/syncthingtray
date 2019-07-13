@@ -1039,11 +1039,15 @@ bool SystemdOptionPage::apply()
     systemdSettings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
     auto result = true;
     if (systemdSettings.showButton && launcherSettings.showButton) {
-        errors().append(QCoreApplication::translate("QtGui::SystemdOptionPage", "It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes."));
+        errors().append(QCoreApplication::translate("QtGui::SystemdOptionPage",
+            "It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd "
+            "service precedes."));
         result = false;
     }
     if (systemdSettings.considerForReconnect && launcherSettings.considerForReconnect) {
-        errors().append(QCoreApplication::translate("QtGui::SystemdOptionPage", "It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes."));
+        errors().append(QCoreApplication::translate("QtGui::SystemdOptionPage",
+            "It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service "
+            "precedes."));
         result = false;
     }
     return result;

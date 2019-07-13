@@ -78,7 +78,8 @@ private slots:
     void updateOverallStatistics();
     void toggleRunning();
     Settings::Launcher::LauncherStatus handleLauncherStatusChanged();
-    Settings::Launcher::LauncherStatus applyLauncherSettings(bool reconnectRequired = false, bool skipApplyingToConnection = false, bool skipStartStopButton = false);
+    Settings::Launcher::LauncherStatus applyLauncherSettings(
+        bool reconnectRequired = false, bool skipApplyingToConnection = false, bool skipStartStopButton = false);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Settings::Systemd::ServiceStatus handleSystemdStatusChanged();
     Settings::Systemd::ServiceStatus applySystemdSettings(bool reconnectRequired = false);
@@ -109,9 +110,7 @@ private:
     Data::SyncthingConnectionSettings *m_selectedConnection;
     QMenu *m_notificationsMenu;
     std::vector<Data::SyncthingLogEntry> m_notifications;
-    enum class StartStopButtonTarget {
-        None, Service, Launcher
-    } m_startStopButtonTarget;
+    enum class StartStopButtonTarget { None, Service, Launcher } m_startStopButtonTarget;
     static std::vector<TrayWidget *> m_instances;
 };
 

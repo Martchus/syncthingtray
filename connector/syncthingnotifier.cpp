@@ -101,9 +101,10 @@ void SyncthingNotifier::handleSyncthingProcessError(QProcess::ProcessError proce
         return;
     }
 
-    switch(processError) {
+    switch (processError) {
     case QProcess::FailedToStart:
-        emit syncthingProcessError(tr("Failed to start Syncthing"), tr("Maybe the configured binary path is wrong or the binary is not marked as executable."));
+        emit syncthingProcessError(
+            tr("Failed to start Syncthing"), tr("Maybe the configured binary path is wrong or the binary is not marked as executable."));
         break;
     case QProcess::Crashed:
         emit syncthingProcessError(tr("Syncthing crashed with exit code %1").arg(m_process->exitCode()), QString());

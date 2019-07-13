@@ -3,8 +3,8 @@
 #include "./traymenu.h"
 
 #include "../../widgets/misc/otherdialogs.h"
-#include "../../widgets/misc/textviewdialog.h"
 #include "../../widgets/misc/syncthinglauncher.h"
+#include "../../widgets/misc/textviewdialog.h"
 #include "../../widgets/settings/settingsdialog.h"
 #include "../../widgets/webview/webviewdialog.h"
 
@@ -549,7 +549,7 @@ void TrayWidget::updateOverallStatistics()
 
 void TrayWidget::toggleRunning()
 {
-    switch(m_startStopButtonTarget) {
+    switch (m_startStopButtonTarget) {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     case StartStopButtonTarget::Service:
         if (auto *const service = SyncthingService::mainInstance()) {
@@ -566,8 +566,7 @@ void TrayWidget::toggleRunning()
             }
         }
         break;
-    default:
-        ;
+    default:;
     }
 }
 
@@ -589,9 +588,8 @@ Settings::Launcher::LauncherStatus TrayWidget::applyLauncherSettings(bool reconn
 {
     // update connection
     const auto &launcherSettings = Settings::values().launcher;
-    const auto launcherStatus = skipApplyingToConnection
-            ? launcherSettings.status(m_connection)
-            : launcherSettings.apply(m_connection, m_selectedConnection, reconnectRequired);
+    const auto launcherStatus = skipApplyingToConnection ? launcherSettings.status(m_connection)
+                                                         : launcherSettings.apply(m_connection, m_selectedConnection, reconnectRequired);
 
     if (skipStartStopButton || !launcherStatus.showStartStopButton) {
         return launcherStatus;
@@ -626,7 +624,7 @@ Settings::Systemd::ServiceStatus TrayWidget::handleSystemdStatusChanged()
     const auto launcherStatus = applyLauncherSettings(false, true, false);
     m_ui->startStopPushButton->setVisible(launcherStatus.showStartStopButton);
 
-    return  systemdStatus;
+    return systemdStatus;
 }
 
 Settings::Systemd::ServiceStatus TrayWidget::applySystemdSettings(bool reconnectRequired)

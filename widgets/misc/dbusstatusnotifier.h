@@ -71,7 +71,7 @@ inline void DBusStatusNotifier::showInternalError(const InternalError &error)
 
 inline void QtGui::DBusStatusNotifier::showLauncherError(const QString &errorMessage, const QString &additionalInfo)
 {
-    m_launcherErrorNotification.update(QStringList({errorMessage, additionalInfo}).join(QStringLiteral("\n    ")));
+    m_launcherErrorNotification.update(QStringList({ errorMessage, additionalInfo }).join(QStringLiteral("\n    ")));
 }
 
 inline void DBusStatusNotifier::showSyncthingNotification(CppUtilities::DateTime when, const QString &message)

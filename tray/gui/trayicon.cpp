@@ -192,7 +192,8 @@ void TrayIcon::handleErrorsCleared()
     m_errorsAction->setVisible(false);
 }
 
-void TrayIcon::showInternalError(const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
+void TrayIcon::showInternalError(
+    const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
     if (!InternalError::isRelevant(m_trayMenu.widget().connection(), category, networkError)) {
         return;
@@ -220,7 +221,7 @@ void TrayIcon::showLauncherError(const QString &errorMessage, const QString &add
 #endif
     {
         m_messageClickedAction = TrayIconMessageClickedAction::None;
-        showMessage(tr("Launcher error"), QStringList({errorMessage, additionalInfo}).join(QChar('\n')), QSystemTrayIcon::Critical);
+        showMessage(tr("Launcher error"), QStringList({ errorMessage, additionalInfo }).join(QChar('\n')), QSystemTrayIcon::Critical);
     }
 }
 
