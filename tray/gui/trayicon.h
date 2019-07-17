@@ -50,8 +50,10 @@ private slots:
 
 private:
     TrayMenu m_trayMenu;
+#ifndef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     QMenu m_contextMenu;
     QAction *m_errorsAction;
+#endif
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     DBusStatusNotifier m_dbusNotifier;
     bool &m_dbusNotificationsEnabled;

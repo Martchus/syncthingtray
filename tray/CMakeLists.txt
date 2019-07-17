@@ -102,8 +102,22 @@ use_syncthingwidgets()
 # link also explicitely against the following Qt 5 modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 
-# include modules to apply configuration
+# apply basic configuration
 include(BasicConfig)
+
+# add an option to unify left- and right-click context menus useful on Mac OS
+if (APPLE)
+    set(UNIFY_TRAY_MENUS_BY_DEFAULT ON)
+else ()
+    set(UNIFY_TRAY_MENUS_BY_DEFAULT OFF)
+endif ()
+option(UNIFY_TRAY_MENUS "unifies the left- and right-click tray menus" ${UNIFY_TRAY_MENUS_BY_DEFAULT})
+if (UNIFY_TRAY_MENUS)
+    list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_UNIFY_TRAY_MENUS)
+    message(STATUS "left- and right-click context menus will be unified")
+endif ()
+
+# include modules to apply configuration
 include(QtGuiConfig)
 include(QtConfig)
 include(WindowsResources)

@@ -19,6 +19,7 @@
 QT_FORWARD_DECLARE_CLASS(QFrame)
 QT_FORWARD_DECLARE_CLASS(QMenu)
 QT_FORWARD_DECLARE_CLASS(QActionGroup)
+QT_FORWARD_DECLARE_CLASS(QPushButton)
 
 namespace CppUtilities {
 class QtConfigArguments;
@@ -60,6 +61,10 @@ public slots:
     void showLog();
     void showNotifications();
     void showAtCursor();
+#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
+    void showInternalErrorsButton();
+    void showInternalErrorsDialog();
+#endif
     void dismissNotifications();
     void restartSyncthing();
     void quitTray();
@@ -67,6 +72,9 @@ public slots:
 
 private slots:
     void handleStatusChanged(Data::SyncthingStatus status);
+#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
+    void handleErrorsCleared();
+#endif
     static void applySettingsOnAllInstances();
     void openDir(const Data::SyncthingDir &dir);
     void openItemDir(const Data::SyncthingItemDownloadProgress &item);
@@ -100,6 +108,9 @@ private:
     WebViewDialog *m_webViewDlg;
 #endif
     QFrame *m_cornerFrame;
+#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
+    QPushButton *m_internalErrorsButton;
+#endif
     Data::SyncthingConnection m_connection;
     Data::SyncthingNotifier m_notifier;
     Data::SyncthingDirectoryModel m_dirModel;

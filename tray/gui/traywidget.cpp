@@ -8,6 +8,10 @@
 #include "../../widgets/settings/settingsdialog.h"
 #include "../../widgets/webview/webviewdialog.h"
 
+#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
+#include "../../widgets/misc/internalerrorsdialog.h"
+#endif
+
 #include "../../model/syncthingicons.h"
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -136,6 +140,25 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     m_ui->localTextLabel->setPixmap(
         QIcon::fromTheme(QStringLiteral("user-home"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/user-home.svg"))).pixmap(16));
     updateTraffic();
+
+#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
+    // add actions from right-click menu if it is not available
+    m_internalErrorsButton = new QPushButton(m_cornerFrame);
+    m_internalErrorsButton->setToolTip(tr("Show internal errors"));
+    m_internalErrorsButton->setIcon(
+        QIcon::fromTheme(QStringLiteral("emblem-error"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-error.svg"))));
+    m_internalErrorsButton->setFlat(true);
+    m_internalErrorsButton->setVisible(false);
+    connect(m_internalErrorsButton, &QPushButton::clicked, this, &TrayWidget::showInternalErrorsDialog);
+    cornerFrameLayout->addWidget(m_internalErrorsButton);
+    auto *quitButton = new QPushButton(m_cornerFrame);
+    quitButton->setToolTip(tr("Quit Syncthing Tray"));
+    quitButton->setIcon(
+        QIcon::fromTheme(QStringLiteral("window-close"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))));
+    quitButton->setFlat(true);
+    connect(quitButton, &QPushButton::clicked, this, &TrayWidget::quitTray);
+    cornerFrameLayout->addWidget(quitButton);
+#endif
 
     // connect signals and slots
     connect(m_ui->statusPushButton, &QPushButton::clicked, this, &TrayWidget::changeStatus);
@@ -266,6 +289,21 @@ void TrayWidget::showAtCursor()
     }
 }
 
+#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
+void TrayWidget::showInternalErrorsButton()
+{
+    m_internalErrorsButton->setVisible(true);
+}
+
+void TrayWidget::showInternalErrorsDialog()
+{
+    auto *const errorViewDlg = InternalErrorsDialog::instance();
+    connect(errorViewDlg, &InternalErrorsDialog::errorsCleared, this, &TrayWidget::handleErrorsCleared);
+    centerWidget(errorViewDlg);
+    errorViewDlg->show();
+}
+#endif
+
 void TrayWidget::dismissNotifications()
 {
     m_connection.considerAllNotificationsRead();
@@ -332,6 +370,13 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
     default:;
     }
 }
+
+#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
+void TrayWidget::handleErrorsCleared()
+{
+    m_internalErrorsButton->setVisible(false);
+}
+#endif
 
 void TrayWidget::applySettings(const QString &connectionConfig)
 {

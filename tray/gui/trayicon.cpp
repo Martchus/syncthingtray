@@ -51,6 +51,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     updateStatusIconAndText();
 
     // set context menu
+#ifndef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     connect(m_contextMenu.addAction(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-default.svg")), tr("Open Syncthing")),
         &QAction::triggered, &widget, &TrayWidget::showWebUi);
     connect(m_contextMenu.addAction(
@@ -80,6 +81,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
                 tr("Close")),
         &QAction::triggered, this, &TrayIcon::deleteLater);
     setContextMenu(&m_contextMenu);
+#endif
 
     // connect signals and slots
     connect(this, &TrayIcon::activated, this, &TrayIcon::handleActivated);
@@ -189,7 +191,9 @@ void TrayIcon::showSyncComplete(const QString &message)
 
 void TrayIcon::handleErrorsCleared()
 {
+#ifndef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     m_errorsAction->setVisible(false);
+#endif
 }
 
 void TrayIcon::showInternalError(
@@ -209,7 +213,11 @@ void TrayIcon::showInternalError(
         showMessage(tr("Error"), errorMessage, QSystemTrayIcon::Critical);
     }
     InternalErrorsDialog::addError(move(error));
+#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
+    m_trayMenu.widget().showInternalErrorsButton();
+#else
     m_errorsAction->setVisible(true);
+#endif
 }
 
 void TrayIcon::showLauncherError(const QString &errorMessage, const QString &additionalInfo)
