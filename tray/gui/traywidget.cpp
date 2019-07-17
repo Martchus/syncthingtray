@@ -153,8 +153,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     cornerFrameLayout->addWidget(m_internalErrorsButton);
     auto *quitButton = new QPushButton(m_cornerFrame);
     quitButton->setToolTip(tr("Quit Syncthing Tray"));
-    quitButton->setIcon(
-        QIcon::fromTheme(QStringLiteral("window-close"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))));
+    quitButton->setIcon(QIcon::fromTheme(QStringLiteral("window-close"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))));
     quitButton->setFlat(true);
     connect(quitButton, &QPushButton::clicked, this, &TrayWidget::quitTray);
     cornerFrameLayout->addWidget(quitButton);
