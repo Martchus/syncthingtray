@@ -61,6 +61,16 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="configDirLabel">
+        <property name="text">
+         <string>Config directory</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QtUtilities::PathSelection" name="configDirPathSelection" native="true"/>
+      </item>
      </layout>
     </widget>
    </item>
@@ -110,9 +120,6 @@
      </item>
      <item>
       <widget class="QPushButton" name="launchNowPushButton">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -207,6 +214,70 @@
     <hint type="destinationlabel">
      <x>320</x>
      <y>36</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useBuiltInVersionCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>argumentsLineEdit</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>319</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>101</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useBuiltInVersionCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>configDirPathSelection</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>319</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>171</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useBuiltInVersionCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>configDirLabel</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>319</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>116</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useBuiltInVersionCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>argumentsLabel</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>319</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>131</x>
+     <y>101</y>
     </hint>
    </hints>
   </connection>

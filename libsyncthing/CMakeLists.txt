@@ -78,7 +78,8 @@ endif ()
 file(GLOB_RECURSE SRC_FILES_SYNCTHING
      LIST_DIRECTORIES false
      RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-     "${SYNCTHING_PATH}/cmd/*.go" "${SYNCTHING_PATH}/cmd/*.h" "${SYNCTHING_PATH}/cmd/*.c")
+     "${SYNCTHING_PATH}/c-bindings/*.go" "${SYNCTHING_PATH}/c-bindings/*.h" "${SYNCTHING_PATH}/c-bindings/*.c"
+     "${SYNCTHING_PATH}/lib/*.go" "${SYNCTHING_PATH}/lib/*.h" "${SYNCTHING_PATH}/lib/*.c")
 if (NOT SRC_FILES_SYNCTHING)
     message(
         FATAL_ERROR
@@ -119,7 +120,7 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
                            c-archive
                            -o
                            "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
-                           ./cmd/syncthing
+                           ./c-bindings
                            &&
                            "${CMAKE_RANLIB}"
                            "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
@@ -136,8 +137,8 @@ elseif (UNIX)
     list(APPEND PRIVATE_LIBRARIES -lpthread)
 endif ()
 
-# ensure we can find libsyncthing.h from Syncthing's source tree when building the interface
-list(APPEND PRIVATE_INCLUDE_DIRS "${SYNCTHING_PATH}/cmd/syncthing")
+# ensure we can find c_bindings.h from Syncthing's source tree when building the interface
+list(APPEND PRIVATE_INCLUDE_DIRS "${SYNCTHING_PATH}/c-bindings")
 
 # find c++utilities
 find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)

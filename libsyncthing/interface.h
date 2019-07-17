@@ -13,7 +13,6 @@ struct RuntimeOptions {
     std::string configDir;
     std::string guiAddress;
     std::string guiApiKey;
-    std::string logFile;
     bool verbose = false;
 };
 
@@ -31,14 +30,10 @@ using LoggingCallback = std::function<void(LogLevel, const char *message, std::s
 
 void LIB_SYNCTHING_EXPORT setLoggingCallback(const LoggingCallback &callback);
 void LIB_SYNCTHING_EXPORT setLoggingCallback(LoggingCallback &&callback);
-long long LIB_SYNCTHING_EXPORT runSyncthing(const RuntimeOptions &options);
-long long LIB_SYNCTHING_EXPORT runSyncthing(const std::string &configDir);
-long long LIB_SYNCTHING_EXPORT runSyncthing(const std::vector<std::string> &cliArguments);
+long long LIB_SYNCTHING_EXPORT runSyncthing(const RuntimeOptions &options = RuntimeOptions{});
 bool LIB_SYNCTHING_EXPORT isSyncthingRunning();
 void LIB_SYNCTHING_EXPORT stopSyncthing();
-void LIB_SYNCTHING_EXPORT restartSyncthing();
-void LIB_SYNCTHING_EXPORT generateCertFiles(const std::string &generateDir);
-void LIB_SYNCTHING_EXPORT openGUI();
+std::string LIB_SYNCTHING_EXPORT ownDeviceId();
 std::string LIB_SYNCTHING_EXPORT syncthingVersion();
 std::string LIB_SYNCTHING_EXPORT longSyncthingVersion();
 

@@ -251,6 +251,7 @@ void restore()
     auto &launcher = v.launcher;
     launcher.autostartEnabled = settings.value(QStringLiteral("syncthingAutostart"), launcher.autostartEnabled).toBool();
     launcher.useLibSyncthing = settings.value(QStringLiteral("useLibSyncthing"), launcher.useLibSyncthing).toBool();
+    launcher.libSyncthing.configDir = settings.value(QStringLiteral("libSyncthingConfigDir"), launcher.libSyncthing.configDir).toString();
     launcher.syncthingPath = settings.value(QStringLiteral("syncthingPath"), launcher.syncthingPath).toString();
     launcher.syncthingArgs = settings.value(QStringLiteral("syncthingArgs"), launcher.syncthingArgs).toString();
     launcher.considerForReconnect = settings.value(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect).toBool();
@@ -341,6 +342,7 @@ void save()
     const auto &launcher = v.launcher;
     settings.setValue(QStringLiteral("syncthingAutostart"), launcher.autostartEnabled);
     settings.setValue(QStringLiteral("useLibSyncthing"), launcher.useLibSyncthing);
+    settings.setValue(QStringLiteral("libSyncthingConfigDir"), launcher.libSyncthing.configDir);
     settings.setValue(QStringLiteral("syncthingPath"), launcher.syncthingPath);
     settings.setValue(QStringLiteral("syncthingArgs"), launcher.syncthingArgs);
     settings.setValue(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect);

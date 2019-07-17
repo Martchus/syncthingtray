@@ -28,7 +28,6 @@ using namespace CPPUNIT_NS;
 class InterfaceTests : public TestFixture {
     CPPUNIT_TEST_SUITE(InterfaceTests);
     CPPUNIT_TEST(testRunWidthConfig);
-    CPPUNIT_TEST(testRunWithArgs);
     CPPUNIT_TEST(testVersion);
     CPPUNIT_TEST_SUITE_END();
 
@@ -37,7 +36,6 @@ public:
 
     void testInitialState();
     void testRunWidthConfig();
-    void testRunWithArgs();
     void testVersion();
 
     void setUp();
@@ -107,9 +105,8 @@ void InterfaceTests::testInitialState()
 {
     CPPUNIT_ASSERT_MESSAGE("initially not running", !isSyncthingRunning());
 
-    // stopping and restarting Syncthing when not running should not cause any trouble
+    // stopping Syncthing when not running should not cause any trouble
     stopSyncthing();
-    restartSyncthing();
 }
 
 /*!
@@ -188,17 +185,6 @@ void InterfaceTests::testRunWidthConfig()
     RuntimeOptions options;
     options.configDir = setupConfigDir();
     testRun(bind(static_cast<long long (*)(const RuntimeOptions &)>(&runSyncthing), cref(options)));
-}
-
-void InterfaceTests::testRunWithArgs()
-{
-    const std::vector<std::string> args{
-        "-no-restart",
-        "-no-browser",
-        "-home",
-        setupConfigDir(),
-    };
-    testRun(bind(static_cast<long long (*)(const decltype(args) &)>(&runSyncthing), cref(args)));
 }
 
 /*!

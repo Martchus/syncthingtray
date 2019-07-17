@@ -71,14 +71,7 @@ void SyncthingLauncher::launch(const QString &program, const QStringList &argume
     }
 
     // use libsyncthing
-    vector<string> utf8Arguments{ "-no-restart", "-no-browser" };
-    utf8Arguments.reserve(utf8Arguments.size() + static_cast<size_t>(arguments.size()));
-    for (const auto &arg : arguments) {
-        const auto utf8Data(arg.toUtf8());
-        utf8Arguments.emplace_back(utf8Data.data(), utf8Data.size());
-    }
-    m_future = QtConcurrent::run(
-        this, static_cast<void (SyncthingLauncher::*)(const std::vector<std::string> &)>(&SyncthingLauncher::runLibSyncthing), utf8Arguments);
+    m_future = QtConcurrent::run(this, static_cast<void (SyncthingLauncher::*)()>(&SyncthingLauncher::runLibSyncthing));
 }
 
 /*!
@@ -94,8 +87,13 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
         emit errorOccurred(QProcess::FailedToStart);
         return;
     }
-    launch(launcherSettings.useLibSyncthing ? QString() : launcherSettings.syncthingPath,
-        SyncthingProcess::splitArguments(launcherSettings.syncthingArgs));
+    if (launcherSettings.useLibSyncthing) {
+        LibSyncthing::RuntimeOptions options;
+        options.configDir = launcherSettings.libSyncthing.configDir.toStdString();
+        launch(options);
+    } else {
+        launch(launcherSettings.syncthingPath, SyncthingProcess::splitArguments(launcherSettings.syncthingArgs));
+    }
 }
 
 /*!
@@ -208,12 +206,12 @@ void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runt
 #endif
 }
 
-void SyncthingLauncher::runLibSyncthing(const std::vector<string> &arguments)
+void SyncthingLauncher::runLibSyncthing()
 {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
     emit runningChanged(true);
-    const auto exitCode = LibSyncthing::runSyncthing(arguments);
+    const auto exitCode = LibSyncthing::runSyncthing();
     emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
     emit runningChanged(false);
 #else

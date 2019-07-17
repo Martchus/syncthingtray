@@ -779,15 +779,16 @@ QWidget *LauncherOptionPage::setupWidget()
         m_restoreArgsButton->setToolTip(tr("Restore default"));
         connect(m_restoreArgsButton, &IconButton::clicked, this, &LauncherOptionPage::restoreDefaultArguments);
         ui()->argumentsLineEdit->insertCustomButton(0, m_restoreArgsButton);
+        ui()->configDirPathSelection->provideCustomFileMode(QFileDialog::Directory);
     }
 
     // setup other widgets
     ui()->syncthingPathSelection->provideCustomFileMode(QFileDialog::ExistingFile);
     ui()->logTextEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
-    const auto running(isRunning());
+    const auto running = isRunning();
     ui()->launchNowPushButton->setHidden(running);
     ui()->stopPushButton->setHidden(!running);
-    ui()->useBuiltInVersionCheckBox->setHidden(!SyncthingLauncher::isLibSyncthingAvailable());
+    ui()->useBuiltInVersionCheckBox->setVisible(isSyncthing && SyncthingLauncher::isLibSyncthingAvailable());
 
     // connect signals & slots
     if (m_process) {
@@ -813,6 +814,7 @@ bool LauncherOptionPage::apply()
     if (m_tool.isEmpty()) {
         settings.autostartEnabled = ui()->enabledCheckBox->isChecked();
         settings.useLibSyncthing = ui()->useBuiltInVersionCheckBox->isChecked();
+        settings.libSyncthing.configDir = ui()->configDirPathSelection->lineEdit()->text();
         settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
         settings.syncthingArgs = ui()->argumentsLineEdit->text();
         settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
@@ -833,6 +835,7 @@ void LauncherOptionPage::reset()
         ui()->enabledCheckBox->setChecked(settings.autostartEnabled);
         ui()->useBuiltInVersionCheckBox->setChecked(settings.useLibSyncthing);
         ui()->useBuiltInVersionCheckBox->setVisible(settings.useLibSyncthing || SyncthingLauncher::isLibSyncthingAvailable());
+        ui()->configDirPathSelection->lineEdit()->setText(settings.libSyncthing.configDir);
         ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
         ui()->argumentsLineEdit->setText(settings.syncthingArgs);
         ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
@@ -961,8 +964,7 @@ void LauncherOptionPage::launch()
     }
     const auto launcherSettings(values().launcher);
     if (m_tool.isEmpty()) {
-        m_launcher->launch(launcherSettings.useLibSyncthing ? QString() : launcherSettings.syncthingPath,
-            SyncthingProcess::splitArguments(launcherSettings.syncthingArgs));
+        m_launcher->launch(launcherSettings);
     } else {
         const auto toolParams(launcherSettings.tools.value(m_tool));
         m_process->startSyncthing(toolParams.path, SyncthingProcess::splitArguments(toolParams.args));

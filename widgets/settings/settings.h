@@ -73,6 +73,10 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
     bool considerForReconnect = false;
     bool showButton = false;
 
+    struct LibSyncthing {
+        QString configDir;
+    } libSyncthing;
+
     static Data::SyncthingProcess &toolProcess(const QString &tool);
     static std::vector<Data::SyncthingProcess *> allProcesses();
     void autostart() const;

@@ -73,20 +73,31 @@ public:
 
 private:
     bool m_invalid;
+    static bool s_loggingInitialized;
 };
+
+bool RunningState::s_loggingInitialized = false;
 
 inline RunningState::RunningState()
 {
+    // prevent running multiple Syncthing instances at the same time (for now)
     if ((m_invalid = syncthingRunning.load())) {
         return;
     }
-    ::libst_loggingCallbackFunction = handleLoggingCallback;
+
+    // initialize logging callback
+    if (!s_loggingInitialized) {
+        ::libst_init_logging();
+        s_loggingInitialized = true;
+    }
+    ::libst_logging_callback_function = handleLoggingCallback;
+
     syncthingRunning.store(true);
 }
 
 inline RunningState::~RunningState()
 {
-    ::libst_loggingCallbackFunction = nullptr;
+    ::libst_logging_callback_function = nullptr;
     syncthingRunning.store(false);
 }
 
@@ -129,49 +140,8 @@ long long runSyncthing(const RuntimeOptions &options)
     if (!runningState) {
         return -1;
     }
-    return ::libst_runSyncthingWithConfig(
-        gostr(options.configDir), gostr(options.guiAddress), gostr(options.guiApiKey), gostr(options.logFile), options.verbose);
-}
-
-/*!
- * \brief Runs a Syncthing instance using the default options and the specified \a configDir.
- * \return Returns the exit code (as usual, zero means no error).
- * \remark
- * - Does nothing if Syncthing is already running.
- * - Blocks the current thread as long as the instance is running.
- *   Use eg. std::thread(runSyncthing, options) to run it in another thread.
- */
-long long runSyncthing(const std::string &configDir)
-{
-    const RunningState runningState;
-    if (!runningState) {
-        return -1;
-    }
-    const string empty;
-    return ::libst_runSyncthingWithConfig(gostr(configDir), gostr(empty), gostr(empty), gostr(empty), false);
-}
-
-/*!
- * \brief Runs a Syncthing instance using the specified raw \a cliArguments.
- * \return Returns the exit code (as usual, zero means no error).
- * \remark
- * - Does nothing if Syncthing is already running.
- * - Blocks the current thread as long as the instance is running.
- *   Use eg. std::thread(runSyncthing, options) to run it in another thread.
- */
-long long runSyncthing(const std::vector<string> &cliArguments)
-{
-    const RunningState runningState;
-    if (!runningState) {
-        return -1;
-    }
-    vector<const char *> argsAsGoStrings;
-    argsAsGoStrings.reserve(cliArguments.size());
-    for (const auto &arg : cliArguments) {
-        argsAsGoStrings.emplace_back(arg.data());
-    }
-    const GoSlice slice{ argsAsGoStrings.data(), static_cast<GoInt>(argsAsGoStrings.size()), static_cast<GoInt>(argsAsGoStrings.capacity()) };
-    return ::libst_runSyncthingWithArgs(slice);
+    return ::libst_run_syncthing(
+        gostr(options.configDir), gostr(options.guiAddress), gostr(options.guiApiKey), options.verbose);
 }
 
 /*!
@@ -194,37 +164,16 @@ void stopSyncthing()
     if (!syncthingRunning.load()) {
         return;
     }
-    ::libst_stopSyncthing();
+    ::libst_stop_syncthing();
 }
 
 /*!
- * \brief Restarts Syncthing if it is running; otherwise does nothing.
- * \returns Might be called from any thread.
- * \todo Make this actually work. Currently crashes happen after stopping Syncthing.
- * \sa https://github.com/syncthing/syncthing/issues/4085
+ * \brief Returns the ID of the own device.
+ * \remarks The own device ID is initialized within runSyncthing().
  */
-void restartSyncthing()
+string ownDeviceId()
 {
-    if (!syncthingRunning.load()) {
-        return;
-    }
-    ::libst_restartSyncthing();
-}
-
-/*!
- * \brief Generates certificated in the specified directory.
- */
-void generateCertFiles(const std::string &generateDir)
-{
-    ::libst_generateCertFiles(gostr(generateDir));
-}
-
-/*!
- * \brief Opens the Syncthing GUI.
- */
-void openGUI()
-{
-    ::libst_openGUI();
+    return stdstr(::libst_own_device_id());
 }
 
 /*!
@@ -232,7 +181,7 @@ void openGUI()
  */
 string syncthingVersion()
 {
-    return stdstr(::libst_syncthingVersion());
+    return stdstr(::libst_syncthing_version());
 }
 
 /*!
@@ -240,7 +189,7 @@ string syncthingVersion()
  */
 string longSyncthingVersion()
 {
-    return stdstr(::libst_longSyncthingVersion());
+    return stdstr(::libst_long_syncthing_version());
 }
 
 } // namespace LibSyncthing
