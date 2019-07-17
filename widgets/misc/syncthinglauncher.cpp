@@ -215,7 +215,6 @@ void SyncthingLauncher::runLibSyncthing()
     emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
     emit runningChanged(false);
 #else
-    CPP_UTILITIES_UNUSED(arguments)
     emit outputAvailable("libsyncthing support not enabled");
     emit exited(-1, QProcess::CrashExit);
 #endif
