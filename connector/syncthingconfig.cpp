@@ -19,6 +19,10 @@ QString SyncthingConfig::locateConfigFile()
     if (path.isEmpty()) {
         path = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("Syncthing/config.xml"));
     }
+    // The default Syncthing config path on macOS. The full path is "$HOME/Library/Application Support/Syncthing/config.xml".
+    if (path.isEmpty()) {
+        path = QStandardPaths::locate(QStandardPaths::RuntimeLocation, QStringLiteral("Syncthing/config.xml"));
+    }
     return path;
 }
 
