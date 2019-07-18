@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <filesystem>
 #include <functional>
+#include <thread>
 
 #include <unistd.h>
 
@@ -27,16 +28,17 @@ using namespace CPPUNIT_NS;
  */
 class InterfaceTests : public TestFixture {
     CPPUNIT_TEST_SUITE(InterfaceTests);
-    CPPUNIT_TEST(testRunWidthConfig);
+    CPPUNIT_TEST(testInitialState);
     CPPUNIT_TEST(testVersion);
+    CPPUNIT_TEST(testRunWidthConfig);
     CPPUNIT_TEST_SUITE_END();
 
 public:
     InterfaceTests();
 
     void testInitialState();
-    void testRunWidthConfig();
     void testVersion();
+    void testRunWidthConfig();
 
     void setUp();
     void tearDown();
@@ -82,12 +84,12 @@ string InterfaceTests::setupConfigDir()
             if (!dir.is_directory() || dirPath == "." || dirPath == "..") {
                 continue;
             }
-            const auto subdirIterator = filesystem::directory_iterator(configDir % '/' + dirPath);
+            const auto subdirIterator = filesystem::directory_iterator(dirPath);
             for (const auto &file : subdirIterator) {
                 if (file.is_directory()) {
                     continue;
                 }
-                const auto toRemove = configDir % '/' % dirPath % '/' + file.path();
+                const auto toRemove = file.path().string();
                 CPPUNIT_ASSERT_EQUAL_MESSAGE("removing " + toRemove, 0, remove(toRemove.data()));
             }
         }
@@ -110,7 +112,20 @@ void InterfaceTests::testInitialState()
 }
 
 /*!
- * \brief Tests running Syncthing.
+ * \brief Tests whether the version() functions at least return something.
+ */
+void InterfaceTests::testVersion()
+{
+    const auto version(syncthingVersion());
+    const auto longVersion(longSyncthingVersion());
+    cout << "\nversion: " << version;
+    cout << "\nlong version: " << longVersion << endl;
+    CPPUNIT_ASSERT(!version.empty());
+    CPPUNIT_ASSERT(!longVersion.empty());
+}
+
+/*!
+ * \brief Test helper for running Syncthing and checking log according to test configuration.
  */
 void InterfaceTests::testRun(const std::function<long long()> &runFunction)
 {
@@ -135,32 +150,54 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction)
             myIdAnnounced = true;
         } else if (startsWith(msg, "Single thread SHA256 performance is")) {
             performanceAnnounced = true;
-        } else if (msg == "Ready to synchronize test1 (readwrite)") {
+        } else if (msg == "Ready to synchronize test1 (sendreceive)") {
             testDir1Ready = true;
-        } else if (msg == "Ready to synchronize test2 (readwrite)") {
+        } else if (msg == "Ready to synchronize test2 (sendreceive)") {
             testDir2Ready = true;
         } else if (msg == "Device 6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4 is \"Test dev 1\" at [dynamic]") {
             testDev1Ready = true;
         } else if (msg == "Device MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7 is \"Test dev 2\" at [tcp://192.168.2.2:22001]") {
             testDev2Ready = true;
-        } else if (msg == "Shutting down") {
+        } else if (msg == "Exiting") {
             shutDownLogged = true;
         }
 
         // print the message on cout (which results in duplicated messages, but allows to check whether we've got everything)
-        cout << "logging callback (" << static_cast<std::underlying_type<LogLevel>::type>(logLevel) << ": ";
+        cout << "logging callback (" << static_cast<std::underlying_type<LogLevel>::type>(logLevel) << "): ";
         cout.write(message, static_cast<std::streamsize>(messageSize));
         cout << endl;
 
         // stop Syncthing again if the found the messages we've been looking for or we've timed out
         const auto timeout((DateTime::gmtNow() - startTime) > TimeSpan::fromSeconds(30));
         if (!timeout && (!myIdAnnounced || !performanceAnnounced || !testDir1Ready || !testDev1Ready || !testDev2Ready)) {
+            // log status
+            cout << "still wating for:";
+            if (!myIdAnnounced) {
+                cout << " myIdAnnounced";
+            }
+            if (!performanceAnnounced) {
+                cout << " performanceAnnounced";
+            }
+            if (!testDir1Ready) {
+                cout << " testDir1Ready";
+            }
+            if (!testDir2Ready) {
+                cout << " testDir2Ready";
+            }
+            if (!testDev1Ready) {
+                cout << " testDev1Ready";
+            }
+            if (!testDev2Ready) {
+                cout << " testDev2Ready";
+            }
+            cout << endl;
             return;
         }
         if (!shuttingDown) {
             cerr << "stopping Syncthing again" << endl;
             shuttingDown = true;
-            stopSyncthing();
+            std::thread stopThread(stopSyncthing);
+            stopThread.detach();
         }
     });
 
@@ -180,22 +217,12 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction)
     sleep(5);
 }
 
+/*!
+ * \brief Tests whether Syncthing can be started (and stopped again) using the specified test config.
+ */
 void InterfaceTests::testRunWidthConfig()
 {
     RuntimeOptions options;
     options.configDir = setupConfigDir();
-    testRun(bind(static_cast<long long (*)(const RuntimeOptions &)>(&runSyncthing), cref(options)));
-}
-
-/*!
- * \brief Tests whether the version() functions at least return something.
- */
-void InterfaceTests::testVersion()
-{
-    const auto version(syncthingVersion());
-    const auto longVersion(longSyncthingVersion());
-    cout << "\nversion: " << version;
-    cout << "\nlong version: " << longVersion << endl;
-    CPPUNIT_ASSERT(!version.empty());
-    CPPUNIT_ASSERT(!longVersion.empty());
+    testRun(bind(static_cast<std::int64_t (*)(const RuntimeOptions &)>(&runSyncthing), cref(options)));
 }

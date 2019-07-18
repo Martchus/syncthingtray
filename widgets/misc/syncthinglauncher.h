@@ -55,7 +55,7 @@ private Q_SLOTS:
     void handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void handleLoggingCallback(LibSyncthing::LogLevel, const char *message, std::size_t messageSize);
     void runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions);
-    void runLibSyncthing();
+    void stopLibSyncthing();
 
 private:
     SyncthingProcess m_process;

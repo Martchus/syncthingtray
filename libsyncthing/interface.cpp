@@ -132,9 +132,9 @@ void setLoggingCallback(LoggingCallback &&callback)
  * \remark
  * - Does nothing if Syncthing is already running.
  * - Blocks the current thread as long as the instance is running.
- *   Use eg. std::thread(runSyncthing, options) to run it in another thread.
+ *   Use e.g. std::thread(runSyncthing, options) to run it in another thread.
  */
-long long runSyncthing(const RuntimeOptions &options)
+std::int64_t runSyncthing(const RuntimeOptions &options)
 {
     const RunningState runningState;
     if (!runningState) {
@@ -155,16 +155,15 @@ bool isSyncthingRunning()
 
 /*!
  * \brief Stops Syncthing if it is running; otherwise does nothing.
- * \returns Might be called from any thread.
- * \todo Make this actually work. Currently crashes happen after stopping Syncthing.
- * \sa https://github.com/syncthing/syncthing/issues/4085
+ * \returns Returns the Syncthing exit code (as usual, zero means no error).
+ * \remarks
+ * - Might be called from any thread.
+ * - Blocks the current thread until the instance has been stopped.
+ *   Use e.g. std::thread(stopSyncthing) to run it in another thread.
  */
-void stopSyncthing()
+std::int64_t stopSyncthing()
 {
-    if (!syncthingRunning.load()) {
-        return;
-    }
-    ::libst_stop_syncthing();
+    return ::libst_stop_syncthing();
 }
 
 /*!

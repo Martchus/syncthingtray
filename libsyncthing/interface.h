@@ -3,6 +3,7 @@
 
 #include "./global.h"
 
+#include <cstdint>
 #include <functional>
 #include <string>
 #include <vector>
@@ -30,9 +31,9 @@ using LoggingCallback = std::function<void(LogLevel, const char *message, std::s
 
 void LIB_SYNCTHING_EXPORT setLoggingCallback(const LoggingCallback &callback);
 void LIB_SYNCTHING_EXPORT setLoggingCallback(LoggingCallback &&callback);
-long long LIB_SYNCTHING_EXPORT runSyncthing(const RuntimeOptions &options = RuntimeOptions{});
+std::int64_t LIB_SYNCTHING_EXPORT runSyncthing(const RuntimeOptions &options = RuntimeOptions{});
 bool LIB_SYNCTHING_EXPORT isSyncthingRunning();
-void LIB_SYNCTHING_EXPORT stopSyncthing();
+std::int64_t LIB_SYNCTHING_EXPORT stopSyncthing();
 std::string LIB_SYNCTHING_EXPORT ownDeviceId();
 std::string LIB_SYNCTHING_EXPORT syncthingVersion();
 std::string LIB_SYNCTHING_EXPORT longSyncthingVersion();

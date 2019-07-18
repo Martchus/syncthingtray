@@ -53,9 +53,11 @@ bool SyncthingLauncher::isLibSyncthingAvailable()
 
 /*!
  * \brief Launches a Syncthing instance using the specified \a arguments.
- * \remarks
- * - Does nothing if already running an instance.
- * - To use the internal library, leave \a program empty. Otherwise it must be the path the external Syncthing executable.
+ *
+ * To use the internal library, leave \a program empty. In this case \a arguments are ignored.
+ * Otherwise \a program must be the path the external Syncthing executable.
+ *
+ * \remarks Does nothing if already running an instance.
  */
 void SyncthingLauncher::launch(const QString &program, const QStringList &arguments)
 {
@@ -71,7 +73,7 @@ void SyncthingLauncher::launch(const QString &program, const QStringList &argume
     }
 
     // use libsyncthing
-    m_future = QtConcurrent::run(this, static_cast<void (SyncthingLauncher::*)()>(&SyncthingLauncher::runLibSyncthing));
+    m_future = QtConcurrent::run(this, &SyncthingLauncher::runLibSyncthing, LibSyncthing::RuntimeOptions{});
 }
 
 /*!
@@ -106,8 +108,7 @@ void SyncthingLauncher::launch(const LibSyncthing::RuntimeOptions &runtimeOption
         return;
     }
     m_manuallyStopped = false;
-    m_future = QtConcurrent::run(
-        this, static_cast<void (SyncthingLauncher::*)(const LibSyncthing::RuntimeOptions &)>(&SyncthingLauncher::runLibSyncthing), runtimeOptions);
+    m_future = QtConcurrent::run(this, &SyncthingLauncher::runLibSyncthing, runtimeOptions);
 }
 
 void SyncthingLauncher::terminate()
@@ -117,9 +118,7 @@ void SyncthingLauncher::terminate()
         m_process.stopSyncthing();
     } else if (m_future.isRunning()) {
         m_manuallyStopped = true;
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-        LibSyncthing::stopSyncthing();
-#endif
+        QtConcurrent::run(this, &SyncthingLauncher::stopLibSyncthing);
     }
 }
 
@@ -130,10 +129,7 @@ void SyncthingLauncher::kill()
         m_process.killSyncthing();
     } else if (m_future.isRunning()) {
         m_manuallyStopped = true;
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-        // FIXME: any chance to try harder?
-        LibSyncthing::stopSyncthing();
-#endif
+        QtConcurrent::run(this, &SyncthingLauncher::stopLibSyncthing);
     }
 }
 
@@ -206,17 +202,11 @@ void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runt
 #endif
 }
 
-void SyncthingLauncher::runLibSyncthing()
+void SyncthingLauncher::stopLibSyncthing()
 {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
-    emit runningChanged(true);
-    const auto exitCode = LibSyncthing::runSyncthing();
-    emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
-    emit runningChanged(false);
-#else
-    emit outputAvailable("libsyncthing support not enabled");
-    emit exited(-1, QProcess::CrashExit);
+    LibSyncthing::stopSyncthing();
+    // no need to emit exited/runningChanged here; that is already done in runLibSyncthing()
 #endif
 }
 
