@@ -140,8 +140,7 @@ std::int64_t runSyncthing(const RuntimeOptions &options)
     if (!runningState) {
         return -1;
     }
-    return ::libst_run_syncthing(
-        gostr(options.configDir), gostr(options.guiAddress), gostr(options.guiApiKey), options.verbose);
+    return ::libst_run_syncthing(gostr(options.configDir), gostr(options.guiAddress), gostr(options.guiApiKey), options.verbose);
 }
 
 /*!
