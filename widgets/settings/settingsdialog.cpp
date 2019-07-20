@@ -46,6 +46,8 @@
 #include <QStandardPaths>
 #elif defined(PLATFORM_WINDOWS)
 #include <QSettings>
+#elif defined(PLATFORM_MAC)
+#include <QFileInfo>
 #endif
 #include <QApplication>
 #include <QFontDatabase>
@@ -618,6 +620,9 @@ QWidget *AutostartOptionPage::setupWidget()
     ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage",
         "This is achieved by adding a registry key under <i>HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run</i> so the setting "
         "only affects the current user. Note that the startup entry is invalidated when moving <i>syncthingtray.exe</i>."));
+#elif defined(PLATFORM_MAC)
+    ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage",
+        "This is achieved by adding a *.plist file under <i>~/Library/LaunchAgents</i> so the setting only affects the current user."));
 #else
     ui()->platformNoteLabel->setText(
         QCoreApplication::translate("QtGui::AutostartOptionPage", "This feature has not been implemented for your platform (yet)."));
@@ -636,7 +641,7 @@ bool isAutostartEnabled()
 {
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
     QFile desktopFile(QStandardPaths::locate(QStandardPaths::ConfigLocation, QStringLiteral("autostart/" PROJECT_NAME ".desktop")));
-    // check whether the file can be opeed and whether it is enabled but prevent reading large files
+    // check whether the file can be opened and whether it is enabled but prevent reading large files
     if (desktopFile.open(QFile::ReadOnly) && (desktopFile.size() > (5 * 1024) || !desktopFile.readAll().contains("Hidden=true"))) {
         return true;
     }
@@ -644,6 +649,8 @@ bool isAutostartEnabled()
 #elif defined(PLATFORM_WINDOWS)
     QSettings settings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat);
     return settings.contains(QStringLiteral(PROJECT_NAME));
+#elif defined(PLATFORM_MAC)
+    return QFileInfo(QDir::home(), QStringLiteral("Library/LaunchAgents/" PROJECT_NAME ".plist")).isReadable();
 #else
     return false;
 #endif
@@ -710,6 +717,37 @@ bool setAutostartEnabled(bool enabled)
     }
     settings.sync();
     return true;
+#elif defined(PLATFORM_MAC)
+    const QString libraryPath(QDir::home().filePath("Library"));
+    if (enabled && !QDir().mkpath(libraryPath + QStringLiteral("/LaunchAgents"))) {
+        return false;
+    }
+    QFile launchdPlistFile(libraryPath + QStringLiteral("/LaunchAgents/" PROJECT_NAME ".plist"));
+    if (enabled) {
+        if (!launchdPlistFile.open(QFile::WriteOnly | QFile::Truncate)) {
+            return false;
+        }
+        launchdPlistFile.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                               "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n"
+                               "<plist version=\"1.0\">\n"
+                               "    <dict>\n"
+                               "        <key>Label</key>\n"
+                               "        <string>" PROJECT_NAME "</string>\n"
+                               "        <key>ProgramArguments</key>\n"
+                               "        <array>\n"
+                               "            <string>");
+        launchdPlistFile.write(QCoreApplication::applicationFilePath().toUtf8().data());
+        launchdPlistFile.write("</string>\n"
+                               "        </array>\n"
+                               "        <key>KeepAlive</key>\n"
+                               "        <true/>\n"
+                               "    </dict>\n"
+                               "</plist>\n");
+        return launchdPlistFile.error() == QFile::NoError && launchdPlistFile.flush();
+
+    } else {
+        return !launchdPlistFile.exists() || launchdPlistFile.remove();
+    }
 #endif
 }
 
