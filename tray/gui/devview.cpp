@@ -41,7 +41,7 @@ void DevView::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-void DevView::showContextMenu()
+void DevView::showContextMenu(const QPoint &position)
 {
     if (selectionModel() && selectionModel()->selectedRows(0).size() == 1) {
         QMenu menu;
@@ -60,7 +60,7 @@ void DevView::showContextMenu()
                     tr("Copy ID")),
                 &QAction::triggered, this, &DevView::copySelectedItemId);
         }
-        menu.exec(QCursor::pos());
+        menu.exec(mapToGlobal(position));
     }
 }
 

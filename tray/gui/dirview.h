@@ -23,7 +23,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private Q_SLOTS:
-    void showContextMenu();
+    void showContextMenu(const QPoint &position);
     void copySelectedItem();
     void copySelectedItemPath();
 };

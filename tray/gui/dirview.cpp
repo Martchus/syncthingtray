@@ -70,7 +70,7 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-void DirView::showContextMenu()
+void DirView::showContextMenu(const QPoint &position)
 {
     if (selectionModel() && selectionModel()->selectedRows(0).size() == 1) {
         QMenu menu;
@@ -89,7 +89,7 @@ void DirView::showContextMenu()
                     tr("Copy path")),
                 &QAction::triggered, this, &DirView::copySelectedItemPath);
         }
-        menu.exec(QCursor::pos());
+        menu.exec(mapToGlobal(position));
     }
 }
 

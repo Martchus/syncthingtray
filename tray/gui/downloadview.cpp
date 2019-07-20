@@ -47,7 +47,7 @@ void DownloadView::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-void DownloadView::showContextMenu()
+void DownloadView::showContextMenu(const QPoint &position)
 {
     if (selectionModel() && selectionModel()->selectedRows(0).size() == 1) {
         QMenu menu;
@@ -62,7 +62,7 @@ void DownloadView::showContextMenu()
                     tr("Copy label/ID")),
                 &QAction::triggered, this, &DownloadView::copySelectedItem);
         }
-        menu.exec(QCursor::pos());
+        menu.exec(mapToGlobal(position));
     }
 }
 
