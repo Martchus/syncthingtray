@@ -658,7 +658,7 @@ bool isAutostartEnabled()
 
 #if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
 /*!
- * \brief Provides a fallback for qEnvironmentVariable() when using old Qt version.
+ * \brief Provides a fallback for qEnvironmentVariable() when using old Qt versions.
  */
 QString qEnvironmentVariable(const char *varName, const QString &defaultValue)
 {
@@ -679,6 +679,7 @@ bool setAutostartEnabled(bool enabled)
     if (!isAutostartEnabled() && !enabled) {
         return true;
     }
+
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
     const QString configPath(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation));
     if (configPath.isEmpty()) {
@@ -717,8 +718,9 @@ bool setAutostartEnabled(bool enabled)
     }
     settings.sync();
     return true;
+
 #elif defined(PLATFORM_MAC)
-    const QString libraryPath(QDir::home().filePath("Library"));
+    const QString libraryPath(QDir::home().filePath(QStringLiteral("Library")));
     if (enabled && !QDir().mkpath(libraryPath + QStringLiteral("/LaunchAgents"))) {
         return false;
     }
