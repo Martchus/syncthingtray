@@ -19,10 +19,11 @@
     * Wayland
         * Plasma 5 (native "Plasmoid" provided, positioning issues with Qt Widgets based version)
     * Windows 10
+    * macOS 10.14 Mojave
 * Can be shown as regular window if tray icon support is not available
 
 If you can confirm it works under other desktop environments, please add it
-to the list. Maybe someone could check whether it works under Mac OS X.
+to the list.
 
 ## Features
 * Provides quick access to most frequently used features but does not intend to replace the official web UI
@@ -146,6 +147,8 @@ See the release section on GitHub.
     * for statically linked binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
     * [my website](http://martchus.no-ip.biz/website/page.php?name=programming) also contains an occasionally
       updated archive with a dynamically linked executable
+* Mac OS X/macOS
+    * package syncthingtray-devel is available from [MacPorts](https://www.macports.org/ports.php?by=name&substr=syncthingtray-devel)
 
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and
