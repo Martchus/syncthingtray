@@ -122,7 +122,27 @@
         <translation>Syncthing öffnen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="539"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="454"/>
+        <source>Global</source>
+        <translation>Globale</translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="463"/>
+        <source>Global incoming traffic</source>
+        <translation>Globaler eingehender Datenverkehr</translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="474"/>
+        <source>Local</source>
+        <translation>Lokale</translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="483"/>
+        <source>Global outgoing traffic</source>
+        <translation>Globaler ausgehender Datenverkehr</translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="535"/>
         <source>Toggle filter</source>
         <translation>Filter ein-/ausblenden</translation>
     </message>
@@ -231,6 +251,24 @@
         <location filename="../lib/syncthingapplet.cpp" line="491"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
+    </message>
+</context>
+<context>
+    <name>StatisticsView</name>
+    <message>
+        <location filename="../package/contents/ui/StatisticsView.qml" line="15"/>
+        <source> files</source>
+        <translation> Dateien</translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/StatisticsView.qml" line="20"/>
+        <source> directories</source>
+        <translation> Verzeichnisse</translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/StatisticsView.qml" line="26"/>
+        <source> size</source>
+        <translation> Datengröße</translation>
     </message>
 </context>
 <context>
