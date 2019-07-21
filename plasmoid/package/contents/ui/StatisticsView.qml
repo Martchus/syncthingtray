@@ -5,34 +5,24 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 RowLayout {
+    id: rowLayout
     property var statistics
+    property string context: "?"
 
-    PlasmaCore.IconItem {
-        Layout.preferredWidth: 16
-        Layout.preferredHeight: 16
-        source: plasmoid.nativeInterface.loadFontAwesomeIcon("file", false)
-        opacity: 0.7
-    }
-    PlasmaComponents.Label {
+    IconLabel {
+        iconSource: plasmoid.nativeInterface.loadFontAwesomeIcon("file", false)
         text: statistics.files !== undefined ? statistics.files : "?"
+        tooltip: context + qsTr(" files")
     }
-    PlasmaCore.IconItem {
-        Layout.preferredWidth: 16
-        Layout.preferredHeight: 16
-        source: plasmoid.nativeInterface.loadFontAwesomeIcon("folder", false)
-        opacity: 0.7
-    }
-    PlasmaComponents.Label {
+    IconLabel {
+        iconSource: plasmoid.nativeInterface.loadFontAwesomeIcon("folder", false)
         text: statistics.dirs !== undefined ? statistics.dirs : "?"
+        tooltip: context + qsTr(" directories")
     }
-    PlasmaCore.IconItem {
-        Layout.preferredWidth: 16
-        Layout.preferredHeight: 16
-        source: plasmoid.nativeInterface.loadFontAwesomeIcon("hdd", false)
-        opacity: 0.7
-    }
-    PlasmaComponents.Label {
+    IconLabel {
+        iconSource: plasmoid.nativeInterface.loadFontAwesomeIcon("hdd", false)
         text: statistics.bytes !== undefined ? plasmoid.nativeInterface.formatFileSize(
                                                    statistics.bytes) : "?"
+        tooltip: context + qsTr(" size")
     }
 }

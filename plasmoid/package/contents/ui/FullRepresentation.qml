@@ -439,7 +439,7 @@ ColumnLayout {
         Layout.leftMargin: 5
         Layout.fillWidth: true
         Layout.fillHeight: false
-        columns: 4
+        columns: 3
         rowSpacing: 1
         columnSpacing: 4
 
@@ -451,18 +451,16 @@ ColumnLayout {
         StatisticsView {
             Layout.leftMargin: 4
             statistics: plasmoid.nativeInterface.globalStatistics
+            context: qsTr("Global")
         }
 
-        PlasmaCore.IconItem {
-            Layout.preferredWidth: 16
-            Layout.preferredHeight: 16
+        IconLabel {
             Layout.leftMargin: 10
-            source: plasmoid.nativeInterface.loadFontAwesomeIcon(
+            iconSource: plasmoid.nativeInterface.loadFontAwesomeIcon(
                         "cloud-download-alt")
-            opacity: plasmoid.nativeInterface.hasIncomingTraffic ? 1.0 : 0.5
-        }
-        PlasmaComponents.Label {
+            iconOpacity: plasmoid.nativeInterface.hasIncomingTraffic ? 1.0 : 0.5
             text: plasmoid.nativeInterface.incomingTraffic
+            tooltip: qsTr("Global incoming traffic")
         }
 
         PlasmaCore.IconItem {
@@ -473,18 +471,16 @@ ColumnLayout {
         StatisticsView {
             Layout.leftMargin: 4
             statistics: plasmoid.nativeInterface.localStatistics
+            context: qsTr("Local")
         }
 
-        PlasmaCore.IconItem {
-            Layout.preferredWidth: 16
-            Layout.preferredHeight: 16
+        IconLabel {
             Layout.leftMargin: 10
-            source: plasmoid.nativeInterface.loadFontAwesomeIcon(
+            iconSource: plasmoid.nativeInterface.loadFontAwesomeIcon(
                         "cloud-upload-alt")
-            opacity: plasmoid.nativeInterface.hasOutgoingTraffic ? 1.0 : 0.5
-        }
-        PlasmaComponents.Label {
+            iconOpacity: plasmoid.nativeInterface.hasOutgoingTraffic ? 1.0 : 0.5
             text: plasmoid.nativeInterface.outgoingTraffic
+            tooltip: qsTr("Global outgoing traffic")
         }
     }
 

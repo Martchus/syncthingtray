@@ -13,10 +13,12 @@ set(PLASMOID_FILES
     ../package/contents/ui/TopLevelItem.qml
     ../package/contents/ui/DetailView.qml
     ../package/contents/ui/DetailItem.qml
+    ../package/contents/ui/ToolTipTrigger.qml
     ../package/contents/ui/ToolTipView.qml
     ../package/contents/ui/TinyButton.qml
     ../package/contents/ui/TinyButtonStyle.qml
     ../package/contents/ui/ButtonShadow.qml
+    ../package/contents/ui/IconLabel.qml
     ../package/contents/ui/StatisticsView.qml
     ../package/contents/ui/main.qml)
 list(APPEND QML_SRC_FILES ${PLASMOID_FILES})
