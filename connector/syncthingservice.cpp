@@ -24,6 +24,18 @@ using namespace CppUtilities;
 
 namespace Data {
 
+/*!
+ * \class SyncthingService
+ * \brief The SyncthingService class controls and monitors a Syncthing as systemd user service.
+ * \remarks Internally systemd's D-Bus interface is used. So the service "org.freedesktop.systemd1" must
+ *          be running on the user-session D-Bus.
+ *
+ * This class is actually not Syncthing-specific. It could be used to control and monitor any systemd
+ * user service.
+ */
+
+/// \cond
+
 QDBusArgument &operator<<(QDBusArgument &argument, const ManagerDBusUnitFileChange &unitFileChange)
 {
     argument.beginStructure();
@@ -51,6 +63,11 @@ OrgFreedesktopLogin1ManagerInterface *SyncthingService::s_loginManager = nullptr
 DateTime SyncthingService::s_lastWakeUp = DateTime();
 bool SyncthingService::s_fallingAsleep = false;
 
+/// \endcond
+
+/*!
+ * \brief Creates a new SyncthingService instance.
+ */
 SyncthingService::SyncthingService(QObject *parent)
     : QObject(parent)
     , m_unit(nullptr)
@@ -107,6 +124,9 @@ SyncthingService::SyncthingService(QObject *parent)
 #endif
 }
 
+/*!
+ * \brief Sets the \a unitName of the systemd user service to be controlled/monitored, e.g. "syncthing.service".
+ */
 void SyncthingService::setUnitName(const QString &unitName)
 {
     if (m_unitName == unitName) {
@@ -128,6 +148,11 @@ void SyncthingService::setUnitName(const QString &unitName)
     emit unitNameChanged(unitName);
 }
 
+/*!
+ * \brief Returns whether systemd (and specificly its D-Bus interface for user services) is available.
+ * \remarks The availability might not be instantly detected and may change at any time. Use the systemdAvailableChanged()
+ *          to react to availability changes.
+ */
 bool SyncthingService::isSystemdAvailable() const
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
@@ -137,6 +162,13 @@ bool SyncthingService::isSystemdAvailable() const
 #endif
 }
 
+/*!
+ * \brief Returns whether the unit specified with \a unitName is available.
+ * \remarks
+ * - The availability might not be instantly detected and may change at any time. Use the unitAvailableChanged()
+ *   to react to availability changes.
+ * - Unless this function returns true the other unit-related functions will return false/empty values.
+ */
 bool SyncthingService::isUnitAvailable() const
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
@@ -146,6 +178,9 @@ bool SyncthingService::isUnitAvailable() const
 #endif
 }
 
+/*!
+ * \brief Returns whether \a activeSince or the last standby-wake-up is longer ago than \a atLeastSeconds.
+ */
 bool SyncthingService::isActiveWithoutSleepFor(DateTime activeSince, unsigned int atLeastSeconds)
 {
     if (!atLeastSeconds) {
@@ -159,6 +194,9 @@ bool SyncthingService::isActiveWithoutSleepFor(DateTime activeSince, unsigned in
     return ((now - activeSince).totalSeconds() > atLeastSeconds) && (s_lastWakeUp.isNull() || ((now - s_lastWakeUp).totalSeconds() > atLeastSeconds));
 }
 
+/*!
+ * \brief Starts the unit if \a running is true and stops the unit if \a running is false.
+ */
 void SyncthingService::setRunning(bool running)
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
@@ -171,6 +209,9 @@ void SyncthingService::setRunning(bool running)
 #endif
 }
 
+/*!
+ * \brief Enables the unit if \a enabled is true and disables the unit if \a enabled is false.
+ */
 void SyncthingService::setEnabled(bool enabled)
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
@@ -182,6 +223,9 @@ void SyncthingService::setEnabled(bool enabled)
 #endif
 }
 
+/*!
+ * \brief Handles when a new unit is added to react if it matches the name of the unit we're monitoring.
+ */
 void SyncthingService::handleUnitAdded(const QString &unitName, const QDBusObjectPath &unitPath)
 {
     if (unitName == m_unitName) {
@@ -189,6 +233,9 @@ void SyncthingService::handleUnitAdded(const QString &unitName, const QDBusObjec
     }
 }
 
+/*!
+ * \brief Handles when a unit is removed to react if it matches the name of the unit we're monitoring.
+ */
 void SyncthingService::handleUnitRemoved(const QString &unitName, const QDBusObjectPath &unitPath)
 {
     Q_UNUSED(unitPath)
@@ -197,6 +244,9 @@ void SyncthingService::handleUnitRemoved(const QString &unitName, const QDBusObj
     }
 }
 
+/*!
+ * \brief Consumes the results of the s_manager->GetUnit() call (in setUnitName()).
+ */
 void SyncthingService::handleUnitGet(QDBusPendingCallWatcher *watcher)
 {
     watcher->deleteLater();
@@ -209,6 +259,9 @@ void SyncthingService::handleUnitGet(QDBusPendingCallWatcher *watcher)
     setUnit(unitReply.value());
 }
 
+/*!
+ * \brief Handles when properties of the monitored unit change.
+ */
 void SyncthingService::handlePropertiesChanged(
     const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
@@ -249,6 +302,9 @@ void SyncthingService::handlePropertiesChanged(
         m_description, &SyncthingService::descriptionChanged, QStringLiteral("Description"), changedProperties, invalidatedProperties);
 }
 
+/*!
+ * \brief Handles D-Bus errors.
+ */
 void SyncthingService::handleError(const char *context, QDBusPendingCallWatcher *watcher)
 {
     watcher->deleteLater();
@@ -258,6 +314,9 @@ void SyncthingService::handleError(const char *context, QDBusPendingCallWatcher 
     }
 }
 
+/*!
+ * \brief Handles when the service availability changes.
+ */
 void SyncthingService::handleServiceRegisteredChanged(const QString &service)
 {
     if (service == s_manager->service()) {
@@ -265,6 +324,9 @@ void SyncthingService::handleServiceRegisteredChanged(const QString &service)
     }
 }
 
+/*!
+ * \brief Logs the moment before when standby is enabled and the time of the last standby-wakeup.
+ */
 void SyncthingService::handlePrepareForSleep(bool rightBefore)
 {
     if (!(s_fallingAsleep = rightBefore)) {
@@ -272,6 +334,9 @@ void SyncthingService::handlePrepareForSleep(bool rightBefore)
     }
 }
 
+/*!
+ * \brief Internal helper to handle property changes for QString-properties.
+ */
 bool SyncthingService::handlePropertyChanged(QString &variable, void (SyncthingService::*signal)(const QString &), const QString &propertyName,
     const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
@@ -290,6 +355,9 @@ bool SyncthingService::handlePropertyChanged(QString &variable, void (SyncthingS
     return false;
 }
 
+/*!
+ * \brief Internal helper to handle property changes for DateTime-properties.
+ */
 bool SyncthingService::handlePropertyChanged(
     DateTime &variable, const QString &propertyName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
@@ -308,11 +376,17 @@ bool SyncthingService::handlePropertyChanged(
     return false;
 }
 
+/*!
+ * \brief Registers error handler for D-Bus errors.
+ */
 void SyncthingService::registerErrorHandler(const QDBusPendingCall &call, const char *context)
 {
     connect(new QDBusPendingCallWatcher(call, this), &QDBusPendingCallWatcher::finished, bind(&SyncthingService::handleError, this, context, _1));
 }
 
+/*!
+ * \brief Sets the current unit data.
+ */
 void SyncthingService::setUnit(const QDBusObjectPath &objectPath)
 {
     // cleanup
@@ -335,6 +409,9 @@ void SyncthingService::setUnit(const QDBusObjectPath &objectPath)
     connect(m_properties, &OrgFreedesktopDBusPropertiesInterface::PropertiesChanged, this, &SyncthingService::handlePropertiesChanged);
 }
 
+/*!
+ * \brief Updates the properties for the current unit.
+ */
 void SyncthingService::setProperties(
     bool unitAvailable, const QString &activeState, const QString &subState, const QString &unitFileState, const QString &description)
 {
