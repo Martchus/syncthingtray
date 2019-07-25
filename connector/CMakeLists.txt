@@ -99,7 +99,7 @@ endif ()
 # configure whether events should be logged
 option(SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS "enables logging event data to stdout (enable only for debugging!)" OFF)
 if (SYNCTHING_CONNECTION_LOG_SYNCTHING_EVENTS)
-    set_property(SOURCE syncthingconnection_requests.cpp
+    set_property(SOURCE syncthingconnection.cpp syncthingconnection_requests.cpp
                  APPEND
                  PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_LOG_SYNCTHING_EVENTS)
     message(WARNING "SyncthingConnection class will log event data to stdout")

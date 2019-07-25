@@ -9,6 +9,11 @@
 
 #include <c++utilities/conversion/stringconversion.h>
 
+#if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS)
+#include <c++utilities/io/ansiescapecodes.h>
+#include <iostream>
+#endif
+
 #include <QAuthenticator>
 #include <QHostAddress>
 #include <QJsonArray>
@@ -24,6 +29,9 @@
 
 using namespace std;
 using namespace CppUtilities;
+#if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS)
+using namespace CppUtilities::EscapeCodes;
+#endif
 
 namespace Data {
 
@@ -111,6 +119,17 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
 
 #ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     setupTestData();
+#endif
+
+#ifdef LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
+    QObject::connect(this, &SyncthingConnection::newDirs, [] (const auto &dirs) {
+        std::cerr << Phrases::Info << "Directory list renewed:" << Phrases::End;
+        std::cerr << displayNames(dirs).join(QStringLiteral(", ")).toStdString() << endl;
+    });
+    QObject::connect(this, &SyncthingConnection::newDevices, [] (const auto &devs) {
+        std::cerr << Phrases::Info << "Device list renewed:" << Phrases::End;
+        std::cerr << displayNames(devs).join(QStringLiteral(", ")).toStdString() << endl;
+    });
 #endif
 }
 
