@@ -422,7 +422,7 @@ Systemd::ServiceStatus Systemd::apply(
     if (!service) {
         return ServiceStatus{};
     }
-    const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
+    const auto isRelevant = service->isSystemdAvailable() && service->isUnitAvailable() && connection.isLocal();
     const auto isRunning = service->isRunning();
     const auto consideredForReconnect = considerForReconnect && isRelevant;
 
