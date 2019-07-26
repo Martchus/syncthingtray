@@ -133,7 +133,7 @@ Launcher::LauncherStatus Launcher::apply(
         if (reconnectRequired) {
             if (launcher->isActiveFor(minActiveTimeInSeconds)) {
                 connection.reconnect();
-            } else {
+            } else if (isRunning) {
                 // give the service (which has just started) a few seconds to initialize
                 connection.reconnectLater(minActiveTimeInSeconds * 1000);
             }
@@ -422,9 +422,10 @@ Systemd::ServiceStatus Systemd::apply(
     if (!service) {
         return ServiceStatus{};
     }
-    const auto isRelevant = service->isSystemdAvailable() && service->isUnitAvailable() && connection.isLocal();
-    const auto isRunning = service->isRunning();
-    const auto consideredForReconnect = considerForReconnect && isRelevant;
+    const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
+    const auto unitAvailable = service->isUnitAvailable();
+    const auto isRunning = unitAvailable && service->isRunning();
+    const auto consideredForReconnect = considerForReconnect && isRelevant && unitAvailable;
 
     if (currentConnectionSettings && (!considerForReconnect || !isRelevant || isRunning)) {
         // ensure auto-reconnect is configured according to settings
@@ -439,7 +440,7 @@ Systemd::ServiceStatus Systemd::apply(
         if (reconnectRequired) {
             if (service->isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
                 connection.reconnect();
-            } else {
+            } else if (isRunning) {
                 // give the service (which has just started) a few seconds to initialize
                 connection.reconnectLater(minActiveTimeInSeconds * 1000);
             }
