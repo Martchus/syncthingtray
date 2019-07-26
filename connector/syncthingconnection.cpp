@@ -122,11 +122,11 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
 #endif
 
 #ifdef LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
-    QObject::connect(this, &SyncthingConnection::newDirs, [] (const auto &dirs) {
+    QObject::connect(this, &SyncthingConnection::newDirs, [](const auto &dirs) {
         std::cerr << Phrases::Info << "Directory list renewed:" << Phrases::End;
         std::cerr << displayNames(dirs).join(QStringLiteral(", ")).toStdString() << endl;
     });
-    QObject::connect(this, &SyncthingConnection::newDevices, [] (const auto &devs) {
+    QObject::connect(this, &SyncthingConnection::newDevices, [](const auto &devs) {
         std::cerr << Phrases::Info << "Device list renewed:" << Phrases::End;
         std::cerr << displayNames(devs).join(QStringLiteral(", ")).toStdString() << endl;
     });
