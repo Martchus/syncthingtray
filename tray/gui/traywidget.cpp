@@ -55,9 +55,9 @@ using namespace std;
 
 namespace QtGui {
 
-SettingsDialog *TrayWidget::m_settingsDlg = nullptr;
-QtUtilities::AboutDialog *TrayWidget::m_aboutDlg = nullptr;
-vector<TrayWidget *> TrayWidget::m_instances;
+SettingsDialog *TrayWidget::s_settingsDlg = nullptr;
+QtUtilities::AboutDialog *TrayWidget::s_aboutDlg = nullptr;
+vector<TrayWidget *> TrayWidget::s_instances;
 
 /*!
  * \brief Instantiates a new tray widget.
@@ -79,7 +79,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     , m_selectedConnection(nullptr)
     , m_startStopButtonTarget(StartStopButtonTarget::None)
 {
-    m_instances.push_back(this);
+    s_instances.push_back(this);
 
     m_ui->setupUi(this);
 
@@ -195,40 +195,40 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 
 TrayWidget::~TrayWidget()
 {
-    auto i = std::find(m_instances.begin(), m_instances.end(), this);
-    if (i != m_instances.end()) {
-        m_instances.erase(i);
+    auto i = std::find(s_instances.begin(), s_instances.end(), this);
+    if (i != s_instances.end()) {
+        s_instances.erase(i);
     }
-    if (m_instances.empty()) {
+    if (s_instances.empty()) {
         QCoreApplication::quit();
     }
 }
 
 void TrayWidget::showSettingsDialog()
 {
-    if (!m_settingsDlg) {
-        m_settingsDlg = new SettingsDialog(&m_connection, this);
-        connect(m_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettingsOnAllInstances);
+    if (!s_settingsDlg) {
+        s_settingsDlg = new SettingsDialog(&m_connection, this);
+        connect(s_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettingsOnAllInstances);
     }
-    centerWidget(m_settingsDlg);
-    showDialog(m_settingsDlg);
+    centerWidget(s_settingsDlg);
+    showDialog(s_settingsDlg);
 }
 
 void TrayWidget::showAboutDialog()
 {
-    if (!m_aboutDlg) {
-        m_aboutDlg = new AboutDialog(this, QString(),
+    if (!s_aboutDlg) {
+        s_aboutDlg = new AboutDialog(this, QString(),
             QStringLiteral(
                 "<p>Developed by " APP_AUTHOR
                 "<br>Fallback icons from KDE/Breeze project<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "
                 "icons from <a href=\"https://fontawesome.com\">Font "
                 "Awesome</a> (see <a href=\"https://fontawesome.com/license\">their license</a>)</p>"),
             QString(), {}, QStringLiteral(APP_URL), QString(), QImage(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
-        m_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
-        m_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+        s_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
+        s_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     }
-    centerWidget(m_aboutDlg);
-    showDialog(m_aboutDlg);
+    centerWidget(s_aboutDlg);
+    showDialog(s_aboutDlg);
 }
 
 void TrayWidget::showWebUi()
@@ -478,7 +478,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
 
 void TrayWidget::applySettingsOnAllInstances()
 {
-    for (TrayWidget *instance : m_instances) {
+    for (TrayWidget *instance : s_instances) {
         instance->applySettings();
     }
 }

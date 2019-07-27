@@ -102,8 +102,8 @@ private slots:
 private:
     TrayMenu *m_menu;
     std::unique_ptr<Ui::TrayWidget> m_ui;
-    static SettingsDialog *m_settingsDlg;
-    static QtUtilities::AboutDialog *m_aboutDlg;
+    static SettingsDialog *s_settingsDlg;
+    static QtUtilities::AboutDialog *s_aboutDlg;
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     WebViewDialog *m_webViewDlg;
 #endif
@@ -122,7 +122,7 @@ private:
     QMenu *m_notificationsMenu;
     std::vector<Data::SyncthingLogEntry> m_notifications;
     enum class StartStopButtonTarget { None, Service, Launcher } m_startStopButtonTarget;
-    static std::vector<TrayWidget *> m_instances;
+    static std::vector<TrayWidget *> s_instances;
 };
 
 inline Data::SyncthingConnection &TrayWidget::connection()
@@ -152,7 +152,7 @@ inline QMenu *TrayWidget::connectionsMenu()
 
 inline const std::vector<TrayWidget *> &TrayWidget::instances()
 {
-    return m_instances;
+    return s_instances;
 }
 } // namespace QtGui
 
