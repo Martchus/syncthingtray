@@ -4,7 +4,6 @@
 #include "../../model/syncthingdownloadmodel.h"
 
 #include <QClipboard>
-#include <QCursor>
 #include <QGuiApplication>
 #include <QHeaderView>
 #include <QMenu>
@@ -27,60 +26,64 @@ DownloadView::DownloadView(QWidget *parent)
 void DownloadView::mouseReleaseEvent(QMouseEvent *event)
 {
     QTreeView::mouseReleaseEvent(event);
-    if (const SyncthingDownloadModel *dlModel = qobject_cast<SyncthingDownloadModel *>(model())) {
-        const QPoint pos(event->pos());
-        const QModelIndex clickedIndex(indexAt(event->pos()));
-        if (clickedIndex.isValid() && clickedIndex.column() == 0) {
-            const QRect itemRect(visualRect(clickedIndex));
-            if (pos.x() > itemRect.right() - 17) {
-                if (clickedIndex.parent().isValid()) {
-                    if (pos.y() < itemRect.y() + itemRect.height() / 2) {
-                        if (const SyncthingItemDownloadProgress *progress = dlModel->progressInfo(clickedIndex)) {
-                            emit openItemDir(*progress);
-                        }
-                    }
-                } else if (const SyncthingDir *dir = dlModel->dirInfo(clickedIndex)) {
-                    emit openDir(*dir);
-                }
+    const auto *const dlModel = qobject_cast<const SyncthingDownloadModel *>(model());
+    if (!dlModel) {
+        return;
+    }
+    const QPoint pos(event->pos());
+    const QModelIndex clickedIndex(indexAt(event->pos()));
+    if (!clickedIndex.isValid() || clickedIndex.column() != 0) {
+        return;
+    }
+    const QRect itemRect(visualRect(clickedIndex));
+    if (pos.x() <= itemRect.right() - 17) {
+        return;
+    }
+    if (clickedIndex.parent().isValid()) {
+        if (pos.y() < itemRect.y() + itemRect.height() / 2) {
+            if (const SyncthingItemDownloadProgress *const progress = dlModel->progressInfo(clickedIndex)) {
+                emit openItemDir(*progress);
             }
         }
+    } else if (const SyncthingDir *const dir = dlModel->dirInfo(clickedIndex)) {
+        emit openDir(*dir);
     }
 }
 
 void DownloadView::showContextMenu(const QPoint &position)
 {
-    if (selectionModel() && selectionModel()->selectedRows(0).size() == 1) {
-        QMenu menu;
-        if (selectionModel()->selectedRows(0).at(0).parent().isValid()) {
-            connect(
-                menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
-                    tr("Copy value")),
-                &QAction::triggered, this, &DownloadView::copySelectedItem);
-        } else {
-            connect(
-                menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
-                    tr("Copy label/ID")),
-                &QAction::triggered, this, &DownloadView::copySelectedItem);
-        }
-        menu.exec(mapToGlobal(position));
+    if (!selectionModel() || selectionModel()->selectedRows(0).size() != 1) {
+        return;
     }
+    QMenu menu;
+    if (selectionModel()->selectedRows(0).at(0).parent().isValid()) {
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+                    tr("Copy value")),
+            &QAction::triggered, this, &DownloadView::copySelectedItem);
+    } else {
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+                    tr("Copy label/ID")),
+            &QAction::triggered, this, &DownloadView::copySelectedItem);
+    }
+    menu.exec(viewport()->mapToGlobal(position));
 }
 
 void DownloadView::copySelectedItem()
 {
-    if (selectionModel() && selectionModel()->selectedRows(0).size() == 1) {
-        const QModelIndex selectedIndex = selectionModel()->selectedRows(0).at(0);
-        QString text;
-        if (selectedIndex.parent().isValid()) {
-            // dev attribute
-            text = model()->data(model()->index(selectedIndex.row(), 1, selectedIndex.parent())).toString();
-        } else {
-            // dev label/id
-            text = model()->data(selectedIndex).toString();
-        }
-        if (!text.isEmpty()) {
-            QGuiApplication::clipboard()->setText(text);
-        }
+    if (!selectionModel() || selectionModel()->selectedRows(0).size() != 1) {
+        return;
+    }
+    const QModelIndex selectedIndex = selectionModel()->selectedRows(0).at(0);
+    QString text;
+    if (selectedIndex.parent().isValid()) {
+        // dev attribute
+        text = model()->data(model()->index(selectedIndex.row(), 1, selectedIndex.parent())).toString();
+    } else {
+        // dev label/id
+        text = model()->data(selectedIndex).toString();
+    }
+    if (!text.isEmpty()) {
+        QGuiApplication::clipboard()->setText(text);
     }
 }
 } // namespace QtGui
