@@ -31,7 +31,7 @@ void SyncthingKiller::waitForFinished()
         if (!waitForSignalsOrFail(noop, 0, signalInfo(this, &SyncthingKiller::ignored),
                 signalInfo(process,
 #if QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13)
-                    static_cast<void (SyncthingProcess::*)(int)>(
+                    static_cast<void (SyncthingProcess::*)(int, QProcess::ExitStatus)>(
 #endif
                         &SyncthingProcess::finished
 #if QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13)
@@ -60,7 +60,7 @@ void SyncthingKiller::confirmKill() const
     msgBox->addButton(tr("Kill process"), QMessageBox::AcceptRole);
     connect(process,
 #if QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13)
-        static_cast<void (QProcess::*)(int)>(
+        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
 #endif
             &SyncthingProcess::finished
 #if QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13)
