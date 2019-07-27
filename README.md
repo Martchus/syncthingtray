@@ -17,10 +17,15 @@
         * Awesome/qt5ct
         * Cinnamon
     * Wayland
-        * Plasma 5 (native "Plasmoid" provided, positioning issues with Qt Widgets based version)
+        * Plasma 5
+            * native "Plasmoid" works well
+            * for Qt Widgets based version see note below
     * Windows 10
     * macOS 10.14 Mojave
 * Can be shown as regular window if tray icon support is not available
+
+The Qt Widgets based version basically works under Wayland but there are positioning issues (see known bugs
+section).
 
 If you can confirm it works under other desktop environments, please add it
 to the list.
@@ -295,15 +300,21 @@ and [Testing and debugging Plasma 5 plasmoid with Qt Creator](/plasmoid/testing.
 The following bugs are caused by dependencies and hence tracked externally. For bugs of Syncthing Tray itself, checkout the issues
 on GitHub.
 
-* Any self-signed certificate is accepted when using Qt WebEngine due to
-  Qt bug https://bugreports.qt.io/browse/QTBUG-51176
-* Pausing/resuming folders and devices doesn't work when using scan-intervalls with a lot of zeros
-  because of Syncthing bug https://github.com/syncthing/syncthing/issues/4001.
-  This has already been fixed on the Qt-side with https://codereview.qt-project.org/#/c/187069/. However, the fix is only
-  available in Qt 5.9 and above.
-* The tray disconnects from the local instance when the network connection goes down.
-  The network connection must be restored or the tray restarted to be able to connect to local
-  Syncthing again. This is caused by Qt bug https://bugreports.qt.io/browse/QTBUG-60949.
+* Wayland limitations
+    * The tray menu can not be positioned correctly under Wayland because the protocol does not allow setting window positions from
+      the client-side (at least I don't know a way to do it). This issue can not be fixed unless Wayland provides an API to set the
+      window position to specific coordinates or a system tray icon.
+      See discussion on [freedesktop.org](https://lists.freedesktop.org/archives/wayland-devel/2014-August/017584.html).
+      Note that the Plasmoid is not affected by this limitation.
+    * While the tray menu is shown its entry is shown in the taskbar. Not sure whether there is a way to avoid this.
+* Qt bugs
+    * Any self-signed certificate is accepted when using Qt WebEngine due to Qt bug https://bugreports.qt.io/browse/QTBUG-51176.
+    * Pausing/resuming folders and devices doesn't work when using scan-intervalls with a lot of zeros because of Syncthing bug
+      https://github.com/syncthing/syncthing/issues/4001. This has already been fixed on the Qt-side with
+      https://codereview.qt-project.org/#/c/187069/. However, the fix is only available in Qt 5.9 and above.
+    * The tray disconnects from the local instance when the network connection goes down. The network connection must be restored or
+      the tray restarted to be able to connect to local Syncthing again. This is caused by Qt bug
+      https://bugreports.qt.io/browse/QTBUG-60949.
 
 ## Attribution for 3rd party content
 * Some icons are taken from the Syncthing project.
