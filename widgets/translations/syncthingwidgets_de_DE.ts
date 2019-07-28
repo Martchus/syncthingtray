@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de_DE">
 <context>
+    <name>Data::SyncthingLauncher</name>
+    <message>
+        <location filename="../misc/syncthinglauncher.cpp" line="62"/>
+        <source>Not built with libsyncthing support.</source>
+        <translation>Unterstützung für libsyncthing nicht aktiviert.</translation>
+    </message>
+</context>
+<context>
     <name>QtGui::AppearanceOptionPage</name>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="6"/>
@@ -14,104 +22,132 @@
         <translation>Größe des Menüs</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="26"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="94"/>
         <source>Optional GUI elements</source>
         <translation>Optionale Elemente</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="33"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="101"/>
         <source>Traffic statistics</source>
         <translation>Traffic-Statistiken</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="61"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="50"/>
         <source> x </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="84"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="28"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="60"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="257"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="286"/>
         <source> px</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="96"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="108"/>
         <source>Frame shape</source>
         <translation>Rahmenform</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="103"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="139"/>
         <source>Frame shadow</source>
         <translation>Rahmenschatten</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="111"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="116"/>
         <source>No frame</source>
         <translation>Kein Rahmen</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="116"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="121"/>
         <source>Box</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="121"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="126"/>
         <source>Panel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="126"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="131"/>
         <source>Styled panel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="135"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="147"/>
         <source>Plain</source>
         <translation>Einfach</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="140"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="152"/>
         <source>Raised</source>
         <translation>Angehoben</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="145"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="157"/>
         <source>Sunken</source>
         <translation>Eingedrückt</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="153"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="165"/>
         <source>Tab position</source>
         <translation>Position der Tabs</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="161"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="173"/>
         <source>Top</source>
         <translation>Oben</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="166"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="178"/>
         <source>Bottom</source>
         <translation>Unten</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="171"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="183"/>
         <source>Left</source>
         <translation>Links</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="176"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="188"/>
         <source>Right</source>
         <translation>Rechts</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="184"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="196"/>
         <source>Colors</source>
         <translation>Farben</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="191"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="203"/>
         <source>Bright custom text colors (use for dark color scheme)</source>
         <translation>Helle benutzerdefinierte Schriftfarben (für dunkles Farbschema gedacht)</translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="210"/>
+        <source>Positioning</source>
+        <translation>Menüposition</translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="222"/>
+        <source>Use cursor position</source>
+        <translation>Verwende Mausposition</translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="232"/>
+        <source>Otherwise assume tray icon coordinates to be:</source>
+        <translation>Andernfalls folgende Koordinaten verwenden:</translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="250"/>
+        <source>x:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="276"/>
+        <source>y:</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -127,27 +163,27 @@
         <translation>Tray-Icon beim Starten der Desktopumgebung automatisch starten</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="617"/>
+        <location filename="../settings/settingsdialog.cpp" line="625"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Durch das Hinzufügen einer *.desktop-Datei unter &lt;i&gt;~/.config/autostart&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="620"/>
+        <location filename="../settings/settingsdialog.cpp" line="628"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation>Durch das Hinzufügen eines Registry-Schlüssels unter &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="624"/>
+        <location filename="../settings/settingsdialog.cpp" line="632"/>
         <source>This is achieved by adding a *.plist file under &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Durch das Hinzufügen einer *.plist-Datei unter &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="628"/>
+        <location filename="../settings/settingsdialog.cpp" line="636"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation>Diese Funktion wurde für die aktuelle Plattform nicht nicht implementiert.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="759"/>
+        <location filename="../settings/settingsdialog.cpp" line="767"/>
         <source>unable to modify startup entry</source>
         <translation>Fehler beim aktualisieren des Auto-Start-Eintrags</translation>
     </message>
@@ -530,7 +566,7 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="147"/>
-        <location filename="../settings/settingsdialog.cpp" line="900"/>
+        <location filename="../settings/settingsdialog.cpp" line="911"/>
         <source>Stop launched instance</source>
         <translation>Stoppen</translation>
     </message>
@@ -545,77 +581,77 @@
         <translation>Log folgen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="804"/>
+        <location filename="../settings/settingsdialog.cpp" line="812"/>
         <source>%1-launcher</source>
         <translation>%1-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="805"/>
+        <location filename="../settings/settingsdialog.cpp" line="813"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation>Starte %1 beim Starten des Tray-Icons</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="806"/>
+        <location filename="../settings/settingsdialog.cpp" line="814"/>
         <source>%1 executable</source>
         <translation>Ausführbare Datei von %1</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="807"/>
+        <location filename="../settings/settingsdialog.cpp" line="815"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation>%1-Log (stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="819"/>
+        <location filename="../settings/settingsdialog.cpp" line="827"/>
         <source>Restore default</source>
         <translation>Auf Vorgabe zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="935"/>
+        <location filename="../settings/settingsdialog.cpp" line="946"/>
         <source>%1 exited with exit code %2</source>
         <translation>%1 wurde mit dem Statuscode %2 beendet</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="938"/>
+        <location filename="../settings/settingsdialog.cpp" line="949"/>
         <source>%1 crashed with exit code %2</source>
         <translation>%1 ist mit dem Statuscode %2 abgestürzt</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="965"/>
+        <location filename="../settings/settingsdialog.cpp" line="976"/>
         <source>failed to start (e.g. executable does not exist or not permission error)</source>
         <translation>Start fehlgeschlagen (z. B. weil Programmdatei nicht existiert oder nicht ausführbar ist)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="968"/>
+        <location filename="../settings/settingsdialog.cpp" line="979"/>
         <source>process crashed</source>
         <translation>Prozess ist abgestürzt</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="971"/>
+        <location filename="../settings/settingsdialog.cpp" line="982"/>
         <source>timeout error</source>
         <translation>Time-out</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="974"/>
+        <location filename="../settings/settingsdialog.cpp" line="985"/>
         <source>read error</source>
         <translation>Lesefehler</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="977"/>
+        <location filename="../settings/settingsdialog.cpp" line="988"/>
         <source>write error</source>
         <translation>Schreibfehler</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="980"/>
+        <location filename="../settings/settingsdialog.cpp" line="991"/>
         <source>unknown process error</source>
         <translation>unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="982"/>
+        <location filename="../settings/settingsdialog.cpp" line="993"/>
         <source>An error occurred when running %1: %2</source>
         <translation>Beim Ausführen von %1 ist ein Fehler aufgetreten: %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1028"/>
+        <location filename="../settings/settingsdialog.cpp" line="1039"/>
         <source>Kill launched instance</source>
         <translation>Töten</translation>
     </message>
@@ -734,22 +770,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1227"/>
+        <location filename="../settings/settingsdialog.cpp" line="1238"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1234"/>
+        <location filename="../settings/settingsdialog.cpp" line="1245"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1241"/>
+        <location filename="../settings/settingsdialog.cpp" line="1252"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1263"/>
+        <location filename="../settings/settingsdialog.cpp" line="1274"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -910,8 +946,8 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <location filename="../settings/systemdoptionpage.ui" line="99"/>
         <location filename="../settings/systemdoptionpage.ui" line="154"/>
         <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="1142"/>
-        <location filename="../settings/settingsdialog.cpp" line="1154"/>
+        <location filename="../settings/settingsdialog.cpp" line="1153"/>
+        <location filename="../settings/settingsdialog.cpp" line="1165"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -945,22 +981,22 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1084"/>
+        <location filename="../settings/settingsdialog.cpp" line="1095"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Start-/Stop-Button für den Systemd-Dienst und den internen Starter gleichzeitig anzugeigen. Wenn verfügbar, wird der Button den Systemd-Dienst kontrollieren.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1090"/>
+        <location filename="../settings/settingsdialog.cpp" line="1101"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Status des Systemd-Dienstes und den des internen Starters gleichzeitig für Verbindungsveruche einzubeziehen. Wenn verfügbar, wird der Status des Systemd-Dienstes verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1115"/>
+        <location filename="../settings/settingsdialog.cpp" line="1126"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1137"/>
+        <location filename="../settings/settingsdialog.cpp" line="1148"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -994,7 +1030,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="1176"/>
+        <location filename="../settings/settingsdialog.cpp" line="1187"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
@@ -1024,7 +1060,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1178"/>
+        <location filename="../settings/settingsdialog.cpp" line="1189"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.
@@ -1034,7 +1070,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="218"/>
+        <location filename="../settings/settings.cpp" line="227"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Fehler beim laden des Zertifikats &quot;%1&quot; beim wiederherstellen der Einstellungen.</translation>
     </message>
