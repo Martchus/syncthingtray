@@ -24,7 +24,7 @@ TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     menuLayout->addWidget(m_trayWidget = new TrayWidget(this));
     setLayout(menuLayout);
     setPlatformMenu(nullptr);
-    setWindowFlags(Qt::ToolTip | Qt::FramelessWindowHint | Qt::Popup);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
 }
 
 QSize TrayMenu::sizeHint() const
