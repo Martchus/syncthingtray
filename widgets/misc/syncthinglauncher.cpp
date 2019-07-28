@@ -52,6 +52,18 @@ bool SyncthingLauncher::isLibSyncthingAvailable()
 }
 
 /*!
+ * \brief Returns the Syncthing version provided by libsyncthing or "Not built with libsyncthing support." if not built with libsyncthing support.
+ */
+QString SyncthingLauncher::libSyncthingVersionInfo()
+{
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    return QString::fromStdString(LibSyncthing::longSyncthingVersion());
+#else
+    return tr("Not built with libsyncthing support.");
+#endif
+}
+
+/*!
  * \brief Launches a Syncthing instance using the specified \a arguments.
  *
  * To use the internal library, leave \a program empty. In this case \a arguments are ignored.

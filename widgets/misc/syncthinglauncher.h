@@ -34,6 +34,7 @@ public:
     static bool isLibSyncthingAvailable();
     static SyncthingLauncher *mainInstance();
     static void setMainInstance(SyncthingLauncher *mainInstance);
+    static QString libSyncthingVersionInfo();
 
 Q_SIGNALS:
     void confirmKill();

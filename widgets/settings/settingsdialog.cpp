@@ -837,6 +837,9 @@ QWidget *LauncherOptionPage::setupWidget()
     ui()->launchNowPushButton->setHidden(running);
     ui()->stopPushButton->setHidden(!running);
     ui()->useBuiltInVersionCheckBox->setVisible(isSyncthing && SyncthingLauncher::isLibSyncthingAvailable());
+    if (isSyncthing) {
+        ui()->useBuiltInVersionCheckBox->setToolTip(SyncthingLauncher::libSyncthingVersionInfo());
+    }
 
     // connect signals & slots
     if (m_process) {
