@@ -52,7 +52,7 @@ struct SYNCTHINGWIDGETS_EXPORT Appearance {
     int frameStyle = QFrame::NoFrame | QFrame::Plain;
     int tabPosition = QTabWidget::South;
     bool brightTextColors = false;
-    struct Positioning {
+    struct SYNCTHINGWIDGETS_EXPORT Positioning {
         QPoint assumedIconPosition;
         bool useCursorPosition = true;
         QPoint positionToUse() const;
@@ -79,7 +79,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
     bool considerForReconnect = false;
     bool showButton = false;
 
-    struct LibSyncthing {
+    struct SYNCTHINGWIDGETS_EXPORT LibSyncthing {
         QString configDir;
     } libSyncthing;
 
@@ -87,7 +87,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
     static std::vector<Data::SyncthingProcess *> allProcesses();
     void autostart() const;
     static void terminate();
-    struct LauncherStatus {
+    struct SYNCTHINGWIDGETS_EXPORT LauncherStatus {
         bool relevant = false;
         bool running = false;
         bool consideredForReconnect = false;
@@ -104,7 +104,7 @@ struct SYNCTHINGWIDGETS_EXPORT Systemd {
     bool showButton = false;
     bool considerForReconnect = false;
 
-    struct ServiceStatus {
+    struct SYNCTHINGWIDGETS_EXPORT ServiceStatus {
         bool relevant = false;
         bool running = false;
         bool consideredForReconnect = false;
