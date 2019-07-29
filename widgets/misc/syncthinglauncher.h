@@ -49,6 +49,7 @@ public Q_SLOTS:
     void launch(const LibSyncthing::RuntimeOptions &runtimeOptions);
     void terminate();
     void kill();
+    void tearDownLibSyncthing();
 
 private Q_SLOTS:
     void handleProcessReadyRead();

@@ -128,9 +128,8 @@ void SyncthingLauncher::terminate()
     if (m_process.isRunning()) {
         m_manuallyStopped = true;
         m_process.stopSyncthing();
-    } else if (m_future.isRunning()) {
-        m_manuallyStopped = true;
-        QtConcurrent::run(this, &SyncthingLauncher::stopLibSyncthing);
+    } else {
+        tearDownLibSyncthing();
     }
 }
 
@@ -139,10 +138,20 @@ void SyncthingLauncher::kill()
     if (m_process.isRunning()) {
         m_manuallyStopped = true;
         m_process.killSyncthing();
-    } else if (m_future.isRunning()) {
-        m_manuallyStopped = true;
-        QtConcurrent::run(this, &SyncthingLauncher::stopLibSyncthing);
+    } else {
+        tearDownLibSyncthing();
     }
+}
+
+void SyncthingLauncher::tearDownLibSyncthing()
+{
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    if (!m_future.isRunning()) {
+        return;
+    }
+    m_manuallyStopped = true;
+    QtConcurrent::run(this, &SyncthingLauncher::stopLibSyncthing);
+#endif
 }
 
 void SyncthingLauncher::handleProcessReadyRead()

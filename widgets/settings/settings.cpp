@@ -107,6 +107,10 @@ void Launcher::autostart() const
  */
 void Launcher::terminate()
 {
+    auto *const launcher = SyncthingLauncher::mainInstance();
+    if (launcher) {
+        launcher->tearDownLibSyncthing();
+    }
     QtGui::SyncthingKiller(allProcesses()).waitForFinished();
 }
 
