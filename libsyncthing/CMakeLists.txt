@@ -6,6 +6,7 @@ set(META_PROJECT_TYPE library)
 set(META_APP_NAME "Syncthing library")
 set(META_APP_DESCRIPTION "Syncthing itself, built as a shared or static library")
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING)
+set(META_SYNCTHING_VERSION "v1.2.1-rc.4-710f5c19")
 
 # add project files
 set(HEADER_FILES interface.h)
@@ -89,6 +90,29 @@ endif ()
 list(APPEND SRC_FILES_SYNCTHING "${SYNCTHING_PATH}/lib/auto/gui.files.go")
 message(STATUS "Syncthing's go files: ${SRC_FILES_SYNCTHING}")
 
+# set Go linker flags
+set(GO_LINKER_FLAGS)
+if (CMAKE_BUILD_TYPE STREQUAL Release OR CMAKE_BUILD_TYPE STREQUAL MinSizeRel)
+    set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -w")
+endif ()
+if (META_SYNCTHING_VERSION)
+    set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.Version=${META_SYNCTHING_VERSION}")
+endif ()
+if (DEFINED $ENV{USER})
+    set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.User=$ENV{USER}")
+endif ()
+if (DEFINED $ENV{BUILD_HOST})
+    set(BUILD_HOST $ENV{BUILD_HOST})
+else ()
+    cmake_host_system_information(RESULT BUILD_HOST QUERY HOSTNAME)
+endif ()
+if (BUILD_HOST)
+    set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.Host=${BUILD_HOST}")
+endif()
+if (DEFINED $ENV{BUILD_STAMP})
+    set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.Stamp=$ENV{BUILD_STAMP}")
+endif()
+
 # generate Syncthing's assets: don't set GOARCH/GOOS here, this is supposed to run on the host
 add_custom_command(OUTPUT "${SYNCTHING_PATH}/lib/auto/gui.files.go"
                    COMMAND "GOPATH=${GO_DEVELOPMENT_PATH}"
@@ -120,6 +144,7 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
                            c-archive
                            -o
                            "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
+                           -ldflags "${GO_LINKER_FLAGS}"
                            ./c-bindings
                            &&
                            "${CMAKE_RANLIB}"
