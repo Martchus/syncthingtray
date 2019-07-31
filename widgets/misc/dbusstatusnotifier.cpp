@@ -58,10 +58,10 @@ DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
 
     const auto &iconManager = IconManager::instance();
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &DBusStatusNotifier::setIcons);
-    setIcons(iconManager.statusIcons());
+    setIcons(iconManager.statusIcons(), iconManager.trayIcons());
 }
 
-void DBusStatusNotifier::setIcons(const StatusIcons &icons)
+void DBusStatusNotifier::setIcons(const StatusIcons &, const StatusIcons &icons)
 {
     if (!icons.isValid) {
         return;

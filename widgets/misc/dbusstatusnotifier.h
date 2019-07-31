@@ -32,7 +32,7 @@ public Q_SLOTS:
     void showSyncComplete(const QString &message);
     void showNewDev(const QString &devId, const QString &message);
     void showNewDir(const QString &devId, const QString &dirId, const QString &message);
-    void setIcons(const Data::StatusIcons &icons);
+    void setIcons(const Data::StatusIcons &statusIcons, const Data::StatusIcons &icons);
 
 Q_SIGNALS:
     void connectRequested();

@@ -134,7 +134,11 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
 #endif
     unsigned int ignoreInavailabilityAfterStart = 15;
     Appearance appearance;
-    Data::StatusIconSettings statusIcons;
+    struct SYNCTHINGWIDGETS_EXPORT Icons {
+        Data::StatusIconSettings status;
+        Data::StatusIconSettings tray;
+        bool distinguishTrayIcons = false;
+    } icons;
     Launcher launcher;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Systemd systemd;

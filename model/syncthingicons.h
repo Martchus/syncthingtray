@@ -87,6 +87,8 @@ struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
 struct LIB_SYNCTHING_MODEL_EXPORT StatusIcons {
     StatusIcons();
     StatusIcons(const StatusIconSettings &settings);
+    StatusIcons(const StatusIcons &other) = default;
+    StatusIcons &operator=(const StatusIcons &other) = default;
     QIcon disconnected;
     QIcon idling;
     QIcon scanninig;
@@ -133,30 +135,47 @@ class LIB_SYNCTHING_MODEL_EXPORT IconManager : public QObject {
 public:
     static IconManager &instance();
 
-    void applySettings(const StatusIconSettings &settings);
+    void applySettings(const StatusIconSettings *statusIconSettings = nullptr, const StatusIconSettings *trayIconSettings = nullptr);
     const StatusIcons &statusIcons() const;
+    const StatusIcons &trayIcons() const;
     const FontAwesomeIcons &fontAwesomeIconsForLightTheme() const;
     const FontAwesomeIcons &fontAwesomeIconsForDarkTheme() const;
 
 Q_SIGNALS:
-    void statusIconsChanged(const StatusIcons &newStatusIcons);
+    void statusIconsChanged(const StatusIcons &newStatusIcons, const StatusIcons &newTrayIcons);
 
 private:
     IconManager();
 
     StatusIcons m_statusIcons;
+    StatusIcons m_trayIcons;
     FontAwesomeIcons m_fontAwesomeIconsForLightTheme;
     FontAwesomeIcons m_fontAwesomeIconsForDarkTheme;
 };
 
-inline void IconManager::applySettings(const StatusIconSettings &settings)
+inline void IconManager::applySettings(const StatusIconSettings *statusIconSettings, const StatusIconSettings *trayIconSettings)
 {
-    emit statusIconsChanged(m_statusIcons = StatusIcons(settings));
+    if (statusIconSettings) {
+        m_statusIcons = StatusIcons(*statusIconSettings);
+    } else {
+        m_statusIcons = StatusIcons(StatusIconSettings());
+    }
+    if (trayIconSettings) {
+        m_trayIcons = StatusIcons(*trayIconSettings);
+    } else {
+        m_trayIcons = m_statusIcons;
+    }
+    emit statusIconsChanged(m_statusIcons, m_trayIcons);
 }
 
 inline const StatusIcons &IconManager::statusIcons() const
 {
     return m_statusIcons;
+}
+
+inline const StatusIcons &IconManager::trayIcons() const
+{
+    return m_trayIcons;
 }
 
 inline const FontAwesomeIcons &IconManager::fontAwesomeIconsForLightTheme() const
@@ -172,6 +191,11 @@ inline const FontAwesomeIcons &IconManager::fontAwesomeIconsForDarkTheme() const
 inline const StatusIcons &statusIcons()
 {
     return IconManager::instance().statusIcons();
+}
+
+inline const StatusIcons &trayIcons()
+{
+    return IconManager::instance().trayIcons();
 }
 
 inline const FontAwesomeIcons &fontAwesomeIconsForLightTheme()

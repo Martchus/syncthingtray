@@ -465,7 +465,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     m_dirModel.setBrightColors(settings.appearance.brightTextColors);
     m_devModel.setBrightColors(settings.appearance.brightTextColors);
     m_dlModel.setBrightColors(settings.appearance.brightTextColors);
-    IconManager::instance().applySettings(settings.statusIcons);
+    IconManager::instance().applySettings(&settings.icons.status, settings.icons.distinguishTrayIcons ? &settings.icons.tray : nullptr);
 
     // show warning when explicitely specified connection configuration was not found
     if (!specifiedConnectionConfigFound && !connectionConfig.isEmpty()) {

@@ -11,6 +11,12 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLabel" name="contextLabel"/>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="contextCheckBox"/>
+   </item>
+   <item>
     <widget class="QGroupBox" name="statusIconsGroupBox">
      <property name="title">
       <string>Status icons</string>
@@ -128,5 +134,22 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>contextCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>statusIconsGroupBox</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>224</x>
+     <y>39</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>115</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

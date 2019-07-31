@@ -67,7 +67,7 @@ void SyncthingFileItemActionStaticData::initialize()
     }
 
     // use default icon settings
-    IconManager::instance().applySettings(StatusIconSettings());
+    IconManager::instance().applySettings();
 
     m_initialized = true;
 }

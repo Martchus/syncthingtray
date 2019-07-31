@@ -15,7 +15,7 @@ namespace QtGui {
 
 StatusInfo::StatusInfo()
     : m_statusText(QCoreApplication::translate("QtGui::StatusInfo", "Initializing ..."))
-    , m_statusIcon(&statusIcons().disconnected)
+    , m_statusIcon(&trayIcons().disconnected)
 {
 }
 
@@ -36,6 +36,7 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection)
 {
     m_additionalStatusInfo.clear();
 
+    const auto &icons = trayIcons();
     switch (connection.status()) {
     case SyncthingStatus::Disconnected:
         if (connection.autoReconnectInterval() > 0) {
@@ -45,11 +46,11 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection)
         } else {
             m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Not connected to Syncthing");
         }
-        m_statusIcon = &statusIcons().disconnected;
+        m_statusIcon = &icons.disconnected;
         break;
     case SyncthingStatus::Reconnecting:
         m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Reconnecting ...");
-        m_statusIcon = &statusIcons().disconnected;
+        m_statusIcon = &icons.disconnected;
         break;
     default:
         if (connection.hasOutOfSyncDirs()) {
@@ -57,36 +58,36 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection)
             case SyncthingStatus::Synchronizing:
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Synchronization is ongoing");
                 m_additionalStatusInfo = QCoreApplication::translate("QtGui::StatusInfo", "At least one directory is out of sync");
-                m_statusIcon = &statusIcons().errorSync;
+                m_statusIcon = &icons.errorSync;
                 break;
             default:
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "At least one directory is out of sync");
-                m_statusIcon = &statusIcons().error;
+                m_statusIcon = &icons.error;
             }
         } else if (connection.hasUnreadNotifications()) {
             m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Notifications available");
-            m_statusIcon = &statusIcons().notify;
+            m_statusIcon = &icons.notify;
         } else {
             switch (connection.status()) {
             case SyncthingStatus::Idle:
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Syncthing is idling");
-                m_statusIcon = &statusIcons().idling;
+                m_statusIcon = &icons.idling;
                 break;
             case SyncthingStatus::Scanning:
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Syncthing is scanning");
-                m_statusIcon = &statusIcons().scanninig;
+                m_statusIcon = &icons.scanninig;
                 break;
             case SyncthingStatus::Paused:
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "At least one device is paused");
-                m_statusIcon = &statusIcons().pause;
+                m_statusIcon = &icons.pause;
                 break;
             case SyncthingStatus::Synchronizing:
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Synchronization is ongoing");
-                m_statusIcon = &statusIcons().sync;
+                m_statusIcon = &icons.sync;
                 break;
             default:
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Status is unknown");
-                m_statusIcon = &statusIcons().disconnected;
+                m_statusIcon = &icons.disconnected;
             }
         }
     }

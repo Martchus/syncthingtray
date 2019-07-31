@@ -505,8 +505,9 @@ void AppearanceOptionPage::reset()
 }
 
 // IconsOptionPage
-IconsOptionPage::IconsOptionPage(QWidget *parentWidget)
+IconsOptionPage::IconsOptionPage(Context context, QWidget *parentWidget)
     : IconsOptionPageBase(parentWidget)
+    , m_context(context)
 {
 }
 
@@ -517,6 +518,24 @@ IconsOptionPage::~IconsOptionPage()
 QWidget *IconsOptionPage::setupWidget()
 {
     auto *const widget = IconsOptionPageBase::setupWidget();
+
+    // set context-specific elements
+    switch (m_context) {
+    case Context::Combined:
+        ui()->contextLabel->hide();
+        ui()->contextCheckBox->hide();
+        break;
+    case Context::UI:
+        widget->setWindowTitle(QCoreApplication::translate("QtGui::IconsOptionPageBase", "UI icons"));
+        ui()->contextLabel->setText(QCoreApplication::translate("QtGui::IconsOptionPageBase", "These icon colors are used within Syncthing Tray's UI."));
+        ui()->contextCheckBox->hide();
+        break;
+    case Context::System:
+        widget->setWindowTitle(QCoreApplication::translate("QtGui::IconsOptionPageBase", "System icons"));
+        ui()->contextLabel->setText(QCoreApplication::translate("QtGui::IconsOptionPageBase", "These icon colors are used for the system tray icon and the notifications."));
+        ui()->contextCheckBox->setText(QCoreApplication::translate("QtGui::IconsOptionPageBase", "Use same colors as for UI icons"));
+        break;
+    }
 
     // populate form for status icon colors
     auto *const gridLayout = ui()->gridLayout;
@@ -586,7 +605,17 @@ bool IconsOptionPage::apply()
             widgetsForColor.colorButtons[2]->color(),
         };
     }
-    values().statusIcons = m_settings;
+    auto &iconSettings = values().icons;
+    switch (m_context) {
+    case Context::Combined:
+    case Context::UI:
+        iconSettings.status = m_settings;
+        break;
+    case Context::System:
+        iconSettings.tray = m_settings;
+        iconSettings.distinguishTrayIcons = !ui()->contextCheckBox->isChecked();
+        break;
+    }
     return true;
 }
 
@@ -601,7 +630,17 @@ void IconsOptionPage::update()
 
 void IconsOptionPage::reset()
 {
-    m_settings = values().statusIcons;
+    const auto &iconSettings = values().icons;
+    switch (m_context) {
+    case Context::Combined:
+    case Context::UI:
+        m_settings = iconSettings.status;
+        break;
+    case Context::System:
+        m_settings = iconSettings.tray;
+        ui()->contextCheckBox->setChecked(!iconSettings.distinguishTrayIcons);
+        break;
+    }
     update();
 }
 
@@ -1237,7 +1276,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     category = new OptionCategory(this);
     category->setDisplayName(tr("Tray"));
     category->assignPages(QList<OptionPage *>() << new ConnectionOptionPage(connection) << new NotificationsOptionPage << new AppearanceOptionPage
-                                                << new IconsOptionPage);
+                                                << new IconsOptionPage(IconsOptionPage::Context::UI) << new IconsOptionPage(IconsOptionPage::Context::System));
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     categories << category;
 
