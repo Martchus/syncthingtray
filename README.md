@@ -273,10 +273,13 @@ can be added quite easily:
 
 1. Append a new translation file for the desired locale to the `TS_FILES` list
    in `connector/CMakeLists.txt`, `model/CMakeLists.txt`, `widgets/CMakeLists.txt`,
-   `plasmoid/CMakeLists.txt` and `tray/CMakeLists.txt`.
+   `fileitemactionplugin/CMakeLists.txt`, `plasmoid/CMakeLists.txt` and
+   `tray/CMakeLists.txt`.
 2. Trigger a new build, eg. follow steps under *Building this straight*.
 3. New translation files should have been created by the build system under
-   `connector/translations`, `model/translations` and `tray/translations`.
+   `connector/translations`, `model/translations`, `widgets/translations`,
+   `fileitemactionplugin/translations`, `plasmoid/translations` and
+   `tray/translations`.
 4. Open the files with Qt Linguist to add translations. Qt Linguist is part of
    the [Qt Tools repository](http://code.qt.io/cgit/qt/qttools.git/) and its usage
    is [well documented](http://doc.qt.io/qt-5/linguist-translators.html).
