@@ -20,6 +20,11 @@
         * Plasma 5
             * native "Plasmoid" works well
             * for Qt Widgets based version see note below
+        * other desktop environments
+            * for Qt Widgets based version see note below
+            * besides, the Qt Widgets based version would only work if the platform integration plugin
+              used for Qt 5 applications uses the D-Bus protocol (or whatever is supported by your system
+              tray) to show the tray icon
     * Windows 10
     * macOS 10.14 Mojave
 * Can be shown as regular window if tray icon support is not available
