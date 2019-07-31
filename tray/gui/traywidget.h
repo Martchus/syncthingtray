@@ -101,6 +101,7 @@ private slots:
 
 private:
     TrayMenu *m_menu;
+    std::unique_ptr<QWidget> m_dialogParent;
     std::unique_ptr<Ui::TrayWidget> m_ui;
     static SettingsDialog *s_settingsDlg;
     static QtUtilities::AboutDialog *s_aboutDlg;
