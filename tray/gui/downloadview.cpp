@@ -55,7 +55,7 @@ void DownloadView::showContextMenu(const QPoint &position)
     if (!selectionModel() || selectionModel()->selectedRows(0).size() != 1) {
         return;
     }
-    QMenu menu;
+    QMenu menu(this);
     if (selectionModel()->selectedRows(0).at(0).parent().isValid()) {
         connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy value")),
