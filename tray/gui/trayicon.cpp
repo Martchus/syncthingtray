@@ -47,9 +47,6 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     const auto &connection(widget.connection());
     const auto &notifier(widget.notifier());
 
-    // update status icon and text so the icon is immediately visible also when the connection isn't
-    updateStatusIconAndText();
-
     // set context menu
 #ifndef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     connect(m_contextMenu.addAction(QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-default.svg")), tr("Open Syncthing")),
@@ -108,7 +105,8 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
 #endif
 
     // apply settings, this also establishes the connection to Syncthing (according to settings)
-    // note: it is important to apply settings after all Signals & Slots have been connected (eg. to handle SyncthingConnection::error())
+    // note: It is important to apply settings only after all Signals & Slots have been connected (eg. to handle SyncthingConnection::error()).
+    // note: This weirdly call updateStatusIconAndText(). So there is not need to call it again within this constructor.
     trayMenu().widget().applySettings(connectionConfig);
 }
 

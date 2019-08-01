@@ -473,6 +473,11 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     m_dlModel.setBrightColors(settings.appearance.brightTextColors);
     IconManager::instance().applySettings(&settings.icons.status, settings.icons.distinguishTrayIcons ? &settings.icons.tray : nullptr);
 
+    // update status icon and text of tray icon because reconnect interval might have changed
+    if (m_menu && m_menu->icon()) {
+        m_menu->icon()->updateStatusIconAndText();
+    }
+
     // show warning when explicitely specified connection configuration was not found
     if (!specifiedConnectionConfigFound && !connectionConfig.isEmpty()) {
         auto *const msgBox = new QMessageBox(QMessageBox::Warning, QCoreApplication::applicationName(),

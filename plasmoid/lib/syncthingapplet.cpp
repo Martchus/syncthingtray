@@ -415,6 +415,9 @@ void SyncthingApplet::handleSettingsChanged()
     m_currentConnectionConfig = -1; // force update
     setCurrentConnectionConfigIndex(currentConfig);
 
+    // update status icons and tooltip because the reconnect interval might have changed
+    updateStatusIconAndTooltip();
+
     emit settingsChanged();
 }
 
