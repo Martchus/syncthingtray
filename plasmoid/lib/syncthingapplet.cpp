@@ -343,12 +343,14 @@ void SyncthingApplet::showNotificationsDialog()
 void SyncthingApplet::dismissNotifications()
 {
     m_connection.considerAllNotificationsRead();
-    if (!m_notifications.empty()) {
-        m_notifications.clear();
-        emit notificationsAvailableChanged(false);
-        // update status as well because having or not having notifications is relevant for status text/icon
-        updateStatusIconAndTooltip();
+    if (m_notifications.empty()) {
+        return;
     }
+    m_notifications.clear();
+    emit notificationsAvailableChanged(false);
+
+    // update status as well because having or not having notifications is relevant for status text/icon
+    updateStatusIconAndTooltip();
 }
 
 void SyncthingApplet::showInternalErrorsDialog()
@@ -428,13 +430,8 @@ void SyncthingApplet::handleConnectionStatusChanged(Data::SyncthingStatus previo
         return;
     }
 
-    // update whether passive
     setPassive(static_cast<int>(newStatus) < passiveStates().size() && passiveStates().at(static_cast<int>(newStatus)).isChecked());
-
-    // update status icon and tooltip text
-    m_statusInfo.updateConnectionStatus(m_connection);
-    m_statusInfo.updateConnectedDevices(m_connection);
-    emit connectionStatusChanged();
+    updateStatusIconAndTooltip();
 }
 
 void SyncthingApplet::handleDevicesChanged()
