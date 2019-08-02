@@ -30,6 +30,7 @@ SyncthingLauncher *SyncthingLauncher::s_mainInstance = nullptr;
 SyncthingLauncher::SyncthingLauncher(QObject *parent)
     : QObject(parent)
     , m_manuallyStopped(true)
+    , m_emittingOutput(false)
 {
     connect(&m_process, &SyncthingProcess::readyRead, this, &SyncthingLauncher::handleProcessReadyRead);
     connect(&m_process, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
@@ -37,6 +38,19 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     connect(&m_process, &SyncthingProcess::stateChanged, this, &SyncthingLauncher::handleProcessStateChanged);
     connect(&m_process, &SyncthingProcess::errorOccurred, this, &SyncthingLauncher::errorOccurred);
     connect(&m_process, &SyncthingProcess::confirmKill, this, &SyncthingLauncher::confirmKill);
+}
+
+/*!
+ * \brief Sets whether the output/log should be emitted via outputAvailable() signal.
+ */
+void SyncthingLauncher::setEmittingOutput(bool emittingOutput)
+{
+    if (m_emittingOutput == emittingOutput || !(m_emittingOutput = emittingOutput) || m_outputBuffer.isEmpty()) {
+        return;
+    }
+    QByteArray data;
+    m_outputBuffer.swap(data);
+    emit outputAvailable(move(data));
 }
 
 /*!
@@ -156,7 +170,7 @@ void SyncthingLauncher::tearDownLibSyncthing()
 
 void SyncthingLauncher::handleProcessReadyRead()
 {
-    emit outputAvailable(m_process.readAll());
+    handleOutputAvailable(m_process.readAll());
 }
 
 void SyncthingLauncher::handleProcessStateChanged(QProcess::ProcessState newState)
@@ -200,12 +214,21 @@ void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, cons
     messageData.append(message, static_cast<int>(messageSize));
     messageData.append('\n');
 
-    emit outputAvailable(move(messageData));
+    handleOutputAvailable(move(messageData));
 #else
     CPP_UTILITIES_UNUSED(level)
     CPP_UTILITIES_UNUSED(message)
     CPP_UTILITIES_UNUSED(messageSize)
 #endif
+}
+
+void SyncthingLauncher::handleOutputAvailable(QByteArray &&data)
+{
+    if (isEmittingOutput()) {
+        emit outputAvailable(data);
+    } else {
+        m_outputBuffer += data;
+    }
 }
 
 void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions)
@@ -218,7 +241,7 @@ void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runt
     emit runningChanged(false);
 #else
     CPP_UTILITIES_UNUSED(runtimeOptions)
-    emit outputAvailable("libsyncthing support not enabled");
+    handleOutputAvailable(QByteArray("libsyncthing support not enabled"));
     emit exited(-1, QProcess::CrashExit);
 #endif
 }

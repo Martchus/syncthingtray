@@ -6,6 +6,7 @@
 #include "../../connector/syncthingprocess.h"
 #include "../../libsyncthing/interface.h"
 
+#include <QByteArray>
 #include <QFuture>
 
 namespace LibSyncthing {
@@ -23,6 +24,7 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
     Q_PROPERTY(bool running READ isRunning NOTIFY runningChanged)
     Q_PROPERTY(CppUtilities::DateTime activeSince READ activeSince)
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
+    Q_PROPERTY(bool emittingOutput READ isEmittingOutput WRITE setEmittingOutput)
 
 public:
     explicit SyncthingLauncher(QObject *parent = nullptr);
@@ -31,6 +33,8 @@ public:
     CppUtilities::DateTime activeSince() const;
     bool isActiveFor(unsigned int atLeastSeconds) const;
     bool isManuallyStopped() const;
+    bool isEmittingOutput() const;
+    void setEmittingOutput(bool emittingOutput);
     static bool isLibSyncthingAvailable();
     static SyncthingLauncher *mainInstance();
     static void setMainInstance(SyncthingLauncher *mainInstance);
@@ -60,10 +64,14 @@ private Q_SLOTS:
     void stopLibSyncthing();
 
 private:
+    void handleOutputAvailable(QByteArray &&data);
+
     SyncthingProcess m_process;
     QFuture<void> m_future;
+    QByteArray m_outputBuffer;
     CppUtilities::DateTime m_futureStarted;
     bool m_manuallyStopped;
+    bool m_emittingOutput;
     bool m_useLibSyncthing;
     static SyncthingLauncher *s_mainInstance;
 };
@@ -98,6 +106,12 @@ inline bool SyncthingLauncher::isActiveFor(unsigned int atLeastSeconds) const
 inline bool SyncthingLauncher::isManuallyStopped() const
 {
     return m_manuallyStopped;
+}
+
+/// \brief Returns whether the output/log should be emitted via outputAvailable() signal.
+inline bool SyncthingLauncher::isEmittingOutput() const
+{
+    return m_emittingOutput;
 }
 
 /// \brief Returns the SyncthingLauncher instance previously assigned via SyncthingLauncher::setMainInstance().

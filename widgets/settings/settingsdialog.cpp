@@ -891,6 +891,7 @@ QWidget *LauncherOptionPage::setupWidget()
         connect(m_launcher, &SyncthingLauncher::outputAvailable, this, &LauncherOptionPage::handleSyncthingOutputAvailable, Qt::QueuedConnection);
         connect(m_launcher, &SyncthingLauncher::exited, this, &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
         connect(m_launcher, &SyncthingLauncher::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
+        m_launcher->setEmittingOutput(true);
     }
     connect(ui()->launchNowPushButton, &QPushButton::clicked, this, &LauncherOptionPage::launch);
     connect(ui()->stopPushButton, &QPushButton::clicked, this, &LauncherOptionPage::stop);

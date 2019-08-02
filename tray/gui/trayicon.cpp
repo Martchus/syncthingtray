@@ -105,8 +105,8 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
 #endif
 
     // apply settings, this also establishes the connection to Syncthing (according to settings)
-    // note: It is important to apply settings only after all Signals & Slots have been connected (eg. to handle SyncthingConnection::error()).
-    // note: This weirdly call updateStatusIconAndText(). So there is not need to call it again within this constructor.
+    // note: It is important to apply settings only after all Signals & Slots have been connected (e.g. to handle SyncthingConnection::error()).
+    // note: This weirdly calls updateStatusIconAndText(). So there is not need to call it again within this constructor.
     trayMenu().widget().applySettings(connectionConfig);
 }
 
