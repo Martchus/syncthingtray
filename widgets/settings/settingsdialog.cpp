@@ -527,12 +527,14 @@ QWidget *IconsOptionPage::setupWidget()
         break;
     case Context::UI:
         widget->setWindowTitle(QCoreApplication::translate("QtGui::IconsOptionPageBase", "UI icons"));
-        ui()->contextLabel->setText(QCoreApplication::translate("QtGui::IconsOptionPageBase", "These icon colors are used within Syncthing Tray's UI."));
+        ui()->contextLabel->setText(
+            QCoreApplication::translate("QtGui::IconsOptionPageBase", "These icon colors are used within Syncthing Tray's UI."));
         ui()->contextCheckBox->hide();
         break;
     case Context::System:
         widget->setWindowTitle(QCoreApplication::translate("QtGui::IconsOptionPageBase", "System icons"));
-        ui()->contextLabel->setText(QCoreApplication::translate("QtGui::IconsOptionPageBase", "These icon colors are used for the system tray icon and the notifications."));
+        ui()->contextLabel->setText(
+            QCoreApplication::translate("QtGui::IconsOptionPageBase", "These icon colors are used for the system tray icon and the notifications."));
         ui()->contextCheckBox->setText(QCoreApplication::translate("QtGui::IconsOptionPageBase", "Use same colors as for UI icons"));
         break;
     }
@@ -1277,7 +1279,8 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     category = new OptionCategory(this);
     category->setDisplayName(tr("Tray"));
     category->assignPages(QList<OptionPage *>() << new ConnectionOptionPage(connection) << new NotificationsOptionPage << new AppearanceOptionPage
-                                                << new IconsOptionPage(IconsOptionPage::Context::UI) << new IconsOptionPage(IconsOptionPage::Context::System));
+                                                << new IconsOptionPage(IconsOptionPage::Context::UI)
+                                                << new IconsOptionPage(IconsOptionPage::Context::System));
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     categories << category;
 

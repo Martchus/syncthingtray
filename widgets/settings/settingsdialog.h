@@ -81,8 +81,8 @@ DECLARE_UI_FILE_BASED_OPTION_PAGE(AppearanceOptionPage)
 
 BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(IconsOptionPage)
 public:
-    enum class Context { Combined, UI, System };
-    explicit IconsOptionPage(Context context = Context::Combined, QWidget *parentWidget = nullptr);
+enum class Context { Combined, UI, System };
+explicit IconsOptionPage(Context context = Context::Combined, QWidget *parentWidget = nullptr);
 DECLARE_SETUP_WIDGETS
 private:
 void update();
