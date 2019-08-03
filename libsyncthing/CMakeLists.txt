@@ -6,7 +6,7 @@ set(META_PROJECT_TYPE library)
 set(META_APP_NAME "Syncthing library")
 set(META_APP_DESCRIPTION "Syncthing itself, built as a shared or static library")
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING)
-set(META_SYNCTHING_VERSION "v1.2.1-rc.4-710f5c19")
+set(META_SYNCTHING_VERSION "v1.2.1-rc.4-61b9f7b")
 
 # add project files
 set(HEADER_FILES interface.h)
@@ -155,6 +155,7 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a"
 
 # do not use this library directly but depend on it
 list(APPEND PRIVATE_LIBRARIES "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a")
+
 # add additional libraries (not sure if go build could provide this list somehow to make this more generic)
 if (WIN32)
     list(APPEND PRIVATE_LIBRARIES -lws2_32 -lwinmm)
@@ -174,9 +175,6 @@ if (CPP_UTILITIES_SOURCE_DIR)
 else ()
     list(APPEND PRIVATE_INCLUDE_DIRS ${CPP_UTILITIES_INCLUDE_DIRS})
 endif ()
-
-# use std::filesystem
-use_standard_filesystem()
 
 # include modules to apply configuration
 include(BasicConfig)

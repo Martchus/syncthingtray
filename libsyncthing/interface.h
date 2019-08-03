@@ -15,6 +15,8 @@ struct RuntimeOptions {
     std::string guiAddress;
     std::string guiApiKey;
     bool verbose = false;
+    bool allowNewerConfig = true;
+    bool noDefaultConfig = false;
 };
 
 enum class LogLevel : int {
