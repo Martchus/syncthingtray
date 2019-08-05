@@ -79,8 +79,12 @@ endif ()
 file(GLOB_RECURSE SRC_FILES_SYNCTHING
      LIST_DIRECTORIES false
      RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-     "${SYNCTHING_PATH}/c-bindings/*.go" "${SYNCTHING_PATH}/c-bindings/*.h" "${SYNCTHING_PATH}/c-bindings/*.c"
-     "${SYNCTHING_PATH}/lib/*.go" "${SYNCTHING_PATH}/lib/*.h" "${SYNCTHING_PATH}/lib/*.c")
+     "${SYNCTHING_PATH}/c-bindings/*.go"
+     "${SYNCTHING_PATH}/c-bindings/*.h"
+     "${SYNCTHING_PATH}/c-bindings/*.c"
+     "${SYNCTHING_PATH}/lib/*.go"
+     "${SYNCTHING_PATH}/lib/*.h"
+     "${SYNCTHING_PATH}/lib/*.c")
 if (NOT SRC_FILES_SYNCTHING)
     message(
         FATAL_ERROR
@@ -108,10 +112,10 @@ else ()
 endif ()
 if (BUILD_HOST)
     set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.Host=${BUILD_HOST}")
-endif()
+endif ()
 if (DEFINED $ENV{BUILD_STAMP})
     set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.Stamp=$ENV{BUILD_STAMP}")
-endif()
+endif ()
 
 # generate Syncthing's assets: don't set GOARCH/GOOS here, this is supposed to run on the host
 add_custom_command(OUTPUT "${SYNCTHING_PATH}/lib/auto/gui.files.go"
@@ -141,7 +145,8 @@ add_custom_command(OUTPUT "${SYNCTHINGINTERNAL_LIBRARY_PATH}" "${SYNCTHINGINTERN
                            "GOPATH=${GO_DEVELOPMENT_PATH}"
                            "${GO_BIN}"
                            build
-                           -v -buildmode
+                           -v
+                           -buildmode
                            c-archive
                            -o
                            "${SYNCTHINGINTERNAL_LIBRARY_PATH}"
