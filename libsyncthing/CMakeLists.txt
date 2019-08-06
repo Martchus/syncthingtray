@@ -160,6 +160,16 @@ add_custom_command(OUTPUT "${SYNCTHINGINTERNAL_LIBRARY_PATH}" "${SYNCTHINGINTERN
                    WORKING_DIRECTORY "${SYNCTHING_PATH}"
                    COMMENT "Building Syncthing itself")
 
+# find c++utilities
+find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
+list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
+if (CPP_UTILITIES_SOURCE_DIR)
+   list(APPEND PRIVATE_INCLUDE_DIRS $<BUILD_INTERFACE:${CPP_UTILITIES_SOURCE_DIR}/..>
+               $<INSTALL_INTERFACE:${CPP_UTILITIES_INCLUDE_DIRS}>)
+else ()
+   list(APPEND PRIVATE_INCLUDE_DIRS ${CPP_UTILITIES_INCLUDE_DIRS})
+endif ()
+
 # apply basic config
 include(BasicConfig)
 
@@ -184,16 +194,6 @@ endforeach ()
 # depend on that imported target
 list(APPEND PRIVATE_LIBRARIES $<BUILD_INTERFACE:syncthinginternal>
             $<INSTALL_INTERFACE:${LIB_INSTALL_DESTINATION}/libsyncthinginternal.a>)
-
-# find c++utilities
-find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
-list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
-if (CPP_UTILITIES_SOURCE_DIR)
-    list(APPEND PRIVATE_INCLUDE_DIRS $<BUILD_INTERFACE:${CPP_UTILITIES_SOURCE_DIR}/..>
-                $<INSTALL_INTERFACE:${CPP_UTILITIES_INCLUDE_DIRS}>)
-else ()
-    list(APPEND PRIVATE_INCLUDE_DIRS ${CPP_UTILITIES_INCLUDE_DIRS})
-endif ()
 
 # include modules to apply configuration
 include(WindowsResources)
