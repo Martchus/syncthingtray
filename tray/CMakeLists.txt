@@ -46,6 +46,7 @@ set(REQUIRED_ICONS
     dialog-ok
     dialog-ok-apply
     edit-copy
+    edit-clear
     edit-cut
     edit-delete
     edit-paste
