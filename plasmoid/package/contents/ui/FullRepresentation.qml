@@ -15,6 +15,9 @@ ColumnLayout {
     Layout.minimumWidth: units.gridUnit * 20
     Layout.minimumHeight: units.gridUnit * 15
 
+    // ensure keyboard events can be received after initialization
+    Component.onCompleted: forceActiveFocus()
+
     // define function to update the size according to the settings
     // when "floating" (shown as popup) or tied to an edge
     function updateSize() {
