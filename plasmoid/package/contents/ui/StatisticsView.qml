@@ -15,7 +15,8 @@ RowLayout {
         tooltip: context + qsTr(" files")
     }
     IconLabel {
-        iconSource: plasmoid.nativeInterface.loadFontAwesomeIcon("folder", false)
+        iconSource: plasmoid.nativeInterface.loadFontAwesomeIcon("folder",
+                                                                 false)
         text: statistics.dirs !== undefined ? statistics.dirs : "?"
         tooltip: context + qsTr(" directories")
     }

@@ -9,6 +9,9 @@ MouseArea {
         id: timer
         interval: 1000
         running: parent.containsMouse && parent.tooltip.length !== 0
-        onTriggered: ControlsPrivate.Tooltip.showText(parent, Qt.point(parent.mouseX, parent.mouseY), parent.tooltip)
+        onTriggered: ControlsPrivate.Tooltip.showText(parent,
+                                                      Qt.point(parent.mouseX,
+                                                               parent.mouseY),
+                                                      parent.tooltip)
     }
 }
