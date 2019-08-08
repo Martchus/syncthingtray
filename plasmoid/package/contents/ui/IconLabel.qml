@@ -10,8 +10,8 @@ Item {
     property alias text: label.text
     property alias tooltip: tooltipTrigger.tooltip
 
-    width: layout.width
-    height: layout.height
+    implicitWidth: layout.implicitWidth
+    implicitHeight: layout.implicitHeight
 
     RowLayout {
         id: layout
