@@ -68,8 +68,10 @@ int initSyncthingTray(bool windowed, bool waitForTray, const char *connectionCon
     // check whether system tray is available
     if (!QSystemTrayIcon::isSystemTrayAvailable() && !waitForTray) {
         QMessageBox::critical(nullptr, QApplication::applicationName(),
-            QApplication::translate(
-                "main", "The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though."));
+            QApplication::translate("main",
+                "The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though."
+                "It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this "
+                "message."));
         return -1;
     }
 
