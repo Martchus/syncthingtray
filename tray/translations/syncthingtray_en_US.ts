@@ -345,22 +345,22 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="87"/>
+        <location filename="../application/main.cpp" line="71"/>
+        <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../application/main.cpp" line="89"/>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="88"/>
+        <location filename="../application/main.cpp" line="90"/>
         <source>Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="71"/>
-        <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the -w flag, though.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../application/main.cpp" line="97"/>
+        <location filename="../application/main.cpp" line="99"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation type="unfinished"></translation>
     </message>
