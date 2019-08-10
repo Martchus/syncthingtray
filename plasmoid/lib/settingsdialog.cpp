@@ -124,8 +124,8 @@ SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
     category = new OptionCategory;
     m_appearanceOptionPage = new AppearanceOptionPage(applet);
     category->setDisplayName(QCoreApplication::translate("Plasmoid::SettingsDialog", "Plasmoid"));
-    category->assignPages(QList<OptionPage *>() << new ConnectionOptionPage(applet.connection()) << new NotificationsOptionPage(GuiType::Plasmoid)
-                                                << m_appearanceOptionPage << new IconsOptionPage << new ShortcutOptionPage(applet));
+    category->assignPages({ new ConnectionOptionPage(applet.connection()), new NotificationsOptionPage(GuiType::Plasmoid), m_appearanceOptionPage,
+        new IconsOptionPage, new ShortcutOptionPage(applet) });
     category->setIcon(QIcon::fromTheme(QStringLiteral("plasma")));
     categories << category;
 
@@ -142,11 +142,12 @@ SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
 
     category = new OptionCategory;
     category->setDisplayName(QCoreApplication::translate("Plasmoid::SettingsDialog", "Extras"));
-    category->assignPages(QList<OptionPage *>() << webViewPage
+    category->assignPages({ webViewPage
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-                                                << systemdPage
+        ,
+        systemdPage
 #endif
-    );
+    });
     category->setIcon(
         QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
     categories << category;

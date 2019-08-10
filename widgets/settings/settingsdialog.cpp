@@ -1278,27 +1278,26 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Tray"));
-    category->assignPages(QList<OptionPage *>() << new ConnectionOptionPage(connection) << new NotificationsOptionPage << new AppearanceOptionPage
-                                                << new IconsOptionPage(IconsOptionPage::Context::UI)
-                                                << new IconsOptionPage(IconsOptionPage::Context::System));
+    category->assignPages({ new ConnectionOptionPage(connection), new NotificationsOptionPage, new AppearanceOptionPage,
+        new IconsOptionPage(IconsOptionPage::Context::UI), new IconsOptionPage(IconsOptionPage::Context::System) });
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     categories << category;
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Web view"));
-    category->assignPages(QList<OptionPage *>() << new WebViewOptionPage);
+    category->assignPages({ new WebViewOptionPage });
     category->setIcon(
         QIcon::fromTheme(QStringLiteral("internet-web-browser"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))));
     categories << category;
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Startup"));
-    category->assignPages(
-        QList<OptionPage *>() << new AutostartOptionPage << new LauncherOptionPage << new LauncherOptionPage(QStringLiteral("Inotify"))
+    category->assignPages({ new AutostartOptionPage, new LauncherOptionPage, new LauncherOptionPage(QStringLiteral("Inotify"))
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-                              << new SystemdOptionPage
+                                                                                 ,
+        new SystemdOptionPage
 #endif
-    );
+    });
     category->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
     categories << category;
 
