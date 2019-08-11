@@ -17,6 +17,7 @@
         * Awesome/qt5ct
         * Cinnamon (native look and feel using [adwaita-qt](https://github.com/FedoraQt/adwaita-qt))
         * Deepin Desktop Environment
+        * Xfce
     * Wayland
         * Plasma 5
             * native "Plasmoid" works well
