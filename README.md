@@ -291,7 +291,10 @@ can be added quite easily:
    the [Qt Tools repository](http://code.qt.io/cgit/qt/qttools.git/) and its usage
    is [well documented](http://doc.qt.io/qt-5/linguist-translators.html).
 
-Note that the CLI `syncthingctl` currently does not support translations.
+#### Remarks
+* Syncthing Tray displays also text from [qtutilities](https://github.com/Martchus/qtutilities).
+  Hence it makes sense adding translations there as well (following the same procedure).
+* The CLI `syncthingctl` currently does not support translations.
 
 ### Using backend libraries
 The contained backend libraries (which provide connecting to Syncthing, data models and more) are written for internal
