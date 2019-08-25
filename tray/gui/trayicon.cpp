@@ -212,7 +212,7 @@ void TrayIcon::showInternalError(
     }
     InternalErrorsDialog::addError(move(error));
 #ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
-    m_trayMenu.widget().showInternalErrorsButton();
+    trayMenu().widget().showInternalErrorsButton();
 #else
     m_errorsAction->setVisible(true);
 #endif
