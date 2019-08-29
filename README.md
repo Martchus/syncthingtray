@@ -160,7 +160,7 @@ See the release section on GitHub.
     * [my website](http://martchus.no-ip.biz/website/page.php?name=programming) also contains an occasionally
       updated archive with a dynamically linked executable
 * Mac OS X/macOS
-    * package syncthingtray-devel is available from [MacPorts](https://www.macports.org/ports.php?by=name&substr=syncthingtray-devel)
+    * package syncthingtray is available from [MacPorts](https://ports.macports.org/port/syncthingtray/)
 
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and
