@@ -12,6 +12,12 @@ SyncthingDirActions::SyncthingDirActions(const SyncthingDir &dir, QObject *paren
     , m_dirId(dir.id)
 {
     m_infoAction.setSeparator(true);
+    m_infoAction.setIcon(fontAwesomeIconsForLightTheme().folder);
+    m_globalStatusAction.setIcon(fontAwesomeIconsForLightTheme().globe);
+    m_localStatusAction.setIcon(fontAwesomeIconsForLightTheme().home);
+    m_lastScanAction.setIcon(fontAwesomeIconsForLightTheme().clock);
+    m_rescanIntervalAction.setIcon(fontAwesomeIconsForLightTheme().refresh);
+    m_errorsAction.setIcon(fontAwesomeIconsForLightTheme().exclamationTriangle);
     updateStatus(dir);
 }
 
@@ -32,7 +38,6 @@ bool SyncthingDirActions::updateStatus(const SyncthingDir &dir)
         return false;
     }
     m_infoAction.setText(tr("Directory info for %1").arg(dir.displayName()));
-    m_infoAction.setIcon(QIcon::fromTheme(QStringLiteral("dialog-information")));
     m_statusAction.setText(tr("Status: ") + dir.statusString());
     if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
         m_statusAction.setIcon(statusIcons().pause);
@@ -60,13 +65,11 @@ bool SyncthingDirActions::updateStatus(const SyncthingDir &dir)
     m_globalStatusAction.setText(tr("Global: ") + directoryStatusString(dir.globalStats));
     m_localStatusAction.setText(tr("Local: ") + directoryStatusString(dir.localStats));
     m_lastScanAction.setText(tr("Last scan time: ") + agoString(dir.lastScanTime));
-    m_lastScanAction.setIcon(QIcon::fromTheme(QStringLiteral("accept_time_event")));
     m_rescanIntervalAction.setText(tr("Rescan interval: %1 seconds").arg(dir.rescanInterval));
     if (!dir.pullErrorCount) {
         m_errorsAction.setVisible(false);
     } else {
         m_errorsAction.setVisible(true);
-        m_errorsAction.setIcon(QIcon::fromTheme(QStringLiteral("dialog-error")));
         m_errorsAction.setText(tr("%1 item(s) out-of-sync", nullptr, trQuandity(dir.pullErrorCount)).arg(dir.pullErrorCount));
     }
     return true;
