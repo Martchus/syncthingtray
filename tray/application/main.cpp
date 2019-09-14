@@ -117,6 +117,12 @@ void trigger(bool tray, bool webUi)
     }
 }
 
+void shutdownSyncthingTray()
+{
+    Settings::save();
+    Settings::Launcher::terminate();
+}
+
 int runApplication(int argc, const char *const *argv)
 {
     // setup argument parser
@@ -173,17 +179,16 @@ int runApplication(int argc, const char *const *argv)
         QObject::connect(&service, &SyncthingService::errorOccurred, &handleSystemdServiceError);
 #endif
 
-        // show (first) tray icon and enter main event loop
-        auto res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue());
-        if (!res) {
-            trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
-            res = application.exec();
+        // init Syncthing Tray and immediately shutdown on failure
+        if (const auto res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue())) {
+            shutdownSyncthingTray();
+            return res;
         }
 
-        // perform cleanup, then terminate
-        Settings::Launcher::terminate();
-        Settings::save();
-        return res;
+        // trigger UI and enter event loop
+        QObject::connect(&application, &QCoreApplication::aboutToQuit, &shutdownSyncthingTray);
+        trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
+        return application.exec();
     }
 
     // trigger actions if --webui or --trigger is present but don't create a new tray icon
