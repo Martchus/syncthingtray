@@ -455,7 +455,7 @@ QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
     }
     switch (dir.status) {
     case SyncthingDirStatus::Unknown:
-        return tr("Unknown status");
+        return dir.rawStatus.isEmpty() ? tr("Unknown status") : QString(dir.rawStatus);
     case SyncthingDirStatus::Idle:
         return tr("Idle");
     case SyncthingDirStatus::Scanning:

@@ -93,6 +93,7 @@ bool SyncthingDir::assignStatus(const QString &statusStr, CppUtilities::DateTime
     if (!checkWhetherStatusUpdateRelevant(time)) {
         return false;
     }
+
     // identify statusStr
     SyncthingDirStatus newStatus;
     if (statusStr == QLatin1String("idle")) {
@@ -112,6 +113,9 @@ bool SyncthingDir::assignStatus(const QString &statusStr, CppUtilities::DateTime
     } else {
         newStatus = SyncthingDirStatus::Idle;
     }
+
+    rawStatus = statusStr;
+
     return finalizeStatusUpdate(newStatus, time);
 }
 
@@ -136,6 +140,8 @@ QString SyncthingDir::statusString() const
         return QCoreApplication::translate("SyncthingDir", "paused");
     } else if (isUnshared()) {
         return QCoreApplication::translate("SyncthingDir", "unshared");
+    } else if (status == SyncthingDirStatus::Unknown && !rawStatus.isEmpty()) {
+        return QString(rawStatus);
     } else {
         return ::Data::statusString(status);
     }

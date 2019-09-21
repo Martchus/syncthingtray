@@ -171,6 +171,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     int blocksAlreadyDownloaded = 0;
     int blocksToBeDownloaded = 0;
     QString downloadLabel;
+    QString rawStatus;
     unsigned int downloadPercentage = 0;
     bool ignorePermissions = false;
     bool ignoreDelete = false;
@@ -214,7 +215,11 @@ inline bool SyncthingDir::isUnshared() const
 
 inline bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, CppUtilities::DateTime time)
 {
-    return checkWhetherStatusUpdateRelevant(time) && finalizeStatusUpdate(newStatus, time);
+    if (!checkWhetherStatusUpdateRelevant(time)) {
+        return false;
+    }
+    rawStatus.clear();
+    return finalizeStatusUpdate(newStatus, time);
 }
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingOverallDirStatistics {
