@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick.Layouts 1.1
 import org.kde.plasma.plasmoid 2.0
 import org.kde.kquickcontrolsaddons 2.0
 
@@ -20,6 +21,10 @@ Item {
     Plasmoid.toolTipMainText: plasmoid.nativeInterface.statusText
     Plasmoid.toolTipSubText: plasmoid.nativeInterface.additionalStatusText
     Plasmoid.toolTipItem: Loader {
+        Layout.minimumWidth: item ? item.width : 0
+        Layout.maximumWidth: item ? item.width : 0
+        Layout.minimumHeight: item ? item.height : 0
+        Layout.maximumHeight: item ? item.height : 0
         source: "ToolTipView.qml"
     }
 
