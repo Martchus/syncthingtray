@@ -794,11 +794,14 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
         // reset reconnect tries
         m_autoReconnectTries = 0;
 
-        // check whether at least one directory is scanning or synchronizing
+        // check whether at least one directory is scanning, preparing to synchronize or synchronizing
+        // note: We don't distinguish between "preparing to sync" and "synchronizing" for computing the overall
+        //       status at the moment.
         bool scanning = false;
         bool synchronizing = false;
         for (const SyncthingDir &dir : m_dirs) {
             switch (dir.status) {
+            case SyncthingDirStatus::PreparingToSync:
             case SyncthingDirStatus::Synchronizing:
                 synchronizing = true;
                 break;
@@ -806,6 +809,9 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
                 scanning = true;
                 break;
             default:;
+            }
+            if (synchronizing) {
+                break; // skip remaining dirs, "synchronizing" overrides "scanning" anyways
             }
         }
 

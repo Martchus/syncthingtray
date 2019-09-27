@@ -54,6 +54,7 @@ bool SyncthingDirActions::updateStatus(const SyncthingDir &dir)
         case SyncthingDirStatus::Scanning:
             m_statusAction.setIcon(statusIcons().scanninig);
             break;
+        case SyncthingDirStatus::PreparingToSync:
         case SyncthingDirStatus::Synchronizing:
             m_statusAction.setIcon(statusIcons().sync);
             break;

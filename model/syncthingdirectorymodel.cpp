@@ -316,6 +316,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     return statusIcons().idling;
                 case SyncthingDirStatus::Scanning:
                     return statusIcons().scanninig;
+                case SyncthingDirStatus::PreparingToSync:
                 case SyncthingDirStatus::Synchronizing:
                     return statusIcons().sync;
                 case SyncthingDirStatus::OutOfSync:
@@ -466,6 +467,8 @@ QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
             return tr("Scanning (%1 %)").arg(dir.scanningPercentage);
         }
         return tr("Scanning");
+    case SyncthingDirStatus::PreparingToSync:
+        return tr("Preparing to sync");
     case SyncthingDirStatus::Synchronizing:
         return dir.completionPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dir.completionPercentage) : tr("Synchronizing");
     case SyncthingDirStatus::OutOfSync:
@@ -488,6 +491,7 @@ QVariant SyncthingDirectoryModel::dirStatusColor(const SyncthingDir &dir) const
     case SyncthingDirStatus::Idle:
         return Colors::green(m_brightColors);
     case SyncthingDirStatus::Scanning:
+    case SyncthingDirStatus::PreparingToSync:
     case SyncthingDirStatus::Synchronizing:
         return Colors::blue(m_brightColors);
     case SyncthingDirStatus::OutOfSync:
