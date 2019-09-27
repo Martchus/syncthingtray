@@ -17,6 +17,8 @@ QString statusString(SyncthingDirStatus status)
         return QCoreApplication::translate("SyncthingDirStatus", "unknown");
     case SyncthingDirStatus::Idle:
         return QCoreApplication::translate("SyncthingDirStatus", "idle");
+    case SyncthingDirStatus::WaitingToScan:
+        return QCoreApplication::translate("SyncthingDirStatus", "waiting to scan");
     case SyncthingDirStatus::Scanning:
         return QCoreApplication::translate("SyncthingDirStatus", "scanning");
     case SyncthingDirStatus::PreparingToSync:
@@ -101,6 +103,8 @@ bool SyncthingDir::assignStatus(const QString &statusStr, CppUtilities::DateTime
     if (statusStr == QLatin1String("idle")) {
         completionPercentage = 0;
         newStatus = SyncthingDirStatus::Idle;
+    } else if (statusStr == QLatin1String("scan-waiting")) {
+        newStatus = SyncthingDirStatus::WaitingToScan;
     } else if (statusStr == QLatin1String("scanning")) {
         newStatus = SyncthingDirStatus::Scanning;
     } else if (statusStr == QLatin1String("sync-preparing")) {

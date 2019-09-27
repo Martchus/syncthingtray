@@ -12,7 +12,7 @@
 
 namespace Data {
 
-enum class SyncthingDirStatus { Unknown, Idle, Scanning, PreparingToSync, Synchronizing, OutOfSync };
+enum class SyncthingDirStatus { Unknown, Idle, WaitingToScan, Scanning, PreparingToSync, Synchronizing, OutOfSync };
 
 QString LIB_SYNCTHING_CONNECTOR_EXPORT statusString(SyncthingDirStatus status);
 

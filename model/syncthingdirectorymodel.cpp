@@ -314,6 +314,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     return statusIcons().disconnected;
                 case SyncthingDirStatus::Idle:
                     return statusIcons().idling;
+                case SyncthingDirStatus::WaitingToScan:
                 case SyncthingDirStatus::Scanning:
                     return statusIcons().scanninig;
                 case SyncthingDirStatus::PreparingToSync:
@@ -459,6 +460,8 @@ QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
         return dir.rawStatus.isEmpty() ? tr("Unknown status") : QString(dir.rawStatus);
     case SyncthingDirStatus::Idle:
         return tr("Idle");
+    case SyncthingDirStatus::WaitingToScan:
+        return tr("Waiting to scan");
     case SyncthingDirStatus::Scanning:
         if (dir.scanningPercentage > 0) {
             if (dir.scanningRate != 0.0) {
@@ -490,6 +493,8 @@ QVariant SyncthingDirectoryModel::dirStatusColor(const SyncthingDir &dir) const
         break;
     case SyncthingDirStatus::Idle:
         return Colors::green(m_brightColors);
+    case SyncthingDirStatus::WaitingToScan:
+        return Colors::orange(m_brightColors);
     case SyncthingDirStatus::Scanning:
     case SyncthingDirStatus::PreparingToSync:
     case SyncthingDirStatus::Synchronizing:

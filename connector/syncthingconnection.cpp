@@ -805,6 +805,7 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
             case SyncthingDirStatus::Synchronizing:
                 synchronizing = true;
                 break;
+            case SyncthingDirStatus::WaitingToScan:
             case SyncthingDirStatus::Scanning:
                 scanning = true;
                 break;

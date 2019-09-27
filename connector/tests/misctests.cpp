@@ -203,6 +203,10 @@ void MiscTests::testSyncthingDir()
 
     const DateTime lastScanTime(DateTime::now());
     updateTime += TimeSpan::fromSeconds(5);
+    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::WaitingToScan, updateTime));
+    CPPUNIT_ASSERT(dir.lastScanTime.isNull());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("waiting to scan"), dir.statusString());
+    updateTime += TimeSpan::fromSeconds(5);
     CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Scanning, updateTime));
     CPPUNIT_ASSERT(dir.lastScanTime.isNull());
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("scanning"), dir.statusString());
