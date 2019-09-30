@@ -5,6 +5,14 @@
 * command-line interface
 * Qt-ish C++ interface to control Syncthing
 
+---
+
+Checkout the [official forum thread](https://forum.syncthing.net/t/yet-another-syncthing-tray) for discussions
+and announcement of new features.
+
+Issues can be created on GitHub but please read the "Known bugs" and "Planned features" sections in this document
+before.
+
 ## Supported platforms
 * Designed to work under any desktop environment supported by Qt 5 with tray icon
   support
@@ -73,12 +81,13 @@ to the list.
     * Pause/resume Syncthing directory
     * See also screenshots section
 * Also has an implementation as Plasmoid for Plasma 5 desktop
+* Build Syncthing as a library to run it in the same process as the tray/GUI (optional build configuration, not enabled
+  by default)
 * English and German localization
 
 ## Planned features
 The tray is still under development; the following features are under construction or planned:
 
-* Build Syncthing as a library to run it in the same process as the tray/GUI
 * Create Qt Quick Controls 2 and Kirigami 2 based frontend for mobile devices (focusing on Android)
 * Show recently processed items
 * Make some notifications configurable on folder level
