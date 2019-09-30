@@ -203,6 +203,10 @@ void MiscTests::testSyncthingDir()
 
     const DateTime lastScanTime(DateTime::now());
     updateTime += TimeSpan::fromSeconds(5);
+    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::WaitingToScan, updateTime));
+    CPPUNIT_ASSERT(dir.lastScanTime.isNull());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("waiting to scan"), dir.statusString());
+    updateTime += TimeSpan::fromSeconds(5);
     CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Scanning, updateTime));
     CPPUNIT_ASSERT(dir.lastScanTime.isNull());
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("scanning"), dir.statusString());
@@ -221,13 +225,20 @@ void MiscTests::testSyncthingDir()
     CPPUNIT_ASSERT(!dir.assignStatus(SyncthingDirStatus::Idle, updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastSyncStarted);
     const auto lastSyncTime(updateTime += TimeSpan::fromMinutes(1.5));
+    dir.itemErrors.emplace_back();
     CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Synchronizing, lastSyncTime));
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("synchronizing"), dir.statusString());
     CPPUNIT_ASSERT_EQUAL(0_st, dir.itemErrors.size());
     CPPUNIT_ASSERT_EQUAL(lastSyncTime, dir.lastSyncStarted);
+    const auto lastSyncTime2(updateTime += TimeSpan::fromMinutes(2.0));
+    dir.itemErrors.emplace_back();
+    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::PreparingToSync, lastSyncTime2));
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("preparing to sync"), dir.statusString());
+    CPPUNIT_ASSERT_EQUAL(0_st, dir.itemErrors.size());
+    CPPUNIT_ASSERT_EQUAL(lastSyncTime2, dir.lastSyncStarted);
 
     CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Idle, updateTime += TimeSpan::fromMinutes(1.5)));
-    CPPUNIT_ASSERT_EQUAL(lastSyncTime, dir.lastSyncStarted);
+    CPPUNIT_ASSERT_EQUAL(lastSyncTime2, dir.lastSyncStarted);
     CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("syncing"), updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastSyncStarted);
 

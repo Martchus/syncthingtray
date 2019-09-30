@@ -12,7 +12,9 @@
 
 namespace Data {
 
-enum class SyncthingDirStatus { Unknown, Idle, Scanning, Synchronizing, OutOfSync };
+/// \brief The SyncthingDirStatus enum represents a Syncthing directory status.
+/// \remarks It needs to be kept in sync with the states defined in Syncthing's "syncthing/lib/model/folderstate.go".
+enum class SyncthingDirStatus { Unknown, Idle, WaitingToScan, Scanning, PreparingToSync, Synchronizing, OutOfSync };
 
 QString LIB_SYNCTHING_CONNECTOR_EXPORT statusString(SyncthingDirStatus status);
 

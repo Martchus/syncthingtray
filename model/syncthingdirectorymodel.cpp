@@ -314,8 +314,10 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     return statusIcons().disconnected;
                 case SyncthingDirStatus::Idle:
                     return statusIcons().idling;
+                case SyncthingDirStatus::WaitingToScan:
                 case SyncthingDirStatus::Scanning:
                     return statusIcons().scanninig;
+                case SyncthingDirStatus::PreparingToSync:
                 case SyncthingDirStatus::Synchronizing:
                     return statusIcons().sync;
                 case SyncthingDirStatus::OutOfSync:
@@ -458,6 +460,8 @@ QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
         return dir.rawStatus.isEmpty() ? tr("Unknown status") : QString(dir.rawStatus);
     case SyncthingDirStatus::Idle:
         return tr("Idle");
+    case SyncthingDirStatus::WaitingToScan:
+        return tr("Waiting to scan");
     case SyncthingDirStatus::Scanning:
         if (dir.scanningPercentage > 0) {
             if (dir.scanningRate != 0.0) {
@@ -466,6 +470,8 @@ QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
             return tr("Scanning (%1 %)").arg(dir.scanningPercentage);
         }
         return tr("Scanning");
+    case SyncthingDirStatus::PreparingToSync:
+        return tr("Preparing to sync");
     case SyncthingDirStatus::Synchronizing:
         return dir.completionPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dir.completionPercentage) : tr("Synchronizing");
     case SyncthingDirStatus::OutOfSync:
@@ -487,7 +493,10 @@ QVariant SyncthingDirectoryModel::dirStatusColor(const SyncthingDir &dir) const
         break;
     case SyncthingDirStatus::Idle:
         return Colors::green(m_brightColors);
+    case SyncthingDirStatus::WaitingToScan:
+        return Colors::orange(m_brightColors);
     case SyncthingDirStatus::Scanning:
+    case SyncthingDirStatus::PreparingToSync:
     case SyncthingDirStatus::Synchronizing:
         return Colors::blue(m_brightColors);
     case SyncthingDirStatus::OutOfSync:

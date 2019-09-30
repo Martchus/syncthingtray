@@ -11,6 +11,9 @@
 
 namespace Data {
 
+/// \brief The SyncthingDevStatus enum represents a Syncthing device status.
+/// \remarks The device status is not directly provided by Syncthing and instead deduced by this library from
+///          other information and events.
 enum class SyncthingDevStatus { Unknown, Disconnected, OwnDevice, Idle, Synchronizing, OutOfSync, Rejected };
 
 QString statusString(SyncthingDevStatus status);

@@ -17,8 +17,12 @@ QString statusString(SyncthingDirStatus status)
         return QCoreApplication::translate("SyncthingDirStatus", "unknown");
     case SyncthingDirStatus::Idle:
         return QCoreApplication::translate("SyncthingDirStatus", "idle");
+    case SyncthingDirStatus::WaitingToScan:
+        return QCoreApplication::translate("SyncthingDirStatus", "waiting to scan");
     case SyncthingDirStatus::Scanning:
         return QCoreApplication::translate("SyncthingDirStatus", "scanning");
+    case SyncthingDirStatus::PreparingToSync:
+        return QCoreApplication::translate("SyncthingDirStatus", "preparing to sync");
     case SyncthingDirStatus::Synchronizing:
         return QCoreApplication::translate("SyncthingDirStatus", "synchronizing");
     case SyncthingDirStatus::OutOfSync:
@@ -55,7 +59,7 @@ bool SyncthingDir::checkWhetherStatusUpdateRelevant(DateTime time)
 bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus, DateTime time)
 {
     // handle obsoletion of out-of-sync items: no FolderErrors are accepted older than the last "sync" state are accepted
-    if (newStatus == SyncthingDirStatus::Synchronizing) {
+    if (newStatus == SyncthingDirStatus::PreparingToSync || newStatus == SyncthingDirStatus::Synchronizing) {
         // update time of last "sync" state and obsolete currently assigned errors
         lastSyncStarted = time; // used internally and not displayed, hence keep it GMT
         itemErrors.clear();
@@ -99,8 +103,16 @@ bool SyncthingDir::assignStatus(const QString &statusStr, CppUtilities::DateTime
     if (statusStr == QLatin1String("idle")) {
         completionPercentage = 0;
         newStatus = SyncthingDirStatus::Idle;
+    } else if (statusStr == QLatin1String("scan-waiting")) {
+        newStatus = SyncthingDirStatus::WaitingToScan;
     } else if (statusStr == QLatin1String("scanning")) {
         newStatus = SyncthingDirStatus::Scanning;
+    } else if (statusStr == QLatin1String("sync-preparing")) {
+        // ensure status changed signal is emitted
+        if (!itemErrors.empty()) {
+            status = SyncthingDirStatus::Unknown;
+        }
+        newStatus = SyncthingDirStatus::PreparingToSync;
     } else if (statusStr == QLatin1String("syncing")) {
         // ensure status changed signal is emitted
         if (!itemErrors.empty()) {
