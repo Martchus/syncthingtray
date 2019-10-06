@@ -212,6 +212,12 @@ void TrayWidget::showSettingsDialog()
     if (!s_settingsDlg) {
         s_settingsDlg = new SettingsDialog(&m_connection, m_dialogParent.get());
         connect(s_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettingsOnAllInstances);
+
+        // save settings to disk when applied
+        // note: QCoreApplication::aboutToQuit() does not work reliably but terminating only at the
+        //       end of the session is a common use-case for the tray application. So workaround this
+        //       by simply saving the settings immediately.
+        connect(s_settingsDlg, &SettingsDialog::applied, &Settings::save);
     }
     centerWidget(s_settingsDlg);
     showDialog(s_settingsDlg);
