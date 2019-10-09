@@ -4,47 +4,46 @@
 <context>
     <name>SyncthingDirActions</name>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="25"/>
+        <location filename="../syncthingdiractions.cpp" line="31"/>
         <source>Status: not available anymore</source>
         <translation>Stav: už není k dispozici</translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="34"/>
+        <location filename="../syncthingdiractions.cpp" line="40"/>
         <source>Directory info for %1</source>
         <translation>Informace o adresáři pro %1</translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="36"/>
+        <location filename="../syncthingdiractions.cpp" line="41"/>
         <source>Status: </source>
         <translation>Stav: </translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="60"/>
+        <location filename="../syncthingdiractions.cpp" line="67"/>
         <source>Global: </source>
         <translation>Globální: </translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="61"/>
+        <location filename="../syncthingdiractions.cpp" line="68"/>
         <source>Local: </source>
         <translation>Lokální: </translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="62"/>
+        <location filename="../syncthingdiractions.cpp" line="69"/>
         <source>Last scan time: </source>
         <translation>Okamžik posledního skenu: </translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="64"/>
+        <location filename="../syncthingdiractions.cpp" line="70"/>
         <source>Rescan interval: %1 seconds</source>
         <translation>Interval opakování skenu: %1 sekund</translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdiractions.cpp" line="70"/>
+        <location filename="../syncthingdiractions.cpp" line="75"/>
         <source>%1 item(s) out-of-sync</source>
         <translation>
             <numerusform>%1 prvek nesesynchronizován</numerusform>
             <numerusform>%1 prvky nesesynchronizovány</numerusform>
-            <numerusform>%1 prvků nesesynchronizováno</numerusform>
         </translation>
     </message>
 </context>
@@ -123,47 +122,47 @@
         <translation>Chyba spojení se Syncthing</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="103"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="105"/>
         <source>About</source>
         <translation>O aplikaci</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="111"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="113"/>
         <source>Select Syncthing config file</source>
         <translation>Vybrat soubor s nastaveními pro Syncthing</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="132"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="134"/>
         <source>Syncthing config file can not be automatically located</source>
         <translation>Soubor s nastaveními pro Syncthing se nepodařilo nalézt automaticky</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="139"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="141"/>
         <source>Unable to load Syncthing config from &quot;%1&quot;</source>
         <translation>Nedaří se načíst nastavení pro Syncthing z „%1“</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="148"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="150"/>
         <source>Syncthing config from &quot;%1&quot; does not contain GUI address.</source>
         <translation>Nastavení pro Syncthing z „%1“ neobsahují adresu GUI.</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="160"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="162"/>
         <source>Enter API key</source>
         <translation>Zadejte klíč k API</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="160"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="162"/>
         <source>The selected config file does not contain an API key. Please enter the API key manually:</source>
         <translation>Zvolený soubor s nastaveními neobsahuje klíč k API. Zadejte klíč ručně:</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="162"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="164"/>
         <source>No API key supplied for &quot;%1&quot;.</source>
         <translation>Neposkytnut žádný klíč k API pro „%1“.</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="121"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="123"/>
         <source>(still using config from &quot;%1&quot;)</source>
         <translation>(pořád je používáno nastavení z „%1“)</translation>
     </message>

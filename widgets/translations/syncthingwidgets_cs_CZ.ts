@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en_US">
+<TS version="2.1" language="cs_CZ">
 <context>
     <name>Data::SyncthingLauncher</name>
     <message>
@@ -22,6 +22,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="28"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="60"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="257"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="286"/>
+        <source> px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="50"/>
+        <source> x </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../settings/appearanceoptionpage.ui" line="94"/>
         <source>Optional GUI elements</source>
         <translation type="unfinished"></translation>
@@ -32,26 +45,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="50"/>
-        <source> x </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="28"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="60"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="257"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="286"/>
-        <source> px</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../settings/appearanceoptionpage.ui" line="108"/>
         <source>Frame shape</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="139"/>
-        <source>Frame shadow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -72,6 +67,11 @@
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="131"/>
         <source>Styled panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="139"/>
+        <source>Frame shadow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -416,6 +416,7 @@
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -531,6 +532,7 @@
         <location filename="../misc/internalerrorsdialog.cpp" line="101"/>
         <source>%1 error(s) occured</source>
         <translation type="unfinished">
+            <numerusform></numerusform>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
@@ -745,11 +747,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="110"/>
-        <source>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance started via Systemd or the internal launcher.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../settings/notificationsoptionpage.ui" line="94"/>
         <source>&amp;Method provided by Qt (might be overridden by QPA plugin)</source>
         <translation type="unfinished"></translation>
@@ -757,6 +754,11 @@
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="104"/>
         <source>Misc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/notificationsoptionpage.ui" line="110"/>
+        <source>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance started via Systemd or the internal launcher.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -830,8 +832,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../misc/statusinfo.cpp" line="45"/>
+        <source>Trying to reconnect every %1 ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../misc/statusinfo.cpp" line="52"/>
         <source>Reconnecting ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="59"/>
+        <location filename="../misc/statusinfo.cpp" line="85"/>
+        <source>Synchronization is ongoing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -860,26 +873,39 @@
         <source>At least one device is paused</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="89"/>
+        <source>Status is unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="112"/>
+        <source>Not connected to other devices</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
         <location filename="../misc/statusinfo.cpp" line="136"/>
         <source>Connected to %1 devices</source>
-        <translation>
-            <numerusform>Conntected to %1 device</numerusform>
-            <numerusform>Conntected to %1 devices</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../misc/statusinfo.cpp" line="139"/>
         <source>Connected to %1 and %2 other devices</source>
-        <translation>
-            <numerusform>Conntected to %1 and %2 other device</numerusform>
-            <numerusform>Conntected to %1 and %2 other devices</numerusform>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../misc/statusinfo.cpp" line="143"/>
         <source>Connected to %1 and %2</source>
         <translation type="unfinished">
+            <numerusform></numerusform>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
@@ -890,28 +916,8 @@
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
-    </message>
-    <message>
-        <location filename="../misc/statusinfo.cpp" line="59"/>
-        <location filename="../misc/statusinfo.cpp" line="85"/>
-        <source>Synchronization is ongoing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/statusinfo.cpp" line="45"/>
-        <source>Trying to reconnect every %1 ms</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/statusinfo.cpp" line="89"/>
-        <source>Status is unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/statusinfo.cpp" line="112"/>
-        <source>Not connected to other devices</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

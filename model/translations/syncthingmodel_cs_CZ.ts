@@ -256,17 +256,17 @@
         <translation>Nezdařené položky</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="458"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="460"/>
         <source>Unknown status</source>
         <translation>Neznámý stav</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="460"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="462"/>
         <source>Idle</source>
         <translation>Nečinné</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="454"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="456"/>
         <source>Unshared</source>
         <translation>Nesdíleno</translation>
     </message>
@@ -292,36 +292,46 @@
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="464"/>
+        <source>Waiting to scan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="468"/>
         <source>Scanning (%1 %, %2)</source>
         <translation>Skenování (%1 %, %2)</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="466"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="470"/>
         <source>Scanning (%1 %)</source>
         <translation>Skenování (%1 %)</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="468"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="472"/>
         <source>Scanning</source>
         <translation>Skenování</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="470"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="474"/>
+        <source>Preparing to sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="476"/>
         <source>Synchronizing (%1 %)</source>
         <translation>Synchronizace (%1 %)</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="470"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="476"/>
         <source>Synchronizing</source>
         <translation>Synchronizace</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="451"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="453"/>
         <source>Paused</source>
         <translation>Pozastaveno</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="472"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="478"/>
         <source>Out of sync</source>
         <translation>Nesesynchronizováno</translation>
     </message>

@@ -560,8 +560,8 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="60"/>
-        <source>Use built-in Syncthing library (experimental)</source>
-        <translation>Verwende eingebaute Syncthing-Bibliothek (experimentell)</translation>
+        <source>Use built-in Syncthing library</source>
+        <translation>Verwende eingebaute Syncthing-Bibliothek</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="67"/>
@@ -803,17 +803,17 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1288"/>
+        <location filename="../settings/settingsdialog.cpp" line="1287"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1295"/>
+        <location filename="../settings/settingsdialog.cpp" line="1294"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1317"/>
+        <location filename="../settings/settingsdialog.cpp" line="1316"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
