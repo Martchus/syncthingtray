@@ -74,8 +74,8 @@ public:
     void testRequestingRescan();
     void testDealingWithArbitraryConfig();
 
-    void setUp();
-    void tearDown();
+    void setUp() override;
+    void tearDown() override;
 
 private:
     template <typename Action, typename... Signalinfo> void waitForConnection(Action action, int timeout, const Signalinfo &... signalInfo);

@@ -36,8 +36,8 @@ public:
 
     void test();
 
-    void setUp();
-    void tearDown();
+    void setUp() override;
+    void tearDown() override;
 
 private:
     DateTime m_startTime;

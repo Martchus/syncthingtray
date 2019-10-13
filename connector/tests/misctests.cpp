@@ -51,8 +51,8 @@ public:
     void testConnectionSettingsAndLoadingSelfSignedCert();
     void testSyncthingDir();
 
-    void setUp();
-    void tearDown();
+    void setUp() override;
+    void tearDown() override;
 
 private:
 };

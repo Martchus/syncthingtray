@@ -40,8 +40,8 @@ public:
     void testVersion();
     void testRunWidthConfig();
 
-    void setUp();
-    void tearDown();
+    void setUp() override;
+    void tearDown() override;
 
 private:
     std::string setupConfigDir();
