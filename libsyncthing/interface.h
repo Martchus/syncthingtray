@@ -17,6 +17,7 @@ struct RuntimeOptions {
     bool verbose = false;
     bool allowNewerConfig = true;
     bool noDefaultConfig = false;
+    bool ensureConfigDirectoryExists = true;
 };
 
 enum class LogLevel : int {

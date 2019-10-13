@@ -24,12 +24,13 @@ using namespace LibSyncthing;
 using namespace CPPUNIT_NS;
 
 /*!
- * \brief The InterfaceTests class tests the SyncthingConnector.
+ * \brief The InterfaceTests class tests the C++ interface of "libsyncthing".
  */
 class InterfaceTests : public TestFixture {
     CPPUNIT_TEST_SUITE(InterfaceTests);
     CPPUNIT_TEST(testInitialState);
     CPPUNIT_TEST(testVersion);
+    CPPUNIT_TEST(testRunWithoutConfig);
     CPPUNIT_TEST(testRunWidthConfig);
     CPPUNIT_TEST_SUITE_END();
 
@@ -38,14 +39,15 @@ public:
 
     void testInitialState();
     void testVersion();
+    void testRunWithoutConfig();
     void testRunWidthConfig();
 
     void setUp() override;
     void tearDown() override;
 
 private:
-    std::string setupConfigDir();
-    void testRun(const std::function<long long(void)> &runFunction);
+    std::string setupTestConfigDir();
+    void testRun(const std::function<long long(void)> &runFunction, bool assertTestConfig);
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(InterfaceTests);
@@ -67,7 +69,7 @@ void InterfaceTests::tearDown()
  * \brief Initializes the Syncthing config for this fixture (currently using same config as in connector test).
  * \returns Returns the config directory.
  */
-string InterfaceTests::setupConfigDir()
+string InterfaceTests::setupTestConfigDir()
 {
     // setup Syncthing config (currently using same config as in connector test)
     const auto configFilePath(workingCopyPath("testconfig/config.xml"));
@@ -125,9 +127,9 @@ void InterfaceTests::testVersion()
 }
 
 /*!
- * \brief Test helper for running Syncthing and checking log according to test configuration.
+ * \brief Test helper for running Syncthing and checking log (according the the test configuration).
  */
-void InterfaceTests::testRun(const std::function<long long()> &runFunction)
+void InterfaceTests::testRun(const std::function<long long()> &runFunction, bool assertTestConfig)
 {
     // keep track of certain log messages
     const auto startTime(DateTime::gmtNow());
@@ -169,7 +171,7 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction)
 
         // stop Syncthing again if the found the messages we've been looking for or we've timed out
         const auto timeout((DateTime::gmtNow() - startTime) > TimeSpan::fromSeconds(30));
-        if (!timeout && (!myIdAnnounced || !performanceAnnounced || !testDir1Ready || !testDev1Ready || !testDev2Ready)) {
+        if (!timeout && (!myIdAnnounced || !performanceAnnounced || (assertTestConfig && (!testDir1Ready || !testDev1Ready || !testDev2Ready)))) {
             // log status
             cout << "still wating for:";
             if (!myIdAnnounced) {
@@ -178,17 +180,19 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction)
             if (!performanceAnnounced) {
                 cout << " performanceAnnounced";
             }
-            if (!testDir1Ready) {
-                cout << " testDir1Ready";
-            }
-            if (!testDir2Ready) {
-                cout << " testDir2Ready";
-            }
-            if (!testDev1Ready) {
-                cout << " testDev1Ready";
-            }
-            if (!testDev2Ready) {
-                cout << " testDev2Ready";
+            if (assertTestConfig) {
+                if (!testDir1Ready) {
+                    cout << " testDir1Ready";
+                }
+                if (!testDir2Ready) {
+                    cout << " testDir2Ready";
+                }
+                if (!testDev1Ready) {
+                    cout << " testDev1Ready";
+                }
+                if (!testDev2Ready) {
+                    cout << " testDev2Ready";
+                }
             }
             cout << endl;
             return;
@@ -206,23 +210,41 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction)
     // assert whether all expected log messages were present
     CPPUNIT_ASSERT(myIdAnnounced);
     CPPUNIT_ASSERT(performanceAnnounced);
-    CPPUNIT_ASSERT(testDir1Ready);
-    CPPUNIT_ASSERT(!testDir2Ready);
-    CPPUNIT_ASSERT(testDev1Ready);
-    CPPUNIT_ASSERT(testDev2Ready);
+    if (assertTestConfig) {
+        CPPUNIT_ASSERT(testDir1Ready);
+        CPPUNIT_ASSERT(!testDir2Ready);
+        CPPUNIT_ASSERT(testDev1Ready);
+        CPPUNIT_ASSERT(testDev2Ready);
+    }
     CPPUNIT_ASSERT(shutDownLogged);
 
-    // keep running a bit longer to check whether would not crash in the next few seconds
-    // (could happen if Syncthing's extra threads haven't been stopped correctly)
-    sleep(5);
+    // check for random crashes afterwards
+    if (assertTestConfig) {
+        cerr << "\nkeep running a bit longer to check whether the application would not crash in the next few seconds"
+                "\n(could happen if Syncthing's extra threads haven't been stopped correctly)";
+        sleep(5);
+    }
 }
 
 /*!
- * \brief Tests whether Syncthing can be started (and stopped again) using the specified test config.
+ * \brief Tests whether Syncthing can be started (and stopped again) when the config directory has not been created yet.
+ * \remarks It is expected that Syncthing creates the config directory automatically with a default config and new certs.
+ */
+void InterfaceTests::testRunWithoutConfig()
+{
+    RuntimeOptions options;
+    options.configDir = TestApplication::instance()->workingDirectory() + "/does/not/exist";
+    filesystem::remove_all(TestApplication::instance()->workingDirectory() + "/does");
+    testRun(bind(static_cast<std::int64_t (*)(const RuntimeOptions &)>(&runSyncthing), cref(options)), false);
+}
+
+/*!
+ * \brief Tests whether Syncthing can be started (and stopped again).
+ * \remarks This test uses the usual test config (same as for connector and CLI) and runs some checks against it.
  */
 void InterfaceTests::testRunWidthConfig()
 {
     RuntimeOptions options;
-    options.configDir = setupConfigDir();
-    testRun(bind(static_cast<std::int64_t (*)(const RuntimeOptions &)>(&runSyncthing), cref(options)));
+    options.configDir = setupTestConfigDir();
+    testRun(bind(static_cast<std::int64_t (*)(const RuntimeOptions &)>(&runSyncthing), cref(options)), true);
 }

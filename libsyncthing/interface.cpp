@@ -141,7 +141,7 @@ std::int64_t runSyncthing(const RuntimeOptions &options)
         return -1;
     }
     return ::libst_run_syncthing(gostr(options.configDir), gostr(options.guiAddress), gostr(options.guiApiKey), options.verbose,
-        options.allowNewerConfig, options.noDefaultConfig);
+        options.allowNewerConfig, options.noDefaultConfig, options.ensureConfigDirectoryExists);
 }
 
 /*!
