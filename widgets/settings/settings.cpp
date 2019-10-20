@@ -33,6 +33,7 @@ using namespace std;
 using namespace Data;
 using namespace QtUtilities;
 
+#if (QT_VERSION < QT_VERSION_CHECK(5, 14, 0))
 namespace std {
 
 template <> struct hash<QString> {
@@ -42,6 +43,7 @@ template <> struct hash<QString> {
     }
 };
 } // namespace std
+#endif
 
 namespace Settings {
 
