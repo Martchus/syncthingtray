@@ -154,22 +154,24 @@ See the release section on GitHub.
     * for RPM \*.spec files and binary repository checkout
       [openSUSE Build Servide](https://build.opensuse.org/project/show/home:mkittler)
     * there's also a [repo with builds of Git master](https://build.opensuse.org/project/show/home:mkittler:vcs)
+* NixOS
+    * the package syncthingtray is available from the official repositories
 * Exherbo
-    * packages for my other project "Tageditor" and dependencies could serve as a base and are provided
+    * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
       by [the platypus repository](https://git.exherbo.org/summer/packages/media-sound/tageditor)
 * Gentoo
-    * packages for my other projects (which are built in the same way) are provided by perfect7gentleman; checkout his
-      [repository](https://github.com/perfect7gentleman/pg_overlay)
+    * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
+      by [perfect7gentleman's repository](https://github.com/perfect7gentleman/pg_overlay)
 * Other GNU/Linux systems
     * [AppImage repository for releases on the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage/AppImage)
     * [AppImage repository for builds from Git master the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage:/vcs/AppImage/)
 * Windows
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
     * for statically linked binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
-    * [my website](http://martchus.no-ip.biz/website/page.php?name=programming) also contains an occasionally
-      updated archive with a dynamically linked executable
+* FreeBSD
+    * the package syncthingtray is available from [FreeBSD Ports](https://www.freshports.org/deskutils/syncthingtray)
 * Mac OS X/macOS
-    * package syncthingtray is available from [MacPorts](https://ports.macports.org/port/syncthingtray/)
+    * the package syncthingtray is available from [MacPorts](https://ports.macports.org/port/syncthingtray/)
 
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and
