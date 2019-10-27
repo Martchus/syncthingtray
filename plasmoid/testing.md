@@ -25,6 +25,17 @@ Be aware that `plasmoidviewer` will revert Plasmoid-specific settings to the def
 startup. So it is not possible to test restoring/saving settings using it.
 For this use case, `plasmawindowed` can be used instead.
 
+## Testing within the real Plasma shell
+
+Some issues are only reproducible within the actual Plasma shell. It is possible to test
+with the real Plasma shell in the same way as described above by setting `plasmashell` as
+executable.
+
+It is only possible to run one `plasmashell` at a time so you have to stop your regular
+`plasmashell` first. While developing you can start e.g. `tint2` to be not without a shell.
+It works quite well within a Plasma session when both shells are placed on different screen
+edges.
+
 ## Enable QML debugging
 
 To enable QML debugging, it is required to rebuild `plasmoidviewer` with QML debugging
