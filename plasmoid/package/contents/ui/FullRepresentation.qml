@@ -28,8 +28,11 @@ ColumnLayout {
         case PlasmaCore.Types.LeftEdge:
         case PlasmaCore.Types.RightEdge:
             var size = plasmoid.nativeInterface.size
-            parent.width = units.gridUnit * size.width
-            parent.height = units.gridUnit * size.height
+            parent.width = tabWidget.Layout.minimumWidth = units.gridUnit * size.width
+            parent.height = tabWidget.Layout.minimumHeight = units.gridUnit * size.height
+            // note: Setting the tabWidget's layout properties here as well because setting the parent's
+            // height ceased to work with Plasma 5.17.1. (It somehow doesn't work to set root's layout properties
+            // so I'm using tabWidget here.)
             break
         default:
             ;
@@ -498,6 +501,7 @@ ColumnLayout {
 
     // tab "widget"
     RowLayout {
+        id: tabWidget
         spacing: 0
 
         ColumnLayout {
