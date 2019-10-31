@@ -31,8 +31,8 @@ ColumnLayout {
             parent.width = tabWidget.Layout.minimumWidth = units.gridUnit * size.width
             parent.height = tabWidget.Layout.minimumHeight = units.gridUnit * size.height
             // note: Setting the tabWidget's layout properties here as well because setting the parent's
-            // height ceased to work with Plasma 5.17.1. (It somehow doesn't work to set root's layout properties
-            // so I'm using tabWidget here.)
+            // height ceased to work with Plasma 5.17.0 or later. (It somehow doesn't work to set root's layout
+            // properties so I'm using tabWidget here.)
             break
         default:
             ;
