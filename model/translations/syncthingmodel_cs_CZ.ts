@@ -4,42 +4,42 @@
 <context>
     <name>Data::StatusIconSettings</name>
     <message>
-        <location filename="../syncthingicons.cpp" line="193"/>
+        <location filename="../syncthingicons.cpp" line="217"/>
         <source>Misc. notifications</source>
         <translation>Různá oznámení</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="194"/>
+        <location filename="../syncthingicons.cpp" line="218"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="195"/>
+        <location filename="../syncthingicons.cpp" line="219"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="196"/>
+        <location filename="../syncthingicons.cpp" line="220"/>
         <source>Idle</source>
         <translation>Nečinné</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="197"/>
+        <location filename="../syncthingicons.cpp" line="221"/>
         <source>Scanning</source>
         <translation>Skenuje</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="198"/>
+        <location filename="../syncthingicons.cpp" line="222"/>
         <source>Synchronizing</source>
         <translation>Synchronizuje</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="199"/>
+        <location filename="../syncthingicons.cpp" line="223"/>
         <source>Paused</source>
         <translation>Pozastaveno</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="200"/>
+        <location filename="../syncthingicons.cpp" line="224"/>
         <source>Disconnected</source>
         <translation>Odpojeno</translation>
     </message>
