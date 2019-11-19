@@ -53,6 +53,7 @@ set(TS_FILES translations/${META_PROJECT_NAME}_cs_CZ.ts translations/${META_PROJ
              translations/${META_PROJECT_NAME}_en_US.ts)
 
 set(REQUIRED_ICONS
+    color-profile
     preferences-other
     process-stop
     list-add

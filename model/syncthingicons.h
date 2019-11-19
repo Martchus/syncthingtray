@@ -61,7 +61,14 @@ QPixmap LIB_SYNCTHING_MODEL_EXPORT renderSvgImage(const QByteArray &contents, co
 QByteArray LIB_SYNCTHING_MODEL_EXPORT loadFontAwesomeIcon(const QString &iconName, const QColor &color, bool solid = true);
 
 struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
+    struct DarkTheme {
+    };
+    struct BrightTheme {
+    };
+
     explicit StatusIconSettings();
+    explicit StatusIconSettings(DarkTheme);
+    explicit StatusIconSettings(BrightTheme);
     explicit StatusIconSettings(const QString &str);
 
     StatusIconColorSet defaultColor;

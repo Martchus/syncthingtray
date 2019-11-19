@@ -187,6 +187,30 @@ StatusIconSettings::StatusIconSettings()
 {
 }
 
+StatusIconSettings::StatusIconSettings(StatusIconSettings::DarkTheme)
+    : defaultColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FFFFFFFF") })
+    , errorColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FFFFAEA5") })
+    , warningColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFFFF6A5") })
+    , idleColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFFFFFFF") })
+    , scanningColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA5EFFF") })
+    , synchronizingColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA5EFFF") })
+    , pausedColor({ QStringLiteral("#00000000"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA7A7A7") })
+    , disconnectedColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FFA7A7A7") })
+{
+}
+
+StatusIconSettings::StatusIconSettings(StatusIconSettings::BrightTheme)
+    : defaultColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FF000000") })
+    , errorColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFDB3C26") })
+    , warningColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FFC9CE3B") })
+    , idleColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FF000000") })
+    , scanningColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FF26B6DB") })
+    , synchronizingColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FF26B6DB") })
+    , pausedColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA7A7A7") })
+    , disconnectedColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA7A7A7") })
+{
+}
+
 std::vector<StatusIconSettings::ColorMapping> StatusIconSettings::colorMapping()
 {
     return std::vector<ColorMapping>({

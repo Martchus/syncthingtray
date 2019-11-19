@@ -51,6 +51,7 @@
 #endif
 #include <QApplication>
 #include <QFontDatabase>
+#include <QMenu>
 #include <QStringBuilder>
 #include <QStyle>
 #include <QTextBlock>
@@ -588,11 +589,25 @@ QWidget *IconsOptionPage::setupWidget()
         }
     }
 
-    // setup additional buttons
-    QObject::connect(ui()->restoreDefaultsPushButton, &QPushButton::clicked, [this] {
+    // setup presets menu
+    auto *const presetsMenu = new QMenu(widget);
+    presetsMenu->addAction(QCoreApplication::translate("QtGui::IconsOptionPageBase", "Colorful background with gradient (default)"), [this] {
         m_settings = Data::StatusIconSettings();
         update();
     });
+    presetsMenu->addAction(
+        QCoreApplication::translate("QtGui::IconsOptionPageBase", "Transparent background and dark foreground (for bright themes)"), [this] {
+            m_settings = Data::StatusIconSettings(Data::StatusIconSettings::BrightTheme{});
+            update();
+        });
+    presetsMenu->addAction(
+        QCoreApplication::translate("QtGui::IconsOptionPageBase", "Transparent background and bright foreground (for dark themes)"), [this] {
+            m_settings = Data::StatusIconSettings(Data::StatusIconSettings::DarkTheme{});
+            update();
+        });
+
+    // setup additional buttons
+    ui()->restoreDefaultsPushButton->setMenu(presetsMenu);
     QObject::connect(ui()->restorePreviousPushButton, &QPushButton::clicked, [this] { reset(); });
 
     return widget;

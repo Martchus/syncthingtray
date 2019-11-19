@@ -17,6 +17,13 @@
     <widget class="QCheckBox" name="contextCheckBox"/>
    </item>
    <item>
+    <widget class="QLabel" name="dragAndDropInfoLabel">
+     <property name="text">
+      <string>Use Drag &amp; Drop to re-use a selected color at a different position.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="statusIconsGroupBox">
      <property name="title">
       <string>Status icons</string>
@@ -105,11 +112,10 @@
         <item>
          <widget class="QPushButton" name="restoreDefaultsPushButton">
           <property name="text">
-           <string>Restore defaults</string>
+           <string>Use preset</string>
           </property>
           <property name="icon">
-           <iconset theme="edit-undo">
-            <normaloff>.</normaloff>.</iconset>
+           <iconset theme="color-profile"/>
           </property>
          </widget>
         </item>
