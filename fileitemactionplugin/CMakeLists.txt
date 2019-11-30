@@ -6,18 +6,10 @@ set(META_PROJECT_TYPE qtplugin)
 set(META_QT5_VERSION 5.8)
 
 # add project files
-set(HEADER_FILES
-    syncthingmenuaction.h
-    syncthinginfoaction.h
-    syncthingdiractions.h
-    syncthingfileitemactionstaticdata.h
-    syncthingfileitemaction.h)
-set(SRC_FILES
-    syncthingmenuaction.cpp
-    syncthinginfoaction.cpp
-    syncthingdiractions.cpp
-    syncthingfileitemactionstaticdata.cpp
-    syncthingfileitemaction.cpp)
+set(HEADER_FILES syncthingmenuaction.h syncthinginfoaction.h syncthingdiractions.h syncthingfileitemactionstaticdata.h
+                 syncthingfileitemaction.h)
+set(SRC_FILES syncthingmenuaction.cpp syncthinginfoaction.cpp syncthingdiractions.cpp syncthingfileitemactionstaticdata.cpp
+              syncthingfileitemaction.cpp)
 
 set(TS_FILES translations/${META_PROJECT_NAME}_cs_CZ.ts translations/${META_PROJECT_NAME}_de_DE.ts
              translations/${META_PROJECT_NAME}_en_US.ts)
@@ -39,11 +31,7 @@ use_syncthingmodel()
 # link also explicitely against the following Qt and KF modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 list(APPEND ADDITIONAL_KF_MODULES KIO)
-set(KIO_MODULE_TARGETS
-    KF5::KIOCore
-    KF5::KIOFileWidgets
-    KF5::KIOWidgets
-    KF5::KIONTLM)
+set(KIO_MODULE_TARGETS KF5::KIOCore KF5::KIOFileWidgets KF5::KIOWidgets KF5::KIONTLM)
 
 # include modules to apply configuration
 include(BasicConfig)
@@ -53,4 +41,7 @@ include(WindowsResources)
 include(LibraryTarget)
 include(ConfigHeader)
 
-install(FILES ${META_PROJECT_NAME}.desktop DESTINATION "share/kservices5" COMPONENT desktop)
+install(
+    FILES ${META_PROJECT_NAME}.desktop
+    DESTINATION "share/kservices5"
+    COMPONENT desktop)

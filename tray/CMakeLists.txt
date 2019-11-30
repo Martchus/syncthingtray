@@ -132,6 +132,6 @@ include(ConfigHeader)
 add_desktop_file()
 
 if (APPLE)
-    set_target_properties(${META_TARGET_NAME}
-                          PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/resources/Info.plist.in")
+    set_target_properties(${META_TARGET_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST
+                                                         "${CMAKE_CURRENT_SOURCE_DIR}/resources/Info.plist.in")
 endif ()

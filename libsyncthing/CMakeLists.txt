@@ -22,7 +22,9 @@ if (NOT GO_BIN)
 endif ()
 
 # determine GOARCH for target
-set(GO_TARGET_ARCH_OVERRIDE "" CACHE STRING "overrides the 'GOARCH' variable")
+set(GO_TARGET_ARCH_OVERRIDE
+    ""
+    CACHE STRING "overrides the 'GOARCH' variable")
 if (GO_TARGET_ARCH_OVERRIDE)
     set(GO_TARGET_ARCH "${GO_TARGET_ARCH_OVERRIDE}")
 elseif (NOT CMAKE_CROSSCOMPILING)
@@ -37,7 +39,9 @@ else ()
     message(FATAL_ERROR "Unable to auto-determine GOARCH. Please set GO_TARGET_ARCH_OVERRIDE manually.")
 endif ()
 # determine GOOS for target
-set(GO_TARGET_OS_OVERRIDE "" CACHE STRING "overrides the 'GOOS' variable")
+set(GO_TARGET_OS_OVERRIDE
+    ""
+    CACHE STRING "overrides the 'GOOS' variable")
 if (GO_TARGET_OS_OVERRIDE)
     set(GO_TARGET_OS "${GO_TARGET_OS_OVERRIDE}")
 elseif (NOT CMAKE_CROSSCOMPILING)
@@ -58,38 +62,38 @@ endif ()
 message(STATUS "Using GOOS=${GO_TARGET_OS} and GOARCH=${GO_TARGET_ARCH}")
 
 # locate the Syncthing checkout
-set(GO_DEVELOPMENT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/go" CACHE PATH "the 'GOPATH'")
+set(GO_DEVELOPMENT_PATH
+    "${CMAKE_CURRENT_SOURCE_DIR}/go"
+    CACHE PATH "the 'GOPATH'")
 set(SYNCTHING_PATH
     "${CMAKE_CURRENT_SOURCE_DIR}/go/src/github.com/syncthing/syncthing"
     CACHE PATH "path of Syncthing checkout")
 
 # find Syncthing's assets caveat: newly added assets will not cause CMake to automatically regenerate
-file(GLOB_RECURSE SRC_FILES_SYNCTHING_ASSETS
-     LIST_DIRECTORIES false
-     RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-     "${SYNCTHING_PATH}/gui/*")
+file(
+    GLOB_RECURSE SRC_FILES_SYNCTHING_ASSETS
+    LIST_DIRECTORIES false
+    RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${SYNCTHING_PATH}/gui/*")
 if (NOT SRC_FILES_SYNCTHING_ASSETS)
     message(
         FATAL_ERROR
             "No asset files found in Syncthing checkout \"${CMAKE_CURRENT_SOURCE_DIR}/go/src/github.com/syncthing/syncthing\"."
-        )
+    )
 endif ()
 
 # find Syncthing's source code caveat: newly added files will not cause CMake to automatically regenerate
-file(GLOB_RECURSE SRC_FILES_SYNCTHING
-     LIST_DIRECTORIES false
-     RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-     "${SYNCTHING_PATH}/c-bindings/*.go"
-     "${SYNCTHING_PATH}/c-bindings/*.h"
-     "${SYNCTHING_PATH}/c-bindings/*.c"
-     "${SYNCTHING_PATH}/lib/*.go"
-     "${SYNCTHING_PATH}/lib/*.h"
-     "${SYNCTHING_PATH}/lib/*.c")
+file(
+    GLOB_RECURSE SRC_FILES_SYNCTHING
+    LIST_DIRECTORIES false
+    RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${SYNCTHING_PATH}/c-bindings/*.go" "${SYNCTHING_PATH}/c-bindings/*.h" "${SYNCTHING_PATH}/c-bindings/*.c"
+    "${SYNCTHING_PATH}/lib/*.go" "${SYNCTHING_PATH}/lib/*.h" "${SYNCTHING_PATH}/lib/*.c")
 if (NOT SRC_FILES_SYNCTHING)
     message(
         FATAL_ERROR
             "No *.go files found in Syncthing checkout \"${CMAKE_CURRENT_SOURCE_DIR}/go/src/github.com/syncthing/syncthing\"."
-        )
+    )
 endif ()
 list(APPEND SRC_FILES_SYNCTHING "${SYNCTHING_PATH}/lib/auto/gui.files.go")
 message(STATUS "Syncthing's go files: ${SRC_FILES_SYNCTHING}")
@@ -118,47 +122,27 @@ if (DEFINED $ENV{BUILD_STAMP})
 endif ()
 
 # generate Syncthing's assets: don't set GOARCH/GOOS here, this is supposed to run on the host
-add_custom_command(OUTPUT "${SYNCTHING_PATH}/lib/auto/gui.files.go"
-                   COMMAND "GOPATH=${GO_DEVELOPMENT_PATH}"
-                           "GO111MODULE=on"
-                           "${GO_BIN}"
-                           run
-                           ./script/genassets.go
-                           gui
-                           >
-                           lib/auto/gui.files.go
-                   DEPENDS ${SRC_FILES_SYNCTHING_ASSETS}
-                   WORKING_DIRECTORY "${SYNCTHING_PATH}"
-                   COMMENT "Building Syncthing's assets")
+add_custom_command(
+    OUTPUT "${SYNCTHING_PATH}/lib/auto/gui.files.go"
+    COMMAND
+        "GOPATH=${GO_DEVELOPMENT_PATH}" "GO111MODULE=on" "${GO_BIN}" run ./script/genassets.go gui > lib/auto/gui.files.go
+    DEPENDS ${SRC_FILES_SYNCTHING_ASSETS}
+    WORKING_DIRECTORY "${SYNCTHING_PATH}"
+    COMMENT "Building Syncthing's assets")
 
 # compile Syncthing as static library
 set(SYNCTHINGINTERNAL_LIBRARY_PATH "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.a")
 set(SYNCTHINGINTERNAL_HEADER_PATH "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.h")
-add_custom_command(OUTPUT "${SYNCTHINGINTERNAL_LIBRARY_PATH}" "${SYNCTHINGINTERNAL_HEADER_PATH}"
-                   COMMAND "CC=${CMAKE_C_COMPILER}"
-                           "CXX=${CMAKE_CXX_COMPILER}"
-                           "AR=${CMAKE_C_COMPILER_AR}"
-                           "GOOS=${GO_TARGET_OS}"
-                           "GOARCH=${GO_TARGET_ARCH}"
-                           "CGO_ENABLED=1"
-                           "GO111MODULE=on"
-                           "GOPATH=${GO_DEVELOPMENT_PATH}"
-                           "${GO_BIN}"
-                           build
-                           -v
-                           -buildmode
-                           c-archive
-                           -o
-                           "${SYNCTHINGINTERNAL_LIBRARY_PATH}"
-                           -ldflags
-                           "${GO_LINKER_FLAGS}"
-                           ./c-bindings
-                           &&
-                           "${CMAKE_RANLIB}"
-                           "${SYNCTHINGINTERNAL_LIBRARY_PATH}"
-                   DEPENDS ${SRC_FILES_SYNCTHING}
-                   WORKING_DIRECTORY "${SYNCTHING_PATH}"
-                   COMMENT "Building Syncthing itself")
+add_custom_command(
+    OUTPUT "${SYNCTHINGINTERNAL_LIBRARY_PATH}" "${SYNCTHINGINTERNAL_HEADER_PATH}"
+    COMMAND
+        "CC=${CMAKE_C_COMPILER}" "CXX=${CMAKE_CXX_COMPILER}" "AR=${CMAKE_C_COMPILER_AR}" "GOOS=${GO_TARGET_OS}"
+        "GOARCH=${GO_TARGET_ARCH}" "CGO_ENABLED=1" "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "${GO_BIN}" build -v
+        -buildmode c-archive -o "${SYNCTHINGINTERNAL_LIBRARY_PATH}" -ldflags "${GO_LINKER_FLAGS}" ./c-bindings &&
+        "${CMAKE_RANLIB}" "${SYNCTHINGINTERNAL_LIBRARY_PATH}"
+    DEPENDS ${SRC_FILES_SYNCTHING}
+    WORKING_DIRECTORY "${SYNCTHING_PATH}"
+    COMMENT "Building Syncthing itself")
 
 # find c++utilities
 find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
@@ -186,9 +170,10 @@ elseif (UNIX)
 endif ()
 foreach (LIBRARY ${SYNCTHING_INTERNAL_LIBS})
     find_library(SYNCTHING_INTERNAL_LIBRARY_PATH_${LIBRARY} ${LIBRARY})
-    set_property(TARGET syncthinginternal
-                 APPEND
-                 PROPERTY IMPORTED_LINK_INTERFACE_LIBRARIES ${SYNCTHING_INTERNAL_LIBRARY_PATH_${LIBRARY}})
+    set_property(
+        TARGET syncthinginternal
+        APPEND
+        PROPERTY IMPORTED_LINK_INTERFACE_LIBRARIES ${SYNCTHING_INTERNAL_LIBRARY_PATH_${LIBRARY}})
 endforeach ()
 
 # depend on that imported target
@@ -204,6 +189,11 @@ include(ConfigHeader)
 
 # create install target for static libsyncthinginternal.a if we're also creating a static libsyncthing.a note: Not possible
 # to add syncthinginternal to BUNDLED_TARGETS because it is an import library which apparently can not be exported.
-if (NOT BUILD_SHARED_LIBS AND NOT META_NO_INSTALL_TARGETS AND ENABLE_INSTALL_TARGETS)
-    install(FILES "${SYNCTHINGINTERNAL_LIBRARY_PATH}" DESTINATION "lib${SELECTED_LIB_SUFFIX}" COMPONENT binary)
+if (NOT BUILD_SHARED_LIBS
+    AND NOT META_NO_INSTALL_TARGETS
+    AND ENABLE_INSTALL_TARGETS)
+    install(
+        FILES "${SYNCTHINGINTERNAL_LIBRARY_PATH}"
+        DESTINATION "lib${SELECTED_LIB_SUFFIX}"
+        COMPONENT binary)
 endif ()
