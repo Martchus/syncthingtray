@@ -11,38 +11,28 @@ import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
 ColumnLayout {
     id: root
 
-    // define minimum size
-    Layout.minimumWidth: units.gridUnit * 20
-    Layout.minimumHeight: units.gridUnit * 15
-
     // ensure keyboard events can be received after initialization
     Component.onCompleted: forceActiveFocus()
-
-    // define function to update the size according to the settings
-    // when "floating" (shown as popup) or tied to an edge
-    function updateSize() {
-        switch (plasmoid.location) {
-        case PlasmaCore.Types.Floating:
-        case PlasmaCore.Types.TopEdge:
-        case PlasmaCore.Types.BottomEdge:
-        case PlasmaCore.Types.LeftEdge:
-        case PlasmaCore.Types.RightEdge:
-            var size = plasmoid.nativeInterface.size
-            parent.width = tabWidget.Layout.minimumWidth = units.gridUnit * size.width
-            parent.height = tabWidget.Layout.minimumHeight = units.gridUnit * size.height
-            // note: Setting the tabWidget's layout properties here as well because setting the parent's
-            // height ceased to work with Plasma 5.17.0 or later. (It somehow doesn't work to set root's layout
-            // properties so I'm using tabWidget here.)
-            break
-        default:
-            ;
-        }
-    }
 
     // update the size when settings changed
     Connections {
         target: plasmoid.nativeInterface
-        onSizeChanged: updateSize()
+        onSizeChanged: {
+            switch (plasmoid.location) {
+            case PlasmaCore.Types.Floating:
+            case PlasmaCore.Types.TopEdge:
+            case PlasmaCore.Types.BottomEdge:
+            case PlasmaCore.Types.LeftEdge:
+            case PlasmaCore.Types.RightEdge:
+                // set the parent's width and height so it will shrink again when decreasing the size
+                var size = plasmoid.nativeInterface.size
+                parent.width = units.gridUnit * size.width
+                parent.height = units.gridUnit * size.height
+                break
+            default:
+                ;
+            }
+        }
     }
 
     // define shortcuts to trigger actions for currently selected item
@@ -503,6 +493,8 @@ ColumnLayout {
     RowLayout {
         id: tabWidget
         spacing: 0
+        Layout.minimumWidth: units.gridUnit * plasmoid.nativeInterface.size.width
+        Layout.minimumHeight: units.gridUnit * plasmoid.nativeInterface.size.height
 
         ColumnLayout {
             spacing: 0
