@@ -67,87 +67,87 @@
 <context>
     <name>FullRepresentation</name>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="195"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="188"/>
         <source>Connect</source>
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="203"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="196"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="211"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="204"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="256"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="249"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="267"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="260"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="312"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="305"/>
         <source>Show new notifications</source>
         <translation>Neue Benachrichtigungen anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="338"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="331"/>
         <source>Show own device ID</source>
         <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="351"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="344"/>
         <source>Show Syncthing log</source>
         <translation>Syncthing-Log anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="364"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="357"/>
         <source>Rescan all directories</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="374"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="367"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="387"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="380"/>
         <source>Open Syncthing</source>
         <translation>Syncthing öffnen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="457"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="450"/>
         <source>Global</source>
         <translation>Globale</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="466"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="459"/>
         <source>Global incoming traffic</source>
         <translation>Globaler eingehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="477"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="470"/>
         <source>Local</source>
         <translation>Lokale</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="486"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="479"/>
         <source>Global outgoing traffic</source>
         <translation>Globaler ausgehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="538"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="534"/>
         <source>Toggle filter</source>
         <translation>Filter ein-/ausblenden</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="329"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="322"/>
         <source>About Syncthing Tray</source>
         <translation>Über Syncthing Tray</translation>
     </message>
@@ -161,8 +161,8 @@
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="18"/>
-        <source>Size of full representation</source>
-        <translation>Minimale Größe</translation>
+        <source>Size of directory/device/download list</source>
+        <translation>Größe der Verzeichnis-/Geräte-/Downloadliste</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="68"/>
@@ -176,8 +176,8 @@
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="112"/>
-        <source>Note that the size is ignored when the Plasmoid is displayed on the desktop, in full screen mode or as entry of the system tray Plasmoid.</source>
-        <translation>Die eingestellte Größe wird ignoriert, wenn das Plasmoid am Desktop, im Vollbild oder innerhalb des Systemtray-Plasmoids dargestellt wird.</translation>
+        <source>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
+        <translation>Die Größe wird ignoriert when das Plasmoid auf dem Desktop oder im Vollbildmodus dargestellt wird. Wenn das Plasmoid innerhalb des Systemtray-Plasmoids dargestellt wird kann die Größe nicht geändert werden (einen größeren Wert einzustellen führt nur dazu, dass der Inhalt abgeschnitten wird).</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="124"/>
