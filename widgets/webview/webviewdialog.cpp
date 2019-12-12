@@ -12,6 +12,7 @@
 #include <QKeyEvent>
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
 #include <QWebEngineProfile>
+#include <QtWebEngineWidgetsVersion>
 #endif
 
 using namespace QtUtilities;
@@ -28,7 +29,7 @@ WebViewDialog::WebViewDialog(QWidget *parent)
 
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
     m_profile = new QWebEngineProfile(objectName(), this);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0))
+#if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(5, 13, 0))
     m_profile->setUrlRequestInterceptor(new WebViewInterceptor(m_connectionSettings, m_profile));
 #else
     m_profile->setRequestInterceptor(new WebViewInterceptor(m_connectionSettings, m_profile));
