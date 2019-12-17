@@ -297,22 +297,22 @@
 <context>
     <name>Data::SyncthingService</name>
     <message>
-        <location filename="../syncthingservice.cpp" line="205"/>
+        <location filename="../syncthingservice.cpp" line="362"/>
         <source>start unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="207"/>
+        <location filename="../syncthingservice.cpp" line="364"/>
         <source>stop unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="219"/>
+        <location filename="../syncthingservice.cpp" line="379"/>
         <source>enable unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="221"/>
+        <location filename="../syncthingservice.cpp" line="381"/>
         <source>disable unit</source>
         <translation type="unfinished"></translation>
     </message>

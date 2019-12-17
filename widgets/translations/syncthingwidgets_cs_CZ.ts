@@ -818,22 +818,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1295"/>
+        <location filename="../settings/settingsdialog.cpp" line="1303"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1302"/>
+        <location filename="../settings/settingsdialog.cpp" line="1310"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1309"/>
+        <location filename="../settings/settingsdialog.cpp" line="1317"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1331"/>
+        <location filename="../settings/settingsdialog.cpp" line="1339"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -985,66 +985,71 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="78"/>
+        <location filename="../settings/systemdoptionpage.ui" line="84"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="99"/>
-        <location filename="../settings/systemdoptionpage.ui" line="154"/>
-        <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="1210"/>
-        <location filename="../settings/settingsdialog.cpp" line="1222"/>
+        <location filename="../settings/systemdoptionpage.ui" line="105"/>
+        <location filename="../settings/systemdoptionpage.ui" line="160"/>
+        <location filename="../settings/systemdoptionpage.ui" line="249"/>
+        <location filename="../settings/settingsdialog.cpp" line="1218"/>
+        <location filename="../settings/settingsdialog.cpp" line="1230"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="114"/>
+        <location filename="../settings/systemdoptionpage.ui" line="120"/>
         <source>Current status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="161"/>
+        <location filename="../settings/systemdoptionpage.ui" line="173"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="172"/>
+        <location filename="../settings/systemdoptionpage.ui" line="190"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="191"/>
+        <location filename="../settings/systemdoptionpage.ui" line="209"/>
         <source>Unit file state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="238"/>
+        <location filename="../settings/systemdoptionpage.ui" line="262"/>
         <source>Enable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="249"/>
+        <location filename="../settings/systemdoptionpage.ui" line="279"/>
         <source>Disable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1152"/>
+        <location filename="../settings/systemdoptionpage.ui" line="292"/>
+        <source>System unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1154"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1158"/>
+        <location filename="../settings/settingsdialog.cpp" line="1160"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1183"/>
+        <location filename="../settings/settingsdialog.cpp" line="1191"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1205"/>
+        <location filename="../settings/settingsdialog.cpp" line="1213"/>
         <source>since </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1069,7 +1074,7 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>QtGui::WebViewDialog</name>
     <message>
-        <location filename="../webview/webviewdialog.cpp" line="25"/>
+        <location filename="../webview/webviewdialog.cpp" line="26"/>
         <source>Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1078,7 +1083,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="1244"/>
+        <location filename="../settings/settingsdialog.cpp" line="1252"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1108,7 +1113,7 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1246"/>
+        <location filename="../settings/settingsdialog.cpp" line="1254"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>

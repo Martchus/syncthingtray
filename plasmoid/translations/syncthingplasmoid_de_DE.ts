@@ -165,33 +165,33 @@
         <translation>Größe der Verzeichnis-/Geräte-/Downloadliste</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="68"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="71"/>
         <source> x </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="94"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="97"/>
         <source> grid units</source>
         <translation> Rastereinheiten</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="112"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="115"/>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
         <translation>Die Größe wird ignoriert when das Plasmoid auf dem Desktop oder im Vollbildmodus dargestellt wird. Wenn das Plasmoid innerhalb des Systemtray-Plasmoids dargestellt wird kann die Größe nicht geändert werden (einen größeren Wert einzustellen führt nur dazu, dass der Inhalt abgeschnitten wird).</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="124"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="127"/>
         <source>States to enable passive mode</source>
         <translatorcomment>Plural: https://www.duden.de/rechtschreibung/Status</translatorcomment>
         <translation>Status für passiven Modus</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="25"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="28"/>
         <source>Colors</source>
         <translation>Farben</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="32"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="35"/>
         <source>Bright custom text colors (use for dark color scheme)</source>
         <translation>Helle benutzerdefinierte Schriftfarben (für dunkles Farbschema gedacht)</translation>
     </message>

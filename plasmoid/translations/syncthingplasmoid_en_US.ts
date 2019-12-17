@@ -165,32 +165,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="68"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="71"/>
         <source> x </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="94"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="97"/>
         <source> grid units</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="112"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="115"/>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="124"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="127"/>
         <source>States to enable passive mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="25"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="28"/>
         <source>Colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="32"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="35"/>
         <source>Bright custom text colors (use for dark color scheme)</source>
         <translation type="unfinished"></translation>
     </message>

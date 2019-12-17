@@ -481,10 +481,6 @@
         <source>Use preset</source>
         <translation>Verwende Standardfarben</translation>
     </message>
-    <message>
-        <source>Restore defaults</source>
-        <translation type="vanished">Auf Standardfarben zurücksetzen</translation>
-    </message>
 </context>
 <context>
     <name>QtGui::IconsOptionPageBase</name>
@@ -822,22 +818,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1295"/>
+        <location filename="../settings/settingsdialog.cpp" line="1303"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1302"/>
+        <location filename="../settings/settingsdialog.cpp" line="1310"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1309"/>
+        <location filename="../settings/settingsdialog.cpp" line="1317"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1331"/>
+        <location filename="../settings/settingsdialog.cpp" line="1339"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -980,26 +976,31 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Syncthing-Unit</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="78"/>
+        <location filename="../settings/systemdoptionpage.ui" line="84"/>
         <source>Description</source>
         <translation>Beschreibung</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="114"/>
+        <location filename="../settings/systemdoptionpage.ui" line="120"/>
         <source>Current status</source>
         <translation>Aktueller Status</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="191"/>
+        <location filename="../settings/systemdoptionpage.ui" line="209"/>
         <source>Unit file state</source>
         <translation>Status des Unit files</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="99"/>
-        <location filename="../settings/systemdoptionpage.ui" line="154"/>
-        <location filename="../settings/systemdoptionpage.ui" line="231"/>
-        <location filename="../settings/settingsdialog.cpp" line="1210"/>
-        <location filename="../settings/settingsdialog.cpp" line="1222"/>
+        <location filename="../settings/systemdoptionpage.ui" line="292"/>
+        <source>System unit</source>
+        <translation>System-Unit</translation>
+    </message>
+    <message>
+        <location filename="../settings/systemdoptionpage.ui" line="105"/>
+        <location filename="../settings/systemdoptionpage.ui" line="160"/>
+        <location filename="../settings/systemdoptionpage.ui" line="249"/>
+        <location filename="../settings/settingsdialog.cpp" line="1218"/>
+        <location filename="../settings/settingsdialog.cpp" line="1230"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -1013,42 +1014,42 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
  • Automatisch neu verbinden, wenn die Syncthing-Unit gestartet wird</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="238"/>
+        <location filename="../settings/systemdoptionpage.ui" line="262"/>
         <source>Enable</source>
         <translation>Autom. starten</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="249"/>
+        <location filename="../settings/systemdoptionpage.ui" line="279"/>
         <source>Disable</source>
         <translation>Nicht autom. starten</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="161"/>
+        <location filename="../settings/systemdoptionpage.ui" line="173"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="172"/>
+        <location filename="../settings/systemdoptionpage.ui" line="190"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1152"/>
+        <location filename="../settings/settingsdialog.cpp" line="1154"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Start-/Stop-Button für den Systemd-Dienst und den internen Starter gleichzeitig anzugeigen. Wenn verfügbar, wird der Button den Systemd-Dienst kontrollieren.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1158"/>
+        <location filename="../settings/settingsdialog.cpp" line="1160"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Status des Systemd-Dienstes und den des internen Starters gleichzeitig für Verbindungsveruche einzubeziehen. Wenn verfügbar, wird der Status des Systemd-Dienstes verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1183"/>
+        <location filename="../settings/settingsdialog.cpp" line="1191"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1205"/>
+        <location filename="../settings/settingsdialog.cpp" line="1213"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -1073,7 +1074,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>QtGui::WebViewDialog</name>
     <message>
-        <location filename="../webview/webviewdialog.cpp" line="25"/>
+        <location filename="../webview/webviewdialog.cpp" line="26"/>
         <source>Syncthing</source>
         <translation></translation>
     </message>
@@ -1082,7 +1083,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="6"/>
-        <location filename="../settings/settingsdialog.cpp" line="1244"/>
+        <location filename="../settings/settingsdialog.cpp" line="1252"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
@@ -1112,7 +1113,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1246"/>
+        <location filename="../settings/settingsdialog.cpp" line="1254"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.
