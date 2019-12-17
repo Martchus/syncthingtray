@@ -45,7 +45,7 @@ inline std::ostream &operator<<(std::ostream &o, const QStringList &qstringlist)
  */
 inline std::ostream &operator<<(std::ostream &o, const QSet<QString> &qstringset)
 {
-    return o << qstringset.toList().join(QStringLiteral(", ")).toLocal8Bit().data();
+    return o << qstringset.values().join(QStringLiteral(", ")).toLocal8Bit().data();
 }
 
 namespace CppUtilities {
