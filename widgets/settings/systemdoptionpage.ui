@@ -163,6 +163,12 @@
         </item>
         <item>
          <widget class="QPushButton" name="startPushButton">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>Start</string>
           </property>
@@ -174,6 +180,12 @@
         </item>
         <item>
          <widget class="QPushButton" name="stopPushButton">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>Stop</string>
           </property>
@@ -240,6 +252,12 @@
         </item>
         <item>
          <widget class="QPushButton" name="enablePushButton">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>Enable</string>
           </property>
@@ -251,6 +269,12 @@
         </item>
         <item>
          <widget class="QPushButton" name="disablePushButton">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>Disable</string>
           </property>
