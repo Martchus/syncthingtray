@@ -133,13 +133,16 @@ Use of systemd can be explicitely enabled/disabled by adding
 dependency to systemd in any case.
 
 With systemd support the tray can start and stop the systemd unit of Syncthing.
-It will also take the unit status into account when connecting to the local
+It can also take the unit status into account when connecting to the local
 instance. So connection attempts can be prevented when Syncthing isn't running
 anyways. However, those features are optional. To use them they must be enabled
 in the settings dialog first.
 
-Note that this only works when starting Syncthing as user service. This is
-described in the [Arch Wiki](https://wiki.archlinux.org/index.php/Systemd/User).
+Syncthing Tray assumes by default that the systemd unit is a
+[user unit](https://wiki.archlinux.org/index.php/Systemd/User). If you are using
+a system-wide unit you need to enable the "System unit" checkbox in the settings.
+Note that starting and stopping the system-wide Syncthing unit requires
+authorization (systemd can ask though PolicyKit).
 
 ## Download
 ### Source
