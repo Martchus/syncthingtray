@@ -134,6 +134,7 @@ private:
 BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(SystemdOptionPage)
 private:
 DECLARE_SETUP_WIDGETS
+void handleSystemUnitChanged();
 void handleDescriptionChanged(const QString &description);
 void handleStatusChanged(const QString &activeState, const QString &subState, CppUtilities::DateTime activeSince);
 void handleEnabledChanged(const QString &unitFileState);

@@ -6,6 +6,8 @@
 #include <QObject>
 #include <QVariantMap>
 
+#include <unordered_set>
+
 QT_FORWARD_DECLARE_CLASS(QDBusServiceWatcher)
 QT_FORWARD_DECLARE_CLASS(QDBusArgument)
 QT_FORWARD_DECLARE_CLASS(QDBusObjectPath)
@@ -31,6 +33,8 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ManagerDBusUnitFi
 
 typedef QList<ManagerDBusUnitFileChange> ManagerDBusUnitFileChangeList;
 
+enum class SystemdScope { System, User };
+
 class SyncthingService : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString unitName READ unitName WRITE setUnitName NOTIFY unitNameChanged)
@@ -44,9 +48,10 @@ class SyncthingService : public QObject {
     Q_PROPERTY(bool running READ isRunning WRITE setRunning NOTIFY runningChanged)
     Q_PROPERTY(bool enable READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
+    Q_PROPERTY(SystemdScope scope READ scope WRITE setScope)
 
 public:
-    explicit SyncthingService(QObject *parent = nullptr);
+    explicit SyncthingService(SystemdScope scope = SystemdScope::User, QObject *parent = nullptr);
 
     const QString &unitName() const;
     bool isSystemdAvailable() const;
@@ -63,6 +68,9 @@ public:
     bool isRunning() const;
     bool isEnabled() const;
     bool isManuallyStopped() const;
+    SystemdScope scope() const;
+    void setScope(SystemdScope scope);
+    void setScopeAndUnitName(SystemdScope scope, const QString &unitName);
     static SyncthingService *mainInstance();
     static void setMainInstance(SyncthingService *mainInstance);
 
@@ -102,13 +110,22 @@ private Q_SLOTS:
         bool unitAvailable, const QString &activeState, const QString &subState, const QString &unitFileState, const QString &description);
 
 private:
+    void setupSystemdInterface();
+    void setupFreedesktopLoginInterface();
+    template<typename HandlerType>
+    void makeAsyncCall(const QDBusPendingCall &call, HandlerType &&handler);
+    void registerErrorHandler(const QDBusPendingCall &call, const char *context);
+    bool concludeAsyncCall(QDBusPendingCallWatcher *watcher);
+    void clearSystemdInterface();
+    void clearUnitData();
+    void queryUnitFromSystemdInterface();
     bool handlePropertyChanged(QString &variable, void (SyncthingService::*signal)(const QString &), const QString &propertyName,
         const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
     bool handlePropertyChanged(CppUtilities::DateTime &variable, const QString &propertyName, const QVariantMap &changedProperties,
         const QStringList &invalidatedProperties);
-    void registerErrorHandler(const QDBusPendingCall &call, const char *context);
 
-    static OrgFreedesktopSystemd1ManagerInterface *s_manager;
+    static OrgFreedesktopSystemd1ManagerInterface *s_systemdUserInterface;
+    static OrgFreedesktopSystemd1ManagerInterface *s_systemdSystemInterface;
     static OrgFreedesktopLogin1ManagerInterface *s_loginManager;
     static bool s_fallingAsleep;
     static CppUtilities::DateTime s_lastWakeUp;
@@ -123,6 +140,9 @@ private:
     QString m_subState;
     QString m_unitFileState;
     CppUtilities::DateTime m_activeSince;
+    OrgFreedesktopSystemd1ManagerInterface *m_currentSystemdInterface;
+    std::unordered_set<QDBusPendingCallWatcher *> m_pendingCalls;
+    SystemdScope m_scope;
     bool m_manuallyStopped;
     bool m_unitAvailable;
 };
@@ -219,6 +239,14 @@ inline bool SyncthingService::isEnabled() const
 inline bool SyncthingService::isManuallyStopped() const
 {
     return m_manuallyStopped;
+}
+
+/*!
+ * \brief Returns the scope the current instance is tuned to.
+ */
+inline SystemdScope SyncthingService::scope() const
+{
+    return m_scope;
 }
 
 /*!

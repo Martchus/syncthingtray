@@ -58,7 +58,8 @@ constexpr DateTime dateTimeFromSystemdTimeStamp(qulonglong timeStamp)
 }
 
 SyncthingService *SyncthingService::s_mainInstance = nullptr;
-OrgFreedesktopSystemd1ManagerInterface *SyncthingService::s_manager = nullptr;
+OrgFreedesktopSystemd1ManagerInterface *SyncthingService::s_systemdUserInterface = nullptr;
+OrgFreedesktopSystemd1ManagerInterface *SyncthingService::s_systemdSystemInterface = nullptr;
 OrgFreedesktopLogin1ManagerInterface *SyncthingService::s_loginManager = nullptr;
 DateTime SyncthingService::s_lastWakeUp = DateTime();
 bool SyncthingService::s_fallingAsleep = false;
@@ -68,37 +69,19 @@ bool SyncthingService::s_fallingAsleep = false;
 /*!
  * \brief Creates a new SyncthingService instance.
  */
-SyncthingService::SyncthingService(QObject *parent)
+SyncthingService::SyncthingService(SystemdScope scope, QObject *parent)
     : QObject(parent)
     , m_unit(nullptr)
     , m_service(nullptr)
     , m_properties(nullptr)
+    , m_currentSystemdInterface(nullptr)
+    , m_scope(scope)
     , m_manuallyStopped(false)
     , m_unitAvailable(false)
 {
-#ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
-    if (!s_manager) {
-        // register custom data types
-        qDBusRegisterMetaType<ManagerDBusUnitFileChange>();
-        qDBusRegisterMetaType<ManagerDBusUnitFileChangeList>();
+    setupFreedesktopLoginInterface();
 
-        s_manager = new OrgFreedesktopSystemd1ManagerInterface(
-            QStringLiteral("org.freedesktop.systemd1"), QStringLiteral("/org/freedesktop/systemd1"), QDBusConnection::sessionBus());
-
-        // enable systemd to emit signals
-        s_manager->Subscribe();
-    }
-    if (!s_loginManager) {
-        s_loginManager = new OrgFreedesktopLogin1ManagerInterface(
-            QStringLiteral("org.freedesktop.login1"), QStringLiteral("/org/freedesktop/login1"), QDBusConnection::systemBus());
-        connect(s_loginManager, &OrgFreedesktopLogin1ManagerInterface::PrepareForSleep, &SyncthingService::handlePrepareForSleep);
-    }
-    connect(s_manager, &OrgFreedesktopSystemd1ManagerInterface::UnitNew, this, &SyncthingService::handleUnitAdded);
-    connect(s_manager, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
-    m_serviceWatcher = new QDBusServiceWatcher(s_manager->service(), s_manager->connection());
-    connect(m_serviceWatcher, &QDBusServiceWatcher::serviceRegistered, this, &SyncthingService::handleServiceRegisteredChanged);
-    connect(m_serviceWatcher, &QDBusServiceWatcher::serviceUnregistered, this, &SyncthingService::handleServiceRegisteredChanged);
-#else
+#ifdef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
     // let the mocked service initially be stopped and simulate start after 5 seconds, then stop after 10 seconds and start after 15 seconds
     QTimer::singleShot(5000, this, [this] {
         m_activeSince = DateTime::gmtNow() - TimeSpan::fromMilliseconds(250);
@@ -125,6 +108,147 @@ SyncthingService::SyncthingService(QObject *parent)
 }
 
 /*!
+ * \brief Initializes m_currentSystemdInterface and its connection and service watcher for the current m_scope.
+ */
+void SyncthingService::setupSystemdInterface()
+{
+#ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
+    clearSystemdInterface();
+
+    // ensure the static systemd interface for the current scope is initialized
+    const auto isUserScope = m_scope == SystemdScope::User;
+    OrgFreedesktopSystemd1ManagerInterface *&staticSystemdInterface
+            = isUserScope ? s_systemdUserInterface : s_systemdSystemInterface;
+    if (!staticSystemdInterface) {
+        // register custom data types
+        qDBusRegisterMetaType<ManagerDBusUnitFileChange>();
+        qDBusRegisterMetaType<ManagerDBusUnitFileChangeList>();
+
+        staticSystemdInterface = new OrgFreedesktopSystemd1ManagerInterface(
+            QStringLiteral("org.freedesktop.systemd1"), QStringLiteral("/org/freedesktop/systemd1"), isUserScope ? QDBusConnection::sessionBus() : QDBusConnection::systemBus());
+
+        // enable systemd to emit signals
+        staticSystemdInterface->Subscribe();
+    }
+
+    // use the static systemd interface for the current scope
+    m_currentSystemdInterface = staticSystemdInterface;
+    connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitNew, this, &SyncthingService::handleUnitAdded);
+    connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
+    m_serviceWatcher = new QDBusServiceWatcher(m_currentSystemdInterface->service(), m_currentSystemdInterface->connection());
+    connect(m_serviceWatcher, &QDBusServiceWatcher::serviceRegistered, this, &SyncthingService::handleServiceRegisteredChanged);
+    connect(m_serviceWatcher, &QDBusServiceWatcher::serviceUnregistered, this, &SyncthingService::handleServiceRegisteredChanged);
+#endif
+}
+
+/*!
+ * \brief Initializes s_loginManager.
+ */
+void SyncthingService::setupFreedesktopLoginInterface()
+{
+#ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
+    // ensure the static login interface is initialized and use it
+    if (s_loginManager) {
+        return;
+    }
+    s_loginManager = new OrgFreedesktopLogin1ManagerInterface(
+        QStringLiteral("org.freedesktop.login1"), QStringLiteral("/org/freedesktop/login1"), QDBusConnection::systemBus());
+    connect(s_loginManager, &OrgFreedesktopLogin1ManagerInterface::PrepareForSleep, &SyncthingService::handlePrepareForSleep);
+#endif
+}
+
+/*!
+ * \brief Registers the specified D-Bus \a call to invoke \a handler when it has been concluded.
+ */
+template<typename HandlerType>
+void SyncthingService::makeAsyncCall(const QDBusPendingCall &call, HandlerType &&handler)
+{
+    if (m_currentSystemdInterface) {
+        // disconnect from unit add/removed signals because these seem to be spammed when waiting for permissions
+        disconnect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitNew, this, &SyncthingService::handleUnitAdded);
+        disconnect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
+    }
+    auto *const watcher = new QDBusPendingCallWatcher(call, this);
+    m_pendingCalls.emplace(watcher);
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, handler);
+}
+
+/*!
+ * \brief Registers a generic error handler for the specifeid D-Bus \a call.
+ */
+void SyncthingService::registerErrorHandler(const QDBusPendingCall &call, const char *context)
+{
+    makeAsyncCall(call, bind(&SyncthingService::handleError, this, context, _1));
+}
+
+/*!
+ * \brief Determines whether the specified \a watcher is still relevant and ensures it is being deleted later.
+ */
+bool SyncthingService::concludeAsyncCall(QDBusPendingCallWatcher *watcher)
+{
+    watcher->deleteLater();
+
+    const auto i = m_pendingCalls.find(watcher);
+    const auto resultStillRelevant = i != m_pendingCalls.cend();
+    if (resultStillRelevant) {
+        m_pendingCalls.erase(i);
+    }
+    if (m_currentSystemdInterface && m_pendingCalls.empty()) {
+        // ensure we listen to unit add/removed signals again if there are no pending calls anymore
+        connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitNew, this, &SyncthingService::handleUnitAdded);
+        connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
+    }
+    return resultStillRelevant;
+}
+
+/*!
+ * \brief Unties the current instance from its current systemd interface.
+ */
+void Data::SyncthingService::clearSystemdInterface()
+{
+    m_pendingCalls.clear();
+    if (m_currentSystemdInterface) {
+        disconnect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitNew, this, &SyncthingService::handleUnitAdded);
+        disconnect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
+        delete m_serviceWatcher;
+        m_currentSystemdInterface = nullptr;
+    }
+}
+
+/*!
+ * \brief Clears everything we know about the systemd unit.
+ */
+void SyncthingService::clearUnitData()
+{
+    // clean up data from previous unit
+    delete m_service;
+    m_service = nullptr;
+    delete m_unit;
+    m_unit = nullptr;
+    delete m_properties;
+    m_properties = nullptr;
+}
+
+/*!
+ * \brief Queries m_unit from m_currentSystemdInterface.
+ */
+void Data::SyncthingService::queryUnitFromSystemdInterface()
+{
+    clearUnitData();
+    setProperties(false, QString(), QString(), QString(), QString());
+
+#ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
+    if (!m_currentSystemdInterface) {
+        setupSystemdInterface();
+    }
+    if (!m_currentSystemdInterface->isValid()) {
+        return;
+    }
+    makeAsyncCall(m_currentSystemdInterface->GetUnit(m_unitName), &SyncthingService::handleUnitGet);
+#endif
+}
+
+/*!
  * \brief Sets the \a unitName of the systemd user service to be controlled/monitored, e.g. "syncthing.service".
  */
 void SyncthingService::setUnitName(const QString &unitName)
@@ -134,18 +258,35 @@ void SyncthingService::setUnitName(const QString &unitName)
     }
     m_unitName = unitName;
 
-    delete m_service, delete m_unit, delete m_properties;
-    m_service = nullptr, m_unit = nullptr, m_properties = nullptr;
-    setProperties(false, QString(), QString(), QString(), QString());
-
-#ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
-    if (s_manager->isValid()) {
-        connect(new QDBusPendingCallWatcher(s_manager->GetUnit(m_unitName), this), &QDBusPendingCallWatcher::finished, this,
-            &SyncthingService::handleUnitGet);
+    if (!m_unitName.isEmpty()) {
+        queryUnitFromSystemdInterface();
     }
-#endif
-
     emit unitNameChanged(unitName);
+}
+
+/*!
+ * \brief Sets the \a scope and \a unitName (see scope() and unitName()).
+ */
+void SyncthingService::setScopeAndUnitName(SystemdScope scope, const QString &unitName)
+{
+    const auto scopeChanged = m_scope != scope;
+    const auto unitNameChanged = m_unitName != unitName;
+    if (!scopeChanged && !unitNameChanged) {
+        return;
+    }
+    if (scopeChanged) {
+        m_scope = scope;
+        clearSystemdInterface();
+    }
+    if (unitNameChanged) {
+        m_unitName = unitName;
+    }
+    if (!unitName.isEmpty()) {
+        queryUnitFromSystemdInterface();
+    }
+    if (unitNameChanged) {
+        emit this->unitNameChanged(unitName);
+    }
 }
 
 /*!
@@ -156,7 +297,7 @@ void SyncthingService::setUnitName(const QString &unitName)
 bool SyncthingService::isSystemdAvailable() const
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
-    return s_manager && s_manager->isValid();
+    return m_currentSystemdInterface && m_currentSystemdInterface->isValid();
 #else
     return true;
 #endif
@@ -195,16 +336,32 @@ bool SyncthingService::isActiveWithoutSleepFor(DateTime activeSince, unsigned in
 }
 
 /*!
+ * \brief Sets the scope the current instance is tuned to.
+ */
+void SyncthingService::setScope(SystemdScope scope)
+{
+    if (m_scope == scope) {
+        return;
+    }
+    m_scope = scope;
+    clearSystemdInterface();
+    queryUnitFromSystemdInterface();
+}
+
+/*!
  * \brief Starts the unit if \a running is true and stops the unit if \a running is false.
  */
 void SyncthingService::setRunning(bool running)
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
     m_manuallyStopped = !running;
+    if (!m_currentSystemdInterface) {
+        setupSystemdInterface();
+    }
     if (running) {
-        registerErrorHandler(s_manager->StartUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("start unit"));
+        registerErrorHandler(m_currentSystemdInterface->StartUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("start unit"));
     } else {
-        registerErrorHandler(s_manager->StopUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("stop unit"));
+        registerErrorHandler(m_currentSystemdInterface->StopUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("stop unit"));
     }
 #endif
 }
@@ -215,10 +372,13 @@ void SyncthingService::setRunning(bool running)
 void SyncthingService::setEnabled(bool enabled)
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
+    if (!m_currentSystemdInterface) {
+        setupSystemdInterface();
+    }
     if (enabled) {
-        registerErrorHandler(s_manager->EnableUnitFiles(QStringList(m_unitName), false, true), QT_TR_NOOP_UTF8("enable unit"));
+        registerErrorHandler(m_currentSystemdInterface->EnableUnitFiles(QStringList(m_unitName), false, true), QT_TR_NOOP_UTF8("enable unit"));
     } else {
-        registerErrorHandler(s_manager->DisableUnitFiles(QStringList(m_unitName), false), QT_TR_NOOP_UTF8("disable unit"));
+        registerErrorHandler(m_currentSystemdInterface->DisableUnitFiles(QStringList(m_unitName), false), QT_TR_NOOP_UTF8("disable unit"));
     }
 #endif
 }
@@ -249,13 +409,13 @@ void SyncthingService::handleUnitRemoved(const QString &unitName, const QDBusObj
  */
 void SyncthingService::handleUnitGet(QDBusPendingCallWatcher *watcher)
 {
-    watcher->deleteLater();
-
+    if (!concludeAsyncCall(watcher)) {
+        return;
+    }
     const QDBusPendingReply<QDBusObjectPath> unitReply = *watcher;
     if (unitReply.isError()) {
         return;
     }
-
     setUnit(unitReply.value());
 }
 
@@ -307,7 +467,9 @@ void SyncthingService::handlePropertiesChanged(
  */
 void SyncthingService::handleError(const char *context, QDBusPendingCallWatcher *watcher)
 {
-    watcher->deleteLater();
+    if (!concludeAsyncCall(watcher)) {
+        return;
+    }
     const QDBusError error = watcher->error();
     if (error.isValid()) {
         emit errorOccurred(tr(context), error.name(), error.message());
@@ -319,8 +481,8 @@ void SyncthingService::handleError(const char *context, QDBusPendingCallWatcher 
  */
 void SyncthingService::handleServiceRegisteredChanged(const QString &service)
 {
-    if (service == s_manager->service()) {
-        emit systemdAvailableChanged(s_manager->isValid());
+    if (m_currentSystemdInterface && service == m_currentSystemdInterface->service()) {
+        emit systemdAvailableChanged(m_currentSystemdInterface->isValid());
     }
 }
 
@@ -377,35 +539,25 @@ bool SyncthingService::handlePropertyChanged(
 }
 
 /*!
- * \brief Registers error handler for D-Bus errors.
- */
-void SyncthingService::registerErrorHandler(const QDBusPendingCall &call, const char *context)
-{
-    connect(new QDBusPendingCallWatcher(call, this), &QDBusPendingCallWatcher::finished, bind(&SyncthingService::handleError, this, context, _1));
-}
-
-/*!
  * \brief Sets the current unit data.
  */
 void SyncthingService::setUnit(const QDBusObjectPath &objectPath)
 {
-    // cleanup
-    delete m_service, delete m_unit, delete m_properties;
-    m_service = nullptr, m_unit = nullptr, m_properties = nullptr;
+    clearUnitData();
 
     const QString path = objectPath.path();
-    if (path.isEmpty()) {
+    if (!m_currentSystemdInterface || path.isEmpty()) {
         setProperties(false, QString(), QString(), QString(), QString());
         return;
     }
 
     // init unit
-    m_unit = new OrgFreedesktopSystemd1UnitInterface(s_manager->service(), path, s_manager->connection());
+    m_unit = new OrgFreedesktopSystemd1UnitInterface(m_currentSystemdInterface->service(), path, m_currentSystemdInterface->connection());
     m_activeSince = dateTimeFromSystemdTimeStamp(m_unit->activeEnterTimestamp());
     setProperties(m_unit->isValid(), m_unit->activeState(), m_unit->subState(), m_unit->unitFileState(), m_unit->description());
 
     // init properties
-    m_properties = new OrgFreedesktopDBusPropertiesInterface(s_manager->service(), path, s_manager->connection());
+    m_properties = new OrgFreedesktopDBusPropertiesInterface(m_currentSystemdInterface->service(), path, m_currentSystemdInterface->connection());
     connect(m_properties, &OrgFreedesktopDBusPropertiesInterface::PropertiesChanged, this, &SyncthingService::handlePropertiesChanged);
 }
 
@@ -443,7 +595,6 @@ void SyncthingService::setProperties(
     if (enabled != isEnabled()) {
         emit enabledChanged(isEnabled());
     }
-
     if (m_description != description) {
         emit descriptionChanged(m_description = description);
     }

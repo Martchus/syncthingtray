@@ -26,6 +26,7 @@ namespace Data {
 class SyncthingProcess;
 class SyncthingNotifier;
 class SyncthingConnection;
+class SyncthingService;
 } // namespace Data
 
 namespace Settings {
@@ -101,6 +102,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 struct SYNCTHINGWIDGETS_EXPORT Systemd {
     QString syncthingUnit = QStringLiteral("syncthing.service");
+    bool systemUnit = false;
     bool showButton = false;
     bool considerForReconnect = false;
 
@@ -110,6 +112,7 @@ struct SYNCTHINGWIDGETS_EXPORT Systemd {
         bool consideredForReconnect = false;
         bool showStartStopButton = false;
     };
+    void setupService(Data::SyncthingService &) const;
     ServiceStatus apply(Data::SyncthingConnection &connection, const Data::SyncthingConnectionSettings *currentConnectionSettings,
         bool preventReconnect = false) const;
     ServiceStatus status(Data::SyncthingConnection &connection) const;

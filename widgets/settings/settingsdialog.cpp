@@ -1129,6 +1129,7 @@ QWidget *SystemdOptionPage::setupWidget()
         return widget;
     }
     QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, m_service, &SyncthingService::setUnitName);
+    QObject::connect(ui()->systemUnitCheckBox, &QCheckBox::clicked, m_service, bind(&SystemdOptionPage::handleSystemUnitChanged, this));
     QObject::connect(ui()->startPushButton, &QPushButton::clicked, m_service, &SyncthingService::start);
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, m_service, &SyncthingService::stop);
     QObject::connect(ui()->enablePushButton, &QPushButton::clicked, m_service, &SyncthingService::enable);
@@ -1145,6 +1146,7 @@ bool SystemdOptionPage::apply()
     auto &systemdSettings = settings.systemd;
     auto &launcherSettings = settings.launcher;
     systemdSettings.syncthingUnit = ui()->syncthingUnitLineEdit->text();
+    systemdSettings.systemUnit = ui()->systemUnitCheckBox->isChecked();
     systemdSettings.showButton = ui()->showButtonCheckBox->isChecked();
     systemdSettings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
     auto result = true;
@@ -1167,6 +1169,7 @@ void SystemdOptionPage::reset()
 {
     const auto &settings = values().systemd;
     ui()->syncthingUnitLineEdit->setText(settings.syncthingUnit);
+    ui()->systemUnitCheckBox->setChecked(settings.systemUnit);
     ui()->showButtonCheckBox->setChecked(settings.showButton);
     ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
     if (!m_service) {
@@ -1175,6 +1178,11 @@ void SystemdOptionPage::reset()
     handleDescriptionChanged(m_service->description());
     handleStatusChanged(m_service->activeState(), m_service->subState(), m_service->activeSince());
     handleEnabledChanged(m_service->unitFileState());
+}
+
+void SystemdOptionPage::handleSystemUnitChanged()
+{
+    m_service->setScope(ui()->systemUnitCheckBox->isChecked() ? SystemdScope::System : SystemdScope::User);
 }
 
 void SystemdOptionPage::handleDescriptionChanged(const QString &description)

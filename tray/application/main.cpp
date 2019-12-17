@@ -40,11 +40,12 @@ ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 void handleSystemdServiceError(const QString &context, const QString &name, const QString &message)
 {
-    QMessageBox msgBox;
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.setText(QCoreApplication::translate("main", "Unable to ") + context);
-    msgBox.setInformativeText(name % QStringLiteral(":\n") % message);
-    msgBox.exec();
+    auto *const msgBox = new QMessageBox;
+    msgBox->setAttribute(Qt::WA_DeleteOnClose);
+    msgBox->setIcon(QMessageBox::Critical);
+    msgBox->setText(QCoreApplication::translate("main", "Unable to ") + context);
+    msgBox->setInformativeText(name % QStringLiteral(":\n") % message);
+    msgBox->show();
 }
 #endif
 
@@ -175,7 +176,7 @@ int runApplication(int argc, const char *const *argv)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         SyncthingService service;
         SyncthingService::setMainInstance(&service);
-        service.setUnitName(Settings::values().systemd.syncthingUnit);
+        Settings::values().systemd.setupService(service);
         QObject::connect(&service, &SyncthingService::errorOccurred, &handleSystemdServiceError);
 #endif
 

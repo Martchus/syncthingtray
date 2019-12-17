@@ -291,6 +291,7 @@ void restore()
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     auto &systemd = v.systemd;
     systemd.syncthingUnit = settings.value(QStringLiteral("syncthingUnit"), systemd.syncthingUnit).toString();
+    systemd.systemUnit = settings.value(QStringLiteral("systemUnit"), systemd.systemUnit).toBool();
     systemd.showButton = settings.value(QStringLiteral("showButton"), systemd.showButton).toBool();
     systemd.considerForReconnect = settings.value(QStringLiteral("considerForReconnect"), systemd.considerForReconnect).toBool();
 #endif
@@ -388,6 +389,7 @@ void save()
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     const auto &systemd = v.systemd;
     settings.setValue(QStringLiteral("syncthingUnit"), systemd.syncthingUnit);
+    settings.setValue(QStringLiteral("systemUnit"), systemd.systemUnit);
     settings.setValue(QStringLiteral("showButton"), systemd.showButton);
     settings.setValue(QStringLiteral("considerForReconnect"), systemd.considerForReconnect);
 #endif
@@ -435,6 +437,14 @@ void Settings::apply(SyncthingNotifier &notifier) const
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+/*!
+ * \brief Sets the scope and unit name of the specified \a service according to the settings.
+ */
+void Systemd::setupService(SyncthingService &service) const
+{
+    service.setScopeAndUnitName(systemUnit ? SystemdScope::System : SystemdScope::User, syncthingUnit);
+}
+
 /*!
  * \brief Applies the systemd settings to the specified \a connection considering the status of the global SyncthingService instance.
  * \remarks
@@ -497,7 +507,6 @@ Systemd::ServiceStatus Systemd::status(SyncthingConnection &connection) const
     const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
     return ServiceStatus{ isRelevant, service->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant };
 }
-
 #endif
 
 } // namespace Settings
