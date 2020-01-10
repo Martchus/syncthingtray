@@ -1,6 +1,8 @@
 #ifndef SYNCTHINGTESTHELPER_H
 #define SYNCTHINGTESTHELPER_H
 
+#include "./global.h"
+
 #include <c++utilities/conversion/stringbuilder.h>
 
 #ifndef SYNCTHINGTESTHELPER_FOR_CLI
@@ -50,7 +52,7 @@ inline std::ostream &operator<<(std::ostream &o, const QSet<QString> &qstringset
 
 namespace CppUtilities {
 
-extern double timeoutFactor;
+extern double SYNCTHINGTESTHELPER_EXPORT timeoutFactor;
 
 /*!
  * \brief Waits for the \a duration specified in ms while keeping the event loop running.

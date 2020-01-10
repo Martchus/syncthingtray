@@ -1,6 +1,8 @@
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD) && !defined(DATA_SYNCTHINGSERVICE_H)
 #define DATA_SYNCTHINGSERVICE_H
 
+#include "./global.h"
+
 #include <c++utilities/chrono/datetime.h>
 
 #include <QObject>
@@ -35,7 +37,7 @@ typedef QList<ManagerDBusUnitFileChange> ManagerDBusUnitFileChangeList;
 
 enum class SystemdScope { System, User };
 
-class SyncthingService : public QObject {
+class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingService : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString unitName READ unitName WRITE setUnitName NOTIFY unitNameChanged)
     Q_PROPERTY(bool systemdAvailable READ isSystemdAvailable NOTIFY systemdAvailableChanged)
