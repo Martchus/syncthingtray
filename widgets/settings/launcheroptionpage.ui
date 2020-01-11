@@ -181,15 +181,15 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>QtUtilities::ClearLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">qtutilities/widgets/clearlineedit.h</header>
+  </customwidget>
+  <customwidget>
    <class>QtUtilities::PathSelection</class>
    <extends>QWidget</extends>
    <header location="global">qtutilities/widgets/pathselection.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>QtUtilities::ClearLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header location="global">qtutilities/widgets/clearlineedit.h</header>
   </customwidget>
   <customwidget>
    <class>QtUtilities::ClearPlainTextEdit</class>

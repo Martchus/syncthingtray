@@ -2,6 +2,12 @@
 <ui version="4.0">
  <class>Plasmoid::AppearanceOptionPage</class>
  <widget class="QWidget" name="Plasmoid::AppearanceOptionPage">
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Appearance</string>
   </property>

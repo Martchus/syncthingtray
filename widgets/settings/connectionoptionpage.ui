@@ -2,6 +2,12 @@
 <ui version="4.0">
  <class>QtGui::ConnectionOptionPage</class>
  <widget class="QWidget" name="QtGui::ConnectionOptionPage">
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Connection</string>
   </property>
@@ -75,7 +81,8 @@
          <string>Move currently selected configuration down</string>
         </property>
         <property name="icon">
-         <iconset theme="go-down"/>
+         <iconset theme="go-down">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -91,7 +98,8 @@
          <string>Move currently selected configuration up</string>
         </property>
         <property name="icon">
-         <iconset theme="go-up"/>
+         <iconset theme="go-up">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -449,15 +457,15 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>QtUtilities::ClearLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">qtutilities/widgets/clearlineedit.h</header>
+  </customwidget>
+  <customwidget>
    <class>QtUtilities::PathSelection</class>
    <extends>QWidget</extends>
    <header location="global">qtutilities/widgets/pathselection.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>QtUtilities::ClearLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header location="global">qtutilities/widgets/clearlineedit.h</header>
   </customwidget>
  </customwidgets>
  <resources>

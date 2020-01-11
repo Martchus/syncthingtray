@@ -2,6 +2,12 @@
 <ui version="4.0">
  <class>QtGui::WebViewOptionPage</class>
  <widget class="QWidget" name="QtGui::WebViewOptionPage">
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>General</string>
   </property>
