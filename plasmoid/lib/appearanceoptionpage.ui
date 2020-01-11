@@ -2,12 +2,6 @@
 <ui version="4.0">
  <class>Plasmoid::AppearanceOptionPage</class>
  <widget class="QWidget" name="Plasmoid::AppearanceOptionPage">
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="windowTitle">
    <string>Appearance</string>
   </property>
@@ -17,137 +11,158 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="sizeLabel">
-       <property name="text">
-        <string>Size of directory/device/download list</string>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="colorsLabel">
-       <property name="text">
-        <string>Colors</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QCheckBox" name="brightTextColorsCheckBox">
-       <property name="text">
-        <string>Bright custom text colors (use for dark color scheme)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <layout class="QVBoxLayout" name="sizeVerticalLayout">
-       <property name="spacing">
-        <number>2</number>
-       </property>
-       <item>
-        <layout class="QHBoxLayout" name="sizeHorizontalLayout">
-         <item>
-          <widget class="QSpinBox" name="widthSpinBox">
-           <property name="minimum">
-            <number>0</number>
-           </property>
-           <property name="maximum">
-            <number>1000</number>
-           </property>
-           <property name="singleStep">
-            <number>1</number>
-           </property>
-           <property name="value">
-            <number>25</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="sizeTimesLabel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string> x </string>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::PlainText</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="heightSpinBox">
-           <property name="minimum">
-            <number>0</number>
-           </property>
-           <property name="maximum">
-            <number>1000</number>
-           </property>
-           <property name="singleStep">
-            <number>1</number>
-           </property>
-           <property name="value">
-            <number>25</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="sizePxLabel">
-           <property name="text">
-            <string> grid units</string>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::PlainText</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QLabel" name="sizeNoteLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</string>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="passiveLabel">
-       <property name="text">
-        <string>States to enable passive mode</string>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QListView" name="passiveListView">
-       <property name="selectionMode">
-        <enum>QAbstractItemView::NoSelection</enum>
-       </property>
-       <property name="layoutMode">
-        <enum>QListView::Batched</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QWidget" name="" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="sizeLabel">
+        <property name="text">
+         <string>Size of directory/device/download list</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="colorsLabel">
+        <property name="text">
+         <string>Colors</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="brightTextColorsCheckBox">
+        <property name="text">
+         <string>Bright custom text colors (use for dark color scheme)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <layout class="QVBoxLayout" name="sizeVerticalLayout">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="sizeHorizontalLayout">
+          <item>
+           <widget class="QSpinBox" name="widthSpinBox">
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+            <property name="singleStep">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>25</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="sizeTimesLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string> x </string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::PlainText</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="heightSpinBox">
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+            <property name="singleStep">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>25</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="sizePxLabel">
+            <property name="text">
+             <string> grid units</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::PlainText</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="sizeNoteLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="passiveLabel">
+        <property name="text">
+         <string>States to enable passive mode</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QListView" name="passiveListView">
+        <property name="selectionMode">
+         <enum>QAbstractItemView::NoSelection</enum>
+        </property>
+        <property name="layoutMode">
+         <enum>QListView::Batched</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
