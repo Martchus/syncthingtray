@@ -12,140 +12,140 @@
 <context>
     <name>QtGui::AppearanceOptionPage</name>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="6"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="12"/>
         <source>Appearance</source>
         <translation>Erscheinungsbild</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="19"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="25"/>
         <source>Menu size</source>
         <translation>Größe des Menüs</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="94"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="100"/>
         <source>Optional GUI elements</source>
         <translation>Optionale Elemente</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="101"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="107"/>
         <source>Traffic statistics</source>
         <translation>Traffic-Statistiken</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="50"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="56"/>
         <source> x </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="28"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="60"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="257"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="286"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="34"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="66"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="263"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="292"/>
         <source> px</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="108"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="114"/>
         <source>Frame shape</source>
         <translation>Rahmenform</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="139"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="145"/>
         <source>Frame shadow</source>
         <translation>Rahmenschatten</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="116"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="122"/>
         <source>No frame</source>
         <translation>Kein Rahmen</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="121"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="127"/>
         <source>Box</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="126"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="132"/>
         <source>Panel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="131"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="137"/>
         <source>Styled panel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="147"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="153"/>
         <source>Plain</source>
         <translation>Einfach</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="152"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="158"/>
         <source>Raised</source>
         <translation>Angehoben</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="157"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="163"/>
         <source>Sunken</source>
         <translation>Eingedrückt</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="165"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="171"/>
         <source>Tab position</source>
         <translation>Position der Tabs</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="173"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="179"/>
         <source>Top</source>
         <translation>Oben</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="178"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="184"/>
         <source>Bottom</source>
         <translation>Unten</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="183"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="189"/>
         <source>Left</source>
         <translation>Links</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="188"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="194"/>
         <source>Right</source>
         <translation>Rechts</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="196"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="202"/>
         <source>Colors</source>
         <translation>Farben</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="203"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="209"/>
         <source>Bright custom text colors (use for dark color scheme)</source>
         <translation>Helle benutzerdefinierte Schriftfarben (für dunkles Farbschema gedacht)</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="210"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="216"/>
         <source>Positioning</source>
         <translation>Menüposition</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="222"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="228"/>
         <source>Use cursor position</source>
         <translation>Verwende Mausposition</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="232"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="238"/>
         <source>Otherwise assume tray icon coordinates to be:</source>
         <translation>Andernfalls folgende Koordinaten verwenden:</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="250"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="256"/>
         <source>x:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="276"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="282"/>
         <source>y:</source>
         <translation></translation>
     </message>
@@ -153,12 +153,12 @@
 <context>
     <name>QtGui::AutostartOptionPage</name>
     <message>
-        <location filename="../settings/autostartoptionpage.ui" line="6"/>
+        <location filename="../settings/autostartoptionpage.ui" line="12"/>
         <source>Autostart</source>
         <translation>Auto-Start</translation>
     </message>
     <message>
-        <location filename="../settings/autostartoptionpage.ui" line="18"/>
+        <location filename="../settings/autostartoptionpage.ui" line="24"/>
         <source>Start the tray icon when the desktop environment launches</source>
         <translation>Tray-Icon beim Starten der Desktopumgebung automatisch starten</translation>
     </message>
@@ -191,125 +191,125 @@
 <context>
     <name>QtGui::ConnectionOptionPage</name>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="6"/>
+        <location filename="../settings/connectionoptionpage.ui" line="12"/>
         <source>Connection</source>
         <translation>Verbindung</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="25"/>
+        <location filename="../settings/connectionoptionpage.ui" line="31"/>
         <source>Config label</source>
         <translation>Name der Konfig.</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="75"/>
+        <location filename="../settings/connectionoptionpage.ui" line="81"/>
         <source>Move currently selected configuration down</source>
         <translation>Aktuelle Konfiguration in der Liste nach unten schieben</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="107"/>
+        <location filename="../settings/connectionoptionpage.ui" line="115"/>
         <source>Add secondary instance</source>
         <translation>Sekundäre Konfiguration hinzufügen</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="124"/>
+        <location filename="../settings/connectionoptionpage.ui" line="132"/>
         <source>Remove currently selected secondary instance</source>
         <translation>Sekundäre Konfiguration löschen</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="177"/>
+        <location filename="../settings/connectionoptionpage.ui" line="185"/>
         <source>Syncthing URL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="187"/>
+        <location filename="../settings/connectionoptionpage.ui" line="195"/>
         <source>Authentication</source>
         <translation>Authentifizierung</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="200"/>
+        <location filename="../settings/connectionoptionpage.ui" line="208"/>
         <source>User</source>
         <translation>Benutzername</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="217"/>
+        <location filename="../settings/connectionoptionpage.ui" line="225"/>
         <source>Password</source>
         <translation>Passwort</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="234"/>
+        <location filename="../settings/connectionoptionpage.ui" line="242"/>
         <source>API key</source>
         <translation>API-Schlüssel</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="244"/>
+        <location filename="../settings/connectionoptionpage.ui" line="252"/>
         <source>HTTPS certificate</source>
         <translation>HTTPS-Zertifikat</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="264"/>
+        <location filename="../settings/connectionoptionpage.ui" line="272"/>
         <source>Insert values from local Syncthing configuration</source>
         <translation>Werte aus lokaler Syncthing-Konfiguration einfügen</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="365"/>
+        <location filename="../settings/connectionoptionpage.ui" line="373"/>
         <source>Errors</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="426"/>
+        <location filename="../settings/connectionoptionpage.ui" line="434"/>
         <source>Status</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="433"/>
+        <location filename="../settings/connectionoptionpage.ui" line="441"/>
         <source>disconnected</source>
         <translation>getrennt</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="440"/>
+        <location filename="../settings/connectionoptionpage.ui" line="448"/>
         <source>Apply connection settings and try to reconnect with the currently selected config</source>
         <translation>Verbindungseinstellungen übernehmen und mit neuen Einstellungen verbinden</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="288"/>
+        <location filename="../settings/connectionoptionpage.ui" line="296"/>
         <source>Poll interval</source>
         <translation>Abfrageintervall</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="325"/>
+        <location filename="../settings/connectionoptionpage.ui" line="333"/>
         <source>Traffic</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="312"/>
-        <location filename="../settings/connectionoptionpage.ui" line="352"/>
-        <location filename="../settings/connectionoptionpage.ui" line="378"/>
-        <location filename="../settings/connectionoptionpage.ui" line="407"/>
+        <location filename="../settings/connectionoptionpage.ui" line="320"/>
+        <location filename="../settings/connectionoptionpage.ui" line="360"/>
+        <location filename="../settings/connectionoptionpage.ui" line="386"/>
+        <location filename="../settings/connectionoptionpage.ui" line="415"/>
         <source> ms</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="91"/>
+        <location filename="../settings/connectionoptionpage.ui" line="98"/>
         <source>Move currently selected configuration up</source>
         <translation>Aktuelle Konfiguration in der Liste nach oben schieben</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="154"/>
+        <location filename="../settings/connectionoptionpage.ui" line="162"/>
         <source>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device. The first configuration is the primary/default configuration.</source>
         <translation>Es ist möglich, mehrere Konfigurationen zu speichern. Zwischen diesen kann anschließend über das Verbindungsmenü rechts oben im Tray schnell hin- und hergewechselt werden. Der Name der Konfiguration muss nicht mit dem Namen des entsprechenden Syncthing-Gerätes übereinstimmen. Die erste Konfiguration in der Liste ist die Standardkonfiguration.</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="332"/>
+        <location filename="../settings/connectionoptionpage.ui" line="340"/>
         <source>Device statistics</source>
         <translation>Gerätestatistiken</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="391"/>
+        <location filename="../settings/connectionoptionpage.ui" line="399"/>
         <source>Reconnect</source>
         <translation>Verbindungsveruch</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="404"/>
+        <location filename="../settings/connectionoptionpage.ui" line="412"/>
         <source>no</source>
         <translation>nicht neu verbinden</translation>
     </message>
@@ -437,47 +437,47 @@
 <context>
     <name>QtGui::IconsOptionPage</name>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="6"/>
+        <location filename="../settings/iconsoptionpage.ui" line="12"/>
         <source>Icons</source>
         <translation>Symbole</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="22"/>
+        <location filename="../settings/iconsoptionpage.ui" line="39"/>
         <source>Use Drag &amp; Drop to re-use a selected color at a different position.</source>
         <translation>Verwende Drag &amp; Drop um eine ausgewählte Farbe an eine andere Position zu kopieren.</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="29"/>
+        <location filename="../settings/iconsoptionpage.ui" line="46"/>
         <source>Status icons</source>
         <translation>Status-Icons</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="37"/>
+        <location filename="../settings/iconsoptionpage.ui" line="54"/>
         <source>Background color 1</source>
         <translation>Hintergrundfarbe 1</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="47"/>
+        <location filename="../settings/iconsoptionpage.ui" line="64"/>
         <source>Background color 2</source>
         <translation>Hintergrundfarbe 2</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="57"/>
+        <location filename="../settings/iconsoptionpage.ui" line="74"/>
         <source>Preview</source>
         <translation>Vorschau</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="70"/>
+        <location filename="../settings/iconsoptionpage.ui" line="87"/>
         <source>Foreground color</source>
         <translation>Vordergrundfarbe</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="104"/>
+        <location filename="../settings/iconsoptionpage.ui" line="121"/>
         <source>Restore previous settings</source>
         <translation>Auf vorherige Farben zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="115"/>
+        <location filename="../settings/iconsoptionpage.ui" line="132"/>
         <source>Use preset</source>
         <translation>Verwende Standardfarben</translation>
     </message>
@@ -971,34 +971,34 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Zeige Start/Stop-Button für die lokale Instanz wenn systemd verfügbar ist</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="62"/>
+        <location filename="../settings/systemdoptionpage.ui" line="68"/>
         <source>Syncthing unit</source>
         <translation>Syncthing-Unit</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="84"/>
+        <location filename="../settings/systemdoptionpage.ui" line="91"/>
         <source>Description</source>
         <translation>Beschreibung</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="120"/>
+        <location filename="../settings/systemdoptionpage.ui" line="121"/>
         <source>Current status</source>
         <translation>Aktueller Status</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="209"/>
+        <location filename="../settings/systemdoptionpage.ui" line="210"/>
         <source>Unit file state</source>
         <translation>Status des Unit files</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="292"/>
+        <location filename="../settings/systemdoptionpage.ui" line="78"/>
         <source>System unit</source>
         <translation>System-Unit</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="105"/>
-        <location filename="../settings/systemdoptionpage.ui" line="160"/>
-        <location filename="../settings/systemdoptionpage.ui" line="249"/>
+        <location filename="../settings/systemdoptionpage.ui" line="106"/>
+        <location filename="../settings/systemdoptionpage.ui" line="161"/>
+        <location filename="../settings/systemdoptionpage.ui" line="250"/>
         <location filename="../settings/settingsdialog.cpp" line="1218"/>
         <location filename="../settings/settingsdialog.cpp" line="1230"/>
         <source>unknown</source>
@@ -1014,22 +1014,22 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
  • Automatisch neu verbinden, wenn die Syncthing-Unit gestartet wird</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="262"/>
+        <location filename="../settings/systemdoptionpage.ui" line="263"/>
         <source>Enable</source>
         <translation>Autom. starten</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="279"/>
+        <location filename="../settings/systemdoptionpage.ui" line="280"/>
         <source>Disable</source>
         <translation>Nicht autom. starten</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="173"/>
+        <location filename="../settings/systemdoptionpage.ui" line="174"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="190"/>
+        <location filename="../settings/systemdoptionpage.ui" line="191"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
@@ -1082,33 +1082,33 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>QtGui::WebViewOptionPage</name>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="6"/>
+        <location filename="../settings/webviewoptionpage.ui" line="12"/>
         <location filename="../settings/settingsdialog.cpp" line="1252"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="12"/>
+        <location filename="../settings/webviewoptionpage.ui" line="18"/>
         <source>Usage</source>
         <translation>Verwendung</translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="19"/>
+        <location filename="../settings/webviewoptionpage.ui" line="25"/>
         <source>Disable web view (open regular web browser instead)</source>
         <translation>Eingebaute Anzeige deaktivieren (stattdessen Standardbrowser verwenden)</translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="26"/>
+        <location filename="../settings/webviewoptionpage.ui" line="32"/>
         <source>Zoom factor</source>
         <translation>Zoom-Faktor</translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="49"/>
+        <location filename="../settings/webviewoptionpage.ui" line="55"/>
         <source>Hiding</source>
         <translation>Schließen</translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="56"/>
+        <location filename="../settings/webviewoptionpage.ui" line="62"/>
         <source>Keep web view running when currently not shown</source>
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>

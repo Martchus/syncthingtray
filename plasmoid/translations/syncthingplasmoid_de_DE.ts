@@ -142,7 +142,7 @@
         <translation>Globaler ausgehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="534"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="541"/>
         <source>Toggle filter</source>
         <translation>Filter ein-/ausblenden</translation>
     </message>
@@ -160,38 +160,38 @@
         <translation>Erscheinungsbild</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="18"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="25"/>
         <source>Size of directory/device/download list</source>
         <translation>Größe der Verzeichnis-/Geräte-/Downloadliste</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="71"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="78"/>
         <source> x </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="97"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="104"/>
         <source> grid units</source>
         <translation> Rastereinheiten</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="115"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="122"/>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
         <translation>Die Größe wird ignoriert when das Plasmoid auf dem Desktop oder im Vollbildmodus dargestellt wird. Wenn das Plasmoid innerhalb des Systemtray-Plasmoids dargestellt wird kann die Größe nicht geändert werden (einen größeren Wert einzustellen führt nur dazu, dass der Inhalt abgeschnitten wird).</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="127"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="134"/>
         <source>States to enable passive mode</source>
         <translatorcomment>Plural: https://www.duden.de/rechtschreibung/Status</translatorcomment>
         <translation>Status für passiven Modus</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="28"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="35"/>
         <source>Colors</source>
         <translation>Farben</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="35"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="42"/>
         <source>Bright custom text colors (use for dark color scheme)</source>
         <translation>Helle benutzerdefinierte Schriftfarben (für dunkles Farbschema gedacht)</translation>
     </message>
@@ -238,19 +238,32 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="324"/>
+        <location filename="../lib/syncthingapplet.cpp" line="325"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="336"/>
+        <location filename="../lib/syncthingapplet.cpp" line="337"/>
         <source>New notifications</source>
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="491"/>
+        <location filename="../lib/syncthingapplet.cpp" line="492"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
+    </message>
+</context>
+<context>
+    <name>RecentChangesPage</name>
+    <message>
+        <location filename="../package/contents/ui/RecentChangesPage.qml" line="98"/>
+        <source>Copy path</source>
+        <translation>Pfad kopieren</translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/RecentChangesPage.qml" line="103"/>
+        <source>Copy device ID</source>
+        <translation>Geräte-ID kopieren</translation>
     </message>
 </context>
 <context>
@@ -274,37 +287,37 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="63"/>
+        <location filename="../package/contents/ui/main.qml" line="67"/>
         <source>Web UI</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="64"/>
+        <location filename="../package/contents/ui/main.qml" line="68"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="65"/>
+        <location filename="../package/contents/ui/main.qml" line="69"/>
         <source>Log</source>
         <translation>Log</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="67"/>
+        <location filename="../package/contents/ui/main.qml" line="71"/>
         <source>Internal errors</source>
         <translation>Interne Fehler</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="69"/>
+        <location filename="../package/contents/ui/main.qml" line="73"/>
         <source>Rescan all directories</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="71"/>
+        <location filename="../package/contents/ui/main.qml" line="75"/>
         <source>Restart Syncthing</source>
         <translation>Syncthing neustarten</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="73"/>
+        <location filename="../package/contents/ui/main.qml" line="77"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>

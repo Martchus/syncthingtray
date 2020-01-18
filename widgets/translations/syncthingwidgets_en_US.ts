@@ -12,140 +12,140 @@
 <context>
     <name>QtGui::AppearanceOptionPage</name>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="6"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="12"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="19"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="25"/>
         <source>Menu size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="94"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="100"/>
         <source>Optional GUI elements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="101"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="107"/>
         <source>Traffic statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="50"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="56"/>
         <source> x </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="28"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="60"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="257"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="286"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="34"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="66"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="263"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="292"/>
         <source> px</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="108"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="114"/>
         <source>Frame shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="139"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="145"/>
         <source>Frame shadow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="116"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="122"/>
         <source>No frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="121"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="127"/>
         <source>Box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="126"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="132"/>
         <source>Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="131"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="137"/>
         <source>Styled panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="147"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="153"/>
         <source>Plain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="152"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="158"/>
         <source>Raised</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="157"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="163"/>
         <source>Sunken</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="165"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="171"/>
         <source>Tab position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="173"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="179"/>
         <source>Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="178"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="184"/>
         <source>Bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="183"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="189"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="188"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="194"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="196"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="202"/>
         <source>Colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="203"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="209"/>
         <source>Bright custom text colors (use for dark color scheme)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="210"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="216"/>
         <source>Positioning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="222"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="228"/>
         <source>Use cursor position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="232"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="238"/>
         <source>Otherwise assume tray icon coordinates to be:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="250"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="256"/>
         <source>x:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="276"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="282"/>
         <source>y:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -153,12 +153,12 @@
 <context>
     <name>QtGui::AutostartOptionPage</name>
     <message>
-        <location filename="../settings/autostartoptionpage.ui" line="6"/>
+        <location filename="../settings/autostartoptionpage.ui" line="12"/>
         <source>Autostart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/autostartoptionpage.ui" line="18"/>
+        <location filename="../settings/autostartoptionpage.ui" line="24"/>
         <source>Start the tray icon when the desktop environment launches</source>
         <translation type="unfinished"></translation>
     </message>
@@ -191,125 +191,125 @@
 <context>
     <name>QtGui::ConnectionOptionPage</name>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="6"/>
+        <location filename="../settings/connectionoptionpage.ui" line="12"/>
         <source>Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="25"/>
+        <location filename="../settings/connectionoptionpage.ui" line="31"/>
         <source>Config label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="75"/>
+        <location filename="../settings/connectionoptionpage.ui" line="81"/>
         <source>Move currently selected configuration down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="91"/>
+        <location filename="../settings/connectionoptionpage.ui" line="98"/>
         <source>Move currently selected configuration up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="107"/>
+        <location filename="../settings/connectionoptionpage.ui" line="115"/>
         <source>Add secondary instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="124"/>
+        <location filename="../settings/connectionoptionpage.ui" line="132"/>
         <source>Remove currently selected secondary instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="154"/>
+        <location filename="../settings/connectionoptionpage.ui" line="162"/>
         <source>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device. The first configuration is the primary/default configuration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="177"/>
+        <location filename="../settings/connectionoptionpage.ui" line="185"/>
         <source>Syncthing URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="187"/>
+        <location filename="../settings/connectionoptionpage.ui" line="195"/>
         <source>Authentication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="200"/>
+        <location filename="../settings/connectionoptionpage.ui" line="208"/>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="217"/>
+        <location filename="../settings/connectionoptionpage.ui" line="225"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="234"/>
+        <location filename="../settings/connectionoptionpage.ui" line="242"/>
         <source>API key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="244"/>
+        <location filename="../settings/connectionoptionpage.ui" line="252"/>
         <source>HTTPS certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="264"/>
+        <location filename="../settings/connectionoptionpage.ui" line="272"/>
         <source>Insert values from local Syncthing configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="288"/>
+        <location filename="../settings/connectionoptionpage.ui" line="296"/>
         <source>Poll interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="312"/>
-        <location filename="../settings/connectionoptionpage.ui" line="352"/>
-        <location filename="../settings/connectionoptionpage.ui" line="378"/>
-        <location filename="../settings/connectionoptionpage.ui" line="407"/>
+        <location filename="../settings/connectionoptionpage.ui" line="320"/>
+        <location filename="../settings/connectionoptionpage.ui" line="360"/>
+        <location filename="../settings/connectionoptionpage.ui" line="386"/>
+        <location filename="../settings/connectionoptionpage.ui" line="415"/>
         <source> ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="325"/>
+        <location filename="../settings/connectionoptionpage.ui" line="333"/>
         <source>Traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="332"/>
+        <location filename="../settings/connectionoptionpage.ui" line="340"/>
         <source>Device statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="365"/>
+        <location filename="../settings/connectionoptionpage.ui" line="373"/>
         <source>Errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="391"/>
+        <location filename="../settings/connectionoptionpage.ui" line="399"/>
         <source>Reconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="404"/>
+        <location filename="../settings/connectionoptionpage.ui" line="412"/>
         <source>no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="426"/>
+        <location filename="../settings/connectionoptionpage.ui" line="434"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="433"/>
+        <location filename="../settings/connectionoptionpage.ui" line="441"/>
         <source>disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="440"/>
+        <location filename="../settings/connectionoptionpage.ui" line="448"/>
         <source>Apply connection settings and try to reconnect with the currently selected config</source>
         <translation type="unfinished"></translation>
     </message>
@@ -437,47 +437,47 @@
 <context>
     <name>QtGui::IconsOptionPage</name>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="6"/>
+        <location filename="../settings/iconsoptionpage.ui" line="12"/>
         <source>Icons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="22"/>
+        <location filename="../settings/iconsoptionpage.ui" line="39"/>
         <source>Use Drag &amp; Drop to re-use a selected color at a different position.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="29"/>
+        <location filename="../settings/iconsoptionpage.ui" line="46"/>
         <source>Status icons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="37"/>
+        <location filename="../settings/iconsoptionpage.ui" line="54"/>
         <source>Background color 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="47"/>
+        <location filename="../settings/iconsoptionpage.ui" line="64"/>
         <source>Background color 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="57"/>
+        <location filename="../settings/iconsoptionpage.ui" line="74"/>
         <source>Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="70"/>
+        <location filename="../settings/iconsoptionpage.ui" line="87"/>
         <source>Foreground color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="104"/>
+        <location filename="../settings/iconsoptionpage.ui" line="121"/>
         <source>Restore previous settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="115"/>
+        <location filename="../settings/iconsoptionpage.ui" line="132"/>
         <source>Use preset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -974,56 +974,56 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="62"/>
+        <location filename="../settings/systemdoptionpage.ui" line="68"/>
         <source>Syncthing unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="84"/>
+        <location filename="../settings/systemdoptionpage.ui" line="91"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="105"/>
-        <location filename="../settings/systemdoptionpage.ui" line="160"/>
-        <location filename="../settings/systemdoptionpage.ui" line="249"/>
+        <location filename="../settings/systemdoptionpage.ui" line="106"/>
+        <location filename="../settings/systemdoptionpage.ui" line="161"/>
+        <location filename="../settings/systemdoptionpage.ui" line="250"/>
         <location filename="../settings/settingsdialog.cpp" line="1218"/>
         <location filename="../settings/settingsdialog.cpp" line="1230"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="120"/>
+        <location filename="../settings/systemdoptionpage.ui" line="121"/>
         <source>Current status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="173"/>
+        <location filename="../settings/systemdoptionpage.ui" line="174"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="190"/>
+        <location filename="../settings/systemdoptionpage.ui" line="191"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="209"/>
+        <location filename="../settings/systemdoptionpage.ui" line="210"/>
         <source>Unit file state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="262"/>
+        <location filename="../settings/systemdoptionpage.ui" line="263"/>
         <source>Enable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="279"/>
+        <location filename="../settings/systemdoptionpage.ui" line="280"/>
         <source>Disable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="292"/>
+        <location filename="../settings/systemdoptionpage.ui" line="78"/>
         <source>System unit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1076,33 +1076,33 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>QtGui::WebViewOptionPage</name>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="6"/>
+        <location filename="../settings/webviewoptionpage.ui" line="12"/>
         <location filename="../settings/settingsdialog.cpp" line="1252"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="12"/>
+        <location filename="../settings/webviewoptionpage.ui" line="18"/>
         <source>Usage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="19"/>
+        <location filename="../settings/webviewoptionpage.ui" line="25"/>
         <source>Disable web view (open regular web browser instead)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="26"/>
+        <location filename="../settings/webviewoptionpage.ui" line="32"/>
         <source>Zoom factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="49"/>
+        <location filename="../settings/webviewoptionpage.ui" line="55"/>
         <source>Hiding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="56"/>
+        <location filename="../settings/webviewoptionpage.ui" line="62"/>
         <source>Keep web view running when currently not shown</source>
         <translation type="unfinished"></translation>
     </message>

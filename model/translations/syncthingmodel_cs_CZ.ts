@@ -349,4 +349,37 @@
         <translation>Postup</translation>
     </message>
 </context>
+<context>
+    <name>Data::SyncthingRecentChangesModel</name>
+    <message>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="71"/>
+        <source>Action</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="73"/>
+        <source>Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="75"/>
+        <source>Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="77"/>
+        <source>Path</source>
+        <translation type="unfinished">Popis umístění</translation>
+    </message>
+    <message>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="123"/>
+        <source>Locally</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="123"/>
+        <source>Remotely</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

@@ -156,12 +156,12 @@
         <translation>Nedaří se vyžádat si vyčištění chyb: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1532"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1533"/>
         <source>Unable to parse Syncthing events: </source>
         <translation>Nedaří se zpracovat události v Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1557"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1558"/>
         <source>Unable to request Syncthing events: </source>
         <translation>Nedaří se vyžádat si události v Syncthing: </translation>
     </message>
@@ -231,12 +231,12 @@
         <translation>Nedaří se vyžádat si verzi: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2067"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2068"/>
         <source>Unable to parse disk events: </source>
         <translation>Nedaří se zpracovat události úložiště: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2082"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2083"/>
         <source>Unable to request disk events: </source>
         <translation>Nedaří se vyžádat si události úložiště: </translation>
     </message>
@@ -297,22 +297,22 @@
 <context>
     <name>Data::SyncthingService</name>
     <message>
-        <location filename="../syncthingservice.cpp" line="362"/>
+        <location filename="../syncthingservice.cpp" line="360"/>
         <source>start unit</source>
         <translation>spustit jednotku</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="364"/>
+        <location filename="../syncthingservice.cpp" line="362"/>
         <source>stop unit</source>
         <translation>zastavit jednotku</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="379"/>
+        <location filename="../syncthingservice.cpp" line="377"/>
         <source>enable unit</source>
         <translation>zapnout jednotku</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="381"/>
+        <location filename="../syncthingservice.cpp" line="379"/>
         <source>disable unit</source>
         <translation>vypnout jednotku</translation>
     </message>
