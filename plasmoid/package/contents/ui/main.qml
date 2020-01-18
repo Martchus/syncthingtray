@@ -14,7 +14,11 @@ Item {
     }
     Plasmoid.fullRepresentation: Loader {
         source: "FullRepresentation.qml"
-        onLoaded: item.updateSize()
+        onLoaded: {
+            if (typeof(item.updateSize) === 'function') {
+                item.updateSize()
+            }
+        }
     }
 
     Plasmoid.icon: "syncthingtray"
