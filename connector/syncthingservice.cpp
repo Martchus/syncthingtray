@@ -117,15 +117,14 @@ void SyncthingService::setupSystemdInterface()
 
     // ensure the static systemd interface for the current scope is initialized
     const auto isUserScope = m_scope == SystemdScope::User;
-    OrgFreedesktopSystemd1ManagerInterface *&staticSystemdInterface
-            = isUserScope ? s_systemdUserInterface : s_systemdSystemInterface;
+    OrgFreedesktopSystemd1ManagerInterface *&staticSystemdInterface = isUserScope ? s_systemdUserInterface : s_systemdSystemInterface;
     if (!staticSystemdInterface) {
         // register custom data types
         qDBusRegisterMetaType<ManagerDBusUnitFileChange>();
         qDBusRegisterMetaType<ManagerDBusUnitFileChangeList>();
 
-        staticSystemdInterface = new OrgFreedesktopSystemd1ManagerInterface(
-            QStringLiteral("org.freedesktop.systemd1"), QStringLiteral("/org/freedesktop/systemd1"), isUserScope ? QDBusConnection::sessionBus() : QDBusConnection::systemBus());
+        staticSystemdInterface = new OrgFreedesktopSystemd1ManagerInterface(QStringLiteral("org.freedesktop.systemd1"),
+            QStringLiteral("/org/freedesktop/systemd1"), isUserScope ? QDBusConnection::sessionBus() : QDBusConnection::systemBus());
 
         // enable systemd to emit signals
         staticSystemdInterface->Subscribe();
@@ -160,8 +159,7 @@ void SyncthingService::setupFreedesktopLoginInterface()
 /*!
  * \brief Registers the specified D-Bus \a call to invoke \a handler when it has been concluded.
  */
-template<typename HandlerType>
-void SyncthingService::makeAsyncCall(const QDBusPendingCall &call, HandlerType &&handler)
+template <typename HandlerType> void SyncthingService::makeAsyncCall(const QDBusPendingCall &call, HandlerType &&handler)
 {
     if (m_currentSystemdInterface) {
         // disconnect from unit add/removed signals because these seem to be spammed when waiting for permissions

@@ -488,7 +488,8 @@ void ConnectionTests::checkDirectories() const
     const auto devNames = QSet(dir1.deviceNames.begin(), dir1.deviceNames.end());
 #endif
     CPPUNIT_ASSERT_EQUAL(QSet<QString>({ QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"),
-                             QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4") }), devIds);
+                             QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4") }),
+        devIds);
     CPPUNIT_ASSERT_EQUAL(QSet<QString>({ QStringLiteral("Test dev 2"), QStringLiteral("Test dev 1") }), devNames);
     const SyncthingDir &dir2 = dirInfo.back();
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("test2"), dir2.id);
@@ -506,8 +507,7 @@ void ConnectionTests::checkDirectories() const
     const auto devIds2 = QSet(dir2.deviceIds.begin(), dir2.deviceIds.end());
     const auto devNames2 = QSet(dir2.deviceNames.begin(), dir2.deviceNames.end());
 #endif
-    CPPUNIT_ASSERT_EQUAL(
-        QSet<QString>({ QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7") }), devIds2);
+    CPPUNIT_ASSERT_EQUAL(QSet<QString>({ QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7") }), devIds2);
     CPPUNIT_ASSERT_EQUAL(QSet<QString>({ QStringLiteral("Test dev 2") }), devNames2);
 }
 

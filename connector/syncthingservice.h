@@ -114,8 +114,7 @@ private Q_SLOTS:
 private:
     void setupSystemdInterface();
     void setupFreedesktopLoginInterface();
-    template<typename HandlerType>
-    void makeAsyncCall(const QDBusPendingCall &call, HandlerType &&handler);
+    template <typename HandlerType> void makeAsyncCall(const QDBusPendingCall &call, HandlerType &&handler);
     void registerErrorHandler(const QDBusPendingCall &call, const char *context);
     bool concludeAsyncCall(QDBusPendingCallWatcher *watcher);
     void clearSystemdInterface();
