@@ -14,11 +14,18 @@ set(HEADER_FILES
     syncthingdirectorymodel.h
     syncthingdevicemodel.h
     syncthingdownloadmodel.h
+    syncthingrecentchangesmodel.h
     syncthingstatusselectionmodel.h
     syncthingicons.h
     colors.h)
-set(SRC_FILES syncthingmodel.cpp syncthingdirectorymodel.cpp syncthingdevicemodel.cpp syncthingdownloadmodel.cpp
-              syncthingstatusselectionmodel.cpp syncthingicons.cpp)
+set(SRC_FILES
+    syncthingmodel.cpp
+    syncthingdirectorymodel.cpp
+    syncthingdevicemodel.cpp
+    syncthingdownloadmodel.cpp
+    syncthingrecentchangesmodel.cpp
+    syncthingstatusselectionmodel.cpp
+    syncthingicons.cpp)
 set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 
 set(TS_FILES translations/${META_PROJECT_NAME}_cs_CZ.ts translations/${META_PROJECT_NAME}_de_DE.ts

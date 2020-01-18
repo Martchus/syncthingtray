@@ -218,6 +218,7 @@ Q_SIGNALS:
     void newEvents(const QJsonArray &events);
     void dirStatusChanged(const SyncthingDir &dir, int index);
     void devStatusChanged(const SyncthingDev &dev, int index);
+    void fileChanged(const SyncthingDir &dir, int index, const SyncthingFileChange &fileChange);
     void downloadProgressChanged();
     void dirStatisticsChanged();
     void dirCompleted(CppUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev = nullptr);

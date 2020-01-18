@@ -469,6 +469,35 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="recentChangesTab">
+      <attribute name="icon">
+       <iconset theme="document-open-recent-symbolic">
+        <normaloff>.</normaloff>.</iconset>
+      </attribute>
+      <attribute name="title">
+       <string>Recent changes</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QTreeView" name="recentChangesTreeView"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

@@ -523,6 +523,13 @@ ColumnLayout {
                     iconSource: "folder-download-symbolic"
                     tab: downloadsPage
                 }
+                PlasmaComponents.TabButton {
+                    id: recentChangesTabButton
+                    //text: qsTr("Recent changes")
+                    iconSource: "document-open-recent-symbolic"
+                    tab: recentChangesPage
+                }
+
             }
             Item {
                 Layout.fillHeight: true
@@ -576,6 +583,11 @@ ColumnLayout {
                 id: downloadsPage
                 when: mainTabGroup.currentTab === downloadsPage
                 source: Qt.resolvedUrl("DownloadsPage.qml")
+            }
+            PlasmaExtras.ConditionalLoader {
+                id: recentChangesPage
+                when: mainTabGroup.currentTab === recentChangesPage
+                source: Qt.resolvedUrl("RecentChangesPage.qml")
             }
         }
     }

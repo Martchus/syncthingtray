@@ -9,6 +9,7 @@ set(PLASMOID_FILES
     ../package/contents/ui/DirectoriesPage.qml
     ../package/contents/ui/DevicesPage.qml
     ../package/contents/ui/DownloadsPage.qml
+    ../package/contents/ui/RecentChangesPage.qml
     ../package/contents/ui/TopLevelView.qml
     ../package/contents/ui/TopLevelItem.qml
     ../package/contents/ui/DetailView.qml

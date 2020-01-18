@@ -14,7 +14,7 @@ using namespace CppUtilities;
 
 namespace Data {
 
-int computeDirectoryRowCount(const SyncthingDir &dir)
+static int computeDirectoryRowCount(const SyncthingDir &dir)
 {
     return dir.paused ? 8 : 10;
 }
@@ -260,10 +260,10 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     if (!dir.lastFileTime.isNull()) {
                         if (dir.lastFileDeleted) {
                             return tr("Deleted at %1")
-                                .arg(QString::fromLatin1(dir.lastFileTime.toString(DateTimeOutputFormat::DateAndTime, true).data()));
+                                .arg(QString::fromStdString(dir.lastFileTime.toString(DateTimeOutputFormat::DateAndTime, true)));
                         } else {
                             return tr("Updated at %1")
-                                .arg(QString::fromLatin1(dir.lastFileTime.toString(DateTimeOutputFormat::DateAndTime, true).data()));
+                                .arg(QString::fromStdString(dir.lastFileTime.toString(DateTimeOutputFormat::DateAndTime, true)));
                         }
                     }
                     break;

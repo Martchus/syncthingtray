@@ -7,6 +7,7 @@
 #include "../../model/syncthingdevicemodel.h"
 #include "../../model/syncthingdirectorymodel.h"
 #include "../../model/syncthingdownloadmodel.h"
+#include "../../model/syncthingrecentchangesmodel.h"
 
 #include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingnotifier.h"
@@ -117,6 +118,7 @@ private:
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingDownloadModel m_dlModel;
+    Data::SyncthingRecentChangesModel m_recentChangesModel;
     QMenu *m_connectionsMenu;
     QActionGroup *m_connectionsActionGroup;
     Data::SyncthingConnectionSettings *m_selectedConnection;

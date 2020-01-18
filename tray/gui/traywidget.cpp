@@ -76,6 +76,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     , m_dirModel(m_connection)
     , m_devModel(m_connection)
     , m_dlModel(m_connection)
+    , m_recentChangesModel(m_connection)
     , m_selectedConnection(nullptr)
     , m_startStopButtonTarget(StartStopButtonTarget::None)
 {
@@ -87,6 +88,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     m_ui->dirsTreeView->setModel(&m_dirModel);
     m_ui->devsTreeView->setModel(&m_devModel);
     m_ui->downloadsTreeView->setModel(&m_dlModel);
+    m_ui->recentChangesTreeView->setModel(&m_recentChangesModel);
 
     // setup sync-all button
     m_cornerFrame = new QFrame(this);

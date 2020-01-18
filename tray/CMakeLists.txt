@@ -46,6 +46,7 @@ set(REQUIRED_ICONS
     dialog-cancel
     dialog-ok
     dialog-ok-apply
+    document-open-recent-symbolic
     edit-copy
     edit-clear
     edit-cut

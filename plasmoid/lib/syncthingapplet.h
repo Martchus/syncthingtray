@@ -8,6 +8,7 @@
 #include "../../model/syncthingdevicemodel.h"
 #include "../../model/syncthingdirectorymodel.h"
 #include "../../model/syncthingdownloadmodel.h"
+#include "../../model/syncthingrecentchangesmodel.h"
 #include "../../model/syncthingstatusselectionmodel.h"
 
 #include "../../connector/syncthingconnection.h"
@@ -22,13 +23,7 @@
 #include <QSize>
 
 namespace Data {
-class SyncthingConnection;
 struct SyncthingConnectionSettings;
-class SyncthingDirectoryModel;
-class SyncthingDeviceModel;
-class SyncthingDownloadModel;
-class SyncthingService;
-enum class SyncthingErrorCategory;
 } // namespace Data
 
 namespace QtGui {
@@ -45,6 +40,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel NOTIFY dirModelChanged)
     Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel NOTIFY devModelChanged)
     Q_PROPERTY(Data::SyncthingDownloadModel *downloadModel READ downloadModel NOTIFY downloadModelChanged)
+    Q_PROPERTY(Data::SyncthingRecentChangesModel *recentChangesModel READ recentChangesModel NOTIFY recentChangesModelChanged)
     Q_PROPERTY(Data::SyncthingStatusSelectionModel *passiveSelectionModel READ passiveSelectionModel NOTIFY passiveSelectionModelChanged)
     Q_PROPERTY(Data::SyncthingService *service READ service NOTIFY serviceChanged)
     Q_PROPERTY(bool local READ isLocal NOTIFY localChanged)
@@ -76,6 +72,7 @@ public:
     Data::SyncthingDirectoryModel *dirModel() const;
     Data::SyncthingDeviceModel *devModel() const;
     Data::SyncthingDownloadModel *downloadModel() const;
+    Data::SyncthingRecentChangesModel *recentChangesModel() const;
     Data::SyncthingStatusSelectionModel *passiveSelectionModel() const;
     Data::SyncthingService *service() const;
     bool isLocal() const;
@@ -128,6 +125,8 @@ Q_SIGNALS:
     /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
     void downloadModelChanged();
     /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
+    void recentChangesModelChanged();
+    /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
     void passiveSelectionModelChanged();
     /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
     void serviceChanged();
@@ -172,6 +171,7 @@ private:
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingDownloadModel m_downloadModel;
+    Data::SyncthingRecentChangesModel m_recentChangesModel;
     Data::SyncthingStatusSelectionModel m_passiveSelectionModel;
     SettingsDialog *m_settingsDlg;
     QtGui::DBusStatusNotifier m_dbusNotifier;
@@ -202,6 +202,11 @@ inline Data::SyncthingDeviceModel *SyncthingApplet::devModel() const
 inline Data::SyncthingDownloadModel *SyncthingApplet::downloadModel() const
 {
     return const_cast<Data::SyncthingDownloadModel *>(&m_downloadModel);
+}
+
+inline Data::SyncthingRecentChangesModel *SyncthingApplet::recentChangesModel() const
+{
+    return const_cast<Data::SyncthingRecentChangesModel *>(&m_recentChangesModel);
 }
 
 inline Data::SyncthingStatusSelectionModel *SyncthingApplet::passiveSelectionModel() const
