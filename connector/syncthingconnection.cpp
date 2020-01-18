@@ -100,6 +100,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_hasDiskEvents(false)
     , m_lastFileDeleted(false)
     , m_dirStatsAltered(false)
+    , m_recordFileChanges(false)
 {
     m_trafficPollTimer.setInterval(SyncthingConnectionSettings::defaultTrafficPollInterval);
     m_trafficPollTimer.setTimerType(Qt::VeryCoarseTimer);

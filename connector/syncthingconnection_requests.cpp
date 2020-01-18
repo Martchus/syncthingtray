@@ -1486,9 +1486,13 @@ void SyncthingConnection::readChangeEvent(DateTime eventTime, const QString &eve
     change.type = eventData.value(QLatin1String("type")).toString();
     change.modifiedBy = eventData.value(QLatin1String("modifiedBy")).toString();
     change.path = eventData.value(QLatin1String("path")).toString();
-    dirInfo->recentChanges.emplace_back(move(change));
-    emit dirStatusChanged(*dirInfo, index);
-    emit fileChanged(*dirInfo, index, dirInfo->recentChanges.back());
+    if (m_recordFileChanges) {
+        dirInfo->recentChanges.emplace_back(move(change));
+        emit dirStatusChanged(*dirInfo, index);
+        emit fileChanged(*dirInfo, index, dirInfo->recentChanges.back());
+    } else {
+        emit fileChanged(*dirInfo, index, change);
+    }
 }
 
 // events / long polling API

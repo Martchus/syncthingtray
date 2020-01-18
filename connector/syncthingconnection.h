@@ -76,6 +76,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(unsigned int autoReconnectTries READ autoReconnectTries)
     Q_PROPERTY(int trafficPollInterval READ trafficPollInterval WRITE setTrafficPollInterval)
     Q_PROPERTY(int devStatsPollInterval READ devStatsPollInterval WRITE setDevStatsPollInterval)
+    Q_PROPERTY(bool recordFileChanges READ recordFileChanges WRITE setRecordFileChanges)
     Q_PROPERTY(QString myId READ myId NOTIFY myIdChanged)
     Q_PROPERTY(QString configDir READ configDir NOTIFY configDirChanged)
     Q_PROPERTY(int totalIncomingTraffic READ totalIncomingTraffic NOTIFY trafficChanged)
@@ -129,6 +130,8 @@ public:
     unsigned int autoReconnectTries() const;
     void setAutoReconnectInterval(int interval);
     void disablePolling();
+    bool recordFileChanges() const;
+    void setRecordFileChanges(bool recordFileChanges);
 
     // getter for information retrieved from Syncthing
     const QString &configDir() const;
@@ -366,6 +369,7 @@ private:
     QList<QSslError> m_expectedSslErrors;
     QJsonObject m_rawConfig;
     bool m_dirStatsAltered;
+    bool m_recordFileChanges;
 };
 
 /*!
@@ -594,6 +598,24 @@ inline void SyncthingConnection::setAutoReconnectInterval(int interval)
         m_autoReconnectTimer.stop();
     }
     m_autoReconnectTimer.setInterval(interval);
+}
+
+/*!
+ * \brief Returns whether file changes are recorded for each directory so SyncthingDir::recentChanges is being populated.
+ * \remarks The fileChanged() signal is unaffected.
+ */
+inline bool SyncthingConnection::recordFileChanges() const
+{
+    return m_recordFileChanges;
+}
+
+/*!
+ * \brief Returns whether file changes are recorded for each directory so SyncthingDir::recentChanges is being populated.
+ * \remarks The fileChanged() signal is unaffected.
+ */
+inline void SyncthingConnection::setRecordFileChanges(bool recordFileChanges)
+{
+    m_recordFileChanges = recordFileChanges;
 }
 
 /*!
