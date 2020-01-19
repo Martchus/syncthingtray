@@ -9,19 +9,17 @@
 
 #include <QStringBuilder>
 
+#include <limits>
+
 using namespace std;
 using namespace CppUtilities;
 
 namespace Data {
 
-SyncthingRecentChangesModel::SyncthingRecentChangesModel(SyncthingConnection &connection, QObject *parent)
+SyncthingRecentChangesModel::SyncthingRecentChangesModel(SyncthingConnection &connection, int maxRows, QObject *parent)
     : SyncthingModel(connection, parent)
+    , m_maxRows(maxRows)
 {
-    for (const auto &dir : connection.dirInfo()) {
-        for (const auto &fileChange : dir.recentChanges) {
-            fileChanged(dir, -1, fileChange);
-        }
-    }
     connect(&m_connection, &SyncthingConnection::fileChanged, this, &SyncthingRecentChangesModel::fileChanged);
 }
 
@@ -91,7 +89,7 @@ QVariant SyncthingRecentChangesModel::data(const QModelIndex &index, int role) c
         return QVariant();
     }
 
-    const SyncthingRecentChange &change = m_changes[m_changes.size() - static_cast<size_t>(index.row()) - 1];
+    const SyncthingRecentChange &change = m_changes[static_cast<size_t>(index.row())];
     switch (role) {
     case Qt::DisplayRole:
     case Qt::EditRole:
@@ -184,7 +182,7 @@ void SyncthingRecentChangesModel::fileChanged(const SyncthingDir &dir, int index
     if (index >= 0) {
         beginInsertRows(QModelIndex(), 0, 0);
     }
-    m_changes.emplace_back(SyncthingRecentChange{
+    m_changes.emplace_front(SyncthingRecentChange{
         .directoryId = dir.id,
         .directoryName = dir.displayName(),
         .fileChange = change,
@@ -192,6 +190,8 @@ void SyncthingRecentChangesModel::fileChanged(const SyncthingDir &dir, int index
     if (index >= 0) {
         endInsertRows();
     }
+
+    ensureWithinLimit();
 }
 
 void SyncthingRecentChangesModel::handleConfigInvalidated()
@@ -200,6 +200,22 @@ void SyncthingRecentChangesModel::handleConfigInvalidated()
 
 void SyncthingRecentChangesModel::handleNewConfigAvailable()
 {
+}
+
+void SyncthingRecentChangesModel::setMaxRows(int maxRows)
+{
+    m_maxRows = maxRows < 0 ? std::numeric_limits<int>::max() : maxRows;
+}
+
+void SyncthingRecentChangesModel::ensureWithinLimit()
+{
+    const auto rowsToDelete = static_cast<int>(m_changes.size()) - m_maxRows;
+    if (rowsToDelete <= 0) {
+        return;
+    }
+    beginRemoveRows(QModelIndex(), m_maxRows, static_cast<int>(m_changes.size()) - 1);
+    m_changes.erase(m_changes.begin() + m_maxRows, m_changes.end());
+    endRemoveRows();
 }
 
 } // namespace Data

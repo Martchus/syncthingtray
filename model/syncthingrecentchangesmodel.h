@@ -5,7 +5,7 @@
 
 #include "../connector/syncthingdir.h"
 
-#include <vector>
+#include <deque>
 
 namespace Data {
 
@@ -17,6 +17,7 @@ struct LIB_SYNCTHING_MODEL_EXPORT SyncthingRecentChange {
 
 class LIB_SYNCTHING_MODEL_EXPORT SyncthingRecentChangesModel : public SyncthingModel {
     Q_OBJECT
+    Q_PROPERTY(int maxRows READ maxRows WRITE setMaxRows)
 public:
     enum SyncthingRecentChangesModelRole {
         Action = Qt::UserRole + 1,
@@ -29,8 +30,7 @@ public:
         ExtendedAction,
         ItemType,
     };
-
-    explicit SyncthingRecentChangesModel(SyncthingConnection &connection, QObject *parent = nullptr);
+    explicit SyncthingRecentChangesModel(SyncthingConnection &connection, int maxRows = 200, QObject *parent = nullptr);
 
 public Q_SLOTS:
     QHash<int, QByteArray> roleNames() const override;
@@ -42,6 +42,8 @@ public Q_SLOTS:
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
+    int maxRows() const;
+    void setMaxRows(int maxRows);
 
 private Q_SLOTS:
     void fileChanged(const SyncthingDir &dir, int index, const SyncthingFileChange &change);
@@ -49,8 +51,16 @@ private Q_SLOTS:
     void handleNewConfigAvailable() override;
 
 private:
-    std::vector<SyncthingRecentChange> m_changes;
+    void ensureWithinLimit();
+
+    std::deque<SyncthingRecentChange> m_changes;
+    int m_maxRows;
 };
+
+inline int SyncthingRecentChangesModel::maxRows() const
+{
+    return m_maxRows;
+}
 
 } // namespace Data
 
