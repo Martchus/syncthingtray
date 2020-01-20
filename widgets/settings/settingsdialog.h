@@ -117,6 +117,7 @@ private slots:
     void handleSyncthingError(QProcess::ProcessError error);
     bool isRunning() const;
     void launch();
+    void updateLibSyncthingLogLevel();
     void stop();
     void restoreDefaultArguments();
 

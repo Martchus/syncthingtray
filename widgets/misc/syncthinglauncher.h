@@ -35,6 +35,8 @@ public:
     bool isManuallyStopped() const;
     bool isEmittingOutput() const;
     void setEmittingOutput(bool emittingOutput);
+    LibSyncthing::LogLevel libSyncthingLogLevel() const;
+    void setLibSyncthingLogLevel(LibSyncthing::LogLevel logLevel);
     static bool isLibSyncthingAvailable();
     static SyncthingLauncher *mainInstance();
     static void setMainInstance(SyncthingLauncher *mainInstance);
@@ -70,6 +72,7 @@ private:
     QFuture<void> m_future;
     QByteArray m_outputBuffer;
     CppUtilities::DateTime m_futureStarted;
+    LibSyncthing::LogLevel m_libsyncthingLogLevel;
     bool m_manuallyStopped;
     bool m_emittingOutput;
     bool m_useLibSyncthing;
@@ -112,6 +115,18 @@ inline bool SyncthingLauncher::isManuallyStopped() const
 inline bool SyncthingLauncher::isEmittingOutput() const
 {
     return m_emittingOutput;
+}
+
+/// \brief Returns the log level used for libsyncthing.
+inline LibSyncthing::LogLevel SyncthingLauncher::libSyncthingLogLevel() const
+{
+    return m_libsyncthingLogLevel;
+}
+
+/// \brief Sets the log level used for libsyncthing.
+inline void SyncthingLauncher::setLibSyncthingLogLevel(LibSyncthing::LogLevel logLevel)
+{
+    m_libsyncthingLogLevel = logLevel;
 }
 
 /// \brief Returns the SyncthingLauncher instance previously assigned via SyncthingLauncher::setMainInstance().

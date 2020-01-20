@@ -908,6 +908,7 @@ QWidget *LauncherOptionPage::setupWidget()
         connect(m_launcher, &SyncthingLauncher::outputAvailable, this, &LauncherOptionPage::handleSyncthingOutputAvailable, Qt::QueuedConnection);
         connect(m_launcher, &SyncthingLauncher::exited, this, &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
         connect(m_launcher, &SyncthingLauncher::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
+        connect(ui()->logLevelComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &LauncherOptionPage::updateLibSyncthingLogLevel);
         m_launcher->setEmittingOutput(true);
     }
     connect(ui()->launchNowPushButton, &QPushButton::clicked, this, &LauncherOptionPage::launch);
@@ -923,6 +924,7 @@ bool LauncherOptionPage::apply()
         settings.autostartEnabled = ui()->enabledCheckBox->isChecked();
         settings.useLibSyncthing = ui()->useBuiltInVersionCheckBox->isChecked();
         settings.libSyncthing.configDir = ui()->configDirPathSelection->lineEdit()->text();
+        settings.libSyncthing.logLevel = static_cast<LibSyncthing::LogLevel>(ui()->logLevelComboBox->currentIndex());
         settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
         settings.syncthingArgs = ui()->argumentsLineEdit->text();
         settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
@@ -944,6 +946,7 @@ void LauncherOptionPage::reset()
         ui()->useBuiltInVersionCheckBox->setChecked(settings.useLibSyncthing);
         ui()->useBuiltInVersionCheckBox->setVisible(settings.useLibSyncthing || SyncthingLauncher::isLibSyncthingAvailable());
         ui()->configDirPathSelection->lineEdit()->setText(settings.libSyncthing.configDir);
+        ui()->logLevelComboBox->setCurrentIndex(static_cast<int>(settings.libSyncthing.logLevel));
         ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
         ui()->argumentsLineEdit->setText(settings.syncthingArgs);
         ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
@@ -1070,14 +1073,19 @@ void LauncherOptionPage::launch()
     if (isRunning()) {
         return;
     }
-    const auto launcherSettings(values().launcher);
+    const auto &launcherSettings(values().launcher);
     if (m_tool.isEmpty()) {
         m_launcher->launch(launcherSettings);
-    } else {
-        const auto toolParams(launcherSettings.tools.value(m_tool));
-        m_process->startSyncthing(toolParams.path, SyncthingProcess::splitArguments(toolParams.args));
-        handleSyncthingLaunched(true);
+        return;
     }
+    const auto toolParams(launcherSettings.tools.value(m_tool));
+    m_process->startSyncthing(toolParams.path, SyncthingProcess::splitArguments(toolParams.args));
+    handleSyncthingLaunched(true);
+}
+
+void LauncherOptionPage::updateLibSyncthingLogLevel()
+{
+    m_launcher->setLibSyncthingLogLevel(static_cast<LibSyncthing::LogLevel>(ui()->logLevelComboBox->currentIndex()));
 }
 
 void LauncherOptionPage::stop()

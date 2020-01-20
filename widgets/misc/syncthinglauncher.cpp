@@ -29,6 +29,7 @@ SyncthingLauncher *SyncthingLauncher::s_mainInstance = nullptr;
  */
 SyncthingLauncher::SyncthingLauncher(QObject *parent)
     : QObject(parent)
+    , m_libsyncthingLogLevel(LibSyncthing::LogLevel::Info)
     , m_manuallyStopped(true)
     , m_emittingOutput(false)
 {
@@ -118,6 +119,7 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
     if (launcherSettings.useLibSyncthing) {
         LibSyncthing::RuntimeOptions options;
         options.configDir = launcherSettings.libSyncthing.configDir.toStdString();
+        setLibSyncthingLogLevel(launcherSettings.libSyncthing.logLevel);
         launch(options);
     } else {
         launch(launcherSettings.syncthingPath, SyncthingProcess::splitArguments(launcherSettings.syncthingArgs));
@@ -204,7 +206,7 @@ static const char *const logLevelStrings[] = {
 void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, const char *message, size_t messageSize)
 {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    if (level < LibSyncthing::LogLevel::Info) {
+    if (level < m_libsyncthingLogLevel) {
         return;
     }
     QByteArray messageData;

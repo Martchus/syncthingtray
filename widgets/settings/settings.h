@@ -3,6 +3,7 @@
 
 #include "../../connector/syncthingconnectionsettings.h"
 #include "../../model/syncthingicons.h"
+#include "../../libsyncthing/interface.h"
 #include "../global.h"
 
 #include <qtutilities/settingsdialog/qtsettings.h>
@@ -82,6 +83,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
 
     struct SYNCTHINGWIDGETS_EXPORT LibSyncthing {
         QString configDir;
+        ::LibSyncthing::LogLevel logLevel = ::LibSyncthing::LogLevel::Info;
     } libSyncthing;
 
     static Data::SyncthingProcess &toolProcess(const QString &tool);
