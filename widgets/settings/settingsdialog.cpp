@@ -176,6 +176,7 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
     ui()->pollDevStatsSpinBox->setValue(connectionSettings.devStatsPollInterval);
     ui()->pollErrorsSpinBox->setValue(connectionSettings.errorsPollInterval);
     ui()->reconnectSpinBox->setValue(connectionSettings.reconnectInterval);
+    ui()->autoConnectCheckBox->setChecked(connectionSettings.autoConnect);
     setCurrentIndex(index);
     return true;
 }
@@ -199,6 +200,7 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
     connectionSettings.devStatsPollInterval = ui()->pollDevStatsSpinBox->value();
     connectionSettings.errorsPollInterval = ui()->pollErrorsSpinBox->value();
     connectionSettings.reconnectInterval = ui()->reconnectSpinBox->value();
+    connectionSettings.autoConnect = ui()->autoConnectCheckBox->isChecked();
     if (!connectionSettings.loadHttpsCert()) {
         const QString errorMessage = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to load specified certificate \"%1\".")
                                          .arg(connectionSettings.httpsCertPath);

@@ -136,8 +136,15 @@ Launcher::LauncherStatus Launcher::apply(
     const auto consideredForReconnect = considerForReconnect && isRelevant;
 
     if (currentConnectionSettings && (!considerForReconnect || !isRelevant || isRunning)) {
-        // ensure auto-reconnect is configured according to settings
+        // ensure auto-reconnect is configured according to settings and connect if auto-connect is configured
         connection.setAutoReconnectInterval(currentConnectionSettings->reconnectInterval);
+        if (currentConnectionSettings->autoConnect) {
+            if (reconnectRequired) {
+                connection.reconnect();
+            } else {
+                connection.connect();
+            }
+        }
     } else {
         // disable auto-reconnect regardless of the overall settings
         connection.setAutoReconnectInterval(0);
@@ -227,6 +234,8 @@ void restore()
                 = settings.value(QStringLiteral("errorsPollInterval"), connectionSettings->errorsPollInterval).toInt();
             connectionSettings->reconnectInterval
                 = settings.value(QStringLiteral("reconnectInterval"), connectionSettings->reconnectInterval).toInt();
+            connectionSettings->autoConnect
+                = settings.value(QStringLiteral("autoConnect"), connectionSettings->autoConnect).toBool();
             connectionSettings->httpsCertPath = settings.value(QStringLiteral("httpsCertPath")).toString();
             if (!connectionSettings->loadHttpsCert()) {
                 QMessageBox::critical(nullptr, QCoreApplication::applicationName(),
@@ -336,6 +345,7 @@ void save()
         settings.setValue(QStringLiteral("devStatsPollInterval"), connectionSettings->devStatsPollInterval);
         settings.setValue(QStringLiteral("errorsPollInterval"), connectionSettings->errorsPollInterval);
         settings.setValue(QStringLiteral("reconnectInterval"), connectionSettings->reconnectInterval);
+        settings.setValue(QStringLiteral("autoConnect"), connectionSettings->autoConnect);
         settings.setValue(QStringLiteral("httpsCertPath"), connectionSettings->httpsCertPath);
     }
     settings.endArray();
@@ -468,8 +478,15 @@ Systemd::ServiceStatus Systemd::apply(
     const auto consideredForReconnect = considerForReconnect && isRelevant && unitAvailable;
 
     if (currentConnectionSettings && (!considerForReconnect || !isRelevant || isRunning)) {
-        // ensure auto-reconnect is configured according to settings
+        // ensure auto-reconnect is configured according to settings and connect if auto-connect is configured
         connection.setAutoReconnectInterval(currentConnectionSettings->reconnectInterval);
+        if (currentConnectionSettings->autoConnect) {
+            if (reconnectRequired) {
+                connection.reconnect();
+            } else {
+                connection.connect();
+            }
+        }
     } else {
         // disable auto-reconnect regardless of the overall settings
         connection.setAutoReconnectInterval(0);

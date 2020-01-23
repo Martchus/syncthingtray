@@ -22,6 +22,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     int reconnectInterval = defaultReconnectInterval;
     QString httpsCertPath;
     QList<QSslError> expectedSslErrors;
+    bool autoConnect = false;
     bool loadHttpsCert();
 
     static constexpr int defaultTrafficPollInterval = 5000;
