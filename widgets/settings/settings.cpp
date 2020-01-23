@@ -116,6 +116,61 @@ void Launcher::terminate()
     QtGui::SyncthingKiller(allProcesses()).waitForFinished();
 }
 
+static bool isActiveFor(const SyncthingLauncher &launcher, unsigned int atLeastSeconds)
+{
+    return launcher.isActiveFor(atLeastSeconds);
+}
+
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+static bool isActiveFor(const SyncthingService &launcher, unsigned int atLeastSeconds)
+{
+    return launcher.isActiveWithoutSleepFor(atLeastSeconds);
+}
+#endif
+
+/*!
+ * \brief Configures the reconnect interval and establishes a connection according to the specified settings/status.
+ */
+template <typename SyncthingMonitor>
+static inline void connectAccordingToSettings(Data::SyncthingConnection &connection, const SyncthingConnectionSettings *currentConnectionSettings,
+    const SyncthingMonitor &monitor, bool reconnectRequired, bool considerForReconnect, bool isRelevant, bool isRunning, bool consideredForReconnect)
+{
+    // set reconnect interval and connect if auto-reconnect is configured
+    if (currentConnectionSettings && (!considerForReconnect || !isRelevant || isRunning)) {
+        // ensure reconnect interval is configured according to settings and connect if auto-connect is configured
+        connection.setAutoReconnectInterval(currentConnectionSettings->reconnectInterval);
+        if (!consideredForReconnect && currentConnectionSettings->autoConnect) {
+            if (reconnectRequired) {
+                connection.reconnect();
+            } else {
+                connection.connect();
+            }
+        }
+    } else {
+        // disable auto-reconnect regardless of the overall settings
+        connection.setAutoReconnectInterval(0);
+    }
+
+    // connect instantly if service is running
+    if (consideredForReconnect) {
+        if (reconnectRequired) {
+            if (isActiveFor(monitor, minActiveTimeInSeconds)) {
+                connection.reconnect();
+            } else if (isRunning) {
+                // give the service (which has just started) a few seconds to initialize
+                connection.reconnectLater(minActiveTimeInSeconds * 1000);
+            }
+        } else if (isRunning && !connection.isConnected()) {
+            if (isActiveFor(monitor, minActiveTimeInSeconds)) {
+                connection.connect();
+            } else {
+                // give the service (which has just started) a few seconds to initialize
+                connection.connectLater(minActiveTimeInSeconds * 1000);
+            }
+        }
+    }
+}
+
 /*!
  * \brief Applies the launcher settings to the specified \a connection considering the status of the main SyncthingLauncher instance.
  * \remarks
@@ -134,41 +189,8 @@ Launcher::LauncherStatus Launcher::apply(
     const auto isRelevant = connection.isLocal();
     const auto isRunning = launcher->isRunning();
     const auto consideredForReconnect = considerForReconnect && isRelevant;
-
-    if (currentConnectionSettings && (!considerForReconnect || !isRelevant || isRunning)) {
-        // ensure auto-reconnect is configured according to settings and connect if auto-connect is configured
-        connection.setAutoReconnectInterval(currentConnectionSettings->reconnectInterval);
-        if (currentConnectionSettings->autoConnect) {
-            if (reconnectRequired) {
-                connection.reconnect();
-            } else {
-                connection.connect();
-            }
-        }
-    } else {
-        // disable auto-reconnect regardless of the overall settings
-        connection.setAutoReconnectInterval(0);
-    }
-
-    // connect instantly if service is running
-    if (consideredForReconnect) {
-        if (reconnectRequired) {
-            if (launcher->isActiveFor(minActiveTimeInSeconds)) {
-                connection.reconnect();
-            } else if (isRunning) {
-                // give the service (which has just started) a few seconds to initialize
-                connection.reconnectLater(minActiveTimeInSeconds * 1000);
-            }
-        } else if (isRunning && !connection.isConnected()) {
-            if (launcher->isActiveFor(minActiveTimeInSeconds)) {
-                connection.connect();
-            } else {
-                // give the service (which has just started) a few seconds to initialize
-                connection.connectLater(minActiveTimeInSeconds * 1000);
-            }
-        }
-    }
-
+    connectAccordingToSettings(
+        connection, currentConnectionSettings, *launcher, reconnectRequired, considerForReconnect, isRelevant, isRunning, consideredForReconnect);
     return LauncherStatus{ isRelevant, isRunning, consideredForReconnect, showButton && isRelevant };
 }
 
@@ -476,41 +498,8 @@ Systemd::ServiceStatus Systemd::apply(
     const auto unitAvailable = service->isUnitAvailable();
     const auto isRunning = unitAvailable && service->isRunning();
     const auto consideredForReconnect = considerForReconnect && isRelevant && unitAvailable;
-
-    if (currentConnectionSettings && (!considerForReconnect || !isRelevant || isRunning)) {
-        // ensure auto-reconnect is configured according to settings and connect if auto-connect is configured
-        connection.setAutoReconnectInterval(currentConnectionSettings->reconnectInterval);
-        if (currentConnectionSettings->autoConnect) {
-            if (reconnectRequired) {
-                connection.reconnect();
-            } else {
-                connection.connect();
-            }
-        }
-    } else {
-        // disable auto-reconnect regardless of the overall settings
-        connection.setAutoReconnectInterval(0);
-    }
-
-    // connect instantly if service is running
-    if (consideredForReconnect) {
-        if (reconnectRequired) {
-            if (service->isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
-                connection.reconnect();
-            } else if (isRunning) {
-                // give the service (which has just started) a few seconds to initialize
-                connection.reconnectLater(minActiveTimeInSeconds * 1000);
-            }
-        } else if (isRunning && !connection.isConnected()) {
-            if (service->isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
-                connection.connect();
-            } else {
-                // give the service (which has just started) a few seconds to initialize
-                connection.connectLater(minActiveTimeInSeconds * 1000);
-            }
-        }
-    }
-
+    connectAccordingToSettings(
+        connection, currentConnectionSettings, *service, reconnectRequired, considerForReconnect, isRelevant, isRunning, consideredForReconnect);
     return ServiceStatus{ isRelevant, isRunning, consideredForReconnect, showButton && isRelevant };
 }
 
