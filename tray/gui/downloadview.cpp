@@ -1,5 +1,6 @@
 #include "./downloadview.h"
 #include "./downloaditemdelegate.h"
+#include "./helper.h"
 
 #include "../../model/syncthingdownloadmodel.h"
 
@@ -65,14 +66,7 @@ void DownloadView::showContextMenu(const QPoint &position)
                     tr("Copy label/ID")),
             &QAction::triggered, this, &DownloadView::copySelectedItem);
     }
-
-    // map the coordinates to top-level widget if it is a QMenu (not sure why this is required)
-    const auto *const topLevelWidget = this->topLevelWidget();
-    if (qobject_cast<const QMenu *>(topLevelWidget)) {
-        menu.exec(topLevelWidget->mapToGlobal(position));
-    } else {
-        menu.exec(viewport()->mapToGlobal(position));
-    }
+    showViewMenu(position, *this, menu);
 }
 
 void DownloadView::copySelectedItem()

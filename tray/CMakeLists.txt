@@ -17,7 +17,8 @@ set(WIDGETS_HEADER_FILES
     gui/downloaditemdelegate.h
     gui/dirview.h
     gui/devview.h
-    gui/downloadview.h)
+    gui/downloadview.h
+    gui/helper.h)
 set(WIDGETS_SRC_FILES
     application/main.cpp
     application/singleinstance.cpp
@@ -29,7 +30,8 @@ set(WIDGETS_SRC_FILES
     gui/downloaditemdelegate.cpp
     gui/dirview.cpp
     gui/devview.cpp
-    gui/downloadview.cpp)
+    gui/downloadview.cpp
+    gui/helper.cpp)
 set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 set(WIDGETS_UI_FILES gui/traywidget.ui)
 

@@ -1,4 +1,5 @@
 #include "./traywidget.h"
+#include "./helper.h"
 #include "./trayicon.h"
 #include "./traymenu.h"
 
@@ -89,6 +90,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     m_ui->devsTreeView->setModel(&m_devModel);
     m_ui->downloadsTreeView->setModel(&m_dlModel);
     m_ui->recentChangesTreeView->setModel(&m_recentChangesModel);
+    m_ui->recentChangesTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
 
     // setup sync-all button
     m_cornerFrame = new QFrame(this);
@@ -175,6 +177,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     connect(m_ui->devsTreeView, &DevView::pauseResumeDev, this, &TrayWidget::pauseResumeDev);
     connect(m_ui->downloadsTreeView, &DownloadView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->downloadsTreeView, &DownloadView::openItemDir, this, &TrayWidget::openItemDir);
+    connect(m_ui->recentChangesTreeView, &QTreeView::customContextMenuRequested, this, &TrayWidget::showRecentChangesContextMenu);
     connect(scanAllButton, &QPushButton::clicked, &m_connection, &SyncthingConnection::rescanAllDirs);
     connect(viewIdButton, &QPushButton::clicked, this, &TrayWidget::showOwnDeviceId);
     connect(showLogButton, &QPushButton::clicked, this, &TrayWidget::showLog);
@@ -544,6 +547,31 @@ void TrayWidget::pauseResumeDir(const SyncthingDir &dir)
     } else {
         m_connection.pauseDirectories(QStringList(dir.id));
     }
+}
+
+void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
+{
+    const auto *const selectionModel = m_ui->recentChangesTreeView->selectionModel();
+    if (!selectionModel || selectionModel->selectedRows().size() != 1) {
+        return;
+    }
+    const auto copyRole = [this](SyncthingRecentChangesModel::SyncthingRecentChangesModelRole role) {
+        return [this, role] {
+            const auto *const selectionModel = m_ui->recentChangesTreeView->selectionModel();
+            if (selectionModel && selectionModel->selectedRows().size() == 1) {
+                QGuiApplication::clipboard()->setText(m_recentChangesModel.data(selectionModel->selectedRows().at(0), role).toString());
+            }
+        };
+    };
+    QMenu menu(this);
+    connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+                tr("Copy path")),
+        &QAction::triggered, this, copyRole(SyncthingRecentChangesModel::Path));
+    connect(menu.addAction(QIcon::fromTheme(QStringLiteral("network-server-symbolic"),
+                               QIcon(QStringLiteral(":/icons/hicolor/scalable/places/network-workgroup.svg"))),
+                tr("Copy device ID")),
+        &QAction::triggered, this, copyRole(SyncthingRecentChangesModel::ModifiedBy));
+    showViewMenu(position, *m_ui->recentChangesTreeView, menu);
 }
 
 void TrayWidget::changeStatus()

@@ -21,6 +21,7 @@ QT_FORWARD_DECLARE_CLASS(QFrame)
 QT_FORWARD_DECLARE_CLASS(QMenu)
 QT_FORWARD_DECLARE_CLASS(QActionGroup)
 QT_FORWARD_DECLARE_CLASS(QPushButton)
+QT_FORWARD_DECLARE_CLASS(QTreeView)
 
 namespace CppUtilities {
 class QtConfigArguments;
@@ -82,6 +83,7 @@ private slots:
     void scanDir(const Data::SyncthingDir &dir);
     void pauseResumeDev(const Data::SyncthingDev &dev);
     void pauseResumeDir(const Data::SyncthingDir &dir);
+    void showRecentChangesContextMenu(const QPoint &position);
     void changeStatus();
     void updateTraffic();
     void updateOverallStatistics();
