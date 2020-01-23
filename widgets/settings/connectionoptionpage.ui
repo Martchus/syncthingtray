@@ -316,6 +316,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>Frequency for updating traffic statistics and download speed</string>
+       </property>
        <property name="suffix">
         <string> ms</string>
        </property>
@@ -356,6 +359,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>Frequency for updating device statistics</string>
+       </property>
        <property name="suffix">
         <string> ms</string>
        </property>
@@ -382,6 +388,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>Frequency to poll for new errors</string>
+       </property>
        <property name="suffix">
         <string> ms</string>
        </property>
@@ -407,6 +416,9 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Time to wait for reconnecting again when the connection to Syncthing has been lost. This setting might be overruled by systemd and launcher settings.</string>
        </property>
        <property name="specialValueText">
         <string>no</string>

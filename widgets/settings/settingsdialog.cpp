@@ -87,6 +87,10 @@ QWidget *ConnectionOptionPage::setupWidget()
     ui()->certPathSelection->lineEdit()->setPlaceholderText(
         QCoreApplication::translate("QtGui::ConnectionOptionPage", "Auto-detected for local instance"));
     ui()->instanceNoteIcon->setPixmap(QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation).pixmap(32, 32));
+    ui()->pollTrafficLabel->setToolTip(ui()->pollTrafficSpinBox->toolTip());
+    ui()->pollDevStatsLabel->setToolTip(ui()->pollDevStatsSpinBox->toolTip());
+    ui()->pollErrorsLabel->setToolTip(ui()->pollErrorsSpinBox->toolTip());
+    ui()->reconnectLabel->setToolTip(ui()->reconnectSpinBox->toolTip());
     QObject::connect(m_connection, &SyncthingConnection::statusChanged, bind(&ConnectionOptionPage::updateConnectionStatus, this));
     QObject::connect(ui()->connectPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::applyAndReconnect, this));
     QObject::connect(ui()->insertFromConfigFilePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::insertFromConfigFile, this));
