@@ -125,7 +125,7 @@ QVariant SyncthingRecentChangesModel::data(const QModelIndex &index, int role) c
         }
         break;
     case Action:
-        return change.fileChange.action;    
+        return change.fileChange.action;
     case ModifiedBy:
         return change.fileChange.modifiedBy;
     case DirectoryId:

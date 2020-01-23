@@ -234,8 +234,7 @@ void restore()
                 = settings.value(QStringLiteral("errorsPollInterval"), connectionSettings->errorsPollInterval).toInt();
             connectionSettings->reconnectInterval
                 = settings.value(QStringLiteral("reconnectInterval"), connectionSettings->reconnectInterval).toInt();
-            connectionSettings->autoConnect
-                = settings.value(QStringLiteral("autoConnect"), connectionSettings->autoConnect).toBool();
+            connectionSettings->autoConnect = settings.value(QStringLiteral("autoConnect"), connectionSettings->autoConnect).toBool();
             connectionSettings->httpsCertPath = settings.value(QStringLiteral("httpsCertPath")).toString();
             if (!connectionSettings->loadHttpsCert()) {
                 QMessageBox::critical(nullptr, QCoreApplication::applicationName(),
@@ -283,7 +282,8 @@ void restore()
     launcher.autostartEnabled = settings.value(QStringLiteral("syncthingAutostart"), launcher.autostartEnabled).toBool();
     launcher.useLibSyncthing = settings.value(QStringLiteral("useLibSyncthing"), launcher.useLibSyncthing).toBool();
     launcher.libSyncthing.configDir = settings.value(QStringLiteral("libSyncthingConfigDir"), launcher.libSyncthing.configDir).toString();
-    launcher.libSyncthing.logLevel = static_cast<LibSyncthing::LogLevel>(settings.value(QStringLiteral("libSyncthingLogLevel"), static_cast<int>(launcher.libSyncthing.logLevel)).toInt());
+    launcher.libSyncthing.logLevel = static_cast<LibSyncthing::LogLevel>(
+        settings.value(QStringLiteral("libSyncthingLogLevel"), static_cast<int>(launcher.libSyncthing.logLevel)).toInt());
     launcher.syncthingPath = settings.value(QStringLiteral("syncthingPath"), launcher.syncthingPath).toString();
     launcher.syncthingArgs = settings.value(QStringLiteral("syncthingArgs"), launcher.syncthingArgs).toString();
     launcher.considerForReconnect = settings.value(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect).toBool();

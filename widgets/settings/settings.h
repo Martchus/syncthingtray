@@ -2,8 +2,8 @@
 #define SETTINGS_H
 
 #include "../../connector/syncthingconnectionsettings.h"
-#include "../../model/syncthingicons.h"
 #include "../../libsyncthing/interface.h"
+#include "../../model/syncthingicons.h"
 #include "../global.h"
 
 #include <qtutilities/settingsdialog/qtsettings.h>
