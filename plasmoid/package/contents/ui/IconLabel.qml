@@ -18,12 +18,22 @@ Item {
 
         PlasmaCore.IconItem {
             id: iconItem
-            Layout.preferredWidth: 16
-            Layout.preferredHeight: 16
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+            Layout.maximumWidth: units.iconSizes.small
+            Layout.maximumHeight: units.iconSizes.small
             opacity: 0.7
+            Rectangle {
+                color: "red"
+                anchors.top: parent.top
+                anchors.left: parent.left
+                width: parent.paintedWidth
+                height: parent.paintedHeight
+            }
         }
         PlasmaComponents.Label {
             id: label
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+            verticalAlignment: Qt.AlignVCenter
         }
     }
 

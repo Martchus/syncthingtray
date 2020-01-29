@@ -17,23 +17,30 @@ Item {
         width: parent.width
 
         PlasmaCore.IconItem {
-            source: detailIcon
+            id: icon
             Layout.leftMargin: units.iconSizes.small * 1.1
-            Layout.preferredWidth: units.iconSizes.small
             Layout.preferredHeight: units.iconSizes.small
+            Layout.preferredWidth: height
+            Layout.fillHeight: true
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+            source: detailIcon
             opacity: 0.8
         }
         PlasmaComponents.Label {
             Layout.preferredWidth: 100
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
             text: detailName
             font.weight: Font.DemiBold
+            verticalAlignment: Qt.AlignVCenter
         }
         PlasmaComponents.Label {
             Layout.leftMargin: theme.defaultFont.pointSize * 0.9
             Layout.fillWidth: true
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
             text: detailValue
             elide: Text.ElideRight
             horizontalAlignment: Qt.AlignRight
+            verticalAlignment: Qt.AlignVCenter
         }
     }
 

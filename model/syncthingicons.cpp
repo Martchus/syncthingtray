@@ -303,8 +303,8 @@ FontAwesomeIcons::FontAwesomeIcons(const QColor &color, const QSize &size, int m
 IconManager::IconManager()
     : m_statusIcons()
     , m_trayIcons(m_statusIcons)
-    , m_fontAwesomeIconsForLightTheme(QColor(10, 10, 10), QSize(64, 64), 8)
-    , m_fontAwesomeIconsForDarkTheme(Qt::white, QSize(64, 64), 8)
+    , m_fontAwesomeIconsForLightTheme(QColor(10, 10, 10), QSize(64, 64), 4)
+    , m_fontAwesomeIconsForDarkTheme(Qt::white, QSize(64, 64), 4)
 {
 }
 
