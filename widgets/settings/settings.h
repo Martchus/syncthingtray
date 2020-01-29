@@ -156,9 +156,9 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
     void apply(Data::SyncthingNotifier &notifier) const;
 };
 
-Settings SYNCTHINGWIDGETS_EXPORT &values();
-void SYNCTHINGWIDGETS_EXPORT restore();
-void SYNCTHINGWIDGETS_EXPORT save();
+SYNCTHINGWIDGETS_EXPORT Settings &values();
+SYNCTHINGWIDGETS_EXPORT void restore();
+SYNCTHINGWIDGETS_EXPORT void save();
 } // namespace Settings
 
 #endif // SETTINGS_H

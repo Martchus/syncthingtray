@@ -34,7 +34,7 @@ QT_ANNOTATE_CLASS(qt_qnamespace, "") /*end*/
 
 struct SyncthingConnectionSettings;
 
-QNetworkAccessManager LIB_SYNCTHING_CONNECTOR_EXPORT &networkAccessManager();
+LIB_SYNCTHING_CONNECTOR_EXPORT QNetworkAccessManager &networkAccessManager();
 
 enum class SyncthingStatus { Disconnected, Reconnecting, Idle, Scanning, Paused, Synchronizing, OutOfSync, BeingDestroyed };
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))

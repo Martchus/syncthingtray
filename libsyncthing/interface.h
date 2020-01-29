@@ -32,14 +32,14 @@ constexpr auto highestLogLevel = LogLevel::Fatal;
 
 using LoggingCallback = std::function<void(LogLevel, const char *message, std::size_t messageSize)>;
 
-void LIB_SYNCTHING_EXPORT setLoggingCallback(const LoggingCallback &callback);
-void LIB_SYNCTHING_EXPORT setLoggingCallback(LoggingCallback &&callback);
-std::int64_t LIB_SYNCTHING_EXPORT runSyncthing(const RuntimeOptions &options = RuntimeOptions{});
-bool LIB_SYNCTHING_EXPORT isSyncthingRunning();
-std::int64_t LIB_SYNCTHING_EXPORT stopSyncthing();
-std::string LIB_SYNCTHING_EXPORT ownDeviceId();
-std::string LIB_SYNCTHING_EXPORT syncthingVersion();
-std::string LIB_SYNCTHING_EXPORT longSyncthingVersion();
+LIB_SYNCTHING_EXPORT void setLoggingCallback(const LoggingCallback &callback);
+LIB_SYNCTHING_EXPORT void setLoggingCallback(LoggingCallback &&callback);
+LIB_SYNCTHING_EXPORT std::int64_t runSyncthing(const RuntimeOptions &options = RuntimeOptions{});
+LIB_SYNCTHING_EXPORT bool isSyncthingRunning();
+LIB_SYNCTHING_EXPORT std::int64_t stopSyncthing();
+LIB_SYNCTHING_EXPORT std::string ownDeviceId();
+LIB_SYNCTHING_EXPORT std::string syncthingVersion();
+LIB_SYNCTHING_EXPORT std::string longSyncthingVersion();
 
 } // namespace LibSyncthing
 

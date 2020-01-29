@@ -52,7 +52,7 @@ inline std::ostream &operator<<(std::ostream &o, const QSet<QString> &qstringset
 
 namespace CppUtilities {
 
-extern double SYNCTHINGTESTHELPER_EXPORT timeoutFactor;
+extern SYNCTHINGTESTHELPER_EXPORT double timeoutFactor;
 
 /*!
  * \brief Waits for the \a duration specified in ms while keeping the event loop running.

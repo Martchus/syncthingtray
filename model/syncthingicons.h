@@ -53,12 +53,12 @@ inline StatusIconColorSet::StatusIconColorSet(const QString &backgroundStart, co
 {
 }
 
-QByteArray LIB_SYNCTHING_MODEL_EXPORT makeSyncthingIcon(
+LIB_SYNCTHING_MODEL_EXPORT QByteArray makeSyncthingIcon(
     const StatusIconColorSet &colors = StatusIconColorSet{ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8"), QStringLiteral("#FFFFFF") },
     StatusEmblem statusEmblem = StatusEmblem::None);
-QPixmap LIB_SYNCTHING_MODEL_EXPORT renderSvgImage(const QString &path, const QSize &size = QSize(128, 128), int margin = 0);
-QPixmap LIB_SYNCTHING_MODEL_EXPORT renderSvgImage(const QByteArray &contents, const QSize &size = QSize(128, 128), int margin = 0);
-QByteArray LIB_SYNCTHING_MODEL_EXPORT loadFontAwesomeIcon(const QString &iconName, const QColor &color, bool solid = true);
+LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QString &path, const QSize &size = QSize(128, 128), int margin = 0);
+LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QByteArray &contents, const QSize &size = QSize(128, 128), int margin = 0);
+LIB_SYNCTHING_MODEL_EXPORT QByteArray loadFontAwesomeIcon(const QString &iconName, const QColor &color, bool solid = true);
 
 struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
     struct DarkTheme {

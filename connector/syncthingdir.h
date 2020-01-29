@@ -16,11 +16,11 @@ namespace Data {
 /// \remarks It needs to be kept in sync with the states defined in Syncthing's "syncthing/lib/model/folderstate.go".
 enum class SyncthingDirStatus { Unknown, Idle, WaitingToScan, Scanning, PreparingToSync, Synchronizing, OutOfSync };
 
-QString LIB_SYNCTHING_CONNECTOR_EXPORT statusString(SyncthingDirStatus status);
+LIB_SYNCTHING_CONNECTOR_EXPORT QString statusString(SyncthingDirStatus status);
 
 enum class SyncthingDirType { Unknown, SendReceive, SendOnly, ReceiveOnly };
 
-QString LIB_SYNCTHING_CONNECTOR_EXPORT dirTypeString(SyncthingDirType dirType);
+LIB_SYNCTHING_CONNECTOR_EXPORT QString dirTypeString(SyncthingDirType dirType);
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemError {
     SyncthingItemError(const QString &message = QString(), const QString &path = QString())

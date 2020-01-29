@@ -13,7 +13,7 @@ class SyncthingConnection;
 
 namespace QtGui {
 
-QDialog SYNCTHINGWIDGETS_EXPORT *ownDeviceIdDialog(Data::SyncthingConnection &connection);
+SYNCTHINGWIDGETS_EXPORT QDialog *ownDeviceIdDialog(Data::SyncthingConnection &connection);
 }
 
 #endif // SYNCTHINGWIDGETS_OTHERDIALOGS_H
