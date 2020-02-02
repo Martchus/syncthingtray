@@ -124,8 +124,8 @@ endif ()
 # generate Syncthing's assets: don't set GOARCH/GOOS here, this is supposed to run on the host
 add_custom_command(
     OUTPUT "${SYNCTHING_PATH}/lib/auto/gui.files.go"
-    COMMAND
-        "GOPATH=${GO_DEVELOPMENT_PATH}" "GO111MODULE=on" "${GO_BIN}" run ./script/genassets.go gui > lib/auto/gui.files.go
+    COMMAND "GOPATH=${GO_DEVELOPMENT_PATH}" "GO111MODULE=on" "${GO_BIN}" run ./script/genassets.go gui >
+            lib/auto/gui.files.go
     DEPENDS ${SRC_FILES_SYNCTHING_ASSETS}
     WORKING_DIRECTORY "${SYNCTHING_PATH}"
     COMMENT "Building Syncthing's assets")
@@ -149,7 +149,7 @@ find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 if (CPP_UTILITIES_SOURCE_DIR)
     list(APPEND PRIVATE_INCLUDE_DIRS $<BUILD_INTERFACE:${CPP_UTILITIES_SOURCE_DIR}/..>
-                $<INSTALL_INTERFACE:${CPP_UTILITIES_INCLUDE_DIRS}>)
+         $<INSTALL_INTERFACE:${CPP_UTILITIES_INCLUDE_DIRS}>)
 else ()
     list(APPEND PRIVATE_INCLUDE_DIRS ${CPP_UTILITIES_INCLUDE_DIRS})
 endif ()
@@ -170,15 +170,13 @@ elseif (UNIX)
 endif ()
 foreach (LIBRARY ${SYNCTHING_INTERNAL_LIBS})
     find_library(SYNCTHING_INTERNAL_LIBRARY_PATH_${LIBRARY} ${LIBRARY})
-    set_property(
-        TARGET syncthinginternal
-        APPEND
-        PROPERTY IMPORTED_LINK_INTERFACE_LIBRARIES ${SYNCTHING_INTERNAL_LIBRARY_PATH_${LIBRARY}})
+    set_property(TARGET syncthinginternal APPEND PROPERTY IMPORTED_LINK_INTERFACE_LIBRARIES
+                                                          ${SYNCTHING_INTERNAL_LIBRARY_PATH_${LIBRARY}})
 endforeach ()
 
 # depend on that imported target
 list(APPEND PRIVATE_LIBRARIES $<BUILD_INTERFACE:syncthinginternal>
-            $<INSTALL_INTERFACE:${LIB_INSTALL_DESTINATION}/libsyncthinginternal.a>)
+     $<INSTALL_INTERFACE:${LIB_INSTALL_DESTINATION}/libsyncthinginternal.a>)
 
 # include modules to apply configuration
 include(WindowsResources)
