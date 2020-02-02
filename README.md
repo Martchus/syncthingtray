@@ -57,6 +57,7 @@ to the list.
     * Open a directory with the default file browser
     * Pause/resume a specific device or all devices at once
     * Pause/resume a specific directory
+    * View recent history of changes (done locally and remotely)
 * Shows Syncthing notifications
 * Can read the local Syncthing configuration file for quick setup when just connecting to local instance
 * Can show the status of the Syncthing systemd unit and allows to start and stop it (see section *Use of systemd*)
@@ -89,12 +90,11 @@ to the list.
 The tray is still under development; the following features are under construction or planned:
 
 * Create Qt Quick Controls 2 and Kirigami 2 based frontend for mobile devices (focusing on Android)
-* Show recently processed items
 * Make some notifications configurable on folder level
 * Optionally notify for single file updates (https://github.com/Martchus/syncthingtray/issues/7)
 
 ## Screenshots
-The screenshots might not be up-to-date.
+The screenshots are not up-to-date.
 
 ### Qt Widgets based GUI under Openbox/Tint2 with dark Breeze theme
 ![Qt Widgets based GUI under Openbox/Tint2](/tray/resources/screenshots/tint2-dark.png?raw=true)
