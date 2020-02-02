@@ -282,6 +282,9 @@ void SyncthingService::setScopeAndUnitName(SystemdScope scope, const QString &un
     if (!unitName.isEmpty()) {
         queryUnitFromSystemdInterface();
     }
+    if (scopeChanged) {
+        emit this->scopeChanged(scope);
+    }
     if (unitNameChanged) {
         emit this->unitNameChanged(unitName);
     }
@@ -344,6 +347,7 @@ void SyncthingService::setScope(SystemdScope scope)
     m_scope = scope;
     clearSystemdInterface();
     queryUnitFromSystemdInterface();
+    emit scopeChanged(scope);
 }
 
 /*!

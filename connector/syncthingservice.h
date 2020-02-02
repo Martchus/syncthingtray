@@ -50,7 +50,8 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingService : public QObject {
     Q_PROPERTY(bool running READ isRunning WRITE setRunning NOTIFY runningChanged)
     Q_PROPERTY(bool enable READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
-    Q_PROPERTY(SystemdScope scope READ scope WRITE setScope)
+    Q_PROPERTY(SystemdScope scope READ scope WRITE setScope NOTIFY scopeChanged)
+    Q_PROPERTY(bool userScope READ isUserScope NOTIFY scopeChanged)
 
 public:
     explicit SyncthingService(SystemdScope scope = SystemdScope::User, QObject *parent = nullptr);
@@ -73,6 +74,7 @@ public:
     SystemdScope scope() const;
     void setScope(SystemdScope scope);
     void setScopeAndUnitName(SystemdScope scope, const QString &unitName);
+    bool isUserScope() const;
     static SyncthingService *mainInstance();
     static void setMainInstance(SyncthingService *mainInstance);
 
@@ -98,6 +100,7 @@ Q_SIGNALS:
     void runningChanged(bool running);
     void enabledChanged(bool enable);
     void errorOccurred(const QString &context, const QString &name, const QString &message);
+    void scopeChanged(SystemdScope scope);
 
 private Q_SLOTS:
     void handleUnitAdded(const QString &unitName, const QDBusObjectPath &unitPath);
@@ -248,6 +251,14 @@ inline bool SyncthingService::isManuallyStopped() const
 inline SystemdScope SyncthingService::scope() const
 {
     return m_scope;
+}
+
+/*!
+ * \brief Returns whether the scope is SystemdScope::User.
+ */
+inline bool SyncthingService::isUserScope() const
+{
+    return m_scope == SystemdScope::User;
 }
 
 /*!

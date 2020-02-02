@@ -500,7 +500,7 @@ Systemd::ServiceStatus Systemd::apply(
     const auto consideredForReconnect = considerForReconnect && isRelevant && unitAvailable;
     connectAccordingToSettings(
         connection, currentConnectionSettings, *service, reconnectRequired, considerForReconnect, isRelevant, isRunning, consideredForReconnect);
-    return ServiceStatus{ isRelevant, isRunning, consideredForReconnect, showButton && isRelevant };
+    return ServiceStatus{ isRelevant, isRunning, consideredForReconnect, showButton && isRelevant, service->isUserScope() };
 }
 
 /*!
@@ -513,7 +513,7 @@ Systemd::ServiceStatus Systemd::status(SyncthingConnection &connection) const
         return ServiceStatus{};
     }
     const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
-    return ServiceStatus{ isRelevant, service->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant };
+    return ServiceStatus{ isRelevant, service->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant, service->isUserScope() };
 }
 #endif
 

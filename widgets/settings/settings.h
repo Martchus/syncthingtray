@@ -113,6 +113,7 @@ struct SYNCTHINGWIDGETS_EXPORT Systemd {
         bool running = false;
         bool consideredForReconnect = false;
         bool showStartStopButton = false;
+        bool userService = true;
     };
     void setupService(Data::SyncthingService &) const;
     ServiceStatus apply(Data::SyncthingConnection &connection, const Data::SyncthingConnectionSettings *currentConnectionSettings,

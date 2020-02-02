@@ -731,12 +731,16 @@ Settings::Systemd::ServiceStatus TrayWidget::applySystemdSettings(bool reconnect
     m_startStopButtonTarget = StartStopButtonTarget::Service;
     if (serviceStatus.running) {
         m_ui->startStopPushButton->setText(tr("Stop"));
-        m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user stop ") + systemdSettings.syncthingUnit);
+        m_ui->startStopPushButton->setToolTip(
+            (serviceStatus.userService ? QStringLiteral("systemctl --user stop ") : QStringLiteral("systemctl stop "))
+            + systemdSettings.syncthingUnit);
         m_ui->startStopPushButton->setIcon(
             QIcon::fromTheme(QStringLiteral("process-stop"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/process-stop.svg"))));
     } else {
         m_ui->startStopPushButton->setText(tr("Start"));
-        m_ui->startStopPushButton->setToolTip(QStringLiteral("systemctl --user start ") + systemdSettings.syncthingUnit);
+        m_ui->startStopPushButton->setToolTip(
+            (serviceStatus.userService ? QStringLiteral("systemctl --user start ") : QStringLiteral("systemctl start "))
+            + systemdSettings.syncthingUnit);
         m_ui->startStopPushButton->setIcon(
             QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
     }

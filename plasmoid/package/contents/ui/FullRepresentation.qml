@@ -247,7 +247,7 @@ ColumnLayout {
                         target: startStopButton
                         visible: true
                         text: qsTr("Stop")
-                        tooltip: "systemctl --user stop "
+                        tooltip: (plasmoid.nativeInterface.service.userScope ? "systemctl --user stop " : "systemctl stop ")
                                  + plasmoid.nativeInterface.service.unitName
                         iconSource: "process-stop"
                     }
@@ -258,7 +258,7 @@ ColumnLayout {
                         target: startStopButton
                         visible: true
                         text: qsTr("Start")
-                        tooltip: "systemctl --user start "
+                        tooltip: (plasmoid.nativeInterface.service.userScope ? "systemctl --user start " : "systemctl start ")
                                  + plasmoid.nativeInterface.service.unitName
                         iconSource: "system-run"
                     }
