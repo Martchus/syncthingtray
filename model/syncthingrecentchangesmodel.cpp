@@ -41,7 +41,7 @@ QHash<int, QByteArray> SyncthingRecentChangesModel::roleNames() const
 
 const QVector<int> &SyncthingRecentChangesModel::colorRoles() const
 {
-    static const QVector<int> colorRoles({ Qt::DecorationRole, Qt::ForegroundRole });
+    static const QVector<int> colorRoles({ Qt::DecorationRole, Qt::ForegroundRole, ActionIcon });
     return colorRoles;
 }
 
