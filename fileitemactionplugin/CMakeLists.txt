@@ -41,7 +41,9 @@ include(WindowsResources)
 include(LibraryTarget)
 include(ConfigHeader)
 
-install(
-    FILES ${META_PROJECT_NAME}.desktop
-    DESTINATION "share/kservices5"
-    COMPONENT desktop)
+# configure and install desktop file
+include(TemplateFinder)
+find_template_file("${META_PROJECT_NAME}.desktop" "${META_PROJECT_NAME}" DESKTOP_TEMPLATE_FILE)
+set(DESKTOP_TARGET_FILE "${CMAKE_CURRENT_BINARY_DIR}/${META_TARGET_NAME}.desktop")
+configure_file("${DESKTOP_TEMPLATE_FILE}" "${DESKTOP_TARGET_FILE}")
+install(FILES "${DESKTOP_TARGET_FILE}" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/kservices5" COMPONENT desktop)

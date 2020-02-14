@@ -1,4 +1,17 @@
-#!/bin/sh
+#!/bin/bash
+set -e
+
+# use the package dir within the source-tree so one does not need to run CMake again for updating
+# build-tree copy all the time
+package_dir=$(dirname $0)/../package
+
+# copy the generated desktop file back into the source-tree package dir so it can actually be used
+meta_data_file=$1
+cp --target-directory="$package_dir" "$meta_data_file"
+
+# install or update the package into the working directory
 export HOME="$PWD"
-plasmapkg2 --install $(dirname $0)/../package || plasmapkg2 --upgrade $(dirname $0)/../package
+if ! plasmapkg2 --install "$package_dir"; then
+    plasmapkg2 --upgrade "$package_dir"
+fi
 exit $?

@@ -20,6 +20,9 @@ set(TEST_SRC_FILES tests/manualtesting.cpp)
 
 set(TS_FILES)
 
+# don't allow adding a target suffix to the test library
+set(SYNCTHINGTESTHELPER_CONFIGURATION_TARGET_SUFFIX none)
+
 # find c++utilities
 find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 use_cpp_utilities()

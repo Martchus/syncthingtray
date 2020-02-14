@@ -2,33 +2,10 @@
 set(HEADER_FILES syncthingapplet.h settingsdialog.h)
 set(SRC_FILES syncthingapplet.cpp settingsdialog.cpp)
 set(WIDGETS_UI_FILES appearanceoptionpage.ui)
-set(PLASMOID_FILES
-    ../package/metadata.desktop
-    ../package/contents/ui/CompactRepresentation.qml
-    ../package/contents/ui/FullRepresentation.qml
-    ../package/contents/ui/DirectoriesPage.qml
-    ../package/contents/ui/DevicesPage.qml
-    ../package/contents/ui/DownloadsPage.qml
-    ../package/contents/ui/RecentChangesPage.qml
-    ../package/contents/ui/TopLevelView.qml
-    ../package/contents/ui/TopLevelItem.qml
-    ../package/contents/ui/DetailView.qml
-    ../package/contents/ui/DetailItem.qml
-    ../package/contents/ui/ToolTipTrigger.qml
-    ../package/contents/ui/ToolTipView.qml
-    ../package/contents/ui/TinyButton.qml
-    ../package/contents/ui/TinyButtonStyle.qml
-    ../package/contents/ui/ButtonShadow.qml
-    ../package/contents/ui/IconLabel.qml
-    ../package/contents/ui/StatisticsView.qml
-    ../package/contents/ui/main.qml)
-list(APPEND QML_SRC_FILES ${PLASMOID_FILES})
-
+foreach (PLASMOID_FILE ${PLASMOID_FILES})
+    list(APPEND QML_SRC_FILES "../${PLASMOID_FILE}")
+endforeach ()
 set(TS_FILES ../translations/${META_PROJECT_NAME}_de_DE.ts ../translations/${META_PROJECT_NAME}_en_US.ts)
-
-# find c++utilities
-find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
-list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 
 # find qtutilities
 find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX} 6.0.0 REQUIRED)
@@ -62,5 +39,10 @@ include(WindowsResources)
 include(LibraryTarget)
 include(ConfigHeader)
 
+# export some variable for further use in the overall plasmoid build script
+set(META_TARGET_NAME "${META_TARGET_NAME}" PARENT_SCOPE)
+set(META_ID "martchus.${META_TARGET_NAME}" PARENT_SCOPE)
+set(META_PROJECT_LICENSE "${META_PROJECT_LICENSE}" PARENT_SCOPE)
+
 # what ever this does, it is done
-kcoreaddons_desktop_to_json("${META_PROJECT_NAME}" ../package/metadata.desktop)
+kcoreaddons_desktop_to_json("${META_TARGET_NAME}" "${PLASMOID_CONFIG_TARGET_FILE}" DESKTOP_TO_JSON_OUTPUT_DIR "${PLASMOID_PACKAGE_DIR}")
