@@ -350,32 +350,32 @@
 <context>
     <name>Data::SyncthingRecentChangesModel</name>
     <message>
-        <location filename="../syncthingrecentchangesmodel.cpp" line="71"/>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="69"/>
         <source>Action</source>
         <translation>Aktion</translation>
     </message>
     <message>
-        <location filename="../syncthingrecentchangesmodel.cpp" line="73"/>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="71"/>
         <source>Device</source>
         <translation>Gerät</translation>
     </message>
     <message>
-        <location filename="../syncthingrecentchangesmodel.cpp" line="75"/>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="73"/>
         <source>Directory</source>
         <translation>Verzeichnis</translation>
     </message>
     <message>
-        <location filename="../syncthingrecentchangesmodel.cpp" line="77"/>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="75"/>
         <source>Path</source>
         <translation>Pfad</translation>
     </message>
     <message>
-        <location filename="../syncthingrecentchangesmodel.cpp" line="123"/>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="121"/>
         <source>Locally</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../syncthingrecentchangesmodel.cpp" line="123"/>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="121"/>
         <source>Remotely</source>
         <translation></translation>
     </message>

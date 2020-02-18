@@ -140,7 +140,7 @@
     <message>
         <location filename="../gui/traywidget.ui" line="72"/>
         <location filename="../gui/traywidget.cpp" line="696"/>
-        <location filename="../gui/traywidget.cpp" line="738"/>
+        <location filename="../gui/traywidget.cpp" line="740"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
@@ -356,27 +356,27 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="46"/>
+        <location filename="../application/main.cpp" line="48"/>
         <source>Unable to </source>
         <translation>Fehler beim </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="72"/>
+        <location filename="../application/main.cpp" line="74"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>Das System-Tray bzw. der Infobereich ist aktuell nicht verfügbar. Mit der Option &quot;--windowed&quot; ist es möglich, Syncthing Tray als normales Fenster zu starten. Außerdem ist es möglich mit der Option &quot;--wait&quot; zu warten bis das System-Tray verfügbar ist anstelle diesen Dialog zu zeigen.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="90"/>
+        <location filename="../application/main.cpp" line="92"/>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>
         <translation>Vor der ersten Verwendung muss eingestellt werden, wie sich das Syncthing Tray mit Syncthing verbinden soll.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="91"/>
+        <location filename="../application/main.cpp" line="93"/>
         <source>Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration.</source>
         <translation>Der Einstellungsdialog ermöglicht es die URL, Zugangsdaten und den API-Key automatisch aus der lokalen Syncthing-Konfiguration auszulesen.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="100"/>
+        <location filename="../application/main.cpp" line="102"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Die verwendete Qt-Bibliothek wurde nicht mit Unterstützung für System-Tray konfiguriert. Es wäre möglich, Syncthing Tray als normales Fenster zu starten (mit Option -w).</translation>
     </message>

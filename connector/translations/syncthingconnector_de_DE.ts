@@ -4,48 +4,48 @@
 <context>
     <name>Data::SyncthingConnection</name>
     <message>
-        <location filename="../syncthingconnection.cpp" line="160"/>
+        <location filename="../syncthingconnection.cpp" line="161"/>
         <source>disconnected</source>
         <translation>Verbindung getrennt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="162"/>
+        <location filename="../syncthingconnection.cpp" line="163"/>
         <source>reconnecting</source>
         <translation>Verbindung wird hergestellt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="164"/>
+        <location filename="../syncthingconnection.cpp" line="165"/>
         <source>connected</source>
         <translation>verbunden</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="166"/>
+        <location filename="../syncthingconnection.cpp" line="167"/>
         <source>connected, scanning</source>
         <translation>verbunden, scannt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="168"/>
+        <location filename="../syncthingconnection.cpp" line="169"/>
         <source>connected, paused</source>
         <translation>verbunden, pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="170"/>
+        <location filename="../syncthingconnection.cpp" line="171"/>
         <source>connected, synchronizing</source>
         <translation>verbunden, am Synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="172"/>
+        <location filename="../syncthingconnection.cpp" line="173"/>
         <source>connected, out of sync</source>
         <translation>verbunden, nicht synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="174"/>
+        <location filename="../syncthingconnection.cpp" line="175"/>
         <source>unknown</source>
         <translation>Verbindungsstatus unbekannt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="228"/>
-        <location filename="../syncthingconnection.cpp" line="411"/>
+        <location filename="../syncthingconnection.cpp" line="229"/>
+        <location filename="../syncthingconnection.cpp" line="412"/>
         <source>Connection configuration is insufficient.</source>
         <translation>Verbindungskonfiguration is ungenügend</translation>
     </message>
@@ -80,12 +80,12 @@
         <translation>Fehler beim Abfragen des Syncthing-Logs: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="708"/>
+        <location filename="../syncthingconnection.cpp" line="709"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="714"/>
+        <location filename="../syncthingconnection.cpp" line="715"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht ausgelesen werden.</translation>
     </message>
@@ -156,12 +156,12 @@
         <translation>Fehler beim Löschen der Fehlermeldungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1533"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1537"/>
         <source>Unable to parse Syncthing events: </source>
         <translation>Fehler beim Auslesen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1558"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1562"/>
         <source>Unable to request Syncthing events: </source>
         <translation>Fehler beim Abfragen der Syncthing-Ereignisse: </translation>
     </message>
@@ -231,17 +231,17 @@
         <translation>Fehler beim Anfordern der Syncthing-Version: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2068"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2072"/>
         <source>Unable to parse disk events: </source>
         <translation>Fehler beim Auslesen der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2083"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2087"/>
         <source>Unable to request disk events: </source>
         <translation>Fehler beim Anfordern der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="861"/>
+        <location filename="../syncthingconnection.cpp" line="862"/>
         <source>at offset %1</source>
         <translation>bei Zeichen %1</translation>
     </message>
@@ -297,22 +297,22 @@
 <context>
     <name>Data::SyncthingService</name>
     <message>
-        <location filename="../syncthingservice.cpp" line="360"/>
+        <location filename="../syncthingservice.cpp" line="364"/>
         <source>start unit</source>
         <translation>Starten der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="362"/>
+        <location filename="../syncthingservice.cpp" line="366"/>
         <source>stop unit</source>
         <translation>Stoppen der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="377"/>
+        <location filename="../syncthingservice.cpp" line="381"/>
         <source>enable unit</source>
         <translation>Aktivieren der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="379"/>
+        <location filename="../syncthingservice.cpp" line="383"/>
         <source>disable unit</source>
         <translation>Deaktivieren der Unit</translation>
     </message>
