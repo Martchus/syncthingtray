@@ -40,9 +40,16 @@ include(LibraryTarget)
 include(ConfigHeader)
 
 # export some variable for further use in the overall plasmoid build script
-set(META_TARGET_NAME "${META_TARGET_NAME}" PARENT_SCOPE)
-set(META_ID "martchus.${META_TARGET_NAME}" PARENT_SCOPE)
-set(META_PROJECT_LICENSE "${META_PROJECT_LICENSE}" PARENT_SCOPE)
+set(META_TARGET_NAME
+    "${META_TARGET_NAME}"
+    PARENT_SCOPE)
+set(META_ID
+    "martchus.${META_TARGET_NAME}"
+    PARENT_SCOPE)
+set(META_PROJECT_LICENSE
+    "${META_PROJECT_LICENSE}"
+    PARENT_SCOPE)
 
 # what ever this does, it is done
-kcoreaddons_desktop_to_json("${META_TARGET_NAME}" "${PLASMOID_CONFIG_TARGET_FILE}" DESKTOP_TO_JSON_OUTPUT_DIR "${PLASMOID_PACKAGE_DIR}")
+kcoreaddons_desktop_to_json("${META_TARGET_NAME}" "${PLASMOID_CONFIG_TARGET_FILE}" DESKTOP_TO_JSON_OUTPUT_DIR
+                            "${PLASMOID_PACKAGE_DIR}")

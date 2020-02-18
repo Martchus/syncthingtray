@@ -12,6 +12,7 @@
 class SyncthingFileItemActionStaticData : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString configPath READ configPath)
+    Q_PROPERTY(bool useBrightCustomColors READ isUsingBrightCustomColors)
     Q_PROPERTY(QString currentError READ currentError WRITE setCurrentError NOTIFY currentErrorChanged RESET clearCurrentError)
     Q_PROPERTY(bool hasError READ hasError NOTIFY hasErrorChanged)
     Q_PROPERTY(bool initialized READ isInitialized)
@@ -21,6 +22,7 @@ public:
     Data::SyncthingConnection &connection();
     const Data::SyncthingConnection &connection() const;
     const QString &configPath() const;
+    bool isUsingBrightCustomColors() const;
     const QString &currentError() const;
     bool hasError() const;
     bool isInitialized() const;
@@ -28,11 +30,13 @@ public:
 public Q_SLOTS:
     void initialize();
     bool applySyncthingConfiguration(const QString &syncthingConfigFilePath, const QString &syncthingApiKey, bool skipSavingConfig);
+    void applyBrightCustomColorsSetting(bool useBrightCustomColors, bool skipSavingConfig);
     void logConnectionStatus();
     void logConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory errorCategory);
     void rescanDir(const QString &dirId, const QString &relpath = QString());
     static void showAboutDialog();
     void selectSyncthingConfig();
+    void handleBrightCustomColorsChanged();
     void setCurrentError(const QString &currentError);
     void clearCurrentError();
 
@@ -46,6 +50,7 @@ private:
     Data::SyncthingConnection m_connection;
     QString m_configFilePath;
     QString m_currentError;
+    bool m_useBrightCustomColors;
     bool m_initialized;
 };
 
@@ -62,6 +67,11 @@ inline const Data::SyncthingConnection &SyncthingFileItemActionStaticData::conne
 inline const QString &SyncthingFileItemActionStaticData::configPath() const
 {
     return m_configFilePath;
+}
+
+inline bool SyncthingFileItemActionStaticData::isUsingBrightCustomColors() const
+{
+    return m_useBrightCustomColors;
 }
 
 inline const QString &SyncthingFileItemActionStaticData::currentError() const

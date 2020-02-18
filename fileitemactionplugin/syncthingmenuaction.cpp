@@ -66,7 +66,7 @@ void SyncthingMenuAction::updateActionStatus()
     // handle case when already connected
     if (connection.isConnected()) {
         setText(tr("Syncthing"));
-        setIcon(renderSvgImage(makeSyncthingIcon(), QSize(16, 16)));
+        setIcon(statusIcons().idling);
         return;
     }
 

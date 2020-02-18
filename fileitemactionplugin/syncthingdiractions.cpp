@@ -1,4 +1,5 @@
 #include "./syncthingdiractions.h"
+#include "./syncthingfileitemactionstaticdata.h"
 
 #include "../model/syncthingicons.h"
 
@@ -7,17 +8,18 @@
 
 using namespace Data;
 
-SyncthingDirActions::SyncthingDirActions(const SyncthingDir &dir, QObject *parent)
+SyncthingDirActions::SyncthingDirActions(const SyncthingDir &dir, const SyncthingFileItemActionStaticData *data, QObject *parent)
     : QObject(parent)
     , m_dirId(dir.id)
 {
+    const auto &icons = !data || !data->isUsingBrightCustomColors() ? fontAwesomeIconsForLightTheme() : fontAwesomeIconsForDarkTheme();
     m_infoAction.setSeparator(true);
-    m_infoAction.setIcon(fontAwesomeIconsForLightTheme().folder);
-    m_globalStatusAction.setIcon(fontAwesomeIconsForLightTheme().globe);
-    m_localStatusAction.setIcon(fontAwesomeIconsForLightTheme().home);
-    m_lastScanAction.setIcon(fontAwesomeIconsForLightTheme().clock);
-    m_rescanIntervalAction.setIcon(fontAwesomeIconsForLightTheme().refresh);
-    m_errorsAction.setIcon(fontAwesomeIconsForLightTheme().exclamationTriangle);
+    m_infoAction.setIcon(icons.folder);
+    m_globalStatusAction.setIcon(icons.globe);
+    m_localStatusAction.setIcon(icons.home);
+    m_lastScanAction.setIcon(icons.clock);
+    m_rescanIntervalAction.setIcon(icons.refresh);
+    m_errorsAction.setIcon(icons.exclamationTriangle);
     updateStatus(dir);
 }
 

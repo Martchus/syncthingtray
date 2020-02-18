@@ -5,6 +5,8 @@
 
 #include "./syncthinginfoaction.h"
 
+class SyncthingFileItemActionStaticData;
+
 /*!
  * \brief The SyncthingDirActions class provides the read-only directory info actions.
  */
@@ -13,7 +15,7 @@ class SyncthingDirActions : public QObject {
     friend QList<QAction *> &operator<<(QList<QAction *> &, SyncthingDirActions &);
 
 public:
-    explicit SyncthingDirActions(const Data::SyncthingDir &dir, QObject *parent = nullptr);
+    explicit SyncthingDirActions(const Data::SyncthingDir &dir, const SyncthingFileItemActionStaticData *data = nullptr, QObject *parent = nullptr);
 
 public Q_SLOTS:
     void updateStatus(const std::vector<Data::SyncthingDir> &dirs);

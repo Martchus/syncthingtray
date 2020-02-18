@@ -12,6 +12,7 @@
 #include <qtutilities/aboutdialog/aboutdialog.h>
 #include <qtutilities/resources/resources.h>
 
+#include <QAction>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
@@ -28,7 +29,8 @@ using namespace QtUtilities;
 using namespace Data;
 
 SyncthingFileItemActionStaticData::SyncthingFileItemActionStaticData()
-    : m_initialized(false)
+    : m_useBrightCustomColors(false)
+    , m_initialized(false)
 {
 }
 
@@ -57,6 +59,10 @@ void SyncthingFileItemActionStaticData::initialize()
     }();
     applySyncthingConfiguration(m_configFilePath, settingsFile.value(QStringLiteral("syncthingApiKey")).toString(), true);
 
+    // apply icon settings
+    applyBrightCustomColorsSetting(
+        m_useBrightCustomColors = settingsFile.value(QStringLiteral("useBrightCustomColors"), m_useBrightCustomColors).toBool(), true);
+
     // prevent unnecessary API calls (for the purpose of the context menu)
     m_connection.disablePolling();
 
@@ -65,9 +71,6 @@ void SyncthingFileItemActionStaticData::initialize()
     if (qEnvironmentVariableIsSet("KIO_SYNCTHING_LOG_STATUS")) {
         connect(&m_connection, &SyncthingConnection::statusChanged, this, &SyncthingFileItemActionStaticData::logConnectionStatus);
     }
-
-    // use default icon settings
-    IconManager::instance().applySettings();
 
     m_initialized = true;
 }
@@ -114,6 +117,11 @@ void SyncthingFileItemActionStaticData::selectSyncthingConfig()
     if (!configFilePath.isEmpty()) {
         applySyncthingConfiguration(configFilePath, QString(), false);
     }
+}
+
+void SyncthingFileItemActionStaticData::handleBrightCustomColorsChanged()
+{
+    applyBrightCustomColorsSetting(qobject_cast<const QAction *>(QObject::sender())->isChecked(), false);
 }
 
 void SyncthingFileItemActionStaticData::appendNoteToError(QString &errorMessage, const QString &newSyncthingConfigFilePath) const
@@ -190,6 +198,23 @@ bool SyncthingFileItemActionStaticData::applySyncthingConfiguration(
     }
 
     return true;
+}
+
+void SyncthingFileItemActionStaticData::applyBrightCustomColorsSetting(bool useBrightCustomColors, bool skipSavingConfig)
+{
+    if (useBrightCustomColors) {
+        static const auto settings = StatusIconSettings(StatusIconSettings::DarkTheme());
+        IconManager::instance().applySettings(&settings);
+    } else {
+        static const auto settings = StatusIconSettings(StatusIconSettings::BrightTheme());
+        IconManager::instance().applySettings(&settings);
+    }
+
+    // save new config persistently
+    if (!skipSavingConfig) {
+        QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral(PROJECT_NAME));
+        settings.setValue(QStringLiteral("useBrightCustomColors"), m_useBrightCustomColors = useBrightCustomColors);
+    }
 }
 
 void SyncthingFileItemActionStaticData::setCurrentError(const QString &currentError)

@@ -206,7 +206,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
 
     // add actions to show further information about directory if the selection is only about one particular Syncthing dir
     if (lastDir && detectedDirs.size() + containingDirs.size() == 1) {
-        auto *statusActions = new SyncthingDirActions(*lastDir, parent);
+        auto *statusActions = new SyncthingDirActions(*lastDir, &data, parent);
         connect(&connection, &SyncthingConnection::newDirs, statusActions,
             static_cast<void (SyncthingDirActions::*)(const vector<SyncthingDir> &)>(&SyncthingDirActions::updateStatus));
         connect(&connection, &SyncthingConnection::dirStatusChanged, statusActions,
@@ -231,7 +231,12 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     connect(&data, &SyncthingFileItemActionStaticData::currentErrorChanged, errorAction, &QAction::changed);
     actions << errorAction;
 
-    // add config file selection
+    // add config items
+    QAction *const brightCustomColorsAction = new QAction(QIcon::fromTheme(QStringLiteral("color-profile")), tr("Use bright custom colors"), parent);
+    brightCustomColorsAction->setCheckable(true);
+    brightCustomColorsAction->setChecked(data.isUsingBrightCustomColors());
+    connect(brightCustomColorsAction, &QAction::triggered, &data, &SyncthingFileItemActionStaticData::handleBrightCustomColorsChanged);
+    actions << brightCustomColorsAction;
     QAction *const configFileAction = new QAction(QIcon::fromTheme(QStringLiteral("settings-configure")), tr("Select Syncthing config ..."), parent);
     connect(configFileAction, &QAction::triggered, &data, &SyncthingFileItemActionStaticData::selectSyncthingConfig);
     actions << configFileAction;
