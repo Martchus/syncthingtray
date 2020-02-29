@@ -479,9 +479,11 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     if (settings.appearance.tabPosition >= QTabWidget::North && settings.appearance.tabPosition <= QTabWidget::East) {
         m_ui->tabWidget->setTabPosition(static_cast<QTabWidget::TabPosition>(settings.appearance.tabPosition));
     }
-    m_dirModel.setBrightColors(settings.appearance.brightTextColors);
-    m_devModel.setBrightColors(settings.appearance.brightTextColors);
-    m_dlModel.setBrightColors(settings.appearance.brightTextColors);
+    const auto brightColors = settings.appearance.brightTextColors;
+    m_dirModel.setBrightColors(brightColors);
+    m_devModel.setBrightColors(brightColors);
+    m_dlModel.setBrightColors(brightColors);
+    m_recentChangesModel.setBrightColors(brightColors);
     IconManager::instance().applySettings(&settings.icons.status, settings.icons.distinguishTrayIcons ? &settings.icons.tray : nullptr);
 
     // update status icon and text of tray icon because reconnect interval might have changed

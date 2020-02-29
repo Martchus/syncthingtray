@@ -401,6 +401,7 @@ void SyncthingApplet::handleSettingsChanged()
     m_dirModel.setBrightColors(brightColors);
     m_devModel.setBrightColors(brightColors);
     m_downloadModel.setBrightColors(brightColors);
+    m_recentChangesModel.setBrightColors(brightColors);
     IconManager::instance().applySettings(&settings.icons.status);
 
     // restore selected states
