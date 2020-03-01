@@ -370,7 +370,10 @@ QString SyncthingDeviceModel::devStatusString(const SyncthingDev &dev)
     case SyncthingDevStatus::Disconnected:
         return tr("Disconnected");
     case SyncthingDevStatus::Synchronizing:
-        return dev.progressPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dev.progressPercentage) : tr("Synchronizing");
+        return dev.overallCompletion.needed.bytes > 0 ? tr("Synchronizing (%1 %, %2)")
+                                                            .arg(dev.overallCompletion.percentage)
+                                                            .arg(QString::fromStdString(dataSizeToString(dev.overallCompletion.needed.bytes)))
+                                                      : tr("Synchronizing");
     case SyncthingDevStatus::OutOfSync:
         return tr("Out of sync");
     case SyncthingDevStatus::Rejected:
