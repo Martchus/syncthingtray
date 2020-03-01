@@ -1097,50 +1097,66 @@ void SyncthingConnection::requestCompletion(const QString &devId, const QString 
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readCompletion);
 }
 
+/// \cond
+static void ensureCompletionNotConsideredRequested(const QString &devId, SyncthingDev *devInfo, const QString &dirId, SyncthingDir *dirInfo)
+{
+    if (devInfo) {
+        devInfo->completionByDir[dirId].requested = false;
+    }
+    if (dirInfo) {
+        dirInfo->completionByDevice[dirId].requested = false;
+    }
+}
+/// \endcond
+
 /*!
  * \brief Reads data from requestCompletion().
  */
 void SyncthingConnection::readCompletion()
 {
-    auto *const reply = prepareReply(m_otherReplies);
+    auto *reply = prepareReply(m_otherReplies);
+    const auto cancelled = reply == nullptr;
     if (!reply) {
-        return;
+        reply = static_cast<QNetworkReply *>(sender());
     }
+
+    // determine relevant dev/dir
     const auto devId(reply->property("devId").toString());
     const auto dirId(reply->property("dirId").toString());
+    int devIndex, dirIndex;
+    auto *const devInfo = findDevInfo(devId, devIndex);
+    auto *const dirInfo = findDirInfo(dirId, dirIndex);
+    if (!devInfo && !dirInfo) {
+        return;
+    }
 
+    if (cancelled) {
+        ensureCompletionNotConsideredRequested(devId, devInfo, dirId, dirInfo);
+        return;
+    }
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        // determine relevant dev/dir
-        int devIndex, dirIndex;
-        auto *const devInfo = findDevInfo(devId, devIndex);
-        auto *const dirInfo = findDirInfo(dirId, dirIndex);
-        // discard status if the related dev and dir are unknown
-        if (!devInfo && !dirInfo) {
-            return;
-        }
-
         // parse JSON
         QJsonParseError jsonError;
         const auto response(reply->readAll());
         const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
-        if (jsonError.error != QJsonParseError::NoError) {
-            emitError(tr("Unable to parse completion for device/directory %1/%2: ").arg(devId, dirId), jsonError, reply, response);
+        if (jsonError.error == QJsonParseError::NoError) {
+            // update the relevant completion info
+            readRemoteFolderCompletion(DateTime::gmtNow(), replyDoc.object(), devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
+            concludeConnection();
             return;
         }
 
-        // update the relevant completion info
-        readRemoteFolderCompletion(DateTime::gmtNow(), replyDoc.object(), devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
-
-        concludeConnection();
+        emitError(tr("Unable to parse completion for device/directory %1/%2: ").arg(devId, dirId), jsonError, reply, response);
         break;
     }
     case QNetworkReply::OperationCanceledError:
         handleAdditionalRequestCanceled();
-        return;
+        break;
     default:
         emitError(tr("Unable to request completion for device/directory %1/%2: ").arg(devId, dirId), SyncthingErrorCategory::SpecificRequest, reply);
     }
+    ensureCompletionNotConsideredRequested(devId, devInfo, dirId, dirInfo);
 }
 
 /*!
@@ -2030,7 +2046,7 @@ void SyncthingConnection::readRemoteFolderCompletion(DateTime eventTime, const Q
 void SyncthingConnection::readRemoteIndexUpdated(DateTime eventTime, const QJsonObject &eventData)
 {
     // ignore those events if we're not updating completion automatically
-    if (!m_requestCompletion) {
+    if (!m_requestCompletion && !m_keepPolling) {
         return;
     }
 
@@ -2054,9 +2070,9 @@ void SyncthingConnection::readRemoteIndexUpdated(DateTime eventTime, const QJson
         return;
     }
 
-    // request completion again if out-of-date
+    // request completion again if not already requested and out-of-date
     const auto &completion = dirInfo ? dirInfo->completionByDevice[devId] : devInfo->completionByDir[dirId];
-    if (completion.lastUpdate < eventTime) {
+    if (!completion.requested && completion.lastUpdate < eventTime) {
         requestCompletion(devId, dirId);
     }
 }

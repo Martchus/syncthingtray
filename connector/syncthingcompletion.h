@@ -23,6 +23,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingCompletion {
         constexpr Needed &operator+=(const Needed &other);
         constexpr Needed &operator-=(const Needed &other);
     } needed;
+    bool requested = false;
     constexpr SyncthingCompletion &operator+=(const SyncthingCompletion &other);
     constexpr SyncthingCompletion &operator-=(const SyncthingCompletion &other);
     void recomputePercentage();
