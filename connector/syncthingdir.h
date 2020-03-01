@@ -1,7 +1,7 @@
 ﻿#ifndef DATA_SYNCTHINGDIR_H
 #define DATA_SYNCTHINGDIR_H
 
-#include "./global.h"
+#include "./syncthingcompletion.h"
 
 #include <c++utilities/chrono/datetime.h>
 
@@ -23,7 +23,7 @@ enum class SyncthingDirType { Unknown, SendReceive, SendOnly, ReceiveOnly };
 LIB_SYNCTHING_CONNECTOR_EXPORT QString dirTypeString(SyncthingDirType dirType);
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemError {
-    SyncthingItemError(const QString &message = QString(), const QString &path = QString())
+    explicit SyncthingItemError(const QString &message = QString(), const QString &path = QString())
         : message(message)
         , path(path)
     {
@@ -48,7 +48,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingFileChange {
 };
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemDownloadProgress {
-    SyncthingItemDownloadProgress(
+    explicit SyncthingItemDownloadProgress(
         const QString &containingDirPath = QString(), const QString &relativeItemPath = QString(), const QJsonObject &values = QJsonObject());
     QString relativePath;
     QFileInfo fileInfo;
@@ -65,35 +65,6 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemDownloadProgress {
     CppUtilities::DateTime lastUpdate;
     static constexpr unsigned int syncthingBlockSize = 128 * 1024;
 };
-
-struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingCompletion {
-    CppUtilities::DateTime lastUpdate;
-    double percentage = 0;
-    quint64 globalBytes = 0;
-    struct Needed {
-        quint64 bytes = 0;
-        quint64 items = 0;
-        quint64 deletes = 0;
-        constexpr bool isNull() const;
-        constexpr bool operator==(const Needed &other) const;
-        constexpr bool operator!=(const Needed &other) const;
-    } needed;
-};
-
-constexpr bool SyncthingCompletion::Needed::isNull() const
-{
-    return bytes == 0 && items == 0 && deletes == 0;
-}
-
-constexpr bool SyncthingCompletion::Needed::operator==(const SyncthingCompletion::Needed &other) const
-{
-    return bytes == other.bytes && items == other.items && deletes == other.deletes;
-}
-
-constexpr bool SyncthingCompletion::Needed::operator!=(const SyncthingCompletion::Needed &other) const
-{
-    return !(*this == other);
-}
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingStatistics {
     Q_GADGET
@@ -132,7 +103,7 @@ constexpr bool SyncthingStatistics::operator!=(const SyncthingStatistics &other)
 }
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
-    SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
+    explicit SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
     bool assignStatus(const QString &statusStr, CppUtilities::DateTime time);
     bool assignStatus(SyncthingDirStatus newStatus, CppUtilities::DateTime time);
     bool assignDirType(const QString &dirType);
@@ -231,8 +202,8 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingOverallDirStatistics {
     Q_PROPERTY(SyncthingStatistics needed MEMBER needed)
 
 public:
-    SyncthingOverallDirStatistics();
-    SyncthingOverallDirStatistics(const std::vector<SyncthingDir> &directories);
+    explicit SyncthingOverallDirStatistics();
+    explicit SyncthingOverallDirStatistics(const std::vector<SyncthingDir> &directories);
 
     SyncthingStatistics local;
     SyncthingStatistics global;

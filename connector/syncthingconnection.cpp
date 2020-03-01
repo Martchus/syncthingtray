@@ -75,7 +75,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_keepPolling(false)
     , m_abortingAllRequests(false)
     , m_abortingToReconnect(false)
-    , m_requestCompletion(false)
+    , m_requestCompletion(true)
     , m_lastEventId(0)
     , m_lastDiskEventId(0)
     , m_autoReconnectTries(0)

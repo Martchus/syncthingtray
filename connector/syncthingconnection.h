@@ -268,11 +268,13 @@ private Q_SLOTS:
     void readItemStarted(CppUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readItemFinished(CppUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readFolderErrors(CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
-    void readFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
-    void readFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index, const QString &devId);
+    void readFolderCompletion(
+        CppUtilities::DateTime eventTime, const QJsonObject &eventData, const QString &dirId, SyncthingDir *dirInfo, int dirIndex);
+    void readFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, const QString &devId, SyncthingDev *devInfo,
+        int devIndex, const QString &dirId, SyncthingDir *dirInfo, int dirIndex);
     void readLocalFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
-    void readRemoteFolderCompletion(
-        CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index, const QString &devId);
+    void readRemoteFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, const QString &devId, SyncthingDev *devInfo,
+        int devIndex, const QString &dirId, SyncthingDir *dirInfo, int dirIndex);
     void readRemoteIndexUpdated(CppUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readPostConfig();
     void readRescan();

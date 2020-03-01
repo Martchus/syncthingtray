@@ -10,6 +10,7 @@ set(META_PUBLIC_QT_MODULES Core Network)
 
 # add project files
 set(HEADER_FILES
+    syncthingcompletion.h
     syncthingdir.h
     syncthingdev.h
     syncthingconnection.h

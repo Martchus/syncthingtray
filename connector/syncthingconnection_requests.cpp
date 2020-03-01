@@ -1112,10 +1112,11 @@ void SyncthingConnection::readCompletion()
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         // determine relevant dev/dir
-        int index;
-        auto *const dir = findDirInfo(dirId, index);
-        // discard status for unknown dirs
-        if (!dir) {
+        int devIndex, dirIndex;
+        auto *const devInfo = findDevInfo(devId, devIndex);
+        auto *const dirInfo = findDirInfo(dirId, dirIndex);
+        // discard status if the related dev and dir are unknown
+        if (!devInfo && !dirInfo) {
             return;
         }
 
@@ -1129,7 +1130,7 @@ void SyncthingConnection::readCompletion()
         }
 
         // update the relevant completion info
-        readRemoteFolderCompletion(DateTime::gmtNow(), replyDoc.object(), *dir, index, devId);
+        readRemoteFolderCompletion(DateTime::gmtNow(), replyDoc.object(), devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
 
         concludeConnection();
         break;
@@ -1723,6 +1724,10 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
         return eventData.value(QLatin1String("id")).toString();
     }());
     if (dirId.isEmpty()) {
+        // handle events which don't necessarily require a corresponding dir info
+        if (eventType == eventType == QLatin1String("FolderCompletion")) {
+            readFolderCompletion(eventTime, eventData, dirId, nullptr, -1);
+        }
         return;
     }
 
@@ -1745,7 +1750,7 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
     } else if (eventType == QLatin1String("FolderSummary")) {
         readDirSummary(eventTime, eventData.value(QLatin1String("summary")).toObject(), *dirInfo, index);
     } else if (eventType == QLatin1String("FolderCompletion") && dirInfo->lastStatisticsUpdate < eventTime) {
-        readFolderCompletion(eventTime, eventData, *dirInfo, index);
+        readFolderCompletion(eventTime, eventData, dirId, dirInfo, index);
     } else if (eventType == QLatin1String("FolderScanProgress")) {
         const double current = eventData.value(QLatin1String("current")).toDouble(0);
         const double total = eventData.value(QLatin1String("total")).toDouble(0);
@@ -1800,7 +1805,7 @@ void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eve
     SyncthingDevStatus status = devInfo->status;
     bool paused = devInfo->paused;
     if (eventType == QLatin1String("DeviceConnected")) {
-        status = SyncthingDevStatus::Idle; // TODO: figure out when dev is actually syncing
+        devInfo->setConnectedStateAccordingToCompletion();
     } else if (eventType == QLatin1String("DeviceDisconnected")) {
         status = SyncthingDevStatus::Disconnected;
     } else if (eventType == QLatin1String("DevicePaused")) {
@@ -1929,21 +1934,25 @@ void SyncthingConnection::readFolderErrors(DateTime eventTime, const QJsonObject
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readFolderCompletion(DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index)
+void SyncthingConnection::readFolderCompletion(
+    DateTime eventTime, const QJsonObject &eventData, const QString &dirId, SyncthingDir *dirInfo, int dirIndex)
 {
-    readFolderCompletion(eventTime, eventData, dirInfo, index, eventData.value(QLatin1String("device")).toString());
+    const auto devId = eventData.value(QLatin1String("device")).toString();
+    int devIndex;
+    auto *const devInfo = findDevInfo(devId, devIndex);
+    readFolderCompletion(eventTime, eventData, devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
 }
 
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readFolderCompletion(
-    DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index, const QString &devId)
+void SyncthingConnection::readFolderCompletion(DateTime eventTime, const QJsonObject &eventData, const QString &devId, SyncthingDev *devInfo,
+    int devIndex, const QString &dirId, SyncthingDir *dirInfo, int dirIndex)
 {
-    if (devId.isEmpty() || devId == myId()) {
-        readLocalFolderCompletion(eventTime, eventData, dirInfo, index);
-    } else {
-        readRemoteFolderCompletion(eventTime, eventData, dirInfo, index, devId);
+    if (devInfo && !devId.isEmpty() && devId != myId()) {
+        readRemoteFolderCompletion(eventTime, eventData, devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
+    } else if (dirInfo) {
+        readLocalFolderCompletion(eventTime, eventData, *dirInfo, dirIndex);
     }
 }
 
@@ -1975,26 +1984,43 @@ void SyncthingConnection::readLocalFolderCompletion(DateTime eventTime, const QJ
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readRemoteFolderCompletion(
-    DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index, const QString &devId)
+void SyncthingConnection::readRemoteFolderCompletion(DateTime eventTime, const QJsonObject &eventData, const QString &devId, SyncthingDev *devInfo,
+    int devIndex, const QString &dirId, SyncthingDir *dirInfo, int dirIndex)
 {
-    auto &completion = dirInfo.completionByDevice[devId];
+    // make new completion
+    auto completion = SyncthingCompletion();
     auto &needed(completion.needed);
-    const auto previouslyUpdated = !completion.lastUpdate.isNull();
-    const auto previouslyNeeded = !needed.isNull();
-    const auto previousGlobalBytes = completion.globalBytes;
     completion.lastUpdate = eventTime;
     completion.percentage = eventData.value(QLatin1String("completion")).toDouble();
     completion.globalBytes = jsonValueToInt(eventData.value(QLatin1String("globalBytes")));
     needed.bytes = jsonValueToInt(eventData.value(QLatin1String("needBytes")), needed.bytes);
     needed.items = jsonValueToInt(eventData.value(QLatin1String("needItems")), needed.items);
     needed.deletes = jsonValueToInt(eventData.value(QLatin1String("needDeletes")), needed.deletes);
-    emit dirStatusChanged(dirInfo, index);
-    if (needed.isNull() && previouslyUpdated && (previouslyNeeded || previousGlobalBytes != completion.globalBytes)) {
-        int devIndex;
-        if (const auto *const devInfo = findDevInfo(devId, devIndex)) {
-            emit dirCompleted(DateTime::gmtNow(), dirInfo, index, devInfo);
+
+    // update dir info
+    if (dirInfo) {
+        auto &previousCompletion = dirInfo->completionByDevice[devId];
+        const auto previouslyUpdated = !previousCompletion.lastUpdate.isNull();
+        const auto previouslyNeeded = !previousCompletion.needed.isNull();
+        const auto previousGlobalBytes = previousCompletion.globalBytes;
+        previousCompletion = completion;
+        emit dirStatusChanged(*dirInfo, dirIndex);
+        if (devInfo && needed.isNull() && previouslyUpdated && (previouslyNeeded || previousGlobalBytes != completion.globalBytes)) {
+            emit dirCompleted(DateTime::gmtNow(), *dirInfo, dirIndex, devInfo);
         }
+    }
+
+    // update dev info
+    if (devInfo) {
+        auto &previousCompletion = devInfo->completionByDir[dirId];
+        devInfo->overallCompletion -= previousCompletion;
+        devInfo->overallCompletion += completion;
+        devInfo->overallCompletion.recomputePercentage();
+        previousCompletion = completion;
+        if (devInfo->isConnected()) {
+            devInfo->setConnectedStateAccordingToCompletion();
+        }
+        emit devStatusChanged(*devInfo, devIndex);
     }
 }
 
@@ -2011,22 +2037,25 @@ void SyncthingConnection::readRemoteIndexUpdated(DateTime eventTime, const QJson
     // find dev/dir
     const auto devId(eventData.value(QLatin1String("device")).toString());
     const auto dirId(eventData.value(QLatin1String("folder")).toString());
-    if (dirId.isEmpty()) {
+    if (devId.isEmpty() || dirId.isEmpty()) {
         return;
     }
-    int index;
-    auto *const dirInfo = findDirInfo(dirId, index);
-    if (!dirInfo) {
+    int devIndex, dirIndex;
+    auto *const devInfo = findDevInfo(devId, devIndex);
+    auto *const dirInfo = findDirInfo(dirId, dirIndex);
+
+    // discard if the related dev and dir are unknown
+    if (!devInfo && !dirInfo) {
         return;
     }
 
-    // ignore event if we don't share the directory with the device
-    if (!dirInfo->deviceIds.contains(devId)) {
+    // ignore event if we don't know the device and if we don't share the directory with the device
+    if (!devInfo && !dirInfo->deviceIds.contains(devId)) {
         return;
     }
 
     // request completion again if out-of-date
-    const auto &completion = dirInfo->completionByDevice[devId];
+    const auto &completion = dirInfo ? dirInfo->completionByDevice[devId] : devInfo->completionByDir[dirId];
     if (completion.lastUpdate < eventTime) {
         requestCompletion(devId, dirId);
     }

@@ -1,7 +1,7 @@
 #ifndef DATA_SYNCTHINGDEV_H
 #define DATA_SYNCTHINGDEV_H
 
-#include "./global.h"
+#include "./syncthingcompletion.h"
 
 #include <c++utilities/chrono/datetime.h>
 
@@ -19,9 +19,10 @@ enum class SyncthingDevStatus { Unknown, Disconnected, OwnDevice, Idle, Synchron
 QString statusString(SyncthingDevStatus status);
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
-    SyncthingDev(const QString &id = QString(), const QString &name = QString());
+    explicit SyncthingDev(const QString &id = QString(), const QString &name = QString());
     QString statusString() const;
     bool isConnected() const;
+    void setConnectedStateAccordingToCompletion();
     const QString displayName() const;
 
     QString id;
@@ -30,16 +31,16 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
     QString compression;
     QString certName;
     SyncthingDevStatus status = SyncthingDevStatus::Unknown;
-    int progressPercentage = 0;
-    int progressRate = 0;
-    bool introducer = false;
-    bool paused = false;
     std::uint64_t totalIncomingTraffic = 0;
     std::uint64_t totalOutgoingTraffic = 0;
     QString connectionAddress;
     QString connectionType;
     QString clientVersion;
     CppUtilities::DateTime lastSeen;
+    std::unordered_map<QString, SyncthingCompletion> completionByDir;
+    SyncthingCompletion overallCompletion;
+    bool introducer = false;
+    bool paused = false;
 };
 
 inline SyncthingDev::SyncthingDev(const QString &id, const QString &name)
@@ -54,10 +55,16 @@ inline bool SyncthingDev::isConnected() const
     case SyncthingDevStatus::Unknown:
     case SyncthingDevStatus::Disconnected:
     case SyncthingDevStatus::OwnDevice:
+    case SyncthingDevStatus::Rejected:
         return false;
     default:
         return true;
     }
+}
+
+inline void SyncthingDev::setConnectedStateAccordingToCompletion()
+{
+    status = overallCompletion.needed.isNull() ? SyncthingDevStatus::Idle : SyncthingDevStatus::Synchronizing;
 }
 
 inline const QString SyncthingDev::displayName() const
