@@ -143,22 +143,22 @@
         <translation>Odpojeno</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="373"/>
-        <source>Synchronizing (%1 %)</source>
-        <translation>Synchronizuje se (%1 %)</translation>
-    </message>
-    <message>
-        <location filename="../syncthingdevicemodel.cpp" line="373"/>
+        <location filename="../syncthingdevicemodel.cpp" line="376"/>
         <source>Synchronizing</source>
         <translation>Synchronizuje se</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="375"/>
+        <location filename="../syncthingdevicemodel.cpp" line="373"/>
+        <source>Synchronizing (%1 %, %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdevicemodel.cpp" line="378"/>
         <source>Out of sync</source>
         <translation>Nesesynchronizováno</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="377"/>
+        <location filename="../syncthingdevicemodel.cpp" line="380"/>
         <source>Rejected</source>
         <translation>Odmítnuto</translation>
     </message>

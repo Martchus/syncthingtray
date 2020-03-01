@@ -139,8 +139,8 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="72"/>
-        <location filename="../gui/traywidget.cpp" line="696"/>
-        <location filename="../gui/traywidget.cpp" line="740"/>
+        <location filename="../gui/traywidget.cpp" line="698"/>
+        <location filename="../gui/traywidget.cpp" line="742"/>
         <source>Start</source>
         <translation>Spustit</translation>
     </message>
@@ -312,43 +312,43 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Přinejmenším jedno zařízení je pozastaveno, kliknutím pokračujte</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="495"/>
+        <location filename="../gui/traywidget.cpp" line="497"/>
         <source>The specified connection configuration &lt;em&gt;%1&lt;/em&gt; is not defined and hence ignored.</source>
         <translation>Zadané nastavení spojení &lt;em&gt;%1&lt;/em&gt; není definováno a proto je ignorováno.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="514"/>
+        <location filename="../gui/traywidget.cpp" line="516"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Adresář &lt;i&gt;%1&lt;/i&gt; neexistuje místně.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="525"/>
+        <location filename="../gui/traywidget.cpp" line="527"/>
         <source>The containing directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Obsažený adresář &lt;i&gt;%1&lt;/i&gt; neexistuje místně.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="568"/>
+        <location filename="../gui/traywidget.cpp" line="570"/>
         <source>Copy path</source>
         <translation type="unfinished">Zkopírovat popis umístění</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="572"/>
+        <location filename="../gui/traywidget.cpp" line="574"/>
         <source>Copy device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="691"/>
-        <location filename="../gui/traywidget.cpp" line="733"/>
+        <location filename="../gui/traywidget.cpp" line="693"/>
+        <location filename="../gui/traywidget.cpp" line="735"/>
         <source>Stop</source>
         <translation>Zastavit</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="692"/>
+        <location filename="../gui/traywidget.cpp" line="694"/>
         <source>Stop Syncthing instance launched via tray icon</source>
         <translation>Zastavit instanci Syncthing spuštěnou prostřednictvím ikony v oznamovací oblasti</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="697"/>
+        <location filename="../gui/traywidget.cpp" line="699"/>
         <source>Start Syncthing with the built-in launcher configured in the settings</source>
         <translation>Spustit Syncthing s vestavěným spouštěčem nastaveným v nastaveních</translation>
     </message>
@@ -356,27 +356,27 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="48"/>
+        <location filename="../application/main.cpp" line="46"/>
         <source>Unable to </source>
         <translation>Nedaří se </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="74"/>
+        <location filename="../application/main.cpp" line="72"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>Oznamovací oblast systémového panelu je (pro tuto chvíli) nedostupná. Je možné otevřít nabídku oznamovací oblasti jako běžné okno pomocí příznaku „--windowed“. Dále je možné spustit s volbou „--wait“ a čekat na to, až bude oznamovací oblast k dispozici (namísto zobrazení této zprávy).</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="92"/>
+        <location filename="../application/main.cpp" line="90"/>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>
         <translation>Je třeba nastavit jako se připojit k Syncthing ze Syncthing Tray.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="93"/>
+        <location filename="../application/main.cpp" line="91"/>
         <source>Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration.</source>
         <translation>Poznamenejme, že dialog nastavení umožňuje importovat URL adresu, přihlašovací údaje a klíč k API z místního nastavení Syncthing.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="102"/>
+        <location filename="../application/main.cpp" line="100"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Knihovny Qt byly sestaveny bez podpory pro ikonu v oznamovací oblasti. Měli byste otevřít nabídku pro oznamovací oblast jako běžné okno pomocí příznaku -w.</translation>
     </message>

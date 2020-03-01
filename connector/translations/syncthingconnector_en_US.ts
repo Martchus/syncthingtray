@@ -65,17 +65,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1284"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1285"/>
         <source>Unable to request QR-Code: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1317"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1318"/>
         <source>Unable to parse Syncthing log: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1334"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1335"/>
         <source>Unable to request Syncthing log: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -131,12 +131,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1173"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1174"/>
         <source>Unable to parse device statistics: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1204"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1205"/>
         <source>Unable to request device statistics: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -156,17 +156,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1537"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1538"/>
         <source>Unable to parse Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1562"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1563"/>
         <source>Unable to request Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1375"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1376"/>
         <source>Unable to post config: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -211,32 +211,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1127"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1128"/>
         <source>Unable to parse completion for device/directory %1/%2: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1141"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1142"/>
         <source>Unable to request completion for device/directory %1/%2: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1233"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1234"/>
         <source>Unable to parse version: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1249"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1250"/>
         <source>Unable to request version: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2072"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2101"/>
         <source>Unable to parse disk events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2087"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2116"/>
         <source>Unable to request disk events: </source>
         <translation type="unfinished"></translation>
     </message>

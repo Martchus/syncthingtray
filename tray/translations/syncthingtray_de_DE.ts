@@ -139,8 +139,8 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="72"/>
-        <location filename="../gui/traywidget.cpp" line="696"/>
-        <location filename="../gui/traywidget.cpp" line="740"/>
+        <location filename="../gui/traywidget.cpp" line="698"/>
+        <location filename="../gui/traywidget.cpp" line="742"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
@@ -312,43 +312,43 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Mind. ein Gerät ist pausiert, klicke um fortzusetzen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="495"/>
+        <location filename="../gui/traywidget.cpp" line="497"/>
         <source>The specified connection configuration &lt;em&gt;%1&lt;/em&gt; is not defined and hence ignored.</source>
         <translation>Die angegebene Verbindungskonfiguration &lt;em&gt;%1&lt;/em&gt; ist nicht definiert und wird daher ignoriert.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="514"/>
+        <location filename="../gui/traywidget.cpp" line="516"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Das Verzeichnis &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="525"/>
+        <location filename="../gui/traywidget.cpp" line="527"/>
         <source>The containing directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Das beinhaltende Verzeichnis &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="568"/>
+        <location filename="../gui/traywidget.cpp" line="570"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="572"/>
+        <location filename="../gui/traywidget.cpp" line="574"/>
         <source>Copy device ID</source>
         <translation>Geräte-ID kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="691"/>
-        <location filename="../gui/traywidget.cpp" line="733"/>
+        <location filename="../gui/traywidget.cpp" line="693"/>
+        <location filename="../gui/traywidget.cpp" line="735"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="692"/>
+        <location filename="../gui/traywidget.cpp" line="694"/>
         <source>Stop Syncthing instance launched via tray icon</source>
         <translation>Stoppe Syncthing-Instanz, die mit dem internen Starter gestartet wurde</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="697"/>
+        <location filename="../gui/traywidget.cpp" line="699"/>
         <source>Start Syncthing with the built-in launcher configured in the settings</source>
         <translation>Starte Syncthing mit dem eingebauten Starter, der in den Einstellungen konfiguriert wird</translation>
     </message>
@@ -356,27 +356,27 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="48"/>
+        <location filename="../application/main.cpp" line="46"/>
         <source>Unable to </source>
         <translation>Fehler beim </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="74"/>
+        <location filename="../application/main.cpp" line="72"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>Das System-Tray bzw. der Infobereich ist aktuell nicht verfügbar. Mit der Option &quot;--windowed&quot; ist es möglich, Syncthing Tray als normales Fenster zu starten. Außerdem ist es möglich mit der Option &quot;--wait&quot; zu warten bis das System-Tray verfügbar ist anstelle diesen Dialog zu zeigen.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="92"/>
+        <location filename="../application/main.cpp" line="90"/>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>
         <translation>Vor der ersten Verwendung muss eingestellt werden, wie sich das Syncthing Tray mit Syncthing verbinden soll.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="93"/>
+        <location filename="../application/main.cpp" line="91"/>
         <source>Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration.</source>
         <translation>Der Einstellungsdialog ermöglicht es die URL, Zugangsdaten und den API-Key automatisch aus der lokalen Syncthing-Konfiguration auszulesen.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="102"/>
+        <location filename="../application/main.cpp" line="100"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Die verwendete Qt-Bibliothek wurde nicht mit Unterstützung für System-Tray konfiguriert. Es wäre möglich, Syncthing Tray als normales Fenster zu starten (mit Option -w).</translation>
     </message>
