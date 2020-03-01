@@ -268,6 +268,9 @@ void SyncthingConnection::connectLater(int milliSeconds)
 void SyncthingConnection::disconnect()
 {
     m_abortingToReconnect = m_keepPolling = false;
+    m_trafficPollTimer.stop();
+    m_devStatsPollTimer.stop();
+    m_errorsPollTimer.stop();
     m_autoReconnectTries = 0;
     abortAllRequests();
 }
@@ -329,6 +332,11 @@ void SyncthingConnection::reconnect()
     // reset reconnect timer
     m_autoReconnectTimer.stop();
     m_autoReconnectTries = 0;
+
+    // stop other timers
+    m_trafficPollTimer.stop();
+    m_devStatsPollTimer.stop();
+    m_errorsPollTimer.stop();
 
     // reset variables to track connection progress
     // note: especially resetting events is important as it influences the subsequent hasPendingRequests() call
