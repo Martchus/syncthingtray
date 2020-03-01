@@ -976,7 +976,7 @@ void SyncthingConnection::requestDirStatus(const QString &dirId)
     auto *const reply = requestData(QStringLiteral("db/status"), query);
     reply->setProperty("dirId", dirId);
     m_otherReplies << reply;
-    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirStatus);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirStatus, Qt::QueuedConnection);
 }
 
 /*!
@@ -1094,7 +1094,7 @@ void SyncthingConnection::requestCompletion(const QString &devId, const QString 
     reply->setProperty("devId", devId);
     reply->setProperty("dirId", dirId);
     m_otherReplies << reply;
-    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readCompletion);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readCompletion, Qt::QueuedConnection);
 }
 
 /// \cond
