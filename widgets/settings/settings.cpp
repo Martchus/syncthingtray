@@ -3,6 +3,7 @@
 #include "../misc/syncthingkiller.h"
 #include "../misc/syncthinglauncher.h"
 
+#include "../../connector/qstringhash.h"
 #include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingnotifier.h"
 #include "../../connector/syncthingprocess.h"
@@ -32,18 +33,6 @@
 using namespace std;
 using namespace Data;
 using namespace QtUtilities;
-
-#if (QT_VERSION < QT_VERSION_CHECK(5, 14, 0))
-namespace std {
-
-template <> struct hash<QString> {
-    std::size_t operator()(const QString &str) const
-    {
-        return qHash(str);
-    }
-};
-} // namespace std
-#endif
 
 namespace Settings {
 
