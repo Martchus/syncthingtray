@@ -1,6 +1,7 @@
 #ifndef DATA_SYNCTHINGDEV_H
 #define DATA_SYNCTHINGDEV_H
 
+#include "./qstringhash.h"
 #include "./syncthingcompletion.h"
 
 #include <c++utilities/chrono/datetime.h>

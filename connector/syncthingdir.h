@@ -1,6 +1,7 @@
 ﻿#ifndef DATA_SYNCTHINGDIR_H
 #define DATA_SYNCTHINGDIR_H
 
+#include "./qstringhash.h"
 #include "./syncthingcompletion.h"
 
 #include <c++utilities/chrono/datetime.h>
@@ -130,7 +131,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     int scanningPercentage = 0;
     double scanningRate = 0;
     double fileSystemWatcherDelay = 0.0;
-    std::map<QString, SyncthingCompletion> completionByDevice;
+    std::unordered_map<QString, SyncthingCompletion> completionByDevice;
     QString globalError;
     quint64 pullErrorCount = 0;
     std::vector<SyncthingItemError> itemErrors;

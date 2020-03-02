@@ -19,6 +19,7 @@ set(HEADER_FILES
     syncthingconfig.h
     syncthingprocess.h
     syncthingservice.h
+    qstringhash.h
     utils.h)
 set(SRC_FILES
     syncthingdir.cpp
