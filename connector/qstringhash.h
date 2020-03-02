@@ -1,6 +1,7 @@
 ﻿#ifndef SYNCTHING_CONNECTOR_QSTRING_HASH_H
 #define SYNCTHING_CONNECTOR_QSTRING_HASH_H
 
+#include <QHash>
 #include <QString>
 
 #include <functional>
