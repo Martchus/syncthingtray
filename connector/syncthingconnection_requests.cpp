@@ -1741,7 +1741,7 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
     }());
     if (dirId.isEmpty()) {
         // handle events which don't necessarily require a corresponding dir info
-        if (eventType == eventType == QLatin1String("FolderCompletion")) {
+        if (eventType == QLatin1String("FolderCompletion")) {
             readFolderCompletion(eventTime, eventData, dirId, nullptr, -1);
         }
         return;
