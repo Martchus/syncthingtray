@@ -1104,7 +1104,7 @@ static void ensureCompletionNotConsideredRequested(const QString &devId, Syncthi
         devInfo->completionByDir[dirId].requested = false;
     }
     if (dirInfo) {
-        dirInfo->completionByDevice[dirId].requested = false;
+        dirInfo->completionByDevice[devId].requested = false;
     }
 }
 /// \endcond
@@ -2071,10 +2071,27 @@ void SyncthingConnection::readRemoteIndexUpdated(DateTime eventTime, const QJson
     }
 
     // request completion again if not already requested and out-of-date
-    const auto &completion = dirInfo ? dirInfo->completionByDevice[devId] : devInfo->completionByDir[dirId];
-    if (!completion.requested && completion.lastUpdate < eventTime) {
-        requestCompletion(devId, dirId);
+    // note: Considering the current completion info stored within the dir info and the dev info. That
+    //       should not be required because both should be in sync but theoretically a user of the library
+    //       might meddle with that.
+    auto *const completionFromDirInfo = dirInfo ? &dirInfo->completionByDevice[devId] : nullptr;
+    auto *const completionFromDevInfo = devInfo ? &devInfo->completionByDir[dirId] : nullptr;
+    if ((completionFromDirInfo && completionFromDirInfo->requested) || (completionFromDevInfo && completionFromDevInfo->requested)) {
+        return;
     }
+    const auto lastUpdate = completionFromDirInfo && completionFromDevInfo
+            ? min(completionFromDirInfo->lastUpdate, completionFromDevInfo->lastUpdate)
+            : (completionFromDirInfo ? completionFromDirInfo->lastUpdate : completionFromDevInfo->lastUpdate);
+    if (lastUpdate >= eventTime) {
+        return;
+    }
+    if (completionFromDirInfo) {
+        completionFromDirInfo->requested = true;
+    }
+    if (completionFromDevInfo) {
+        completionFromDevInfo->requested = true;
+    }
+    requestCompletion(devId, dirId);
 }
 
 /*!
