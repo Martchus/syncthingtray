@@ -69,7 +69,7 @@ set(SYNCTHING_PATH
     "${CMAKE_CURRENT_SOURCE_DIR}/go/src/github.com/syncthing/syncthing"
     CACHE PATH "path of Syncthing checkout")
 
-# find Syncthing's assets caveat: newly added assets will not cause CMake to automatically regenerate
+# find Syncthing's assets (caveat: newly added assets will not cause CMake to automatically regenerate)
 file(
     GLOB_RECURSE SRC_FILES_SYNCTHING_ASSETS
     LIST_DIRECTORIES false
@@ -82,7 +82,7 @@ if (NOT SRC_FILES_SYNCTHING_ASSETS)
     )
 endif ()
 
-# find Syncthing's source code caveat: newly added files will not cause CMake to automatically regenerate
+# find Syncthing's source code (caveat: newly added files will not cause CMake to automatically regenerate)
 file(
     GLOB_RECURSE SRC_FILES_SYNCTHING
     LIST_DIRECTORIES false
@@ -121,7 +121,7 @@ if (DEFINED $ENV{BUILD_STAMP})
     set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.Stamp=$ENV{BUILD_STAMP}")
 endif ()
 
-# generate Syncthing's assets: don't set GOARCH/GOOS here, this is supposed to run on the host
+# generate Syncthing's assets (not setting GOARCH/GOOS here, this is supposed to run on the host)
 add_custom_command(
     OUTPUT "${SYNCTHING_PATH}/lib/auto/gui.files.go"
     COMMAND "GOPATH=${GO_DEVELOPMENT_PATH}" "GO111MODULE=on" "${GO_BIN}" run ./script/genassets.go gui >
@@ -144,7 +144,7 @@ add_custom_command(
     WORKING_DIRECTORY "${SYNCTHING_PATH}"
     COMMENT "Building Syncthing itself")
 
-# find c++utilities
+# find c++utilities to use CMake modules and headers from it privately
 find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 if (CPP_UTILITIES_SOURCE_DIR)
@@ -185,8 +185,8 @@ include(TestTarget)
 include(Doxygen)
 include(ConfigHeader)
 
-# create install target for static libsyncthinginternal.a if we're also creating a static libsyncthing.a note: Not possible
-# to add syncthinginternal to BUNDLED_TARGETS because it is an import library which apparently can not be exported.
+# create install target for static libsyncthinginternal.a if we're also creating a static libsyncthing.a (note: It is not
+# possible to add syncthinginternal to BUNDLED_TARGETS because it is an import library which apparently can not be exported.)
 if (NOT BUILD_SHARED_LIBS
     AND NOT META_NO_INSTALL_TARGETS
     AND ENABLE_INSTALL_TARGETS)

@@ -75,7 +75,7 @@ else ()
     message(STATUS "systemd support disabled")
 endif ()
 
-# configure whether the connection should be mocked for test purposes
+# configure whether the SyncthingConnection class should be mocked for test purposes
 option(SYNCTHING_CONNECTION_MOCKED
        "enables mocking the SyncthingConnection class so it will provide only some fixed test data" OFF)
 if (SYNCTHING_CONNECTION_MOCKED)
@@ -88,7 +88,7 @@ if (SYNCTHING_CONNECTION_MOCKED)
     message(WARNING "SyncthingConnection class will be mocked")
 endif ()
 
-# configure whether the service should be mocked for test purposes
+# configure whether the SyncthingService class should be mocked for test purposes
 option(SYNCTHING_SERVICE_MOCKED "enables mocking the SyncthingService class so it will provide some fake status" OFF)
 if (SYNCTHING_SERVICE_MOCKED)
     set_property(SOURCE syncthingservice.cpp APPEND PROPERTY COMPILE_DEFINITIONS

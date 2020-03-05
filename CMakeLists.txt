@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 
-# metadata
+# define metadata
 set(META_PROJECT_NAME syncthingtray)
 set(META_PROJECT_TYPE application)
 set(META_APP_AUTHOR "Martchus")
@@ -17,7 +17,7 @@ set(META_ADD_DEFAULT_CPP_UNIT_TEST_APPLICATION ON)
 
 project(${META_PROJECT_NAME})
 
-# disable Dolphin integration under Android, Windows and MacOS by default
+# disable KDE integration under Android, Windows and MacOS by default
 if(ANDROID OR WIN32 OR APPLE)
     set(FILE_ITEM_ACTION_PLUGIN_DISABLED_BY_DEFAULT ON)
     set(PLASMOID_DISABLED_BY_DEFAULT ON)
@@ -26,7 +26,7 @@ else()
     set(PLASMOID_DISABLED_BY_DEFAULT OFF)
 endif()
 
-# options for partial build
+# add options for partial build
 option(NO_LIBSYNCTHING "whether building Syncthing itself as a library should be skipped" ON)
 option(NO_CLI "whether building CLI should be skipped" OFF)
 option(NO_TRAY "whether building the tray should be skipped" OFF)
@@ -42,11 +42,9 @@ set(CONFIGURATION_PACKAGE_SUFFIX "" CACHE STRING "sets the suffix for find_packa
 enable_testing()
 add_subdirectory(connector)
 add_subdirectory(testhelper)
-
 if (NOT NO_LIBSYNCTHING)
     add_subdirectory(libsyncthing)
 endif()
-
 link_directories(${LIB_SYNCTHING_CONNECTOR_BINARY_DIR})
 if(NOT NO_CLI)
     add_subdirectory(cli)
