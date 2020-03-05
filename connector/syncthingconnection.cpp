@@ -263,7 +263,7 @@ void SyncthingConnection::connectLater(int milliSeconds)
 }
 
 /*!
- * \brief Disconnects. Does nothing if not connected.
+ * \brief Disconnects. That means all (long) polling is stopped and ongoing requests are aborted via abortAllRequests().
  */
 void SyncthingConnection::disconnect()
 {
@@ -271,6 +271,7 @@ void SyncthingConnection::disconnect()
     m_trafficPollTimer.stop();
     m_devStatsPollTimer.stop();
     m_errorsPollTimer.stop();
+    m_autoReconnectTimer.stop();
     m_autoReconnectTries = 0;
     abortAllRequests();
 }
