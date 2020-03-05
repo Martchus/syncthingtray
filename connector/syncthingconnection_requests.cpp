@@ -2080,8 +2080,8 @@ void SyncthingConnection::readRemoteIndexUpdated(DateTime eventTime, const QJson
         return;
     }
     const auto lastUpdate = completionFromDirInfo && completionFromDevInfo
-            ? min(completionFromDirInfo->lastUpdate, completionFromDevInfo->lastUpdate)
-            : (completionFromDirInfo ? completionFromDirInfo->lastUpdate : completionFromDevInfo->lastUpdate);
+        ? min(completionFromDirInfo->lastUpdate, completionFromDevInfo->lastUpdate)
+        : (completionFromDirInfo ? completionFromDirInfo->lastUpdate : completionFromDevInfo->lastUpdate);
     if (lastUpdate >= eventTime) {
         return;
     }
