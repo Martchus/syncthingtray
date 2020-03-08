@@ -55,7 +55,7 @@ public:
     QMenu *connectionsMenu();
     static const std::vector<TrayWidget *> &instances();
 
-public slots:
+public Q_SLOTS:
     void showSettingsDialog();
     void showAboutDialog();
     void showWebUi();
@@ -72,7 +72,7 @@ public slots:
     void quitTray();
     void applySettings(const QString &connectionConfig = QString());
 
-private slots:
+private Q_SLOTS:
     void handleStatusChanged(Data::SyncthingStatus status);
 #ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     void handleErrorsCleared();

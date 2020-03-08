@@ -43,7 +43,7 @@ public:
 
     int exec(int argc, const char *const *argv);
 
-private slots:
+private Q_SLOTS:
     void handleStatusChanged(Data::SyncthingStatus newStatus);
     void handleResponse();
     void handleError(

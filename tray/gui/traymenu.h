@@ -19,7 +19,7 @@ public:
     const TrayWidget &widget() const;
     TrayIcon *icon();
 
-public slots:
+public Q_SLOTS:
     void showUsingPositioningSettings();
 
 private:

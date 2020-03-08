@@ -39,7 +39,7 @@ protected:
     void javaScriptConsoleMessage(const QString &message, int lineNumber, const QString &sourceID) override;
 #endif
 
-private slots:
+private Q_SLOTS:
     void delegateNewWindowToExternalBrowser(const QUrl &url);
     void supplyCredentials(const QUrl &requestUrl, QAuthenticator *authenticator);
     void supplyCredentials(QNetworkReply *reply, QAuthenticator *authenticator);

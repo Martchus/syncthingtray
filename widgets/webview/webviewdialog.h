@@ -23,7 +23,7 @@ public:
     WebViewDialog(QWidget *parent = nullptr);
     ~WebViewDialog() override;
 
-public slots:
+public Q_SLOTS:
     void applySettings(const Data::SyncthingConnectionSettings &connectionSettings, bool aboutToShow);
     const Data::SyncthingConnectionSettings &connectionSettings() const;
 #if defined(SYNCTHINGWIDGETS_USE_WEBKIT)

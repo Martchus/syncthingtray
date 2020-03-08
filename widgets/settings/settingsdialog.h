@@ -109,7 +109,7 @@ public:
     bool apply() override;
     void reset() override;
 
-private slots:
+private Q_SLOTS:
     void handleSyncthingLaunched(bool running);
     void handleSyncthingReadyRead();
     void handleSyncthingOutputAvailable(const QByteArray &output);

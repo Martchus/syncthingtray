@@ -31,7 +31,7 @@ public:
     TrayIcon(const QString &connectionConfig = QString(), QObject *parent = nullptr);
     TrayMenu &trayMenu();
 
-public slots:
+public Q_SLOTS:
     void showInternalError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,
         const QByteArray &response);
     void showLauncherError(const QString &errorMessage, const QString &additionalInfo);
@@ -41,7 +41,7 @@ public slots:
     void showNewDev(const QString &devId, const QString &message);
     void showNewDir(const QString &devId, const QString &dirId, const QString &message);
 
-private slots:
+private Q_SLOTS:
     void handleActivated(QSystemTrayIcon::ActivationReason reason);
     void handleMessageClicked();
     void showDisconnected();

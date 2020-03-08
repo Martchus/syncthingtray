@@ -9,7 +9,7 @@ class JSConsole : public QObject
 public:
     explicit JSConsole(QObject *parent = nullptr);
 
-public slots:
+public Q_SLOTS:
     void log(const QString &msg) const;
 };
 
