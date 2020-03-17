@@ -630,11 +630,13 @@ void ConnectionTests::testDisconnecting()
     waitForConnected();
     m_connection.requestVersion();
     m_connection.requestDirStatistics();
-    waitForSignals([this] {
-        m_connection.requestDeviceStatistics();
-        m_connection.requestCompletion("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7", "test1");
-        QTimer::singleShot(0, &m_connection, defaultDisconnect());
-    }, 5000, connectionSignal(&SyncthingConnection::statusChanged));
+    waitForSignals(
+        [this] {
+            m_connection.requestDeviceStatistics();
+            m_connection.requestCompletion("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7", "test1");
+            QTimer::singleShot(0, &m_connection, defaultDisconnect());
+        },
+        5000, connectionSignal(&SyncthingConnection::statusChanged));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("disconnected", QStringLiteral("disconnected"), m_connection.statusText());
 }
 

@@ -1,9 +1,9 @@
 #ifndef SYNCTHINGCONNECTION_H
 #define SYNCTHINGCONNECTION_H
 
+#include "./syncthingconnectionstatus.h"
 #include "./syncthingdev.h"
 #include "./syncthingdir.h"
-#include "./syncthingconnectionstatus.h"
 
 #include <QJsonObject>
 #include <QList>
