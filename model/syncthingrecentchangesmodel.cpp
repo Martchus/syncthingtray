@@ -21,6 +21,7 @@ SyncthingRecentChangesModel::SyncthingRecentChangesModel(SyncthingConnection &co
     , m_maxRows(maxRows)
 {
     connect(&m_connection, &SyncthingConnection::fileChanged, this, &SyncthingRecentChangesModel::fileChanged);
+    connect(&m_connection, &SyncthingConnection::statusChanged, this, &SyncthingRecentChangesModel::handleStatusChanged);
 }
 
 QHash<int, QByteArray> SyncthingRecentChangesModel::roleNames() const
@@ -55,6 +56,7 @@ QModelIndex SyncthingRecentChangesModel::index(int row, int column, const QModel
 
 QModelIndex SyncthingRecentChangesModel::parent(const QModelIndex &child) const
 {
+    Q_UNUSED(child)
     return QModelIndex();
 }
 
@@ -200,6 +202,20 @@ void SyncthingRecentChangesModel::handleConfigInvalidated()
 
 void SyncthingRecentChangesModel::handleNewConfigAvailable()
 {
+}
+
+void SyncthingRecentChangesModel::handleStatusChanged(SyncthingStatus status)
+{
+    // clear history when re-connecting
+    // note: This model is independent of changes to the current configuration (it is about the past and not
+    //       the current state) so the re-connect event is used here instead of handleConfigInvalidated()
+    //       and handleNewConfigAvailable() as usual.
+    if (status != SyncthingStatus::Reconnecting) {
+        return;
+    }
+    beginResetModel();
+    m_changes.clear();
+    endResetModel();
 }
 
 void SyncthingRecentChangesModel::setMaxRows(int maxRows)

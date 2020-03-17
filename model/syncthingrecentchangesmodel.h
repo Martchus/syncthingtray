@@ -4,6 +4,7 @@
 #include "./syncthingmodel.h"
 
 #include "../connector/syncthingdir.h"
+#include "../connector/syncthingconnectionstatus.h"
 
 #include <deque>
 
@@ -49,6 +50,7 @@ private Q_SLOTS:
     void fileChanged(const SyncthingDir &dir, int index, const SyncthingFileChange &change);
     void handleConfigInvalidated() override;
     void handleNewConfigAvailable() override;
+    void handleStatusChanged(SyncthingStatus status);
 
 private:
     void ensureWithinLimit();
