@@ -1352,7 +1352,7 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::init()
 {
-    resize(860, 620);
+    resize(1100, 750);
     setWindowTitle(tr("Settings") + QStringLiteral(" - " APP_NAME));
     setWindowIcon(
         QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
