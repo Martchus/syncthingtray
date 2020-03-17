@@ -93,7 +93,9 @@ QWidget *ConnectionOptionPage::setupWidget()
     ui()->reconnectLabel->setToolTip(ui()->reconnectSpinBox->toolTip());
     QObject::connect(m_connection, &SyncthingConnection::statusChanged, bind(&ConnectionOptionPage::updateConnectionStatus, this));
     QObject::connect(ui()->connectPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::applyAndReconnect, this));
-    QObject::connect(ui()->insertFromConfigFilePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::insertFromConfigFile, this));
+    QObject::connect(ui()->insertFromConfigFilePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::insertFromConfigFile, this, false));
+    QObject::connect(
+        ui()->insertFromCustomConfigFilePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::insertFromConfigFile, this, true));
     QObject::connect(ui()->selectionComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
         bind(&ConnectionOptionPage::showConnectionSettings, this, _1));
     QObject::connect(ui()->selectionComboBox, static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::editTextChanged),
@@ -105,9 +107,9 @@ QWidget *ConnectionOptionPage::setupWidget()
     return widget;
 }
 
-void ConnectionOptionPage::insertFromConfigFile()
+void ConnectionOptionPage::insertFromConfigFile(bool forceFileSelection)
 {
-    auto configFile(SyncthingConfig::locateConfigFile());
+    auto configFile(forceFileSelection ? QString() : SyncthingConfig::locateConfigFile());
     if (configFile.isEmpty()) {
         // allow user to select config file manually if it could not be located
         configFile = QFileDialog::getOpenFileName(

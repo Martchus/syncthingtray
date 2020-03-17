@@ -51,7 +51,7 @@ ConnectionOptionPage(Data::SyncthingConnection *connection, QWidget *parentWidge
 
 private:
 DECLARE_SETUP_WIDGETS
-void insertFromConfigFile();
+void insertFromConfigFile(bool forceFileSelection);
 void updateConnectionStatus();
 void applyAndReconnect();
 bool showConnectionSettings(int index);
