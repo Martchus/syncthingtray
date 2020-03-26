@@ -355,7 +355,7 @@ ColumnLayout {
         TinyButton {
             id: rescanAllDirsButton
             tooltip: qsTr("Rescan all directories")
-            iconSource: "view-refresh"
+            iconSource: "folder-sync"
             onClicked: plasmoid.nativeInterface.connection.rescanAllDirs()
             Shortcut {
                 sequence: "Ctrl+Shift+R"
