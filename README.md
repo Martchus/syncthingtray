@@ -245,15 +245,12 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
   engine at all. If no JavaScript engine is used, the CLI does not support scripting configuration changes.
 
 #### Limitations of Qt WebEngine compared to Qt WebKit
-* Currently there is no way to allow a particular self-signed certificate in Qt
-  WebEngine. Currently any self-signed certificate is accepted! See:
-  https://bugreports.qt.io/browse/QTBUG-51176
-* Qt WebEngine can not be built with mingw-w64.
+* When using a version of Qt older than 5.14 there is no way to allow only a particular self-signed certificate in Qt
+  WebEngine. That means any self-signed certificate is accepted! See: https://bugreports.qt.io/browse/QTBUG-51176
+* Qt WebEngine can not be built with GCC/mingw-w64 for Windows.
 * QWebEngineView seems to eat `keyPressEvent`.
-* Qt WebEngine is more buggy in my experience.
-* Security issues are not a concern because no other website than the
-  Syncthing web UI is shown. Any external links will be opened in the
-  regular web browser anyways.
+* Security issues are not a concern because no other website than the Syncthing web UI is shown. Any external links
+  will be opened in the regular web browser anyways.
 
 ### Troubleshooting KDE integration
 If the Dolphin integration or the Plasmoid don't work, check whether the files for those components
