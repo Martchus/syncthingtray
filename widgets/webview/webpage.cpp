@@ -18,6 +18,7 @@
 #include <QWebEngineCertificateError>
 #include <QWebEngineSettings>
 #include <QWebEngineView>
+#include <QtWebEngineWidgetsVersion>
 #elif defined(SYNCTHINGWIDGETS_USE_WEBKIT)
 #include <QNetworkRequest>
 #include <QSslError>
@@ -101,18 +102,50 @@ SYNCTHINGWIDGETS_WEB_PAGE *WebPage::createWindow(SYNCTHINGWIDGETS_WEB_PAGE::WebW
 
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
 /*!
- * \brief Accepts self-signed certificate.
- * \todo Only ignore the error if the used certificate matches the certificate known to be used by the Syncthing GUI.
+ * \brief Accepts self-signed certificates used by the Syncthing GUI as configured.
+ * \remarks Before Qt 5.14 any self-signed certificates are accepted.
  */
 bool WebPage::certificateError(const QWebEngineCertificateError &certificateError)
 {
+    // never ignore errors other than CertificateCommonNameInvalid and CertificateAuthorityInvalid
     switch (certificateError.error()) {
     case QWebEngineCertificateError::CertificateCommonNameInvalid:
     case QWebEngineCertificateError::CertificateAuthorityInvalid:
-        return true;
+        break;
     default:
         return false;
     }
+
+    // don't ignore the error if there are no expected self-signed SSL certificates configured
+    if (!m_dlg || m_dlg->connectionSettings().expectedSslErrors.isEmpty()) {
+        return false;
+    }
+
+    // ignore only certificate errors matching the expected URL of the Syncthing instance
+    const auto urlWithError = certificateError.url();
+    const auto expectedUrl = m_view->url();
+    if (urlWithError.scheme() != expectedUrl.scheme() || urlWithError.host() != expectedUrl.host()) {
+        return false;
+    }
+
+#if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+    // don't ignore the error if no certificate is provided at all (possible?)
+    const auto certificateChain = certificateError.certificateChain();
+    if (certificateChain.isEmpty()) {
+        return false;
+    }
+
+    // don't ignore the error if the first certificate in the chain (the peer's immediate certificate) does
+    // not match the expected SSL certificate
+    // note: All the SSL errors in the settings refer to the same certificate so it is sufficient to just pick
+    //      the first one.
+    if (certificateChain.first() != m_dlg->connectionSettings().expectedSslErrors.first().certificate()) {
+        return false;
+    }
+#endif
+
+    // accept the self-signed certificate
+    return true;
 }
 
 /*!

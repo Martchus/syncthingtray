@@ -196,7 +196,9 @@ can be passed to CMake to influence the build.
 ### Further dependencies
 The following Qt 5 modules are requried (version 5.6 or newer): core network dbus gui widgets svg webenginewidgets/webkitwidgets
 
-The built-in web view is optional (see section "Select Qt module for WebView").
+It is recommended to use at least Qt 5.14 to avoid limitations in previous versions (see *Known bugs* section).
+
+The built-in web view and therefore the modules webenginewidgets/webkitwidgets are optional (see section *Select Qt module for WebView*).
 
 To build the plugin for Dolphin integration KIO is also requried. Additionally, the Dolphin plugin requires Qt 5.8 or newer. To skip
 building the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
@@ -351,13 +353,16 @@ on GitHub.
       Note that the Plasmoid is not affected by this limitation.
     * While the tray menu is shown its entry is shown in the taskbar. Not sure whether there is a way to avoid this.
 * Qt bugs
-    * Any self-signed certificate is accepted when using Qt WebEngine due to Qt bug https://bugreports.qt.io/browse/QTBUG-51176.
-    * Pausing/resuming folders and devices doesn't work when using scan-intervalls with a lot of zeros because of Syncthing bug
-      https://github.com/syncthing/syncthing/issues/4001. This has already been fixed on the Qt-side with
-      https://codereview.qt-project.org/#/c/187069/. However, the fix is only available in Qt 5.9 and above.
-    * The tray disconnects from the local instance when the network connection goes down. The network connection must be restored or
-      the tray restarted to be able to connect to local Syncthing again. This is caused by Qt bug
-      https://bugreports.qt.io/browse/QTBUG-60949.
+    * Qt < 5.14
+        * Any self-signed certificate is accepted when using Qt WebEngine due to https://bugreports.qt.io/browse/QTBUG-51176.
+    * Qt < 5.9:
+        * Pausing/resuming folders and devices doesn't work when using scan-intervalls with a lot of zeros because of
+          Syncthing bug https://github.com/syncthing/syncthing/issues/4001. This has already been fixed on the Qt-side with
+          https://codereview.qt-project.org/#/c/187069/. However, the fix is only available in Qt 5.9 and above.
+    * any Qt version:
+        * The tray disconnects from the local instance when the network connection goes down. The network connection must be restored
+          or the tray restarted to be able to connect to local Syncthing again. This is caused by Qt bug
+          https://bugreports.qt.io/browse/QTBUG-60949.
 
 ## Attribution for 3rd party content
 * Some icons are taken from the Syncthing project.
