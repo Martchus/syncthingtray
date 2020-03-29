@@ -13,10 +13,13 @@ and announcement of new features.
 Issues can be created on GitHub but please read the "Known bugs" and "Planned features" sections in this document
 before.
 
+I provide binaries/repositories for some platforms. There are also binaries/repositories provided by other
+distributors. For a list with links, checkout the *Download* section of this document. The release section on
+GitHub only contains a fraction of the available options.
+
 ## Supported platforms
-* Designed to work under any desktop environment supported by Qt 5 with tray icon
-  support
-* No desktop environment specific libraries required (only for optional features)
+* Designed to work under any desktop environment supported by Qt 5 with tray icon support
+* No desktop environment specific libraries required (only for optional features/integrations)
 * Tested under
     * X Window System
         * Plasma 5 (beside Qt Widgets based version there is a native "Plasmoid")
@@ -42,8 +45,7 @@ before.
 The Qt Widgets based version basically works under Wayland but there are positioning issues (see known bugs
 section).
 
-If you can confirm it works under other desktop environments, please add it
-to the list.
+If you can confirm it works under other desktop environments, please add it to the list.
 
 ## Features
 * Provides quick access to most frequently used features but does not intend to replace the official web UI
@@ -58,40 +60,47 @@ to the list.
     * Pause/resume a specific device or all devices at once
     * Pause/resume a specific directory
     * View recent history of changes (done locally and remotely)
-* Shows Syncthing notifications
-* Can read the local Syncthing configuration file for quick setup when just connecting to local instance
-* Can show the status of the Syncthing systemd unit and allows to start and stop it (see section *Use of systemd*)
+* Shows notifications
+    * The notification to show is configurable
+    * Uses Qt's notification support or a D-Bus notification daemon directly
+* Reads connection parameters from Syncthing config file for quick setup (when just connecting to local instance)
+* Allows monitoring the status of the Syncthing systemd unit to start and stop it (see section *Use of systemd*)
 * Provides an option to conveniently add the tray to the applications launched when the desktop environment starts
-* Can launch Syncthing and syncthing-inotify automatically when started and display stdout/stderr (useful under
-  Windows)
+* Can launch Syncthing automatically when started and display stdout/stderr (useful under Windows)
 * Provides quick access to the official web UI
-    * Utilizes either Qt WebKit or Qt WebEngine
+    * Utilizes either Qt WebEngine or Qt WebKit
     * Can be built without web view support as well (then the web UI is opened in the regular browser)
-* Allows quickly switching between multiple Syncthing instances
-* Shows notifications via Qt or uses D-Bus notification daemon directly
+* Allows switching quickly between multiple Syncthing instances
 * Also features a simple command line utility `syncthingctl`
     * Check status
     * Trigger rescan/pause/resume/restart
     * Wait for idle
-    * View and modify configuration
+    * View and modify raw configuration
     * Supports Bash completion, even for directory and device names
-* Also bundles a KIO plugin which shows the status of a Syncthing directory
-  and allows to trigger Syncthing actions in Dolphin file manager
+* Also bundles a KIO plugin which shows the status of a Syncthing directory and allows to trigger Syncthing actions
+  in Dolphin file manager
     * Rescan selected items
     * Rescan entire Syncthing directory
     * Pause/resume Syncthing directory
     * See also screenshots section
 * Also has an implementation as Plasmoid for Plasma 5 desktop
-* Build Syncthing as a library to run it in the same process as the tray/GUI (optional build configuration, not enabled
-  by default)
+* Allows building Syncthing as a library to run it in the same process as the tray/GUI (optional build configuration
+  which is not enabled by default)
 * English and German localization
 
-## Planned features
-The tray is still under development; the following features are under construction or planned:
+## Does this launch or bundle Syncthing itself? What about my existing Syncthing installation?
+Syncthing Tray does *not* launch Syncthing itself by default. There should be no interface with your existing
+Syncthing installation. You might consider different configurations:
 
-* Create Qt Quick Controls 2 and Kirigami 2 based frontend for mobile devices (focusing on Android)
-* Make some notifications configurable on folder level
-* Optionally notify for single file updates (https://github.com/Martchus/syncthingtray/issues/7)
+* If you're happy how Syncthing is started on your system so far just tell Syncthing Tray to connect to your currently
+  running Syncthing instance in the settings. If you're currently starting Syncthing via systemd you might consider
+  enabling the systemd integration in the settings (see section *Use of systemd*).
+* If you would like Syncthing Tray to take care of starting Syncthing for you, you can use the Syncthing launcher
+  available in the settings.
+    * The Windows builds provided in the release section on GitHub come with a built-in version of Syncthing
+      which you can consider to use. Keep in mind that automatic updates of Syncthing are not possible this way.
+    * In any case you can simply point the launcher to the binary of Syncthing (which you have to install separately).
+* It is also possible to let Syncthing Tray connect to a Syncthing instance running on a different machine.
 
 ## Screenshots
 The screenshots are not up-to-date.
@@ -157,24 +166,24 @@ See the release section on GitHub.
     * for RPM \*.spec files and binary repository checkout
       [openSUSE Build Servide](https://build.opensuse.org/project/show/home:mkittler)
     * there's also a [repo with builds of Git master](https://build.opensuse.org/project/show/home:mkittler:vcs)
-* NixOS
-    * the package syncthingtray is available from the official repositories
-* Exherbo
-    * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
-      by [the platypus repository](https://git.exherbo.org/summer/packages/media-sound/tageditor)
-* Gentoo
-    * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
-      by [perfect7gentleman's repository](https://github.com/perfect7gentleman/pg_overlay)
 * Other GNU/Linux systems
     * [AppImage repository for releases on the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage/AppImage)
     * [AppImage repository for builds from Git master the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage:/vcs/AppImage/)
 * Windows
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
     * for statically linked binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
+* NixOS
+    * the package syncthingtray is available from the official repositories
 * FreeBSD
     * the package syncthingtray is available from [FreeBSD Ports](https://www.freshports.org/deskutils/syncthingtray)
 * Mac OS X/macOS
     * the package syncthingtray is available from [MacPorts](https://ports.macports.org/port/syncthingtray/)
+* Exherbo
+    * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
+      by [the platypus repository](https://git.exherbo.org/summer/packages/media-sound/tageditor)
+* Gentoo
+    * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
+      by [perfect7gentleman's repository](https://github.com/perfect7gentleman/pg_overlay)
 
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and
@@ -322,6 +331,13 @@ directly to this repository. Then I will be able to take it into account when ch
 Since the Dolphin integration and the Plasmoid are plugins, testing and debugging requires a few extra steps.
 See [Testing and debugging Dolphin/KIO plugin with Qt Creator](/fileitemactionplugin/testing.md)
 and [Testing and debugging Plasma 5 plasmoid with Qt Creator](/plasmoid/testing.md).
+
+## Planned features
+The tray is still under development; the following features are under construction or planned:
+
+* Create Qt Quick Controls 2 and Kirigami 2 based frontend for mobile devices (focusing on Android)
+* Make some notifications configurable on folder level
+* Optionally notify for single file updates (https://github.com/Martchus/syncthingtray/issues/7)
 
 ## Known bugs
 The following bugs are caused by dependencies and hence tracked externally. For bugs of Syncthing Tray itself, checkout the issues
