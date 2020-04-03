@@ -472,7 +472,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
      <widget class="QWidget" name="recentChangesTab">
       <attribute name="icon">
        <iconset theme="document-open-recent-symbolic">
-        <normaloff>.</normaloff>.</iconset>
+        <normaloff>.</normaloff>
+        <normalon>:/icons/hicolor/scalable/actions/appointment-new.svg</normalon>.</iconset>
       </attribute>
       <attribute name="title">
        <string>Recent changes</string>

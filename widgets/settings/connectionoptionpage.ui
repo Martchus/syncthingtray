@@ -504,7 +504,9 @@
         <string>Select config file manually</string>
        </property>
        <property name="icon">
-        <iconset theme="document-open"/>
+        <iconset theme="document-open">
+         <normaloff>.</normaloff>
+         <normalon>:/icons/hicolor/scalable/actions/document-open.svg</normalon>.</iconset>
        </property>
       </widget>
      </item>

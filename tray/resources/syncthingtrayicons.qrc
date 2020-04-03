@@ -15,5 +15,6 @@
         <file>icons/hicolor/scalable/actions/network-connect.svg</file>
         <file>icons/hicolor/scalable/places/folder-download.svg</file>
         <file>icons/hicolor/scalable/emblems/8/emblem-error.svg</file>
+        <file>icons/hicolor/scalable/actions/appointment-new.svg</file>
     </qresource>
 </RCC>
