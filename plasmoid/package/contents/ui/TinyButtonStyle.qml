@@ -32,7 +32,7 @@ QtQuickControlStyle.ButtonStyle {
 
         PlasmaCore.IconItem {
             id: icon
-            source: control.iconName || control.iconSource
+            source: control.icon
             Layout.preferredWidth: control.iconSize
             Layout.preferredHeight: control.iconSize
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter

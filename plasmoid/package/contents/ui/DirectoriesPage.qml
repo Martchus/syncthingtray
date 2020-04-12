@@ -71,7 +71,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: errorsButton
-                                iconSource: ":/icons/hicolor/scalable/emblems/emblem-important-old.svg"
+                                icon: ":/icons/hicolor/scalable/emblems/emblem-important-old.svg"
                                 tooltip: qsTr("Show errors")
                                 visible: pullErrorCount > 0
                                 onClicked: {
@@ -82,7 +82,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: rescanButton
-                                iconSource: "view-refresh"
+                                icon: "view-refresh"
                                 tooltip: qsTr("Rescan")
                                 enabled: !paused
                                 onClicked: plasmoid.nativeInterface.connection.rescan(
@@ -90,7 +90,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: resumePauseButton
-                                iconSource: paused ? "media-playback-start" : "media-playback-pause"
+                                icon: paused ? "media-playback-start" : "media-playback-pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 onClicked: {
                                     paused ? plasmoid.nativeInterface.connection.resumeDirectories(
@@ -100,7 +100,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: openButton
-                                iconSource: "folder"
+                                icon: "folder"
                                 tooltip: qsTr("Open in file browser")
                                 onClicked: {
                                     Qt.openUrlExternally(path)

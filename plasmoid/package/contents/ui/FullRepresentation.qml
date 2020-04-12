@@ -186,7 +186,7 @@ ColumnLayout {
                     PropertyChanges {
                         target: connectButton
                         text: qsTr("Connect")
-                        iconSource: "view-refresh"
+                        icon: "view-refresh"
                     }
                 },
                 State {
@@ -194,7 +194,7 @@ ColumnLayout {
                     PropertyChanges {
                         target: connectButton
                         text: qsTr("Resume")
-                        iconSource: "media-playback-start"
+                        icon: "media-playback-start"
                     }
                 },
                 State {
@@ -202,7 +202,7 @@ ColumnLayout {
                     PropertyChanges {
                         target: connectButton
                         text: qsTr("Pause")
-                        iconSource: "media-playback-pause"
+                        icon: "media-playback-pause"
                     }
                 }
             ]
@@ -249,7 +249,7 @@ ColumnLayout {
                         text: qsTr("Stop")
                         tooltip: (plasmoid.nativeInterface.service.userScope ? "systemctl --user stop " : "systemctl stop ")
                                  + plasmoid.nativeInterface.service.unitName
-                        iconSource: "process-stop"
+                        icon: "process-stop"
                     }
                 },
                 State {
@@ -260,7 +260,7 @@ ColumnLayout {
                         text: qsTr("Start")
                         tooltip: (plasmoid.nativeInterface.service.userScope ? "systemctl --user start " : "systemctl start ")
                                  + plasmoid.nativeInterface.service.unitName
-                        iconSource: "system-run"
+                        icon: "system-run"
                     }
                 },
                 State {
@@ -286,8 +286,7 @@ ColumnLayout {
                 return service.running ? "running" : "stopped"
             }
             onClicked: plasmoid.nativeInterface.service.toggleRunning()
-            style: TinyButtonStyle {
-            }
+            style: TinyButtonStyle {}
             Shortcut {
                 sequence: "Ctrl+Shift+S"
                 onActivated: {
@@ -320,7 +319,7 @@ ColumnLayout {
         }
         TinyButton {
             tooltip: qsTr("About Syncthing Tray")
-            iconSource: "help-about"
+            icon: "help-about"
             onClicked: {
                 plasmoid.nativeInterface.showAboutDialog()
                 plasmoid.expanded = false
@@ -329,7 +328,7 @@ ColumnLayout {
         TinyButton {
             id: showOwnIdButton
             tooltip: qsTr("Show own device ID")
-            iconSource: "view-barcode"
+            icon: "view-barcode"
             onClicked: {
                 plasmoid.nativeInterface.showOwnDeviceId()
                 plasmoid.expanded = false
@@ -342,7 +341,7 @@ ColumnLayout {
         TinyButton {
             id: showLogButton
             tooltip: qsTr("Show Syncthing log")
-            iconSource: "text-x-generic"
+            icon: "text-x-generic"
             onClicked: {
                 plasmoid.nativeInterface.showLog()
                 plasmoid.expanded = false
@@ -355,7 +354,7 @@ ColumnLayout {
         TinyButton {
             id: rescanAllDirsButton
             tooltip: qsTr("Rescan all directories")
-            iconSource: "folder-sync"
+            icon: "folder-sync"
             onClicked: plasmoid.nativeInterface.connection.rescanAllDirs()
             Shortcut {
                 sequence: "Ctrl+Shift+R"
@@ -365,7 +364,7 @@ ColumnLayout {
         TinyButton {
             id: settingsButton
             tooltip: qsTr("Settings")
-            iconSource: "preferences-other"
+            icon: "preferences-other"
             onClicked: {
                 plasmoid.nativeInterface.showSettingsDlg()
                 plasmoid.expanded = false
@@ -378,7 +377,7 @@ ColumnLayout {
         TinyButton {
             id: webUIButton
             tooltip: qsTr("Open Syncthing")
-            iconSource: ":/icons/hicolor/scalable/status/syncthing-default.svg"
+            icon: plasmoid.nativeInterface.syncthingIcon
             onClicked: {
                 plasmoid.nativeInterface.showWebUI()
                 plasmoid.expanded = false
@@ -390,7 +389,7 @@ ColumnLayout {
         }
         TinyButton {
             text: plasmoid.nativeInterface.currentConnectionConfigName
-            iconSource: "network-connect"
+            icon: "network-connect"
             paddingEnabled: true
             // FIXME: figure out why menu doesn't work in plasmoidviewer using NVIDIA driver
             // (works with plasmawindowed and plasmashell or always when using Intel graphics)
@@ -529,14 +528,13 @@ ColumnLayout {
                     iconSource: "document-open-recent-symbolic"
                     tab: recentChangesPage
                 }
-
             }
             Item {
                 Layout.fillHeight: true
             }
             TinyButton {
                 id: searchButton
-                iconSource: "search"
+                icon: "search"
                 enabled: mainTabGroup.currentTab === dirsPage
                 tooltip: qsTr("Toggle filter")
                 onClicked: {

@@ -56,7 +56,7 @@ Item {
                             }
                             TinyButton {
                                 id: resumePauseButton
-                                iconSource: paused ? "media-playback-start" : "media-playback-pause"
+                                icon: paused ? "media-playback-start" : "media-playback-pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 onClicked: {
                                     paused ? plasmoid.nativeInterface.connection.resumeDevice(

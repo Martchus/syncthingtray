@@ -126,10 +126,6 @@
         <property name="toolTip">
          <string>Open Syncthing</string>
         </property>
-        <property name="icon">
-         <iconset resource="../../model/resources/syncthingmodelicons.qrc">
-          <normaloff>:/icons/hicolor/scalable/status/syncthing-default.svg</normaloff>:/icons/hicolor/scalable/status/syncthing-default.svg</iconset>
-        </property>
         <property name="flat">
          <bool>true</bool>
         </property>
