@@ -134,7 +134,7 @@ ColumnLayout {
                     // use value for properties depending on paused state from buttons
                     rescanItem.enabled = item.rescanButton.enabled
                     resumePauseItem.text = item.resumePauseButton.tooltip
-                    resumePauseItem.icon = item.resumePauseButton.iconSource
+                    resumePauseItem.icon = item.resumePauseButton.icon
                 }
 
                 PlasmaComponents.MenuItem {

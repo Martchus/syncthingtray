@@ -90,7 +90,7 @@ Item {
                 function init(item) {
                     // use value for properties depending on paused state from buttons
                     resumePauseItem.text = item.resumePauseButton.tooltip
-                    resumePauseItem.icon = item.resumePauseButton.iconSource
+                    resumePauseItem.icon = item.resumePauseButton.icon
                 }
 
                 PlasmaComponents.MenuItem {
