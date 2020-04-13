@@ -392,10 +392,7 @@ ColumnLayout {
             text: plasmoid.nativeInterface.currentConnectionConfigName
             icon: "network-connect"
             paddingEnabled: true
-            onClicked: (connectionConfigsMenu.opened
-                        = !connectionConfigsMenu.opened) ? connectionConfigsMenu.open(
-                                                               x,
-                                                               y + height) : connectionConfigsMenu.close()
+            onClicked: connectionConfigsMenu.toggle(x, y + height)
             Shortcut {
                 sequence: "Ctrl+Shift+C"
                 onActivated: connectionsButton.clicked()
@@ -404,22 +401,39 @@ ColumnLayout {
         PlasmaComponents.Menu {
             id: connectionConfigsMenu
             property bool opened: false
+            function toggle(x, y) {
+                if (!(connectionConfigsMenu.opened = !connectionConfigsMenu.opened)) {
+                    close()
+                    return
+                }
+                var nativeInterface = plasmoid.nativeInterface
+                var configNames = nativeInterface.connectionConfigNames
+                var currentIndex = nativeInterface.currentConnectionConfigIndex
+                clearMenuItems()
+                for (var i = 0, count = configNames.length; i !== count; ++i) {
+                    addMenuItem(menuItem.createObject(connectButton, {
+                                                          "text": configNames[i],
+                                                          "checked": i === currentIndex,
+                                                          "index": i
+                                                      }))
+                }
+                open(x, y)
+            }
+            function hide() {
+                close()
+                opened = false
+            }
         }
-        Instantiator {
-            model: plasmoid.nativeInterface.connectionConfigNames
+        Component {
+            id: menuItem
             PlasmaComponents.MenuItem {
-                text: model.modelData
+                property int index: -1
                 checkable: true
-                checked: plasmoid.nativeInterface.currentConnectionConfigIndex === index
                 onClicked: {
                     plasmoid.nativeInterface.currentConnectionConfigIndex = index
-                    connectionConfigsMenu.close()
-                    connectionConfigsMenu.opened = false
+                    connectionConfigsMenu.hide()
                 }
             }
-            onObjectAdded: connectionConfigsMenu.addMenuItem(
-                               object, connectionConfigsMenu.content[index])
-            onObjectRemoved: connectionConfigsMenu.removeItem(object)
         }
     }
 
