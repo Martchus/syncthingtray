@@ -388,35 +388,38 @@ ColumnLayout {
             }
         }
         TinyButton {
+            id: connectionsButton
             text: plasmoid.nativeInterface.currentConnectionConfigName
             icon: "network-connect"
             paddingEnabled: true
-            // FIXME: figure out why menu doesn't work in plasmoidviewer using NVIDIA driver
-            // (works with plasmawindowed and plasmashell or always when using Intel graphics)
-            menu: Menu {
-                id: connectionConfigsMenu
-
-                ExclusiveGroup {
-                    id: connectionConfigsExclusiveGroup
-                }
-
-                Instantiator {
-                    model: plasmoid.nativeInterface.connectionConfigNames
-
-                    MenuItem {
-                        text: model.modelData
-                        checkable: true
-                        checked: plasmoid.nativeInterface.currentConnectionConfigIndex === index
-                        exclusiveGroup: connectionConfigsExclusiveGroup
-                        onTriggered: {
-                            plasmoid.nativeInterface.currentConnectionConfigIndex = index
-                        }
-                    }
-                    onObjectAdded: connectionConfigsMenu.insertItem(index,
-                                                                    object)
-                    onObjectRemoved: connectionConfigsMenu.removeItem(object)
+            onClicked: (connectionConfigsMenu.opened
+                        = !connectionConfigsMenu.opened) ? connectionConfigsMenu.open(
+                                                               x,
+                                                               y + height) : connectionConfigsMenu.close()
+            Shortcut {
+                sequence: "Ctrl+Shift+C"
+                onActivated: connectionsButton.clicked()
+            }
+        }
+        PlasmaComponents.Menu {
+            id: connectionConfigsMenu
+            property bool opened: false
+        }
+        Instantiator {
+            model: plasmoid.nativeInterface.connectionConfigNames
+            PlasmaComponents.MenuItem {
+                text: model.modelData
+                checkable: true
+                checked: plasmoid.nativeInterface.currentConnectionConfigIndex === index
+                onClicked: {
+                    plasmoid.nativeInterface.currentConnectionConfigIndex = index
+                    connectionConfigsMenu.close()
+                    connectionConfigsMenu.opened = false
                 }
             }
+            onObjectAdded: connectionConfigsMenu.addMenuItem(
+                               object, connectionConfigsMenu.content[index])
+            onObjectRemoved: connectionConfigsMenu.removeItem(object)
         }
     }
 
