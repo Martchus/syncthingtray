@@ -392,6 +392,7 @@ ColumnLayout {
             text: plasmoid.nativeInterface.currentConnectionConfigName
             icon: "network-connect"
             paddingEnabled: true
+            enforceMenuArrow: true
             onClicked: connectionConfigsMenu.toggle(x, y + height)
             Shortcut {
                 sequence: "Ctrl+Shift+C"
@@ -400,9 +401,8 @@ ColumnLayout {
         }
         PlasmaComponents.Menu {
             id: connectionConfigsMenu
-            property bool opened: false
             function toggle(x, y) {
-                if (!(connectionConfigsMenu.opened = !connectionConfigsMenu.opened)) {
+                if (connectionConfigsMenu.status === PlasmaComponents.DialogStatus.Open) {
                     close()
                     return
                 }
@@ -419,10 +419,6 @@ ColumnLayout {
                 }
                 open(x, y)
             }
-            function hide() {
-                close()
-                opened = false
-            }
         }
         Component {
             id: menuItem
@@ -431,7 +427,7 @@ ColumnLayout {
                 checkable: true
                 onClicked: {
                     plasmoid.nativeInterface.currentConnectionConfigIndex = index
-                    connectionConfigsMenu.hide()
+                    connectionConfigsMenu.close()
                 }
             }
         }

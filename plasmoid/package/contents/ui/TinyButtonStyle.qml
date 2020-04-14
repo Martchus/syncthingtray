@@ -22,6 +22,7 @@ QtQuickControlStyle.ButtonStyle {
     property bool controlHovered: control.hovered
                                   && !(QtQuickControlsPrivate.Settings.hasTouchScreen
                                        && QtQuickControlsPrivate.Settings.isMobile)
+    property bool needsMenuArrow: control.menu || control.enforceMenuArrow
 
     label: RowLayout {
         id: buttonContent
@@ -65,14 +66,14 @@ QtQuickControlStyle.ButtonStyle {
 
         PlasmaExtras.ConditionalLoader {
             id: arrow
-            when: control.menu !== null
+            when: needsMenuArrow
             visible: when
             Layout.preferredWidth: units.iconSizes.small
             Layout.preferredHeight: units.iconSizes.small
 
             source: Component {
                 PlasmaCore.SvgItem {
-                    visible: control.menu !== null
+                    visible: needsMenuArrow
                     svg: PlasmaCore.Svg {
                         imagePath: "widgets/arrows"
                         colorGroup: (style.controlHovered || !style.flat)
