@@ -6,6 +6,7 @@
 #include <c++utilities/chrono/datetime.h>
 
 #include <QProcess>
+#include <QStringList>
 #include <QTimer>
 
 namespace Data {

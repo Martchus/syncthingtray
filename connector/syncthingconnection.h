@@ -12,6 +12,7 @@
 #include <QSslError>
 #include <QTimer>
 
+#include <cstdint>
 #include <functional>
 #include <limits>
 #include <vector>

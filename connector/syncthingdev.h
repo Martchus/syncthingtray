@@ -10,6 +10,10 @@
 #include <QString>
 #include <QStringList>
 
+#include <cstdlib>
+#include <unordered_map>
+#include <vector>
+
 namespace Data {
 
 /// \brief The SyncthingDevStatus enum represents a Syncthing device status.

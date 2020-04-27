@@ -4,6 +4,7 @@
 #include "./global.h"
 
 #include <QByteArray>
+#include <QList>
 #include <QSslError>
 #include <QString>
 

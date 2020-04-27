@@ -11,6 +11,9 @@
 #include <QMetaType>
 #include <QString>
 
+#include <unordered_map>
+#include <vector>
+
 namespace Data {
 
 /// \brief The SyncthingDirStatus enum represents a Syncthing directory status.
