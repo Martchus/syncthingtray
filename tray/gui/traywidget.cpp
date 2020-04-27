@@ -433,6 +433,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
         m_connectionsMenu->actions().at(0)->setChecked(true);
     }
     m_ui->connectionsPushButton->setText(m_selectedConnection->label);
+    m_ui->connectionsPushButton->setHidden(secondaryConnectionSettings.empty());
     const bool reconnectRequired = m_connection.applySettings(*m_selectedConnection);
 
     // apply notification settings

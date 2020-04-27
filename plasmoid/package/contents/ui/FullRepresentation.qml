@@ -394,6 +394,7 @@ ColumnLayout {
             paddingEnabled: true
             enforceMenuArrow: true
             onClicked: connectionConfigsMenu.toggle(x, y + height)
+            visible: plasmoid.nativeInterface.connectionConfigNames.length > 1
             Shortcut {
                 sequence: "Ctrl+Shift+C"
                 onActivated: connectionsButton.clicked()
