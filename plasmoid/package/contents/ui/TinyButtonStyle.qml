@@ -136,14 +136,14 @@ QtQuickControlStyle.ButtonStyle {
                     return "AllBorders"
                 }
 
-                var borders = new Array()
-                if (control.x == 0) {
+                var borders = []
+                if (control.x === 0) {
                     borders.push("LeftBorder")
                     shadow.anchors.leftMargin = 0
                 } else {
                     shadow.anchors.leftMargin = -1
                 }
-                if (control.y == 0) {
+                if (control.y === 0) {
                     borders.push("TopBorder")
                     shadow.anchors.topMargin = 0
                 } else {
