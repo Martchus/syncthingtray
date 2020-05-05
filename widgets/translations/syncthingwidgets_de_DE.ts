@@ -654,12 +654,17 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="116"/>
+        <location filename="../settings/launcheroptionpage.ui" line="113"/>
+        <source>Data directory</source>
+        <translation>Datenverzeichnis</translation>
+    </message>
+    <message>
+        <location filename="../settings/launcheroptionpage.ui" line="126"/>
         <source>Show start/stop button on tray for local instance</source>
         <translation>Zeige Start/Stop-Button für die lokale Instanz</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="123"/>
+        <location filename="../settings/launcheroptionpage.ui" line="133"/>
         <source>Consider process status for reconnect attempts to local instance
  • Don&apos;t reconnect when the process is not running
  • Try to reconnect when starting the process</source>
@@ -668,28 +673,28 @@
  • Automatisch neu verbinden, wenn Syncthing gestartet wird</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="153"/>
+        <location filename="../settings/launcheroptionpage.ui" line="163"/>
         <source>Syncthing log (interleaved stdout/stderr)</source>
         <translation>Syncthing-Log (stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="166"/>
+        <location filename="../settings/launcheroptionpage.ui" line="176"/>
         <source>Apply and launch now</source>
         <translation>Jetzt starten</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="183"/>
-        <location filename="../settings/settingsdialog.cpp" line="980"/>
+        <location filename="../settings/launcheroptionpage.ui" line="193"/>
+        <location filename="../settings/settingsdialog.cpp" line="983"/>
         <source>Stop launched instance</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="202"/>
+        <location filename="../settings/launcheroptionpage.ui" line="212"/>
         <source>No log messages available yet</source>
         <translation>Bisher keine Log-Meldungen</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="209"/>
+        <location filename="../settings/launcheroptionpage.ui" line="219"/>
         <source>Ensure latest log is visible</source>
         <translation>Log folgen</translation>
     </message>
@@ -719,52 +724,52 @@
         <translation>Auf Vorgabe zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1015"/>
+        <location filename="../settings/settingsdialog.cpp" line="1018"/>
         <source>%1 exited with exit code %2</source>
         <translation>%1 wurde mit dem Statuscode %2 beendet</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1018"/>
+        <location filename="../settings/settingsdialog.cpp" line="1021"/>
         <source>%1 crashed with exit code %2</source>
         <translation>%1 ist mit dem Statuscode %2 abgestürzt</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1045"/>
+        <location filename="../settings/settingsdialog.cpp" line="1048"/>
         <source>failed to start (e.g. executable does not exist or not permission error)</source>
         <translation>Start fehlgeschlagen (z. B. weil Programmdatei nicht existiert oder nicht ausführbar ist)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1048"/>
+        <location filename="../settings/settingsdialog.cpp" line="1051"/>
         <source>process crashed</source>
         <translation>Prozess ist abgestürzt</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1051"/>
+        <location filename="../settings/settingsdialog.cpp" line="1054"/>
         <source>timeout error</source>
         <translation>Time-out</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1054"/>
+        <location filename="../settings/settingsdialog.cpp" line="1057"/>
         <source>read error</source>
         <translation>Lesefehler</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1057"/>
+        <location filename="../settings/settingsdialog.cpp" line="1060"/>
         <source>write error</source>
         <translation>Schreibfehler</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1060"/>
+        <location filename="../settings/settingsdialog.cpp" line="1063"/>
         <source>unknown process error</source>
         <translation>unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1062"/>
+        <location filename="../settings/settingsdialog.cpp" line="1065"/>
         <source>An error occurred when running %1: %2</source>
         <translation>Beim Ausführen von %1 ist ein Fehler aufgetreten: %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1113"/>
+        <location filename="../settings/settingsdialog.cpp" line="1116"/>
         <source>Kill launched instance</source>
         <translation>Töten</translation>
     </message>
@@ -883,22 +888,22 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1320"/>
+        <location filename="../settings/settingsdialog.cpp" line="1323"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1327"/>
+        <location filename="../settings/settingsdialog.cpp" line="1330"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1334"/>
+        <location filename="../settings/settingsdialog.cpp" line="1337"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1356"/>
+        <location filename="../settings/settingsdialog.cpp" line="1359"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -1064,8 +1069,8 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <location filename="../settings/systemdoptionpage.ui" line="106"/>
         <location filename="../settings/systemdoptionpage.ui" line="161"/>
         <location filename="../settings/systemdoptionpage.ui" line="250"/>
-        <location filename="../settings/settingsdialog.cpp" line="1235"/>
-        <location filename="../settings/settingsdialog.cpp" line="1247"/>
+        <location filename="../settings/settingsdialog.cpp" line="1238"/>
+        <location filename="../settings/settingsdialog.cpp" line="1250"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -1099,22 +1104,22 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1171"/>
+        <location filename="../settings/settingsdialog.cpp" line="1174"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Start-/Stop-Button für den Systemd-Dienst und den internen Starter gleichzeitig anzugeigen. Wenn verfügbar, wird der Button den Systemd-Dienst kontrollieren.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1177"/>
+        <location filename="../settings/settingsdialog.cpp" line="1180"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Status des Systemd-Dienstes und den des internen Starters gleichzeitig für Verbindungsveruche einzubeziehen. Wenn verfügbar, wird der Status des Systemd-Dienstes verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1208"/>
+        <location filename="../settings/settingsdialog.cpp" line="1211"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1230"/>
+        <location filename="../settings/settingsdialog.cpp" line="1233"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -1131,7 +1136,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>QtGui::WebPage</name>
     <message>
-        <location filename="../webview/webpage.cpp" line="285"/>
+        <location filename="../webview/webpage.cpp" line="318"/>
         <source>Select path for Syncthing directory ...</source>
         <translation>Pfad für Syncthing-Verzeichnis auswählen ...</translation>
     </message>
@@ -1148,7 +1153,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1269"/>
+        <location filename="../settings/settingsdialog.cpp" line="1272"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
@@ -1178,7 +1183,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1271"/>
+        <location filename="../settings/settingsdialog.cpp" line="1274"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.

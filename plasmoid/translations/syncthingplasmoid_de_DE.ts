@@ -92,62 +92,62 @@
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="305"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="304"/>
         <source>Show new notifications</source>
         <translation>Neue Benachrichtigungen anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="331"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="330"/>
         <source>Show own device ID</source>
         <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="344"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="343"/>
         <source>Show Syncthing log</source>
         <translation>Syncthing-Log anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="357"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="356"/>
         <source>Rescan all directories</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="367"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="366"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="380"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="379"/>
         <source>Open Syncthing</source>
         <translation>Syncthing öffnen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="450"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="463"/>
         <source>Global</source>
         <translation>Globale</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="459"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="472"/>
         <source>Global incoming traffic</source>
         <translation>Globaler eingehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="470"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="483"/>
         <source>Local</source>
         <translation>Lokale</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="479"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="492"/>
         <source>Global outgoing traffic</source>
         <translation>Globaler ausgehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="541"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="553"/>
         <source>Toggle filter</source>
         <translation>Filter ein-/ausblenden</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="322"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="321"/>
         <source>About Syncthing Tray</source>
         <translation>Über Syncthing Tray</translation>
     </message>
@@ -238,17 +238,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="325"/>
+        <location filename="../lib/syncthingapplet.cpp" line="330"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="337"/>
+        <location filename="../lib/syncthingapplet.cpp" line="342"/>
         <source>New notifications</source>
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="493"/>
+        <location filename="../lib/syncthingapplet.cpp" line="498"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
     </message>
