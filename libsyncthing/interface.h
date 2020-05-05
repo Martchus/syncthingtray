@@ -6,18 +6,36 @@
 #include <cstdint>
 #include <functional>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 namespace LibSyncthing {
 
+enum class RuntimeFlags : std::uint64_t {
+    None = 0,
+    Verbose = (1 << 0),
+    AllowNewerConfig = (1 << 1),
+    NoDefaultConfig = (1 << 2),
+    EnsureConfigDirExists = (1 << 3),
+    EnsureDataDirExists = (1 << 4),
+};
+
+constexpr bool operator&(RuntimeFlags lhs, RuntimeFlags rhs)
+{
+    return static_cast<std::underlying_type_t<RuntimeFlags>>(lhs) & static_cast<std::underlying_type_t<RuntimeFlags>>(rhs);
+}
+
+constexpr RuntimeFlags operator|(RuntimeFlags lhs, RuntimeFlags rhs)
+{
+    return static_cast<RuntimeFlags>(static_cast<std::underlying_type_t<RuntimeFlags>>(lhs) | static_cast<std::underlying_type_t<RuntimeFlags>>(rhs));
+}
+
 struct RuntimeOptions {
     std::string configDir;
+    std::string dataDir;
     std::string guiAddress;
     std::string guiApiKey;
-    bool verbose = false;
-    bool allowNewerConfig = true;
-    bool noDefaultConfig = false;
-    bool ensureConfigDirectoryExists = true;
+    RuntimeFlags flags = RuntimeFlags::AllowNewerConfig | RuntimeFlags::EnsureConfigDirExists | RuntimeFlags::EnsureDataDirExists;
 };
 
 enum class LogLevel : int {

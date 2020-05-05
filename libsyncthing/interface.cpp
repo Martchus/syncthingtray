@@ -140,8 +140,9 @@ std::int64_t runSyncthing(const RuntimeOptions &options)
     if (!runningState) {
         return -1;
     }
-    return ::libst_run_syncthing(gostr(options.configDir), gostr(options.guiAddress), gostr(options.guiApiKey), options.verbose,
-        options.allowNewerConfig, options.noDefaultConfig, options.ensureConfigDirectoryExists);
+    return ::libst_run_syncthing(gostr(options.configDir), gostr(options.dataDir), gostr(options.guiAddress), gostr(options.guiApiKey),
+        options.flags & RuntimeFlags::Verbose, options.flags & RuntimeFlags::AllowNewerConfig, options.flags & RuntimeFlags::NoDefaultConfig,
+        options.flags & RuntimeFlags::EnsureConfigDirExists, options.flags & RuntimeFlags::EnsureDataDirExists);
 }
 
 /*!

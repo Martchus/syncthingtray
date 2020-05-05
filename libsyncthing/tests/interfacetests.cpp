@@ -234,6 +234,7 @@ void InterfaceTests::testRunWithoutConfig()
 {
     RuntimeOptions options;
     options.configDir = TestApplication::instance()->workingDirectory() + "/does/not/exist";
+    options.dataDir = TestApplication::instance()->workingDirectory() + "/does/also/not/exist";
     filesystem::remove_all(TestApplication::instance()->workingDirectory() + "/does");
     testRun(bind(static_cast<std::int64_t (*)(const RuntimeOptions &)>(&runSyncthing), cref(options)), false);
 }
@@ -245,6 +246,6 @@ void InterfaceTests::testRunWithoutConfig()
 void InterfaceTests::testRunWidthConfig()
 {
     RuntimeOptions options;
-    options.configDir = setupTestConfigDir();
+    options.configDir = options.dataDir = setupTestConfigDir();
     testRun(bind(static_cast<std::int64_t (*)(const RuntimeOptions &)>(&runSyncthing), cref(options)), true);
 }

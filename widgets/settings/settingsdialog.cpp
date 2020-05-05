@@ -892,6 +892,7 @@ QWidget *LauncherOptionPage::setupWidget()
         connect(m_restoreArgsButton, &IconButton::clicked, this, &LauncherOptionPage::restoreDefaultArguments);
         ui()->argumentsLineEdit->insertCustomButton(0, m_restoreArgsButton);
         ui()->configDirPathSelection->provideCustomFileMode(QFileDialog::Directory);
+        ui()->dataDirPathSelection->provideCustomFileMode(QFileDialog::Directory);
     }
 
     // setup other widgets
@@ -933,6 +934,7 @@ bool LauncherOptionPage::apply()
         settings.autostartEnabled = ui()->enabledCheckBox->isChecked();
         settings.useLibSyncthing = ui()->useBuiltInVersionCheckBox->isChecked();
         settings.libSyncthing.configDir = ui()->configDirPathSelection->lineEdit()->text();
+        settings.libSyncthing.dataDir = ui()->dataDirPathSelection->lineEdit()->text();
         settings.libSyncthing.logLevel = static_cast<LibSyncthing::LogLevel>(ui()->logLevelComboBox->currentIndex());
         settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
         settings.syncthingArgs = ui()->argumentsLineEdit->text();
@@ -955,6 +957,7 @@ void LauncherOptionPage::reset()
         ui()->useBuiltInVersionCheckBox->setChecked(settings.useLibSyncthing);
         ui()->useBuiltInVersionCheckBox->setVisible(settings.useLibSyncthing || SyncthingLauncher::isLibSyncthingAvailable());
         ui()->configDirPathSelection->lineEdit()->setText(settings.libSyncthing.configDir);
+        ui()->dataDirPathSelection->lineEdit()->setText(settings.libSyncthing.dataDir);
         ui()->logLevelComboBox->setCurrentIndex(static_cast<int>(settings.libSyncthing.logLevel));
         ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
         ui()->argumentsLineEdit->setText(settings.syncthingArgs);

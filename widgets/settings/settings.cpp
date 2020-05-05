@@ -293,6 +293,7 @@ void restore()
     launcher.autostartEnabled = settings.value(QStringLiteral("syncthingAutostart"), launcher.autostartEnabled).toBool();
     launcher.useLibSyncthing = settings.value(QStringLiteral("useLibSyncthing"), launcher.useLibSyncthing).toBool();
     launcher.libSyncthing.configDir = settings.value(QStringLiteral("libSyncthingConfigDir"), launcher.libSyncthing.configDir).toString();
+    launcher.libSyncthing.dataDir = settings.value(QStringLiteral("libSyncthingDataDir"), launcher.libSyncthing.dataDir).toString();
     launcher.libSyncthing.logLevel = static_cast<LibSyncthing::LogLevel>(
         settings.value(QStringLiteral("libSyncthingLogLevel"), static_cast<int>(launcher.libSyncthing.logLevel)).toInt());
     launcher.syncthingPath = settings.value(QStringLiteral("syncthingPath"), launcher.syncthingPath).toString();
@@ -394,6 +395,7 @@ void save()
     settings.setValue(QStringLiteral("syncthingAutostart"), launcher.autostartEnabled);
     settings.setValue(QStringLiteral("useLibSyncthing"), launcher.useLibSyncthing);
     settings.setValue(QStringLiteral("libSyncthingConfigDir"), launcher.libSyncthing.configDir);
+    settings.setValue(QStringLiteral("libSyncthingDataDir"), launcher.libSyncthing.dataDir);
     settings.setValue(QStringLiteral("libSyncthingLogLevel"), static_cast<int>(launcher.libSyncthing.logLevel));
     settings.setValue(QStringLiteral("syncthingPath"), launcher.syncthingPath);
     settings.setValue(QStringLiteral("syncthingArgs"), launcher.syncthingArgs);

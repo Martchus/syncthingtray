@@ -119,6 +119,7 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
     if (launcherSettings.useLibSyncthing) {
         LibSyncthing::RuntimeOptions options;
         options.configDir = launcherSettings.libSyncthing.configDir.toStdString();
+        options.dataDir = launcherSettings.libSyncthing.configDir.toStdString();
         setLibSyncthingLogLevel(launcherSettings.libSyncthing.logLevel);
         launch(options);
     } else {

@@ -71,14 +71,14 @@
       <item row="3" column="1">
        <widget class="QtUtilities::PathSelection" name="configDirPathSelection" native="true"/>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="logLevelLabel">
         <property name="text">
          <string>Log level</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="5" column="1">
        <widget class="QComboBox" name="logLevelComboBox">
         <item>
          <property name="text">
@@ -106,6 +106,16 @@
          </property>
         </item>
        </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="dataDirLabel">
+        <property name="text">
+         <string>Data directory</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QtUtilities::PathSelection" name="dataDirPathSelection" native="true"/>
       </item>
      </layout>
     </widget>
@@ -346,6 +356,38 @@
     <hint type="destinationlabel">
      <x>180</x>
      <y>145</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useBuiltInVersionCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dataDirLabel</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>273</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>156</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useBuiltInVersionCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dataDirPathSelection</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>273</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>171</x>
+     <y>156</y>
     </hint>
    </hints>
   </connection>
