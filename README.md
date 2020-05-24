@@ -184,14 +184,11 @@ Disabling the systemd integration is mainly intended for systems which do not us
 Windows and MacOS).
 
 ## Hotkeys
-To create hotkeys, you can use the same approach as for any other
-application. Just make it invoke the `syncthingctl` application with
-the arguments for the desired action.
+Use the same approach as for launching an arbitrary application via a hotkey. Make it invoke
 
-### Hotkey for web UI
-Just add `--webui` to the `syncthingtray` arguments to trigger the web UI.
-Syncthing Tray ensures that no second instance will be spawned if it is already
-running and just trigger the web UI.
+* `syncthingtray --trigger` to show the tray menu.
+* `syncthingtray --webui` to show the web UI.
+* `syncthingctl [...]` to trigger a particular action. See `syncthingctl -h` for details.
 
 ## Download
 ### Source
