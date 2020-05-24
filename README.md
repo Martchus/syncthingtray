@@ -64,7 +64,7 @@ If you can confirm it works under other desktop environments, please add it to t
     * The notification to show is configurable
     * Uses Qt's notification support or a D-Bus notification daemon directly
 * Reads connection parameters from Syncthing config file for quick setup (when just connecting to local instance)
-* Allows monitoring the status of the Syncthing systemd unit to start and stop it (see section *Use of systemd*)
+* Allows monitoring the status of the Syncthing systemd unit and to start and stop it (see section *Configuring systemd integration*)
 * Provides an option to conveniently add the tray to the applications launched when the desktop environment starts
 * Can launch Syncthing automatically when started and display stdout/stderr (useful under Windows)
 * Provides quick access to the official web UI
@@ -94,12 +94,13 @@ Syncthing installation. You might consider different configurations:
 
 * If you're happy how Syncthing is started on your system so far just tell Syncthing Tray to connect to your currently
   running Syncthing instance in the settings. If you're currently starting Syncthing via systemd you might consider
-  enabling the systemd integration in the settings (see section *Use of systemd*).
+  enabling the systemd integration in the settings (see section *Configuring systemd integration*).
 * If you would like Syncthing Tray to take care of starting Syncthing for you, you can use the Syncthing launcher
   available in the settings.
     * The Windows builds provided in the release section on GitHub come with a built-in version of Syncthing
       which you can consider to use. Keep in mind that automatic updates of Syncthing are not possible this way.
-    * In any case you can simply point the launcher to the binary of Syncthing (which you have to install separately).
+    * In any case you can simply point the launcher to the binary of Syncthing (which you have to download/install
+      separately).
 * It is also possible to let Syncthing Tray connect to a Syncthing instance running on a different machine.
 
 ## Screenshots
@@ -126,6 +127,62 @@ The screenshots are not up-to-date.
 ### Syncthing actions for Dolphin
 ![Rescan/pause/status](/fileitemactionplugin/resources/screenshots/dolphin.png?raw=true)
 
+## Configuring systemd integration
+The next section explains what it is good for and how to use it. If it doesn't work on your
+system please read the subsequent sections as well before filing an issue.
+
+### Using the systemd integration
+With the system configured correctly and systemd support enabled at build-time the following
+features are available:
+
+* Starting and stopping the systemd unit of Syncthing
+* Consider the unit status when connecting to the local instance to prevent connection attempts
+  when Syncthing isn't running anyways
+* Detect when the system has just been resumed from standby to avoid the "Disconnect"
+  notification in that case
+
+However, these features are optional. To use them they must be enabled in the settings dialog
+first.
+
+Be aware that Syncthing Tray assumes by default that the systemd unit is a
+[user unit](https://wiki.archlinux.org/index.php/Systemd/User). If you are using
+a regular system-wide unit (including those started with `…@username`) you need to enable the
+"System unit" checkbox in the settings. Note that starting and stopping the system-wide Syncthing
+unit requires authorization (systemd can ask through PolicyKit).
+
+### Required system configuration
+The communication between Syncthing Tray and systemd is implemented using systemd's D-Bus service.
+That means systemd's D-Bus service (which is called `org.freedesktop.systemd1`) must be running on
+your D-Bus. For [user units](https://wiki.archlinux.org/index.php/Systemd/User) the session D-Bus is
+relevant and for regular units (including those started with `…@username`) the system D-Bus is relevant.
+
+It seems that systemd's D-Bus service is only available when D-Bus itself is started via systemd. That
+is by default the case under Arch Linux and openSUSE and likely most other modern distributions where
+it is usually started via "socket activation" (e.g. `/usr/lib/systemd/user/dbus.socket` for the session
+D-Bus).
+
+All of this counts for the session D-Bus *and* for the system D-Bus although the startup of the session
+D-Bus can be screwed up particularily easy. One easy way to screw it up is to start a second instance of
+the session D-Bus manually e.g. via `dbus-run-session`. When starting the session D-Bus this way the
+systemd integration will *not* work and you will likely end up with two session D-Bus processes. It is
+also worth noticing that you do *not* need to set the `DBUS_SESSION_BUS_ADDRESS` variable manually
+because the systemd file `dbus.socket` should take care of this. Note that for instance the Wayland
+session provided by the Arch Linux package `plasma-wayland-session` screws things up in the way I've
+described (see my PKGBUILDs repo for a
+[workaround](https://github.com/Martchus/PKGBUILDs/tree/master/plasma-wayland-session-no-dbus/default)).
+Their packaging does not seem to change any defaults from upstream so other distributions maybe have
+the same problem.
+
+### Build-time configuration
+The systemd integration can be explicitely enabled/disabled add compile time by adding
+`-DSYSTEMD_SUPPORT=ON/OFF` to the CMake arguments. If the systemd integration does not work be sure your
+version of Syncthing Tray has been compiled with systemd support.
+
+Note for distributors: There will be no hard dependency to systemd in any case. Distributions supporting
+alternative init systems do *not* need to provide differently configured versions of Syncthing Tray.
+Disabling the systemd integration is mainly intended for systems which do not use systemd at all (e.g.
+Windows and MacOS).
+
 ## Hotkeys
 To create hotkeys, you can use the same approach as for any other
 application. Just make it invoke the `syncthingctl` application with
@@ -135,23 +192,6 @@ the arguments for the desired action.
 Just add `--webui` to the `syncthingtray` arguments to trigger the web UI.
 Syncthing Tray ensures that no second instance will be spawned if it is already
 running and just trigger the web UI.
-
-## Use of systemd
-Use of systemd can be explicitely enabled/disabled by adding
-`-DSYSTEMD_SUPPORT=ON/OFF` to the CMake arguments. There will be no hard
-dependency to systemd in any case.
-
-With systemd support the tray can start and stop the systemd unit of Syncthing.
-It can also take the unit status into account when connecting to the local
-instance. So connection attempts can be prevented when Syncthing isn't running
-anyways. However, those features are optional. To use them they must be enabled
-in the settings dialog first.
-
-Syncthing Tray assumes by default that the systemd unit is a
-[user unit](https://wiki.archlinux.org/index.php/Systemd/User). If you are using
-a system-wide unit you need to enable the "System unit" checkbox in the settings.
-Note that starting and stopping the system-wide Syncthing unit requires
-authorization (systemd can ask though PolicyKit).
 
 ## Download
 ### Source
@@ -360,6 +400,9 @@ on GitHub.
         * The tray disconnects from the local instance when the network connection goes down. The network connection must be restored
           or the tray restarted to be able to connect to local Syncthing again. This is caused by Qt bug
           https://bugreports.qt.io/browse/QTBUG-60949.
+* Systemd integration
+    * This feature relies especially on the system being correctly configured. Checkout the *Required system configuration* section
+      for details.
 
 ## Attribution for 3rd party content
 * Some icons are taken from the Syncthing project.
