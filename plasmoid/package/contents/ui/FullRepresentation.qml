@@ -187,6 +187,14 @@ ColumnLayout {
                         target: connectButton
                         text: qsTr("Connect")
                         icon: "view-refresh"
+                        visible: true
+                    }
+                },
+                State {
+                    name: "connecting"
+                    PropertyChanges {
+                        target: connectButton
+                        visible: false
                     }
                 },
                 State {
@@ -195,6 +203,7 @@ ColumnLayout {
                         target: connectButton
                         text: qsTr("Resume")
                         icon: "media-playback-start"
+                        visible: true
                     }
                 },
                 State {
@@ -203,14 +212,16 @@ ColumnLayout {
                         target: connectButton
                         text: qsTr("Pause")
                         icon: "media-playback-pause"
+                        visible: true
                     }
                 }
             ]
             state: {
                 switch (plasmoid.nativeInterface.connection.status) {
                 case SyncthingPlasmoid.Data.Disconnected:
-                case SyncthingPlasmoid.Data.Reconnecting:
                     return "disconnected"
+                case SyncthingPlasmoid.Data.Reconnecting:
+                    return "connecting";
                 case SyncthingPlasmoid.Data.Paused:
                     return "paused"
                 default:
@@ -221,8 +232,9 @@ ColumnLayout {
             onClicked: {
                 switch (plasmoid.nativeInterface.connection.status) {
                 case SyncthingPlasmoid.Data.Disconnected:
-                case SyncthingPlasmoid.Data.Reconnecting:
                     plasmoid.nativeInterface.connection.connect()
+                    break
+                case SyncthingPlasmoid.Data.Reconnecting:
                     break
                 case SyncthingPlasmoid.Data.Paused:
                     plasmoid.nativeInterface.connection.resumeAllDevs()
