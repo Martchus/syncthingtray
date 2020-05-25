@@ -218,11 +218,11 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
 
     // apply systemd settings, reconnect if required and possible
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    const auto systemdRelevantForReconnect = settings.systemd.apply(m_connection, currentConnectionConfig(), reconnectRequired).relevant;
+    const auto systemdConsideredForReconnect = settings.systemd.apply(m_connection, currentConnectionConfig(), reconnectRequired).consideredForReconnect;
 #else
     const auto systemdRelevantForReconnect = false;
 #endif
-    if (!systemdRelevantForReconnect && (reconnectRequired || !m_connection.isConnected())) {
+    if (!systemdConsideredForReconnect && (reconnectRequired || !m_connection.isConnected())) {
         m_connection.reconnect();
     }
 }
