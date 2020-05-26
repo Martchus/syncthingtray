@@ -85,13 +85,16 @@ ColumnLayout {
             // select previous tab
             switch (mainTabGroup.currentTab) {
             case dirsPage:
-                downloadsTabButton.clicked()
+                recentChangesPage.clicked()
                 break
             case devicesPage:
                 dirsTabButton.clicked()
                 break
             case downloadsPage:
                 devsTabButton.clicked()
+                break
+            case recentChangesPage:
+                downloadsTabButton.clicked()
                 break
             }
             break
@@ -105,8 +108,10 @@ ColumnLayout {
                 downloadsTabButton.clicked()
                 break
             case downloadsPage:
-                dirsTabButton.clicked()
+                recentChangesTabButton.clicked()
                 break
+            case recentChangesPage:
+                dirsTabButton.clicked()
             }
             break
         case Qt.Key_Enter:
@@ -132,16 +137,16 @@ ColumnLayout {
             }
             break
         case Qt.Key_1:
-            // select directories tab
             dirsTabButton.clicked()
             break
         case Qt.Key_2:
-            // select devices tab
             devsTabButton.clicked()
             break
         case Qt.Key_3:
-            // select downloads tab
             downloadsTabButton.clicked()
+            break
+        case Qt.Key_4:
+            recentChangesTabButton.clicked()
             break
         default:
             sendKeyEventToFilter(event)
