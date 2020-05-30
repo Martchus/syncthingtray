@@ -67,87 +67,87 @@
 <context>
     <name>FullRepresentation</name>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="188"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="193"/>
         <source>Connect</source>
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="196"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="209"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="204"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="218"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="249"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="266"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="260"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="277"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="304"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="321"/>
         <source>Show new notifications</source>
         <translation>Neue Benachrichtigungen anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="330"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="347"/>
         <source>Show own device ID</source>
         <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="343"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="360"/>
         <source>Show Syncthing log</source>
         <translation>Syncthing-Log anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="356"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="373"/>
         <source>Rescan all directories</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="366"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="383"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="379"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="396"/>
         <source>Open Syncthing</source>
         <translation>Syncthing öffnen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="463"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="480"/>
         <source>Global</source>
         <translation>Globale</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="472"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="489"/>
         <source>Global incoming traffic</source>
         <translation>Globaler eingehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="483"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="500"/>
         <source>Local</source>
         <translation>Lokale</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="492"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="509"/>
         <source>Global outgoing traffic</source>
         <translation>Globaler ausgehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="553"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="570"/>
         <source>Toggle filter</source>
         <translation>Filter ein-/ausblenden</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="321"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="338"/>
         <source>About Syncthing Tray</source>
         <translation>Über Syncthing Tray</translation>
     </message>
@@ -287,9 +287,13 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="67"/>
         <source>Web UI</source>
-        <translation>Weboberfläche</translation>
+        <translation type="vanished">Weboberfläche</translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/main.qml" line="66"/>
+        <source>Open Syncthing</source>
+        <translation>Syncthing öffnen</translation>
     </message>
     <message>
         <location filename="../package/contents/ui/main.qml" line="68"/>

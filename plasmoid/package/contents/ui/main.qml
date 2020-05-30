@@ -10,12 +10,11 @@ Item {
     Plasmoid.switchHeight: units.gridUnit * 20
 
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
-    Plasmoid.compactRepresentation: CompactRepresentation {
-    }
+    Plasmoid.compactRepresentation: CompactRepresentation {}
     Plasmoid.fullRepresentation: Loader {
         source: "FullRepresentation.qml"
         onLoaded: {
-            if (typeof(item.updateSize) === 'function') {
+            if (typeof (item.updateSize) === 'function') {
                 item.updateSize()
             }
         }
@@ -64,7 +63,8 @@ Item {
 
     Component.onCompleted: {
         plasmoid.removeAction("configure")
-        plasmoid.setAction("showWebUI", qsTr("Web UI"), "internet-web-browser")
+        plasmoid.setAction("showWebUI", qsTr("Open Syncthing"),
+                           plasmoid.nativeInterface.syncthingIcon)
         plasmoid.setAction("showSettings", qsTr("Settings"), "configure")
         plasmoid.setAction("showLog", qsTr("Log"), "text-x-generic")
         plasmoid.setAction(
