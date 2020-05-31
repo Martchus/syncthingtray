@@ -63,8 +63,9 @@ Item {
 
     Component.onCompleted: {
         plasmoid.removeAction("configure")
-        plasmoid.setAction("showWebUI", qsTr("Open Syncthing"),
-                           plasmoid.nativeInterface.syncthingIcon)
+        plasmoid.setAction(
+                    "showWebUI", qsTr("Open Syncthing"),
+                    ":/icons/hicolor/scalable/status/syncthing-default.svg")
         plasmoid.setAction("showSettings", qsTr("Settings"), "configure")
         plasmoid.setAction("showLog", qsTr("Log"), "text-x-generic")
         plasmoid.setAction(
