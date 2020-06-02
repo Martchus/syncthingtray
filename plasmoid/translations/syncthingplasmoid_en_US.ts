@@ -286,37 +286,37 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="66"/>
+        <location filename="../package/contents/ui/main.qml" line="67"/>
         <source>Open Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="68"/>
+        <location filename="../package/contents/ui/main.qml" line="69"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="69"/>
+        <location filename="../package/contents/ui/main.qml" line="70"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="71"/>
+        <location filename="../package/contents/ui/main.qml" line="72"/>
         <source>Internal errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="73"/>
+        <location filename="../package/contents/ui/main.qml" line="74"/>
         <source>Rescan all directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="75"/>
+        <location filename="../package/contents/ui/main.qml" line="76"/>
         <source>Restart Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="77"/>
+        <location filename="../package/contents/ui/main.qml" line="78"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
