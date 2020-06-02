@@ -6,7 +6,7 @@ set(META_PROJECT_TYPE library)
 set(META_APP_NAME "Syncthing library")
 set(META_APP_DESCRIPTION "Syncthing itself, built as a shared or static library")
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING)
-set(META_SYNCTHING_VERSION "v1.5.0")
+set(META_SYNCTHING_VERSION "v1.6.0")
 
 # add project files
 set(HEADER_FILES interface.h)
@@ -95,8 +95,9 @@ if (NOT SRC_FILES_SYNCTHING)
             "No *.go files found in Syncthing checkout \"${CMAKE_CURRENT_SOURCE_DIR}/go/src/github.com/syncthing/syncthing\"."
     )
 endif ()
-list(APPEND SRC_FILES_SYNCTHING "${SYNCTHING_PATH}/lib/auto/gui.files.go")
-message(STATUS "Syncthing's go files: ${SRC_FILES_SYNCTHING}")
+set(GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH "lib/api/auto/gui.files.go")
+list(APPEND SRC_FILES_SYNCTHING "${SYNCTHING_PATH}/${GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH}")
+message(STATUS "Syncthing's source files: ${SRC_FILES_SYNCTHING}")
 
 # set Go linker flags
 set(GO_LINKER_FLAGS)
@@ -123,9 +124,9 @@ endif ()
 
 # generate Syncthing's assets (not setting GOARCH/GOOS here, this is supposed to run on the host)
 add_custom_command(
-    OUTPUT "${SYNCTHING_PATH}/lib/auto/gui.files.go"
+    OUTPUT "${SYNCTHING_PATH}/${GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH}"
     COMMAND "GOPATH=${GO_DEVELOPMENT_PATH}" "GO111MODULE=on" "${GO_BIN}" run ./script/genassets.go gui >
-            lib/auto/gui.files.go
+            "${GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH}"
     DEPENDS ${SRC_FILES_SYNCTHING_ASSETS}
     WORKING_DIRECTORY "${SYNCTHING_PATH}"
     COMMENT "Building Syncthing's assets")
