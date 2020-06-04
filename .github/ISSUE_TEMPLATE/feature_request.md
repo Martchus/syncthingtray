@@ -11,7 +11,8 @@ assignees: ''
 * [ ] Standalone tray application (based on Qt Widgets)
 * [ ] Plasmoid/applet for Plasma desktop
 * [ ] Dolphin integration
-* [ ] Integrated Syncthing instance ("libsyncthing")
+* [ ] Command line tool (`syncthingctl`)
+* [ ] Integrated Syncthing instance (`libsyncthing`)
 * [ ] Backend libraries
 
 **Is your feature request specific to a certain platform/environment? Please specify.**
