@@ -166,12 +166,11 @@ D-Bus can be screwed up particularily easy. One easy way to screw it up is to st
 the session D-Bus manually e.g. via `dbus-run-session`. When starting the session D-Bus this way the
 systemd integration will *not* work and you will likely end up with two session D-Bus processes. It is
 also worth noticing that you do *not* need to set the `DBUS_SESSION_BUS_ADDRESS` variable manually
-because the systemd file `dbus.socket` should take care of this. Note that for instance the Wayland
-session provided by the Arch Linux package `plasma-wayland-session` screws things up in the way I've
-described (see my PKGBUILDs repo for a
-[workaround](https://github.com/Martchus/PKGBUILDs/tree/master/plasma-wayland-session-no-dbus/default)).
-Their packaging does not seem to change any defaults from upstream so other distributions maybe have
-the same problem.
+because the systemd file `dbus.socket` should take care of this.
+
+Note that the Plasma Wayland session screwed things up in the way I've described. This has been fixed with
+[Only spawn dbus-run-session if there isn't a session already](https://invent.kde.org/plasma/plasma-workspace/-/merge_requests/128)
+but this change might not be available on older distributions.
 
 ### Build-time configuration
 The systemd integration can be explicitely enabled/disabled add compile time by adding
