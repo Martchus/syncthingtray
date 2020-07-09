@@ -883,6 +883,12 @@ QWidget *LauncherOptionPage::setupWidget()
         ui()->showButtonCheckBox->setVisible(false);
     }
 
+    // hide libsyncthing-controls by default (as the checkbox is unchecked by default)
+    for (auto *const widget : std::initializer_list<QWidget *>{ ui()->configDirLabel, ui()->configDirPathSelection, ui()->dataDirLabel,
+             ui()->dataDirPathSelection, ui()->logLevelLabel, ui()->logLevelComboBox }) {
+        widget->setVisible(false);
+    }
+
     // add "restore to defaults" action for Syncthing arguments
     if (isSyncthing) {
         m_restoreArgsAction = new QAction(ui()->argumentsLineEdit);
