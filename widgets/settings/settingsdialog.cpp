@@ -856,7 +856,7 @@ LauncherOptionPage::LauncherOptionPage(const QString &tool, QWidget *parentWidge
     , LauncherOptionPageBase(parentWidget)
     , m_process(&Launcher::toolProcess(tool))
     , m_launcher(nullptr)
-    , m_restoreArgsButton(nullptr)
+    , m_restoreArgsAction(nullptr)
     , m_kill(false)
     , m_tool(tool)
 {
@@ -885,12 +885,12 @@ QWidget *LauncherOptionPage::setupWidget()
 
     // add "restore to defaults" action for Syncthing arguments
     if (isSyncthing) {
-        m_restoreArgsButton = new IconButton(ui()->argumentsLineEdit);
-        m_restoreArgsButton->setPixmap(
-            QIcon::fromTheme(QStringLiteral("edit-undo"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-paste.svg"))).pixmap(16));
-        m_restoreArgsButton->setToolTip(tr("Restore default"));
-        connect(m_restoreArgsButton, &IconButton::clicked, this, &LauncherOptionPage::restoreDefaultArguments);
-        ui()->argumentsLineEdit->insertCustomButton(0, m_restoreArgsButton);
+        m_restoreArgsAction = new QAction(ui()->argumentsLineEdit);
+        m_restoreArgsAction->setText(tr("Restore default"));
+        m_restoreArgsAction->setIcon(
+            QIcon::fromTheme(QStringLiteral("edit-undo"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-paste.svg"))));
+        connect(m_restoreArgsAction, &QAction::triggered, this, &LauncherOptionPage::restoreDefaultArguments);
+        ui()->argumentsLineEdit->addCustomAction(m_restoreArgsAction);
         ui()->configDirPathSelection->provideCustomFileMode(QFileDialog::Directory);
         ui()->dataDirPathSelection->provideCustomFileMode(QFileDialog::Directory);
     }

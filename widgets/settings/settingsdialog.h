@@ -14,6 +14,7 @@
 #include <QProcess>
 #include <QWidget>
 
+QT_FORWARD_DECLARE_CLASS(QAction)
 QT_FORWARD_DECLARE_CLASS(QLabel)
 
 namespace CppUtilities {
@@ -126,7 +127,7 @@ private:
 
     Data::SyncthingProcess *const m_process;
     Data::SyncthingLauncher *const m_launcher;
-    QtUtilities::IconButton *m_restoreArgsButton;
+    QAction *m_restoreArgsAction;
     bool m_kill;
     QString m_tool;
 };
