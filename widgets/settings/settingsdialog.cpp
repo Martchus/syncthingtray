@@ -851,7 +851,7 @@ LauncherOptionPage::LauncherOptionPage(QWidget *parentWidget)
 {
 }
 
-LauncherOptionPage::LauncherOptionPage(const QString &tool, QWidget *parentWidget)
+LauncherOptionPage::LauncherOptionPage(const QString &tool, const QString &toolName, const QString &windowTitle, QWidget *parentWidget)
     : QObject(parentWidget)
     , LauncherOptionPageBase(parentWidget)
     , m_process(&Launcher::toolProcess(tool))
@@ -859,6 +859,8 @@ LauncherOptionPage::LauncherOptionPage(const QString &tool, QWidget *parentWidge
     , m_restoreArgsAction(nullptr)
     , m_kill(false)
     , m_tool(tool)
+    , m_toolName(toolName)
+    , m_windowTitle(windowTitle)
 {
 }
 
@@ -873,10 +875,12 @@ QWidget *LauncherOptionPage::setupWidget()
     // adjust labels to use name of additional tool instead of "Syncthing"
     const auto isSyncthing = m_tool.isEmpty();
     if (!isSyncthing) {
-        widget->setWindowTitle(tr("%1-launcher").arg(m_tool));
-        ui()->enabledCheckBox->setText(tr("Launch %1 when starting the tray icon").arg(m_tool));
-        ui()->syncthingPathLabel->setText(tr("%1 executable").arg(m_tool));
-        ui()->logLabel->setText(tr("%1 log (interleaved stdout/stderr)").arg(m_tool));
+        widget->setWindowTitle(m_windowTitle.isEmpty() ? tr("%1-launcher").arg(m_tool) : m_windowTitle);
+        ui()->enabledCheckBox->setText(tr("Launch %1 when starting the tray icon").arg(m_toolName.isEmpty() ? m_tool : m_toolName));
+        auto toolNameStartingSentence = m_toolName.isEmpty() ? m_tool : m_toolName;
+        toolNameStartingSentence[0] = toolNameStartingSentence[0].toUpper();
+        ui()->syncthingPathLabel->setText(tr("%1 executable").arg(toolNameStartingSentence));
+        ui()->logLabel->setText(tr("%1 log (interleaved stdout/stderr)").arg(toolNameStartingSentence));
 
         // hide "consider for reconnect" and "show start/stop button on tray" checkboxes for tools
         ui()->considerForReconnectCheckBox->setVisible(false);
@@ -1341,9 +1345,10 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Startup"));
-    category->assignPages({ new AutostartOptionPage, new LauncherOptionPage, new LauncherOptionPage(QStringLiteral("Inotify"))
+    category->assignPages({ new AutostartOptionPage, new LauncherOptionPage,
+        new LauncherOptionPage(QStringLiteral("Inotify"), tr("additional tool"), tr("Extra launcher"))
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-                                                                                 ,
+            ,
         new SystemdOptionPage
 #endif
     });

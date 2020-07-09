@@ -684,7 +684,7 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="193"/>
-        <location filename="../settings/settingsdialog.cpp" line="983"/>
+        <location filename="../settings/settingsdialog.cpp" line="993"/>
         <source>Stop launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -699,77 +699,77 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="876"/>
+        <location filename="../settings/settingsdialog.cpp" line="878"/>
         <source>%1-launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="877"/>
+        <location filename="../settings/settingsdialog.cpp" line="879"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="878"/>
+        <location filename="../settings/settingsdialog.cpp" line="882"/>
         <source>%1 executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="879"/>
+        <location filename="../settings/settingsdialog.cpp" line="883"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="891"/>
+        <location filename="../settings/settingsdialog.cpp" line="899"/>
         <source>Restore default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1018"/>
+        <location filename="../settings/settingsdialog.cpp" line="1028"/>
         <source>%1 exited with exit code %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1021"/>
+        <location filename="../settings/settingsdialog.cpp" line="1031"/>
         <source>%1 crashed with exit code %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1048"/>
+        <location filename="../settings/settingsdialog.cpp" line="1058"/>
         <source>failed to start (e.g. executable does not exist or not permission error)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1051"/>
+        <location filename="../settings/settingsdialog.cpp" line="1061"/>
         <source>process crashed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1054"/>
+        <location filename="../settings/settingsdialog.cpp" line="1064"/>
         <source>timeout error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1057"/>
+        <location filename="../settings/settingsdialog.cpp" line="1067"/>
         <source>read error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1060"/>
+        <location filename="../settings/settingsdialog.cpp" line="1070"/>
         <source>write error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1063"/>
+        <location filename="../settings/settingsdialog.cpp" line="1073"/>
         <source>unknown process error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1065"/>
+        <location filename="../settings/settingsdialog.cpp" line="1075"/>
         <source>An error occurred when running %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1116"/>
+        <location filename="../settings/settingsdialog.cpp" line="1126"/>
         <source>Kill launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -888,22 +888,32 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1323"/>
+        <location filename="../settings/settingsdialog.cpp" line="1333"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1330"/>
+        <location filename="../settings/settingsdialog.cpp" line="1340"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1337"/>
+        <location filename="../settings/settingsdialog.cpp" line="1347"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1359"/>
+        <location filename="../settings/settingsdialog.cpp" line="1349"/>
+        <source>Extra launcher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1349"/>
+        <source>additional tool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1370"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1063,8 +1073,8 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../settings/systemdoptionpage.ui" line="106"/>
         <location filename="../settings/systemdoptionpage.ui" line="161"/>
         <location filename="../settings/systemdoptionpage.ui" line="250"/>
-        <location filename="../settings/settingsdialog.cpp" line="1238"/>
-        <location filename="../settings/settingsdialog.cpp" line="1250"/>
+        <location filename="../settings/settingsdialog.cpp" line="1248"/>
+        <location filename="../settings/settingsdialog.cpp" line="1260"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1104,22 +1114,22 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1174"/>
+        <location filename="../settings/settingsdialog.cpp" line="1184"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1180"/>
+        <location filename="../settings/settingsdialog.cpp" line="1190"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1211"/>
+        <location filename="../settings/settingsdialog.cpp" line="1221"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1233"/>
+        <location filename="../settings/settingsdialog.cpp" line="1243"/>
         <source>since </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1153,7 +1163,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1272"/>
+        <location filename="../settings/settingsdialog.cpp" line="1282"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1183,7 +1193,7 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1274"/>
+        <location filename="../settings/settingsdialog.cpp" line="1284"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>

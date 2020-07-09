@@ -105,7 +105,8 @@ class QT_UTILITIES_EXPORT LauncherOptionPage : public QObject, public ::QtUtilit
 
 public:
     LauncherOptionPage(QWidget *parentWidget = nullptr);
-    LauncherOptionPage(const QString &tool, QWidget *parentWidget = nullptr);
+    LauncherOptionPage(
+        const QString &tool, const QString &toolName = QString(), const QString &windowTitle = QString(), QWidget *parentWidget = nullptr);
     ~LauncherOptionPage() override;
     bool apply() override;
     void reset() override;
@@ -129,7 +130,7 @@ private:
     Data::SyncthingLauncher *const m_launcher;
     QAction *m_restoreArgsAction;
     bool m_kill;
-    QString m_tool;
+    QString m_tool, m_toolName, m_windowTitle;
 };
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
