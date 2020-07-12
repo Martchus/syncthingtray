@@ -240,7 +240,7 @@ void TrayWidget::showAboutDialog()
                 "<br>Fallback icons from KDE/Breeze project<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "
                 "icons from <a href=\"https://fontawesome.com\">Font "
                 "Awesome</a> (see <a href=\"https://fontawesome.com/license\">their license</a>)</p>"),
-            QString(), {}, QStringLiteral(APP_URL), QString(), QImage(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+            QString(), {}, QStringLiteral(APP_URL), QString(), renderSvgImage(makeSyncthingIcon(), QSize(128, 128)).toImage());
         s_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         s_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     }

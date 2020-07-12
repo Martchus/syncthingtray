@@ -564,6 +564,7 @@ QWidget *IconsOptionPage::setupWidget()
             &colorMapping.setting,
             colorMapping.defaultEmblem,
         };
+        widgetsForColor.previewLabel->setMaximumSize(QSize(32, 32));
 
         // add label for color name
         gridLayout->addWidget(new QLabel(colorMapping.colorName, statusIconsGroupBox), index, 0, Qt::AlignRight | Qt::AlignVCenter);
@@ -577,8 +578,7 @@ QWidget *IconsOptionPage::setupWidget()
                                                                            widgetsForColor.colorButtons[1]->color(),
                                                                            widgetsForColor.colorButtons[2]->color(),
                                                                        },
-                                                                       widgetsForColor.statusEmblem),
-                QSize(32, 32)));
+                                                                       widgetsForColor.statusEmblem), widgetsForColor.previewLabel->maximumSize()));
         };
         for (const auto &colorButton : widgetsForColor.colorButtons) {
             QObject::connect(colorButton, &ColorButton::colorChanged, updatePreview);

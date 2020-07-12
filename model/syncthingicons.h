@@ -56,8 +56,8 @@ inline StatusIconColorSet::StatusIconColorSet(const QString &backgroundStart, co
 LIB_SYNCTHING_MODEL_EXPORT QByteArray makeSyncthingIcon(
     const StatusIconColorSet &colors = StatusIconColorSet{ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8"), QStringLiteral("#FFFFFF") },
     StatusEmblem statusEmblem = StatusEmblem::None);
-LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QString &path, const QSize &size = QSize(128, 128), int margin = 0);
-LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QByteArray &contents, const QSize &size = QSize(128, 128), int margin = 0);
+LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QString &path, const QSize &size = QSize(32, 32), int margin = 0);
+LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QByteArray &contents, const QSize &size = QSize(32, 32), int margin = 0);
 LIB_SYNCTHING_MODEL_EXPORT QByteArray loadFontAwesomeIcon(const QString &iconName, const QColor &color, bool solid = true);
 
 struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
