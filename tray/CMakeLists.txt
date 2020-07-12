@@ -44,7 +44,10 @@ set(PNG_ICON_NO_CROP ON)
 
 set(DOC_FILES README.md)
 
+# declare required icons; used when bundling icon themes
+# note: Icons required by libraries the tray application depends on need to be specified as well.
 set(REQUIRED_ICONS
+    color-profile
     dialog-cancel
     dialog-ok
     dialog-ok-apply
@@ -57,7 +60,9 @@ set(REQUIRED_ICONS
     edit-paste
     edit-redo
     edit-undo
+    emblem-checked
     emblem-error
+    emblem-remove
     folder
     folder-download
     folder-open
@@ -79,6 +84,7 @@ set(REQUIRED_ICONS
     preferences-desktop-locale
     preferences-desktop-notification
     preferences-other
+    process-stop
     qtcreator
     system-run
     system-search
