@@ -1,7 +1,7 @@
 #include "./syncthingicons.h"
 
-#include <QGuiApplication>
 #include <QFile>
+#include <QGuiApplication>
 #include <QPainter>
 #include <QStringBuilder>
 #include <QSvgRenderer>

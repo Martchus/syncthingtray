@@ -578,7 +578,8 @@ QWidget *IconsOptionPage::setupWidget()
                                                                            widgetsForColor.colorButtons[1]->color(),
                                                                            widgetsForColor.colorButtons[2]->color(),
                                                                        },
-                                                                       widgetsForColor.statusEmblem), widgetsForColor.previewLabel->maximumSize()));
+                                                                       widgetsForColor.statusEmblem),
+                widgetsForColor.previewLabel->maximumSize()));
         };
         for (const auto &colorButton : widgetsForColor.colorButtons) {
             QObject::connect(colorButton, &ColorButton::colorChanged, updatePreview);
