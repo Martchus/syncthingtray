@@ -83,6 +83,7 @@ SyncthingApplet::~SyncthingApplet()
 void SyncthingApplet::init()
 {
     LOAD_QT_TRANSLATIONS;
+    setupCommonQtApplicationAttributes();
 
     Applet::init();
 
