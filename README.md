@@ -89,7 +89,7 @@ If you can confirm it works under other desktop environments, please add it to t
 * English and German localization
 
 ## Does this launch or bundle Syncthing itself? What about my existing Syncthing installation?
-Syncthing Tray does *not* launch Syncthing itself by default. There should be no interface with your existing
+Syncthing Tray does *not* launch Syncthing itself by default. There should be no interference with your existing
 Syncthing installation. You might consider different configurations:
 
 * If you're happy how Syncthing is started on your system so far just tell Syncthing Tray to connect to your currently
