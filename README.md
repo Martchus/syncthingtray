@@ -202,6 +202,11 @@ See the release section on GitHub.
     * for RPM \*.spec files and binary repository checkout
       [openSUSE Build Servide](https://build.opensuse.org/project/show/home:mkittler)
     * there's also a [repo with builds of Git master](https://build.opensuse.org/project/show/home:mkittler:vcs)
+    * available split packages
+        * `syncthingtray`: Qt-widgets based GUI
+        * `syncthingplasmoid`: widget for Plasma desktop
+        * `syncthingfileitemaction`: Dolphin/KIO integration
+        * `syncthingctl`: command line interface
 * Other GNU/Linux systems
     * [AppImage repository for releases on the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage/AppImage)
     * [AppImage repository for builds from Git master the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage:/vcs/AppImage/)
