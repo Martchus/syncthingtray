@@ -401,6 +401,9 @@ on GitHub.
         * The tray disconnects from the local instance when the network connection goes down. The network connection must be restored
           or the tray restarted to be able to connect to local Syncthing again. This is caused by Qt bug
           https://bugreports.qt.io/browse/QTBUG-60949.
+* KDE limitations
+    * High-DPI scaling of Plasmoid is broken under X11 (https://bugs.kde.org/show_bug.cgi?id=356446).
+    * The Plasmoid contents are possibly clipped when shown within the system notifications plasmoid.
 * Systemd integration
     * This feature relies especially on the system being correctly configured. Checkout the *Required system configuration* section
       for details.
