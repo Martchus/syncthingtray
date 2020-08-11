@@ -38,9 +38,7 @@ set(WIDGETS_UI_FILES gui/traywidget.ui)
 set(TS_FILES translations/${META_PROJECT_NAME}_cs_CZ.ts translations/${META_PROJECT_NAME}_de_DE.ts
              translations/${META_PROJECT_NAME}_en_US.ts)
 
-set(ICON_FILES resources/icons/hicolor/scalable/app/${META_PROJECT_NAME}.svg)
-set(PNG_ICON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/resources/icons/hicolor/scalable/app/${META_PROJECT_NAME}.png")
-set(PNG_ICON_NO_CROP ON)
+set(ICON_FILES resources/icons/hicolor/scalable/apps/${META_PROJECT_NAME}.svg)
 
 set(DOC_FILES README.md)
 
@@ -96,7 +94,7 @@ set(REQUIRED_ICONS
     window-close)
 
 # find c++utilities
-find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
+find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.6.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities
