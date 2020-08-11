@@ -171,8 +171,10 @@ elseif (UNIX)
 endif ()
 foreach (LIBRARY ${SYNCTHING_INTERNAL_LIBS})
     find_library(SYNCTHING_INTERNAL_LIBRARY_PATH_${LIBRARY} ${LIBRARY})
-    set_property(TARGET syncthinginternal APPEND PROPERTY IMPORTED_LINK_INTERFACE_LIBRARIES
-                                                          ${SYNCTHING_INTERNAL_LIBRARY_PATH_${LIBRARY}})
+    set_property(
+        TARGET syncthinginternal
+        APPEND
+        PROPERTY IMPORTED_LINK_INTERFACE_LIBRARIES ${SYNCTHING_INTERNAL_LIBRARY_PATH_${LIBRARY}})
 endforeach ()
 
 # depend on that imported target
