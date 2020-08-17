@@ -65,7 +65,7 @@ endforeach ()
 plasma_install_package("${PLASMOID_PACKAGE_DIR}" "${META_ID}")
 
 # add target to ease testing the plasmoid (see testing.md)
-set(PLASMOID_TESTDIR "${CMAKE_CURRENT_BINARY_DIR}/testdir" CACHE STRING "specifies the Plasmoid test directory")
+set(PLASMOID_TESTDIR "${CMAKE_BINARY_DIR}" CACHE STRING "specifies the Plasmoid test directory")
 file(MAKE_DIRECTORY "${PLASMOID_TESTDIR}")
 add_custom_target(init_plasmoid_testing
     COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/scripts/inittesting.sh" "${PLASMOID_CONFIG_TARGET_FILE_ABSOLUTE_PATH}"

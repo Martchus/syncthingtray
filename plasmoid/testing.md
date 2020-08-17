@@ -4,19 +4,24 @@ The following instructions allow to test the Plasmoid by installing it in a test
 rather than the regular home to separate testing from production.
 
 1. Build as usual, ensure `NO_PLASMOID` is turned off
-2. Add build step to execute custom target `init_plasmoid_testing` which
-   will install the Plasmoid in a test directory which is "$BUILD_DIR/plasmoid/testdir"
+2. Add build step to execute the custom target `init_plasmoid_testing` which
+   will install the Plasmoid in a test directory which is `$CMAKE_BUILD_DIR/plasmoid-testing`
    by default
-3. Add new config for run in Qt Creator and set `plasmoidviewer` (or `plasmawindowed`)
-   as executable
-4. In execution environment, set
-  * `QT_PLUGIN_PATH` to `$BUILD_DIR/plasmoid/lib` which should be containing the plugin
-    for the Plasmoid under `plasma/applets/libsyncthingplasmoid.so`
-  * `QT_DEBUG_PLUGINS` to 1 for verbose plugin detection
-  * `HOME` to the test directory from step 2 so plasmoidviewer finds the Plasmoid
-    in the test directory
-5. Set `--applet martchus.syncthingplasmoid` as CLI argument
-6. Ignore warning that executable is no debug build, it is sufficiant when
+3. Add new config for run in Qt Creator and set `bash` as executable
+4. Set `%{sourceDir}/../../syncthingtray/plasmoid/scripts/starttesting.sh plasmoidviewer --applet martchus.syncthingplasmoid`
+   as CLI argument
+  * It is also possible to use `plasmawindowed` or `plasmashell`, see sections below.
+  * This usage of `%{sourceDir}` assumes one used the "Building this straight" instructions
+    from the main README.md.
+5. Keep `%{buildDir}` as working directory.
+6. In execution environment there's nothing mandatory to be set because `starttesting.sh` should
+   already take care of setting the environment.
+    * The home directory is set in accordance with the directory used in step 2. but can be overridden
+      by setting `TEST_HOME`
+    * If not already set, `QT_PLUGIN_PATH` is set to `$CMAKE_CURRENT_BINARY_DIR/plasmoid/lib` which
+      should contain the plugin for the Plasmoid under `plasma/applets/libsyncthingplasmoid.so`
+    * `QT_DEBUG_PLUGINS` to 1 for verbose plugin detection
+7. Ignore warning that executable is no debug build, it is sufficiant when
    the plugin is a debug build (see next section for QML debugging)
 
 ## Saving/restoring settings
