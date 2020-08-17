@@ -16,8 +16,10 @@ Item {
 
         TopLevelView {
             id: recentChangesView
+            width: parent.width
             model: plasmoid.nativeInterface.recentChangesModel
             delegate: TopLevelItem {
+                width: recentChangesView.width
                 ColumnLayout {
                     width: parent.width
                     spacing: 0

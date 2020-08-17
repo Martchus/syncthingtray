@@ -19,6 +19,7 @@ ColumnLayout {
 
         TopLevelView {
             id: directoryView
+            width: parent.width
 
             model: PlasmaCore.SortFilterModel {
                 id: directoryFilterModel
@@ -29,6 +30,7 @@ ColumnLayout {
 
             delegate: TopLevelItem {
                 id: item
+                width: directoryView.width
                 property alias errorsButton: errorsButton
                 property alias rescanButton: rescanButton
                 property alias resumePauseButton: resumePauseButton

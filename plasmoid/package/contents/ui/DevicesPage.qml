@@ -17,10 +17,12 @@ Item {
 
         TopLevelView {
             id: deviceView
+            width: parent.width
             model: plasmoid.nativeInterface.devModel
 
             delegate: TopLevelItem {
                 id: item
+                width: deviceView.width
                 property alias resumePauseButton: resumePauseButton
 
                 ColumnLayout {

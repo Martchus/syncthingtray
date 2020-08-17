@@ -17,10 +17,12 @@ Item {
 
         TopLevelView {
             id: downloadView
+            width: parent.width
             model: plasmoid.nativeInterface.downloadModel
 
             delegate: TopLevelItem {
                 id: item
+                width: downloadView.width
                 property alias openButton: openButton
 
                 ColumnLayout {
