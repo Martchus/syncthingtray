@@ -109,7 +109,7 @@ use_syncthingmodel()
 find_package(syncthingwidgets ${META_APP_VERSION} REQUIRED)
 use_syncthingwidgets()
 
-# link also explicitely against the following Qt 5 modules
+# link also explicitely against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 
 # apply basic configuration

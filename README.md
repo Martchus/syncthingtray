@@ -1,5 +1,5 @@
 # [Syncthing](https://github.com/syncthing/syncthing) Tray
-* Qt 5-based tray application
+* Qt-based tray application
 * [Dolphin](https://www.kde.org/applications/system/dolphin)/[Plasma](https://www.kde.org/plasma-desktop)
   integration
 * command-line interface
@@ -18,7 +18,7 @@ distributors. For a list with links, checkout the *Download* section of this doc
 GitHub only contains a fraction of the available options.
 
 ## Supported platforms
-* Designed to work under any desktop environment supported by Qt 5 with tray icon support
+* Designed to work under any desktop environment supported by Qt with tray icon support
 * No desktop environment specific libraries required (only for optional features/integrations)
 * Tested under
     * X Window System
@@ -36,7 +36,7 @@ GitHub only contains a fraction of the available options.
         * other desktop environments
             * for Qt Widgets based version see note below
             * besides, the Qt Widgets based version would only work if the platform integration plugin
-              used for Qt 5 applications uses the D-Bus protocol (or whatever is supported by your system
+              used for Qt applications uses the D-Bus protocol (or whatever is supported by your system
               tray) to show the tray icon
     * Windows 10
     * macOS 10.14 Mojave
@@ -235,7 +235,7 @@ For building this straight, see the section below. There's also documentation ab
 can be passed to CMake to influence the build.
 
 ### Further dependencies
-The following Qt 5 modules are requried (version 5.6 or newer): core network dbus gui widgets svg webenginewidgets/webkitwidgets
+The following Qt modules are requried (version 5.6 or newer): core network dbus gui widgets svg webenginewidgets/webkitwidgets
 
 It is recommended to use at least Qt 5.14 to avoid limitations in previous versions (see *Known bugs* section).
 
@@ -244,7 +244,7 @@ The built-in web view and therefore the modules webenginewidgets/webkitwidgets a
 To build the plugin for Dolphin integration KIO is also requried. Additionally, the Dolphin plugin requires Qt 5.8 or newer. To skip
 building the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
 
-To build the Plasmoid for the Plasma 5 desktop, the Qt 5 module QML and the KF5 module
+To build the Plasmoid for the Plasma 5 desktop, the Qt module QML and the KF5 module
 Plasma are required as well. Additionally, the Plasmoid requires Qt 5.8 or newer. To skip
 building the Plasmoid, add `-DNO_PLASMOID:BOOL=ON` to the CMake arguments.
 
@@ -259,7 +259,7 @@ to systemd in any case.
 Building the testsuite requires CppUnit and Qt 5.8 or higher.
 
 ### Building this straight
-0. Install (preferably the latest version of) the CGG toolchain or Clang, the required Qt 5 modules and CMake.
+0. Install (preferably the latest version of) the CGG toolchain or Clang, the required Qt modules and CMake.
 1. Get the sources. For the lastest version from Git clone the following repositories:
    ```
    cd $SOURCES
@@ -315,7 +315,7 @@ The files for the Dolphin integration look like this under Tumbleweed:
 
 The directory the `*.so` file needs to be installed to seems to differ from distribution to
 distribution. The right directory for your distribution can be queried from qmake using
-`qmake-qt5 -query QT_INSTALL_PLUGINS`. In doubt, just look where other Qt 5 plugins are stored.
+`qmake-qt5 -query QT_INSTALL_PLUGINS`. In doubt, just look where other Qt plugins are stored.
 
 Actually the build system should be able to do that query automatically. It is also possible to
 specify the directory manually, e.g. for Tumbleweed one would add

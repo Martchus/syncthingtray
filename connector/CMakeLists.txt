@@ -49,7 +49,7 @@ find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX} 6.3.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
 list(APPEND PUBLIC_INCLUDE_DIRS ${QT_UTILITIES_INCLUDE_DIRS})
 
-# link also explicitely against the following Qt 5 modules
+# link also explicitely against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 set(META_PUBLIC_QT_MODULES Core ${ADDITIONAL_QT_MODULES})
 

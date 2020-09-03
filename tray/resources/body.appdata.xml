@@ -1,6 +1,6 @@
 <description>
   <ul>
-    <li>Qt 5-based tray application for Syncthing</li>
+    <li>Qt-based tray application for Syncthing</li>
     <li>Provides quick access to most frequently used features but does not intend to replace the official web UI</li>
     <li>Shows Syncthing notifications</li>
     <li>Can read the local Syncthing configuration file for quick setup when just connecting to local instance</li>
