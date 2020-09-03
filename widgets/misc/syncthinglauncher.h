@@ -69,7 +69,8 @@ private:
     void handleOutputAvailable(QByteArray &&data);
 
     SyncthingProcess m_process;
-    QFuture<void> m_future;
+    QFuture<void> m_startFuture;
+    QFuture<void> m_stopFuture;
     QByteArray m_outputBuffer;
     CppUtilities::DateTime m_futureStarted;
     LibSyncthing::LogLevel m_libsyncthingLogLevel;
@@ -82,7 +83,7 @@ private:
 /// \brief Returns whether Syncthing is running.
 inline bool SyncthingLauncher::isRunning() const
 {
-    return m_process.isRunning() || m_future.isRunning();
+    return m_process.isRunning() || m_startFuture.isRunning();
 }
 
 /// \brief Returns when the Syncthing instance has been started.
@@ -90,7 +91,7 @@ inline CppUtilities::DateTime SyncthingLauncher::activeSince() const
 {
     if (m_process.isRunning()) {
         return m_process.activeSince();
-    } else if (m_future.isRunning()) {
+    } else if (m_startFuture.isRunning()) {
         return m_futureStarted;
     }
     return CppUtilities::DateTime();

@@ -159,11 +159,11 @@ QString SyncthingDir::statusString() const
     }
 }
 
-QStringRef SyncthingDir::pathWithoutTrailingSlash() const
+QtUtilities::StringView SyncthingDir::pathWithoutTrailingSlash() const
 {
-    QStringRef dirPath(&path);
+    auto dirPath = QtUtilities::makeStringView(path);
     while (dirPath.endsWith(QChar('/'))) {
-#if QT_VERSION_MAJOR >= 5 && QT_VERSION_MINOR >= 8
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
         dirPath.chop(1);
 #else
         dirPath = dirPath.left(dirPath.size() - 1);

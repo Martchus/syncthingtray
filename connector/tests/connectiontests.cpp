@@ -444,7 +444,7 @@ void ConnectionTests::checkDevices()
             CPPUNIT_ASSERT_EQUAL_MESSAGE("paused device", QStringLiteral("paused"), dev.statusString());
             CPPUNIT_ASSERT_EQUAL_MESSAGE("name", QStringLiteral("Test dev 2"), dev.name);
             CPPUNIT_ASSERT_MESSAGE("no introducer", !dev.introducer);
-            CPPUNIT_ASSERT_EQUAL(1, dev.addresses.size());
+            CPPUNIT_ASSERT_EQUAL(static_cast<decltype(dev.addresses.size())>(1), dev.addresses.size());
             CPPUNIT_ASSERT_EQUAL(QStringLiteral("tcp://192.168.2.2:22001"), dev.addresses.front());
             dev2 = &dev;
             dev2Index = index;
@@ -452,7 +452,7 @@ void ConnectionTests::checkDevices()
             CPPUNIT_ASSERT_EQUAL_MESSAGE("disconnected device", QStringLiteral("disconnected"), dev.statusString());
             CPPUNIT_ASSERT_EQUAL_MESSAGE("name", QStringLiteral("Test dev 1"), dev.name);
             CPPUNIT_ASSERT_MESSAGE("introducer", dev.introducer);
-            CPPUNIT_ASSERT_EQUAL(1, dev.addresses.size());
+            CPPUNIT_ASSERT_EQUAL(static_cast<decltype(dev.addresses.size())>(1), dev.addresses.size());
             CPPUNIT_ASSERT_EQUAL(QStringLiteral("dynamic"), dev.addresses.front());
             dev1 = &dev;
             dev1Index = index;

@@ -7,7 +7,6 @@
 #include <qtutilities/misc/dialogutils.h>
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QHBoxLayout>
 
 using namespace QtUtilities;

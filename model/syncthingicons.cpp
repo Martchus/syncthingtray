@@ -1,5 +1,7 @@
 #include "./syncthingicons.h"
 
+#include <qtutilities/misc/compat.h>
+
 #include <QFile>
 #include <QGuiApplication>
 #include <QPainter>
@@ -165,15 +167,15 @@ QPixmap renderSvgImage(const QByteArray &contents, const QSize &size, int margin
 QByteArray loadFontAwesomeIcon(const QString &iconName, const QColor &color, bool solid)
 {
     QByteArray result;
-    QFile icon((solid ? QStringLiteral(":/icons/hicolor/scalable/fa/") : QStringLiteral(":/icons/hicolor/scalable/fa-non-solid/")) % iconName
-        % QStringLiteral(".svg"));
+    QFile icon((solid ? QStringLiteral(":/icons/hicolor/scalable/fa/")
+                      : QString(QStringLiteral(":/icons/hicolor/scalable/fa-non-solid/")) % iconName % QStringLiteral(".svg")));
     if (!icon.open(QFile::ReadOnly)) {
         return result;
     }
     result = icon.readAll();
     const auto pathBegin = result.indexOf("<path ");
     if (pathBegin > 0) {
-        result.insert(pathBegin + 6, QStringLiteral("fill=\"") % color.name(QColor::HexRgb) % QStringLiteral("\" "));
+        result.insert(pathBegin + 6, (QStringLiteral("fill=\"") % color.name(QColor::HexRgb) % QStringLiteral("\" ")).toUtf8());
     }
     return result;
 }
@@ -231,7 +233,7 @@ std::vector<StatusIconSettings::ColorMapping> StatusIconSettings::colorMapping()
 StatusIconSettings::StatusIconSettings(const QString &str)
     : StatusIconSettings()
 {
-    const auto parts = str.splitRef(QChar(';'));
+    const auto parts = QtUtilities::splitRef(str, QChar(';'));
     int index = 0;
     for (auto *field :
         { &defaultColor, &errorColor, &warningColor, &idleColor, &scanningColor, &synchronizingColor, &pausedColor, &disconnectedColor }) {

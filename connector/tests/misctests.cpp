@@ -166,9 +166,9 @@ void MiscTests::testConnectionSettingsAndLoadingSelfSignedCert()
     settings.apiKey = QByteArray("foo");
     settings.httpsCertPath = SyncthingConfig::locateHttpsCertificate();
     if (!settings.httpsCertPath.isEmpty() && settings.loadHttpsCert()) {
-        CPPUNIT_ASSERT_EQUAL(4, settings.expectedSslErrors.size());
+        CPPUNIT_ASSERT_EQUAL(static_cast<decltype(settings.expectedSslErrors.size())>(4), settings.expectedSslErrors.size());
     } else {
-        CPPUNIT_ASSERT_EQUAL(0, settings.expectedSslErrors.size());
+        CPPUNIT_ASSERT_EQUAL(static_cast<decltype(settings.expectedSslErrors.size())>(0), settings.expectedSslErrors.size());
     }
     SyncthingConnection connection;
     CPPUNIT_ASSERT(connection.applySettings(settings));

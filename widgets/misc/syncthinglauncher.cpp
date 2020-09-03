@@ -5,6 +5,7 @@
 #include <QtConcurrentRun>
 
 #include <algorithm>
+#include <functional>
 #include <limits>
 
 using namespace std;
@@ -88,7 +89,7 @@ QString SyncthingLauncher::libSyncthingVersionInfo()
  */
 void SyncthingLauncher::launch(const QString &program, const QStringList &arguments)
 {
-    if (isRunning()) {
+    if (isRunning() || m_stopFuture.isRunning()) {
         return;
     }
     m_manuallyStopped = false;
@@ -100,7 +101,7 @@ void SyncthingLauncher::launch(const QString &program, const QStringList &argume
     }
 
     // use libsyncthing
-    m_future = QtConcurrent::run(this, &SyncthingLauncher::runLibSyncthing, LibSyncthing::RuntimeOptions{});
+    m_startFuture = QtConcurrent::run(std::bind(&SyncthingLauncher::runLibSyncthing, this, LibSyncthing::RuntimeOptions{}));
 }
 
 /*!
@@ -133,11 +134,11 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
  */
 void SyncthingLauncher::launch(const LibSyncthing::RuntimeOptions &runtimeOptions)
 {
-    if (isRunning()) {
+    if (isRunning() || m_stopFuture.isRunning()) {
         return;
     }
     m_manuallyStopped = false;
-    m_future = QtConcurrent::run(this, &SyncthingLauncher::runLibSyncthing, runtimeOptions);
+    m_startFuture = QtConcurrent::run(std::bind(&SyncthingLauncher::runLibSyncthing, this, runtimeOptions));
 }
 
 void SyncthingLauncher::terminate()
@@ -163,11 +164,11 @@ void SyncthingLauncher::kill()
 void SyncthingLauncher::tearDownLibSyncthing()
 {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    if (!m_future.isRunning()) {
+    if (!m_startFuture.isRunning() || m_stopFuture.isRunning()) {
         return;
     }
     m_manuallyStopped = true;
-    QtConcurrent::run(this, &SyncthingLauncher::stopLibSyncthing);
+    m_stopFuture = QtConcurrent::run(std::bind(&SyncthingLauncher::stopLibSyncthing, this));
 #endif
 }
 

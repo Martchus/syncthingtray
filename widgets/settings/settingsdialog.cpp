@@ -26,6 +26,7 @@
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
 
+#include <qtutilities/misc/compat.h>
 #include <qtutilities/paletteeditor/colorbutton.h>
 #include <qtutilities/settingsdialog/optioncategory.h>
 #include <qtutilities/settingsdialog/optioncategorymodel.h>
@@ -127,8 +128,8 @@ void ConnectionOptionPage::insertFromConfigFile(bool forceFileSelection)
 
     if (!config.guiAddress.isEmpty()) {
         const auto portStart(config.guiAddress.indexOf(QChar(':')));
-        QString guiHost(config.guiAddress.mid(0, portStart));
-        const QStringRef guiPort(portStart > 0 ? config.guiAddress.midRef(portStart) : QStringRef());
+        auto guiHost(config.guiAddress.mid(0, portStart));
+        const auto guiPort = portStart > 0 ? QtUtilities::midRef(config.guiAddress, portStart) : QtUtilities::StringView();
         const QHostAddress guiAddress(guiHost);
         // assume local connection if address is eg. 0.0.0.0
         auto localConnection = true;

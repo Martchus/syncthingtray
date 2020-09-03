@@ -76,7 +76,7 @@ find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities
-find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX} 6.1.0 REQUIRED)
+find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX} 6.3.0 REQUIRED)
 use_qt_utilities()
 
 # find backend libraries

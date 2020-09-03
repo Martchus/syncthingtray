@@ -208,7 +208,7 @@ int Application::loadConfig()
     if (apiKeyArgValue) {
         m_settings.apiKey.append(apiKeyArgValue);
     } else {
-        m_settings.apiKey.append(config.guiApiKey);
+        m_settings.apiKey.append(config.guiApiKey.toUtf8());
     }
     if (const char *certArgValue = m_args.certificate.firstValue()) {
         m_settings.httpsCertPath = argToQString(certArgValue);

@@ -35,6 +35,7 @@
 #include <c++utilities/application/argumentparser.h>
 #include <c++utilities/conversion/stringconversion.h>
 
+#include <QActionGroup>
 #include <QClipboard>
 #include <QCoreApplication>
 #include <QDesktopServices>

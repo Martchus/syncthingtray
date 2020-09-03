@@ -4,6 +4,8 @@
 #include "./qstringhash.h"
 #include "./syncthingcompletion.h"
 
+#include <qtutilities/misc/compat.h>
+
 #include <c++utilities/chrono/datetime.h>
 
 #include <QFileInfo>
@@ -114,7 +116,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     const QString &displayName() const;
     QString statusString() const;
     QString dirTypeString() const;
-    QStringRef pathWithoutTrailingSlash() const;
+    QtUtilities::StringView pathWithoutTrailingSlash() const;
     bool isLocallyUpToDate() const;
     bool areRemotesUpToDate() const;
     bool isUnshared() const;
