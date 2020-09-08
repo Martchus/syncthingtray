@@ -167,8 +167,8 @@ QPixmap renderSvgImage(const QByteArray &contents, const QSize &size, int margin
 QByteArray loadFontAwesomeIcon(const QString &iconName, const QColor &color, bool solid)
 {
     QByteArray result;
-    QFile icon((solid ? QStringLiteral(":/icons/hicolor/scalable/fa/")
-                      : QString(QStringLiteral(":/icons/hicolor/scalable/fa-non-solid/")) % iconName % QStringLiteral(".svg")));
+    QFile icon(QString((solid ? QStringLiteral(":/icons/hicolor/scalable/fa/") : QStringLiteral(":/icons/hicolor/scalable/fa-non-solid/")) % iconName
+        % QStringLiteral(".svg")));
     if (!icon.open(QFile::ReadOnly)) {
         return result;
     }
