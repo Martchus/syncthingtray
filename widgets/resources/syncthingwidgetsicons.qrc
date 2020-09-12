@@ -14,5 +14,7 @@
         <file>icons/hicolor/scalable/emblems/emblem-important-old.svg</file>
         <file>icons/hicolor/scalable/actions/edit-undo.svg</file>
         <file>icons/hicolor/scalable/actions/document-open.svg</file>
+        <file>icons/hicolor/scalable/actions/go-down.svg</file>
+        <file>icons/hicolor/scalable/actions/go-up.svg</file>
     </qresource>
 </RCC>
