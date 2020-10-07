@@ -12,55 +12,80 @@
 <context>
     <name>DevicesPage</name>
     <message>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="60"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="64"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="60"/>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="98"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="64"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="115"/>
         <source>Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="101"/>
+        <source>Copy name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="106"/>
+        <source>Copy ID</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DirectoriesPage</name>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="75"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="79"/>
         <source>Show errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="86"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="142"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="90"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="159"/>
         <source>Rescan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="94"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="98"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="94"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="149"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="98"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="166"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="104"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="156"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="108"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="173"/>
         <source>Open in file browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="145"/>
+        <source>Copy label/ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="150"/>
+        <source>Copy path</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DownloadsPage</name>
     <message>
-        <location filename="../package/contents/ui/DownloadsPage.qml" line="64"/>
-        <location filename="../package/contents/ui/DownloadsPage.qml" line="120"/>
-        <location filename="../package/contents/ui/DownloadsPage.qml" line="137"/>
+        <location filename="../package/contents/ui/DownloadsPage.qml" line="67"/>
+        <location filename="../package/contents/ui/DownloadsPage.qml" line="123"/>
+        <location filename="../package/contents/ui/DownloadsPage.qml" line="148"/>
         <source>Open in file browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/DownloadsPage.qml" line="139"/>
+        <source>Copy label/ID</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -255,12 +280,12 @@
 <context>
     <name>RecentChangesPage</name>
     <message>
-        <location filename="../package/contents/ui/RecentChangesPage.qml" line="98"/>
+        <location filename="../package/contents/ui/RecentChangesPage.qml" line="100"/>
         <source>Copy path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/RecentChangesPage.qml" line="103"/>
+        <location filename="../package/contents/ui/RecentChangesPage.qml" line="105"/>
         <source>Copy device ID</source>
         <translation type="unfinished"></translation>
     </message>

@@ -4,42 +4,42 @@
 <context>
     <name>Data::StatusIconSettings</name>
     <message>
-        <location filename="../syncthingicons.cpp" line="217"/>
+        <location filename="../syncthingicons.cpp" line="222"/>
         <source>Misc. notifications</source>
         <translation>Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="218"/>
+        <location filename="../syncthingicons.cpp" line="223"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="219"/>
+        <location filename="../syncthingicons.cpp" line="224"/>
         <source>Warning</source>
         <translation>Warnungen</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="220"/>
+        <location filename="../syncthingicons.cpp" line="225"/>
         <source>Idle</source>
         <translation>Leerlauf</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="221"/>
+        <location filename="../syncthingicons.cpp" line="226"/>
         <source>Scanning</source>
         <translation>Scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="222"/>
+        <location filename="../syncthingicons.cpp" line="227"/>
         <source>Synchronizing</source>
         <translation>Synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="223"/>
+        <location filename="../syncthingicons.cpp" line="228"/>
         <source>Paused</source>
         <translation>Pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="224"/>
+        <location filename="../syncthingicons.cpp" line="229"/>
         <source>Disconnected</source>
         <translation>Getrennt</translation>
     </message>
@@ -350,32 +350,32 @@
 <context>
     <name>Data::SyncthingRecentChangesModel</name>
     <message>
-        <location filename="../syncthingrecentchangesmodel.cpp" line="69"/>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="71"/>
         <source>Action</source>
         <translation>Aktion</translation>
     </message>
     <message>
-        <location filename="../syncthingrecentchangesmodel.cpp" line="71"/>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="73"/>
         <source>Device</source>
         <translation>Gerät</translation>
     </message>
     <message>
-        <location filename="../syncthingrecentchangesmodel.cpp" line="73"/>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="75"/>
         <source>Directory</source>
         <translation>Verzeichnis</translation>
     </message>
     <message>
-        <location filename="../syncthingrecentchangesmodel.cpp" line="75"/>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="77"/>
         <source>Path</source>
         <translation>Pfad</translation>
     </message>
     <message>
-        <location filename="../syncthingrecentchangesmodel.cpp" line="121"/>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="123"/>
         <source>Locally</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../syncthingrecentchangesmodel.cpp" line="121"/>
+        <location filename="../syncthingrecentchangesmodel.cpp" line="123"/>
         <source>Remotely</source>
         <translation></translation>
     </message>
