@@ -72,59 +72,46 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
 
 void DirView::showContextMenu(const QPoint &position)
 {
-    if (!selectionModel() || selectionModel()->selectedRows(0).size() != 1) {
+    const auto selectedRow = SelectedRow(this);
+    const auto &selectedIndex = selectedRow.index;
+    if (!selectedRow) {
         return;
     }
     QMenu menu(this);
-    if (selectionModel()->selectedRows(0).at(0).parent().isValid()) {
+    if (selectedIndex.parent().isValid()) {
         connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy value")),
-            &QAction::triggered, this, &DirView::copySelectedItem);
+            &QAction::triggered,
+            copyToClipboard(selectedRow.model->data(selectedRow.model->index(selectedIndex.row(), 1, selectedIndex.parent())).toString()));
     } else {
+        const auto *const dir = selectedRow.data;
         connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy label/ID")),
-            &QAction::triggered, this, &DirView::copySelectedItem);
+            &QAction::triggered, copyToClipboard(dir->displayName()));
         connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy path")),
-            &QAction::triggered, this, &DirView::copySelectedItemPath);
+            &QAction::triggered, copyToClipboard(dir->path));
+        menu.addSeparator();
+        connect(menu.addAction(
+                    QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))),
+                    tr("Rescan")),
+            &QAction::triggered, triggerActionForSelectedRow(this, &DirView::scanDir));
+        if (dir->paused) {
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-start"),
+                                       QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-start.svg"))),
+                        tr("Resume")),
+                &QAction::triggered, triggerActionForSelectedRow(this, &DirView::pauseResumeDir));
+        } else {
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-pause"),
+                                       QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg"))),
+                        tr("Pause")),
+                &QAction::triggered, triggerActionForSelectedRow(this, &DirView::pauseResumeDir));
+        }
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("folder"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg"))),
+                    tr("Open in file browser")),
+            &QAction::triggered, triggerActionForSelectedRow(this, &DirView::openDir));
     }
     showViewMenu(position, *this, menu);
 }
 
-void DirView::copySelectedItem()
-{
-    if (!selectionModel() || selectionModel()->selectedRows(0).size() != 1) {
-        return;
-    }
-    const QModelIndex selectedIndex = selectionModel()->selectedRows(0).at(0);
-    QString text;
-    if (selectedIndex.parent().isValid()) {
-        // dev attribute
-        text = model()->data(model()->index(selectedIndex.row(), 1, selectedIndex.parent())).toString();
-    } else {
-        // dev label/id
-        text = model()->data(selectedIndex).toString();
-    }
-    if (!text.isEmpty()) {
-        QGuiApplication::clipboard()->setText(text);
-    }
-}
-
-void DirView::copySelectedItemPath()
-{
-    if (!selectionModel() || selectionModel()->selectedRows(0).size() != 1) {
-        return;
-    }
-    const QModelIndex selectedIndex = selectionModel()->selectedRows(0).at(0);
-    QString text;
-    if (selectedIndex.parent().isValid()) {
-        // dev attribute: should be handled by copySelectedItem() only
-    } else {
-        // dev path
-        text = model()->data(model()->index(1, 1, selectedIndex)).toString();
-    }
-    if (!text.isEmpty()) {
-        QGuiApplication::clipboard()->setText(text);
-    }
-}
 } // namespace QtGui

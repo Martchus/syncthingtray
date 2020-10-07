@@ -6,6 +6,7 @@
 namespace Data {
 struct SyncthingItemDownloadProgress;
 struct SyncthingDir;
+class SyncthingDownloadModel;
 } // namespace Data
 
 namespace QtGui {
@@ -13,6 +14,8 @@ namespace QtGui {
 class DownloadView : public QTreeView {
     Q_OBJECT
 public:
+    using ModelType = Data::SyncthingDownloadModel;
+
     DownloadView(QWidget *parent = nullptr);
 
 Q_SIGNALS:
@@ -24,7 +27,9 @@ protected:
 
 private Q_SLOTS:
     void showContextMenu(const QPoint &position);
-    void copySelectedItem();
+
+private:
+    void emitOpenDir(QPair<const Data::SyncthingDir *, const Data::SyncthingItemDownloadProgress *> info);
 };
 } // namespace QtGui
 

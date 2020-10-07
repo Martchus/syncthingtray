@@ -23,6 +23,7 @@ Item {
             delegate: TopLevelItem {
                 id: item
                 width: downloadView.width
+                readonly property string downloadName: name
                 property alias openButton: openButton
 
                 ColumnLayout {
@@ -135,8 +136,16 @@ Item {
                 id: contextMenu
 
                 PlasmaComponents.MenuItem {
+                    text: qsTr("Copy label/ID")
+                    icon: "edit-copy"
+                    onClicked: downloadView.copyCurrentItemData("downloadName")
+                }
+                PlasmaComponents.MenuItem {
+                    separator: true
+                }
+                PlasmaComponents.MenuItem {
                     id: openItem
-                    text: qsTr('Open in file browser')
+                    text: qsTr("Open in file browser")
                     icon: "folder"
                     onClicked: downloadView.clickCurrentItemButton("openButton")
                 }

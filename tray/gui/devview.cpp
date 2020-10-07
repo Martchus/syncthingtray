@@ -2,6 +2,7 @@
 #include "./devbuttonsitemdelegate.h"
 #include "./helper.h"
 
+#include "../../connector/syncthingdev.h"
 #include "../../model/syncthingdevicemodel.h"
 
 #include <QClipboard>
@@ -48,59 +49,39 @@ void DevView::mouseReleaseEvent(QMouseEvent *event)
 
 void DevView::showContextMenu(const QPoint &position)
 {
-    if (!selectionModel() || selectionModel()->selectedRows(0).size() != 1) {
+    const auto selectedRow = SelectedRow(this);
+    const auto &selectedIndex = selectedRow.index;
+    if (!selectedRow) {
         return;
     }
     QMenu menu(this);
-    if (selectionModel()->selectedRows(0).at(0).parent().isValid()) {
+    if (selectedIndex.parent().isValid()) {
         connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy value")),
-            &QAction::triggered, this, &DevView::copySelectedItem);
+            &QAction::triggered,
+            copyToClipboard(selectedRow.model->data(selectedRow.model->index(selectedIndex.row(), 1, selectedIndex.parent())).toString()));
     } else {
+        const auto *const dev = selectedRow.data;
         connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy name")),
-            &QAction::triggered, this, &DevView::copySelectedItem);
+            &QAction::triggered, copyToClipboard(dev->displayName()));
         connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy ID")),
-            &QAction::triggered, this, &DevView::copySelectedItemId);
+            &QAction::triggered, copyToClipboard(dev->id));
+        menu.addSeparator();
+        if (dev->paused) {
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-start"),
+                                       QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-start.svg"))),
+                        tr("Resume")),
+                &QAction::triggered, triggerActionForSelectedRow(this, &DevView::pauseResumeDev));
+        } else {
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-pause"),
+                                       QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg"))),
+                        tr("Pause")),
+                &QAction::triggered, triggerActionForSelectedRow(this, &DevView::pauseResumeDev));
+        }
     }
     showViewMenu(position, *this, menu);
 }
 
-void DevView::copySelectedItem()
-{
-    if (!selectionModel() || selectionModel()->selectedRows(0).size() != 1) {
-        return;
-    }
-    const QModelIndex selectedIndex = selectionModel()->selectedRows(0).at(0);
-    QString text;
-    if (selectedIndex.parent().isValid()) {
-        // dev attribute
-        text = model()->data(model()->index(selectedIndex.row(), 1, selectedIndex.parent())).toString();
-    } else {
-        // dev name/id
-        text = model()->data(selectedIndex).toString();
-    }
-    if (!text.isEmpty()) {
-        QGuiApplication::clipboard()->setText(text);
-    }
-}
-
-void DevView::copySelectedItemId()
-{
-    if (!selectionModel() || selectionModel()->selectedRows(0).size() != 1) {
-        return;
-    }
-    const QModelIndex selectedIndex = selectionModel()->selectedRows(0).at(0);
-    QString text;
-    if (selectedIndex.parent().isValid()) {
-        // dev attribute: should be handled by copySelectedItemId()
-    } else {
-        // dev name/id
-        text = model()->data(model()->index(0, 1, selectedIndex)).toString();
-    }
-    if (!text.isEmpty()) {
-        QGuiApplication::clipboard()->setText(text);
-    }
-}
 } // namespace QtGui

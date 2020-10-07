@@ -2,6 +2,7 @@
 #include "./downloaditemdelegate.h"
 #include "./helper.h"
 
+#include "../../connector/syncthingdir.h"
 #include "../../model/syncthingdownloadmodel.h"
 
 #include <QClipboard>
@@ -53,38 +54,36 @@ void DownloadView::mouseReleaseEvent(QMouseEvent *event)
 
 void DownloadView::showContextMenu(const QPoint &position)
 {
-    if (!selectionModel() || selectionModel()->selectedRows(0).size() != 1) {
+    const auto selectedRow = SelectedRow(this);
+    const auto &selectedIndex = selectedRow.index;
+    if (!selectedRow) {
         return;
     }
     QMenu menu(this);
-    if (selectionModel()->selectedRows(0).at(0).parent().isValid()) {
+    if (selectedIndex.parent().isValid()) {
         connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy value")),
-            &QAction::triggered, this, &DownloadView::copySelectedItem);
+            &QAction::triggered, copyToClipboard(model()->data(model()->index(selectedIndex.row(), 1, selectedIndex.parent())).toString()));
     } else {
+        const auto [dir, progress] = selectedRow.data;
         connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy label/ID")),
-            &QAction::triggered, this, &DownloadView::copySelectedItem);
+            &QAction::triggered, copyToClipboard(dir->displayName()));
+        menu.addSeparator();
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("folder"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg"))),
+                    tr("Open in file browser")),
+            &QAction::triggered, triggerActionForSelectedRow(this, &DownloadView::emitOpenDir));
     }
     showViewMenu(position, *this, menu);
 }
 
-void DownloadView::copySelectedItem()
+void DownloadView::emitOpenDir(QPair<const SyncthingDir *, const SyncthingItemDownloadProgress *> info)
 {
-    if (!selectionModel() || selectionModel()->selectedRows(0).size() != 1) {
-        return;
-    }
-    const QModelIndex selectedIndex = selectionModel()->selectedRows(0).at(0);
-    QString text;
-    if (selectedIndex.parent().isValid()) {
-        // dev attribute
-        text = model()->data(model()->index(selectedIndex.row(), 1, selectedIndex.parent())).toString();
+    if (info.second) {
+        emit openItemDir(*info.second);
     } else {
-        // dev label/id
-        text = model()->data(selectedIndex).toString();
-    }
-    if (!text.isEmpty()) {
-        QGuiApplication::clipboard()->setText(text);
+        emit openDir(*info.first);
     }
 }
+
 } // namespace QtGui

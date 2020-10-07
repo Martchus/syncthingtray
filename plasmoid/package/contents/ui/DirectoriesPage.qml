@@ -31,6 +31,8 @@ ColumnLayout {
             delegate: TopLevelItem {
                 id: item
                 width: directoryView.width
+                readonly property string dirName: name
+                readonly property string dirPath: path
                 property alias errorsButton: errorsButton
                 property alias rescanButton: rescanButton
                 property alias resumePauseButton: resumePauseButton
@@ -140,8 +142,21 @@ ColumnLayout {
                 }
 
                 PlasmaComponents.MenuItem {
+                    text: qsTr("Copy label/ID")
+                    icon: "edit-copy"
+                    onClicked: directoryView.copyCurrentItemData("dirName")
+                }
+                PlasmaComponents.MenuItem {
+                    text: qsTr("Copy path")
+                    icon: "edit-copy"
+                    onClicked: directoryView.copyCurrentItemData("dirPath")
+                }
+                PlasmaComponents.MenuItem {
+                    separator: true
+                }
+                PlasmaComponents.MenuItem {
                     id: rescanItem
-                    text: qsTr('Rescan')
+                    text: qsTr("Rescan")
                     icon: "view-refresh"
                     onClicked: directoryView.clickCurrentItemButton(
                                    "rescanButton")
@@ -155,7 +170,7 @@ ColumnLayout {
                 }
                 PlasmaComponents.MenuItem {
                     id: openItem
-                    text: qsTr('Open in file browser')
+                    text: qsTr("Open in file browser")
                     icon: "folder"
                     onClicked: directoryView.clickCurrentItemButton(
                                    "openButton")

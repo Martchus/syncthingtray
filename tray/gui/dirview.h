@@ -5,13 +5,16 @@
 
 namespace Data {
 struct SyncthingDir;
-}
+class SyncthingDirectoryModel;
+} // namespace Data
 
 namespace QtGui {
 
 class DirView : public QTreeView {
     Q_OBJECT
 public:
+    using ModelType = Data::SyncthingDirectoryModel;
+
     DirView(QWidget *parent = nullptr);
 
 Q_SIGNALS:
@@ -24,8 +27,6 @@ protected:
 
 private Q_SLOTS:
     void showContextMenu(const QPoint &position);
-    void copySelectedItem();
-    void copySelectedItemPath();
 };
 } // namespace QtGui
 

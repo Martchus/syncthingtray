@@ -23,6 +23,8 @@ Item {
             delegate: TopLevelItem {
                 id: item
                 width: deviceView.width
+                readonly property string devName: name
+                readonly property string devId: devId
                 property alias resumePauseButton: resumePauseButton
 
                 ColumnLayout {
@@ -95,6 +97,19 @@ Item {
                     resumePauseItem.icon = item.resumePauseButton.icon
                 }
 
+                PlasmaComponents.MenuItem {
+                    text: qsTr("Copy name")
+                    icon: "edit-copy"
+                    onClicked: deviceView.copyCurrentItemData("devName")
+                }
+                PlasmaComponents.MenuItem {
+                    text: qsTr("Copy ID")
+                    icon: "edit-copy"
+                    onClicked: deviceView.copyCurrentItemData("devId")
+                }
+                PlasmaComponents.MenuItem {
+                    separator: true
+                }
                 PlasmaComponents.MenuItem {
                     id: resumePauseItem
                     text: qsTr("Pause")

@@ -33,6 +33,16 @@ ListView {
         }
     }
 
+    function copyCurrentItemData(fieldName) {
+        if (!currentItem) {
+            return
+        }
+        var data = currentItem[fieldName]
+        if (data) {
+            plasmoid.nativeInterface.copyToClipboard(data)
+        }
+    }
+
     function showContextMenu(item, x, y) {
         if (typeof contextMenu === "undefined") {
             return

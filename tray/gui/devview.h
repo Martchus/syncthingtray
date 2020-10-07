@@ -5,13 +5,16 @@
 
 namespace Data {
 struct SyncthingDev;
-}
+class SyncthingDeviceModel;
+} // namespace Data
 
 namespace QtGui {
 
 class DevView : public QTreeView {
     Q_OBJECT
 public:
+    using ModelType = Data::SyncthingDeviceModel;
+
     DevView(QWidget *parent = nullptr);
 
 Q_SIGNALS:
@@ -22,8 +25,6 @@ protected:
 
 private Q_SLOTS:
     void showContextMenu(const QPoint &position);
-    void copySelectedItem();
-    void copySelectedItemId();
 };
 } // namespace QtGui
 

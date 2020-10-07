@@ -27,12 +27,13 @@ public Q_SLOTS:
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &child) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-    QVariant data(const QModelIndex &index, int role) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
     const SyncthingDir *dirInfo(const QModelIndex &index) const;
     const SyncthingItemDownloadProgress *progressInfo(const QModelIndex &index) const;
+    QPair<const SyncthingDir *, const SyncthingItemDownloadProgress *> info(const QModelIndex &index) const;
     unsigned int pendingDownloads() const;
     bool singleColumnMode() const;
     void setSingleColumnMode(bool singleColumnModeEnabled);
@@ -61,6 +62,11 @@ private:
     unsigned int m_pendingDownloads;
     bool m_singleColumnMode;
 };
+
+inline QPair<const SyncthingDir *, const SyncthingItemDownloadProgress *> SyncthingDownloadModel::info(const QModelIndex &index) const
+{
+    return qMakePair(dirInfo(index), progressInfo(index));
+}
 
 inline unsigned int SyncthingDownloadModel::pendingDownloads() const
 {
