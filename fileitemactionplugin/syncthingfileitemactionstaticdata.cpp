@@ -179,7 +179,7 @@ bool SyncthingFileItemActionStaticData::applySyncthingConfiguration(
     // make connection settings
     SyncthingConnectionSettings connectionSettings;
     connectionSettings.syncthingUrl = config.syncthingUrl();
-    connectionSettings.apiKey.append(config.guiApiKey);
+    connectionSettings.apiKey.append(config.guiApiKey.toUtf8());
 
     // establish connection
     bool ok;
