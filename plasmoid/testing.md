@@ -6,7 +6,7 @@ rather than the regular home to separate testing from production.
 1. Build as usual, ensure `NO_PLASMOID` is turned off
 2. Add build step to execute the custom target `init_plasmoid_testing` which
    will install the Plasmoid in a test directory which is `$CMAKE_BUILD_DIR/plasmoid-testing`
-   by default
+   by default (configurable via cache variable `PLASMOID_TESTDIR`)
 3. Add new config for run in Qt Creator and set `bash` as executable
 4. Set `%{sourceDir}/../../syncthingtray/plasmoid/scripts/starttesting.sh plasmoidviewer --applet martchus.syncthingplasmoid`
    as CLI argument
@@ -17,7 +17,8 @@ rather than the regular home to separate testing from production.
 6. In execution environment there's nothing mandatory to be set because `starttesting.sh` should
    already take care of setting the environment.
     * The home directory is set in accordance with the directory used in step 2. but can be overridden
-      by setting `TEST_HOME`
+      by setting `TEST_HOME`; make sure that `TEST_HOME` and the CMake variable `PLASMOID_TESTDIR` are
+      set in accordance
     * If not already set, `QT_PLUGIN_PATH` is set to `$CMAKE_CURRENT_BINARY_DIR/plasmoid/lib` which
       should contain the plugin for the Plasmoid under `plasma/applets/libsyncthingplasmoid.so`
     * `QT_DEBUG_PLUGINS` to 1 for verbose plugin detection

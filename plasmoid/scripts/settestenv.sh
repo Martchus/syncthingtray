@@ -2,7 +2,6 @@
 set -e
 
 # use a sub directory within the build directory which is supposed to be $PWD
-echo $PWD
 export HOME=${TEST_HOME:-$PWD/plasmoid-testing}
 echo "HOME directory used for Plasmoid testing: $HOME"
 mkdir -p "$HOME"
