@@ -137,8 +137,8 @@ int MockedReply::s_eventIndex = 0;
 
 MockedReply *MockedReply::forRequest(const QString &method, const QString &path, const QUrlQuery &query, bool rest)
 {
-    VAR_UNUSED(query)
-    VAR_UNUSED(rest)
+    CPP_UTILITIES_UNUSED(query)
+    CPP_UTILITIES_UNUSED(rest)
 
     // set "mock URL"
     QUrl url((rest ? QStringLiteral("mock://rest/") : QStringLiteral("mock://")) + path);
