@@ -24,7 +24,7 @@ Item {
                 id: item
                 width: deviceView.width
                 readonly property string devName: name
-                readonly property string devId: devId
+                readonly property string devID: devId
                 property alias resumePauseButton: resumePauseButton
 
                 ColumnLayout {
@@ -105,7 +105,7 @@ Item {
                 PlasmaComponents.MenuItem {
                     text: qsTr("Copy ID")
                     icon: "edit-copy"
-                    onClicked: deviceView.copyCurrentItemData("devId")
+                    onClicked: deviceView.copyCurrentItemData("devID")
                 }
                 PlasmaComponents.MenuItem {
                     separator: true
