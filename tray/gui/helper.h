@@ -8,6 +8,8 @@
 #include <QModelIndex>
 #include <QTreeView>
 
+#include <functional>
+
 QT_FORWARD_DECLARE_CLASS(QPoint)
 QT_FORWARD_DECLARE_CLASS(QMenu)
 
