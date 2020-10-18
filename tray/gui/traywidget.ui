@@ -495,7 +495,11 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
         <number>0</number>
        </property>
        <item>
-        <widget class="QTreeView" name="recentChangesTreeView"/>
+        <widget class="QTreeView" name="recentChangesTreeView">
+         <property name="rootIsDecorated">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
