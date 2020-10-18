@@ -27,6 +27,7 @@
 #include <QMessageBox>
 #include <QNetworkAccessManager>
 #include <QStringBuilder>
+#include <QSettings>
 
 #include <iostream>
 
@@ -155,17 +156,25 @@ int runApplication(int argc, const char *const *argv)
     waitForTrayArg.setCombinable(true);
     ConfigValueArgument connectionArg("connection", '\0', "specifies one or more connection configurations to be used", { "config name" });
     connectionArg.setRequiredValueCount(Argument::varValueCount);
+    ConfigValueArgument configPathArg("config-dir-path", '\0', "specifies the path to the configuration directory", { "path" });
+    configPathArg.setEnvironmentVariable(PROJECT_VARNAME_UPPER "_CONFIG_DIR");
     Argument &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
     widgetsGuiArg.addSubArgument(&windowedArg);
     widgetsGuiArg.addSubArgument(&showWebUiArg);
     widgetsGuiArg.addSubArgument(&triggerArg);
     widgetsGuiArg.addSubArgument(&waitForTrayArg);
     widgetsGuiArg.addSubArgument(&connectionArg);
+    widgetsGuiArg.addSubArgument(&configPathArg);
 
     parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(), &parser.noColorArg(), &parser.helpArg() });
     parser.parseArgs(argc, argv);
     if (!qtConfigArgs.qtWidgetsGuiArg().isPresent()) {
         return 0;
+    }
+
+    // handle override for config dir
+    if (const char *const configPathDir = configPathArg.firstValue()) {
+        QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, QString::fromLocal8Bit(configPathDir));
     }
 
     // check whether runApplication() has been called for the first time
