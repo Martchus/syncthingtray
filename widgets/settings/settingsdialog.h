@@ -49,6 +49,7 @@ enum class GuiType {
 BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(ConnectionOptionPage)
 public:
 ConnectionOptionPage(Data::SyncthingConnection *connection, QWidget *parentWidget = nullptr);
+void hideConnectionStatus();
 
 private:
 DECLARE_SETUP_WIDGETS
@@ -158,9 +159,12 @@ public:
     explicit SettingsDialog(const QList<QtUtilities::OptionCategory *> &categories, QWidget *parent = nullptr);
     explicit SettingsDialog(QWidget *parent = nullptr);
     ~SettingsDialog() override;
+    void hideConnectionStatus();
 
 private:
     void init();
+
+    ConnectionOptionPage *m_connectionsOptionPage;
 };
 } // namespace QtGui
 

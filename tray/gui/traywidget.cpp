@@ -84,6 +84,9 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     , m_selectedConnection(nullptr)
     , m_startStopButtonTarget(StartStopButtonTarget::None)
 {
+    if (!s_instances.empty() && s_settingsDlg) {
+        s_settingsDlg->hideConnectionStatus();
+    }
     s_instances.push_back(this);
 
     m_ui->setupUi(this);
@@ -219,7 +222,7 @@ void TrayWidget::showSettingsDialog()
         s_dialogParent = make_unique<QWidget>();
     }
     if (!s_settingsDlg) {
-        s_settingsDlg = new SettingsDialog(&m_connection, s_dialogParent.get());
+        s_settingsDlg = new SettingsDialog(s_instances.size() < 2 ? &m_connection : nullptr, s_dialogParent.get());
         connect(s_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettingsOnAllInstances);
 
         // save settings to disk when applied

@@ -81,6 +81,14 @@ ConnectionOptionPage::~ConnectionOptionPage()
 {
 }
 
+void ConnectionOptionPage::hideConnectionStatus()
+{
+    ui()->statusTextLabel->setHidden(true);
+    ui()->statusLabel->setHidden(true);
+    ui()->connectPushButton->setHidden(true);
+    m_connection = nullptr;
+}
+
 QWidget *ConnectionOptionPage::setupWidget()
 {
     auto *const widget = ConnectionOptionPageBase::setupWidget();
@@ -92,7 +100,11 @@ QWidget *ConnectionOptionPage::setupWidget()
     ui()->pollDevStatsLabel->setToolTip(ui()->pollDevStatsSpinBox->toolTip());
     ui()->pollErrorsLabel->setToolTip(ui()->pollErrorsSpinBox->toolTip());
     ui()->reconnectLabel->setToolTip(ui()->reconnectSpinBox->toolTip());
-    QObject::connect(m_connection, &SyncthingConnection::statusChanged, bind(&ConnectionOptionPage::updateConnectionStatus, this));
+    if (m_connection) {
+        QObject::connect(m_connection, &SyncthingConnection::statusChanged, bind(&ConnectionOptionPage::updateConnectionStatus, this));
+    } else {
+        hideConnectionStatus();
+    }
     QObject::connect(ui()->connectPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::applyAndReconnect, this));
     QObject::connect(ui()->insertFromConfigFilePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::insertFromConfigFile, this, false));
     QObject::connect(
@@ -160,7 +172,9 @@ void ConnectionOptionPage::insertFromConfigFile(bool forceFileSelection)
 
 void ConnectionOptionPage::updateConnectionStatus()
 {
-    ui()->statusLabel->setText(m_connection->statusText());
+    if (m_connection) {
+        ui()->statusLabel->setText(m_connection->statusText());
+    }
 }
 
 bool ConnectionOptionPage::showConnectionSettings(int index)
@@ -352,7 +366,9 @@ void ConnectionOptionPage::reset()
 void ConnectionOptionPage::applyAndReconnect()
 {
     apply();
-    m_connection->reconnect((m_currentIndex == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(m_currentIndex - 1)]));
+    if (m_connection) {
+        m_connection->reconnect((m_currentIndex == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(m_currentIndex - 1)]));
+    }
 }
 
 // NotificationsOptionPage
@@ -1333,7 +1349,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Tray"));
-    category->assignPages({ new ConnectionOptionPage(connection), new NotificationsOptionPage, new AppearanceOptionPage,
+    category->assignPages({ m_connectionsOptionPage = new ConnectionOptionPage(connection), new NotificationsOptionPage, new AppearanceOptionPage,
         new IconsOptionPage(IconsOptionPage::Context::UI), new IconsOptionPage(IconsOptionPage::Context::System) });
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     categories << category;
@@ -1376,6 +1392,12 @@ void SettingsDialog::init()
     // some settings could be applied without restarting the application, good idea?
     //connect(this, &Dialogs::SettingsDialog::applied, bind(&Dialogs::QtSettings::apply, &Settings::qtSettings()));
 }
+
+void SettingsDialog::hideConnectionStatus()
+{
+    m_connectionsOptionPage->hideConnectionStatus();
+}
+
 } // namespace QtGui
 
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, ConnectionOptionPage)
