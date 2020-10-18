@@ -9,6 +9,7 @@
 #include "../../model/syncthingdirectorymodel.h"
 #include "../../model/syncthingdownloadmodel.h"
 #include "../../model/syncthingrecentchangesmodel.h"
+#include "../../model/syncthingsortfilterdirectorymodel.h"
 #include "../../model/syncthingstatusselectionmodel.h"
 
 #include "../../connector/syncthingconnection.h"
@@ -38,6 +39,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_OBJECT
     Q_PROPERTY(Data::SyncthingConnection *connection READ connection NOTIFY connectionChanged)
     Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel NOTIFY dirModelChanged)
+    Q_PROPERTY(Data::SyncthingSortFilterDirectoryModel *sortFilterDirModel READ sortFilterDirModel NOTIFY dirModelChanged)
     Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel NOTIFY devModelChanged)
     Q_PROPERTY(Data::SyncthingDownloadModel *downloadModel READ downloadModel NOTIFY downloadModelChanged)
     Q_PROPERTY(Data::SyncthingRecentChangesModel *recentChangesModel READ recentChangesModel NOTIFY recentChangesModelChanged)
@@ -71,6 +73,7 @@ public:
 public:
     Data::SyncthingConnection *connection() const;
     Data::SyncthingDirectoryModel *dirModel() const;
+    Data::SyncthingSortFilterDirectoryModel *sortFilterDirModel() const;
     Data::SyncthingDeviceModel *devModel() const;
     Data::SyncthingDownloadModel *downloadModel() const;
     Data::SyncthingRecentChangesModel *recentChangesModel() const;
@@ -171,6 +174,7 @@ private:
 #endif
     QtGui::StatusInfo m_statusInfo;
     Data::SyncthingDirectoryModel m_dirModel;
+    Data::SyncthingSortFilterDirectoryModel m_sortFilterDirModel;
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingDownloadModel m_downloadModel;
     Data::SyncthingRecentChangesModel m_recentChangesModel;
@@ -194,6 +198,11 @@ inline Data::SyncthingConnection *SyncthingApplet::connection() const
 inline Data::SyncthingDirectoryModel *SyncthingApplet::dirModel() const
 {
     return const_cast<Data::SyncthingDirectoryModel *>(&m_dirModel);
+}
+
+inline Data::SyncthingSortFilterDirectoryModel *SyncthingApplet::sortFilterDirModel() const
+{
+    return const_cast<Data::SyncthingSortFilterDirectoryModel *>(&m_sortFilterDirModel);
 }
 
 inline Data::SyncthingDeviceModel *SyncthingApplet::devModel() const

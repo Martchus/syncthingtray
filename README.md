@@ -245,7 +245,7 @@ To build the plugin for Dolphin integration KIO is also requried. Additionally, 
 building the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
 
 To build the Plasmoid for the Plasma 5 desktop, the Qt module QML and the KF5 module
-Plasma are required as well. Additionally, the Plasmoid requires Qt 5.8 or newer. To skip
+Plasma are required as well. Additionally, the Plasmoid requires Qt 5.12 or newer. To skip
 building the Plasmoid, add `-DNO_PLASMOID:BOOL=ON` to the CMake arguments.
 
 It is also possible to build only the CLI (syncthingctl) by adding `-DNO_MODEL:BOOL=ON` and

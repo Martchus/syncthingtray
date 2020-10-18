@@ -6,6 +6,7 @@
 namespace Data {
 struct SyncthingDir;
 class SyncthingDirectoryModel;
+class SyncthingSortFilterDirectoryModel;
 } // namespace Data
 
 namespace QtGui {
@@ -14,6 +15,7 @@ class DirView : public QTreeView {
     Q_OBJECT
 public:
     using ModelType = Data::SyncthingDirectoryModel;
+    using SortFilterModelType = Data::SyncthingSortFilterDirectoryModel;
 
     DirView(QWidget *parent = nullptr);
 

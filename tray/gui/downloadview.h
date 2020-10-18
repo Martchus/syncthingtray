@@ -15,6 +15,7 @@ class DownloadView : public QTreeView {
     Q_OBJECT
 public:
     using ModelType = Data::SyncthingDownloadModel;
+    using SortFilterModelType = void;
 
     DownloadView(QWidget *parent = nullptr);
 

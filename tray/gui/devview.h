@@ -14,6 +14,7 @@ class DevView : public QTreeView {
     Q_OBJECT
 public:
     using ModelType = Data::SyncthingDeviceModel;
+    using SortFilterModelType = void;
 
     DevView(QWidget *parent = nullptr);
 

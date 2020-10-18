@@ -4,6 +4,7 @@
 
 #include "../../connector/syncthingconnection.h"
 #include "../../model/syncthingdirectorymodel.h"
+#include "../../model/syncthingsortfilterdirectorymodel.h"
 #include "../../widgets/misc/direrrorsdialog.h"
 
 #include <QClipboard>
@@ -30,13 +31,15 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
 {
     QTreeView::mouseReleaseEvent(event);
 
-    // get SyncthingDir object
-    auto *const dirModel = qobject_cast<SyncthingDirectoryModel *>(model());
+    // get SyncthingDir object for clicked index
+    auto *const sortDirModel = qobject_cast<SortFilterModelType *>(model());
+    auto *const dirModel = qobject_cast<ModelType *>(sortDirModel ? sortDirModel->sourceModel() : model());
     if (!dirModel) {
         return;
     }
-    const QPoint pos(event->pos());
-    const QModelIndex clickedIndex(indexAt(event->pos()));
+    const auto pos = event->pos();
+    const auto clickedProxyIndex = indexAt(event->pos());
+    const auto clickedIndex = sortDirModel ? sortDirModel->mapToSource(clickedProxyIndex) : clickedProxyIndex;
     if (!clickedIndex.isValid() || clickedIndex.column() != 1) {
         return;
     }
@@ -47,7 +50,7 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
 
     if (!clickedIndex.parent().isValid()) {
         // open/scan dir buttons
-        const QRect itemRect(visualRect(clickedIndex));
+        const QRect itemRect = visualRect(clickedProxyIndex);
         if (pos.x() <= itemRect.right() - 58) {
             return;
         }

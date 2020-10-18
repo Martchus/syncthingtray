@@ -76,6 +76,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 #endif
     , m_notifier(m_connection)
     , m_dirModel(m_connection)
+    , m_sortFilterDirModel(&m_dirModel)
     , m_devModel(m_connection)
     , m_dlModel(m_connection)
     , m_recentChangesModel(m_connection)
@@ -86,8 +87,9 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 
     m_ui->setupUi(this);
 
-    // setup model and view
-    m_ui->dirsTreeView->setModel(&m_dirModel);
+    // setup models and views
+    m_ui->dirsTreeView->header()->setSortIndicator(0, Qt::AscendingOrder);
+    m_ui->dirsTreeView->setModel(&m_sortFilterDirModel);
     m_ui->devsTreeView->setModel(&m_devModel);
     m_ui->downloadsTreeView->setModel(&m_dlModel);
     m_ui->recentChangesTreeView->setModel(&m_recentChangesModel);

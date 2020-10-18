@@ -53,6 +53,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_connection()
     , m_notifier(m_connection)
     , m_dirModel(m_connection)
+    , m_sortFilterDirModel(&m_dirModel)
     , m_devModel(m_connection)
     , m_downloadModel(m_connection)
     , m_recentChangesModel(m_connection)
@@ -66,6 +67,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     m_notifier.setService(&m_service);
 #endif
+    m_sortFilterDirModel.sort(0, Qt::AscendingOrder);
     qmlRegisterUncreatableMetaObject(Data::staticMetaObject, "martchus.syncthingplasmoid", 0, 6, "Data", QStringLiteral("only enums"));
 }
 

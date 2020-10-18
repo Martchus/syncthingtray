@@ -403,7 +403,11 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
         <number>0</number>
        </property>
        <item>
-        <widget class="QtGui::DirView" name="dirsTreeView"/>
+        <widget class="QtGui::DirView" name="dirsTreeView">
+         <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

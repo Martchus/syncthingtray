@@ -9,6 +9,7 @@
 #include <QTreeView>
 
 #include <functional>
+#include <type_traits>
 
 QT_FORWARD_DECLARE_CLASS(QPoint)
 QT_FORWARD_DECLARE_CLASS(QMenu)
@@ -42,7 +43,15 @@ template <typename ViewType> SelectedRow<ViewType>::SelectedRow(ViewType *view)
         return;
     }
     index = selectedRows.at(0);
-    model = qobject_cast<typename ViewType::ModelType *>(view->model());
+    if constexpr (std::is_void_v<typename ViewType::SortFilterModelType>) {
+        model = qobject_cast<typename ViewType::ModelType *>(view->model());
+    } else {
+        const auto *const sortFilterModel = qobject_cast<typename ViewType::SortFilterModelType *>(view->model());
+        if (sortFilterModel) {
+            index = sortFilterModel->mapToSource(index);
+            model = qobject_cast<typename ViewType::ModelType *>(sortFilterModel->sourceModel());
+        }
+    }
     if (model) {
         data = model->info(index);
     }

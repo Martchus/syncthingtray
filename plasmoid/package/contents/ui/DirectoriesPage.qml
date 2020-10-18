@@ -20,13 +20,7 @@ ColumnLayout {
         TopLevelView {
             id: directoryView
             width: parent.width
-
-            model: PlasmaCore.SortFilterModel {
-                id: directoryFilterModel
-                sourceModel: plasmoid.nativeInterface.dirModel
-                filterRole: "name"
-                filterRegExp: filter.text
-            }
+            model: plasmoid.nativeInterface.sortFilterDirModel
 
             delegate: TopLevelItem {
                 id: item
@@ -37,8 +31,6 @@ ColumnLayout {
                 property alias rescanButton: rescanButton
                 property alias resumePauseButton: resumePauseButton
                 property alias openButton: openButton
-                property int sourceIndex: directoryFilterModel.mapRowToSource(
-                                              index)
 
                 ColumnLayout {
                     width: parent.width
@@ -122,7 +114,7 @@ ColumnLayout {
 
                         model: DelegateModel {
                             model: plasmoid.nativeInterface.dirModel
-                            rootIndex: detailsView.model.modelIndex(sourceIndex)
+                            rootIndex: directoryView.model.mapToSource(directoryView.model.index(index, 0))
                             delegate: DetailItem {
                                 width: detailsView.width
                             }
@@ -185,5 +177,6 @@ ColumnLayout {
         clearButtonShown: true
         Layout.fillWidth: true
         visible: explicitelyShown || text !== ""
+        onTextChanged: directoryView.model.filterRegularExpression = new RegExp(text)
     }
 }
