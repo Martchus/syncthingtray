@@ -105,8 +105,8 @@ private Q_SLOTS:
 
 private:
     TrayMenu *m_menu;
-    std::unique_ptr<QWidget> m_dialogParent;
     std::unique_ptr<Ui::TrayWidget> m_ui;
+    static std::unique_ptr<QWidget> s_dialogParent;
     static SettingsDialog *s_settingsDlg;
     static QtUtilities::AboutDialog *s_aboutDlg;
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW

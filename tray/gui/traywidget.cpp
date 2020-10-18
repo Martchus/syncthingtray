@@ -57,6 +57,7 @@ using namespace std;
 
 namespace QtGui {
 
+std::unique_ptr<QWidget> TrayWidget::s_dialogParent;
 SettingsDialog *TrayWidget::s_settingsDlg = nullptr;
 QtUtilities::AboutDialog *TrayWidget::s_aboutDlg = nullptr;
 vector<TrayWidget *> TrayWidget::s_instances;
@@ -214,11 +215,11 @@ TrayWidget::~TrayWidget()
 
 void TrayWidget::showSettingsDialog()
 {
-    if (!m_dialogParent) {
-        m_dialogParent = make_unique<QWidget>();
+    if (!s_dialogParent) {
+        s_dialogParent = make_unique<QWidget>();
     }
     if (!s_settingsDlg) {
-        s_settingsDlg = new SettingsDialog(&m_connection, m_dialogParent.get());
+        s_settingsDlg = new SettingsDialog(&m_connection, s_dialogParent.get());
         connect(s_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettingsOnAllInstances);
 
         // save settings to disk when applied
@@ -233,11 +234,11 @@ void TrayWidget::showSettingsDialog()
 
 void TrayWidget::showAboutDialog()
 {
-    if (!m_dialogParent) {
-        m_dialogParent = make_unique<QWidget>();
+    if (!s_dialogParent) {
+        s_dialogParent = make_unique<QWidget>();
     }
     if (!s_aboutDlg) {
-        s_aboutDlg = new AboutDialog(m_dialogParent.get(), QString(),
+        s_aboutDlg = new AboutDialog(s_dialogParent.get(), QString(),
             QStringLiteral(
                 "<p>Developed by " APP_AUTHOR
                 "<br>Fallback icons from KDE/Breeze project<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "

@@ -49,19 +49,25 @@ void handleSystemdServiceError(const QString &context, const QString &name, cons
 }
 #endif
 
-int initSyncthingTray(bool windowed, bool waitForTray, const char *connectionConfig)
+int initSyncthingTray(bool windowed, bool waitForTray, const Argument &connectionConfigArg)
 {
     // get settings
     auto &settings = Settings::values();
-    const auto connectionConfigQStr(connectionConfig ? QString::fromLocal8Bit(connectionConfig) : QString());
+    static const auto defaultConnection = std::vector<const char *>({""});
+    const auto &connectionConfigurations = connectionConfigArg.isPresent() && !connectionConfigArg.values().empty() ? connectionConfigArg.values() : defaultConnection;
 
     // handle "windowed" case
     if (windowed) {
+        // launch Syncthing if configured
         settings.launcher.autostart();
-        auto *const trayWidget = new TrayWidget();
-        trayWidget->setAttribute(Qt::WA_DeleteOnClose);
-        trayWidget->show();
-        trayWidget->applySettings(connectionConfigQStr);
+
+        // show a window for each connection
+        for (const auto *const connectionConfig : connectionConfigurations) {
+            auto *const trayWidget = new TrayWidget();
+            trayWidget->setAttribute(Qt::WA_DeleteOnClose);
+            trayWidget->show();
+            trayWidget->applySettings(QString::fromLocal8Bit(connectionConfig));
+        }
         return 0;
     }
 
@@ -76,22 +82,28 @@ int initSyncthingTray(bool windowed, bool waitForTray, const char *connectionCon
         return -1;
     }
 
-    // show tray icon
+    // launch Syncthing if configured
     settings.launcher.autostart();
-    auto *const trayIcon = new TrayIcon(connectionConfigQStr, QApplication::instance());
-    trayIcon->show();
-    if (!settings.firstLaunch) {
-        return 0;
+
+    // show a tray icon for each connection
+    TrayWidget *widget;
+    for (const auto *const connectionConfig : connectionConfigurations) {
+        auto *const trayIcon = new TrayIcon(QString::fromLocal8Bit(connectionConfig), QApplication::instance());
+        trayIcon->show();
+        widget = &trayIcon->trayMenu().widget();
     }
 
     // show "first launch" message box
+    if (!settings.firstLaunch) {
+        return 0;
+    }
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setText(QCoreApplication::translate("main", "You must configure how to connect to Syncthing when using Syncthing Tray the first time."));
     msgBox.setInformativeText(QCoreApplication::translate(
         "main", "Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration."));
     msgBox.exec();
-    trayIcon->trayMenu().widget().showSettingsDialog();
+    widget->showSettingsDialog();
     return 0;
 
 #else
@@ -141,7 +153,8 @@ int runApplication(int argc, const char *const *argv)
     Argument waitForTrayArg("wait", '\0',
         "wait until the system tray becomes available instead of showing an error message if the system tray is not available on start-up");
     waitForTrayArg.setCombinable(true);
-    ConfigValueArgument connectionArg("connection", '\0', "specifies the connection configuration to be used", { "config name" });
+    ConfigValueArgument connectionArg("connection", '\0', "specifies one or more connection configurations to be used", { "config name" });
+    connectionArg.setRequiredValueCount(Argument::varValueCount);
     Argument &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
     widgetsGuiArg.addSubArgument(&windowedArg);
     widgetsGuiArg.addSubArgument(&showWebUiArg);
@@ -181,7 +194,7 @@ int runApplication(int argc, const char *const *argv)
 #endif
 
         // init Syncthing Tray and immediately shutdown on failure
-        if (const auto res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue())) {
+        if (const auto res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg)) {
             shutdownSyncthingTray();
             return res;
         }
@@ -199,7 +212,7 @@ int runApplication(int argc, const char *const *argv)
     }
 
     // create new/additional tray icon
-    const auto res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg.firstValue());
+    const auto res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg);
     if (!res) {
         trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
     }
