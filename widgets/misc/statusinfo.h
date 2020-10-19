@@ -16,12 +16,12 @@ namespace QtGui {
 class SYNCTHINGWIDGETS_EXPORT StatusInfo {
 public:
     explicit StatusInfo();
-    explicit StatusInfo(const Data::SyncthingConnection &connection);
+    explicit StatusInfo(const Data::SyncthingConnection &connection, const QString &configurationName = QString());
 
     const QString &statusText() const;
     const QString &additionalStatusText() const;
     const QIcon &statusIcon() const;
-    void updateConnectionStatus(const Data::SyncthingConnection &connection);
+    void updateConnectionStatus(const Data::SyncthingConnection &connection, const QString &configurationName = QString());
     void updateConnectedDevices(const Data::SyncthingConnection &connection);
 
 private:
@@ -34,9 +34,9 @@ private:
     const QIcon *m_statusIcon;
 };
 
-inline StatusInfo::StatusInfo(const Data::SyncthingConnection &connection)
+inline StatusInfo::StatusInfo(const Data::SyncthingConnection &connection, const QString &configurationName)
 {
-    updateConnectionStatus(connection);
+    updateConnectionStatus(connection, configurationName);
     updateConnectedDevices(connection);
 }
 

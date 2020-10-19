@@ -55,6 +55,7 @@ public:
     const Data::SyncthingNotifier &notifier() const;
     QMenu *connectionsMenu();
     static const std::vector<TrayWidget *> &instances();
+    Data::SyncthingConnectionSettings *selectedConnection();
 
 public Q_SLOTS:
     void showSettingsDialog();
@@ -88,6 +89,7 @@ private Q_SLOTS:
     void changeStatus();
     void updateTraffic();
     void updateOverallStatistics();
+    void updateIconAndTooltip();
     void toggleRunning();
     Settings::Launcher::LauncherStatus handleLauncherStatusChanged();
     Settings::Launcher::LauncherStatus applyLauncherSettings(
@@ -161,6 +163,12 @@ inline const std::vector<TrayWidget *> &TrayWidget::instances()
 {
     return s_instances;
 }
+
+inline Data::SyncthingConnectionSettings *TrayWidget::selectedConnection()
+{
+    return m_selectedConnection;
+}
+
 } // namespace QtGui
 
 #endif // TRAY_WIDGET_H

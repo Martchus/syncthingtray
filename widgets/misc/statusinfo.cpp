@@ -32,7 +32,7 @@ void StatusInfo::recomputeAdditionalStatusText()
     }
 }
 
-void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection)
+void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection, const QString &configurationName)
 {
     m_additionalStatusInfo.clear();
 
@@ -90,6 +90,10 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection)
                 m_statusIcon = &icons.disconnected;
             }
         }
+    }
+
+    if (!configurationName.isEmpty()) {
+        m_statusText = configurationName % QChar(':') % QChar(' ') % m_statusText;
     }
 
     recomputeAdditionalStatusText();

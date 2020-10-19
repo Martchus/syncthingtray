@@ -84,10 +84,18 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     , m_selectedConnection(nullptr)
     , m_startStopButtonTarget(StartStopButtonTarget::None)
 {
+    // don't show connection status within connection settings if there are multiple tray widgets/icons (would be ambiguous)
     if (!s_instances.empty() && s_settingsDlg) {
         s_settingsDlg->hideConnectionStatus();
     }
+
+    // take record of the newly created instance
     s_instances.push_back(this);
+
+    // show the connection configuration in the previous icon's tooltip as soon as there's a 2nd icon
+    if (s_instances.size() == 2) {
+        s_instances.front()->updateIconAndTooltip();
+    }
 
     m_ui->setupUi(this);
 
@@ -214,6 +222,8 @@ TrayWidget::~TrayWidget()
     if (s_instances.empty()) {
         delete s_dialogParent;
         QCoreApplication::quit();
+    } else if (s_instances.size() == 1) {
+        s_instances.front()->updateIconAndTooltip();
     }
 }
 
@@ -647,6 +657,16 @@ void TrayWidget::updateOverallStatistics()
     const auto overallStats = m_connection.computeOverallDirStatistics();
     m_ui->globalStatisticsLabel->setText(directoryStatusString(overallStats.global));
     m_ui->localStatisticsLabel->setText(directoryStatusString(overallStats.local));
+}
+
+void TrayWidget::updateIconAndTooltip()
+{
+    if (!m_menu) {
+        return;
+    }
+    if (auto *const trayIcon = m_menu->icon()) {
+        trayIcon->updateStatusIconAndText();
+    }
 }
 
 void TrayWidget::toggleRunning()
