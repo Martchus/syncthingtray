@@ -337,22 +337,36 @@ Also consider using strace to find out at which paths the shell is looking for `
 For a development setup of the KDE integration, continue reading the subsequent section.
 
 ## Contributing
-### Adding translations
-Currently translations for English and German are available. Further translations
-can be added quite easily:
+### Translations
+Currently translations for English and German are available. Qt's built-in localization/translation
+framework is used under the hood.
+
+Note that `syncthingctl` has not been internationalized yet so it supports only English.
+
+### Add a new locale
+Translations for further locales can be added quite easily:
 
 1. Append a new translation file for the desired locale to the `TS_FILES` list
    in `connector/CMakeLists.txt`, `model/CMakeLists.txt`, `widgets/CMakeLists.txt`,
    `fileitemactionplugin/CMakeLists.txt`, `plasmoid/CMakeLists.txt` and
    `tray/CMakeLists.txt`.
-2. Trigger a new build, eg. follow steps under *Building this straight*.
-3. New translation files should have been created by the build system under
+2. Configure a new build, e.g. follow steps under *Building this straight*.
+3. Conduct a full build or generate only translation files via the `translations` target.
+4. New translation files should have been created by the build system under
    `connector/translations`, `model/translations`, `widgets/translations`,
    `fileitemactionplugin/translations`, `plasmoid/translations` and
-   `tray/translations`.
-4. Open the files with Qt Linguist to add translations. Qt Linguist is part of
+   `tray/translations` and the `translations` folder of `qtutilities`.
+5. Open the files with Qt Linguist to add translations. Qt Linguist is part of
    the [Qt Tools repository](http://code.qt.io/cgit/qt/qttools.git/) and its usage
    is [well documented](http://doc.qt.io/qt-5/linguist-translators.html).
+
+### Extend/update existing translations
+* For English, update the corresponding string literals within the source code.
+* If necassary, sync the translation files with the source code like in step `2.`/`3.` of
+  "Add a new locale". Check that no translations have been lost (except ones which are no
+  longer required of course).
+* Change the strings within the translation files found within the `translations`
+  directories like in step `4.`/`5.` of "Add a new locale".
 
 #### Remarks
 * Syncthing Tray displays also text from [qtutilities](https://github.com/Martchus/qtutilities).
