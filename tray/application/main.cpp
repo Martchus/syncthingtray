@@ -26,8 +26,8 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QNetworkAccessManager>
-#include <QStringBuilder>
 #include <QSettings>
+#include <QStringBuilder>
 
 #include <iostream>
 
@@ -54,8 +54,9 @@ int initSyncthingTray(bool windowed, bool waitForTray, const Argument &connectio
 {
     // get settings
     auto &settings = Settings::values();
-    static const auto defaultConnection = std::vector<const char *>({""});
-    const auto &connectionConfigurations = connectionConfigArg.isPresent() && !connectionConfigArg.values().empty() ? connectionConfigArg.values() : defaultConnection;
+    static const auto defaultConnection = std::vector<const char *>({ "" });
+    const auto &connectionConfigurations
+        = connectionConfigArg.isPresent() && !connectionConfigArg.values().empty() ? connectionConfigArg.values() : defaultConnection;
 
     // handle "windowed" case
     if (windowed) {
