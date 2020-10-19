@@ -17,10 +17,14 @@ using namespace CppUtilities::EscapeCodes;
 
 namespace QtGui {
 
-SingleInstance::SingleInstance(int argc, const char *const *argv, QObject *parent)
+SingleInstance::SingleInstance(int argc, const char *const *argv, bool newInstance, QObject *parent)
     : QObject(parent)
     , m_server(nullptr)
 {
+    if (newInstance) {
+        return;
+    }
+
     const QString appId(QCoreApplication::applicationName() % QStringLiteral(" by ") % QCoreApplication::organizationName());
 
     // check for previous instance

@@ -159,6 +159,7 @@ int runApplication(int argc, const char *const *argv)
     connectionArg.setRequiredValueCount(Argument::varValueCount);
     ConfigValueArgument configPathArg("config-dir-path", '\0', "specifies the path to the configuration directory", { "path" });
     configPathArg.setEnvironmentVariable(PROJECT_VARNAME_UPPER "_CONFIG_DIR");
+    ConfigValueArgument newInstanceArg("new-instance", '\0', "disable the usual single-process behavior");
     Argument &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
     widgetsGuiArg.addSubArgument(&windowedArg);
     widgetsGuiArg.addSubArgument(&showWebUiArg);
@@ -166,6 +167,7 @@ int runApplication(int argc, const char *const *argv)
     widgetsGuiArg.addSubArgument(&waitForTrayArg);
     widgetsGuiArg.addSubArgument(&connectionArg);
     widgetsGuiArg.addSubArgument(&configPathArg);
+    widgetsGuiArg.addSubArgument(&newInstanceArg);
 
     parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(), &parser.noColorArg(), &parser.helpArg() });
     parser.parseArgs(argc, argv);
@@ -187,7 +189,7 @@ int runApplication(int argc, const char *const *argv)
         SET_QT_APPLICATION_INFO;
         QApplication application(argc, const_cast<char **>(argv));
         QGuiApplication::setQuitOnLastWindowClosed(false);
-        SingleInstance singleInstance(argc, argv);
+        SingleInstance singleInstance(argc, argv, newInstanceArg.isPresent());
         networkAccessManager().setParent(&singleInstance);
         QObject::connect(&singleInstance, &SingleInstance::newInstance, &runApplication);
         Settings::restore();

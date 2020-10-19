@@ -14,7 +14,7 @@ namespace QtGui {
 class SingleInstance : public QObject {
     Q_OBJECT
 public:
-    SingleInstance(int argc, const char *const *argv, QObject *parent = nullptr);
+    SingleInstance(int argc, const char *const *argv, bool newInstance = false, QObject *parent = nullptr);
 
 Q_SIGNALS:
     void newInstance(int argc, const char *const *argv);
