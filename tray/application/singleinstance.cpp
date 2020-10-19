@@ -25,9 +25,23 @@ SingleInstance::SingleInstance(int argc, const char *const *argv, bool newInstan
         return;
     }
 
+    // check for running instance
     const QString appId(QCoreApplication::applicationName() % QStringLiteral(" by ") % QCoreApplication::organizationName());
+    passArgsToRunningInstance(argc, argv, appId);
 
-    // check for previous instance
+    // no previous instance running
+    // -> however, previous server instance might not have been cleaned up dute to crash
+    QLocalServer::removeServer(appId);
+    // -> start server
+    m_server = new QLocalServer(this);
+    connect(m_server, &QLocalServer::newConnection, this, &SingleInstance::handleNewConnection);
+    if (!m_server->listen(appId)) {
+        cerr << Phrases::Error << "Unable to launch as single instance application" << Phrases::EndFlush;
+    }
+}
+
+void SingleInstance::passArgsToRunningInstance(int argc, const char *const *argv, const QString &appId)
+{
     QLocalSocket socket;
     socket.connectToServer(appId, QLocalSocket::ReadWrite);
     if (socket.waitForConnected(1000)) {
@@ -47,16 +61,6 @@ SingleInstance::SingleInstance(int argc, const char *const *argv, bool newInstan
         socket.flush();
         socket.close();
         exit(0);
-    }
-
-    // no previous instance running
-    // -> however, previous server instance might not have been cleaned up dute to crash
-    QLocalServer::removeServer(appId);
-    // -> start server
-    m_server = new QLocalServer(this);
-    connect(m_server, &QLocalServer::newConnection, this, &SingleInstance::handleNewConnection);
-    if (!m_server->listen(appId)) {
-        cerr << Phrases::Error << "Unable to launch as single instance application" << Phrases::EndFlush;
     }
 }
 
@@ -99,4 +103,5 @@ void SingleInstance::readArgs()
 
     emit newInstance(static_cast<int>(args.size() - 1), args.data());
 }
+
 } // namespace QtGui

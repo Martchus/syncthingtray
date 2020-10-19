@@ -24,6 +24,8 @@ private Q_SLOTS:
     void readArgs();
 
 private:
+    void passArgsToRunningInstance(int argc, const char *const *argv, const QString &appId);
+
     QLocalServer *m_server;
 };
 } // namespace QtGui
