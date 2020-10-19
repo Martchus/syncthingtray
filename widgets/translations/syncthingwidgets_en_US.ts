@@ -964,16 +964,16 @@
         <location filename="../misc/statusinfo.cpp" line="136"/>
         <source>Connected to %1 devices</source>
         <translation>
-            <numerusform>Conntected to %1 device</numerusform>
-            <numerusform>Conntected to %1 devices</numerusform>
+            <numerusform>Connected to %1 device</numerusform>
+            <numerusform>Connected to %1 devices</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../misc/statusinfo.cpp" line="139"/>
         <source>Connected to %1 and %2 other devices</source>
         <translation>
-            <numerusform>Conntected to %1 and %2 other device</numerusform>
-            <numerusform>Conntected to %1 and %2 other devices</numerusform>
+            <numerusform>Connected to %1 and %2 other device</numerusform>
+            <numerusform>Connected to %1 and %2 other devices</numerusform>
         </translation>
     </message>
     <message numerus="yes">
