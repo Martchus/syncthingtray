@@ -4,6 +4,7 @@
 
 #include "../../connector/syncthingdev.h"
 #include "../../model/syncthingdevicemodel.h"
+#include "../../model/syncthingsortfiltermodel.h"
 
 #include <QClipboard>
 #include <QGuiApplication>
@@ -28,22 +29,19 @@ DevView::DevView(QWidget *parent)
 void DevView::mouseReleaseEvent(QMouseEvent *event)
 {
     QTreeView::mouseReleaseEvent(event);
-    const auto *const devModel = qobject_cast<const SyncthingDeviceModel *>(model());
-    if (!devModel) {
+
+    const auto pos = event->pos();
+    const auto clickedRow = ClickedRow(this, pos);
+    if (!clickedRow) {
         return;
     }
-    const QPoint pos(event->pos());
-    const QModelIndex clickedIndex(indexAt(event->pos()));
-    if (!clickedIndex.isValid() || clickedIndex.column() != 1 || clickedIndex.parent().isValid()) {
+    if (clickedRow.index.parent().isValid()) {
         return;
     }
-    const SyncthingDev *const devInfo = devModel->devInfo(clickedIndex);
-    if (!devInfo) {
-        return;
-    }
-    const QRect itemRect(visualRect(clickedIndex));
+
+    const auto itemRect = visualRect(clickedRow.proxyIndex);
     if (pos.x() > itemRect.right() - 17) {
-        emit pauseResumeDev(*devInfo);
+        emit pauseResumeDev(*clickedRow.data);
     }
 }
 

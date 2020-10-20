@@ -1,10 +1,10 @@
-#include "./syncthingsortfilterdirectorymodel.h"
+#include "./syncthingsortfiltermodel.h"
 
 #include <QSortFilterProxyModel>
 
 namespace Data {
 
-bool SyncthingSortFilterDirectoryModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool SyncthingSortFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     // show all nested structures
     if (sourceParent.isValid()) {
@@ -14,10 +14,10 @@ bool SyncthingSortFilterDirectoryModel::filterAcceptsRow(int sourceRow, const QM
     return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
 }
 
-bool SyncthingSortFilterDirectoryModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+bool SyncthingSortFilterModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
     // keep order within nested structures
-    if (m_behavior == SyncthingDirectorySortBehavior::KeepRawOrder || left.parent().isValid() || right.parent().isValid()) {
+    if (m_behavior == SyncthingSortBehavior::KeepRawOrder || left.parent().isValid() || right.parent().isValid()) {
         return left.row() < right.row();
     }
     // use the default sorting for the top-level

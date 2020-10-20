@@ -7,42 +7,42 @@
 
 namespace Data {
 
-enum class SyncthingDirectorySortBehavior {
+enum class SyncthingSortBehavior {
     KeepRawOrder,
     Alphabetically,
 };
 
-class LIB_SYNCTHING_MODEL_EXPORT SyncthingSortFilterDirectoryModel : public QSortFilterProxyModel {
+class LIB_SYNCTHING_MODEL_EXPORT SyncthingSortFilterModel : public QSortFilterProxyModel {
     Q_OBJECT
 public:
-    explicit SyncthingSortFilterDirectoryModel(QAbstractItemModel *sourceModel = nullptr, QObject *parent = nullptr);
+    explicit SyncthingSortFilterModel(QAbstractItemModel *sourceModel = nullptr, QObject *parent = nullptr);
 
-    SyncthingDirectorySortBehavior behavior() const;
-    void setBehavior(SyncthingDirectorySortBehavior behavior);
+    SyncthingSortBehavior behavior() const;
+    void setBehavior(SyncthingSortBehavior behavior);
 
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
 
 private:
-    SyncthingDirectorySortBehavior m_behavior;
+    SyncthingSortBehavior m_behavior;
 };
 
-inline SyncthingSortFilterDirectoryModel::SyncthingSortFilterDirectoryModel(QAbstractItemModel *sourceModel, QObject *parent)
+inline SyncthingSortFilterModel::SyncthingSortFilterModel(QAbstractItemModel *sourceModel, QObject *parent)
     : QSortFilterProxyModel(parent)
-    , m_behavior(SyncthingDirectorySortBehavior::Alphabetically)
+    , m_behavior(SyncthingSortBehavior::Alphabetically)
 {
     setSortCaseSensitivity(Qt::CaseInsensitive);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     setSourceModel(sourceModel);
 }
 
-inline SyncthingDirectorySortBehavior SyncthingSortFilterDirectoryModel::behavior() const
+inline SyncthingSortBehavior SyncthingSortFilterModel::behavior() const
 {
     return m_behavior;
 }
 
-inline void SyncthingSortFilterDirectoryModel::setBehavior(SyncthingDirectorySortBehavior behavior)
+inline void SyncthingSortFilterModel::setBehavior(SyncthingSortBehavior behavior)
 {
     if (behavior != m_behavior) {
         m_behavior = behavior;

@@ -6,6 +6,7 @@
 namespace Data {
 struct SyncthingDev;
 class SyncthingDeviceModel;
+class SyncthingSortFilterModel;
 } // namespace Data
 
 namespace QtGui {
@@ -14,7 +15,7 @@ class DevView : public QTreeView {
     Q_OBJECT
 public:
     using ModelType = Data::SyncthingDeviceModel;
-    using SortFilterModelType = void;
+    using SortFilterModelType = Data::SyncthingSortFilterModel;
 
     DevView(QWidget *parent = nullptr);
 

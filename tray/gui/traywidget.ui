@@ -436,7 +436,11 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
         <number>0</number>
        </property>
        <item>
-        <widget class="QtGui::DevView" name="devsTreeView"/>
+        <widget class="QtGui::DevView" name="devsTreeView">
+         <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -545,8 +549,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
  </customwidgets>
  <resources>
   <include location="../../model/resources/syncthingmodelicons.qrc"/>
-  <include location="../../widgets/resources/syncthingwidgetsicons.qrc"/>
   <include location="../resources/syncthingtrayicons.qrc"/>
+  <include location="../../widgets/resources/syncthingwidgetsicons.qrc"/>
  </resources>
  <connections/>
 </ui>

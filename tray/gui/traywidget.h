@@ -8,7 +8,7 @@
 #include "../../model/syncthingdirectorymodel.h"
 #include "../../model/syncthingdownloadmodel.h"
 #include "../../model/syncthingrecentchangesmodel.h"
-#include "../../model/syncthingsortfilterdirectorymodel.h"
+#include "../../model/syncthingsortfiltermodel.h"
 
 #include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingnotifier.h"
@@ -121,8 +121,9 @@ private:
     Data::SyncthingConnection m_connection;
     Data::SyncthingNotifier m_notifier;
     Data::SyncthingDirectoryModel m_dirModel;
-    Data::SyncthingSortFilterDirectoryModel m_sortFilterDirModel;
+    Data::SyncthingSortFilterModel m_sortFilterDirModel;
     Data::SyncthingDeviceModel m_devModel;
+    Data::SyncthingSortFilterModel m_sortFilterDevModel;
     Data::SyncthingDownloadModel m_dlModel;
     Data::SyncthingRecentChangesModel m_recentChangesModel;
     QMenu *m_connectionsMenu;

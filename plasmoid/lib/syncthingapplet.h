@@ -9,7 +9,7 @@
 #include "../../model/syncthingdirectorymodel.h"
 #include "../../model/syncthingdownloadmodel.h"
 #include "../../model/syncthingrecentchangesmodel.h"
-#include "../../model/syncthingsortfilterdirectorymodel.h"
+#include "../../model/syncthingsortfiltermodel.h"
 #include "../../model/syncthingstatusselectionmodel.h"
 
 #include "../../connector/syncthingconnection.h"
@@ -39,8 +39,9 @@ class SyncthingApplet : public Plasma::Applet {
     Q_OBJECT
     Q_PROPERTY(Data::SyncthingConnection *connection READ connection NOTIFY connectionChanged)
     Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel NOTIFY dirModelChanged)
-    Q_PROPERTY(Data::SyncthingSortFilterDirectoryModel *sortFilterDirModel READ sortFilterDirModel NOTIFY dirModelChanged)
+    Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDirModel READ sortFilterDirModel NOTIFY dirModelChanged)
     Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel NOTIFY devModelChanged)
+    Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDevModel READ sortFilterDevModel NOTIFY devModelChanged)
     Q_PROPERTY(Data::SyncthingDownloadModel *downloadModel READ downloadModel NOTIFY downloadModelChanged)
     Q_PROPERTY(Data::SyncthingRecentChangesModel *recentChangesModel READ recentChangesModel NOTIFY recentChangesModelChanged)
     Q_PROPERTY(Data::SyncthingStatusSelectionModel *passiveSelectionModel READ passiveSelectionModel NOTIFY passiveSelectionModelChanged)
@@ -73,8 +74,9 @@ public:
 public:
     Data::SyncthingConnection *connection() const;
     Data::SyncthingDirectoryModel *dirModel() const;
-    Data::SyncthingSortFilterDirectoryModel *sortFilterDirModel() const;
+    Data::SyncthingSortFilterModel *sortFilterDirModel() const;
     Data::SyncthingDeviceModel *devModel() const;
+    Data::SyncthingSortFilterModel *sortFilterDevModel() const;
     Data::SyncthingDownloadModel *downloadModel() const;
     Data::SyncthingRecentChangesModel *recentChangesModel() const;
     Data::SyncthingStatusSelectionModel *passiveSelectionModel() const;
@@ -174,8 +176,9 @@ private:
 #endif
     QtGui::StatusInfo m_statusInfo;
     Data::SyncthingDirectoryModel m_dirModel;
-    Data::SyncthingSortFilterDirectoryModel m_sortFilterDirModel;
+    Data::SyncthingSortFilterModel m_sortFilterDirModel;
     Data::SyncthingDeviceModel m_devModel;
+    Data::SyncthingSortFilterModel m_sortFilterDevModel;
     Data::SyncthingDownloadModel m_downloadModel;
     Data::SyncthingRecentChangesModel m_recentChangesModel;
     Data::SyncthingStatusSelectionModel m_passiveSelectionModel;
@@ -200,14 +203,19 @@ inline Data::SyncthingDirectoryModel *SyncthingApplet::dirModel() const
     return const_cast<Data::SyncthingDirectoryModel *>(&m_dirModel);
 }
 
-inline Data::SyncthingSortFilterDirectoryModel *SyncthingApplet::sortFilterDirModel() const
+inline Data::SyncthingSortFilterModel *SyncthingApplet::sortFilterDirModel() const
 {
-    return const_cast<Data::SyncthingSortFilterDirectoryModel *>(&m_sortFilterDirModel);
+    return const_cast<Data::SyncthingSortFilterModel *>(&m_sortFilterDirModel);
 }
 
 inline Data::SyncthingDeviceModel *SyncthingApplet::devModel() const
 {
     return const_cast<Data::SyncthingDeviceModel *>(&m_devModel);
+}
+
+inline Data::SyncthingSortFilterModel *SyncthingApplet::sortFilterDevModel() const
+{
+    return const_cast<Data::SyncthingSortFilterModel *>(&m_sortFilterDevModel);
 }
 
 inline Data::SyncthingDownloadModel *SyncthingApplet::downloadModel() const

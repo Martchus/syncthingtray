@@ -4,7 +4,7 @@
 
 #include "../../connector/syncthingconnection.h"
 #include "../../model/syncthingdirectorymodel.h"
-#include "../../model/syncthingsortfilterdirectorymodel.h"
+#include "../../model/syncthingsortfiltermodel.h"
 #include "../../widgets/misc/direrrorsdialog.h"
 
 #include <QClipboard>
@@ -31,43 +31,32 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
 {
     QTreeView::mouseReleaseEvent(event);
 
-    // get SyncthingDir object for clicked index
-    auto *const sortDirModel = qobject_cast<SortFilterModelType *>(model());
-    auto *const dirModel = qobject_cast<ModelType *>(sortDirModel ? sortDirModel->sourceModel() : model());
-    if (!dirModel) {
-        return;
-    }
     const auto pos = event->pos();
-    const auto clickedProxyIndex = indexAt(event->pos());
-    const auto clickedIndex = sortDirModel ? sortDirModel->mapToSource(clickedProxyIndex) : clickedProxyIndex;
-    if (!clickedIndex.isValid() || clickedIndex.column() != 1) {
-        return;
-    }
-    const auto *const dir = dirModel->dirInfo(clickedIndex);
-    if (!dir) {
+    const auto clickedRow = ClickedRow(this, pos);
+    if (!clickedRow) {
         return;
     }
 
-    if (!clickedIndex.parent().isValid()) {
+    if (!clickedRow.index.parent().isValid()) {
         // open/scan dir buttons
-        const QRect itemRect = visualRect(clickedProxyIndex);
+        const QRect itemRect = visualRect(clickedRow.proxyIndex);
         if (pos.x() <= itemRect.right() - 58) {
             return;
         }
         if (pos.x() < itemRect.right() - 34) {
-            if (!dir->paused) {
-                emit scanDir(*dir);
+            if (!clickedRow.data->paused) {
+                emit scanDir(*clickedRow.data);
             }
         } else if (pos.x() < itemRect.right() - 17) {
-            emit pauseResumeDir(*dir);
+            emit pauseResumeDir(*clickedRow.data);
         } else {
-            emit openDir(*dir);
+            emit openDir(*clickedRow.data);
         }
-    } else if (clickedIndex.row() == 9 && dir->pullErrorCount) {
-        auto &connection(*dirModel->connection());
-        connection.requestDirPullErrors(dir->id);
+    } else if (clickedRow.index.row() == 9 && clickedRow.data->pullErrorCount) {
+        auto &connection(*clickedRow.model->connection());
+        connection.requestDirPullErrors(clickedRow.data->id);
 
-        auto *const textViewDlg = new DirectoryErrorsDialog(connection, *dir);
+        auto *const textViewDlg = new DirectoryErrorsDialog(connection, *clickedRow.data);
         textViewDlg->setAttribute(Qt::WA_DeleteOnClose);
         textViewDlg->show();
     }

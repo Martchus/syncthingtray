@@ -18,7 +18,7 @@ Item {
         TopLevelView {
             id: deviceView
             width: parent.width
-            model: plasmoid.nativeInterface.devModel
+            model: plasmoid.nativeInterface.sortFilterDevModel
 
             delegate: TopLevelItem {
                 id: item
@@ -79,7 +79,7 @@ Item {
 
                         model: DelegateModel {
                             model: plasmoid.nativeInterface.devModel
-                            rootIndex: detailsView.model.modelIndex(index)
+                            rootIndex: deviceView.model.mapToSource(deviceView.model.index(index, 0))
                             delegate: DetailItem {
                                 width: detailsView.width
                             }
