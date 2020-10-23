@@ -45,7 +45,7 @@ find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 use_cpp_utilities(VISIBILITY PUBLIC)
 
 # find qtutilities (only headers and CMake modules used)
-find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX} 6.3.0 REQUIRED)
+find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.3.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
 list(APPEND PUBLIC_INCLUDE_DIRS ${QT_UTILITIES_INCLUDE_DIRS})
 

@@ -37,6 +37,7 @@ option(NO_PLASMOID "whether building the Plasma 5 plasmoid should be skipped" "$
 
 # allow using non-default configuration
 set(CONFIGURATION_PACKAGE_SUFFIX "" CACHE STRING "sets the suffix for find_package() calls to packages configured via c++utilities")
+set(CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES "${CONFIGURATION_PACKAGE_SUFFIX}" CACHE STRING "sets the suffix for qtutilities")
 
 # add subdirectories
 enable_testing()
