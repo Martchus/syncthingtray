@@ -37,7 +37,8 @@ template <typename ViewType> BasicRowData<ViewType>::operator bool() const
     if (!model || !index.isValid()) {
         return false;
     }
-    if constexpr (CppUtilities::Traits::IsSpecializationOf<decltype(data), QPair>::value) {
+    if constexpr (CppUtilities::Traits::IsSpecializationOf<decltype(data), QPair>::value
+        || CppUtilities::Traits::IsSpecializationOf<decltype(data), std::pair>::value) {
         return data.first;
     } else {
         return data;

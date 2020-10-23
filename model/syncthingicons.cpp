@@ -117,7 +117,11 @@ QByteArray makeSyncthingIcon(const StatusIconColorSet &colors, StatusEmblem stat
 namespace Detail {
 template <typename SourceType> QPixmap renderSvgImage(const SourceType &source, const QSize &givenSize, int margin)
 {
-    const qreal scaleFactor = QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? qGuiApp->devicePixelRatio() : 1.0;
+    const qreal scaleFactor =
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+        !QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? 1.0 :
+#endif
+                                                                   qGuiApp->devicePixelRatio();
     QSvgRenderer renderer(source);
     QSize scaledSize(givenSize.width() * scaleFactor, givenSize.height() * scaleFactor);
     QSize renderSize(renderer.defaultSize());

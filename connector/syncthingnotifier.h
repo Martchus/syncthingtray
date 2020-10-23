@@ -6,6 +6,12 @@
 #include <QObject>
 #include <QProcess>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include "./syncthingservice.h"
+#include "./syncthingprocess.h"
+#include "./syncthingdev.h"
+#endif
+
 namespace CppUtilities {
 class DateTime;
 }
