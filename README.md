@@ -101,6 +101,7 @@ Syncthing installation. You might consider different configurations:
       which you can consider to use. Keep in mind that automatic updates of Syncthing are not possible this way.
     * In any case you can simply point the launcher to the binary of Syncthing (which you have to download/install
       separately).
+    * Checkout the *Configuring the built-in launcher* section for further details.
 * It is also possible to let Syncthing Tray connect to a Syncthing instance running on a different machine.
 
 ## Screenshots
@@ -144,6 +145,12 @@ features are available:
 However, these features are optional. To use them they must be enabled in the settings dialog
 first.
 
+It is recommended to enable "Consider unit status …". Note that Syncthing might still not be immediately
+ready to serve API requests when the systemd unit turns active. Hence it is still required to configure
+a re-connect interval. The re-connect interval will only be in effect while the systemd unit is active.
+So despite the re-connect interval there will be no connection attempts while the systemd unit is
+inactive. That's all the systemd integration can optimize in that regard.
+
 Be aware that Syncthing Tray assumes by default that the systemd unit is a
 [user unit](https://wiki.archlinux.org/index.php/Systemd/User). If you are using
 a regular system-wide unit (including those started with `…@username`) you need to enable the
@@ -181,6 +188,15 @@ Note for distributors: There will be no hard dependency to systemd in any case. 
 alternative init systems do *not* need to provide differently configured versions of Syncthing Tray.
 Disabling the systemd integration is mainly intended for systems which do not use systemd at all (e.g.
 Windows and MacOS).
+
+## Configuring the built-in launcher
+The built-in launcher can be accessed and configured within the settings dialog. The GUI should be
+self-explaining.
+
+It is recommended to enable "Consider process status …". Note that Syncthing might not be immediately
+ready to serve API requests when started. Hence it is still required to configure a re-connect interval.
+The re-connect interval will only be in effect while the Syncthing process is running. So despite the
+re-connect interval there will be no connection attempts while the Syncthing process is not running.
 
 ## Hotkeys
 Use the same approach as for launching an arbitrary application via a hotkey. Make it invoke
