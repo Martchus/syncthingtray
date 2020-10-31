@@ -38,6 +38,7 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "(ppc64|ppc64le|arm|arm64|s390x)")
 else ()
     message(FATAL_ERROR "Unable to auto-determine GOARCH. Please set GO_TARGET_ARCH_OVERRIDE manually.")
 endif ()
+
 # determine GOOS for target
 set(GO_TARGET_OS_OVERRIDE
     ""
@@ -60,6 +61,16 @@ else ()
     message(FATAL_ERROR "Unable to auto-determine GOOS. Please set GO_TARGET_OS_OVERRIDE manually.")
 endif ()
 message(STATUS "Using GOOS=${GO_TARGET_OS} and GOARCH=${GO_TARGET_ARCH}")
+
+# define default GOFLAGS
+set(GO_FLAGS_OVERRIDE
+    ""
+    CACHE STRING "overrides the 'GOFLAGS' variable")
+if (GO_FLAGS_OVERRIDE)
+    set(GO_FLAGS "${GO_FLAGS_OVERRIDE}")
+else ()
+    set(GO_FLAGS "-trimpath -mod=readonly -modcacherw")
+endif ()
 
 # locate the Syncthing checkout
 set(GO_DEVELOPMENT_PATH
@@ -100,7 +111,10 @@ list(APPEND SRC_FILES_SYNCTHING "${SYNCTHING_PATH}/${GENERATED_SYNCTHING_GUI_FIL
 message(STATUS "Syncthing's source files: ${SRC_FILES_SYNCTHING}")
 
 # set Go linker flags
-set(GO_LINKER_FLAGS)
+set(GO_LINKER_FLAGS_OVERRIDE
+    ""
+    CACHE STRING "overrides flags passed to Go's build system via -ldflags")
+set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS_OVERRIDE}")
 if (CMAKE_BUILD_TYPE STREQUAL Release OR CMAKE_BUILD_TYPE STREQUAL MinSizeRel)
     set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -w")
 endif ()
@@ -125,8 +139,8 @@ endif ()
 # generate Syncthing's assets (not setting GOARCH/GOOS here, this is supposed to run on the host)
 add_custom_command(
     OUTPUT "${SYNCTHING_PATH}/${GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH}"
-    COMMAND "GOPATH=${GO_DEVELOPMENT_PATH}" "GO111MODULE=on" "${GO_BIN}" run ./script/genassets.go gui >
-            "${GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH}"
+    COMMAND "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" run ./script/genassets.go gui
+            > "${GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH}"
     DEPENDS ${SRC_FILES_SYNCTHING_ASSETS}
     WORKING_DIRECTORY "${SYNCTHING_PATH}"
     COMMENT "Building Syncthing's assets")
@@ -138,9 +152,10 @@ add_custom_command(
     OUTPUT "${SYNCTHINGINTERNAL_LIBRARY_PATH}" "${SYNCTHINGINTERNAL_HEADER_PATH}"
     COMMAND
         "CC=${CMAKE_C_COMPILER}" "CXX=${CMAKE_CXX_COMPILER}" "AR=${CMAKE_C_COMPILER_AR}" "GOOS=${GO_TARGET_OS}"
-        "GOARCH=${GO_TARGET_ARCH}" "CGO_ENABLED=1" "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "${GO_BIN}" build -v
-        -buildmode c-archive -o "${SYNCTHINGINTERNAL_LIBRARY_PATH}" -ldflags "${GO_LINKER_FLAGS}" ./c-bindings &&
-        "${CMAKE_RANLIB}" "${SYNCTHINGINTERNAL_LIBRARY_PATH}"
+        "CGO_CFLAGS=${CMAKE_C_FLAGS}" "CGO_CXXFLAGS=${CMAKE_CXX_FLAGS}" "GOARCH=${GO_TARGET_ARCH}" "CGO_ENABLED=1"
+        "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" build -v -buildmode c-archive -o
+        "${SYNCTHINGINTERNAL_LIBRARY_PATH}" -ldflags "${GO_LINKER_FLAGS}" ./c-bindings && "${CMAKE_RANLIB}"
+        "${SYNCTHINGINTERNAL_LIBRARY_PATH}"
     DEPENDS ${SRC_FILES_SYNCTHING}
     WORKING_DIRECTORY "${SYNCTHING_PATH}"
     COMMENT "Building Syncthing itself")
