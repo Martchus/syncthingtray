@@ -63,6 +63,7 @@ endif ()
 message(STATUS "Using GOOS=${GO_TARGET_OS} and GOARCH=${GO_TARGET_ARCH}")
 
 # define default GOFLAGS
+string(TOUPPER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_UPPER)
 set(GO_FLAGS_OVERRIDE
     ""
     CACHE STRING "overrides the 'GOFLAGS' variable")
@@ -70,6 +71,24 @@ if (GO_FLAGS_OVERRIDE)
     set(GO_FLAGS "${GO_FLAGS_OVERRIDE}")
 else ()
     set(GO_FLAGS "-trimpath -mod=readonly -modcacherw")
+endif ()
+foreach (LANGUAGE C CXX)
+    set(CGO_${LANGUAGE}FLAGS_OVERRIDE
+        ""
+        CACHE STRING "overrides the 'CGO_${LANGUAGE}FLAGS' variable")
+    if (CGO_${LANGUAGE}FLAGS_OVERRIDE)
+        set(CGO_${LANGUAGE}FLAGS "${CGO_${LANGUAGE}FLAGS_OVERRIDE}")
+    else ()
+        set(CGO_${LANGUAGE}FLAGS "${CMAKE_${LANGUAGE}_FLAGS_INIT} ${CMAKE_${LANGUAGE}_FLAGS_${CMAKE_BUILD_TYPE_UPPER}_INIT}")
+    endif ()
+endforeach()
+set(CGO_LDFLAGS_OVERRIDE
+    ""
+    CACHE STRING "overrides the 'CGO_LDFLAGS' variable")
+if (CGO_LDFLAGS_OVERRIDE)
+    set(CGO_LDFLAGS "${CGO_CFLAGS_OVERRIDE}")
+else ()
+    set(CGO_LDFLAGS "${CMAKE_SHARED_LINKER_FLAGS_INIT} ${CMAKE_SHARED_LINKER_FLAGS_${CMAKE_BUILD_TYPE_UPPER}_INIT}")
 endif ()
 
 # locate the Syncthing checkout
@@ -152,7 +171,7 @@ add_custom_command(
     OUTPUT "${SYNCTHINGINTERNAL_LIBRARY_PATH}" "${SYNCTHINGINTERNAL_HEADER_PATH}"
     COMMAND
         "CC=${CMAKE_C_COMPILER}" "CXX=${CMAKE_CXX_COMPILER}" "AR=${CMAKE_C_COMPILER_AR}" "GOOS=${GO_TARGET_OS}"
-        "CGO_CFLAGS=${CMAKE_C_FLAGS}" "CGO_CXXFLAGS=${CMAKE_CXX_FLAGS}" "GOARCH=${GO_TARGET_ARCH}" "CGO_ENABLED=1"
+        "CGO_CFLAGS=${CGO_CFLAGS}" "CGO_CXXFLAGS=${CGO_CXXFLAGS}" "CGO_LDFLAGS=${CGO_LDFLAGS}" "GOARCH=${GO_TARGET_ARCH}" "CGO_ENABLED=1"
         "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" build -v -buildmode c-archive -o
         "${SYNCTHINGINTERNAL_LIBRARY_PATH}" -ldflags "${GO_LINKER_FLAGS}" ./c-bindings && "${CMAKE_RANLIB}"
         "${SYNCTHINGINTERNAL_LIBRARY_PATH}"
