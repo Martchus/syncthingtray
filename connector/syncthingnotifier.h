@@ -7,9 +7,9 @@
 #include <QProcess>
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-#include "./syncthingservice.h"
-#include "./syncthingprocess.h"
 #include "./syncthingdev.h"
+#include "./syncthingprocess.h"
+#include "./syncthingservice.h"
 #endif
 
 namespace CppUtilities {
