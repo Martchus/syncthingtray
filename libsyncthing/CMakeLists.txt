@@ -6,7 +6,7 @@ set(META_PROJECT_TYPE library)
 set(META_APP_NAME "Syncthing library")
 set(META_APP_DESCRIPTION "Syncthing itself, built as a shared or static library")
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING)
-set(META_SYNCTHING_VERSION "v1.10.0")
+set(META_SYNCTHING_VERSION "v1.11.1")
 
 # add project files
 set(HEADER_FILES interface.h)
