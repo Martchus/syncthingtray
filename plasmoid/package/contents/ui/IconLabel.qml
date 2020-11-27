@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.1
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 
 Item {
     property alias iconSource: iconItem.source
@@ -22,11 +22,10 @@ Item {
             Layout.preferredHeight: 16
             opacity: 0.7
         }
-        PlasmaComponents.Label {
+        PlasmaComponents3.Label {
             id: label
         }
     }
-
     ToolTipTrigger {
         id: tooltipTrigger
         anchors.fill: layout

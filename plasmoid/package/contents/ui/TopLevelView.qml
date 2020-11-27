@@ -1,6 +1,5 @@
 import QtQuick 2.7
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 2.0 as PlasmaComponents // for Highlight and DialogStatus.Closed (used with Menu and MenuItem)
 
 ListView {
     anchors.fill: parent

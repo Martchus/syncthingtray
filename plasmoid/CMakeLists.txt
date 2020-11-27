@@ -23,8 +23,6 @@ set(PLASMOID_FILES
     package/contents/ui/ToolTipTrigger.qml
     package/contents/ui/ToolTipView.qml
     package/contents/ui/TinyButton.qml
-    package/contents/ui/TinyButtonStyle.qml
-    package/contents/ui/ButtonShadow.qml
     package/contents/ui/IconLabel.qml
     package/contents/ui/StatisticsView.qml
     package/contents/ui/main.qml)

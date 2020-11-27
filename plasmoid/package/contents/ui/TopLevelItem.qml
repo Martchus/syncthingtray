@@ -4,7 +4,6 @@
 //  loop of width and height properties.)
 import QtQuick 2.7
 import QtQuick.Layouts 1.1
-import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 Item {

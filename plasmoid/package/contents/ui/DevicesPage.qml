@@ -1,8 +1,8 @@
 import QtQuick 2.3
 import QtQuick.Layouts 1.1
 import QtQml.Models 2.2
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 2.0 as PlasmaComponents  // for Menu and MenuItem
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
@@ -40,7 +40,7 @@ Item {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             source: statusIcon
                         }
-                        PlasmaComponents.Label {
+                        PlasmaComponents3.Label {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             elide: Text.ElideRight
@@ -49,7 +49,7 @@ Item {
                         RowLayout {
                             id: toolButtonsLayout
                             spacing: 0
-                            PlasmaComponents.Label {
+                            PlasmaComponents3.Label {
                                 height: implicitHeight
                                 text: statusString
                                 color: statusColor ? statusColor : PlasmaCore.ColorScope.textColor
@@ -60,7 +60,7 @@ Item {
                             }
                             TinyButton {
                                 id: resumePauseButton
-                                icon: paused ? "media-playback-start" : "media-playback-pause"
+                                icon.name: paused ? "media-playback-start" : "media-playback-pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 onClicked: {
                                     paused ? plasmoid.nativeInterface.connection.resumeDevice(

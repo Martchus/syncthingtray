@@ -1,8 +1,8 @@
 import QtQuick 2.3
 import QtQuick.Layouts 1.1
 import QtQml.Models 2.2
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 2.0 as PlasmaComponents  // for Menu and MenuItem
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
@@ -46,7 +46,7 @@ ColumnLayout {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             source: statusIcon
                         }
-                        PlasmaComponents.Label {
+                        PlasmaComponents3.Label {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             elide: Text.ElideRight
@@ -56,7 +56,7 @@ ColumnLayout {
                             id: toolButtonsLayout
                             spacing: 0
 
-                            PlasmaComponents.Label {
+                            PlasmaComponents3.Label {
                                 height: implicitHeight
                                 text: statusString
                                 color: statusColor ? statusColor : PlasmaCore.ColorScope.textColor
@@ -67,7 +67,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: errorsButton
-                                icon: ":/icons/hicolor/scalable/emblems/emblem-important-old.svg"
+                                icon.source: ":/icons/hicolor/scalable/emblems/emblem-important-old.svg"
                                 tooltip: qsTr("Show errors")
                                 visible: pullErrorCount > 0
                                 onClicked: {
@@ -78,7 +78,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: rescanButton
-                                icon: "view-refresh"
+                                icon.name: "view-refresh"
                                 tooltip: qsTr("Rescan")
                                 enabled: !paused
                                 onClicked: plasmoid.nativeInterface.connection.rescan(
@@ -86,7 +86,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: resumePauseButton
-                                icon: paused ? "media-playback-start" : "media-playback-pause"
+                                icon.name: paused ? "media-playback-start" : "media-playback-pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 onClicked: {
                                     paused ? plasmoid.nativeInterface.connection.resumeDirectories(
@@ -96,7 +96,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: openButton
-                                icon: "folder"
+                                icon.name: "folder"
                                 tooltip: qsTr("Open in file browser")
                                 onClicked: {
                                     Qt.openUrlExternally(path)
@@ -171,7 +171,7 @@ ColumnLayout {
         }
     }
 
-    PlasmaComponents.TextField {
+    PlasmaComponents3.TextField {
         property bool explicitelyShown: false
         id: filter
         clearButtonShown: true

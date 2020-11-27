@@ -1,9 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.1
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-
 RowLayout {
     id: rowLayout
     property var statistics

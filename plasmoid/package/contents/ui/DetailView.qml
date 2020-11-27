@@ -1,5 +1,5 @@
 import QtQuick 2.7
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 2.0 as PlasmaComponents // for Menu and MenuItem
 
 ListView {
     id: detailView

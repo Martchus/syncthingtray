@@ -1,8 +1,8 @@
 import QtQuick 2.3
 import QtQuick.Layouts 1.1
 import QtQml.Models 2.2
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 2.0 as PlasmaComponents  // for Menu and MenuItem
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
@@ -31,7 +31,7 @@ Item {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             source: actionIcon
                         }
-                        PlasmaComponents.Label {
+                        PlasmaComponents3.Label {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             Layout.fillWidth: true
                             elide: Text.ElideRight
@@ -46,7 +46,7 @@ Item {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             source: "change-date-symbolic"
                         }
-                        PlasmaComponents.Label {
+                        PlasmaComponents3.Label {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             elide: Text.ElideRight
                             text: eventTime
@@ -60,7 +60,7 @@ Item {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             source: "network-server-symbolic"
                         }
-                        PlasmaComponents.Label {
+                        PlasmaComponents3.Label {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             elide: Text.ElideRight
                             text: modifiedBy
@@ -74,11 +74,11 @@ Item {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             source: itemType === "file" ? "view-refresh-symbolic" : "folder-sync"
                         }
-                        PlasmaComponents.Label {
+                        PlasmaComponents3.Label {
                             text: directoryId + ": "
                             font.weight: Font.DemiBold
                         }
-                        PlasmaComponents.Label {
+                        PlasmaComponents3.Label {
                             Layout.fillWidth: true
                             text: path
                             elide: Text.ElideRight

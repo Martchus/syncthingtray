@@ -1,7 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 
 Item {
     id: detailItem
@@ -23,12 +23,12 @@ Item {
             Layout.preferredHeight: units.iconSizes.small
             opacity: 0.8
         }
-        PlasmaComponents.Label {
+        PlasmaComponents3.Label {
             Layout.preferredWidth: 100
             text: detailName
             font.weight: Font.DemiBold
         }
-        PlasmaComponents.Label {
+        PlasmaComponents3.Label {
             Layout.leftMargin: theme.defaultFont.pointSize * 0.9
             Layout.fillWidth: true
             text: detailValue

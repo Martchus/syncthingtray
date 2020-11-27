@@ -1,11 +1,10 @@
-import QtQuick 2.7
-import QtQuick.Controls 1.4
+import QtQuick 2.8
 import QtQuick.Layouts 1.1
 import QtQml 2.2
-import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 2.0 as PlasmaComponents // for vertical TabBar
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
 
 ColumnLayout {
@@ -182,16 +181,15 @@ ColumnLayout {
         id: toolBar
         Layout.fillWidth: true
 
-        TinyButton {
+        PlasmaComponents3.ToolButton {
             id: connectButton
-
             states: [
                 State {
                     name: "disconnected"
                     PropertyChanges {
                         target: connectButton
                         text: qsTr("Connect")
-                        icon: "view-refresh"
+                        icon.name: "view-refresh"
                         visible: true
                     }
                 },
@@ -207,7 +205,7 @@ ColumnLayout {
                     PropertyChanges {
                         target: connectButton
                         text: qsTr("Resume")
-                        icon: "media-playback-start"
+                        icon.name: "media-playback-start"
                         visible: true
                     }
                 },
@@ -216,7 +214,7 @@ ColumnLayout {
                     PropertyChanges {
                         target: connectButton
                         text: qsTr("Pause")
-                        icon: "media-playback-pause"
+                        icon.name: "media-playback-pause"
                         visible: true
                     }
                 }
@@ -233,7 +231,9 @@ ColumnLayout {
                     return "idle"
                 }
             }
-            tooltip: text
+            PlasmaComponents3.ToolTip {
+                text: connectButton.text
+            }
             onClicked: {
                 switch (plasmoid.nativeInterface.connection.status) {
                 case SyncthingPlasmoid.Data.Disconnected:
@@ -249,14 +249,14 @@ ColumnLayout {
                     break
                 }
             }
+
             Shortcut {
                 sequence: "Ctrl+Shift+P"
                 onActivated: connectButton.clicked()
             }
         }
-        TinyButton {
+        PlasmaComponents3.ToolButton {
             id: startStopButton
-
             states: [
                 State {
                     name: "running"
@@ -264,9 +264,12 @@ ColumnLayout {
                         target: startStopButton
                         visible: true
                         text: qsTr("Stop")
-                        tooltip: (plasmoid.nativeInterface.service.userScope ? "systemctl --user stop " : "systemctl stop ")
+                        icon.name: "process-stop"
+                    }
+                    PropertyChanges {
+                        target: startStopToolTip
+                        text: (plasmoid.nativeInterface.service.userScope ? "systemctl --user stop " : "systemctl stop ")
                                  + plasmoid.nativeInterface.service.unitName
-                        icon: "process-stop"
                     }
                 },
                 State {
@@ -275,9 +278,12 @@ ColumnLayout {
                         target: startStopButton
                         visible: true
                         text: qsTr("Start")
-                        tooltip: (plasmoid.nativeInterface.service.userScope ? "systemctl --user start " : "systemctl start ")
+                        icon.name: "system-run"
+                    }
+                    PropertyChanges {
+                        target: startStopToolTip
+                        text: (plasmoid.nativeInterface.service.userScope ? "systemctl --user start " : "systemctl start ")
                                  + plasmoid.nativeInterface.service.unitName
-                        icon: "system-run"
                     }
                 },
                 State {
@@ -303,7 +309,9 @@ ColumnLayout {
                 return service.running ? "running" : "stopped"
             }
             onClicked: plasmoid.nativeInterface.service.toggleRunning()
-            style: TinyButtonStyle {}
+            PlasmaComponents3.ToolTip {
+                id: startStopToolTip
+            }
             Shortcut {
                 sequence: "Ctrl+Shift+S"
                 onActivated: {
@@ -316,14 +324,16 @@ ColumnLayout {
         Item {
             Layout.fillWidth: true
         }
-        TinyButton {
+        PlasmaComponents3.ToolButton {
             id: showNewNotifications
-            tooltip: qsTr("Show new notifications")
-            iconSource: "emblem-warning"
+            icon.name: "emblem-warning"
             visible: plasmoid.nativeInterface.notificationsAvailable
             onClicked: {
                 plasmoid.nativeInterface.showNotificationsDialog()
                 plasmoid.expanded = false
+            }
+            PlasmaComponents3.ToolTip {
+                text: qsTr("Show new notifications")
             }
             Shortcut {
                 sequence: "Ctrl+N"
@@ -334,119 +344,103 @@ ColumnLayout {
                 }
             }
         }
-        TinyButton {
-            tooltip: qsTr("About Syncthing Tray")
-            icon: "help-about"
+        PlasmaComponents3.ToolButton {
+            icon.name: "help-about"
+            PlasmaComponents3.ToolTip {
+                text: qsTr("About Syncthing Tray")
+            }
             onClicked: {
                 plasmoid.nativeInterface.showAboutDialog()
                 plasmoid.expanded = false
             }
         }
-        TinyButton {
+        PlasmaComponents3.ToolButton {
             id: showOwnIdButton
-            tooltip: qsTr("Show own device ID")
-            icon: "view-barcode"
+            icon.name: "view-barcode"
             onClicked: {
                 plasmoid.nativeInterface.showOwnDeviceId()
                 plasmoid.expanded = false
+            }
+            PlasmaComponents3.ToolTip {
+                text: qsTr("Show own device ID")
             }
             Shortcut {
                 sequence: "Ctrl+I"
                 onActivated: showOwnIdButton.clicked()
             }
         }
-        TinyButton {
+        PlasmaComponents3.ToolButton {
             id: showLogButton
-            tooltip: qsTr("Show Syncthing log")
-            icon: "text-x-generic"
+            icon.name: "text-x-generic"
             onClicked: {
                 plasmoid.nativeInterface.showLog()
                 plasmoid.expanded = false
+            }
+            PlasmaComponents3.ToolTip {
+                text: qsTr("Show Syncthing log")
             }
             Shortcut {
                 sequence: "Ctrl+L"
                 onActivated: showLogButton.clicked()
             }
         }
-        TinyButton {
+        PlasmaComponents3.ToolButton {
             id: rescanAllDirsButton
-            tooltip: qsTr("Rescan all directories")
-            icon: "folder-sync"
+            icon.name: "folder-sync"
             onClicked: plasmoid.nativeInterface.connection.rescanAllDirs()
+            PlasmaComponents3.ToolTip {
+                text: qsTr("Rescan all directories")
+            }
             Shortcut {
                 sequence: "Ctrl+Shift+R"
                 onActivated: rescanAllDirsButton.clicked()
             }
         }
-        TinyButton {
+        PlasmaComponents3.ToolButton {
             id: settingsButton
-            tooltip: qsTr("Settings")
-            icon: "preferences-other"
+            icon.name: "preferences-other"
             onClicked: {
                 plasmoid.nativeInterface.showSettingsDlg()
                 plasmoid.expanded = false
+            }
+            PlasmaComponents3.ToolTip {
+                text: qsTr("Settings")
             }
             Shortcut {
                 sequence: "Ctrl+S"
                 onActivated: settingsButton.clicked()
             }
         }
-        TinyButton {
+        PlasmaComponents3.ToolButton {
             id: webUIButton
-            tooltip: qsTr("Open Syncthing")
-            icon: plasmoid.nativeInterface.syncthingIcon
+            // use PlasmaCore.IconItem for the icon because I wouldn't know how to show the QIcon otherwise
+            contentItem: PlasmaCore.IconItem {
+                source: plasmoid.nativeInterface.syncthingIcon
+            }
+            // set preferred size so the tool button is displayed consistently with the previous one despite using PlasmaCore.IconItem
+            Layout.preferredWidth: settingsButton.width
+            Layout.preferredHeight: settingsButton.height
             onClicked: {
                 plasmoid.nativeInterface.showWebUI()
                 plasmoid.expanded = false
+            }
+            PlasmaComponents3.ToolTip {
+                text: qsTr("Open Syncthing")
             }
             Shortcut {
                 sequence: "Ctrl+W"
                 onActivated: webUIButton.clicked()
             }
         }
-        TinyButton {
-            id: connectionsButton
-            text: plasmoid.nativeInterface.currentConnectionConfigName
-            icon: "network-connect"
-            paddingEnabled: true
-            enforceMenuArrow: true
-            onClicked: connectionConfigsMenu.toggle(x, y + height)
+        PlasmaComponents3.ComboBox {
+            id: connectionConfigsMenu
+            model: plasmoid.nativeInterface.connectionConfigNames
             visible: plasmoid.nativeInterface.connectionConfigNames.length > 1
+            currentIndex: plasmoid.nativeInterface.currentConnectionConfigIndex
+            onCurrentIndexChanged: plasmoid.nativeInterface.currentConnectionConfigIndex = currentIndex
             Shortcut {
                 sequence: "Ctrl+Shift+C"
-                onActivated: connectionsButton.clicked()
-            }
-        }
-        PlasmaComponents.Menu {
-            id: connectionConfigsMenu
-            function toggle(x, y) {
-                if (connectionConfigsMenu.status === PlasmaComponents.DialogStatus.Open) {
-                    close()
-                    return
-                }
-                var nativeInterface = plasmoid.nativeInterface
-                var configNames = nativeInterface.connectionConfigNames
-                var currentIndex = nativeInterface.currentConnectionConfigIndex
-                clearMenuItems()
-                for (var i = 0, count = configNames.length; i !== count; ++i) {
-                    addMenuItem(menuItem.createObject(connectButton, {
-                                                          "text": configNames[i],
-                                                          "checked": i === currentIndex,
-                                                          "index": i
-                                                      }))
-                }
-                open(x, y)
-            }
-        }
-        Component {
-            id: menuItem
-            PlasmaComponents.MenuItem {
-                property int index: -1
-                checkable: true
-                onClicked: {
-                    plasmoid.nativeInterface.currentConnectionConfigIndex = index
-                    connectionConfigsMenu.close()
-                }
+                onActivated: connectionConfigsMenu.popup()
             }
         }
     }
@@ -537,25 +531,21 @@ ColumnLayout {
 
                 PlasmaComponents.TabButton {
                     id: dirsTabButton
-                    //text: qsTr("Directories")
                     iconSource: "folder-symbolic"
                     tab: dirsPage
                 }
                 PlasmaComponents.TabButton {
                     id: devsTabButton
-                    //text: qsTr("Devices")
                     iconSource: "network-server-symbolic"
                     tab: devicesPage
                 }
                 PlasmaComponents.TabButton {
                     id: downloadsTabButton
-                    //text: qsTr("Downloads")
                     iconSource: "folder-download-symbolic"
                     tab: downloadsPage
                 }
                 PlasmaComponents.TabButton {
                     id: recentChangesTabButton
-                    //text: qsTr("Recent changes")
                     iconSource: "document-open-recent-symbolic"
                     tab: recentChangesPage
                 }
@@ -565,7 +555,7 @@ ColumnLayout {
             }
             TinyButton {
                 id: searchButton
-                icon: "search"
+                icon.name: "search"
                 enabled: mainTabGroup.currentTab === dirsPage
                 tooltip: qsTr("Toggle filter")
                 onClicked: {
