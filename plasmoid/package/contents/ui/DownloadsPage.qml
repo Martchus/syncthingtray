@@ -1,7 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Layouts 1.1
 import QtQml.Models 2.2
-import org.kde.plasma.components 2.0 as PlasmaComponents  // for Menu and MenuItem
+import QtQuick.Controls 2.15 as QQC2
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
 
@@ -131,22 +131,21 @@ Item {
                 }
             }
 
-            PlasmaComponents.Menu {
+            QQC2.Menu {
                 id: contextMenu
 
-                PlasmaComponents.MenuItem {
+                QQC2.MenuItem {
                     text: qsTr("Copy label/ID")
-                    icon: "edit-copy"
-                    onClicked: downloadView.copyCurrentItemData("downloadName")
+                    icon.name: "edit-copy"
+                    onTriggered: downloadView.copyCurrentItemData("downloadName")
                 }
-                PlasmaComponents.MenuItem {
-                    separator: true
+                QQC2.MenuSeparator {
                 }
-                PlasmaComponents.MenuItem {
+                QQC2.MenuItem {
                     id: openItem
                     text: qsTr("Open in file browser")
-                    icon: "folder"
-                    onClicked: downloadView.clickCurrentItemButton("openButton")
+                    icon.name: "folder"
+                    onTriggered: downloadView.clickCurrentItemButton("openButton")
                 }
             }
         }

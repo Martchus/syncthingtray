@@ -1,7 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Layouts 1.1
 import QtQml.Models 2.2
-import org.kde.plasma.components 2.0 as PlasmaComponents  // for Menu and MenuItem
+import QtQuick.Controls 2.15 as QQC2
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
 
@@ -103,17 +103,17 @@ Item {
                 }
             }
 
-            PlasmaComponents.Menu {
+            QQC2.Menu {
                 id: contextMenu
-                PlasmaComponents.MenuItem {
+                QQC2.MenuItem {
                     text: qsTr("Copy path")
-                    icon: "edit-copy"
-                    onClicked: recentChangesView.currentItem.copyPath()
+                    icon.name: "edit-copy"
+                    onTriggered: recentChangesView.currentItem.copyPath()
                 }
-                PlasmaComponents.MenuItem {
+                QQC2.MenuItem {
                     text: qsTr("Copy device ID")
-                    icon: "network-server-symbolic"
-                    onClicked: recentChangesView.currentItem.copyDeviceId()
+                    icon.name: "network-server-symbolic"
+                    onTriggered: recentChangesView.currentItem.copyDeviceId()
                 }
                 PlasmaComponents.MenuItem {
                     text: qsTr("Copy directory ID")

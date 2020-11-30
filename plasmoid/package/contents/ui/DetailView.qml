@@ -1,5 +1,5 @@
 import QtQuick 2.7
-import org.kde.plasma.components 2.0 as PlasmaComponents // for Menu and MenuItem
+import QtQuick.Controls 2.15 as QQC2
 
 ListView {
     id: detailView
@@ -8,12 +8,12 @@ ListView {
     interactive: false
     height: contentHeight
 
-    PlasmaComponents.Menu {
+    QQC2.Menu {
         id: contextMenu
-        PlasmaComponents.MenuItem {
+        QQC2.MenuItem {
             text: qsTr('Copy value')
-            icon: "edit-copy"
-            onClicked: {
+            icon.name: "edit-copy"
+            onTriggered: {
                 var item = detailView.contextMenuItem
                 if (item) {
                     plasmoid.nativeInterface.copyToClipboard(item.detailValue)
@@ -24,6 +24,6 @@ ListView {
 
     function showContextMenu(item, x, y) {
         contextMenuItem = item
-        contextMenu.open(x, y)
+        contextMenu.popup()
     }
 }

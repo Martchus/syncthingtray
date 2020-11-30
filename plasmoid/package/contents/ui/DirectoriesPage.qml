@@ -1,7 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Layouts 1.1
 import QtQml.Models 2.2
-import org.kde.plasma.components 2.0 as PlasmaComponents  // for Menu and MenuItem
+import QtQuick.Controls 2.15 as QQC2
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
 import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
@@ -133,48 +133,47 @@ ColumnLayout {
                 }
             }
 
-            PlasmaComponents.Menu {
+            QQC2.Menu {
                 id: contextMenu
 
                 function init(item) {
                     // use value for properties depending on paused state from buttons
                     rescanItem.enabled = item.rescanButton.enabled
                     resumePauseItem.text = item.resumePauseButton.tooltip
-                    resumePauseItem.icon = item.resumePauseButton.icon
+                    resumePauseItem.icon.name = item.resumePauseButton.icon
                 }
 
-                PlasmaComponents.MenuItem {
+                QQC2.MenuItem {
                     text: qsTr("Copy label/ID")
-                    icon: "edit-copy"
-                    onClicked: directoryView.copyCurrentItemData("dirName")
+                    icon.name: "edit-copy"
+                    onTriggered: directoryView.copyCurrentItemData("dirName")
                 }
-                PlasmaComponents.MenuItem {
+                QQC2.MenuItem {
                     text: qsTr("Copy path")
-                    icon: "edit-copy"
-                    onClicked: directoryView.copyCurrentItemData("dirPath")
+                    icon.name: "edit-copy"
+                    onTriggered: directoryView.copyCurrentItemData("dirPath")
                 }
-                PlasmaComponents.MenuItem {
-                    separator: true
+                QQC2.MenuSeparator {
                 }
-                PlasmaComponents.MenuItem {
+                QQC2.MenuItem {
                     id: rescanItem
                     text: qsTr("Rescan")
-                    icon: "view-refresh"
-                    onClicked: directoryView.clickCurrentItemButton(
+                    icon.name: "view-refresh"
+                    onTriggered: directoryView.clickCurrentItemButton(
                                    "rescanButton")
                 }
-                PlasmaComponents.MenuItem {
+                QQC2.MenuItem {
                     id: resumePauseItem
                     text: qsTr("Pause")
-                    icon: "media-playback-pause"
-                    onClicked: directoryView.clickCurrentItemButton(
+                    icon.name: "media-playback-pause"
+                    onTriggered: directoryView.clickCurrentItemButton(
                                    "resumePauseButton")
                 }
-                PlasmaComponents.MenuItem {
+                QQC2.MenuItem {
                     id: openItem
                     text: qsTr("Open in file browser")
-                    icon: "folder"
-                    onClicked: directoryView.clickCurrentItemButton(
+                    icon.name: "folder"
+                    onTriggered: directoryView.clickCurrentItemButton(
                                    "openButton")
                 }
             }

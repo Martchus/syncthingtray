@@ -1,7 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Layouts 1.1
 import QtQml.Models 2.2
-import org.kde.plasma.components 2.0 as PlasmaComponents  // for Menu and MenuItem
+import QtQuick.Controls 2.15 as QQC2
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
 
@@ -88,7 +88,7 @@ Item {
                 }
             }
 
-            PlasmaComponents.Menu {
+            QQC2.Menu {
                 id: contextMenu
 
                 function init(item) {
@@ -97,24 +97,23 @@ Item {
                     resumePauseItem.icon = item.resumePauseButton.icon
                 }
 
-                PlasmaComponents.MenuItem {
+                QQC2.MenuItem {
                     text: qsTr("Copy name")
-                    icon: "edit-copy"
-                    onClicked: deviceView.copyCurrentItemData("devName")
+                    icon.name: "edit-copy"
+                    onTriggered: deviceView.copyCurrentItemData("devName")
                 }
-                PlasmaComponents.MenuItem {
+                QQC2.MenuItem {
                     text: qsTr("Copy ID")
-                    icon: "edit-copy"
-                    onClicked: deviceView.copyCurrentItemData("devID")
+                    icon.name: "edit-copy"
+                    onTriggered: deviceView.copyCurrentItemData("devID")
                 }
-                PlasmaComponents.MenuItem {
-                    separator: true
+                QQC2.MenuSeparator {
                 }
-                PlasmaComponents.MenuItem {
+                QQC2.MenuItem {
                     id: resumePauseItem
                     text: qsTr("Pause")
-                    icon: "media-playback-pause"
-                    onClicked: deviceView.clickCurrentItemButton(
+                    icon.name: "media-playback-pause"
+                    onTriggered: deviceView.clickCurrentItemButton(
                                    "resumePauseButton")
                 }
             }
