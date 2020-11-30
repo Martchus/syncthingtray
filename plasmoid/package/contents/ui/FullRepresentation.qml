@@ -1,5 +1,6 @@
 import QtQuick 2.8
 import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.15 as QQ2 // for ComboBox (PlasmaComponents3 version clips the end of the text)
 import QtQml 2.2
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
@@ -432,12 +433,14 @@ ColumnLayout {
                 onActivated: webUIButton.clicked()
             }
         }
-        PlasmaComponents3.ComboBox {
+        QQ2.ComboBox {
             id: connectionConfigsMenu
             model: plasmoid.nativeInterface.connectionConfigNames
             visible: plasmoid.nativeInterface.connectionConfigNames.length > 1
             currentIndex: plasmoid.nativeInterface.currentConnectionConfigIndex
             onCurrentIndexChanged: plasmoid.nativeInterface.currentConnectionConfigIndex = currentIndex
+            Layout.fillWidth: true
+            Layout.maximumWidth: implicitWidth
             Shortcut {
                 sequence: "Ctrl+Shift+C"
                 onActivated: connectionConfigsMenu.popup()
