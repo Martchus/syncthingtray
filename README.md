@@ -213,7 +213,7 @@ See the release section on GitHub.
 * Arch Linux
     * for PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs) or
       [the AUR](https://aur.archlinux.org/packages?SeB=m&K=Martchus)
-    * for a binary repository checkout [my website](http://martchus.no-ip.biz/website/page.php?name=programming)
+    * there is also a [binary repository](https://martchus.no-ip.biz/repo/arch/ownstuff)
 * Tumbleweed, Leap, Fedora
     * RPM \*.spec files and binaries are available via openSUSE Build Service
         * latest releases: [download page](https://software.opensuse.org/download.html?project=home:mkittler&package=syncthingtray),
@@ -230,7 +230,7 @@ See the release section on GitHub.
     * [AppImage repository for builds from Git master the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage:/vcs/AppImage/)
 * Windows
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
-    * for statically linked binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
+    * for binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
 * NixOS
     * the package syncthingtray is available from the official repositories
 * FreeBSD
