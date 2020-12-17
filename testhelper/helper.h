@@ -278,7 +278,7 @@ template <typename SignalInfo> inline void connectSignalInfoToLoop(QEventLoop *l
  * \brief Connects the specified signal info the \a loop via SignalInfo::connectToLoop().
  */
 template <typename SignalInfo, typename... Signalinfo>
-inline void connectSignalInfoToLoop(QEventLoop *loop, const SignalInfo &firstSignalInfo, const Signalinfo &... remainingSignalinfo)
+inline void connectSignalInfoToLoop(QEventLoop *loop, const SignalInfo &firstSignalInfo, const Signalinfo &...remainingSignalinfo)
 {
     connectSignalInfoToLoop(loop, firstSignalInfo);
     connectSignalInfoToLoop(loop, remainingSignalinfo...);
@@ -296,7 +296,7 @@ template <typename SignalInfo> inline bool checkWhetherAllSignalsEmitted(const S
  * \brief Checks whether all specified signals have been emitted.
  */
 template <typename SignalInfo, typename... Signalinfo>
-inline bool checkWhetherAllSignalsEmitted(const SignalInfo &firstSignalInfo, const Signalinfo &... remainingSignalinfo)
+inline bool checkWhetherAllSignalsEmitted(const SignalInfo &firstSignalInfo, const Signalinfo &...remainingSignalinfo)
 {
     return firstSignalInfo && checkWhetherAllSignalsEmitted(remainingSignalinfo...);
 }
@@ -313,7 +313,7 @@ template <typename SignalInfo> inline QByteArray failedSignalNames(const SignalI
  * \brief Returns the names of all specified signal info which haven't been emitted yet as comma-separated string.
  */
 template <typename SignalInfo, typename... Signalinfo>
-inline QByteArray failedSignalNames(const SignalInfo &firstSignalInfo, const Signalinfo &... remainingSignalinfo)
+inline QByteArray failedSignalNames(const SignalInfo &firstSignalInfo, const Signalinfo &...remainingSignalinfo)
 {
     const QByteArray firstSignalName = failedSignalNames(firstSignalInfo);
     if (!firstSignalName.isEmpty()) {
@@ -332,7 +332,7 @@ inline QByteArray failedSignalNames(const SignalInfo &firstSignalInfo, const Sig
  *         required connections can not be established.
  * \returns Returns true if all \a signalinfo have been omitted before the \a timeout exceeded.
  */
-template <typename Action, typename... Signalinfo> bool waitForSignals(Action action, int timeout, const Signalinfo &... signalinfo)
+template <typename Action, typename... Signalinfo> bool waitForSignals(Action action, int timeout, const Signalinfo &...signalinfo)
 {
     return waitForSignalsOrFail(action, timeout, dummySignalInfo(), signalinfo...);
 }
@@ -348,7 +348,7 @@ template <typename Action, typename... Signalinfo> bool waitForSignals(Action ac
  * \returns Returns true if all \a signalinfo have been omitted before \a failure as been emitted or the \a timeout exceeded.
  */
 template <typename Action, typename SignalInfo, typename... Signalinfo>
-bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure, const Signalinfo &... signalinfo)
+bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure, const Signalinfo &...signalinfo)
 {
     // use loop for waiting
     QEventLoop loop;

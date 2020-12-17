@@ -78,9 +78,9 @@ public:
     void tearDown() override;
 
 private:
-    template <typename Action, typename... Signalinfo> void waitForConnection(Action action, int timeout, const Signalinfo &... signalInfo);
+    template <typename Action, typename... Signalinfo> void waitForConnection(Action action, int timeout, const Signalinfo &...signalInfo);
     template <typename Action, typename FailureSignalInfo, typename... Signalinfo>
-    void waitForConnectionOrFail(Action action, int timeout, const FailureSignalInfo &failureSignalInfo, const Signalinfo &... signalInfo);
+    void waitForConnectionOrFail(Action action, int timeout, const FailureSignalInfo &failureSignalInfo, const Signalinfo &...signalInfo);
     template <typename Signal, typename Handler = function<void(void)>>
     SignalInfo<Signal, Handler> connectionSignal(
         Signal signal, const Handler &handler = function<void(void)>(), bool *correctSignalEmitted = nullptr);
@@ -154,7 +154,7 @@ void ConnectionTests::tearDown()
  * \brief Variant of waitForSignal() where the sender is the connection and the action is a method of the connection.
  */
 template <typename Action, typename... SignalInfo>
-void ConnectionTests::waitForConnection(Action action, int timeout, const SignalInfo &... signalInfo)
+void ConnectionTests::waitForConnection(Action action, int timeout, const SignalInfo &...signalInfo)
 {
     waitForSignals(bind(action, &m_connection), timeout, signalInfo...);
 }
@@ -163,8 +163,7 @@ void ConnectionTests::waitForConnection(Action action, int timeout, const Signal
  * \brief Variant of waitForSignalOrFail() where the sender is the connection and the action is a method of the connection.
  */
 template <typename Action, typename FailureSignalInfo, typename... SignalInfo>
-void ConnectionTests::waitForConnectionOrFail(
-    Action action, int timeout, const FailureSignalInfo &failureSignalInfo, const SignalInfo &... signalInfo)
+void ConnectionTests::waitForConnectionOrFail(Action action, int timeout, const FailureSignalInfo &failureSignalInfo, const SignalInfo &...signalInfo)
 {
     waitForSignalsOrFail(bind(action, &m_connection), timeout, failureSignalInfo, signalInfo...);
 }
