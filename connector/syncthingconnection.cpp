@@ -314,7 +314,7 @@ void SyncthingConnection::abortAllRequests()
     if (m_logReply) {
         m_logReply->abort();
     }
-    for (auto *const reply : m_otherReplies) {
+    for (auto *const reply : std::as_const(m_otherReplies)) {
         reply->abort();
     }
 
