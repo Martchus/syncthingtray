@@ -3,6 +3,8 @@
 
 #include "./global.h"
 
+#include <c++utilities/misc/flagenumclass.h>
+
 #include <QObject>
 #include <QProcess>
 
@@ -30,31 +32,14 @@ struct SyncthingDev;
  * \remarks The enum is supposed to be used as flag-enum.
  */
 enum class SyncthingHighLevelNotification {
-    None = 0x0,
-    ConnectedDisconnected = 0x1,
-    LocalSyncComplete = 0x2,
-    RemoteSyncComplete = 0x4,
-    NewDevice = 0x8,
-    NewDir = 0x10,
-    SyncthingProcessError = 0x20,
+    None = 0,
+    ConnectedDisconnected = (1 << 0),
+    LocalSyncComplete = (1 << 1),
+    RemoteSyncComplete = (1 << 2),
+    NewDevice = (1 << 3),
+    NewDir = (1 << 4),
+    SyncthingProcessError = (1 << 5),
 };
-
-/// \cond
-constexpr SyncthingHighLevelNotification operator|(SyncthingHighLevelNotification lhs, SyncthingHighLevelNotification rhs)
-{
-    return static_cast<SyncthingHighLevelNotification>(static_cast<unsigned char>(lhs) | static_cast<unsigned char>(rhs));
-}
-
-constexpr SyncthingHighLevelNotification &operator|=(SyncthingHighLevelNotification &lhs, SyncthingHighLevelNotification rhs)
-{
-    return lhs = static_cast<SyncthingHighLevelNotification>(static_cast<unsigned char>(lhs) | static_cast<unsigned char>(rhs));
-}
-
-constexpr bool operator&(SyncthingHighLevelNotification lhs, SyncthingHighLevelNotification rhs)
-{
-    return static_cast<bool>(static_cast<unsigned char>(lhs) & static_cast<unsigned char>(rhs));
-}
-/// \endcond
 
 class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingNotifier : public QObject {
     Q_OBJECT
@@ -198,5 +183,7 @@ inline void SyncthingNotifier::setProcess(const SyncthingProcess *process)
 }
 
 } // namespace Data
+
+CPP_UTILITIES_MARK_FLAG_ENUM_CLASS(Data, Data::SyncthingHighLevelNotification)
 
 #endif // DATA_SYNCTHINGNOTIFIER_H
