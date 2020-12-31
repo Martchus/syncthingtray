@@ -169,8 +169,6 @@ QString SyncthingConnection::statusText(SyncthingStatus status)
         return tr("connected, paused");
     case SyncthingStatus::Synchronizing:
         return tr("connected, synchronizing");
-    case SyncthingStatus::OutOfSync:
-        return tr("connected, out of sync");
     default:
         return tr("unknown");
     }
