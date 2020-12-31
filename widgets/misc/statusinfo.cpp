@@ -103,11 +103,7 @@ void StatusInfo::updateConnectedDevices(const SyncthingConnection &connection)
 {
     m_additionalDeviceInfo.clear();
 
-    switch (connection.status()) {
-    case SyncthingStatus::Idle:
-    case SyncthingStatus::OutOfSync:
-    case SyncthingStatus::Scanning:
-    case SyncthingStatus::Synchronizing: {
+    if (connection.isConnected()) {
         // find devices we're currently connected to
         const auto connectedDevices(connection.connectedDevices());
 
@@ -149,9 +145,6 @@ void StatusInfo::updateConnectedDevices(const SyncthingConnection &connection)
         } else if (deviceNames.size() == 1) {
             m_additionalDeviceInfo = QCoreApplication::translate("QtGui::StatusInfo", "Connected to %1", nullptr, deviceCount).arg(deviceNames[0]);
         }
-        break;
-    }
-    default:;
     }
 
     recomputeAdditionalStatusText();
