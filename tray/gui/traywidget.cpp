@@ -389,6 +389,7 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
     case SyncthingStatus::Idle:
     case SyncthingStatus::Scanning:
     case SyncthingStatus::Synchronizing:
+    case SyncthingStatus::RemoteNotInSync:
         m_ui->statusPushButton->setText(tr("Pause"));
         m_ui->statusPushButton->setToolTip(tr("Syncthing is running, click to pause all devices"));
         m_ui->statusPushButton->setIcon(QIcon::fromTheme(
@@ -609,6 +610,7 @@ void TrayWidget::changeStatus()
     case SyncthingStatus::Idle:
     case SyncthingStatus::Scanning:
     case SyncthingStatus::Synchronizing:
+    case SyncthingStatus::RemoteNotInSync:
         m_connection.pauseAllDevs();
         break;
     case SyncthingStatus::Paused:

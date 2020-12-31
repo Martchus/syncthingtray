@@ -579,20 +579,25 @@ void Application::printStatus(const ArgumentOccurrence &)
         const auto &overallStats(m_connection.computeOverallDirStatistics());
         const auto *statusString = "idle";
         const auto *statusColor = "32";
-        switch (m_connection.status()) {
-        case SyncthingStatus::Synchronizing:
-            statusString = "synchronizing";
-            statusColor = "34";
-            break;
-        case SyncthingStatus::Scanning:
-            statusString = "scanning";
-            statusColor = "34";
-            break;
-        case SyncthingStatus::OutOfSync:
+        if (m_connection.hasOutOfSyncDirs()) {
             statusString = "out-of-sync";
             statusColor = "31";
-            break;
-        default:;
+        } else {
+            switch (m_connection.status()) {
+            case SyncthingStatus::Synchronizing:
+                statusString = "synchronizing";
+                statusColor = "34";
+                break;
+            case SyncthingStatus::RemoteNotInSync:
+                statusString = "remote synchronizing";
+                statusColor = "34";
+                break;
+            case SyncthingStatus::Scanning:
+                statusString = "scanning";
+                statusColor = "34";
+                break;
+            default:;
+            }
         }
         if (!EscapeCodes::enabled) {
             printProperty("Status", statusString);

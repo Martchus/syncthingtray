@@ -3,12 +3,29 @@
 
 #include "./global.h"
 
+#include <c++utilities/misc/flagenumclass.h>
+
 #include <QByteArray>
 #include <QList>
 #include <QSslError>
 #include <QString>
 
 namespace Data {
+
+/*!
+ * \brief The SyncthingStatusComputionFlags enum specifies what information is considered to compute the overall state.
+ * \remarks The enum is supposed to be used as flag-enum.
+ */
+enum class SyncthingStatusComputionFlags : quint64 {
+    None = 0, /**< no further information is considered leaving SyncthingStatus::Disconnected, SyncthingStatus::Reconnecting,
+                   SyncthingStatus::BeingDestroyed and SyncthingStatus::Idle the only possible states */
+    Scanning = (1 << 0), /**< the status SyncthingStatus::Scanning might be set (in addition) */
+    Synchronizing = (1 << 1), /**< the status SyncthingStatus::Synchronizing might be set (in addition) */
+    RemoteSynchronizing = (1 << 2), /**< the status SyncthingStatus::RemoteNotInSync might be set (in addition) */
+    DevicePaused = (1 << 3), /**< the status SyncthingStatus::Paused might be set if there's at least one paused device (in addition) */
+    Default = SyncthingStatusComputionFlags::Scanning | SyncthingStatusComputionFlags::Synchronizing | SyncthingStatusComputionFlags::DevicePaused,
+    /**< the default flags used all over the place */
+};
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     QString label;
@@ -23,6 +40,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     int reconnectInterval = defaultReconnectInterval;
     QString httpsCertPath;
     QList<QSslError> expectedSslErrors;
+    SyncthingStatusComputionFlags statusComputionFlags = SyncthingStatusComputionFlags::Default;
     bool autoConnect = false;
     bool loadHttpsCert();
 
@@ -32,5 +50,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     static constexpr int defaultReconnectInterval = 0;
 };
 } // namespace Data
+
+CPP_UTILITIES_MARK_FLAG_ENUM_CLASS(Data, Data::SyncthingStatusComputionFlags)
 
 #endif // SYNCTHINGCONNECTIONSETTINGS_H

@@ -72,6 +72,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     , m_syncthingUrl(syncthingUrl)
     , m_apiKey(apiKey)
     , m_status(SyncthingStatus::Disconnected)
+    , m_statusComputionFlags(SyncthingStatusComputionFlags::Default)
     , m_keepPolling(false)
     , m_abortingAllRequests(false)
     , m_abortingToReconnect(false)
@@ -169,6 +170,8 @@ QString SyncthingConnection::statusText(SyncthingStatus status)
         return tr("connected, paused");
     case SyncthingStatus::Synchronizing:
         return tr("connected, synchronizing");
+    case SyncthingStatus::RemoteNotInSync:
+        return tr("connected, remote not in sync");
     default:
         return tr("unknown");
     }
@@ -773,15 +776,29 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
     setDevStatsPollInterval(connectionSettings.devStatsPollInterval);
     setErrorsPollInterval(connectionSettings.errorsPollInterval);
     setAutoReconnectInterval(connectionSettings.reconnectInterval);
+    setStatusComputionFlags(connectionSettings.statusComputionFlags);
 
     return reconnectRequired;
 }
 
 /*!
- * \brief Sets the connection status. Ensures statusChanged() is emitted.
+ * \brief Sets the connection status. Ensures statusChanged() is emitted if the status has actually changed.
  * \param status Specifies the status; should be either SyncthingStatus::Disconnected, SyncthingStatus::Reconnecting, or
  *        SyncthingStatus::Idle. There is no use in specifying other values such as SyncthingStatus::Synchronizing as
- *        these are determined automatically within the method.
+ *        these are determined automatically within the method according to SyncthingConnection::statusComputionFlags().
+ *
+ * The precedence of the "connected" states from highest to lowest is:
+ * 1. SyncthingStatus::Synchronizing
+ * 2. SyncthingStatus::RemoteSynchronizing
+ * 3. SyncthingStatus::Scanning
+ * 4. SyncthingStatus::Paused
+ * 5. SyncthingStatus::Idle
+ *
+ * \remarks
+ * - The "out-of-sync" status is (currently) *not* handled by this function. One needs to query this via
+ *   the SyncthingConnection::hasOutOfSyncDirs() function.
+ * - Whether notifications are available is *not* handled by this function. One needs to query this via
+ *   SyncthingConnection::hasUnreadNotifications().
  */
 void SyncthingConnection::setStatus(SyncthingStatus status)
 {
@@ -802,30 +819,51 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
         // reset reconnect tries
         m_autoReconnectTries = 0;
 
+        // skip if no further status information should be gathered
+        if (m_statusComputionFlags == SyncthingStatusComputionFlags::None) {
+            status = SyncthingStatus::Idle;
+            break;
+        }
+
         // check whether at least one directory is scanning, preparing to synchronize or synchronizing
         // note: We don't distinguish between "preparing to sync" and "synchronizing" for computing the overall
         //       status at the moment.
-        bool scanning = false;
-        bool synchronizing = false;
-        for (const SyncthingDir &dir : m_dirs) {
-            switch (dir.status) {
-            case SyncthingDirStatus::PreparingToSync:
-            case SyncthingDirStatus::Synchronizing:
-                synchronizing = true;
-                break;
-            case SyncthingDirStatus::WaitingToScan:
-            case SyncthingDirStatus::Scanning:
-                scanning = true;
-                break;
-            default:;
+        auto scanning = false, synchronizing = false, remoteSynchronizing = false;
+        if (m_statusComputionFlags & SyncthingStatusComputionFlags::Synchronizing
+            || m_statusComputionFlags & SyncthingStatusComputionFlags::Scanning) {
+            for (const SyncthingDir &dir : m_dirs) {
+                switch (dir.status) {
+                case SyncthingDirStatus::WaitingToSync:
+                case SyncthingDirStatus::PreparingToSync:
+                case SyncthingDirStatus::Synchronizing:
+                    synchronizing = m_statusComputionFlags & SyncthingStatusComputionFlags::Synchronizing;
+                    break;
+                case SyncthingDirStatus::WaitingToScan:
+                case SyncthingDirStatus::Scanning:
+                    scanning = m_statusComputionFlags & SyncthingStatusComputionFlags::Scanning;
+                    break;
+                default:;
+                }
+                if (synchronizing) {
+                    break; // skip remaining dirs, "synchronizing" overrides "scanning" anyways
+                }
             }
-            if (synchronizing) {
-                break; // skip remaining dirs, "synchronizing" overrides "scanning" anyways
+        }
+
+        // set the status to "remote synchronizing" if at least one remote device is still in progress
+        if (!synchronizing && (m_statusComputionFlags & SyncthingStatusComputionFlags::RemoteSynchronizing)) {
+            for (const SyncthingDev &dev : m_devs) {
+                if (dev.status == SyncthingDevStatus::Synchronizing) {
+                    remoteSynchronizing = true;
+                    break;
+                }
             }
         }
 
         if (synchronizing) {
             status = SyncthingStatus::Synchronizing;
+        } else if (remoteSynchronizing) {
+            status = SyncthingStatus::RemoteNotInSync;
         } else if (scanning) {
             status = SyncthingStatus::Scanning;
         } else {

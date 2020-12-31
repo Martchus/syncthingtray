@@ -85,6 +85,10 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection, c
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Synchronization is ongoing");
                 m_statusIcon = &icons.sync;
                 break;
+            case SyncthingStatus::RemoteNotInSync:
+                m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "At least one remote directory is not in sync");
+                m_statusIcon = &icons.sync;
+                break;
             default:
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Status is unknown");
                 m_statusIcon = &icons.disconnected;

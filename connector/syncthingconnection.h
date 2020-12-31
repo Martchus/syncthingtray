@@ -30,6 +30,7 @@ class MiscTests;
 namespace Data {
 
 struct SyncthingConnectionSettings;
+enum class SyncthingStatusComputionFlags : quint64;
 
 LIB_SYNCTHING_CONNECTOR_EXPORT QNetworkAccessManager &networkAccessManager();
 
@@ -54,6 +55,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(QString user READ user)
     Q_PROPERTY(QString password READ password)
     Q_PROPERTY(Data::SyncthingStatus status READ status NOTIFY statusChanged)
+    Q_PROPERTY(Data::SyncthingStatusComputionFlags statusComputionFlags READ statusComputionFlags WRITE setStatusComputionFlags)
     Q_PROPERTY(QString statusText READ statusText NOTIFY statusChanged)
     Q_PROPERTY(bool connected READ isConnected NOTIFY statusChanged)
     Q_PROPERTY(bool hasUnreadNotifications READ hasUnreadNotifications)
@@ -98,6 +100,8 @@ public:
     SyncthingStatus status() const;
     QString statusText() const;
     static QString statusText(SyncthingStatus status);
+    SyncthingStatusComputionFlags statusComputionFlags() const;
+    void setStatusComputionFlags(SyncthingStatusComputionFlags flags);
     bool isConnected() const;
     bool hasPendingRequests() const;
     bool hasPendingRequestsIncludingEvents() const;
@@ -313,6 +317,8 @@ private:
     QString m_user;
     QString m_password;
     SyncthingStatus m_status;
+    SyncthingStatusComputionFlags m_statusComputionFlags;
+
     bool m_keepPolling;
     bool m_abortingAllRequests;
     bool m_abortingToReconnect;
@@ -616,6 +622,25 @@ inline bool SyncthingConnection::recordFileChanges() const
 inline void SyncthingConnection::setRecordFileChanges(bool recordFileChanges)
 {
     m_recordFileChanges = recordFileChanges;
+}
+
+/*!
+ * \brief Returns what information is considered to compute the overall status returned by status().
+ */
+inline SyncthingStatusComputionFlags SyncthingConnection::statusComputionFlags() const
+{
+    return m_statusComputionFlags;
+}
+
+/*!
+ * \brief Sets what information should be used to compute the overall status returned by status().
+ */
+inline void SyncthingConnection::setStatusComputionFlags(SyncthingStatusComputionFlags flags)
+{
+    if (m_statusComputionFlags != flags) {
+        m_statusComputionFlags = flags;
+        recalculateStatus();
+    }
 }
 
 /*!
