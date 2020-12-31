@@ -19,8 +19,24 @@
 namespace Data {
 
 /// \brief The SyncthingDirStatus enum represents a Syncthing directory status.
-/// \remarks It needs to be kept in sync with the states defined in Syncthing's "syncthing/lib/model/folderstate.go".
-enum class SyncthingDirStatus { Unknown, Idle, WaitingToScan, Scanning, PreparingToSync, Synchronizing, OutOfSync };
+/// \remarks
+/// - It needs to be kept in sync with the states defined in Syncthing's "syncthing/lib/model/folderstate.go". If it is not in sync
+///   SyncthingDirStatus::Unknown will be used.
+/// - There's no real documentation here because these enum items really correspond to the folder state as provided by Syncthing.
+/// - When changing this enum, also change SyncthingDir::assignStatus(), SyncthingConnection::setStatus(), SyncthingDirActions::updateStatus()
+///   and SyncthingDirectoryModel::data(), SyncthingDirectoryModel::dirStatusString() and SyncthingDirectoryModel::dirStatusColor().
+enum class SyncthingDirStatus {
+    Unknown, /**< directory status is unknown */
+    Idle, /**< directory is idling ("idle") */
+    Scanning, /**< directory is scanning ("scanning") */
+    WaitingToScan, /**< directory is waiting to scan ("scan-waiting") */
+    WaitingToSync, /**< directory is waiting to sync ("sync-waiting") */
+    PreparingToSync, /**< directory is preparing to sync ("sync-preparing") */
+    Synchronizing, /**< directory is synchronizing ("syncing") */
+    Cleaning, /**< directory is cleaning ("cleaning") */
+    WaitingToClean, /**< directory is waiting to clean ("clean-waiting") */
+    OutOfSync, /**< directory is out-of-sync due to errors ("error") */
+};
 
 LIB_SYNCTHING_CONNECTOR_EXPORT QString statusString(SyncthingDirStatus status);
 

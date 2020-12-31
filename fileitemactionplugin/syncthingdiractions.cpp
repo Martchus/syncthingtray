@@ -51,12 +51,15 @@ bool SyncthingDirActions::updateStatus(const SyncthingDir &dir)
             m_statusAction.setIcon(statusIcons().disconnected);
             break;
         case SyncthingDirStatus::Idle:
+        case SyncthingDirStatus::WaitingToClean:
+        case SyncthingDirStatus::Cleaning:
             m_statusAction.setIcon(statusIcons().idling);
             break;
         case SyncthingDirStatus::WaitingToScan:
         case SyncthingDirStatus::Scanning:
             m_statusAction.setIcon(statusIcons().scanninig);
             break;
+        case SyncthingDirStatus::WaitingToSync:
         case SyncthingDirStatus::PreparingToSync:
         case SyncthingDirStatus::Synchronizing:
             m_statusAction.setIcon(statusIcons().sync);
