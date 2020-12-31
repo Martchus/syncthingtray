@@ -938,13 +938,12 @@ void SyncthingConnection::handleAdditionalRequestCanceled()
 }
 
 /*!
- * \brief Internally called to recalculate the overall connection status, eg. after the status of a directory
+ * \brief Internally called to recalculate the overall connection status, e.g. after the status of a directory
  *        changed.
  * \remarks
  * - This is achieved by simply setting the status to idle. setStatus() will calculate the specific status.
  * - If not connected, this method does nothing. This is important, because when this method is called when
- *   establishing a connection (and the status is hence still disconnected) timers for polling would be
- *   killed.
+ *   establishing a connection (and the status is hence still disconnected) timers for polling would be killed.
  */
 void SyncthingConnection::recalculateStatus()
 {
@@ -1018,7 +1017,7 @@ void SyncthingConnection::recalculateStatus()
 
 /*!
  * \fn SyncthingConnection::statusChanged()
- * \brief Indicates the status of the connection changed.
+ * \brief Indicates the status of the connection changed (status(), hasOutOfSyncDirs()).
  */
 
 /*!

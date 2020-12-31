@@ -427,7 +427,8 @@ inline QString SyncthingConnection::statusText() const
 }
 
 /*!
- * \brief Returns the connection status.
+ * \brief Returns the (pre-computed) connection status.
+ * \sa See SyncthingConnection::setStatus() and SyncthingStatus for details how it is computed.
  */
 inline SyncthingStatus SyncthingConnection::status() const
 {

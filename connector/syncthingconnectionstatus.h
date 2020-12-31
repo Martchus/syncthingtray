@@ -17,7 +17,14 @@ enum class SyncthingStatus { Disconnected, Reconnecting, Idle, Scanning, Paused,
 Q_ENUM_NS(SyncthingStatus)
 #endif
 
-enum class SyncthingErrorCategory { OverallConnection, SpecificRequest, Parsing };
+/*!
+ * \brief The SyncthingErrorCategory enum classifies different errors related to the SyncthingConnection class.
+ */
+enum class SyncthingErrorCategory {
+    OverallConnection, /**< an error affecting the overall connection */
+    SpecificRequest, /**< an error only affecting a specific request */
+    Parsing, /**< an error when parsing Syncthing's response as a JSON document */
+};
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
 Q_ENUM_NS(SyncthingErrorCategory)
 #endif
