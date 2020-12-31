@@ -489,6 +489,16 @@ inline void SyncthingConnection::setRequestingCompletionEnabled(bool requestingC
 }
 
 /*!
+ * \brief Interanlly called to emit the notification with the specified \a message.
+ * \remarks Ensures the unread notifications flag is set.
+ */
+inline void SyncthingConnection::emitNotification(CppUtilities::DateTime when, const QString &message)
+{
+    m_unreadNotifications = true;
+    emit newNotification(when, message);
+}
+
+/*!
  * \brief Considers all notifications as read; hence might trigger a status update.
  */
 inline void SyncthingConnection::considerAllNotificationsRead()

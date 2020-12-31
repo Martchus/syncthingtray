@@ -852,17 +852,6 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
 }
 
 /*!
- * \brief Interanlly called to emit the notification with the specified \a message.
- * \remarks Ensures the status is updated and the unread notifications flag is set.
- */
-void SyncthingConnection::emitNotification(DateTime when, const QString &message)
-{
-    m_unreadNotifications = true;
-    emit newNotification(when, message);
-    recalculateStatus();
-}
-
-/*!
  * \brief Internally called to emit a JSON parsing error.
  * \remarks Since in this case the reply has already been read, its response must be passed as extra argument.
  */
