@@ -5,6 +5,7 @@
 
 #include "../../connector/qstringhash.h"
 #include "../../connector/syncthingconnection.h"
+#include "../../connector/syncthingconnectionsettings.h"
 #include "../../connector/syncthingnotifier.h"
 #include "../../connector/syncthingprocess.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -28,6 +29,7 @@
 #include <QSslError>
 #include <QStringBuilder>
 
+#include <type_traits>
 #include <unordered_map>
 
 using namespace std;
@@ -215,6 +217,7 @@ void restore()
     settings.beginGroup(QStringLiteral("tray"));
     const int connectionCount = settings.beginReadArray(QStringLiteral("connections"));
     auto &primaryConnectionSettings = v.connection.primary;
+    using UnderlyingFlagType = std::underlying_type_t<Data::SyncthingStatusComputionFlags>;
     if (connectionCount > 0) {
         auto &secondaryConnectionSettings = v.connection.secondary;
         secondaryConnectionSettings.clear();
@@ -246,6 +249,12 @@ void restore()
             connectionSettings->reconnectInterval
                 = settings.value(QStringLiteral("reconnectInterval"), connectionSettings->reconnectInterval).toInt();
             connectionSettings->autoConnect = settings.value(QStringLiteral("autoConnect"), connectionSettings->autoConnect).toBool();
+            const auto statusComputionFlags = settings.value(QStringLiteral("statusComputionFlags"),
+                QVariant::fromValue(static_cast<UnderlyingFlagType>(connectionSettings->statusComputionFlags)));
+            if (statusComputionFlags.canConvert<UnderlyingFlagType>()) {
+                connectionSettings->statusComputionFlags
+                    = static_cast<Data::SyncthingStatusComputionFlags>(statusComputionFlags.value<UnderlyingFlagType>());
+            }
             connectionSettings->httpsCertPath = settings.value(QStringLiteral("httpsCertPath")).toString();
             if (!connectionSettings->loadHttpsCert()) {
                 QMessageBox::critical(nullptr, QCoreApplication::applicationName(),
@@ -358,6 +367,8 @@ void save()
         settings.setValue(QStringLiteral("errorsPollInterval"), connectionSettings->errorsPollInterval);
         settings.setValue(QStringLiteral("reconnectInterval"), connectionSettings->reconnectInterval);
         settings.setValue(QStringLiteral("autoConnect"), connectionSettings->autoConnect);
+        settings.setValue(QStringLiteral("statusComputionFlags"),
+            QVariant::fromValue(static_cast<std::underlying_type_t<Data::SyncthingStatusComputionFlags>>(connectionSettings->statusComputionFlags)));
         settings.setValue(QStringLiteral("httpsCertPath"), connectionSettings->httpsCertPath);
     }
     settings.endArray();
