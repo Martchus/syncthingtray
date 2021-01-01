@@ -3,7 +3,7 @@
  <class>QtGui::ConnectionOptionPage</class>
  <widget class="QWidget" name="QtGui::ConnectionOptionPage">
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+   <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -263,6 +263,51 @@
      </property>
     </widget>
    </item>
+   <item row="10" column="1">
+    <layout class="QHBoxLayout" name="insertFromConfigFileLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="insertFromConfigFilePushButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font-weight: bold;</string>
+       </property>
+       <property name="text">
+        <string>Insert values from local Syncthing configuration</string>
+       </property>
+       <property name="icon">
+        <iconset theme="edit-paste" resource="../resources/syncthingwidgetsicons.qrc">
+         <normaloff>:/icons/hicolor/scalable/actions/edit-paste.svg</normaloff>:/icons/hicolor/scalable/actions/edit-paste.svg</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="insertFromCustomConfigFilePushButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Select config file manually</string>
+       </property>
+       <property name="icon">
+        <iconset theme="document-open">
+         <normaloff>.</normaloff>
+         <normalon>:/icons/hicolor/scalable/actions/document-open.svg</normalon>.</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item row="11" column="1">
     <widget class="Line" name="line2">
      <property name="sizePolicy">
@@ -437,20 +482,69 @@
     </widget>
    </item>
    <item row="14" column="0">
-    <widget class="QLabel" name="statusTextLabel">
+    <widget class="QLabel" name="overallStatusLabel">
      <property name="text">
-      <string>Status</string>
+      <string>Overall status</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
     </widget>
    </item>
    <item row="14" column="1">
+    <layout class="QVBoxLayout" name="statusComputionFlagsVerticalLayout">
+     <property name="spacing">
+      <number>2</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="statusComputionFlagsLabel">
+       <property name="text">
+        <string>Select what information should be considered to compute the overall status:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QListView" name="statusComputionFlagsListView">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="flow">
+        <enum>QListView::LeftToRight</enum>
+       </property>
+       <property name="isWrapping" stdset="0">
+        <bool>true</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="15" column="0">
+    <widget class="QLabel" name="statusTextLabel">
+     <property name="text">
+      <string>Current status</string>
+     </property>
+    </widget>
+   </item>
+   <item row="15" column="1">
     <widget class="QLabel" name="statusLabel">
      <property name="text">
       <string>disconnected</string>
      </property>
     </widget>
    </item>
-   <item row="17" column="1">
+   <item row="18" column="1">
     <widget class="QPushButton" name="connectPushButton">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -466,51 +560,6 @@
        <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
      </property>
     </widget>
-   </item>
-   <item row="10" column="1">
-    <layout class="QHBoxLayout" name="insertFromConfigFileLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QPushButton" name="insertFromConfigFilePushButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">font-weight: bold;</string>
-       </property>
-       <property name="text">
-        <string>Insert values from local Syncthing configuration</string>
-       </property>
-       <property name="icon">
-        <iconset theme="edit-paste" resource="../resources/syncthingwidgetsicons.qrc">
-         <normaloff>:/icons/hicolor/scalable/actions/edit-paste.svg</normaloff>:/icons/hicolor/scalable/actions/edit-paste.svg</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="insertFromCustomConfigFilePushButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Select config file manually</string>
-       </property>
-       <property name="icon">
-        <iconset theme="document-open">
-         <normaloff>.</normaloff>
-         <normalon>:/icons/hicolor/scalable/actions/document-open.svg</normalon>.</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>

@@ -820,8 +820,8 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
         m_autoReconnectTries = 0;
 
         // skip if no further status information should be gathered
+        status = SyncthingStatus::Idle;
         if (m_statusComputionFlags == SyncthingStatusComputionFlags::None) {
-            status = SyncthingStatus::Idle;
             break;
         }
 
@@ -866,19 +866,13 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
             status = SyncthingStatus::RemoteNotInSync;
         } else if (scanning) {
             status = SyncthingStatus::Scanning;
-        } else {
+        } else if (m_statusComputionFlags & SyncthingStatusComputionFlags::DevicePaused) {
             // check whether at least one device is paused
-            bool paused = false;
             for (const SyncthingDev &dev : m_devs) {
                 if (dev.paused) {
-                    paused = true;
+                    status = SyncthingStatus::Paused;
                     break;
                 }
-            }
-            if (paused) {
-                status = SyncthingStatus::Paused;
-            } else {
-                status = SyncthingStatus::Idle;
             }
         }
     }

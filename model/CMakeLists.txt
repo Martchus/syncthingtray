@@ -16,6 +16,7 @@ set(HEADER_FILES
     syncthingdownloadmodel.h
     syncthingrecentchangesmodel.h
     syncthingsortfiltermodel.h
+    syncthingstatuscomputionmodel.h
     syncthingstatusselectionmodel.h
     syncthingicons.h
     colors.h)
@@ -26,6 +27,7 @@ set(SRC_FILES
     syncthingdownloadmodel.cpp
     syncthingrecentchangesmodel.cpp
     syncthingsortfiltermodel.cpp
+    syncthingstatuscomputionmodel.cpp
     syncthingstatusselectionmodel.cpp
     syncthingicons.cpp)
 set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)

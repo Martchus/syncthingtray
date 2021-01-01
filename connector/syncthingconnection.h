@@ -27,10 +27,15 @@ QT_FORWARD_DECLARE_CLASS(QJsonParseError)
 class ConnectionTests;
 class MiscTests;
 
+#define SYNCTHING_CONNECTOR_ENUM_CLASS enum class
+namespace Data {
+SYNCTHING_CONNECTOR_ENUM_CLASS SyncthingStatusComputionFlags : quint64;
+}
+#undef SYNCTHING_CONNECTOR_ENUM_CLASS
+
 namespace Data {
 
 struct SyncthingConnectionSettings;
-enum class SyncthingStatusComputionFlags : quint64;
 
 LIB_SYNCTHING_CONNECTOR_EXPORT QNetworkAccessManager &networkAccessManager();
 

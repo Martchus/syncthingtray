@@ -6,6 +6,7 @@
 #include "../../connector/syncthingconnection.h"
 #include "../../connector/syncthingprocess.h"
 #include "../../connector/utils.h"
+#include "../../model/syncthingstatuscomputionmodel.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "../../connector/syncthingservice.h"
 #include "../../model/colors.h"
@@ -92,6 +93,7 @@ void ConnectionOptionPage::hideConnectionStatus()
 QWidget *ConnectionOptionPage::setupWidget()
 {
     auto *const widget = ConnectionOptionPageBase::setupWidget();
+    m_statusComputionModel = new SyncthingStatusComputionModel(widget);
     ui()->certPathSelection->provideCustomFileMode(QFileDialog::ExistingFile);
     ui()->certPathSelection->lineEdit()->setPlaceholderText(
         QCoreApplication::translate("QtGui::ConnectionOptionPage", "Auto-detected for local instance"));
@@ -105,6 +107,7 @@ QWidget *ConnectionOptionPage::setupWidget()
     } else {
         hideConnectionStatus();
     }
+    ui()->statusComputionFlagsListView->setModel(m_statusComputionModel);
     QObject::connect(ui()->connectPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::applyAndReconnect, this));
     QObject::connect(ui()->insertFromConfigFilePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::insertFromConfigFile, this, false));
     QObject::connect(
@@ -198,6 +201,7 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
     ui()->pollErrorsSpinBox->setValue(connectionSettings.errorsPollInterval);
     ui()->reconnectSpinBox->setValue(connectionSettings.reconnectInterval);
     ui()->autoConnectCheckBox->setChecked(connectionSettings.autoConnect);
+    m_statusComputionModel->setStatusComputionFlags(connectionSettings.statusComputionFlags);
     setCurrentIndex(index);
     return true;
 }
@@ -222,6 +226,7 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
     connectionSettings.errorsPollInterval = ui()->pollErrorsSpinBox->value();
     connectionSettings.reconnectInterval = ui()->reconnectSpinBox->value();
     connectionSettings.autoConnect = ui()->autoConnectCheckBox->isChecked();
+    connectionSettings.statusComputionFlags = m_statusComputionModel->statusComputionFlags();
     if (!connectionSettings.loadHttpsCert()) {
         const QString errorMessage = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to load specified certificate \"%1\".")
                                          .arg(connectionSettings.httpsCertPath);

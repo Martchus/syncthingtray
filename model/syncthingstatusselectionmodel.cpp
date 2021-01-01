@@ -6,7 +6,7 @@ using namespace QtUtilities;
 
 namespace Data {
 
-inline ChecklistItem itemFor(SyncthingStatus status)
+inline static ChecklistItem itemFor(SyncthingStatus status)
 {
     return ChecklistItem(static_cast<int>(status), QString(), Qt::Unchecked);
 }

@@ -31,6 +31,7 @@ class SyncthingConnection;
 class SyncthingService;
 class SyncthingProcess;
 class SyncthingLauncher;
+class SyncthingStatusComputionModel;
 } // namespace Data
 
 namespace QtGui {
@@ -67,6 +68,7 @@ void setCurrentIndex(int currentIndex);
 Data::SyncthingConnection *m_connection;
 Data::SyncthingConnectionSettings m_primarySettings;
 std::vector<Data::SyncthingConnectionSettings> m_secondarySettings;
+Data::SyncthingStatusComputionModel *m_statusComputionModel;
 int m_currentIndex;
 END_DECLARE_OPTION_PAGE
 
