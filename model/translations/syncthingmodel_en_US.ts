@@ -274,62 +274,77 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="453"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="456"/>
         <source>Paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="460"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="463"/>
         <source>Unknown status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="456"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="459"/>
         <source>Unshared</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="462"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="465"/>
         <source>Idle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="464"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="467"/>
         <source>Waiting to scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="468"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="471"/>
         <source>Scanning (%1 %, %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="470"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="473"/>
         <source>Scanning (%1 %)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="472"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="475"/>
         <source>Scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="474"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="477"/>
+        <source>Waiting to sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="479"/>
         <source>Preparing to sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="476"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="481"/>
         <source>Synchronizing (%1 %)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="476"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="481"/>
         <source>Synchronizing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="478"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="483"/>
+        <source>Cleaning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="485"/>
+        <source>Waiting to clean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="487"/>
         <source>Out of sync</source>
         <translation type="unfinished"></translation>
     </message>
@@ -377,6 +392,29 @@
     <message>
         <location filename="../syncthingrecentchangesmodel.cpp" line="123"/>
         <source>Remotely</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Data::SyncthingStatusComputionModel</name>
+    <message>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="35"/>
+        <source>Local dir is scanning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="37"/>
+        <source>Local dir is synchronizing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="39"/>
+        <source>Remote dir has outstanding progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="41"/>
+        <source>A device is paused</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -19,27 +19,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="69"/>
+        <location filename="../syncthingdiractions.cpp" line="72"/>
         <source>Global: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="70"/>
+        <location filename="../syncthingdiractions.cpp" line="73"/>
         <source>Local: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="71"/>
+        <location filename="../syncthingdiractions.cpp" line="74"/>
         <source>Last scan time: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="72"/>
+        <location filename="../syncthingdiractions.cpp" line="75"/>
         <source>Rescan interval: %1 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdiractions.cpp" line="77"/>
+        <location filename="../syncthingdiractions.cpp" line="80"/>
         <source>%1 item(s) out-of-sync</source>
         <translation>
             <numerusform>%1 item out-of-sync</numerusform>

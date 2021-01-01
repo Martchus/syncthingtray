@@ -4,48 +4,48 @@
 <context>
     <name>Data::SyncthingConnection</name>
     <message>
-        <location filename="../syncthingconnection.cpp" line="161"/>
+        <location filename="../syncthingconnection.cpp" line="162"/>
         <source>disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="163"/>
+        <location filename="../syncthingconnection.cpp" line="164"/>
         <source>reconnecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="165"/>
+        <location filename="../syncthingconnection.cpp" line="166"/>
         <source>connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="167"/>
+        <location filename="../syncthingconnection.cpp" line="168"/>
         <source>connected, scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="169"/>
+        <location filename="../syncthingconnection.cpp" line="170"/>
         <source>connected, paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="171"/>
+        <location filename="../syncthingconnection.cpp" line="172"/>
         <source>connected, synchronizing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="173"/>
-        <source>connected, out of sync</source>
+        <location filename="../syncthingconnection.cpp" line="174"/>
+        <source>connected, remote not in sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="175"/>
+        <location filename="../syncthingconnection.cpp" line="176"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="229"/>
-        <location filename="../syncthingconnection.cpp" line="421"/>
+        <location filename="../syncthingconnection.cpp" line="230"/>
+        <location filename="../syncthingconnection.cpp" line="422"/>
         <source>Connection configuration is insufficient.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -80,12 +80,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="718"/>
+        <location filename="../syncthingconnection.cpp" line="719"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="724"/>
+        <location filename="../syncthingconnection.cpp" line="725"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -241,7 +241,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="871"/>
+        <location filename="../syncthingconnection.cpp" line="890"/>
         <source>at offset %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -442,12 +442,12 @@
 <context>
     <name>SyncthingDir</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="152"/>
+        <location filename="../syncthingdir.cpp" line="164"/>
         <source>paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="154"/>
+        <location filename="../syncthingdir.cpp" line="166"/>
         <source>unshared</source>
         <translation type="unfinished"></translation>
     </message>
@@ -465,27 +465,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="21"/>
+        <location filename="../syncthingdir.cpp" line="23"/>
         <source>waiting to scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="23"/>
+        <location filename="../syncthingdir.cpp" line="21"/>
         <source>scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="25"/>
-        <source>preparing to sync</source>
+        <source>waiting to sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="27"/>
-        <source>synchronizing</source>
+        <source>preparing to sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="29"/>
+        <source>synchronizing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="31"/>
+        <source>cleaning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="33"/>
+        <source>waiting to clean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="35"/>
         <source>out of sync</source>
         <translation type="unfinished"></translation>
     </message>
@@ -493,22 +508,22 @@
 <context>
     <name>SyncthingDirType</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="38"/>
+        <location filename="../syncthingdir.cpp" line="44"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="40"/>
+        <location filename="../syncthingdir.cpp" line="46"/>
         <source>Send &amp; Receive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="42"/>
+        <location filename="../syncthingdir.cpp" line="48"/>
         <source>Send only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="44"/>
+        <location filename="../syncthingdir.cpp" line="50"/>
         <source>Receive only</source>
         <translation type="unfinished"></translation>
     </message>

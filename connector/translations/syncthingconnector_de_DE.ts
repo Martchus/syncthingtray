@@ -4,48 +4,52 @@
 <context>
     <name>Data::SyncthingConnection</name>
     <message>
-        <location filename="../syncthingconnection.cpp" line="161"/>
+        <location filename="../syncthingconnection.cpp" line="162"/>
         <source>disconnected</source>
         <translation>Verbindung getrennt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="163"/>
+        <location filename="../syncthingconnection.cpp" line="164"/>
         <source>reconnecting</source>
         <translation>Verbindung wird hergestellt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="165"/>
+        <location filename="../syncthingconnection.cpp" line="166"/>
         <source>connected</source>
         <translation>verbunden</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="167"/>
+        <location filename="../syncthingconnection.cpp" line="168"/>
         <source>connected, scanning</source>
         <translation>verbunden, scannt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="169"/>
+        <location filename="../syncthingconnection.cpp" line="170"/>
         <source>connected, paused</source>
         <translation>verbunden, pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="171"/>
+        <location filename="../syncthingconnection.cpp" line="172"/>
         <source>connected, synchronizing</source>
         <translation>verbunden, am Synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="173"/>
-        <source>connected, out of sync</source>
-        <translation>verbunden, nicht synchronisiert</translation>
+        <location filename="../syncthingconnection.cpp" line="174"/>
+        <source>connected, remote not in sync</source>
+        <translation>verbunden, entferntes Gerät nicht synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="175"/>
+        <source>connected, out of sync</source>
+        <translation type="vanished">verbunden, nicht synchronisiert</translation>
+    </message>
+    <message>
+        <location filename="../syncthingconnection.cpp" line="176"/>
         <source>unknown</source>
         <translation>Verbindungsstatus unbekannt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="229"/>
-        <location filename="../syncthingconnection.cpp" line="421"/>
+        <location filename="../syncthingconnection.cpp" line="230"/>
+        <location filename="../syncthingconnection.cpp" line="422"/>
         <source>Connection configuration is insufficient.</source>
         <translation>Verbindungskonfiguration is ungenügend</translation>
     </message>
@@ -80,12 +84,12 @@
         <translation>Fehler beim Abfragen des Syncthing-Logs: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="718"/>
+        <location filename="../syncthingconnection.cpp" line="719"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="724"/>
+        <location filename="../syncthingconnection.cpp" line="725"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht ausgelesen werden.</translation>
     </message>
@@ -241,7 +245,7 @@
         <translation>Fehler beim Anfordern der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="871"/>
+        <location filename="../syncthingconnection.cpp" line="890"/>
         <source>at offset %1</source>
         <translation>bei Zeichen %1</translation>
     </message>
@@ -444,12 +448,12 @@
 <context>
     <name>SyncthingDir</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="152"/>
+        <location filename="../syncthingdir.cpp" line="164"/>
         <source>paused</source>
         <translation>pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="154"/>
+        <location filename="../syncthingdir.cpp" line="166"/>
         <source>unshared</source>
         <translation>nicht geteilt</translation>
     </message>
@@ -467,27 +471,42 @@
         <translation>untätig</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="21"/>
+        <location filename="../syncthingdir.cpp" line="23"/>
         <source>waiting to scan</source>
         <translation>wartet aufs Scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="23"/>
+        <location filename="../syncthingdir.cpp" line="21"/>
         <source>scanning</source>
         <translation>scannt</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="25"/>
+        <source>waiting to sync</source>
+        <translation>wartet aufs Synchronisieren</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="27"/>
         <source>preparing to sync</source>
         <translation>bereitet Synchronisation vor</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="27"/>
+        <location filename="../syncthingdir.cpp" line="29"/>
         <source>synchronizing</source>
         <translation>synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="29"/>
+        <location filename="../syncthingdir.cpp" line="31"/>
+        <source>cleaning</source>
+        <translation>Versionen bereinigen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="33"/>
+        <source>waiting to clean</source>
+        <translation>wartet auf Bereinigung</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="35"/>
         <source>out of sync</source>
         <translation>nicht synchronisiert</translation>
     </message>
@@ -495,22 +514,22 @@
 <context>
     <name>SyncthingDirType</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="38"/>
+        <location filename="../syncthingdir.cpp" line="44"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="40"/>
+        <location filename="../syncthingdir.cpp" line="46"/>
         <source>Send &amp; Receive</source>
         <translation>Senden &amp; Empfangen</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="42"/>
+        <location filename="../syncthingdir.cpp" line="48"/>
         <source>Send only</source>
         <translation>Nur senden</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="44"/>
+        <location filename="../syncthingdir.cpp" line="50"/>
         <source>Receive only</source>
         <translation>Nur empfangen</translation>
     </message>

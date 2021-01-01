@@ -4,48 +4,52 @@
 <context>
     <name>Data::SyncthingConnection</name>
     <message>
-        <location filename="../syncthingconnection.cpp" line="161"/>
+        <location filename="../syncthingconnection.cpp" line="162"/>
         <source>disconnected</source>
         <translation>odpojeno</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="163"/>
+        <location filename="../syncthingconnection.cpp" line="164"/>
         <source>reconnecting</source>
         <translation>znovu se připojuje</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="165"/>
+        <location filename="../syncthingconnection.cpp" line="166"/>
         <source>connected</source>
         <translation>spojeno</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="167"/>
+        <location filename="../syncthingconnection.cpp" line="168"/>
         <source>connected, scanning</source>
         <translation>spojeno, skenování</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="169"/>
+        <location filename="../syncthingconnection.cpp" line="170"/>
         <source>connected, paused</source>
         <translation>spojeno, pozastaveno</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="171"/>
+        <location filename="../syncthingconnection.cpp" line="172"/>
         <source>connected, synchronizing</source>
         <translation>spojeno, synchronizuje se</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="173"/>
-        <source>connected, out of sync</source>
-        <translation>spojeno, nesesynchronizováno</translation>
+        <location filename="../syncthingconnection.cpp" line="174"/>
+        <source>connected, remote not in sync</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="175"/>
+        <source>connected, out of sync</source>
+        <translation type="vanished">spojeno, nesesynchronizováno</translation>
+    </message>
+    <message>
+        <location filename="../syncthingconnection.cpp" line="176"/>
         <source>unknown</source>
         <translation>neznámý stav spojení</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="229"/>
-        <location filename="../syncthingconnection.cpp" line="421"/>
+        <location filename="../syncthingconnection.cpp" line="230"/>
+        <location filename="../syncthingconnection.cpp" line="422"/>
         <source>Connection configuration is insufficient.</source>
         <translation>Nastavení spojení není dostačující.</translation>
     </message>
@@ -80,12 +84,12 @@
         <translation>Nedaří se vyžádat si záznamy událostí v Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="718"/>
+        <location filename="../syncthingconnection.cpp" line="719"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>Nedaří se nalézt certifikát, používaný Syncthing.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="724"/>
+        <location filename="../syncthingconnection.cpp" line="725"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>Nedaří se načíst certifikát, používaný Syncthing.</translation>
     </message>
@@ -241,7 +245,7 @@
         <translation>Nedaří se vyžádat si události úložiště: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="871"/>
+        <location filename="../syncthingconnection.cpp" line="890"/>
         <source>at offset %1</source>
         <translation>na posunu %1</translation>
     </message>
@@ -446,12 +450,12 @@
 <context>
     <name>SyncthingDir</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="152"/>
+        <location filename="../syncthingdir.cpp" line="164"/>
         <source>paused</source>
         <translation>pozastaveno</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="154"/>
+        <location filename="../syncthingdir.cpp" line="166"/>
         <source>unshared</source>
         <translation>nesdíleno</translation>
     </message>
@@ -469,27 +473,42 @@
         <translation>nečinné</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="21"/>
+        <location filename="../syncthingdir.cpp" line="23"/>
         <source>waiting to scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="23"/>
+        <location filename="../syncthingdir.cpp" line="21"/>
         <source>scanning</source>
         <translation>skenuje se</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="25"/>
-        <source>preparing to sync</source>
+        <source>waiting to sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="27"/>
+        <source>preparing to sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="29"/>
         <source>synchronizing</source>
         <translation>synchronizuje se</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="29"/>
+        <location filename="../syncthingdir.cpp" line="31"/>
+        <source>cleaning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="33"/>
+        <source>waiting to clean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="35"/>
         <source>out of sync</source>
         <translation>nesesynchronizováno</translation>
     </message>
@@ -497,22 +516,22 @@
 <context>
     <name>SyncthingDirType</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="38"/>
+        <location filename="../syncthingdir.cpp" line="44"/>
         <source>unknown</source>
         <translation>neznámé</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="40"/>
+        <location filename="../syncthingdir.cpp" line="46"/>
         <source>Send &amp; Receive</source>
         <translation>Odesílat a přijímat</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="42"/>
+        <location filename="../syncthingdir.cpp" line="48"/>
         <source>Send only</source>
         <translation>Pouze odesílat</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="44"/>
+        <location filename="../syncthingdir.cpp" line="50"/>
         <source>Receive only</source>
         <translation>Pouze přijímat</translation>
     </message>
