@@ -94,20 +94,6 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="guiElementsLabel">
-     <property name="text">
-      <string>Optional GUI elements</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QCheckBox" name="showTrafficCheckBox">
-     <property name="text">
-      <string>Traffic statistics</string>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="0">
     <widget class="QLabel" name="frameShapeLabel">
      <property name="text">
@@ -196,21 +182,21 @@
      </item>
     </widget>
    </item>
-   <item row="7" column="0">
+   <item row="8" column="0">
     <widget class="QLabel" name="colorsLabel">
      <property name="text">
       <string>Colors</string>
      </property>
     </widget>
    </item>
-   <item row="7" column="1">
+   <item row="8" column="1">
     <widget class="QCheckBox" name="brightTextColorsCheckBox">
      <property name="text">
       <string>Bright custom text colors (use for dark color scheme)</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="0">
+   <item row="9" column="0">
     <widget class="QLabel" name="positioningLabel">
      <property name="text">
       <string>Positioning</string>
@@ -220,7 +206,7 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
+   <item row="9" column="1">
     <layout class="QVBoxLayout" name="positioningVerticalLayout">
      <item>
       <widget class="QCheckBox" name="useCursorPosCheckBox">
@@ -318,6 +304,20 @@
       </layout>
      </item>
     </layout>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="guiElementsLabel">
+     <property name="text">
+      <string>Optional GUI elements</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="QCheckBox" name="showTrafficCheckBox">
+     <property name="text">
+      <string>Traffic statistics</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
