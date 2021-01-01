@@ -41,13 +41,12 @@ set(TS_FILES translations/${META_PROJECT_NAME}_cs_CZ.ts translations/${META_PROJ
              translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
-find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
+find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.10.0 REQUIRED)
 use_cpp_utilities(VISIBILITY PUBLIC)
 
 # find qtutilities (only headers and CMake modules used)
 find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.3.0 REQUIRED)
-list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
-list(APPEND PUBLIC_INCLUDE_DIRS ${QT_UTILITIES_INCLUDE_DIRS})
+use_qt_utilities(ONLY_HEADERS VISIBILITY PUBLIC)
 
 # link also explicitely against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
