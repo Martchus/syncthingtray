@@ -310,7 +310,8 @@ void restore()
     launcher.considerForReconnect = settings.value(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect).toBool();
     launcher.showButton = settings.value(QStringLiteral("showLauncherButton"), launcher.showButton).toBool();
     settings.beginGroup(QStringLiteral("tools"));
-    for (const QString &tool : settings.childGroups()) {
+    const auto childGroups = settings.childGroups();
+    for (const QString &tool : childGroups) {
         settings.beginGroup(tool);
         ToolParameter &toolParams = launcher.tools[tool];
         toolParams.autostart = settings.value(QStringLiteral("autostart"), toolParams.autostart).toBool();
