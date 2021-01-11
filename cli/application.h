@@ -15,7 +15,7 @@ namespace Cli {
 enum class OperationType { Status, PauseResume, WaitForIdle };
 
 struct RelevantDir {
-    RelevantDir(const Data::SyncthingDir *dir = nullptr, const QString &subDir = QString());
+    explicit RelevantDir(const Data::SyncthingDir *dir = nullptr, const QString &subDir = QString());
     operator bool() const;
     void notifyAboutRescan() const;
 
@@ -39,7 +39,7 @@ class Application : public QObject {
 
 public:
     Application();
-    ~Application();
+    ~Application() override;
 
     int exec(int argc, const char *const *argv);
 
