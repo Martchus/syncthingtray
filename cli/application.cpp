@@ -623,17 +623,19 @@ void Application::printStatus(const ArgumentOccurrence &)
     // display dirs
     if (!m_relevantDirs.empty()) {
         cout << TextAttribute::Bold << "Directories\n" << TextAttribute::Reset;
-        sort(m_relevantDirs.begin(), m_relevantDirs.end(),
-            [](const RelevantDir &dir1, const RelevantDir &dir2) { return dir1.dirObj->displayName() < dir2.dirObj->displayName(); });
-        for_each(m_relevantDirs.cbegin(), m_relevantDirs.cend(), bind(&Application::printDir, this, placeholders::_1));
+        std::sort(m_relevantDirs.begin(), m_relevantDirs.end(),
+            [](const RelevantDir &lhs, const RelevantDir &rhs) { return lhs.dirObj->displayName() < rhs.dirObj->displayName(); });
+        std::for_each(m_relevantDirs.cbegin(), m_relevantDirs.cend(), bind(&Application::printDir, this, std::placeholders::_1));
     }
 
     // display devs
     if (!m_relevantDevs.empty()) {
         cout << TextAttribute::Bold << "Devices\n" << TextAttribute::Reset;
-        sort(m_relevantDevs.begin(), m_relevantDevs.end(),
-            [](const SyncthingDev *dev1, const SyncthingDev *dev2) { return dev1->displayName() < dev2->displayName(); });
-        for_each(m_relevantDevs.cbegin(), m_relevantDevs.cend(), bind(&Application::printDev, this, placeholders::_1));
+        std::sort(m_relevantDevs.begin(), m_relevantDevs.end(), [](const SyncthingDev *lhs, const SyncthingDev *rhs) {
+            const auto lhsIsOwn = lhs->status == SyncthingDevStatus::OwnDevice, rhsIsOwn = rhs->status == SyncthingDevStatus::OwnDevice;
+            return lhsIsOwn != rhsIsOwn ? lhsIsOwn : lhs->displayName() < rhs->displayName();
+        });
+        std::for_each(m_relevantDevs.cbegin(), m_relevantDevs.cend(), bind(&Application::printDev, this, std::placeholders::_1));
     }
 
     cout.flush();

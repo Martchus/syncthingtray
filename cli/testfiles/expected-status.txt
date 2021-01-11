@@ -32,6 +32,12 @@ Directories
    Rescan interval               2 h, file system watcher disabled
 
 Devices
+ - .*
+   ID                            \w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w
+   Status                        own device
+   Addresses                     dynamic
+   Compression                   metadata
+
  - Test dev 1
    ID                            6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4
    Status                        disconnected
@@ -42,10 +48,4 @@ Devices
    ID                            MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7
    Status                        paused
    Addresses                     tcp://.*22001
-   Compression                   metadata
-
- - .*
-   ID                            \w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w
-   Status                        own device
-   Addresses                     dynamic
    Compression                   metadata
