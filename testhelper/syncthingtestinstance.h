@@ -4,7 +4,7 @@
 #include "./global.h"
 #include "./helper.h"
 
-#include "../connector/syncthingprocess.h"
+#include <syncthingconnector/syncthingprocess.h>
 
 #include <QCoreApplication>
 #include <QProcess>

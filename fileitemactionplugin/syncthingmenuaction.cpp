@@ -1,9 +1,9 @@
 #include "./syncthingmenuaction.h"
 #include "./syncthingfileitemaction.h"
 
-#include "../model/syncthingicons.h"
+#include <syncthingmodel/syncthingicons.h>
 
-#include "../connector/syncthingconnection.h"
+#include <syncthingconnector/syncthingconnection.h>
 
 #ifdef CPP_UTILITIES_DEBUG_BUILD
 #include <c++utilities/io/ansiescapecodes.h>

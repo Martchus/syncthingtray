@@ -3,12 +3,12 @@
 #include "../gui/trayicon.h"
 #include "../gui/traywidget.h"
 
-#include "../../widgets/misc/syncthinglauncher.h"
-#include "../../widgets/settings/settings.h"
+#include <syncthingwidgets/misc/syncthinglauncher.h>
+#include <syncthingwidgets/settings/settings.h>
 
-#include "../../connector/syncthingprocess.h"
+#include <syncthingconnector/syncthingprocess.h>
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-#include "../../connector/syncthingservice.h"
+#include <syncthingconnector/syncthingservice.h>
 #endif
 
 #include "resources/config.h"

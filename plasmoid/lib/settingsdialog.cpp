@@ -3,7 +3,7 @@
 
 #include "ui_appearanceoptionpage.h"
 
-#include "../../widgets/settings/settingsdialog.h"
+#include <syncthingwidgets/settings/settingsdialog.h>
 
 #include <qtutilities/settingsdialog/optioncategory.h>
 #include <qtutilities/settingsdialog/optioncategorymodel.h>

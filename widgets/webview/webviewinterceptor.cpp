@@ -1,7 +1,7 @@
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
 #include "./webviewinterceptor.h"
 
-#include "../../connector/syncthingconnectionsettings.h"
+#include <syncthingconnector/syncthingconnectionsettings.h>
 
 #include <QWebEngineProfile>
 #include <QWebEngineUrlRequestInterceptor>

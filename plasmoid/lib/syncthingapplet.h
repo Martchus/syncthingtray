@@ -1,20 +1,20 @@
 #ifndef SYNCTHINGAPPLET_H
 #define SYNCTHINGAPPLET_H
 
-#include "../../widgets/misc/dbusstatusnotifier.h"
-#include "../../widgets/misc/statusinfo.h"
-#include "../../widgets/webview/webviewdefs.h"
+#include <syncthingwidgets/misc/dbusstatusnotifier.h>
+#include <syncthingwidgets/misc/statusinfo.h>
+#include <syncthingwidgets/webview/webviewdefs.h>
 
-#include "../../model/syncthingdevicemodel.h"
-#include "../../model/syncthingdirectorymodel.h"
-#include "../../model/syncthingdownloadmodel.h"
-#include "../../model/syncthingrecentchangesmodel.h"
-#include "../../model/syncthingsortfiltermodel.h"
-#include "../../model/syncthingstatusselectionmodel.h"
+#include <syncthingmodel/syncthingdevicemodel.h>
+#include <syncthingmodel/syncthingdirectorymodel.h>
+#include <syncthingmodel/syncthingdownloadmodel.h>
+#include <syncthingmodel/syncthingrecentchangesmodel.h>
+#include <syncthingmodel/syncthingsortfiltermodel.h>
+#include <syncthingmodel/syncthingstatusselectionmodel.h>
 
-#include "../../connector/syncthingconnection.h"
-#include "../../connector/syncthingnotifier.h"
-#include "../../connector/syncthingservice.h"
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingnotifier.h>
+#include <syncthingconnector/syncthingservice.h>
 
 #include <qtutilities/aboutdialog/aboutdialog.h>
 #include <qtutilities/models/checklistmodel.h>

@@ -4,7 +4,7 @@
 
 #include "../settings/settings.h"
 
-#include "../../connector/syncthingconnection.h"
+#include <syncthingconnector/syncthingconnection.h>
 
 #include "resources/config.h"
 

@@ -3,22 +3,22 @@
 #include "./trayicon.h"
 #include "./traymenu.h"
 
-#include "../../widgets/misc/otherdialogs.h"
-#include "../../widgets/misc/syncthinglauncher.h"
-#include "../../widgets/misc/textviewdialog.h"
-#include "../../widgets/settings/settingsdialog.h"
-#include "../../widgets/webview/webviewdialog.h"
+#include <syncthingwidgets/misc/otherdialogs.h>
+#include <syncthingwidgets/misc/syncthinglauncher.h>
+#include <syncthingwidgets/misc/textviewdialog.h>
+#include <syncthingwidgets/settings/settingsdialog.h>
+#include <syncthingwidgets/webview/webviewdialog.h>
 
 #ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
-#include "../../widgets/misc/internalerrorsdialog.h"
+#include <syncthingwidgets/misc/internalerrorsdialog.h>
 #endif
 
-#include "../../model/syncthingicons.h"
+#include <syncthingmodel/syncthingicons.h>
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-#include "../../connector/syncthingservice.h"
+#include <syncthingconnector/syncthingservice.h>
 #endif
-#include "../../connector/utils.h"
+#include <syncthingconnector/utils.h>
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"

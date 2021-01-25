@@ -2,8 +2,8 @@
 #include "./colors.h"
 #include "./syncthingicons.h"
 
-#include "../connector/syncthingconnection.h"
-#include "../connector/utils.h"
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/utils.h>
 
 #include <c++utilities/conversion/stringconversion.h>
 

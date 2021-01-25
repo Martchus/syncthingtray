@@ -1,18 +1,18 @@
 #include "./trayicon.h"
 #include "./traywidget.h"
 
-#include "../../widgets/misc/internalerrorsdialog.h"
-#include "../../widgets/misc/statusinfo.h"
-#include "../../widgets/misc/textviewdialog.h"
-#include "../../widgets/settings/settings.h"
+#include <syncthingwidgets/misc/internalerrorsdialog.h>
+#include <syncthingwidgets/misc/statusinfo.h>
+#include <syncthingwidgets/misc/textviewdialog.h>
+#include <syncthingwidgets/settings/settings.h>
 
-#include "../../model/syncthingicons.h"
+#include <syncthingmodel/syncthingicons.h>
 
-#include "../../connector/syncthingconnection.h"
+#include <syncthingconnector/syncthingconnection.h>
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-#include "../../connector/syncthingservice.h"
+#include <syncthingconnector/syncthingservice.h>
 #endif
-#include "../../connector/utils.h"
+#include <syncthingconnector/utils.h>
 
 #include <qtutilities/misc/dialogutils.h>
 

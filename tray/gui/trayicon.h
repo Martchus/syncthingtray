@@ -3,7 +3,7 @@
 
 #include "./traymenu.h"
 
-#include "../../widgets/misc/dbusstatusnotifier.h"
+#include <syncthingwidgets/misc/dbusstatusnotifier.h>
 
 #include <c++utilities/chrono/datetime.h>
 

@@ -1,7 +1,7 @@
 #ifndef SYNCTHINGMENUACTION_H
 #define SYNCTHINGMENUACTION_H
 
-#include "../connector/syncthingnotifier.h"
+#include <syncthingconnector/syncthingnotifier.h>
 
 #include <KFileItemListProperties>
 

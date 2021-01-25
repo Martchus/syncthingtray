@@ -1,7 +1,7 @@
 #include "./textviewdialog.h"
 
-#include "../../connector/syncthingconnection.h"
-#include "../../connector/syncthingdir.h"
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingdir.h>
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"

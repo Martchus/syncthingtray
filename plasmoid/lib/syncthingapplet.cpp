@@ -1,20 +1,20 @@
 #include "./syncthingapplet.h"
 #include "./settingsdialog.h"
 
-#include "../../connector/syncthingservice.h"
-#include "../../connector/utils.h"
+#include <syncthingconnector/syncthingservice.h>
+#include <syncthingconnector/utils.h>
 
-#include "../../widgets/misc/direrrorsdialog.h"
-#include "../../widgets/misc/internalerrorsdialog.h"
-#include "../../widgets/misc/otherdialogs.h"
-#include "../../widgets/misc/textviewdialog.h"
-#include "../../widgets/settings/settings.h"
-#include "../../widgets/settings/settingsdialog.h"
-#include "../../widgets/webview/webviewdialog.h"
+#include <syncthingwidgets/misc/direrrorsdialog.h>
+#include <syncthingwidgets/misc/internalerrorsdialog.h>
+#include <syncthingwidgets/misc/otherdialogs.h>
+#include <syncthingwidgets/misc/textviewdialog.h>
+#include <syncthingwidgets/settings/settings.h>
+#include <syncthingwidgets/settings/settingsdialog.h>
+#include <syncthingwidgets/webview/webviewdialog.h>
 
-#include "../../model/syncthingicons.h"
+#include <syncthingmodel/syncthingicons.h>
 
-#include "../../connector/utils.h"
+#include <syncthingconnector/utils.h>
 
 #include "resources/config.h"
 #include "resources/qtconfig.h"

@@ -2,10 +2,10 @@
 #include "./dirbuttonsitemdelegate.h"
 #include "./helper.h"
 
-#include "../../connector/syncthingconnection.h"
-#include "../../model/syncthingdirectorymodel.h"
-#include "../../model/syncthingsortfiltermodel.h"
-#include "../../widgets/misc/direrrorsdialog.h"
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingmodel/syncthingdirectorymodel.h>
+#include <syncthingmodel/syncthingsortfiltermodel.h>
+#include <syncthingwidgets/misc/direrrorsdialog.h>
 
 #include <QClipboard>
 #include <QGuiApplication>

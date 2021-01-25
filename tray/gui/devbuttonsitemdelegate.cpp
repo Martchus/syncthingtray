@@ -1,7 +1,7 @@
 #include "./devbuttonsitemdelegate.h"
 
-#include "../../connector/syncthingconnection.h"
-#include "../../model/syncthingdevicemodel.h"
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingmodel/syncthingdevicemodel.h>
 
 #include <QApplication>
 #include <QBrush>

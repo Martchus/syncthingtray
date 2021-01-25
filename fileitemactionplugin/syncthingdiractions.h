@@ -1,7 +1,7 @@
 #ifndef SYNCTHINGDIRACTIONS_H
 #define SYNCTHINGDIRACTIONS_H
 
-#include "../connector/syncthingdir.h"
+#include <syncthingconnector/syncthingdir.h>
 
 #include "./syncthinginfoaction.h"
 

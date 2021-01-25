@@ -26,6 +26,9 @@ else()
     set(PLASMOID_DISABLED_BY_DEFAULT OFF)
 endif()
 
+# set the include directory used when building so the headers of the different backend libraries can be found at build time
+set(TARGET_INCLUDE_DIRECTORY_BUILD_INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+
 # add options for partial build
 option(NO_LIBSYNCTHING "whether building Syncthing itself as a library should be skipped" ON)
 option(NO_CLI "whether building CLI should be skipped" OFF)

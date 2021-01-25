@@ -3,8 +3,8 @@
 
 #include "./args.h"
 
-#include "../connector/syncthingconnection.h"
-#include "../connector/syncthingconnectionsettings.h"
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingconnectionsettings.h>
 
 #include <QObject>
 

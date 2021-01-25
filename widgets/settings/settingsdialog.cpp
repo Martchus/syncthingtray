@@ -2,15 +2,15 @@
 
 #include "../misc/syncthinglauncher.h"
 
-#include "../../connector/syncthingconfig.h"
-#include "../../connector/syncthingconnection.h"
-#include "../../connector/syncthingprocess.h"
-#include "../../connector/utils.h"
-#include "../../model/syncthingstatuscomputionmodel.h"
+#include <syncthingconnector/syncthingconfig.h>
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingprocess.h>
+#include <syncthingconnector/utils.h>
+#include <syncthingmodel/syncthingstatuscomputionmodel.h>
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-#include "../../connector/syncthingservice.h"
-#include "../../model/colors.h"
-#include "../../model/syncthingicons.h"
+#include <syncthingconnector/syncthingservice.h>
+#include <syncthingmodel/colors.h>
+#include <syncthingmodel/syncthingicons.h>
 #endif
 
 #include "ui_appearanceoptionpage.h"

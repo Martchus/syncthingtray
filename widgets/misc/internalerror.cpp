@@ -3,8 +3,8 @@
 
 #include "../settings/settings.h"
 
-#include "../../connector/syncthingconnection.h"
-#include "../../connector/syncthingservice.h"
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingservice.h>
 
 #include <QNetworkReply>
 

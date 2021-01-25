@@ -1,6 +1,6 @@
 #include "./syncthingkiller.h"
 
-#include "../../connector/syncthingprocess.h"
+#include <syncthingconnector/syncthingprocess.h>
 #define SYNCTHINGTESTHELPER_FOR_CLI
 #include "../../testhelper/helper.h"
 

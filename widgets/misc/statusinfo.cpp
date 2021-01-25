@@ -1,9 +1,9 @@
 #include "./statusinfo.h"
 
-#include "../../connector/syncthingconnection.h"
-#include "../../connector/syncthingdev.h"
-#include "../../connector/utils.h"
-#include "../../model/syncthingicons.h"
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingdev.h>
+#include <syncthingconnector/utils.h>
+#include <syncthingmodel/syncthingicons.h>
 
 #include <QCoreApplication>
 #include <QIcon>

@@ -1,7 +1,7 @@
 #include "./syncthingmodel.h"
 #include "./syncthingicons.h"
 
-#include "../connector/syncthingconnection.h"
+#include <syncthingconnector/syncthingconnection.h>
 
 namespace Data {
 

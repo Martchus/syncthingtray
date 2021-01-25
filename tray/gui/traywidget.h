@@ -1,18 +1,18 @@
 #ifndef TRAY_WIDGET_H
 #define TRAY_WIDGET_H
 
-#include "../../widgets/settings/settings.h"
-#include "../../widgets/webview/webviewdefs.h"
+#include <syncthingwidgets/settings/settings.h>
+#include <syncthingwidgets/webview/webviewdefs.h>
 
-#include "../../model/syncthingdevicemodel.h"
-#include "../../model/syncthingdirectorymodel.h"
-#include "../../model/syncthingdownloadmodel.h"
-#include "../../model/syncthingrecentchangesmodel.h"
-#include "../../model/syncthingsortfiltermodel.h"
+#include <syncthingmodel/syncthingdevicemodel.h>
+#include <syncthingmodel/syncthingdirectorymodel.h>
+#include <syncthingmodel/syncthingdownloadmodel.h>
+#include <syncthingmodel/syncthingrecentchangesmodel.h>
+#include <syncthingmodel/syncthingsortfiltermodel.h>
 
-#include "../../connector/syncthingconnection.h"
-#include "../../connector/syncthingnotifier.h"
-#include "../../connector/syncthingprocess.h"
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingnotifier.h>
+#include <syncthingconnector/syncthingprocess.h>
 
 #include <QWidget>
 

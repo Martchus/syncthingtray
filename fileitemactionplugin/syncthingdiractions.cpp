@@ -1,10 +1,10 @@
 #include "./syncthingdiractions.h"
 #include "./syncthingfileitemactionstaticdata.h"
 
-#include "../model/syncthingicons.h"
+#include <syncthingmodel/syncthingicons.h>
 
-#include "../connector/syncthingdir.h"
-#include "../connector/utils.h"
+#include <syncthingconnector/syncthingdir.h>
+#include <syncthingconnector/utils.h>
 
 using namespace Data;
 

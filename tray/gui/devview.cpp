@@ -2,9 +2,9 @@
 #include "./devbuttonsitemdelegate.h"
 #include "./helper.h"
 
-#include "../../connector/syncthingdev.h"
-#include "../../model/syncthingdevicemodel.h"
-#include "../../model/syncthingsortfiltermodel.h"
+#include <syncthingconnector/syncthingdev.h>
+#include <syncthingmodel/syncthingdevicemodel.h>
+#include <syncthingmodel/syncthingsortfiltermodel.h>
 
 #include <QClipboard>
 #include <QGuiApplication>

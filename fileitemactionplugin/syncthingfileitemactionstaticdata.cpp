@@ -1,10 +1,10 @@
 #include "./syncthingfileitemactionstaticdata.h"
 
-#include "../model/syncthingicons.h"
+#include <syncthingmodel/syncthingicons.h>
 
-#include "../connector/syncthingconfig.h"
-#include "../connector/syncthingconnection.h"
-#include "../connector/syncthingconnectionsettings.h"
+#include <syncthingconnector/syncthingconfig.h>
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingconnectionsettings.h>
 
 #include <c++utilities/application/argumentparser.h>
 #include <c++utilities/io/ansiescapecodes.h>

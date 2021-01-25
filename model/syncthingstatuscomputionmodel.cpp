@@ -1,6 +1,6 @@
 #include "./syncthingstatuscomputionmodel.h"
 
-#include "../connector/syncthingconnectionsettings.h"
+#include <syncthingconnector/syncthingconnectionsettings.h>
 
 #include <type_traits>
 

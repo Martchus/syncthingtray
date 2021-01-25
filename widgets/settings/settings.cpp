@@ -3,13 +3,13 @@
 #include "../misc/syncthingkiller.h"
 #include "../misc/syncthinglauncher.h"
 
-#include "../../connector/qstringhash.h"
-#include "../../connector/syncthingconnection.h"
-#include "../../connector/syncthingconnectionsettings.h"
-#include "../../connector/syncthingnotifier.h"
-#include "../../connector/syncthingprocess.h"
+#include <syncthingconnector/qstringhash.h>
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingconnectionsettings.h>
+#include <syncthingconnector/syncthingnotifier.h>
+#include <syncthingconnector/syncthingprocess.h>
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-#include "../../connector/syncthingservice.h"
+#include <syncthingconnector/syncthingservice.h>
 #endif
 
 // use meta-data of syncthingtray application here

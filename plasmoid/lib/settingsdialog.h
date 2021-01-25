@@ -1,9 +1,9 @@
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
-#include "../../model/syncthingstatusselectionmodel.h"
+#include <syncthingmodel/syncthingstatusselectionmodel.h>
 
-#include "../../widgets/settings/settingsdialog.h"
+#include <syncthingwidgets/settings/settingsdialog.h>
 
 #include <qtutilities/settingsdialog/optionpage.h>
 

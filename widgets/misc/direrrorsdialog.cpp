@@ -1,8 +1,8 @@
 #include "./direrrorsdialog.h"
 
-#include "../../connector/syncthingconnection.h"
-#include "../../connector/syncthingdir.h"
-#include "../../connector/utils.h"
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingdir.h>
+#include <syncthingconnector/utils.h>
 
 #include <QDir>
 #include <QHBoxLayout>

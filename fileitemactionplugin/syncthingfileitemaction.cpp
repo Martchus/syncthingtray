@@ -3,7 +3,7 @@
 #include "./syncthinginfoaction.h"
 #include "./syncthingmenuaction.h"
 
-#include "../model/syncthingicons.h"
+#include <syncthingmodel/syncthingicons.h>
 
 #include <KFileItem>
 #include <KPluginFactory>

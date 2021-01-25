@@ -3,8 +3,8 @@
 
 #include "./syncthingmodel.h"
 
-#include "../connector/syncthingconnectionstatus.h"
-#include "../connector/syncthingdir.h"
+#include <syncthingconnector/syncthingconnectionstatus.h>
+#include <syncthingconnector/syncthingdir.h>
 
 #include <deque>
 

@@ -1,6 +1,6 @@
 #include "./dirbuttonsitemdelegate.h"
 
-#include "../model/syncthingdirectorymodel.h"
+#include <syncthingmodel/syncthingdirectorymodel.h>
 
 #include <QApplication>
 #include <QBrush>

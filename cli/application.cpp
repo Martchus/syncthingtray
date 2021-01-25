@@ -4,8 +4,8 @@
 #include "./jsdefs.h"
 #include "./jsincludes.h"
 
-#include "../connector/syncthingconfig.h"
-#include "../connector/utils.h"
+#include <syncthingconnector/syncthingconfig.h>
+#include <syncthingconnector/utils.h>
 
 // use header-only functions waitForSignals() and signalInfo() from test utilities; disable assertions via macro
 #define SYNCTHINGTESTHELPER_FOR_CLI

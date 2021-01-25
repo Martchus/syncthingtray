@@ -1,7 +1,7 @@
 #ifndef SYNCTHINGFILEITEMACTIONSTATICDATA_H
 #define SYNCTHINGFILEITEMACTIONSTATICDATA_H
 
-#include "../connector/syncthingconnection.h"
+#include <syncthingconnector/syncthingconnection.h>
 
 /*!
  * \brief The SyncthingFileItemActionStaticData class holds objects required during the whole application's live time.

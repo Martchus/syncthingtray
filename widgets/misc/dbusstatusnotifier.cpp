@@ -1,7 +1,7 @@
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
 #include "./dbusstatusnotifier.h"
 
-#include "../../model/syncthingicons.h"
+#include <syncthingmodel/syncthingicons.h>
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"

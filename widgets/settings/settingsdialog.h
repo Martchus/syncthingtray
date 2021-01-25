@@ -5,7 +5,7 @@
 
 #include "../webview/webviewdefs.h"
 
-#include "../../model/syncthingicons.h"
+#include <syncthingmodel/syncthingicons.h>
 
 #include <qtutilities/settingsdialog/optionpage.h>
 #include <qtutilities/settingsdialog/qtsettings.h>

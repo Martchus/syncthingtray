@@ -3,7 +3,7 @@
 
 #include "../global.h"
 
-#include "../../connector/syncthingprocess.h"
+#include <syncthingconnector/syncthingprocess.h>
 #include "../../libsyncthing/interface.h"
 
 #include <QByteArray>

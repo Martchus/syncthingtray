@@ -1,6 +1,6 @@
 #include "./downloaditemdelegate.h"
 
-#include "../../model/syncthingdownloadmodel.h"
+#include <syncthingmodel/syncthingdownloadmodel.h>
 
 #include <QApplication>
 #include <QBrush>

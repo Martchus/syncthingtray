@@ -2,8 +2,8 @@
 #include "./downloaditemdelegate.h"
 #include "./helper.h"
 
-#include "../../connector/syncthingdir.h"
-#include "../../model/syncthingdownloadmodel.h"
+#include <syncthingconnector/syncthingdir.h>
+#include <syncthingmodel/syncthingdownloadmodel.h>
 
 #include <QClipboard>
 #include <QGuiApplication>

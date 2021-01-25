@@ -2,7 +2,7 @@
 #include "./trayicon.h"
 #include "./traywidget.h"
 
-#include "../../widgets/settings/settings.h"
+#include <syncthingwidgets/settings/settings.h>
 
 #include <qtutilities/misc/dialogutils.h>
 

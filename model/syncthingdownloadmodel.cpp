@@ -1,7 +1,7 @@
 #include "./syncthingdownloadmodel.h"
 
-#include "../connector/syncthingconnection.h"
-#include "../connector/utils.h"
+#include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/utils.h>
 
 #include <QStringBuilder>
 
