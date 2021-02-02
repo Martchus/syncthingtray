@@ -301,10 +301,12 @@ void restore()
     auto &launcher = v.launcher;
     launcher.autostartEnabled = settings.value(QStringLiteral("syncthingAutostart"), launcher.autostartEnabled).toBool();
     launcher.useLibSyncthing = settings.value(QStringLiteral("useLibSyncthing"), launcher.useLibSyncthing).toBool();
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     launcher.libSyncthing.configDir = settings.value(QStringLiteral("libSyncthingConfigDir"), launcher.libSyncthing.configDir).toString();
     launcher.libSyncthing.dataDir = settings.value(QStringLiteral("libSyncthingDataDir"), launcher.libSyncthing.dataDir).toString();
     launcher.libSyncthing.logLevel = static_cast<LibSyncthing::LogLevel>(
         settings.value(QStringLiteral("libSyncthingLogLevel"), static_cast<int>(launcher.libSyncthing.logLevel)).toInt());
+#endif
     launcher.syncthingPath = settings.value(QStringLiteral("syncthingPath"), launcher.syncthingPath).toString();
     launcher.syncthingArgs = settings.value(QStringLiteral("syncthingArgs"), launcher.syncthingArgs).toString();
     launcher.considerForReconnect = settings.value(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect).toBool();
@@ -406,9 +408,11 @@ void save()
     const auto &launcher = v.launcher;
     settings.setValue(QStringLiteral("syncthingAutostart"), launcher.autostartEnabled);
     settings.setValue(QStringLiteral("useLibSyncthing"), launcher.useLibSyncthing);
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     settings.setValue(QStringLiteral("libSyncthingConfigDir"), launcher.libSyncthing.configDir);
     settings.setValue(QStringLiteral("libSyncthingDataDir"), launcher.libSyncthing.dataDir);
     settings.setValue(QStringLiteral("libSyncthingLogLevel"), static_cast<int>(launcher.libSyncthing.logLevel));
+#endif
     settings.setValue(QStringLiteral("syncthingPath"), launcher.syncthingPath);
     settings.setValue(QStringLiteral("syncthingArgs"), launcher.syncthingArgs);
     settings.setValue(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect);

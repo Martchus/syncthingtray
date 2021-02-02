@@ -122,7 +122,9 @@ private Q_SLOTS:
     void handleSyncthingError(QProcess::ProcessError error);
     bool isRunning() const;
     void launch();
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void updateLibSyncthingLogLevel();
+#endif
     void stop();
     void restoreDefaultArguments();
 

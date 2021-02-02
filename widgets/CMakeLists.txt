@@ -90,7 +90,7 @@ option(USE_LIBSYNCTHING "whether libsyncthing should be included for the launche
 if (USE_LIBSYNCTHING)
     find_package(syncthing ${META_APP_VERSION} REQUIRED)
     use_syncthing()
-    set_source_files_properties(misc/syncthinglauncher.cpp PROPERTIES COMPILE_DEFINITIONS SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
+    list(APPEND META_PUBLIC_COMPILE_DEFINITIONS SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
 endif ()
 
 # configure logging JavaScript events to stderr

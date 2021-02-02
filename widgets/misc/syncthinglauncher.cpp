@@ -30,7 +30,9 @@ SyncthingLauncher *SyncthingLauncher::s_mainInstance = nullptr;
  */
 SyncthingLauncher::SyncthingLauncher(QObject *parent)
     : QObject(parent)
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_libsyncthingLogLevel(LibSyncthing::LogLevel::Info)
+#endif
     , m_manuallyStopped(true)
     , m_emittingOutput(false)
 {
@@ -100,8 +102,12 @@ void SyncthingLauncher::launch(const QString &program, const QStringList &argume
         return;
     }
 
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     // use libsyncthing
     m_startFuture = QtConcurrent::run(std::bind(&SyncthingLauncher::runLibSyncthing, this, LibSyncthing::RuntimeOptions{}));
+#else
+    showLibSyncthingNotSupported();
+#endif
 }
 
 /*!
@@ -118,16 +124,21 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
         return;
     }
     if (launcherSettings.useLibSyncthing) {
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
         LibSyncthing::RuntimeOptions options;
         options.configDir = launcherSettings.libSyncthing.configDir.toStdString();
         options.dataDir = launcherSettings.libSyncthing.configDir.toStdString();
         setLibSyncthingLogLevel(launcherSettings.libSyncthing.logLevel);
         launch(options);
+#else
+        showLibSyncthingNotSupported();
+#endif
     } else {
         launch(launcherSettings.syncthingPath, SyncthingProcess::splitArguments(launcherSettings.syncthingArgs));
     }
 }
 
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 /*!
  * \brief Launches a Syncthing instance using the internal library with the specified \a runtimeOptions.
  * \remarks Does nothing if already running an instance.
@@ -140,6 +151,7 @@ void SyncthingLauncher::launch(const LibSyncthing::RuntimeOptions &runtimeOption
     m_manuallyStopped = false;
     m_startFuture = QtConcurrent::run(std::bind(&SyncthingLauncher::runLibSyncthing, this, runtimeOptions));
 }
+#endif
 
 void SyncthingLauncher::terminate()
 {
@@ -203,11 +215,9 @@ static const char *const logLevelStrings[] = {
     "[WARNING] ",
     "[FATAL]   ",
 };
-#endif
 
 void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, const char *message, size_t messageSize)
 {
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     if (level < m_libsyncthingLogLevel) {
         return;
     }
@@ -219,12 +229,8 @@ void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, cons
     messageData.append('\n');
 
     handleOutputAvailable(move(messageData));
-#else
-    CPP_UTILITIES_UNUSED(level)
-    CPP_UTILITIES_UNUSED(message)
-    CPP_UTILITIES_UNUSED(messageSize)
-#endif
 }
+#endif
 
 void SyncthingLauncher::handleOutputAvailable(QByteArray &&data)
 {
@@ -235,27 +241,29 @@ void SyncthingLauncher::handleOutputAvailable(QByteArray &&data)
     }
 }
 
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions)
 {
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
     emit runningChanged(true);
     const auto exitCode = LibSyncthing::runSyncthing(runtimeOptions);
     emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
     emit runningChanged(false);
-#else
-    CPP_UTILITIES_UNUSED(runtimeOptions)
-    handleOutputAvailable(QByteArray("libsyncthing support not enabled"));
-    emit exited(-1, QProcess::CrashExit);
-#endif
 }
 
 void SyncthingLauncher::stopLibSyncthing()
 {
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::stopSyncthing();
     // no need to emit exited/runningChanged here; that is already done in runLibSyncthing()
-#endif
 }
+
+#else
+void SyncthingLauncher::showLibSyncthingNotSupported()
+{
+    handleOutputAvailable(QByteArray("libsyncthing support not enabled"));
+    emit exited(-1, QProcess::CrashExit);
+}
+#endif
+
 
 } // namespace Data

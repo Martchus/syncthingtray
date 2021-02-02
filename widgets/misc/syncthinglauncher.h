@@ -3,15 +3,14 @@
 
 #include "../global.h"
 
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+#include <syncthing/interface.h>
+#endif
+
 #include <syncthingconnector/syncthingprocess.h>
-#include "../../libsyncthing/interface.h"
 
 #include <QByteArray>
 #include <QFuture>
-
-namespace LibSyncthing {
-struct RuntimeOptions;
-}
 
 namespace Settings {
 struct Launcher;
@@ -35,12 +34,17 @@ public:
     bool isManuallyStopped() const;
     bool isEmittingOutput() const;
     void setEmittingOutput(bool emittingOutput);
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::LogLevel libSyncthingLogLevel() const;
     void setLibSyncthingLogLevel(LibSyncthing::LogLevel logLevel);
+#endif
     static bool isLibSyncthingAvailable();
     static SyncthingLauncher *mainInstance();
     static void setMainInstance(SyncthingLauncher *mainInstance);
     static QString libSyncthingVersionInfo();
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    void launch(const LibSyncthing::RuntimeOptions &runtimeOptions);
+#endif
 
 Q_SIGNALS:
     void confirmKill();
@@ -52,7 +56,6 @@ Q_SIGNALS:
 public Q_SLOTS:
     void launch(const QString &program, const QStringList &arguments);
     void launch(const Settings::Launcher &launcherSettings);
-    void launch(const LibSyncthing::RuntimeOptions &runtimeOptions);
     void terminate();
     void kill();
     void tearDownLibSyncthing();
@@ -61,11 +64,17 @@ private Q_SLOTS:
     void handleProcessReadyRead();
     void handleProcessStateChanged(QProcess::ProcessState newState);
     void handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
-    void handleLoggingCallback(LibSyncthing::LogLevel, const char *message, std::size_t messageSize);
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions);
     void stopLibSyncthing();
+#else
+    void showLibSyncthingNotSupported();
+#endif
 
 private:
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    void handleLoggingCallback(LibSyncthing::LogLevel, const char *message, std::size_t messageSize);
+#endif
     void handleOutputAvailable(QByteArray &&data);
 
     SyncthingProcess m_process;
@@ -73,7 +82,9 @@ private:
     QFuture<void> m_stopFuture;
     QByteArray m_outputBuffer;
     CppUtilities::DateTime m_futureStarted;
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::LogLevel m_libsyncthingLogLevel;
+#endif
     bool m_manuallyStopped;
     bool m_emittingOutput;
     bool m_useLibSyncthing;
@@ -118,6 +129,7 @@ inline bool SyncthingLauncher::isEmittingOutput() const
     return m_emittingOutput;
 }
 
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 /// \brief Returns the log level used for libsyncthing.
 inline LibSyncthing::LogLevel SyncthingLauncher::libSyncthingLogLevel() const
 {
@@ -129,6 +141,7 @@ inline void SyncthingLauncher::setLibSyncthingLogLevel(LibSyncthing::LogLevel lo
 {
     m_libsyncthingLogLevel = logLevel;
 }
+#endif
 
 /// \brief Returns the SyncthingLauncher instance previously assigned via SyncthingLauncher::setMainInstance().
 inline SyncthingLauncher *SyncthingLauncher::mainInstance()

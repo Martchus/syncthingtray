@@ -1,10 +1,14 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <syncthingconnector/syncthingconnectionsettings.h>
-#include "../../libsyncthing/interface.h"
-#include <syncthingmodel/syncthingicons.h>
 #include "../global.h"
+
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+#include <syncthing/interface.h>
+#endif
+
+#include <syncthingconnector/syncthingconnectionsettings.h>
+#include <syncthingmodel/syncthingicons.h>
 
 #include <qtutilities/settingsdialog/qtsettings.h>
 
@@ -81,11 +85,13 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
     bool considerForReconnect = false;
     bool showButton = false;
 
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     struct SYNCTHINGWIDGETS_EXPORT LibSyncthing {
         QString configDir;
         QString dataDir;
         ::LibSyncthing::LogLevel logLevel = ::LibSyncthing::LogLevel::Info;
     } libSyncthing;
+#endif
 
     static Data::SyncthingProcess &toolProcess(const QString &tool);
     static std::vector<Data::SyncthingProcess *> allProcesses();

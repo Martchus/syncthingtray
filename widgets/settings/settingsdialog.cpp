@@ -950,8 +950,10 @@ QWidget *LauncherOptionPage::setupWidget()
         connect(m_launcher, &SyncthingLauncher::outputAvailable, this, &LauncherOptionPage::handleSyncthingOutputAvailable, Qt::QueuedConnection);
         connect(m_launcher, &SyncthingLauncher::exited, this, &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
         connect(m_launcher, &SyncthingLauncher::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
         connect(ui()->logLevelComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
             &LauncherOptionPage::updateLibSyncthingLogLevel);
+#endif
         m_launcher->setEmittingOutput(true);
     }
     connect(ui()->launchNowPushButton, &QPushButton::clicked, this, &LauncherOptionPage::launch);
@@ -966,9 +968,11 @@ bool LauncherOptionPage::apply()
     if (m_tool.isEmpty()) {
         settings.autostartEnabled = ui()->enabledCheckBox->isChecked();
         settings.useLibSyncthing = ui()->useBuiltInVersionCheckBox->isChecked();
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
         settings.libSyncthing.configDir = ui()->configDirPathSelection->lineEdit()->text();
         settings.libSyncthing.dataDir = ui()->dataDirPathSelection->lineEdit()->text();
         settings.libSyncthing.logLevel = static_cast<LibSyncthing::LogLevel>(ui()->logLevelComboBox->currentIndex());
+#endif
         settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
         settings.syncthingArgs = ui()->argumentsLineEdit->text();
         settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
@@ -989,9 +993,11 @@ void LauncherOptionPage::reset()
         ui()->enabledCheckBox->setChecked(settings.autostartEnabled);
         ui()->useBuiltInVersionCheckBox->setChecked(settings.useLibSyncthing);
         ui()->useBuiltInVersionCheckBox->setVisible(settings.useLibSyncthing || SyncthingLauncher::isLibSyncthingAvailable());
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
         ui()->configDirPathSelection->lineEdit()->setText(settings.libSyncthing.configDir);
         ui()->dataDirPathSelection->lineEdit()->setText(settings.libSyncthing.dataDir);
         ui()->logLevelComboBox->setCurrentIndex(static_cast<int>(settings.libSyncthing.logLevel));
+#endif
         ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
         ui()->argumentsLineEdit->setText(settings.syncthingArgs);
         ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
@@ -1128,10 +1134,12 @@ void LauncherOptionPage::launch()
     handleSyncthingLaunched(true);
 }
 
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 void LauncherOptionPage::updateLibSyncthingLogLevel()
 {
     m_launcher->setLibSyncthingLogLevel(static_cast<LibSyncthing::LogLevel>(ui()->logLevelComboBox->currentIndex()));
 }
+#endif
 
 void LauncherOptionPage::stop()
 {
