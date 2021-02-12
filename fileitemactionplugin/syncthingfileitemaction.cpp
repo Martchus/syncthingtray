@@ -12,6 +12,7 @@
 #include <QAction>
 
 #include <functional>
+#include <utility>
 
 using namespace std;
 using namespace Data;
@@ -72,7 +73,8 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     // get all paths
     QStringList paths;
     paths.reserve(fileItemInfo.items().size());
-    for (const KFileItem &item : fileItemInfo.items()) {
+    const auto items = fileItemInfo.items();
+    for (const KFileItem &item : items) {
         if (!item.isLocalFile()) {
             // don't show any actions when remote files are selected
             return actions;
@@ -87,7 +89,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     const SyncthingDir *lastDir = nullptr;
     for (const SyncthingDir &dir : dirs) {
         QStringRef dirPath(dir.pathWithoutTrailingSlash());
-        for (const QString &path : paths) {
+        for (const QString &path : std::as_const(paths)) {
             if (path == dirPath) {
                 lastDir = &dir;
                 if (!detectedDirs.contains(lastDir)) {
@@ -114,7 +116,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         }
         actions << new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")), rescanLabel, parent);
         if (connection.isConnected()) {
-            for (const SyncthingItem &item : detectedItems) {
+            for (const SyncthingItem &item : std::as_const(detectedItems)) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, item.dir->id, item.path));
             }
         } else {
@@ -128,7 +130,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         actions << new QAction(QIcon::fromTheme(QStringLiteral("folder-sync")),
             detectedDirs.size() == 1 ? tr("Rescan \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Rescan selected directories"), parent);
         if (connection.isConnected()) {
-            for (const SyncthingDir *dir : detectedDirs) {
+            for (const SyncthingDir *dir : std::as_const(detectedDirs)) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, dir->id, QString()));
                 containingDirs.removeAll(dir);
             }
@@ -140,7 +142,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         QStringList ids;
         ids.reserve(detectedDirs.size());
         bool isPaused = false;
-        for (const SyncthingDir *dir : detectedDirs) {
+        for (const SyncthingDir *const dir : std::as_const(detectedDirs)) {
             ids << dir->id;
             if (dir->paused) {
                 isPaused = true;
@@ -169,7 +171,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
             containingDirs.size() == 1 ? tr("Rescan \"%1\"").arg(containingDirs.front()->displayName()) : tr("Rescan containing directories"),
             parent);
         if (connection.isConnected()) {
-            for (const SyncthingDir *dir : containingDirs) {
+            for (const SyncthingDir *dir : std::as_const(containingDirs)) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, dir->id, QString()));
             }
         } else {
@@ -180,7 +182,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         QStringList ids;
         ids.reserve(containingDirs.size());
         bool isPaused = false;
-        for (const SyncthingDir *dir : containingDirs) {
+        for (const SyncthingDir *dir : std::as_const(containingDirs)) {
             ids << dir->id;
             if (dir->paused) {
                 isPaused = true;
