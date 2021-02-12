@@ -786,7 +786,7 @@ void SyncthingConnection::readConnections()
                     dev.status = SyncthingDevStatus::Disconnected;
                 }
             }
-            dev.paused = connectionObj.value(QLatin1String("paused")).toBool(false);
+            dev.paused = dev.status == SyncthingDevStatus::OwnDevice ? false : connectionObj.value(QLatin1String("paused")).toBool(false);
             dev.totalIncomingTraffic = jsonValueToInt(connectionObj.value(QLatin1String("inBytesTotal")));
             dev.totalOutgoingTraffic = jsonValueToInt(connectionObj.value(QLatin1String("outBytesTotal")));
             dev.connectionAddress = connectionObj.value(QLatin1String("address")).toString();
@@ -1852,8 +1852,8 @@ void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eve
         // don't mess with the status of the own device
         if (devInfo->status != SyncthingDevStatus::OwnDevice) {
             devInfo->status = status;
+            devInfo->paused = paused;
         }
-        devInfo->paused = paused;
         emit devStatusChanged(*devInfo, index);
     }
 }

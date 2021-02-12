@@ -914,6 +914,7 @@ void SyncthingConnection::emitMyIdChanged(const QString &newId)
         if (dev.id == newId) {
             if (dev.status != SyncthingDevStatus::OwnDevice) {
                 dev.status = SyncthingDevStatus::OwnDevice;
+                dev.paused = false;
                 emit devStatusChanged(dev, row);
             }
         } else if (dev.status == SyncthingDevStatus::OwnDevice) {
