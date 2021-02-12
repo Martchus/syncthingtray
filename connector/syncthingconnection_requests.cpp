@@ -626,8 +626,13 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
         devItem->compression = devObj.value(QLatin1String("compression")).toString();
         devItem->certName = devObj.value(QLatin1String("certName")).toString();
         devItem->introducer = devObj.value(QLatin1String("introducer")).toBool(false);
-        devItem->status = devItem->id == m_myId ? SyncthingDevStatus::OwnDevice : SyncthingDevStatus::Unknown;
-        devItem->paused = devObj.value(QLatin1String("paused")).toBool(devItem->paused);
+        if (devItem->id == m_myId) {
+            devItem->status = SyncthingDevStatus::OwnDevice;
+            devItem->paused = false;
+        } else {
+            devItem->status = SyncthingDevStatus::Unknown;
+            devItem->paused = devObj.value(QLatin1String("paused")).toBool(devItem->paused);
+        }
     }
 
     m_devs.swap(newDevs);
