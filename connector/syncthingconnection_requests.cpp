@@ -1202,7 +1202,8 @@ void SyncthingConnection::readDeviceStatistics()
             const QJsonObject devObj(replyObj.value(devInfo.id).toObject());
             if (!devObj.isEmpty()) {
                 try {
-                    devInfo.lastSeen = DateTime::fromIsoStringLocal(devObj.value(QLatin1String("lastSeen")).toString().toUtf8().data());
+                    const auto [localTime, utcOffset] = DateTime::fromIsoString(devObj.value(QLatin1String("lastSeen")).toString().toUtf8().data());
+                    devInfo.lastSeen = (localTime - utcOffset) > DateTime::unixEpochStart() ? localTime : DateTime();
                     emit devStatusChanged(devInfo, index);
                 } catch (const ConversionException &) {
                     devInfo.lastSeen = DateTime();
