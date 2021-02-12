@@ -6,7 +6,8 @@ rather than the regular home to separate testing from production.
 1. Build as usual, ensure `NO_PLASMOID` is turned off
 2. Add build step to execute the custom target `init_plasmoid_testing` which
    will install the Plasmoid in a test directory which is `$CMAKE_BUILD_DIR/plasmoid-testing`
-   by default (configurable via cache variable `PLASMOID_TESTDIR`)
+   by default (configurable via cache variable `PLASMOID_TESTDIR`, the sub directory
+   `plasmoid-testing` is not part of the variable)
 3. Add new config for run in Qt Creator and set `bash` as executable
 4. Set `%{sourceDir}/../../syncthingtray/plasmoid/scripts/starttesting.sh plasmoidviewer --applet martchus.syncthingplasmoid`
    as CLI argument
