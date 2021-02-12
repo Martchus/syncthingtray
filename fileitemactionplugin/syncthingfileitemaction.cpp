@@ -63,6 +63,33 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
     return topLevelActions;
 }
 
+struct DirStats {
+    explicit DirStats(const QList<const SyncthingDir *> &dirs);
+
+    QStringList ids;
+    bool anyPaused = false;
+    bool allPaused = true;
+};
+
+DirStats::DirStats(const QList<const SyncthingDir *> &dirs)
+{
+    ids.reserve(dirs.size());
+    for (const SyncthingDir *const dir : dirs) {
+        ids << dir->id;
+        if (dir->paused) {
+            anyPaused = true;
+            if (!allPaused) {
+                break;
+            }
+        } else {
+            allPaused = false;
+            if (anyPaused) {
+                break;
+            }
+        }
+    }
+}
+
 QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListProperties &fileItemInfo, QObject *parent)
 {
     QList<QAction *> actions;
@@ -105,6 +132,10 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         }
     }
 
+    // compute dir stats
+    const auto detectedDirsStats = DirStats(detectedDirs);
+    const auto containingDirsStats = DirStats(containingDirs);
+
     // add actions for the selected items itself
     actions.reserve(32);
     if (!detectedItems.isEmpty()) {
@@ -115,7 +146,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
             rescanLabel = tr("Rescan \"%1\"").arg(detectedItems.front().name);
         }
         actions << new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")), rescanLabel, parent);
-        if (connection.isConnected()) {
+        if (connection.isConnected() && !containingDirsStats.allPaused) {
             for (const SyncthingItem &item : std::as_const(detectedItems)) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, item.dir->id, item.path));
             }
@@ -126,10 +157,11 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
 
     // add actions for explicitely selected Syncthing dirs
     if (!detectedDirs.isEmpty()) {
+
         // rescan item
         actions << new QAction(QIcon::fromTheme(QStringLiteral("folder-sync")),
             detectedDirs.size() == 1 ? tr("Rescan \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Rescan selected directories"), parent);
-        if (connection.isConnected()) {
+        if (connection.isConnected() && !detectedDirsStats.allPaused) {
             for (const SyncthingDir *dir : std::as_const(detectedDirs)) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, dir->id, QString()));
                 containingDirs.removeAll(dir);
@@ -139,17 +171,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         }
 
         // pause/resume item
-        QStringList ids;
-        ids.reserve(detectedDirs.size());
-        bool isPaused = false;
-        for (const SyncthingDir *const dir : std::as_const(detectedDirs)) {
-            ids << dir->id;
-            if (dir->paused) {
-                isPaused = true;
-                break;
-            }
-        }
-        if (isPaused) {
+        if (detectedDirsStats.anyPaused) {
             actions << new QAction(QIcon::fromTheme(QStringLiteral("media-playback-start")),
                 detectedDirs.size() == 1 ? tr("Resume \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Resume selected directories"), parent);
         } else {
@@ -158,7 +180,8 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         }
         if (connection.isConnected()) {
             connect(actions.back(), &QAction::triggered,
-                bind(isPaused ? &SyncthingConnection::resumeDirectories : &SyncthingConnection::pauseDirectories, &connection, ids));
+                bind(detectedDirsStats.anyPaused ? &SyncthingConnection::resumeDirectories : &SyncthingConnection::pauseDirectories, &connection,
+                    detectedDirsStats.ids));
         } else {
             actions.back()->setEnabled(false);
         }
@@ -170,7 +193,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         actions << new QAction(QIcon::fromTheme(QStringLiteral("folder-sync")),
             containingDirs.size() == 1 ? tr("Rescan \"%1\"").arg(containingDirs.front()->displayName()) : tr("Rescan containing directories"),
             parent);
-        if (connection.isConnected()) {
+        if (connection.isConnected() && !containingDirsStats.allPaused) {
             for (const SyncthingDir *dir : std::as_const(containingDirs)) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, dir->id, QString()));
             }
@@ -179,17 +202,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         }
 
         // pause/resume item
-        QStringList ids;
-        ids.reserve(containingDirs.size());
-        bool isPaused = false;
-        for (const SyncthingDir *dir : std::as_const(containingDirs)) {
-            ids << dir->id;
-            if (dir->paused) {
-                isPaused = true;
-                break;
-            }
-        }
-        if (isPaused) {
+        if (containingDirsStats.anyPaused) {
             actions << new QAction(QIcon::fromTheme(QStringLiteral("media-playback-start")),
                 containingDirs.size() == 1 ? tr("Resume \"%1\"").arg(containingDirs.front()->displayName()) : tr("Resume containing directories"),
                 parent);
@@ -200,7 +213,8 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         }
         if (connection.isConnected()) {
             connect(actions.back(), &QAction::triggered,
-                bind(isPaused ? &SyncthingConnection::resumeDirectories : &SyncthingConnection::pauseDirectories, &connection, ids));
+                bind(containingDirsStats.anyPaused ? &SyncthingConnection::resumeDirectories : &SyncthingConnection::pauseDirectories, &connection,
+                    containingDirsStats.ids));
         } else {
             actions.back()->setEnabled(false);
         }

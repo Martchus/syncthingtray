@@ -94,7 +94,11 @@ void SyncthingFileItemActionStaticData::logConnectionError(const QString &errorM
 
 void SyncthingFileItemActionStaticData::rescanDir(const QString &dirId, const QString &relpath)
 {
-    m_connection.rescan(dirId, relpath);
+    int row;
+    const auto *const dirInfo = m_connection.findDirInfo(dirId, row);
+    if (dirInfo && !dirInfo->paused) {
+        m_connection.rescan(dirId, relpath);
+    }
 }
 
 void SyncthingFileItemActionStaticData::showAboutDialog()
