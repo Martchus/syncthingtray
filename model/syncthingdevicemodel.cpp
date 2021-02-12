@@ -28,6 +28,7 @@ QHash<int, QByteArray> SyncthingDeviceModel::roleNames() const
         { DeviceStatus, "status" },
         { Qt::DecorationRole, "statusIcon" },
         { DevicePaused, "paused" },
+        { IsOwnDevice, "isOwnDevice" },
         { DeviceStatusString, "statusString" },
         { DeviceStatusColor, "statusColor" },
         { DeviceId, "devId" },

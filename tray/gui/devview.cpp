@@ -40,8 +40,9 @@ void DevView::mouseReleaseEvent(QMouseEvent *event)
     }
 
     const auto itemRect = visualRect(clickedRow.proxyIndex);
-    if (pos.x() > itemRect.right() - 17) {
-        emit pauseResumeDev(*clickedRow.data);
+    const auto &device = *clickedRow.data;
+    if (device.status != SyncthingDevStatus::OwnDevice && pos.x() > itemRect.right() - 17) {
+        emit pauseResumeDev(device);
     }
 }
 
@@ -72,7 +73,7 @@ void DevView::showContextMenu(const QPoint &position)
                                        QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-start.svg"))),
                         tr("Resume")),
                 &QAction::triggered, triggerActionForSelectedRow(this, &DevView::pauseResumeDev));
-        } else {
+        } else if (dev->status != SyncthingDevStatus::OwnDevice) {
             connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-pause"),
                                        QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg"))),
                         tr("Pause")),

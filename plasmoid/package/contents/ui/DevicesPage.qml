@@ -62,6 +62,7 @@ Item {
                                 id: resumePauseButton
                                 icon.name: paused ? "media-playback-start" : "media-playback-pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
+                                enabled: !isOwnDevice
                                 onClicked: {
                                     paused ? plasmoid.nativeInterface.connection.resumeDevice(
                                                  [devId]) : plasmoid.nativeInterface.connection.pauseDevice(

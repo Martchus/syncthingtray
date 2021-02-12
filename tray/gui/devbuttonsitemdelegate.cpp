@@ -55,6 +55,9 @@ void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         painter->drawText(textRect, displayText(index.data(Qt::DisplayRole), option.locale), textOption);
 
         // draw buttons
+        if (index.data(SyncthingDeviceModel::IsOwnDevice).toBool()) {
+            return;
+        }
         const int buttonY = option.rect.y() + centerObj(option.rect.height(), 16);
         painter->drawPixmap(
             option.rect.right() - 16, buttonY, 16, 16, index.data(SyncthingDeviceModel::DevicePaused).toBool() ? m_resumeIcon : m_pauseIcon);
