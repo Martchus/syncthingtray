@@ -40,5 +40,6 @@ git -C "$syncthingrepodir" rebase "$latest_tag"
 git -C "$syncthingrepodir" branch "libsyncthing-$latest_tag"
 
 echo '==> Pushing updated/new libsyncthing branches to GitHub'
-git -C "$syncthingrepodir" push -fu martchus libsyncthing-latest:libsyncthing-latest
-git -C "$syncthingrepodir" push -u martchus "libsyncthing-$latest_tag:libsyncthing-$latest_tag"
+git -C "$syncthingrepodir" config remote.all.url > /dev/null && remote=all || remote=martchus
+git -C "$syncthingrepodir" push -fu "$remote" libsyncthing-latest:libsyncthing-latest
+git -C "$syncthingrepodir" push -u "$remote" "libsyncthing-$latest_tag:libsyncthing-$latest_tag"
