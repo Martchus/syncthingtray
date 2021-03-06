@@ -47,118 +47,118 @@
 <context>
     <name>Data::SyncthingDeviceModel</name>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="84"/>
-        <location filename="../syncthingdevicemodel.cpp" line="114"/>
+        <location filename="../syncthingdevicemodel.cpp" line="85"/>
+        <location filename="../syncthingdevicemodel.cpp" line="115"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="86"/>
+        <location filename="../syncthingdevicemodel.cpp" line="87"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="116"/>
+        <location filename="../syncthingdevicemodel.cpp" line="117"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="118"/>
+        <location filename="../syncthingdevicemodel.cpp" line="119"/>
         <source>Last seen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="120"/>
+        <location filename="../syncthingdevicemodel.cpp" line="121"/>
         <source>Compression</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="122"/>
+        <location filename="../syncthingdevicemodel.cpp" line="123"/>
         <source>Certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="124"/>
+        <location filename="../syncthingdevicemodel.cpp" line="125"/>
         <source>Introducer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="126"/>
+        <location filename="../syncthingdevicemodel.cpp" line="127"/>
         <source>Incoming traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="128"/>
+        <location filename="../syncthingdevicemodel.cpp" line="129"/>
         <source>Outgoing traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="130"/>
+        <location filename="../syncthingdevicemodel.cpp" line="131"/>
         <source>Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="150"/>
+        <location filename="../syncthingdevicemodel.cpp" line="151"/>
         <source>unknown or own device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="155"/>
+        <location filename="../syncthingdevicemodel.cpp" line="156"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="157"/>
+        <location filename="../syncthingdevicemodel.cpp" line="158"/>
         <source>yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="157"/>
+        <location filename="../syncthingdevicemodel.cpp" line="158"/>
         <source>no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="361"/>
+        <location filename="../syncthingdevicemodel.cpp" line="362"/>
         <source>Paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="365"/>
+        <location filename="../syncthingdevicemodel.cpp" line="366"/>
         <source>Unknown status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="367"/>
+        <location filename="../syncthingdevicemodel.cpp" line="368"/>
         <source>Own device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="369"/>
+        <location filename="../syncthingdevicemodel.cpp" line="370"/>
         <source>Idle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="371"/>
+        <location filename="../syncthingdevicemodel.cpp" line="372"/>
         <source>Disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="376"/>
+        <location filename="../syncthingdevicemodel.cpp" line="377"/>
         <source>Synchronizing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="373"/>
+        <location filename="../syncthingdevicemodel.cpp" line="374"/>
         <source>Synchronizing (%1 %, %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="378"/>
+        <location filename="../syncthingdevicemodel.cpp" line="379"/>
         <source>Out of sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="380"/>
+        <location filename="../syncthingdevicemodel.cpp" line="381"/>
         <source>Rejected</source>
         <translation type="unfinished"></translation>
     </message>

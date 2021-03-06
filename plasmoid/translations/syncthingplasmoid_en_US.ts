@@ -18,17 +18,17 @@
     </message>
     <message>
         <location filename="../package/contents/ui/DevicesPage.qml" line="64"/>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="115"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="116"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="101"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="102"/>
         <source>Copy name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="106"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="107"/>
         <source>Copy ID</source>
         <translation type="unfinished"></translation>
     </message>

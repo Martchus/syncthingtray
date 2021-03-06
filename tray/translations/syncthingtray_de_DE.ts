@@ -4,27 +4,27 @@
 <context>
     <name>QtGui::DevView</name>
     <message>
-        <location filename="../gui/devview.cpp" line="58"/>
+        <location filename="../gui/devview.cpp" line="59"/>
         <source>Copy value</source>
         <translation>Wert kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="64"/>
+        <location filename="../gui/devview.cpp" line="65"/>
         <source>Copy name</source>
         <translation>Namen kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="67"/>
+        <location filename="../gui/devview.cpp" line="68"/>
         <source>Copy ID</source>
         <translation>ID kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="73"/>
+        <location filename="../gui/devview.cpp" line="74"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="78"/>
+        <location filename="../gui/devview.cpp" line="79"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>

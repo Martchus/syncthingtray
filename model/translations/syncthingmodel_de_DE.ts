@@ -47,118 +47,118 @@
 <context>
     <name>Data::SyncthingDeviceModel</name>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="84"/>
-        <location filename="../syncthingdevicemodel.cpp" line="114"/>
+        <location filename="../syncthingdevicemodel.cpp" line="85"/>
+        <location filename="../syncthingdevicemodel.cpp" line="115"/>
         <source>ID</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="86"/>
+        <location filename="../syncthingdevicemodel.cpp" line="87"/>
         <source>Status</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="116"/>
+        <location filename="../syncthingdevicemodel.cpp" line="117"/>
         <source>Address</source>
         <translation>Adresse</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="118"/>
+        <location filename="../syncthingdevicemodel.cpp" line="119"/>
         <source>Last seen</source>
         <translation>Zuletzt gesehen</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="120"/>
+        <location filename="../syncthingdevicemodel.cpp" line="121"/>
         <source>Compression</source>
         <translation>Kompression</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="122"/>
+        <location filename="../syncthingdevicemodel.cpp" line="123"/>
         <source>Certificate</source>
         <translation>Zertifikat</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="124"/>
+        <location filename="../syncthingdevicemodel.cpp" line="125"/>
         <source>Introducer</source>
         <translation>Verteilergerät</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="126"/>
+        <location filename="../syncthingdevicemodel.cpp" line="127"/>
         <source>Incoming traffic</source>
         <translation>Eingehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="128"/>
+        <location filename="../syncthingdevicemodel.cpp" line="129"/>
         <source>Outgoing traffic</source>
         <translation>Ausgehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="130"/>
+        <location filename="../syncthingdevicemodel.cpp" line="131"/>
         <source>Version</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="150"/>
+        <location filename="../syncthingdevicemodel.cpp" line="151"/>
         <source>unknown or own device</source>
         <translation>unbekannt oder eigenes Gerät</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="155"/>
+        <location filename="../syncthingdevicemodel.cpp" line="156"/>
         <source>none</source>
         <translation>keines</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="157"/>
+        <location filename="../syncthingdevicemodel.cpp" line="158"/>
         <source>yes</source>
         <translation>ja</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="157"/>
+        <location filename="../syncthingdevicemodel.cpp" line="158"/>
         <source>no</source>
         <translation>nein</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="361"/>
+        <location filename="../syncthingdevicemodel.cpp" line="362"/>
         <source>Paused</source>
         <translation>Pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="365"/>
+        <location filename="../syncthingdevicemodel.cpp" line="366"/>
         <source>Unknown status</source>
         <translation>Unbekannter Status</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="367"/>
+        <location filename="../syncthingdevicemodel.cpp" line="368"/>
         <source>Own device</source>
         <translation>Eigenes Gerät</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="369"/>
+        <location filename="../syncthingdevicemodel.cpp" line="370"/>
         <source>Idle</source>
         <translation>Leerlauf</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="371"/>
+        <location filename="../syncthingdevicemodel.cpp" line="372"/>
         <source>Disconnected</source>
         <translation>Getrennt</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="376"/>
+        <location filename="../syncthingdevicemodel.cpp" line="377"/>
         <source>Synchronizing</source>
         <translation>Synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="373"/>
+        <location filename="../syncthingdevicemodel.cpp" line="374"/>
         <source>Synchronizing (%1 %, %2)</source>
         <translation>Synchronisieren (%1 %, %2)</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="378"/>
+        <location filename="../syncthingdevicemodel.cpp" line="379"/>
         <source>Out of sync</source>
         <translation>Nicht synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="380"/>
+        <location filename="../syncthingdevicemodel.cpp" line="381"/>
         <source>Rejected</source>
         <translation>Zurückgewiesen</translation>
     </message>
