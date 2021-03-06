@@ -265,5 +265,4 @@ void SyncthingLauncher::showLibSyncthingNotSupported()
 }
 #endif
 
-
 } // namespace Data
