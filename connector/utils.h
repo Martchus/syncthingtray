@@ -60,7 +60,7 @@ constexpr LIB_SYNCTHING_CONNECTOR_EXPORT int trQuandity(quint64 quandity)
 template <class Objects, class Accessor> LIB_SYNCTHING_CONNECTOR_EXPORT QStringList things(const Objects &objects, Accessor accessor)
 {
     QStringList things;
-    things.reserve(objects.size());
+    things.reserve(static_cast<QStringList::size_type>(objects.size()));
     for (const auto &object : objects) {
         things << accessor(object);
     }

@@ -248,6 +248,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
         case 1:
             return devStatusString(dev);
         }
+        break;
     case Qt::DecorationRole:
         switch (index.column()) {
         case 0:

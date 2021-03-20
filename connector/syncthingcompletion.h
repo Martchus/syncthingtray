@@ -77,7 +77,7 @@ constexpr SyncthingCompletion &SyncthingCompletion::operator-=(const SyncthingCo
 
 inline void SyncthingCompletion::recomputePercentage()
 {
-    percentage = (static_cast<double>(globalBytes - needed.bytes) / globalBytes) * 100.0;
+    percentage = (static_cast<double>(globalBytes - needed.bytes) / static_cast<double>(globalBytes)) * 100.0;
 }
 
 } // namespace Data

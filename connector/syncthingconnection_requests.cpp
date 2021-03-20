@@ -580,8 +580,8 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
         dirItem->path = dirObj.value(QLatin1String("path")).toString();
         dirItem->deviceIds.clear();
         dirItem->deviceNames.clear();
-        for (const QJsonValueRef dev : dirObj.value(QLatin1String("devices")).toArray()) {
-            const QString devId = dev.toObject().value(QLatin1String("deviceID")).toString();
+        for (const QJsonValueRef devObj : dirObj.value(QLatin1String("devices")).toArray()) {
+            const QString devId = devObj.toObject().value(QLatin1String("deviceID")).toString();
             if (devId.isEmpty() || devId == m_myId) {
                 continue;
             }
@@ -753,10 +753,10 @@ void SyncthingConnection::readConnections()
         const bool hasDelta
             = !m_lastConnectionsUpdate.isNull() && ((transferTime = (DateTime::gmtNow() - m_lastConnectionsUpdate).totalSeconds()) != 0.0);
         m_totalIncomingRate = (hasDelta && totalIncomingTraffic != unknownTraffic && m_totalIncomingTraffic != unknownTraffic)
-            ? (totalIncomingTraffic - m_totalIncomingTraffic) * 0.008 / transferTime
+            ? static_cast<double>(totalIncomingTraffic - m_totalIncomingTraffic) * 0.008 / transferTime
             : 0.0;
         m_totalOutgoingRate = (hasDelta && totalOutgoingTraffic != unknownTraffic && m_totalOutgoingTraffic != unknownTraffic)
-            ? (totalOutgoingTraffic - m_totalOutgoingTraffic) * 0.008 / transferTime
+            ? static_cast<double>(totalOutgoingTraffic - m_totalOutgoingTraffic) * 0.008 / transferTime
             : 0.0;
         emit trafficChanged(m_totalIncomingTraffic = totalIncomingTraffic, m_totalOutgoingTraffic = totalOutgoingTraffic);
 
@@ -1990,10 +1990,10 @@ void SyncthingConnection::readLocalFolderCompletion(DateTime eventTime, const QJ
     const auto previouslyNeeded(neededStats);
     const auto previouslyGlobal(globalStats);
     // read values from event data
-    globalStats.bytes = jsonValueToInt(eventData.value(QLatin1String("globalBytes")), globalStats.bytes);
-    neededStats.bytes = jsonValueToInt(eventData.value(QLatin1String("needBytes")), neededStats.bytes);
-    neededStats.deletes = jsonValueToInt(eventData.value(QLatin1String("needDeletes")), neededStats.deletes);
-    neededStats.deletes = jsonValueToInt(eventData.value(QLatin1String("needItems")), neededStats.files);
+    globalStats.bytes = jsonValueToInt(eventData.value(QLatin1String("globalBytes")), static_cast<double>(globalStats.bytes));
+    neededStats.bytes = jsonValueToInt(eventData.value(QLatin1String("needBytes")), static_cast<double>(neededStats.bytes));
+    neededStats.deletes = jsonValueToInt(eventData.value(QLatin1String("needDeletes")), static_cast<double>(neededStats.deletes));
+    neededStats.deletes = jsonValueToInt(eventData.value(QLatin1String("needItems")), static_cast<double>(neededStats.files));
     dirInfo.lastStatisticsUpdate = eventTime;
     dirInfo.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
     emit dirStatusChanged(dirInfo, index);
@@ -2015,9 +2015,9 @@ void SyncthingConnection::readRemoteFolderCompletion(DateTime eventTime, const Q
     completion.lastUpdate = eventTime;
     completion.percentage = eventData.value(QLatin1String("completion")).toDouble();
     completion.globalBytes = jsonValueToInt(eventData.value(QLatin1String("globalBytes")));
-    needed.bytes = jsonValueToInt(eventData.value(QLatin1String("needBytes")), needed.bytes);
-    needed.items = jsonValueToInt(eventData.value(QLatin1String("needItems")), needed.items);
-    needed.deletes = jsonValueToInt(eventData.value(QLatin1String("needDeletes")), needed.deletes);
+    needed.bytes = jsonValueToInt(eventData.value(QLatin1String("needBytes")), static_cast<double>(needed.bytes));
+    needed.items = jsonValueToInt(eventData.value(QLatin1String("needItems")), static_cast<double>(needed.items));
+    needed.deletes = jsonValueToInt(eventData.value(QLatin1String("needDeletes")), static_cast<double>(needed.deletes));
 
     // update dir info
     if (dirInfo) {

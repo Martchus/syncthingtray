@@ -123,7 +123,7 @@ template <typename SourceType> QPixmap renderSvgImage(const SourceType &source, 
 #endif
                                                                    qGuiApp->devicePixelRatio();
     QSvgRenderer renderer(source);
-    QSize scaledSize(givenSize.width() * scaleFactor, givenSize.height() * scaleFactor);
+    QSize scaledSize(static_cast<int>(givenSize.width() * scaleFactor), static_cast<int>(givenSize.height() * scaleFactor));
     QSize renderSize(renderer.defaultSize());
     renderSize.scale(scaledSize.width() - margin, scaledSize.height() - margin, Qt::KeepAspectRatio);
     QRect renderBounds(QPoint(), scaledSize);

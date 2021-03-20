@@ -120,18 +120,18 @@ void StatusInfo::updateConnectedDevices(const SyncthingConnection &connection)
         // get up to 2 device names
         const auto deviceCount = trQuandity(connectedDevices.size());
         const auto deviceNames = [&] {
-            QStringList deviceNames;
-            deviceNames.reserve(2);
+            QStringList names;
+            names.reserve(2);
             for (const auto *dev : connectedDevices) {
                 if (dev->name.isEmpty()) {
                     continue;
                 }
-                deviceNames << dev->name;
-                if (deviceNames.size() > 2) {
+                names << dev->name;
+                if (names.size() > 2) {
                     break;
                 }
             }
-            return deviceNames;
+            return names;
         }();
 
         // update status text

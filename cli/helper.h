@@ -18,7 +18,7 @@ namespace Cli {
 inline void printProperty(const char *propName, const char *value, const char *suffix = nullptr, CppUtilities::Indentation indentation = 3)
 {
     if (*value) {
-        std::cout << indentation << propName << CppUtilities::Indentation(30 - strlen(propName)) << value;
+        std::cout << indentation << propName << CppUtilities::Indentation(static_cast<unsigned char>(30 - strlen(propName))) << value;
         if (suffix) {
             std::cout << ' ' << suffix;
         }

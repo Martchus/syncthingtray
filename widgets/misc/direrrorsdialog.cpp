@@ -118,9 +118,9 @@ void DirectoryErrorsDialog::removeNonEmptyDirs()
     }
     QStringList removedDirs, failedDirs;
     for (const QString &dirPath : m_nonEmptyDirs) {
-        bool ok = false;
-        QDir dir(dirPath);
-        if (!dir.exists() || !dir.removeRecursively()) {
+        auto ok = false;
+        auto dirObj = QDir(dirPath);
+        if (!dirObj.exists() || !dirObj.removeRecursively()) {
             // check whether dir has already been removed by removing its parent
             for (const QString &removedDir : removedDirs) {
                 if (dirPath.startsWith(removedDir)) {

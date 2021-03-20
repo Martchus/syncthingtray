@@ -219,7 +219,6 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
         case Qt::ForegroundRole:
             switch (index.column()) {
             case 1:
-                const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
                 switch (row) {
                 case 4:
                     if (dir.deviceIds.isEmpty()) {
@@ -242,7 +241,6 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
         case Qt::ToolTipRole:
             switch (index.column()) {
             case 1:
-                const SyncthingDir &dir = m_dirs[static_cast<size_t>(index.parent().row())];
                 switch (row) {
                 case 3:
                     if (dir.deviceNames.isEmpty()) {

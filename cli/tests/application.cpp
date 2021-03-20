@@ -184,7 +184,7 @@ void ApplicationTests::test()
     TESTUTILS_ASSERT_EXEC(catArgs);
     cout << stdout;
     QJsonParseError error;
-    const auto doc(QJsonDocument::fromJson(QByteArray(stdout.data(), stdout.size()), &error));
+    const auto doc(QJsonDocument::fromJson(QByteArray(stdout.data(), static_cast<QByteArray::size_type>(stdout.size())), &error));
     CPPUNIT_ASSERT_EQUAL(QJsonParseError::NoError, error.error);
     const auto object(doc.object());
     CPPUNIT_ASSERT(object.value(QLatin1String("options")).isObject());

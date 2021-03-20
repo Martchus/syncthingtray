@@ -582,9 +582,9 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
     }
     const auto copyRole = [this](SyncthingRecentChangesModel::SyncthingRecentChangesModelRole role) {
         return [this, role] {
-            const auto *const selectionModel = m_ui->recentChangesTreeView->selectionModel();
-            if (selectionModel && selectionModel->selectedRows().size() == 1) {
-                QGuiApplication::clipboard()->setText(m_recentChangesModel.data(selectionModel->selectedRows().at(0), role).toString());
+            const auto *const selectionModelToCopy = m_ui->recentChangesTreeView->selectionModel();
+            if (selectionModelToCopy && selectionModelToCopy->selectedRows().size() == 1) {
+                QGuiApplication::clipboard()->setText(m_recentChangesModel.data(selectionModelToCopy->selectedRows().at(0), role).toString());
             }
         };
     };

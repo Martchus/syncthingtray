@@ -47,7 +47,7 @@ static int statusCode = 0;
 
 void exitApplication(int statusCode)
 {
-    statusCode = ::Cli::statusCode;
+    ::Cli::statusCode = statusCode;
     terminated = true;
 }
 
@@ -825,13 +825,13 @@ QByteArray Application::editConfigViaScript() const
         }
     } else if (m_args.jsLines.isPresent()) {
         // construct script from CLI arguments
-        int requiredSize = 0;
-        for (const auto *line : m_args.jsLines.values()) {
-            requiredSize += strlen(line);
+        auto requiredSize = QString::size_type(0);
+        for (const auto *const line : m_args.jsLines.values()) {
+            requiredSize += static_cast<QString::size_type>(std::strlen(line));
             requiredSize += 1;
         }
         script.reserve(requiredSize);
-        for (const auto *line : m_args.jsLines.values()) {
+        for (const auto *const line : m_args.jsLines.values()) {
             script += line;
             script += '\n';
         }
