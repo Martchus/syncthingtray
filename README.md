@@ -18,7 +18,7 @@ distributors. For a list with links, checkout the *Download* section of this doc
 GitHub only contains a fraction of the available options.
 
 ## Supported platforms
-* Designed to work under any desktop environment supported by Qt with tray icon support
+* Designed to work under any desktop environment supported by Qt with tray icon support (can be shown as regular window if tray icon support is not available)
 * No desktop environment specific libraries required (only for optional features/integrations)
 * Tested under
     * X Window System
@@ -31,21 +31,20 @@ GitHub only contains a fraction of the available options.
         * Xfce
     * Wayland
         * Plasma 5
-            * native "Plasmoid" works well
-            * for Qt Widgets based version see note below
-        * other desktop environments
-            * for Qt Widgets based version see note below
-            * besides, the Qt Widgets based version would only work if the platform integration plugin
-              used for Qt applications uses the D-Bus protocol (or whatever is supported by your system
-              tray) to show the tray icon
+        * Sway/Swaybar/Waybar
     * Windows 10
     * macOS 10.14 Mojave
-* Can be shown as regular window if tray icon support is not available
-
-The Qt Widgets based version basically works under Wayland but there are positioning issues (see known bugs
-section).
 
 If you can confirm it works under other desktop environments, please add it to the list.
+
+### Wayland-specific notes
+The Qt Widgets based version basically works under Wayland but there are positioning issues and the settings
+regarding positioning have no effect (see known bugs section). One can workaround this limitation by telling
+the window manager how to place the window, e.g. under Sway one could add a configuration like this:
+
+```
+for_window [title="^Syncthing Tray( \(.*\))$"] floating enable, border none, resize set 450 400, move position 916 0
+```
 
 ## Features
 * Provides quick access to most frequently used features but does not intend to replace the official web UI
