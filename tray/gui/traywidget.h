@@ -67,8 +67,8 @@ public Q_SLOTS:
     void showUsingPositioningSettings();
 #ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     void showInternalErrorsButton();
-    void showInternalErrorsDialog();
 #endif
+    void showInternalErrorsDialog();
     void dismissNotifications();
     void restartSyncthing();
     void quitTray();
@@ -103,7 +103,7 @@ private Q_SLOTS:
 #endif
     void handleNewNotification(CppUtilities::DateTime when, const QString &msg);
     void handleConnectionSelected(QAction *connectionAction);
-    void showDialog(QWidget *dlg);
+    void showDialog(QWidget *dlg, bool maximized = false);
 
 private:
     TrayMenu *m_menu;

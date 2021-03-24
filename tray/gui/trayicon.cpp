@@ -295,9 +295,9 @@ void TrayIcon::showNewDir(const QString &devId, const QString &dirId, const QStr
 
 void TrayIcon::showInternalErrorsDialog()
 {
-    auto *const errorViewDlg = InternalErrorsDialog::instance();
-    connect(errorViewDlg, &InternalErrorsDialog::errorsCleared, this, &TrayIcon::handleErrorsCleared);
-    centerWidget(errorViewDlg);
-    errorViewDlg->show();
+    if (!InternalErrorsDialog::hasInstance()) {
+        connect(InternalErrorsDialog::instance(), &InternalErrorsDialog::errorsCleared, this, &TrayIcon::handleErrorsCleared);
+    }
+    trayMenu().widget().showInternalErrorsDialog();
 }
 } // namespace QtGui

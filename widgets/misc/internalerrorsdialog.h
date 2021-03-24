@@ -15,6 +15,7 @@ class SYNCTHINGWIDGETS_EXPORT InternalErrorsDialog : public TextViewDialog {
 public:
     ~InternalErrorsDialog() override;
     static InternalErrorsDialog *instance();
+    static bool hasInstance();
     static void addError(InternalError &&newError);
 
 Q_SIGNALS:
@@ -41,6 +42,11 @@ private:
 inline InternalErrorsDialog *InternalErrorsDialog::instance()
 {
     return s_instance ? s_instance : (s_instance = new InternalErrorsDialog);
+}
+
+inline bool InternalErrorsDialog::hasInstance()
+{
+    return s_instance != nullptr;
 }
 
 inline void InternalErrorsDialog::showInstance()

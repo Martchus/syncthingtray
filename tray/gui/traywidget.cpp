@@ -3,15 +3,12 @@
 #include "./trayicon.h"
 #include "./traymenu.h"
 
+#include <syncthingwidgets/misc/internalerrorsdialog.h>
 #include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #include <syncthingwidgets/misc/textviewdialog.h>
 #include <syncthingwidgets/settings/settingsdialog.h>
 #include <syncthingwidgets/webview/webviewdialog.h>
-
-#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
-#include <syncthingwidgets/misc/internalerrorsdialog.h>
-#endif
 
 #include <syncthingmodel/syncthingicons.h>
 
@@ -244,8 +241,9 @@ void TrayWidget::showSettingsDialog()
         //       by simply saving the settings immediately.
         connect(s_settingsDlg, &SettingsDialog::applied, &Settings::save);
     }
-    centerWidget(s_settingsDlg);
-    showDialog(s_settingsDlg);
+
+    // show settings dialog centered or maximized if the relatively big windows would overflow
+    showDialog(s_settingsDlg, centerWidgetAvoidingOverflow(s_settingsDlg));
 }
 
 void TrayWidget::showAboutDialog()
@@ -292,24 +290,21 @@ void TrayWidget::showOwnDeviceId()
 {
     auto *const dlg = ownDeviceIdDialog(m_connection);
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
-    centerWidget(dlg);
-    showDialog(dlg);
+    showDialog(dlg, centerWidgetAvoidingOverflow(dlg));
 }
 
 void TrayWidget::showLog()
 {
     auto *const dlg = TextViewDialog::forLogEntries(m_connection);
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
-    centerWidget(dlg);
-    showDialog(dlg);
+    showDialog(dlg, centerWidgetAvoidingOverflow(dlg));
 }
 
 void TrayWidget::showNotifications()
 {
     auto *const dlg = TextViewDialog::forLogEntries(m_notifications, tr("New notifications"));
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
-    centerWidget(dlg);
-    showDialog(dlg);
+    showDialog(dlg, centerWidgetAvoidingOverflow(dlg));
     m_notifications.clear();
     dismissNotifications();
 }
@@ -329,15 +324,16 @@ void TrayWidget::showInternalErrorsButton()
 {
     m_internalErrorsButton->setVisible(true);
 }
+#endif
 
 void TrayWidget::showInternalErrorsDialog()
 {
     auto *const errorViewDlg = InternalErrorsDialog::instance();
+#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     connect(errorViewDlg, &InternalErrorsDialog::errorsCleared, this, &TrayWidget::handleErrorsCleared);
-    centerWidget(errorViewDlg);
-    errorViewDlg->show();
-}
 #endif
+    showDialog(errorViewDlg, centerWidgetAvoidingOverflow(errorViewDlg));
+}
 
 void TrayWidget::dismissNotifications()
 {
@@ -816,12 +812,19 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
     }
 }
 
-void TrayWidget::showDialog(QWidget *dlg)
+void TrayWidget::showDialog(QWidget *dlg, bool maximized)
 {
     if (m_menu) {
         m_menu->close();
     }
-    dlg->show();
+    if (maximized) {
+        // assign the minimum size so when the window is "de-maximized" again it doesn't overflow again and is not misplaced
+        dlg->resize(dlg->minimumSize());
+        centerWidget(dlg);
+        dlg->showMaximized();
+    } else {
+        dlg->show();
+    }
     dlg->activateWindow();
 }
 
