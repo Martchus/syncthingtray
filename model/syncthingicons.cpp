@@ -117,16 +117,16 @@ QByteArray makeSyncthingIcon(const StatusIconColorSet &colors, StatusEmblem stat
 namespace Detail {
 template <typename SourceType> QPixmap renderSvgImage(const SourceType &source, const QSize &givenSize, int margin)
 {
-    const qreal scaleFactor =
+    const auto scaleFactor =
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         !QCoreApplication::testAttribute(Qt::AA_UseHighDpiPixmaps) ? 1.0 :
 #endif
                                                                    qGuiApp->devicePixelRatio();
-    QSvgRenderer renderer(source);
-    QSize scaledSize(static_cast<int>(givenSize.width() * scaleFactor), static_cast<int>(givenSize.height() * scaleFactor));
-    QSize renderSize(renderer.defaultSize());
+    const auto scaledSize = QSize(givenSize * scaleFactor);
+    auto renderer = QSvgRenderer(source);
+    auto renderSize = QSize(renderer.defaultSize());
     renderSize.scale(scaledSize.width() - margin, scaledSize.height() - margin, Qt::KeepAspectRatio);
-    QRect renderBounds(QPoint(), scaledSize);
+    auto renderBounds = QRect(QPoint(), scaledSize);
     if (renderSize.width() < renderBounds.width()) {
         const auto diff = (renderBounds.width() - renderSize.width()) / 2;
         renderBounds.setX(diff);
@@ -137,9 +137,9 @@ template <typename SourceType> QPixmap renderSvgImage(const SourceType &source, 
         renderBounds.setY(diff);
         renderBounds.setHeight(renderSize.height());
     }
-    QPixmap pm(scaledSize);
+    auto pm = QPixmap(scaledSize);
     pm.fill(QColor(Qt::transparent));
-    QPainter painter(&pm);
+    auto painter = QPainter(&pm);
     renderer.render(&painter, renderBounds);
     pm.setDevicePixelRatio(scaleFactor);
     return pm;
@@ -170,9 +170,9 @@ QPixmap renderSvgImage(const QByteArray &contents, const QSize &size, int margin
  */
 QByteArray loadFontAwesomeIcon(const QString &iconName, const QColor &color, bool solid)
 {
-    QByteArray result;
-    QFile icon(QString((solid ? QStringLiteral(":/icons/hicolor/scalable/fa/") : QStringLiteral(":/icons/hicolor/scalable/fa-non-solid/")) % iconName
-        % QStringLiteral(".svg")));
+    auto result = QByteArray();
+    auto icon = QFile(QString((solid ? QStringLiteral(":/icons/hicolor/scalable/fa/") : QStringLiteral(":/icons/hicolor/scalable/fa-non-solid/"))
+        % iconName % QStringLiteral(".svg")));
     if (!icon.open(QFile::ReadOnly)) {
         return result;
     }
