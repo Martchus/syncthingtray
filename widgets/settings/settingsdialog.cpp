@@ -1356,6 +1356,8 @@ SettingsDialog::SettingsDialog(QWidget *parent)
 SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *parent)
     : QtUtilities::SettingsDialog(parent)
 {
+    setWindowFlags(windowFlags() | Qt::WindowMaximizeButtonHint);
+
     // setup categories
     QList<OptionCategory *> categories;
     OptionCategory *category;
