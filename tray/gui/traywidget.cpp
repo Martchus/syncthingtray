@@ -818,7 +818,6 @@ void TrayWidget::showDialog(QWidget *dlg, bool maximized)
         m_menu->close();
     }
     if (maximized) {
-        // assign the minimum size so when the window is "de-maximized" again it doesn't overflow again and is not misplaced
         dlg->showMaximized();
     } else {
         dlg->show();
