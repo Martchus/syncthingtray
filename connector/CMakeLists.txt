@@ -27,6 +27,7 @@ set(SRC_FILES
     syncthingdev.cpp
     syncthingconnection.cpp
     syncthingconnection_requests.cpp
+    syncthingconnection_capture_replay.cpp
     syncthingconnectionsettings.cpp
     syncthingnotifier.cpp
     syncthingconfig.cpp

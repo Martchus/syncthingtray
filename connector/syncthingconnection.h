@@ -304,6 +304,11 @@ private Q_SLOTS:
     void handleAdditionalRequestCanceled();
     void recalculateStatus();
 
+    // capture/replay feature
+    void initCaptureReplay();
+    void captureResponse(std::string_view context, const QByteArray &response);
+    void replyCapturedResponses();
+
 private:
     // internal helper methods
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
@@ -321,6 +326,8 @@ private:
     QByteArray m_apiKey;
     QString m_user;
     QString m_password;
+    QFile *m_captureFile, *m_replayFile;
+    CppUtilities::DateTime m_lastReplyEvent;
     SyncthingStatus m_status;
     SyncthingStatusComputionFlags m_statusComputionFlags;
 

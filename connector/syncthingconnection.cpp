@@ -71,6 +71,8 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     : QObject(parent)
     , m_syncthingUrl(syncthingUrl)
     , m_apiKey(apiKey)
+    , m_captureFile(nullptr)
+    , m_replayFile(nullptr)
     , m_status(SyncthingStatus::Disconnected)
     , m_statusComputionFlags(SyncthingStatusComputionFlags::Default)
     , m_keepPolling(false)
@@ -120,7 +122,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     QObject::connect(&m_autoReconnectTimer, &QTimer::timeout, this, &SyncthingConnection::autoReconnect);
 
 #ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
-    setupTestData();
+    setupTestData(); // TODO: remove this in favor of capturing/replay feature
 #endif
 
 #ifdef LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
@@ -133,6 +135,8 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
         std::cerr << displayNames(devs).join(QStringLiteral(", ")).toStdString() << endl;
     });
 #endif
+
+    initCaptureReplay();
 }
 
 /*!
