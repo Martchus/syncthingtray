@@ -43,7 +43,7 @@ regarding positioning have no effect (see known bugs section). One can workaroun
 the window manager how to place the window, e.g. under Sway one could add a configuration like this:
 
 ```
-for_window [title="^Syncthing Tray( \(.*\))$"] floating enable, border none, resize set 450 400, move position 916 0
+for_window [title="^Syncthing Tray( \(.*\))?$"] floating enable, border none, resize set 450 400, move position 916 0
 ```
 
 ## Features
