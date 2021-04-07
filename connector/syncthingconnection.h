@@ -271,6 +271,8 @@ private Q_SLOTS:
     void readLocalFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
     void readRemoteFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, const QString &devId, SyncthingDev *devInfo,
         int devIndex, const QString &dirId, SyncthingDir *dirInfo, int dirIndex);
+    void readRemoteFolderCompletion(const SyncthingCompletion &completion, const QString &devId, SyncthingDev *devInfo, int devIndex,
+        const QString &dirId, SyncthingDir *dirInfo, int dirIndex);
     void readRemoteIndexUpdated(CppUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readPostConfig();
     void readRescan();

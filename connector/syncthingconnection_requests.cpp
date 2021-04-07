@@ -1159,6 +1159,14 @@ void SyncthingConnection::readCompletion()
         emitError(tr("Unable to parse completion for device/directory %1/%2: ").arg(devId, dirId), jsonError, reply, response);
         break;
     }
+    case QNetworkReply::ContentNotFoundError:
+        // assign empty completion when receiving 404 response
+        // note: The connector generally tries to avoid requesting the completion for paused dirs/devs but if the completion is requested
+        //       before it is aware that the dir/dev is paused it might still run into this error, e.g. when pausing a directory and completion
+        //       is requested concurrently. Before Syncthing v1.15.0 we've got an empty completion instead of 404 anyways.
+        readRemoteFolderCompletion(SyncthingCompletion(), devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
+        concludeConnection();
+        return;
     case QNetworkReply::OperationCanceledError:
         handleAdditionalRequestCanceled();
         break;
@@ -2023,6 +2031,16 @@ void SyncthingConnection::readRemoteFolderCompletion(DateTime eventTime, const Q
     needed.items = jsonValueToInt(eventData.value(QLatin1String("needItems")), static_cast<double>(needed.items));
     needed.deletes = jsonValueToInt(eventData.value(QLatin1String("needDeletes")), static_cast<double>(needed.deletes));
 
+    // update dir and dev info
+    readRemoteFolderCompletion(completion, devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
+}
+
+/*!
+ * \brief Reads \a completion (parsed from results of requestEvents()).
+ */
+void SyncthingConnection::readRemoteFolderCompletion(const SyncthingCompletion &completion, const QString &devId, SyncthingDev *devInfo, int devIndex,
+    const QString &dirId, SyncthingDir *dirInfo, int dirIndex)
+{
     // update dir info
     if (dirInfo) {
         auto &previousCompletion = dirInfo->completionByDevice[devId];
@@ -2031,11 +2049,10 @@ void SyncthingConnection::readRemoteFolderCompletion(DateTime eventTime, const Q
         const auto previousGlobalBytes = previousCompletion.globalBytes;
         previousCompletion = completion;
         emit dirStatusChanged(*dirInfo, dirIndex);
-        if (devInfo && needed.isNull() && previouslyUpdated && (previouslyNeeded || previousGlobalBytes != completion.globalBytes)) {
+        if (devInfo && completion.needed.isNull() && previouslyUpdated && (previouslyNeeded || previousGlobalBytes != completion.globalBytes)) {
             emit dirCompleted(DateTime::gmtNow(), *dirInfo, dirIndex, devInfo);
         }
     }
-
     // update dev info
     if (devInfo) {
         auto &previousCompletion = devInfo->completionByDir[dirId];
