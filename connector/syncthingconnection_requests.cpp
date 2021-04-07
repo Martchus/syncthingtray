@@ -678,7 +678,11 @@ void SyncthingConnection::readStatus()
 
         const auto replyObj(replyDoc.object());
         emitMyIdChanged(replyObj.value(QLatin1String("myID")).toString());
-        m_startTime = DateTime::fromIsoStringGmt(replyObj.value(QLatin1String("startTime")).toString().toLocal8Bit().data());
+        try {
+            m_startTime = DateTime::fromIsoStringGmt(replyObj.value(QLatin1String("startTime")).toString().toLocal8Bit().data());
+        } catch (const ConversionException &) {
+            m_startTime = DateTime(); // tracking the start time isn't very important so just ignore
+        }
         m_hasStatus = true;
 
         if (m_keepPolling) {
