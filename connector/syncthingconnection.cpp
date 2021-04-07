@@ -673,7 +673,7 @@ void SyncthingConnection::continueConnecting()
     requestVersion();
     for (const SyncthingDir &dir : m_dirs) {
         requestDirStatus(dir.id);
-        if (!m_requestCompletion) {
+        if (!m_requestCompletion || dir.paused) {
             continue;
         }
         for (const QString &devId : dir.deviceIds) {
