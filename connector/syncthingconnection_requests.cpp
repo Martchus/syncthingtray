@@ -2101,7 +2101,9 @@ void SyncthingConnection::readRemoteIndexUpdated(DateTime eventTime, const QJson
     if (completionFromDevInfo) {
         completionFromDevInfo->requested = true;
     }
-    requestCompletion(devId, dirId);
+    if (devInfo && dirInfo && !devInfo->paused && !dirInfo->paused) {
+        requestCompletion(devId, dirId);
+    }
 }
 
 /*!
