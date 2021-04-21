@@ -272,16 +272,16 @@ QString StatusIconSettings::toString() const
 }
 
 StatusIcons::StatusIcons(const StatusIconSettings &settings)
-    : disconnected(QIcon(renderSvgImage(makeSyncthingIcon(settings.disconnectedColor, StatusEmblem::None))))
-    , idling(QIcon(renderSvgImage(makeSyncthingIcon(settings.idleColor, StatusEmblem::None))))
-    , scanninig(QIcon(renderSvgImage(makeSyncthingIcon(settings.scanningColor, StatusEmblem::Scanning))))
-    , notify(QIcon(renderSvgImage(makeSyncthingIcon(settings.warningColor, StatusEmblem::Alert))))
-    , pause(QIcon(renderSvgImage(makeSyncthingIcon(settings.pausedColor, StatusEmblem::Paused))))
-    , sync(QIcon(renderSvgImage(makeSyncthingIcon(settings.synchronizingColor, StatusEmblem::Synchronizing))))
-    , syncComplete(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Complete))))
-    , error(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Alert))))
-    , errorSync(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Synchronizing))))
-    , newItem(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Add))))
+    : disconnected(QIcon(renderSvgImage(makeSyncthingIcon(settings.disconnectedColor, StatusEmblem::None), settings.renderSize)))
+    , idling(QIcon(renderSvgImage(makeSyncthingIcon(settings.idleColor, StatusEmblem::None), settings.renderSize)))
+    , scanninig(QIcon(renderSvgImage(makeSyncthingIcon(settings.scanningColor, StatusEmblem::Scanning), settings.renderSize)))
+    , notify(QIcon(renderSvgImage(makeSyncthingIcon(settings.warningColor, StatusEmblem::Alert), settings.renderSize)))
+    , pause(QIcon(renderSvgImage(makeSyncthingIcon(settings.pausedColor, StatusEmblem::Paused), settings.renderSize)))
+    , sync(QIcon(renderSvgImage(makeSyncthingIcon(settings.synchronizingColor, StatusEmblem::Synchronizing), settings.renderSize)))
+    , syncComplete(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Complete), settings.renderSize)))
+    , error(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Alert), settings.renderSize)))
+    , errorSync(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Synchronizing), settings.renderSize)))
+    , newItem(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Add), settings.renderSize)))
     , isValid(true)
 {
 }

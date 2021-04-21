@@ -79,6 +79,7 @@ struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
     StatusIconColorSet synchronizingColor;
     StatusIconColorSet pausedColor;
     StatusIconColorSet disconnectedColor;
+    QSize renderSize = QSize(32, 32);
 
     static constexpr auto distinguishableColorCount = 8;
 

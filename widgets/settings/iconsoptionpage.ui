@@ -47,6 +47,69 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="toolTip">
+           <string>Increase the rendering size if you're using a tray area with extraordinarily big icons.</string>
+          </property>
+          <property name="text">
+           <string>Rendering size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QSlider" name="renderingSizeSlider">
+            <property name="minimum">
+             <number>16</number>
+            </property>
+            <property name="maximum">
+             <number>256</number>
+            </property>
+            <property name="singleStep">
+             <number>16</number>
+            </property>
+            <property name="pageStep">
+             <number>16</number>
+            </property>
+            <property name="value">
+             <number>32</number>
+            </property>
+            <property name="sliderPosition">
+             <number>16</number>
+            </property>
+            <property name="tracking">
+             <bool>false</bool>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::TicksBelow</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="renderingSizeLabel">
+            <property name="text">
+             <string>? px</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line1">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="1">
          <widget class="QLabel" name="bgColor1Label">
@@ -94,7 +157,7 @@
        </layout>
       </item>
       <item>
-       <widget class="Line" name="line">
+       <widget class="Line" name="line2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>

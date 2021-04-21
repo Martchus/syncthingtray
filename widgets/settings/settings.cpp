@@ -289,6 +289,8 @@ void restore()
     appearance.brightTextColors = settings.value(QStringLiteral("brightTextColors"), appearance.brightTextColors).toBool();
     v.icons.status = StatusIconSettings(settings.value(QStringLiteral("statusIcons")).toString());
     v.icons.tray = StatusIconSettings(settings.value(QStringLiteral("trayIcons")).toString());
+    v.icons.status.renderSize = settings.value(QStringLiteral("statusIconsRenderSize"), v.icons.status.renderSize).toSize();
+    v.icons.tray.renderSize = settings.value(QStringLiteral("trayIconsRenderSize"), v.icons.tray.renderSize).toSize();
     v.icons.distinguishTrayIcons = settings.value(QStringLiteral("distinguishTrayIcons")).toBool();
     settings.beginGroup(QStringLiteral("positioning"));
     auto &positioning = appearance.positioning;
@@ -397,6 +399,8 @@ void save()
     settings.setValue(QStringLiteral("brightTextColors"), appearance.brightTextColors);
     settings.setValue(QStringLiteral("statusIcons"), v.icons.status.toString());
     settings.setValue(QStringLiteral("trayIcons"), v.icons.tray.toString());
+    settings.setValue(QStringLiteral("statusIconsRenderSize"), v.icons.status.renderSize);
+    settings.setValue(QStringLiteral("trayIconsRenderSize"), v.icons.tray.renderSize);
     settings.setValue(QStringLiteral("distinguishTrayIcons"), v.icons.distinguishTrayIcons);
     settings.beginGroup(QStringLiteral("positioning"));
     settings.setValue(QStringLiteral("useCursorPos"), appearance.positioning.useCursorPosition);

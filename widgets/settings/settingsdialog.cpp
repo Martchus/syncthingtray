@@ -559,14 +559,14 @@ QWidget *IconsOptionPage::setupWidget()
     case Context::UI:
         widget->setWindowTitle(QCoreApplication::translate("QtGui::IconsOptionPageBase", "UI icons"));
         ui()->contextLabel->setText(
-            QCoreApplication::translate("QtGui::IconsOptionPageBase", "These icon colors are used within Syncthing Tray's UI."));
+            QCoreApplication::translate("QtGui::IconsOptionPageBase", "These icon settings are used within Syncthing Tray's UI."));
         ui()->contextCheckBox->hide();
         break;
     case Context::System:
         widget->setWindowTitle(QCoreApplication::translate("QtGui::IconsOptionPageBase", "System icons"));
-        ui()->contextLabel->setText(
-            QCoreApplication::translate("QtGui::IconsOptionPageBase", "These icon colors are used for the system tray icon and the notifications."));
-        ui()->contextCheckBox->setText(QCoreApplication::translate("QtGui::IconsOptionPageBase", "Use same colors as for UI icons"));
+        ui()->contextLabel->setText(QCoreApplication::translate(
+            "QtGui::IconsOptionPageBase", "These icon settinngs are used for the system tray icon and the notifications."));
+        ui()->contextCheckBox->setText(QCoreApplication::translate("QtGui::IconsOptionPageBase", "Use same settings as for UI icons"));
         break;
     }
 
@@ -641,6 +641,18 @@ QWidget *IconsOptionPage::setupWidget()
     ui()->restoreDefaultsPushButton->setMenu(presetsMenu);
     QObject::connect(ui()->restorePreviousPushButton, &QPushButton::clicked, [this] { reset(); });
 
+    // setup slider
+    QObject::connect(ui()->renderingSizeSlider, &QSlider::valueChanged, [this](int value) {
+        m_settings.renderSize = QSize(value, value);
+        auto *const label = ui()->renderingSizeLabel;
+        if (const auto scaleFactor = label->devicePixelRatioF(); scaleFactor == 1.0) {
+            label->setText(QString::number(value) + QStringLiteral(" px"));
+        } else {
+            label->setText(QCoreApplication::translate("QtGui::IconsOptionPageBase", "%1 px (scaled to %2 px)")
+                               .arg(QString::number(value), QString::number(static_cast<qreal>(value) * scaleFactor, 'f', 0)));
+        }
+    });
+
     return widget;
 }
 
@@ -669,6 +681,7 @@ bool IconsOptionPage::apply()
 
 void IconsOptionPage::update()
 {
+    ui()->renderingSizeSlider->setValue(std::max(m_settings.renderSize.width(), m_settings.renderSize.height()));
     for (auto &widgetsForColor : m_widgets) {
         widgetsForColor.colorButtons[0]->setColor(widgetsForColor.setting->backgroundStart);
         widgetsForColor.colorButtons[1]->setColor(widgetsForColor.setting->backgroundEnd);
