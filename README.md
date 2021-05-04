@@ -433,7 +433,7 @@ on GitHub.
     * Qt < 5.14
         * Any self-signed certificate is accepted when using Qt WebEngine due to https://bugreports.qt.io/browse/QTBUG-51176.
     * Qt < 5.9:
-        * Pausing/resuming folders and devices doesn't work when using scan-intervalls with a lot of zeros because of
+        * Pausing/resuming folders and devices doesn't work when using scan-intervals with a lot of zeros because of
           Syncthing bug https://github.com/syncthing/syncthing/issues/4001. This has already been fixed on the Qt-side with
           https://codereview.qt-project.org/#/c/187069/. However, the fix is only available in Qt 5.9 and above.
     * any Qt version:
