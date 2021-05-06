@@ -81,6 +81,9 @@ set(REQUIRED_ICONS
     preferences-desktop-icons
     preferences-desktop-locale
     preferences-desktop-notification
+    preferences-system-startup
+    preferences-system-startup
+    preferences-system-services
     preferences-other
     process-stop
     qtcreator

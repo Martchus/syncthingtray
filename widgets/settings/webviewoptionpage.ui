@@ -11,6 +11,10 @@
   <property name="windowTitle">
    <string>General</string>
   </property>
+  <property name="windowIcon">
+   <iconset theme="internet-web-browser" resource="../resources/syncthingwidgetsicons.qrc">
+    <normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</iconset>
+  </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="1" column="0">
     <widget class="QLabel" name="usageLabel">
@@ -65,6 +69,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/syncthingwidgetsicons.qrc"/>
+ </resources>
  <connections/>
 </ui>

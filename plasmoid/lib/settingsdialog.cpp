@@ -132,12 +132,8 @@ SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
     // most startup options don't make much sense for a Plasmoid, so merge webview with startup
     auto *const webViewPage = new WebViewOptionPage;
     webViewPage->widget()->setWindowTitle(QCoreApplication::translate("Plasmoid::SettingsDialog", "Web view"));
-    webViewPage->widget()->setWindowIcon(
-        QIcon::fromTheme(QStringLiteral("internet-web-browser"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))));
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     auto *const systemdPage = new SystemdOptionPage;
-    systemdPage->widget()->setWindowIcon(
-        QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
 #endif
 
     category = new OptionCategory;

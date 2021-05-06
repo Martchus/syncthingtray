@@ -11,6 +11,9 @@
   <property name="windowTitle">
    <string>Autostart</string>
   </property>
+  <property name="windowIcon">
+   <iconset theme="preferences-system-startup"/>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QCheckBox" name="autostartCheckBox">

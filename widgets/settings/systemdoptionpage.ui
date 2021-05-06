@@ -5,6 +5,9 @@
   <property name="windowTitle">
    <string>Systemd</string>
   </property>
+  <property name="windowIcon">
+   <iconset theme="preferences-system-services"/>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QCheckBox" name="showButtonCheckBox">

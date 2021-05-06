@@ -5,6 +5,10 @@
   <property name="windowTitle">
    <string>Syncthing launcher</string>
   </property>
+  <property name="windowIcon">
+   <iconset theme="system-run" resource="../resources/syncthingwidgetsicons.qrc">
+    <normaloff>:/icons/hicolor/scalable/apps/system-run.svg</normaloff>:/icons/hicolor/scalable/apps/system-run.svg</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QCheckBox" name="enabledCheckBox">

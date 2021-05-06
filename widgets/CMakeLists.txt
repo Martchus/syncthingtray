@@ -64,6 +64,8 @@ set(REQUIRED_ICONS
     edit-paste
     list-remove
     preferences-desktop-notification
+    preferences-system-startup
+    preferences-system-services
     view-refresh
     emblem-checked
     network-connect

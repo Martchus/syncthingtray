@@ -12,8 +12,8 @@
    <string>Connection</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="network-connect">
-    <normaloff>.</normaloff>.</iconset>
+   <iconset theme="network-connect" resource="../../tray/resources/syncthingtrayicons.qrc">
+    <normaloff>:/icons/hicolor/scalable/actions/network-connect.svg</normaloff>:/icons/hicolor/scalable/actions/network-connect.svg</iconset>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <property name="verticalSpacing">
@@ -583,6 +583,7 @@
   </customwidget>
  </customwidgets>
  <resources>
+  <include location="../../tray/resources/syncthingtrayicons.qrc"/>
   <include location="../resources/syncthingwidgetsicons.qrc"/>
  </resources>
  <connections>
