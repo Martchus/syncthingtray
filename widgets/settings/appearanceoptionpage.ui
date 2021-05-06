@@ -19,17 +19,255 @@
    <property name="verticalSpacing">
     <number>4</number>
    </property>
-   <item row="0" column="0">
+   <item row="3" column="0">
+    <widget class="QLabel" name="frameShapeLabel">
+     <property name="text">
+      <string>Frame shape</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="frameShapeComboBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <item>
+      <property name="text">
+       <string>No frame</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Box</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Panel</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Styled panel</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="frameShadowLabel">
+     <property name="text">
+      <string>Frame shadow</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QComboBox" name="frameShadowComboBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <item>
+      <property name="text">
+       <string>Plain</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Raised</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Sunken</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="tabPosLabel">
+     <property name="text">
+      <string>Tab position</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QComboBox" name="tabPosComboBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <item>
+      <property name="text">
+       <string>Top</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Bottom</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Left</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Right</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="colorsLabel">
+     <property name="text">
+      <string>Colors</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="QCheckBox" name="brightTextColorsCheckBox">
+     <property name="text">
+      <string>Bright custom text colors (use for dark color scheme)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="guiElementsLabel">
+     <property name="text">
+      <string>Optional GUI elements</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QCheckBox" name="showTrafficCheckBox">
+     <property name="text">
+      <string>Traffic statistics</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="positioningLabel">
+     <property name="text">
+      <string>Positioning</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="1">
+    <layout class="QVBoxLayout" name="positioningVerticalLayout">
+     <item>
+      <widget class="QCheckBox" name="useCursorPosCheckBox">
+       <property name="text">
+        <string>Use cursor position</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="assumeIconPosLabel">
+       <property name="text">
+        <string>Otherwise assume tray icon coordinates to be:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="positioningHorizontalLayout">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <item>
+        <widget class="QSpinBox" name="xPosSpinBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="suffix">
+          <string> px</string>
+         </property>
+         <property name="prefix">
+          <string>x: </string>
+         </property>
+         <property name="minimum">
+          <number>-10000</number>
+         </property>
+         <property name="maximum">
+          <number>10000</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="yPosSpinBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="suffix">
+          <string> px</string>
+         </property>
+         <property name="prefix">
+          <string>y: </string>
+         </property>
+         <property name="minimum">
+          <number>-10000</number>
+         </property>
+         <property name="maximum">
+          <number>10000</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="positioningHorizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::MinimumExpanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="7" column="0">
     <widget class="QLabel" name="sizeLabel">
      <property name="text">
       <string>Menu size</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="7" column="1">
     <layout class="QHBoxLayout" name="menuSizeHorizontalLayout">
      <item>
       <widget class="QSpinBox" name="widthSpinBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="suffix">
         <string> px</string>
        </property>
@@ -62,6 +300,12 @@
      </item>
      <item>
       <widget class="QSpinBox" name="heightSpinBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="suffix">
         <string> px</string>
        </property>
@@ -82,7 +326,7 @@
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Preferred</enum>
+        <enum>QSizePolicy::MinimumExpanding</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -93,231 +337,6 @@
       </spacer>
      </item>
     </layout>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="frameShapeLabel">
-     <property name="text">
-      <string>Frame shape</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QComboBox" name="frameShapeComboBox">
-     <item>
-      <property name="text">
-       <string>No frame</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Box</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Panel</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Styled panel</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="frameShadowLabel">
-     <property name="text">
-      <string>Frame shadow</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QComboBox" name="frameShadowComboBox">
-     <item>
-      <property name="text">
-       <string>Plain</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Raised</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Sunken</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="tabPosLabel">
-     <property name="text">
-      <string>Tab position</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="1">
-    <widget class="QComboBox" name="tabPosComboBox">
-     <item>
-      <property name="text">
-       <string>Top</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Bottom</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Left</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Right</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="8" column="0">
-    <widget class="QLabel" name="colorsLabel">
-     <property name="text">
-      <string>Colors</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="1">
-    <widget class="QCheckBox" name="brightTextColorsCheckBox">
-     <property name="text">
-      <string>Bright custom text colors (use for dark color scheme)</string>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="0">
-    <widget class="QLabel" name="positioningLabel">
-     <property name="text">
-      <string>Positioning</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="1">
-    <layout class="QVBoxLayout" name="positioningVerticalLayout">
-     <item>
-      <widget class="QCheckBox" name="useCursorPosCheckBox">
-       <property name="text">
-        <string>Use cursor position</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="assumeIconPosLabel">
-       <property name="text">
-        <string>Otherwise assume tray icon coordinates to be:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="positioningHorizontalLayout">
-       <property name="spacing">
-        <number>10</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="xPosLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>x:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="xPosSpinBox">
-         <property name="suffix">
-          <string> px</string>
-         </property>
-         <property name="minimum">
-          <number>-10000</number>
-         </property>
-         <property name="maximum">
-          <number>10000</number>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="yPosLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>y:</string>
-         </property>
-         <property name="textFormat">
-          <enum>Qt::PlainText</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="yPosSpinBox">
-         <property name="suffix">
-          <string> px</string>
-         </property>
-         <property name="minimum">
-          <number>-10000</number>
-         </property>
-         <property name="maximum">
-          <number>10000</number>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="positioningHorizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Preferred</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-   <item row="7" column="0">
-    <widget class="QLabel" name="guiElementsLabel">
-     <property name="text">
-      <string>Optional GUI elements</string>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="1">
-    <widget class="QCheckBox" name="showTrafficCheckBox">
-     <property name="text">
-      <string>Traffic statistics</string>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>
