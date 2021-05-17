@@ -7,10 +7,7 @@
 
 #include <c++utilities/conversion/conversionexception.h>
 #include <c++utilities/conversion/stringconversion.h>
-
-#if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS)
 #include <c++utilities/io/ansiescapecodes.h>
-#endif
 
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -26,9 +23,7 @@
 
 using namespace std;
 using namespace CppUtilities;
-#if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS)
 using namespace CppUtilities::EscapeCodes;
-#endif
 
 namespace Data {
 
@@ -676,12 +671,15 @@ void SyncthingConnection::readStatus()
             return;
         }
 
-        const auto replyObj(replyDoc.object());
+        const auto replyObj = replyDoc.object();
+        const auto startTime = replyObj.value(QLatin1String("startTime")).toString().toUtf8();
         emitMyIdChanged(replyObj.value(QLatin1String("myID")).toString());
         try {
-            m_startTime = DateTime::fromIsoStringGmt(replyObj.value(QLatin1String("startTime")).toString().toLocal8Bit().data());
-        } catch (const ConversionException &) {
+            m_startTime = DateTime::fromIsoStringLocal(startTime.data());
+        } catch (const ConversionException &e) {
             m_startTime = DateTime(); // tracking the start time isn't very important so just ignore
+            cerr << EscapeCodes::Phrases::Warning << "Unable to parse start time timestamp \"" << startTime.data() << "\": " << e.what()
+                 << EscapeCodes::Phrases::End;
         }
         m_hasStatus = true;
 
@@ -864,12 +862,15 @@ void SyncthingConnection::readErrors()
             if (errorObj.isEmpty()) {
                 continue;
             }
+            const auto whenStr = errorObj.value(QLatin1String("when")).toString().toUtf8();
             try {
-                const DateTime when = DateTime::fromIsoStringLocal(errorObj.value(QLatin1String("when")).toString().toLocal8Bit().data());
+                const auto when = DateTime::fromIsoStringLocal(whenStr.data());
                 if (m_lastErrorTime < when) {
                     emitNotification(m_lastErrorTime = when, errorObj.value(QLatin1String("message")).toString());
                 }
-            } catch (const ConversionException &) {
+            } catch (const ConversionException &e) {
+                cerr << EscapeCodes::Phrases::Warning << "Unable to parse error message timestamp \"" << whenStr.data() << "\": " << e.what()
+                     << EscapeCodes::Phrases::End;
             }
         }
 
@@ -932,11 +933,16 @@ void SyncthingConnection::readDirStatistics()
             }
 
             bool dirModified = false;
-            try {
-                dirInfo.lastScanTime = DateTime::fromIsoStringLocal(dirObj.value(QLatin1String("lastScan")).toString().toUtf8().data());
+            const auto lastScan = dirObj.value(QLatin1String("lastScan")).toString().toUtf8();
+            if (!lastScan.isEmpty()) {
                 dirModified = true;
-            } catch (const ConversionException &) {
-                dirInfo.lastScanTime = DateTime();
+                try {
+                    dirInfo.lastScanTime = DateTime::fromIsoStringLocal(lastScan.data());
+                } catch (const ConversionException &e) {
+                    dirInfo.lastScanTime = DateTime();
+                    cerr << EscapeCodes::Phrases::Warning << "Unable to parse last scan timestamp \"" << lastScan.data() << "\": " << e.what()
+                         << EscapeCodes::Phrases::End;
+                }
             }
             const QJsonObject lastFileObj(dirObj.value(QLatin1String("lastFile")).toObject());
             if (!lastFileObj.isEmpty()) {
@@ -1018,7 +1024,7 @@ void SyncthingConnection::readDirStatus()
             return;
         }
 
-        readDirSummary(DateTime::gmtNow(), replyDoc.object(), *dir, index);
+        readDirSummary(DateTime::now(), replyDoc.object(), *dir, index);
 
         if (m_keepPolling) {
             concludeConnection();
@@ -1081,7 +1087,7 @@ void SyncthingConnection::readDirPullErrors()
             return;
         }
 
-        readFolderErrors(DateTime::gmtNow(), replyDoc.object(), *dir, index);
+        readFolderErrors(DateTime::now(), replyDoc.object(), *dir, index);
         break;
     }
     case QNetworkReply::OperationCanceledError:
@@ -1151,7 +1157,7 @@ void SyncthingConnection::readCompletion()
         const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
         if (jsonError.error == QJsonParseError::NoError) {
             // update the relevant completion info
-            readRemoteFolderCompletion(DateTime::gmtNow(), replyDoc.object(), devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
+            readRemoteFolderCompletion(DateTime::now(), replyDoc.object(), devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
             concludeConnection();
             return;
         }
@@ -1213,12 +1219,15 @@ void SyncthingConnection::readDeviceStatistics()
         for (SyncthingDev &devInfo : m_devs) {
             const QJsonObject devObj(replyObj.value(devInfo.id).toObject());
             if (!devObj.isEmpty()) {
+                const auto lastSeen = devObj.value(QLatin1String("lastSeen")).toString().toUtf8();
                 try {
-                    const auto [localTime, utcOffset] = DateTime::fromIsoString(devObj.value(QLatin1String("lastSeen")).toString().toUtf8().data());
+                    const auto [localTime, utcOffset] = DateTime::fromIsoString(lastSeen.data());
                     devInfo.lastSeen = (localTime - utcOffset) > DateTime::unixEpochStart() ? localTime : DateTime();
                     emit devStatusChanged(devInfo, index);
-                } catch (const ConversionException &) {
+                } catch (const ConversionException &e) {
                     devInfo.lastSeen = DateTime();
+                    cerr << EscapeCodes::Phrases::Warning << "Unable to parse last seen timestamp \"" << lastSeen.data() << "\": " << e.what()
+                         << EscapeCodes::Phrases::End;
                 }
             }
             ++index;
@@ -1451,12 +1460,15 @@ void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     dir.lastStatisticsUpdate = eventTime;
 
     // update status
-    const QString state(summary.value(QLatin1String("state")).toString());
+    const auto state = summary.value(QLatin1String("state")).toString();
     if (!state.isEmpty()) {
+        const auto stateChanged = summary.value(QLatin1String("stateChanged")).toString().toUtf8();
         try {
-            dir.assignStatus(state, DateTime::fromIsoStringGmt(summary.value(QLatin1String("stateChanged")).toString().toUtf8().data()));
-        } catch (const ConversionException &) {
-            // FIXME: warning about invalid stateChanged
+            dir.assignStatus(state, DateTime::fromIsoStringLocal(stateChanged.data()));
+        } catch (const ConversionException &e) {
+            dir.assignStatus(state, dir.lastStatusUpdate);
+            cerr << EscapeCodes::Phrases::Warning << "Unable to parse folder state timestamp \"" << stateChanged.data() << "\": " << e.what()
+                 << EscapeCodes::Phrases::End;
         }
     }
 
@@ -1615,9 +1627,12 @@ void SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, int 
     for (const auto &eventVal : events) {
         const auto event(eventVal.toObject());
         const auto eventTime([&] {
+            const auto timestamp = event.value(QLatin1String("time")).toString().toUtf8();
             try {
-                return DateTime::fromIsoStringGmt(event.value(QLatin1String("time")).toString().toLocal8Bit().data());
-            } catch (const ConversionException &) {
+                return DateTime::fromIsoStringLocal(timestamp);
+            } catch (const ConversionException &e) {
+                cerr << EscapeCodes::Phrases::Warning << "Unable to parse event timestamp \"" << timestamp.data() << "\": " << e.what()
+                     << EscapeCodes::Phrases::End;
                 return DateTime(); // ignore conversion error
             }
         }());
@@ -2050,7 +2065,7 @@ void SyncthingConnection::readRemoteFolderCompletion(const SyncthingCompletion &
         previousCompletion = completion;
         emit dirStatusChanged(*dirInfo, dirIndex);
         if (devInfo && completion.needed.isNull() && previouslyUpdated && (previouslyNeeded || previousGlobalBytes != completion.globalBytes)) {
-            emit dirCompleted(DateTime::gmtNow(), *dirInfo, dirIndex, devInfo);
+            emit dirCompleted(DateTime::now(), *dirInfo, dirIndex, devInfo);
         }
     }
     // update dev info

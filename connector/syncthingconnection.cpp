@@ -8,11 +8,7 @@
 #endif
 
 #include <c++utilities/conversion/stringconversion.h>
-
-#if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS)
 #include <c++utilities/io/ansiescapecodes.h>
-#include <iostream>
-#endif
 
 #include <QAuthenticator>
 #include <QHostAddress>
@@ -25,13 +21,12 @@
 #include <QStringBuilder>
 #include <QTimer>
 
+#include <iostream>
 #include <utility>
 
 using namespace std;
 using namespace CppUtilities;
-#if defined(LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS) || defined(LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS)
 using namespace CppUtilities::EscapeCodes;
-#endif
 
 namespace Data {
 

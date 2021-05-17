@@ -755,7 +755,7 @@ inline CppUtilities::DateTime SyncthingConnection::startTime() const
  */
 inline CppUtilities::TimeSpan SyncthingConnection::uptime() const
 {
-    return m_startTime.isNull() ? CppUtilities::TimeSpan() : CppUtilities::DateTime::gmtNow() - m_startTime;
+    return m_startTime.isNull() ? CppUtilities::TimeSpan() : CppUtilities::DateTime::now() - m_startTime;
 }
 
 /*!

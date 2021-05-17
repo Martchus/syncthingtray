@@ -647,8 +647,13 @@ void Application::printLog(const std::vector<SyncthingLogEntry> &logEntries)
     cerr << Phrases::Override;
 
     for (const SyncthingLogEntry &entry : logEntries) {
-        cout << DateTime::fromIsoStringLocal(entry.when.toLocal8Bit().data()).toString(DateTimeOutputFormat::DateAndTime, true).data() << ':' << ' '
-             << entry.message.toLocal8Bit().data() << '\n';
+        const auto when = entry.when.toUtf8();
+        try {
+            cout << DateTime::fromIsoStringLocal(when.data()).toString(DateTimeOutputFormat::DateAndTime, true);
+        } catch (const ConversionException &e) {
+            cout << when.data();
+        }
+        cout << ':' << ' ' << entry.message.toLocal8Bit().data() << '\n';
     }
     cout.flush();
     QCoreApplication::exit();
