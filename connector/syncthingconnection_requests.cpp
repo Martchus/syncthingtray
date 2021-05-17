@@ -857,8 +857,9 @@ void SyncthingConnection::readErrors()
             return;
         }
 
-        for (const QJsonValueRef errorVal : replyDoc.object().value(QLatin1String("errors")).toArray()) {
-            const QJsonObject errorObj(errorVal.toObject());
+        const auto errors = replyDoc.object().value(QLatin1String("errors")).toArray();
+        for (const QJsonValue &errorVal : errors) {
+            const QJsonObject errorObj = errorVal.toObject();
             if (errorObj.isEmpty()) {
                 continue;
             }
@@ -1959,7 +1960,8 @@ void SyncthingConnection::readFolderErrors(DateTime eventTime, const QJsonObject
     dirInfo.itemErrors.clear();
 
     // add errors
-    for (const QJsonValueRef errorVal : eventData.value(QLatin1String("errors")).toArray()) {
+    const auto errors = eventData.value(QLatin1String("errors")).toArray();
+    for (const QJsonValue &errorVal : errors) {
         const QJsonObject error(errorVal.toObject());
         if (error.isEmpty()) {
             continue;
