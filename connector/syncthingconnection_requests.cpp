@@ -52,9 +52,9 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest));
-#ifdef LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS
-    cerr << Phrases::Info << "GETing: " << reply->url().toString().toStdString() << Phrases::EndFlush;
-#endif
+    if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
+        cerr << Phrases::Info << "Querying API: GET " << reply->url().toString().toStdString() << Phrases::EndFlush;
+    }
     reply->ignoreSslErrors(m_expectedSslErrors);
     return reply;
 #else
@@ -68,9 +68,9 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuery &query, const QByteArray &data)
 {
     auto *const reply = networkAccessManager().post(prepareRequest(path, query), data);
-#ifdef LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS
-    cerr << Phrases::Info << "POSTing: " << reply->url().toString().toStdString() << Phrases::End << data.data() << endl;
-#endif
+    if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
+        cerr << Phrases::Info << "Querying API: POST " << reply->url().toString().toStdString() << Phrases::EndFlush;
+    }
     reply->ignoreSslErrors(m_expectedSslErrors);
     return reply;
 }
@@ -78,60 +78,62 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
 /*!
  * \brief Prepares the current reply.
  */
-QNetworkReply *SyncthingConnection::prepareReply()
+SyncthingConnection::Reply SyncthingConnection::prepareReply(bool readData, bool handleAborting)
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-
-    // skip further processing if aborting to reconnect
-    if (m_abortingToReconnect) {
-        handleAdditionalRequestCanceled();
-        return nullptr;
-    }
-
-    return reply;
+    return handleReply(static_cast<QNetworkReply *>(sender()), readData, handleAborting);
 }
 
 /*!
  * \brief Prepares the current reply.
  */
-QNetworkReply *SyncthingConnection::prepareReply(QNetworkReply *&expectedReply)
+SyncthingConnection::Reply SyncthingConnection::prepareReply(QNetworkReply *&expectedReply, bool readData, bool handleAborting)
 {
     auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-
-    // unset the expected reply so it is no longer considered pending
     if (reply == expectedReply) {
-        expectedReply = nullptr;
+        expectedReply = nullptr; // unset the expected reply so it is no longer considered pending
     }
-
-    // skip further processing if aborting to reconnect
-    if (m_abortingToReconnect) {
-        handleAdditionalRequestCanceled();
-        return nullptr;
-    }
-
-    return reply;
+    return handleReply(reply, readData, handleAborting);
 }
 
 /*!
  * \brief Prepares the current reply.
  */
-QNetworkReply *SyncthingConnection::prepareReply(QList<QNetworkReply *> &expectedReplies)
+SyncthingConnection::Reply SyncthingConnection::prepareReply(QList<QNetworkReply *> &expectedReplies, bool readData, bool handleAborting)
 {
     auto *const reply = static_cast<QNetworkReply *>(sender());
+    expectedReplies.removeAll(reply); // unset the expected reply so it is no longer considered pending
+    return handleReply(reply, readData, handleAborting);
+}
+
+/*!
+ * \brief Handles the specified \a reply; invoked by the prepareReply() functions.
+ */
+SyncthingConnection::Reply SyncthingConnection::handleReply(QNetworkReply *reply, bool readData, bool handleAborting)
+{
+    const auto log = m_loggingFlags & SyncthingConnectionLoggingFlags::ApiReplies;
+    readData = readData || log;
+    handleAborting = handleAborting && m_abortingAllRequests;
+    const auto data = Reply{
+        .reply = handleAborting ? nullptr : reply, // skip further processing if aborting to reconnect
+        .response = readData ? reply->readAll() : QByteArray(),
+    };
     reply->deleteLater();
 
-    // unset the expected reply so it is no longer considered pending
-    expectedReplies.removeAll(reply);
-
-    // skip further processing if aborting to reconnect
-    if (m_abortingToReconnect) {
-        handleAdditionalRequestCanceled();
-        return nullptr;
+    if (log) {
+        const auto url = reply->url();
+        const auto path = url.path().toUtf8();
+        const auto urlStr = url.toString().toUtf8();
+        cerr << Phrases::Info << "Received reply for: " << std::string_view(urlStr.data(), static_cast<std::string_view::size_type>(urlStr.size()))
+             << Phrases::EndFlush;
+        if (!data.response.isEmpty() && path != "/rest/events"
+            && path != "/rest/events/disk") { // events are logged separately because they are not always useful but make the log very verbose
+            cerr << std::string_view(data.response.data(), static_cast<std::string_view::size_type>(data.response.size()));
+        }
     }
-
-    return reply;
+    if (handleAborting) {
+        handleAdditionalRequestCanceled();
+    }
+    return data;
 }
 
 // pause/resume devices
@@ -212,14 +214,14 @@ bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paus
  */
 void SyncthingConnection::readDevPauseResume()
 {
-    auto *const reply = prepareReply();
+    auto const [reply, response] = prepareReply(false);
     if (!reply) {
         return;
     }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        const QStringList devIds(reply->property("devIds").toStringList());
+        const QStringList devIds = reply->property("devIds").toStringList();
         const bool resume = reply->property("resume").toBool();
         setDevicesPaused(m_rawConfig, devIds, !resume);
         if (reply->property("resume").toBool()) {
@@ -316,14 +318,14 @@ bool SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool p
 
 void SyncthingConnection::readDirPauseResume()
 {
-    auto *const reply = prepareReply();
+    auto const [reply, response] = prepareReply(false);
     if (!reply) {
         return;
     }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        const QStringList dirIds(reply->property("dirIds").toStringList());
+        const QStringList dirIds = reply->property("dirIds").toStringList();
         const bool resume = reply->property("resume").toBool();
         setDirectoriesPaused(m_rawConfig, dirIds, !resume);
         if (resume) {
@@ -385,7 +387,7 @@ void SyncthingConnection::rescan(const QString &dirId, const QString &relpath)
  */
 void SyncthingConnection::readRescan()
 {
-    auto *const reply = prepareReply();
+    auto const [reply, response] = prepareReply(false);
     if (!reply) {
         return;
     }
@@ -416,7 +418,7 @@ void SyncthingConnection::restart()
  */
 void SyncthingConnection::readRestart()
 {
-    auto *const reply = prepareReply();
+    auto const [reply, response] = prepareReply(false);
     if (!reply) {
         return;
     }
@@ -445,7 +447,7 @@ void SyncthingConnection::shutdown()
  */
 void SyncthingConnection::readShutdown()
 {
-    auto *const reply = prepareReply();
+    auto const [reply, response] = prepareReply(false);
     if (!reply) {
         return;
     }
@@ -477,7 +479,7 @@ void SyncthingConnection::requestClearingErrors()
  */
 void SyncthingConnection::readClearingErrors()
 {
-    auto *const reply = prepareReply();
+    auto const [reply, response] = prepareReply(false);
     if (!reply) {
         return;
     }
@@ -511,14 +513,13 @@ void SyncthingConnection::requestConfig()
  */
 void SyncthingConnection::readConfig()
 {
-    auto *const reply = prepareReply(m_configReply);
+    auto const [reply, response] = prepareReply(m_configReply);
     if (!reply) {
         return;
     }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
         const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
@@ -655,14 +656,13 @@ void SyncthingConnection::requestStatus()
  */
 void SyncthingConnection::readStatus()
 {
-    auto *const reply = prepareReply(m_statusReply);
+    auto const [reply, response] = prepareReply(m_statusReply);
     if (!reply) {
         return;
     }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
         const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
         if (jsonError.error != QJsonParseError::NoError) {
@@ -728,14 +728,13 @@ void SyncthingConnection::requestConnections()
  */
 void SyncthingConnection::readConnections()
 {
-    auto *const reply = prepareReply(m_connectionsReply);
+    auto const [reply, response] = prepareReply(m_connectionsReply);
     if (!reply) {
         return;
     }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
         const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
@@ -837,7 +836,7 @@ void SyncthingConnection::requestErrors()
  */
 void SyncthingConnection::readErrors()
 {
-    auto *const reply = prepareReply(m_errorsReply);
+    auto const [reply, response] = prepareReply(m_errorsReply);
     if (!reply) {
         return;
     }
@@ -849,7 +848,6 @@ void SyncthingConnection::readErrors()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
         const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
@@ -909,14 +907,13 @@ void SyncthingConnection::requestDirStatistics()
  */
 void SyncthingConnection::readDirStatistics()
 {
-    auto *const reply = prepareReply(m_dirStatsReply);
+    auto const [reply, response] = prepareReply(m_dirStatsReply);
     if (!reply) {
         return;
     }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
         const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
@@ -1000,7 +997,7 @@ void SyncthingConnection::requestDirStatus(const QString &dirId)
  */
 void SyncthingConnection::readDirStatus()
 {
-    auto *const reply = prepareReply(m_otherReplies);
+    auto const [reply, response] = prepareReply(m_otherReplies);
     if (!reply) {
         return;
     }
@@ -1017,7 +1014,6 @@ void SyncthingConnection::readDirStatus()
         }
 
         // parse JSON
-        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
         const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
@@ -1063,7 +1059,7 @@ void SyncthingConnection::requestDirPullErrors(const QString &dirId, int page, i
  */
 void SyncthingConnection::readDirPullErrors()
 {
-    auto *const reply = prepareReply();
+    auto const [reply, response] = prepareReply();
     if (!reply) {
         return;
     }
@@ -1080,7 +1076,6 @@ void SyncthingConnection::readDirPullErrors()
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         // parse JSON
-        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
         const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
@@ -1130,15 +1125,13 @@ static void ensureCompletionNotConsideredRequested(const QString &devId, Syncthi
  */
 void SyncthingConnection::readCompletion()
 {
-    auto *reply = prepareReply(m_otherReplies);
+    auto const [reply, response] = prepareReply(m_otherReplies);
     const auto cancelled = reply == nullptr;
-    if (!reply) {
-        reply = static_cast<QNetworkReply *>(sender());
-    }
+    const auto *const sender = cancelled ? static_cast<QNetworkReply *>(this->sender()) : reply;
 
     // determine relevant dev/dir
-    const auto devId(reply->property("devId").toString());
-    const auto dirId(reply->property("dirId").toString());
+    const auto devId = sender->property("devId").toString();
+    const auto dirId = sender->property("dirId").toString();
     int devIndex, dirIndex;
     auto *const devInfo = findDevInfo(devId, devIndex);
     auto *const dirInfo = findDirInfo(dirId, dirIndex);
@@ -1154,8 +1147,7 @@ void SyncthingConnection::readCompletion()
     case QNetworkReply::NoError: {
         // parse JSON
         QJsonParseError jsonError;
-        const auto response(reply->readAll());
-        const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error == QJsonParseError::NoError) {
             // update the relevant completion info
             readRemoteFolderCompletion(DateTime::now(), replyDoc.object(), devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
@@ -1200,14 +1192,13 @@ void SyncthingConnection::requestDeviceStatistics()
  */
 void SyncthingConnection::readDeviceStatistics()
 {
-    auto *const reply = prepareReply(m_devStatsReply);
+    auto const [reply, response] = prepareReply(m_devStatsReply);
     if (!reply) {
         return;
     }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
         const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
@@ -1264,14 +1255,13 @@ void SyncthingConnection::requestVersion()
  */
 void SyncthingConnection::readVersion()
 {
-    auto *const reply = prepareReply(m_versionReply);
+    auto const [reply, response] = prepareReply(m_versionReply);
     if (!reply) {
         return;
     }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
         const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
         if (jsonError.error != QJsonParseError::NoError) {
@@ -1314,14 +1304,14 @@ void SyncthingConnection::requestQrCode(const QString &text)
  */
 void SyncthingConnection::readQrCode()
 {
-    auto *const reply = prepareReply();
+    auto const [reply, response] = prepareReply();
     if (!reply) {
         return;
     }
 
     switch (reply->error()) {
     case QNetworkReply::NoError:
-        emit qrCodeAvailable(reply->property("qrText").toString(), reply->readAll());
+        emit qrCodeAvailable(reply->property("qrText").toString(), response);
         break;
     case QNetworkReply::OperationCanceledError:
         break;
@@ -1349,7 +1339,7 @@ void SyncthingConnection::requestLog()
  */
 void SyncthingConnection::readLog()
 {
-    auto *const reply = prepareReply(m_logReply);
+    auto const [reply, response] = prepareReply(m_logReply);
     if (!reply) {
         return;
     }
@@ -1357,7 +1347,7 @@ void SyncthingConnection::readLog()
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(reply->readAll(), &jsonError);
+        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
             emit error(tr("Unable to parse Syncthing log: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
             return;
@@ -1410,8 +1400,7 @@ void SyncthingConnection::postConfigFromByteArray(const QByteArray &rawConfig)
  */
 void SyncthingConnection::readPostConfig()
 {
-    auto *const reply = static_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
+    auto const [reply, response] = prepareReply(false, false);
     switch (reply->error()) {
     case QNetworkReply::NoError:
         emit newConfigTriggered();
@@ -1571,14 +1560,13 @@ void SyncthingConnection::requestEvents()
  */
 void SyncthingConnection::readEvents()
 {
-    auto *const reply = prepareReply(m_eventsReply);
+    auto const [reply, response] = prepareReply(m_eventsReply);
     if (!reply) {
         return;
     }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
         const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
@@ -1592,12 +1580,10 @@ void SyncthingConnection::readEvents()
         emit newEvents(replyArray);
         readEventsFromJsonArray(replyArray, m_lastEventId);
 
-#ifdef LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
-        if (!replyArray.isEmpty()) {
-            cerr << Phrases::Info << "Received " << replyArray.size() << " Syncthing events:" << Phrases::End
-                 << replyDoc.toJson(QJsonDocument::Indented).data() << endl;
+        if (!replyArray.isEmpty() && (loggingFlags() & SyncthingConnectionLoggingFlags::Events)) {
+            const auto log = replyDoc.toJson(QJsonDocument::Indented);
+            cerr << Phrases::Info << "Received " << replyArray.size() << " Syncthing events:" << Phrases::End << log.data() << endl;
         }
-#endif
         break;
     }
     case QNetworkReply::TimeoutError:
@@ -2166,14 +2152,13 @@ void SyncthingConnection::requestDiskEvents(int limit)
  */
 void SyncthingConnection::readDiskEvents()
 {
-    auto *const reply = prepareReply(m_diskEventsReply);
+    auto const [reply, response] = prepareReply(m_diskEventsReply);
     if (!reply) {
         return;
     }
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        const QByteArray response(reply->readAll());
         QJsonParseError jsonError;
         const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
         if (jsonError.error != QJsonParseError::NoError) {
@@ -2181,8 +2166,14 @@ void SyncthingConnection::readDiskEvents()
             return;
         }
 
+        const auto replyArray = replyDoc.array();
         m_hasDiskEvents = true;
-        readEventsFromJsonArray(replyDoc.array(), m_lastDiskEventId);
+        readEventsFromJsonArray(replyArray, m_lastDiskEventId);
+
+        if (!replyArray.isEmpty() && (loggingFlags() & SyncthingConnectionLoggingFlags::Events)) {
+            const auto log = replyDoc.toJson(QJsonDocument::Indented);
+            cerr << Phrases::Info << "Received " << replyArray.size() << " Syncthing disk events:" << Phrases::End << log.data() << endl;
+        }
         break;
     }
     case QNetworkReply::TimeoutError:

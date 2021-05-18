@@ -5,6 +5,9 @@
 #include "./syncthingdev.h"
 #include "./syncthingdir.h"
 
+#include <c++utilities/misc/flagenumclass.h>
+
+#include <QByteArray>
 #include <QJsonObject>
 #include <QList>
 #include <QNetworkRequest>
@@ -49,6 +52,22 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry {
     QString message;
 };
 
+enum class SyncthingConnectionLoggingFlags : quint64 {
+    None, /**< loggingn is disabled */
+    FromEnvironment = (1 << 0), /**< environment variables are checked to pull in any of the other flags dynamically */
+    ApiCalls = (1 << 1), /**< log calls to Syncthing's REST-API and responses */
+    ApiReplies = (1 << 2), /**< log replies fromm Syncthing's REST-API */
+    Events = (1 << 3), /**< log events received via Syncthing's event API */
+    DirsOrDevsResetted = (1 << 4), /**< log list of directories/devices when list is resetted */
+    All = ApiCalls | ApiReplies | Events | DirsOrDevsResetted, /** log as much as possible */
+};
+
+} // namespace Data
+
+CPP_UTILITIES_MARK_FLAG_ENUM_CLASS(Data, Data::SyncthingConnectionLoggingFlags)
+
+namespace Data {
+
 class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     friend ConnectionTests;
     friend MiscTests;
@@ -61,6 +80,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(QString password READ password)
     Q_PROPERTY(Data::SyncthingStatus status READ status NOTIFY statusChanged)
     Q_PROPERTY(Data::SyncthingStatusComputionFlags statusComputionFlags READ statusComputionFlags WRITE setStatusComputionFlags)
+    Q_PROPERTY(Data::SyncthingConnectionLoggingFlags loggingFlags READ loggingFlags WRITE setLoggingFlags)
     Q_PROPERTY(QString statusText READ statusText NOTIFY statusChanged)
     Q_PROPERTY(bool connected READ isConnected NOTIFY statusChanged)
     Q_PROPERTY(bool hasUnreadNotifications READ hasUnreadNotifications)
@@ -87,8 +107,8 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(QJsonObject rawConfig READ rawConfig NOTIFY newConfig)
 
 public:
-    explicit SyncthingConnection(
-        const QString &syncthingUrl = QStringLiteral("http://localhost:8080"), const QByteArray &apiKey = QByteArray(), QObject *parent = nullptr);
+    explicit SyncthingConnection(const QString &syncthingUrl = QStringLiteral("http://localhost:8080"), const QByteArray &apiKey = QByteArray(),
+        SyncthingConnectionLoggingFlags loggingFlags = SyncthingConnectionLoggingFlags::FromEnvironment, QObject *parent = nullptr);
     ~SyncthingConnection() override;
 
     // getter/setter for
@@ -107,6 +127,8 @@ public:
     static QString statusText(SyncthingStatus status);
     SyncthingStatusComputionFlags statusComputionFlags() const;
     void setStatusComputionFlags(SyncthingStatusComputionFlags flags);
+    SyncthingConnectionLoggingFlags loggingFlags() const;
+    void setLoggingFlags(SyncthingConnectionLoggingFlags flags);
     bool isConnected() const;
     bool hasPendingRequests() const;
     bool hasPendingRequestsIncludingEvents() const;
@@ -308,12 +330,17 @@ private Q_SLOTS:
 
 private:
     // internal helper methods
+    struct Reply {
+        QNetworkReply *reply;
+        QByteArray response;
+    };
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
-    QNetworkReply *prepareReply();
-    QNetworkReply *prepareReply(QNetworkReply *&expectedReply);
-    QNetworkReply *prepareReply(QList<QNetworkReply *> &expectedReplies);
+    Reply prepareReply(bool readData = true, bool handleAborting = true);
+    Reply prepareReply(QNetworkReply *&expectedReply, bool readData = true, bool handleAborting = true);
+    Reply prepareReply(QList<QNetworkReply *> &expectedReplies, bool readData = true, bool handleAborting = true);
+    Reply handleReply(QNetworkReply *reply, bool readData, bool handleAborting);
     bool pauseResumeDevice(const QStringList &devIds, bool paused);
     bool pauseResumeDirectory(const QStringList &dirIds, bool paused);
     SyncthingDir *addDirInfo(std::vector<SyncthingDir> &dirs, const QString &dirId);
@@ -325,6 +352,8 @@ private:
     QString m_password;
     SyncthingStatus m_status;
     SyncthingStatusComputionFlags m_statusComputionFlags;
+    SyncthingConnectionLoggingFlags m_loggingFlags;
+    SyncthingConnectionLoggingFlags m_loggingFlagsHandler;
 
     bool m_keepPolling;
     bool m_abortingAllRequests;
@@ -648,6 +677,14 @@ inline void SyncthingConnection::setStatusComputionFlags(SyncthingStatusComputio
         m_statusComputionFlags = flags;
         recalculateStatus();
     }
+}
+
+/*!
+ * \brief Returns the currently active logging flags.
+ */
+inline SyncthingConnectionLoggingFlags SyncthingConnection::loggingFlags() const
+{
+    return m_loggingFlags;
 }
 
 /*!

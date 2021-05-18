@@ -411,6 +411,15 @@ Since the Dolphin integration and the Plasmoid are plugins, testing and debuggin
 See [Testing and debugging Dolphin/KIO plugin with Qt Creator](/fileitemactionplugin/testing.md)
 and [Testing and debugging Plasma 5 plasmoid with Qt Creator](/plasmoid/testing.md).
 
+### Logging
+It is possible to turn on logging of the underlying library by setting environment variables:
+
+* `LIB_SYNCTHING_CONNECTOR_LOG_ALL`: log everything mentioned in points below
+* `LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS`: log calls to Syncthing's REST-API
+* `LIB_SYNCTHING_CONNECTOR_LOG_API_REPLIES`: log replies from Syncthing's REST-API (except events)
+* `LIB_SYNCTHING_CONNECTOR_LOG_EVENTS`: log events emitted by Syncthing's events REST-API endpoint
+* `LIB_SYNCTHING_CONNECTOR_LOG_DIRS_OR_DEVS_RESETTED`: log when directories/devices are internally resetted
+
 ## Planned features
 The tray is still under development; the following features are under construction or planned:
 

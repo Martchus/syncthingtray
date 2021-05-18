@@ -7,6 +7,8 @@
 #include "./syncthingconnectionmockhelpers.h"
 #endif
 
+#include "resources/config.h"
+
 #include <c++utilities/conversion/stringconversion.h>
 #include <c++utilities/io/ansiescapecodes.h>
 
@@ -62,12 +64,15 @@ QNetworkAccessManager &networkAccessManager()
 /*!
  * \brief Constructs a new instance ready to connect. To establish the connection, call connect().
  */
-SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByteArray &apiKey, QObject *parent)
+SyncthingConnection::SyncthingConnection(
+    const QString &syncthingUrl, const QByteArray &apiKey, SyncthingConnectionLoggingFlags loggingFlags, QObject *parent)
     : QObject(parent)
     , m_syncthingUrl(syncthingUrl)
     , m_apiKey(apiKey)
     , m_status(SyncthingStatus::Disconnected)
     , m_statusComputionFlags(SyncthingStatusComputionFlags::Default)
+    , m_loggingFlags(SyncthingConnectionLoggingFlags::None)
+    , m_loggingFlagsHandler(SyncthingConnectionLoggingFlags::None)
     , m_keepPolling(false)
     , m_abortingAllRequests(false)
     , m_abortingToReconnect(false)
@@ -118,16 +123,7 @@ SyncthingConnection::SyncthingConnection(const QString &syncthingUrl, const QByt
     setupTestData();
 #endif
 
-#ifdef LIB_SYNCTHING_CONNECTOR_LOG_SYNCTHING_EVENTS
-    QObject::connect(this, &SyncthingConnection::newDirs, [](const auto &dirs) {
-        std::cerr << Phrases::Info << "Directory list renewed:" << Phrases::End;
-        std::cerr << displayNames(dirs).join(QStringLiteral(", ")).toStdString() << endl;
-    });
-    QObject::connect(this, &SyncthingConnection::newDevices, [](const auto &devs) {
-        std::cerr << Phrases::Info << "Device list renewed:" << Phrases::End;
-        std::cerr << displayNames(devs).join(QStringLiteral(", ")).toStdString() << endl;
-    });
-#endif
+    setLoggingFlags(loggingFlags);
 }
 
 /*!
@@ -169,6 +165,49 @@ QString SyncthingConnection::statusText(SyncthingStatus status)
         return tr("connected, remote not in sync");
     default:
         return tr("unknown");
+    }
+}
+
+/*!
+ * \brief Sets the specified logging \a flags.
+ */
+void SyncthingConnection::setLoggingFlags(SyncthingConnectionLoggingFlags flags)
+{
+    m_loggingFlags = flags;
+    if (flags & SyncthingConnectionLoggingFlags::FromEnvironment) {
+        if (!(flags & SyncthingConnectionLoggingFlags::All) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_ALL")) {
+            m_loggingFlags |= SyncthingConnectionLoggingFlags::All;
+        } else {
+            if (!(flags & SyncthingConnectionLoggingFlags::ApiCalls) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_API_CALLS")) {
+                m_loggingFlags |= SyncthingConnectionLoggingFlags::ApiCalls;
+            }
+            if (!(flags & SyncthingConnectionLoggingFlags::ApiCalls) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_API_REPLIES")) {
+                m_loggingFlags |= SyncthingConnectionLoggingFlags::ApiCalls;
+            }
+            if (!(flags & SyncthingConnectionLoggingFlags::Events) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_EVENTS")) {
+                m_loggingFlags |= SyncthingConnectionLoggingFlags::Events;
+            }
+            if (!(flags & SyncthingConnectionLoggingFlags::DirsOrDevsResetted)
+                && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_DIRS_OR_DEVS_RESETTED")) {
+                m_loggingFlags |= SyncthingConnectionLoggingFlags::Events;
+            }
+        }
+    }
+    if ((m_loggingFlags & SyncthingConnectionLoggingFlags::DirsOrDevsResetted)
+        && !(m_loggingFlagsHandler & SyncthingConnectionLoggingFlags::DirsOrDevsResetted)) {
+        QObject::connect(this, &SyncthingConnection::newDirs, [this](const auto &dirs) {
+            if (m_loggingFlags & SyncthingConnectionLoggingFlags::DirsOrDevsResetted) {
+                std::cerr << Phrases::Info << "Directory list renewed:" << Phrases::End;
+                std::cerr << displayNames(dirs).join(QStringLiteral(", ")).toStdString() << endl;
+            }
+        });
+        QObject::connect(this, &SyncthingConnection::newDevices, [this](const auto &devs) {
+            if (m_loggingFlags & SyncthingConnectionLoggingFlags::DirsOrDevsResetted) {
+                std::cerr << Phrases::Info << "Device list renewed:" << Phrases::End;
+                std::cerr << displayNames(devs).join(QStringLiteral(", ")).toStdString() << endl;
+            }
+        });
+        m_loggingFlagsHandler |= SyncthingConnectionLoggingFlags::DirsOrDevsResetted;
     }
 }
 
