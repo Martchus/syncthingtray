@@ -1,5 +1,7 @@
 #include "./internalerrorsdialog.h"
 
+#include <c++utilities/io/ansiescapecodes.h>
+
 #include <QHBoxLayout>
 #include <QIcon>
 #include <QLabel>
@@ -80,20 +82,24 @@ void InternalErrorsDialog::addError(InternalError &&newError)
 
 void InternalErrorsDialog::internalAddError(const InternalError &error)
 {
-    const QString url(error.url.toString());
-
-    browser()->append(QString::fromUtf8(error.when.toString(DateTimeOutputFormat::DateAndTime, true).data()) % QChar(':') % QChar(' ') % error.message
-        % QChar('\n') % m_request % QChar(' ') % url % QChar('\n') % m_response % QChar('\n') % QString::fromLocal8Bit(error.response) % QChar('\n'));
-
-    // also log errors to console
-    cerr << "internal error: " << error.message.toLocal8Bit().data();
-    if (!error.url.isEmpty()) {
-        cerr << "\n request URL: " << url.toLocal8Bit().data();
+    const QString url = error.url.toString();
+    browser()->append(QString::fromUtf8(error.when.toString(DateTimeOutputFormat::DateAndTime, true).data()) % QChar(':') % QChar(' ') % error.message);
+    if (!url.isEmpty()) {
+        browser()->append(m_request % QChar(' ') % url);
     }
     if (!error.response.isEmpty()) {
-        cerr << "\n response: " << error.response.data();
+        browser()->append(m_response % QChar('\n') % QString::fromLocal8Bit(error.response));
     }
-    cerr << endl;
+
+    // also log errors to console
+    using namespace EscapeCodes;
+    cerr << Phrases::Error << error.message.toLocal8Bit().data() << Phrases::End;
+    if (!error.url.isEmpty()) {
+        cerr << "request URL: " << url.toLocal8Bit().data() << '\n';
+    }
+    if (!error.response.isEmpty()) {
+        cerr << "response: " << error.response.data() << '\n';
+    }
 }
 
 void InternalErrorsDialog::updateStatusLabel()
