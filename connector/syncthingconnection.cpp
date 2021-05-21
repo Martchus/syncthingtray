@@ -689,6 +689,22 @@ SyncthingDev *SyncthingConnection::addDevInfo(std::vector<SyncthingDev> &devs, c
 }
 
 /*!
+ * \brief Internally called to parse a time stamp.
+ */
+DateTime SyncthingConnection::parseTimeStamp(const QJsonValue &jsonValue, const QString &context, DateTime defaultValue, bool greaterThanEpoch)
+{
+    const auto utf16 = jsonValue.toString();
+    const auto utf8 = utf16.toUtf8();
+    try {
+        const auto [localTime, utcOffset] = DateTime::fromIsoString(utf8.data());
+        return !greaterThanEpoch || (localTime - utcOffset) > DateTime::unixEpochStart() ? localTime : defaultValue;
+    } catch (const ConversionException &e) {
+        emit error(tr("Unable to parse timestamp \"%1\" (%2): %3").arg(utf16, context, QString::fromUtf8(e.what())), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
+    }
+    return defaultValue;
+}
+
+/*!
  * \brief Continues connecting if both - config and status - have been parsed yet and continuous polling is enabled.
  */
 void SyncthingConnection::continueConnecting()

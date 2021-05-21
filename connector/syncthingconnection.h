@@ -345,6 +345,7 @@ private:
     bool pauseResumeDirectory(const QStringList &dirIds, bool paused);
     SyncthingDir *addDirInfo(std::vector<SyncthingDir> &dirs, const QString &dirId);
     SyncthingDev *addDevInfo(std::vector<SyncthingDev> &devs, const QString &devId);
+    CppUtilities::DateTime parseTimeStamp(const QJsonValue &jsonValue, const QString &context, CppUtilities::DateTime defaultValue = CppUtilities::DateTime(), bool greaterThanEpoch = false);
 
     QString m_syncthingUrl;
     QByteArray m_apiKey;

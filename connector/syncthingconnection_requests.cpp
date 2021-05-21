@@ -672,15 +672,8 @@ void SyncthingConnection::readStatus()
         }
 
         const auto replyObj = replyDoc.object();
-        const auto startTime = replyObj.value(QLatin1String("startTime")).toString().toUtf8();
         emitMyIdChanged(replyObj.value(QLatin1String("myID")).toString());
-        try {
-            m_startTime = DateTime::fromIsoStringLocal(startTime.data());
-        } catch (const ConversionException &e) {
-            m_startTime = DateTime(); // tracking the start time isn't very important so just ignore
-            cerr << EscapeCodes::Phrases::Warning << "Unable to parse start time timestamp \"" << startTime.data() << "\": " << e.what()
-                 << EscapeCodes::Phrases::End;
-        }
+        m_startTime = parseTimeStamp(replyObj.value(QLatin1String("startTime")), QStringLiteral("start time"));
         m_hasStatus = true;
 
         if (m_keepPolling) {
@@ -861,15 +854,8 @@ void SyncthingConnection::readErrors()
             if (errorObj.isEmpty()) {
                 continue;
             }
-            const auto whenStr = errorObj.value(QLatin1String("when")).toString().toUtf8();
-            try {
-                const auto when = DateTime::fromIsoStringLocal(whenStr.data());
-                if (m_lastErrorTime < when) {
-                    emitNotification(m_lastErrorTime = when, errorObj.value(QLatin1String("message")).toString());
-                }
-            } catch (const ConversionException &e) {
-                cerr << EscapeCodes::Phrases::Warning << "Unable to parse error message timestamp \"" << whenStr.data() << "\": " << e.what()
-                     << EscapeCodes::Phrases::End;
+            if (const auto when = parseTimeStamp(errorObj.value(QLatin1String("when")), QStringLiteral("error message")); m_lastErrorTime < when) {
+                emitNotification(m_lastErrorTime = when, errorObj.value(QLatin1String("message")).toString());
             }
         }
 
@@ -934,13 +920,7 @@ void SyncthingConnection::readDirStatistics()
             const auto lastScan = dirObj.value(QLatin1String("lastScan")).toString().toUtf8();
             if (!lastScan.isEmpty()) {
                 dirModified = true;
-                try {
-                    dirInfo.lastScanTime = DateTime::fromIsoStringLocal(lastScan.data());
-                } catch (const ConversionException &e) {
-                    dirInfo.lastScanTime = DateTime();
-                    cerr << EscapeCodes::Phrases::Warning << "Unable to parse last scan timestamp \"" << lastScan.data() << "\": " << e.what()
-                         << EscapeCodes::Phrases::End;
-                }
+                dirInfo.lastScanTime = parseTimeStamp(dirObj.value(QLatin1String("lastScan")), QStringLiteral("last scan"));
             }
             const QJsonObject lastFileObj(dirObj.value(QLatin1String("lastFile")).toObject());
             if (!lastFileObj.isEmpty()) {
@@ -948,15 +928,11 @@ void SyncthingConnection::readDirStatistics()
                 dirModified = true;
                 if (!dirInfo.lastFileName.isEmpty()) {
                     dirInfo.lastFileDeleted = lastFileObj.value(QLatin1String("deleted")).toBool(false);
-                    try {
-                        dirInfo.lastFileTime = DateTime::fromIsoStringLocal(lastFileObj.value(QLatin1String("at")).toString().toUtf8().data());
-                        if (dirInfo.lastFileTime > m_lastFileTime) {
-                            m_lastFileTime = dirInfo.lastFileTime;
-                            m_lastFileName = dirInfo.lastFileName;
-                            m_lastFileDeleted = dirInfo.lastFileDeleted;
-                        }
-                    } catch (const ConversionException &) {
-                        dirInfo.lastFileTime = DateTime();
+                    dirInfo.lastFileTime = parseTimeStamp(lastFileObj.value(QLatin1String("at")), QStringLiteral("dir statistics"));
+                    if (!dirInfo.lastFileTime.isNull() && dirInfo.lastFileTime > m_lastFileTime) {
+                        m_lastFileTime = dirInfo.lastFileTime;
+                        m_lastFileName = dirInfo.lastFileName;
+                        m_lastFileDeleted = dirInfo.lastFileDeleted;
                     }
                 }
             }
@@ -1211,16 +1187,8 @@ void SyncthingConnection::readDeviceStatistics()
         for (SyncthingDev &devInfo : m_devs) {
             const QJsonObject devObj(replyObj.value(devInfo.id).toObject());
             if (!devObj.isEmpty()) {
-                const auto lastSeen = devObj.value(QLatin1String("lastSeen")).toString().toUtf8();
-                try {
-                    const auto [localTime, utcOffset] = DateTime::fromIsoString(lastSeen.data());
-                    devInfo.lastSeen = (localTime - utcOffset) > DateTime::unixEpochStart() ? localTime : DateTime();
-                    emit devStatusChanged(devInfo, index);
-                } catch (const ConversionException &e) {
-                    devInfo.lastSeen = DateTime();
-                    cerr << EscapeCodes::Phrases::Warning << "Unable to parse last seen timestamp \"" << lastSeen.data() << "\": " << e.what()
-                         << EscapeCodes::Phrases::End;
-                }
+                devInfo.lastSeen = parseTimeStamp(devObj.value(QLatin1String("lastSeen")), QStringLiteral("last seen"), DateTime(), true);
+                emit devStatusChanged(devInfo, index);
             }
             ++index;
         }
@@ -1450,16 +1418,8 @@ void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     dir.lastStatisticsUpdate = eventTime;
 
     // update status
-    const auto state = summary.value(QLatin1String("state")).toString();
-    if (!state.isEmpty()) {
-        const auto stateChanged = summary.value(QLatin1String("stateChanged")).toString().toUtf8();
-        try {
-            dir.assignStatus(state, DateTime::fromIsoStringLocal(stateChanged.data()));
-        } catch (const ConversionException &e) {
-            dir.assignStatus(state, dir.lastStatusUpdate);
-            cerr << EscapeCodes::Phrases::Warning << "Unable to parse folder state timestamp \"" << stateChanged.data() << "\": " << e.what()
-                 << EscapeCodes::Phrases::End;
-        }
+    if (const auto state = summary.value(QLatin1String("state")).toString(); !state.isEmpty()) {
+        dir.assignStatus(state, parseTimeStamp(summary.value(QLatin1String("stateChanged")), QStringLiteral("state changed"), dir.lastStatusUpdate));
     }
 
     dir.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
@@ -1612,19 +1572,10 @@ void SyncthingConnection::readEvents()
 void SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, int &idVariable)
 {
     for (const auto &eventVal : events) {
-        const auto event(eventVal.toObject());
-        const auto eventTime([&] {
-            const auto timestamp = event.value(QLatin1String("time")).toString().toUtf8();
-            try {
-                return DateTime::fromIsoStringLocal(timestamp);
-            } catch (const ConversionException &e) {
-                cerr << EscapeCodes::Phrases::Warning << "Unable to parse event timestamp \"" << timestamp.data() << "\": " << e.what()
-                     << EscapeCodes::Phrases::End;
-                return DateTime(); // ignore conversion error
-            }
-        }());
-        const auto eventType(event.value(QLatin1String("type")).toString());
-        const auto eventData(event.value(QLatin1String("data")).toObject());
+        const auto event = eventVal.toObject();
+        const auto eventTime = parseTimeStamp(event.value(QLatin1String("time")), QStringLiteral("event time"));
+        const auto eventType = event.value(QLatin1String("type")).toString();
+        const auto eventData = event.value(QLatin1String("data")).toObject();
 
         idVariable = event.value(QLatin1String("id")).toInt(idVariable);
 
