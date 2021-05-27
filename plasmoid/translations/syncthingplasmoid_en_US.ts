@@ -241,7 +241,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="144"/>
+        <location filename="../lib/settingsdialog.cpp" line="140"/>
         <source>Extras</source>
         <translation type="unfinished"></translation>
     </message>

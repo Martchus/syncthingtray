@@ -17,136 +17,136 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="25"/>
-        <source>Menu size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="34"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="66"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="249"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="278"/>
-        <source> px</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="56"/>
-        <source> x </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="311"/>
-        <source>Optional GUI elements</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="318"/>
-        <source>Traffic statistics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="100"/>
-        <source>Frame shape</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="108"/>
-        <source>No frame</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="113"/>
-        <source>Box</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="118"/>
-        <source>Panel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="123"/>
-        <source>Styled panel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="131"/>
-        <source>Frame shadow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="139"/>
-        <source>Plain</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="144"/>
-        <source>Raised</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="149"/>
-        <source>Sunken</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="157"/>
-        <source>Tab position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="165"/>
-        <source>Top</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="170"/>
-        <source>Bottom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="175"/>
-        <source>Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="180"/>
-        <source>Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="188"/>
-        <source>Colors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="195"/>
-        <source>Bright custom text colors (use for dark color scheme)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../settings/appearanceoptionpage.ui" line="202"/>
-        <source>Positioning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="214"/>
-        <source>Use cursor position</source>
+        <source>x: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="224"/>
+        <source>y: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="257"/>
+        <source>Menu size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="199"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="221"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="272"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="310"/>
+        <source> px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="294"/>
+        <source> x </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="145"/>
+        <source>Optional GUI elements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="152"/>
+        <source>Traffic statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="25"/>
+        <source>Frame shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="39"/>
+        <source>No frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="44"/>
+        <source>Box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="49"/>
+        <source>Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="54"/>
+        <source>Styled panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="62"/>
+        <source>Frame shadow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="76"/>
+        <source>Plain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="81"/>
+        <source>Raised</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="86"/>
+        <source>Sunken</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="94"/>
+        <source>Tab position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="108"/>
+        <source>Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="113"/>
+        <source>Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="118"/>
+        <source>Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="123"/>
+        <source>Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="131"/>
+        <source>Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="138"/>
+        <source>Bright custom text colors (use for dark color scheme)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="159"/>
+        <source>Positioning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="171"/>
+        <source>Use cursor position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="181"/>
         <source>Otherwise assume tray icon coordinates to be:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="242"/>
-        <source>x:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="268"/>
-        <source>y:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -158,7 +158,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/autostartoptionpage.ui" line="24"/>
+        <location filename="../settings/autostartoptionpage.ui" line="27"/>
         <source>Start the tray icon when the desktop environment launches</source>
         <translation type="unfinished"></translation>
     </message>
@@ -594,27 +594,27 @@
 <context>
     <name>QtGui::InternalErrorsDialog</name>
     <message>
-        <location filename="../misc/internalerrorsdialog.cpp" line="25"/>
+        <location filename="../misc/internalerrorsdialog.cpp" line="27"/>
         <source>Internal errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/internalerrorsdialog.cpp" line="26"/>
+        <location filename="../misc/internalerrorsdialog.cpp" line="28"/>
         <source>Request URL:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/internalerrorsdialog.cpp" line="27"/>
+        <location filename="../misc/internalerrorsdialog.cpp" line="29"/>
         <source>Response:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/internalerrorsdialog.cpp" line="53"/>
+        <location filename="../misc/internalerrorsdialog.cpp" line="55"/>
         <source>Clear errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/internalerrorsdialog.cpp" line="101"/>
+        <location filename="../misc/internalerrorsdialog.cpp" line="108"/>
         <source>%1 error(s) occured</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -631,100 +631,100 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="18"/>
+        <location filename="../settings/launcheroptionpage.ui" line="22"/>
         <source>Launch Syncthing when starting the tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="40"/>
+        <location filename="../settings/launcheroptionpage.ui" line="44"/>
         <source>Syncthing executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="50"/>
+        <location filename="../settings/launcheroptionpage.ui" line="54"/>
         <source>Arguments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="60"/>
+        <location filename="../settings/launcheroptionpage.ui" line="64"/>
         <source>Use built-in Syncthing library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="67"/>
+        <location filename="../settings/launcheroptionpage.ui" line="71"/>
         <source>Config directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="77"/>
+        <location filename="../settings/launcheroptionpage.ui" line="81"/>
         <source>Log level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="85"/>
+        <location filename="../settings/launcheroptionpage.ui" line="89"/>
         <source>Debug</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="90"/>
+        <location filename="../settings/launcheroptionpage.ui" line="94"/>
         <source>Verbose</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="95"/>
+        <location filename="../settings/launcheroptionpage.ui" line="99"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="100"/>
+        <location filename="../settings/launcheroptionpage.ui" line="104"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="105"/>
+        <location filename="../settings/launcheroptionpage.ui" line="109"/>
         <source>Fatal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="113"/>
+        <location filename="../settings/launcheroptionpage.ui" line="117"/>
         <source>Data directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="126"/>
+        <location filename="../settings/launcheroptionpage.ui" line="130"/>
         <source>Show start/stop button on tray for local instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="133"/>
+        <location filename="../settings/launcheroptionpage.ui" line="137"/>
         <source>Consider process status for reconnect attempts to local instance
  • Don&apos;t reconnect when the process is not running
  • Try to reconnect when starting the process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="163"/>
+        <location filename="../settings/launcheroptionpage.ui" line="167"/>
         <source>Syncthing log (interleaved stdout/stderr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="176"/>
+        <location filename="../settings/launcheroptionpage.ui" line="180"/>
         <source>Apply and launch now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="193"/>
+        <location filename="../settings/launcheroptionpage.ui" line="197"/>
         <location filename="../settings/settingsdialog.cpp" line="1035"/>
         <source>Stop launched instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="212"/>
+        <location filename="../settings/launcheroptionpage.ui" line="216"/>
         <source>No log messages available yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="219"/>
+        <location filename="../settings/launcheroptionpage.ui" line="223"/>
         <source>Ensure latest log is visible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1083,68 +1083,68 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="18"/>
+        <location filename="../settings/systemdoptionpage.ui" line="21"/>
         <source>Show start/stop button on tray for local instance when systemd is available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="25"/>
+        <location filename="../settings/systemdoptionpage.ui" line="28"/>
         <source>Consider systemd unit status for reconnect attempts to local instance
  • Don&apos;t reconnect when unit not active/running
  • Try to reconnect when unit becomes active/running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="68"/>
+        <location filename="../settings/systemdoptionpage.ui" line="71"/>
         <source>Syncthing unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="91"/>
+        <location filename="../settings/systemdoptionpage.ui" line="94"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="106"/>
-        <location filename="../settings/systemdoptionpage.ui" line="161"/>
-        <location filename="../settings/systemdoptionpage.ui" line="250"/>
+        <location filename="../settings/systemdoptionpage.ui" line="109"/>
+        <location filename="../settings/systemdoptionpage.ui" line="164"/>
+        <location filename="../settings/systemdoptionpage.ui" line="253"/>
         <location filename="../settings/settingsdialog.cpp" line="1292"/>
         <location filename="../settings/settingsdialog.cpp" line="1304"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="121"/>
+        <location filename="../settings/systemdoptionpage.ui" line="124"/>
         <source>Current status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="174"/>
+        <location filename="../settings/systemdoptionpage.ui" line="177"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="191"/>
+        <location filename="../settings/systemdoptionpage.ui" line="194"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="210"/>
+        <location filename="../settings/systemdoptionpage.ui" line="213"/>
         <source>Unit file state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="263"/>
+        <location filename="../settings/systemdoptionpage.ui" line="266"/>
         <source>Enable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="280"/>
+        <location filename="../settings/systemdoptionpage.ui" line="283"/>
         <source>Disable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="78"/>
+        <location filename="../settings/systemdoptionpage.ui" line="81"/>
         <source>System unit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1203,27 +1203,27 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="18"/>
+        <location filename="../settings/webviewoptionpage.ui" line="22"/>
         <source>Usage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="25"/>
+        <location filename="../settings/webviewoptionpage.ui" line="29"/>
         <source>Disable web view (open regular web browser instead)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="32"/>
+        <location filename="../settings/webviewoptionpage.ui" line="36"/>
         <source>Zoom factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="55"/>
+        <location filename="../settings/webviewoptionpage.ui" line="59"/>
         <source>Hiding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/webviewoptionpage.ui" line="62"/>
+        <location filename="../settings/webviewoptionpage.ui" line="66"/>
         <source>Keep web view running when currently not shown</source>
         <translation type="unfinished"></translation>
     </message>
