@@ -699,7 +699,8 @@ DateTime SyncthingConnection::parseTimeStamp(const QJsonValue &jsonValue, const 
         const auto [localTime, utcOffset] = DateTime::fromIsoString(utf8.data());
         return !greaterThanEpoch || (localTime - utcOffset) > DateTime::unixEpochStart() ? localTime : defaultValue;
     } catch (const ConversionException &e) {
-        emit error(tr("Unable to parse timestamp \"%1\" (%2): %3").arg(utf16, context, QString::fromUtf8(e.what())), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
+        emit error(tr("Unable to parse timestamp \"%1\" (%2): %3").arg(utf16, context, QString::fromUtf8(e.what())), SyncthingErrorCategory::Parsing,
+            QNetworkReply::NoError);
     }
     return defaultValue;
 }

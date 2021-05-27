@@ -83,7 +83,8 @@ void InternalErrorsDialog::addError(InternalError &&newError)
 void InternalErrorsDialog::internalAddError(const InternalError &error)
 {
     const QString url = error.url.toString();
-    browser()->append(QString::fromUtf8(error.when.toString(DateTimeOutputFormat::DateAndTime, true).data()) % QChar(':') % QChar(' ') % error.message);
+    browser()->append(
+        QString::fromUtf8(error.when.toString(DateTimeOutputFormat::DateAndTime, true).data()) % QChar(':') % QChar(' ') % error.message);
     if (!url.isEmpty()) {
         browser()->append(m_request % QChar(' ') % url);
     }
