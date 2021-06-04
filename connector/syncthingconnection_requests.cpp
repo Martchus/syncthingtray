@@ -111,7 +111,7 @@ SyncthingConnection::Reply SyncthingConnection::prepareReply(QList<QNetworkReply
 SyncthingConnection::Reply SyncthingConnection::handleReply(QNetworkReply *reply, bool readData, bool handleAborting)
 {
     const auto log = m_loggingFlags & SyncthingConnectionLoggingFlags::ApiReplies;
-    readData = readData || log;
+    readData = (readData || log) && reply->isOpen();
     handleAborting = handleAborting && m_abortingAllRequests;
     const auto data = Reply{
         .reply = handleAborting ? nullptr : reply, // skip further processing if aborting to reconnect
