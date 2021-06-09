@@ -34,6 +34,7 @@ public:
     bool isManuallyStopped() const;
     bool isEmittingOutput() const;
     void setEmittingOutput(bool emittingOutput);
+    QString errorString() const;
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::LogLevel libSyncthingLogLevel() const;
     void setLibSyncthingLogLevel(LibSyncthing::LogLevel logLevel);
@@ -127,6 +128,12 @@ inline bool SyncthingLauncher::isManuallyStopped() const
 inline bool SyncthingLauncher::isEmittingOutput() const
 {
     return m_emittingOutput;
+}
+
+/// \brief Returns the last error message.
+inline QString SyncthingLauncher::errorString() const
+{
+    return m_process.errorString();
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING

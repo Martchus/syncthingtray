@@ -48,6 +48,34 @@ use_cpp_utilities(VISIBILITY PUBLIC)
 find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.3.0 REQUIRED)
 use_qt_utilities(ONLY_HEADERS VISIBILITY PUBLIC)
 
+# find boost libraries
+option(USE_BOOST_PROCESS "enables Boost.Process for improved behavior of the launcher" ON)
+if (USE_BOOST_PROCESS)
+    option(BOOST_STATIC_LINKAGE "${STATIC_LINKAGE}" "link statically against Boost (instead of dynamically)")
+    set(Boost_USE_MULTITHREADED ON)
+    if (BOOST_STATIC_LINKAGE)
+        set(Boost_USE_STATIC_LIBS ON)
+    endif ()
+    # add Boost::boost target which represents include directory for header-only deps add Boost::filesystem when building for
+    # Windows as it is needed by Boost.Process there
+    set(BOOST_ARGS REQUIRED)
+    if (WIN32)
+        list(APPEND BOOST_ARGS COMPONENTS filesystem)
+    endif ()
+    use_package(TARGET_NAME Boost::boost PACKAGE_NAME Boost PACKAGE_ARGS "${BOOST_ARGS}")
+    if (WIN32)
+        use_package(TARGET_NAME Boost::filesystem PACKAGE_NAME Boost PACKAGE_ARGS "${BOOST_ARGS}")
+    endif ()
+    list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_BOOST_PROCESS)
+    if (MINGW)
+        # workaround https://github.com/boostorg/process/issues/96
+        set_property(
+            SOURCE syncthingprocess.cpp
+            APPEND
+            PROPERTY COMPILE_DEFINITIONS BOOST_USE_WINDOWS_H WIN32_LEAN_AND_MEAN)
+    endif ()
+endif ()
+
 # link also explicitely against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 set(META_PUBLIC_QT_MODULES Core ${ADDITIONAL_QT_MODULES})

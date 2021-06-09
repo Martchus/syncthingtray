@@ -94,13 +94,14 @@ void SyncthingTestInstance::start()
  */
 void SyncthingTestInstance::stop()
 {
-    if (m_syncthingProcess.state() == QProcess::Running) {
+    if (m_syncthingProcess.isRunning()) {
         cerr << "\n - Waiting for Syncthing to terminate ..." << endl;
         m_syncthingProcess.terminate();
         m_syncthingProcess.waitForFinished();
     }
     if (m_syncthingProcess.isOpen()) {
         cerr << "\n - Syncthing terminated with exit code " << m_syncthingProcess.exitCode() << ".\n";
+        /*
         const auto stdOut(m_syncthingProcess.readAllStandardOutput());
         if (!stdOut.isEmpty()) {
             cerr << "\n - Syncthing stdout during the testrun:\n" << stdOut.data();
@@ -114,6 +115,7 @@ void SyncthingTestInstance::stop()
             cerr << "\n - Syncthing exited:      " << stdOut.count("INFO: Syncthing exited: exit status") << " times";
             cerr << "\n - Syncthing panicked:    " << stdOut.count("WARNING: Panic detected") << " times";
         }
+        */
     }
 }
 
@@ -126,7 +128,7 @@ void SyncthingTestInstance::setInterleavedOutputEnabled(bool interleavedOutputEn
         return;
     }
     m_interleavedOutput = interleavedOutputEnabled;
-    m_syncthingProcess.setProcessChannelMode(interleavedOutputEnabled ? QProcess::ForwardedChannels : QProcess::SeparateChannels);
+    //m_syncthingProcess.setProcessChannelMode(interleavedOutputEnabled ? QProcess::ForwardedChannels : QProcess::SeparateChannels);
 }
 
 /*!

@@ -59,11 +59,11 @@ void SyncthingKiller::confirmKill() const
     msgBox->addButton(tr("Keep running"), QMessageBox::RejectRole);
     msgBox->addButton(tr("Kill process"), QMessageBox::AcceptRole);
     connect(process,
-#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13)
+#if !defined(LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS) && (QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13))
         static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
 #endif
             &SyncthingProcess::finished
-#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13)
+#if !defined(LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS) && (QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13))
             )
 #endif
             ,

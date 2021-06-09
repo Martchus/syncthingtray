@@ -7,7 +7,9 @@ function handle_int {
 }
 trap "handle_int" SIGINT SIGTERM
 
+i=0
 while [[ true ]]; do
-    echo $RANDOM
+    echo "$i : $RANDOM"
+    i=$((i + 1))
     sleep 1
 done

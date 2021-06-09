@@ -1094,25 +1094,32 @@ void LauncherOptionPage::handleSyncthingError(QProcess::ProcessError error)
     cursor.movePosition(QTextCursor::End);
     cursor.insertBlock();
 
-    QString errorString;
-    switch (error) {
-    case QProcess::FailedToStart:
-        errorString = tr("failed to start (e.g. executable does not exist or not permission error)");
-        break;
-    case QProcess::Crashed:
-        errorString = tr("process crashed");
-        break;
-    case QProcess::Timedout:
-        errorString = tr("timeout error");
-        break;
-    case QProcess::ReadError:
-        errorString = tr("read error");
-        break;
-    case QProcess::WriteError:
-        errorString = tr("write error");
-        break;
-    default:
-        errorString = tr("unknown process error");
+    auto errorString = QString();
+    if (m_launcher) {
+        errorString = m_launcher->errorString();
+    } else if (m_process) {
+        errorString = m_process->errorString();
+    }
+    if (errorString.isEmpty()) {
+        switch (error) {
+        case QProcess::FailedToStart:
+            errorString = tr("failed to start (e.g. executable does not exist or not permission error)");
+            break;
+        case QProcess::Crashed:
+            errorString = tr("process crashed");
+            break;
+        case QProcess::Timedout:
+            errorString = tr("timeout error");
+            break;
+        case QProcess::ReadError:
+            errorString = tr("read error");
+            break;
+        case QProcess::WriteError:
+            errorString = tr("write error");
+            break;
+        default:
+            errorString = tr("unknown process error");
+        }
     }
     cursor.insertText(tr("An error occurred when running %1: %2").arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, errorString));
     cursor.insertBlock();

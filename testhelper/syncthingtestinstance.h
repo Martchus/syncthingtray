@@ -25,7 +25,7 @@ public:
     const QString &apiKey() const;
     const QString &syncthingPort() const;
     QCoreApplication &application();
-    QProcess &syncthingProcess();
+    Data::SyncthingProcess &syncthingProcess();
 
 public Q_SLOTS:
     void start();
@@ -57,7 +57,7 @@ inline QCoreApplication &SyncthingTestInstance::application()
     return m_app;
 }
 
-inline QProcess &SyncthingTestInstance::syncthingProcess()
+inline Data::SyncthingProcess &SyncthingTestInstance::syncthingProcess()
 {
     return m_syncthingProcess;
 }

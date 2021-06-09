@@ -9,9 +9,21 @@
 #include <QStringList>
 #include <QTimer>
 
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+#include <memory>
+#endif
+
 namespace Data {
 
-class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingProcess : public QProcess {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+struct SyncthingProcessInternalData;
+struct SyncthingProcessIOHandler;
+using SyncthingProcessBase = QIODevice;
+#else
+using SyncthingProcessBase = QProcess;
+#endif
+
+class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingProcess : public SyncthingProcessBase {
     Q_OBJECT
     Q_PROPERTY(bool running READ isRunning)
     Q_PROPERTY(CppUtilities::DateTime activeSince READ activeSince)
@@ -19,6 +31,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingProcess : public QProcess {
 
 public:
     explicit SyncthingProcess(QObject *parent = nullptr);
+    ~SyncthingProcess() override;
     bool isRunning() const;
     CppUtilities::DateTime activeSince() const;
     bool isActiveFor(unsigned int atLeastSeconds) const;
@@ -26,26 +39,62 @@ public:
     static SyncthingProcess *mainInstance();
     static void setMainInstance(SyncthingProcess *mainInstance);
     static QStringList splitArguments(const QString &arguments);
-
-Q_SIGNALS:
-    void confirmKill();
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+    QProcess::ProcessState state() const;
+    void start(const QString &program, const QStringList &arguments, QIODevice::OpenMode openMode = QIODevice::ReadOnly);
+    qint64 bytesAvailable() const override;
+    void close() override;
+    int exitCode() const;
+    bool waitForFinished(int msecs = 30000);
+    qint64 processId() const;
+    QString program() const;
+    QStringList arguments() const;
+#endif
 
 public Q_SLOTS:
     void restartSyncthing(const QString &program, const QStringList &arguments);
     void startSyncthing(const QString &program, const QStringList &arguments);
     void stopSyncthing();
     void killSyncthing();
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+    void terminate();
+    void kill();
+#endif
+
+Q_SIGNALS:
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+    void started();
+    void finished(int exitCode, QProcess::ExitStatus exitStatus);
+    void errorOccurred(QProcess::ProcessError error);
+    void stateChanged(QProcess::ProcessState newState);
+#endif
+    void confirmKill();
+
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+protected:
+    qint64 readData(char *data, qint64 maxSize) override;
+    qint64 writeData(const char *data, qint64 len) override;
+#endif
 
 private Q_SLOTS:
     void handleStarted();
     void handleFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void killToRestart();
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+    void handleError(QProcess::ProcessError error, const QString &errorMessage, bool closed);
+    void bufferOutput();
+    void handleLeftoverProcesses();
+#endif
 
 private:
     QString m_program;
     QStringList m_arguments;
     CppUtilities::DateTime m_activeSince;
     QTimer m_killTimer;
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+    std::shared_ptr<SyncthingProcessInternalData> m_process;
+    std::unique_ptr<SyncthingProcessIOHandler> m_handler;
+#endif
     bool m_manuallyStopped;
     static SyncthingProcess *s_mainInstance;
 };
