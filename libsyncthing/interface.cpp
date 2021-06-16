@@ -1,5 +1,15 @@
 #include "./interface.h"
 
+// avoid exporting symbols for internal functions declared within libsyncthinginternal.h as we
+// are building a static library here
+// note: cgo uses `__declspec` despite `-buildmode c-archive`; bug or feature?
+#ifdef PLATFORM_WINDOWS
+#ifdef __declspec
+#undef __declspec
+#endif
+#define __declspec(foo)
+#endif
+
 #include "libsyncthinginternal.h"
 
 #include <atomic>
