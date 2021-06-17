@@ -303,10 +303,10 @@ Data::SyncthingProcessInternalData::Lock::operator bool() const
 /*!
  * \brief Internally handles an error.
  */
-void SyncthingProcess::handleError(QProcess::ProcessError error, const QString &errorMessage, bool closed)
+void SyncthingProcess::handleError(int error, const QString &errorMessage, bool closed)
 {
     setErrorString(errorMessage);
-    errorOccurred(error);
+    errorOccurred(static_cast<QProcess::ProcessError>(error));
     if (closed) {
         setOpenMode(QIODevice::NotOpen);
     }
@@ -396,7 +396,7 @@ void SyncthingProcess::start(const QString &program, const QStringList &argument
             const auto msg = ec.message();
             std::cerr << EscapeCodes::Phrases::Error << "Launched process " << m_process->child.native_handle() << " exited with error: " << msg
                       << EscapeCodes::Phrases::End;
-            QMetaObject::invokeMethod(this, "handleError", Qt::QueuedConnection, Q_ARG(QProcess::ProcessError, QProcess::Crashed),
+            QMetaObject::invokeMethod(this, "handleError", Qt::QueuedConnection, Q_ARG(int, QProcess::Crashed),
                 Q_ARG(QString, QString::fromStdString(msg)), Q_ARG(bool, false));
         }
     };
@@ -416,8 +416,8 @@ void SyncthingProcess::start(const QString &program, const QStringList &argument
         const auto error = ec == std::errc::timed_out || ec == std::errc::stream_timeout ? QProcess::Timedout : QProcess::Crashed;
         const auto msg = ec.message();
         std::cerr << EscapeCodes::Phrases::Error << "Unable to launch process: " << msg << EscapeCodes::Phrases::End;
-        QMetaObject::invokeMethod(this, "handleError", Qt::QueuedConnection, Q_ARG(QProcess::ProcessError, error),
-            Q_ARG(QString, QString::fromStdString(msg)), Q_ARG(bool, false));
+        QMetaObject::invokeMethod(
+            this, "handleError", Qt::QueuedConnection, Q_ARG(int, error), Q_ARG(QString, QString::fromStdString(msg)), Q_ARG(bool, false));
     };
 
     // start the process within a new process group (or job object under Windows)
@@ -535,7 +535,7 @@ void SyncthingProcess::bufferOutput()
                 const auto msg = ec.message();
                 std::cerr << EscapeCodes::Phrases::Error << "Unable to read output of process " << m_process->child.native_handle() << ": " << msg
                           << EscapeCodes::Phrases::End;
-                QMetaObject::invokeMethod(this, "handleError", Qt::QueuedConnection, Q_ARG(QProcess::ProcessError, QProcess::ReadError),
+                QMetaObject::invokeMethod(this, "handleError", Qt::QueuedConnection, Q_ARG(int, QProcess::ReadError),
                     Q_ARG(QString, QString::fromStdString(msg)), Q_ARG(bool, true));
             }
             if (!ec || bytesRead) {

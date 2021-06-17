@@ -84,7 +84,7 @@ private Q_SLOTS:
     void handleFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void killToRestart();
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
-    void handleError(QProcess::ProcessError error, const QString &errorMessage, bool closed);
+    void handleError(int error, const QString &errorMessage, bool closed);
     void bufferOutput();
     void handleLeftoverProcesses();
 #endif
