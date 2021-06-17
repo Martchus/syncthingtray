@@ -46,9 +46,12 @@ public:
     void close() override;
     int exitCode() const;
     bool waitForFinished(int msecs = 30000);
+    bool waitForReadyRead(int msecs) override;
     qint64 processId() const;
     QString program() const;
     QStringList arguments() const;
+    QProcess::ProcessChannelMode processChannelMode() const;
+    void setProcessChannelMode(QProcess::ProcessChannelMode mode);
 #endif
 
 public Q_SLOTS:
@@ -94,6 +97,7 @@ private:
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     std::shared_ptr<SyncthingProcessInternalData> m_process;
     std::unique_ptr<SyncthingProcessIOHandler> m_handler;
+    QProcess::ProcessChannelMode m_mode;
 #endif
     bool m_manuallyStopped;
     static SyncthingProcess *s_mainInstance;
@@ -140,6 +144,27 @@ inline void SyncthingProcess::setMainInstance(SyncthingProcess *mainInstance)
 {
     s_mainInstance = mainInstance;
 }
+
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+/*!
+ * \brief Returns the QProcess::ProcessChannelMode like QProcess::processChannelMode().
+ */
+inline QProcess::ProcessChannelMode SyncthingProcess::processChannelMode() const
+{
+    return m_mode;
+}
+
+/*!
+ * \brief Sets the QProcess::ProcessChannelMode like QProcess::setProcessChannelMode().
+ * \remarks
+ * - Does not affect an already running process.
+ * - Supports only QProcess::MergedChannels, QProcess::SeparateChannels and QProcess::ForwardedChannels.
+ */
+inline void SyncthingProcess::setProcessChannelMode(QProcess::ProcessChannelMode mode)
+{
+    m_mode = mode;
+}
+#endif
 
 } // namespace Data
 

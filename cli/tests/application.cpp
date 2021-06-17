@@ -117,11 +117,12 @@ void ApplicationTests::test()
                 }
                 syncthingProcess().waitForReadyRead(static_cast<int>(syncthingCheckInterval.totalMilliseconds()));
             }
-            syncthingOutput.append(syncthingProcess().readAll());
+            const auto newOutput = syncthingProcess().readAll();
+            clog.write(newOutput.data(), newOutput.size());
+            syncthingOutput.append(newOutput);
         } while (!syncthingOutput.contains("Access the GUI via the following URL"));
 
         setInterleavedOutputEnabledFromEnv();
-        cout.write(syncthingOutput.data(), syncthingOutput.size());
         cout.flush();
     }
 

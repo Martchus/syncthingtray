@@ -59,13 +59,9 @@ if (USE_BOOST_PROCESS)
     # add Boost::boost target which represents include directory for header-only deps add Boost::filesystem when building for
     # Windows as it is needed by Boost.Process there
     set(BOOST_ARGS REQUIRED)
-    if (WIN32)
-        list(APPEND BOOST_ARGS COMPONENTS filesystem)
-    endif ()
+    list(APPEND BOOST_ARGS COMPONENTS filesystem)
     use_package(TARGET_NAME Boost::boost PACKAGE_NAME Boost PACKAGE_ARGS "${BOOST_ARGS}")
-    if (WIN32)
-        use_package(TARGET_NAME Boost::filesystem PACKAGE_NAME Boost PACKAGE_ARGS "${BOOST_ARGS}")
-    endif ()
+    use_package(TARGET_NAME Boost::filesystem PACKAGE_NAME Boost PACKAGE_ARGS "${BOOST_ARGS}")
     list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_BOOST_PROCESS)
     if (MINGW)
         # workaround https://github.com/boostorg/process/issues/96
