@@ -265,6 +265,10 @@ To build the Plasmoid for the Plasma 5 desktop, the Qt module QML and the KF5 mo
 Plasma are required as well. Additionally, the Plasmoid requires Qt 5.12 or newer. To skip
 building the Plasmoid, add `-DNO_PLASMOID:BOOL=ON` to the CMake arguments.
 
+The launcher uses by default `Boost.Process` to handle sub processes correctly (and avoid leftover processes).
+Add `-DUSE_BOOST_PROCESS:BOOL:OFF` to the CMake arguments get rid of the dependency. This disables handling sub processes
+and `QProcess` (from Qt Core module) is used instead.
+
 It is also possible to build only the CLI (syncthingctl) by adding `-DNO_MODEL:BOOL=ON` and
 `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments. Then only the Qt modules core,
 network and dbus are required.
