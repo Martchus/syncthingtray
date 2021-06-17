@@ -101,21 +101,16 @@ void SyncthingTestInstance::stop()
     }
     if (m_syncthingProcess.isOpen()) {
         cerr << "\n - Syncthing terminated with exit code " << m_syncthingProcess.exitCode() << ".\n";
-        /*
-        const auto stdOut(m_syncthingProcess.readAllStandardOutput());
-        if (!stdOut.isEmpty()) {
-            cerr << "\n - Syncthing stdout during the testrun:\n" << stdOut.data();
+        const auto output = m_syncthingProcess.readAll();
+        if (!output.isEmpty()) {
+            cerr << "\n - Syncthing output (merged stdout/stderr) during the testrun:\n"
+                 << std::string_view(output.data(), static_cast<std::string_view::size_type>(output.size()));
         }
-        const auto stdErr(m_syncthingProcess.readAllStandardError());
-        if (!stdErr.isEmpty()) {
-            cerr << "\n - Syncthing stderr during the testrun:\n" << stdErr.data();
+        if (!output.isEmpty()) {
+            cerr << "\n - Syncthing (re)started: " << output.count("INFO: Starting syncthing") << " times";
+            cerr << "\n - Syncthing exited:      " << output.count("INFO: Syncthing exited: exit status") << " times";
+            cerr << "\n - Syncthing panicked:    " << output.count("WARNING: Panic detected") << " times";
         }
-        if (!stdOut.isEmpty()) {
-            cerr << "\n - Syncthing (re)started: " << stdOut.count("INFO: Starting syncthing") << " times";
-            cerr << "\n - Syncthing exited:      " << stdOut.count("INFO: Syncthing exited: exit status") << " times";
-            cerr << "\n - Syncthing panicked:    " << stdOut.count("WARNING: Panic detected") << " times";
-        }
-        */
     }
 }
 
@@ -128,7 +123,7 @@ void SyncthingTestInstance::setInterleavedOutputEnabled(bool interleavedOutputEn
         return;
     }
     m_interleavedOutput = interleavedOutputEnabled;
-    //m_syncthingProcess.setProcessChannelMode(interleavedOutputEnabled ? QProcess::ForwardedChannels : QProcess::SeparateChannels);
+    m_syncthingProcess.setProcessChannelMode(interleavedOutputEnabled ? QProcess::ForwardedChannels : QProcess::MergedChannels);
 }
 
 /*!
