@@ -306,7 +306,7 @@ Data::SyncthingProcessInternalData::Lock::operator bool() const
 void SyncthingProcess::handleError(int error, const QString &errorMessage, bool closed)
 {
     setErrorString(errorMessage);
-    errorOccurred(static_cast<QProcess::ProcessError>(error));
+    emit errorOccurred(static_cast<QProcess::ProcessError>(error));
     if (closed) {
         setOpenMode(QIODevice::NotOpen);
     }
@@ -475,7 +475,7 @@ void SyncthingProcess::terminate()
             const auto msg = ec.message();
             std::cerr << EscapeCodes::Phrases::Error << "Unable to kill process group " << groupId << ": " << msg << EscapeCodes::Phrases::End;
             setErrorString(QString::fromStdString(msg));
-            errorOccurred(QProcess::UnknownError);
+            emit errorOccurred(QProcess::UnknownError);
         }
     }
 #else
@@ -506,7 +506,7 @@ void SyncthingProcess::kill()
         const auto msg = ec.message();
         std::cerr << EscapeCodes::Phrases::Error << "Unable to kill process group " << groupId << ": " << msg << EscapeCodes::Phrases::End;
         setErrorString(QString::fromStdString(msg));
-        errorOccurred(QProcess::UnknownError);
+        emit errorOccurred(QProcess::UnknownError);
     }
     // note: No need to emit finished() signal here, the on_exit handler will fire
     //       also in case of a forceful termination.
@@ -576,7 +576,7 @@ qint64 SyncthingProcess::bytesAvailable() const
 
 void SyncthingProcess::close()
 {
-    emit aboutToClose();
+    aboutToClose();
     if (m_process) {
         const auto lock = std::lock_guard<std::mutex>(m_process->mutex);
         m_process->pipe.async_close();
