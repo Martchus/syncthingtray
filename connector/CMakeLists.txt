@@ -56,8 +56,8 @@ if (USE_BOOST_PROCESS)
     if (BOOST_STATIC_LINKAGE)
         set(Boost_USE_STATIC_LIBS ON)
     endif ()
-    # add Boost::boost target which represents include directory for header-only deps add Boost::filesystem when building for
-    # Windows as it is needed by Boost.Process there
+    # add Boost::boost target which represents include directory for header-only deps add Boost::filesystem as
+    # it is needed by Boost.Process
     set(BOOST_ARGS REQUIRED)
     list(APPEND BOOST_ARGS COMPONENTS filesystem)
     use_package(TARGET_NAME Boost::boost PACKAGE_NAME Boost PACKAGE_ARGS "${BOOST_ARGS}")
@@ -70,6 +70,8 @@ if (USE_BOOST_PROCESS)
             APPEND
             PROPERTY COMPILE_DEFINITIONS BOOST_USE_WINDOWS_H WIN32_LEAN_AND_MEAN)
     endif ()
+    # add threading library as it is needed by Boost.Process
+    use_package(TARGET_NAME Threads::Threads PACKAGE_NAME Threads PACKAGE_ARGS REQUIRED)
 endif ()
 
 # link also explicitely against the following Qt modules
