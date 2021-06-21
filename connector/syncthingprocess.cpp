@@ -394,7 +394,7 @@ void SyncthingProcess::start(const QString &program, const QStringList &argument
         emit finished(rc, rc != 0 ? QProcess::CrashExit : QProcess::NormalExit);
         if (ec) {
             const auto msg = ec.message();
-            std::cerr << EscapeCodes::Phrases::Error << "Launched process " << m_process->child.native_handle() << " exited with error: " << msg
+            std::cerr << EscapeCodes::Phrases::Info << "Launched process " << m_process->child.native_handle() << " exited with error: " << msg
                       << EscapeCodes::Phrases::End;
             QMetaObject::invokeMethod(this, "handleError", Qt::QueuedConnection, Q_ARG(int, QProcess::Crashed),
                 Q_ARG(QString, QString::fromStdString(msg)), Q_ARG(bool, false));
