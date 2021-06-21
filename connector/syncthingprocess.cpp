@@ -94,7 +94,7 @@ SyncthingProcess::SyncthingProcess(QObject *parent)
     setProcessChannelMode(QProcess::MergedChannels);
     connect(this, &SyncthingProcess::started, this, &SyncthingProcess::handleStarted);
     connect(this, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
-        &SyncthingProcess::handleFinished);
+        &SyncthingProcess::handleFinished, Qt::QueuedConnection);
     connect(&m_killTimer, &QTimer::timeout, this, &SyncthingProcess::confirmKill);
 }
 
