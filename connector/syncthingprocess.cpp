@@ -1,5 +1,7 @@
 #include "./syncthingprocess.h"
 
+#include <syncthingconnector/syncthingconnection.h>
+
 #include <QTimer>
 
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
@@ -185,9 +187,10 @@ QStringList SyncthingProcess::splitArguments(const QString &arguments)
 }
 
 /*!
- * \brief Stops the currently running process. If it has been stopped, starts the specified \a program with the specified \a arguments.
+ * \brief Stops the currently running process gracefully. If it has been stopped, starts the specified \a program with the specified \a arguments.
+ * \sa See stopSyncthing() for details about \a currentConnection.
  */
-void SyncthingProcess::restartSyncthing(const QString &program, const QStringList &arguments)
+void SyncthingProcess::restartSyncthing(const QString &program, const QStringList &arguments, SyncthingConnection *currentConnection)
 {
     if (!isRunning()) {
         startSyncthing(program, arguments);
@@ -195,9 +198,7 @@ void SyncthingProcess::restartSyncthing(const QString &program, const QStringLis
     }
     m_program = program;
     m_arguments = arguments;
-    m_manuallyStopped = true;
-    m_killTimer.start();
-    terminate();
+    stopSyncthing(currentConnection);
 }
 
 /*!
@@ -215,11 +216,22 @@ void SyncthingProcess::startSyncthing(const QString &program, const QStringList 
 
 /*!
  * \brief Stops the currently running process gracefully. If it doesn't stop after 3 seconds, attempts to kill the process.
+ * \remarks
+ * If graceful stopping is not possible (under Windows) the process is attempted to be stopped via the REST-API using \a currentConnection.
+ * This is however only considered, if \a currentConnection is configured and a local connection.
  */
-void SyncthingProcess::stopSyncthing()
+void SyncthingProcess::stopSyncthing(SyncthingConnection *currentConnection)
 {
     m_manuallyStopped = true;
     m_killTimer.start();
+#ifdef PLATFORM_UNIX
+    Q_UNUSED(currentConnection)
+#else
+    if (currentConnection && !currentConnection->syncthingUrl().isEmpty() && !currentConnection->apiKey().isEmpty() && currentConnection->isLocal()) {
+        currentConnection->shutdown();
+        return;
+    }
+#endif
     terminate();
 }
 

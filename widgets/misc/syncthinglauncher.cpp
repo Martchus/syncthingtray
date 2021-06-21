@@ -153,11 +153,11 @@ void SyncthingLauncher::launch(const LibSyncthing::RuntimeOptions &runtimeOption
 }
 #endif
 
-void SyncthingLauncher::terminate()
+void SyncthingLauncher::terminate(SyncthingConnection *relevantConnection)
 {
     if (m_process.isRunning()) {
         m_manuallyStopped = true;
-        m_process.stopSyncthing();
+        m_process.stopSyncthing(relevantConnection);
     } else {
         tearDownLibSyncthing();
     }

@@ -682,7 +682,7 @@ void TrayWidget::toggleRunning()
     case StartStopButtonTarget::Launcher:
         if (auto *const launcher = SyncthingLauncher::mainInstance()) {
             if (launcher->isRunning()) {
-                launcher->terminate();
+                launcher->terminate(&m_connection);
             } else {
                 launcher->launch(Settings::values().launcher);
             }

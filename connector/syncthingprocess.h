@@ -15,6 +15,7 @@
 
 namespace Data {
 
+class SyncthingConnection;
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
 struct SyncthingProcessInternalData;
 struct SyncthingProcessIOHandler;
@@ -55,9 +56,9 @@ public:
 #endif
 
 public Q_SLOTS:
-    void restartSyncthing(const QString &program, const QStringList &arguments);
+    void restartSyncthing(const QString &program, const QStringList &arguments, SyncthingConnection *currentConnection = nullptr);
     void startSyncthing(const QString &program, const QStringList &arguments);
-    void stopSyncthing();
+    void stopSyncthing(SyncthingConnection *currentConnection = nullptr);
     void killSyncthing();
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     void terminate();
