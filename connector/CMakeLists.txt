@@ -56,13 +56,16 @@ if (USE_BOOST_PROCESS)
     if (BOOST_STATIC_LINKAGE)
         set(Boost_USE_STATIC_LIBS ON)
     endif ()
-    # add Boost::boost target which represents include directory for header-only deps add Boost::filesystem as
-    # it is needed by Boost.Process
+    # add Boost::boost target which represents include directory for header-only deps and add Boost::filesystem as it is
+    # needed by Boost.Process
     set(BOOST_ARGS REQUIRED)
     list(APPEND BOOST_ARGS COMPONENTS filesystem)
     use_package(TARGET_NAME Boost::boost PACKAGE_NAME Boost PACKAGE_ARGS "${BOOST_ARGS}")
     use_package(TARGET_NAME Boost::filesystem PACKAGE_NAME Boost PACKAGE_ARGS "${BOOST_ARGS}")
     list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_BOOST_PROCESS)
+    if (WIN32)
+        list(APPEND PRIVATE_LIBRARIES ws2_32) # needed by Boost.Asio
+    endif ()
     if (MINGW)
         # workaround https://github.com/boostorg/process/issues/96
         set_property(
