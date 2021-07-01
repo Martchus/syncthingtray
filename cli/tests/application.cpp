@@ -102,7 +102,7 @@ void ApplicationTests::test()
 
     // wait till Syncthing GUI becomes available
     {
-        cerr << "\nWaiting till Syncthing GUI becomes available ...";
+        cerr << "\nWaiting till Syncthing GUI becomes available ...\n";
         QByteArray syncthingOutput;
         constexpr auto syncthingCheckInterval = TimeSpan::fromMilliseconds(200.0);
         const auto maxSyncthingStartupTime = TimeSpan::fromSeconds(15.0 * max(timeoutFactor, 5.0));
