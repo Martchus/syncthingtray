@@ -1507,6 +1507,8 @@ void SyncthingConnection::requestEvents()
     QUrlQuery query;
     if (m_lastEventId) {
         query.addQueryItem(QStringLiteral("since"), QString::number(m_lastEventId));
+    } else {
+        query.addQueryItem(QStringLiteral("limit"), QStringLiteral("1"));
     }
     // force to return immediately after the first call
     if (!m_hasEvents) {
