@@ -80,6 +80,13 @@ bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus, DateTime t
         globalError.clear();
     }
 
+    // consider the directory still as out-of-sync if there are still pull errors
+    // note: Syncthing reports status changes to "idle" despite pull errors. This means we can only rely on reading
+    //       a "FolderSummary" event without pull errors for clearing the out-of-sync status.
+    if (pullErrorCount && (newStatus == SyncthingDirStatus::Unknown || newStatus == SyncthingDirStatus::Idle)) {
+        newStatus = SyncthingDirStatus::OutOfSync;
+    }
+
     if (newStatus == status) {
         return false;
     }

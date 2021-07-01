@@ -1418,8 +1418,14 @@ void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     dir.lastStatisticsUpdate = eventTime;
 
     // update status
-    if (const auto state = summary.value(QLatin1String("state")).toString(); !state.isEmpty()) {
-        dir.assignStatus(state, parseTimeStamp(summary.value(QLatin1String("stateChanged")), QStringLiteral("state changed"), dir.lastStatusUpdate));
+    const auto lastStatusUpdate = parseTimeStamp(summary.value(QLatin1String("stateChanged")), QStringLiteral("state changed"), dir.lastStatusUpdate);
+    if (dir.pullErrorCount) {
+        // consider the directory still as out-of-sync if there are still pull errors
+        // note: Syncthing can report an "idle" status despite pull errors.
+        dir.status = SyncthingDirStatus::OutOfSync;
+        dir.lastStatusUpdate = std::max(dir.lastStatusUpdate, lastStatusUpdate);
+    } else if (const auto state = summary.value(QLatin1String("state")).toString(); !state.isEmpty()) {
+        dir.assignStatus(state, lastStatusUpdate);
     }
 
     dir.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
