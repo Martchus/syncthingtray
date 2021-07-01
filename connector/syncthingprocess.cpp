@@ -674,8 +674,7 @@ qint64 SyncthingProcess::readData(char *data, qint64 maxSize)
         return 0;
     }
     if (!m_process->bytesBuffered) {
-        bufferOutput();
-        return 0;
+        return 0; // do *not* invoke bufferOutput() here; an async read operation is already pending
     }
 
     const auto bytesAvailable = m_process->bytesBuffered - m_process->bytesRead;
