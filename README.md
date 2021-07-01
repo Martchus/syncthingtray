@@ -267,7 +267,7 @@ building the Plasmoid, add `-DNO_PLASMOID:BOOL=ON` to the CMake arguments.
 
 ---
 
-The following Boost libraries are required: `Boost.Process`, `Boost.Filesystem`
+The following Boost libraries are required: `Boost.Asio`, `Boost.Process`, `Boost.Filesystem`
 
 The launcher uses the Boost libraries by default to handle sub processes correctly (and avoid leftover processes).
 Add `-DUSE_BOOST_PROCESS:BOOL:OFF` to the CMake arguments get rid of the dependency to Boost libraries.
