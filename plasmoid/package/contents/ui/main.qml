@@ -68,9 +68,7 @@ Item {
                     ":/icons/hicolor/scalable/status/syncthing-default.svg")
         plasmoid.setAction("showSettings", qsTr("Settings"), "configure")
         plasmoid.setAction("showLog", qsTr("Log"), "text-x-generic")
-        plasmoid.setAction(
-                    "showErrors", qsTr("Internal errors"),
-                    ":/icons/hicolor/scalable/emblems/emblem-important-old.svg")
+        plasmoid.setAction("showErrors", qsTr("Internal errors"), "data-error")
         plasmoid.setAction("rescanAllDirs", qsTr("Rescan all directories"),
                            "folder-sync")
         plasmoid.setAction("restartSyncthing", qsTr("Restart Syncthing"),
