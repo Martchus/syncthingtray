@@ -713,8 +713,15 @@
     </message>
     <message numerus="yes">
         <location filename="../misc/internalerrorsdialog.cpp" line="108"/>
-        <source>%1 error(s) occured</source>
+        <source>%1 error(s) occurred</source>
         <translation>
+            <numerusform>%1 interner Fehler</numerusform>
+            <numerusform>%1 interne Fehler</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 error(s) occured</source>
+        <translation type="vanished">
             <numerusform>%1 interner Fehler</numerusform>
             <numerusform>%1 interne Fehler</numerusform>
         </translation>

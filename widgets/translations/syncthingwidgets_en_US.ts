@@ -614,10 +614,10 @@
     </message>
     <message numerus="yes">
         <location filename="../misc/internalerrorsdialog.cpp" line="108"/>
-        <source>%1 error(s) occured</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <source>%1 error(s) occurred</source>
+        <translation>
+            <numerusform>%1 error occurred</numerusform>
+            <numerusform>%1 errors occurred</numerusform>
         </translation>
     </message>
 </context>
