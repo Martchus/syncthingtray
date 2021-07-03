@@ -331,22 +331,22 @@
         <translation>Log</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="72"/>
+        <location filename="../package/contents/ui/main.qml" line="71"/>
         <source>Internal errors</source>
         <translation>Interne Fehler</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="74"/>
+        <location filename="../package/contents/ui/main.qml" line="72"/>
         <source>Rescan all directories</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="76"/>
+        <location filename="../package/contents/ui/main.qml" line="74"/>
         <source>Restart Syncthing</source>
         <translation>Syncthing neustarten</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="78"/>
+        <location filename="../package/contents/ui/main.qml" line="76"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>

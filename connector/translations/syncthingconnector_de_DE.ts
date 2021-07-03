@@ -165,12 +165,12 @@
         <translation>Fehler beim Löschen der Fehlermeldungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1533"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1541"/>
         <source>Unable to parse Syncthing events: </source>
         <translation>Fehler beim Auslesen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1556"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1564"/>
         <source>Unable to request Syncthing events: </source>
         <translation>Fehler beim Abfragen der Syncthing-Ereignisse: </translation>
     </message>
@@ -240,12 +240,12 @@
         <translation>Fehler beim Anfordern der Syncthing-Version: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2116"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2124"/>
         <source>Unable to parse disk events: </source>
         <translation>Fehler beim Auslesen der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2137"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2145"/>
         <source>Unable to request disk events: </source>
         <translation>Fehler beim Anfordern der letzten Änderungen: </translation>
     </message>
@@ -457,12 +457,12 @@
 <context>
     <name>SyncthingDir</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="164"/>
+        <location filename="../syncthingdir.cpp" line="171"/>
         <source>paused</source>
         <translation>pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="166"/>
+        <location filename="../syncthingdir.cpp" line="173"/>
         <source>unshared</source>
         <translation>nicht geteilt</translation>
     </message>
