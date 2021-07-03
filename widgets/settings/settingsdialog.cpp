@@ -41,6 +41,7 @@
 #include <qtutilities/misc/dialogutils.h>
 #endif
 
+#include <QDesktopServices>
 #include <QFileDialog>
 #include <QHostAddress>
 #include <QMessageBox>
@@ -937,6 +938,13 @@ QWidget *LauncherOptionPage::setupWidget()
             QIcon::fromTheme(QStringLiteral("edit-undo"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-paste.svg"))));
         connect(m_restoreArgsAction, &QAction::triggered, this, &LauncherOptionPage::restoreDefaultArguments);
         ui()->argumentsLineEdit->addCustomAction(m_restoreArgsAction);
+        m_syncthingDownloadAction = new QAction(ui()->syncthingPathSelection);
+        m_syncthingDownloadAction->setText(tr("Show Syncthing releases/downloads"));
+        m_syncthingDownloadAction->setIcon(
+            QIcon::fromTheme(QStringLiteral("download"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/download.svg"))));
+        connect(m_syncthingDownloadAction, &QAction::triggered,
+            [] { QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/syncthing/syncthing/releases"))); });
+        ui()->syncthingPathSelection->lineEdit()->addCustomAction(m_syncthingDownloadAction);
         ui()->configDirPathSelection->provideCustomFileMode(QFileDialog::Directory);
         ui()->dataDirPathSelection->provideCustomFileMode(QFileDialog::Directory);
     }

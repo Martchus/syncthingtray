@@ -134,6 +134,7 @@ private:
     Data::SyncthingProcess *const m_process;
     Data::SyncthingLauncher *const m_launcher;
     QAction *m_restoreArgsAction;
+    QAction *m_syncthingDownloadAction;
     bool m_kill;
     QString m_tool, m_toolName, m_windowTitle;
 };
