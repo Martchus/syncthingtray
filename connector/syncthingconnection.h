@@ -58,7 +58,7 @@ enum class SyncthingConnectionLoggingFlags : quint64 {
     ApiCalls = (1 << 1), /**< log calls to Syncthing's REST-API and responses */
     ApiReplies = (1 << 2), /**< log replies fromm Syncthing's REST-API */
     Events = (1 << 3), /**< log events received via Syncthing's event API */
-    DirsOrDevsResetted = (1 << 4), /**< log list of directories/devices when list is resetted */
+    DirsOrDevsResetted = (1 << 4), /**< log list of directories/devices when list is reset */
     All = ApiCalls | ApiReplies | Events | DirsOrDevsResetted, /** log as much as possible */
 };
 
@@ -482,7 +482,7 @@ inline SyncthingStatus SyncthingConnection::status() const
 /*!
  * \brief Returns whether the connection to Syncthing has been established.
  *
- * If ture, all information like dirInfo() and devInfo() has been populated and will be updated if it changes.
+ * If true, all information like dirInfo() and devInfo() has been populated and will be updated if it changes.
  */
 inline bool SyncthingConnection::isConnected() const
 {
@@ -534,7 +534,7 @@ inline void SyncthingConnection::setRequestingCompletionEnabled(bool requestingC
 }
 
 /*!
- * \brief Interanlly called to emit the notification with the specified \a message.
+ * \brief Internally called to emit the notification with the specified \a message.
  * \remarks Ensures the unread notifications flag is set.
  */
 inline void SyncthingConnection::emitNotification(CppUtilities::DateTime when, const QString &message)

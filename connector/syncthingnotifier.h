@@ -133,7 +133,7 @@ inline void SyncthingNotifier::setEnabledNotifications(SyncthingHighLevelNotific
 }
 
 /*!
- * \brief Returns the number of seconds after startup or standby-wakeup to supress disconnect notifications.
+ * \brief Returns the number of seconds after startup or standby-wakeup to suppress disconnect notifications.
  */
 inline unsigned int SyncthingNotifier::ignoreInavailabilityAfterStart() const
 {

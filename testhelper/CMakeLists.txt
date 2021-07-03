@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 set(META_PROJECT_NAME syncthingtesthelper)
 set(META_PROJECT_TYPE library)
 set(META_APP_NAME "Syncthing Tray Test Helper")
-set(META_APP_DESCRIPTION "Helper for testing compontents of Syncthing Tray")
+set(META_APP_DESCRIPTION "Helper for testing components of Syncthing Tray")
 set(META_PUBLIC_QT_MODULES Core)
 set(META_NO_INSTALL_TARGETS ON)
 set(META_NO_CPP_UNIT ON)
@@ -35,7 +35,7 @@ list(APPEND CMAKE_MODULE_PATH ${QT_UTILITIES_MODULE_DIRS})
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector()
 
-# link also explicitely against the following Qt modules
+# link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 
 # include modules to apply configuration

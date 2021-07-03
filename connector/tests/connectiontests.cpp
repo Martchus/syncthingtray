@@ -337,9 +337,9 @@ void ConnectionTests::testErrorCases()
         // check whether Syncthing is available
         if ((errorMessage == QStringLiteral("Unable to request Syncthing status: Connection refused"))
             || (errorMessage == QStringLiteral("Unable to request Syncthing config: Connection refused"))) {
-            // consider test failed if we receive "Connection refused" when another error has already occured
+            // consider test failed if we receive "Connection refused" when another error has already occurred
             if (syncthingAvailable) {
-                CPPUNIT_FAIL("Syncthing became unavailable after another error had already occured");
+                CPPUNIT_FAIL("Syncthing became unavailable after another error had already occurred");
             }
 
             // consider test failed if Syncthing takes too long to come up (or we fail to connect)

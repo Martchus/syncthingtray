@@ -341,7 +341,7 @@ template <typename Action, typename... Signalinfo> bool waitForSignals(Action ac
  * \brief Waits until the specified signals have been emitted when performing async operations triggered by \a action. Aborts when \a failure is emitted.
  * \arg action Specifies a method to trigger the action to run when waiting.
  * \arg timeout Specifies the max. time to wait in ms. Set to zero to wait forever.
- * \arg failure Specifies the signal indicating an error occured.
+ * \arg failure Specifies the signal indicating an error occurred.
  * \arg signalinfo Specifies the signals to wait for.
  * \throws Fails if not all signals have been emitted in at least \a timeout milliseconds or when at least one of the
  *         required connections can not be established.
@@ -384,14 +384,14 @@ bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure,
     } while (!(failureEmitted = checkWhetherAllSignalsEmitted(failure)) && !(allSignalsEmitted = checkWhetherAllSignalsEmitted(signalinfo...))
         && (!timeout || timer.isActive()));
 
-    // check whether a timeout occured
+    // check whether a timeout occurred
     const bool timeoutFailed(!allSignalsEmitted && timeout && !timer.isActive());
 #ifndef SYNCTHINGTESTHELPER_FOR_CLI
     if (failureEmitted) {
         CPPUNIT_FAIL(
-            argsToString("Signal(s) ", failedSignalNames(signalinfo...).data(), " has/have not emmitted before ", failure.signalName().data(), '.'));
+            argsToString("Signal(s) ", failedSignalNames(signalinfo...).data(), " has/have not emitted before ", failure.signalName().data(), '.'));
     } else if (timeoutFailed) {
-        CPPUNIT_FAIL(argsToString("Signal(s) ", failedSignalNames(signalinfo...).data(), " has/have not emmitted within at least ", timer.interval(),
+        CPPUNIT_FAIL(argsToString("Signal(s) ", failedSignalNames(signalinfo...).data(), " has/have not emitted within at least ", timer.interval(),
             " ms (set environment variable SYNCTHING_TEST_TIMEOUT_FACTOR to increase the timeout).",
             timeoutFactor != 1.0 ? argsToString(" (original timeout: ", timeout, " ms)") : std::string()));
     }

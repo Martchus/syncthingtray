@@ -834,7 +834,7 @@ void SyncthingConnection::readErrors()
         return;
     }
 
-    // ignore any errors occured before connecting
+    // ignore any errors occurred before connecting
     if (m_lastErrorTime.isNull()) {
         m_lastErrorTime = DateTime::now();
     }
@@ -1342,7 +1342,7 @@ void SyncthingConnection::readLog()
 
 /*!
  * \brief Posts the specified \a rawConfig.
- * \remarks The signal newConfigTriggered() is emitted when the config has been posted sucessfully. In the error case, error() is emitted.
+ * \remarks The signal newConfigTriggered() is emitted when the config has been posted successfully. In the error case, error() is emitted.
  *          Besides, the newConfig() signal should be emitted as well, indicating Syncthing has actually applied the new configuration.
  */
 void SyncthingConnection::postConfigFromJsonObject(const QJsonObject &rawConfig)
@@ -1354,7 +1354,7 @@ void SyncthingConnection::postConfigFromJsonObject(const QJsonObject &rawConfig)
 /*!
  * \brief Posts the specified \a rawConfig.
  * \param rawConfig A valid JSON document containing the configuration. It is directly passed to Syncthing.
- * \remarks The signal newConfigTriggered() is emitted when the config has been posted sucessfully. In the error case, error() is emitted.
+ * \remarks The signal newConfigTriggered() is emitted when the config has been posted successfully. In the error case, error() is emitted.
  *          Besides, the newConfig() signal should be emitted as well, indicating Syncthing has actually applied the new configuration.
  */
 void SyncthingConnection::postConfigFromByteArray(const QByteArray &rawConfig)

@@ -47,7 +47,7 @@ use_qt_utilities()
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector(VISIBILITY PUBLIC)
 
-# link also explicitely against the following Qt modules
+# link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network Gui Widgets Svg)
 
 # include modules to apply configuration

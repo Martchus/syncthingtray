@@ -510,7 +510,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
         m_menu->icon()->updateStatusIconAndText();
     }
 
-    // show warning when explicitely specified connection configuration was not found
+    // show warning when explicitly specified connection configuration was not found
     if (!specifiedConnectionConfigFound && !connectionConfig.isEmpty()) {
         auto *const msgBox = new QMessageBox(QMessageBox::Warning, QCoreApplication::applicationName(),
             tr("The specified connection configuration <em>%1</em> is not defined and hence ignored.").arg(connectionConfig));

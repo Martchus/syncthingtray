@@ -155,7 +155,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         }
     }
 
-    // add actions for explicitely selected Syncthing dirs
+    // add actions for explicitly selected Syncthing dirs
     if (!detectedDirs.isEmpty()) {
 
         // rescan item

@@ -28,7 +28,7 @@ use_syncthingconnector()
 find_package(syncthingmodel ${META_APP_VERSION} REQUIRED)
 use_syncthingmodel()
 
-# link also explicitely against the following Qt and KF modules
+# link also explicitly against the following Qt and KF modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 list(APPEND ADDITIONAL_KF_MODULES KIO)
 set(KIO_MODULE_TARGETS KF5::KIOCore KF5::KIOFileWidgets KF5::KIOWidgets KF5::KIONTLM)

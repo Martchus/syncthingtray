@@ -116,7 +116,7 @@ SyncthingProcess::~SyncthingProcess()
 }
 
 /*!
- * \brief Splits the given arguments similar to how a shell would split it. So whitespaces are considered seperators unless quotes are used.
+ * \brief Splits the given arguments similar to how a shell would split it. So whitespaces are considered separators unless quotes are used.
  */
 QStringList SyncthingProcess::splitArguments(const QString &arguments)
 {

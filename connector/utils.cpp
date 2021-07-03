@@ -61,7 +61,7 @@ QString directoryStatusString(const SyncthingStatistics &stats)
 }
 
 /*!
- * \brief Returns the "sync complete" notication message for the specified directories.
+ * \brief Returns the "sync complete" notification message for the specified directories.
  */
 QString syncCompleteString(const std::vector<const SyncthingDir *> &completedDirs, const SyncthingDev *remoteDevice)
 {

@@ -143,13 +143,13 @@ void MiscTests::testUtils()
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 /*!
- * \brief Tests SyncthingService class, but error case with non-existant service so far.
+ * \brief Tests SyncthingService class, but error case with non-existent service so far.
  */
 void MiscTests::testService()
 {
     SyncthingService service;
     service.isSystemdAvailable();
-    service.setUnitName(QStringLiteral("non-existant.service"));
+    service.setUnitName(QStringLiteral("non-existent.service"));
     CPPUNIT_ASSERT(!service.isUnitAvailable());
     CPPUNIT_ASSERT_EQUAL(QString(), service.description());
     CPPUNIT_ASSERT(!service.isRunning());

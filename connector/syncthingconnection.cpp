@@ -47,11 +47,11 @@ QNetworkAccessManager &networkAccessManager()
  * \remarks All requests are performed asynchronously.
  *
  * The first thing to do when working with that class is setting the URL to connect to and the API key
- * via the constructor or setSyncthingUrl() and setApiKey(). Credentials for the HTTP authentification
+ * via the constructor or setSyncthingUrl() and setApiKey(). Credentials for the HTTP authentication
  * can be set via setCredentials() if not included in the URL.
  *
  * Requests can then be done via the request...() methods, eg. requestConfig(). This would emit the
- * newConfig() signal on success and the error() signal when an error occured. The other request...()
+ * newConfig() signal on success and the error() signal when an error occurred. The other request...()
  * methods work in a similar way.
  *
  * However, usually it is best to simply call the connect() method. It will do all required requests
@@ -313,7 +313,7 @@ void SyncthingConnection::disconnect()
 
 /*!
  * \brief Aborts status-relevant, pending requests.
- * \remarks Status-relevant means that requests for tiggering actions like rescan() or restart() are excluded. requestQrCode() does not
+ * \remarks Status-relevant means that requests for triggering actions like rescan() or restart() are excluded. requestQrCode() does not
  *          contribute to the status as well and is excluded as well.
  */
 void SyncthingConnection::abortAllRequests()
@@ -1002,7 +1002,7 @@ void SyncthingConnection::handleFatalConnectionError()
 }
 
 /*!
- * \brief Handles cancelation of additional requests done via continueConnecting() method.
+ * \brief Handles cancellation of additional requests done via continueConnecting() method.
  */
 void SyncthingConnection::handleAdditionalRequestCanceled()
 {
@@ -1119,25 +1119,25 @@ void SyncthingConnection::recalculateStatus()
 
 /*!
  * \fn SyncthingConnection::newConfigTriggered()
- * \brief Indicates a new configuration has posted sucessfully via postConfig().
+ * \brief Indicates a new configuration has posted successfully via postConfig().
  * \remarks In contrast to newConfig(), this signal is only emitted for configuration changes internally posted via postConfig().
  */
 
 /*!
  * \fn SyncthingConnection::rescanTriggered()
- * \brief Indicates a rescan has been triggered sucessfully.
+ * \brief Indicates a rescan has been triggered successfully.
  * \remarks Only emitted for rescans triggered internally via rescan() or rescanAll().
  */
 
 /*!
  * \fn SyncthingConnection::pauseTriggered()
- * \brief Indicates a device has been paused sucessfully.
+ * \brief Indicates a device has been paused successfully.
  * \remarks Only emitted for pausing triggered internally via pause() or pauseAll().
  */
 
 /*!
  * \fn SyncthingConnection::resumeTriggered()
- * \brief Indicates a device has been resumed sucessfully.
+ * \brief Indicates a device has been resumed successfully.
  * \remarks Only emitted for resuming triggered internally via resume() or resumeAll().
  */
 

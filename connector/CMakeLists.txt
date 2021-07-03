@@ -77,7 +77,7 @@ if (USE_BOOST_PROCESS)
     use_package(TARGET_NAME Threads::Threads PACKAGE_NAME Threads PACKAGE_ARGS REQUIRED)
 endif ()
 
-# link also explicitely against the following Qt modules
+# link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 set(META_PUBLIC_QT_MODULES Core ${ADDITIONAL_QT_MODULES})
 

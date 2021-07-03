@@ -124,7 +124,7 @@ inline bool SyncthingProcess::isActiveFor(unsigned int atLeastSeconds) const
 
 /// \brief Returns whether the process has been manually stopped via SyncthingProcess::stopSyncthing(), SyncthingProcess::killSyncthing()
 /// or SyncthingProcess::restartSyncthing().
-/// \remarks Resetted on SyncthingProcess::startSyncthing() and SyncthingProcess::restartSyncthing().
+/// \remarks Reset on SyncthingProcess::startSyncthing() and SyncthingProcess::restartSyncthing().
 inline bool SyncthingProcess::isManuallyStopped() const
 {
     return m_manuallyStopped;

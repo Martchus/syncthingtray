@@ -120,7 +120,7 @@ inline bool SyncthingLauncher::isActiveFor(unsigned int atLeastSeconds) const
 
 /// \brief Returns whether the Syncthing instance has been manually stopped using SyncthingLauncher::terminate()
 /// or SyncthingLauncher::kill().
-/// \remarks This is resetted when calling SyncthingLauncher::launch().
+/// \remarks This is reset when calling SyncthingLauncher::launch().
 inline bool SyncthingLauncher::isManuallyStopped() const
 {
     return m_manuallyStopped;

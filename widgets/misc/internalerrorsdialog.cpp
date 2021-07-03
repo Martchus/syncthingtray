@@ -105,7 +105,7 @@ void InternalErrorsDialog::internalAddError(const InternalError &error)
 
 void InternalErrorsDialog::updateStatusLabel()
 {
-    m_statusLabel->setText(tr("%1 error(s) occured", nullptr, static_cast<int>(min<size_t>(s_internalErrors.size(), numeric_limits<int>::max())))
+    m_statusLabel->setText(tr("%1 error(s) occurred", nullptr, static_cast<int>(min<size_t>(s_internalErrors.size(), numeric_limits<int>::max())))
                                .arg(s_internalErrors.size()));
 }
 

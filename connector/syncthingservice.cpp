@@ -291,7 +291,7 @@ void SyncthingService::setScopeAndUnitName(SystemdScope scope, const QString &un
 }
 
 /*!
- * \brief Returns whether systemd (and specificly its D-Bus interface for user services) is available.
+ * \brief Returns whether systemd (and specifically its D-Bus interface for user services) is available.
  * \remarks The availability might not be instantly detected and may change at any time. Use the systemdAvailableChanged()
  *          to react to availability changes.
  */

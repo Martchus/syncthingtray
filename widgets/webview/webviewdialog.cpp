@@ -62,7 +62,7 @@ QtGui::WebViewDialog::~WebViewDialog()
 
 void QtGui::WebViewDialog::applySettings(const Data::SyncthingConnectionSettings &connectionSettings, bool aboutToShow)
 {
-    // delete the web view if currently hidden and the configuration to keep it running in the backround isn't enabled
+    // delete the web view if currently hidden and the configuration to keep it running in the background isn't enabled
     const auto &settings(Settings::values());
     if (!aboutToShow && !settings.webView.keepRunning && isHidden()) {
         deleteLater();

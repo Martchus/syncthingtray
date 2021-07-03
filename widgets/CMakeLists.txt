@@ -105,7 +105,7 @@ if (SYNCTHING_WIDGETS_LOG_JAVASCRIPT_CONSOLE)
     message(WARNING "JavaScript console of web view will be logged to stderr")
 endif ()
 
-# link also explicitely against the following Qt modules
+# link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network Concurrent)
 
 # include modules to apply configuration

@@ -22,7 +22,7 @@ SyncthingLauncher *SyncthingLauncher::s_mainInstance = nullptr;
  * \remarks
  * - This is *not* strictly a singleton class. However, one instance is supposed to be the "main instance" (see SyncthingLauncher::setMainInstance()).
  * - A SyncthingLauncher instance can only launch one Syncthing instance at a time.
- * - Using Syncthing as library is still under development and must be explicitely enabled by setting the CMake variable USE_LIBSYNCTHING.
+ * - Using Syncthing as library is still under development and must be explicitly enabled by setting the CMake variable USE_LIBSYNCTHING.
  */
 
 /*!

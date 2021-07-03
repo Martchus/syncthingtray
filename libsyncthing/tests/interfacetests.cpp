@@ -173,7 +173,7 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction, bool
         const auto timeout((DateTime::gmtNow() - startTime) > TimeSpan::fromSeconds(30));
         if (!timeout && (!myIdAnnounced || !performanceAnnounced || (assertTestConfig && (!testDir1Ready || !testDev1Ready || !testDev2Ready)))) {
             // log status
-            cout << "still wating for:";
+            cout << "still waiting for:";
             if (!myIdAnnounced) {
                 cout << " myIdAnnounced";
             }

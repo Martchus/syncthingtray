@@ -168,7 +168,7 @@ it is usually started via "socket activation" (e.g. `/usr/lib/systemd/user/dbus.
 D-Bus).
 
 All of this counts for the session D-Bus *and* for the system D-Bus although the startup of the session
-D-Bus can be screwed up particularily easy. One easy way to screw it up is to start a second instance of
+D-Bus can be screwed up particularly easy. One easy way to screw it up is to start a second instance of
 the session D-Bus manually e.g. via `dbus-run-session`. When starting the session D-Bus this way the
 systemd integration will *not* work and you will likely end up with two session D-Bus processes. It is
 also worth noticing that you do *not* need to set the `DBUS_SESSION_BUS_ADDRESS` variable manually
@@ -179,7 +179,7 @@ Note that the Plasma Wayland session screwed things up in the way I've described
 but this change might not be available on older distributions.
 
 ### Build-time configuration
-The systemd integration can be explicitely enabled/disabled add compile time by adding
+The systemd integration can be explicitly enabled/disabled add compile time by adding
 `-DSYSTEMD_SUPPORT=ON/OFF` to the CMake arguments. If the systemd integration does not work be sure your
 version of Syncthing Tray has been compiled with systemd support.
 
@@ -245,20 +245,20 @@ See the release section on GitHub.
 
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and
-[qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libaries.
+[qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libraries.
 For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities).
 For building this straight, see the section below. There's also documentation about
 [various build variables](https://github.com/Martchus/cpp-utilities/blob/master/doc/buildvariables.md) which
 can be passed to CMake to influence the build.
 
 ### Further dependencies
-The following Qt modules are requried (version 5.6 or newer): core network dbus gui widgets svg webenginewidgets/webkitwidgets
+The following Qt modules are required (version 5.6 or newer): core network dbus gui widgets svg webenginewidgets/webkitwidgets
 
 It is recommended to use at least Qt 5.14 to avoid limitations in previous versions (see *Known bugs* section).
 
 The built-in web view and therefore the modules webenginewidgets/webkitwidgets are optional (see section *Select Qt module for WebView*).
 
-To build the plugin for Dolphin integration KIO is also requried. Additionally, the Dolphin plugin requires Qt 5.8 or newer. To skip
+To build the plugin for Dolphin integration KIO is also required. Additionally, the Dolphin plugin requires Qt 5.8 or newer. To skip
 building the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
 
 To build the Plasmoid for the Plasma 5 desktop, the Qt module QML and the KF5 module
@@ -287,7 +287,7 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
 
 ### Building this straight
 0. Install (preferably the latest version of) the CGG toolchain or Clang, the required Qt modules and CMake.
-1. Get the sources. For the lastest version from Git clone the following repositories:
+1. Get the sources. For the latest version from Git clone the following repositories:
    ```
    cd $SOURCES
    git clone https://github.com/Martchus/cpp-utilities.git c++utilities
@@ -360,7 +360,7 @@ specify the directory manually, e.g. for Tumbleweed one would add
 
 Also be sure that the version of the plasma framework the plasmoid was built against is *not* newer
 than the version actually installed on the system. That can for instance easily happen when using
-`tumbleweed-cli` for sticking to a previous snapshot but having the lastest version of the plasmoid
+`tumbleweed-cli` for sticking to a previous snapshot but having the latest version of the plasmoid
 from my home repository installed.
 
 ---
@@ -410,11 +410,11 @@ Translations for further locales can be added quite easily:
 
 ### Using backend libraries
 The contained backend libraries (which provide connecting to Syncthing, data models and more) are written for internal
-use whithin the components contained by this repository.
+use within the components contained by this repository.
 
 Hence those libraries do *not* provide a stable ABI/API. If you like to
 use them to develop Syncthing integration or tooling with Qt and C++, it makes most sense to contribute it as an additional component
-directly to this repository. Then I will be able to take it into account when changeing the API.
+directly to this repository. Then I will be able to take it into account when changing the API.
 
 ### KDE integration
 Since the Dolphin integration and the Plasmoid are plugins, testing and debugging requires a few extra steps.
@@ -428,7 +428,7 @@ It is possible to turn on logging of the underlying library by setting environme
 * `LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS`: log calls to Syncthing's REST-API
 * `LIB_SYNCTHING_CONNECTOR_LOG_API_REPLIES`: log replies from Syncthing's REST-API (except events)
 * `LIB_SYNCTHING_CONNECTOR_LOG_EVENTS`: log events emitted by Syncthing's events REST-API endpoint
-* `LIB_SYNCTHING_CONNECTOR_LOG_DIRS_OR_DEVS_RESETTED`: log when directories/devices are internally resetted
+* `LIB_SYNCTHING_CONNECTOR_LOG_DIRS_OR_DEVS_RESETTED`: log when directories/devices are internally reset
 
 ## Planned features
 The tray is still under development; the following features are under construction or planned:
