@@ -1209,6 +1209,10 @@ SystemdOptionPage::SystemdOptionPage(QWidget *parentWidget)
 
 SystemdOptionPage::~SystemdOptionPage()
 {
+    QObject::disconnect(m_unitChangedConn);
+    QObject::disconnect(m_descChangedConn);
+    QObject::disconnect(m_statusChangedConn);
+    QObject::disconnect(m_enabledChangedConn);
 }
 
 QWidget *SystemdOptionPage::setupWidget()
@@ -1218,14 +1222,18 @@ QWidget *SystemdOptionPage::setupWidget()
         return widget;
     }
     QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, m_service, &SyncthingService::setUnitName);
-    QObject::connect(ui()->systemUnitCheckBox, &QCheckBox::clicked, m_service, bind(&SystemdOptionPage::handleSystemUnitChanged, this));
     QObject::connect(ui()->startPushButton, &QPushButton::clicked, m_service, &SyncthingService::start);
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, m_service, &SyncthingService::stop);
     QObject::connect(ui()->enablePushButton, &QPushButton::clicked, m_service, &SyncthingService::enable);
     QObject::connect(ui()->disablePushButton, &QPushButton::clicked, m_service, &SyncthingService::disable);
-    QObject::connect(m_service, &SyncthingService::descriptionChanged, bind(&SystemdOptionPage::handleDescriptionChanged, this, _1));
-    QObject::connect(m_service, &SyncthingService::stateChanged, bind(&SystemdOptionPage::handleStatusChanged, this, _1, _2, _3));
-    QObject::connect(m_service, &SyncthingService::unitFileStateChanged, bind(&SystemdOptionPage::handleEnabledChanged, this, _1));
+    m_unitChangedConn
+        = QObject::connect(ui()->systemUnitCheckBox, &QCheckBox::clicked, m_service, bind(&SystemdOptionPage::handleSystemUnitChanged, this));
+    m_descChangedConn
+        = QObject::connect(m_service, &SyncthingService::descriptionChanged, bind(&SystemdOptionPage::handleDescriptionChanged, this, _1));
+    m_statusChangedConn
+        = QObject::connect(m_service, &SyncthingService::stateChanged, bind(&SystemdOptionPage::handleStatusChanged, this, _1, _2, _3));
+    m_enabledChangedConn
+        = QObject::connect(m_service, &SyncthingService::unitFileStateChanged, bind(&SystemdOptionPage::handleEnabledChanged, this, _1));
     return widget;
 }
 

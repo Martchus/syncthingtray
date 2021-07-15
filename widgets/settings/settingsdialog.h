@@ -148,6 +148,10 @@ void handleDescriptionChanged(const QString &description);
 void handleStatusChanged(const QString &activeState, const QString &subState, CppUtilities::DateTime activeSince);
 void handleEnabledChanged(const QString &unitFileState);
 Data::SyncthingService *const m_service;
+QMetaObject::Connection m_unitChangedConn;
+QMetaObject::Connection m_descChangedConn;
+QMetaObject::Connection m_statusChangedConn;
+QMetaObject::Connection m_enabledChangedConn;
 END_DECLARE_OPTION_PAGE
 #endif
 
