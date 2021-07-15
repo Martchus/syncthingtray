@@ -74,8 +74,8 @@ set(REQUIRED_ICONS
     go-up)
 
 # find c++utilities
-find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
-use_cpp_utilities()
+find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.11.0 REQUIRED)
+use_cpp_utilities(VISIBILITY PUBLIC)
 
 # find qtutilities
 find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.3.0 REQUIRED)

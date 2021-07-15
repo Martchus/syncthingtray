@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <functional>
 #include <limits>
+#include <string_view>
 
 using namespace std;
 using namespace std::placeholders;
@@ -30,6 +31,8 @@ SyncthingLauncher *SyncthingLauncher::s_mainInstance = nullptr;
  */
 SyncthingLauncher::SyncthingLauncher(QObject *parent)
     : QObject(parent)
+    , m_guiListeningUrlSearch("Access the GUI via the following URL: ", "\n\r", std::string_view(),
+          std::bind(&SyncthingLauncher::handleGuiListeningUrlFound, this, std::placeholders::_1, std::placeholders::_2))
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_libsyncthingLogLevel(LibSyncthing::LogLevel::Info)
 #endif
@@ -94,7 +97,7 @@ void SyncthingLauncher::launch(const QString &program, const QStringList &argume
     if (isRunning() || m_stopFuture.isRunning()) {
         return;
     }
-    m_manuallyStopped = false;
+    resetState();
 
     // start external process
     if (!program.isEmpty()) {
@@ -148,7 +151,7 @@ void SyncthingLauncher::launch(const LibSyncthing::RuntimeOptions &runtimeOption
     if (isRunning() || m_stopFuture.isRunning()) {
         return;
     }
-    m_manuallyStopped = false;
+    resetState();
     m_startFuture = QtConcurrent::run(std::bind(&SyncthingLauncher::runLibSyncthing, this, runtimeOptions));
 }
 #endif
@@ -207,6 +210,16 @@ void SyncthingLauncher::handleProcessFinished(int exitCode, QProcess::ExitStatus
     emit exited(exitCode, exitStatus);
 }
 
+void SyncthingLauncher::resetState()
+{
+    m_manuallyStopped = false;
+    m_guiListeningUrlSearch.reset();
+    if (!m_guiListeningUrl.isEmpty()) {
+        m_guiListeningUrl.clear();
+        emit guiUrlChanged(m_guiListeningUrl);
+    }
+}
+
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 static const char *const logLevelStrings[] = {
     "[DEBUG]   ",
@@ -234,11 +247,18 @@ void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, cons
 
 void SyncthingLauncher::handleOutputAvailable(QByteArray &&data)
 {
+    m_guiListeningUrlSearch(data.data(), static_cast<std::size_t>(data.size()));
     if (isEmittingOutput()) {
         emit outputAvailable(data);
     } else {
         m_outputBuffer += data;
     }
+}
+
+void SyncthingLauncher::handleGuiListeningUrlFound(CppUtilities::BufferSearch &, std::string &&searchResult)
+{
+    m_guiListeningUrl.setUrl(QString::fromStdString(searchResult));
+    emit guiUrlChanged(m_guiListeningUrl);
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING

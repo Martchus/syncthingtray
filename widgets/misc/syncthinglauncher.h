@@ -9,8 +9,11 @@
 
 #include <syncthingconnector/syncthingprocess.h>
 
+#include <c++utilities/io/buffersearch.h>
+
 #include <QByteArray>
 #include <QFuture>
+#include <QUrl>
 
 namespace Settings {
 struct Launcher;
@@ -26,6 +29,8 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
     Q_PROPERTY(CppUtilities::DateTime activeSince READ activeSince)
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
     Q_PROPERTY(bool emittingOutput READ isEmittingOutput WRITE setEmittingOutput)
+    Q_PROPERTY(QUrl guiUrl READ guiUrl WRITE guiUrlChanged)
+    Q_PROPERTY(SyncthingProcess *process READ process)
 
 public:
     explicit SyncthingLauncher(QObject *parent = nullptr);
@@ -37,6 +42,9 @@ public:
     bool isEmittingOutput() const;
     void setEmittingOutput(bool emittingOutput);
     QString errorString() const;
+    QUrl guiUrl() const;
+    SyncthingProcess *process();
+    const SyncthingProcess *process() const;
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::LogLevel libSyncthingLogLevel() const;
     void setLibSyncthingLogLevel(LibSyncthing::LogLevel logLevel);
@@ -55,6 +63,7 @@ Q_SIGNALS:
     void outputAvailable(const QByteArray &data);
     void exited(int exitCode, QProcess::ExitStatus exitStatus);
     void errorOccurred(QProcess::ProcessError error);
+    void guiUrlChanged(const QUrl &newUrl);
 
 public Q_SLOTS:
     void launch(const QString &program, const QStringList &arguments);
@@ -75,15 +84,19 @@ private Q_SLOTS:
 #endif
 
 private:
+    void resetState();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void handleLoggingCallback(LibSyncthing::LogLevel, const char *message, std::size_t messageSize);
 #endif
     void handleOutputAvailable(QByteArray &&data);
+    void handleGuiListeningUrlFound(CppUtilities::BufferSearch &bufferSearch, std::string &&searchResult);
 
     SyncthingProcess m_process;
+    QUrl m_guiListeningUrl;
     QFuture<void> m_startFuture;
     QFuture<void> m_stopFuture;
     QByteArray m_outputBuffer;
+    CppUtilities::BufferSearch m_guiListeningUrlSearch;
     CppUtilities::DateTime m_futureStarted;
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::LogLevel m_libsyncthingLogLevel;
@@ -136,6 +149,24 @@ inline bool SyncthingLauncher::isEmittingOutput() const
 inline QString SyncthingLauncher::errorString() const
 {
     return m_process.errorString();
+}
+
+/// \brief Returns the GUI listening URL determined from Syncthing's log.
+inline QUrl SyncthingLauncher::guiUrl() const
+{
+    return m_guiListeningUrl;
+}
+
+/// \brief Returns the underlying SyncthingProcess.
+inline SyncthingProcess *SyncthingLauncher::process()
+{
+    return &m_process;
+}
+
+/// \brief Returns the underlying SyncthingProcess.
+inline const SyncthingProcess *SyncthingLauncher::process() const
+{
+    return &m_process;
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING

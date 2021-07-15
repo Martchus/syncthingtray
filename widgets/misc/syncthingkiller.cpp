@@ -13,18 +13,18 @@ using namespace CppUtilities;
 
 namespace QtGui {
 
-SyncthingKiller::SyncthingKiller(std::vector<SyncthingProcess *> &&processes)
+SyncthingKiller::SyncthingKiller(std::vector<ProcessWithConnection> &&processes)
     : m_processes(processes)
 {
-    for (auto *process : m_processes) {
-        process->stopSyncthing();
+    for (const auto [process, connection] : m_processes) {
+        process->stopSyncthing(connection);
         connect(process, &SyncthingProcess::confirmKill, this, &SyncthingKiller::confirmKill);
     }
 }
 
 void SyncthingKiller::waitForFinished()
 {
-    for (auto *process : m_processes) {
+    for (const auto [process, connection] : m_processes) {
         if (!process->isRunning()) {
             continue;
         }

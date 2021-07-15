@@ -8,6 +8,7 @@
 #include <syncthingconnector/syncthingconnectionsettings.h>
 #include <syncthingconnector/syncthingnotifier.h>
 #include <syncthingconnector/syncthingprocess.h>
+#include <syncthingconnector/utils.h>
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include <syncthingconnector/syncthingservice.h>
 #endif
@@ -20,6 +21,8 @@
 #include <qtutilities/misc/dbusnotification.h>
 #endif
 
+#include <c++utilities/io/ansiescapecodes.h>
+
 #include <QApplication>
 #include <QCursor>
 #include <QFile>
@@ -29,11 +32,13 @@
 #include <QSslError>
 #include <QStringBuilder>
 
+#include <iostream>
 #include <type_traits>
 #include <unordered_map>
 
 using namespace std;
 using namespace Data;
+using namespace CppUtilities::EscapeCodes;
 using namespace QtUtilities;
 
 namespace Settings {
@@ -64,15 +69,53 @@ SyncthingProcess &Launcher::toolProcess(const QString &tool)
     return toolProcesses[tool];
 }
 
-std::vector<SyncthingProcess *> Launcher::allProcesses()
+static bool isLocalAndMatchesPort(const Data::SyncthingConnectionSettings &settings, int port)
 {
-    vector<SyncthingProcess *> processes;
-    processes.reserve(1 + toolProcesses.size());
-    if (auto *const syncthingProcess = SyncthingProcess::mainInstance()) {
-        processes.push_back(syncthingProcess);
+    if (settings.syncthingUrl.isEmpty() || settings.apiKey.isEmpty()) {
+        return false;
     }
-    for (auto &process : toolProcesses) {
-        processes.push_back(&process.second);
+    const auto url = QUrl(settings.syncthingUrl);
+    return ::Data::isLocal(url) && port == url.port(url.scheme() == QLatin1String("https") ? 443 : 80);
+}
+
+Data::SyncthingConnection *Launcher::connectionForLauncher(Data::SyncthingLauncher *launcher)
+{
+    const auto port = launcher->guiUrl().port(-1);
+    if (port < 0) {
+        return nullptr;
+    }
+    auto &connectionSettings = values().connection;
+    auto *relevantSetting = isLocalAndMatchesPort(connectionSettings.primary, port) ? &connectionSettings.primary : nullptr;
+    if (!relevantSetting) {
+        for (auto &secondarySetting : connectionSettings.secondary) {
+            if (isLocalAndMatchesPort(secondarySetting, port)) {
+                relevantSetting = &secondarySetting;
+                continue;
+            }
+        }
+    }
+    if (!relevantSetting) {
+        return nullptr;
+    }
+    auto *const connection = new SyncthingConnection();
+    connection->setParent(launcher);
+    connection->applySettings(*relevantSetting);
+    std::cerr << Phrases::Info << "Considering configured connection \"" << relevantSetting->label.toStdString()
+              << "\" (URL: " << relevantSetting->syncthingUrl.toStdString() << ") to terminate Syncthing" << Phrases::End;
+    return connection;
+}
+
+std::vector<QtGui::ProcessWithConnection> Launcher::allProcesses()
+{
+    auto processes = std::vector<QtGui::ProcessWithConnection>();
+    processes.reserve(1 + toolProcesses.size());
+    if (auto *const launcher = SyncthingLauncher::mainInstance()) {
+        processes.emplace_back(launcher->process(), connectionForLauncher(launcher));
+    } else if (auto *const process = SyncthingProcess::mainInstance()) {
+        processes.emplace_back(process);
+    }
+    for (auto &[tool, process] : toolProcesses) {
+        processes.emplace_back(&process);
     }
     return processes;
 }

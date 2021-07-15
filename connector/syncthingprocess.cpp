@@ -4,6 +4,9 @@
 
 #include <QTimer>
 
+// uncomment to enforce stopSyncthing() via REST-API (for testing)
+//#define LIB_SYNCTHING_CONNECTOR_ENFORCE_STOP_VIA_API
+
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
 #include <c++utilities/io/ansiescapecodes.h>
 
@@ -224,7 +227,7 @@ void SyncthingProcess::stopSyncthing(SyncthingConnection *currentConnection)
 {
     m_manuallyStopped = true;
     m_killTimer.start();
-#ifdef PLATFORM_UNIX
+#if defined(PLATFORM_UNIX) && !defined(LIB_SYNCTHING_CONNECTOR_ENFORCE_STOP_VIA_API)
     Q_UNUSED(currentConnection)
 #else
     if (currentConnection && !currentConnection->syncthingUrl().isEmpty() && !currentConnection->apiKey().isEmpty() && currentConnection->isLocal()) {

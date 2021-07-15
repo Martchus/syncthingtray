@@ -1188,7 +1188,7 @@ void LauncherOptionPage::stop()
             m_process->stopSyncthing();
         }
         if (m_launcher) {
-            m_launcher->terminate();
+            m_launcher->terminate(Launcher::connectionForLauncher(m_launcher));
         }
     }
 }

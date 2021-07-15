@@ -8,15 +8,28 @@
 #include <vector>
 
 namespace Data {
+class SyncthingConnection;
 class SyncthingProcess;
-}
+} // namespace Data
 
 namespace QtGui {
+
+struct ProcessWithConnection {
+    explicit ProcessWithConnection(Data::SyncthingProcess *process, Data::SyncthingConnection *connection = nullptr);
+    Data::SyncthingProcess *const process;
+    Data::SyncthingConnection *const connection;
+};
+
+inline ProcessWithConnection::ProcessWithConnection(Data::SyncthingProcess *process, Data::SyncthingConnection *connection)
+    : process(process)
+    , connection(connection)
+{
+}
 
 class SYNCTHINGWIDGETS_EXPORT SyncthingKiller : public QObject {
     Q_OBJECT
 public:
-    SyncthingKiller(std::vector<Data::SyncthingProcess *> &&processes);
+    explicit SyncthingKiller(std::vector<ProcessWithConnection> &&processes);
 
 Q_SIGNALS:
     void ignored();
@@ -28,7 +41,7 @@ private Q_SLOTS:
     void confirmKill() const;
 
 private:
-    std::vector<Data::SyncthingProcess *> m_processes;
+    std::vector<ProcessWithConnection> m_processes;
 };
 
 } // namespace QtGui

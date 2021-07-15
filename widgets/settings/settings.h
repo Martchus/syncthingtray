@@ -29,10 +29,15 @@ class QtSettings;
 
 namespace Data {
 class SyncthingProcess;
+class SyncthingLauncher;
 class SyncthingNotifier;
 class SyncthingConnection;
 class SyncthingService;
 } // namespace Data
+
+namespace QtGui {
+struct ProcessWithConnection;
+}
 
 namespace Settings {
 
@@ -94,7 +99,8 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
 #endif
 
     static Data::SyncthingProcess &toolProcess(const QString &tool);
-    static std::vector<Data::SyncthingProcess *> allProcesses();
+    static Data::SyncthingConnection *connectionForLauncher(Data::SyncthingLauncher *launcher);
+    static std::vector<QtGui::ProcessWithConnection> allProcesses();
     void autostart() const;
     static void terminate();
     struct SYNCTHINGWIDGETS_EXPORT LauncherStatus {
