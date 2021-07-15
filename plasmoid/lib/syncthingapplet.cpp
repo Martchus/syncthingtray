@@ -226,7 +226,7 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
     const auto systemdConsideredForReconnect
         = settings.systemd.apply(m_connection, currentConnectionConfig(), reconnectRequired).consideredForReconnect;
 #else
-    const auto systemdRelevantForReconnect = false;
+    const auto systemdConsideredForReconnect = false;
 #endif
     if (!systemdConsideredForReconnect && (reconnectRequired || !m_connection.isConnected())) {
         m_connection.reconnect();
