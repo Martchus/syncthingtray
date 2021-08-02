@@ -19,3 +19,9 @@ if ! [[ $QT_PLUGIN_PATH ]]; then
     fi
     echo "QT_PLUGIN_PATH used for Plasmoid testing: $QT_PLUGIN_PATH"
 fi
+
+# set TEST_FILE_PATH so files for the mocked configuration can be found
+export TEST_FILE_PATH=$(dirname "${BASH_SOURCE[0]}")/../testfiles
+
+# log working directory
+echo "Working directory used for Plasmoid testing: $PWD"
