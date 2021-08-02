@@ -252,36 +252,42 @@ For building this straight, see the section below. There's also documentation ab
 can be passed to CMake to influence the build.
 
 ### Further dependencies
-The following Qt modules are required (version 5.6 or newer): core network dbus gui widgets svg webenginewidgets/webkitwidgets
+The following Qt modules are required (version 5.6 or newer): `core`, `network`, `dbus`, `gui`, `widgets`,
+`svg`, `webenginewidgets`/`webkitwidgets`
 
 It is recommended to use at least Qt 5.14 to avoid limitations in previous versions (see *Known bugs* section).
 
-The built-in web view and therefore the modules webenginewidgets/webkitwidgets are optional (see section *Select Qt module for WebView*).
+The built-in web view and therefore the modules webenginewidgets/webkitwidgets are optional (see
+section *Select Qt module for WebView*).
 
-To build the plugin for Dolphin integration KIO is also required. Additionally, the Dolphin plugin requires Qt 5.8 or newer. To skip
-building the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
+To build the plugin for Dolphin integration KIO is also required. Additionally, the Dolphin plugin requires
+Qt 5.8 or newer. To skip building the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
 
-To build the Plasmoid for the Plasma 5 desktop, the Qt module QML and the KF5 module
-Plasma are required as well. Additionally, the Plasmoid requires Qt 5.12 or newer. To skip
-building the Plasmoid, add `-DNO_PLASMOID:BOOL=ON` to the CMake arguments.
+To build the Plasmoid for the Plasma 5 desktop, the Qt module QML and the KF5 module Plasma are required as
+well. Additionally, the Plasmoid requires Qt 5.12 or newer. To skip building the Plasmoid, add
+`-DNO_PLASMOID:BOOL=ON` to the CMake arguments.
 
 ---
 
 The following Boost libraries are required: `Boost.Asio`, `Boost.Process`, `Boost.Filesystem`
 
-The launcher uses the Boost libraries by default to handle sub processes correctly (and avoid leftover processes).
-Add `-DUSE_BOOST_PROCESS:BOOL:OFF` to the CMake arguments get rid of the dependency to Boost libraries.
-This disables handling sub processes and `QProcess` (from Qt Core module) is used instead.
+The launcher uses these libraries by default to handle sub processes correctly (and avoid leftover processes).
+Add `-DUSE_BOOST_PROCESS:BOOL:OFF` to the CMake arguments to get rid of the dependency to Boost libraries.
+This disables handling sub processes and `QProcess` (from Qt Core) is used instead.
 
 ---
 
-It is also possible to build only the CLI (syncthingctl) by adding `-DNO_MODEL:BOOL=ON` and
-`-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments. Then only the Qt modules core,
-network and dbus are required.
+It is also possible to build only the CLI (`syncthingctl`) by adding `-DNO_MODEL:BOOL=ON` and
+`-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments. Then only the Qt modules `core`,
+`network` and `dbus` are required.
+
+---
 
 To get rid of systemd support, add `-DENABLE_SYSTEMD_SUPPORT_BY_DEFAULT` to the CMake arguments.
-In this case the Qt module D-Bus is not required anymore. Note that there is no hard dependency
+In this case the Qt module `dbus` is not required anymore. Note that there is no hard dependency
 to systemd in any case.
+
+---
 
 Building the testsuite requires CppUnit and Qt 5.8 or higher.
 
