@@ -119,7 +119,7 @@ Item {
                                     }
                                 }
                                 TinyButton {
-                                    icon: "folder"
+                                    icon.name: "folder"
                                     tooltip: qsTr("Open in file browser")
                                     onClicked: {
                                         Qt.openUrlExternally(path + "/..")
