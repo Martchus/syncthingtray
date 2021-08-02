@@ -380,14 +380,14 @@ Also consider using strace to find out at which paths the shell is looking for `
 
 For a development setup of the KDE integration, continue reading the subsequent section.
 
-## Contributing
+## Contributing, developing, debugging
 ### Translations
 Currently translations for English and German are available. Qt's built-in localization/translation
 framework is used under the hood.
 
 Note that `syncthingctl` has not been internationalized yet so it supports only English.
 
-### Add a new locale
+#### Add a new locale
 Translations for further locales can be added quite easily:
 
 1. Append a new translation file for the desired locale to the `TS_FILES` list
@@ -404,7 +404,7 @@ Translations for further locales can be added quite easily:
    the [Qt Tools repository](http://code.qt.io/cgit/qt/qttools.git/) and its usage
    is [well documented](http://doc.qt.io/qt-5/linguist-translators.html).
 
-### Extend/update existing translations
+#### Extend/update existing translations
 * For English, update the corresponding string literals within the source code.
 * If necassary, sync the translation files with the source code like in step `2.`/`3.` of
   "Add a new locale". Check that no translations have been lost (except ones which are no
@@ -439,7 +439,7 @@ It is possible to turn on logging of the underlying library by setting environme
 * `LIB_SYNCTHING_CONNECTOR_LOG_EVENTS`: log events emitted by Syncthing's events REST-API endpoint
 * `LIB_SYNCTHING_CONNECTOR_LOG_DIRS_OR_DEVS_RESETTED`: log when directories/devices are internally reset
 
-## Planned features
+### Planned features
 The tray is still under development; the following features are under construction or planned:
 
 * Create Qt Quick Controls 2 and Kirigami 2 based frontend for mobile devices (focusing on Android)
