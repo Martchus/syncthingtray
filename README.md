@@ -328,7 +328,6 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
 * When using a version of Qt older than 5.14 there is no way to allow only a particular self-signed certificate in Qt
   WebEngine. That means any self-signed certificate is accepted! See: https://bugreports.qt.io/browse/QTBUG-51176
 * Qt WebEngine can not be built with GCC/mingw-w64 for Windows.
-* QWebEngineView seems to eat `keyPressEvent`.
 * Security issues are not a concern because no other website than the Syncthing web UI is shown. Any external links
   will be opened in the regular web browser anyways.
 
