@@ -36,7 +36,8 @@ string readMockFile(const string &filePath)
     try {
         return readFile(filePath);
     } catch (const std::ios_base::failure &failure) {
-        cerr << Phrases::Error << "An IO error occurred when reading mock config file \"" << filePath << "\": " << failure.what() << Phrases::EndFlush;
+        cerr << Phrases::Error << "An IO error occurred when reading mock config file \"" << filePath << "\": " << failure.what()
+             << Phrases::EndFlush;
         exit(-2);
     }
 }

@@ -42,8 +42,8 @@ set(ICON_FILES resources/icons/hicolor/scalable/apps/${META_PROJECT_NAME}.svg)
 
 set(DOC_FILES README.md)
 
-# declare required icons; used when bundling icon themes (Icons required by libraries the tray application depends on
-# need to be specified as well.)
+# declare required icons; used when bundling icon themes (Icons required by libraries the tray application depends on need to
+# be specified as well.)
 set(REQUIRED_ICONS
     color-profile
     dialog-cancel
