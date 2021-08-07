@@ -319,7 +319,7 @@ void ConnectionTests::testConnection()
 
 void ConnectionTests::testErrorCases()
 {
-    cerr << "\n - Error handling in case of insufficient conficuration ..." << endl;
+    cerr << "\n - Error handling in case of insufficient configuration ..." << endl;
     waitForConnection(defaultConnect(), 1000, connectionSignal(&SyncthingConnection::error, [](const QString &errorMessage) {
         CPPUNIT_ASSERT_EQUAL(QStringLiteral("Connection configuration is insufficient."), errorMessage);
     }));
