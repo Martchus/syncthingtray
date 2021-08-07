@@ -18,7 +18,6 @@
 #include <QWebEngineCertificateError>
 #include <QWebEngineSettings>
 #include <QWebEngineView>
-#include <QtWebEngineWidgetsVersion>
 #elif defined(SYNCTHINGWIDGETS_USE_WEBKIT)
 #include <QNetworkRequest>
 #include <QSslError>
@@ -47,6 +46,9 @@ WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view)
 {
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
     settings()->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, true);
+#if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    connect(this, &WebPage::certificateError, this, &WebPage::handleCertificateError);
+#endif
     connect(
         this, &WebPage::authenticationRequired, this, static_cast<void (WebPage::*)(const QUrl &, QAuthenticator *)>(&WebPage::supplyCredentials));
 #else // SYNCTHINGWIDGETS_USE_WEBKIT
@@ -101,14 +103,16 @@ SYNCTHINGWIDGETS_WEB_PAGE *WebPage::createWindow(SYNCTHINGWIDGETS_WEB_PAGE::WebW
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
-/*!
- * \brief Accepts self-signed certificates used by the Syncthing GUI as configured.
- * \remarks Before Qt 5.14 any self-signed certificates are accepted.
- */
-bool WebPage::certificateError(const QWebEngineCertificateError &certificateError)
+bool WebPage::canIgnoreCertificateError(const QWebEngineCertificateError &certificateError) const
 {
     // never ignore errors other than CertificateCommonNameInvalid and CertificateAuthorityInvalid
-    switch (certificateError.error()) {
+    switch (certificateError
+#if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+                .type()
+#else
+                .error()
+#endif
+    ) {
     case QWebEngineCertificateError::CertificateCommonNameInvalid:
     case QWebEngineCertificateError::CertificateAuthorityInvalid:
         break;
@@ -147,6 +151,31 @@ bool WebPage::certificateError(const QWebEngineCertificateError &certificateErro
     // accept the self-signed certificate
     return true;
 }
+
+/*!
+ * \brief Accepts self-signed certificates used by the Syncthing GUI as configured.
+ * \remarks
+ * - Before Qt 5.14 any self-signed certificates are accepted.
+ * - The const_cast used in the Qt 6 version is most likely wrong and not how to the API is
+ *   supposed to be used. The [documentation](https://doc-snapshots.qt.io/qt6-dev/qwebenginepage.html#certificateError)
+ *   mentions one is able to ignore certificate errors but does not state how.
+ */
+#if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+void WebPage::handleCertificateError(const QWebEngineCertificateError &certificateError)
+{
+    auto &error = const_cast<QWebEngineCertificateError &>(certificateError);
+    if (canIgnoreCertificateError(certificateError)) {
+        error.acceptCertificate();
+    } else {
+        error.rejectCertificate();
+    }
+}
+#else
+bool WebPage::certificateError(const QWebEngineCertificateError &certificateError)
+{
+    return canIgnoreCertificateError(certificateError);
+}
+#endif
 
 /*!
  * \brief Accepts navigation requests only on the same page.

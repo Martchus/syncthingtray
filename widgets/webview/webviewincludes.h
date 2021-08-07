@@ -9,6 +9,7 @@
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
 # include <QWebEngineView>
 # include <QWebEnginePage>
+# include <QtWebEngineWidgetsVersion>
 #elif defined(SYNCTHINGWIDGETS_USE_WEBKIT)
 # include <QWebView>
 # include <QWebPage>
