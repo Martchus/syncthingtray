@@ -103,6 +103,10 @@ SYNCTHINGWIDGETS_WEB_PAGE *WebPage::createWindow(SYNCTHINGWIDGETS_WEB_PAGE::WebW
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
+/*!
+ * \brief Returns whether \a certificateError can be ignored.
+ * \remarks Before Qt 5.14 any self-signed certificates are accepted.
+ */
 bool WebPage::canIgnoreCertificateError(const QWebEngineCertificateError &certificateError) const
 {
     // never ignore errors other than CertificateCommonNameInvalid and CertificateAuthorityInvalid
@@ -155,19 +159,19 @@ bool WebPage::canIgnoreCertificateError(const QWebEngineCertificateError &certif
 /*!
  * \brief Accepts self-signed certificates used by the Syncthing GUI as configured.
  * \remarks
- * - Before Qt 5.14 any self-signed certificates are accepted.
- * - The const_cast used in the Qt 6 version is most likely wrong and not how to the API is
- *   supposed to be used. The [documentation](https://doc-snapshots.qt.io/qt6-dev/qwebenginepage.html#certificateError)
- *   mentions one is able to ignore certificate errors but does not state how.
+ * Judging by https://github.com/qt/qtwebengine/blob/dev/examples/webenginewidgets/simplebrowser/webpage.cpp
+ * the QWebEngineCertificateError is really supposed to be a copy. One would assume that
+ * modifying only the copy has no effect but it actually works, e.g. when removing the
+ * call `certificateError.acceptCertificate()` one only gets `ERR_CERT_AUTHORITY_INVALID`
+ * when trying to access e.g. `https://127.0.0.1:8080` but with the call it works.
  */
 #if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-void WebPage::handleCertificateError(const QWebEngineCertificateError &certificateError)
+void WebPage::handleCertificateError(QWebEngineCertificateError certificateError)
 {
-    auto &error = const_cast<QWebEngineCertificateError &>(certificateError);
     if (canIgnoreCertificateError(certificateError)) {
-        error.acceptCertificate();
+        certificateError.acceptCertificate();
     } else {
-        error.rejectCertificate();
+        certificateError.rejectCertificate();
     }
 }
 #else

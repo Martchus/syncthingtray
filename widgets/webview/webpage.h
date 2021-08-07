@@ -7,6 +7,10 @@
 
 #include "../global.h"
 
+#if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#include <QWebEngineCertificateError>
+#endif
+
 QT_FORWARD_DECLARE_CLASS(QAuthenticator)
 QT_FORWARD_DECLARE_CLASS(QNetworkReply)
 QT_FORWARD_DECLARE_CLASS(QNetworkRequest)
@@ -48,7 +52,7 @@ private Q_SLOTS:
     void supplyCredentials(QAuthenticator *authenticator);
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
 #if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-    void handleCertificateError(const QWebEngineCertificateError &certificateError);
+    void handleCertificateError(QWebEngineCertificateError certificateError);
 #endif
 #else // SYNCTHINGWIDGETS_USE_WEBKIT
     void handleSslErrors(QNetworkReply *, const QList<QSslError> &errors);
