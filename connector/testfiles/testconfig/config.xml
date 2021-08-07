@@ -55,7 +55,7 @@
         <maxRecvKbps>0</maxRecvKbps>
     </device>
     <gui enabled="true" tls="false" debugging="false">
-        <address>localhost:4001</address>
+        <address>127.0.0.1:4001</address>
         <user>nobody</user>
         <password>$2a$12$35MnbsQgQNn1hzPYK/lWXOaP.U5D2TO0nuuQy2M4gsqJB4ff4q2RK</password>
         <apikey>syncthingconnectortest</apikey>
@@ -63,7 +63,7 @@
     </gui>
     <ldap></ldap>
     <options>
-        <listenAddress>tcp://localhost:32452</listenAddress>
+        <listenAddress>tcp://127.0.0.1:32452</listenAddress>
         <globalAnnounceServer>default</globalAnnounceServer>
         <globalAnnounceEnabled>true</globalAnnounceEnabled>
         <localAnnounceEnabled>true</localAnnounceEnabled>

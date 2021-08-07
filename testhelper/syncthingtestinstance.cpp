@@ -76,7 +76,7 @@ void SyncthingTestInstance::start()
     // start st
     // clang-format off
     const QStringList args{
-        QStringLiteral("-gui-address=http://localhost:") + m_syncthingPort,
+        QStringLiteral("-gui-address=http://127.0.0.1:") + m_syncthingPort,
         QStringLiteral("-gui-apikey=") + m_apiKey,
         QStringLiteral("-home=") + configFile.absolutePath(),
         QStringLiteral("-no-browser"),

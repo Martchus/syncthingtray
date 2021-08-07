@@ -118,7 +118,7 @@ void ConnectionTests::setUp()
     SyncthingTestInstance::start();
 
     cerr << "\n - Preparing connection ..." << endl;
-    m_connection.setSyncthingUrl(QStringLiteral("http://localhost:") + syncthingPort());
+    m_connection.setSyncthingUrl(QStringLiteral("http://127.0.0.1:") + syncthingPort());
 
     // keep track of status changes
     QObject::connect(&m_connection, &SyncthingConnection::statusChanged,
