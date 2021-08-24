@@ -42,8 +42,10 @@ namespace Data {
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
 #ifdef PLATFORM_WINDOWS
 #define LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS boost::process::windows::create_no_window,
+#define LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION toStdWString
 #else
 #define LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS
+#define LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION toLocal8Bit().toStdString
 #endif
 
 /// \brief Holds data related to the process execution via Boost.Process.
@@ -384,11 +386,11 @@ void SyncthingProcess::start(const QString &program, const QStringList &argument
     emit stateChanged(m_process->state = QProcess::Starting);
 
     // convert args
-    auto prog = program.toStdString();
-    auto args = std::vector<std::string>();
+    auto prog = program.LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION();
+    auto args = std::vector<decltype(arguments.front().LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION())>();
     args.reserve(static_cast<std::size_t>(arguments.size()));
     for (const auto &arg : arguments) {
-        args.emplace_back(arg.toStdString());
+        args.emplace_back(arg.LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION());
     }
     m_process->program = program;
     m_process->arguments = arguments;
