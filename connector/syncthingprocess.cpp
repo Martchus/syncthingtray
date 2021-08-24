@@ -20,6 +20,9 @@
 #include <boost/process/group.hpp>
 #include <boost/process/io.hpp>
 #include <boost/process/search_path.hpp>
+#ifdef PLATFORM_WINDOWS
+#include <boost/process/windows.hpp>
+#endif
 
 #include <atomic>
 #include <chrono>
@@ -37,6 +40,12 @@ using namespace CppUtilities;
 namespace Data {
 
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+#ifdef PLATFORM_WINDOWS
+#define LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS boost::process::windows::create_no_window,
+#else
+#define LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS
+#endif
+
 /// \brief Holds data related to the process execution via Boost.Process.
 /// \remarks A new one is created for each process to be started.
 struct SyncthingProcessInternalData : std::enable_shared_from_this<SyncthingProcessInternalData> {
@@ -443,13 +452,13 @@ void SyncthingProcess::start(const QString &program, const QStringList &argument
         }
         switch (m_mode) {
         case QProcess::MergedChannels:
-            m_process->child = boost::process::child(m_handler->ioc, m_process->group, path, args,
+            m_process->child = boost::process::child(LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS m_handler->ioc, m_process->group, path, args,
                 (boost::process::std_out & boost::process::std_err) > m_process->pipe, std::move(successHandler), std::move(exitHandler),
                 std::move(errorHandler));
             break;
         case QProcess::ForwardedChannels:
-            m_process->child = boost::process::child(
-                m_handler->ioc, m_process->group, path, args, std::move(successHandler), std::move(exitHandler), std::move(errorHandler));
+            m_process->child = boost::process::child(LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS m_handler->ioc, m_process->group, path, args,
+                std::move(successHandler), std::move(exitHandler), std::move(errorHandler));
             break;
         default:
             std::cerr << EscapeCodes::Phrases::Error << "Unable to launch process: specified channel mode not supported" << EscapeCodes::Phrases::End;
