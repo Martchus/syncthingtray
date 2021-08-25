@@ -87,14 +87,14 @@ void MiscTests::testParsingConfig()
     SyncthingConfig config;
     CPPUNIT_ASSERT(!config.restore(QStringLiteral("non-existant-file")));
     CPPUNIT_ASSERT(config.restore(QString::fromLocal8Bit(testFilePath("testconfig/config.xml").data())));
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("address", QStringLiteral("localhost:4001"), config.guiAddress);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("address", QStringLiteral("127.0.0.1:4001"), config.guiAddress);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("API key", QStringLiteral("syncthingconnectortest"), config.guiApiKey);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("user", QStringLiteral("nobody"), config.guiUser);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("password", QStringLiteral("$2a$12$35MnbsQgQNn1hzPYK/lWXOaP.U5D2TO0nuuQy2M4gsqJB4ff4q2RK"), config.guiPasswordHash);
     CPPUNIT_ASSERT_MESSAGE("TLS", !config.guiEnforcesSecureConnection);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("url", QStringLiteral("http://localhost:4001"), config.syncthingUrl());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("url", QStringLiteral("http://127.0.0.1:4001"), config.syncthingUrl());
     config.guiEnforcesSecureConnection = true;
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("url", QStringLiteral("https://localhost:4001"), config.syncthingUrl());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("url", QStringLiteral("https://127.0.0.1:4001"), config.syncthingUrl());
     const QString configFile(SyncthingConfig::locateConfigFile());
     CPPUNIT_ASSERT(configFile.isEmpty() || QFile::exists(configFile));
     const QString httpsCert(SyncthingConfig::locateHttpsCertificate());
