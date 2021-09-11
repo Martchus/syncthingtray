@@ -12,7 +12,9 @@
 #include <QStringBuilder>
 #include <QSvgRenderer>
 
+#ifndef LIB_SYNCTHING_MODEL_STATIC
 ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
+#endif
 
 namespace Data {
 
