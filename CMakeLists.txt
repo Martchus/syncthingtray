@@ -15,6 +15,7 @@ set(META_VERSION_EXACT_SONAME ON)
 set(META_ADD_DEFAULT_CPP_UNIT_TEST_APPLICATION ON)
 
 project(${META_PROJECT_NAME})
+enable_testing()
 
 # disable KDE integration under Android, Windows and MacOS by default
 if(ANDROID OR WIN32 OR APPLE)
@@ -24,9 +25,6 @@ else()
     set(FILE_ITEM_ACTION_PLUGIN_DISABLED_BY_DEFAULT OFF)
     set(PLASMOID_DISABLED_BY_DEFAULT OFF)
 endif()
-
-# set the include directory used when building so the headers of the different backend libraries can be found at build time
-set(TARGET_INCLUDE_DIRECTORY_BUILD_INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # add options for partial build
 option(NO_LIBSYNCTHING "whether building Syncthing itself as a library should be skipped" ON)
@@ -40,33 +38,25 @@ option(NO_PLASMOID "whether building the Plasma 5 plasmoid should be skipped" "$
 # allow using non-default configuration
 set(CONFIGURATION_PACKAGE_SUFFIX "" CACHE STRING "sets the suffix for find_package() calls to packages configured via c++utilities")
 set(CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES "${CONFIGURATION_PACKAGE_SUFFIX}" CACHE STRING "sets the suffix for qtutilities")
+set(CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME "${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES}" CACHE STRING "sets the suffix for qtforkawesome")
 
 # allow building qtforkawesome as part of this project
 set(BUNDLED_QT_FORK_AWESOME_PATH OFF CACHE PATH "specifies the (relative) path to the qtforkawesome sources for building it together with ${META_PROJECT_NAME}")
 if(NOT BUNDLED_QT_FORK_AWESOME_PATH)
     message(STATUS "Using system qtforkawesome")
 else()
-    # check whether bundled c++utilities actually exists
-    if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${BUNDLED_QT_FORK_AWESOME_PATH}")
-        # treat the specified path as relative to the current source dir
-        set(qtforkawesome_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${BUNDLED_QT_FORK_AWESOME_PATH}")
-    elseif(IS_DIRECTORY "${BUNDLED_QT_FORK_AWESOME_PATH}")
-        # treat the specified path as absolute
-        set(qtforkawesome_DIR "${BUNDLED_QT_FORK_AWESOME_PATH}")
+    if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${BUNDLED_QT_FORK_AWESOME_PATH}" OR IS_DIRECTORY "${BUNDLED_QT_FORK_AWESOME_PATH}")
+        add_subdirectory("${BUNDLED_QT_FORK_AWESOME_PATH}" qtforkawesome)
+        set(qtforkawesome${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES}_DIR "${CMAKE_CURRENT_BINARY_DIR}/qtforkawesome")
     else()
-        # consider the specified path invalid
-        set(qtforkawesome_DIR "")
-    endif()
-    if(qtforkawesome_DIR)
-        add_subdirectory("${BUNDLED_QT_FORK_AWESOME_PATH}" qtforkawesome_DIR)
-        list(APPEND CMAKE_MODULE_PATH "${CPP_UTILITIES_SOURCE_DIR}/cmake/modules")
-    else()
-        message(FATAL_ERROR "Specified directory for qtforkawesome sources \"${BUNDLED_CPP_UTILITIES_PATH}\" does not exist.")
+        message(FATAL_ERROR "Specified directory for qtforkawesome sources \"${BUNDLED_QT_FORK_AWESOME_PATH}\" does not exist.")
     endif()
 endif()
 
+# set the include directory used when building so the headers of the different backend libraries can be found at build time
+set(TARGET_INCLUDE_DIRECTORY_BUILD_INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+
 # add subdirectories
-enable_testing()
 add_subdirectory(connector)
 add_subdirectory(testhelper)
 if (NOT NO_LIBSYNCTHING)
