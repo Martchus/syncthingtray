@@ -2,6 +2,8 @@
 
 #include <qtutilities/misc/compat.h>
 
+#include <qtforkawesome/icon.h>
+
 #include <QFile>
 #include <QGuiApplication>
 #include <QPainter>

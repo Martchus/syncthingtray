@@ -22,6 +22,8 @@
 
 #include "ui_traywidget.h"
 
+#include <qtforkawesome/icon.h>
+
 #include <qtutilities/aboutdialog/aboutdialog.h>
 #include <qtutilities/misc/desktoputils.h>
 #include <qtutilities/misc/dialogutils.h>

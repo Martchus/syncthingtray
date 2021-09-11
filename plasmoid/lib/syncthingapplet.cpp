@@ -19,6 +19,8 @@
 #include "resources/config.h"
 #include "resources/qtconfig.h"
 
+#include <qtforkawesome/utils.h>
+
 #include <qtutilities/misc/desktoputils.h>
 #include <qtutilities/misc/dialogutils.h>
 #include <qtutilities/resources/resources.h>
@@ -264,17 +266,9 @@ void SyncthingApplet::updateStatusIconAndTooltip()
 
 QIcon SyncthingApplet::loadForkAwesomeIcon(const QString &name) const
 {
-    using namespace QtForkAwesome;
-    static const auto mapping = QMap<QString, Icon>({
-        { QStringLiteral("cloud-download"), Icon::CloudDownload },
-        { QStringLiteral("cloud-upload"), Icon::CloudUpload },
-        { QStringLiteral("file"), Icon::FileO },
-        { QStringLiteral("folder"), Icon::FolderO },
-        { QStringLiteral("hdd"), Icon::HddO },
-    });
-    const auto icon = mapping.find(name);
-    return icon != mapping.cend()
-        ? QIcon(IconManager::instance().forkAwesomeRenderer().pixmap(*icon, QSize(32, 32), QGuiApplication::palette().color(QPalette::WindowText)))
+    const auto icon = QtForkAwesome::iconFromId(name);
+    return QtForkAwesome::isIconValid(icon)
+        ? QIcon(IconManager::instance().forkAwesomeRenderer().pixmap(icon, QSize(32, 32), QGuiApplication::palette().color(QPalette::WindowText)))
         : QIcon();
 }
 

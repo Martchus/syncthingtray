@@ -3,7 +3,7 @@
 
 #include "./global.h"
 
-#include <qtforkawesome/qtforkawesome.h>
+#include <qtforkawesome/renderer.h>
 
 #include <QIcon>
 #include <QSize>
