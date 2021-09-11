@@ -1,5 +1,7 @@
 #include "./syncthingicons.h"
 
+#include "resources/qtconfig.h"
+
 #include <qtutilities/misc/compat.h>
 
 #include <qtforkawesome/icon.h>
@@ -9,6 +11,8 @@
 #include <QPainter>
 #include <QStringBuilder>
 #include <QSvgRenderer>
+
+ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
 
 namespace Data {
 
