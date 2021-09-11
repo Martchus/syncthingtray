@@ -169,7 +169,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
         case DeviceDetailIcon:
             if (index.column() == 0) {
                 // attribute icons
-                const auto &icons = m_brightColors ? fontAwesomeIconsForDarkTheme() : fontAwesomeIconsForLightTheme();
+                const auto &icons = m_brightColors ? forkAwesomeIconsForDarkTheme() : forkAwesomeIconsForLightTheme();
                 switch (index.row()) {
                 case 0:
                     return icons.hashtag;

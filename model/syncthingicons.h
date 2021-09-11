@@ -3,6 +3,8 @@
 
 #include "./global.h"
 
+#include <qtforkawesome/qtforkawesome.h>
+
 #include <QIcon>
 #include <QSize>
 
@@ -58,7 +60,6 @@ LIB_SYNCTHING_MODEL_EXPORT QByteArray makeSyncthingIcon(
     StatusEmblem statusEmblem = StatusEmblem::None);
 LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QString &path, const QSize &size = QSize(32, 32), int margin = 0);
 LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QByteArray &contents, const QSize &size = QSize(32, 32), int margin = 0);
-LIB_SYNCTHING_MODEL_EXPORT QByteArray loadFontAwesomeIcon(const QString &iconName, const QColor &color, bool solid = true);
 
 struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
     struct DarkTheme {
@@ -115,8 +116,8 @@ inline StatusIcons::StatusIcons()
 {
 }
 
-struct LIB_SYNCTHING_MODEL_EXPORT FontAwesomeIcons {
-    FontAwesomeIcons(const QColor &color, const QSize &size, int margin);
+struct LIB_SYNCTHING_MODEL_EXPORT ForkAwesomeIcons {
+    ForkAwesomeIcons(QtForkAwesome::Renderer &renderer, const QColor &color, const QSize &size);
     QIcon hashtag;
     QIcon folderOpen;
     QIcon globe;
@@ -146,8 +147,9 @@ public:
     void applySettings(const StatusIconSettings *statusIconSettings = nullptr, const StatusIconSettings *trayIconSettings = nullptr);
     const StatusIcons &statusIcons() const;
     const StatusIcons &trayIcons() const;
-    const FontAwesomeIcons &fontAwesomeIconsForLightTheme() const;
-    const FontAwesomeIcons &fontAwesomeIconsForDarkTheme() const;
+    QtForkAwesome::Renderer &forkAwesomeRenderer();
+    const ForkAwesomeIcons &forkAwesomeIconsForLightTheme() const;
+    const ForkAwesomeIcons &forkAwesomeIconsForDarkTheme() const;
 
 Q_SIGNALS:
     void statusIconsChanged(const StatusIcons &newStatusIcons, const StatusIcons &newTrayIcons);
@@ -157,8 +159,9 @@ private:
 
     StatusIcons m_statusIcons;
     StatusIcons m_trayIcons;
-    FontAwesomeIcons m_fontAwesomeIconsForLightTheme;
-    FontAwesomeIcons m_fontAwesomeIconsForDarkTheme;
+    QtForkAwesome::Renderer m_forkAwesomeRenderer;
+    ForkAwesomeIcons m_forkAwesomeIconsForLightTheme;
+    ForkAwesomeIcons m_fontAwesomeIconsForDarkTheme;
 };
 
 inline void IconManager::applySettings(const StatusIconSettings *statusIconSettings, const StatusIconSettings *trayIconSettings)
@@ -186,12 +189,17 @@ inline const StatusIcons &IconManager::trayIcons() const
     return m_trayIcons;
 }
 
-inline const FontAwesomeIcons &IconManager::fontAwesomeIconsForLightTheme() const
+inline QtForkAwesome::Renderer &IconManager::forkAwesomeRenderer()
 {
-    return m_fontAwesomeIconsForLightTheme;
+    return m_forkAwesomeRenderer;
 }
 
-inline const FontAwesomeIcons &IconManager::fontAwesomeIconsForDarkTheme() const
+inline const ForkAwesomeIcons &IconManager::forkAwesomeIconsForLightTheme() const
+{
+    return m_forkAwesomeIconsForLightTheme;
+}
+
+inline const ForkAwesomeIcons &IconManager::forkAwesomeIconsForDarkTheme() const
 {
     return m_fontAwesomeIconsForDarkTheme;
 }
@@ -206,14 +214,14 @@ inline const StatusIcons &trayIcons()
     return IconManager::instance().trayIcons();
 }
 
-inline const FontAwesomeIcons &fontAwesomeIconsForLightTheme()
+inline const ForkAwesomeIcons &forkAwesomeIconsForLightTheme()
 {
-    return IconManager::instance().fontAwesomeIconsForLightTheme();
+    return IconManager::instance().forkAwesomeIconsForLightTheme();
 }
 
-inline const FontAwesomeIcons &fontAwesomeIconsForDarkTheme()
+inline const ForkAwesomeIcons &forkAwesomeIconsForDarkTheme()
 {
-    return IconManager::instance().fontAwesomeIconsForDarkTheme();
+    return IconManager::instance().forkAwesomeIconsForDarkTheme();
 }
 
 } // namespace Data

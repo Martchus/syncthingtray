@@ -256,8 +256,8 @@ void TrayWidget::showAboutDialog()
             QStringLiteral(
                 "<p>Developed by " APP_AUTHOR
                 "<br>Fallback icons from KDE/Breeze project<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "
-                "icons from <a href=\"https://fontawesome.com\">Font "
-                "Awesome</a> (see <a href=\"https://fontawesome.com/license\">their license</a>)</p>"),
+                "icons from <a href=\"https://forkaweso.me\">Fork "
+                "Awesome</a> (see <a href=\"https://forkaweso.me/Fork-Awesome/license\">their license</a>))</p>"),
             QString(), {}, QStringLiteral(APP_URL), QString(), renderSvgImage(makeSyncthingIcon(), QSize(128, 128)).toImage());
         s_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         s_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
@@ -630,18 +630,19 @@ void TrayWidget::updateTraffic()
         const auto colorActive = palette.color(QPalette::WindowText);
         const auto colorInactive = QColor((colorActive.red() + colorBackground.red()) / 2, (colorActive.green() + colorBackground.green()) / 2,
             (colorActive.blue() + colorBackground.blue()) / 2);
-        const auto renderIcon
-            = [&size](const QString &name, const QColor &color) { return Data::renderSvgImage(Data::loadFontAwesomeIcon(name, color), size); };
+        const auto renderIcon = [&size](QtForkAwesome::Icon icon, const QColor &color) {
+            return IconManager::instance().forkAwesomeRenderer().pixmap(icon, size, color);
+        };
         struct {
             QPixmap uploadIconActive;
             QPixmap uploadIconInactive;
             QPixmap downloadIconActive;
             QPixmap downloadIconInactive;
         } icons;
-        icons.uploadIconActive = renderIcon(QStringLiteral("cloud-upload-alt"), colorActive);
-        icons.uploadIconInactive = renderIcon(QStringLiteral("cloud-upload-alt"), colorInactive);
-        icons.downloadIconActive = renderIcon(QStringLiteral("cloud-download-alt"), colorActive);
-        icons.downloadIconInactive = renderIcon(QStringLiteral("cloud-download-alt"), colorInactive);
+        icons.uploadIconActive = renderIcon(QtForkAwesome::Icon::CloudUpload, colorActive);
+        icons.uploadIconInactive = renderIcon(QtForkAwesome::Icon::CloudUpload, colorInactive);
+        icons.downloadIconActive = renderIcon(QtForkAwesome::Icon::CloudDownload, colorActive);
+        icons.downloadIconInactive = renderIcon(QtForkAwesome::Icon::CloudDownload, colorInactive);
         return icons;
     }();
 

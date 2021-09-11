@@ -479,8 +479,8 @@ ColumnLayout {
 
         IconLabel {
             Layout.leftMargin: 10
-            iconSource: plasmoid.nativeInterface.loadFontAwesomeIcon(
-                            "cloud-download-alt")
+            iconSource: plasmoid.nativeInterface.loadForkAwesomeIcon(
+                            "cloud-download")
             iconOpacity: plasmoid.nativeInterface.hasIncomingTraffic ? 1.0 : 0.5
             text: plasmoid.nativeInterface.incomingTraffic
             tooltip: qsTr("Global incoming traffic")
@@ -499,8 +499,8 @@ ColumnLayout {
 
         IconLabel {
             Layout.leftMargin: 10
-            iconSource: plasmoid.nativeInterface.loadFontAwesomeIcon(
-                            "cloud-upload-alt")
+            iconSource: plasmoid.nativeInterface.loadForkAwesomeIcon(
+                            "cloud-upload")
             iconOpacity: plasmoid.nativeInterface.hasOutgoingTraffic ? 1.0 : 0.5
             text: plasmoid.nativeInterface.outgoingTraffic
             tooltip: qsTr("Global outgoing traffic")

@@ -111,9 +111,9 @@ QVariant SyncthingRecentChangesModel::data(const QModelIndex &index, int role) c
         switch (index.column()) {
         case 0:
             if (change.fileChange.local) {
-                return m_brightColors ? fontAwesomeIconsForDarkTheme().home : fontAwesomeIconsForLightTheme().home;
+                return m_brightColors ? forkAwesomeIconsForDarkTheme().home : forkAwesomeIconsForLightTheme().home;
             } else {
-                return m_brightColors ? fontAwesomeIconsForDarkTheme().globe : fontAwesomeIconsForLightTheme().globe;
+                return m_brightColors ? forkAwesomeIconsForDarkTheme().globe : forkAwesomeIconsForLightTheme().globe;
             }
         }
         break;

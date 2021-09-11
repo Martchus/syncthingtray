@@ -7,18 +7,17 @@ RowLayout {
     property string context: "?"
 
     IconLabel {
-        iconSource: plasmoid.nativeInterface.loadFontAwesomeIcon("file", false)
+        iconSource: plasmoid.nativeInterface.loadForkAwesomeIcon("file")
         text: statistics.files !== undefined ? statistics.files : "?"
         tooltip: context + qsTr(" files")
     }
     IconLabel {
-        iconSource: plasmoid.nativeInterface.loadFontAwesomeIcon("folder",
-                                                                 false)
+        iconSource: plasmoid.nativeInterface.loadForkAwesomeIcon("folder")
         text: statistics.dirs !== undefined ? statistics.dirs : "?"
         tooltip: context + qsTr(" directories")
     }
     IconLabel {
-        iconSource: plasmoid.nativeInterface.loadFontAwesomeIcon("hdd", false)
+        iconSource: plasmoid.nativeInterface.loadForkAwesomeIcon("hdd")
         text: statistics.bytes !== undefined ? plasmoid.nativeInterface.formatFileSize(
                                                    statistics.bytes) : "?"
         tooltip: context + qsTr(" size")

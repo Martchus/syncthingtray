@@ -119,7 +119,7 @@ public Q_SLOTS:
     void showDirectoryErrors(unsigned int directoryIndex);
     void copyToClipboard(const QString &text);
     void updateStatusIconAndTooltip();
-    QIcon loadFontAwesomeIcon(const QString &name, bool solid = true) const;
+    QIcon loadForkAwesomeIcon(const QString &name) const;
     QString formatFileSize(quint64 fileSizeInByte) const;
 
 Q_SIGNALS:

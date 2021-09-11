@@ -105,8 +105,8 @@ void SyncthingFileItemActionStaticData::showAboutDialog()
 {
     auto *const aboutDialog = new AboutDialog(nullptr, QStringLiteral(APP_NAME),
         QStringLiteral(APP_AUTHOR "<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "
-                                  "icons from <a href=\"https://fontawesome.com\">Font "
-                                  "Awesome</a> (see <a href=\"https://fontawesome.com/license\">their license</a>)"),
+                                  "icons from <a href=\"https://forkaweso.me\">Fork "
+                                  "Awesome</a> (see <a href=\"https://forkaweso.me/Fork-Awesome/license\">their license</a>)"),
         QStringLiteral(APP_VERSION), CppUtilities::applicationInfo.dependencyVersions, QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION),
         renderSvgImage(makeSyncthingIcon(), QSize(128, 128)).toImage());
     aboutDialog->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));

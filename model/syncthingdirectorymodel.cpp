@@ -191,7 +191,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
         case DirectoryDetailIcon:
             if (index.column() == 0) {
                 // attribute icons
-                const auto &icons = m_brightColors ? fontAwesomeIconsForDarkTheme() : fontAwesomeIconsForLightTheme();
+                const auto &icons = m_brightColors ? forkAwesomeIconsForDarkTheme() : forkAwesomeIconsForLightTheme();
                 switch (row) {
                 case 0:
                     return icons.hashtag;

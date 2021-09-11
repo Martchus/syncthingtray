@@ -244,8 +244,9 @@ See the release section on GitHub.
       by [perfect7gentleman's repository](https://github.com/perfect7gentleman/pg_overlay)
 
 ## Build instructions
-The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities) and
-[qtutilities](https://github.com/Martchus/qtutilities) and is built the same way as these libraries.
+The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities),
+[qtutilities](https://github.com/Martchus/qtutilities) and
+[qtforkawesome](https://github.com/Martchus/qtforkawesome) and is built the same way as these libraries.
 For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities).
 For building this straight, see the section below. There's also documentation about
 [various build variables](https://github.com/Martchus/cpp-utilities/blob/master/doc/buildvariables.md) which
@@ -298,6 +299,8 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
    cd $SOURCES
    git clone -c core.symlinks=true https://github.com/Martchus/cpp-utilities.git c++utilities
    git clone -c core.symlinks=true https://github.com/Martchus/qtutilities.git
+   git clone -c core.symlinks=true https://github.com/Martchus/qtforkawesome.git
+   git clone -c core.symlinks=true https://github.com/ForkAwesome/Fork-Awesome.git forkawesome
    git clone -c core.symlinks=true https://github.com/Martchus/syncthingtray.git
    git clone -c core.symlinks=true https://github.com/Martchus/subdirs.git
    ```
@@ -311,6 +314,9 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
    cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX="/install/prefix" \
+    -DBUNDLED_QT_FORK_AWESOME_PATH="$SOURCES/qtforkawesome" \
+    -DFORK_AWESOME_FONT_FILE="$SOURCES/forkawesome/fonts/forkawesome-webfont.woff2" \
+    -DFORK_AWESOME_ICON_DEFINITIONS="$SOURCES/forkawesome/src/icons/icons.yml" \
     $SOURCES/subdirs/syncthingtray
    ```
     * Replace `/install/prefix` with the directory where you want to install.

@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 
 # define metadata
 set(META_PROJECT_NAME syncthingtray)
-set(META_PROJECT_TYPE application)
 set(META_APP_AUTHOR "Martchus")
 set(META_APP_AUTHOR_MAIL "martchus@gmx.net")
 set(META_APP_URL "https://github.com/${META_APP_AUTHOR}/${META_PROJECT_NAME}")
@@ -11,7 +10,7 @@ set(META_APP_CATEGORIES "Network;FileTransfer")
 set(META_GUI_OPTIONAL false)
 set(META_VERSION_MAJOR 1)
 set(META_VERSION_MINOR 1)
-set(META_VERSION_PATCH 10)
+set(META_VERSION_PATCH 11)
 set(META_VERSION_EXACT_SONAME ON)
 set(META_ADD_DEFAULT_CPP_UNIT_TEST_APPLICATION ON)
 
@@ -41,6 +40,30 @@ option(NO_PLASMOID "whether building the Plasma 5 plasmoid should be skipped" "$
 # allow using non-default configuration
 set(CONFIGURATION_PACKAGE_SUFFIX "" CACHE STRING "sets the suffix for find_package() calls to packages configured via c++utilities")
 set(CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES "${CONFIGURATION_PACKAGE_SUFFIX}" CACHE STRING "sets the suffix for qtutilities")
+
+# allow building qtforkawesome as part of this project
+set(BUNDLED_QT_FORK_AWESOME_PATH OFF CACHE PATH "specifies the (relative) path to the qtforkawesome sources for building it together with ${META_PROJECT_NAME}")
+if(NOT BUNDLED_QT_FORK_AWESOME_PATH)
+    message(STATUS "Using system qtforkawesome")
+else()
+    # check whether bundled c++utilities actually exists
+    if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${BUNDLED_QT_FORK_AWESOME_PATH}")
+        # treat the specified path as relative to the current source dir
+        set(qtforkawesome_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${BUNDLED_QT_FORK_AWESOME_PATH}")
+    elseif(IS_DIRECTORY "${BUNDLED_QT_FORK_AWESOME_PATH}")
+        # treat the specified path as absolute
+        set(qtforkawesome_DIR "${BUNDLED_QT_FORK_AWESOME_PATH}")
+    else()
+        # consider the specified path invalid
+        set(qtforkawesome_DIR "")
+    endif()
+    if(qtforkawesome_DIR)
+        add_subdirectory("${BUNDLED_QT_FORK_AWESOME_PATH}" qtforkawesome_DIR)
+        list(APPEND CMAKE_MODULE_PATH "${CPP_UTILITIES_SOURCE_DIR}/cmake/modules")
+    else()
+        message(FATAL_ERROR "Specified directory for qtforkawesome sources \"${BUNDLED_CPP_UTILITIES_PATH}\" does not exist.")
+    endif()
+endif()
 
 # add subdirectories
 enable_testing()

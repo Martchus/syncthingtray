@@ -31,6 +31,7 @@
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QGuiApplication>
+#include <QMap>
 #include <QNetworkReply>
 #include <QPalette>
 #include <QQmlEngine>
@@ -261,9 +262,20 @@ void SyncthingApplet::updateStatusIconAndTooltip()
     emit connectionStatusChanged();
 }
 
-QIcon SyncthingApplet::loadFontAwesomeIcon(const QString &name, bool solid) const
+QIcon SyncthingApplet::loadForkAwesomeIcon(const QString &name) const
 {
-    return Data::renderSvgImage(Data::loadFontAwesomeIcon(name, QGuiApplication::palette().color(QPalette::WindowText), solid), QSize(32, 32), 8);
+    using namespace QtForkAwesome;
+    static const auto mapping = QMap<QString, Icon>({
+        { QStringLiteral("cloud-download"), Icon::CloudDownload },
+        { QStringLiteral("cloud-upload"), Icon::CloudUpload },
+        { QStringLiteral("file"), Icon::FileO },
+        { QStringLiteral("folder"), Icon::FolderO },
+        { QStringLiteral("hdd"), Icon::HddO },
+    });
+    const auto icon = mapping.find(name);
+    return icon != mapping.cend()
+        ? QIcon(IconManager::instance().forkAwesomeRenderer().pixmap(*icon, QSize(32, 32), QGuiApplication::palette().color(QPalette::WindowText)))
+        : QIcon();
 }
 
 QString SyncthingApplet::formatFileSize(quint64 fileSizeInByte) const
@@ -329,8 +341,8 @@ void SyncthingApplet::showAboutDialog()
     if (!m_aboutDlg) {
         m_aboutDlg = new AboutDialog(nullptr, QStringLiteral(APP_NAME),
             QStringLiteral("<p>Developed by " APP_AUTHOR "<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "
-                           "icons from <a href=\"https://fontawesome.com\">Font "
-                           "Awesome</a> (see <a href=\"https://fontawesome.com/license\">their license</a>)</p>"),
+                           "icons from <a href=\"https://forkaweso.me\">Fork "
+                           "Awesome</a> (see <a href=\"https://forkaweso.me/Fork-Awesome/license\">their license</a>)</p>"),
             QStringLiteral(APP_VERSION), CppUtilities::applicationInfo.dependencyVersions, QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION),
             renderSvgImage(makeSyncthingIcon(), QSize(128, 128)).toImage());
         m_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));

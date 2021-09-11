@@ -47,6 +47,10 @@ use_qt_utilities()
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector(VISIBILITY PUBLIC)
 
+# find qtforkawesome
+find_package(qtforkawesome 0.0.1 REQUIRED)
+use_qt_fork_awesome(VISIBILITY PUBLIC)
+
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network Gui Widgets Svg)
 
