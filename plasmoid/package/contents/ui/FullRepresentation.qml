@@ -357,7 +357,13 @@ ColumnLayout {
         }
         PlasmaComponents3.ToolButton {
             id: showOwnIdButton
-            icon.name: "view-barcode"
+            // use PlasmaCore.IconItem for the icon because I wouldn't know how to show the QIcon otherwise
+            contentItem: PlasmaCore.IconItem {
+                source: plasmoid.nativeInterface.loadForkAwesomeIcon("qrcode", 64)
+            }
+            // set preferred size so the tool button is displayed consistently with the previous one despite using PlasmaCore.IconItem
+            Layout.preferredWidth: settingsButton.width
+            Layout.preferredHeight: settingsButton.height
             onClicked: {
                 plasmoid.nativeInterface.showOwnDeviceId()
                 plasmoid.expanded = false

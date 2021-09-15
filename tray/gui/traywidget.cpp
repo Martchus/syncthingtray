@@ -116,8 +116,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     m_cornerFrame->setLayout(cornerFrameLayout);
     auto *viewIdButton = new QPushButton(m_cornerFrame);
     viewIdButton->setToolTip(tr("View own device ID"));
-    viewIdButton->setIcon(
-        QIcon::fromTheme(QStringLiteral("view-barcode"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-barcode.svg"))));
+    viewIdButton->setIcon(QIcon(QStringLiteral("qrcode.fa")));
     viewIdButton->setFlat(true);
     cornerFrameLayout->addWidget(viewIdButton);
     auto *restartButton = new QPushButton(m_cornerFrame);

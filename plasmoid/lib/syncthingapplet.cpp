@@ -264,11 +264,11 @@ void SyncthingApplet::updateStatusIconAndTooltip()
     emit connectionStatusChanged();
 }
 
-QIcon SyncthingApplet::loadForkAwesomeIcon(const QString &name) const
+QIcon SyncthingApplet::loadForkAwesomeIcon(const QString &name, int size) const
 {
     const auto icon = QtForkAwesome::iconFromId(name);
     return QtForkAwesome::isIconValid(icon)
-        ? QIcon(IconManager::instance().forkAwesomeRenderer().pixmap(icon, QSize(32, 32), QGuiApplication::palette().color(QPalette::WindowText)))
+        ? QIcon(IconManager::instance().forkAwesomeRenderer().pixmap(icon, QSize(size, size), QGuiApplication::palette().color(QPalette::WindowText)))
         : QIcon();
 }
 

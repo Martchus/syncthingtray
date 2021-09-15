@@ -112,6 +112,13 @@ use_syncthingmodel()
 find_package(syncthingwidgets ${META_APP_VERSION} REQUIRED)
 use_syncthingwidgets()
 
+# link against the qtforkawesomeiconengine plugin when static linkage is enabled
+include(3rdParty)
+if (STATIC_LINKAGE)
+    find_package(qtforkawesomeiconengine${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.0.1 REQUIRED)
+    use_qt_fork_awesome_icon_engine()
+endif ()
+
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 
