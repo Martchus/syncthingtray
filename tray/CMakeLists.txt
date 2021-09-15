@@ -92,7 +92,6 @@ set(REQUIRED_ICONS
     system-file-manager
     text-plain
     user-home
-    view-barcode
     view-refresh
     window-close)
 
