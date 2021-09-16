@@ -36,6 +36,12 @@ using namespace CppUtilities;
 using namespace QtGui;
 using namespace Data;
 
+// import static icon engine plugin
+#ifdef QT_FORK_AWESOME_ICON_ENGINE_STATIC
+#include <QtPlugin>
+Q_IMPORT_PLUGIN(ForkAwesomeIconEnginePlugin)
+#endif
+
 ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
