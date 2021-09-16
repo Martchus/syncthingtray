@@ -19,6 +19,10 @@
 #include <qtutilities/aboutdialog/aboutdialog.h>
 #include <qtutilities/models/checklistmodel.h>
 
+// ignore Plasma deprecation warnings because I'm not sure how to fix them considering Plasma's own applets
+// haven't been ported yet
+#define PLASMA_NO_DEPRECATED_WARNINGS 1
+
 #include <Plasma/Applet>
 
 #include <QSize>
