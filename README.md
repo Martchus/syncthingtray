@@ -459,6 +459,41 @@ configuration like this:
 for_window [title="^Syncthing Tray( \(.*\))?$"] floating enable, border none, resize set 450 400, move position 916 0
 ```
 
+### Workaround missing support for Windows 10 dark mode
+The dark mode introduced in Windows 10 does not affect traditional desktop
+applications like Syncthing Tray. Unfortunately, Windows normal theming
+capabilities [have been
+removed](https://superuser.com/questions/949920/window-color-and-appearance-
+removed-in-win10). So far Qt does not offer much to improve the situation (see
+"List of bugs" below).
+
+However, it is possible to use Syncthing Tray's custom appearance settings to
+achieve a dark theming:
+
+* To enable dark Window borders, set the environment variable `QT_QPA_PLATFORM`
+  to `windows:darkmode=1`.
+* To enable dark colors for Syncthing Tray's UI elements, configure a dark color
+  palette in Syncthing Tray's settings under "Qt/Appearance". You can download and
+  load the file as a base
+  https://raw.githubusercontent.com/Martchus/syncthingtray/master/tray/resources/dark-palette.ini
+  and tweak the colors to your liking.
+* To make the rest of the colors used by Syncthing Tray fit with the dark color
+  palette, enable "Bright custom text colors" in Syncthing Tray's settings under
+  "Tray/Appearance".
+* To make general icons fit with the dark color palette, configure an
+  appropriate icon them, e.g. select "Breeze Dark" as icon theme in Syncthing
+  Tray's settings under "Qt/Appearance".
+* To make Syncthing icons fit with the dark color palette, configure their
+  colors in Syncthing Tray's settings under "Tray/UI icons" and "Tray/System
+  icons". The "Use preset" button allows to select pre-defined colors suitable for
+  a dark color palette.
+* Select the widgets style "Fusion" under "Qt/Appearance". This is required
+  because the native styling provided by Windows for traditional desktop
+  applications does not look very nice when using a dark color palette.
+
+After changing these settings, restart Syncthing Tray. It is not sufficient to
+close the last Windows; the process needs to be restarted.
+
 ### List of bugs
 * Wayland limitations
     * The tray menu can not be positioned correctly under Wayland because the protocol does not allow setting window positions from
