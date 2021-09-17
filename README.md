@@ -494,6 +494,10 @@ achieve a dark theming:
 After changing these settings, restart Syncthing Tray. It is not sufficient to
 close the last Windows; the process needs to be restarted.
 
+It is also possible to enable Windows' "High contrast" setting which seems to
+bring back the traditional theming/coloring but unfortunately doesn't look very
+nice overall.
+
 ### List of bugs
 * Wayland limitations
     * The tray menu can not be positioned correctly under Wayland because the protocol does not allow setting window positions from
