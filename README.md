@@ -36,15 +36,7 @@ GitHub only contains a fraction of the available options.
     * macOS 10.14 Mojave
 
 If you can confirm it works under other desktop environments, please add it to the list.
-
-### Wayland-specific notes
-The Qt Widgets based version basically works under Wayland but there are positioning issues and the settings
-regarding positioning have no effect (see known bugs section). One can workaround this limitation by telling
-the window manager how to place the window, e.g. under Sway one could add a configuration like this:
-
-```
-for_window [title="^Syncthing Tray( \(.*\))?$"] floating enable, border none, resize set 450 400, move position 916 0
-```
+The section "Known bugs" below contains information and workarounds for certain caveats.
 
 ## Features
 * Provides quick access to most frequently used features but does not intend to replace the official web UI
@@ -452,10 +444,22 @@ The tray is still under development; the following features are under constructi
 * Make some notifications configurable on folder level
 * Optionally notify for single file updates (https://github.com/Martchus/syncthingtray/issues/7)
 
-## Known bugs
-The following bugs are caused by dependencies and hence tracked externally. For bugs of Syncthing Tray itself, checkout the issues
-on GitHub.
+## Known bugs and workarounds
+The following bugs are caused by dependencies or limitations of certain
+platforms. For bugs of Syncthing Tray itself, checkout the issues on GitHub.
 
+### Workaround positioning issues under Wayland
+The Qt Widgets based version basically works under Wayland but there are
+positioning issues and the settings regarding positioning have no effect (see
+"List of bugs" section below). One can workaround this limitation by telling the
+window manager how to place the window, e.g. under Sway one could add a
+configuration like this:
+
+```
+for_window [title="^Syncthing Tray( \(.*\))?$"] floating enable, border none, resize set 450 400, move position 916 0
+```
+
+### List of bugs
 * Wayland limitations
     * The tray menu can not be positioned correctly under Wayland because the protocol does not allow setting window positions from
       the client-side (at least I don't know a way to do it). This issue can not be fixed unless Wayland provides an API to set the
