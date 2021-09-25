@@ -496,7 +496,9 @@ close the last Windows; the process needs to be restarted.
 
 It is also possible to enable Windows' "High contrast" setting which seems to
 bring back the traditional theming/coloring but unfortunately doesn't look very
-nice overall.
+nice overall. Check https://github.com/tomasz1986/classic2000 to see how Windows
+looks like with high contrast applied, or if you're in need for themes that look
+at least nicer than what's shipped with Windows.
 
 ### List of bugs
 * Wayland limitations
