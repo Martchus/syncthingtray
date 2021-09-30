@@ -2,6 +2,7 @@
 
 #include <syncthingconnector/syncthingconnection.h>
 
+#include <QStringBuilder>
 #include <QTimer>
 
 // uncomment to enforce stopSyncthing() via REST-API (for testing)
@@ -19,6 +20,7 @@
 #include <boost/process/extend.hpp>
 #include <boost/process/group.hpp>
 #include <boost/process/io.hpp>
+#include <boost/process/locale.hpp>
 #include <boost/process/search_path.hpp>
 #ifdef PLATFORM_WINDOWS
 #include <boost/process/windows.hpp>
@@ -358,6 +360,22 @@ QProcess::ProcessState SyncthingProcess::state() const
  */
 void SyncthingProcess::start(const QString &program, const QStringList &arguments, QIODevice::OpenMode openMode)
 {
+    // get Boost.Process' code converter to provoke and handle a possible error when it is setting up its default locale via e.g. `std::locale("")`
+    try {
+        boost::process::codecvt();
+    } catch (const std::runtime_error &e) {
+        setErrorString(QStringLiteral("unable to initialize codecvt/locale: ") % QString::fromLocal8Bit(e.what())
+            % QStringLiteral("\nBe sure your locale setup is correct, see https://wiki.archlinux.org/title/Locale for details."));
+        std::cerr << EscapeCodes::Phrases::Error << "Unable to initialize locale for launching process" << EscapeCodes::Phrases::End;
+        std::cerr << EscapeCodes::Phrases::SubError << "Unable to initialize boost::process::codecvt/std::locale: " << e.what()
+                  << EscapeCodes::Phrases::End;
+        std::cerr << EscapeCodes::Phrases::SubMessage
+                  << "Be sure the locale is setup correctly in your environment (see https://wiki.archlinux.org/title/Locale)"
+                  << EscapeCodes::Phrases::End;
+        emit errorOccurred(QProcess::FailedToStart);
+        return;
+    }
+
     // ensure the dev is only opened  in read-only mode because writing is not implemented here
     if (openMode != QIODevice::ReadOnly) {
         setErrorString(QStringLiteral("only read-only openmode supported"));
