@@ -4,42 +4,42 @@
 <context>
     <name>Data::StatusIconSettings</name>
     <message>
-        <location filename="../syncthingicons.cpp" line="226"/>
+        <location filename="../syncthingicons.cpp" line="215"/>
         <source>Misc. notifications</source>
         <translation>Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="227"/>
+        <location filename="../syncthingicons.cpp" line="216"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="228"/>
+        <location filename="../syncthingicons.cpp" line="217"/>
         <source>Warning</source>
         <translation>Warnungen</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="229"/>
+        <location filename="../syncthingicons.cpp" line="218"/>
         <source>Idle</source>
         <translation>Leerlauf</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="230"/>
+        <location filename="../syncthingicons.cpp" line="219"/>
         <source>Scanning</source>
         <translation>Scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="231"/>
+        <location filename="../syncthingicons.cpp" line="220"/>
         <source>Synchronizing</source>
         <translation>Synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="232"/>
+        <location filename="../syncthingicons.cpp" line="221"/>
         <source>Paused</source>
         <translation>Pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="233"/>
+        <location filename="../syncthingicons.cpp" line="222"/>
         <source>Disconnected</source>
         <translation>Getrennt</translation>
     </message>
