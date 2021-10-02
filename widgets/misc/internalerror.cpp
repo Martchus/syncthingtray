@@ -13,6 +13,20 @@ using namespace Data;
 namespace QtGui {
 
 /*!
+ * \brief Constructs a new error suitable for display purposes (password in \a url is redacted).
+ */
+InternalError::InternalError(const QString &message, const QUrl &url, const QByteArray &response)
+    : message(message)
+    , url(url)
+    , response(response)
+    , when(CppUtilities::DateTime::now())
+{
+    if (!this->url.password().isEmpty()) {
+        this->url.setPassword(QStringLiteral("redacted"));
+    }
+}
+
+/*!
  * \brief Returns whether the error is relevant. Only in this case a notification for the error should be shown.
  * \todo Unify with SyncthingNotifier::isDisconnectRelevant().
  */

@@ -27,13 +27,6 @@ struct SYNCTHINGWIDGETS_EXPORT InternalError {
     CppUtilities::DateTime when;
 };
 
-inline InternalError::InternalError(const QString &message, const QUrl &url, const QByteArray &response)
-    : message(message)
-    , url(url)
-    , response(response)
-    , when(CppUtilities::DateTime::now())
-{
-}
 } // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_INTERNAL_ERROR_H
