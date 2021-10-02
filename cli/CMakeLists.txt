@@ -14,11 +14,11 @@ set(TEST_HEADER_FILES)
 set(TEST_SRC_FILES tests/application.cpp)
 
 # find c++utilities
-find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.10.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.10.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities
-find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.0.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.0.0 REQUIRED)
 use_qt_utilities(ONLY_HEADERS VISIBILITY PUBLIC)
 
 # find backend libraries

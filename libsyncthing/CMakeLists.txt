@@ -193,7 +193,7 @@ add_custom_target(
     COMMENT "Building Syncthing itself (as executable, ${SYNCTHING_EXECUTABLE_PATH})")
 
 # find c++utilities to use CMake modules and headers from it privately
-find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 if (CPP_UTILITIES_SOURCE_DIR)
     list(APPEND PRIVATE_INCLUDE_DIRS $<BUILD_INTERFACE:${CPP_UTILITIES_SOURCE_DIR}/..>

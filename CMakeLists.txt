@@ -47,8 +47,8 @@ if(NOT BUNDLED_QT_FORK_AWESOME_PATH)
 else()
     if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${BUNDLED_QT_FORK_AWESOME_PATH}" OR IS_DIRECTORY "${BUNDLED_QT_FORK_AWESOME_PATH}")
         add_subdirectory("${BUNDLED_QT_FORK_AWESOME_PATH}" qtforkawesome)
-        set(qtforkawesome${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME}_DIR "${CMAKE_CURRENT_BINARY_DIR}/qtforkawesome/qtforkawesome")
-        set(qtforkawesomeiconengine${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME}_DIR "${CMAKE_CURRENT_BINARY_DIR}/qtforkawesome/iconengineplugin")
+        set(${NAMESPACE_PREFIX}qtforkawesome${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME}_DIR "${CMAKE_CURRENT_BINARY_DIR}/qtforkawesome/qtforkawesome")
+        set(${NAMESPACE_PREFIX}qtforkawesomeiconengine${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME}_DIR "${CMAKE_CURRENT_BINARY_DIR}/qtforkawesome/iconengineplugin")
     else()
         message(FATAL_ERROR "Specified directory for qtforkawesome sources \"${BUNDLED_QT_FORK_AWESOME_PATH}\" does not exist.")
     endif()
@@ -56,6 +56,11 @@ endif()
 
 # set the include directory used when building so the headers of the different backend libraries can be found at build time
 set(TARGET_INCLUDE_DIRECTORY_BUILD_INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+
+set(PACKAGE_NAMESPACE "" CACHE STRING "sets the prefix for find_package() calls to packages configured via c++utilities")
+if (PACKAGE_NAMESPACE)
+  set(PACKAGE_NAMESPACE_PREFIX "${PACKAGE_NAMESPACE}-")
+endif ()
 
 # add subdirectories
 add_subdirectory(connector)

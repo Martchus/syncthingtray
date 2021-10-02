@@ -41,11 +41,11 @@ set(TS_FILES translations/${META_PROJECT_NAME}_cs_CZ.ts translations/${META_PROJ
              translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
-find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.10.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.10.0 REQUIRED)
 use_cpp_utilities(VISIBILITY PUBLIC)
 
 # find qtutilities (only headers and CMake modules used)
-find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.3.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.3.0 REQUIRED)
 use_qt_utilities(ONLY_HEADERS VISIBILITY PUBLIC)
 
 # find boost libraries
