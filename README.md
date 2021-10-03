@@ -306,12 +306,14 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
    cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX="/install/prefix" \
-    -DBUNDLED_QT_FORK_AWESOME_PATH="$SOURCES/qtforkawesome" \
     -DFORK_AWESOME_FONT_FILE="$SOURCES/forkawesome/fonts/forkawesome-webfont.woff2" \
     -DFORK_AWESOME_ICON_DEFINITIONS="$SOURCES/forkawesome/src/icons/icons.yml" \
     $SOURCES/subdirs/syncthingtray
    ```
     * Replace `/install/prefix` with the directory where you want to install.
+    * Checkout the [Providing the font file](https://github.com/Martchus/qtforkawesome/#providing-the-font-file)
+      secton of qtforkawesome's README for details regarding the
+      ForkAwesome-related parameters.
 3. Build and install everything in one step:
    ```
    cd $BUILD_DIR
