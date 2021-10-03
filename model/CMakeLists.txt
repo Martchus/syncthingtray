@@ -36,11 +36,11 @@ set(TS_FILES translations/${META_PROJECT_NAME}_cs_CZ.ts translations/${META_PROJ
              translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
-find_package(c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities (only CMake modules used)
-find_package(qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.3.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.3.0 REQUIRED)
 use_qt_utilities()
 
 # find backend libraries
@@ -48,7 +48,7 @@ find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector(VISIBILITY PUBLIC)
 
 # find qtforkawesome
-find_package(qtforkawesome${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.0.1 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}qtforkawesome${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.0.1 REQUIRED)
 use_qt_fork_awesome(VISIBILITY PUBLIC)
 
 # link also explicitly against the following Qt modules
