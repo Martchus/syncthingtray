@@ -47,7 +47,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     static constexpr int defaultTrafficPollInterval = 5000;
     static constexpr int defaultDevStatusPollInterval = 60000;
     static constexpr int defaultErrorsPollInterval = 30000;
-    static constexpr int defaultReconnectInterval = 0;
+    static constexpr int defaultReconnectInterval = 30000;
 };
 } // namespace Data
 
