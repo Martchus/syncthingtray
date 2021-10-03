@@ -114,7 +114,8 @@ use_syncthingwidgets()
 # link against the qtforkawesomeiconengine plugin when static linkage is enabled
 include(3rdParty)
 if (STATIC_LINKAGE)
-    find_package(${PACKAGE_NAMESPACE_PREFIX}qtforkawesomeiconengine${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.0.1 REQUIRED)
+    find_package(${PACKAGE_NAMESPACE_PREFIX}qtforkawesomeiconengine${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.0.1
+                 REQUIRED)
     use_qt_fork_awesome_icon_engine()
 endif ()
 
