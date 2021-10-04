@@ -112,7 +112,7 @@ void DirectoryErrorsDialog::removeNonEmptyDirs()
 
     const QString title(tr("Remove non-empty directories for folder \"%1\"").arg(dir->displayName()));
     if (QMessageBox::warning(this, title, printDirectories(tr("Do you really want to remove the following directories:"), m_nonEmptyDirs),
-            QMessageBox::YesToAll, QMessageBox::NoToAll | QMessageBox::Default | QMessageBox::Escape)
+            QMessageBox::YesToAll | QMessageBox::NoToAll, QMessageBox::NoToAll)
         != QMessageBox::YesToAll) {
         return;
     }
