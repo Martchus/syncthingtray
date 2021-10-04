@@ -17,7 +17,7 @@ enum class SyncthingErrorCategory;
 namespace QtGui {
 
 struct SYNCTHINGWIDGETS_EXPORT InternalError {
-    InternalError(const QString &message = QString(), const QUrl &url = QUrl(), const QByteArray &response = QByteArray());
+    explicit InternalError(const QString &message = QString(), const QUrl &url = QUrl(), const QByteArray &response = QByteArray());
 
     static bool isRelevant(const Data::SyncthingConnection &connection, Data::SyncthingErrorCategory category, int networkError);
 
