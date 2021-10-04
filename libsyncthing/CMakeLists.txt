@@ -214,7 +214,10 @@ set_property(TARGET syncthinginternal PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${
 if (WIN32)
     set(SYNCTHING_INTERNAL_LIBS ws2_32 winmm)
 elseif (UNIX)
-    set(SYNCTHING_INTERNAL_LIBS pthread)
+    set_property(
+        TARGET syncthinginternal
+        APPEND
+        PROPERTY INTERFACE_LINK_OPTIONS "-pthread")
 endif ()
 foreach (LIBRARY ${SYNCTHING_INTERNAL_LIBS})
     find_library(SYNCTHING_INTERNAL_LIBRARY_PATH_${LIBRARY} ${LIBRARY})
