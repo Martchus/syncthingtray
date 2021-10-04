@@ -27,6 +27,20 @@ struct SYNCTHINGWIDGETS_EXPORT InternalError {
     CppUtilities::DateTime when;
 };
 
+/*!
+ * \brief Constructs a new error suitable for display purposes (password in \a url is redacted).
+ */
+inline InternalError::InternalError(const QString &message, const QUrl &url, const QByteArray &response)
+    : message(message)
+    , url(url)
+    , response(response)
+    , when(CppUtilities::DateTime::now())
+{
+    if (!this->url.password().isEmpty()) {
+        this->url.setPassword(QStringLiteral("redacted"));
+    }
+}
+
 } // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_INTERNAL_ERROR_H
