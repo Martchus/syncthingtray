@@ -314,7 +314,7 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
    ```
     * Replace `/install/prefix` with the directory where you want to install.
     * Checkout the [Providing the font file](https://github.com/Martchus/qtforkawesome/#providing-the-font-file)
-      secton of qtforkawesome's README for details regarding the
+      section of qtforkawesome's README for details regarding the
       ForkAwesome-related parameters.
 3. Build and install everything in one step:
    ```
