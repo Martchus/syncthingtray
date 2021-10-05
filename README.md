@@ -497,6 +497,12 @@ nice overall. Check https://github.com/tomasz1986/classic2000 to see how Windows
 looks like with high contrast applied, or if you're in need for themes that look
 at least nicer than what's shipped with Windows.
 
+### Enable experimental support for Windows' per-monitor DPI awareness (V2)
+[PMv2](https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows#per-monitor-and-per-monitor-v2-dpi-awareness)
+is not working out of the box but experimental support can be enabled in the
+Qt 6 build by setting the environment variable `QT_QPA_PLATFORM` to
+`windows:dpiawareness=3`.
+
 ### List of bugs
 * Wayland limitations
     * The tray menu can not be positioned correctly under Wayland because the protocol does not allow setting window positions from
