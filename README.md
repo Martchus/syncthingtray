@@ -441,13 +441,6 @@ It is possible to turn on logging of the underlying library by setting environme
 * `LIB_SYNCTHING_CONNECTOR_LOG_EVENTS`: log events emitted by Syncthing's events REST-API endpoint
 * `LIB_SYNCTHING_CONNECTOR_LOG_DIRS_OR_DEVS_RESETTED`: log when directories/devices are internally reset
 
-### Planned features
-The tray is still under development; the following features are under construction or planned:
-
-* Create Qt Quick Controls 2 and Kirigami 2 based frontend for mobile devices (focusing on Android)
-* Make some notifications configurable on folder level
-* Optionally notify for single file updates (https://github.com/Martchus/syncthingtray/issues/7)
-
 ## Known bugs and workarounds
 The following bugs are caused by dependencies or limitations of certain
 platforms. For bugs of Syncthing Tray itself, checkout the issues on GitHub.
