@@ -10,7 +10,7 @@
 Checkout the [official forum thread](https://forum.syncthing.net/t/yet-another-syncthing-tray) for discussions
 and announcement of new features.
 
-Issues can be created on GitHub but please read the "Known bugs" and "Planned features" sections in this document
+Issues can be created on GitHub but please read the "Known bugs and workarounds" section in this document
 before.
 
 I provide binaries/repositories for some platforms. There are also binaries/repositories provided by other
@@ -36,7 +36,8 @@ GitHub only contains a fraction of the available options.
     * macOS 10.14 Mojave
 
 If you can confirm it works under other desktop environments, please add it to the list.
-The section "Known bugs" below contains information and workarounds for certain caveats.
+The section "Known bugs and workarounds" below contains information and workarounds for
+certain caveats.
 
 ## Features
 * Provides quick access to most frequently used features but does not intend to replace the official web UI
