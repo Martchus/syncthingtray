@@ -35,8 +35,8 @@ set(WIDGETS_SRC_FILES
 set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 set(WIDGETS_UI_FILES gui/traywidget.ui)
 
-set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts translations/${META_PROJECT_NAME}_de_DE.ts
-             translations/${META_PROJECT_NAME}_en_US.ts)
+set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
+             translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
 set(ICON_FILES resources/icons/hicolor/scalable/apps/${META_PROJECT_NAME}.svg)
 
@@ -113,8 +113,7 @@ use_syncthingwidgets()
 
 # link against the qtforkawesomeiconengine plugin when it is a static library
 include(3rdParty)
-find_package(${PACKAGE_NAMESPACE_PREFIX}qtforkawesomeiconengine${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.0.1
-             REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}qtforkawesomeiconengine${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.0.1 REQUIRED)
 if (NOT QT_FORK_AWESOME_ICON_ENGINE_LIB_IS_SHARED)
     use_qt_fork_awesome_icon_engine()
 endif ()
