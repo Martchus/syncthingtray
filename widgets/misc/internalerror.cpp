@@ -19,7 +19,7 @@ namespace QtGui {
 bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingErrorCategory category, int networkError)
 {
     // ignore overall connection errors when auto reconnect tries >= 1
-    if (category != SyncthingErrorCategory::OverallConnection && connection.autoReconnectTries() >= 1) {
+    if (category != SyncthingErrorCategory::OverallConnection && category != SyncthingErrorCategory::TLS && connection.autoReconnectTries() >= 1) {
         return false;
     }
 

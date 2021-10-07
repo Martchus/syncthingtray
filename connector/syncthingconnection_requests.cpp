@@ -52,10 +52,10 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest));
+    QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
     if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: GET " << reply->url().toString().toStdString() << Phrases::EndFlush;
     }
-    reply->ignoreSslErrors(m_expectedSslErrors);
     return reply;
 #else
     return MockedReply::forRequest(QStringLiteral("GET"), path, query, rest);
@@ -68,10 +68,10 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuery &query, const QByteArray &data)
 {
     auto *const reply = networkAccessManager().post(prepareRequest(path, query), data);
+    QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
     if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: POST " << reply->url().toString().toStdString() << Phrases::EndFlush;
     }
-    reply->ignoreSslErrors(m_expectedSslErrors);
     return reply;
 }
 
@@ -103,6 +103,50 @@ SyncthingConnection::Reply SyncthingConnection::prepareReply(QList<QNetworkReply
     auto *const reply = static_cast<QNetworkReply *>(sender());
     expectedReplies.removeAll(reply); // unset the expected reply so it is no longer considered pending
     return handleReply(reply, readData, handleAborting);
+}
+
+/*!
+ * \brief Handles SSL errors of replies; just for logging purposes at this point.
+ */
+void SyncthingConnection::handleSslErrors(const QList<QSslError> &errors)
+{
+    // check SSL errors for replies
+    auto *const reply = static_cast<QNetworkReply *>(sender());
+    auto hasUnexpectedErrors = false;
+
+    for (const auto &error : errors) {
+        // skip expected errors
+        // note: This would be required even when calling reply->ignoreSslErrors(m_expectedSslErrors) before so we
+        //       are omitting that call and just check it here.
+        if (m_expectedSslErrors.contains(error)) {
+            continue;
+        }
+
+        // handle the error by emitting the error signal with all the details including the certificate
+        // note: Of course the failing request would cause a QNetworkReply::SslHandshakeFailedError anyways. However,
+        //       at this point the concrete SSL error with the certificate is not accessible anymore.
+        auto errorMessage = QStringLiteral("TLS error: ") + error.errorString();
+        if (const auto cert = error.certificate(); !cert.isNull()) {
+            errorMessage += QChar('\n');
+            if (cert == m_certFromLastSslError) {
+                errorMessage += QStringLiteral("Certificate: same as last");
+            } else {
+                errorMessage += cert.toText();
+                if (!m_expectedSslErrors.isEmpty()) {
+                    errorMessage += QStringLiteral("\nExpected ") + m_expectedSslErrors.front().certificate().toText();
+                }
+                m_certFromLastSslError = cert;
+            }
+        }
+        cerr << "TLS ERROR" << endl;
+        emit this->error(errorMessage, SyncthingErrorCategory::TLS, QNetworkReply::NoError, reply->request());
+        hasUnexpectedErrors = true;
+    }
+
+    // proceed if all errors are expected
+    if (!hasUnexpectedErrors) {
+        reply->ignoreSslErrors();
+    }
 }
 
 /*!

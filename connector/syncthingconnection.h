@@ -326,6 +326,7 @@ private Q_SLOTS:
     void emitDirStatisticsChanged();
     void handleFatalConnectionError();
     void handleAdditionalRequestCanceled();
+    void handleSslErrors(const QList<QSslError> &errors);
     void recalculateStatus();
 
 private:
@@ -400,6 +401,7 @@ private:
     QString m_syncthingVersion;
     bool m_lastFileDeleted;
     QList<QSslError> m_expectedSslErrors;
+    QSslCertificate m_certFromLastSslError;
     QJsonObject m_rawConfig;
     bool m_dirStatsAltered;
     bool m_recordFileChanges;
