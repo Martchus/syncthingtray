@@ -13,6 +13,9 @@ bool SyncthingConnectionSettings::loadHttpsCert()
         return false;
     }
     const auto &cert(certs.front());
+    if (cert.isNull()) {
+        return false;
+    }
     // clang-format off
     expectedSslErrors = {
         QSslError(QSslError::UnableToGetLocalIssuerCertificate, cert),
