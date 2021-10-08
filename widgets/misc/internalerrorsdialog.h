@@ -17,6 +17,7 @@ public:
     static InternalErrorsDialog *instance();
     static bool hasInstance();
     static void addError(InternalError &&newError);
+    static void addError(const QString &message = QString(), const QUrl &url = QUrl(), const QByteArray &response = QByteArray());
 
 Q_SIGNALS:
     void errorsCleared();

@@ -65,9 +65,9 @@ public Q_SLOTS:
     void showLog();
     void showNotifications();
     void showUsingPositioningSettings();
-#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
+    void showInternalError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,
+        const QByteArray &response);
     void showInternalErrorsButton();
-#endif
     void showInternalErrorsDialog();
     void dismissNotifications();
     void restartSyncthing();
@@ -76,9 +76,6 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void handleStatusChanged(Data::SyncthingStatus status);
-#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
-    void handleErrorsCleared();
-#endif
     static void applySettingsOnAllInstances();
     void openDir(const Data::SyncthingDir &dir);
     void openItemDir(const Data::SyncthingItemDownloadProgress &item);
@@ -115,9 +112,7 @@ private:
     WebViewDialog *m_webViewDlg;
 #endif
     QFrame *m_cornerFrame;
-#ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     QPushButton *m_internalErrorsButton;
-#endif
     Data::SyncthingConnection m_connection;
     Data::SyncthingNotifier m_notifier;
     Data::SyncthingDirectoryModel m_dirModel;

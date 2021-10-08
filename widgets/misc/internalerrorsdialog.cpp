@@ -80,6 +80,15 @@ void InternalErrorsDialog::addError(InternalError &&newError)
     }
 }
 
+void InternalErrorsDialog::addError(const QString &message, const QUrl &url, const QByteArray &response)
+{
+    s_internalErrors.emplace_back(message, url, response);
+    if (s_instance) {
+        s_instance->internalAddError(s_internalErrors.back());
+        s_instance->updateStatusLabel();
+    }
+}
+
 void InternalErrorsDialog::internalAddError(const InternalError &error)
 {
     const QString url = error.url.toString();
