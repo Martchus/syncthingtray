@@ -105,6 +105,21 @@ SyncthingConnection::Reply SyncthingConnection::prepareReply(QList<QNetworkReply
     return handleReply(reply, readData, handleAborting);
 }
 
+/// \cond
+static QString certText(const QSslCertificate &cert)
+{
+    auto text = cert.toText();
+    if (text.startsWith(QStringLiteral("Certificate: "))) {
+        return text;
+    }
+    if (text.isEmpty()) {
+        // .toText() is not implemented for all backends so use .toPem() as fallback
+        text = QChar('\n') + QString::fromUtf8(cert.toPem());
+    }
+    return text.isEmpty() ? QStringLiteral("Certificate: [no information available]") : QStringLiteral("Certificate: ") + text;
+}
+/// \endcond
+
 /*!
  * \brief Handles SSL errors of replies; just for logging purposes at this point.
  */
@@ -125,20 +140,20 @@ void SyncthingConnection::handleSslErrors(const QList<QSslError> &errors)
         // handle the error by emitting the error signal with all the details including the certificate
         // note: Of course the failing request would cause a QNetworkReply::SslHandshakeFailedError anyways. However,
         //       at this point the concrete SSL error with the certificate is not accessible anymore.
-        auto errorMessage = QStringLiteral("TLS error: ") + error.errorString();
+        auto errorMessage
+            = QString(QStringLiteral("TLS error: ") % error.errorString() % QChar(' ') % QChar('(') % QString::number(error.error()) % QChar(')'));
         if (const auto cert = error.certificate(); !cert.isNull()) {
             errorMessage += QChar('\n');
             if (cert == m_certFromLastSslError) {
                 errorMessage += QStringLiteral("Certificate: same as last");
             } else {
-                errorMessage += cert.toText();
+                errorMessage += certText(cert);
                 if (!m_expectedSslErrors.isEmpty()) {
-                    errorMessage += QStringLiteral("\nExpected ") + m_expectedSslErrors.front().certificate().toText();
+                    errorMessage += QStringLiteral("\nExpected ") + certText(m_expectedSslErrors.front().certificate());
                 }
                 m_certFromLastSslError = cert;
             }
         }
-        cerr << "TLS ERROR" << endl;
         emit this->error(errorMessage, SyncthingErrorCategory::TLS, QNetworkReply::NoError, reply->request());
         hasUnexpectedErrors = true;
     }
