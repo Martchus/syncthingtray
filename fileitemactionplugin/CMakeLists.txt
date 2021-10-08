@@ -11,8 +11,8 @@ set(HEADER_FILES syncthingmenuaction.h syncthinginfoaction.h syncthingdiractions
 set(SRC_FILES syncthingmenuaction.cpp syncthinginfoaction.cpp syncthingdiractions.cpp syncthingfileitemactionstaticdata.cpp
               syncthingfileitemaction.cpp)
 
-set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts translations/${META_PROJECT_NAME}_de_DE.ts
-             translations/${META_PROJECT_NAME}_en_US.ts)
+set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
+             translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
