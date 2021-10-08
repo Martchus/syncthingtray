@@ -18,7 +18,9 @@ bool SyncthingConnectionSettings::loadHttpsCert()
         QSslError(QSslError::UnableToGetLocalIssuerCertificate, cert),
         QSslError(QSslError::UnableToVerifyFirstCertificate, cert),
         QSslError(QSslError::SelfSignedCertificate, cert),
-        QSslError(QSslError::HostNameMismatch, cert)
+        QSslError(QSslError::HostNameMismatch, cert),
+        QSslError(QSslError::CertificateUntrusted, cert),
+        QSslError(QSslError::CertificateRejected, cert)
     };
     // clang-format on
     return true;
