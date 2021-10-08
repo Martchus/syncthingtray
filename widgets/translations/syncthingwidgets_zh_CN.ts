@@ -612,7 +612,7 @@
         <translation>清除错误</translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/internalerrorsdialog.cpp" line="108"/>
+        <location filename="../misc/internalerrorsdialog.cpp" line="117"/>
         <source>%1 error(s) occurred</source>
         <translation>
             <numerusform>发生 %1 个错误</numerusform>
