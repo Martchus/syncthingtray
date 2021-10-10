@@ -54,7 +54,6 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(QString statusText READ statusText NOTIFY connectionStatusChanged)
     Q_PROPERTY(QString additionalStatusText READ additionalStatusText NOTIFY connectionStatusChanged)
     Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY connectionStatusChanged)
-    Q_PROPERTY(QIcon syncthingIcon READ syncthingIcon NOTIFY settingsChanged)
     Q_PROPERTY(QString incomingTraffic READ incomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(bool hasIncomingTraffic READ hasIncomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(QString outgoingTraffic READ outgoingTraffic NOTIFY trafficChanged)

@@ -10,6 +10,6 @@ X-KDE-PluginInfo-Version=@META_VERSION_MAJOR@.@META_VERSION_MINOR@.@META_VERSION
 X-KDE-Library=@META_TARGET_NAME@
 X-KDE-Submenu=Syncthing
 
-Icon=syncthingtray
+Icon=syncthing.fa
 ServiceTypes=KFileItemAction/Plugin
 MimeType=application/octet-stream;inode/directory

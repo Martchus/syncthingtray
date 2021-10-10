@@ -129,6 +129,9 @@
         <property name="flat">
          <bool>true</bool>
         </property>
+        <property name="icon">
+         <iconset>syncthing.fa</iconset>
+        </property>
        </widget>
       </item>
       <item>

@@ -140,11 +140,6 @@ QIcon SyncthingApplet::statusIcon() const
     return m_statusInfo.statusIcon();
 }
 
-QIcon SyncthingApplet::syncthingIcon() const
-{
-    return statusIcons().idling;
-}
-
 QString SyncthingApplet::incomingTraffic() const
 {
     return trafficString(m_connection.totalIncomingTraffic(), m_connection.totalIncomingRate());

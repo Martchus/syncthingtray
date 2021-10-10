@@ -517,7 +517,6 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     m_dlModel.setBrightColors(brightColors);
     m_recentChangesModel.setBrightColors(brightColors);
     IconManager::instance().applySettings(&settings.icons.status, settings.icons.distinguishTrayIcons ? &settings.icons.tray : nullptr);
-    m_ui->webUiPushButton->setIcon(statusIcons().idling);
 
     // update status icon and text of tray icon because reconnect interval might have changed
     if (m_menu && m_menu->icon()) {

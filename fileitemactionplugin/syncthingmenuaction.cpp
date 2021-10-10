@@ -66,7 +66,7 @@ void SyncthingMenuAction::updateActionStatus()
     // handle case when already connected
     if (connection.isConnected()) {
         setText(tr("Syncthing"));
-        setIcon(statusIcons().idling);
+        setIcon(QIcon(QStringLiteral("syncthing.fa")));
         return;
     }
 

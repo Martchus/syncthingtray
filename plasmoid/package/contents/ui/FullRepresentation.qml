@@ -422,7 +422,7 @@ ColumnLayout {
             id: webUIButton
             // use PlasmaCore.IconItem for the icon because I wouldn't know how to show the QIcon otherwise
             contentItem: PlasmaCore.IconItem {
-                source: plasmoid.nativeInterface.syncthingIcon
+                source: plasmoid.nativeInterface.loadForkAwesomeIcon("syncthing")
             }
             // set preferred size so the tool button is displayed consistently with the previous one despite using PlasmaCore.IconItem
             Layout.preferredWidth: settingsButton.width
