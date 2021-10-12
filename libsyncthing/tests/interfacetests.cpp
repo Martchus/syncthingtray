@@ -31,7 +31,7 @@ class InterfaceTests : public TestFixture {
     CPPUNIT_TEST(testInitialState);
     CPPUNIT_TEST(testVersion);
     CPPUNIT_TEST(testRunWithoutConfig);
-    CPPUNIT_TEST(testRunWidthConfig);
+    CPPUNIT_TEST(testRunWithConfig);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -40,7 +40,7 @@ public:
     void testInitialState();
     void testVersion();
     void testRunWithoutConfig();
-    void testRunWidthConfig();
+    void testRunWithConfig();
 
     void setUp() override;
     void tearDown() override;
@@ -243,7 +243,7 @@ void InterfaceTests::testRunWithoutConfig()
  * \brief Tests whether Syncthing can be started (and stopped again).
  * \remarks This test uses the usual test config (same as for connector and CLI) and runs some checks against it.
  */
-void InterfaceTests::testRunWidthConfig()
+void InterfaceTests::testRunWithConfig()
 {
     RuntimeOptions options;
     options.configDir = options.dataDir = setupTestConfigDir();
