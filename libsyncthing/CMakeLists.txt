@@ -248,3 +248,8 @@ if (NOT BUILD_SHARED_LIBS
         DESTINATION "lib${SELECTED_LIB_SUFFIX}"
         COMPONENT binary)
 endif ()
+
+# avoid running this test in parallel with other tests spawning a Syncthing test instance
+if (META_MAIN_TEST_NAME)
+    set_tests_properties("${META_MAIN_TEST_NAME}" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
+endif ()

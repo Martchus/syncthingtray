@@ -49,3 +49,8 @@ include(ConfigHeader)
 
 # exclude the target from 'all' target so it is only built when tests are built
 set_target_properties("${META_TARGET_NAME}" PROPERTIES EXCLUDE_FROM_ALL ON)
+
+# avoid running this test in parallel with other tests spawning a Syncthing test instance
+if (META_MAIN_TEST_NAME)
+    set_tests_properties("${META_MAIN_TEST_NAME}" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
+endif ()

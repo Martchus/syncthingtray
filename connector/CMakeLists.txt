@@ -137,5 +137,10 @@ include(LibraryTarget)
 list(APPEND TEST_LIBRARIES syncthingtesthelper)
 include(TestTarget)
 
+# avoid running this test in parallel with other tests spawning a Syncthing test instance
+if (META_MAIN_TEST_NAME)
+    set_tests_properties("${META_MAIN_TEST_NAME}" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
+endif ()
+
 include(Doxygen)
 include(ConfigHeader)
