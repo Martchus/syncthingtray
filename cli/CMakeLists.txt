@@ -43,3 +43,8 @@ include(TestTarget)
 include(ShellCompletion)
 include(Doxygen)
 include(ConfigHeader)
+
+# avoid running this test in parallel with other tests as it interferes with the connector test
+if (META_MAIN_TEST_NAME)
+    set_tests_properties("${META_MAIN_TEST_NAME}" PROPERTIES RUN_SERIAL TRUE)
+endif ()
