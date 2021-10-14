@@ -122,20 +122,17 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     cornerFrameLayout->addWidget(viewIdButton);
     auto *restartButton = new QPushButton(m_cornerFrame);
     restartButton->setToolTip(tr("Restart Syncthing"));
-    restartButton->setIcon(
-        QIcon::fromTheme(QStringLiteral("system-reboot"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
+    restartButton->setIcon(QIcon(QStringLiteral("power-off.fa")));
     restartButton->setFlat(true);
     cornerFrameLayout->addWidget(restartButton);
     auto *showLogButton = new QPushButton(m_cornerFrame);
     showLogButton->setToolTip(tr("Show Syncthing log"));
-    showLogButton->setIcon(
-        QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))));
+    showLogButton->setIcon(QIcon(QStringLiteral("file-code-o.fa")));
     showLogButton->setFlat(true);
     cornerFrameLayout->addWidget(showLogButton);
     auto *scanAllButton = new QPushButton(m_cornerFrame);
     scanAllButton->setToolTip(tr("Rescan all directories"));
-    scanAllButton->setIcon(
-        QIcon::fromTheme(QStringLiteral("folder-sync"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/folder-sync.svg"))));
+    scanAllButton->setIcon(QIcon(QStringLiteral("search.fa")));
     scanAllButton->setFlat(true);
     cornerFrameLayout->addWidget(scanAllButton);
     m_ui->tabWidget->setCornerWidget(m_cornerFrame, Qt::BottomRightCorner);
@@ -154,10 +151,8 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 
     // setup other widgets
     m_ui->notificationsPushButton->setHidden(true);
-    m_ui->globalTextLabel->setPixmap(
-        QIcon::fromTheme(QStringLiteral("globe"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/globe.svg"))).pixmap(16));
-    m_ui->localTextLabel->setPixmap(
-        QIcon::fromTheme(QStringLiteral("user-home"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/user-home.svg"))).pixmap(16));
+    m_ui->globalTextLabel->setPixmap(QIcon(QStringLiteral("globe.fa")).pixmap(16));
+    m_ui->localTextLabel->setPixmap(QIcon(QStringLiteral("home.fa")).pixmap(16));
     updateTraffic();
 
     // add actions from right-click menu if it is not available
@@ -395,8 +390,7 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
     case SyncthingStatus::Disconnected:
         m_ui->statusPushButton->setText(tr("Connect"));
         m_ui->statusPushButton->setToolTip(tr("Not connected to Syncthing, click to connect"));
-        m_ui->statusPushButton->setIcon(
-            QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
+        m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("refresh.fa")));
         m_ui->statusPushButton->setHidden(false);
         updateTraffic(); // ensure previous traffic statistics are no longer shown
         break;
@@ -409,15 +403,13 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
     case SyncthingStatus::RemoteNotInSync:
         m_ui->statusPushButton->setText(tr("Pause"));
         m_ui->statusPushButton->setToolTip(tr("Syncthing is running, click to pause all devices"));
-        m_ui->statusPushButton->setIcon(QIcon::fromTheme(
-            QStringLiteral("media-playback-pause"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg"))));
+        m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("pause.fa")));
         m_ui->statusPushButton->setHidden(false);
         break;
     case SyncthingStatus::Paused:
         m_ui->statusPushButton->setText(tr("Continue"));
         m_ui->statusPushButton->setToolTip(tr("At least one device is paused, click to resume"));
-        m_ui->statusPushButton->setIcon(QIcon::fromTheme(
-            QStringLiteral("media-playback-start"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-start.svg"))));
+        m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("play.fa")));
         m_ui->statusPushButton->setHidden(false);
         break;
     default:;
@@ -736,13 +728,11 @@ Settings::Launcher::LauncherStatus TrayWidget::applyLauncherSettings(bool reconn
     if (launcherStatus.running) {
         m_ui->startStopPushButton->setText(tr("Stop"));
         m_ui->startStopPushButton->setToolTip(tr("Stop Syncthing instance launched via tray icon"));
-        m_ui->startStopPushButton->setIcon(
-            QIcon::fromTheme(QStringLiteral("process-stop"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/process-stop.svg"))));
+        m_ui->startStopPushButton->setIcon(QIcon(QStringLiteral("stop.fa")));
     } else {
         m_ui->startStopPushButton->setText(tr("Start"));
         m_ui->startStopPushButton->setToolTip(tr("Start Syncthing with the built-in launcher configured in the settings"));
-        m_ui->startStopPushButton->setIcon(
-            QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
+        m_ui->startStopPushButton->setIcon(QIcon(QStringLiteral("play.fa")));
     }
     return launcherStatus;
 }
@@ -780,15 +770,13 @@ Settings::Systemd::ServiceStatus TrayWidget::applySystemdSettings(bool reconnect
         m_ui->startStopPushButton->setToolTip(
             (serviceStatus.userService ? QStringLiteral("systemctl --user stop ") : QStringLiteral("systemctl stop "))
             + systemdSettings.syncthingUnit);
-        m_ui->startStopPushButton->setIcon(
-            QIcon::fromTheme(QStringLiteral("process-stop"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/process-stop.svg"))));
+        m_ui->startStopPushButton->setIcon(QIcon(QStringLiteral("stop.fa")));
     } else {
         m_ui->startStopPushButton->setText(tr("Start"));
         m_ui->startStopPushButton->setToolTip(
             (serviceStatus.userService ? QStringLiteral("systemctl --user start ") : QStringLiteral("systemctl start "))
             + systemdSettings.syncthingUnit);
-        m_ui->startStopPushButton->setIcon(
-            QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
+        m_ui->startStopPushButton->setIcon(QIcon(QStringLiteral("play.fa")));
     }
     return serviceStatus;
 }

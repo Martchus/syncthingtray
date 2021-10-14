@@ -58,8 +58,7 @@
          <string>Connect</string>
         </property>
         <property name="icon">
-         <iconset theme="view-refresh" resource="../../widgets/resources/syncthingwidgetsicons.qrc">
-          <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
+         <iconset>refresh.fa</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -72,8 +71,7 @@
          <string>Start</string>
         </property>
         <property name="icon">
-         <iconset theme="system-run" resource="../../widgets/resources/syncthingwidgetsicons.qrc">
-          <normaloff>:/icons/hicolor/scalable/apps/system-run.svg</normaloff>:/icons/hicolor/scalable/apps/system-run.svg</iconset>
+         <iconset>play.fa</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -99,8 +97,7 @@
          <string>About</string>
         </property>
         <property name="icon">
-         <iconset theme="help-about" resource="../resources/syncthingtrayicons.qrc">
-          <normaloff>:/icons/hicolor/scalable/actions/help-about.svg</normaloff>:/icons/hicolor/scalable/actions/help-about.svg</iconset>
+         <iconset>info.fa</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -113,8 +110,7 @@
          <string>Settings</string>
         </property>
         <property name="icon">
-         <iconset theme="preferences-other" resource="../resources/syncthingtrayicons.qrc">
-          <normaloff>:/icons/hicolor/scalable/actions/application-menu.svg</normaloff>:/icons/hicolor/scalable/actions/application-menu.svg</iconset>
+         <iconset>cogs.fa</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -145,8 +141,7 @@
            </sizepolicy>
           </property>
           <property name="icon">
-           <iconset theme="network-connect" resource="../resources/syncthingtrayicons.qrc">
-            <normaloff>:/icons/hicolor/scalable/actions/network-connect.svg</normaloff>:/icons/hicolor/scalable/actions/network-connect.svg</iconset>
+           <iconset>plug.fa</iconset>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -383,8 +378,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
      </property>
      <widget class="QWidget" name="dirsTab">
       <attribute name="icon">
-       <iconset theme="folder" resource="../resources/syncthingtrayicons.qrc">
-        <normaloff>:/icons/hicolor/scalable/places/folder.svg</normaloff>:/icons/hicolor/scalable/places/folder.svg</iconset>
+       <iconset>folder.fa</iconset>
       </attribute>
       <attribute name="title">
        <string>Directories</string>
@@ -416,8 +410,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
      </widget>
      <widget class="QWidget" name="devsTab">
       <attribute name="icon">
-       <iconset theme="network-server" resource="../resources/syncthingtrayicons.qrc">
-        <normaloff>:/icons/hicolor/scalable/places/network-workgroup.svg</normaloff>:/icons/hicolor/scalable/places/network-workgroup.svg</iconset>
+       <iconset>sitemap.fa</iconset>
       </attribute>
       <attribute name="title">
        <string>Devices</string>
@@ -449,8 +442,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
      </widget>
      <widget class="QWidget" name="downloadsTab">
       <attribute name="icon">
-       <iconset theme="folder-download" resource="../resources/syncthingtrayicons.qrc">
-        <normaloff>:/icons/hicolor/scalable/places/folder-download.svg</normaloff>:/icons/hicolor/scalable/places/folder-download.svg</iconset>
+       <iconset>download.fa</iconset>
       </attribute>
       <attribute name="title">
        <string>Downloads</string>
@@ -478,9 +470,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
      </widget>
      <widget class="QWidget" name="recentChangesTab">
       <attribute name="icon">
-       <iconset theme="document-open-recent-symbolic">
-        <normaloff>.</normaloff>
-        <normalon>:/icons/hicolor/scalable/actions/appointment-new.svg</normalon>.</iconset>
+       <iconset>history.fa</iconset>
       </attribute>
       <attribute name="title">
        <string>Recent changes</string>

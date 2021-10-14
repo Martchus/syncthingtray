@@ -13,9 +13,6 @@ public:
 
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-
-private:
-    const QPixmap m_folderIcon;
 };
 } // namespace QtGui
 

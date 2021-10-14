@@ -1,6 +1,10 @@
 #include "./downloaditemdelegate.h"
 
 #include <syncthingmodel/syncthingdownloadmodel.h>
+#include <syncthingmodel/syncthingicons.h>
+
+#include <qtforkawesome/renderer.h>
+#include <qtforkawesome/icon.h>
 
 #include <QApplication>
 #include <QBrush>
@@ -26,8 +30,6 @@ inline int centerObj(int avail, int size)
 
 DownloadItemDelegate::DownloadItemDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
-    , m_folderIcon(QIcon::fromTheme(QStringLiteral("folder-open"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg")))
-                       .pixmap(QSize(16, 16)))
 {
 }
 
@@ -81,7 +83,7 @@ void DownloadItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if (!index.parent().isValid()) {
         buttonY += centerObj(progressBarOption.rect.height(), 16);
     }
-    painter->drawPixmap(option.rect.right() - 16, buttonY, 16, 16, m_folderIcon);
+    IconManager::instance().forkAwesomeRenderer().render(QtForkAwesome::Icon::Folder, painter, QRect(option.rect.right() - 16, buttonY, 16, 16), QGuiApplication::palette().color(QPalette::Text));
 
     // draw file icon
     if (index.parent().isValid()) {
