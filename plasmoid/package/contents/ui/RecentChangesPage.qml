@@ -40,11 +40,13 @@ Item {
                         Item {
                             width: units.smallSpacing
                         }
-                        PlasmaCore.IconItem {
+                        Image {
                             Layout.preferredWidth: units.iconSizes.small
                             Layout.preferredHeight: units.iconSizes.small
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                            source: "change-date-symbolic"
+                            height: parent.height
+                            fillMode: Image.PreserveAspectFit
+                            source: "image://fa/calendar"
                         }
                         PlasmaComponents3.Label {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
@@ -54,11 +56,13 @@ Item {
                         Item {
                             width: units.smallSpacing
                         }
-                        PlasmaCore.IconItem {
+                        Image {
                             Layout.preferredWidth: units.iconSizes.small
                             Layout.preferredHeight: units.iconSizes.small
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                            source: "network-server-symbolic"
+                            height: parent.height
+                            fillMode: Image.PreserveAspectFit
+                            source: "image://fa/qrcode"
                         }
                         PlasmaComponents3.Label {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
@@ -68,11 +72,13 @@ Item {
                     }
                     RowLayout {
                         Layout.fillWidth: true
-                        PlasmaCore.IconItem {
+                        Image {
                             Layout.preferredWidth: units.iconSizes.small
                             Layout.preferredHeight: units.iconSizes.small
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                            source: itemType === "file" ? "view-refresh-symbolic" : "folder-sync"
+                            height: parent.height
+                            fillMode: Image.PreserveAspectFit
+                            source: itemType === "file" ? "image://fa/file-o" : "image://fa/folder-o"
                         }
                         PlasmaComponents3.Label {
                             text: directoryId + ": "

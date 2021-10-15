@@ -281,12 +281,12 @@
 <context>
     <name>RecentChangesPage</name>
     <message>
-        <location filename="../package/contents/ui/RecentChangesPage.qml" line="100"/>
+        <location filename="../package/contents/ui/RecentChangesPage.qml" line="106"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/RecentChangesPage.qml" line="105"/>
+        <location filename="../package/contents/ui/RecentChangesPage.qml" line="111"/>
         <source>Copy device ID</source>
         <translation>Geräte-ID kopieren</translation>
     </message>
