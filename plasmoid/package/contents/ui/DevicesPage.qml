@@ -60,7 +60,7 @@ Item {
                             }
                             TinyButton {
                                 id: resumePauseButton
-                                icon.name: paused ? "media-playback-start" : "media-playback-pause"
+                                icon.source: paused ? "image://fa/play" : "image://fa/pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 enabled: !isOwnDevice
                                 onClicked: {

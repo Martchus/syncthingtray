@@ -16,11 +16,12 @@ Item {
     RowLayout {
         id: layout
 
-        PlasmaCore.IconItem {
+        Image {
             id: iconItem
             Layout.preferredWidth: 16
             Layout.preferredHeight: 16
-            opacity: 0.7
+            height: 16
+            fillMode: Image.PreserveAspectFit
         }
         PlasmaComponents3.Label {
             id: label

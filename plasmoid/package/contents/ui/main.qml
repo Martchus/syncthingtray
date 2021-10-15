@@ -62,6 +62,7 @@ Item {
     }
 
     Component.onCompleted: {
+        plasmoid.nativeInterface.initEngine(this)
         plasmoid.removeAction("configure")
         plasmoid.setAction(
                     "showWebUI", qsTr("Open Syncthing"),

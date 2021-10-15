@@ -67,7 +67,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: errorsButton
-                                icon.name: "data-error"
+                                icon.source: "image://fa/exclamation-triangle"
                                 tooltip: qsTr("Show errors")
                                 visible: pullErrorCount > 0
                                 onClicked: {
@@ -78,7 +78,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: rescanButton
-                                icon.name: "view-refresh"
+                                icon.source: "image://fa/refresh"
                                 tooltip: qsTr("Rescan")
                                 enabled: !paused
                                 onClicked: plasmoid.nativeInterface.connection.rescan(
@@ -86,7 +86,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: resumePauseButton
-                                icon.name: paused ? "media-playback-start" : "media-playback-pause"
+                                icon.source: paused ? "image://fa/play" : "image://fa/pause"
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 onClicked: {
                                     paused ? plasmoid.nativeInterface.connection.resumeDirectories(
@@ -96,7 +96,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: openButton
-                                icon.name: "folder"
+                                icon.source: "image://fa/folder"
                                 tooltip: qsTr("Open in file browser")
                                 onClicked: {
                                     Qt.openUrlExternally(path)

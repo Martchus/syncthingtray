@@ -182,7 +182,7 @@ ColumnLayout {
         id: toolBar
         Layout.fillWidth: true
 
-        PlasmaComponents3.ToolButton {
+        ToolButton {
             id: connectButton
             states: [
                 State {
@@ -190,7 +190,7 @@ ColumnLayout {
                     PropertyChanges {
                         target: connectButton
                         text: qsTr("Connect")
-                        icon.name: "view-refresh"
+                        icon.source: "image://fa/refresh"
                         visible: true
                     }
                 },
@@ -206,7 +206,7 @@ ColumnLayout {
                     PropertyChanges {
                         target: connectButton
                         text: qsTr("Resume")
-                        icon.name: "media-playback-start"
+                        icon.source: "image://fa/play"
                         visible: true
                     }
                 },
@@ -215,7 +215,7 @@ ColumnLayout {
                     PropertyChanges {
                         target: connectButton
                         text: qsTr("Pause")
-                        icon.name: "media-playback-pause"
+                        icon.source: "image://fa/pause"
                         visible: true
                     }
                 }
@@ -256,7 +256,7 @@ ColumnLayout {
                 onActivated: connectButton.clicked()
             }
         }
-        PlasmaComponents3.ToolButton {
+        ToolButton {
             id: startStopButton
             states: [
                 State {
@@ -265,7 +265,7 @@ ColumnLayout {
                         target: startStopButton
                         visible: true
                         text: qsTr("Stop")
-                        icon.name: "process-stop"
+                        icon.source: "image://fa/stop"
                     }
                     PropertyChanges {
                         target: startStopToolTip
@@ -279,7 +279,7 @@ ColumnLayout {
                         target: startStopButton
                         visible: true
                         text: qsTr("Start")
-                        icon.name: "system-run"
+                        icon.source: "image://fa/play"
                     }
                     PropertyChanges {
                         target: startStopToolTip
@@ -345,8 +345,8 @@ ColumnLayout {
                 }
             }
         }
-        PlasmaComponents3.ToolButton {
-            icon.name: "help-about"
+        ToolButton {
+            icon.source: "image://fa/info"
             PlasmaComponents3.ToolTip {
                 text: qsTr("About Syncthing Tray")
             }
@@ -355,15 +355,9 @@ ColumnLayout {
                 plasmoid.expanded = false
             }
         }
-        PlasmaComponents3.ToolButton {
+        ToolButton {
             id: showOwnIdButton
-            // use PlasmaCore.IconItem for the icon because I wouldn't know how to show the QIcon otherwise
-            contentItem: PlasmaCore.IconItem {
-                source: plasmoid.nativeInterface.loadForkAwesomeIcon("qrcode", 64)
-            }
-            // set preferred size so the tool button is displayed consistently with the previous one despite using PlasmaCore.IconItem
-            Layout.preferredWidth: settingsButton.width
-            Layout.preferredHeight: settingsButton.height
+            icon.source: "image://fa/qrcode"
             onClicked: {
                 plasmoid.nativeInterface.showOwnDeviceId()
                 plasmoid.expanded = false
@@ -376,9 +370,9 @@ ColumnLayout {
                 onActivated: showOwnIdButton.clicked()
             }
         }
-        PlasmaComponents3.ToolButton {
+        ToolButton {
             id: showLogButton
-            icon.name: "text-x-generic"
+            icon.source: "image://fa/file-code-o"
             onClicked: {
                 plasmoid.nativeInterface.showLog()
                 plasmoid.expanded = false
@@ -391,9 +385,9 @@ ColumnLayout {
                 onActivated: showLogButton.clicked()
             }
         }
-        PlasmaComponents3.ToolButton {
+        ToolButton {
             id: rescanAllDirsButton
-            icon.name: "folder-sync"
+            icon.source: "image://fa/search"
             onClicked: plasmoid.nativeInterface.connection.rescanAllDirs()
             PlasmaComponents3.ToolTip {
                 text: qsTr("Rescan all directories")
@@ -403,9 +397,9 @@ ColumnLayout {
                 onActivated: rescanAllDirsButton.clicked()
             }
         }
-        PlasmaComponents3.ToolButton {
+        ToolButton {
             id: settingsButton
-            icon.name: "preferences-other"
+            icon.source: "image://fa/cogs"
             onClicked: {
                 plasmoid.nativeInterface.showSettingsDlg()
                 plasmoid.expanded = false
@@ -418,15 +412,9 @@ ColumnLayout {
                 onActivated: settingsButton.clicked()
             }
         }
-        PlasmaComponents3.ToolButton {
+        ToolButton {
             id: webUIButton
-            // use PlasmaCore.IconItem for the icon because I wouldn't know how to show the QIcon otherwise
-            contentItem: PlasmaCore.IconItem {
-                source: plasmoid.nativeInterface.loadForkAwesomeIcon("syncthing")
-            }
-            // set preferred size so the tool button is displayed consistently with the previous one despite using PlasmaCore.IconItem
-            Layout.preferredWidth: settingsButton.width
-            Layout.preferredHeight: settingsButton.height
+            icon.source: "image://fa/syncthing"
             onClicked: {
                 plasmoid.nativeInterface.showWebUI()
                 plasmoid.expanded = false
@@ -472,10 +460,12 @@ ColumnLayout {
         rowSpacing: 1
         columnSpacing: 4
 
-        PlasmaCore.IconItem {
+        Image {
             Layout.preferredWidth: 16
             Layout.preferredHeight: 16
-            source: "globe"
+            height: 16
+            fillMode: Image.PreserveAspectFit
+            source: "image://fa/globe"
         }
         StatisticsView {
             Layout.leftMargin: 4
@@ -485,17 +475,18 @@ ColumnLayout {
 
         IconLabel {
             Layout.leftMargin: 10
-            iconSource: plasmoid.nativeInterface.loadForkAwesomeIcon(
-                            "cloud-download")
+            iconSource: "image://fa/cloud-download"
             iconOpacity: plasmoid.nativeInterface.hasIncomingTraffic ? 1.0 : 0.5
             text: plasmoid.nativeInterface.incomingTraffic
             tooltip: qsTr("Global incoming traffic")
         }
 
-        PlasmaCore.IconItem {
+        Image {
             Layout.preferredWidth: 16
             Layout.preferredHeight: 16
-            source: "user-home-symbolic"
+            height: 16
+            fillMode: Image.PreserveAspectFit
+            source: "image://fa/home"
         }
         StatisticsView {
             Layout.leftMargin: 4
@@ -505,8 +496,7 @@ ColumnLayout {
 
         IconLabel {
             Layout.leftMargin: 10
-            iconSource: plasmoid.nativeInterface.loadForkAwesomeIcon(
-                            "cloud-upload")
+            iconSource: "image://fa/cloud-upload"
             iconOpacity: plasmoid.nativeInterface.hasOutgoingTraffic ? 1.0 : 0.5
             text: plasmoid.nativeInterface.outgoingTraffic
             tooltip: qsTr("Global outgoing traffic")
@@ -540,22 +530,22 @@ ColumnLayout {
 
                 PlasmaComponents.TabButton {
                     id: dirsTabButton
-                    iconSource: "folder-symbolic"
+                    iconSource: plasmoid.nativeInterface.loadForkAwesomeIcon("folder")
                     tab: dirsPage
                 }
                 PlasmaComponents.TabButton {
                     id: devsTabButton
-                    iconSource: "network-server-symbolic"
+                    iconSource: plasmoid.nativeInterface.loadForkAwesomeIcon("sitemap")
                     tab: devicesPage
                 }
                 PlasmaComponents.TabButton {
                     id: downloadsTabButton
-                    iconSource: "folder-download-symbolic"
+                    iconSource: plasmoid.nativeInterface.loadForkAwesomeIcon("download")
                     tab: downloadsPage
                 }
                 PlasmaComponents.TabButton {
                     id: recentChangesTabButton
-                    iconSource: "document-open-recent-symbolic"
+                    iconSource: plasmoid.nativeInterface.loadForkAwesomeIcon("history")
                     tab: recentChangesPage
                 }
             }

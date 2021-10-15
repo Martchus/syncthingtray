@@ -111,6 +111,7 @@ public:
 
 public Q_SLOTS:
     void init() override;
+    void initEngine(QObject *object);
     void showSettingsDlg();
     void showWebUI();
     void showLog();

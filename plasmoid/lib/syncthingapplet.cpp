@@ -20,6 +20,7 @@
 #include "resources/qtconfig.h"
 
 #include <qtforkawesome/utils.h>
+#include <qtquickforkawesome/imageprovider.h>
 
 #include <qtutilities/misc/desktoputils.h>
 #include <qtutilities/misc/dialogutils.h>
@@ -38,8 +39,6 @@
 #include <QPalette>
 #include <QQmlEngine>
 #include <QStringBuilder>
-
-#include <iostream>
 
 using namespace std;
 using namespace Data;
@@ -133,6 +132,15 @@ void SyncthingApplet::init()
     handleSettingsChanged();
 
     m_initialized = true;
+}
+
+void SyncthingApplet::initEngine(QObject *object)
+{
+    auto engine = qmlEngine(object);
+    if (!engine) {
+        return;
+    }
+    engine->addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(IconManager::instance().forkAwesomeRenderer()));
 }
 
 QIcon SyncthingApplet::statusIcon() const

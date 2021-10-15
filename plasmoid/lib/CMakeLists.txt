@@ -11,6 +11,10 @@ set(TS_FILES ../translations/${META_PROJECT_NAME}_de_DE.ts ../translations/${MET
 find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.2.0 REQUIRED)
 use_qt_utilities()
 
+# find qtforkawesomequickimageprovider
+find_package(${PACKAGE_NAMESPACE_PREFIX}qtquickforkawesome${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.0.1 REQUIRED)
+use_qt_quick_fork_awesome()
+
 # check whether qtutilities supports DBus notifications
 get_target_property(QT_UTILITIES_COMPILE_DEFINITIONS ${QT_UTILITIES_LIB} INTERFACE_COMPILE_DEFINITIONS)
 list(FIND QT_UTILITIES_COMPILE_DEFINITIONS QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS)
