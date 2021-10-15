@@ -3,8 +3,8 @@
 #include <syncthingmodel/syncthingdirectorymodel.h>
 #include <syncthingmodel/syncthingicons.h>
 
-#include <qtforkawesome/renderer.h>
 #include <qtforkawesome/icon.h>
+#include <qtforkawesome/renderer.h>
 
 #include <QApplication>
 #include <QBrush>
@@ -59,7 +59,8 @@ void DirButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         if (!dirPaused) {
             forkAwesomeRenderer.render(QtForkAwesome::Icon::Refresh, painter, QRect(option.rect.right() - 52, buttonY, 16, 16), iconColor);
         }
-        forkAwesomeRenderer.render(dirPaused ? QtForkAwesome::Icon::Play : QtForkAwesome::Icon::Pause, painter, QRect(option.rect.right() - 34, buttonY, 16, 16), iconColor);
+        forkAwesomeRenderer.render(
+            dirPaused ? QtForkAwesome::Icon::Play : QtForkAwesome::Icon::Pause, painter, QRect(option.rect.right() - 34, buttonY, 16, 16), iconColor);
         forkAwesomeRenderer.render(QtForkAwesome::Icon::Folder, painter, QRect(option.rect.right() - 16, buttonY, 16, 16), iconColor);
     }
 }

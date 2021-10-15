@@ -3,8 +3,8 @@
 #include <syncthingmodel/syncthingdownloadmodel.h>
 #include <syncthingmodel/syncthingicons.h>
 
-#include <qtforkawesome/renderer.h>
 #include <qtforkawesome/icon.h>
+#include <qtforkawesome/renderer.h>
 
 #include <QApplication>
 #include <QBrush>
@@ -83,7 +83,8 @@ void DownloadItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if (!index.parent().isValid()) {
         buttonY += centerObj(progressBarOption.rect.height(), 16);
     }
-    IconManager::instance().forkAwesomeRenderer().render(QtForkAwesome::Icon::Folder, painter, QRect(option.rect.right() - 16, buttonY, 16, 16), QGuiApplication::palette().color(QPalette::Text));
+    IconManager::instance().forkAwesomeRenderer().render(
+        QtForkAwesome::Icon::Folder, painter, QRect(option.rect.right() - 16, buttonY, 16, 16), QGuiApplication::palette().color(QPalette::Text));
 
     // draw file icon
     if (index.parent().isValid()) {

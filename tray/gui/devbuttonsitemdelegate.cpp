@@ -4,8 +4,8 @@
 #include <syncthingmodel/syncthingdevicemodel.h>
 #include <syncthingmodel/syncthingicons.h>
 
-#include <qtforkawesome/renderer.h>
 #include <qtforkawesome/icon.h>
+#include <qtforkawesome/renderer.h>
 
 #include <QApplication>
 #include <QBrush>
@@ -57,7 +57,9 @@ void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
             return;
         }
         const int buttonY = option.rect.y() + centerObj(option.rect.height(), 16);
-        IconManager::instance().forkAwesomeRenderer().render(index.data(SyncthingDeviceModel::DevicePaused).toBool() ? QtForkAwesome::Icon::Play : QtForkAwesome::Icon::Pause, painter, QRect(option.rect.right() - 16, buttonY, 16, 16), QGuiApplication::palette().color(QPalette::Text));
+        IconManager::instance().forkAwesomeRenderer().render(
+            index.data(SyncthingDeviceModel::DevicePaused).toBool() ? QtForkAwesome::Icon::Play : QtForkAwesome::Icon::Pause, painter,
+            QRect(option.rect.right() - 16, buttonY, 16, 16), QGuiApplication::palette().color(QPalette::Text));
     }
 }
 } // namespace QtGui

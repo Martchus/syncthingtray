@@ -49,8 +49,8 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
 
     // set context menu
 #ifndef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
-    connect(m_contextMenu.addAction(QIcon(QStringLiteral("syncthing.fa")), tr("Open Syncthing")),
-        &QAction::triggered, &widget, &TrayWidget::showWebUi);
+    connect(
+        m_contextMenu.addAction(QIcon(QStringLiteral("syncthing.fa")), tr("Open Syncthing")), &QAction::triggered, &widget, &TrayWidget::showWebUi);
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))),
                 tr("Settings")),
@@ -59,9 +59,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
                 QIcon::fromTheme(QStringLiteral("folder-sync"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/folder-sync.svg"))),
                 tr("Rescan all")),
         &QAction::triggered, &widget.connection(), &SyncthingConnection::rescanAllDirs);
-    connect(m_contextMenu.addAction(QIcon(QStringLiteral("file-code-o.fa")),
-                tr("Log")),
-        &QAction::triggered, &widget, &TrayWidget::showLog);
+    connect(m_contextMenu.addAction(QIcon(QStringLiteral("file-code-o.fa")), tr("Log")), &QAction::triggered, &widget, &TrayWidget::showLog);
     m_errorsAction = m_contextMenu.addAction(
         QIcon::fromTheme(QStringLiteral("emblem-error"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-error.svg"))),
         tr("Show internal errors"));
