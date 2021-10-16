@@ -12,7 +12,8 @@ SyncthingDirActions::SyncthingDirActions(const SyncthingDir &dir, const Syncthin
     : QObject(parent)
     , m_dirId(dir.id)
 {
-    const auto &icons = !data || !data->isUsingBrightCustomColors() ? forkAwesomeIconsForLightTheme() : forkAwesomeIconsForDarkTheme();
+    Q_UNUSED(data)
+    const auto &icons = commonForkAwesomeIcons();
     m_infoAction.setSeparator(true);
     m_infoAction.setIcon(icons.folder);
     m_globalStatusAction.setIcon(icons.globe);

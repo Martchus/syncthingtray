@@ -169,7 +169,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
         case DeviceDetailIcon:
             if (index.column() == 0) {
                 // attribute icons
-                const auto &icons = m_brightColors ? forkAwesomeIconsForDarkTheme() : forkAwesomeIconsForLightTheme();
+                const auto &icons = commonForkAwesomeIcons();
                 switch (index.row()) {
                 case 0:
                     return icons.hashtag;
@@ -354,7 +354,12 @@ void SyncthingDeviceModel::devStatusChanged(const SyncthingDev &, int index)
 
 void SyncthingDeviceModel::handleStatusIconsChanged()
 {
-    emit dataChanged(index(0, 0), index(static_cast<int>(m_devs.size()) - 1, 0), QVector<int>({ Qt::DecorationRole }));
+    invalidateTopLevelIndicies(QVector<int>({ Qt::DecorationRole }));
+}
+
+void SyncthingDeviceModel::handleForkAwesomeIconsChanged()
+{
+    invalidateNestedIndicies(QVector<int>({ Qt::DecorationRole, DeviceDetailIcon }));
 }
 
 QString SyncthingDeviceModel::devStatusString(const SyncthingDev &dev)

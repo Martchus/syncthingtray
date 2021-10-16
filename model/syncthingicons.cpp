@@ -9,6 +9,7 @@
 #include <QFile>
 #include <QGuiApplication>
 #include <QPainter>
+#include <QPalette>
 #include <QStringBuilder>
 #include <QSvgRenderer>
 
@@ -301,9 +302,15 @@ ForkAwesomeIcons::ForkAwesomeIcons(QtForkAwesome::Renderer &renderer, const QCol
 IconManager::IconManager()
     : m_statusIcons()
     , m_trayIcons(m_statusIcons)
-    , m_forkAwesomeIconsForLightTheme(m_forkAwesomeRenderer, QColor(10, 10, 10), QSize(64, 64))
-    , m_fontAwesomeIconsForDarkTheme(m_forkAwesomeRenderer, Qt::white, QSize(64, 64))
+    , m_commonForkAwesomeIcons(m_forkAwesomeRenderer, QGuiApplication::palette().color(QPalette::Normal, QPalette::Text), QSize(64, 64))
 {
+    QObject::connect(qGuiApp, &QGuiApplication::paletteChanged, this, &IconManager::handlePaletteChanged);
+}
+
+void IconManager::handlePaletteChanged(const QPalette &pal)
+{
+    emit forkAwesomeIconsChanged(
+        m_commonForkAwesomeIcons = ForkAwesomeIcons(m_forkAwesomeRenderer, pal.color(QPalette::Normal, QPalette::Text), QSize(64, 64)));
 }
 
 IconManager &IconManager::instance()

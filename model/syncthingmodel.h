@@ -27,11 +27,14 @@ public:
 
 protected:
     virtual const QVector<int> &colorRoles() const;
+    void invalidateTopLevelIndicies(const QVector<int> &affectedRoles);
+    void invalidateNestedIndicies(const QVector<int> &affectedRoles);
 
 private Q_SLOTS:
     virtual void handleConfigInvalidated();
     virtual void handleNewConfigAvailable();
     virtual void handleStatusIconsChanged();
+    virtual void handleForkAwesomeIconsChanged();
 
 protected:
     Data::SyncthingConnection &m_connection;

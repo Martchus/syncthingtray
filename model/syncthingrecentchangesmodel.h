@@ -51,6 +51,7 @@ private Q_SLOTS:
     void handleConfigInvalidated() override;
     void handleNewConfigAvailable() override;
     void handleStatusChanged(SyncthingStatus status);
+    void handleForkAwesomeIconsChanged() override;
 
 private:
     void ensureWithinLimit();

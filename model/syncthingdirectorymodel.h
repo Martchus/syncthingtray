@@ -46,6 +46,7 @@ private Q_SLOTS:
     void handleConfigInvalidated() override;
     void handleNewConfigAvailable() override;
     void handleStatusIconsChanged() override;
+    void handleForkAwesomeIconsChanged() override;
 
 private:
     static QString dirStatusString(const SyncthingDir &dir);

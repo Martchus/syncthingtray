@@ -12,13 +12,32 @@ SyncthingModel::SyncthingModel(SyncthingConnection &connection, QObject *parent)
 {
     connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingModel::handleConfigInvalidated);
     connect(&m_connection, &SyncthingConnection::newConfigApplied, this, &SyncthingModel::handleNewConfigAvailable);
-    connect(&IconManager::instance(), &IconManager::statusIconsChanged, this, &SyncthingModel::handleStatusIconsChanged);
+
+    const auto &iconManager = IconManager::instance();
+    connect(&iconManager, &IconManager::statusIconsChanged, this, &SyncthingModel::handleStatusIconsChanged);
+    connect(&iconManager, &IconManager::forkAwesomeIconsChanged, this, &SyncthingModel::handleForkAwesomeIconsChanged);
 }
 
 const QVector<int> &SyncthingModel::colorRoles() const
 {
     static const QVector<int> colorRoles;
     return colorRoles;
+}
+
+void SyncthingModel::invalidateTopLevelIndicies(const QVector<int> &affectedRoles)
+{
+    emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1), affectedRoles);
+}
+
+void SyncthingModel::invalidateNestedIndicies(const QVector<int> &affectedRoles)
+{
+    for (auto i = 0, rows = rowCount(); i != rows; ++i) {
+        const auto parentIndex = index(i, 0);
+        const auto childRows = rowCount(parentIndex);
+        if (childRows > 0) {
+            emit dataChanged(index(0, 0, parentIndex), index(childRows - 1, columnCount(parentIndex) - 1), affectedRoles);
+        }
+    }
 }
 
 void SyncthingModel::setBrightColors(bool brightColors)
@@ -28,22 +47,8 @@ void SyncthingModel::setBrightColors(bool brightColors)
     }
     m_brightColors = brightColors;
 
-    const QVector<int> &affectedRoles = colorRoles();
-    if (affectedRoles.isEmpty()) {
-        return;
-    }
-
-    // update top-level indices
-    const auto rows = rowCount();
-    emit dataChanged(index(0, 0), index(rows - 1, columnCount() - 1), affectedRoles);
-
-    // update nested indices
-    for (auto i = 0; i != rows; ++i) {
-        const auto parentIndex = index(i, 0);
-        const auto childRows = rowCount(parentIndex);
-        if (childRows > 0) {
-            emit dataChanged(index(0, 0, parentIndex), index(childRows - 1, columnCount(parentIndex) - 1), affectedRoles);
-        }
+    if (const QVector<int> &affectedRoles = colorRoles(); !affectedRoles.isEmpty()) {
+        invalidateTopLevelIndicies(affectedRoles);
     }
 }
 
@@ -58,6 +63,10 @@ void SyncthingModel::handleNewConfigAvailable()
 }
 
 void SyncthingModel::handleStatusIconsChanged()
+{
+}
+
+void SyncthingModel::handleForkAwesomeIconsChanged()
 {
 }
 

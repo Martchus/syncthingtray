@@ -11,6 +11,7 @@
 #include <vector>
 
 QT_FORWARD_DECLARE_CLASS(QColor)
+QT_FORWARD_DECLARE_CLASS(QPalette)
 
 namespace Data {
 
@@ -148,11 +149,14 @@ public:
     const StatusIcons &statusIcons() const;
     const StatusIcons &trayIcons() const;
     QtForkAwesome::Renderer &forkAwesomeRenderer();
-    const ForkAwesomeIcons &forkAwesomeIconsForLightTheme() const;
-    const ForkAwesomeIcons &forkAwesomeIconsForDarkTheme() const;
+    const ForkAwesomeIcons &commonForkAwesomeIcons() const;
 
 Q_SIGNALS:
     void statusIconsChanged(const StatusIcons &newStatusIcons, const StatusIcons &newTrayIcons);
+    void forkAwesomeIconsChanged(const ForkAwesomeIcons &newForkAwesomeIcons);
+
+private Q_SLOTS:
+    void handlePaletteChanged(const QPalette &pal);
 
 private:
     IconManager();
@@ -160,8 +164,7 @@ private:
     StatusIcons m_statusIcons;
     StatusIcons m_trayIcons;
     QtForkAwesome::Renderer m_forkAwesomeRenderer;
-    ForkAwesomeIcons m_forkAwesomeIconsForLightTheme;
-    ForkAwesomeIcons m_fontAwesomeIconsForDarkTheme;
+    ForkAwesomeIcons m_commonForkAwesomeIcons;
 };
 
 inline void IconManager::applySettings(const StatusIconSettings *statusIconSettings, const StatusIconSettings *trayIconSettings)
@@ -194,14 +197,9 @@ inline QtForkAwesome::Renderer &IconManager::forkAwesomeRenderer()
     return m_forkAwesomeRenderer;
 }
 
-inline const ForkAwesomeIcons &IconManager::forkAwesomeIconsForLightTheme() const
+inline const ForkAwesomeIcons &IconManager::commonForkAwesomeIcons() const
 {
-    return m_forkAwesomeIconsForLightTheme;
-}
-
-inline const ForkAwesomeIcons &IconManager::forkAwesomeIconsForDarkTheme() const
-{
-    return m_fontAwesomeIconsForDarkTheme;
+    return m_commonForkAwesomeIcons;
 }
 
 inline const StatusIcons &statusIcons()
@@ -214,14 +212,9 @@ inline const StatusIcons &trayIcons()
     return IconManager::instance().trayIcons();
 }
 
-inline const ForkAwesomeIcons &forkAwesomeIconsForLightTheme()
+inline const ForkAwesomeIcons &commonForkAwesomeIcons()
 {
-    return IconManager::instance().forkAwesomeIconsForLightTheme();
-}
-
-inline const ForkAwesomeIcons &forkAwesomeIconsForDarkTheme()
-{
-    return IconManager::instance().forkAwesomeIconsForDarkTheme();
+    return IconManager::instance().commonForkAwesomeIcons();
 }
 
 } // namespace Data

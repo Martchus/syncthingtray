@@ -110,11 +110,7 @@ QVariant SyncthingRecentChangesModel::data(const QModelIndex &index, int role) c
     case ActionIcon:
         switch (index.column()) {
         case 0:
-            if (change.fileChange.local) {
-                return m_brightColors ? forkAwesomeIconsForDarkTheme().home : forkAwesomeIconsForLightTheme().home;
-            } else {
-                return m_brightColors ? forkAwesomeIconsForDarkTheme().globe : forkAwesomeIconsForLightTheme().globe;
-            }
+            return change.fileChange.local ? commonForkAwesomeIcons().home : commonForkAwesomeIcons().globe;
         }
         break;
     case Qt::ToolTipRole:
@@ -216,6 +212,11 @@ void SyncthingRecentChangesModel::handleStatusChanged(SyncthingStatus status)
     beginResetModel();
     m_changes.clear();
     endResetModel();
+}
+
+void SyncthingRecentChangesModel::handleForkAwesomeIconsChanged()
+{
+    invalidateTopLevelIndicies(QVector<int>({ Qt::DecorationRole, ActionIcon }));
 }
 
 void SyncthingRecentChangesModel::setMaxRows(int maxRows)
