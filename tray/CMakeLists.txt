@@ -50,7 +50,6 @@ set(REQUIRED_ICONS
     dialog-ok
     dialog-ok-apply
     document-open
-    document-open-recent-symbolic
     edit-copy
     edit-clear
     edit-cut
@@ -65,7 +64,6 @@ set(REQUIRED_ICONS
     folder-download
     folder-open
     folder-sync
-    globe
     go-down
     go-up
     help-about
@@ -90,8 +88,6 @@ set(REQUIRED_ICONS
     system-run
     system-search
     system-file-manager
-    text-plain
-    user-home
     view-refresh
     window-close)
 
