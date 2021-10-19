@@ -99,7 +99,7 @@ QVariant SyncthingRecentChangesModel::data(const QModelIndex &index, int role) c
         case 0:
             return change.fileChange.action;
         case 1:
-            return change.fileChange.modifiedBy;
+            return change.deviceName.isEmpty() ? change.fileChange.modifiedBy : change.deviceName;
         case 2:
             return change.directoryId;
         case 3:
@@ -118,6 +118,8 @@ QVariant SyncthingRecentChangesModel::data(const QModelIndex &index, int role) c
         case 0:
             return QString((change.fileChange.local ? tr("Locally") : tr("Remotely")) % QChar(' ') % change.fileChange.action % QStringLiteral(", ")
                 % QString::fromStdString(change.fileChange.eventTime.toString(DateTimeOutputFormat::DateAndTime, true)));
+        case 1:
+            return change.deviceId.isEmpty() ? change.fileChange.modifiedBy : change.deviceId;
         case 3:
             return change.fileChange.path; // usually too long so add a tooltip
         }
@@ -125,7 +127,7 @@ QVariant SyncthingRecentChangesModel::data(const QModelIndex &index, int role) c
     case Action:
         return change.fileChange.action;
     case ModifiedBy:
-        return change.fileChange.modifiedBy;
+        return change.deviceName.isEmpty() ? change.fileChange.modifiedBy : change.deviceName;
     case DirectoryId:
         return change.directoryId;
     case DirectoryName:
@@ -177,12 +179,21 @@ void SyncthingRecentChangesModel::fileChanged(const SyncthingDir &dir, int index
 {
     Q_UNUSED(index)
 
+    const SyncthingDev *relatedDev = nullptr;
+    for (const SyncthingDev &dev : m_connection.devInfo()) {
+        if (dev.id.startsWith(change.modifiedBy)) {
+            relatedDev = &dev;
+            break;
+        }
+    }
     if (index >= 0) {
         beginInsertRows(QModelIndex(), 0, 0);
     }
     m_changes.emplace_front(SyncthingRecentChange{
         .directoryId = dir.id,
         .directoryName = dir.displayName(),
+        .deviceId = relatedDev ? relatedDev->id : QString(),
+        .deviceName = relatedDev ? relatedDev->name : QString(),
         .fileChange = change,
     });
     if (index >= 0) {

@@ -13,6 +13,8 @@ namespace Data {
 struct LIB_SYNCTHING_MODEL_EXPORT SyncthingRecentChange {
     QString directoryId;
     QString directoryName;
+    QString deviceId;
+    QString deviceName;
     SyncthingFileChange fileChange;
 };
 
