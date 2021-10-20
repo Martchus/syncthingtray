@@ -18,6 +18,9 @@
 #include <c++utilities/application/commandlineutils.h>
 #include <c++utilities/misc/parseerror.h>
 
+#include <boost/stacktrace/stacktrace.hpp>
+#include <boost/stacktrace/safe_dump_to.hpp>
+
 #include <qtutilities/resources/importplugin.h>
 #include <qtutilities/resources/qtconfigarguments.h>
 #include <qtutilities/resources/resources.h>
@@ -28,6 +31,9 @@
 #include <QNetworkAccessManager>
 #include <QSettings>
 #include <QStringBuilder>
+
+#include <csignal>
+#include <fstream>
 
 #include <iostream>
 
@@ -237,7 +243,31 @@ int runApplication(int argc, const char *const *argv)
     return res;
 }
 
+static void printStackTrace()
+{
+    try {
+        std::cerr << boost::stacktrace::stacktrace();
+    } catch (...) {}
+    std::abort();
+}
+
+static void printStackTraceFromSignalHandler(int signal)
+{
+    std::signal(SIGSEGV, SIG_DFL);
+    std::signal(SIGABRT, SIG_DFL);
+    boost::stacktrace::safe_dump_to(PROJECT_VARNAME "-stacktrace-dump.bin");
+    std::raise(signal);
+}
+
 int main(int argc, char *argv[])
 {
+    std::set_terminate(&printStackTrace);
+    std::signal(SIGABRT, &printStackTraceFromSignalHandler);
+    std::signal(SIGSEGV, &printStackTraceFromSignalHandler);
+    if (auto stacktraceFile = std::ifstream("stacktrace.bin", std::ios_base::in | std::ios_base::binary); stacktraceFile.is_open()) {
+        std::cerr << "Last execution crashed:\n" << boost::stacktrace::stacktrace::from_dump(stacktraceFile);
+        std::rename(PROJECT_VARNAME "-stacktrace-dump.bin", PROJECT_VARNAME "-stacktrace-dump.bin.bak");
+    }
+
     return runApplication(argc, argv);
 }

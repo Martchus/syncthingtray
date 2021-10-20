@@ -592,6 +592,7 @@ SyncthingDir *SyncthingConnection::addDirInfo(std::vector<SyncthingDir> &dirs, c
  */
 SyncthingDev *SyncthingConnection::findDevInfo(const QString &devId, int &row)
 {
+    throw std::runtime_error("foobar");
     row = 0;
     for (SyncthingDev &d : m_devs) {
         if (d.id == devId) {

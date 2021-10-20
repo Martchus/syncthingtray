@@ -114,6 +114,9 @@ if (NOT QT_FORK_AWESOME_ICON_ENGINE_LIB_IS_SHARED)
     use_qt_fork_awesome_icon_engine()
 endif ()
 
+# use Boost.Stacktrace to print stacktraces in case of fatal errors
+use_package(TARGET_NAME Boost::stacktrace_basic PACKAGE_NAME Boost PACKAGE_ARGS "COMPONENTS;stacktrace_basic")
+
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 
