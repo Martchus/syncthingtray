@@ -132,7 +132,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     cornerFrameLayout->addWidget(showLogButton);
     auto *scanAllButton = new QPushButton(m_cornerFrame);
     scanAllButton->setToolTip(tr("Rescan all directories"));
-    scanAllButton->setIcon(QIcon(QStringLiteral("search.fa")));
+    scanAllButton->setIcon(QIcon(QStringLiteral("refresh.fa")));
     scanAllButton->setFlat(true);
     cornerFrameLayout->addWidget(scanAllButton);
     m_ui->tabWidget->setCornerWidget(m_cornerFrame, Qt::BottomRightCorner);

@@ -387,7 +387,7 @@ ColumnLayout {
         }
         ToolButton {
             id: rescanAllDirsButton
-            icon.source: "image://fa/search"
+            icon.source: "image://fa/refresh"
             onClicked: plasmoid.nativeInterface.connection.rescanAllDirs()
             PlasmaComponents3.ToolTip {
                 text: qsTr("Rescan all directories")
@@ -399,7 +399,7 @@ ColumnLayout {
         }
         ToolButton {
             id: settingsButton
-            icon.source: "image://fa/cogs"
+            icon.source: "image://fa/cog"
             onClicked: {
                 plasmoid.nativeInterface.showSettingsDlg()
                 plasmoid.expanded = false

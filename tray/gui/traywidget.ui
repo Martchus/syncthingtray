@@ -110,7 +110,7 @@
          <string>Settings</string>
         </property>
         <property name="icon">
-         <iconset>cogs.fa</iconset>
+         <iconset>cog.fa</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
