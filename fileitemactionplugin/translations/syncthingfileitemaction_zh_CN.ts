@@ -4,42 +4,42 @@
 <context>
     <name>SyncthingDirActions</name>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="33"/>
+        <location filename="../syncthingdiractions.cpp" line="34"/>
         <source>Status: not available anymore</source>
         <translation>状态：不再可用</translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="42"/>
+        <location filename="../syncthingdiractions.cpp" line="43"/>
         <source>Directory info for %1</source>
         <translation>%1 的目录信息</translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="43"/>
+        <location filename="../syncthingdiractions.cpp" line="44"/>
         <source>Status: </source>
         <translation>状态： </translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="72"/>
+        <location filename="../syncthingdiractions.cpp" line="73"/>
         <source>Global: </source>
         <translation>全局： </translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="73"/>
+        <location filename="../syncthingdiractions.cpp" line="74"/>
         <source>Local: </source>
         <translation>本地： </translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="74"/>
+        <location filename="../syncthingdiractions.cpp" line="75"/>
         <source>Last scan time: </source>
         <translation>最后扫描时间： </translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="75"/>
+        <location filename="../syncthingdiractions.cpp" line="76"/>
         <source>Rescan interval: %1 seconds</source>
         <translation>重新扫描间隔：%1 秒</translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdiractions.cpp" line="80"/>
+        <location filename="../syncthingdiractions.cpp" line="81"/>
         <source>%1 item(s) out-of-sync</source>
         <translation>
             <numerusform>%1 项目未同步</numerusform>

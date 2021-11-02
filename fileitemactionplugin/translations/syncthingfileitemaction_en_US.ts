@@ -4,42 +4,42 @@
 <context>
     <name>SyncthingDirActions</name>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="33"/>
+        <location filename="../syncthingdiractions.cpp" line="34"/>
         <source>Status: not available anymore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="42"/>
+        <location filename="../syncthingdiractions.cpp" line="43"/>
         <source>Directory info for %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="43"/>
+        <location filename="../syncthingdiractions.cpp" line="44"/>
         <source>Status: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="72"/>
+        <location filename="../syncthingdiractions.cpp" line="73"/>
         <source>Global: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="73"/>
+        <location filename="../syncthingdiractions.cpp" line="74"/>
         <source>Local: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="74"/>
+        <location filename="../syncthingdiractions.cpp" line="75"/>
         <source>Last scan time: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdiractions.cpp" line="75"/>
+        <location filename="../syncthingdiractions.cpp" line="76"/>
         <source>Rescan interval: %1 seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdiractions.cpp" line="80"/>
+        <location filename="../syncthingdiractions.cpp" line="81"/>
         <source>%1 item(s) out-of-sync</source>
         <translation>
             <numerusform>%1 item out-of-sync</numerusform>
