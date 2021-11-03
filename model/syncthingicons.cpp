@@ -27,16 +27,17 @@ QByteArray makeSyncthingIcon(const StatusIconColorSet &colors, StatusEmblem stat
     // serialize colors
     auto gradientStartColor = colors.backgroundStart.name(QColor::HexRgb);
     auto gradientEndColor = colors.backgroundEnd.name(QColor::HexRgb);
-    if (colors.backgroundStart.alphaF() < 1.0) {
-        gradientStartColor += QStringLiteral(";stop-opacity:") + QString::number(colors.backgroundStart.alphaF());
+    constexpr auto opaque = static_cast<decltype(colors.backgroundStart.alphaF())>(1.0);
+    if (colors.backgroundStart.alphaF() < opaque) {
+        gradientStartColor += QStringLiteral(";stop-opacity:") + QString::number(static_cast<double>(colors.backgroundStart.alphaF()));
     }
-    if (colors.backgroundEnd.alphaF() < 1.0) {
-        gradientEndColor += QStringLiteral(";stop-opacity:") + QString::number(colors.backgroundEnd.alphaF());
+    if (colors.backgroundEnd.alphaF() < opaque) {
+        gradientEndColor += QStringLiteral(";stop-opacity:") + QString::number(static_cast<double>(colors.backgroundEnd.alphaF()));
     }
     auto fillColor = colors.foreground.name(QColor::HexRgb);
     auto strokeColor = fillColor;
-    if (colors.foreground.alphaF() < 1.0) {
-        const auto alpha = QString::number(colors.foreground.alphaF());
+    if (colors.foreground.alphaF() < opaque) {
+        const auto alpha = QString::number(static_cast<double>(colors.foreground.alphaF()));
         fillColor += QStringLiteral(";fill-opacity:") + alpha;
         strokeColor += QStringLiteral(";stroke-opacity:") + alpha;
     }
@@ -304,7 +305,14 @@ IconManager::IconManager()
     , m_trayIcons(m_statusIcons)
     , m_commonForkAwesomeIcons(m_forkAwesomeRenderer, QGuiApplication::palette().color(QPalette::Normal, QPalette::Text), QSize(64, 64))
 {
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
     QObject::connect(qGuiApp, &QGuiApplication::paletteChanged, this, &IconManager::handlePaletteChanged);
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 }
 
 void IconManager::handlePaletteChanged(const QPalette &pal)

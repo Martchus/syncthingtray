@@ -797,7 +797,7 @@ void TrayWidget::handleNewNotification(DateTime when, const QString &msg)
 
 void TrayWidget::handleConnectionSelected(QAction *connectionAction)
 {
-    int index = m_connectionsMenu->actions().indexOf(connectionAction);
+    auto index = m_connectionsMenu->actions().indexOf(connectionAction);
     if (index >= 0) {
         m_selectedConnection
             = (index == 0) ? &Settings::values().connection.primary : &Settings::values().connection.secondary[static_cast<size_t>(index - 1)];

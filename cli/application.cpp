@@ -1110,7 +1110,7 @@ RelevantDir Application::findDirectory(const QString &dirIdentifier)
 
     // check whether the specified identifier is a known Syncthing directory or a relative path to an item in a
     // known Syncthing directory
-    int firstSlash = dirIdentifier.indexOf(QChar('/'));
+    auto firstSlash = dirIdentifier.indexOf(QChar('/'));
     relevantDir.dirObj = m_connection.findDirInfo(firstSlash >= 0 ? dirIdentifier.mid(0, firstSlash) : dirIdentifier, dummy);
     if (relevantDir) {
         if (firstSlash >= 0) {

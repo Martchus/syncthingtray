@@ -139,10 +139,10 @@ void StatusInfo::updateConnectedDevices(const SyncthingConnection &connection)
             m_additionalDeviceInfo
                 = QCoreApplication::translate("QtGui::StatusInfo", "Connected to %1 devices", nullptr, deviceCount).arg(deviceCount);
         } else if (deviceNames.size() < deviceCount) {
-            m_additionalDeviceInfo
-                = QCoreApplication::translate("QtGui::StatusInfo", "Connected to %1 and %2 other devices", nullptr, deviceCount - deviceNames.size())
-                      .arg(deviceNames.join(QStringLiteral(", ")))
-                      .arg(deviceCount - deviceNames.size());
+            m_additionalDeviceInfo = QCoreApplication::translate(
+                "QtGui::StatusInfo", "Connected to %1 and %2 other devices", nullptr, deviceCount - static_cast<int>(deviceNames.size()))
+                                         .arg(deviceNames.join(QStringLiteral(", ")))
+                                         .arg(deviceCount - deviceNames.size());
         } else if (deviceNames.size() == 2) {
             m_additionalDeviceInfo = QCoreApplication::translate("QtGui::StatusInfo", "Connected to %1 and %2", nullptr, deviceCount)
                                          .arg(deviceNames[0], deviceNames[1]);
