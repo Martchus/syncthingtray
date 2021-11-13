@@ -127,7 +127,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     cornerFrameLayout->addWidget(restartButton);
     auto *showLogButton = new QPushButton(m_cornerFrame);
     showLogButton->setToolTip(tr("Show Syncthing log"));
-    showLogButton->setIcon(QIcon(QStringLiteral("file-code-o.fa")));
+    showLogButton->setIcon(QIcon(QStringLiteral("file-text.fa")));
     showLogButton->setFlat(true);
     cornerFrameLayout->addWidget(showLogButton);
     auto *scanAllButton = new QPushButton(m_cornerFrame);

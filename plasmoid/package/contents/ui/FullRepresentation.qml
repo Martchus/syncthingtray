@@ -372,7 +372,7 @@ ColumnLayout {
         }
         ToolButton {
             id: showLogButton
-            icon.source: "image://fa/file-code-o"
+            icon.source: "image://fa/file-text"
             onClicked: {
                 plasmoid.nativeInterface.showLog()
                 plasmoid.expanded = false
