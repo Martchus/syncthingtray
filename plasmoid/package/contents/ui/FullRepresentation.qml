@@ -181,6 +181,8 @@ ColumnLayout {
     RowLayout {
         id: toolBar
         Layout.fillWidth: true
+        Layout.minimumHeight: units.iconSizes.medium
+        Layout.maximumHeight: units.iconSizes.medium
 
         ToolButton {
             id: connectButton
@@ -552,11 +554,15 @@ ColumnLayout {
             Item {
                 Layout.fillHeight: true
             }
-            TinyButton {
+            ToolButton {
                 id: searchButton
-                icon.name: "search"
+                Layout.fillWidth: false
+                Layout.fillHeight: false
+                Layout.minimumWidth: units.iconSizes.smallMedium
+                Layout.minimumHeight: units.iconSizes.smallMedium
+                Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
+                icon.source: "image://fa/search"
                 enabled: mainTabGroup.currentTab === dirsPage
-                tooltip: qsTr("Toggle filter")
                 onClicked: {
                     var filter = findCurrentFilter()
                     if (!filter) {
@@ -569,6 +575,9 @@ ColumnLayout {
                         filter.explicitelyShown = false
                         filter.text = ""
                     }
+                }
+                PlasmaComponents3.ToolTip {
+                    text: qsTr("Toggle filter")
                 }
             }
         }
