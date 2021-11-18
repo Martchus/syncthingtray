@@ -1,4 +1,7 @@
 # [Syncthing](https://github.com/syncthing/syncthing) Tray
+[![GitHub license](https://img.shields.io/github/license/Martchus/syncthingtray)](https://github.com/Martchus/syncthingtray/blob/master/LICENSE)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Martchus/syncthingtray)](https://github.com/Martchus/syncthingtray/releases/latest)
+
 * Qt-based tray application
 * [Dolphin](https://www.kde.org/applications/system/dolphin)/[Plasma](https://www.kde.org/plasma-desktop)
   integration
@@ -459,11 +462,9 @@ for_window [title="^Syncthing Tray( \(.*\))?$"] floating enable, border none, re
 
 ### Workaround missing support for Windows 10 dark mode
 The dark mode introduced in Windows 10 does not affect traditional desktop
-applications like Syncthing Tray. Unfortunately, Windows normal theming
-capabilities [have been
-removed](https://superuser.com/questions/949920/window-color-and-appearance-
-removed-in-win10). So far Qt does not offer much to improve the situation (see
-"List of bugs" below).
+applications like Syncthing Tray. Unfortunately, Windows normal theming capabilities 
+[have been removed](https://superuser.com/questions/949920/window-color-and-appearance-removed-in-win10).
+So far Qt does not offer much to improve the situation (see "List of bugs" below).
 
 However, it is possible to use Syncthing Tray's custom appearance settings to
 achieve a dark theming:
