@@ -65,6 +65,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_webViewDlg(nullptr)
 #endif
     , m_currentConnectionConfig(-1)
+    , m_hasInternalErrors(false)
     , m_initialized(false)
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -246,6 +247,11 @@ bool SyncthingApplet::isStartStopEnabled() const
 #else
     return false;
 #endif
+}
+
+bool SyncthingApplet::hasInternalErrors() const
+{
+    return m_hasInternalErrors;
 }
 
 bool SyncthingApplet::areNotificationsAvailable() const
@@ -471,6 +477,9 @@ void SyncthingApplet::handleInternalError(
     InternalError error(errorMsg, request.url(), response);
     m_dbusNotifier.showInternalError(error);
     InternalErrorsDialog::addError(move(error));
+    if (!m_hasInternalErrors) {
+        emit hasInternalErrorsChanged(m_hasInternalErrors = true);
+    }
 }
 
 void SyncthingApplet::handleDirStatisticsChanged()
@@ -481,6 +490,7 @@ void SyncthingApplet::handleDirStatisticsChanged()
 
 void SyncthingApplet::handleErrorsCleared()
 {
+    emit hasInternalErrorsChanged(m_hasInternalErrors = false);
 }
 
 void SyncthingApplet::handleAboutDialogDeleted()

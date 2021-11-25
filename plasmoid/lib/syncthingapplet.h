@@ -65,6 +65,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(int currentConnectionConfigIndex READ currentConnectionConfigIndex WRITE setCurrentConnectionConfigIndex NOTIFY
             currentConnectionConfigIndexChanged)
     Q_PROPERTY(bool startStopEnabled READ isStartStopEnabled NOTIFY settingsChanged)
+    Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(bool notificationsAvailable READ areNotificationsAvailable NOTIFY notificationsAvailableChanged)
     Q_PROPERTY(bool passive READ isPassive NOTIFY passiveChanged)
@@ -102,6 +103,7 @@ public:
     Data::SyncthingConnectionSettings *connectionConfig(int index);
     void setCurrentConnectionConfigIndex(int index);
     bool isStartStopEnabled() const;
+    bool hasInternalErrors() const;
     QSize size() const;
     void setSize(const QSize &size);
     bool areNotificationsAvailable() const;
@@ -147,6 +149,7 @@ Q_SIGNALS:
     void statisticsChanged();
     void settingsChanged();
     void currentConnectionConfigIndexChanged(int index);
+    void hasInternalErrorsChanged(bool hasInternalErrors);
     void sizeChanged(const QSize &size);
     void notificationsAvailableChanged(bool notificationsAvailable);
     void passiveChanged(bool passive);
@@ -193,6 +196,7 @@ private:
     QtGui::WebViewDialog *m_webViewDlg;
 #endif
     int m_currentConnectionConfig;
+    bool m_hasInternalErrors;
     bool m_initialized;
     QSize m_size;
 };

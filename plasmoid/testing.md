@@ -12,6 +12,8 @@ rather than the regular home to separate testing from production.
 4. Set `%{sourceDir}/../../syncthingtray/plasmoid/scripts/starttesting.sh plasmoidviewer --applet martchus.syncthingplasmoid`
    as CLI argument
   * It is also possible to use `plasmawindowed` or `plasmashell`, see sections below.
+  * It is also possible to specify `org.kde.plasma.systemtray` as applet to test how the Plasmoid
+    looks like within the system tray plasmoid.
   * This usage of `%{sourceDir}` assumes one used the "Building this straight" instructions
     from the main README.md.
 5. Keep `%{buildDir}` as working directory.

@@ -13,6 +13,16 @@ ColumnLayout {
     anchors.fill: parent
     objectName: "DirectoriesPage"
 
+    PlasmaComponents3.TextField {
+        property bool explicitelyShown: false
+        id: filter
+        clearButtonShown: true
+        Layout.fillWidth: true
+        visible: explicitelyShown || text !== ""
+        placeholderText: qsTr("Filter directories")
+        onTextChanged: directoryView.model.filterRegularExpression = new RegExp(text)
+    }
+
     PlasmaExtras.ScrollArea {
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -169,14 +179,5 @@ ColumnLayout {
                 }
             }
         }
-    }
-
-    PlasmaComponents3.TextField {
-        property bool explicitelyShown: false
-        id: filter
-        clearButtonShown: true
-        Layout.fillWidth: true
-        visible: explicitelyShown || text !== ""
-        onTextChanged: directoryView.model.filterRegularExpression = new RegExp(text)
     }
 }

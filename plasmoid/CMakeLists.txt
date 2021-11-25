@@ -20,8 +20,10 @@ set(PLASMOID_FILES
     package/contents/ui/TopLevelItem.qml
     package/contents/ui/DetailView.qml
     package/contents/ui/DetailItem.qml
+    package/contents/ui/TabButton.qml
     package/contents/ui/ToolTipTrigger.qml
     package/contents/ui/ToolTipView.qml
+    package/contents/ui/ToolBar.qml
     package/contents/ui/ToolButton.qml
     package/contents/ui/TinyButton.qml
     package/contents/ui/IconLabel.qml
