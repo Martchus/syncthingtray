@@ -5,9 +5,14 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 
 PlasmaComponents3.TabButton {
     id: root
+    spacing: 0
     contentItem: RowLayout {
         spacing: label.visible ? units.smallSpacing : 0
         PlasmaCore.ColorScope.inherit: true
+        width: parent.width
+        Item {
+            Layout.fillWidth: true
+        }
         Image {
             id: image
             Layout.preferredHeight: height
@@ -22,8 +27,10 @@ PlasmaComponents3.TabButton {
             font: root.parent.font
             color: PlasmaCore.ColorScope.textColor
             elide: Text.ElideRight
-            Layout.fillWidth: true
             Layout.fillHeight: true
+        }
+        Item {
+            Layout.fillWidth: true
         }
     }
 }

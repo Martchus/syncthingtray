@@ -7,10 +7,46 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 
 PlasmaComponents3.Page {
+    // header ("toolbar" with buttons and combo box) and footer ("tabbar")
     header: PlasmaExtras.PlasmoidHeading {
         ToolBar {
             id: toolbar
             width: parent.width
+        }
+    }
+    footer: PlasmaExtras.PlasmoidHeading {
+        spacing: 0
+        height: units.iconSizes.medium
+        PlasmaComponents3.TabBar {
+            id: tabBar
+            readonly property double buttonWidth: parent.width / count
+            position: PlasmaComponents3.TabBar.Footer
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            TabButton {
+                id: dirsTabButton
+                text: qsTr("Directories")
+                icon.source: "image://fa/folder"
+                width: tabBar.buttonWidth
+            }
+            TabButton {
+                id: devsTabButton
+                text: qsTr("Devices")
+                icon.source: "image://fa/sitemap"
+                width: tabBar.buttonWidth
+            }
+            TabButton {
+                id: downloadsTabButton
+                text: qsTr("Downloads")
+                icon.source: "image://fa/download"
+                width: tabBar.buttonWidth
+            }
+            TabButton {
+                id: recentChangesTabButton
+                text: qsTr("History")
+                icon.source: "image://fa/history"
+                width: tabBar.buttonWidth
+            }
         }
     }
 
@@ -45,6 +81,7 @@ PlasmaComponents3.Page {
         onActivated: clickCurrentItemButton("openButton")
     }
 
+    // main contents
     FocusScope {
         anchors.fill: parent
         anchors.topMargin: PlasmaCore.Units.smallSpacing * 2
@@ -228,64 +265,23 @@ PlasmaComponents3.Page {
                 }
             }
 
-            // tab "widget"
-            ColumnLayout {
-                id: tabWidget
-                spacing: 0
+            // tab content
+            StackLayout {
+                id: tabLayout
+                currentIndex: tabBar.currentIndex
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-
-                StackLayout {
-                    id: tabLayout
-                    currentIndex: tabBar.currentIndex
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    DirectoriesPage {
-                        id: directoriesPage
-                    }
-                    DevicesPage {
-                        id: devicesPage
-                    }
-                    DownloadsPage {
-                        id: downloadsPage
-                    }
-                    RecentChangesPage {
-                        id: recentChangesPage
-                    }
+                DirectoriesPage {
+                    id: directoriesPage
                 }
-                PlasmaCore.SvgItem {
-                    Layout.preferredHeight: 1
-                    Layout.fillWidth: true
-                    elementId: "horizontal-line"
-                    svg: PlasmaCore.Svg {
-                        imagePath: "widgets/line"
-                    }
+                DevicesPage {
+                    id: devicesPage
                 }
-                PlasmaComponents3.TabBar {
-                    id: tabBar
-                    position: PlasmaComponents3.TabBar.Footer
-                    spacing: units.smallSpacing
-                    Layout.alignment: Qt.AlignBottom
-                    TabButton {
-                        id: dirsTabButton
-                        text: qsTr("Directories")
-                        icon.source: "image://fa/folder"
-                    }
-                    TabButton {
-                        id: devsTabButton
-                        text: qsTr("Devices")
-                        icon.source: "image://fa/sitemap"
-                    }
-                    TabButton {
-                        id: downloadsTabButton
-                        text: qsTr("Downloads")
-                        icon.source: "image://fa/download"
-                    }
-                    TabButton {
-                        id: recentChangesTabButton
-                        text: qsTr("History")
-                        icon.source: "image://fa/history"
-                    }
+                DownloadsPage {
+                    id: downloadsPage
+                }
+                RecentChangesPage {
+                    id: recentChangesPage
                 }
             }
         }
