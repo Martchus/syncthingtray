@@ -123,6 +123,16 @@ The screenshots are not up-to-date.
 ### Syncthing actions for Dolphin
 ![Rescan/pause/status](/fileitemactionplugin/resources/screenshots/dolphin.png?raw=true)
 
+## Configuring Plasmoid and Dolphin integration
+The Dolphin integration can be enabled/disabled in Dolphin's context menu settings.
+
+The Plasmoid can be added to a panel or the desktop like any other Plasmoid. It can also be shown
+as part of the system tray Plasmoid. That can be configured in the settings of the system
+tray Plasmoid. This way it is also possible to show the icon only in certain states by choosing to
+show it only when important and selecting the states in the Plasmoid's settings. Note that
+configuring the size has no effect when the Plasmoid is displayed as part of the system tray
+Plasmoid.
+
 ## Configuring systemd integration
 The next section explains what it is good for and how to use it. If it doesn't work on your
 system please read the subsequent sections as well before filing an issue.
@@ -193,12 +203,14 @@ ready to serve API requests when started. Hence it is still required to configur
 The re-connect interval will only be in effect while the Syncthing process is running. So despite the
 re-connect interval there will be no connection attempts while the Syncthing process is not running.
 
-## Hotkeys
+## Configuring hotkeys
 Use the same approach as for launching an arbitrary application via a hotkey. Make it invoke
 
-* `syncthingtray --trigger` to show the tray menu.
+* `syncthingtray --trigger` to show the Qt Widgets based tray menu.
 * `syncthingtray --webui` to show the web UI.
 * `syncthingctl [...]` to trigger a particular action. See `syncthingctl -h` for details.
+
+The Plasmoid can be shown via a hot-key as well by configuring one in the Plasmoid settings.
 
 ## Download
 ### Source
@@ -217,9 +229,9 @@ See the release section on GitHub.
           [project page](https://build.opensuse.org/project/show/home:mkittler:vcs)
     * available split packages
         * `syncthingtray`: Qt-widgets based GUI
-        * `syncthingplasmoid`: widget for Plasma desktop
+        * `syncthingplasmoid`: applet/plasmoid for Plasma desktop
         * `syncthingfileitemaction`: Dolphin/KIO integration
-        * `syncthingctl`: command line interface
+        * `syncthingctl`: command-line interface
 * Other GNU/Linux systems
     * [AppImage repository for releases on the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage/AppImage)
     * [AppImage repository for builds from Git master the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage:/vcs/AppImage/)
@@ -344,7 +356,7 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
   will be opened in the regular web browser anyways.
 
 ### Troubleshooting KDE integration
-If the Dolphin integration or the Plasmoid don't work, check whether the files for those components
+If the Dolphin integration or the Plasmoid does not work, check whether the files for those components
 have been installed in the right directories.
 
 For instance, under Tumbleweed it looks like this for the Plasmoid:
@@ -363,11 +375,11 @@ The files for the Dolphin integration look like this under Tumbleweed:
 /usr/share/kservices5/syncthingfileitemaction.desktop
 ```
 
-The directory the `*.so` file needs to be installed to seems to differ from distribution to
+The directory where the `*.so` file needs to be installed to, seems to differ from distribution to
 distribution. The right directory for your distribution can be queried from qmake using
 `qmake-qt5 -query QT_INSTALL_PLUGINS`. In doubt, just look where other Qt plugins are stored.
 
-Actually the build system should be able to do that query automatically. It is also possible to
+Actually, the build system should be able to do that query automatically. It is also possible to
 specify the directory manually, e.g. for Tumbleweed one would add
 `-DQT_PLUGIN_DIR=/usr/lib64/qt5/plugins` to the CMake arguments.
 
