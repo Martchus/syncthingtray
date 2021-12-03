@@ -269,7 +269,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/traywidget.ui" line="476"/>
         <source>Recent changes</source>
-        <translation>Letzte Änderungen</translation>
+        <translatorcomment>&quot;Letzte Änderungen&quot; is too long</translatorcomment>
+        <translation>Änderungen</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="512"/>

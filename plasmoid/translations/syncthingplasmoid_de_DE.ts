@@ -178,7 +178,8 @@
     <message>
         <location filename="../package/contents/ui/FullRepresentation.qml" line="46"/>
         <source>History</source>
-        <translation>Letzte Änderungen</translation>
+        <translatorcomment>&quot;Letzte Änderungen&quot; is too long</translatorcomment>
+        <translation>Änderungen</translation>
     </message>
     <message>
         <location filename="../package/contents/ui/FullRepresentation.qml" line="231"/>
