@@ -482,7 +482,12 @@ However, it is possible to use Syncthing Tray's custom appearance settings to
 achieve a dark theming:
 
 * To enable dark Window borders, set the environment variable `QT_QPA_PLATFORM`
-  to `windows:darkmode=1`.
+  to `windows:darkmode=1` or create a file called `qt.conf` next to `syncthingtray.exe`
+  with the contents:
+  ```
+  [Platforms]
+  WindowsArguments = darkmode=1
+  ```
 * To enable dark colors for Syncthing Tray's UI elements, configure a dark color
   palette in Syncthing Tray's settings under "Qt/Appearance". You can download and
   load the file as a base
@@ -515,7 +520,8 @@ at least nicer than what's shipped with Windows.
 [PMv2](https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows#per-monitor-and-per-monitor-v2-dpi-awareness)
 is not working out of the box but experimental support can be enabled in the
 Qt 6 build by setting the environment variable `QT_QPA_PLATFORM` to
-`windows:dpiawareness=3`.
+`windows:dpiawareness=3` or set it via `qt.conf` as described in the previous
+section.
 
 ### List of bugs
 * Wayland limitations
