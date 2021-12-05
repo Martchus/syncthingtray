@@ -258,7 +258,9 @@ The application depends on [c++utilities](https://github.com/Martchus/cpp-utilit
 [qtutilities](https://github.com/Martchus/qtutilities) and
 [qtforkawesome](https://github.com/Martchus/qtforkawesome) and is built the same way as these libraries.
 For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities).
-For building this straight, see the section below. There's also documentation about
+
+To avoid building c++utilities/qtutilities/qtforkawesome separately, follow the instructions under
+"Building this straight". There's also documentation about
 [various build variables](https://github.com/Martchus/cpp-utilities/blob/master/doc/buildvariables.md) which
 can be passed to CMake to influence the build.
 
@@ -303,10 +305,11 @@ to systemd in any case.
 Building the testsuite requires CppUnit and Qt 5.8 or higher.
 
 ### Building this straight
-0. Install (preferably the latest version of) the CGG toolchain or Clang, the required Qt modules and CMake.
+0. Install (preferably the latest version of) the CGG toolchain or Clang, the required Qt modules,
+   iconv, CMake and Ninja.
 1. Get the sources. For the latest version from Git clone the following repositories:
    ```
-   cd $SOURCES
+   cd "$SOURCES"
    git clone -c core.symlinks=true https://github.com/Martchus/cpp-utilities.git c++utilities
    git clone -c core.symlinks=true https://github.com/Martchus/qtutilities.git
    git clone -c core.symlinks=true https://github.com/Martchus/qtforkawesome.git
@@ -320,13 +323,13 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
    fix this.
 2. Configure the build
    ```
-   cd $BUILD_DIR
+   cd "$BUILD_DIR"
    cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX="/install/prefix" \
     -DFORK_AWESOME_FONT_FILE="$SOURCES/forkawesome/fonts/forkawesome-webfont.woff2" \
     -DFORK_AWESOME_ICON_DEFINITIONS="$SOURCES/forkawesome/src/icons/icons.yml" \
-    $SOURCES/subdirs/syncthingtray
+    "$SOURCES/subdirs/syncthingtray"
    ```
     * Replace `/install/prefix` with the directory where you want to install.
     * Checkout the [Providing the font file](https://github.com/Martchus/qtforkawesome/#providing-the-font-file)
@@ -334,11 +337,11 @@ Building the testsuite requires CppUnit and Qt 5.8 or higher.
       ForkAwesome-related parameters.
 3. Build and install everything in one step:
    ```
-   cd $BUILD_DIR
-   make install -j$(nproc)
+   cd "$BUILD_DIR"
+   ninja install
    ```
     * If the install directory is not writable, do **not** conduct the build as root. Instead, set `DESTDIR` to a
-      writable location (e.g. `make DESTDIR="temporary/install/dir" install …`) and move the files from there to
+      writable location (e.g. `DESTDIR="temporary/install/dir" ninja install`) and move the files from there to
       the desired location afterwards.
 
 ### Select Qt module for web view and JavaScript
