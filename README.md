@@ -555,5 +555,5 @@ section.
 
 ## Attribution for 3rd party content
 * Some icons are taken from the Syncthing project.
-* Some icons are taken from [Font Awesome](https://fontawesome.com) (see [their license](https://fontawesome.com/license)).
+* Some icons are taken from [Fork Awesome](https://forkaweso.me/Fork-Awesome) (see [their license](https://forkaweso.me/Fork-Awesome/license)).
 * Fallback icons are taken from KDE/Breeze project.
