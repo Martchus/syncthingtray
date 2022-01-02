@@ -86,8 +86,35 @@ PlasmaComponents3.Page {
         anchors.fill: parent
         anchors.topMargin: PlasmaCore.Units.smallSpacing * 2
 
+        TinyButton {
+            id: searchButton
+            anchors.right: mainLayout.right
+            anchors.verticalCenter: infoLayout.verticalCenter
+            icon.source: "image://fa/search"
+            width: PlasmaCore.Units.iconSizes.smallMedium
+            height: width
+            enabled: tabBar.currentIndex === 0
+            opacity: enabled ? 1.0 : 0.25
+            tooltip: qsTr("Toggle filter")
+            onClicked: {
+                var filter = findCurrentFilter()
+                if (!filter) {
+                    return
+                }
+                if (!filter.explicitelyShown) {
+                    filter.explicitelyShown = true
+                    filter.forceActiveFocus()
+                } else {
+                    filter.explicitelyShown = false
+                    filter.text = ""
+                }
+            }
+        }
+
         ColumnLayout {
+            id: mainLayout
             anchors.fill: parent
+            spacing: 0
 
             // ensure keyboard events can be received after initialization
             Component.onCompleted: forceActiveFocus()
@@ -189,10 +216,13 @@ PlasmaComponents3.Page {
 
             // global statistics and traffic
             GridLayout {
+                id: infoLayout
                 Layout.leftMargin: 5
+                Layout.bottomMargin: 2
                 Layout.fillWidth: true
                 Layout.fillHeight: false
-                columns: 5
+                Layout.maximumWidth: parent.width
+                columns: 4
                 rowSpacing: 1
                 columnSpacing: 4
 
@@ -209,7 +239,7 @@ PlasmaComponents3.Page {
                     context: qsTr("Global")
                 }
                 IconLabel {
-                    Layout.leftMargin: 10
+                    Layout.leftMargin: 5
                     iconSource: "image://fa/cloud-download"
                     iconOpacity: plasmoid.nativeInterface.hasIncomingTraffic ? 1.0 : 0.5
                     text: plasmoid.nativeInterface.incomingTraffic
@@ -220,30 +250,6 @@ PlasmaComponents3.Page {
                     Layout.fillWidth: true
                     Layout.rowSpan: 2
                 }
-                TinyButton {
-                    id: searchButton
-                    Layout.fillWidth: false
-                    Layout.fillHeight: false
-                    Layout.rowSpan: 2
-                    icon.source: "image://fa/search"
-                    enabled: tabBar.currentIndex === 0
-                    opacity: enabled ? 1.0 : 0.25
-                    tooltip: qsTr("Toggle filter")
-                    onClicked: {
-                        var filter = findCurrentFilter()
-                        if (!filter) {
-                            return
-                        }
-                        if (!filter.explicitelyShown) {
-                            filter.explicitelyShown = true
-                            filter.forceActiveFocus()
-                        } else {
-                            filter.explicitelyShown = false
-                            filter.text = ""
-                        }
-                    }
-                }
-
                 Image {
                     Layout.preferredWidth: 16
                     Layout.preferredHeight: 16
@@ -257,7 +263,7 @@ PlasmaComponents3.Page {
                     context: qsTr("Local")
                 }
                 IconLabel {
-                    Layout.leftMargin: 10
+                    Layout.leftMargin: 5
                     iconSource: "image://fa/cloud-upload"
                     iconOpacity: plasmoid.nativeInterface.hasOutgoingTraffic ? 1.0 : 0.5
                     text: plasmoid.nativeInterface.outgoingTraffic
