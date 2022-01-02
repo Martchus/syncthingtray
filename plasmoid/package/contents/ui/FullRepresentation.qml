@@ -16,6 +16,7 @@ PlasmaComponents3.Page {
     }
     footer: PlasmaExtras.PlasmoidHeading {
         spacing: 0
+        topPadding: 0
         height: units.iconSizes.medium
         PlasmaComponents3.TabBar {
             id: tabBar
