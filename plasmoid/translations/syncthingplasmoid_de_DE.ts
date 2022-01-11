@@ -141,48 +141,48 @@
         <translation type="vanished">Syncthing öffnen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="209"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="240"/>
         <source>Global</source>
         <translation>Globale</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="216"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="247"/>
         <source>Global incoming traffic</source>
         <translation>Globaler eingehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="257"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="264"/>
         <source>Local</source>
         <translation>Lokale</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="264"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="271"/>
         <source>Global outgoing traffic</source>
         <translation>Globaler ausgehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="28"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="29"/>
         <source>Directories</source>
         <translation>Verzeichnisse</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="34"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="35"/>
         <source>Devices</source>
         <translation>Geräte</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="40"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="41"/>
         <source>Downloads</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="46"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="47"/>
         <source>History</source>
         <translatorcomment>&quot;Letzte Änderungen&quot; is too long</translatorcomment>
         <translation>Änderungen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="231"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="99"/>
         <source>Toggle filter</source>
         <translation>Filter ein-/ausblenden</translation>
     </message>
