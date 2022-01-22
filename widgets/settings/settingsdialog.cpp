@@ -566,7 +566,7 @@ QWidget *IconsOptionPage::setupWidget()
     case Context::System:
         widget->setWindowTitle(QCoreApplication::translate("QtGui::IconsOptionPageBase", "System icons"));
         ui()->contextLabel->setText(QCoreApplication::translate(
-            "QtGui::IconsOptionPageBase", "These icon settinngs are used for the system tray icon and the notifications."));
+            "QtGui::IconsOptionPageBase", "These icon settings are used for the system tray icon and the notifications."));
         ui()->contextCheckBox->setText(QCoreApplication::translate("QtGui::IconsOptionPageBase", "Use same settings as for UI icons"));
         break;
     }
