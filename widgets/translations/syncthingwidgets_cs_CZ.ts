@@ -562,7 +562,7 @@
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="568"/>
-        <source>These icon settinngs are used for the system tray icon and the notifications.</source>
+        <source>These icon settings are used for the system tray icon and the notifications.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
