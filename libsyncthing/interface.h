@@ -18,6 +18,7 @@ enum class RuntimeFlags : std::uint64_t {
     NoDefaultConfig = (1 << 2),
     EnsureConfigDirExists = (1 << 3),
     EnsureDataDirExists = (1 << 4),
+    SkipPortProbing = (1 << 5),
 };
 
 constexpr bool operator&(RuntimeFlags lhs, RuntimeFlags rhs)
