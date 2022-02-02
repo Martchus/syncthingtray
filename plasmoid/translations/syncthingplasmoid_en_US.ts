@@ -227,17 +227,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="351"/>
+        <location filename="../lib/syncthingapplet.cpp" line="360"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="363"/>
+        <location filename="../lib/syncthingapplet.cpp" line="372"/>
         <source>New notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="523"/>
+        <location filename="../lib/syncthingapplet.cpp" line="532"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
