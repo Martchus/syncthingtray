@@ -24,15 +24,22 @@
 #define PLASMA_NO_DEPRECATED_WARNINGS 1
 
 #include <Plasma/Applet>
+#include <Plasma/Theme>
 
+#include <QPalette>
 #include <QSize>
 
 namespace Data {
 struct SyncthingConnectionSettings;
+class IconManager;
 } // namespace Data
 
 namespace QtGui {
 class WebViewDialog;
+}
+
+namespace QtForkAwesome {
+class QuickImageProvider;
 }
 
 namespace Plasmoid {
@@ -171,9 +178,14 @@ private Q_SLOTS:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     void handleSystemdStatusChanged();
 #endif
+    void handleImageProviderDestroyed();
+    void handleThemeChanged();
     void setPassive(bool passive);
 
 private:
+    Plasma::Theme m_theme;
+    QPalette m_palette;
+    Data::IconManager &m_iconManager;
     QtUtilities::AboutDialog *m_aboutDlg;
     Data::SyncthingConnection m_connection;
     Data::SyncthingOverallDirStatistics m_overallStats;
@@ -192,6 +204,7 @@ private:
     SettingsDialog *m_settingsDlg;
     QtGui::DBusStatusNotifier m_dbusNotifier;
     std::vector<Data::SyncthingLogEntry> m_notifications;
+    QtForkAwesome::QuickImageProvider *m_imageProvider;
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     QtGui::WebViewDialog *m_webViewDlg;
 #endif

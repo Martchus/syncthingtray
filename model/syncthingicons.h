@@ -143,7 +143,7 @@ struct LIB_SYNCTHING_MODEL_EXPORT ForkAwesomeIcons {
 class LIB_SYNCTHING_MODEL_EXPORT IconManager : public QObject {
     Q_OBJECT
 public:
-    static IconManager &instance();
+    static IconManager &instance(const QPalette *palette = nullptr);
 
     void applySettings(const StatusIconSettings *statusIconSettings = nullptr, const StatusIconSettings *trayIconSettings = nullptr);
     const StatusIcons &statusIcons() const;
@@ -151,15 +151,15 @@ public:
     QtForkAwesome::Renderer &forkAwesomeRenderer();
     const ForkAwesomeIcons &commonForkAwesomeIcons() const;
 
-Q_SIGNALS:
-    void statusIconsChanged(const StatusIcons &newStatusIcons, const StatusIcons &newTrayIcons);
-    void forkAwesomeIconsChanged(const ForkAwesomeIcons &newForkAwesomeIcons);
+public Q_SLOTS:
+    void setPalette(const QPalette &palette);
 
-private Q_SLOTS:
-    void handlePaletteChanged(const QPalette &pal);
+Q_SIGNALS:
+    void statusIconsChanged(const Data::StatusIcons &newStatusIcons, const Data::StatusIcons &newTrayIcons);
+    void forkAwesomeIconsChanged(const Data::ForkAwesomeIcons &newForkAwesomeIcons);
 
 private:
-    IconManager();
+    explicit IconManager(const QPalette *palette = nullptr);
 
     StatusIcons m_statusIcons;
     StatusIcons m_trayIcons;

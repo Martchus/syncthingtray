@@ -12,7 +12,7 @@ find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFI
 use_qt_utilities()
 
 # find qtforkawesomequickimageprovider
-find_package(${PACKAGE_NAMESPACE_PREFIX}qtquickforkawesome${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.0.1 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}qtquickforkawesome${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.0.3 REQUIRED)
 use_qt_quick_fork_awesome()
 
 # check whether qtutilities supports DBus notifications

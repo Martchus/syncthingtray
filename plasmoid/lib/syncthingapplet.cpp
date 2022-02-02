@@ -31,6 +31,8 @@
 
 #include <KConfigGroup>
 
+#include <Plasma/Theme>
+
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QGuiApplication>
@@ -51,6 +53,8 @@ namespace Plasmoid {
 
 SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     : Applet(parent, data)
+    , m_palette(m_theme.palette())
+    , m_iconManager(IconManager::instance(&m_palette))
     , m_aboutDlg(nullptr)
     , m_connection()
     , m_notifier(m_connection)
@@ -61,6 +65,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_downloadModel(m_connection)
     , m_recentChangesModel(m_connection)
     , m_settingsDlg(nullptr)
+    , m_imageProvider(nullptr)
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     , m_webViewDlg(nullptr)
 #endif
@@ -112,7 +117,8 @@ void SyncthingApplet::init()
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, this, &SyncthingApplet::showNotificationsDialog);
     connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &SyncthingApplet::showInternalErrorsDialog);
     connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, this, &SyncthingApplet::showWebUI);
-    connect(&IconManager::instance(), &IconManager::statusIconsChanged, this, &SyncthingApplet::connectionStatusChanged);
+    connect(&m_iconManager, &IconManager::statusIconsChanged, this, &SyncthingApplet::connectionStatusChanged);
+    connect(&m_theme, &Plasma::Theme::themeChanged, this, &SyncthingApplet::handleThemeChanged);
 
     // restore settings
     Settings::restore();
@@ -137,11 +143,14 @@ void SyncthingApplet::init()
 
 void SyncthingApplet::initEngine(QObject *object)
 {
-    auto engine = qmlEngine(object);
+    const auto engine = qmlEngine(object);
     if (!engine) {
         return;
     }
-    engine->addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(IconManager::instance().forkAwesomeRenderer()));
+    const auto color = m_theme.color(Plasma::Theme::TextColor, Plasma::Theme::NormalColorGroup);
+    m_imageProvider = new QtForkAwesome::QuickImageProvider(m_iconManager.forkAwesomeRenderer(), color);
+    connect(engine, &QObject::destroyed, this, &SyncthingApplet::handleImageProviderDestroyed); // engine has ownership over image provider
+    engine->addImageProvider(QStringLiteral("fa"), m_imageProvider);
 }
 
 QIcon SyncthingApplet::statusIcon() const
@@ -522,6 +531,19 @@ void SyncthingApplet::handleSystemdServiceError(const QString &context, const QS
 {
     handleInternalError(tr("D-Bus error - unable to ") % context % QChar('\n') % name % QChar(':') % message, SyncthingErrorCategory::SpecificRequest,
         QNetworkReply::NoError, QNetworkRequest(), QByteArray());
+}
+
+void Plasmoid::SyncthingApplet::handleImageProviderDestroyed()
+{
+    m_imageProvider = nullptr;
+}
+
+void SyncthingApplet::handleThemeChanged()
+{
+    IconManager::instance().setPalette(m_theme.palette());
+    if (m_imageProvider) {
+        m_imageProvider->setDefaultColor(m_theme.color(Plasma::Theme::TextColor, Plasma::Theme::NormalColorGroup));
+    }
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

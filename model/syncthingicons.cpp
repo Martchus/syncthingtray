@@ -300,30 +300,32 @@ ForkAwesomeIcons::ForkAwesomeIcons(QtForkAwesome::Renderer &renderer, const QCol
 {
 }
 
-IconManager::IconManager()
+IconManager::IconManager(const QPalette *palette)
     : m_statusIcons()
     , m_trayIcons(m_statusIcons)
-    , m_commonForkAwesomeIcons(m_forkAwesomeRenderer, QGuiApplication::palette().color(QPalette::Normal, QPalette::Text), QSize(64, 64))
+    , m_commonForkAwesomeIcons(m_forkAwesomeRenderer, (palette ? *palette : QGuiApplication::palette()).color(QPalette::Normal, QPalette::Text), QSize(64, 64))
 {
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
-    QObject::connect(qGuiApp, &QGuiApplication::paletteChanged, this, &IconManager::handlePaletteChanged);
+    if (!palette) {
+        QObject::connect(qGuiApp, &QGuiApplication::paletteChanged, this, &IconManager::setPalette);
+    }
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif
 }
 
-void IconManager::handlePaletteChanged(const QPalette &pal)
+void IconManager::setPalette(const QPalette &palette)
 {
     emit forkAwesomeIconsChanged(
-        m_commonForkAwesomeIcons = ForkAwesomeIcons(m_forkAwesomeRenderer, pal.color(QPalette::Normal, QPalette::Text), QSize(64, 64)));
+        m_commonForkAwesomeIcons = ForkAwesomeIcons(m_forkAwesomeRenderer, palette.color(QPalette::Normal, QPalette::Text), QSize(64, 64)));
 }
 
-IconManager &IconManager::instance()
+IconManager &IconManager::instance(const QPalette *palette)
 {
-    static IconManager iconManager;
+    static auto iconManager = IconManager(palette);
     return iconManager;
 }
 
