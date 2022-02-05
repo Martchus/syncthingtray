@@ -62,7 +62,7 @@ Item {
                             }
                             TinyButton {
                                 id: openButton
-                                icon.source: "image://fa/folder"
+                                icon.source: plasmoid.nativeInterface.faUrl + "folder"
                                 tooltip: qsTr("Open in file browser")
                                 enabled: path !== undefined
                                 onClicked: {
@@ -118,7 +118,7 @@ Item {
                                     }
                                 }
                                 TinyButton {
-                                    icon.source: "image://fa/folder"
+                                    icon.source: plasmoid.nativeInterface.faUrl + "folder"
                                     tooltip: qsTr("Open in file browser")
                                     onClicked: {
                                         Qt.openUrlExternally(path + "/..")

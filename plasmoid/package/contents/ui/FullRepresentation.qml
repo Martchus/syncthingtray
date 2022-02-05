@@ -27,25 +27,25 @@ PlasmaComponents3.Page {
             TabButton {
                 id: dirsTabButton
                 text: qsTr("Directories")
-                icon.source: "image://fa/folder"
+                icon.source: plasmoid.nativeInterface.faUrl + "folder"
                 width: tabBar.buttonWidth
             }
             TabButton {
                 id: devsTabButton
                 text: qsTr("Devices")
-                icon.source: "image://fa/sitemap"
+                icon.source: plasmoid.nativeInterface.faUrl + "sitemap"
                 width: tabBar.buttonWidth
             }
             TabButton {
                 id: downloadsTabButton
                 text: qsTr("Downloads")
-                icon.source: "image://fa/download"
+                icon.source: plasmoid.nativeInterface.faUrl + "download"
                 width: tabBar.buttonWidth
             }
             TabButton {
                 id: recentChangesTabButton
                 text: qsTr("History")
-                icon.source: "image://fa/history"
+                icon.source: plasmoid.nativeInterface.faUrl + "history"
                 width: tabBar.buttonWidth
             }
         }
@@ -91,7 +91,7 @@ PlasmaComponents3.Page {
             id: searchButton
             anchors.right: mainLayout.right
             anchors.verticalCenter: infoLayout.verticalCenter
-            icon.source: "image://fa/search"
+            icon.source: plasmoid.nativeInterface.faUrl + "search"
             width: PlasmaCore.Units.iconSizes.smallMedium
             height: width
             enabled: tabBar.currentIndex === 0
@@ -232,7 +232,8 @@ PlasmaComponents3.Page {
                     Layout.preferredHeight: 16
                     height: 16
                     fillMode: Image.PreserveAspectFit
-                    source: "image://fa/globe"
+                    source: plasmoid.nativeInterface.faUrl + "globe"
+                    cache: false
                 }
                 StatisticsView {
                     Layout.leftMargin: 4
@@ -241,7 +242,7 @@ PlasmaComponents3.Page {
                 }
                 IconLabel {
                     Layout.leftMargin: 5
-                    iconSource: "image://fa/cloud-download"
+                    iconSource: plasmoid.nativeInterface.faUrl + "cloud-download"
                     iconOpacity: plasmoid.nativeInterface.hasIncomingTraffic ? 1.0 : 0.5
                     text: plasmoid.nativeInterface.incomingTraffic
                     tooltip: qsTr("Global incoming traffic")
@@ -256,7 +257,8 @@ PlasmaComponents3.Page {
                     Layout.preferredHeight: 16
                     height: 16
                     fillMode: Image.PreserveAspectFit
-                    source: "image://fa/home"
+                    source: plasmoid.nativeInterface.faUrl + "home"
+                    cache: false
                 }
                 StatisticsView {
                     Layout.leftMargin: 4
@@ -265,7 +267,7 @@ PlasmaComponents3.Page {
                 }
                 IconLabel {
                     Layout.leftMargin: 5
-                    iconSource: "image://fa/cloud-upload"
+                    iconSource: plasmoid.nativeInterface.faUrl + "cloud-upload"
                     iconOpacity: plasmoid.nativeInterface.hasOutgoingTraffic ? 1.0 : 0.5
                     text: plasmoid.nativeInterface.outgoingTraffic
                     tooltip: qsTr("Global outgoing traffic")

@@ -59,7 +59,8 @@ Item {
                             }
                             TinyButton {
                                 id: resumePauseButton
-                                icon.source: paused ? "image://fa/play" : "image://fa/pause"
+                                icon.source: plasmoid.nativeInterface.faUrl + (paused ? "play" : "pause")
+                                icon.cache: false
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 enabled: !isOwnDevice
                                 onClicked: {

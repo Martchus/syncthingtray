@@ -17,6 +17,7 @@ PlasmaComponents3.TabButton {
             id: image
             Layout.preferredHeight: height
             source: root.icon.source
+            cache: false
             height: units.iconSizes.small
             fillMode: Image.PreserveAspectFit
         }

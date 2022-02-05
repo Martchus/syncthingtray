@@ -77,6 +77,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(bool notificationsAvailable READ areNotificationsAvailable NOTIFY notificationsAvailableChanged)
     Q_PROPERTY(bool passive READ isPassive NOTIFY passiveChanged)
     Q_PROPERTY(QList<QtUtilities::ChecklistItem> passiveStates READ passiveStates WRITE setPassiveStates)
+    Q_PROPERTY(QString faUrl READ faUrl NOTIFY faUrlChanged)
 
 public:
     SyncthingApplet(QObject *parent, const QVariantList &data);
@@ -117,6 +118,7 @@ public:
     bool isPassive() const;
     const QList<QtUtilities::ChecklistItem> &passiveStates() const;
     void setPassiveStates(const QList<QtUtilities::ChecklistItem> &passiveStates);
+    QString faUrl();
 
 public Q_SLOTS:
     void init() override;
@@ -160,6 +162,7 @@ Q_SIGNALS:
     void sizeChanged(const QSize &size);
     void notificationsAvailableChanged(bool notificationsAvailable);
     void passiveChanged(bool passive);
+    void faUrlChanged(const QString &faUrl);
 
 private Q_SLOTS:
     void handleSettingsChanged();
@@ -184,6 +187,7 @@ private Q_SLOTS:
 
 private:
     Plasma::Theme m_theme;
+    QString m_faUrl;
     QPalette m_palette;
     Data::IconManager &m_iconManager;
     QtUtilities::AboutDialog *m_aboutDlg;
@@ -308,6 +312,11 @@ inline bool SyncthingApplet::isPassive() const
 inline const QList<QtUtilities::ChecklistItem> &SyncthingApplet::passiveStates() const
 {
     return m_passiveSelectionModel.items();
+}
+
+inline QString SyncthingApplet::faUrl()
+{
+    return m_faUrl;
 }
 
 inline void SyncthingApplet::setPassive(bool passive)

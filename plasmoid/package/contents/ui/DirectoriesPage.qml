@@ -77,7 +77,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: errorsButton
-                                icon.source: "image://fa/exclamation-triangle"
+                                icon.source: plasmoid.nativeInterface.faUrl + "exclamation-triangle"
                                 tooltip: qsTr("Show errors")
                                 visible: pullErrorCount > 0
                                 onClicked: {
@@ -88,7 +88,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: rescanButton
-                                icon.source: "image://fa/refresh"
+                                icon.source: plasmoid.nativeInterface.faUrl + "refresh"
                                 tooltip: qsTr("Rescan")
                                 enabled: !paused
                                 onClicked: plasmoid.nativeInterface.connection.rescan(
@@ -96,7 +96,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: resumePauseButton
-                                icon.source: paused ? "image://fa/play" : "image://fa/pause"
+                                icon.source: plasmoid.nativeInterface.faUrl + (paused ? "play" : "pause")
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 onClicked: {
                                     paused ? plasmoid.nativeInterface.connection.resumeDirectories(
@@ -106,7 +106,7 @@ ColumnLayout {
                             }
                             TinyButton {
                                 id: openButton
-                                icon.source: "image://fa/folder"
+                                icon.source: plasmoid.nativeInterface.faUrl + "folder"
                                 tooltip: qsTr("Open in file browser")
                                 onClicked: {
                                     Qt.openUrlExternally(path)

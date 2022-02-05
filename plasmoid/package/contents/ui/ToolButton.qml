@@ -13,6 +13,7 @@ PlasmaComponents3.ToolButton {
         PlasmaCore.ColorScope.inherit: true
         Image {
             source: root.icon.source
+            cache: false
             height: parent.height
             fillMode: Image.PreserveAspectFit
         }

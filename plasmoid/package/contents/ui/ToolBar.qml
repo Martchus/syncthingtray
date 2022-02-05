@@ -23,7 +23,7 @@ RowLayout {
                 PropertyChanges {
                     target: connectButton
                     text: qsTr("Connect")
-                    icon.source: "image://fa/refresh"
+                    icon.source: plasmoid.nativeInterface.faUrl + "refresh"
                     visible: true
                 }
             },
@@ -39,7 +39,7 @@ RowLayout {
                 PropertyChanges {
                     target: connectButton
                     text: qsTr("Resume")
-                    icon.source: "image://fa/play"
+                    icon.source: plasmoid.nativeInterface.faUrl + "play"
                     visible: true
                 }
             },
@@ -48,7 +48,7 @@ RowLayout {
                 PropertyChanges {
                     target: connectButton
                     text: qsTr("Pause")
-                    icon.source: "image://fa/pause"
+                    icon.source: plasmoid.nativeInterface.faUrl + "pause"
                     visible: true
                 }
             }
@@ -97,7 +97,7 @@ RowLayout {
                     target: startStopButton
                     visible: true
                     text: qsTr("Stop")
-                    icon.source: "image://fa/stop"
+                    icon.source: plasmoid.nativeInterface.faUrl + "stop"
                 }
                 PropertyChanges {
                     target: startStopToolTip
@@ -111,7 +111,7 @@ RowLayout {
                     target: startStopButton
                     visible: true
                     text: qsTr("Start")
-                    icon.source: "image://fa/play"
+                    icon.source: plasmoid.nativeInterface.faUrl + "play"
                 }
                 PropertyChanges {
                     target: startStopToolTip
@@ -178,7 +178,7 @@ RowLayout {
         }
     }
     ToolButton {
-        icon.source: "image://fa/info"
+        icon.source: plasmoid.nativeInterface.faUrl + "info"
         visible: showExtraButtons
         onClicked: {
             plasmoid.nativeInterface.showAboutDialog()
@@ -190,7 +190,7 @@ RowLayout {
     }
     ToolButton {
         id: showOwnIdButton
-        icon.source: "image://fa/qrcode"
+        icon.source: plasmoid.nativeInterface.faUrl + "qrcode"
         visible: showExtraButtons
         onClicked: {
             plasmoid.nativeInterface.showOwnDeviceId()
@@ -206,7 +206,7 @@ RowLayout {
     }
     ToolButton {
         id: showLogButton
-        icon.source: "image://fa/file-text"
+        icon.source: plasmoid.nativeInterface.faUrl + "file-text"
         visible: showExtraButtons
         onClicked: {
             plasmoid.nativeInterface.showLog()
@@ -222,7 +222,7 @@ RowLayout {
     }
     ToolButton {
         id: rescanAllDirsButton
-        icon.source: "image://fa/refresh"
+        icon.source: plasmoid.nativeInterface.faUrl + "refresh"
         onClicked: plasmoid.nativeInterface.connection.rescanAllDirs()
         PlasmaComponents3.ToolTip {
             text: qsTr("Rescan all directories")
@@ -234,7 +234,7 @@ RowLayout {
     }
     ToolButton {
         id: settingsButton
-        icon.source: "image://fa/cog"
+        icon.source: plasmoid.nativeInterface.faUrl + "cog"
         visible: showExtraButtons
         onClicked: {
             plasmoid.nativeInterface.showSettingsDlg()
@@ -250,7 +250,7 @@ RowLayout {
     }
     ToolButton {
         id: webUIButton
-        icon.source: "image://fa/syncthing"
+        icon.source: plasmoid.nativeInterface.faUrl + "syncthing"
         onClicked: {
             plasmoid.nativeInterface.showWebUI()
             plasmoid.expanded = false

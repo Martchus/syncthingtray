@@ -66,7 +66,7 @@ static inline QPalette paletteFromTheme(const Plasma::Theme &theme)
 
 SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     : Applet(parent, data)
-    , m_palette(paletteFromTheme(m_theme))
+    , m_faUrl(QStringLiteral("image://fa/"))
     , m_iconManager(IconManager::instance(&m_palette))
     , m_aboutDlg(nullptr)
     , m_connection()
@@ -555,10 +555,17 @@ void Plasmoid::SyncthingApplet::handleImageProviderDestroyed()
 
 void SyncthingApplet::handleThemeChanged()
 {
-    IconManager::instance().setPalette(paletteFromTheme(m_theme));
-    if (m_imageProvider) {
-        m_imageProvider->setDefaultColor(m_theme.color(Plasma::Theme::TextColor, Plasma::Theme::NormalColorGroup));
-    }
+    // unset the fa-URL to provoke Qt Quick to reload the images
+    emit faUrlChanged(m_faUrl = QString());
+
+    // return to the event loop before setting the new theme color; otherwise Qt Quick does not update the images
+    QTimer::singleShot(0, this, [this] {
+        IconManager::instance().setPalette(paletteFromTheme(m_theme));
+        if (m_imageProvider) {
+            m_imageProvider->setDefaultColor(m_theme.color(Plasma::Theme::TextColor, Plasma::Theme::NormalColorGroup));
+        }
+        emit faUrlChanged(m_faUrl = QStringLiteral("image://fa/"));
+    });
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

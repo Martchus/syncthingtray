@@ -46,7 +46,7 @@ Item {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             height: parent.height
                             fillMode: Image.PreserveAspectFit
-                            source: "image://fa/calendar"
+                            source: plasmoid.nativeInterface.faUrl + "calendar"
                         }
                         PlasmaComponents3.Label {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
@@ -62,7 +62,7 @@ Item {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             height: parent.height
                             fillMode: Image.PreserveAspectFit
-                            source: "image://fa/qrcode"
+                            source: plasmoid.nativeInterface.faUrl + "qrcode"
                         }
                         PlasmaComponents3.Label {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
@@ -78,7 +78,7 @@ Item {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             height: parent.height
                             fillMode: Image.PreserveAspectFit
-                            source: itemType === "file" ? "image://fa/file-o" : "image://fa/folder-o"
+                            source: plasmoid.nativeInterface.faUrl + (itemType === "file" ? "file-o" : "folder-o")
                         }
                         PlasmaComponents3.Label {
                             text: directoryId + ": "

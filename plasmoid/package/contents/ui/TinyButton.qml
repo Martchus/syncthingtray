@@ -16,6 +16,7 @@ PlasmaComponents3.ToolButton {
     }
     contentItem: Image {
         source: root.icon.source
+        cache: false
         height: parent.height
         fillMode: Image.PreserveAspectFit
     }

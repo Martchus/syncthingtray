@@ -21,6 +21,7 @@ Item {
             Layout.preferredWidth: 16
             Layout.preferredHeight: 16
             height: 16
+            cache: false
             fillMode: Image.PreserveAspectFit
         }
         PlasmaComponents3.Label {

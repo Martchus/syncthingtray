@@ -7,17 +7,17 @@ RowLayout {
     property string context: "?"
 
     IconLabel {
-        iconSource: "image://fa/file-o"
+        iconSource: plasmoid.nativeInterface.faUrl + "file-o"
         text: statistics.files !== undefined ? statistics.files : "?"
         tooltip: context + qsTr(" files")
     }
     IconLabel {
-        iconSource: "image://fa/folder-o"
+        iconSource: plasmoid.nativeInterface.faUrl + "folder-o"
         text: statistics.dirs !== undefined ? statistics.dirs : "?"
         tooltip: context + qsTr(" directories")
     }
     IconLabel {
-        iconSource: "image://fa/hdd-o"
+        iconSource: plasmoid.nativeInterface.faUrl + "hdd-o"
         text: statistics.bytes !== undefined ? plasmoid.nativeInterface.formatFileSize(
                                                    statistics.bytes) : "?"
         tooltip: context + qsTr(" size")
