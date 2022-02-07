@@ -303,7 +303,8 @@ ForkAwesomeIcons::ForkAwesomeIcons(QtForkAwesome::Renderer &renderer, const QCol
 IconManager::IconManager(const QPalette *palette)
     : m_statusIcons()
     , m_trayIcons(m_statusIcons)
-    , m_commonForkAwesomeIcons(m_forkAwesomeRenderer, (palette ? *palette : QGuiApplication::palette()).color(QPalette::Normal, QPalette::Text), QSize(64, 64))
+    , m_commonForkAwesomeIcons(
+          m_forkAwesomeRenderer, (palette ? *palette : QGuiApplication::palette()).color(QPalette::Normal, QPalette::Text), QSize(64, 64))
 {
 #ifdef __GNUC__
 #pragma GCC diagnostic push
