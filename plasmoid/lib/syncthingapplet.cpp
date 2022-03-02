@@ -32,6 +32,8 @@
 #include <KConfigGroup>
 
 #include <Plasma/Theme>
+#include <plasma/plasma_export.h>
+#include <plasma_version.h>
 
 #include <QClipboard>
 #include <QDesktopServices>
@@ -51,9 +53,20 @@ using namespace QtGui;
 
 namespace Plasmoid {
 
+static inline QPalette paletteFromTheme(const Plasma::Theme &theme)
+{
+#if 0 && PLASMA_VERSION_MAJOR >= 5 && PLASMA_VERSION_MINOR >= 68
+    return theme.palette();
+#else
+    auto p = QPalette();
+    p.setColor(QPalette::Normal, QPalette::Text, theme.color(Plasma::Theme::TextColor));
+    return p;
+#endif
+}
+
 SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     : Applet(parent, data)
-    , m_palette(m_theme.palette())
+    , m_palette(paletteFromTheme(m_theme))
     , m_iconManager(IconManager::instance(&m_palette))
     , m_aboutDlg(nullptr)
     , m_connection()
@@ -540,7 +553,7 @@ void Plasmoid::SyncthingApplet::handleImageProviderDestroyed()
 
 void SyncthingApplet::handleThemeChanged()
 {
-    IconManager::instance().setPalette(m_theme.palette());
+    IconManager::instance().setPalette(paletteFromTheme(m_theme));
     if (m_imageProvider) {
         m_imageProvider->setDefaultColor(m_theme.color(Plasma::Theme::TextColor, Plasma::Theme::NormalColorGroup));
     }
