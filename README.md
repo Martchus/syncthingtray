@@ -560,6 +560,11 @@ section.
     * This feature relies especially on the system being correctly configured. Checkout the *Required system configuration* section
       for details.
 
+## License
+All code is licensed under [GPL-2-or-later](LICENSE). This does *not* apply to
+code contained in Git repositories included as Git submodule (which contain
+their own README and licensing information).
+
 ## Attribution for 3rd party content
 * Some icons are taken from the Syncthing project.
 * Some icons are taken from [Fork Awesome](https://forkaweso.me/Fork-Awesome) (see [their license](https://forkaweso.me/Fork-Awesome/license)).
