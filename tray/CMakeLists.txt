@@ -88,6 +88,7 @@ set(REQUIRED_ICONS
     system-run
     system-search
     system-file-manager
+    text-x-generic
     view-refresh
     window-close)
 

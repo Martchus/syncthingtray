@@ -61,9 +61,7 @@ Item {
     Component.onCompleted: {
         plasmoid.nativeInterface.initEngine(this)
         plasmoid.removeAction("configure")
-        plasmoid.setAction(
-                    "showWebUI", qsTr("Open Syncthing"),
-                    ":/icons/hicolor/scalable/status/syncthing-default.svg")
+        plasmoid.setAction("showWebUI", qsTr("Open Syncthing"), "syncthing")
         plasmoid.setAction("configure", qsTr("Settings"), "configure")
         plasmoid.setAction("rescanAllDirs", qsTr("Rescan all directories"),
                            "folder-sync")
