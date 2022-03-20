@@ -88,67 +88,67 @@
 <context>
     <name>QtGui::TrayIcon</name>
     <message>
-        <location filename="../gui/trayicon.cpp" line="53"/>
+        <location filename="../gui/trayicon.cpp" line="54"/>
         <source>Open Syncthing</source>
         <translation>打开 Syncthing</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="56"/>
+        <location filename="../gui/trayicon.cpp" line="58"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="60"/>
+        <location filename="../gui/trayicon.cpp" line="62"/>
         <source>Rescan all</source>
         <translation>全部重新扫描</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="62"/>
+        <location filename="../gui/trayicon.cpp" line="66"/>
         <source>Log</source>
         <translation>日志</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="65"/>
+        <location filename="../gui/trayicon.cpp" line="70"/>
         <source>Show internal errors</source>
         <translation>显示内部错误</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="70"/>
+        <location filename="../gui/trayicon.cpp" line="75"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="75"/>
+        <location filename="../gui/trayicon.cpp" line="80"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="170"/>
+        <location filename="../gui/trayicon.cpp" line="175"/>
         <source>Disconnected from Syncthing</source>
         <translation>从 Syncthing 断开连接</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="208"/>
+        <location filename="../gui/trayicon.cpp" line="213"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="227"/>
+        <location filename="../gui/trayicon.cpp" line="232"/>
         <source>Launcher error</source>
         <translation>启动器错误</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="243"/>
+        <location filename="../gui/trayicon.cpp" line="248"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation>Syncthing 通知 - 点击解除</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="273"/>
+        <location filename="../gui/trayicon.cpp" line="278"/>
         <source>Syncthing device wants to connect - click for web UI</source>
         <translation>Syncthing 设备想要连接 - 点击打开网页 UI</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="289"/>
+        <location filename="../gui/trayicon.cpp" line="294"/>
         <source>New Syncthing directory - click for web UI</source>
         <translation>新 Syncthing 目录 - 点击打开网页 UI</translation>
     </message>
