@@ -339,42 +339,42 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="65"/>
+        <location filename="../package/contents/ui/main.qml" line="64"/>
         <source>Open Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="67"/>
+        <location filename="../package/contents/ui/main.qml" line="65"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="68"/>
+        <location filename="../package/contents/ui/main.qml" line="66"/>
         <source>Rescan all directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="70"/>
+        <location filename="../package/contents/ui/main.qml" line="68"/>
         <source>Show own device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="72"/>
+        <location filename="../package/contents/ui/main.qml" line="70"/>
         <source>Restart Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="74"/>
+        <location filename="../package/contents/ui/main.qml" line="72"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="75"/>
+        <location filename="../package/contents/ui/main.qml" line="73"/>
         <source>Internal errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="77"/>
+        <location filename="../package/contents/ui/main.qml" line="75"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>

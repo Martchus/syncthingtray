@@ -393,42 +393,42 @@
         <translation type="vanished">Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="65"/>
+        <location filename="../package/contents/ui/main.qml" line="64"/>
         <source>Open Syncthing</source>
         <translation>Syncthing öffnen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="67"/>
+        <location filename="../package/contents/ui/main.qml" line="65"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="70"/>
+        <location filename="../package/contents/ui/main.qml" line="68"/>
         <source>Show own device ID</source>
         <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="74"/>
+        <location filename="../package/contents/ui/main.qml" line="72"/>
         <source>Log</source>
         <translation>Log</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="75"/>
+        <location filename="../package/contents/ui/main.qml" line="73"/>
         <source>Internal errors</source>
         <translation>Interne Fehler</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="68"/>
+        <location filename="../package/contents/ui/main.qml" line="66"/>
         <source>Rescan all directories</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="72"/>
+        <location filename="../package/contents/ui/main.qml" line="70"/>
         <source>Restart Syncthing</source>
         <translation>Syncthing neustarten</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="77"/>
+        <location filename="../package/contents/ui/main.qml" line="75"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
