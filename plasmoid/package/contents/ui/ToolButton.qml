@@ -6,7 +6,6 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 PlasmaComponents3.ToolButton {
     id: root
     Layout.fillHeight: true
-    Layout.preferredHeight: units.iconSizes.smallMedium
     contentItem: Grid {
         columns: 2
         columnSpacing: label.visible ? units.smallSpacing : 0
