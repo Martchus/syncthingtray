@@ -120,6 +120,8 @@ QVariant SyncthingRecentChangesModel::data(const QModelIndex &index, int role) c
                 % QString::fromStdString(change.fileChange.eventTime.toString(DateTimeOutputFormat::DateAndTime, true)));
         case 1:
             return change.deviceId.isEmpty() ? change.fileChange.modifiedBy : change.deviceId;
+        case 2:
+            return change.directoryId;
         case 3:
             return change.fileChange.path; // usually too long so add a tooltip
         }

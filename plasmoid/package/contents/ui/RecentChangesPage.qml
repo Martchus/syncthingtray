@@ -98,6 +98,9 @@ Item {
                 function copyDeviceId() {
                     plasmoid.nativeInterface.copyToClipboard(modifiedBy)
                 }
+                function copyFolderId() {
+                    plasmoid.nativeInterface.copyToClipboard(folderId)
+                }
             }
 
             PlasmaComponents.Menu {
@@ -111,6 +114,11 @@ Item {
                     text: qsTr("Copy device ID")
                     icon: "network-server-symbolic"
                     onClicked: recentChangesView.currentItem.copyDeviceId()
+                }
+                PlasmaComponents.MenuItem {
+                    text: qsTr("Copy directory ID")
+                    icon: "folder"
+                    onClicked: recentChangesView.currentItem.copyFolderId()
                 }
             }
         }
