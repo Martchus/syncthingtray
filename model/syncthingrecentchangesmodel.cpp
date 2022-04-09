@@ -101,7 +101,7 @@ QVariant SyncthingRecentChangesModel::data(const QModelIndex &index, int role) c
         case 1:
             return change.deviceName.isEmpty() ? change.fileChange.modifiedBy : change.deviceName;
         case 2:
-            return change.directoryId;
+            return change.directoryName.isEmpty() ? change.directoryId : change.directoryName;
         case 3:
             return change.fileChange.path;
         }
