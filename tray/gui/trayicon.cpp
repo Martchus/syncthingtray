@@ -202,17 +202,19 @@ void TrayIcon::showInternalError(
     if (!InternalError::isRelevant(trayMenu().widget().connection(), category, networkError)) {
         return;
     }
-    InternalError error(errorMessage, request.url(), response);
+    auto error = InternalError(errorMessage, request.url(), response);
+    if (Settings::values().notifyOn.internalErrors) {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-    if (m_dbusNotificationsEnabled) {
-        m_dbusNotifier.showInternalError(error);
-    } else
+        if (m_dbusNotificationsEnabled) {
+            m_dbusNotifier.showInternalError(error);
+        } else
 #endif
-    {
-        m_messageClickedAction = TrayIconMessageClickedAction::ShowInternalErrors;
-        showMessage(tr("Error"), errorMessage, QSystemTrayIcon::Critical);
+        {
+            m_messageClickedAction = TrayIconMessageClickedAction::ShowInternalErrors;
+            showMessage(tr("Error"), errorMessage, QSystemTrayIcon::Critical);
+        }
     }
-    InternalErrorsDialog::addError(move(error));
+    InternalErrorsDialog::addError(std::move(error));
 #ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     trayMenu().widget().showInternalErrorsButton();
 #else

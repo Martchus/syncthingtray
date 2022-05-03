@@ -496,9 +496,11 @@ void SyncthingApplet::handleInternalError(
     if (!InternalError::isRelevant(m_connection, category, networkError)) {
         return;
     }
-    InternalError error(errorMsg, request.url(), response);
-    m_dbusNotifier.showInternalError(error);
-    InternalErrorsDialog::addError(move(error));
+    auto error = InternalError(errorMsg, request.url(), response);
+    if (Settings::values().notifyOn.internalErrors) {
+        m_dbusNotifier.showInternalError(error);
+    }
+    InternalErrorsDialog::addError(std::move(error));
     if (!m_hasInternalErrors) {
         emit hasInternalErrorsChanged(m_hasInternalErrors = true);
     }

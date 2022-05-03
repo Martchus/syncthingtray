@@ -23,12 +23,6 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
         return false;
     }
 
-    // ignore errors when disabled in settings
-    const auto &settings = Settings::values();
-    if (!settings.notifyOn.internalErrors) {
-        return false;
-    }
-
     // skip further considerations if connection is remote
     if (!connection.isLocal()) {
         return true;
@@ -38,6 +32,7 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
     const auto remoteHostClosed(networkError == QNetworkReply::RemoteHostClosedError || networkError == QNetworkReply::ProxyConnectionClosedError);
     // ignore "remote host closed" error if we've just stopped Syncthing ourselves
     const auto *launcher(SyncthingLauncher::mainInstance());
+    const auto &settings = Settings::values();
     if (settings.launcher.considerForReconnect && remoteHostClosed && launcher && launcher->isManuallyStopped()) {
         return false;
     }
