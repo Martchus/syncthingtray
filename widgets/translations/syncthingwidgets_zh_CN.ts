@@ -825,9 +825,13 @@
         <translation>断连</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="29"/>
         <source>internal errors</source>
-        <translation>内部错误</translation>
+        <translation type="vanished">内部错误</translation>
+    </message>
+    <message>
+        <location filename="../settings/notificationsoptionpage.ui" line="29"/>
+        <source>internal errors (if disabled connection errors are only shown within &quot;Internal errors&quot; accessible from the menu!)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="36"/>

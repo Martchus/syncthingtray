@@ -828,7 +828,7 @@
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="29"/>
-        <source>internal errors</source>
+        <source>internal errors (if disabled connection errors are only shown within &quot;Internal errors&quot; accessible from the menu!)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1026,15 +1026,6 @@
     <message numerus="yes">
         <location filename="../misc/statusinfo.cpp" line="140"/>
         <source>Connected to %1 devices</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="143"/>
-        <source>Connected to %1 and %2 other devices</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>

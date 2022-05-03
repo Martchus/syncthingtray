@@ -825,11 +825,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="29"/>
-        <source>internal errors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../settings/notificationsoptionpage.ui" line="36"/>
         <source>errors/notifications from Syncthing</source>
         <translation type="unfinished"></translation>
@@ -877,6 +872,11 @@
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="94"/>
         <source>&amp;Method provided by Qt (might be overridden by QPA plugin)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/notificationsoptionpage.ui" line="29"/>
+        <source>internal errors (if disabled connection errors are only shown within &quot;Internal errors&quot; accessible from the menu!)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -937,9 +937,8 @@
         <translation>die Verbindung zu Syncthing getrennt wird</translation>
     </message>
     <message>
-        <location filename="../settings/notificationsoptionpage.ui" line="29"/>
         <source>internal errors</source>
-        <translation>interne Fehler auftreten</translation>
+        <translation type="vanished">interne Fehler auftreten</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="36"/>
@@ -990,6 +989,11 @@
         <location filename="../settings/notificationsoptionpage.ui" line="94"/>
         <source>&amp;Method provided by Qt (might be overridden by QPA plugin)</source>
         <translation>Methode die von Qt verwendet wird (kann vom QPA-Plugin überschrieben werden)</translation>
+    </message>
+    <message>
+        <location filename="../settings/notificationsoptionpage.ui" line="29"/>
+        <source>internal errors (if disabled connection errors are only shown within &quot;Internal errors&quot; accessible from the menu!)</source>
+        <translation type="unfinished">interne Fehler auftreten (wenn deaktiviert werden Verbindungsfehler nur noch unter &quot;Interne Fehler&quot; angezeigt!)</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="104"/>
