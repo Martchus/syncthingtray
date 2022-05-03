@@ -26,7 +26,7 @@
       <item>
        <widget class="QCheckBox" name="notifyOnErrorsCheckBox">
         <property name="text">
-         <string>internal errors</string>
+         <string>internal errors (if disabled connection errors are only shown within &quot;Internal errors&quot; accessible from the menu!)</string>
         </property>
        </widget>
       </item>
