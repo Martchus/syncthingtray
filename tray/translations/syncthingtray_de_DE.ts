@@ -174,8 +174,8 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="71"/>
-        <location filename="../gui/traywidget.cpp" line="733"/>
-        <location filename="../gui/traywidget.cpp" line="775"/>
+        <location filename="../gui/traywidget.cpp" line="736"/>
+        <location filename="../gui/traywidget.cpp" line="778"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
@@ -373,18 +373,23 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Geräte-ID kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="729"/>
-        <location filename="../gui/traywidget.cpp" line="769"/>
+        <location filename="../gui/traywidget.cpp" line="601"/>
+        <source>Copy directory ID</source>
+        <translation>Verzeichnis-ID kopieren</translation>
+    </message>
+    <message>
+        <location filename="../gui/traywidget.cpp" line="732"/>
+        <location filename="../gui/traywidget.cpp" line="772"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="730"/>
+        <location filename="../gui/traywidget.cpp" line="733"/>
         <source>Stop Syncthing instance launched via tray icon</source>
         <translation>Stoppe Syncthing-Instanz, die mit dem internen Starter gestartet wurde</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="734"/>
+        <location filename="../gui/traywidget.cpp" line="737"/>
         <source>Start Syncthing with the built-in launcher configured in the settings</source>
         <translation>Starte Syncthing mit dem eingebauten Starter, der in den Einstellungen konfiguriert wird</translation>
     </message>

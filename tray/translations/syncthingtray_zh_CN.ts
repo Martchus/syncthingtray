@@ -168,8 +168,8 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="71"/>
-        <location filename="../gui/traywidget.cpp" line="733"/>
-        <location filename="../gui/traywidget.cpp" line="775"/>
+        <location filename="../gui/traywidget.cpp" line="736"/>
+        <location filename="../gui/traywidget.cpp" line="778"/>
         <source>Start</source>
         <translation>启动</translation>
     </message>
@@ -372,18 +372,23 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>复制设备 ID</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="729"/>
-        <location filename="../gui/traywidget.cpp" line="769"/>
+        <location filename="../gui/traywidget.cpp" line="601"/>
+        <source>Copy directory ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/traywidget.cpp" line="732"/>
+        <location filename="../gui/traywidget.cpp" line="772"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="730"/>
+        <location filename="../gui/traywidget.cpp" line="733"/>
         <source>Stop Syncthing instance launched via tray icon</source>
         <translation>停止通过托盘图标启动 Syncthing 实例</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="734"/>
+        <location filename="../gui/traywidget.cpp" line="737"/>
         <source>Start Syncthing with the built-in launcher configured in the settings</source>
         <translation>使用设置中配置的内置启动器启动 Syncthing</translation>
     </message>
