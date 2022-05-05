@@ -240,13 +240,17 @@ See the release section on GitHub.
         * `syncthingfileitemaction`: Dolphin/KIO integration
         * `syncthingctl`: command-line interface
 * Other GNU/Linux systems
-    * [AppImage repository for releases on the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage/AppImage)
-    * [AppImage repository for builds from Git master the openSUSE Build Service](https://download.opensuse.org/repositories/home:/mkittler:/appimage:/vcs/AppImage/)
+    * for generic, self-contained binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
+        * Requires glibc>=2.26, OpenGL and libX11
+            * openSUSE Leap 15, Fedora 27, Debian 10 and Ubuntu 18.04 are recent enough (be sure
+              the package `libopengl0` is installed on Debian/Ubuntu)
+        * Supports X11 and Wayland (set the environment variable `QT_QPA_PLATFORM=xcb` to disable
+          native Wayland support if it does not work on your system)
 * Windows
-    * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
     * for binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
-        * the Qt 6 based version is stable and preferable but only supports Windows 10
+        * the Qt 6 based version is stable and preferable but only supports Windows 10 and newer
         * the Qt 5 based version should still work on older versions down to Windows 7 although this is not regularly checked
+    * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
 * NixOS
     * the package syncthingtray is available from the official repositories
 * FreeBSD
