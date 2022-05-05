@@ -20,7 +20,6 @@ PlasmaComponents3.ToolButton {
             id: label
             visible: text.length > 0
             text: root.text
-            font: root.parent.font
             color: PlasmaCore.ColorScope.textColor
             elide: Text.ElideRight
             Layout.fillWidth: true

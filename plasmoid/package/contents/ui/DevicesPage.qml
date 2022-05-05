@@ -4,13 +4,12 @@ import QtQml.Models 2.2
 import org.kde.plasma.components 2.0 as PlasmaComponents  // for Menu and MenuItem
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 Item {
     property alias view: deviceView
     objectName: "DevicesPage"
 
-    PlasmaExtras.ScrollArea {
+    PlasmaComponents3.ScrollView {
         anchors.fill: parent
 
         TopLevelView {

@@ -24,7 +24,6 @@ PlasmaComponents3.TabButton {
             id: label
             visible: text.length > 0
             text: root.text
-            font: root.parent.font
             color: PlasmaCore.ColorScope.textColor
             elide: Text.ElideRight
             Layout.fillHeight: true

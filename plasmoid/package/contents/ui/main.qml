@@ -17,12 +17,7 @@ Item {
     Plasmoid.icon: "syncthingtray"
     Plasmoid.toolTipMainText: plasmoid.nativeInterface.statusText
     Plasmoid.toolTipSubText: plasmoid.nativeInterface.additionalStatusText
-    Plasmoid.toolTipItem: ToolTipView {
-        Layout.minimumWidth: item ? item.width : 0
-        Layout.maximumWidth: item ? item.width : 0
-        Layout.minimumHeight: item ? item.height : 0
-        Layout.maximumHeight: item ? item.height : 0
-    }
+    Plasmoid.toolTipItem: ToolTipView {}
 
     Plasmoid.hideOnWindowDeactivate: true
 
