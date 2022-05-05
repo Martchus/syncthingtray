@@ -8,8 +8,6 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 Item {
     property alias view: downloadView
-    anchors.fill: parent
-
     objectName: "DownloadsPage"
 
     PlasmaExtras.ScrollArea {

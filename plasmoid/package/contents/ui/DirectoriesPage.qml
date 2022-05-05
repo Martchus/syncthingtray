@@ -10,7 +10,6 @@ import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
 ColumnLayout {
     property alias view: directoryView
     property alias filter: filter
-    anchors.fill: parent
     objectName: "DirectoriesPage"
 
     PlasmaComponents3.TextField {

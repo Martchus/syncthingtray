@@ -8,7 +8,6 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 Item {
     property alias view: recentChangesView
-    anchors.fill: parent
     objectName: "RecentChangesPage"
 
     PlasmaExtras.ScrollArea {

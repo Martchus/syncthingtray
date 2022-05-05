@@ -8,8 +8,6 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 Item {
     property alias view: deviceView
-
-    anchors.fill: parent
     objectName: "DevicesPage"
 
     PlasmaExtras.ScrollArea {
