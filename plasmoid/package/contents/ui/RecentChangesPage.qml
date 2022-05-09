@@ -12,9 +12,11 @@ Item {
     PlasmaComponents3.ScrollView {
         anchors.fill: parent
 
-        TopLevelView {
+        // HACK: workaround for https://bugreports.qt.io/browse/QTBUG-83890
+        PlasmaComponents3.ScrollBar.horizontal.policy: PlasmaComponents3.ScrollBar.AlwaysOff
+
+        contentItem: TopLevelView {
             id: recentChangesView
-            width: parent.width
             model: plasmoid.nativeInterface.recentChangesModel
             delegate: TopLevelItem {
                 width: recentChangesView.width

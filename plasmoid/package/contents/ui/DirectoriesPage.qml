@@ -25,9 +25,11 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        TopLevelView {
+        // HACK: workaround for https://bugreports.qt.io/browse/QTBUG-83890
+        PlasmaComponents3.ScrollBar.horizontal.policy: PlasmaComponents3.ScrollBar.AlwaysOff
+
+        contentItem: TopLevelView {
             id: directoryView
-            width: parent.width
             model: plasmoid.nativeInterface.sortFilterDirModel
 
             delegate: TopLevelItem {
