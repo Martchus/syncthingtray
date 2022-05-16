@@ -287,9 +287,13 @@ section *Select Qt module for WebView*).
 To build the plugin for Dolphin integration KIO is also required. Additionally, the Dolphin plugin requires
 Qt 5.8 or newer. To skip building the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
 
-To build the Plasmoid for the Plasma 5 desktop, the Qt module QML and the KF5 module Plasma are required as
-well. Additionally, the Plasmoid requires Qt 5.12 or newer. To skip building the Plasmoid, add
+To build the Plasmoid for the Plasma desktop, the Qt module QML and the KDE Frameworks module Plasma are
+required as well. Additionally, the Plasmoid requires Qt 5.15 or newer. To skip building the Plasmoid, add
 `-DNO_PLASMOID:BOOL=ON` to the CMake arguments.
+
+To specify the major Qt version to use, set `QT_PACKAGE_PREFIX` (e.g. add `-DQT_PACKAGE_PREFIX:STRING=Qt6`
+to the CMake arguments). There's also `KF_PACKAGE_PREFIX` for KDE dependencies. Note that KDE integrations
+always require the same major Qt version as your KDE installation uses.
 
 ---
 
