@@ -21,26 +21,28 @@ distributors. For a list with links, checkout the *Download* section of this doc
 GitHub only contains a fraction of the available options.
 
 ## Supported platforms
-* Designed to work under any desktop environment supported by Qt with tray icon support (can be shown as regular window if tray icon support is not available)
+* Designed to work under any desktop environment supported by Qt with tray icon support (can be shown as
+  regular window if tray icon support is not available)
 * No desktop environment specific libraries required (only for optional features/integrations)
-* Tested under
-    * X Window System
-        * Plasma 5 (beside Qt Widgets based version there is a native "Plasmoid")
-        * Openbox/lxqt/LXDE
-        * Openbox/qt5ct/Tint2
-        * Awesome/qt5ct
-        * Cinnamon (native look and feel using [adwaita-qt](https://github.com/FedoraQt/adwaita-qt))
-        * Deepin Desktop Environment
-        * Xfce
-    * Wayland
-        * Plasma 5
-        * Sway/Swaybar/Waybar
+* Known to work under
+    * Plasma
+    * Openbox/lxqt/LXDE
+    * Openbox/qt5ct/Tint2
+    * Awesome/qt5ct
+    * Cinnamon (native look and feel using [adwaita-qt](https://github.com/FedoraQt/adwaita-qt))
+    * Deepin Desktop Environment
+    * Xfce
+    * Sway/Swaybar/Waybar
     * Windows 10
     * macOS 10.14 Mojave
 
-If you can confirm it works under other desktop environments, please add it to the list.
-The section "Known bugs and workarounds" below contains information and workarounds for
-certain caveats.
+For Plasma, there's (in addition to the Qt Widgets based version) also a
+"native" Plasmoid. Note that the latest version of Syncthing Tray generally also
+requires the latest version of Plasma as no testing on earlier versions is done.
+Use the Qt Widgets based version on older Plasma versions.
+
+The section "Known bugs and workarounds" below contains information and
+workarounds for certain caveats.
 
 ## Features
 * Provides quick access to most frequently used features but does not intend to replace the official web UI
