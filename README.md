@@ -578,6 +578,8 @@ code contained in Git repositories included as Git submodule (which contain
 their own README and licensing information).
 
 ## Attribution for 3rd party content
-* Some icons are taken from the Syncthing project.
-* Some icons are taken from [Fork Awesome](https://forkaweso.me/Fork-Awesome) (see [their license](https://forkaweso.me/Fork-Awesome/license)).
-* Fallback icons are taken from KDE/Breeze project.
+* Some icons are taken from [Fork Awesome](https://forkaweso.me/Fork-Awesome) (see [their license](https://forkaweso.me/Fork-Awesome/license)). These are provided via [qtforkawesome](https://github.com/Martchus/qtforkawesome).
+* The Syncthing icons are taken from the [Syncthing](https://github.com/syncthing/syncthing) project.
+* All other icons found in this repository are taken from the [KDE/Breeze](https://invent.kde.org/frameworks/breeze-icons) project.
+
+None of these icons have been (intentionally) modified so no copyright for modifications is asserted.
