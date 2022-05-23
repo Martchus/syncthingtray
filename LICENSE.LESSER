@@ -1,4 +1,7 @@
-The Breeze Icon Theme in icons/
+Files: tray/resources/icons/*
+       widgets/resources/icons/*
+
+This subset of The Breeze Icon Theme is
 
     Copyright (C) 2014 Uri Herrera <uri_herrera@nitrux.in> and others
 
