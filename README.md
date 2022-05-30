@@ -93,9 +93,10 @@ Syncthing installation. You might consider different configurations:
   running Syncthing instance in the settings. If you're currently starting Syncthing via systemd you might consider
   enabling the systemd integration in the settings (see section *Configuring systemd integration*).
 * If you would like Syncthing Tray to take care of starting Syncthing for you, you can use the Syncthing launcher
-  available in the settings.
-    * The Windows builds provided in the release section on GitHub come with a built-in version of Syncthing
-      which you can consider to use. Keep in mind that automatic updates of Syncthing are not possible this way.
+  available in the settings. Note that this is *not* supported when using the Plasmoid.
+    * The Linux and Windows builds provided in the release section on GitHub come with a built-in version of
+      Syncthing which you can consider to use. Keep in mind that automatic updates of Syncthing are not possible this
+      way.
     * In any case you can simply point the launcher to the binary of Syncthing (which you have to download/install
       separately).
     * Checkout the *Configuring the built-in launcher* section for further details.
