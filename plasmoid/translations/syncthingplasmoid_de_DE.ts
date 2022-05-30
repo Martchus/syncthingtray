@@ -12,23 +12,23 @@
 <context>
     <name>DevicesPage</name>
     <message>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="63"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="64"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="63"/>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="115"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="64"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="116"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="101"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="102"/>
         <source>Copy name</source>
         <translation>Namen kopieren</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="106"/>
+        <location filename="../package/contents/ui/DevicesPage.qml" line="107"/>
         <source>Copy ID</source>
         <translation>ID kopieren</translation>
     </message>
@@ -141,22 +141,22 @@
         <translation type="vanished">Syncthing öffnen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="240"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="241"/>
         <source>Global</source>
         <translation>Globale</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="247"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="248"/>
         <source>Global incoming traffic</source>
         <translation>Globaler eingehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="264"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="266"/>
         <source>Local</source>
         <translation>Lokale</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="271"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="273"/>
         <source>Global outgoing traffic</source>
         <translation>Globaler ausgehender Datenverkehr</translation>
     </message>
