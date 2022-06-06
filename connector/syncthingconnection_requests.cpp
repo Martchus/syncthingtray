@@ -1535,9 +1535,10 @@ void SyncthingConnection::readDevRejected(DateTime eventTime, const QString &dev
  */
 void SyncthingConnection::readChangeEvent(DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
 {
+    // read ID via "folder" with fallback to "folderID" (which is deprecated since version v1.1.2)
     int index;
-    auto *const dirInfo(findDirInfo(QLatin1String("folderID"), eventData, &index));
-    if (!dirInfo) {
+    auto *dirInfo = findDirInfo(QLatin1String("folder"), eventData, &index);
+    if (!dirInfo && !(dirInfo = findDirInfo(QLatin1String("folderID"), eventData, &index))) {
         return;
     }
 
