@@ -1843,7 +1843,7 @@ void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eve
         return;
     }
 
-    // handle "FolderRejected"-event which is a bit special because here the dir ID is supposed to be unknown
+    // handle "DeviceRejected"-event
     if (eventType == QLatin1String("DeviceRejected")) {
         readDevRejected(eventTime, dev, eventData);
         return;
