@@ -1497,6 +1497,9 @@ void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
 
 /*!
  * \brief Reads data from "FolderRejected"-event.
+ * \remarks "FolderRejected" is deprecated in favor of "PendingFoldersChanged" since Syncthing version v1.13.0
+ *          but still handled for compatibility with older versions. Currently "PendingFoldersChanged" is ignored
+ *          to avoid emitting events twice.
  */
 void SyncthingConnection::readDirRejected(DateTime eventTime, const QString &dirId, const QJsonObject &eventData)
 {
@@ -1516,6 +1519,9 @@ void SyncthingConnection::readDirRejected(DateTime eventTime, const QString &dir
 
 /*!
  * \brief Reads data from "DeviceRejected"-event.
+ * \remarks "DeviceRejected" is deprecated in favor of "PendingDevicesChanged" since Syncthing version v1.13.0
+ *          but still handled for compatibility with older versions. Currently "PendingDevicesChanged" is ignored
+ *          to avoid emitting events twice.
  */
 void SyncthingConnection::readDevRejected(DateTime eventTime, const QString &devId, const QJsonObject &eventData)
 {
