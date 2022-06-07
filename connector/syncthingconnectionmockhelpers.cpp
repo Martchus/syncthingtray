@@ -31,7 +31,7 @@ static string events[7];
 /*!
  * \brief Returns the contents of the specified file and exits with an error message if an error occurs.
  */
-string readMockFile(const string &filePath)
+static string readMockFile(const string &filePath)
 {
     try {
         return readFile(filePath);

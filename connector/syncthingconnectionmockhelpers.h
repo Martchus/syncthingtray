@@ -25,7 +25,7 @@ void setupTestData();
 /*!
  * \brief The MockedReply class provides a fake QNetworkReply which will just return data from a specified buffer.
  */
-class MockedReply : public QNetworkReply {
+class MockedReply final : public QNetworkReply {
     Q_OBJECT
 
 public:
