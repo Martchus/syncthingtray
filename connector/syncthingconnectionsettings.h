@@ -23,7 +23,12 @@ enum class SyncthingStatusComputionFlags : quint64 {
     Synchronizing = (1 << 1), /**< the status SyncthingStatus::Synchronizing might be set (in addition) */
     RemoteSynchronizing = (1 << 2), /**< the status SyncthingStatus::RemoteNotInSync might be set (in addition) */
     DevicePaused = (1 << 3), /**< the status SyncthingStatus::Paused might be set if there's at least one paused device (in addition) */
-    Default = SyncthingStatusComputionFlags::Scanning | SyncthingStatusComputionFlags::Synchronizing | SyncthingStatusComputionFlags::DevicePaused,
+    OutOfSync = (1
+        << 4), /**< the return value of SyncthingConnection::hasOutOfSyncDirs() is considered by further displaying-related computations such as StatusInfo::updateConnectionStatus() */
+    UnreadNotifications = (1
+        << 5), /**< the return value of SyncthingConnection::hasUnreadNotifications() is considered by further displaying-related computations such as StatusInfo::updateConnectionStatus() */
+    Default = SyncthingStatusComputionFlags::Scanning | SyncthingStatusComputionFlags::Synchronizing | SyncthingStatusComputionFlags::DevicePaused
+        | SyncthingStatusComputionFlags::OutOfSync | SyncthingStatusComputionFlags::UnreadNotifications,
     /**< the default flags used all over the place */
 };
 

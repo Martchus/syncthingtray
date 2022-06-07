@@ -25,6 +25,8 @@ SyncthingStatusComputionModel::SyncthingStatusComputionModel(QObject *parent)
         itemFor(SyncthingStatusComputionFlags::Synchronizing),
         itemFor(SyncthingStatusComputionFlags::RemoteSynchronizing),
         itemFor(SyncthingStatusComputionFlags::DevicePaused),
+        itemFor(SyncthingStatusComputionFlags::OutOfSync),
+        itemFor(SyncthingStatusComputionFlags::UnreadNotifications),
     });
 }
 
@@ -39,6 +41,10 @@ QString SyncthingStatusComputionModel::labelForId(const QVariant &id) const
         return tr("Remote dir has outstanding progress");
     case SyncthingStatusComputionFlags::DevicePaused:
         return tr("A device is paused");
+    case SyncthingStatusComputionFlags::OutOfSync:
+        return tr("Local dir is out of sync");
+    case SyncthingStatusComputionFlags::UnreadNotifications:
+        return tr("Unread notification present");
     default:
         return id.toString();
     }

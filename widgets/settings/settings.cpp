@@ -31,6 +31,7 @@
 #include <QSslCertificate>
 #include <QSslError>
 #include <QStringBuilder>
+#include <QVersionNumber>
 
 #include <iostream>
 #include <type_traits>
@@ -263,6 +264,7 @@ void restore()
     settings.sync();
     Settings &v = values();
 
+    const auto version = QVersionNumber::fromString(settings.value(QStringLiteral("v")).toString());
     settings.beginGroup(QStringLiteral("tray"));
     const int connectionCount = settings.beginReadArray(QStringLiteral("connections"));
     auto &primaryConnectionSettings = v.connection.primary;
@@ -303,6 +305,10 @@ void restore()
             if (statusComputionFlags.canConvert<UnderlyingFlagType>()) {
                 connectionSettings->statusComputionFlags
                     = static_cast<Data::SyncthingStatusComputionFlags>(statusComputionFlags.value<UnderlyingFlagType>());
+                if (version < QVersionNumber(1, 2)) {
+                    connectionSettings->statusComputionFlags
+                        += Data::SyncthingStatusComputionFlags::OutOfSync | Data::SyncthingStatusComputionFlags::UnreadNotifications;
+                }
             }
             connectionSettings->httpsCertPath = settings.value(QStringLiteral("httpsCertPath")).toString();
             if (!connectionSettings->loadHttpsCert()) {
@@ -401,6 +407,7 @@ void save()
 
     const Settings &v = values();
 
+    settings.setValue(QStringLiteral("v"), QStringLiteral(APP_VERSION));
     settings.beginGroup(QStringLiteral("tray"));
     const auto &primaryConnectionSettings = v.connection.primary;
     const auto &secondaryConnectionSettings = v.connection.secondary;

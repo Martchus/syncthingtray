@@ -1,6 +1,7 @@
 #include "./statusinfo.h"
 
 #include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingconnectionsettings.h>
 #include <syncthingconnector/syncthingdev.h>
 #include <syncthingconnector/utils.h>
 #include <syncthingmodel/syncthingicons.h>
@@ -53,7 +54,7 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection, c
         m_statusIcon = &icons.disconnected;
         break;
     default:
-        if (connection.hasOutOfSyncDirs()) {
+        if (connection.hasOutOfSyncDirs() && (connection.statusComputionFlags() & SyncthingStatusComputionFlags::OutOfSync)) {
             switch (connection.status()) {
             case SyncthingStatus::Synchronizing:
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Synchronization is ongoing");
@@ -64,7 +65,7 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection, c
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "At least one directory is out of sync");
                 m_statusIcon = &icons.error;
             }
-        } else if (connection.hasUnreadNotifications()) {
+        } else if (connection.hasUnreadNotifications() && (connection.statusComputionFlags() & SyncthingStatusComputionFlags::UnreadNotifications)) {
             m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Notifications available");
             m_statusIcon = &icons.notify;
         } else {
