@@ -93,7 +93,7 @@ set(REQUIRED_ICONS
     window-close)
 
 # find c++utilities
-find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.6.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.16.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities
