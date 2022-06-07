@@ -954,54 +954,54 @@
 <context>
     <name>QtGui::StatusInfo</name>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="17"/>
+        <location filename="../misc/statusinfo.cpp" line="18"/>
         <source>Initializing ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="43"/>
-        <location filename="../misc/statusinfo.cpp" line="47"/>
+        <location filename="../misc/statusinfo.cpp" line="44"/>
+        <location filename="../misc/statusinfo.cpp" line="48"/>
         <source>Not connected to Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="52"/>
+        <location filename="../misc/statusinfo.cpp" line="53"/>
         <source>Reconnecting ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="60"/>
-        <location filename="../misc/statusinfo.cpp" line="64"/>
+        <location filename="../misc/statusinfo.cpp" line="61"/>
+        <location filename="../misc/statusinfo.cpp" line="65"/>
         <source>At least one directory is out of sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="68"/>
+        <location filename="../misc/statusinfo.cpp" line="69"/>
         <source>Notifications available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="73"/>
+        <location filename="../misc/statusinfo.cpp" line="74"/>
         <source>Syncthing is idling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="77"/>
+        <location filename="../misc/statusinfo.cpp" line="78"/>
         <source>Syncthing is scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="81"/>
+        <location filename="../misc/statusinfo.cpp" line="82"/>
         <source>At least one device is paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="89"/>
+        <location filename="../misc/statusinfo.cpp" line="90"/>
         <source>At least one remote directory is not in sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="140"/>
+        <location filename="../misc/statusinfo.cpp" line="141"/>
         <source>Connected to %1 devices</source>
         <translation>
             <numerusform>Connected to %1 device</numerusform>
@@ -1009,15 +1009,14 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="143"/>
         <source>Connected to %1 and %2 other devices</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Connected to %1 and %2 other device</numerusform>
             <numerusform>Connected to %1 and %2 other devices</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="147"/>
+        <location filename="../misc/statusinfo.cpp" line="148"/>
         <source>Connected to %1 and %2</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1025,7 +1024,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="150"/>
+        <location filename="../misc/statusinfo.cpp" line="151"/>
         <source>Connected to %1</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1033,23 +1032,23 @@
         </translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="59"/>
-        <location filename="../misc/statusinfo.cpp" line="85"/>
+        <location filename="../misc/statusinfo.cpp" line="60"/>
+        <location filename="../misc/statusinfo.cpp" line="86"/>
         <source>Synchronization is ongoing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="45"/>
+        <location filename="../misc/statusinfo.cpp" line="46"/>
         <source>Trying to reconnect every %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="93"/>
+        <location filename="../misc/statusinfo.cpp" line="94"/>
         <source>Status is unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="116"/>
+        <location filename="../misc/statusinfo.cpp" line="117"/>
         <source>Not connected to other devices</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1236,7 +1235,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="304"/>
+        <location filename="../settings/settings.cpp" line="316"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation type="unfinished"></translation>
     </message>

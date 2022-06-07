@@ -396,24 +396,34 @@
 <context>
     <name>Data::SyncthingStatusComputionModel</name>
     <message>
-        <location filename="../syncthingstatuscomputionmodel.cpp" line="35"/>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="37"/>
         <source>Local dir is scanning</source>
         <translation>正在扫描本地目录</translation>
     </message>
     <message>
-        <location filename="../syncthingstatuscomputionmodel.cpp" line="37"/>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="39"/>
         <source>Local dir is synchronizing</source>
         <translation>正在同步本地目录</translation>
     </message>
     <message>
-        <location filename="../syncthingstatuscomputionmodel.cpp" line="39"/>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="41"/>
         <source>Remote dir has outstanding progress</source>
         <translation>远程目录有未完成进度</translation>
     </message>
     <message>
-        <location filename="../syncthingstatuscomputionmodel.cpp" line="41"/>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="43"/>
         <source>A device is paused</source>
         <translation>一个设备已暂停</translation>
+    </message>
+    <message>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="45"/>
+        <source>Local dir is out of sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="47"/>
+        <source>Unread notification present</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -958,96 +958,95 @@
 <context>
     <name>QtGui::StatusInfo</name>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="17"/>
+        <location filename="../misc/statusinfo.cpp" line="18"/>
         <source>Initializing ...</source>
         <translation>正在初始化 ...</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="43"/>
-        <location filename="../misc/statusinfo.cpp" line="47"/>
+        <location filename="../misc/statusinfo.cpp" line="44"/>
+        <location filename="../misc/statusinfo.cpp" line="48"/>
         <source>Not connected to Syncthing</source>
         <translation>未连接到 Syncthing</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="45"/>
+        <location filename="../misc/statusinfo.cpp" line="46"/>
         <source>Trying to reconnect every %1 ms</source>
         <translation>尝试每 %1 毫秒重新连接一次</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="52"/>
+        <location filename="../misc/statusinfo.cpp" line="53"/>
         <source>Reconnecting ...</source>
         <translation>重新连接 ...</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="59"/>
-        <location filename="../misc/statusinfo.cpp" line="85"/>
+        <location filename="../misc/statusinfo.cpp" line="60"/>
+        <location filename="../misc/statusinfo.cpp" line="86"/>
         <source>Synchronization is ongoing</source>
         <translation>同步正在进行中</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="60"/>
-        <location filename="../misc/statusinfo.cpp" line="64"/>
+        <location filename="../misc/statusinfo.cpp" line="61"/>
+        <location filename="../misc/statusinfo.cpp" line="65"/>
         <source>At least one directory is out of sync</source>
         <translation>至少有一个目录未同步</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="68"/>
+        <location filename="../misc/statusinfo.cpp" line="69"/>
         <source>Notifications available</source>
         <translation>通知可用</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="73"/>
+        <location filename="../misc/statusinfo.cpp" line="74"/>
         <source>Syncthing is idling</source>
         <translation>Syncthing 空闲中</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="77"/>
+        <location filename="../misc/statusinfo.cpp" line="78"/>
         <source>Syncthing is scanning</source>
         <translation>Syncthing 扫描中</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="81"/>
+        <location filename="../misc/statusinfo.cpp" line="82"/>
         <source>At least one device is paused</source>
         <translation>至少有一个设备已暂停</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="89"/>
+        <location filename="../misc/statusinfo.cpp" line="90"/>
         <source>At least one remote directory is not in sync</source>
         <translation>至少有一个远程目录未同步</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="93"/>
+        <location filename="../misc/statusinfo.cpp" line="94"/>
         <source>Status is unknown</source>
         <translation>状态未知</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="116"/>
+        <location filename="../misc/statusinfo.cpp" line="117"/>
         <source>Not connected to other devices</source>
         <translation>未连接到其他设备</translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="140"/>
+        <location filename="../misc/statusinfo.cpp" line="141"/>
         <source>Connected to %1 devices</source>
         <translation>
             <numerusform>已连接 %1 个设备</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="143"/>
         <source>Connected to %1 and %2 other devices</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>已连接到 %1 和 %2 个其他设备</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="147"/>
+        <location filename="../misc/statusinfo.cpp" line="148"/>
         <source>Connected to %1 and %2</source>
         <translation>
             <numerusform>已连接到 %1 和 %2</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="150"/>
+        <location filename="../misc/statusinfo.cpp" line="151"/>
         <source>Connected to %1</source>
         <translation>
             <numerusform>已连接到 %1</numerusform>
@@ -1241,7 +1240,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="304"/>
+        <location filename="../settings/settings.cpp" line="316"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>还原设置时无法加载证书 &quot;%1&quot;。</translation>
     </message>
