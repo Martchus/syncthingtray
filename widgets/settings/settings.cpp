@@ -62,11 +62,15 @@ QPoint Appearance::Positioning::positionToUse() const
  * \brief Contains the processes for launching extra tools.
  * \remarks Using std::unordered_map instead of QHash because SyncthingProcess can not be copied.
  */
-static unordered_map<QString, SyncthingProcess> toolProcesses;
+static std::unordered_map<QString, SyncthingProcess> &toolProcesses()
+{
+    static auto toolProcesses = std::unordered_map<QString, SyncthingProcess>();
+    return toolProcesses;
+}
 
 SyncthingProcess &Launcher::toolProcess(const QString &tool)
 {
-    return toolProcesses[tool];
+    return toolProcesses()[tool];
 }
 
 static bool isLocalAndMatchesPort(const Data::SyncthingConnectionSettings &settings, int port)
@@ -107,14 +111,15 @@ Data::SyncthingConnection *Launcher::connectionForLauncher(Data::SyncthingLaunch
 
 std::vector<QtGui::ProcessWithConnection> Launcher::allProcesses()
 {
+    auto &tools = toolProcesses();
     auto processes = std::vector<QtGui::ProcessWithConnection>();
-    processes.reserve(1 + toolProcesses.size());
+    processes.reserve(1 + tools.size());
     if (auto *const launcher = SyncthingLauncher::mainInstance()) {
         processes.emplace_back(launcher->process(), connectionForLauncher(launcher));
     } else if (auto *const process = SyncthingProcess::mainInstance()) {
         processes.emplace_back(process);
     }
-    for (auto &[tool, process] : toolProcesses) {
+    for (auto &[tool, process] : tools) {
         processes.emplace_back(&process);
     }
     return processes;
@@ -129,10 +134,11 @@ void Launcher::autostart() const
     if (autostartEnabled && launcher) {
         launcher->launch(*this);
     }
+    auto &toolProcs = toolProcesses();
     for (auto i = tools.cbegin(), end = tools.cend(); i != end; ++i) {
         const ToolParameter &toolParams = i.value();
         if (toolParams.autostart && !toolParams.path.isEmpty()) {
-            toolProcesses[i.key()].startSyncthing(toolParams.path, SyncthingProcess::splitArguments(toolParams.args));
+            toolProcs[i.key()].startSyncthing(toolParams.path, SyncthingProcess::splitArguments(toolParams.args));
         }
     }
 }
