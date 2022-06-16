@@ -166,7 +166,8 @@ int runApplication(int argc, const char *const *argv)
     connectionArg.setRequiredValueCount(Argument::varValueCount);
     ConfigValueArgument configPathArg("config-dir-path", '\0', "specifies the path to the configuration directory", { "path" });
     configPathArg.setEnvironmentVariable(PROJECT_VARNAME_UPPER "_CONFIG_DIR");
-    ConfigValueArgument newInstanceArg("new-instance", '\0', "disable the usual single-process behavior");
+    Argument singleInstance("single-instance", '\0', "does nothing if a tray icon is already shown");
+    Argument newInstanceArg("new-instance", '\0', "disable the usual single-process behavior");
     Argument &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
     widgetsGuiArg.addSubArgument(&windowedArg);
     widgetsGuiArg.addSubArgument(&showWebUiArg);
@@ -174,6 +175,7 @@ int runApplication(int argc, const char *const *argv)
     widgetsGuiArg.addSubArgument(&waitForTrayArg);
     widgetsGuiArg.addSubArgument(&connectionArg);
     widgetsGuiArg.addSubArgument(&configPathArg);
+    widgetsGuiArg.addSubArgument(&singleInstance);
     widgetsGuiArg.addSubArgument(&newInstanceArg);
 
     parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(), &parser.noColorArg(), &parser.helpArg() });
@@ -225,8 +227,14 @@ int runApplication(int argc, const char *const *argv)
     }
 
     // trigger actions if --webui or --trigger is present but don't create a new tray icon
-    if (!TrayWidget::instances().empty() && (showWebUiArg.isPresent() || triggerArg.isPresent())) {
+    const auto firstInstance = TrayWidget::instances().empty();
+    if (!firstInstance && (showWebUiArg.isPresent() || triggerArg.isPresent())) {
         trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
+        return 0;
+    }
+
+    // don't create a new instance if --single-instance has been specified
+    if (!firstInstance && singleInstance.isPresent()) {
         return 0;
     }
 
