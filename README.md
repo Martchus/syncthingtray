@@ -232,6 +232,8 @@ See the release section on GitHub.
               in sync when upgrading.
             * The linked download pages might be incomplete, use the repositories URL for a full
               list.
+            * Old packages might remain as leftovers when upgrading and need to be cleaned up
+              manually, e.g. `zypper rm libsyncthingconnector1_1_20 libsyncthingmodel1_1_20 libsyncthingwidgets1_1_20`.
         * latest releases: [download page](https://software.opensuse.org/download.html?project=home:mkittler&package=syncthingtray),
           [repositories URL](https://download.opensuse.org/repositories/home:/mkittler),
           [project page](https://build.opensuse.org/project/show/home:mkittler)
