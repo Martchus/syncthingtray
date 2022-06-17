@@ -150,25 +150,20 @@ int runApplication(int argc, const char *const *argv)
     SET_APPLICATION_INFO;
     CMD_UTILS_CONVERT_ARGS_TO_UTF8;
     CMD_UTILS_HANDLE_VIRTUAL_TERMINAL_PROCESSING;
-    ArgumentParser parser;
-    // Qt configuration arguments
-    QT_CONFIG_ARGUMENTS qtConfigArgs;
-    Argument windowedArg("windowed", 'w', "opens the tray menu as a regular window");
-    windowedArg.setCombinable(true);
-    Argument showWebUiArg("webui", '\0', "instantly shows the web UI - meant for creating shortcut to web UI");
-    showWebUiArg.setCombinable(true);
-    Argument triggerArg("trigger", '\0', "instantly shows the left-click tray menu - meant for creating a shortcut");
-    triggerArg.setCombinable(true);
-    Argument waitForTrayArg("wait", '\0',
+    auto parser = ArgumentParser();
+    auto qtConfigArgs = QT_CONFIG_ARGUMENTS();
+    auto windowedArg = ConfigValueArgument("windowed", 'w', "opens the tray menu as a regular window");
+    auto showWebUiArg = ConfigValueArgument("webui", '\0', "instantly shows the web UI - meant for creating shortcut to web UI");
+    auto triggerArg = ConfigValueArgument("trigger", '\0', "instantly shows the left-click tray menu - meant for creating a shortcut");
+    auto waitForTrayArg = ConfigValueArgument("wait", '\0',
         "wait until the system tray becomes available instead of showing an error message if the system tray is not available on start-up");
-    waitForTrayArg.setCombinable(true);
-    ConfigValueArgument connectionArg("connection", '\0', "specifies one or more connection configurations to be used", { "config name" });
+    auto connectionArg = ConfigValueArgument("connection", '\0', "specifies one or more connection configurations to be used", { "config name" });
     connectionArg.setRequiredValueCount(Argument::varValueCount);
-    ConfigValueArgument configPathArg("config-dir-path", '\0', "specifies the path to the configuration directory", { "path" });
+    auto configPathArg = ConfigValueArgument("config-dir-path", '\0', "specifies the path to the configuration directory", { "path" });
     configPathArg.setEnvironmentVariable(PROJECT_VARNAME_UPPER "_CONFIG_DIR");
-    Argument singleInstance("single-instance", '\0', "does nothing if a tray icon is already shown");
-    Argument newInstanceArg("new-instance", '\0', "disable the usual single-process behavior");
-    Argument &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
+    auto singleInstance = Argument("single-instance", '\0', "does nothing if a tray icon is already shown");
+    auto newInstanceArg = Argument("new-instance", '\0', "disable the usual single-process behavior");
+    auto &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
     widgetsGuiArg.addSubArgument(&windowedArg);
     widgetsGuiArg.addSubArgument(&showWebUiArg);
     widgetsGuiArg.addSubArgument(&triggerArg);
