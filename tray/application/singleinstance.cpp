@@ -11,11 +11,58 @@
 #include <iostream>
 #include <memory>
 
+#ifdef Q_OS_WINDOWS
+#include <windows.h>
+// needs to be included after windows.h
+#include <sddl.h>
+#else
+#include <unistd.h>
+#endif
+
 using namespace std;
 using namespace CppUtilities;
 using namespace CppUtilities::EscapeCodes;
 
 namespace QtGui {
+
+#ifdef Q_OS_WINDOWS
+static QString getCurrentProcessSIDAsString()
+{
+    auto res = QString();
+    auto processToken = HANDLE();
+    if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &processToken)) {
+        std::cerr << Phrases::Error << "Unable to determine current user: OpenProcessToken failed with " << GetLastError() << Phrases::EndFlush;
+        return res;
+    }
+
+    auto bufferSize = DWORD();
+    if (!GetTokenInformation(processToken, TokenUser, nullptr, 0, &bufferSize) && (GetLastError() != ERROR_INSUFFICIENT_BUFFER)) {
+        std::cerr << Phrases::Error << "Unable to determine current user: GetTokenInformation failed with " << GetLastError() << Phrases::EndFlush;
+        CloseHandle(processToken);
+        return res;
+    }
+    auto buffer = std::vector<BYTE>();
+    buffer.resize(bufferSize);
+
+    auto userToken = reinterpret_cast<PTOKEN_USER>(buffer.data());
+    if (!GetTokenInformation(processToken, TokenUser, userToken, bufferSize, &bufferSize)) {
+        std::cerr << Phrases::Error << "Unable to determine current user: GetTokenInformation failed with " << GetLastError() << Phrases::EndFlush;
+        CloseHandle(processToken);
+        return res;
+    }
+
+    auto stringSid = LPWSTR();
+    if (!ConvertSidToStringSidW(userToken->User.Sid, &stringSid)) {
+        std::cerr << Phrases::Error << "Unable to determine current user: ConvertSidToStringSid failed with " << GetLastError() << Phrases::EndFlush;
+        CloseHandle(processToken);
+        return res;
+    }
+    res = QString::fromWCharArray(stringSid);
+    LocalFree(stringSid);
+    CloseHandle(processToken);
+    return res;
+}
+#endif
 
 SingleInstance::SingleInstance(int argc, const char *const *argv, bool newInstance, QObject *parent)
     : QObject(parent)
@@ -26,7 +73,13 @@ SingleInstance::SingleInstance(int argc, const char *const *argv, bool newInstan
     }
 
     // check for running instance
-    const QString appId(QCoreApplication::applicationName() % QStringLiteral(" by ") % QCoreApplication::organizationName());
+    static const auto appId = QString(QCoreApplication::applicationName() % QChar('-') % QCoreApplication::organizationName() % QChar('-') %
+#ifdef Q_OS_WINDOWS
+        getCurrentProcessSIDAsString()
+#else
+        QString::number(getuid())
+#endif
+    );
     passArgsToRunningInstance(argc, argv, appId);
 
     // no previous instance running
@@ -36,7 +89,7 @@ SingleInstance::SingleInstance(int argc, const char *const *argv, bool newInstan
     m_server = new QLocalServer(this);
     connect(m_server, &QLocalServer::newConnection, this, &SingleInstance::handleNewConnection);
     if (!m_server->listen(appId)) {
-        cerr << Phrases::Error << "Unable to launch as single instance application" << Phrases::EndFlush;
+        cerr << Phrases::Error << "Unable to launch as single instance application as " << appId.toStdString() << Phrases::EndFlush;
     }
 }
 
