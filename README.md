@@ -496,6 +496,10 @@ configuration like this:
 for_window [title="^Syncthing Tray( \(.*\))?$"] floating enable, border none, resize set 450 400, move position 916 0
 ```
 
+### Workaround broken High-DPI scaling of Plasmoid under X11
+Setting the environment variable `PLASMA_USE_QT_SCALING=1` should fix the
+[issue](https://bugs.kde.org/show_bug.cgi?id=356446) on recent Plasma versions.
+
 ### Workaround missing support for Windows 10 dark mode
 The dark mode introduced in Windows 10 does not affect traditional desktop
 applications like Syncthing Tray. Unfortunately, Windows normal theming capabilities 
