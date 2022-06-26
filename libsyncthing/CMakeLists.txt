@@ -117,8 +117,13 @@ file(
     GLOB_RECURSE SRC_FILES_SYNCTHING
     LIST_DIRECTORIES false
     RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-    "${SYNCTHING_PATH}/c-bindings/*.go" "${SYNCTHING_PATH}/c-bindings/*.h" "${SYNCTHING_PATH}/c-bindings/*.c"
-    "${SYNCTHING_PATH}/lib/*.go" "${SYNCTHING_PATH}/lib/*.h" "${SYNCTHING_PATH}/lib/*.c")
+    "${SYNCTHING_PATH}/c-bindings/*.go"
+    "${SYNCTHING_PATH}/c-bindings/*.h"
+    "${SYNCTHING_PATH}/c-bindings/*.c"
+    "${SYNCTHING_PATH}/cmd/syncthing/cli/*.go"
+    "${SYNCTHING_PATH}/lib/*.go"
+    "${SYNCTHING_PATH}/lib/*.h"
+    "${SYNCTHING_PATH}/lib/*.c")
 if (NOT SRC_FILES_SYNCTHING)
     message(
         FATAL_ERROR

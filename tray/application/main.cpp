@@ -11,6 +11,10 @@
 #include <syncthingconnector/syncthingservice.h>
 #endif
 
+#ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
+#include <syncthing/interface.h>
+#endif
+
 #include "resources/config.h"
 #include "resources/qtconfig.h"
 
@@ -172,9 +176,23 @@ int runApplication(int argc, const char *const *argv)
     widgetsGuiArg.addSubArgument(&configPathArg);
     widgetsGuiArg.addSubArgument(&singleInstance);
     widgetsGuiArg.addSubArgument(&newInstanceArg);
+#ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
+    auto cliArg = OperationArgument("cli", 'c', "run Syncthing's CLI");
+    cliArg.setRequiredValueCount(Argument::varValueCount);
+#endif
 
-    parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(), &parser.noColorArg(), &parser.helpArg() });
+    parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(),
+#ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
+        &cliArg,
+#endif
+        &parser.noColorArg(), &parser.helpArg() });
     parser.parseArgs(argc, argv);
+#ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
+    if (cliArg.isPresent()) {
+        CMD_UTILS_START_CONSOLE;
+        return static_cast<int>(LibSyncthing::runCli(cliArg.values()));
+    }
+#endif
     if (!qtConfigArgs.qtWidgetsGuiArg().isPresent()) {
         return 0;
     }

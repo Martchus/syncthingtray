@@ -118,6 +118,14 @@ endif ()
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 
+# configure libsyncthing
+option(USE_LIBSYNCTHING "whether libsyncthing should be included for syncthingtray's CLI" OFF)
+if (USE_LIBSYNCTHING)
+    find_package(syncthing ${META_APP_VERSION} REQUIRED)
+    use_syncthing()
+    list(APPEND META_PUBLIC_COMPILE_DEFINITIONS SYNCTHINGTRAY_USE_LIBSYNCTHING)
+endif ()
+
 # apply basic configuration
 include(BasicConfig)
 

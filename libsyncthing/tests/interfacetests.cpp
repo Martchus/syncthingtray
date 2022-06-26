@@ -32,6 +32,7 @@ class InterfaceTests : public TestFixture {
     CPPUNIT_TEST(testVersion);
     CPPUNIT_TEST(testRunWithoutConfig);
     CPPUNIT_TEST(testRunWithConfig);
+    CPPUNIT_TEST(testCli);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -41,6 +42,7 @@ public:
     void testVersion();
     void testRunWithoutConfig();
     void testRunWithConfig();
+    void testCli();
 
     void setUp() override;
     void tearDown() override;
@@ -248,4 +250,12 @@ void InterfaceTests::testRunWithConfig()
     RuntimeOptions options;
     options.configDir = options.dataDir = setupTestConfigDir();
     testRun(bind(static_cast<std::int64_t (*)(const RuntimeOptions &)>(&runSyncthing), cref(options)), true);
+}
+
+/*!
+ * \brief Tests running Syncthing's CLI.
+ */
+void InterfaceTests::testCli()
+{
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("run arbitrary CLI command", 0ll, runCli({ "config", "version" }));
 }

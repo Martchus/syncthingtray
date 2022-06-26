@@ -13,6 +13,7 @@
 #include "libsyncthinginternal.h"
 
 #include <atomic>
+#include <cstring>
 
 using namespace std;
 
@@ -36,6 +37,14 @@ static atomic_bool syncthingRunning;
 inline _GoString_ gostr(const string &str)
 {
     return _GoString_{ str.data(), static_cast<ptrdiff_t>(str.size()) };
+}
+
+/*!
+ * \brief Converts the specified null-terminated C-string to a "GoString".
+ */
+inline _GoString_ gostr(const char *str)
+{
+    return _GoString_{ str, static_cast<ptrdiff_t>(std::strlen(str)) };
 }
 
 /*!
@@ -201,6 +210,18 @@ string syncthingVersion()
 string longSyncthingVersion()
 {
     return stdstr(::libst_long_syncthing_version());
+}
+
+/*!
+ * \brief Runs Syncthing's CLI with the specified \a args.
+ */
+long long runCli(const std::vector<const char *> &args)
+{
+    ::libst_clear_cli_args();
+    for (const auto *const arg : args) {
+        ::libst_append_cli_arg(gostr(arg));
+    }
+    return ::libst_run_cli();
 }
 
 } // namespace LibSyncthing
