@@ -178,7 +178,10 @@ int runApplication(int argc, const char *const *argv)
     widgetsGuiArg.addSubArgument(&newInstanceArg);
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
     auto cliArg = OperationArgument("cli", 'c', "run Syncthing's CLI");
+    auto cliHelp = ConfigValueArgument("help", 'h', "show help for Syncthing's CLI");
     cliArg.setRequiredValueCount(Argument::varValueCount);
+    cliArg.setFlags(Argument::Flags::Greedy, true);
+    cliArg.setSubArguments({ &cliHelp });
 #endif
 
     parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(),
