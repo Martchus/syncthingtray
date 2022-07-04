@@ -106,7 +106,9 @@ Q_SIGNALS:
 private Q_SLOTS:
     void handleUnitAdded(const QString &unitName, const QDBusObjectPath &unitPath);
     void handleUnitRemoved(const QString &unitName, const QDBusObjectPath &unitPath);
+    void handleReloading(bool started);
     void handleUnitGet(QDBusPendingCallWatcher *watcher);
+    void handleGetUnitFileState(QDBusPendingCallWatcher *watcher);
     void handlePropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
     void handleError(const char *error, QDBusPendingCallWatcher *watcher, bool reload = false);
     void handleServiceRegisteredChanged(const QString &service);

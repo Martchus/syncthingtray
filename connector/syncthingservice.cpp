@@ -134,6 +134,7 @@ void SyncthingService::setupSystemdInterface()
     m_currentSystemdInterface = staticSystemdInterface;
     connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitNew, this, &SyncthingService::handleUnitAdded);
     connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
+    connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::Reloading, this, &SyncthingService::handleReloading);
     m_serviceWatcher = new QDBusServiceWatcher(m_currentSystemdInterface->service(), m_currentSystemdInterface->connection());
     connect(m_serviceWatcher, &QDBusServiceWatcher::serviceRegistered, this, &SyncthingService::handleServiceRegisteredChanged);
     connect(m_serviceWatcher, &QDBusServiceWatcher::serviceUnregistered, this, &SyncthingService::handleServiceRegisteredChanged);
@@ -198,8 +199,13 @@ bool SyncthingService::concludeAsyncCall(QDBusPendingCallWatcher *watcher, bool 
             connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
         }
         if (reload && !watcher->isError()) {
-            // reload unit files if reload flag was set (for enable/disable to make the change immediately apparent)
-            reloadAllUnitFiles();
+            if (m_scope != SystemdScope::System) {
+                // reload unit files if reload flag was set (for enable/disable to make the change immediately apparent)
+                reloadAllUnitFiles();
+            } else {
+                // we don't have the permission; at least try to refresh the unit again
+                queryUnitFromSystemdInterface();
+            }
         }
     }
     return resultStillRelevant;
@@ -214,6 +220,7 @@ void Data::SyncthingService::clearSystemdInterface()
     if (m_currentSystemdInterface) {
         disconnect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitNew, this, &SyncthingService::handleUnitAdded);
         disconnect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
+        disconnect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::Reloading, this, &SyncthingService::handleReloading);
         delete m_serviceWatcher;
         m_currentSystemdInterface = nullptr;
     }
@@ -367,7 +374,7 @@ void SyncthingService::setRunning(bool running)
         setupSystemdInterface();
     }
     if (running) {
-        registerErrorHandler(m_currentSystemdInterface->StartUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("start unit"));
+        registerErrorHandler(m_currentSystemdInterface->StartUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("start unit"), m_activeState.isEmpty());
     } else {
         registerErrorHandler(m_currentSystemdInterface->StopUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("stop unit"));
     }
@@ -421,6 +428,16 @@ void SyncthingService::handleUnitRemoved(const QString &unitName, const QDBusObj
 }
 
 /*!
+ * \brief Handles when unit files have been reloaded.
+ */
+void SyncthingService::handleReloading(bool started)
+{
+    if (!started) {
+        queryUnitFromSystemdInterface();
+    }
+}
+
+/*!
  * \brief Consumes the results of the s_manager->GetUnit() call (in setUnitName()).
  */
 void SyncthingService::handleUnitGet(QDBusPendingCallWatcher *watcher)
@@ -428,11 +445,25 @@ void SyncthingService::handleUnitGet(QDBusPendingCallWatcher *watcher)
     if (!concludeAsyncCall(watcher)) {
         return;
     }
-    const QDBusPendingReply<QDBusObjectPath> unitReply = *watcher;
-    if (unitReply.isError()) {
+    setUnit(QDBusPendingReply<QDBusObjectPath>(*watcher).value());
+}
+
+/*!
+ * \brief Consumes the results of the s_manager->GetUnitFileState() call (in setUnitName()).
+ */
+void SyncthingService::handleGetUnitFileState(QDBusPendingCallWatcher *watcher)
+{
+    if (!concludeAsyncCall(watcher)) {
         return;
     }
-    setUnit(unitReply.value());
+    auto fileState = QString();
+    if (!watcher->isError()) {
+        if (const auto &args = watcher->reply().arguments(); !args.empty()) {
+            fileState = args.at(0).toString();
+        }
+    }
+    clearUnitData();
+    setProperties(!fileState.isEmpty(), QString(), QString(), fileState, QString());
 }
 
 /*!
@@ -561,16 +592,28 @@ void SyncthingService::setUnit(const QDBusObjectPath &objectPath)
 {
     clearUnitData();
 
-    const QString path = objectPath.path();
-    if (!m_currentSystemdInterface || path.isEmpty()) {
+    if (!m_currentSystemdInterface) {
         setProperties(false, QString(), QString(), QString(), QString());
+        return;
+    }
+
+    const auto path = objectPath.path();
+    if (path.isEmpty()) {
+        // fallback to querying unit file state
+        makeAsyncCall(m_currentSystemdInterface->GetUnitFileState(m_unitName), &SyncthingService::handleGetUnitFileState);
         return;
     }
 
     // init unit
     m_unit = new OrgFreedesktopSystemd1UnitInterface(m_currentSystemdInterface->service(), path, m_currentSystemdInterface->connection());
-    m_activeSince = dateTimeFromSystemdTimeStamp(m_unit->activeEnterTimestamp());
-    setProperties(m_unit->isValid(), m_unit->activeState(), m_unit->subState(), m_unit->unitFileState(), m_unit->description());
+    m_unit->setTimeout(2000);
+    if (m_unit->isValid()) {
+        m_activeSince = dateTimeFromSystemdTimeStamp(m_unit->activeEnterTimestamp());
+        setProperties(true, m_unit->activeState(), m_unit->subState(), m_unit->unitFileState(), m_unit->description());
+    } else {
+        // fallback to querying unit file state
+        makeAsyncCall(m_currentSystemdInterface->GetUnitFileState(m_unitName), &SyncthingService::handleGetUnitFileState);
+    }
 
     // init properties
     m_properties = new OrgFreedesktopDBusPropertiesInterface(m_currentSystemdInterface->service(), path, m_currentSystemdInterface->connection());
