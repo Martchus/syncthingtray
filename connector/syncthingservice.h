@@ -107,7 +107,7 @@ private Q_SLOTS:
     void handleUnitRemoved(const QString &unitName, const QDBusObjectPath &unitPath);
     void handleUnitGet(QDBusPendingCallWatcher *watcher);
     void handlePropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
-    void handleError(const char *error, QDBusPendingCallWatcher *watcher);
+    void handleError(const char *error, QDBusPendingCallWatcher *watcher, bool reload = false);
     void handleServiceRegisteredChanged(const QString &service);
     static void handlePrepareForSleep(bool rightBefore);
     void setUnit(const QDBusObjectPath &objectPath);
@@ -117,9 +117,9 @@ private Q_SLOTS:
 private:
     void setupSystemdInterface();
     void setupFreedesktopLoginInterface();
-    template <typename HandlerType> void makeAsyncCall(const QDBusPendingCall &call, HandlerType &&handler);
-    void registerErrorHandler(const QDBusPendingCall &call, const char *context);
-    bool concludeAsyncCall(QDBusPendingCallWatcher *watcher);
+    template <typename HandlerType> void makeAsyncCall(const QDBusPendingCall &call, HandlerType &&handler, bool removeHandler = true);
+    void registerErrorHandler(const QDBusPendingCall &call, const char *context, bool reload = false, bool removeHandler = true);
+    bool concludeAsyncCall(QDBusPendingCallWatcher *watcher, bool reload = false);
     void clearSystemdInterface();
     void clearUnitData();
     void queryUnitFromSystemdInterface();

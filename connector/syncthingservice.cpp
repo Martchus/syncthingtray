@@ -159,9 +159,9 @@ void SyncthingService::setupFreedesktopLoginInterface()
 /*!
  * \brief Registers the specified D-Bus \a call to invoke \a handler when it has been concluded.
  */
-template <typename HandlerType> void SyncthingService::makeAsyncCall(const QDBusPendingCall &call, HandlerType &&handler)
+template <typename HandlerType> void SyncthingService::makeAsyncCall(const QDBusPendingCall &call, HandlerType &&handler, bool removeHandler)
 {
-    if (m_currentSystemdInterface) {
+    if (m_currentSystemdInterface && removeHandler) {
         // disconnect from unit add/removed signals because these seem to be spammed when waiting for permissions
         disconnect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitNew, this, &SyncthingService::handleUnitAdded);
         disconnect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
@@ -174,15 +174,15 @@ template <typename HandlerType> void SyncthingService::makeAsyncCall(const QDBus
 /*!
  * \brief Registers a generic error handler for the specifeid D-Bus \a call.
  */
-void SyncthingService::registerErrorHandler(const QDBusPendingCall &call, const char *context)
+void SyncthingService::registerErrorHandler(const QDBusPendingCall &call, const char *context, bool reload, bool removeHandler)
 {
-    makeAsyncCall(call, bind(&SyncthingService::handleError, this, context, _1));
+    makeAsyncCall(call, bind(&SyncthingService::handleError, this, context, _1, reload), removeHandler);
 }
 
 /*!
  * \brief Determines whether the specified \a watcher is still relevant and ensures it is being deleted later.
  */
-bool SyncthingService::concludeAsyncCall(QDBusPendingCallWatcher *watcher)
+bool SyncthingService::concludeAsyncCall(QDBusPendingCallWatcher *watcher, bool reload)
 {
     watcher->deleteLater();
 
@@ -191,10 +191,16 @@ bool SyncthingService::concludeAsyncCall(QDBusPendingCallWatcher *watcher)
     if (resultStillRelevant) {
         m_pendingCalls.erase(i);
     }
-    if (m_currentSystemdInterface && m_pendingCalls.empty()) {
-        // ensure we listen to unit add/removed signals again if there are no pending calls anymore
-        connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitNew, this, &SyncthingService::handleUnitAdded);
-        connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
+    if (m_currentSystemdInterface) {
+        if (m_pendingCalls.empty()) {
+            // ensure we listen to unit add/removed signals again if there are no pending calls anymore
+            connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitNew, this, &SyncthingService::handleUnitAdded);
+            connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
+        }
+        if (reload && !watcher->isError()) {
+            // reload unit files if reload flag was set (for enable/disable to make the change immediately apparent)
+            registerErrorHandler(m_currentSystemdInterface->Reload(), QT_TR_NOOP_UTF8("reload manager"), false, false);
+        }
     }
     return resultStillRelevant;
 }
@@ -378,9 +384,9 @@ void SyncthingService::setEnabled(bool enabled)
         setupSystemdInterface();
     }
     if (enabled) {
-        registerErrorHandler(m_currentSystemdInterface->EnableUnitFiles(QStringList(m_unitName), false, true), QT_TR_NOOP_UTF8("enable unit"));
+        registerErrorHandler(m_currentSystemdInterface->EnableUnitFiles(QStringList(m_unitName), false, true), QT_TR_NOOP_UTF8("enable unit"), true);
     } else {
-        registerErrorHandler(m_currentSystemdInterface->DisableUnitFiles(QStringList(m_unitName), false), QT_TR_NOOP_UTF8("disable unit"));
+        registerErrorHandler(m_currentSystemdInterface->DisableUnitFiles(QStringList(m_unitName), false), QT_TR_NOOP_UTF8("disable unit"), true);
     }
 #endif
 }
@@ -467,9 +473,9 @@ void SyncthingService::handlePropertiesChanged(
 /*!
  * \brief Handles D-Bus errors.
  */
-void SyncthingService::handleError(const char *context, QDBusPendingCallWatcher *watcher)
+void SyncthingService::handleError(const char *context, QDBusPendingCallWatcher *watcher, bool reload)
 {
-    if (!concludeAsyncCall(watcher)) {
+    if (!concludeAsyncCall(watcher, reload)) {
         return;
     }
     const QDBusError error = watcher->error();
