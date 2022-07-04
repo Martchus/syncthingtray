@@ -1037,12 +1037,12 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1409"/>
+        <location filename="../settings/settingsdialog.cpp" line="1413"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1416"/>
+        <location filename="../settings/settingsdialog.cpp" line="1420"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
@@ -1051,22 +1051,22 @@
         <translation type="vanished">Zusatztool</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1402"/>
+        <location filename="../settings/settingsdialog.cpp" line="1406"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1418"/>
+        <location filename="../settings/settingsdialog.cpp" line="1422"/>
         <source>Extra launcher</source>
         <translation>Extra-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1418"/>
+        <location filename="../settings/settingsdialog.cpp" line="1422"/>
         <source>additional tool</source>
         <translation>Zusatztool</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1439"/>
+        <location filename="../settings/settingsdialog.cpp" line="1443"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -1236,8 +1236,8 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <location filename="../settings/systemdoptionpage.ui" line="109"/>
         <location filename="../settings/systemdoptionpage.ui" line="164"/>
         <location filename="../settings/systemdoptionpage.ui" line="253"/>
-        <location filename="../settings/settingsdialog.cpp" line="1315"/>
-        <location filename="../settings/settingsdialog.cpp" line="1327"/>
+        <location filename="../settings/settingsdialog.cpp" line="1319"/>
+        <location filename="../settings/settingsdialog.cpp" line="1331"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -1271,22 +1271,27 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1251"/>
+        <location filename="../settings/settingsdialog.cpp" line="1221"/>
+        <source>Reload all unit files</source>
+        <translation>Alle Unit-Dateien neu laden</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1255"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Start-/Stop-Button für den Systemd-Dienst und den internen Starter gleichzeitig anzugeigen. Wenn verfügbar, wird der Button den Systemd-Dienst kontrollieren.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1257"/>
+        <location filename="../settings/settingsdialog.cpp" line="1261"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Status des Systemd-Dienstes und den des internen Starters gleichzeitig für Verbindungsveruche einzubeziehen. Wenn verfügbar, wird der Status des Systemd-Dienstes verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1288"/>
+        <location filename="../settings/settingsdialog.cpp" line="1292"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1310"/>
+        <location filename="../settings/settingsdialog.cpp" line="1314"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -1320,7 +1325,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1349"/>
+        <location filename="../settings/settingsdialog.cpp" line="1353"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
@@ -1350,7 +1355,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1351"/>
+        <location filename="../settings/settingsdialog.cpp" line="1355"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.

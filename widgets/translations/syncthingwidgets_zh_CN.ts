@@ -925,32 +925,32 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1402"/>
+        <location filename="../settings/settingsdialog.cpp" line="1406"/>
         <source>Tray</source>
         <translation>托盘</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1409"/>
+        <location filename="../settings/settingsdialog.cpp" line="1413"/>
         <source>Web view</source>
         <translation>网页视图</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1416"/>
+        <location filename="../settings/settingsdialog.cpp" line="1420"/>
         <source>Startup</source>
         <translation>启动</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1418"/>
+        <location filename="../settings/settingsdialog.cpp" line="1422"/>
         <source>additional tool</source>
         <translation>附加工具</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1418"/>
+        <location filename="../settings/settingsdialog.cpp" line="1422"/>
         <source>Extra launcher</source>
         <translation>额外启动器</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1439"/>
+        <location filename="../settings/settingsdialog.cpp" line="1443"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
@@ -1115,8 +1115,8 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../settings/systemdoptionpage.ui" line="109"/>
         <location filename="../settings/systemdoptionpage.ui" line="164"/>
         <location filename="../settings/systemdoptionpage.ui" line="253"/>
-        <location filename="../settings/settingsdialog.cpp" line="1315"/>
-        <location filename="../settings/settingsdialog.cpp" line="1327"/>
+        <location filename="../settings/settingsdialog.cpp" line="1319"/>
+        <location filename="../settings/settingsdialog.cpp" line="1331"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
@@ -1151,22 +1151,27 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>禁用</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1251"/>
+        <location filename="../settings/settingsdialog.cpp" line="1221"/>
+        <source>Reload all unit files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1255"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>无法同时显示 systemd 服务和内部启动器的启动/停止按钮。 systemd 服务优先。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1257"/>
+        <location filename="../settings/settingsdialog.cpp" line="1261"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>无法同时考虑 systemd 服务和内部启动器进行重新连接。 systemd 服务优先。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1288"/>
+        <location filename="../settings/settingsdialog.cpp" line="1292"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>指定的单位不活动或不存在</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1310"/>
+        <location filename="../settings/settingsdialog.cpp" line="1314"/>
         <source>since </source>
         <translation>自从 </translation>
     </message>
@@ -1200,7 +1205,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <name>QtGui::WebViewOptionPage</name>
     <message>
         <location filename="../settings/webviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1349"/>
+        <location filename="../settings/settingsdialog.cpp" line="1353"/>
         <source>General</source>
         <translation>一般</translation>
     </message>
@@ -1230,7 +1235,7 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>当前未显示时保持网页视图运行</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1351"/>
+        <location filename="../settings/settingsdialog.cpp" line="1355"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
         <translation>Syncthing Tray 尚未使用 Qt WebKit 或 Qt WebEngine 构建支持网页视图。

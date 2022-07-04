@@ -310,24 +310,29 @@
 <context>
     <name>Data::SyncthingService</name>
     <message>
-        <location filename="../syncthingservice.cpp" line="364"/>
+        <location filename="../syncthingservice.cpp" line="370"/>
         <source>start unit</source>
         <translation>Starten der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="366"/>
+        <location filename="../syncthingservice.cpp" line="372"/>
         <source>stop unit</source>
         <translation>Stoppen der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="381"/>
+        <location filename="../syncthingservice.cpp" line="387"/>
         <source>enable unit</source>
         <translation>Aktivieren der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="383"/>
+        <location filename="../syncthingservice.cpp" line="389"/>
         <source>disable unit</source>
         <translation>Deaktivieren der Unit</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="399"/>
+        <source>reload all unit files</source>
+        <translation>Aktualisieren aller Unit-Dateien</translation>
     </message>
 </context>
 <context>
