@@ -143,7 +143,7 @@ void MiscTests::testUtils()
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 /*!
- * \brief Tests SyncthingService class, but error case with non-existent service so far.
+ * \brief Tests SyncthingService class, but only error cases with a non-existent service so far.
  */
 void MiscTests::testService()
 {
