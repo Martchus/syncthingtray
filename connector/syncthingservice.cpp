@@ -441,7 +441,7 @@ void SyncthingService::handlePropertiesChanged(
     const bool wasRunningBefore = isRunning();
     if (handlePropertyChanged(
             m_activeState, &SyncthingService::activeStateChanged, QStringLiteral("ActiveState"), changedProperties, invalidatedProperties)
-        | handlePropertyChanged(
+        || handlePropertyChanged(
             m_subState, &SyncthingService::subStateChanged, QStringLiteral("SubState"), changedProperties, invalidatedProperties)) {
         emit stateChanged(m_activeState, m_subState, m_activeSince);
     }
