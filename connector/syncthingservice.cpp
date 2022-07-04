@@ -199,7 +199,7 @@ bool SyncthingService::concludeAsyncCall(QDBusPendingCallWatcher *watcher, bool 
         }
         if (reload && !watcher->isError()) {
             // reload unit files if reload flag was set (for enable/disable to make the change immediately apparent)
-            registerErrorHandler(m_currentSystemdInterface->Reload(), QT_TR_NOOP_UTF8("reload manager"), false, false);
+            reloadAllUnitFiles();
         }
     }
     return resultStillRelevant;
@@ -389,6 +389,14 @@ void SyncthingService::setEnabled(bool enabled)
         registerErrorHandler(m_currentSystemdInterface->DisableUnitFiles(QStringList(m_unitName), false), QT_TR_NOOP_UTF8("disable unit"), true);
     }
 #endif
+}
+
+/*!
+ * \brief Reload all unit files.
+ */
+void Data::SyncthingService::reloadAllUnitFiles()
+{
+    registerErrorHandler(m_currentSystemdInterface->Reload(), QT_TR_NOOP_UTF8("reload all unit files"), false, false);
 }
 
 /*!

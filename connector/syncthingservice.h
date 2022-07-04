@@ -87,6 +87,7 @@ public Q_SLOTS:
     void setEnabled(bool enable);
     void enable();
     void disable();
+    void reloadAllUnitFiles();
 
 Q_SIGNALS:
     void unitNameChanged(const QString &unitName);
