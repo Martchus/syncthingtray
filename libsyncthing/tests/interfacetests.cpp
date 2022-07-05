@@ -257,5 +257,5 @@ void InterfaceTests::testRunWithConfig()
  */
 void InterfaceTests::testCli()
 {
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("run arbitrary CLI command", 0ll, runCli({ "config", "version" }));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("run arbitrary CLI command", 0ll, runCli({ "config", "version", "--help" }));
 }
