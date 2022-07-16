@@ -521,9 +521,6 @@ achieve a dark theming:
   load the file as a base
   https://raw.githubusercontent.com/Martchus/syncthingtray/master/tray/resources/dark-palette.ini
   and tweak the colors to your liking.
-* To make the rest of the colors used by Syncthing Tray fit with the dark color
-  palette, enable "Bright custom text colors" in Syncthing Tray's settings under
-  "Tray/Appearance".
 * To make general icons fit with the dark color palette, configure an
   appropriate icon them, e.g. select "Breeze Dark" as icon theme in Syncthing
   Tray's settings under "Qt/Appearance".

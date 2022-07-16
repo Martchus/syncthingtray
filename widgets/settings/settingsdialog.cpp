@@ -28,6 +28,7 @@
 #include "resources/../../tray/resources/config.h"
 
 #include <qtutilities/misc/compat.h>
+#include <qtutilities/misc/desktoputils.h>
 #include <qtutilities/paletteeditor/colorbutton.h>
 #include <qtutilities/settingsdialog/optioncategory.h>
 #include <qtutilities/settingsdialog/optioncategorymodel.h>
@@ -488,8 +489,6 @@ bool AppearanceOptionPage::apply()
     settings.frameStyle = style;
     settings.tabPosition = ui()->tabPosComboBox->currentIndex();
 
-    settings.brightTextColors = ui()->brightTextColorsCheckBox->isChecked();
-
     settings.positioning.useCursorPosition = ui()->useCursorPosCheckBox->isChecked();
     settings.positioning.assumedIconPosition = QPoint(ui()->xPosSpinBox->value(), ui()->yPosSpinBox->value());
     return true;
@@ -528,8 +527,6 @@ void AppearanceOptionPage::reset()
     }
     ui()->frameShadowComboBox->setCurrentIndex(index);
     ui()->tabPosComboBox->setCurrentIndex(settings.tabPosition);
-
-    ui()->brightTextColorsCheckBox->setChecked(settings.brightTextColors);
 
     ui()->useCursorPosCheckBox->setChecked(settings.positioning.useCursorPosition);
     ui()->xPosSpinBox->setValue(settings.positioning.assumedIconPosition.x());
@@ -1239,6 +1236,9 @@ QWidget *SystemdOptionPage::setupWidget()
         = QObject::connect(m_service, &SyncthingService::stateChanged, bind(&SystemdOptionPage::handleStatusChanged, this, _1, _2, _3));
     m_enabledChangedConn
         = QObject::connect(m_service, &SyncthingService::unitFileStateChanged, bind(&SystemdOptionPage::handleEnabledChanged, this, _1));
+    if (const auto *optionPageWidget = qobject_cast<OptionPageWidget *>(widget)) {
+        QObject::connect(optionPageWidget, &OptionPageWidget::paletteChanged, std::bind(&SystemdOptionPage::updateColors, this));
+    }
     return widget;
 }
 
@@ -1294,22 +1294,22 @@ void SystemdOptionPage::handleDescriptionChanged(const QString &description)
             : description);
 }
 
-void setIndicatorColor(QWidget *indicator, const QColor &color)
+static void setIndicatorColor(QWidget *indicator, const QColor &color)
 {
     indicator->setStyleSheet(QStringLiteral("border-radius:8px;background-color:") + color.name());
 }
 
 void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QString &subState, DateTime activeSince)
 {
-    QStringList status;
+    m_status.clear();
     if (!activeState.isEmpty()) {
-        status << activeState;
+        m_status << activeState;
     }
     if (!subState.isEmpty()) {
-        status << subState;
+        m_status << subState;
     }
 
-    const bool isRunning = m_service && m_service->isRunning();
+    const bool isRunning = updateRunningColor();
     QString timeStamp;
     if (isRunning && !activeSince.isNull()) {
         timeStamp = QLatin1Char('\n') % QCoreApplication::translate("QtGui::SystemdOptionPage", "since ")
@@ -1317,23 +1317,41 @@ void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QS
     }
 
     ui()->statusValueLabel->setText(
-        status.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown") : status.join(QStringLiteral(" - ")) + timeStamp);
-    setIndicatorColor(ui()->statusIndicator,
-        status.isEmpty() ? Colors::gray(values().appearance.brightTextColors)
-                         : (isRunning ? Colors::green(values().appearance.brightTextColors) : Colors::red(values().appearance.brightTextColors)));
+        m_status.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown") : m_status.join(QStringLiteral(" - ")) + timeStamp);
     ui()->startPushButton->setVisible(!isRunning);
-    ui()->stopPushButton->setVisible(!status.isEmpty() && isRunning);
+    ui()->stopPushButton->setVisible(!m_status.isEmpty() && isRunning);
 }
 
 void SystemdOptionPage::handleEnabledChanged(const QString &unitFileState)
 {
-    const bool isEnabled = m_service && m_service->isEnabled();
+    const auto isEnabled = updateEnabledColor();
     ui()->unitFileStateValueLabel->setText(
         unitFileState.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown") : unitFileState);
-    setIndicatorColor(
-        ui()->enabledIndicator, isEnabled ? Colors::green(values().appearance.brightTextColors) : Colors::gray(values().appearance.brightTextColors));
     ui()->enablePushButton->setVisible(!isEnabled);
     ui()->disablePushButton->setVisible(!unitFileState.isEmpty() && isEnabled);
+}
+
+bool SystemdOptionPage::updateRunningColor()
+{
+    const bool isRunning = m_service && m_service->isRunning();
+    const auto brightColors = isPaletteDark(widget()->palette());
+    setIndicatorColor(ui()->statusIndicator,
+        m_status.isEmpty() ? Colors::gray(brightColors) : (isRunning ? Colors::green(brightColors) : Colors::red(brightColors)));
+    return isRunning;
+}
+
+bool SystemdOptionPage::updateEnabledColor()
+{
+    const auto isEnabled = m_service && m_service->isEnabled();
+    const auto brightColors = isPaletteDark(widget()->palette());
+    setIndicatorColor(ui()->enabledIndicator, isEnabled ? Colors::green(brightColors) : Colors::gray(brightColors));
+    return isEnabled;
+}
+
+void SystemdOptionPage::updateColors()
+{
+    updateRunningColor();
+    updateEnabledColor();
 }
 #endif
 

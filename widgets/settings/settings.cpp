@@ -341,7 +341,6 @@ void restore()
     appearance.trayMenuSize = settings.value(QStringLiteral("trayMenuSize"), appearance.trayMenuSize).toSize();
     appearance.frameStyle = settings.value(QStringLiteral("frameStyle"), appearance.frameStyle).toInt();
     appearance.tabPosition = settings.value(QStringLiteral("tabPos"), appearance.tabPosition).toInt();
-    appearance.brightTextColors = settings.value(QStringLiteral("brightTextColors"), appearance.brightTextColors).toBool();
     v.icons.status = StatusIconSettings(settings.value(QStringLiteral("statusIcons")).toString());
     v.icons.tray = StatusIconSettings(settings.value(QStringLiteral("trayIcons")).toString());
     v.icons.status.renderSize = settings.value(QStringLiteral("statusIconsRenderSize"), v.icons.status.renderSize).toSize();
@@ -452,7 +451,6 @@ void save()
     settings.setValue(QStringLiteral("trayMenuSize"), appearance.trayMenuSize);
     settings.setValue(QStringLiteral("frameStyle"), appearance.frameStyle);
     settings.setValue(QStringLiteral("tabPos"), appearance.tabPosition);
-    settings.setValue(QStringLiteral("brightTextColors"), appearance.brightTextColors);
     settings.setValue(QStringLiteral("statusIcons"), v.icons.status.toString());
     settings.setValue(QStringLiteral("trayIcons"), v.icons.tray.toString());
     settings.setValue(QStringLiteral("statusIconsRenderSize"), v.icons.status.renderSize);

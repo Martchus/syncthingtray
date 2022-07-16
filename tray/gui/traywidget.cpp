@@ -108,6 +108,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     m_ui->downloadsTreeView->setModel(&m_dlModel);
     m_ui->recentChangesTreeView->setModel(&m_recentChangesModel);
     m_ui->recentChangesTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
+    setBrightColorsOfModelsAccordingToPalette();
 
     // setup sync-all button
     m_cornerFrame = new QFrame(this);
@@ -503,11 +504,6 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     if (settings.appearance.tabPosition >= QTabWidget::North && settings.appearance.tabPosition <= QTabWidget::East) {
         m_ui->tabWidget->setTabPosition(static_cast<QTabWidget::TabPosition>(settings.appearance.tabPosition));
     }
-    const auto brightColors = settings.appearance.brightTextColors;
-    m_dirModel.setBrightColors(brightColors);
-    m_devModel.setBrightColors(brightColors);
-    m_dlModel.setBrightColors(brightColors);
-    m_recentChangesModel.setBrightColors(brightColors);
     IconManager::instance().applySettings(&settings.icons.status, settings.icons.distinguishTrayIcons ? &settings.icons.tray : nullptr);
 
     // update status icon and text of tray icon because reconnect interval might have changed
@@ -522,6 +518,17 @@ void TrayWidget::applySettings(const QString &connectionConfig)
         msgBox->setAttribute(Qt::WA_DeleteOnClose);
         msgBox->show();
     }
+}
+
+bool TrayWidget::event(QEvent *event)
+{
+    switch (event->type()) {
+    case QEvent::PaletteChange:
+        setBrightColorsOfModelsAccordingToPalette();
+        break;
+    default:;
+    }
+    return QWidget::event(event);
 }
 
 void TrayWidget::applySettingsOnAllInstances()
@@ -828,6 +835,15 @@ void TrayWidget::showDialog(QWidget *dlg, bool maximized)
         dlg->show();
     }
     dlg->activateWindow();
+}
+
+void TrayWidget::setBrightColorsOfModelsAccordingToPalette()
+{
+    const auto brightColors = isPaletteDark(palette());
+    m_dirModel.setBrightColors(brightColors);
+    m_devModel.setBrightColors(brightColors);
+    m_dlModel.setBrightColors(brightColors);
+    m_recentChangesModel.setBrightColors(brightColors);
 }
 
 } // namespace QtGui

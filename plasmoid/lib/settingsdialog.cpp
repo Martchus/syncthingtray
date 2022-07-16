@@ -91,7 +91,6 @@ bool AppearanceOptionPage::apply()
 {
     KConfigGroup config = m_applet->config();
     config.writeEntry<QSize>("size", QSize(ui()->widthSpinBox->value(), ui()->heightSpinBox->value()));
-    config.writeEntry<bool>("brightColors", ui()->brightTextColorsCheckBox->isChecked());
     config.writeEntry("passiveStates", m_passiveStatusSelection.toVariantList());
 
     return true;
@@ -103,7 +102,6 @@ void AppearanceOptionPage::reset()
     const auto size(config.readEntry<>("size", QSize(25, 25)));
     ui()->widthSpinBox->setValue(size.width());
     ui()->heightSpinBox->setValue(size.height());
-    ui()->brightTextColorsCheckBox->setChecked(config.readEntry<>("brightColors", false));
     m_passiveStatusSelection.applyVariantList(config.readEntry("passiveStates", QVariantList()));
 }
 

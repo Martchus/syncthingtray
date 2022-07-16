@@ -12,6 +12,7 @@
 #include <qtutilities/settingsdialog/settingsdialog.h>
 
 #include <QProcess>
+#include <QStringList>
 #include <QWidget>
 
 QT_FORWARD_DECLARE_CLASS(QAction)
@@ -147,7 +148,11 @@ void handleSystemUnitChanged();
 void handleDescriptionChanged(const QString &description);
 void handleStatusChanged(const QString &activeState, const QString &subState, CppUtilities::DateTime activeSince);
 void handleEnabledChanged(const QString &unitFileState);
+bool updateRunningColor();
+bool updateEnabledColor();
+void updateColors();
 Data::SyncthingService *const m_service;
+QStringList m_status;
 QMetaObject::Connection m_unitChangedConn;
 QMetaObject::Connection m_descChangedConn;
 QMetaObject::Connection m_statusChangedConn;

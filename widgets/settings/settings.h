@@ -62,7 +62,6 @@ struct SYNCTHINGWIDGETS_EXPORT Appearance {
     QSize trayMenuSize = QSize(450, 400);
     int frameStyle = static_cast<int>(QFrame::NoFrame) | static_cast<int>(QFrame::Plain);
     int tabPosition = QTabWidget::South;
-    bool brightTextColors = false;
     struct SYNCTHINGWIDGETS_EXPORT Positioning {
         QPoint assumedIconPosition;
         bool useCursorPosition = true;

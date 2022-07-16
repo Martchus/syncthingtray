@@ -149,6 +149,7 @@ void SyncthingApplet::init()
     m_currentConnectionConfig = config().readEntry<int>("selectedConfig", 0);
 
     // apply settings and connect according to settings
+    setBrightColors(isPaletteDark(paletteFromTheme(m_theme)));
     handleSettingsChanged();
 
     m_initialized = true;
@@ -445,11 +446,6 @@ void SyncthingApplet::handleSettingsChanged()
 
     // apply appearance settings
     setSize(config.readEntry<QSize>("size", QSize(25, 25)));
-    const bool brightColors = config.readEntry<bool>("brightColors", false);
-    m_dirModel.setBrightColors(brightColors);
-    m_devModel.setBrightColors(brightColors);
-    m_downloadModel.setBrightColors(brightColors);
-    m_recentChangesModel.setBrightColors(brightColors);
     IconManager::instance().applySettings(&settings.icons.status);
 
     // restore selected states
@@ -560,12 +556,22 @@ void SyncthingApplet::handleThemeChanged()
 
     // return to the event loop before setting the new theme color; otherwise Qt Quick does not update the images
     QTimer::singleShot(0, this, [this] {
-        IconManager::instance().setPalette(paletteFromTheme(m_theme));
+        const auto palette = paletteFromTheme(m_theme);
+        IconManager::instance().setPalette(palette);
+        setBrightColors(isPaletteDark(palette));
         if (m_imageProvider) {
             m_imageProvider->setDefaultColor(m_theme.color(Plasma::Theme::TextColor, Plasma::Theme::NormalColorGroup));
         }
         emit faUrlChanged(m_faUrl = QStringLiteral("image://fa/"));
     });
+}
+
+void SyncthingApplet::setBrightColors(bool brightColors)
+{
+    m_dirModel.setBrightColors(brightColors);
+    m_devModel.setBrightColors(brightColors);
+    m_downloadModel.setBrightColors(brightColors);
+    m_recentChangesModel.setBrightColors(brightColors);
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

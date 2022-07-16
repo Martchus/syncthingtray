@@ -74,6 +74,9 @@ public Q_SLOTS:
     void quitTray();
     void applySettings(const QString &connectionConfig = QString());
 
+protected:
+    bool event(QEvent *event) override;
+
 private Q_SLOTS:
     void handleStatusChanged(Data::SyncthingStatus status);
     static void applySettingsOnAllInstances();
@@ -101,6 +104,7 @@ private Q_SLOTS:
     void handleNewNotification(CppUtilities::DateTime when, const QString &msg);
     void handleConnectionSelected(QAction *connectionAction);
     void showDialog(QWidget *dlg, bool maximized = false);
+    void setBrightColorsOfModelsAccordingToPalette();
 
 private:
     TrayMenu *m_menu;

@@ -125,132 +125,6 @@
      </item>
     </widget>
    </item>
-   <item row="9" column="0">
-    <widget class="QLabel" name="colorsLabel">
-     <property name="text">
-      <string>Colors</string>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="1">
-    <widget class="QCheckBox" name="brightTextColorsCheckBox">
-     <property name="text">
-      <string>Bright custom text colors (use for dark color scheme)</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="0">
-    <widget class="QLabel" name="guiElementsLabel">
-     <property name="text">
-      <string>Optional GUI elements</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="1">
-    <widget class="QCheckBox" name="showTrafficCheckBox">
-     <property name="text">
-      <string>Traffic statistics</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="0">
-    <widget class="QLabel" name="positioningLabel">
-     <property name="text">
-      <string>Positioning</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="1">
-    <layout class="QVBoxLayout" name="positioningVerticalLayout">
-     <item>
-      <widget class="QCheckBox" name="useCursorPosCheckBox">
-       <property name="text">
-        <string>Use cursor position</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="assumeIconPosLabel">
-       <property name="text">
-        <string>Otherwise assume tray icon coordinates to be:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="positioningHorizontalLayout">
-       <property name="spacing">
-        <number>10</number>
-       </property>
-       <item>
-        <widget class="QSpinBox" name="xPosSpinBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="suffix">
-          <string> px</string>
-         </property>
-         <property name="prefix">
-          <string>x: </string>
-         </property>
-         <property name="minimum">
-          <number>-10000</number>
-         </property>
-         <property name="maximum">
-          <number>10000</number>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="yPosSpinBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="suffix">
-          <string> px</string>
-         </property>
-         <property name="prefix">
-          <string>y: </string>
-         </property>
-         <property name="minimum">
-          <number>-10000</number>
-         </property>
-         <property name="maximum">
-          <number>10000</number>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="positioningHorizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::MinimumExpanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
    <item row="7" column="0">
     <widget class="QLabel" name="sizeLabel">
      <property name="text">
@@ -335,6 +209,118 @@
         </size>
        </property>
       </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="guiElementsLabel">
+     <property name="text">
+      <string>Optional GUI elements</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QCheckBox" name="showTrafficCheckBox">
+     <property name="text">
+      <string>Traffic statistics</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="positioningLabel">
+     <property name="text">
+      <string>Positioning</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <layout class="QVBoxLayout" name="positioningVerticalLayout">
+     <item>
+      <widget class="QCheckBox" name="useCursorPosCheckBox">
+       <property name="text">
+        <string>Use cursor position</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="assumeIconPosLabel">
+       <property name="text">
+        <string>Otherwise assume tray icon coordinates to be:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="positioningHorizontalLayout">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <item>
+        <widget class="QSpinBox" name="xPosSpinBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="suffix">
+          <string> px</string>
+         </property>
+         <property name="prefix">
+          <string>x: </string>
+         </property>
+         <property name="minimum">
+          <number>-10000</number>
+         </property>
+         <property name="maximum">
+          <number>10000</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="yPosSpinBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="suffix">
+          <string> px</string>
+         </property>
+         <property name="prefix">
+          <string>y: </string>
+         </property>
+         <property name="minimum">
+          <number>-10000</number>
+         </property>
+         <property name="maximum">
+          <number>10000</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="positioningHorizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::MinimumExpanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

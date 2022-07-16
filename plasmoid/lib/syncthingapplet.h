@@ -184,6 +184,7 @@ private Q_SLOTS:
     void handleImageProviderDestroyed();
     void handleThemeChanged();
     void setPassive(bool passive);
+    void setBrightColors(bool brightColors);
 
 private:
     Plasma::Theme m_theme;

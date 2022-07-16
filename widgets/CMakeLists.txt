@@ -78,7 +78,7 @@ find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFF
 use_cpp_utilities(VISIBILITY PUBLIC)
 
 # find qtutilities
-find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.5.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.7.0 REQUIRED)
 use_qt_utilities()
 
 # find backend libraries
