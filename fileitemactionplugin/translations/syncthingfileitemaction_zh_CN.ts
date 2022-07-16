@@ -49,71 +49,70 @@
 <context>
     <name>SyncthingFileItemAction</name>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="144"/>
+        <location filename="../syncthingfileitemaction.cpp" line="153"/>
         <source>Rescan selected items</source>
         <translation>重新扫描选定的项目</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="146"/>
-        <location filename="../syncthingfileitemaction.cpp" line="163"/>
-        <location filename="../syncthingfileitemaction.cpp" line="194"/>
+        <location filename="../syncthingfileitemaction.cpp" line="155"/>
+        <location filename="../syncthingfileitemaction.cpp" line="172"/>
+        <location filename="../syncthingfileitemaction.cpp" line="203"/>
         <source>Rescan &quot;%1&quot;</source>
         <translation>重新扫描 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="163"/>
+        <location filename="../syncthingfileitemaction.cpp" line="172"/>
         <source>Rescan selected directories</source>
         <translation>重新扫描选定的目录</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="176"/>
-        <location filename="../syncthingfileitemaction.cpp" line="207"/>
+        <location filename="../syncthingfileitemaction.cpp" line="185"/>
+        <location filename="../syncthingfileitemaction.cpp" line="216"/>
         <source>Resume &quot;%1&quot;</source>
         <translation>恢复 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="176"/>
+        <location filename="../syncthingfileitemaction.cpp" line="185"/>
         <source>Resume selected directories</source>
         <translation>恢复选定的目录</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="179"/>
-        <location filename="../syncthingfileitemaction.cpp" line="211"/>
+        <location filename="../syncthingfileitemaction.cpp" line="188"/>
+        <location filename="../syncthingfileitemaction.cpp" line="220"/>
         <source>Pause &quot;%1&quot;</source>
         <translation>暂停 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="179"/>
+        <location filename="../syncthingfileitemaction.cpp" line="188"/>
         <source>Pause selected directories</source>
         <translation>暂停选定的目录</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="194"/>
+        <location filename="../syncthingfileitemaction.cpp" line="203"/>
         <source>Rescan containing directories</source>
         <translation>重新扫描包含的目录</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="207"/>
+        <location filename="../syncthingfileitemaction.cpp" line="216"/>
         <source>Resume containing directories</source>
         <translation>恢复包含的目录</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="211"/>
+        <location filename="../syncthingfileitemaction.cpp" line="220"/>
         <source>Pause containing directories</source>
         <translation>暂停包含的目录</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="251"/>
         <source>Use bright custom colors</source>
-        <translation>使用明亮的自定义颜色</translation>
+        <translation type="vanished">使用明亮的自定义颜色</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="256"/>
+        <location filename="../syncthingfileitemaction.cpp" line="260"/>
         <source>Select Syncthing config ...</source>
         <translation>选择 Syncthing 配置 ...</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="261"/>
+        <location filename="../syncthingfileitemaction.cpp" line="265"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -121,52 +120,52 @@
 <context>
     <name>SyncthingFileItemActionStaticData</name>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="88"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="84"/>
         <source>Syncthing connection error</source>
         <translation>Syncthing 连接错误</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="112"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="108"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="120"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="116"/>
         <source>Select Syncthing config file</source>
         <translation>选择 Syncthing 配置文件</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="135"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="131"/>
         <source>(still using config from &quot;%1&quot;)</source>
         <translation>（仍然使用来自 &quot;%1&quot; 的配置）</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="146"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="142"/>
         <source>Syncthing config file can not be automatically located</source>
         <translation>Syncthing 配置文件不能自动定位</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="153"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="149"/>
         <source>Unable to load Syncthing config from &quot;%1&quot;</source>
         <translation>无法从 &quot;%1&quot; 加载 Syncthing 配置</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="162"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="158"/>
         <source>Syncthing config from &quot;%1&quot; does not contain GUI address.</source>
         <translation>&quot;%1&quot; 的 Syncthing 配置不包含 GUI 地址。</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="174"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="170"/>
         <source>Enter API key</source>
         <translation>输入 API 密钥</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="174"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="170"/>
         <source>The selected config file does not contain an API key. Please enter the API key manually:</source>
         <translation>所选的配置文件不包含 API 密钥。请手动输入 API 密钥：</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="176"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="172"/>
         <source>No API key supplied for &quot;%1&quot;.</source>
         <translation>没有为 &quot;%1 &quot; 提供 API 密钥。</translation>
     </message>

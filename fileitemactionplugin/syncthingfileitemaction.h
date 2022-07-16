@@ -20,8 +20,12 @@ public:
     static QList<QAction *> createActions(const KFileItemListProperties &fileItemInfo, QObject *parent);
     static SyncthingFileItemActionStaticData &staticData();
 
+protected:
+    bool eventFilter(QObject *object, QEvent *event) override;
+
 private:
     static SyncthingFileItemActionStaticData s_data;
+    QWidget *m_parentWidget;
 };
 
 inline SyncthingFileItemActionStaticData &SyncthingFileItemAction::staticData()

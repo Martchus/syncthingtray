@@ -5,11 +5,14 @@
 
 #include <syncthingmodel/syncthingicons.h>
 
+#include <qtutilities/misc/desktoputils.h>
+
 #include <KFileItem>
 #include <KPluginFactory>
 #include <KPluginLoader>
 
 #include <QAction>
+#include <QEvent>
 
 #include <functional>
 #include <utility>
@@ -42,6 +45,7 @@ SyncthingFileItemActionStaticData SyncthingFileItemAction::s_data;
 
 SyncthingFileItemAction::SyncthingFileItemAction(QObject *parent, const QVariantList &)
     : KAbstractFileItemActionPlugin(parent)
+    , m_parentWidget(nullptr)
 {
     s_data.initialize();
 }
@@ -57,6 +61,11 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
     // don't show anything if no relevant actions could be determined but successfully connected
     if (s_data.connection().isConnected() && !s_data.hasError() && subActions.isEmpty()) {
         return topLevelActions;
+    }
+
+    if ((m_parentWidget = parentWidget)) {
+        s_data.applyBrightCustomColorsSetting(QtUtilities::isPaletteDark(parentWidget->palette()));
+        parentWidget->installEventFilter(this);
     }
 
     topLevelActions << new SyncthingMenuAction(fileItemInfo, subActions, this);
@@ -248,11 +257,6 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     actions << errorAction;
 
     // add config items
-    QAction *const brightCustomColorsAction = new QAction(QIcon::fromTheme(QStringLiteral("color-profile")), tr("Use bright custom colors"), parent);
-    brightCustomColorsAction->setCheckable(true);
-    brightCustomColorsAction->setChecked(data.isUsingBrightCustomColors());
-    connect(brightCustomColorsAction, &QAction::triggered, &data, &SyncthingFileItemActionStaticData::handleBrightCustomColorsChanged);
-    actions << brightCustomColorsAction;
     QAction *const configFileAction = new QAction(QIcon::fromTheme(QStringLiteral("settings-configure")), tr("Select Syncthing config ..."), parent);
     connect(configFileAction, &QAction::triggered, &data, &SyncthingFileItemActionStaticData::selectSyncthingConfig);
     actions << configFileAction;
@@ -263,6 +267,14 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     actions << aboutAction;
 
     return actions;
+}
+
+bool SyncthingFileItemAction::eventFilter(QObject *object, QEvent *event)
+{
+    if (object == m_parentWidget && event->type() == QEvent::PaletteChange) {
+        s_data.handlePaletteChanged(m_parentWidget->palette());
+    }
+    return false;
 }
 
 #include <syncthingfileitemaction.moc>
