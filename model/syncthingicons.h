@@ -63,10 +63,8 @@ LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QString &path, const QSi
 LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QByteArray &contents, const QSize &size = QSize(32, 32), int margin = 0);
 
 struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
-    struct DarkTheme {
-    };
-    struct BrightTheme {
-    };
+    struct DarkTheme {};
+    struct BrightTheme {};
 
     explicit StatusIconSettings();
     explicit StatusIconSettings(DarkTheme);

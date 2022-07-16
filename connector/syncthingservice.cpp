@@ -374,7 +374,8 @@ void SyncthingService::setRunning(bool running)
         setupSystemdInterface();
     }
     if (running) {
-        registerErrorHandler(m_currentSystemdInterface->StartUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("start unit"), m_activeState.isEmpty());
+        registerErrorHandler(
+            m_currentSystemdInterface->StartUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("start unit"), m_activeState.isEmpty());
     } else {
         registerErrorHandler(m_currentSystemdInterface->StopUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("stop unit"));
     }

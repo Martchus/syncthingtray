@@ -1219,7 +1219,8 @@ QWidget *SystemdOptionPage::setupWidget()
 {
     auto *const widget = SystemdOptionPageBase::setupWidget();
     auto *const refreshAction = new QAction(QCoreApplication::translate("QtGui::SystemdOptionPage", "Reload all unit files"), widget);
-    refreshAction->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
+    refreshAction->setIcon(
+        QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
     ui()->syncthingUnitLineEdit->addCustomAction(refreshAction);
     if (!m_service) {
         return widget;
