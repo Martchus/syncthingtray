@@ -155,33 +155,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="78"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="64"/>
         <source> x </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="104"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="90"/>
         <source> grid units</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="122"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="108"/>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="134"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="120"/>
         <source>States to enable passive mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="35"/>
-        <source>Colors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="42"/>
-        <source>Bright custom text colors (use for dark color scheme)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -196,17 +186,17 @@
 <context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="126"/>
+        <location filename="../lib/settingsdialog.cpp" line="124"/>
         <source>Plasmoid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="134"/>
+        <location filename="../lib/settingsdialog.cpp" line="132"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="140"/>
+        <location filename="../lib/settingsdialog.cpp" line="138"/>
         <source>Extras</source>
         <translation type="unfinished"></translation>
     </message>
@@ -227,17 +217,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="373"/>
+        <location filename="../lib/syncthingapplet.cpp" line="374"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="385"/>
+        <location filename="../lib/syncthingapplet.cpp" line="386"/>
         <source>New notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="547"/>
+        <location filename="../lib/syncthingapplet.cpp" line="543"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
