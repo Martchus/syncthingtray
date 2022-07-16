@@ -509,18 +509,21 @@ So far Qt does not offer much to improve the situation (see "List of bugs" below
 However, it is possible to use Syncthing Tray's custom appearance settings to
 achieve a dark theming:
 
-* To enable dark Window borders, set the environment variable `QT_QPA_PLATFORM`
-  to `windows:darkmode=1` or create a file called `qt.conf` next to `syncthingtray.exe`
-  with the contents:
-  ```
-  [Platforms]
-  WindowsArguments = darkmode=1
-  ```
 * To enable dark colors for Syncthing Tray's UI elements, configure a dark color
   palette in Syncthing Tray's settings under "Qt/Appearance". You can download and
   load the file as a base
   https://raw.githubusercontent.com/Martchus/syncthingtray/master/tray/resources/dark-palette.ini
   and tweak the colors to your liking.
+* As of Qt 6.4 dark Window borders will be enabled automatically if Windows'
+  dark mode setting is enabled and a dark color palette has been selected as
+  mentioned in the previous step.
+  To enable dark window borders in earlier Qt versions, set the environment
+  variable `QT_QPA_PLATFORM` to `windows:darkmode=1` or create a file called
+  `qt.conf` next to `syncthingtray.exe` with the contents:
+  ```
+  [Platforms]
+  WindowsArguments = darkmode=1
+  ```
 * To make general icons fit with the dark color palette, configure an
   appropriate icon them, e.g. select "Breeze Dark" as icon theme in Syncthing
   Tray's settings under "Qt/Appearance".
