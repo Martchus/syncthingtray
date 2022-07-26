@@ -185,68 +185,68 @@
         <translation>无法请求磁盘事件： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="153"/>
+        <location filename="../syncthingconnection.cpp" line="154"/>
         <source>disconnected</source>
         <translation>已断线</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="155"/>
+        <location filename="../syncthingconnection.cpp" line="156"/>
         <source>reconnecting</source>
         <translation>重连中</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="157"/>
+        <location filename="../syncthingconnection.cpp" line="158"/>
         <source>connected</source>
         <translation>已连接</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="159"/>
+        <location filename="../syncthingconnection.cpp" line="160"/>
         <source>connected, scanning</source>
         <translation>已连接，扫描中</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="161"/>
+        <location filename="../syncthingconnection.cpp" line="162"/>
         <source>connected, paused</source>
         <translation>已连接，已暂停</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="163"/>
+        <location filename="../syncthingconnection.cpp" line="164"/>
         <source>connected, synchronizing</source>
         <translation>已连接，同步中</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="165"/>
+        <location filename="../syncthingconnection.cpp" line="166"/>
         <source>connected, remote not in sync</source>
         <translation>已连接，远程未同步</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="167"/>
+        <location filename="../syncthingconnection.cpp" line="168"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="264"/>
-        <location filename="../syncthingconnection.cpp" line="456"/>
+        <location filename="../syncthingconnection.cpp" line="265"/>
+        <location filename="../syncthingconnection.cpp" line="458"/>
         <source>Connection configuration is insufficient.</source>
         <translation>缺少连接配置。</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="702"/>
+        <location filename="../syncthingconnection.cpp" line="704"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
         <translation>无法解析时间戳 &quot;%1&quot; (%2): %3</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="770"/>
+        <location filename="../syncthingconnection.cpp" line="772"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>无法找到 Syncthing 使用的证书。</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="776"/>
+        <location filename="../syncthingconnection.cpp" line="778"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>无法加载 Syncthing 使用的证书。</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="941"/>
+        <location filename="../syncthingconnection.cpp" line="945"/>
         <source>at offset %1</source>
         <translation>在偏移量 %1 处</translation>
     </message>

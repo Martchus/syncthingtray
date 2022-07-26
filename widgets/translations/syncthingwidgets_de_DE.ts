@@ -1072,54 +1072,51 @@
 <context>
     <name>QtGui::StatusInfo</name>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="18"/>
         <source>Initializing ...</source>
-        <translation>Initialisierung ...</translation>
+        <translation type="vanished">Initialisierung ...</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="44"/>
-        <location filename="../misc/statusinfo.cpp" line="48"/>
+        <location filename="../misc/statusinfo.cpp" line="46"/>
         <source>Not connected to Syncthing</source>
         <translation>Nicht mit Syncthing verbunden</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="53"/>
         <source>Reconnecting ...</source>
-        <translation>Neu verbinden ...</translation>
+        <translation type="vanished">Neu verbinden ...</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="61"/>
-        <location filename="../misc/statusinfo.cpp" line="65"/>
+        <location filename="../misc/statusinfo.cpp" line="63"/>
+        <location filename="../misc/statusinfo.cpp" line="67"/>
         <source>At least one directory is out of sync</source>
         <translation>Mind. ein Verzeichnis hat Fehler</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="69"/>
+        <location filename="../misc/statusinfo.cpp" line="71"/>
         <source>Notifications available</source>
         <translation>Es gibt neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="74"/>
+        <location filename="../misc/statusinfo.cpp" line="76"/>
         <source>Syncthing is idling</source>
         <translation>Syncthing ist im Leerlauf</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="78"/>
+        <location filename="../misc/statusinfo.cpp" line="80"/>
         <source>Syncthing is scanning</source>
         <translation>Syncthing scannt</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="82"/>
+        <location filename="../misc/statusinfo.cpp" line="84"/>
         <source>At least one device is paused</source>
         <translation>Mind. ein Gerät ist pausiert</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="90"/>
+        <location filename="../misc/statusinfo.cpp" line="92"/>
         <source>At least one remote directory is not in sync</source>
         <translation>Mind. ein entferntes Verzeichnis ist nicht synchronisiert</translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="141"/>
+        <location filename="../misc/statusinfo.cpp" line="143"/>
         <source>Connected to %1 devices</source>
         <translation>
             <numerusform>Mit %1 Gerät verbunden</numerusform>
@@ -1134,7 +1131,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="148"/>
+        <location filename="../misc/statusinfo.cpp" line="150"/>
         <source>Connected to %1 and %2</source>
         <translation>
             <numerusform>Mit %1 und %2 verbunden</numerusform>
@@ -1142,7 +1139,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="151"/>
+        <location filename="../misc/statusinfo.cpp" line="153"/>
         <source>Connected to %1</source>
         <translation>
             <numerusform>Mit %1 verbunden</numerusform>
@@ -1150,23 +1147,38 @@
         </translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="60"/>
-        <location filename="../misc/statusinfo.cpp" line="86"/>
+        <location filename="../misc/statusinfo.cpp" line="62"/>
+        <location filename="../misc/statusinfo.cpp" line="88"/>
         <source>Synchronization is ongoing</source>
         <translation>Syncthing synchronisiert</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="46"/>
+        <location filename="../misc/statusinfo.cpp" line="18"/>
+        <source>Initializing …</source>
+        <translation>Initialisierung …</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="44"/>
+        <source>Connecting to Syncthing …</source>
+        <translation>Stelle Verbindung mit Syncthing her …</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="49"/>
         <source>Trying to reconnect every %1 ms</source>
         <translation>Versuche alle %1 ms zu verbinden</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="94"/>
+        <location filename="../misc/statusinfo.cpp" line="55"/>
+        <source>Reconnecting …</source>
+        <translation>Neu verbinden …</translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="96"/>
         <source>Status is unknown</source>
         <translation>Status ist unbekannt</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="117"/>
+        <location filename="../misc/statusinfo.cpp" line="119"/>
         <source>Not connected to other devices</source>
         <translation>Nicht mit anderen Geräten verbunden</translation>
     </message>
@@ -1306,9 +1318,13 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>QtGui::WebPage</name>
     <message>
-        <location filename="../webview/webpage.cpp" line="351"/>
         <source>Select path for Syncthing directory ...</source>
-        <translation>Pfad für Syncthing-Verzeichnis auswählen ...</translation>
+        <translation type="vanished">Pfad für Syncthing-Verzeichnis auswählen ...</translation>
+    </message>
+    <message>
+        <location filename="../webview/webpage.cpp" line="351"/>
+        <source>Select path for Syncthing directory …</source>
+        <translation>Pfad für Syncthing-Verzeichnis auswählen …</translation>
     </message>
 </context>
 <context>
