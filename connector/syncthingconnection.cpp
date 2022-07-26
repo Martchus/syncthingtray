@@ -75,6 +75,7 @@ SyncthingConnection::SyncthingConnection(
     , m_loggingFlagsHandler(SyncthingConnectionLoggingFlags::None)
     , m_keepPolling(false)
     , m_abortingAllRequests(false)
+    , m_connectionAborted(false)
     , m_abortingToReconnect(false)
     , m_requestCompletion(true)
     , m_lastEventId(0)
@@ -257,7 +258,7 @@ void SyncthingConnection::connect()
     }
 
     // reset status
-    m_abortingToReconnect = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
+    m_connectionAborted = m_abortingToReconnect = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
 
     // check configuration
     if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
@@ -318,7 +319,7 @@ void SyncthingConnection::disconnect()
  */
 void SyncthingConnection::abortAllRequests()
 {
-    m_abortingAllRequests = true;
+    m_connectionAborted = m_abortingAllRequests = true;
     if (m_configReply) {
         m_configReply->abort();
     }
@@ -420,6 +421,7 @@ void SyncthingConnection::continueReconnecting()
 
     // cleanup information from previous connection
     m_keepPolling = true;
+    m_connectionAborted = false;
     m_abortingToReconnect = false;
     m_lastEventId = 0;
     m_lastDiskEventId = 0;
@@ -860,6 +862,7 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
     case SyncthingStatus::Disconnected:
         // disable (long) polling
         m_keepPolling = false;
+        m_connectionAborted = true;
         [[fallthrough]];
     case SyncthingStatus::Reconnecting:
         m_devStatsPollTimer.stop();
@@ -927,7 +930,8 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
             }
         }
     }
-    if (m_status != status) {
+    if (m_status != status || status == SyncthingStatus::Disconnected) {
+        // emit event if status changed and always for disconnects so isConnecting() is re-evaluated
         emit statusChanged(m_status = status);
     }
 }

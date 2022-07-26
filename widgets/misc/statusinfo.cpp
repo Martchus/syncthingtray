@@ -40,12 +40,14 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection, c
     const auto &icons = trayIcons();
     switch (connection.status()) {
     case SyncthingStatus::Disconnected:
-        if (connection.autoReconnectInterval() > 0) {
-            m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Not connected to Syncthing");
-            m_additionalStatusInfo
-                = QCoreApplication::translate("QtGui::StatusInfo", "Trying to reconnect every %1 ms").arg(connection.autoReconnectInterval());
+        if (connection.isConnecting()) {
+            m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Connecting to Syncthing ...");
         } else {
             m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Not connected to Syncthing");
+            if (connection.autoReconnectInterval() > 0) {
+                m_additionalStatusInfo
+                    = QCoreApplication::translate("QtGui::StatusInfo", "Trying to reconnect every %1 ms").arg(connection.autoReconnectInterval());
+            }
         }
         m_statusIcon = &icons.disconnected;
         break;

@@ -83,6 +83,8 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(Data::SyncthingConnectionLoggingFlags loggingFlags READ loggingFlags WRITE setLoggingFlags)
     Q_PROPERTY(QString statusText READ statusText NOTIFY statusChanged)
     Q_PROPERTY(bool connected READ isConnected NOTIFY statusChanged)
+    Q_PROPERTY(bool connecting READ isConnecting NOTIFY statusChanged)
+    Q_PROPERTY(bool aborted READ isAborted NOTIFY statusChanged)
     Q_PROPERTY(bool hasUnreadNotifications READ hasUnreadNotifications)
     Q_PROPERTY(bool hasOutOfSyncDirs READ hasOutOfSyncDirs)
     Q_PROPERTY(bool requestingCompletionEnabled READ isRequestingCompletionEnabled WRITE setRequestingCompletionEnabled)
@@ -130,6 +132,8 @@ public:
     SyncthingConnectionLoggingFlags loggingFlags() const;
     void setLoggingFlags(SyncthingConnectionLoggingFlags flags);
     bool isConnected() const;
+    bool isAborted() const;
+    bool isConnecting() const;
     bool hasPendingRequests() const;
     bool hasPendingRequestsIncludingEvents() const;
     bool hasUnreadNotifications() const;
@@ -360,6 +364,7 @@ private:
 
     bool m_keepPolling;
     bool m_abortingAllRequests;
+    bool m_connectionAborted;
     bool m_abortingToReconnect;
     bool m_requestCompletion;
     int m_lastEventId;
@@ -489,6 +494,23 @@ inline SyncthingStatus SyncthingConnection::status() const
 inline bool SyncthingConnection::isConnected() const
 {
     return m_status != SyncthingStatus::Disconnected && m_status != SyncthingStatus::Reconnecting;
+}
+
+/*!
+ * \brief Returns whether the connection has been aborted, either by invoking disconnect(), abortAllRequests() or
+ *        by an error.
+ */
+inline bool SyncthingConnection::isAborted() const
+{
+    return m_connectionAborted;
+}
+
+/*!
+ * \brief Returns whether the connection is currently being established (and has not been established yet).
+ */
+inline bool SyncthingConnection::isConnecting() const
+{
+    return !isConnected() && !isAborted() && hasPendingRequests();
 }
 
 /*!
