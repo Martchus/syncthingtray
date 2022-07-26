@@ -318,7 +318,7 @@ void WebPage::injectJavaScripts(bool ok)
     Q_UNUSED(ok)
     // show folder path selection when double-clicking input
     injectJavaScript(QStringLiteral("var button = jQuery('<button type=\"button\" class=\"btn btn-sm\" "
-                                    "style=\"float: right;\">Select directory ...</button>');"
+                                    "style=\"float: right;\">Select directory …</button>');"
                                     "button.click(function(event) {"
                                     "    if (!document.getElementById('folderPath').getAttribute('readonly')) {"
                                     "        console.log('nativeInterface.showFolderPathSelection: ' + event.target.value);"
@@ -348,7 +348,7 @@ void WebPage::processJavaScriptConsoleMessage(const QString &message)
  */
 void WebPage::showFolderPathSelection(const QString &defaultDir)
 {
-    const QString dir(QFileDialog::getExistingDirectory(m_view, tr("Select path for Syncthing directory ..."), defaultDir));
+    const QString dir(QFileDialog::getExistingDirectory(m_view, tr("Select path for Syncthing directory …"), defaultDir));
     if (!dir.isEmpty()) {
         injectJavaScript(QStringLiteral("document.getElementById('folderPath').value = '") % dir % QStringLiteral("';"));
     }

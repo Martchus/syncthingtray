@@ -15,7 +15,7 @@ using namespace Data;
 namespace QtGui {
 
 StatusInfo::StatusInfo()
-    : m_statusText(QCoreApplication::translate("QtGui::StatusInfo", "Initializing ..."))
+    : m_statusText(QCoreApplication::translate("QtGui::StatusInfo", "Initializing …"))
     , m_statusIcon(&trayIcons().disconnected)
 {
 }
@@ -41,7 +41,7 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection, c
     switch (connection.status()) {
     case SyncthingStatus::Disconnected:
         if (connection.isConnecting()) {
-            m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Connecting to Syncthing ...");
+            m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Connecting to Syncthing …");
         } else {
             m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Not connected to Syncthing");
             if (connection.autoReconnectInterval() > 0) {
@@ -52,7 +52,7 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection, c
         m_statusIcon = &icons.disconnected;
         break;
     case SyncthingStatus::Reconnecting:
-        m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Reconnecting ...");
+        m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Reconnecting …");
         m_statusIcon = &icons.disconnected;
         break;
     default:
