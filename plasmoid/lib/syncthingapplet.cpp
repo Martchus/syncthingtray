@@ -309,6 +309,11 @@ QString SyncthingApplet::formatFileSize(quint64 fileSizeInByte) const
     return QString::fromStdString(dataSizeToString(fileSizeInByte));
 }
 
+QString SyncthingApplet::substituteTilde(const QString &path) const
+{
+    return Data::substituteTilde(path, m_connection.tilde(), m_connection.pathSeparator());
+}
+
 void SyncthingApplet::showSettingsDlg()
 {
     if (!m_settingsDlg) {

@@ -139,6 +139,15 @@ void MiscTests::testUtils()
     CPPUNIT_ASSERT(isLocal(QUrl(QStringLiteral("http://[::1]"))));
     CPPUNIT_ASSERT(isLocal(QUrl(QStringLiteral("http://localhost/"))));
     CPPUNIT_ASSERT(!isLocal(QUrl(QStringLiteral("http://157.3.52.34"))));
+    CPPUNIT_ASSERT_EQUAL(
+        QStringLiteral("/some/path"), substituteTilde(QStringLiteral("/some/path"), QStringLiteral("/home/foo"), QStringLiteral("/")));
+    CPPUNIT_ASSERT_EQUAL(
+        QStringLiteral("/home/foo/some/path"), substituteTilde(QStringLiteral("~/some/path"), QStringLiteral("/home/foo"), QStringLiteral("/")));
+    CPPUNIT_ASSERT_EQUAL(
+        QStringLiteral("~bar/some/path"), substituteTilde(QStringLiteral("~bar/some/path"), QStringLiteral("/home/foo"), QStringLiteral("/")));
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("/home/foobar/some/path"),
+        substituteTilde(QStringLiteral("~bar/some/path"), QStringLiteral("/home/foo"), QStringLiteral("bar/")));
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("/home/foo"), substituteTilde(QStringLiteral("~"), QStringLiteral("/home/foo"), QStringLiteral("\\")));
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

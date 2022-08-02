@@ -136,6 +136,7 @@ public Q_SLOTS:
     void updateStatusIconAndTooltip();
     QIcon loadForkAwesomeIcon(const QString &name, int size = 32) const;
     QString formatFileSize(quint64 fileSizeInByte) const;
+    QString substituteTilde(const QString &path) const;
 
 Q_SIGNALS:
     /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."

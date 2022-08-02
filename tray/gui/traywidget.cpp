@@ -540,11 +540,11 @@ void TrayWidget::applySettingsOnAllInstances()
 
 void TrayWidget::openDir(const SyncthingDir &dir)
 {
-    if (QDir(dir.path).exists()) {
-        openLocalFileOrDir(dir.path);
+    const auto path = substituteTilde(dir.path, m_connection.tilde(), m_connection.pathSeparator());
+    if (QDir(path).exists()) {
+        openLocalFileOrDir(path);
     } else {
-        QMessageBox::warning(
-            this, QCoreApplication::applicationName(), tr("The directory <i>%1</i> does not exist on the local machine.").arg(dir.path));
+        QMessageBox::warning(this, QCoreApplication::applicationName(), tr("The directory <i>%1</i> does not exist on the local machine.").arg(path));
     }
 }
 

@@ -94,6 +94,8 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(int devStatsPollInterval READ devStatsPollInterval WRITE setDevStatsPollInterval)
     Q_PROPERTY(bool recordFileChanges READ recordFileChanges WRITE setRecordFileChanges)
     Q_PROPERTY(QString myId READ myId NOTIFY myIdChanged)
+    Q_PROPERTY(QString tilde READ tilde NOTIFY tildeChanged)
+    Q_PROPERTY(QString pathSeparator READ pathSeparator NOTIFY tildeChanged)
     Q_PROPERTY(QString configDir READ configDir NOTIFY configDirChanged)
     Q_PROPERTY(quint64 totalIncomingTraffic READ totalIncomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(quint64 totalOutgoingTraffic READ totalOutgoingTraffic NOTIFY trafficChanged)
@@ -158,6 +160,8 @@ public:
     // getter for information retrieved from Syncthing
     const QString &configDir() const;
     const QString &myId() const;
+    const QString &tilde() const;
+    const QString &pathSeparator() const;
     std::uint64_t totalIncomingTraffic() const;
     std::uint64_t totalOutgoingTraffic() const;
     double totalIncomingRate() const;
@@ -255,6 +259,7 @@ Q_SIGNALS:
     void statusChanged(SyncthingStatus newStatus);
     void configDirChanged(const QString &newConfigDir);
     void myIdChanged(const QString &myNewId);
+    void tildeChanged(const QString &tilde);
     void trafficChanged(std::uint64_t totalIncomingTraffic, std::uint64_t totalOutgoingTraffic);
     void newConfigTriggered();
     void rescanTriggered(const QString &dirId);
@@ -327,6 +332,7 @@ private Q_SLOTS:
     void emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response = QByteArray());
     void emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply);
     void emitMyIdChanged(const QString &newId);
+    void emitTildeChanged(const QString &newTilde, const QString &newPathSeparator);
     void emitDirStatisticsChanged();
     void handleFatalConnectionError();
     void handleAdditionalRequestCanceled();
@@ -376,6 +382,8 @@ private:
     unsigned int m_autoReconnectTries;
     QString m_configDir;
     QString m_myId;
+    QString m_tilde;
+    QString m_pathSeparator;
     std::uint64_t m_totalIncomingTraffic;
     std::uint64_t m_totalOutgoingTraffic;
     double m_totalIncomingRate;
@@ -519,9 +527,9 @@ inline bool SyncthingConnection::isConnecting() const
  * - Requests for (disk) events are excluded because those are long polling requests and therefore always pending.
  *   Instead, we take only into account whether those requests have been at least concluded once (since the last
  *   reconnect).
- * - Only requests which contribute to the overall state and population of myId(), dirInfo(), devInfo(), traffic
- *   statistics, ... are considered. So requests for QR code, logs, clearing errors, rescan, ... are not taken
- *   into account.
+ * - Only requests which contribute to the overall state and population of myId(), tilde(), dirInfo(), devInfo(),
+ *   traffic statistics, ... are considered. So requests for QR code, logs, clearing errors, rescan, ... are not
+ *   taken into account.
  * - This function will also return true as long as the method abortAllRequests() is executed.
  */
 inline bool SyncthingConnection::hasPendingRequests() const
@@ -727,6 +735,22 @@ inline const QString &SyncthingConnection::configDir() const
 inline const QString &SyncthingConnection::myId() const
 {
     return m_myId;
+}
+
+/*!
+ * \brief Returns the substitution for "~" of the Syncthing instance.
+ */
+inline const QString &SyncthingConnection::tilde() const
+{
+    return m_tilde;
+}
+
+/*!
+ * \brief Returns the path separator of the Syncthing instance.
+ */
+inline const QString &SyncthingConnection::pathSeparator() const
+{
+    return m_pathSeparator;
 }
 
 /*!

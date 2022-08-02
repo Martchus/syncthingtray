@@ -699,7 +699,7 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
 /*!
  * \brief Requests the Syncthing status asynchronously.
  *
- * The signals myIdChanged() are emitted when those values have changed; error() is emitted in the error case.
+ * The signals myIdChanged() and tildeChanged() are emitted when those values have changed; error() is emitted in the error case.
  */
 void SyncthingConnection::requestStatus()
 {
@@ -732,6 +732,7 @@ void SyncthingConnection::readStatus()
 
         const auto replyObj = replyDoc.object();
         emitMyIdChanged(replyObj.value(QLatin1String("myID")).toString());
+        emitTildeChanged(replyObj.value(QLatin1String("tilde")).toString(), replyObj.value(QLatin1String("pathSeparator")).toString());
         m_startTime = parseTimeStamp(replyObj.value(QLatin1String("startTime")), QStringLiteral("start time"));
         m_hasStatus = true;
 

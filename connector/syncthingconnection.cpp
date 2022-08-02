@@ -427,6 +427,8 @@ void SyncthingConnection::continueReconnecting()
     m_lastDiskEventId = 0;
     m_configDir.clear();
     m_myId.clear();
+    m_tilde.clear();
+    m_pathSeparator.clear();
     m_totalIncomingTraffic = unknownTraffic;
     m_totalOutgoingTraffic = unknownTraffic;
     m_totalIncomingRate = 0.0;
@@ -983,6 +985,19 @@ void SyncthingConnection::emitMyIdChanged(const QString &newId)
 }
 
 /*!
+ * \brief Internally called to emit tildeChanged() signal.
+ */
+void SyncthingConnection::emitTildeChanged(const QString &newTilde, const QString &newPathSeparator)
+{
+    if ((newTilde.isEmpty() || m_tilde == newTilde) && (newPathSeparator.isEmpty() && m_pathSeparator == newPathSeparator)) {
+        return;
+    }
+    m_tilde = newTilde;
+    m_pathSeparator = newPathSeparator;
+    emit tildeChanged(m_tilde);
+}
+
+/*!
  * \brief Internally called to emit dirStatisticsChanged() event.
  */
 void SyncthingConnection::emitDirStatisticsChanged()
@@ -1114,6 +1129,11 @@ void SyncthingConnection::recalculateStatus()
 /*!
  * \fn SyncthingConnection::myIdChanged()
  * \brief Indicates ID of the own Syncthing device changed.
+ */
+
+/*!
+ * \fn SyncthingConnection::tildeChanged()
+ * \brief Indicates the tilde or path separator of the connected Syncthing instance changed.
  */
 
 /*!

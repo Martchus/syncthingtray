@@ -109,7 +109,7 @@ ColumnLayout {
                                 icon.source: plasmoid.nativeInterface.faUrl + "folder"
                                 tooltip: qsTr("Open in file browser")
                                 onClicked: {
-                                    Qt.openUrlExternally(path)
+                                    Qt.openUrlExternally(plasmoid.nativeInterface.substituteTilde(path))
                                     plasmoid.expanded = false
                                 }
                             }

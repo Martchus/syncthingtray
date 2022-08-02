@@ -37,6 +37,7 @@ LIB_SYNCTHING_CONNECTOR_EXPORT bool isLocal(const QString &hostName);
 LIB_SYNCTHING_CONNECTOR_EXPORT bool isLocal(const QString &hostName, const QHostAddress &hostAddress);
 LIB_SYNCTHING_CONNECTOR_EXPORT bool setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused);
 LIB_SYNCTHING_CONNECTOR_EXPORT bool setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);
+LIB_SYNCTHING_CONNECTOR_EXPORT QString substituteTilde(const QString &path, const QString &tilde, const QString &pathSeparator);
 
 /*!
  * \brief Returns whether the host specified by the given \a url is the local machine.

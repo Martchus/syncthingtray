@@ -1,6 +1,8 @@
 #include "./utils.h"
 #include "./syncthingconnection.h"
 
+#include <qtutilities/misc/compat.h>
+
 #include <c++utilities/chrono/datetime.h>
 #include <c++utilities/conversion/stringconversion.h>
 
@@ -220,6 +222,24 @@ bool setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &devIds, b
     }
 
     return altered;
+}
+
+/*!
+ * \brief Substitutes "~" as first element in \a path with \a tilde assuming the elements in \a path
+ *        are separated by \a pathSeparator.
+ */
+QString substituteTilde(const QString &path, const QString &tilde, const QString &pathSeparator)
+{
+    if (tilde.isEmpty() || pathSeparator.isEmpty() || !path.startsWith(QChar('~'))) {
+        return path;
+    }
+    if (path.size() < 2) {
+        return tilde;
+    }
+    if (QtUtilities::midRef(path, 1).startsWith(pathSeparator)) {
+        return tilde % pathSeparator % QtUtilities::midRef(path, 1 + pathSeparator.size());
+    }
+    return path;
 }
 
 } // namespace Data
