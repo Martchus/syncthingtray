@@ -5,7 +5,6 @@
 #include "resources/../../tray/resources/config.h"
 
 #include <QCommandLinkButton>
-#include <QCoreApplication>
 #include <QDesktopServices>
 #include <QFrame>
 #include <QLabel>
@@ -52,7 +51,7 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     setSubTitle(tr("It looks like you're launching %1 for the first time.").arg(QStringLiteral(APP_NAME)));
 
     auto *const infoLabel = new QLabel(this);
-    infoLabel->setText(QCoreApplication::translate("main",
+    infoLabel->setText(tr(
         "You must configure how to connect to Syncthing and how to launch Syncthing (if that's wanted) when using Syncthing Tray the first time.  A "
         "guided/automated setup is still in the works so the manual setup is currently the only option."));
     infoLabel->setWordWrap(true);

@@ -1257,6 +1257,62 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
 </context>
 <context>
+    <name>QtGui::WelcomeWizardPage</name>
+    <message>
+        <location filename="../settings/wizard.cpp" line="50"/>
+        <source>Welcome to </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="51"/>
+        <source>It looks like you&apos;re launching %1 for the first time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="54"/>
+        <source>You must configure how to connect to Syncthing and how to launch Syncthing (if that&apos;s wanted) when using Syncthing Tray the first time.  A guided/automated setup is still in the works so the manual setup is currently the only option.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="60"/>
+        <source>Configure connection and launcher settings manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="62"/>
+        <source>Note that the connection settings allow importing URL, credentials and API-key from the local Syncthing configuration.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="78"/>
+        <source>Show Syncthing&apos;s documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="79"/>
+        <source>It contains general information about configuring Syncthing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="84"/>
+        <source>Show %1&apos;s README</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="85"/>
+        <source>It contains documentation about this GUI integration specifically.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QtGui::Wizard</name>
+    <message>
+        <location filename="../settings/wizard.cpp" line="23"/>
+        <source>Setup wizard - </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Settings::restore</name>
     <message>
         <location filename="../settings/settings.cpp" line="316"/>
