@@ -150,6 +150,7 @@ struct SYNCTHINGWIDGETS_EXPORT WebView {
 
 struct SYNCTHINGWIDGETS_EXPORT Settings {
     bool firstLaunch = false;
+    bool fakeFirstLaunch = false; // not persistent, for testing purposes only
     Connection connection;
     NotifyOn notifyOn;
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS

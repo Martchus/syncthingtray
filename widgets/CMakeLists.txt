@@ -11,6 +11,7 @@ set(META_WEBVIEW_SRC_DIR webview)
 set(WIDGETS_HEADER_FILES
     settings/settings.h
     settings/settingsdialog.h
+    settings/wizard.h
     webview/webpage.h
     webview/webviewdialog.h
     misc/textviewdialog.h
@@ -25,6 +26,7 @@ set(WIDGETS_HEADER_FILES
 set(WIDGETS_SRC_FILES
     settings/settings.cpp
     settings/settingsdialog.cpp
+    settings/wizard.cpp
     webview/webpage.cpp
     webview/webviewdialog.cpp
     webview/webviewinterceptor.h
@@ -71,7 +73,8 @@ set(REQUIRED_ICONS
     network-connect
     emblem-remove
     go-down
-    go-up)
+    go-up
+    help-contents)
 
 # find c++utilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.11.0 REQUIRED)

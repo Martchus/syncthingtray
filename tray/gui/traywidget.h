@@ -56,6 +56,7 @@ public:
     QMenu *connectionsMenu();
     static const std::vector<TrayWidget *> &instances();
     Data::SyncthingConnectionSettings *selectedConnection();
+    SettingsDialog *settingsDialog();
 
 public Q_SLOTS:
     void showSettingsDialog();

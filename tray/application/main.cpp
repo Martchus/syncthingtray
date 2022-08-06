@@ -5,6 +5,7 @@
 
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #include <syncthingwidgets/settings/settings.h>
+#include <syncthingwidgets/settings/wizard.h>
 
 #include <syncthingconnector/syncthingprocess.h>
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -22,6 +23,7 @@
 #include <c++utilities/application/commandlineutils.h>
 #include <c++utilities/misc/parseerror.h>
 
+#include <qtutilities/misc/dialogutils.h>
 #include <qtutilities/resources/importplugin.h>
 #include <qtutilities/resources/qtconfigarguments.h>
 #include <qtutilities/resources/resources.h>
@@ -59,6 +61,14 @@ void handleSystemdServiceError(const QString &context, const QString &name, cons
     msgBox->show();
 }
 #endif
+
+static void showWizard(const TrayWidget *trayWidget)
+{
+    auto *const wizard = Wizard::instance();
+    QtUtilities::centerWidget(wizard);
+    QObject::connect(wizard, &Wizard::settingsRequested, trayWidget, &TrayWidget::showSettingsDialog);
+    wizard->show();
+}
 
 int initSyncthingTray(bool windowed, bool waitForTray, const Argument &connectionConfigArg)
 {
@@ -105,17 +115,10 @@ int initSyncthingTray(bool windowed, bool waitForTray, const Argument &connectio
         widget = &trayIcon->trayMenu().widget();
     }
 
-    // show "first launch" message box
-    if (!settings.firstLaunch) {
-        return 0;
+    // show wizard on first launch
+    if (settings.firstLaunch || settings.fakeFirstLaunch) {
+        showWizard(widget);
     }
-    QMessageBox msgBox;
-    msgBox.setIcon(QMessageBox::Information);
-    msgBox.setText(QCoreApplication::translate("main", "You must configure how to connect to Syncthing when using Syncthing Tray the first time."));
-    msgBox.setInformativeText(QCoreApplication::translate(
-        "main", "Note that the settings dialog allows importing URL, credentials and API-key from the local Syncthing configuration."));
-    msgBox.exec();
-    widget->showSettingsDialog();
     return 0;
 
 #else
@@ -128,9 +131,9 @@ int initSyncthingTray(bool windowed, bool waitForTray, const Argument &connectio
 #endif
 }
 
-void trigger(bool tray, bool webUi)
+static void trigger(bool tray, bool webUi, bool wizard)
 {
-    if (TrayWidget::instances().empty() || !(tray || webUi)) {
+    if (TrayWidget::instances().empty() || !(tray || webUi || wizard)) {
         return;
     }
     auto *const trayWidget = TrayWidget::instances().front();
@@ -139,6 +142,9 @@ void trigger(bool tray, bool webUi)
     }
     if (tray) {
         trayWidget->showUsingPositioningSettings();
+    }
+    if (wizard) {
+        showWizard(trayWidget);
     }
 }
 
@@ -159,6 +165,10 @@ int runApplication(int argc, const char *const *argv)
     auto windowedArg = ConfigValueArgument("windowed", 'w', "opens the tray menu as a regular window");
     auto showWebUiArg = ConfigValueArgument("webui", '\0', "instantly shows the web UI - meant for creating shortcut to web UI");
     auto triggerArg = ConfigValueArgument("trigger", '\0', "instantly shows the left-click tray menu - meant for creating a shortcut");
+    auto showWizardArg = ConfigValueArgument("show-wizard", '\0', "instantly shows the setup  wizard");
+    showWizardArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is WIP
+    auto assumeFirstLaunchArg = ConfigValueArgument("assume-first-launch", '\0', "assumes first launch");
+    assumeFirstLaunchArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is debug-only
     auto waitForTrayArg = ConfigValueArgument("wait", '\0',
         "wait until the system tray becomes available instead of showing an error message if the system tray is not available on start-up");
     auto connectionArg = ConfigValueArgument("connection", '\0', "specifies one or more connection configurations to be used", { "config name" });
@@ -168,8 +178,8 @@ int runApplication(int argc, const char *const *argv)
     auto singleInstance = Argument("single-instance", '\0', "does nothing if a tray icon is already shown");
     auto newInstanceArg = Argument("new-instance", '\0', "disable the usual single-process behavior");
     auto &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
-    widgetsGuiArg.addSubArguments(
-        { &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstance, &newInstanceArg });
+    widgetsGuiArg.addSubArguments({ &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstance,
+        &newInstanceArg, &showWizardArg, &assumeFirstLaunchArg });
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
     auto cliArg = OperationArgument("cli", 'c', "run Syncthing's CLI");
     auto cliHelp = ConfigValueArgument("help", 'h', "show help for Syncthing's CLI");
@@ -214,6 +224,9 @@ int runApplication(int argc, const char *const *argv)
         Settings::restore();
         Settings::values().qt.apply();
         qtConfigArgs.applySettings(true);
+        if (assumeFirstLaunchArg.isPresent()) {
+            Settings::values().fakeFirstLaunch = true;
+        }
         LOAD_QT_TRANSLATIONS;
         SyncthingLauncher launcher;
         SyncthingLauncher::setMainInstance(&launcher);
@@ -232,14 +245,14 @@ int runApplication(int argc, const char *const *argv)
 
         // trigger UI and enter event loop
         QObject::connect(&application, &QCoreApplication::aboutToQuit, &shutdownSyncthingTray);
-        trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
+        trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent());
         return application.exec();
     }
 
     // trigger actions if --webui or --trigger is present but don't create a new tray icon
     const auto firstInstance = TrayWidget::instances().empty();
-    if (!firstInstance && (showWebUiArg.isPresent() || triggerArg.isPresent())) {
-        trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
+    if (!firstInstance && (showWebUiArg.isPresent() || triggerArg.isPresent() || showWizardArg.isPresent())) {
+        trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent());
         return 0;
     }
 
@@ -251,7 +264,7 @@ int runApplication(int argc, const char *const *argv)
     // create new/additional tray icon
     const auto res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg);
     if (!res) {
-        trigger(triggerArg.isPresent(), showWebUiArg.isPresent());
+        trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent());
     }
     return res;
 }

@@ -233,7 +233,7 @@ TrayWidget::~TrayWidget()
     }
 }
 
-void TrayWidget::showSettingsDialog()
+SettingsDialog *TrayWidget::settingsDialog()
 {
     if (!s_dialogParent) {
         s_dialogParent = new QWidget();
@@ -248,9 +248,14 @@ void TrayWidget::showSettingsDialog()
         //       by simply saving the settings immediately.
         connect(s_settingsDlg, &SettingsDialog::applied, &Settings::save);
     }
+    return s_settingsDlg;
+}
 
+void TrayWidget::showSettingsDialog()
+{
+    auto *const dlg = settingsDialog();
     // show settings dialog centered or maximized if the relatively big windows would overflow
-    showDialog(s_settingsDlg, centerWidgetAvoidingOverflow(s_settingsDlg));
+    showDialog(dlg, centerWidgetAvoidingOverflow(dlg));
 }
 
 void TrayWidget::showAboutDialog()

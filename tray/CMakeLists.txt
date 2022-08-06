@@ -67,6 +67,7 @@ set(REQUIRED_ICONS
     go-down
     go-up
     help-about
+    help-contents
     internet-web-browser
     list-add
     list-remove
