@@ -168,14 +168,8 @@ int runApplication(int argc, const char *const *argv)
     auto singleInstance = Argument("single-instance", '\0', "does nothing if a tray icon is already shown");
     auto newInstanceArg = Argument("new-instance", '\0', "disable the usual single-process behavior");
     auto &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
-    widgetsGuiArg.addSubArgument(&windowedArg);
-    widgetsGuiArg.addSubArgument(&showWebUiArg);
-    widgetsGuiArg.addSubArgument(&triggerArg);
-    widgetsGuiArg.addSubArgument(&waitForTrayArg);
-    widgetsGuiArg.addSubArgument(&connectionArg);
-    widgetsGuiArg.addSubArgument(&configPathArg);
-    widgetsGuiArg.addSubArgument(&singleInstance);
-    widgetsGuiArg.addSubArgument(&newInstanceArg);
+    widgetsGuiArg.addSubArguments(
+        { &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstance, &newInstanceArg });
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
     auto cliArg = OperationArgument("cli", 'c', "run Syncthing's CLI");
     auto cliHelp = ConfigValueArgument("help", 'h', "show help for Syncthing's CLI");
