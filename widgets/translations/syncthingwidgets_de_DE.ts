@@ -1379,14 +1379,22 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>QtGui::WelcomeWizardPage</name>
     <message>
-        <location filename="../settings/wizard.cpp" line="50"/>
         <source>Welcome to </source>
-        <translation>Willkommen zu </translation>
+        <translation type="vanished">Willkommen zu </translation>
+    </message>
+    <message>
+        <source>It looks like you&apos;re launching %1 for the first time.</source>
+        <translation type="vanished">Es sieht so aus, als würdes du %1 zum erstem Mal starten.</translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="50"/>
+        <source>Welcome to Syncthing Tray</source>
+        <translation>Willkommen zu Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="51"/>
-        <source>It looks like you&apos;re launching %1 for the first time.</source>
-        <translation>Es sieht so aus, als würdes du %1 zum erstem Mal starten.</translation>
+        <source>It looks like you&apos;re launching Syncthing Tray for the first time.</source>
+        <translation>Es sieht so aus, als würdes du Syncthing Tray zum erstem Mal starten.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="54"/>
@@ -1404,22 +1412,26 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Die Verbindungseinstellungen erlauben es die URL, Zugangsdaten und den API-Schlüssel der lokalen Instanz zu importieren.</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="78"/>
+        <location filename="../settings/wizard.cpp" line="77"/>
         <source>Show Syncthing&apos;s documentation</source>
         <translation>Öffne die Syncthing-Dokumentation</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="79"/>
+        <location filename="../settings/wizard.cpp" line="78"/>
         <source>It contains general information about configuring Syncthing.</source>
         <translation>Die Syncthing-Dokumentation enthält allgemeine Informationen über die Konfiguration von Syncthing.</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="84"/>
-        <source>Show %1&apos;s README</source>
-        <translation>Öffne die RREADME von %1</translation>
+        <location filename="../settings/wizard.cpp" line="83"/>
+        <source>Show Syncthing Tray&apos;s README</source>
+        <translation>Öffne die RREADME von Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="85"/>
+        <source>Show %1&apos;s README</source>
+        <translation type="vanished">Öffne die RREADME von %1</translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="84"/>
         <source>It contains documentation about this GUI integration specifically.</source>
         <translation>Die README ist die Dokumentation für diese GUI-Integration.</translation>
     </message>

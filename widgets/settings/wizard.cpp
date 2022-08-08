@@ -47,8 +47,8 @@ Wizard *Wizard::instance()
 WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     : QWizardPage(parent)
 {
-    setTitle(tr("Welcome to ") + QStringLiteral(APP_NAME));
-    setSubTitle(tr("It looks like you're launching %1 for the first time.").arg(QStringLiteral(APP_NAME)));
+    setTitle(tr("Welcome to Syncthing Tray"));
+    setSubTitle(tr("It looks like you're launching Syncthing Tray for the first time."));
 
     auto *const infoLabel = new QLabel(this);
     infoLabel->setText(tr(
@@ -59,8 +59,7 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     auto *const showSettingsCommand = new QCommandLinkButton(this);
     showSettingsCommand->setText(tr("Configure connection and launcher settings manually"));
     showSettingsCommand->setDescription(
-        tr("Note that the connection settings allow importing URL, credentials and API-key from the local Syncthing configuration.")
-            .arg(QStringLiteral(APP_NAME)));
+        tr("Note that the connection settings allow importing URL, credentials and API-key from the local Syncthing configuration."));
     showSettingsCommand->setIcon(QIcon::fromTheme(QStringLiteral("preferences-other")));
     connect(showSettingsCommand, &QCommandLinkButton::clicked, this, [this] {
         if (auto *const wizard = qobject_cast<Wizard *>(this->wizard())) {
@@ -76,13 +75,13 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
 
     auto *const showDocsCommand = new QCommandLinkButton(this);
     showDocsCommand->setText(tr("Show Syncthing's documentation"));
-    showDocsCommand->setDescription(tr("It contains general information about configuring Syncthing.").arg(QStringLiteral(APP_NAME)));
+    showDocsCommand->setDescription(tr("It contains general information about configuring Syncthing."));
     showDocsCommand->setIcon(QIcon::fromTheme(QStringLiteral("help-contents")));
     connect(showDocsCommand, &QCommandLinkButton::clicked, this, [] { QDesktopServices::openUrl(QStringLiteral("https://docs.syncthing.net/")); });
 
     auto *const showReadmeCommand = new QCommandLinkButton(this);
-    showReadmeCommand->setText(tr("Show %1's README").arg(QStringLiteral(APP_NAME)));
-    showReadmeCommand->setDescription(tr("It contains documentation about this GUI integration specifically.").arg(QStringLiteral(APP_NAME)));
+    showReadmeCommand->setText(tr("Show Syncthing Tray's README"));
+    showReadmeCommand->setDescription(tr("It contains documentation about this GUI integration specifically."));
     showReadmeCommand->setIcon(showDocsCommand->icon());
     connect(showReadmeCommand, &QCommandLinkButton::clicked, this, [] {
         if constexpr (std::string_view(APP_VERSION).find('-') == std::string_view::npos) {

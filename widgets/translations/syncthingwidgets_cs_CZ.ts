@@ -1233,12 +1233,12 @@ The Web UI will be opened in the default web browser instead.</source>
     <name>QtGui::WelcomeWizardPage</name>
     <message>
         <location filename="../settings/wizard.cpp" line="50"/>
-        <source>Welcome to </source>
+        <source>Welcome to Syncthing Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="51"/>
-        <source>It looks like you&apos;re launching %1 for the first time.</source>
+        <source>It looks like you&apos;re launching Syncthing Tray for the first time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1257,22 +1257,22 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="78"/>
+        <location filename="../settings/wizard.cpp" line="77"/>
         <source>Show Syncthing&apos;s documentation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="79"/>
+        <location filename="../settings/wizard.cpp" line="78"/>
         <source>It contains general information about configuring Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="84"/>
-        <source>Show %1&apos;s README</source>
+        <location filename="../settings/wizard.cpp" line="83"/>
+        <source>Show Syncthing Tray&apos;s README</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="85"/>
+        <location filename="../settings/wizard.cpp" line="84"/>
         <source>It contains documentation about this GUI integration specifically.</source>
         <translation type="unfinished"></translation>
     </message>
