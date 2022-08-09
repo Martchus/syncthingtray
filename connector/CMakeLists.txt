@@ -79,7 +79,6 @@ endif ()
 
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
-set(META_PUBLIC_QT_MODULES Core ${ADDITIONAL_QT_MODULES})
 
 # configure support for controlling Syncthing via systemd service
 if (UNIX AND NOT APPLE)
