@@ -269,6 +269,11 @@ See the release section on GitHub.
 * Gentoo
     * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
       by [perfect7gentleman's repository](https://github.com/perfect7gentleman/pg_overlay)
+* Void
+    * available as split packages from the official repositories:
+        * `syncthingtray`: GUI and command-line interface
+        * `syncthingtray-plasma`: applet/plasmoid for Plasma desktop
+        * `syncthingtray-dolphin`: Dolphin/KIO integration
 
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities),
