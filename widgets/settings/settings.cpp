@@ -16,6 +16,7 @@
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
 
+#include <qtutilities/resources/resources.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
 #include <qtutilities/misc/dbusnotification.h>
@@ -256,13 +257,9 @@ Settings &values()
 
 void restore()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral(PROJECT_NAME));
-    // move old config to new location
-    const QString oldConfig
-        = QSettings(QSettings::IniFormat, QSettings::UserScope, QApplication::organizationName(), QApplication::applicationName()).fileName();
-    QFile::rename(oldConfig, settings.fileName()) || QFile::remove(oldConfig);
-    settings.sync();
-    Settings &v = values();
+    auto s = QtUtilities::getSettings(QStringLiteral(PROJECT_NAME));
+    auto &v = values();
+    auto &settings = *s;
 
     const auto version = QVersionNumber::fromString(settings.value(QStringLiteral("v")).toString());
     settings.beginGroup(QStringLiteral("tray"));
@@ -402,9 +399,9 @@ void restore()
 
 void save()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral(PROJECT_NAME));
-
-    const Settings &v = values();
+    auto s = QtUtilities::getSettings(QStringLiteral(PROJECT_NAME));
+    auto &settings = *s;
+    const auto &v = values();
 
     settings.setValue(QStringLiteral("v"), QStringLiteral(APP_VERSION));
     settings.beginGroup(QStringLiteral("tray"));
