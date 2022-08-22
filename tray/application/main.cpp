@@ -169,6 +169,8 @@ int runApplication(int argc, const char *const *argv)
     showWizardArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is WIP
     auto assumeFirstLaunchArg = ConfigValueArgument("assume-first-launch", '\0', "assumes first launch");
     assumeFirstLaunchArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is debug-only
+    auto wipArg = ConfigValueArgument("wip", '\0', "enables WIP features");
+    wipArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is debug-only
     auto waitForTrayArg = ConfigValueArgument("wait", '\0',
         "wait until the system tray becomes available instead of showing an error message if the system tray is not available on start-up");
     auto connectionArg = ConfigValueArgument("connection", '\0', "specifies one or more connection configurations to be used", { "config name" });
@@ -179,7 +181,7 @@ int runApplication(int argc, const char *const *argv)
     auto newInstanceArg = Argument("new-instance", '\0', "disable the usual single-process behavior");
     auto &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
     widgetsGuiArg.addSubArguments({ &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstance,
-        &newInstanceArg, &showWizardArg, &assumeFirstLaunchArg });
+        &newInstanceArg, &showWizardArg, &assumeFirstLaunchArg, &wipArg });
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
     auto cliArg = OperationArgument("cli", 'c', "run Syncthing's CLI");
     auto cliHelp = ConfigValueArgument("help", 'h', "show help for Syncthing's CLI");
@@ -226,6 +228,9 @@ int runApplication(int argc, const char *const *argv)
         qtConfigArgs.applySettings(true);
         if (assumeFirstLaunchArg.isPresent()) {
             Settings::values().fakeFirstLaunch = true;
+        }
+        if (wipArg.isPresent()) {
+            Settings::values().enableWipFeatures = true;
         }
         LOAD_QT_TRANSLATIONS;
         SyncthingLauncher launcher;
