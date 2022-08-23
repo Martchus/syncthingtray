@@ -51,7 +51,8 @@ set(WIDGETS_UI_FILES
     settings/autostartoptionpage.ui
     settings/launcheroptionpage.ui
     settings/systemdoptionpage.ui
-    settings/webviewoptionpage.ui)
+    settings/webviewoptionpage.ui
+    settings/mainconfigwizardpage.ui)
 
 set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
              translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)

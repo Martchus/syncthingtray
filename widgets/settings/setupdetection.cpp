@@ -98,7 +98,7 @@ void SetupDetection::startTest()
 
 void SetupDetection::handleConnectionError(const QString &error)
 {
-    connectionErrors << QStringLiteral(" - ") + error;
+    connectionErrors << error;
 }
 
 void SetupDetection::handleLauncherExit(int exitCode, QProcess::ExitStatus exitStatus)

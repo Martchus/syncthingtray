@@ -8,11 +8,13 @@
 
 #include <memory>
 
-QT_FORWARD_DECLARE_CLASS(QLabel)
-
 namespace QtGui {
 
 class SetupDetection;
+
+namespace Ui {
+class MainConfigWizardPage;
+}
 
 class SYNCTHINGWIDGETS_EXPORT Wizard : public QWizard {
     Q_OBJECT
@@ -67,6 +69,7 @@ class SYNCTHINGWIDGETS_EXPORT MainConfigWizardPage final : public QWizardPage {
 
 public:
     explicit MainConfigWizardPage(QWidget *parent = nullptr);
+    ~MainConfigWizardPage() override;
 
     bool isComplete() const override;
     void initializePage() override;
@@ -76,7 +79,7 @@ Q_SIGNALS:
     void retry();
 
 private:
-    QLabel *m_detailsLabel;
+    std::unique_ptr<Ui::MainConfigWizardPage> m_ui;
 };
 
 } // namespace QtGui

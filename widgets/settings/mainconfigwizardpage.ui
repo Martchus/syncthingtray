@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QtGui::MainConfigWizardPage</class>
+ <widget class="QWidget" name="QtGui::MainConfigWizardPage">
+  <property name="windowTitle">
+   <string>General</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="internet-web-browser" resource="../resources/syncthingwidgetsicons.qrc">
+    <normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QRadioButton" name="cfgCurrentlyRunningRadioButton">
+     <property name="text">
+      <string>Configure Syncthing Tray for currently running Syncthing instance</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="cfgLauncherExternalRadioButton">
+     <property name="text">
+      <string>Start installed Syncthing application via Syncthing Tray</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="cfgLauncherBuiltInlRadioButton">
+     <property name="text">
+      <string>Start Syncthing application that is built into Syncthing Tray</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="cfgSystemdUserUnitlRadioButton">
+     <property name="text">
+      <string>Start Syncthing via systemd user-unit (enables and starts the unit %1)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="cfgSystemdSystemUnitlRadioButton">
+     <property name="text">
+      <string>Start Syncthing via systemd system-unit (enables and starts the unit %1)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="enableSystemdIntegrationCheckBox">
+     <property name="text">
+      <string>Enable systemd-integration</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="showReportCheckBox">
+     <property name="text">
+      <string>Show report from detecting the local Syncthing setup</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTextEdit" name="reportTextEdit">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="placeholderText">
+      <string>No report available</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../resources/syncthingwidgetsicons.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>showReportCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>reportTextEdit</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>196</x>
+     <y>190</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>196</x>
+     <y>302</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

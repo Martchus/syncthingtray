@@ -6,6 +6,8 @@
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
 
+#include "ui_mainconfigwizardpage.h"
+
 #include <QCheckBox>
 #include <QCommandLinkButton>
 #include <QDesktopServices>
@@ -219,21 +221,16 @@ void DetectionWizardPage::continueIfDone()
 
 MainConfigWizardPage::MainConfigWizardPage(QWidget *parent)
     : QWizardPage(parent)
-    , m_detailsLabel(new QLabel(this))
+    , m_ui(new Ui::MainConfigWizardPage)
 {
     setTitle(tr("Select what configuration to apply"));
     setSubTitle(tr("Something when wrong when checking the Syncthing setup."));
+    m_ui->setupUi(this);
+    m_ui->reportTextEdit->hide();
+}
 
-    auto *const showDetailsCheckBox = new QCheckBox(this);
-    showDetailsCheckBox->setText(tr("Show report from detecting the local Syncthing setup"));
-    m_detailsLabel->setVisible(false);
-    m_detailsLabel->setWordWrap(true);
-    connect(showDetailsCheckBox, &QCheckBox::toggled, m_detailsLabel, &QLabel::setVisible);
-
-    auto *const layout = new QVBoxLayout;
-    layout->addWidget(showDetailsCheckBox);
-    layout->addWidget(m_detailsLabel);
-    setLayout(layout);
+MainConfigWizardPage::~MainConfigWizardPage()
+{
 }
 
 bool MainConfigWizardPage::isComplete() const
@@ -250,54 +247,79 @@ void MainConfigWizardPage::initializePage()
 
     // add config info
     auto const &detection = wizard->setupDetection();
-    auto info = QStringList();
+    auto info = QString();
+    auto addParagraph = [&info](const QString &text) {
+        info.append(QStringLiteral("<p><b>"));
+        info.append(text);
+        info.append(QStringLiteral("</b></p>"));
+    };
+    auto addListRo = [&info](const QStringList &items) {
+        info.append(QStringLiteral("<ul><li>"));
+        info.append(items.join(QStringLiteral("</li><li>")));
+        info.append(QStringLiteral("</li></ul>"));
+    };
+    auto addList = [&addListRo](QStringList &items) {
+        addListRo(items);
+        items.clear();
+    };
+    auto infoItems = QStringList();
     if (detection.configFilePath.isEmpty()) {
-        info << tr("Unable to locate Syncthing config file.");
+        infoItems << tr("Unable to locate Syncthing config file.");
     } else {
-        info << tr("Located Syncthing config file: ") + detection.configFilePath;
-        if (isComplete()) {
-            info << tr("Syncthing config file looks ok.");
+        infoItems << tr("Located Syncthing config file: ") + detection.configFilePath;
+        if (detection.hasConfig()) {
+            infoItems << tr("Syncthing config file looks ok.");
         } else {
-            info << tr("Syncthing config file looks invalid/incomplete.");
+            infoItems << tr("Syncthing config file looks invalid/incomplete.");
         }
     }
+    addParagraph(tr("Syncthing configuration:"));
+    addList(infoItems);
 
     // add connection info
     if (detection.connection.isConnected()) {
         auto statusInfo = StatusInfo();
         statusInfo.updateConnectionStatus(detection.connection);
         statusInfo.updateConnectionStatus(detection.connection);
-        info << tr("Could connect to Syncthing under: ") + detection.connection.syncthingUrl();
-        info << tr("Syncthing version: ") + detection.connection.syncthingVersion();
-        info << tr("Syncthing device ID: ") + detection.connection.myId();
-        info << tr("Syncthing status: ") + statusInfo.statusText();
+        infoItems << tr("Could connect to Syncthing under: ") + detection.connection.syncthingUrl();
+        infoItems << tr("Syncthing version: ") + detection.connection.syncthingVersion();
+        infoItems << tr("Syncthing device ID: ") + detection.connection.myId();
+        infoItems << tr("Syncthing status: ") + statusInfo.statusText();
         if (!statusInfo.additionalStatusText().isEmpty()) {
-            info << tr("Additional Syncthing status info: ") + statusInfo.additionalStatusText();
+            infoItems << tr("Additional Syncthing status info: ") + statusInfo.additionalStatusText();
         }
+    } else {
+        infoItems << tr("Coult NOT connect to Syncthing under: ") + detection.connection.syncthingUrl();
     }
+    addParagraph(tr("API connection:"));
+    addList(infoItems);
     if (!detection.connectionErrors.isEmpty()) {
-        info << tr("Connection errors:");
-        info << detection.connectionErrors;
+        addParagraph(tr("API connection errors:"));
+        addListRo(detection.connectionErrors);
     }
 
     // add systemd service info
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    info << tr("State of systemd user unit file \"%1\": ").arg(detection.userService.unitName()) + detection.userService.unitFileState();
-    info << tr("State of systemd system unit file \"%1\": ").arg(detection.systemService.unitName()) + detection.systemService.unitFileState();
+    infoItems << tr("State of user unit file \"%1\": ").arg(detection.userService.unitName()) + detection.userService.unitFileState();
+    infoItems << tr("State of system unit file \"%1\": ").arg(detection.systemService.unitName()) + detection.systemService.unitFileState();
+    addParagraph(tr("Systemd:"));
+    addList(infoItems);
 #endif
 
     // add launcher info
     const auto successfulTestLaunch = detection.launcherExitCode.has_value() && detection.launcherExitStatus.value() == QProcess::NormalExit;
     if (successfulTestLaunch) {
-        info << tr("Could test-launch Syncthing successfully, exit code: ") + QString::number(detection.launcherExitCode.value());
-        info << tr("Syncthing version returned from test-launch: ") + QString::fromLocal8Bit(detection.launcherOutput.trimmed());
+        infoItems << tr("Could test-launch Syncthing successfully, exit code: ") + QString::number(detection.launcherExitCode.value());
+        infoItems << tr("Syncthing version returned from test-launch: ") + QString::fromLocal8Bit(detection.launcherOutput.trimmed());
     } else {
-        info << tr("Unable to test-launch Syncthing: ") + detection.launcher.errorString();
+        infoItems << tr("Unable to test-launch Syncthing: ") + detection.launcher.errorString();
     }
-    info << tr("Built-in Syncthing available: ") + (Data::SyncthingLauncher::isLibSyncthingAvailable() ? tr("yes") : tr("no"));
+    infoItems << tr("Built-in Syncthing available: ") + (Data::SyncthingLauncher::isLibSyncthingAvailable() ? tr("yes") : tr("no"));
+    addParagraph(tr("Launcher:"));
+    addList(infoItems);
 
     // add details info
-    m_detailsLabel->setText(QStringLiteral("<ul><li>") % info.join(QStringLiteral("</li><li>")) % QStringLiteral("</ul>"));
+    m_ui->reportTextEdit->setHtml(info);
 
     // add short summary
     if (detection.connection.isConnected()) {
@@ -311,7 +333,7 @@ void MainConfigWizardPage::initializePage()
 
 void MainConfigWizardPage::cleanupPage()
 {
-    m_detailsLabel->clear();
+    m_ui->reportTextEdit->clear();
     emit retry();
 }
 
