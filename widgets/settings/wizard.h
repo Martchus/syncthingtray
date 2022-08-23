@@ -5,8 +5,13 @@
 
 #include <syncthingconnector/syncthingconfig.h>
 
+#include <QByteArray>
+#include <QProcess>
+#include <QTimer>
 #include <QWizard>
 #include <QWizardPage>
+
+#include <optional>
 
 QT_FORWARD_DECLARE_CLASS(QProgressBar)
 QT_FORWARD_DECLARE_CLASS(QLabel)
@@ -68,6 +73,11 @@ private Q_SLOTS:
     void tryToConnect();
     void handleConnectionStatusChanged();
     void handleConnectionError(const QString &error);
+    void handleLauncherExit(int exitCode, QProcess::ExitStatus exitStatus);
+    void handleLauncherError(QProcess::ProcessError error);
+    void handleLauncherOutput(const QByteArray &output);
+    void handleTimeout();
+    void continueWithSummaryIfDone();
     void showSummary();
 
 private:
@@ -76,11 +86,18 @@ private:
     QStringList m_connectionErrors;
     Data::SyncthingConfig m_config;
     Data::SyncthingConnection *m_connection;
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    Data::SyncthingService *m_service;
-#endif
+    Data::SyncthingService *m_userService;
+    Data::SyncthingService *m_systemService;
+    Data::SyncthingLauncher *m_launcher;
+    QTimer m_timeoutTimer;
+
     QProgressBar *m_progressBar;
     QLabel *m_logLabel;
+    std::optional<int> m_launcherExitCode;
+    std::optional<QProcess::ExitStatus> m_launcherExitStatus;
+    std::optional<QProcess::ProcessError> m_launcherError;
+    QByteArray m_launcherOutput;
+    bool m_timedOut;
     bool m_configOk;
 };
 

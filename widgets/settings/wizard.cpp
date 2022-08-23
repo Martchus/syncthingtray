@@ -1,12 +1,16 @@
 #include "./wizard.h"
 #include "./settings.h"
 
+#include "../misc/statusinfo.h"
+#include "../misc/syncthinglauncher.h"
+
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
 
 #include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingconnectionsettings.h>
+#include <syncthingconnector/syncthingservice.h>
 
 #include <QCommandLinkButton>
 #include <QDesktopServices>
@@ -16,12 +20,19 @@
 #include <QMessageBox>
 #include <QProgressBar>
 #include <QPushButton>
+#include <QStringBuilder>
 #include <QStringList>
 #include <QTimer>
 #include <QUrl>
 #include <QVBoxLayout>
 
+#include <initializer_list>
 #include <string_view>
+
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD) && (defined(PLATFORM_UNIX) || defined(PLATFORM_MINGW) || defined(PLATFORM_CYGWIN))
+#define PLATFORM_HAS_GETLOGIN
+#include <unistd.h>
+#endif
 
 namespace QtGui {
 
@@ -138,12 +149,18 @@ DetectionWizardPage::DetectionWizardPage(QWidget *parent)
     : QWizardPage(parent)
     , m_connection(nullptr)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    , m_service(nullptr)
+    , m_userService(nullptr)
+    , m_systemService(nullptr)
 #endif
+    , m_launcher(nullptr)
+    , m_timedOut(false)
     , m_configOk(false)
 {
     setTitle(tr("Checking current Syncthing setup"));
     setSubTitle(tr("Initializing …"));
+
+    m_timeoutTimer.setInterval(1000);
+    m_timeoutTimer.setSingleShot(true);
 
     m_progressBar = new QProgressBar(this);
     m_progressBar->setMinimum(0);
@@ -167,6 +184,11 @@ void DetectionWizardPage::initializePage()
     m_progressBar->setVisible(true);
     m_configOk = false;
     m_connectionErrors.clear();
+    m_launcherExitCode.reset();
+    m_launcherExitStatus.reset();
+    m_launcherError.reset();
+    m_launcherOutput.clear();
+
     emit completeChanged();
     QTimer::singleShot(0, this, &DetectionWizardPage::tryToConnect);
 }
@@ -177,11 +199,23 @@ void DetectionWizardPage::cleanupPage()
     if (m_connection) {
         m_connection->abortAllRequests();
     }
+    if (m_launcher && m_launcher->isRunning()) {
+        m_launcher->terminate();
+    }
 }
 
 void DetectionWizardPage::tryToConnect()
 {
     setSubTitle(tr("Checking whether Syncthing is already running …"));
+
+    // cleanup old instances possibly still present from previous check
+    for (auto *instance : std::initializer_list<QObject *>{ m_connection, m_userService, m_systemService, m_launcher }) {
+        if (instance) {
+            instance->deleteLater();
+        }
+    }
+
+    // read Syncthing's config file
     m_configFilePath = Data::SyncthingConfig::locateConfigFile();
     m_certPath = Data::SyncthingConfig::locateHttpsCertificate();
     if (m_configFilePath.isEmpty()) {
@@ -200,11 +234,42 @@ void DetectionWizardPage::tryToConnect()
         }
     }
     m_configOk = m_config.restore(m_configFilePath);
+
+    // attempt connecting to Syncthing
     m_connection = new Data::SyncthingConnection(
         m_config.syncthingUrl(), m_config.guiApiKey.toUtf8(), Data::SyncthingConnectionLoggingFlags::FromEnvironment, this);
     connect(m_connection, &Data::SyncthingConnection::error, this, &DetectionWizardPage::handleConnectionError);
     connect(m_connection, &Data::SyncthingConnection::statusChanged, this, &DetectionWizardPage::handleConnectionStatusChanged);
     m_connection->connect();
+
+    // checkout availability of systemd services
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    m_userService = new Data::SyncthingService(Data::SystemdScope::User, this);
+    m_userService->setUnitName(QStringLiteral("syncthing.service"));
+    m_systemService = new Data::SyncthingService(Data::SystemdScope::System, this);
+    m_systemService->setUnitName(QStringLiteral("syncthing@") %
+#ifdef PLATFORM_HAS_GETLOGIN
+        QString::fromLocal8Bit(getlogin()) %
+#endif
+        QStringLiteral(".service"));
+    connect(m_userService, &Data::SyncthingService::unitFileStateChanged, this, &DetectionWizardPage::continueWithSummaryIfDone);
+    connect(m_systemService, &Data::SyncthingService::unitFileStateChanged, this, &DetectionWizardPage::continueWithSummaryIfDone);
+#endif
+
+    // check whether we could launch Syncthing as external binary
+    auto launcherSettings = Settings::Launcher();
+    launcherSettings.syncthingArgs = QStringLiteral("--version");
+    m_launcher = new Data::SyncthingLauncher(this);
+    m_launcher->setEmittingOutput(true);
+    connect(m_launcher, &Data::SyncthingLauncher::outputAvailable, this, &DetectionWizardPage::handleLauncherOutput);
+    connect(m_launcher, &Data::SyncthingLauncher::exited, this, &DetectionWizardPage::handleLauncherExit);
+    connect(m_launcher, &Data::SyncthingLauncher::errorOccurred, this, &DetectionWizardPage::handleLauncherError);
+    m_launcher->launch(launcherSettings);
+
+    // setup a timeout
+    m_timeoutTimer.stop();
+    m_timedOut = false;
+    m_timeoutTimer.start();
 }
 
 void DetectionWizardPage::handleConnectionStatusChanged()
@@ -220,9 +285,47 @@ void DetectionWizardPage::handleConnectionError(const QString &error)
     m_connectionErrors << QStringLiteral(" - ") + error;
 }
 
+void DetectionWizardPage::handleLauncherExit(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    m_launcherExitCode = exitCode;
+    m_launcherExitStatus = exitStatus;
+    continueWithSummaryIfDone();
+}
+
+void DetectionWizardPage::handleLauncherError(QProcess::ProcessError error)
+{
+    m_launcherError = error;
+    continueWithSummaryIfDone();
+}
+
+void DetectionWizardPage::handleLauncherOutput(const QByteArray &output)
+{
+    m_launcherOutput.append(output);
+}
+
+void DetectionWizardPage::handleTimeout()
+{
+    m_timedOut = true;
+    continueWithSummaryIfDone();
+}
+
+void DetectionWizardPage::continueWithSummaryIfDone()
+{
+    if (m_timedOut
+        || (!m_connection->isConnecting() && (m_launcherExitCode.has_value() || m_launcherError.has_value())
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+            && !m_userService->unitFileState().isEmpty() && !m_systemService->unitFileState().isEmpty()
+#endif
+                )) {
+        showSummary();
+    }
+}
+
 void DetectionWizardPage::showSummary()
 {
     auto info = QStringList();
+
+    // add config info
     if (m_configFilePath.isEmpty()) {
         info << tr("Unable to locate Syncthing config file.");
     } else {
@@ -233,13 +336,41 @@ void DetectionWizardPage::showSummary()
             info << tr("Syncthing config file looks invalid/incomplete.");
         }
     }
+
+    // add connection info
     if (m_connection->isConnected()) {
+        auto statusInfo = StatusInfo();
+        statusInfo.updateConnectionStatus(*m_connection);
+        statusInfo.updateConnectionStatus(*m_connection);
         info << tr("Could connect to Syncthing under: ") + m_connection->syncthingUrl();
+        info << tr("Syncthing's version: ") + m_connection->syncthingVersion();
+        info << tr("Syncthing's device ID: ") + m_connection->myId();
+        info << tr("Syncthing's status: ") + statusInfo.statusText();
+        if (!statusInfo.additionalStatusText().isEmpty()) {
+            info << tr("Additional Syncthing status info: ") + statusInfo.additionalStatusText();
+        }
     }
     if (!m_connectionErrors.isEmpty()) {
         info << tr("Connection errors:");
         info << m_connectionErrors;
     }
+
+    // add systemd service info
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    info << tr("State of systemd user service \"%1\": ").arg(m_userService->unitName()) + m_userService->unitFileState();
+    info << tr("State of systemd system service \"%1\": ").arg(m_systemService->unitName()) + m_systemService->unitFileState();
+#endif
+
+    // add launcher info
+    if (m_launcherExitCode.has_value() && m_launcherExitStatus.value() == QProcess::NormalExit) {
+        info << tr("Could test-launch Syncthing successfully, exit code: ") + QString::number(m_launcherExitCode.value());
+        info << tr("Syncthing version returned from test-launch: ") + QString::fromLocal8Bit(m_launcherOutput.trimmed());
+    } else {
+        info << tr("Unable to test-launch Syncthing: ") + m_launcher->errorString();
+    }
+    info << tr("Built-in Syncthing available: ") + (Data::SyncthingLauncher::isLibSyncthingAvailable() ? tr("yes") : tr("no"));
+
+    // update UI
     emit completeChanged();
     setSubTitle(tr("[Some summary should go here]. Select how to proceed."));
     m_logLabel->setText(info.join(QChar('\n')));
