@@ -26,6 +26,8 @@ set(WIDGETS_HEADER_FILES
 set(WIDGETS_SRC_FILES
     settings/settings.cpp
     settings/settingsdialog.cpp
+    settings/setupdetection.h
+    settings/setupdetection.cpp
     settings/wizard.cpp
     webview/webpage.cpp
     webview/webviewdialog.cpp
