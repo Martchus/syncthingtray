@@ -370,12 +370,8 @@ void SyncthingApplet::showOwnDeviceId()
 void SyncthingApplet::showAboutDialog()
 {
     if (!m_aboutDlg) {
-        m_aboutDlg = new AboutDialog(nullptr, QStringLiteral(APP_NAME),
-            QStringLiteral("<p>Developed by " APP_AUTHOR "<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "
-                           "icons from <a href=\"https://forkaweso.me\">Fork "
-                           "Awesome</a> (see <a href=\"https://forkaweso.me/Fork-Awesome/license\">their license</a>)</p>"),
-            QStringLiteral(APP_VERSION), CppUtilities::applicationInfo.dependencyVersions, QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION),
-            renderSvgImage(makeSyncthingIcon(), QSize(128, 128)).toImage());
+        m_aboutDlg = new AboutDialog(nullptr, QStringLiteral(APP_NAME), aboutDialogAttribution(), QStringLiteral(APP_VERSION),
+            CppUtilities::applicationInfo.dependencyVersions, QStringLiteral(APP_URL), QStringLiteral(APP_DESCRIPTION), aboutDialogImage());
         m_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         m_aboutDlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("syncthingtray")));
         m_aboutDlg->setAttribute(Qt::WA_DeleteOnClose);

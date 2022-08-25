@@ -264,13 +264,8 @@ void TrayWidget::showAboutDialog()
         s_dialogParent = new QWidget();
     }
     if (!s_aboutDlg) {
-        s_aboutDlg = new AboutDialog(s_dialogParent, QString(),
-            QStringLiteral(
-                "<p>Developed by " APP_AUTHOR
-                "<br>Fallback icons from KDE/Breeze project<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "
-                "icons from <a href=\"https://forkaweso.me\">Fork "
-                "Awesome</a> (see <a href=\"https://forkaweso.me/Fork-Awesome/license\">their license</a>)</p>"),
-            QString(), {}, QStringLiteral(APP_URL), QString(), renderSvgImage(makeSyncthingIcon(), QSize(128, 128)).toImage());
+        s_aboutDlg = new AboutDialog(
+            s_dialogParent, QString(), aboutDialogAttribution(), QString(), {}, QStringLiteral(APP_URL), QString(), aboutDialogImage());
         s_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         s_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     }

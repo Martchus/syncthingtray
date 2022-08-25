@@ -12,6 +12,8 @@
 
 QT_FORWARD_DECLARE_CLASS(QColor)
 QT_FORWARD_DECLARE_CLASS(QPalette)
+QT_FORWARD_DECLARE_CLASS(QImage)
+QT_FORWARD_DECLARE_CLASS(QString)
 
 namespace Data {
 
@@ -214,6 +216,9 @@ inline const ForkAwesomeIcons &commonForkAwesomeIcons()
 {
     return IconManager::instance().commonForkAwesomeIcons();
 }
+
+LIB_SYNCTHING_MODEL_EXPORT QString aboutDialogAttribution();
+LIB_SYNCTHING_MODEL_EXPORT QImage aboutDialogImage();
 
 } // namespace Data
 

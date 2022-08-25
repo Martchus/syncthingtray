@@ -2,6 +2,9 @@
 
 #include "resources/qtconfig.h"
 
+// use meta-data of syncthingtray application here
+#include "resources/../../tray/resources/config.h"
+
 #include <qtutilities/misc/compat.h>
 
 #include <qtforkawesome/icon.h>
@@ -328,6 +331,20 @@ IconManager &IconManager::instance(const QPalette *palette)
 {
     static auto iconManager = IconManager(palette);
     return iconManager;
+}
+
+QString aboutDialogAttribution()
+{
+    return QStringLiteral(
+        "<p>Developed by " APP_AUTHOR
+        "<br>Fallback icons from KDE/Breeze project<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "
+        "icons from <a href=\"https://forkaweso.me\">Fork "
+        "Awesome</a> (see <a href=\"https://forkaweso.me/Fork-Awesome/license\">their license</a>)</p>");
+}
+
+QImage aboutDialogImage()
+{
+    return renderSvgImage(makeSyncthingIcon(), QSize(128, 128)).toImage();
 }
 
 } // namespace Data
