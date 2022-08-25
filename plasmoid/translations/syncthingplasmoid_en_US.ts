@@ -97,47 +97,47 @@
 <context>
     <name>FullRepresentation</name>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="241"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="245"/>
         <source>Global</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="248"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="252"/>
         <source>Global incoming traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="266"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="270"/>
         <source>Local</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="273"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="277"/>
         <source>Global outgoing traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="29"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="33"/>
         <source>Directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="35"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="39"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="41"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="45"/>
         <source>Downloads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="47"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="51"/>
         <source>History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="99"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="103"/>
         <source>Toggle filter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -217,17 +217,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="379"/>
+        <location filename="../lib/syncthingapplet.cpp" line="375"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="391"/>
+        <location filename="../lib/syncthingapplet.cpp" line="387"/>
         <source>New notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="548"/>
+        <location filename="../lib/syncthingapplet.cpp" line="544"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
