@@ -77,6 +77,7 @@ set(REQUIRED_ICONS
     emblem-remove
     go-down
     go-up
+    tools-wizard
     help-contents)
 
 # find c++utilities

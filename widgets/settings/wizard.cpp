@@ -85,7 +85,8 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
         startWizardCommand->setText(tr("Start guided setup"));
         startWizardCommand->setDescription(
             tr("Allows to configure Syncthing Tray automatically for the local Syncthing instance and helps you starting Syncthing if wanted."));
-        startWizardCommand->setIcon(QIcon::fromTheme(QStringLiteral("quickwizard")));
+        startWizardCommand->setIcon(
+            QIcon::fromTheme(QStringLiteral("tools-wizard"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/tools-wizard.svg"))));
         connect(startWizardCommand, &QCommandLinkButton::clicked, this, [this] { this->wizard()->next(); });
     }
 
@@ -93,7 +94,8 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     showSettingsCommand->setText(tr("Configure connection and launcher settings manually"));
     showSettingsCommand->setDescription(
         tr("Note that the connection settings allow importing URL, credentials and API-key from the local Syncthing configuration."));
-    showSettingsCommand->setIcon(QIcon::fromTheme(QStringLiteral("preferences-other")));
+    showSettingsCommand->setIcon(
+        QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
     connect(showSettingsCommand, &QCommandLinkButton::clicked, this, [this] {
         if (auto *const wizard = qobject_cast<Wizard *>(this->wizard())) {
             emit wizard->settingsRequested();
@@ -109,7 +111,8 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     auto *const showDocsCommand = new QCommandLinkButton(this);
     showDocsCommand->setText(tr("Show Syncthing's documentation"));
     showDocsCommand->setDescription(tr("It contains general information about configuring Syncthing."));
-    showDocsCommand->setIcon(QIcon::fromTheme(QStringLiteral("help-contents")));
+    showDocsCommand->setIcon(
+        QIcon::fromTheme(QStringLiteral("help-contents"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-help.svg"))));
     connect(showDocsCommand, &QCommandLinkButton::clicked, this, [] { QDesktopServices::openUrl(QStringLiteral("https://docs.syncthing.net/")); });
 
     auto *const showReadmeCommand = new QCommandLinkButton(this);

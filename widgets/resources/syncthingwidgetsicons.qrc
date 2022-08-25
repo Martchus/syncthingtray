@@ -3,6 +3,7 @@
         <file>icons/hicolor/scalable/actions/view-refresh.svg</file>
         <file>icons/hicolor/scalable/apps/internet-web-browser.svg</file>
         <file>icons/hicolor/scalable/apps/preferences-other.svg</file>
+        <file>icons/hicolor/scalable/apps/system-help.svg</file>
         <file>icons/hicolor/scalable/apps/system-run.svg</file>
         <file>icons/hicolor/scalable/actions/process-stop.svg</file>
         <file>icons/hicolor/scalable/actions/list-add.svg</file>
@@ -13,5 +14,6 @@
         <file>icons/hicolor/scalable/actions/document-open.svg</file>
         <file>icons/hicolor/scalable/actions/go-down.svg</file>
         <file>icons/hicolor/scalable/actions/go-up.svg</file>
+        <file>icons/hicolor/scalable/actions/tools-wizard.svg</file>
     </qresource>
 </RCC>

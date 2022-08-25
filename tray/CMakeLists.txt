@@ -90,6 +90,7 @@ set(REQUIRED_ICONS
     system-search
     system-file-manager
     text-x-generic
+    tools-wizard
     view-refresh
     window-close)
 
