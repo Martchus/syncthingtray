@@ -336,9 +336,13 @@ IconManager &IconManager::instance(const QPalette *palette)
 QString aboutDialogAttribution()
 {
     return QStringLiteral(
-        "<p>Developed by " APP_AUTHOR
-        "<br>Fallback icons from KDE/Breeze project<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a><br>Using "
-        "icons from <a href=\"https://forkaweso.me\">Fork "
+        "<p>Developed by " APP_AUTHOR "<br>Fallback icons from <a href=\"https://invent.kde.org/frameworks/breeze-icons\">KDE/Breeze</a> "
+        "project (copyright © 2014 Uri Herrera <uri_herrera@nitrux.in> and others, see the according "
+        "<a href=\"" APP_URL "/blob/master/LICENSE.LESSER\">LGPL-3.0 license</a>)"
+        "<br>Syncthing icons from <a href=\"https://syncthing.net\">Syncthing project</a> "
+        "(copyright © 2014-2016 The Syncthing Authors, see the according "
+        "<a href=\"" APP_URL "/blob/master/LICENSE.MPL-2.0\">MPL-2.0 license</a>)"
+        "<br>Using icons from <a href=\"https://forkaweso.me\">Fork "
         "Awesome</a> (see <a href=\"https://forkaweso.me/Fork-Awesome/license\">their license</a>)</p>");
 }
 
