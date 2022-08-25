@@ -6,7 +6,11 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 
-PlasmaComponents3.Page {
+PlasmaExtras.Representation {
+    // disable margins as they don't look good together with the scroll view
+    // note: Would be collapsed automatically if the scroll view was the immediate content item.
+    collapseMarginsHint: true
+
     // header ("toolbar" with buttons and combo box) and footer ("tabbar")
     header: PlasmaExtras.PlasmoidHeading {
         ToolBar {
