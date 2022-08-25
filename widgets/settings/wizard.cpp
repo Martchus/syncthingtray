@@ -31,6 +31,7 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     : QWizard(parent, flags)
 {
     setWindowTitle(tr("Setup wizard - ") + QStringLiteral(APP_NAME));
+    setMinimumSize(770, 550);
 
     const auto &settings = Settings::values();
     if (settings.firstLaunch || settings.fakeFirstLaunch) {
