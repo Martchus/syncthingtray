@@ -1,7 +1,4 @@
 # [Syncthing](https://github.com/syncthing/syncthing) Tray
-[![GitHub license](https://img.shields.io/github/license/Martchus/syncthingtray)](https://github.com/Martchus/syncthingtray/blob/master/LICENSE)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Martchus/syncthingtray)](https://github.com/Martchus/syncthingtray/releases/latest)
-
 * Qt-based tray application
 * [Dolphin](https://www.kde.org/applications/system/dolphin)/[Plasma](https://www.kde.org/plasma-desktop)
   integration
