@@ -332,7 +332,7 @@ to systemd in any case.
 Building the testsuite requires CppUnit and Qt 5.8 or higher.
 
 ### Building this straight
-0. Install (preferably the latest version of) the CGG toolchain or Clang, the required Qt modules,
+0. Install (preferably the latest version of) the GCC toolchain or Clang, the required Qt modules,
    iconv, CMake and Ninja.
 1. Get the sources. For the latest version from Git clone the following repositories:
    ```
