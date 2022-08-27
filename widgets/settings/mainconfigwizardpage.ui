@@ -73,19 +73,12 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="showReportCheckBox">
+    <widget class="QLabel" name="label">
      <property name="text">
-      <string>Show report from detecting the local Syncthing setup</string>
+      <string>Click next to configure Syncthing Tray according to the selected options. You can also reconduct the checks the available options are based on by heading back. If you cancel the wizard, no configuration changes will be made.</string>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTextEdit" name="reportTextEdit">
-     <property name="readOnly">
+     <property name="wordWrap">
       <bool>true</bool>
-     </property>
-     <property name="placeholderText">
-      <string>No report available</string>
      </property>
     </widget>
    </item>
@@ -94,22 +87,5 @@
  <resources>
   <include location="../resources/syncthingwidgetsicons.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>showReportCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>reportTextEdit</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>196</x>
-     <y>190</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>196</x>
-     <y>302</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

@@ -8,9 +8,12 @@
 
 #include "ui_mainconfigwizardpage.h"
 
+#include <qtutilities/misc/dialogutils.h>
+
 #include <QCheckBox>
 #include <QCommandLinkButton>
 #include <QDesktopServices>
+#include <QDialog>
 #include <QFileDialog>
 #include <QFrame>
 #include <QLabel>
@@ -18,9 +21,11 @@
 #include <QProgressBar>
 #include <QPushButton>
 #include <QStringList>
+#include <QTextEdit>
 #include <QUrl>
 #include <QVBoxLayout>
 
+#include <initializer_list>
 #include <string_view>
 
 namespace QtGui {
@@ -39,6 +44,8 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     addPage(new WelcomeWizardPage(this));
     addPage(detectionPage);
     addPage(mainConfigPage);
+
+    connect(this, &QWizard::customButtonClicked, this, &Wizard::showDetailsFromSetupDetection);
 }
 
 Wizard::~Wizard()
@@ -63,6 +70,97 @@ SetupDetection &Wizard::setupDetection()
         m_setupDetection = std::make_unique<SetupDetection>();
     }
     return *m_setupDetection;
+}
+
+void Wizard::showDetailsFromSetupDetection()
+{
+    auto const &detection = setupDetection();
+    auto info = QString();
+    auto addParagraph = [&info](const QString &text) {
+        info.append(QStringLiteral("<p><b>"));
+        info.append(text);
+        info.append(QStringLiteral("</b></p>"));
+    };
+    auto addListRo = [&info](const QStringList &items) {
+        info.append(QStringLiteral("<ul><li>"));
+        info.append(items.join(QStringLiteral("</li><li>")));
+        info.append(QStringLiteral("</li></ul>"));
+    };
+    auto addList = [&addListRo](QStringList &items) {
+        addListRo(items);
+        items.clear();
+    };
+    auto infoItems = QStringList();
+    if (detection.configFilePath.isEmpty()) {
+        infoItems << tr("Unable to locate Syncthing config file.");
+    } else {
+        infoItems << tr("Located Syncthing config file: ") + detection.configFilePath;
+        if (detection.hasConfig()) {
+            infoItems << tr("Syncthing config file looks ok.");
+        } else {
+            infoItems << tr("Syncthing config file looks invalid/incomplete.");
+        }
+    }
+    addParagraph(tr("Syncthing configuration:"));
+    addList(infoItems);
+
+    // add connection info
+    if (detection.connection.isConnected()) {
+        auto statusInfo = StatusInfo();
+        statusInfo.updateConnectionStatus(detection.connection);
+        statusInfo.updateConnectionStatus(detection.connection);
+        infoItems << tr("Could connect to Syncthing under: ") + detection.connection.syncthingUrl();
+        infoItems << tr("Syncthing version: ") + detection.connection.syncthingVersion();
+        infoItems << tr("Syncthing device ID: ") + detection.connection.myId();
+        infoItems << tr("Syncthing status: ") + statusInfo.statusText();
+        if (!statusInfo.additionalStatusText().isEmpty()) {
+            infoItems << tr("Additional Syncthing status info: ") + statusInfo.additionalStatusText();
+        }
+    } else {
+        infoItems << tr("Coult NOT connect to Syncthing under: ") + detection.connection.syncthingUrl();
+    }
+    addParagraph(tr("API connection:"));
+    addList(infoItems);
+    if (!detection.connectionErrors.isEmpty()) {
+        addParagraph(tr("API connection errors:"));
+        addListRo(detection.connectionErrors);
+    }
+
+    // add systemd service info
+    addParagraph(tr("Systemd:"));
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    infoItems << tr("State of user unit file \"%1\": ").arg(detection.userService.unitName()) + detection.userService.unitFileState();
+    infoItems << tr("State of system unit file \"%1\": ").arg(detection.systemService.unitName()) + detection.systemService.unitFileState();
+    addList(infoItems);
+#else
+    addListRo(QStringList(tr("No available")));
+#endif
+
+    // add launcher info
+    const auto successfulTestLaunch = detection.launcherExitCode.has_value() && detection.launcherExitStatus.value() == QProcess::NormalExit;
+    if (successfulTestLaunch) {
+        infoItems << tr("Could test-launch Syncthing successfully, exit code: ") + QString::number(detection.launcherExitCode.value());
+        infoItems << tr("Syncthing version returned from test-launch: ") + QString::fromLocal8Bit(detection.launcherOutput.trimmed());
+    } else {
+        infoItems << tr("Unable to test-launch Syncthing: ") + detection.launcher.errorString();
+    }
+    infoItems << tr("Built-in Syncthing available: ") + (Data::SyncthingLauncher::isLibSyncthingAvailable() ? tr("yes") : tr("no"));
+    addParagraph(tr("Launcher:"));
+    addList(infoItems);
+
+    // show info in dialog
+    auto dlg = QDialog(this);
+    dlg.setWindowFlags(Qt::Tool);
+    dlg.setWindowTitle(tr("Details from setup detection - ") + QStringLiteral(APP_NAME));
+    dlg.resize(500, 400);
+    QtUtilities::centerWidgetAvoidingOverflow(&dlg);
+    auto layout = QBoxLayout(QBoxLayout::Up);
+    layout.setContentsMargins(0, 0, 0, 0);
+    auto textEdit = QTextEdit(this);
+    textEdit.setHtml(info);
+    layout.addWidget(&textEdit);
+    dlg.setLayout(&layout);
+    dlg.exec();
 }
 
 WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
@@ -232,11 +330,18 @@ void DetectionWizardPage::continueIfDone()
 MainConfigWizardPage::MainConfigWizardPage(QWidget *parent)
     : QWizardPage(parent)
     , m_ui(new Ui::MainConfigWizardPage)
+    , m_configSelected(false)
 {
     setTitle(tr("Select what configuration to apply"));
     setSubTitle(tr("Something when wrong when checking the Syncthing setup."));
+    setButtonText(QWizard::CustomButton1, tr("Show details from setup detection"));
     m_ui->setupUi(this);
-    m_ui->reportTextEdit->hide();
+
+    // connect signals & slots
+    for (auto *const option : std::initializer_list<QRadioButton *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
+             m_ui->cfgLauncherBuiltInlRadioButton, m_ui->cfgSystemdUserUnitlRadioButton, m_ui->cfgSystemdSystemUnitlRadioButton }) {
+        connect(option, &QRadioButton::toggled, this, &MainConfigWizardPage::handleSelectionChanged);
+    }
 }
 
 MainConfigWizardPage::~MainConfigWizardPage()
@@ -245,7 +350,7 @@ MainConfigWizardPage::~MainConfigWizardPage()
 
 bool MainConfigWizardPage::isComplete() const
 {
-    return false;
+    return m_configSelected;
 }
 
 void MainConfigWizardPage::initializePage()
@@ -255,96 +360,121 @@ void MainConfigWizardPage::initializePage()
         return;
     }
 
-    // add config info
+    // enable button to show details from setup detection
+    wizard->setOption(QWizard::HaveCustomButton1, true);
+
+    // hide all configuration options as a starting point
+    for (auto *const option : std::initializer_list<QWidget *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
+             m_ui->cfgLauncherBuiltInlRadioButton, m_ui->cfgSystemdUserUnitlRadioButton, m_ui->cfgSystemdSystemUnitlRadioButton,
+             m_ui->enableSystemdIntegrationCheckBox }) {
+        option->hide();
+    }
+
+    // offer enabling Systemd integration if at least one unit is available
     auto const &detection = wizard->setupDetection();
-    auto info = QString();
-    auto addParagraph = [&info](const QString &text) {
-        info.append(QStringLiteral("<p><b>"));
-        info.append(text);
-        info.append(QStringLiteral("</b></p>"));
-    };
-    auto addListRo = [&info](const QStringList &items) {
-        info.append(QStringLiteral("<ul><li>"));
-        info.append(items.join(QStringLiteral("</li><li>")));
-        info.append(QStringLiteral("</li></ul>"));
-    };
-    auto addList = [&addListRo](QStringList &items) {
-        addListRo(items);
-        items.clear();
-    };
-    auto infoItems = QStringList();
-    if (detection.configFilePath.isEmpty()) {
-        infoItems << tr("Unable to locate Syncthing config file.");
-    } else {
-        infoItems << tr("Located Syncthing config file: ") + detection.configFilePath;
-        if (detection.hasConfig()) {
-            infoItems << tr("Syncthing config file looks ok.");
-        } else {
-            infoItems << tr("Syncthing config file looks invalid/incomplete.");
-        }
-    }
-    addParagraph(tr("Syncthing configuration:"));
-    addList(infoItems);
-
-    // add connection info
-    if (detection.connection.isConnected()) {
-        auto statusInfo = StatusInfo();
-        statusInfo.updateConnectionStatus(detection.connection);
-        statusInfo.updateConnectionStatus(detection.connection);
-        infoItems << tr("Could connect to Syncthing under: ") + detection.connection.syncthingUrl();
-        infoItems << tr("Syncthing version: ") + detection.connection.syncthingVersion();
-        infoItems << tr("Syncthing device ID: ") + detection.connection.myId();
-        infoItems << tr("Syncthing status: ") + statusInfo.statusText();
-        if (!statusInfo.additionalStatusText().isEmpty()) {
-            infoItems << tr("Additional Syncthing status info: ") + statusInfo.additionalStatusText();
-        }
-    } else {
-        infoItems << tr("Coult NOT connect to Syncthing under: ") + detection.connection.syncthingUrl();
-    }
-    addParagraph(tr("API connection:"));
-    addList(infoItems);
-    if (!detection.connectionErrors.isEmpty()) {
-        addParagraph(tr("API connection errors:"));
-        addListRo(detection.connectionErrors);
-    }
-
-    // add systemd service info
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    infoItems << tr("State of user unit file \"%1\": ").arg(detection.userService.unitName()) + detection.userService.unitFileState();
-    infoItems << tr("State of system unit file \"%1\": ").arg(detection.systemService.unitName()) + detection.systemService.unitFileState();
-    addParagraph(tr("Systemd:"));
-    addList(infoItems);
+    if (detection.userService.isUnitAvailable() || detection.systemService.isUnitAvailable()) {
+        m_ui->enableSystemdIntegrationCheckBox->show();
+        m_ui->enableSystemdIntegrationCheckBox->setChecked(true);
+    }
 #endif
 
-    // add launcher info
-    const auto successfulTestLaunch = detection.launcherExitCode.has_value() && detection.launcherExitStatus.value() == QProcess::NormalExit;
-    if (successfulTestLaunch) {
-        infoItems << tr("Could test-launch Syncthing successfully, exit code: ") + QString::number(detection.launcherExitCode.value());
-        infoItems << tr("Syncthing version returned from test-launch: ") + QString::fromLocal8Bit(detection.launcherOutput.trimmed());
-    } else {
-        infoItems << tr("Unable to test-launch Syncthing: ") + detection.launcher.errorString();
-    }
-    infoItems << tr("Built-in Syncthing available: ") + (Data::SyncthingLauncher::isLibSyncthingAvailable() ? tr("yes") : tr("no"));
-    addParagraph(tr("Launcher:"));
-    addList(infoItems);
-
-    // add details info
-    m_ui->reportTextEdit->setHtml(info);
-
-    // add short summary
+    // add short summary as sub title and offer configurations that make sense
     if (detection.connection.isConnected()) {
+        // do not propose any options to launch Syncthing if it is already running
         setSubTitle(tr("Looks like Syncthing is already running and Syncthing Tray can be configured accordingly automatically."));
-    } else if (successfulTestLaunch || Data::SyncthingLauncher::isLibSyncthingAvailable()) {
-        setSubTitle(tr("Looks like Syncthing is not running yet. You can launch it via Syncthing Tray."));
+        m_ui->cfgCurrentlyRunningRadioButton->show();
+        m_ui->cfgCurrentlyRunningRadioButton->setChecked(true);
     } else {
-        setSubTitle(tr("Looks like Syncthing is not running yet and needs to be installed before Syncthing Tray can be configured."));
+        // propose options to launch Syncthing if it is not running
+        auto launchOptions = QStringList();
+        launchOptions.reserve(2);
+
+        // enable options to launch Syncthing via Systemd if Systemd units have been found
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        const auto canLaunchViaUserUnit = detection.userService.canEnableOrStart();
+        const auto canLaunchViaSystemUnit = detection.systemService.canEnableOrStart();
+        if (canLaunchViaUserUnit) {
+            m_ui->cfgSystemdUserUnitlRadioButton->show();
+        }
+        if (canLaunchViaSystemUnit) {
+            m_ui->cfgSystemdSystemUnitlRadioButton->show();
+        }
+        if (canLaunchViaUserUnit) {
+            m_ui->cfgSystemdUserUnitlRadioButton->setChecked(true);
+        } else if (canLaunchViaSystemUnit) {
+            m_ui->cfgSystemdSystemUnitlRadioButton->setChecked(true);
+        }
+        if (canLaunchViaUserUnit || canLaunchViaSystemUnit) {
+            launchOptions << tr("Systemd");
+        }
+#endif
+
+        // enable options to launch Syncthing via built-in launcher if Syncthing executable found or libsyncthing available
+        const auto successfulTestLaunch = detection.launcherExitCode.has_value() && detection.launcherExitStatus.value() == QProcess::NormalExit;
+        if (successfulTestLaunch || Data::SyncthingLauncher::isLibSyncthingAvailable()) {
+            launchOptions << tr("Syncthing Tray");
+            if (successfulTestLaunch) {
+                m_ui->cfgLauncherExternalRadioButton->show();
+            }
+            if (Data::SyncthingLauncher::isLibSyncthingAvailable()) {
+                m_ui->cfgLauncherBuiltInlRadioButton->show();
+            }
+            if (successfulTestLaunch) {
+                m_ui->cfgLauncherExternalRadioButton->setChecked(true);
+            } else {
+                m_ui->cfgLauncherBuiltInlRadioButton->setChecked(true);
+            }
+        }
+
+        if (!launchOptions.isEmpty()) {
+            setSubTitle(tr("Looks like Syncthing is not running yet. You can launch it via %1.").arg(launchOptions.join(tr(" and "))));
+        } else {
+            setSubTitle(tr("Looks like Syncthing is not running yet and needs to be installed before Syncthing Tray can be configured."));
+        }
     }
+
+    handleSelectionChanged();
 }
 
 void MainConfigWizardPage::cleanupPage()
 {
-    m_ui->reportTextEdit->clear();
+    wizard()->setOption(QWizard::HaveCustomButton1, false);
     emit retry();
+}
+
+void MainConfigWizardPage::handleSelectionChanged()
+{
+    // enable/disable option for Systemd integration
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    if (m_ui->cfgCurrentlyRunningRadioButton->isVisible()) {
+        const auto &systemdSettings = Settings::values().systemd;
+        m_ui->enableSystemdIntegrationCheckBox->setEnabled(systemdSettings.showButton || systemdSettings.considerForReconnect);
+    } else {
+        if ((m_ui->cfgSystemdUserUnitlRadioButton->isVisible() && m_ui->cfgSystemdUserUnitlRadioButton->isChecked())
+            || ((m_ui->cfgSystemdSystemUnitlRadioButton->isVisible() && m_ui->cfgSystemdSystemUnitlRadioButton->isChecked()))) {
+            m_ui->enableSystemdIntegrationCheckBox->setChecked(true);
+            m_ui->enableSystemdIntegrationCheckBox->setEnabled(true);
+        } else {
+            m_ui->enableSystemdIntegrationCheckBox->setChecked(false);
+            m_ui->enableSystemdIntegrationCheckBox->setEnabled(true);
+        }
+    }
+#endif
+
+    // set completed state according to selection
+    auto configSelected = false;
+    for (auto *const option : std::initializer_list<QRadioButton *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
+             m_ui->cfgLauncherBuiltInlRadioButton, m_ui->cfgSystemdUserUnitlRadioButton, m_ui->cfgSystemdSystemUnitlRadioButton }) {
+        if ((configSelected = option->isChecked())) {
+            break;
+        }
+    }
+    configSelected = configSelected || (m_ui->enableSystemdIntegrationCheckBox->isEnabled() && m_ui->enableSystemdIntegrationCheckBox->isChecked());
+    if (configSelected != m_configSelected) {
+        m_configSelected = configSelected;
+        emit completeChanged();
+    }
 }
 
 } // namespace QtGui

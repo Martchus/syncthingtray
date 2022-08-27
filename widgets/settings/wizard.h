@@ -29,6 +29,9 @@ public:
 Q_SIGNALS:
     void settingsRequested();
 
+private Q_SLOTS:
+    void showDetailsFromSetupDetection();
+
 private:
     static Wizard *s_instance;
     std::unique_ptr<SetupDetection> m_setupDetection;
@@ -78,8 +81,12 @@ public:
 Q_SIGNALS:
     void retry();
 
+private Q_SLOTS:
+    void handleSelectionChanged();
+
 private:
     std::unique_ptr<Ui::MainConfigWizardPage> m_ui;
+    bool m_configSelected;
 };
 
 } // namespace QtGui

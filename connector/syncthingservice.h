@@ -70,6 +70,8 @@ public:
     const QString &description() const;
     bool isRunning() const;
     bool isEnabled() const;
+    bool isDisabled() const;
+    bool canEnableOrStart() const;
     bool isManuallyStopped() const;
     SystemdScope scope() const;
     void setScope(SystemdScope scope);
@@ -238,6 +240,23 @@ inline void SyncthingService::toggleRunning()
 inline bool SyncthingService::isEnabled() const
 {
     return m_unitFileState == QLatin1String("enabled");
+}
+
+/*!
+ * \brief Returns whether the unit is disabled.
+ * \remarks The unit must be available, \sa SyncthingService::isUnitAvailable().
+ */
+inline bool SyncthingService::isDisabled() const
+{
+    return m_unitFileState == QLatin1String("disabled");
+}
+
+/*!
+ * \brief Returns whether the unit can be enabled or started.
+ */
+inline bool Data::SyncthingService::canEnableOrStart() const
+{
+    return isUnitAvailable() && (isDisabled() || !isRunning());
 }
 
 /*!
