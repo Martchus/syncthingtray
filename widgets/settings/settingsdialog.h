@@ -175,6 +175,9 @@ public:
     ~SettingsDialog() override;
     void hideConnectionStatus();
 
+private Q_SLOTS:
+    void showWizard();
+
 private:
     void init();
 

@@ -1,4 +1,6 @@
 #include "./settingsdialog.h"
+#include "./settings.h"
+#include "./wizard.h"
 
 #include "../misc/syncthinglauncher.h"
 
@@ -1463,8 +1465,28 @@ void SettingsDialog::init()
     setWindowIcon(
         QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
 
+    // add button for starting wizard
+    if (!::Settings::values().enableWipFeatures) {
+        return;
+    }
+    auto *startWizardButton = new QPushButton(this);
+    startWizardButton->setToolTip(tr("Start wizard"));
+    startWizardButton->setIcon(
+        QIcon::fromTheme(QStringLiteral("tools-wizard"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/tools-wizard.svg"))));
+    startWizardButton->setFlat(true);
+    startWizardButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    connect(startWizardButton, &QPushButton::clicked, this, &SettingsDialog::showWizard);
+    addHeadingWidget(startWizardButton);
+
     // some settings could be applied without restarting the application, good idea?
     //connect(this, &Dialogs::SettingsDialog::applied, bind(&Dialogs::QtSettings::apply, &Settings::qtSettings()));
+}
+
+void SettingsDialog::showWizard()
+{
+    auto *const wizard = Wizard::instance();
+    QtUtilities::centerWidget(wizard);
+    wizard->show();
 }
 
 void SettingsDialog::hideConnectionStatus()
