@@ -33,13 +33,10 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     setWindowTitle(tr("Setup wizard - ") + QStringLiteral(APP_NAME));
     setMinimumSize(770, 550);
 
-    const auto &settings = Settings::values();
-    if (settings.firstLaunch || settings.fakeFirstLaunch) {
-        addPage(new WelcomeWizardPage(this));
-    }
     auto *const detectionPage = new DetectionWizardPage(this);
     auto *const mainConfigPage = new MainConfigWizardPage(this);
     connect(mainConfigPage, &MainConfigWizardPage::retry, detectionPage, &DetectionWizardPage::refresh);
+    addPage(new WelcomeWizardPage(this));
     addPage(detectionPage);
     addPage(mainConfigPage);
 }
@@ -71,17 +68,22 @@ SetupDetection &Wizard::setupDetection()
 WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     : QWizardPage(parent)
 {
-    setTitle(tr("Welcome to Syncthing Tray"));
-    setSubTitle(tr("It looks like you're launching Syncthing Tray for the first time."));
-
     auto *const infoLabel = new QLabel(this);
-    infoLabel->setText(tr(
-        "You must configure how to connect to Syncthing and how to launch Syncthing (if that's wanted) when using Syncthing Tray the first time.  A "
-        "guided/automated setup is still in the works so the manual setup is currently the only option."));
     infoLabel->setWordWrap(true);
+    const auto &settings = Settings::values();
+    if (settings.firstLaunch || settings.fakeFirstLaunch) {
+        setTitle(tr("Welcome to Syncthing Tray"));
+        setSubTitle(tr("It looks like you're launching Syncthing Tray for the first time."));
+        infoLabel->setText(tr("You must configure how to connect to Syncthing and how to launch Syncthing (if that's wanted) when using Syncthing "
+                              "Tray the first time.  A "
+                              "guided/automated setup is still in the works so the manual setup is currently the only option."));
+    } else {
+        setTitle(tr("Wizard's start page"));
+        setSubTitle(tr("This wizard will help you configuring Syncthing Tray."));
+    }
 
     QCommandLinkButton *startWizardCommand = nullptr;
-    if (Settings::values().enableWipFeatures) {
+    if (settings.enableWipFeatures) {
         startWizardCommand = new QCommandLinkButton(this);
         startWizardCommand->setText(tr("Start guided setup"));
         startWizardCommand->setDescription(
@@ -92,7 +94,11 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     }
 
     auto *const showSettingsCommand = new QCommandLinkButton(this);
-    showSettingsCommand->setText(tr("Configure connection and launcher settings manually"));
+    if (settings.firstLaunch) {
+        showSettingsCommand->setText(tr("Configure connection and launcher settings manually"));
+    } else {
+        showSettingsCommand->setText(tr("Head back to settings to configure connection and launcher manually"));
+    }
     showSettingsCommand->setDescription(
         tr("Note that the connection settings allow importing URL, credentials and API-key from the local Syncthing configuration."));
     showSettingsCommand->setIcon(
