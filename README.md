@@ -245,6 +245,20 @@ See the release section on GitHub.
         * `syncthingplasmoid`: applet/plasmoid for Plasma desktop
         * `syncthingfileitemaction`: Dolphin/KIO integration
         * `syncthingctl`: command-line interface
+* Exherbo
+    * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
+      by [the platypus repository](https://git.exherbo.org/summer/packages/media-sound/tageditor)
+* Gentoo
+    * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
+      by [perfect7gentleman's repository](https://github.com/perfect7gentleman/pg_overlay)
+* NixOS
+    * the package syncthingtray is available from the official repositories
+* Void Linux
+    * available as split packages from the
+      [official repositories](https://voidlinux.org/packages/?q=syncthingtray):
+        * `syncthingtray`: GUI and command-line interface
+        * `syncthingtray-plasma`: applet/plasmoid for Plasma desktop
+        * `syncthingtray-dolphin`: Dolphin/KIO integration
 * Other GNU/Linux systems
     * for generic, self-contained binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
         * Requires glibc>=2.26, OpenGL and libX11
@@ -257,24 +271,10 @@ See the release section on GitHub.
         * the Qt 6 based version is stable and preferable but only supports Windows 10 and newer
         * the Qt 5 based version should still work on older versions down to Windows 7 although this is not regularly checked
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
-* NixOS
-    * the package syncthingtray is available from the official repositories
 * FreeBSD
     * the package syncthingtray is available from [FreeBSD Ports](https://www.freshports.org/deskutils/syncthingtray)
 * Mac OS X/macOS
     * the package syncthingtray is available from [MacPorts](https://ports.macports.org/port/syncthingtray/)
-* Exherbo
-    * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
-      by [the platypus repository](https://git.exherbo.org/summer/packages/media-sound/tageditor)
-* Gentoo
-    * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
-      by [perfect7gentleman's repository](https://github.com/perfect7gentleman/pg_overlay)
-* Void Linux
-    * available as split packages from the
-      [official repositories](https://voidlinux.org/packages/?q=syncthingtray):
-        * `syncthingtray`: GUI and command-line interface
-        * `syncthingtray-plasma`: applet/plasmoid for Plasma desktop
-        * `syncthingtray-dolphin`: Dolphin/KIO integration
 
 ## Build instructions
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities),
