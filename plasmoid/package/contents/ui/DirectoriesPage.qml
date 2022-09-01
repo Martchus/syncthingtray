@@ -12,6 +12,9 @@ ColumnLayout {
     objectName: "DirectoriesPage"
 
     PlasmaComponents3.TextField {
+        Layout.topMargin: PlasmaCore.Units.smallSpacing * 2
+        Layout.leftMargin: PlasmaCore.Units.smallSpacing * 2
+        Layout.rightMargin: PlasmaCore.Units.smallSpacing * 2
         property bool explicitelyShown: false
         id: filter
         clearButtonShown: true
@@ -34,7 +37,7 @@ ColumnLayout {
 
             delegate: TopLevelItem {
                 id: item
-                width: directoryView.width
+                width: directoryView.effectiveWidth()
                 readonly property string dirName: name
                 readonly property string dirPath: path
                 property alias errorsButton: errorsButton

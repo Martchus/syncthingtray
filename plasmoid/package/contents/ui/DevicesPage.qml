@@ -21,7 +21,7 @@ Item {
 
             delegate: TopLevelItem {
                 id: item
-                width: deviceView.width
+                width: deviceView.effectiveWidth()
                 readonly property string devName: name
                 readonly property string devID: devId
                 property alias resumePauseButton: resumePauseButton

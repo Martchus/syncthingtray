@@ -222,8 +222,8 @@ PlasmaExtras.Representation {
             // global statistics and traffic
             GridLayout {
                 id: infoLayout
-                Layout.leftMargin: 5
-                Layout.bottomMargin: 2
+                Layout.leftMargin: PlasmaCore.Units.smallSpacing * 2
+                Layout.rightMargin: PlasmaCore.Units.smallSpacing * 2
                 Layout.fillWidth: true
                 Layout.fillHeight: false
                 Layout.maximumWidth: parent.width

@@ -21,7 +21,7 @@ Item {
 
             delegate: TopLevelItem {
                 id: item
-                width: downloadView.width
+                width: downloadView.effectiveWidth()
                 readonly property string downloadName: name
                 property alias openButton: openButton
 

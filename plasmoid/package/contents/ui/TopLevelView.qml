@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents // for Highlight and DialogStatus.Closed (used with Menu and MenuItem)
 
 ListView {
@@ -11,6 +12,15 @@ ListView {
     highlightMoveDuration: 0
     highlightResizeDuration: 0
     highlight: PlasmaComponents.Highlight {
+    }
+
+    topMargin: PlasmaCore.Units.smallSpacing * 2
+    bottomMargin: PlasmaCore.Units.smallSpacing * 2
+    leftMargin: PlasmaCore.Units.smallSpacing * 2
+    rightMargin: PlasmaCore.Units.smallSpacing * 2
+
+    function effectiveWidth() {
+        return width - leftMargin - rightMargin
     }
 
     function activate(index) {
