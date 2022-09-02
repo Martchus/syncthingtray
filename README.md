@@ -242,9 +242,10 @@ See the release section on GitHub.
         * `syncthingplasmoid`: applet/plasmoid for Plasma desktop
         * `syncthingfileitemaction`: Dolphin/KIO integration
         * `syncthingctl`: command-line interface
-* Debian
-    * the packages syncthingtray and syncthingtray-kde-plasma are available in official repositories
-    * see their [tracker](https://tracker.debian.org/pkg/syncthingtray) for available versions and other details
+* Debian 12 "bookworm" and its derivatives (Ubuntu, Pop!_OS, Neon, etc.)
+    * `sudo apt install syncthingtray-kde-plasma` if using KDE Plasma;
+      otherwise, `sudo apt install syncthingtray`.  Please test installation from a Software Centre such as [GNOME Software](https://apps.gnome.org/en-GB/app/org.gnome.Software) or [Discover](https://apps.kde.org/en-gb/discover/).
+    * [backport](https://backports.debian.org/) to Debian 11 "bullseye" available on request.
 * Exherbo
     * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
       by [the platypus repository](https://git.exherbo.org/summer/packages/media-sound/tageditor)
