@@ -364,7 +364,7 @@ MainConfigWizardPage::MainConfigWizardPage(QWidget *parent)
 
     // connect signals & slots
     for (auto *const option : std::initializer_list<QRadioButton *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
-             m_ui->cfgLauncherBuiltInlRadioButton, m_ui->cfgSystemdUserUnitlRadioButton, m_ui->cfgSystemdSystemUnitlRadioButton }) {
+             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgSystemdUserUnitRadioButton, m_ui->cfgSystemdSystemUnitRadioButton }) {
         connect(option, &QRadioButton::toggled, this, &MainConfigWizardPage::handleSelectionChanged);
     }
 }
@@ -390,7 +390,7 @@ void MainConfigWizardPage::initializePage()
 
     // hide all configuration options as a starting point
     for (auto *const option : std::initializer_list<QWidget *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
-             m_ui->cfgLauncherBuiltInlRadioButton, m_ui->cfgSystemdUserUnitlRadioButton, m_ui->cfgSystemdSystemUnitlRadioButton,
+             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgSystemdUserUnitRadioButton, m_ui->cfgSystemdSystemUnitRadioButton,
              m_ui->enableSystemdIntegrationCheckBox }) {
         option->hide();
     }
@@ -420,15 +420,15 @@ void MainConfigWizardPage::initializePage()
         const auto canLaunchViaUserUnit = detection.userService.canEnableOrStart();
         const auto canLaunchViaSystemUnit = detection.systemService.canEnableOrStart();
         if (canLaunchViaUserUnit) {
-            m_ui->cfgSystemdUserUnitlRadioButton->show();
+            m_ui->cfgSystemdUserUnitRadioButton->show();
         }
         if (canLaunchViaSystemUnit) {
-            m_ui->cfgSystemdSystemUnitlRadioButton->show();
+            m_ui->cfgSystemdSystemUnitRadioButton->show();
         }
         if (canLaunchViaUserUnit) {
-            m_ui->cfgSystemdUserUnitlRadioButton->setChecked(true);
+            m_ui->cfgSystemdUserUnitRadioButton->setChecked(true);
         } else if (canLaunchViaSystemUnit) {
-            m_ui->cfgSystemdSystemUnitlRadioButton->setChecked(true);
+            m_ui->cfgSystemdSystemUnitRadioButton->setChecked(true);
         }
         if (canLaunchViaUserUnit || canLaunchViaSystemUnit) {
             launchOptions << tr("Systemd");
@@ -443,12 +443,12 @@ void MainConfigWizardPage::initializePage()
                 m_ui->cfgLauncherExternalRadioButton->show();
             }
             if (Data::SyncthingLauncher::isLibSyncthingAvailable()) {
-                m_ui->cfgLauncherBuiltInlRadioButton->show();
+                m_ui->cfgLauncherBuiltInRadioButton->show();
             }
             if (successfulTestLaunch) {
                 m_ui->cfgLauncherExternalRadioButton->setChecked(true);
             } else {
-                m_ui->cfgLauncherBuiltInlRadioButton->setChecked(true);
+                m_ui->cfgLauncherBuiltInRadioButton->setChecked(true);
             }
         }
 
@@ -475,11 +475,11 @@ bool MainConfigWizardPage::validatePage()
         mainConfig = MainConfiguration::CurrentlyRunning;
     } else if (m_ui->cfgLauncherExternalRadioButton->isChecked()) {
         mainConfig = MainConfiguration::LauncherExternal;
-    } else if (m_ui->cfgLauncherBuiltInlRadioButton->isChecked()) {
+    } else if (m_ui->cfgLauncherBuiltInRadioButton->isChecked()) {
         mainConfig = MainConfiguration::LauncherBuiltIn;
-    } else if (m_ui->cfgSystemdUserUnitlRadioButton) {
+    } else if (m_ui->cfgSystemdUserUnitRadioButton) {
         mainConfig = MainConfiguration::SystemdUserUnit;
-    } else if (m_ui->cfgSystemdSystemUnitlRadioButton) {
+    } else if (m_ui->cfgSystemdSystemUnitRadioButton) {
         mainConfig = MainConfiguration::SystemdSystemUnit;
     }
 
@@ -498,8 +498,8 @@ void MainConfigWizardPage::handleSelectionChanged()
         const auto &systemdSettings = Settings::values().systemd;
         m_ui->enableSystemdIntegrationCheckBox->setEnabled(systemdSettings.showButton || systemdSettings.considerForReconnect);
     } else {
-        if ((m_ui->cfgSystemdUserUnitlRadioButton->isVisible() && m_ui->cfgSystemdUserUnitlRadioButton->isChecked())
-            || ((m_ui->cfgSystemdSystemUnitlRadioButton->isVisible() && m_ui->cfgSystemdSystemUnitlRadioButton->isChecked()))) {
+        if ((m_ui->cfgSystemdUserUnitRadioButton->isVisible() && m_ui->cfgSystemdUserUnitRadioButton->isChecked())
+            || ((m_ui->cfgSystemdSystemUnitRadioButton->isVisible() && m_ui->cfgSystemdSystemUnitRadioButton->isChecked()))) {
             m_ui->enableSystemdIntegrationCheckBox->setChecked(true);
             m_ui->enableSystemdIntegrationCheckBox->setEnabled(true);
         } else {
@@ -512,7 +512,7 @@ void MainConfigWizardPage::handleSelectionChanged()
     // set completed state according to selection
     auto configSelected = false;
     for (auto *const option : std::initializer_list<QRadioButton *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
-             m_ui->cfgLauncherBuiltInlRadioButton, m_ui->cfgSystemdUserUnitlRadioButton, m_ui->cfgSystemdSystemUnitlRadioButton }) {
+             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgSystemdUserUnitRadioButton, m_ui->cfgSystemdSystemUnitRadioButton }) {
         if ((configSelected = option->isChecked())) {
             break;
         }

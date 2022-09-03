@@ -25,21 +25,21 @@
     </widget>
    </item>
    <item>
-    <widget class="QRadioButton" name="cfgLauncherBuiltInlRadioButton">
+    <widget class="QRadioButton" name="cfgLauncherBuiltInRadioButton">
      <property name="text">
       <string>Start Syncthing application that is built into Syncthing Tray</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QRadioButton" name="cfgSystemdUserUnitlRadioButton">
+    <widget class="QRadioButton" name="cfgSystemdUserUnitRadioButton">
      <property name="text">
       <string>Start Syncthing via systemd user-unit (enables and starts the unit %1)</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QRadioButton" name="cfgSystemdSystemUnitlRadioButton">
+    <widget class="QRadioButton" name="cfgSystemdSystemUnitRadioButton">
      <property name="text">
       <string>Start Syncthing via systemd system-unit (enables and starts the unit %1)</string>
      </property>
