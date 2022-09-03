@@ -6,6 +6,7 @@
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
 
+#include "ui_autostartwizardpage.h"
 #include "ui_mainconfigwizardpage.h"
 
 #include <qtutilities/misc/dialogutils.h>
@@ -28,6 +29,10 @@
 #include <initializer_list>
 #include <string_view>
 
+#if (defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)) || defined(PLATFORM_WINDOWS) || defined(PLATFORM_MAC)
+#define SETTINGS_WIZARD_AUTOSTART
+#endif
+
 namespace QtGui {
 
 Wizard *Wizard::s_instance = nullptr;
@@ -38,12 +43,21 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     setWindowTitle(tr("Setup wizard - ") + QStringLiteral(APP_NAME));
     setMinimumSize(770, 550);
 
+    auto *const welcomePage = new WelcomeWizardPage(this);
     auto *const detectionPage = new DetectionWizardPage(this);
     auto *const mainConfigPage = new MainConfigWizardPage(this);
     connect(mainConfigPage, &MainConfigWizardPage::retry, detectionPage, &DetectionWizardPage::refresh);
-    addPage(new WelcomeWizardPage(this));
+    connect(mainConfigPage, &MainConfigWizardPage::configurationSelected, this, &Wizard::handleConfigurationSelected);
+#ifdef SETTINGS_WIZARD_AUTOSTART
+    auto *const autostartPage = new AutostartWizardPage(this);
+    connect(autostartPage, &AutostartWizardPage::autostartSelected, this, &Wizard::handleAutostartSelected);
+#endif
+    addPage(welcomePage);
     addPage(detectionPage);
     addPage(mainConfigPage);
+#ifdef SETTINGS_WIZARD_AUTOSTART
+    addPage(autostartPage);
+#endif
 
     connect(this, &QWizard::customButtonClicked, this, &Wizard::showDetailsFromSetupDetection);
 }
@@ -161,6 +175,17 @@ void Wizard::showDetailsFromSetupDetection()
     layout.addWidget(&textEdit);
     dlg.setLayout(&layout);
     dlg.exec();
+}
+
+void Wizard::handleConfigurationSelected(MainConfiguration mainConfig, ExtraConfiguration extraConfig)
+{
+    m_mainConfig = mainConfig;
+    m_extraConfig = extraConfig;
+}
+
+void Wizard::handleAutostartSelected(bool autostartEnabled)
+{
+    m_autoStart = autostartEnabled;
 }
 
 WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
@@ -443,6 +468,28 @@ void MainConfigWizardPage::cleanupPage()
     emit retry();
 }
 
+bool MainConfigWizardPage::validatePage()
+{
+    auto mainConfig = MainConfiguration::None;
+    if (m_ui->cfgCurrentlyRunningRadioButton->isChecked()) {
+        mainConfig = MainConfiguration::CurrentlyRunning;
+    } else if (m_ui->cfgLauncherExternalRadioButton->isChecked()) {
+        mainConfig = MainConfiguration::LauncherExternal;
+    } else if (m_ui->cfgLauncherBuiltInlRadioButton->isChecked()) {
+        mainConfig = MainConfiguration::LauncherBuiltIn;
+    } else if (m_ui->cfgSystemdUserUnitlRadioButton) {
+        mainConfig = MainConfiguration::SystemdUserUnit;
+    } else if (m_ui->cfgSystemdSystemUnitlRadioButton) {
+        mainConfig = MainConfiguration::SystemdSystemUnit;
+    }
+
+    auto extraConfig = ExtraConfiguration::None;
+    CppUtilities::modFlagEnum(extraConfig, ExtraConfiguration::SystemdIntegration, m_ui->enableSystemdIntegrationCheckBox->isChecked());
+
+    emit configurationSelected(mainConfig, extraConfig);
+    return true;
+}
+
 void MainConfigWizardPage::handleSelectionChanged()
 {
     // enable/disable option for Systemd integration
@@ -475,6 +522,63 @@ void MainConfigWizardPage::handleSelectionChanged()
         m_configSelected = configSelected;
         emit completeChanged();
     }
+}
+
+AutostartWizardPage::AutostartWizardPage(QWidget *parent)
+    : QWizardPage(parent)
+    , m_ui(new Ui::AutostartWizardPage)
+    , m_configSelected(false)
+{
+    setTitle(tr("Configure autostart"));
+    setSubTitle(tr("Select whether to start Syncthing Tray automatically"));
+    m_ui->setupUi(this);
+}
+
+AutostartWizardPage::~AutostartWizardPage()
+{
+}
+
+bool AutostartWizardPage::isComplete() const
+{
+    return false;
+}
+
+void AutostartWizardPage::initializePage()
+{
+    auto *const wizard = qobject_cast<Wizard *>(this->wizard());
+    if (!wizard) {
+        return;
+    }
+
+    for (auto *const widget :
+        std::initializer_list<QWidget *>{ m_ui->launcherEnabledLabel, m_ui->systemdEnabledLabel, m_ui->launcherDisabledLabel }) {
+        widget->hide();
+    }
+
+    switch (wizard->mainConfig()) {
+    case MainConfiguration::None:
+    case MainConfiguration::CurrentlyRunning:
+        m_ui->launcherDisabledLabel->show();
+        break;
+    case MainConfiguration::LauncherExternal:
+    case MainConfiguration::LauncherBuiltIn:
+        m_ui->launcherEnabledLabel->show();
+        break;
+    case MainConfiguration::SystemdUserUnit:
+    case MainConfiguration::SystemdSystemUnit:
+        m_ui->systemdEnabledLabel->show();
+        break;
+    }
+}
+
+void AutostartWizardPage::cleanupPage()
+{
+}
+
+bool AutostartWizardPage::validatePage()
+{
+    emit autostartSelected(m_ui->enableAutostartCheckBox->isChecked());
+    return true;
 }
 
 } // namespace QtGui

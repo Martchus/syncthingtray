@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QtGui::AutostartWizardPage</class>
+ <widget class="QWidget" name="QtGui::AutostartWizardPage">
+  <property name="windowTitle">
+   <string>General</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="internet-web-browser" resource="../resources/syncthingwidgetsicons.qrc">
+    <normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QCheckBox" name="enableAutostartCheckBox">
+     <property name="text">
+      <string>Start Syncthing-Tray on login (only affects sessions of the current user)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="launcherEnabledLabel">
+     <property name="text">
+      <string>You previously selected to start Syncthing via the built-in launcher so Syncthing itself will be started automatically on login as well.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="systemdEnabledLabel">
+     <property name="text">
+      <string>You previously selected to start Syncthing via systemd so its systemd-unit will be enabled. This means Syncthing itself will start automatically independently of this setting which only affects the tray icon.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="launcherDisabledLabel">
+     <property name="text">
+      <string>Since Syncthing is running independently of Syncthing Tray on your system, this does not affect when Syncthing itself is launched.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../resources/syncthingwidgetsicons.qrc"/>
+ </resources>
+ <connections/>
+</ui>
