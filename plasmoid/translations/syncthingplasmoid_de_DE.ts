@@ -36,45 +36,45 @@
 <context>
     <name>DirectoriesPage</name>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="20"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="23"/>
         <source>Filter directories</source>
         <translation>Verzeichnisse filtern</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="81"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="84"/>
         <source>Show errors</source>
         <translation>Zeige Fehler</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="92"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="161"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="95"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="164"/>
         <source>Rescan</source>
         <translation>Scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="100"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="103"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="100"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="168"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="103"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="171"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="110"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="175"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="113"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="178"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="147"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="150"/>
         <source>Copy label/ID</source>
         <translation>Namen/ID kopieren</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="152"/>
+        <location filename="../package/contents/ui/DirectoriesPage.qml" line="155"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
