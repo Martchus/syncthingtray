@@ -87,6 +87,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_currentConnectionConfig(-1)
     , m_hasInternalErrors(false)
     , m_initialized(false)
+    , m_showTabTexts(false)
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     m_notifier.setService(&m_service);
@@ -451,6 +452,7 @@ void SyncthingApplet::handleSettingsChanged()
 
     // apply appearance settings
     setSize(config.readEntry<QSize>("size", QSize(25, 25)));
+    setShowingTabTexts(config.readEntry<bool>("showTabTexts", false));
     IconManager::instance().applySettings(&settings.icons.status);
 
     // restore selected states

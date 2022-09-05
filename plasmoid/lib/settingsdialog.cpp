@@ -91,6 +91,7 @@ bool AppearanceOptionPage::apply()
 {
     KConfigGroup config = m_applet->config();
     config.writeEntry<QSize>("size", QSize(ui()->widthSpinBox->value(), ui()->heightSpinBox->value()));
+    config.writeEntry<bool>("showTabTexts", ui()->showTabTextsCheckBox->isChecked());
     config.writeEntry("passiveStates", m_passiveStatusSelection.toVariantList());
 
     return true;
@@ -102,6 +103,7 @@ void AppearanceOptionPage::reset()
     const auto size(config.readEntry<>("size", QSize(25, 25)));
     ui()->widthSpinBox->setValue(size.width());
     ui()->heightSpinBox->setValue(size.height());
+    ui()->showTabTextsCheckBox->setChecked(config.readEntry<>("showTabTexts", false));
     m_passiveStatusSelection.applyVariantList(config.readEntry("passiveStates", QVariantList()));
 }
 

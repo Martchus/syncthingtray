@@ -74,6 +74,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(bool startStopEnabled READ isStartStopEnabled NOTIFY settingsChanged)
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
+    Q_PROPERTY(bool showTabTexts READ isShowingTabTexts WRITE setShowingTabTexts NOTIFY showTabTextsChanged)
     Q_PROPERTY(bool notificationsAvailable READ areNotificationsAvailable NOTIFY notificationsAvailableChanged)
     Q_PROPERTY(bool passive READ isPassive NOTIFY passiveChanged)
     Q_PROPERTY(QList<QtUtilities::ChecklistItem> passiveStates READ passiveStates WRITE setPassiveStates)
@@ -114,6 +115,8 @@ public:
     bool hasInternalErrors() const;
     QSize size() const;
     void setSize(const QSize &size);
+    bool isShowingTabTexts() const;
+    void setShowingTabTexts(bool showTabTexts);
     bool areNotificationsAvailable() const;
     bool isPassive() const;
     const QList<QtUtilities::ChecklistItem> &passiveStates() const;
@@ -161,6 +164,7 @@ Q_SIGNALS:
     void currentConnectionConfigIndexChanged(int index);
     void hasInternalErrorsChanged(bool hasInternalErrors);
     void sizeChanged(const QSize &size);
+    void showTabTextsChanged(bool isShowingTabTexts);
     void notificationsAvailableChanged(bool notificationsAvailable);
     void passiveChanged(bool passive);
     void faUrlChanged(const QString &faUrl);
@@ -217,6 +221,7 @@ private:
     int m_currentConnectionConfig;
     bool m_hasInternalErrors;
     bool m_initialized;
+    bool m_showTabTexts;
     QSize m_size;
 };
 
@@ -303,6 +308,18 @@ inline void SyncthingApplet::setSize(const QSize &size)
 {
     if (size != m_size) {
         emit sizeChanged(m_size = size);
+    }
+}
+
+inline bool SyncthingApplet::isShowingTabTexts() const
+{
+    return m_showTabTexts;
+}
+
+inline void SyncthingApplet::setShowingTabTexts(bool showTabTexts)
+{
+    if (showTabTexts != m_showTabTexts) {
+        emit showTabTextsChanged(m_showTabTexts = showTabTexts);
     }
 }
 
