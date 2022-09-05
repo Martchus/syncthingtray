@@ -55,11 +55,13 @@ namespace Plasmoid {
 
 static inline QPalette paletteFromTheme(const Plasma::Theme &theme)
 {
-#if 0 && PLASMA_VERSION_MAJOR >= 5 && PLASMA_VERSION_MINOR >= 68
+#if PLASMA_VERSION_MAJOR >= 5 && PLASMA_VERSION_MINOR >= 68
     return theme.palette();
 #else
     auto p = QPalette();
     p.setColor(QPalette::Normal, QPalette::Text, theme.color(Plasma::Theme::TextColor));
+    p.setColor(QPalette::Normal, QPalette::WindowText, theme.color(Plasma::Theme::TextColor));
+    p.setColor(QPalette::Normal, QPalette::Window, theme.color(Plasma::Theme::BackgroundColor));
     return p;
 #endif
 }
@@ -149,7 +151,9 @@ void SyncthingApplet::init()
     m_currentConnectionConfig = config().readEntry<int>("selectedConfig", 0);
 
     // apply settings and connect according to settings
-    setBrightColors(isPaletteDark(paletteFromTheme(m_theme)));
+    const auto palette = paletteFromTheme(m_theme);
+    setBrightColors(isPaletteDark(palette));
+    IconManager::instance().setPalette(palette);
     handleSettingsChanged();
 
     m_initialized = true;
