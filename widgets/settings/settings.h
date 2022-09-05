@@ -59,7 +59,7 @@ struct SYNCTHINGWIDGETS_EXPORT NotifyOn {
 
 struct SYNCTHINGWIDGETS_EXPORT Appearance {
     bool showTraffic = true;
-    QSize trayMenuSize = QSize(450, 400);
+    QSize trayMenuSize = QSize(575, 475);
     int frameStyle = static_cast<int>(QFrame::NoFrame) | static_cast<int>(QFrame::Plain);
     int tabPosition = QTabWidget::South;
     struct SYNCTHINGWIDGETS_EXPORT Positioning {
