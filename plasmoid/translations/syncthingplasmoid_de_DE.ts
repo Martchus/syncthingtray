@@ -141,22 +141,22 @@
         <translation type="vanished">Syncthing öffnen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="245"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="246"/>
         <source>Global</source>
         <translation>Globale</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="252"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="253"/>
         <source>Global incoming traffic</source>
         <translation>Globaler eingehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="270"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="271"/>
         <source>Local</source>
         <translation>Lokale</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="277"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="278"/>
         <source>Global outgoing traffic</source>
         <translation>Globaler ausgehender Datenverkehr</translation>
     </message>
@@ -182,7 +182,7 @@
         <translation>Änderungen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="103"/>
+        <location filename="../package/contents/ui/FullRepresentation.qml" line="104"/>
         <source>Toggle filter</source>
         <translation>Filter ein-/ausblenden</translation>
     </message>
@@ -194,43 +194,43 @@
 <context>
     <name>Plasmoid::AppearanceOptionPage</name>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="14"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="6"/>
         <source>Appearance</source>
         <translation>Erscheinungsbild</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="33"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="25"/>
         <source>Size of directory/device/download list</source>
         <translation>Größe der Verzeichnis-/Geräte-/Downloadliste</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="72"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="64"/>
         <source> x </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="98"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="90"/>
         <source> grid units</source>
         <translation> Rastereinheiten</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="116"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="108"/>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
         <translation>Die Größe wird ignoriert when das Plasmoid auf dem Desktop oder im Vollbildmodus dargestellt wird. Wenn das Plasmoid innerhalb des Systemtray-Plasmoids dargestellt wird kann die Größe nicht geändert werden (einen größeren Wert einzustellen führt nur dazu, dass der Inhalt abgeschnitten wird).</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="128"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="120"/>
         <source>States to enable passive mode</source>
         <translatorcomment>Plural: https://www.duden.de/rechtschreibung/Status</translatorcomment>
         <translation>Status für passiven Modus</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="148"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="140"/>
         <source>Optional GUI elements</source>
         <translation>Optionale Elemente</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="155"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="147"/>
         <source>Show tab texts</source>
         <translation>Text-Beschriftung der Tab-Buttons</translation>
     </message>

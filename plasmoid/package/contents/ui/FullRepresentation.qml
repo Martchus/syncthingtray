@@ -90,6 +90,7 @@ PlasmaExtras.Representation {
     FocusScope {
         anchors.fill: parent
         anchors.topMargin: PlasmaCore.Units.smallSpacing * 2
+        anchors.rightMargin: PlasmaCore.Units.smallSpacing * 2
 
         TinyButton {
             id: searchButton
