@@ -194,35 +194,45 @@
 <context>
     <name>Plasmoid::AppearanceOptionPage</name>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="6"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="14"/>
         <source>Appearance</source>
         <translation>Erscheinungsbild</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="25"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="33"/>
         <source>Size of directory/device/download list</source>
         <translation>Größe der Verzeichnis-/Geräte-/Downloadliste</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="64"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="72"/>
         <source> x </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="90"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="98"/>
         <source> grid units</source>
         <translation> Rastereinheiten</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="108"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="116"/>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
         <translation>Die Größe wird ignoriert when das Plasmoid auf dem Desktop oder im Vollbildmodus dargestellt wird. Wenn das Plasmoid innerhalb des Systemtray-Plasmoids dargestellt wird kann die Größe nicht geändert werden (einen größeren Wert einzustellen führt nur dazu, dass der Inhalt abgeschnitten wird).</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="120"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="128"/>
         <source>States to enable passive mode</source>
         <translatorcomment>Plural: https://www.duden.de/rechtschreibung/Status</translatorcomment>
         <translation>Status für passiven Modus</translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="148"/>
+        <source>Optional GUI elements</source>
+        <translation>Optionale Elemente</translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="155"/>
+        <source>Show tab texts</source>
+        <translation>Text-Beschriftung der Tab-Buttons</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -244,17 +254,17 @@
 <context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="124"/>
+        <location filename="../lib/settingsdialog.cpp" line="126"/>
         <source>Plasmoid</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="132"/>
+        <location filename="../lib/settingsdialog.cpp" line="134"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="138"/>
+        <location filename="../lib/settingsdialog.cpp" line="140"/>
         <source>Extras</source>
         <translation></translation>
     </message>
@@ -275,17 +285,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="379"/>
+        <location filename="../lib/syncthingapplet.cpp" line="380"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="391"/>
+        <location filename="../lib/syncthingapplet.cpp" line="392"/>
         <source>New notifications</source>
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="548"/>
+        <location filename="../lib/syncthingapplet.cpp" line="550"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
     </message>
