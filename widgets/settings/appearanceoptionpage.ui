@@ -219,13 +219,6 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
-    <widget class="QCheckBox" name="showTrafficCheckBox">
-     <property name="text">
-      <string>Traffic statistics</string>
-     </property>
-    </widget>
-   </item>
    <item row="9" column="0">
     <widget class="QLabel" name="positioningLabel">
      <property name="text">
@@ -321,6 +314,27 @@
         </spacer>
        </item>
       </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="8" column="1">
+    <layout class="QVBoxLayout" name="optionalGuiElementsVerticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QCheckBox" name="showTrafficCheckBox">
+       <property name="text">
+        <string>Traffic statistics</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="showTabTextsCheckBox">
+       <property name="text">
+        <string>Show tab texts</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

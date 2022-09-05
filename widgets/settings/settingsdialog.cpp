@@ -464,6 +464,7 @@ bool AppearanceOptionPage::apply()
     settings.trayMenuSize.setWidth(ui()->widthSpinBox->value());
     settings.trayMenuSize.setHeight(ui()->heightSpinBox->value());
     settings.showTraffic = ui()->showTrafficCheckBox->isChecked();
+    settings.showTabTexts = ui()->showTabTextsCheckBox->isChecked();
     int style;
     switch (ui()->frameShapeComboBox->currentIndex()) {
     case 0:
@@ -502,6 +503,7 @@ void AppearanceOptionPage::reset()
     ui()->widthSpinBox->setValue(settings.trayMenuSize.width());
     ui()->heightSpinBox->setValue(settings.trayMenuSize.height());
     ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
+    ui()->showTabTextsCheckBox->setChecked(settings.showTabTexts);
     int index;
     switch (settings.frameStyle & QFrame::Shape_Mask) {
     case QFrame::NoFrame:

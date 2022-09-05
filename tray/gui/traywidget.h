@@ -132,6 +132,8 @@ private:
     QMenu *m_notificationsMenu;
     std::vector<Data::SyncthingLogEntry> m_notifications;
     enum class StartStopButtonTarget { None, Service, Launcher } m_startStopButtonTarget;
+    QStringList m_tabTexts;
+    bool m_tabTextsShown;
     static std::vector<TrayWidget *> s_instances;
 };
 

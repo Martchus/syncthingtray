@@ -84,6 +84,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     , m_recentChangesModel(m_connection)
     , m_selectedConnection(nullptr)
     , m_startStopButtonTarget(StartStopButtonTarget::None)
+    , m_tabTextsShown(true)
 {
     // don't show connection status within connection settings if there are multiple tray widgets/icons (would be ambiguous)
     if (!s_instances.empty() && s_settingsDlg) {
@@ -99,6 +100,11 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     }
 
     m_ui->setupUi(this);
+    const auto tabCount = m_ui->tabWidget->count();
+    m_tabTexts.reserve(tabCount);
+    for (decltype(m_ui->tabWidget->count()) i = 0; i != tabCount; ++i) {
+        m_tabTexts << m_ui->tabWidget->tabText(i);
+    }
 
     // setup models and views
     m_ui->dirsTreeView->header()->setSortIndicator(0, Qt::AscendingOrder);
@@ -505,6 +511,20 @@ void TrayWidget::applySettings(const QString &connectionConfig)
         m_ui->tabWidget->setTabPosition(static_cast<QTabWidget::TabPosition>(settings.appearance.tabPosition));
     }
     IconManager::instance().applySettings(&settings.icons.status, settings.icons.distinguishTrayIcons ? &settings.icons.tray : nullptr);
+    if (m_tabTextsShown != settings.appearance.showTabTexts) {
+        const auto tabCount = m_ui->tabWidget->count();
+        if ((m_tabTextsShown = settings.appearance.showTabTexts)) {
+            for (decltype(m_ui->tabWidget->count()) i = 0; i != tabCount; ++i) {
+                m_ui->tabWidget->setTabText(i, m_tabTexts[i]);
+                m_ui->tabWidget->setTabToolTip(i, QString());
+            }
+        } else {
+            for (decltype(m_ui->tabWidget->count()) i = 0; i != tabCount; ++i) {
+                m_ui->tabWidget->setTabText(i, QString());
+                m_ui->tabWidget->setTabToolTip(i, m_tabTexts[i]);
+            }
+        }
+    }
 
     // update status icon and text of tray icon because reconnect interval might have changed
     if (m_menu && m_menu->icon()) {

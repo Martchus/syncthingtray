@@ -335,6 +335,7 @@ void restore()
     v.ignoreInavailabilityAfterStart = settings.value(QStringLiteral("ignoreInavailabilityAfterStart"), v.ignoreInavailabilityAfterStart).toUInt();
     auto &appearance = v.appearance;
     appearance.showTraffic = settings.value(QStringLiteral("showTraffic"), appearance.showTraffic).toBool();
+    appearance.showTabTexts = settings.value(QStringLiteral("showTabTexts"), appearance.showTabTexts).toBool();
     appearance.trayMenuSize = settings.value(QStringLiteral("trayMenuSize"), appearance.trayMenuSize).toSize();
     appearance.frameStyle = settings.value(QStringLiteral("frameStyle"), appearance.frameStyle).toInt();
     appearance.tabPosition = settings.value(QStringLiteral("tabPos"), appearance.tabPosition).toInt();
@@ -445,6 +446,7 @@ void save()
     settings.setValue(QStringLiteral("ignoreInavailabilityAfterStart"), v.ignoreInavailabilityAfterStart);
     const auto &appearance = v.appearance;
     settings.setValue(QStringLiteral("showTraffic"), appearance.showTraffic);
+    settings.setValue(QStringLiteral("showTabTexts"), appearance.showTabTexts);
     settings.setValue(QStringLiteral("trayMenuSize"), appearance.trayMenuSize);
     settings.setValue(QStringLiteral("frameStyle"), appearance.frameStyle);
     settings.setValue(QStringLiteral("tabPos"), appearance.tabPosition);
