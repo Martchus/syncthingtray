@@ -31,6 +31,7 @@
 
 #include <qtutilities/misc/compat.h>
 #include <qtutilities/misc/desktoputils.h>
+#include <qtutilities/misc/dialogutils.h>
 #include <qtutilities/paletteeditor/colorbutton.h>
 #include <qtutilities/settingsdialog/optioncategory.h>
 #include <qtutilities/settingsdialog/optioncategorymodel.h>
