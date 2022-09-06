@@ -90,11 +90,11 @@ PlasmaExtras.Representation {
     FocusScope {
         anchors.fill: parent
         anchors.topMargin: PlasmaCore.Units.smallSpacing * 2
-        anchors.rightMargin: PlasmaCore.Units.smallSpacing * 2
 
         TinyButton {
             id: searchButton
             anchors.right: mainLayout.right
+            anchors.rightMargin: PlasmaCore.Units.smallSpacing * 2
             anchors.verticalCenter: infoLayout.verticalCenter
             icon.source: plasmoid.nativeInterface.faUrl + "search"
             width: PlasmaCore.Units.iconSizes.smallMedium
