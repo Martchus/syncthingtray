@@ -19,7 +19,7 @@ class MainConfigWizardPage;
 class AutostartWizardPage;
 } // namespace Ui
 
-enum class MainConfiguration : std::uint64_t {
+enum class MainConfiguration : quint64 {
     None,
     CurrentlyRunning,
     LauncherExternal,
@@ -28,7 +28,7 @@ enum class MainConfiguration : std::uint64_t {
     SystemdSystemUnit,
 };
 
-enum class ExtraConfiguration : std::uint64_t {
+enum class ExtraConfiguration : quint64 {
     None,
     SystemdIntegration = (1 << 0),
 };
