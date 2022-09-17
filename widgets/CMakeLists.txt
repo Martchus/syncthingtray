@@ -53,7 +53,8 @@ set(WIDGETS_UI_FILES
     settings/systemdoptionpage.ui
     settings/webviewoptionpage.ui
     settings/mainconfigwizardpage.ui
-    settings/autostartwizardpage.ui)
+    settings/autostartwizardpage.ui
+    settings/applywizardpage.ui)
 
 set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
              translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)

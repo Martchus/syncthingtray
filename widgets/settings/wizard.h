@@ -10,6 +10,8 @@
 
 #include <memory>
 
+QT_FORWARD_DECLARE_CLASS(QLabel)
+
 namespace QtGui {
 
 class SetupDetection;
@@ -17,6 +19,7 @@ class SetupDetection;
 namespace Ui {
 class MainConfigWizardPage;
 class AutostartWizardPage;
+class ApplyWizardPage;
 } // namespace Ui
 
 enum class MainConfiguration : quint64 {
@@ -45,6 +48,7 @@ public:
     MainConfiguration mainConfig() const;
     ExtraConfiguration extraConfig() const;
     bool autoStart() const;
+    const QString &configError() const;
 
 Q_SIGNALS:
     void settingsRequested();
@@ -53,6 +57,7 @@ private Q_SLOTS:
     void showDetailsFromSetupDetection();
     void handleConfigurationSelected(MainConfiguration mainConfig, ExtraConfiguration extraConfig);
     void handleAutostartSelected(bool autostartEnabled);
+    void handleConfigurationApplied(const QString &configError);
 
 private:
     static Wizard *s_instance;
@@ -60,6 +65,7 @@ private:
     MainConfiguration m_mainConfig = MainConfiguration::None;
     ExtraConfiguration m_extraConfig = ExtraConfiguration::None;
     bool m_autoStart = false;
+    QString m_configError;
 };
 
 inline MainConfiguration Wizard::mainConfig() const
@@ -75,6 +81,11 @@ inline ExtraConfiguration Wizard::extraConfig() const
 inline bool Wizard::autoStart() const
 {
     return m_autoStart;
+}
+
+inline const QString &Wizard::configError() const
+{
+    return m_configError;
 }
 
 class SYNCTHINGWIDGETS_EXPORT WelcomeWizardPage final : public QWizardPage {
@@ -149,6 +160,38 @@ Q_SIGNALS:
 private:
     std::unique_ptr<Ui::AutostartWizardPage> m_ui;
     bool m_configSelected;
+};
+
+class SYNCTHINGWIDGETS_EXPORT ApplyWizardPage final : public QWizardPage {
+    Q_OBJECT
+
+public:
+    explicit ApplyWizardPage(QWidget *parent = nullptr);
+    ~ApplyWizardPage() override;
+
+    bool isComplete() const override;
+    void initializePage() override;
+    bool validatePage() override;
+
+Q_SIGNALS:
+    void configurationApplied(const QString &errorMessage);
+
+private:
+    std::unique_ptr<Ui::ApplyWizardPage> m_ui;
+};
+
+class SYNCTHINGWIDGETS_EXPORT FinalWizardPage final : public QWizardPage {
+    Q_OBJECT
+
+public:
+    explicit FinalWizardPage(QWidget *parent = nullptr);
+    ~FinalWizardPage() override;
+
+    bool isComplete() const override;
+    void initializePage() override;
+
+private:
+    QLabel *m_label;
 };
 
 } // namespace QtGui

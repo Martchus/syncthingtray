@@ -6,6 +6,7 @@
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
 
+#include "ui_applywizardpage.h"
 #include "ui_autostartwizardpage.h"
 #include "ui_mainconfigwizardpage.h"
 
@@ -47,8 +48,11 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     auto *const welcomePage = new WelcomeWizardPage(this);
     auto *const detectionPage = new DetectionWizardPage(this);
     auto *const mainConfigPage = new MainConfigWizardPage(this);
+    auto *const applyPage = new ApplyWizardPage(this);
+    auto *const finalPage = new FinalWizardPage(this);
     connect(mainConfigPage, &MainConfigWizardPage::retry, detectionPage, &DetectionWizardPage::refresh);
     connect(mainConfigPage, &MainConfigWizardPage::configurationSelected, this, &Wizard::handleConfigurationSelected);
+    connect(applyPage, &ApplyWizardPage::configurationApplied, this, &Wizard::handleConfigurationApplied);
 #ifdef SETTINGS_WIZARD_AUTOSTART
     auto *const autostartPage = new AutostartWizardPage(this);
     connect(autostartPage, &AutostartWizardPage::autostartSelected, this, &Wizard::handleAutostartSelected);
@@ -59,6 +63,8 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
 #ifdef SETTINGS_WIZARD_AUTOSTART
     addPage(autostartPage);
 #endif
+    addPage(applyPage);
+    addPage(finalPage);
 
     connect(this, &QWizard::customButtonClicked, this, &Wizard::showDetailsFromSetupDetection);
 }
@@ -132,7 +138,7 @@ void Wizard::showDetailsFromSetupDetection()
             infoItems << tr("Additional Syncthing status info: ") + statusInfo.additionalStatusText();
         }
     } else {
-        infoItems << tr("Coult NOT connect to Syncthing under: ") + detection.connection.syncthingUrl();
+        infoItems << tr("Could NOT connect to Syncthing under: ") + detection.connection.syncthingUrl();
     }
     addParagraph(tr("API connection:"));
     addList(infoItems);
@@ -187,6 +193,11 @@ void Wizard::handleConfigurationSelected(MainConfiguration mainConfig, ExtraConf
 void Wizard::handleAutostartSelected(bool autostartEnabled)
 {
     m_autoStart = autostartEnabled;
+}
+
+void Wizard::handleConfigurationApplied(const QString &configError)
+{
+    m_configError = configError;
 }
 
 WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
@@ -493,14 +504,21 @@ bool MainConfigWizardPage::validatePage()
 
 void MainConfigWizardPage::handleSelectionChanged()
 {
+    auto *const wizard = qobject_cast<Wizard *>(this->wizard());
+    if (!wizard) {
+        return;
+    }
+    const auto &detection = wizard->setupDetection();
+
     // enable/disable option for Systemd integration
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    if (m_ui->cfgCurrentlyRunningRadioButton->isVisible()) {
+    if (!m_ui->cfgCurrentlyRunningRadioButton->isHidden()) {
         const auto &systemdSettings = Settings::values().systemd;
-        m_ui->enableSystemdIntegrationCheckBox->setEnabled(systemdSettings.showButton || systemdSettings.considerForReconnect);
+        m_ui->enableSystemdIntegrationCheckBox->setChecked(systemdSettings.showButton || systemdSettings.considerForReconnect
+            || detection.userService.isRunning() || detection.systemService.isRunning());
     } else {
-        if ((m_ui->cfgSystemdUserUnitRadioButton->isVisible() && m_ui->cfgSystemdUserUnitRadioButton->isChecked())
-            || ((m_ui->cfgSystemdSystemUnitRadioButton->isVisible() && m_ui->cfgSystemdSystemUnitRadioButton->isChecked()))) {
+        if ((!m_ui->cfgSystemdUserUnitRadioButton->isHidden() && m_ui->cfgSystemdUserUnitRadioButton->isChecked())
+            || ((!m_ui->cfgSystemdSystemUnitRadioButton->isHidden() && m_ui->cfgSystemdSystemUnitRadioButton->isChecked()))) {
             m_ui->enableSystemdIntegrationCheckBox->setChecked(true);
             m_ui->enableSystemdIntegrationCheckBox->setEnabled(true);
         } else {
@@ -541,7 +559,7 @@ AutostartWizardPage::~AutostartWizardPage()
 
 bool AutostartWizardPage::isComplete() const
 {
-    return false;
+    return true;
 }
 
 void AutostartWizardPage::initializePage()
@@ -580,6 +598,135 @@ bool AutostartWizardPage::validatePage()
 {
     emit autostartSelected(m_ui->enableAutostartCheckBox->isChecked());
     return true;
+}
+
+ApplyWizardPage::ApplyWizardPage(QWidget *parent)
+    : QWizardPage(parent)
+    , m_ui(new Ui::ApplyWizardPage)
+{
+    const auto applyText = tr("Apply");
+    setTitle(tr("Apply selected configuration"));
+    setSubTitle(tr("Review the summary of the configuration changes before applying them"));
+    setButtonText(QWizard::NextButton, applyText);
+    setButtonText(QWizard::CommitButton, applyText);
+    setButtonText(QWizard::FinishButton, applyText);
+    m_ui->setupUi(this);
+}
+
+ApplyWizardPage::~ApplyWizardPage()
+{
+}
+
+bool ApplyWizardPage::isComplete() const
+{
+    return true;
+}
+
+void ApplyWizardPage::initializePage()
+{
+    auto *const wizard = qobject_cast<Wizard *>(this->wizard());
+    if (!wizard) {
+        return;
+    }
+    auto const &detection = wizard->setupDetection();
+    const auto &currentSettings = Settings::values();
+    auto html = QStringLiteral("<p><b>%1</b></p><ul>").arg(tr("Summary:"));
+    auto addListItem = [&html](const QString &text) {
+        html.append(QStringLiteral("<li>"));
+        html.append(text);
+        html.append(QStringLiteral("</li>"));
+    };
+    auto logFeature = [&addListItem](const QString &feature, bool enabled, bool enabledBefore) {
+        addListItem(enabled == enabledBefore ? (tr("Keep %1 %2").arg(feature, enabled ? tr("enabled") : tr("disabled")))
+                                             : (tr("%1 %2").arg(enabled ? tr("Enable") : tr("Disable"), feature)));
+    };
+    auto mainConfig = QString();
+    auto extraInfo = QString();
+    switch (wizard->mainConfig()) {
+    case MainConfiguration::None:
+        mainConfig = tr("Keeping connection and launcher configuration as-is");
+        break;
+    case MainConfiguration::CurrentlyRunning:
+        mainConfig = tr("Configure Syncthing Tray to use the currently running Syncthing instance");
+        extraInfo = tr("Do <i>not</i> change how Syncthing is launched");
+        break;
+    case MainConfiguration::LauncherExternal:
+    case MainConfiguration::LauncherBuiltIn:
+        mainConfig = tr("Start Syncthing via Syncthing Tray's launcher");
+        extraInfo = wizard->mainConfig() == MainConfiguration::LauncherExternal
+            ? tr("executable from PATH as separate process, \"%1\"").arg(QString::fromLocal8Bit(detection.launcherOutput.trimmed()))
+            : tr("built-in Syncthing library, \"%1\"").arg(Data::SyncthingLauncher::isLibSyncthingAvailable());
+        break;
+    case MainConfiguration::SystemdUserUnit:
+    case MainConfiguration::SystemdSystemUnit:
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        mainConfig = tr("Start Syncthing by enabling and starting its systemd unit ()");
+        extraInfo = wizard->mainConfig() == MainConfiguration::SystemdUserUnit
+            ? tr("Using user unit \"%1\"").arg(detection.userService.unitName())
+            : tr("Using system unit \"%1\"").arg(detection.systemService.unitName());
+#endif
+        break;
+    }
+    if (!extraInfo.isEmpty()) {
+        mainConfig.append(QStringLiteral("<ul><li>"));
+        mainConfig.append(extraInfo);
+        mainConfig.append(QStringLiteral("</li></ul>"));
+    }
+    addListItem(mainConfig);
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    logFeature(tr("systemd integration"), wizard->extraConfig() & ExtraConfiguration::SystemdIntegration,
+        currentSettings.systemd.showButton && currentSettings.systemd.considerForReconnect);
+#endif
+#ifdef SETTINGS_WIZARD_AUTOSTART
+    logFeature(tr("autostart of Syncthing Tray"), wizard->autoStart(), currentSettings.launcher.autostartEnabled);
+#endif
+    html.append(QStringLiteral("</ul><p><b>%1</b></p><ul><li>%2</li><li>%3</li><li>%4</li></ul>")
+                    .arg(tr("Further information:"), tr("Click on \"Show details from setup detection\" for further details."),
+                        tr("If you want to do amendments, you can head back one or more steps."), tr("If you abort now, nothing will be changed.")));
+    m_ui->summaryTextBrowser->setHtml(html);
+}
+
+bool ApplyWizardPage::validatePage()
+{
+    emit configurationApplied(QStringLiteral("not implemented yet"));
+    return true;
+}
+
+FinalWizardPage::FinalWizardPage(QWidget *parent)
+    : QWizardPage(parent)
+{
+    setTitle(tr("Configuration wizard completed"));
+    auto *const layout = new QVBoxLayout;
+    layout->addWidget(m_label = new QLabel());
+    setLayout(layout);
+}
+
+FinalWizardPage::~FinalWizardPage()
+{
+}
+
+bool FinalWizardPage::isComplete() const
+{
+    return true;
+}
+
+void FinalWizardPage::initializePage()
+{
+    auto *const wizard = qobject_cast<Wizard *>(this->wizard());
+    if (!wizard) {
+        return;
+    }
+
+    if (wizard->configError().isEmpty()) {
+        setSubTitle(tr("All changes have been applied"));
+        m_label->setText(tr("You can close the wizard. It may take shortly until Syncthing is up and running."));
+    } else {
+        setSubTitle(tr("Not all changes could be applied"));
+        m_label->setText(
+            QStringLiteral("<p>%1</p><p>%2</p>")
+                .arg(wizard->configError(),
+                    tr("You may try to head back one or more steps and try again or finish the wizard and configure Syncthing Tray manually.")));
+    }
 }
 
 } // namespace QtGui

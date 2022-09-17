@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QtGui::ApplyWizardPage</class>
+ <widget class="QWidget" name="QtGui::ApplyWizardPage">
+  <property name="windowTitle">
+   <string>General</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="internet-web-browser" resource="../resources/syncthingwidgetsicons.qrc">
+    <normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</normaloff>:/icons/hicolor/scalable/apps/internet-web-browser.svg</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTextBrowser" name="summaryTextBrowser"/>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../resources/syncthingwidgetsicons.qrc"/>
+ </resources>
+ <connections/>
+</ui>
