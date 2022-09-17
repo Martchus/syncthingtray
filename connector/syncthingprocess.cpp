@@ -718,7 +718,7 @@ qint64 SyncthingProcess::readData(char *data, qint64 maxSize)
         std::memcpy(data, m_process->buffer + m_process->bytesRead, bytesAvailable);
         m_process->bytesBuffered = 0;
         m_process->bytesRead = 0;
-        bufferOutput();
+        QMetaObject::invokeMethod(this, "bufferOutput", Qt::QueuedConnection);
         return static_cast<qint64>(bytesAvailable);
     }
 }
