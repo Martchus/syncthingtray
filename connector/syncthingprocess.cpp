@@ -2,6 +2,7 @@
 
 #include <syncthingconnector/syncthingconnection.h>
 
+#include <QEventLoop>
 #include <QStringBuilder>
 #include <QTimer>
 
@@ -664,6 +665,8 @@ bool SyncthingProcess::waitForReadyRead(int msecs)
     if (m_process->bytesBuffered) {
         return true;
     }
+    QEventLoop().processEvents(
+        QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers); // ensure a possibly pending bufferOutput() invocation is processed
     auto lock = std::unique_lock<std::mutex>(m_process->readMutex);
     if (msecs < 0) {
         m_process->readCondVar.wait(lock);
