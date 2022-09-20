@@ -289,20 +289,20 @@ To avoid building c++utilities/qtutilities/qtforkawesome separately, follow the 
 can be passed to CMake to influence the build.
 
 ### Further dependencies
-The following Qt modules are required (version 5.6 or newer): `core`, `network`, `dbus`, `gui`, `widgets`,
-`svg`, `webenginewidgets`/`webkitwidgets`
+The following Qt modules are required (only the latest Qt 5 and Qt 6 version tested): `core`, `network`, `dbus`,
+`gui`, `widgets`, `svg`, `webenginewidgets`/`webkitwidgets`
 
 It is recommended to use at least Qt 5.14 to avoid limitations in previous versions (see *Known bugs* section).
 
 The built-in web view and therefore the modules webenginewidgets/webkitwidgets are optional (see
 section *Select Qt module for WebView*).
 
-To build the plugin for Dolphin integration KIO is also required. Additionally, the Dolphin plugin requires
-Qt 5.8 or newer. To skip building the plugin, add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
+To build the plugin for Dolphin integration KIO is also required. To skip building the plugin,
+add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
 
 To build the Plasmoid for the Plasma desktop, the Qt module QML and the KDE Frameworks module Plasma are
-required as well. Additionally, the Plasmoid requires Qt 5.15 or newer. To skip building the Plasmoid, add
-`-DNO_PLASMOID:BOOL=ON` to the CMake arguments.
+required as well. Additionally, the Plasmoid requires the latest Qt version (5.15) for certain Qt Quick features.
+To skip building the Plasmoid, add `-DNO_PLASMOID:BOOL=ON` to the CMake arguments.
 
 To specify the major Qt version to use, set `QT_PACKAGE_PREFIX` (e.g. add `-DQT_PACKAGE_PREFIX:STRING=Qt6`
 to the CMake arguments). There's also `KF_PACKAGE_PREFIX` for KDE dependencies. Note that KDE integrations
@@ -330,7 +330,8 @@ to systemd in any case.
 
 ---
 
-Building the testsuite requires CppUnit and Qt 5.8 or higher.
+Building the testsuite requires CppUnit and Syncthing itself. Tests will spawn (and eventually terminate)
+a test instance of Syncthing that does not affect a possibly existing Syncthing setup on the build host.
 
 ### Building this straight
 0. Install (preferably the latest version of) the GCC toolchain or Clang, the required Qt modules,
