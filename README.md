@@ -250,8 +250,7 @@ See the release section on GitHub.
     * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
       by [the platypus repository](https://git.exherbo.org/summer/packages/media-sound/tageditor)
 * Gentoo
-    * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
-      by [perfect7gentleman's repository](https://github.com/perfect7gentleman/pg_overlay)
+    * there is a package in [Case_Of's overlay](https://codeberg.org/Case_Of/gentoo-overlay)
 * NixOS
     * the package syncthingtray is available from the official repositories
 * Void Linux
