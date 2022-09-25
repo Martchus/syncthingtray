@@ -11,6 +11,7 @@
 #include <memory>
 
 QT_FORWARD_DECLARE_CLASS(QLabel)
+QT_FORWARD_DECLARE_CLASS(QProgressBar)
 
 namespace QtGui {
 
@@ -48,10 +49,16 @@ public:
     MainConfiguration mainConfig() const;
     ExtraConfiguration extraConfig() const;
     bool autoStart() const;
+    bool isConfigApplied() const;
     const QString &configError() const;
 
+public Q_SLOTS:
+    bool applyConfig();
+
 Q_SIGNALS:
-    void settingsRequested();
+    void settingsDialogRequested();
+    void settingsChanged();
+    void configApplied();
 
 private Q_SLOTS:
     void showDetailsFromSetupDetection();
@@ -65,6 +72,7 @@ private:
     MainConfiguration m_mainConfig = MainConfiguration::None;
     ExtraConfiguration m_extraConfig = ExtraConfiguration::None;
     bool m_autoStart = false;
+    bool m_configApplied = false;
     QString m_configError;
 };
 
@@ -81,6 +89,11 @@ inline ExtraConfiguration Wizard::extraConfig() const
 inline bool Wizard::autoStart() const
 {
     return m_autoStart;
+}
+
+inline bool Wizard::isConfigApplied() const
+{
+    return m_configApplied;
 }
 
 inline const QString &Wizard::configError() const
@@ -173,9 +186,6 @@ public:
     void initializePage() override;
     bool validatePage() override;
 
-Q_SIGNALS:
-    void configurationApplied(const QString &errorMessage);
-
 private:
     std::unique_ptr<Ui::ApplyWizardPage> m_ui;
 };
@@ -190,8 +200,12 @@ public:
     bool isComplete() const override;
     void initializePage() override;
 
+public Q_SLOTS:
+    void showResults();
+
 private:
     QLabel *m_label;
+    QProgressBar *m_progressBar;
 };
 
 } // namespace QtGui

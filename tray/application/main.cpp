@@ -66,7 +66,7 @@ static void showWizard(const TrayWidget *trayWidget)
 {
     auto *const wizard = Wizard::instance();
     QtUtilities::centerWidget(wizard);
-    QObject::connect(wizard, &Wizard::settingsRequested, trayWidget, &TrayWidget::showSettingsDialog);
+    QObject::connect(wizard, &Wizard::settingsDialogRequested, trayWidget, &TrayWidget::showSettingsDialog);
     wizard->show();
 }
 

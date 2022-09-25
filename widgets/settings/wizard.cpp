@@ -52,7 +52,6 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     auto *const finalPage = new FinalWizardPage(this);
     connect(mainConfigPage, &MainConfigWizardPage::retry, detectionPage, &DetectionWizardPage::refresh);
     connect(mainConfigPage, &MainConfigWizardPage::configurationSelected, this, &Wizard::handleConfigurationSelected);
-    connect(applyPage, &ApplyWizardPage::configurationApplied, this, &Wizard::handleConfigurationApplied);
 #ifdef SETTINGS_WIZARD_AUTOSTART
     auto *const autostartPage = new AutostartWizardPage(this);
     connect(autostartPage, &AutostartWizardPage::autostartSelected, this, &Wizard::handleAutostartSelected);
@@ -91,6 +90,53 @@ SetupDetection &Wizard::setupDetection()
         m_setupDetection = std::make_unique<SetupDetection>();
     }
     return *m_setupDetection;
+}
+
+bool Wizard::applyConfig()
+{
+    const auto &detection = setupDetection();
+    auto &settings = Settings::values();
+    auto &primary = settings.connection.primary;
+
+    switch (mainConfig()) {
+    case MainConfiguration::None:
+        break;
+    case MainConfiguration::CurrentlyRunning: {
+        // apply changes to current primary config if necessary
+        const auto url = detection.config.syncthingUrl();
+        const auto apiKey = detection.config.guiApiKey.toUtf8();
+        if (url != primary.syncthingUrl || detection.config.guiUser != primary.userName || detection.config.guiApiKey != primary.apiKey) {
+            if (!primary.syncthingUrl.isEmpty() || !primary.userName.isEmpty() || !primary.password.isEmpty() || !primary.apiKey.isEmpty()) {
+                // backup previous primary config unless fields going to be overridden are empty anyways
+                settings.connection.secondary.emplace_back(primary);
+            }
+            primary.syncthingUrl = url;
+            primary.userName = detection.config.guiUser;
+            primary.authEnabled = false;
+            primary.password.clear();
+            primary.apiKey = apiKey;
+        }
+        break;
+    }
+    case MainConfiguration::LauncherExternal:
+    case MainConfiguration::LauncherBuiltIn:
+        // TODO
+        break;
+    case MainConfiguration::SystemdUserUnit:
+    case MainConfiguration::SystemdSystemUnit:
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        // TODO
+#endif
+        break;
+    }
+
+    // TODO: invoke resetAllPages() on possibly opened settings dialog in slot connected to that signal
+    // TODO: let tray widget / plasmoid re-connect on that signal
+    emit settingsChanged();
+
+    // TODO: wait for successful connection instead of just invoking handleConfigurationApplied()
+    handleConfigurationApplied(QStringLiteral("not implemented yet"));
+    return true;
 }
 
 void Wizard::showDetailsFromSetupDetection()
@@ -186,18 +232,22 @@ void Wizard::showDetailsFromSetupDetection()
 
 void Wizard::handleConfigurationSelected(MainConfiguration mainConfig, ExtraConfiguration extraConfig)
 {
+    m_configApplied = false;
     m_mainConfig = mainConfig;
     m_extraConfig = extraConfig;
 }
 
 void Wizard::handleAutostartSelected(bool autostartEnabled)
 {
+    m_configApplied = false;
     m_autoStart = autostartEnabled;
 }
 
 void Wizard::handleConfigurationApplied(const QString &configError)
 {
+    m_configApplied = true;
     m_configError = configError;
+    emit configApplied();
 }
 
 WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
@@ -240,7 +290,7 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
         QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
     connect(showSettingsCommand, &QCommandLinkButton::clicked, this, [this] {
         if (auto *const wizard = qobject_cast<Wizard *>(this->wizard())) {
-            emit wizard->settingsRequested();
+            emit wizard->settingsDialogRequested();
             wizard->close();
         }
     });
@@ -628,7 +678,7 @@ void ApplyWizardPage::initializePage()
     if (!wizard) {
         return;
     }
-    auto const &detection = wizard->setupDetection();
+    const auto &detection = wizard->setupDetection();
     const auto &currentSettings = Settings::values();
     auto html = QStringLiteral("<p><b>%1</b></p><ul>").arg(tr("Summary:"));
     auto addListItem = [&html](const QString &text) {
@@ -688,17 +738,22 @@ void ApplyWizardPage::initializePage()
 
 bool ApplyWizardPage::validatePage()
 {
-    emit configurationApplied(QStringLiteral("not implemented yet"));
-    return true;
+    auto *const wizard = qobject_cast<Wizard *>(this->wizard());
+    return wizard ? wizard->applyConfig() : false;
 }
 
 FinalWizardPage::FinalWizardPage(QWidget *parent)
     : QWizardPage(parent)
 {
-    setTitle(tr("Configuration wizard completed"));
     auto *const layout = new QVBoxLayout;
+    layout->addWidget(m_progressBar = new QProgressBar());
     layout->addWidget(m_label = new QLabel());
     setLayout(layout);
+
+    m_progressBar->setMaximum(0);
+
+    auto *const wizard = qobject_cast<Wizard *>(this->wizard());
+    connect(wizard, &Wizard::configApplied, this, &QWizardPage::completeChanged);
 }
 
 FinalWizardPage::~FinalWizardPage()
@@ -707,16 +762,33 @@ FinalWizardPage::~FinalWizardPage()
 
 bool FinalWizardPage::isComplete() const
 {
-    return true;
+    auto *const wizard = qobject_cast<Wizard *>(this->wizard());
+    return wizard != nullptr && wizard->isConfigApplied();
 }
 
 void FinalWizardPage::initializePage()
+{
+    showResults();
+}
+
+void QtGui::FinalWizardPage::showResults()
 {
     auto *const wizard = qobject_cast<Wizard *>(this->wizard());
     if (!wizard) {
         return;
     }
 
+    if (!wizard->isConfigApplied()) {
+        setTitle(tr("Waiting for configuration wizard completed"));
+        setSubTitle(tr("Changes are being applied"));
+        m_label->hide();
+        m_progressBar->show();
+        return;
+    }
+
+    setTitle(tr("Configuration wizard completed"));
+    m_label->show();
+    m_progressBar->hide();
     if (wizard->configError().isEmpty()) {
         setSubTitle(tr("All changes have been applied"));
         m_label->setText(tr("You can close the wizard. It may take shortly until Syncthing is up and running."));
