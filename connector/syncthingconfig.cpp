@@ -87,7 +87,7 @@ bool SyncthingConfig::restore(const QString &configFilePath)
 
 QString SyncthingConfig::syncthingUrl() const
 {
-    return (guiEnforcesSecureConnection || !isLocal(guiAddress) ? QStringLiteral("https://") : QStringLiteral("http://")) + guiAddress;
+    return (guiEnforcesSecureConnection || !isLocal(stripPort(guiAddress)) ? QStringLiteral("https://") : QStringLiteral("http://")) + guiAddress;
 }
 
 } // namespace Data

@@ -105,6 +105,15 @@ QString rescanIntervalString(int rescanInterval, bool fileSystemWatcherEnabled)
 }
 
 /*!
+ * \brief Strips the port from the specified \a address.
+ */
+QString stripPort(const QString &address)
+{
+    const auto portStart = address.lastIndexOf(QChar(':'));
+    return portStart < 0 ? address : address.mid(0, portStart);
+}
+
+/*!
  * \brief Returns whether the specified \a hostName is the local machine.
  */
 bool isLocal(const QString &hostName)
