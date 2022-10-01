@@ -76,6 +76,7 @@ public Q_SLOTS:
     void restartSyncthing();
     void quitTray();
     void applySettings(const QString &connectionConfig = QString());
+    void applySettingsChangesFromWizard();
 
 protected:
     bool event(QEvent *event) override;
@@ -106,6 +107,7 @@ private Q_SLOTS:
 #endif
     void handleNewNotification(CppUtilities::DateTime when, const QString &msg);
     void handleConnectionSelected(QAction *connectionAction);
+    void concludeWizard(const QString &errorMessage = QString());
     void showDialog(QWidget *dlg, bool maximized = false);
     void setBrightColorsOfModelsAccordingToPalette();
 
@@ -137,6 +139,7 @@ private:
     enum class StartStopButtonTarget { None, Service, Launcher } m_startStopButtonTarget;
     QStringList m_tabTexts;
     bool m_tabTextsShown;
+    bool m_applyingSettingsForWizard;
     static std::vector<TrayWidget *> s_instances;
 };
 

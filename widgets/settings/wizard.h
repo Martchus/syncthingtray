@@ -53,10 +53,12 @@ public:
     const QString &configError() const;
 
 public Q_SLOTS:
-    bool applyConfig();
+    bool changeSettings();
+    void handleConfigurationApplied(const QString &configError = QString());
 
 Q_SIGNALS:
     void settingsDialogRequested();
+    void openSyncthingRequested();
     void settingsChanged();
     void configApplied();
 
@@ -64,7 +66,6 @@ private Q_SLOTS:
     void showDetailsFromSetupDetection();
     void handleConfigurationSelected(MainConfiguration mainConfig, ExtraConfiguration extraConfig);
     void handleAutostartSelected(bool autostartEnabled);
-    void handleConfigurationApplied(const QString &configError);
 
 private:
     static Wizard *s_instance;
@@ -199,9 +200,13 @@ public:
 
     bool isComplete() const override;
     void initializePage() override;
+    bool validatePage() override;
 
 public Q_SLOTS:
     void showResults();
+
+private Q_SLOTS:
+    void handleLinkActivated(const QString &href);
 
 private:
     QLabel *m_label;

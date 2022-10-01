@@ -92,7 +92,7 @@ SetupDetection &Wizard::setupDetection()
     return *m_setupDetection;
 }
 
-bool Wizard::applyConfig()
+bool Wizard::changeSettings()
 {
     const auto &detection = setupDetection();
     auto &settings = Settings::values();
@@ -108,7 +108,8 @@ bool Wizard::applyConfig()
         if (url != primary.syncthingUrl || detection.config.guiUser != primary.userName || detection.config.guiApiKey != primary.apiKey) {
             if (!primary.syncthingUrl.isEmpty() || !primary.userName.isEmpty() || !primary.password.isEmpty() || !primary.apiKey.isEmpty()) {
                 // backup previous primary config unless fields going to be overridden are empty anyways
-                settings.connection.secondary.emplace_back(primary);
+                auto &backup = settings.connection.secondary.emplace_back(primary);
+                backup.label = tr("Backup of %1 (created by wizard)").arg(backup.label);
             }
             primary.syncthingUrl = url;
             primary.userName = detection.config.guiUser;
@@ -130,12 +131,9 @@ bool Wizard::applyConfig()
         break;
     }
 
-    // TODO: invoke resetAllPages() on possibly opened settings dialog in slot connected to that signal
-    // TODO: let tray widget / plasmoid re-connect on that signal
+    // let the tray widget / plasmoid apply the settings
+    // note: The tray widget / plasmoid is expected to call handleConfigurationApplied().
     emit settingsChanged();
-
-    // TODO: wait for successful connection instead of just invoking handleConfigurationApplied()
-    handleConfigurationApplied(QStringLiteral("not implemented yet"));
     return true;
 }
 
@@ -739,7 +737,7 @@ void ApplyWizardPage::initializePage()
 bool ApplyWizardPage::validatePage()
 {
     auto *const wizard = qobject_cast<Wizard *>(this->wizard());
-    return wizard ? wizard->applyConfig() : false;
+    return wizard ? wizard->changeSettings() : false;
 }
 
 FinalWizardPage::FinalWizardPage(QWidget *parent)
@@ -750,10 +748,12 @@ FinalWizardPage::FinalWizardPage(QWidget *parent)
     layout->addWidget(m_label = new QLabel());
     setLayout(layout);
 
+    m_label->setWordWrap(true);
     m_progressBar->setMaximum(0);
 
     auto *const wizard = qobject_cast<Wizard *>(this->wizard());
     connect(wizard, &Wizard::configApplied, this, &QWizardPage::completeChanged);
+    connect(m_label, &QLabel::linkActivated, this, &FinalWizardPage::handleLinkActivated);
 }
 
 FinalWizardPage::~FinalWizardPage()
@@ -769,6 +769,13 @@ bool FinalWizardPage::isComplete() const
 void FinalWizardPage::initializePage()
 {
     showResults();
+}
+
+bool FinalWizardPage::validatePage()
+{
+    // keep config file on disk in-sync with new settings
+    Settings::save();
+    return true;
 }
 
 void QtGui::FinalWizardPage::showResults()
@@ -791,13 +798,25 @@ void QtGui::FinalWizardPage::showResults()
     m_progressBar->hide();
     if (wizard->configError().isEmpty()) {
         setSubTitle(tr("All changes have been applied"));
-        m_label->setText(tr("You can close the wizard. It may take shortly until Syncthing is up and running."));
+        m_label->setText(tr("The configuration has been changed successfully. You can close the wizard and <a href=\"openSyncthing\">open "
+                            "Syncthing</a> to pair remote devices and add folders for sharing. If you need further help, read the "
+                            "<a href=\"openDocs\">documentation to get started</a>."));
     } else {
         setSubTitle(tr("Not all changes could be applied"));
         m_label->setText(
             QStringLiteral("<p>%1</p><p>%2</p>")
                 .arg(wizard->configError(),
                     tr("You may try to head back one or more steps and try again or finish the wizard and configure Syncthing Tray manually.")));
+    }
+}
+
+void FinalWizardPage::handleLinkActivated(const QString &href)
+{
+    auto *const wizard = qobject_cast<Wizard *>(this->wizard());
+    if (wizard && href == QLatin1String("openSyncthing")) {
+        emit wizard->openSyncthingRequested();
+    } else if (href == QLatin1String("openDocs")) {
+        QDesktopServices::openUrl(QStringLiteral("https://docs.syncthing.net/intro/getting-started.html#configuring"));
     }
 }
 

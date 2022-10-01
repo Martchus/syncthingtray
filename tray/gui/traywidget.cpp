@@ -87,6 +87,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     , m_selectedConnection(nullptr)
     , m_startStopButtonTarget(StartStopButtonTarget::None)
     , m_tabTextsShown(true)
+    , m_applyingSettingsForWizard(false)
 {
     // don't show connection status within connection settings if there are multiple tray widgets/icons (would be ambiguous)
     if (!s_instances.empty() && s_settingsDlg) {
@@ -273,8 +274,49 @@ void TrayWidget::showWizard()
         s_wizard = Wizard::instance();
         connect(s_wizard, &Wizard::destroyed, this, [] { s_wizard = nullptr; });
         connect(s_wizard, &Wizard::settingsDialogRequested, this, &TrayWidget::showSettingsDialog);
+        connect(s_wizard, &Wizard::openSyncthingRequested, this, &TrayWidget::showWebUi);
+        connect(s_wizard, &Wizard::settingsChanged, this, &TrayWidget::applySettingsChangesFromWizard);
     }
     showDialog(s_wizard, centerWidgetAvoidingOverflow(s_wizard));
+}
+
+void TrayWidget::applySettingsChangesFromWizard()
+{
+    // reset possibly opened settings dialog to be consistent with new configuration
+    if (s_settingsDlg) {
+        s_settingsDlg->reset();
+    }
+
+    // consider the settings applied instantly if there's no tray widget instance
+    if (s_instances.empty()) {
+        if (s_wizard) {
+            s_wizard->handleConfigurationApplied();
+        }
+        return;
+    }
+
+    // apply settings on all tray widgets using the normal re-connect logic
+    // note: Ensure at least one tray widget has the primary config selected as this is the config changed
+    //       by the wizard we need to keep track of.
+    const auto &primaryConnectionName = Settings::values().connection.primary.label;
+    TrayWidget *relevantInstance = nullptr;
+    for (auto *const instance : s_instances) {
+        auto index = instance->m_connectionsMenu->actions().indexOf(instance->m_connectionsActionGroup->checkedAction());
+        if (index == 0) {
+            instance->m_applyingSettingsForWizard = true;
+            relevantInstance = instance;
+            break;
+        }
+    }
+    for (auto *const instance : s_instances) {
+        if (!relevantInstance) {
+            instance->m_applyingSettingsForWizard = true;
+            instance->applySettings(primaryConnectionName);
+            relevantInstance = instance;
+        } else {
+            instance->applySettings();
+        }
+    }
 }
 
 void TrayWidget::showAboutDialog()
@@ -413,10 +455,13 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
         m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("refresh.fa")));
         m_ui->statusPushButton->setHidden(false);
         updateTraffic(); // ensure previous traffic statistics are no longer shown
-        break;
+        if (m_applyingSettingsForWizard) {
+            concludeWizard(tr("Unable to establish connection to Syncthing."));
+        }
+        return;
     case SyncthingStatus::Reconnecting:
         m_ui->statusPushButton->setHidden(true);
-        break;
+        return;
     case SyncthingStatus::Idle:
     case SyncthingStatus::Scanning:
     case SyncthingStatus::Synchronizing:
@@ -433,6 +478,9 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
         m_ui->statusPushButton->setHidden(false);
         break;
     default:;
+    }
+    if (m_applyingSettingsForWizard) {
+        concludeWizard();
     }
 }
 
@@ -550,6 +598,11 @@ void TrayWidget::applySettings(const QString &connectionConfig)
             tr("The specified connection configuration <em>%1</em> is not defined and hence ignored.").arg(connectionConfig));
         msgBox->setAttribute(Qt::WA_DeleteOnClose);
         msgBox->show();
+    }
+
+    // conclude wizard immediately if no re-connect was required anyways
+    if (!reconnectRequired) {
+        concludeWizard();
     }
 }
 
@@ -854,6 +907,17 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
             m_webViewDlg->applySettings(*m_selectedConnection, false);
         }
 #endif
+    }
+}
+
+void TrayWidget::concludeWizard(const QString &errorMessage)
+{
+    if (!m_applyingSettingsForWizard) {
+        return;
+    }
+    m_applyingSettingsForWizard = false;
+    if (s_wizard) {
+        s_wizard->handleConfigurationApplied(errorMessage);
     }
 }
 
