@@ -36,6 +36,7 @@ namespace QtGui {
 
 class WebViewDialog;
 class SettingsDialog;
+class Wizard;
 class TrayMenu;
 
 namespace Ui {
@@ -60,6 +61,7 @@ public:
 
 public Q_SLOTS:
     void showSettingsDialog();
+    void showWizard();
     void showAboutDialog();
     void showWebUi();
     void showOwnDeviceId();
@@ -112,6 +114,7 @@ private:
     std::unique_ptr<Ui::TrayWidget> m_ui;
     static QWidget *s_dialogParent;
     static SettingsDialog *s_settingsDlg;
+    static Wizard *s_wizard;
     static QtUtilities::AboutDialog *s_aboutDlg;
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     WebViewDialog *m_webViewDlg;

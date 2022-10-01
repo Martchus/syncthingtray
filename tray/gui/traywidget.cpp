@@ -8,6 +8,7 @@
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #include <syncthingwidgets/misc/textviewdialog.h>
 #include <syncthingwidgets/settings/settingsdialog.h>
+#include <syncthingwidgets/settings/wizard.h>
 #include <syncthingwidgets/webview/webviewdialog.h>
 
 #include <syncthingmodel/syncthingicons.h>
@@ -58,6 +59,7 @@ namespace QtGui {
 
 QWidget *TrayWidget::s_dialogParent = nullptr;
 SettingsDialog *TrayWidget::s_settingsDlg = nullptr;
+Wizard *TrayWidget::s_wizard = nullptr;
 QtUtilities::AboutDialog *TrayWidget::s_aboutDlg = nullptr;
 vector<TrayWidget *> TrayWidget::s_instances;
 
@@ -246,6 +248,7 @@ SettingsDialog *TrayWidget::settingsDialog()
     }
     if (!s_settingsDlg) {
         s_settingsDlg = new SettingsDialog(s_instances.size() < 2 ? &m_connection : nullptr, s_dialogParent);
+        connect(s_settingsDlg, &SettingsDialog::wizardRequested, this, &TrayWidget::showWizard);
         connect(s_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettingsOnAllInstances);
 
         // save settings to disk when applied
@@ -262,6 +265,16 @@ void TrayWidget::showSettingsDialog()
     auto *const dlg = settingsDialog();
     // show settings dialog centered or maximized if the relatively big windows would overflow
     showDialog(dlg, centerWidgetAvoidingOverflow(dlg));
+}
+
+void TrayWidget::showWizard()
+{
+    if (!s_wizard) {
+        s_wizard = Wizard::instance();
+        connect(s_wizard, &Wizard::destroyed, this, [] { s_wizard = nullptr; });
+        connect(s_wizard, &Wizard::settingsDialogRequested, this, &TrayWidget::showSettingsDialog);
+    }
+    showDialog(s_wizard, centerWidgetAvoidingOverflow(s_wizard));
 }
 
 void TrayWidget::showAboutDialog()

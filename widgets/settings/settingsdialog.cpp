@@ -1478,18 +1478,11 @@ void SettingsDialog::init()
         QIcon::fromTheme(QStringLiteral("tools-wizard"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/tools-wizard.svg"))));
     startWizardButton->setFlat(true);
     startWizardButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    connect(startWizardButton, &QPushButton::clicked, this, &SettingsDialog::showWizard);
+    connect(startWizardButton, &QPushButton::clicked, this, &SettingsDialog::wizardRequested);
     addHeadingWidget(startWizardButton);
 
     // some settings could be applied without restarting the application, good idea?
     //connect(this, &Dialogs::SettingsDialog::applied, bind(&Dialogs::QtSettings::apply, &Settings::qtSettings()));
-}
-
-void SettingsDialog::showWizard()
-{
-    auto *const wizard = Wizard::instance();
-    QtUtilities::centerWidget(wizard);
-    wizard->show();
 }
 
 void SettingsDialog::hideConnectionStatus()

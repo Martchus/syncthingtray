@@ -5,7 +5,6 @@
 
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #include <syncthingwidgets/settings/settings.h>
-#include <syncthingwidgets/settings/wizard.h>
 
 #include <syncthingconnector/syncthingprocess.h>
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -62,14 +61,6 @@ void handleSystemdServiceError(const QString &context, const QString &name, cons
 }
 #endif
 
-static void showWizard(const TrayWidget *trayWidget)
-{
-    auto *const wizard = Wizard::instance();
-    QtUtilities::centerWidget(wizard);
-    QObject::connect(wizard, &Wizard::settingsDialogRequested, trayWidget, &TrayWidget::showSettingsDialog);
-    wizard->show();
-}
-
 int initSyncthingTray(bool windowed, bool waitForTray, const Argument &connectionConfigArg)
 {
     // get settings
@@ -117,7 +108,7 @@ int initSyncthingTray(bool windowed, bool waitForTray, const Argument &connectio
 
     // show wizard on first launch
     if (settings.firstLaunch || settings.fakeFirstLaunch) {
-        showWizard(widget);
+        widget->showWizard();
     }
     return 0;
 
@@ -144,7 +135,7 @@ static void trigger(bool tray, bool webUi, bool wizard)
         trayWidget->showUsingPositioningSettings();
     }
     if (wizard) {
-        showWizard(trayWidget);
+        trayWidget->showWizard();
     }
 }
 
