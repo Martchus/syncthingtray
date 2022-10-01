@@ -6,6 +6,7 @@
 #include <qtforkawesome/renderer.h>
 
 #include <QIcon>
+#include <QObject>
 #include <QSize>
 
 #include <vector>
