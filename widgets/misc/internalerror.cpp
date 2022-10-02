@@ -24,15 +24,21 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
     }
 
     // skip further considerations if connection is remote
-    if (!connection.isLocal()) {
+    if (!connection.syncthingUrl().isEmpty() && !connection.isLocal()) {
         return true;
+    }
+
+    // ignore configuration errors on first launch (to avoid greeting people with an error message)
+    const auto &settings = Settings::values();
+    if ((settings.firstLaunch || settings.fakeFirstLaunch)
+        && (category == SyncthingErrorCategory::OverallConnection && networkError == QNetworkReply::NoError)) {
+        return false;
     }
 
     // consider process/launcher or systemd unit status
     const auto remoteHostClosed(networkError == QNetworkReply::RemoteHostClosedError || networkError == QNetworkReply::ProxyConnectionClosedError);
     // ignore "remote host closed" error if we've just stopped Syncthing ourselves
     const auto *launcher(SyncthingLauncher::mainInstance());
-    const auto &settings = Settings::values();
     if (settings.launcher.considerForReconnect && remoteHostClosed && launcher && launcher->isManuallyStopped()) {
         return false;
     }

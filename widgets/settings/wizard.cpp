@@ -78,6 +78,8 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
 
 Wizard::~Wizard()
 {
+    auto &settings = Settings::values();
+    settings.firstLaunch = settings.fakeFirstLaunch = false;
     if (this == s_instance) {
         s_instance = nullptr;
     }
