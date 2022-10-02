@@ -96,27 +96,13 @@ bool Wizard::changeSettings()
 {
     const auto &detection = setupDetection();
     auto &settings = Settings::values();
-    auto &primary = settings.connection.primary;
 
     switch (mainConfig()) {
     case MainConfiguration::None:
         break;
     case MainConfiguration::CurrentlyRunning: {
         // apply changes to current primary config if necessary
-        const auto url = detection.config.syncthingUrl();
-        const auto apiKey = detection.config.guiApiKey.toUtf8();
-        if (url != primary.syncthingUrl || detection.config.guiUser != primary.userName || detection.config.guiApiKey != primary.apiKey) {
-            if (!primary.syncthingUrl.isEmpty() || !primary.userName.isEmpty() || !primary.password.isEmpty() || !primary.apiKey.isEmpty()) {
-                // backup previous primary config unless fields going to be overridden are empty anyways
-                auto &backup = settings.connection.secondary.emplace_back(primary);
-                backup.label = tr("Backup of %1 (created by wizard)").arg(backup.label);
-            }
-            primary.syncthingUrl = url;
-            primary.userName = detection.config.guiUser;
-            primary.authEnabled = false;
-            primary.password.clear();
-            primary.apiKey = apiKey;
-        }
+        settings.connection.addConfigFromWizard(detection.config);
         break;
     }
     case MainConfiguration::LauncherExternal:

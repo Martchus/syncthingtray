@@ -28,6 +28,7 @@ class QtSettings;
 }
 
 namespace Data {
+struct SyncthingConfig;
 class SyncthingProcess;
 class SyncthingLauncher;
 class SyncthingNotifier;
@@ -44,6 +45,8 @@ namespace Settings {
 struct SYNCTHINGWIDGETS_EXPORT Connection {
     Data::SyncthingConnectionSettings primary;
     std::vector<Data::SyncthingConnectionSettings> secondary;
+
+    void addConfigFromWizard(const Data::SyncthingConfig &config);
 };
 
 struct SYNCTHINGWIDGETS_EXPORT NotifyOn {

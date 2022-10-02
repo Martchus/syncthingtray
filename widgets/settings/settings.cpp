@@ -4,6 +4,7 @@
 #include "../misc/syncthinglauncher.h"
 
 #include <syncthingconnector/qstringhash.h>
+#include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingconnectionsettings.h>
 #include <syncthingconnector/syncthingnotifier.h>
@@ -579,6 +580,33 @@ Systemd::ServiceStatus Systemd::status(SyncthingConnection &connection) const
     const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
     return ServiceStatus{ isRelevant, service->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant, service->isUserScope() };
 }
+
+/*!
+ * \brief Add the specified \a config as primary config possibly backing up the current primary config as secondary config.
+ */
+void Connection::addConfigFromWizard(const Data::SyncthingConfig &config)
+{
+    // skip if settings basically don't change
+    const auto url = config.syncthingUrl();
+    const auto apiKey = config.guiApiKey.toUtf8();
+    if (url == primary.syncthingUrl && config.guiUser == primary.userName && config.guiApiKey == primary.apiKey) {
+        primary.authEnabled = false; // just disable auth to solely rely on the API key
+        return;
+    }
+
+    // backup previous primary config unless fields going to be overridden are empty anyways
+    if (!primary.syncthingUrl.isEmpty() || !primary.userName.isEmpty() || !primary.password.isEmpty() || !primary.apiKey.isEmpty()) {
+        auto &backup = secondary.emplace_back(primary);
+        backup.label = QCoreApplication::translate("Settings::Connection", "Backup of %1 (created by wizard)").arg(backup.label);
+    }
+
+    primary.syncthingUrl = url;
+    primary.userName = config.guiUser;
+    primary.authEnabled = false;
+    primary.password.clear();
+    primary.apiKey = apiKey;
+}
+
 #endif
 
 } // namespace Settings
