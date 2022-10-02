@@ -78,7 +78,7 @@ bool SyncthingLauncher::isLibSyncthingAvailable()
 QString SyncthingLauncher::libSyncthingVersionInfo()
 {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    return QString::fromStdString(LibSyncthing::longSyncthingVersion());
+    return QString::fromStdString(LibSyncthing::longSyncthingVersion()).replace(QStringLiteral(" 1970-01-01 00:00:00 UTC"), QString());
 #else
     return tr("Not built with libsyncthing support.");
 #endif
