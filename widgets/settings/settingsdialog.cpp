@@ -1450,6 +1450,8 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 #endif
     });
     category->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
+    m_launcherSettingsCategory = static_cast<int>(categories.size());
+    m_launcherSettingsPageIndex = 1;
     categories << category;
 
     categories << values().qt.category();
@@ -1488,6 +1490,13 @@ void SettingsDialog::init()
 void SettingsDialog::hideConnectionStatus()
 {
     m_connectionsOptionPage->hideConnectionStatus();
+}
+
+void SettingsDialog::selectLauncherSettings()
+{
+    if (m_launcherSettingsCategory >= 0 && m_launcherSettingsPageIndex >= 0) {
+        selectPage(m_launcherSettingsCategory, m_launcherSettingsPageIndex);
+    }
 }
 
 } // namespace QtGui

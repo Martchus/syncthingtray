@@ -174,6 +174,7 @@ public:
     explicit SettingsDialog(QWidget *parent = nullptr);
     ~SettingsDialog() override;
     void hideConnectionStatus();
+    void selectLauncherSettings();
 
 Q_SIGNALS:
     void wizardRequested();
@@ -182,6 +183,7 @@ private:
     void init();
 
     ConnectionOptionPage *m_connectionsOptionPage;
+    int m_launcherSettingsCategory = -1, m_launcherSettingsPageIndex = -1;
 };
 } // namespace QtGui
 

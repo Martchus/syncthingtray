@@ -360,7 +360,7 @@ QString Wizard::hintAboutSyncthingLog() const
     switch (mainConfig()) {
     case MainConfiguration::LauncherExternal:
     case MainConfiguration::LauncherBuiltIn:
-        res += tr(" It can be accessed within the launcher settings.");
+        res += tr(" It can be accessed within the <a href=\"openLauncherSettings\">launcher settings</a>.");
         break;
     case MainConfiguration::SystemdUserUnit:
     case MainConfiguration::SystemdSystemUnit:
@@ -961,6 +961,8 @@ void FinalWizardPage::handleLinkActivated(const QString &href)
     auto *const wizard = qobject_cast<Wizard *>(this->wizard());
     if (wizard && href == QLatin1String("openSyncthing")) {
         emit wizard->openSyncthingRequested();
+    } else if (wizard && href == QLatin1String("openLauncherSettings")) {
+        emit wizard->openLauncherSettingsRequested();
     } else if (href == QLatin1String("openDocs")) {
         QDesktopServices::openUrl(QStringLiteral("https://docs.syncthing.net/intro/getting-started.html#configuring"));
     }

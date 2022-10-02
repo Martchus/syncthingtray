@@ -268,12 +268,19 @@ void TrayWidget::showSettingsDialog()
     showDialog(dlg, centerWidgetAvoidingOverflow(dlg));
 }
 
+void TrayWidget::showLauncherSettings()
+{
+    showSettingsDialog();
+    settingsDialog()->selectLauncherSettings();
+}
+
 void TrayWidget::showWizard()
 {
     if (!s_wizard) {
         s_wizard = Wizard::instance();
         connect(s_wizard, &Wizard::destroyed, this, [] { s_wizard = nullptr; });
         connect(s_wizard, &Wizard::settingsDialogRequested, this, &TrayWidget::showSettingsDialog);
+        connect(s_wizard, &Wizard::openLauncherSettingsRequested, this, &TrayWidget::showLauncherSettings);
         connect(s_wizard, &Wizard::openSyncthingRequested, this, &TrayWidget::showWebUi);
         connect(s_wizard, &Wizard::settingsChanged, this, &TrayWidget::applySettingsChangesFromWizard);
     }

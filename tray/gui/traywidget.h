@@ -61,6 +61,7 @@ public:
 
 public Q_SLOTS:
     void showSettingsDialog();
+    void showLauncherSettings();
     void showWizard();
     void showAboutDialog();
     void showWebUi();
