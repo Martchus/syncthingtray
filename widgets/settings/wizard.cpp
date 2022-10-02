@@ -406,7 +406,7 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
         startWizardCommand->setDescription(
             tr("Allows to configure Syncthing Tray automatically for the local Syncthing instance and helps you starting Syncthing if wanted."));
         startWizardCommand->setIcon(
-            QIcon::fromTheme(QStringLiteral("tools-wizard"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/tools-wizard.svg"))));
+            QIcon::fromTheme(QStringLiteral("quickwizard"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/tools-wizard.svg"))));
         connect(startWizardCommand, &QCommandLinkButton::clicked, this, [this] { this->wizard()->next(); });
     }
 
