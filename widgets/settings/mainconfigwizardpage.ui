@@ -11,6 +11,13 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLabel" name="invalidConfigLabel">
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QRadioButton" name="cfgCurrentlyRunningRadioButton">
      <property name="text">
       <string>Configure Syncthing Tray for currently running Syncthing instance</string>

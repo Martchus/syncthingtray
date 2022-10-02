@@ -2,6 +2,7 @@
 #include "./setupdetection.h"
 
 #include "../misc/statusinfo.h"
+#include "../misc/syncthinglauncher.h"
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
@@ -17,6 +18,7 @@
 #include <QDesktopServices>
 #include <QDialog>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QFrame>
 #include <QLabel>
 #include <QMessageBox>
@@ -36,6 +38,10 @@
 
 namespace QtGui {
 
+constexpr int syncthingPollTimeout = 60 * 1000;
+constexpr int syncthingPollInterval = 2000;
+constexpr int systemdPollTimeout = 10 * 1000;
+
 Wizard *Wizard::s_instance = nullptr;
 
 Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
@@ -52,6 +58,8 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     auto *const finalPage = new FinalWizardPage(this);
     connect(mainConfigPage, &MainConfigWizardPage::retry, detectionPage, &DetectionWizardPage::refresh);
     connect(mainConfigPage, &MainConfigWizardPage::configurationSelected, this, &Wizard::handleConfigurationSelected);
+    connect(this, &Wizard::configApplied, finalPage, &FinalWizardPage::completeChanged);
+    connect(this, &Wizard::configApplied, finalPage, &FinalWizardPage::showResults);
 #ifdef SETTINGS_WIZARD_AUTOSTART
     auto *const autostartPage = new AutostartWizardPage(this);
     connect(autostartPage, &AutostartWizardPage::autostartSelected, this, &Wizard::handleAutostartSelected);
@@ -97,29 +105,91 @@ bool Wizard::changeSettings()
     const auto &detection = setupDetection();
     auto &settings = Settings::values();
 
+    // clear state/error from possible previous attempt
+    m_configApplied = false;
+    m_configError.clear();
+
+    // set settings for configured "main config"
     switch (mainConfig()) {
     case MainConfiguration::None:
         break;
-    case MainConfiguration::CurrentlyRunning: {
+    case MainConfiguration::CurrentlyRunning:
         // apply changes to current primary config if necessary
         settings.connection.addConfigFromWizard(detection.config);
         break;
-    }
     case MainConfiguration::LauncherExternal:
+        // configure to use external Syncthing executable
+        settings.launcher.useLibSyncthing = false;
+        settings.launcher.syncthingPath = detection.launcherSettings.syncthingPath;
+        // restore args to defaults that are known to work (maybe warn about this if user had custom args configured?)
+        settings.launcher.syncthingArgs = detection.defaultSyncthingArgs;
+        break;
     case MainConfiguration::LauncherBuiltIn:
-        // TODO
+        // configure to use built-in Syncthing executable
+        settings.launcher.useLibSyncthing = true;
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+        settings.launcher.libSyncthing.configDir = QFileInfo(detection.configFilePath).canonicalPath();
+#endif
         break;
     case MainConfiguration::SystemdUserUnit:
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        // configure systemd integration for user unit
+        settings.systemd.syncthingUnit = detection.userService.unitName();
+        settings.systemd.systemUnit = false;
+#endif
+        break;
     case MainConfiguration::SystemdSystemUnit:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        // TODO
+        // configure systemd integration for system unit
+        settings.systemd.syncthingUnit = detection.systemService.unitName();
+        settings.systemd.systemUnit = true;
 #endif
         break;
     }
 
-    // let the tray widget / plasmoid apply the settings
-    // note: The tray widget / plasmoid is expected to call handleConfigurationApplied().
-    emit settingsChanged();
+    // enable/disable integrations accordingly
+    settings.launcher.considerForReconnect = settings.launcher.showButton = settings.launcher.autostartEnabled
+        = (mainConfig() == MainConfiguration::LauncherExternal || mainConfig() == MainConfiguration::LauncherBuiltIn);
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    settings.systemd.considerForReconnect = settings.systemd.showButton = extraConfig() & ExtraConfiguration::SystemdIntegration;
+#endif
+
+    // invoke next step
+    switch (mainConfig()) {
+    case MainConfiguration::None:
+    case MainConfiguration::CurrentlyRunning:
+        // let the tray widget / plasmoid apply the settings immediately
+        // note: The tray widget / plasmoid is expected to call handleConfigurationApplied().
+        emit settingsChanged();
+        return true;
+    case MainConfiguration::LauncherExternal:
+    case MainConfiguration::LauncherBuiltIn:
+        // launch Syncthing via launcher (before trying to connect to it)
+        if (auto *const launcher = Data::SyncthingLauncher::mainInstance()) {
+            launcher->launch(settings.launcher);
+        } else {
+            handleConfigurationApplied(tr("The internal launcher has not been initialized."));
+            return true;
+        }
+        break;
+    case MainConfiguration::SystemdUserUnit:
+    case MainConfiguration::SystemdSystemUnit:
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        if (auto *const service = Data::SyncthingService::mainInstance()) {
+            settings.systemd.setupService(*service);
+            service->start();
+            service->enable();
+        } else {
+            handleConfigurationApplied(tr("The service handler has not been initialized."));
+            return true;
+        }
+#endif
+        break;
+    }
+
+    // poll until Syncthing config with API key has been created
+    m_elapsedPollTime = 0;
+    pollForSyncthingConfig();
     return true;
 }
 
@@ -227,10 +297,86 @@ void Wizard::handleAutostartSelected(bool autostartEnabled)
     m_autoStart = autostartEnabled;
 }
 
+void Wizard::pollForSyncthingConfig()
+{
+    // check if Syncthing is still running (if not that's an error and we can stop polling)
+    switch (mainConfig()) {
+    case MainConfiguration::LauncherExternal:
+    case MainConfiguration::LauncherBuiltIn:
+        // launch Syncthing via launcher (before trying to connect to it)
+        if (auto *const launcher = Data::SyncthingLauncher::mainInstance()) {
+            if (!launcher->isRunning()) {
+                handleConfigurationApplied(tr("The Syncthing process exited prematurely. ") + hintAboutSyncthingLog());
+                return;
+            }
+        }
+        break;
+    case MainConfiguration::SystemdUserUnit:
+    case MainConfiguration::SystemdSystemUnit:
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        if (m_elapsedPollTime < systemdPollTimeout) {
+            break; // don't consider the systemd unit status immediately; also give it a short time to adjust
+        }
+        if (auto *const service = Data::SyncthingService::mainInstance()) {
+            if (!service->isRunning()) {
+                handleConfigurationApplied(tr("The Syncthing service stopped prematurely. ") + hintAboutSyncthingLog());
+                return;
+            }
+        }
+#endif
+        break;
+    default:;
+    }
+
+    // check for config and if present let the tray widget / plasmoid apply the settings
+    // note: The tray widget / plasmoid is expected to call handleConfigurationApplied().
+    auto &detection = setupDetection();
+    detection.determinePaths();
+    if (!detection.configFilePath.isEmpty()) {
+        detection.restoreConfig();
+        if (detection.hasConfig()) {
+            Settings::values().connection.addConfigFromWizard(detection.config);
+            emit settingsChanged();
+            return;
+        }
+    }
+
+    // keep polling
+    if (m_elapsedPollTime > syncthingPollTimeout) {
+        handleConfigurationApplied(tr("Ran into timeout while waiting for Syncthing to create config file."
+                                      "Maybe Syncthing created its config file under an unexpected location. ")
+            + hintAboutSyncthingLog());
+        return;
+    }
+    m_elapsedPollTime += syncthingPollInterval;
+    QTimer::singleShot(syncthingPollInterval, Qt::VeryCoarseTimer, this, &Wizard::pollForSyncthingConfig);
+}
+
+QString Wizard::hintAboutSyncthingLog() const
+{
+    auto res = tr("Checkout Syncthing's log for details.");
+    switch (mainConfig()) {
+    case MainConfiguration::LauncherExternal:
+    case MainConfiguration::LauncherBuiltIn:
+        res += tr(" It can be accessed within the launcher settings.");
+        break;
+    case MainConfiguration::SystemdUserUnit:
+    case MainConfiguration::SystemdSystemUnit:
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        res += tr(" It is normally written to the system journal (and can be accessed via e.g. journalctl).");
+#endif
+        break;
+    default:;
+    }
+    return res;
+}
+
 void Wizard::handleConfigurationApplied(const QString &configError)
 {
     m_configApplied = true;
-    m_configError = configError;
+    if (m_configError.isEmpty()) {
+        m_configError = configError;
+    }
     emit configApplied();
 }
 
@@ -456,6 +602,7 @@ void MainConfigWizardPage::initializePage()
         setSubTitle(tr("Looks like Syncthing is already running and Syncthing Tray can be configured accordingly automatically."));
         m_ui->cfgCurrentlyRunningRadioButton->show();
         m_ui->cfgCurrentlyRunningRadioButton->setChecked(true);
+        m_ui->invalidConfigLabel->hide();
     } else {
         // propose options to launch Syncthing if it is not running
         auto launchOptions = QStringList();
@@ -467,9 +614,11 @@ void MainConfigWizardPage::initializePage()
         const auto canLaunchViaSystemUnit = detection.systemService.canEnableOrStart();
         if (canLaunchViaUserUnit) {
             m_ui->cfgSystemdUserUnitRadioButton->show();
+            m_ui->cfgSystemdUserUnitRadioButton->setText(m_ui->cfgSystemdUserUnitRadioButton->text().arg(detection.userService.unitName()));
         }
         if (canLaunchViaSystemUnit) {
             m_ui->cfgSystemdSystemUnitRadioButton->show();
+            m_ui->cfgSystemdSystemUnitRadioButton->setText(m_ui->cfgSystemdSystemUnitRadioButton->text().arg(detection.systemService.unitName()));
         }
         if (canLaunchViaUserUnit) {
             m_ui->cfgSystemdUserUnitRadioButton->setChecked(true);
@@ -484,17 +633,19 @@ void MainConfigWizardPage::initializePage()
         // enable options to launch Syncthing via built-in launcher if Syncthing executable found or libsyncthing available
         const auto successfulTestLaunch = detection.launcherExitCode.has_value() && detection.launcherExitStatus.value() == QProcess::NormalExit;
         if (successfulTestLaunch || Data::SyncthingLauncher::isLibSyncthingAvailable()) {
-            launchOptions << tr("Syncthing Tray");
+            launchOptions << tr("Syncthing Tray's launcher");
             if (successfulTestLaunch) {
                 m_ui->cfgLauncherExternalRadioButton->show();
             }
             if (Data::SyncthingLauncher::isLibSyncthingAvailable()) {
                 m_ui->cfgLauncherBuiltInRadioButton->show();
             }
-            if (successfulTestLaunch) {
-                m_ui->cfgLauncherExternalRadioButton->setChecked(true);
-            } else {
-                m_ui->cfgLauncherBuiltInRadioButton->setChecked(true);
+            if (launchOptions.isEmpty()) {
+                if (successfulTestLaunch) {
+                    m_ui->cfgLauncherExternalRadioButton->setChecked(true);
+                } else {
+                    m_ui->cfgLauncherBuiltInRadioButton->setChecked(true);
+                }
             }
         }
 
@@ -502,6 +653,15 @@ void MainConfigWizardPage::initializePage()
             setSubTitle(tr("Looks like Syncthing is not running yet. You can launch it via %1.").arg(launchOptions.join(tr(" and "))));
         } else {
             setSubTitle(tr("Looks like Syncthing is not running yet and needs to be installed before Syncthing Tray can be configured."));
+        }
+
+        if (detection.configFilePath.isEmpty() || detection.configOk) {
+            m_ui->invalidConfigLabel->hide();
+        } else {
+            m_ui->invalidConfigLabel->setText(tr("<b>The Syncthing config could be located under \"%1\" but it seems invalid/incomplete.</b> Hence "
+                                                 "Syncthing is assumed to be not running.")
+                                                  .arg(detection.configFilePath));
+            m_ui->invalidConfigLabel->show();
         }
     }
 
@@ -689,12 +849,12 @@ void ApplyWizardPage::initializePage()
         mainConfig = tr("Start Syncthing via Syncthing Tray's launcher");
         extraInfo = wizard->mainConfig() == MainConfiguration::LauncherExternal
             ? tr("executable from PATH as separate process, \"%1\"").arg(QString::fromLocal8Bit(detection.launcherOutput.trimmed()))
-            : tr("built-in Syncthing library, \"%1\"").arg(Data::SyncthingLauncher::isLibSyncthingAvailable());
+            : tr("built-in Syncthing library, \"%1\"").arg(Data::SyncthingLauncher::libSyncthingVersionInfo());
         break;
     case MainConfiguration::SystemdUserUnit:
     case MainConfiguration::SystemdSystemUnit:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        mainConfig = tr("Start Syncthing by enabling and starting its systemd unit ()");
+        mainConfig = tr("Start Syncthing by enabling and starting its systemd unit");
         extraInfo = wizard->mainConfig() == MainConfiguration::SystemdUserUnit
             ? tr("Using user unit \"%1\"").arg(detection.userService.unitName())
             : tr("Using system unit \"%1\"").arg(detection.systemService.unitName());
@@ -737,8 +897,6 @@ FinalWizardPage::FinalWizardPage(QWidget *parent)
     m_label->setWordWrap(true);
     m_progressBar->setMaximum(0);
 
-    auto *const wizard = qobject_cast<Wizard *>(this->wizard());
-    connect(wizard, &Wizard::configApplied, this, &QWizardPage::completeChanged);
     connect(m_label, &QLabel::linkActivated, this, &FinalWizardPage::handleLinkActivated);
 }
 

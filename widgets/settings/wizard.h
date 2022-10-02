@@ -66,8 +66,11 @@ private Q_SLOTS:
     void showDetailsFromSetupDetection();
     void handleConfigurationSelected(MainConfiguration mainConfig, ExtraConfiguration extraConfig);
     void handleAutostartSelected(bool autostartEnabled);
+    void pollForSyncthingConfig();
 
 private:
+    QString hintAboutSyncthingLog() const;
+
     static Wizard *s_instance;
     std::unique_ptr<SetupDetection> m_setupDetection;
     MainConfiguration m_mainConfig = MainConfiguration::None;
@@ -75,6 +78,7 @@ private:
     bool m_autoStart = false;
     bool m_configApplied = false;
     QString m_configError;
+    int m_elapsedPollTime;
 };
 
 inline MainConfiguration Wizard::mainConfig() const

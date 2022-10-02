@@ -21,6 +21,7 @@ SetupDetection::SetupDetection(QObject *parent)
 #endif
 
     // configure launcher to test invocation of "syncthing --version" capturing output
+    defaultSyncthingArgs = launcherSettings.syncthingArgs;
     launcherSettings.syncthingArgs = QStringLiteral("--version");
     launcher.setEmittingOutput(true);
 

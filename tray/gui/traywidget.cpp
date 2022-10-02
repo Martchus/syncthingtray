@@ -479,9 +479,7 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
         break;
     default:;
     }
-    if (m_applyingSettingsForWizard) {
-        concludeWizard();
-    }
+    concludeWizard();
 }
 
 void TrayWidget::applySettings(const QString &connectionConfig)

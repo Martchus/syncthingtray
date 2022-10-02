@@ -57,6 +57,7 @@ public:
     Data::SyncthingService systemService = Data::SyncthingService(Data::SystemdScope::System);
 #endif
     Settings::Launcher launcherSettings;
+    QString defaultSyncthingArgs;
     Data::SyncthingLauncher launcher;
     std::optional<int> launcherExitCode;
     std::optional<QProcess::ExitStatus> launcherExitStatus;
