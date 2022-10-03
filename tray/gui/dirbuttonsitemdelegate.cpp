@@ -55,7 +55,7 @@ void DirButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         const int buttonY = option.rect.y() + centerObj(option.rect.height(), 16);
         const bool dirPaused = index.data(SyncthingDirectoryModel::DirectoryPaused).toBool();
         const auto iconColor = QGuiApplication::palette().color(QPalette::Text);
-        auto &forkAwesomeRenderer = IconManager::instance().forkAwesomeRenderer();
+        auto &forkAwesomeRenderer = QtForkAwesome::Renderer::global();
         if (!dirPaused) {
             forkAwesomeRenderer.render(QtForkAwesome::Icon::Refresh, painter, QRect(option.rect.right() - 52, buttonY, 16, 16), iconColor);
         }

@@ -461,11 +461,13 @@ AppearanceOptionPage::~AppearanceOptionPage()
 
 bool AppearanceOptionPage::apply()
 {
-    auto &settings = values().appearance;
+    auto &v = values();
+    auto &settings = v.appearance;
     settings.trayMenuSize.setWidth(ui()->widthSpinBox->value());
     settings.trayMenuSize.setHeight(ui()->heightSpinBox->value());
     settings.showTraffic = ui()->showTrafficCheckBox->isChecked();
     settings.showTabTexts = ui()->showTabTextsCheckBox->isChecked();
+    v.icons.preferIconsFromTheme = ui()->preferIconsFromThemeCheckBox->isChecked();
     int style;
     switch (ui()->frameShapeComboBox->currentIndex()) {
     case 0:
@@ -500,11 +502,13 @@ bool AppearanceOptionPage::apply()
 
 void AppearanceOptionPage::reset()
 {
-    const auto &settings = values().appearance;
+    const auto &v = values();
+    const auto &settings = v.appearance;
     ui()->widthSpinBox->setValue(settings.trayMenuSize.width());
     ui()->heightSpinBox->setValue(settings.trayMenuSize.height());
     ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
     ui()->showTabTextsCheckBox->setChecked(settings.showTabTexts);
+    ui()->preferIconsFromThemeCheckBox->setChecked(v.icons.preferIconsFromTheme);
     int index;
     switch (settings.frameStyle & QFrame::Shape_Mask) {
     case QFrame::NoFrame:

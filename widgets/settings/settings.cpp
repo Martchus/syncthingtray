@@ -345,6 +345,7 @@ void restore()
     v.icons.status.renderSize = settings.value(QStringLiteral("statusIconsRenderSize"), v.icons.status.renderSize).toSize();
     v.icons.tray.renderSize = settings.value(QStringLiteral("trayIconsRenderSize"), v.icons.tray.renderSize).toSize();
     v.icons.distinguishTrayIcons = settings.value(QStringLiteral("distinguishTrayIcons")).toBool();
+    v.icons.preferIconsFromTheme = settings.value(QStringLiteral("preferIconsFromTheme")).toBool();
     settings.beginGroup(QStringLiteral("positioning"));
     auto &positioning = appearance.positioning;
     positioning.useCursorPosition = settings.value(QStringLiteral("useCursorPos"), positioning.useCursorPosition).toBool();
@@ -456,6 +457,7 @@ void save()
     settings.setValue(QStringLiteral("statusIconsRenderSize"), v.icons.status.renderSize);
     settings.setValue(QStringLiteral("trayIconsRenderSize"), v.icons.tray.renderSize);
     settings.setValue(QStringLiteral("distinguishTrayIcons"), v.icons.distinguishTrayIcons);
+    settings.setValue(QStringLiteral("preferIconsFromTheme"), v.icons.preferIconsFromTheme);
     settings.beginGroup(QStringLiteral("positioning"));
     settings.setValue(QStringLiteral("useCursorPos"), appearance.positioning.useCursorPosition);
     settings.setValue(QStringLiteral("assumedIconPos"), appearance.positioning.assumedIconPosition);

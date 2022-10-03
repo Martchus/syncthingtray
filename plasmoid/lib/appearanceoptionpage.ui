@@ -114,7 +114,7 @@
         </item>
        </layout>
       </item>
-      <item row="3" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="passiveLabel">
         <property name="text">
          <string>States to enable passive mode</string>
@@ -124,7 +124,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="5" column="1">
        <widget class="QListView" name="passiveListView">
         <property name="selectionMode">
          <enum>QAbstractItemView::NoSelection</enum>
@@ -135,7 +135,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="optionalGuiElementsLabel">
         <property name="text">
          <string>Optional GUI elements</string>
         </property>
@@ -145,6 +145,27 @@
        <widget class="QCheckBox" name="showTabTextsCheckBox">
         <property name="text">
          <string>Show tab texts</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <layout class="QVBoxLayout" name="iconsVerticalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QCheckBox" name="preferIconsFromThemeCheckBox">
+          <property name="text">
+           <string>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="iconsLabel">
+        <property name="text">
+         <string>Icons</string>
         </property>
        </widget>
       </item>

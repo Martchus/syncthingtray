@@ -48,7 +48,7 @@ find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector(VISIBILITY PUBLIC)
 
 # find qtforkawesome
-find_package(${PACKAGE_NAMESPACE_PREFIX}qtforkawesome${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.0.1 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}qtforkawesome${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.1.0 REQUIRED)
 use_qt_fork_awesome(VISIBILITY PUBLIC)
 
 # link also explicitly against the following Qt modules

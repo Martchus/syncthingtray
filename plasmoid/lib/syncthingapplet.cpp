@@ -137,25 +137,30 @@ void SyncthingApplet::init()
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &SyncthingApplet::handleThemeChanged);
 
     // restore settings
+    auto &settings = Settings::values();
     Settings::restore();
 
     // initialize systemd service support
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     SyncthingService::setMainInstance(&m_service);
-    Settings::values().systemd.setupService(m_service);
+    settings.systemd.setupService(m_service);
     connect(&m_service, &SyncthingService::systemdAvailableChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
     connect(&m_service, &SyncthingService::stateChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
     connect(&m_service, &SyncthingService::errorOccurred, this, &SyncthingApplet::handleSystemdServiceError);
 #endif
 
     // load primary connection config
-    m_currentConnectionConfig = config().readEntry<int>("selectedConfig", 0);
+    const auto &c = config();
+    m_currentConnectionConfig = c.readEntry<int>("selectedConfig", 0);
 
     // apply settings and connect according to settings
     const auto palette = paletteFromTheme(m_theme);
     setBrightColors(isPaletteDark(palette));
     IconManager::instance().setPalette(palette);
     handleSettingsChanged();
+    if (c.readEntry<>("preferIconsFromTheme", false)) {
+        Data::setForkAwesomeThemeOverrides();
+    }
 
     m_initialized = true;
 }
@@ -167,7 +172,7 @@ void SyncthingApplet::initEngine(QObject *object)
         return;
     }
     const auto color = m_theme.color(Plasma::Theme::TextColor, Plasma::Theme::NormalColorGroup);
-    m_imageProvider = new QtForkAwesome::QuickImageProvider(m_iconManager.forkAwesomeRenderer(), color);
+    m_imageProvider = new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global(), color);
     connect(engine, &QObject::destroyed, this, &SyncthingApplet::handleImageProviderDestroyed); // engine has ownership over image provider
     engine->addImageProvider(QStringLiteral("fa"), m_imageProvider);
 }
@@ -305,7 +310,7 @@ QIcon SyncthingApplet::loadForkAwesomeIcon(const QString &name, int size) const
 {
     const auto icon = QtForkAwesome::iconFromId(name);
     return QtForkAwesome::isIconValid(icon)
-        ? QIcon(IconManager::instance().forkAwesomeRenderer().pixmap(icon, QSize(size, size), QGuiApplication::palette().color(QPalette::WindowText)))
+        ? QIcon(QtForkAwesome::Renderer::global().pixmap(icon, QSize(size, size), QGuiApplication::palette().color(QPalette::WindowText)))
         : QIcon();
 }
 

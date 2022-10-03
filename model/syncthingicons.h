@@ -221,6 +221,8 @@ inline const ForkAwesomeIcons &commonForkAwesomeIcons()
 LIB_SYNCTHING_MODEL_EXPORT QString aboutDialogAttribution();
 LIB_SYNCTHING_MODEL_EXPORT QImage aboutDialogImage();
 
+LIB_SYNCTHING_MODEL_EXPORT void setForkAwesomeThemeOverrides();
+
 } // namespace Data
 
 #endif // DATA_SYNCTHINGICONS_H

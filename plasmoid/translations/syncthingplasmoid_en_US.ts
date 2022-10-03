@@ -184,6 +184,16 @@
         <source>Show tab texts</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="159"/>
+        <source>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="168"/>
+        <source>Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Plasmoid::Settings</name>
@@ -196,17 +206,17 @@
 <context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="126"/>
+        <location filename="../lib/settingsdialog.cpp" line="128"/>
         <source>Plasmoid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="134"/>
+        <location filename="../lib/settingsdialog.cpp" line="136"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="140"/>
+        <location filename="../lib/settingsdialog.cpp" line="142"/>
         <source>Extras</source>
         <translation type="unfinished"></translation>
     </message>
@@ -227,17 +237,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="380"/>
+        <location filename="../lib/syncthingapplet.cpp" line="385"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="392"/>
+        <location filename="../lib/syncthingapplet.cpp" line="397"/>
         <source>New notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="550"/>
+        <location filename="../lib/syncthingapplet.cpp" line="555"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>

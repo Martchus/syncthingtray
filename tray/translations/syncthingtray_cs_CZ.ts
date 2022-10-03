@@ -174,8 +174,8 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="71"/>
-        <location filename="../gui/traywidget.cpp" line="834"/>
-        <location filename="../gui/traywidget.cpp" line="876"/>
+        <location filename="../gui/traywidget.cpp" line="833"/>
+        <location filename="../gui/traywidget.cpp" line="875"/>
         <source>Start</source>
         <translation>Spustit</translation>
     </message>
@@ -382,18 +382,18 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="830"/>
-        <location filename="../gui/traywidget.cpp" line="870"/>
+        <location filename="../gui/traywidget.cpp" line="829"/>
+        <location filename="../gui/traywidget.cpp" line="869"/>
         <source>Stop</source>
         <translation>Zastavit</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="831"/>
+        <location filename="../gui/traywidget.cpp" line="830"/>
         <source>Stop Syncthing instance launched via tray icon</source>
         <translation>Zastavit instanci Syncthing spuštěnou prostřednictvím ikony v oznamovací oblasti</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="835"/>
+        <location filename="../gui/traywidget.cpp" line="834"/>
         <source>Start Syncthing with the built-in launcher configured in the settings</source>
         <translation>Spustit Syncthing s vestavěným spouštěčem nastaveným v nastaveních</translation>
     </message>
@@ -401,12 +401,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="58"/>
+        <location filename="../application/main.cpp" line="60"/>
         <source>Unable to </source>
         <translation>Nedaří se </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="91"/>
+        <location filename="../application/main.cpp" line="93"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>Oznamovací oblast systémového panelu je (pro tuto chvíli) nedostupná. Je možné otevřít nabídku oznamovací oblasti jako běžné okno pomocí příznaku „--windowed“. Dále je možné spustit s volbou „--wait“ a čekat na to, až bude oznamovací oblast k dispozici (namísto zobrazení této zprávy).</translation>
     </message>
@@ -419,7 +419,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="vanished">Poznamenejme, že dialog nastavení umožňuje importovat URL adresu, přihlašovací údaje a klíč k API z místního nastavení Syncthing.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="118"/>
+        <location filename="../application/main.cpp" line="120"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Knihovny Qt byly sestaveny bez podpory pro ikonu v oznamovací oblasti. Měli byste otevřít nabídku pro oznamovací oblast jako běžné okno pomocí příznaku -w.</translation>
     </message>

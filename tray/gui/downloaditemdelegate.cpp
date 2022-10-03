@@ -83,7 +83,7 @@ void DownloadItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if (!index.parent().isValid()) {
         buttonY += centerObj(progressBarOption.rect.height(), 16);
     }
-    IconManager::instance().forkAwesomeRenderer().render(
+    QtForkAwesome::Renderer::global().render(
         QtForkAwesome::Icon::Folder, painter, QRect(option.rect.right() - 16, buttonY, 16, 16), QGuiApplication::palette().color(QPalette::Text));
 
     // draw file icon

@@ -219,7 +219,7 @@
      </property>
     </widget>
    </item>
-   <item row="9" column="0">
+   <item row="11" column="0">
     <widget class="QLabel" name="positioningLabel">
      <property name="text">
       <string>Positioning</string>
@@ -229,7 +229,7 @@
      </property>
     </widget>
    </item>
-   <item row="9" column="1">
+   <item row="11" column="1">
     <layout class="QVBoxLayout" name="positioningVerticalLayout">
      <item>
       <widget class="QCheckBox" name="useCursorPosCheckBox">
@@ -337,6 +337,27 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="9" column="1">
+    <layout class="QVBoxLayout" name="iconsVerticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QCheckBox" name="preferIconsFromThemeCheckBox">
+       <property name="text">
+        <string>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="iconsLabel">
+     <property name="text">
+      <string>Icons</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

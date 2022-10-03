@@ -6,6 +6,8 @@
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #include <syncthingwidgets/settings/settings.h>
 
+#include <syncthingmodel/syncthingicons.h>
+
 #include <syncthingconnector/syncthingprocess.h>
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include <syncthingconnector/syncthingservice.h>
@@ -215,13 +217,14 @@ int runApplication(int argc, const char *const *argv)
         networkAccessManager().setParent(&singleInstance);
         QObject::connect(&singleInstance, &SingleInstance::newInstance, &runApplication);
         Settings::restore();
-        Settings::values().qt.apply();
+        auto &settings = Settings::values();
+        settings.qt.apply();
         qtConfigArgs.applySettings(true);
         if (assumeFirstLaunchArg.isPresent()) {
-            Settings::values().fakeFirstLaunch = true;
+            settings.fakeFirstLaunch = true;
         }
         if (wipArg.isPresent()) {
-            Settings::values().enableWipFeatures = true;
+            settings.enableWipFeatures = true;
         }
         LOAD_QT_TRANSLATIONS;
         SyncthingLauncher launcher;
@@ -229,9 +232,12 @@ int runApplication(int argc, const char *const *argv)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         SyncthingService service;
         SyncthingService::setMainInstance(&service);
-        Settings::values().systemd.setupService(service);
+        settings.systemd.setupService(service);
         QObject::connect(&service, &SyncthingService::errorOccurred, &handleSystemdServiceError);
 #endif
+        if (settings.icons.preferIconsFromTheme) {
+            Data::setForkAwesomeThemeOverrides();
+        }
 
         // init Syncthing Tray and immediately shutdown on failure
         if (const auto res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg)) {

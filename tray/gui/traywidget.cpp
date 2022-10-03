@@ -736,9 +736,8 @@ void TrayWidget::updateTraffic()
         const auto colorActive = palette.color(QPalette::WindowText);
         const auto colorInactive = QColor((colorActive.red() + colorBackground.red()) / 2, (colorActive.green() + colorBackground.green()) / 2,
             (colorActive.blue() + colorBackground.blue()) / 2);
-        const auto renderIcon = [&size](QtForkAwesome::Icon icon, const QColor &color) {
-            return IconManager::instance().forkAwesomeRenderer().pixmap(icon, size, color);
-        };
+        const auto renderIcon
+            = [&size](QtForkAwesome::Icon icon, const QColor &color) { return QtForkAwesome::Renderer::global().pixmap(icon, size, color); };
         struct {
             QPixmap uploadIconActive;
             QPixmap uploadIconInactive;

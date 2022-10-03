@@ -235,6 +235,16 @@
         <translation>Text-Beschriftung der Tab-Buttons</translation>
     </message>
     <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="159"/>
+        <source>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="168"/>
+        <source>Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Colors</source>
         <translation type="vanished">Farben</translation>
     </message>
@@ -254,17 +264,17 @@
 <context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="126"/>
+        <location filename="../lib/settingsdialog.cpp" line="128"/>
         <source>Plasmoid</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="134"/>
+        <location filename="../lib/settingsdialog.cpp" line="136"/>
         <source>Web view</source>
         <translation>Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="140"/>
+        <location filename="../lib/settingsdialog.cpp" line="142"/>
         <source>Extras</source>
         <translation></translation>
     </message>
@@ -285,17 +295,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="380"/>
+        <location filename="../lib/syncthingapplet.cpp" line="385"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="392"/>
+        <location filename="../lib/syncthingapplet.cpp" line="397"/>
         <source>New notifications</source>
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="550"/>
+        <location filename="../lib/syncthingapplet.cpp" line="555"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
     </message>
