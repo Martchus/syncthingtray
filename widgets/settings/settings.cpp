@@ -580,6 +580,7 @@ Systemd::ServiceStatus Systemd::status(SyncthingConnection &connection) const
     const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
     return ServiceStatus{ isRelevant, service->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant, service->isUserScope() };
 }
+#endif
 
 /*!
  * \brief Add the specified \a config as primary config possibly backing up the current primary config as secondary config.
@@ -606,7 +607,5 @@ void Connection::addConfigFromWizard(const Data::SyncthingConfig &config)
     primary.password.clear();
     primary.apiKey = apiKey;
 }
-
-#endif
 
 } // namespace Settings
