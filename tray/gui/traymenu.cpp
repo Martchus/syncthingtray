@@ -56,5 +56,27 @@ void TrayMenu::showUsingPositioningSettings()
     auto pos = Settings::values().appearance.positioning.positionToUse();
     moveInside(pos, size(), availableScreenGeometryAtPoint(pos));
     popup(pos);
+    activateWindow();
 }
+
+void TrayMenu::setPinned(bool pinned)
+{
+    setWindowFlags(Qt::FramelessWindowHint | ((m_pinned = pinned) ? Qt::Window : Qt::Popup));
+    showUsingPositioningSettings();
+}
+
+void TrayMenu::mousePressEvent(QMouseEvent *event)
+{
+    if (!m_pinned) {
+        QMenu::mousePressEvent(event);
+    }
+}
+
+void TrayMenu::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (!m_pinned) {
+        QMenu::mouseReleaseEvent(event);
+    }
+}
+
 } // namespace QtGui

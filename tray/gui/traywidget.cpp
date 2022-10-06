@@ -220,6 +220,11 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     if (const auto *const launcher = SyncthingLauncher::mainInstance()) {
         connect(launcher, &SyncthingLauncher::runningChanged, this, &TrayWidget::handleLauncherStatusChanged);
     }
+    if (m_menu && Settings::values().enableWipFeatures) {
+        connect(m_ui->pinPushButton, &QPushButton::toggled, m_menu, &TrayMenu::setPinned);
+    } else {
+        m_ui->pinPushButton->hide();
+    }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     if (const auto *const service = SyncthingService::mainInstance()) {
         connect(service, &SyncthingService::systemdAvailableChanged, this, &TrayWidget::handleSystemdStatusChanged);
@@ -591,6 +596,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
             }
         }
     }
+    m_ui->pinPushButton->setChecked(settings.appearance.pinned);
 
     // update status icon and text of tray icon because reconnect interval might have changed
     if (m_menu && m_menu->icon()) {
@@ -927,7 +933,7 @@ void TrayWidget::concludeWizard(const QString &errorMessage)
 
 void TrayWidget::showDialog(QWidget *dlg, bool maximized)
 {
-    if (m_menu) {
+    if (m_menu && !m_menu->isPinned()) {
         m_menu->close();
     }
     if (maximized) {

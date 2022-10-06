@@ -2,6 +2,19 @@
 <ui version="4.0">
  <class>QtGui::TrayWidget</class>
  <widget class="QWidget" name="QtGui::TrayWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>370</width>
+    <height>302</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Noto Sans</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Syncthing Tray</string>
   </property>
@@ -58,7 +71,8 @@
          <string>Connect</string>
         </property>
         <property name="icon">
-         <iconset>refresh.fa</iconset>
+         <iconset>
+          <normaloff>refresh.fa</normaloff>refresh.fa</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -71,7 +85,8 @@
          <string>Start</string>
         </property>
         <property name="icon">
-         <iconset>play.fa</iconset>
+         <iconset>
+          <normaloff>play.fa</normaloff>play.fa</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -97,7 +112,8 @@
          <string>About</string>
         </property>
         <property name="icon">
-         <iconset>info.fa</iconset>
+         <iconset>
+          <normaloff>info.fa</normaloff>info.fa</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -110,7 +126,8 @@
          <string>Settings</string>
         </property>
         <property name="icon">
-         <iconset>cog.fa</iconset>
+         <iconset>
+          <normaloff>cog.fa</normaloff>cog.fa</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -122,11 +139,12 @@
         <property name="toolTip">
          <string>Open Syncthing</string>
         </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>syncthing.fa</normaloff>syncthing.fa</iconset>
+        </property>
         <property name="flat">
          <bool>true</bool>
-        </property>
-        <property name="icon">
-         <iconset>syncthing.fa</iconset>
         </property>
        </widget>
       </item>
@@ -141,7 +159,8 @@
            </sizepolicy>
           </property>
           <property name="icon">
-           <iconset>plug.fa</iconset>
+           <iconset>
+            <normaloff>plug.fa</normaloff>plug.fa</iconset>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -149,6 +168,29 @@
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pinPushButton">
+        <property name="toolTip">
+         <string>Pin window</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset theme="window-pin" resource="../resources/syncthingtrayicons.qrc">
+          <normaloff>:/icons/hicolor/scalable/actions/window-pin.svg</normaloff>:/icons/hicolor/scalable/actions/window-pin.svg</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -342,7 +384,7 @@
         </property>
         <property name="font">
          <font>
-          <weight>75</weight>
+          <family>Noto Sans</family>
           <bold>true</bold>
          </font>
         </property>
@@ -378,7 +420,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
      </property>
      <widget class="QWidget" name="dirsTab">
       <attribute name="icon">
-       <iconset>folder.fa</iconset>
+       <iconset>
+        <normaloff>folder.fa</normaloff>folder.fa</iconset>
       </attribute>
       <attribute name="title">
        <string>Directories</string>
@@ -410,7 +453,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
      </widget>
      <widget class="QWidget" name="devsTab">
       <attribute name="icon">
-       <iconset>sitemap.fa</iconset>
+       <iconset>
+        <normaloff>sitemap.fa</normaloff>sitemap.fa</iconset>
       </attribute>
       <attribute name="title">
        <string>Devices</string>
@@ -442,7 +486,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
      </widget>
      <widget class="QWidget" name="downloadsTab">
       <attribute name="icon">
-       <iconset>download.fa</iconset>
+       <iconset>
+        <normaloff>download.fa</normaloff>download.fa</iconset>
       </attribute>
       <attribute name="title">
        <string>Downloads</string>
@@ -470,7 +515,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
      </widget>
      <widget class="QWidget" name="recentChangesTab">
       <attribute name="icon">
-       <iconset>history.fa</iconset>
+       <iconset>
+        <normaloff>history.fa</normaloff>history.fa</iconset>
       </attribute>
       <attribute name="title">
        <string>Recent changes</string>

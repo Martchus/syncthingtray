@@ -92,7 +92,8 @@ set(REQUIRED_ICONS
     text-x-generic
     tools-wizard
     view-refresh
-    window-close)
+    window-close
+    window-pin)
 
 # find c++utilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.19.0 REQUIRED)
