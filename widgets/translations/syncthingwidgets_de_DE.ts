@@ -2004,7 +2004,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="603"/>
+        <location filename="../settings/settings.cpp" line="605"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation type="unfinished"></translation>
     </message>
