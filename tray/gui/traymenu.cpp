@@ -63,7 +63,8 @@ void TrayMenu::showUsingPositioningSettings()
 void TrayMenu::setPinned(bool pinned)
 {
     setWindowFlags(Qt::FramelessWindowHint | ((m_pinned = pinned) ? Qt::Window : Qt::Popup));
-    showUsingPositioningSettings();
+    show();
+    activateWindow();
 }
 
 void TrayMenu::mousePressEvent(QMouseEvent *event)
