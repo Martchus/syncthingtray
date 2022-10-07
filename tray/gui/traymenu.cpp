@@ -16,6 +16,7 @@ namespace QtGui {
 TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     : QMenu(parent)
     , m_trayIcon(trayIcon)
+    , m_pinned(false)
 {
     setObjectName(QStringLiteral("QtGui::TrayMenu"));
     auto *const menuLayout = new QHBoxLayout;

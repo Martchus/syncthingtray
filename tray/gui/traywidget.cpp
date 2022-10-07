@@ -221,7 +221,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
         connect(launcher, &SyncthingLauncher::runningChanged, this, &TrayWidget::handleLauncherStatusChanged);
     }
     if (m_menu && Settings::values().enableWipFeatures) {
-        connect(m_ui->pinPushButton, &QPushButton::toggled, m_menu, &TrayMenu::setPinned);
+        connect(m_ui->pinPushButton, &QPushButton::toggled, this, &TrayWidget::handlePinnedChanged);
     } else {
         m_ui->pinPushButton->hide();
     }
@@ -328,6 +328,14 @@ void TrayWidget::applySettingsChangesFromWizard()
         } else {
             instance->applySettings();
         }
+    }
+}
+
+void TrayWidget::handlePinnedChanged(bool pinned)
+{
+    Settings::values().appearance.pinned = pinned;
+    if (m_menu) {
+        m_menu->setPinned(pinned);
     }
 }
 
