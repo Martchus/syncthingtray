@@ -42,6 +42,7 @@ include(QtConfig)
 include(WindowsResources)
 include(LibraryTarget)
 include(ConfigHeader)
+include(AppUtilities)
 
 # export some variable for further use in the overall plasmoid build script
 set(META_TARGET_NAME
@@ -57,3 +58,6 @@ set(META_PROJECT_LICENSE
 # what ever this does, it is done
 kcoreaddons_desktop_to_json("${META_TARGET_NAME}" "${PLASMOID_CONFIG_TARGET_FILE}" DESKTOP_TO_JSON_OUTPUT_DIR
                             "${PLASMOID_PACKAGE_DIR}")
+
+# install appstream file
+add_appstream_file()
