@@ -11,8 +11,8 @@
 </description>
 <screenshots>
   <screenshot type="default">
-    <caption>@META_APP_NAME@ under Plasma 5</caption>
-    <image>@META_APP_URL@/blob/master/tray/resources/screenshots/plasma-2.png</image>
+    <caption>@META_APP_NAME@ under Openbox with Tint2 panel</caption>
+    <image>@META_APP_URL@/blob/master/tray/resources/screenshots/tint2-dark.png</image>
   </screenshot>
   <screenshot>
     <caption>Web view, dark theme</caption>
