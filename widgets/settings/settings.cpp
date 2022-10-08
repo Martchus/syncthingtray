@@ -23,6 +23,7 @@
 #include <qtutilities/misc/dbusnotification.h>
 #endif
 
+#include <c++utilities/application/commandlineutils.h>
 #include <c++utilities/io/ansiescapecodes.h>
 
 #include <QApplication>
@@ -256,6 +257,13 @@ Settings &values()
     return settings;
 }
 
+static void setVarFromEnv(bool &var, const char *envVar)
+{
+    if (const auto val = CppUtilities::isEnvVariableSet(envVar)) {
+        var = val.value();
+    }
+}
+
 void restore()
 {
     auto s = QtUtilities::getSettings(QStringLiteral(PROJECT_NAME));
@@ -399,6 +407,10 @@ void restore()
 #endif
 
     v.qt.restore(settings);
+
+    // restore developer settings from environment variables
+    setVarFromEnv(v.fakeFirstLaunch, PROJECT_VARNAME_UPPER "_FAKE_FIRST_LAUNCH");
+    setVarFromEnv(v.enableWipFeatures, PROJECT_VARNAME_UPPER "_ENABLE_WIP_FEATURES");
 }
 
 void save()
