@@ -157,6 +157,7 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
     bool firstLaunch = false;
     bool fakeFirstLaunch = false; // not persistent, for testing purposes only
     bool enableWipFeatures = false; // not persistent, for testing purposes only
+    bool isPlasmoid = false; // not persistent, set by the Plasmoid
     Connection connection;
     NotifyOn notifyOn;
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS

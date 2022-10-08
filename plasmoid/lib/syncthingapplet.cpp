@@ -138,6 +138,7 @@ void SyncthingApplet::init()
 
     // restore settings
     auto &settings = Settings::values();
+    settings.isPlasmoid = true;
     Settings::restore();
 
     // initialize systemd service support
