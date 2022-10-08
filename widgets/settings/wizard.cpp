@@ -1,4 +1,5 @@
 #include "./wizard.h"
+#include "./settingsdialog.h"
 #include "./setupdetection.h"
 
 #include "../misc/statusinfo.h"
@@ -154,6 +155,13 @@ bool Wizard::changeSettings()
         = (mainConfig() == MainConfiguration::LauncherExternal || mainConfig() == MainConfiguration::LauncherBuiltIn);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     settings.systemd.considerForReconnect = settings.systemd.showButton = extraConfig() & ExtraConfiguration::SystemdIntegration;
+#endif
+
+    // enable/disable auto start
+#ifdef SETTINGS_WIZARD_AUTOSTART
+    if (!settings.isPlasmoid && autoStart() != isAutostartEnabled()) {
+        setAutostartEnabled(autoStart());
+    }
 #endif
 
     // invoke next step
@@ -874,7 +882,9 @@ void ApplyWizardPage::initializePage()
         currentSettings.systemd.showButton && currentSettings.systemd.considerForReconnect);
 #endif
 #ifdef SETTINGS_WIZARD_AUTOSTART
-    logFeature(tr("autostart of Syncthing Tray"), wizard->autoStart(), currentSettings.launcher.autostartEnabled);
+    if (!currentSettings.isPlasmoid) {
+        logFeature(tr("autostart of Syncthing Tray"), wizard->autoStart(), isAutostartEnabled());
+    }
 #endif
     html.append(QStringLiteral("</ul><p><b>%1</b></p><ul><li>%2</li><li>%3</li><li>%4</li></ul>")
                     .arg(tr("Further information:"), tr("Click on \"Show details from setup detection\" for further details."),

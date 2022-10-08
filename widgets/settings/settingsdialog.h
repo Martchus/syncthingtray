@@ -102,6 +102,8 @@ struct {
 END_DECLARE_OPTION_PAGE
 
 DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_SETUP(AutostartOptionPage)
+SYNCTHINGWIDGETS_EXPORT bool isAutostartEnabled();
+SYNCTHINGWIDGETS_EXPORT bool setAutostartEnabled(bool enabled);
 
 BEGIN_DECLARE_TYPEDEF_UI_FILE_BASED_OPTION_PAGE(LauncherOptionPage)
 class QT_UTILITIES_EXPORT LauncherOptionPage : public QObject, public ::QtUtilities::UiFileBasedOptionPage<Ui::LauncherOptionPage> {
