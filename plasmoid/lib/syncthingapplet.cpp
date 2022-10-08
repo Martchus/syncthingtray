@@ -10,6 +10,7 @@
 #include <syncthingwidgets/misc/textviewdialog.h>
 #include <syncthingwidgets/settings/settings.h>
 #include <syncthingwidgets/settings/settingsdialog.h>
+#include <syncthingwidgets/settings/wizard.h>
 #include <syncthingwidgets/webview/webviewdialog.h>
 
 #include <syncthingmodel/syncthingicons.h>
@@ -80,6 +81,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_downloadModel(m_connection)
     , m_recentChangesModel(m_connection)
     , m_settingsDlg(nullptr)
+    , m_wizard(nullptr)
     , m_imageProvider(nullptr)
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     , m_webViewDlg(nullptr)
@@ -88,6 +90,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_hasInternalErrors(false)
     , m_initialized(false)
     , m_showTabTexts(false)
+    , m_applyingSettingsForWizard(false)
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     m_notifier.setService(&m_service);
@@ -271,6 +274,8 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
 #endif
     if (!systemdConsideredForReconnect && (reconnectRequired || !m_connection.isConnected())) {
         m_connection.reconnect();
+    } else {
+        concludeWizard();
     }
 }
 
@@ -329,6 +334,8 @@ void SyncthingApplet::showSettingsDlg()
 {
     if (!m_settingsDlg) {
         m_settingsDlg = new SettingsDialog(*this);
+        // show wizard when requested
+        connect(m_settingsDlg, &SettingsDialog::wizardRequested, this, &SyncthingApplet::showWizard);
         // ensure settings take effect when applied
         connect(m_settingsDlg, &SettingsDialog::applied, this, &SyncthingApplet::handleSettingsChanged);
         // save plasmoid specific settings to disk when applied
@@ -339,6 +346,43 @@ void SyncthingApplet::showSettingsDlg()
     centerWidget(m_settingsDlg);
     m_settingsDlg->show();
     m_settingsDlg->activateWindow();
+}
+
+void SyncthingApplet::showWizard()
+{
+    if (!m_wizard) {
+        m_wizard = Wizard::instance();
+        connect(m_wizard, &Wizard::destroyed, this, [this] { m_wizard = nullptr; });
+        connect(m_wizard, &Wizard::settingsDialogRequested, this, &SyncthingApplet::showSettingsDlg);
+        connect(m_wizard, &Wizard::openSyncthingRequested, this, &SyncthingApplet::showWebUI);
+        connect(m_wizard, &Wizard::settingsChanged, this, &SyncthingApplet::applySettingsChangesFromWizard);
+    }
+    centerWidget(m_wizard);
+    m_wizard->show();
+    m_wizard->activateWindow();
+}
+
+void SyncthingApplet::applySettingsChangesFromWizard()
+{
+    // reset possibly opened settings dialog to be consistent with new configuration
+    if (m_settingsDlg) {
+        m_settingsDlg->reset();
+    }
+
+    // ensure first connection is selected as this is the connection the wizard configures
+    m_applyingSettingsForWizard = true;
+    applySettings(0);
+}
+
+void SyncthingApplet::concludeWizard(const QString &errorMessage)
+{
+    if (!m_applyingSettingsForWizard) {
+        return;
+    }
+    m_applyingSettingsForWizard = false;
+    if (m_wizard) {
+        m_wizard->handleConfigurationApplied(errorMessage);
+    }
 }
 
 void SyncthingApplet::showWebUI()
@@ -450,36 +494,7 @@ void SyncthingApplet::copyToClipboard(const QString &text)
  */
 void SyncthingApplet::handleSettingsChanged()
 {
-    const KConfigGroup config(this->config());
-    const auto &settings(Settings::values());
-
-    // apply notifiction settings
-    settings.apply(m_notifier);
-
-    // apply appearance settings
-    setSize(config.readEntry<QSize>("size", QSize(25, 25)));
-    setShowingTabTexts(config.readEntry<bool>("showTabTexts", false));
-    IconManager::instance().applySettings(&settings.icons.status);
-
-    // restore selected states
-    // note: The settings dialog writes this to the Plasmoid's config like the other settings. However, it
-    //       is simpler and more efficient to assign the states directly. Of course this is only possible if
-    //       the dialog has already been shown.
-    if (m_settingsDlg) {
-        setPassiveStates(m_settingsDlg->appearanceOptionPage()->passiveStatusSelection()->items());
-    } else {
-        m_passiveSelectionModel.applyVariantList(config.readEntry("passiveStates", QVariantList()));
-    }
-
-    // apply connection config
-    const int currentConfig = m_currentConnectionConfig;
-    m_currentConnectionConfig = -1; // force update
-    setCurrentConnectionConfigIndex(currentConfig);
-
-    // update status icons and tooltip because the reconnect interval might have changed
-    updateStatusIconAndTooltip();
-
-    emit settingsChanged();
+    applySettings();
 }
 
 void SyncthingApplet::handleConnectionStatusChanged(Data::SyncthingStatus previousStatus, Data::SyncthingStatus newStatus)
@@ -491,6 +506,18 @@ void SyncthingApplet::handleConnectionStatusChanged(Data::SyncthingStatus previo
 
     setPassive(static_cast<int>(newStatus) < passiveStates().size() && passiveStates().at(static_cast<int>(newStatus)).isChecked());
     updateStatusIconAndTooltip();
+
+    if (m_applyingSettingsForWizard) {
+        switch (newStatus) {
+        case SyncthingStatus::Disconnected:
+            concludeWizard(tr("Unable to establish connection to Syncthing."));
+            break;
+        case SyncthingStatus::Reconnecting:
+            break;
+        default:
+            concludeWizard();
+        }
+    }
 }
 
 void SyncthingApplet::handleDevicesChanged()
@@ -585,6 +612,40 @@ void SyncthingApplet::setBrightColors(bool brightColors)
     m_devModel.setBrightColors(brightColors);
     m_downloadModel.setBrightColors(brightColors);
     m_recentChangesModel.setBrightColors(brightColors);
+}
+
+void SyncthingApplet::applySettings(int changeConnectionIndex)
+{
+    const KConfigGroup config = this->config();
+    const auto &settings = Settings::values();
+
+    // apply notifiction settings
+    settings.apply(m_notifier);
+
+    // apply appearance settings
+    setSize(config.readEntry<QSize>("size", QSize(25, 25)));
+    setShowingTabTexts(config.readEntry<bool>("showTabTexts", false));
+    IconManager::instance().applySettings(&settings.icons.status);
+
+    // restore selected states
+    // note: The settings dialog writes this to the Plasmoid's config like the other settings. However, it
+    //       is simpler and more efficient to assign the states directly. Of course this is only possible if
+    //       the dialog has already been shown.
+    if (m_settingsDlg) {
+        setPassiveStates(m_settingsDlg->appearanceOptionPage()->passiveStatusSelection()->items());
+    } else {
+        m_passiveSelectionModel.applyVariantList(config.readEntry("passiveStates", QVariantList()));
+    }
+
+    // apply connection config
+    const int newConfig = changeConnectionIndex < 0 ? m_currentConnectionConfig : changeConnectionIndex;
+    m_currentConnectionConfig = -1; // force update
+    setCurrentConnectionConfigIndex(newConfig);
+
+    // update status icons and tooltip because the reconnect interval might have changed
+    updateStatusIconAndTooltip();
+
+    emit settingsChanged();
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

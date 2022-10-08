@@ -36,7 +36,8 @@ class IconManager;
 
 namespace QtGui {
 class WebViewDialog;
-}
+class Wizard;
+} // namespace QtGui
 
 namespace QtForkAwesome {
 class QuickImageProvider;
@@ -127,6 +128,7 @@ public Q_SLOTS:
     void init() override;
     void initEngine(QObject *object);
     void showSettingsDlg();
+    void showWizard();
     void showWebUI();
     void showLog();
     void showOwnDeviceId();
@@ -190,6 +192,9 @@ private Q_SLOTS:
     void handleThemeChanged();
     void setPassive(bool passive);
     void setBrightColors(bool brightColors);
+    void applySettings(int changeConnectionIndex = -1);
+    void applySettingsChangesFromWizard();
+    void concludeWizard(const QString &errorMessage = QString());
 
 private:
     Plasma::Theme m_theme;
@@ -212,6 +217,7 @@ private:
     Data::SyncthingRecentChangesModel m_recentChangesModel;
     Data::SyncthingStatusSelectionModel m_passiveSelectionModel;
     SettingsDialog *m_settingsDlg;
+    QtGui::Wizard *m_wizard;
     QtGui::DBusStatusNotifier m_dbusNotifier;
     std::vector<Data::SyncthingLogEntry> m_notifications;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
@@ -222,6 +228,7 @@ private:
     bool m_hasInternalErrors;
     bool m_initialized;
     bool m_showTabTexts;
+    bool m_applyingSettingsForWizard;
     QSize m_size;
 };
 

@@ -61,15 +61,15 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     connect(mainConfigPage, &MainConfigWizardPage::configurationSelected, this, &Wizard::handleConfigurationSelected);
     connect(this, &Wizard::configApplied, finalPage, &FinalWizardPage::completeChanged);
     connect(this, &Wizard::configApplied, finalPage, &FinalWizardPage::showResults);
-#ifdef SETTINGS_WIZARD_AUTOSTART
-    auto *const autostartPage = new AutostartWizardPage(this);
-    connect(autostartPage, &AutostartWizardPage::autostartSelected, this, &Wizard::handleAutostartSelected);
-#endif
     addPage(welcomePage);
     addPage(detectionPage);
     addPage(mainConfigPage);
 #ifdef SETTINGS_WIZARD_AUTOSTART
-    addPage(autostartPage);
+    if (!Settings::values().isPlasmoid) {
+        auto *const autostartPage = new AutostartWizardPage(this);
+        connect(autostartPage, &AutostartWizardPage::autostartSelected, this, &Wizard::handleAutostartSelected);
+        addPage(autostartPage);
+    }
 #endif
     addPage(applyPage);
     addPage(finalPage);
@@ -642,7 +642,7 @@ void MainConfigWizardPage::initializePage()
 
         // enable options to launch Syncthing via built-in launcher if Syncthing executable found or libsyncthing available
         const auto successfulTestLaunch = detection.launcherExitCode.has_value() && detection.launcherExitStatus.value() == QProcess::NormalExit;
-        if (successfulTestLaunch || Data::SyncthingLauncher::isLibSyncthingAvailable()) {
+        if (!Settings::values().isPlasmoid && (successfulTestLaunch || Data::SyncthingLauncher::isLibSyncthingAvailable())) {
             launchOptions << tr("Syncthing Tray's launcher");
             if (successfulTestLaunch) {
                 m_ui->cfgLauncherExternalRadioButton->show();
