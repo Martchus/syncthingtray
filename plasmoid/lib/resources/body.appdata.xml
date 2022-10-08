@@ -1,0 +1,29 @@
+<description>
+  <ul>
+    <li>Plasmoid for Syncthing</li>
+    <li>Provides quick access to most frequently used features but does not intend to replace the official web UI</li>
+    <li>Shows Syncthing notifications</li>
+    <li>Can read the local Syncthing configuration file for quick setup when just connecting to local instance</li>
+    <li>Can show the status of the Syncthing systemd unit and allows to start and stop it</li>
+    <li>Provides quick access to the official web UI</li>
+    <li>Allows quickly switching between multiple Syncthing instances</li>
+​  </ul>
+</description>
+<screenshots>
+  <screenshot type="default">
+    <caption>Using Breeze theme</caption>
+    <image>@META_APP_URL@/blob/master/plasmoid/resources/screenshots/plasmoid-1.png</image>
+  </screenshot>
+  <screenshot>
+    <caption>Using custom theme</caption>
+    <image>@META_APP_URL@/blob/master/plasmoid/resources/screenshots/plasmoid-2.png</image>
+  </screenshot>
+  <screenshot>
+    <caption>Icon customization</caption>
+    <image>@META_APP_URL@/blob/master/tray/resources/screenshots/custom-icons.png</image>
+  </screenshot>
+  <screenshot>
+    <caption>Web view, dark theme</caption>
+    <image>@META_APP_URL@/blob/master/tray/resources/screenshots/webview-dark.png</image>
+  </screenshot>
+</screenshots>
