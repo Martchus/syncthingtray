@@ -2,19 +2,6 @@
 <ui version="4.0">
  <class>QtGui::TrayWidget</class>
  <widget class="QWidget" name="QtGui::TrayWidget">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>370</width>
-    <height>302</height>
-   </rect>
-  </property>
-  <property name="font">
-   <font>
-    <family>Noto Sans</family>
-   </font>
-  </property>
   <property name="windowTitle">
    <string>Syncthing Tray</string>
   </property>
