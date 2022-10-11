@@ -239,12 +239,18 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         actions << *statusActions;
     }
 
-    // add separator
-    if (!actions.isEmpty()) {
-        QAction *const separator = new QAction(parent);
-        separator->setSeparator(true);
-        actions << separator;
+    // add note if no actions are available within the current folder
+    if (actions.isEmpty()) {
+        auto *const note = new QAction(parent);
+        note->setText(tr("Not a shared directory"));
+        note->setEnabled(false);
+        actions << note;
     }
+
+    // add separator
+    auto *const separator = new QAction(parent);
+    separator->setSeparator(true);
+    actions << separator;
 
     // add error action
     QAction *const errorAction = new SyncthingInfoAction(parent);
