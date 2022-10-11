@@ -125,7 +125,9 @@ The screenshots are not up-to-date.
 ![Rescan/pause/status](/fileitemactionplugin/resources/screenshots/dolphin.png?raw=true)
 
 ## Configuring Plasmoid and Dolphin integration
-The Dolphin integration can be enabled/disabled in Dolphin's context menu settings.
+The Dolphin integration can be enabled/disabled in Dolphin's context menu settings. It will
+read Syncthing's API key automatically from its config file. If your Syncthing config file is
+not in the default location you need to select it via the corresponding menu action.
 
 The Plasmoid can be added to a panel or the desktop like any other Plasmoid. It can also be shown
 as part of the system tray Plasmoid. That can be configured in the settings of the system
