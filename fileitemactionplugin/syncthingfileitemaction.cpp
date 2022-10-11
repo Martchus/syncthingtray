@@ -262,6 +262,19 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     connect(&data, &SyncthingFileItemActionStaticData::currentErrorChanged, errorAction, &QAction::changed);
     actions << errorAction;
 
+    // show Syncthing version
+    if (!connection.syncthingVersion().isEmpty()) {
+        static const auto versionRegex = QRegularExpression("(syncthing.*v.* \".*\").*");
+        auto *const versionAction = new QAction(parent);
+        if (const auto match = versionRegex.match(connection.syncthingVersion()); match.isValid()) {
+            versionAction->setText(match.captured(1));
+        } else {
+            versionAction->setText(connection.syncthingVersion());
+        }
+        versionAction->setEnabled(false);
+        actions << versionAction;
+    }
+
     // add config items
     QAction *const configFileAction = new QAction(QIcon::fromTheme(QStringLiteral("settings-configure")), tr("Select Syncthing config ..."), parent);
     connect(configFileAction, &QAction::triggered, &data, &SyncthingFileItemActionStaticData::selectSyncthingConfig);
