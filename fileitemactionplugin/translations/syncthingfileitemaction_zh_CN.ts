@@ -103,16 +103,21 @@
         <translation>暂停包含的目录</translation>
     </message>
     <message>
+        <location filename="../syncthingfileitemaction.cpp" line="245"/>
+        <source>Not a shared directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Use bright custom colors</source>
         <translation type="vanished">使用明亮的自定义颜色</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="260"/>
+        <location filename="../syncthingfileitemaction.cpp" line="279"/>
         <source>Select Syncthing config ...</source>
         <translation>选择 Syncthing 配置 ...</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="265"/>
+        <location filename="../syncthingfileitemaction.cpp" line="284"/>
         <source>About</source>
         <translation>关于</translation>
     </message>

@@ -156,133 +156,133 @@
 <context>
     <name>QtGui::TrayWidget</name>
     <message>
-        <location filename="../gui/traywidget.ui" line="19"/>
+        <location filename="../gui/traywidget.ui" line="6"/>
         <source>Syncthing Tray</source>
         <translation>Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="112"/>
+        <location filename="../gui/traywidget.ui" line="99"/>
         <location filename="../gui/traywidget.cpp" line="350"/>
         <source>About</source>
         <translation>O Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="71"/>
+        <location filename="../gui/traywidget.ui" line="58"/>
         <location filename="../gui/traywidget.cpp" line="473"/>
         <source>Connect</source>
         <translation>Připojit</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="85"/>
+        <location filename="../gui/traywidget.ui" line="72"/>
         <location filename="../gui/traywidget.cpp" line="847"/>
         <location filename="../gui/traywidget.cpp" line="889"/>
         <source>Start</source>
         <translation>Spustit</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="126"/>
+        <location filename="../gui/traywidget.ui" line="113"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="140"/>
+        <location filename="../gui/traywidget.ui" line="127"/>
         <source>Open Syncthing</source>
         <translation>Otevřít Syncthing</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="325"/>
+        <location filename="../gui/traywidget.ui" line="312"/>
         <source>In</source>
         <translation>Přích.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="332"/>
+        <location filename="../gui/traywidget.ui" line="319"/>
         <source>Incoming traffic</source>
         <translation>Příchozí provoz</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="264"/>
-        <location filename="../gui/traywidget.ui" line="284"/>
-        <location filename="../gui/traywidget.ui" line="335"/>
-        <location filename="../gui/traywidget.ui" line="355"/>
+        <location filename="../gui/traywidget.ui" line="251"/>
+        <location filename="../gui/traywidget.ui" line="271"/>
+        <location filename="../gui/traywidget.ui" line="322"/>
+        <location filename="../gui/traywidget.ui" line="342"/>
         <source>unknown</source>
         <translation>neznámé</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="175"/>
+        <location filename="../gui/traywidget.ui" line="162"/>
         <source>Pin window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="254"/>
+        <location filename="../gui/traywidget.ui" line="241"/>
         <source>Global</source>
         <translation>Globální</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="261"/>
+        <location filename="../gui/traywidget.ui" line="248"/>
         <source>Global overall statistics</source>
         <translation>Globální celkové statistiky</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="271"/>
+        <location filename="../gui/traywidget.ui" line="258"/>
         <source>Local</source>
         <translation>Místní</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="281"/>
+        <location filename="../gui/traywidget.ui" line="268"/>
         <source>Local overall statistics</source>
         <translation>Místní celkové statistiky</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="342"/>
+        <location filename="../gui/traywidget.ui" line="329"/>
         <source>Out</source>
         <translation>odchoz.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="352"/>
+        <location filename="../gui/traywidget.ui" line="339"/>
         <source>Outgoing traffic</source>
         <translation>Odchozí provoz</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="392"/>
+        <location filename="../gui/traywidget.ui" line="379"/>
         <source>Click to show &lt;i&gt;new&lt;/i&gt; notifications&lt;br&gt;
 For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Kliknutím na &lt;i&gt;nové &lt;/i&gt; oznámení&lt;br&gt;
 (pro &lt;i&gt;alle&lt;/i&gt; oznámení, nahlédněte do záznamu událostí)</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="396"/>
+        <location filename="../gui/traywidget.ui" line="383"/>
         <location filename="../gui/traywidget.cpp" line="157"/>
         <location filename="../gui/traywidget.cpp" line="393"/>
         <source>New notifications</source>
         <translation>Nová oznámení</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="427"/>
+        <location filename="../gui/traywidget.ui" line="414"/>
         <source>Directories</source>
         <translation>Adresáře</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="460"/>
+        <location filename="../gui/traywidget.ui" line="447"/>
         <source>Devices</source>
         <translation>Zařízení</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="493"/>
+        <location filename="../gui/traywidget.ui" line="480"/>
         <source>Downloads</source>
         <translation>Stahování</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="522"/>
+        <location filename="../gui/traywidget.ui" line="509"/>
         <source>Recent changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="558"/>
+        <location filename="../gui/traywidget.ui" line="545"/>
         <source>Show</source>
         <translation>Zobrazit</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="568"/>
+        <location filename="../gui/traywidget.ui" line="555"/>
         <source>Dismiss</source>
         <translation>Zahodit</translation>
     </message>

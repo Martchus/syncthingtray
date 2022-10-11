@@ -104,12 +104,17 @@
         <translation>Pozastavit „%1“</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="260"/>
+        <location filename="../syncthingfileitemaction.cpp" line="245"/>
+        <source>Not a shared directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfileitemaction.cpp" line="279"/>
         <source>Select Syncthing config ...</source>
         <translation>Vybrat nastavení pro Syncthing…</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="265"/>
+        <location filename="../syncthingfileitemaction.cpp" line="284"/>
         <source>About</source>
         <translation>O aplikaci</translation>
     </message>

@@ -87,6 +87,11 @@
         <translation>Beinhaltendes Verzeichnis fortsetzen</translation>
     </message>
     <message>
+        <location filename="../syncthingfileitemaction.cpp" line="245"/>
+        <source>Not a shared directory</source>
+        <translation>Kein geteiltes Verzeichnis</translation>
+    </message>
+    <message>
         <location filename="../syncthingfileitemaction.cpp" line="185"/>
         <location filename="../syncthingfileitemaction.cpp" line="216"/>
         <source>Resume &quot;%1&quot;</source>
@@ -108,12 +113,12 @@
         <translation type="vanished">Helle Farben verwenden</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="260"/>
+        <location filename="../syncthingfileitemaction.cpp" line="279"/>
         <source>Select Syncthing config ...</source>
         <translation>Syncthing-Konfiguration wählen ...</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="265"/>
+        <location filename="../syncthingfileitemaction.cpp" line="284"/>
         <source>About</source>
         <translation>Über</translation>
     </message>

@@ -50,7 +50,7 @@
 <context>
     <name>SyncthingFileItemAction</name>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="265"/>
+        <location filename="../syncthingfileitemaction.cpp" line="284"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
@@ -109,7 +109,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="260"/>
+        <location filename="../syncthingfileitemaction.cpp" line="245"/>
+        <source>Not a shared directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfileitemaction.cpp" line="279"/>
         <source>Select Syncthing config ...</source>
         <translation type="unfinished"></translation>
     </message>
