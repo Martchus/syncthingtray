@@ -1,0 +1,10 @@
+<description>
+  <p>Allows checking a folder's status from Dolphin and triggering rescans/pause/resume.</p>
+</description>
+<screenshots>
+  <screenshot type="default">
+    <caption>Syncthing menu in Dolphin</caption>
+    <image>@META_APP_URL_RAW@/fileitemactionplugin/resources/screenshots/dolphin.png</image>
+  </screenshot>
+</screenshots>
+<content_rating/>

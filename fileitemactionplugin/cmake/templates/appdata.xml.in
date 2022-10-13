@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="addon">
+  <id>@META_PROJECT_RDNS@</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>@META_PROJECT_LICENSE@</project_license>
+  <extends>org.kde.dolphin.desktop</extends>
+  <name>@META_APP_NAME@</name>
+  <summary>@META_APP_DESCRIPTION@</summary>
+  @META_APP_APPDATA_BODY@
+  <url type="homepage">@META_APP_URL@</url>
+  <url type="bugtracker">@META_APP_BUGTRACKER_URL@</url>
+  <developer_name>@META_APP_AUTHOR@</developer_name>
+  <releases>
+    <release version="@META_APP_VERSION@" date="@META_RELEASE_DATE@"/>
+  </releases>
+</component>

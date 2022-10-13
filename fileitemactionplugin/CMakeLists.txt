@@ -15,7 +15,7 @@ set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJ
              translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
-find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.20.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 
 # find qtutilities
@@ -40,6 +40,7 @@ include(QtConfig)
 include(WindowsResources)
 include(LibraryTarget)
 include(ConfigHeader)
+include(AppUtilities)
 
 # configure and install desktop file
 include(TemplateFinder)
@@ -50,3 +51,6 @@ install(
     FILES "${DESKTOP_TARGET_FILE}"
     DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/kservices5"
     COMPONENT desktop)
+
+# install appstream file
+add_appstream_file()
