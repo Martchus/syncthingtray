@@ -10,4 +10,7 @@
   <url type="homepage">@META_APP_URL@</url>
   <url type="bugtracker">@META_APP_BUGTRACKER_URL@</url>
   <developer_name>@META_APP_AUTHOR@</developer_name>
+  <releases>
+    <release version="@META_APP_VERSION@" date="@META_RELEASE_DATE@"/>
+  </releases>
 </component>
