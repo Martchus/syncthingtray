@@ -1,4 +1,5 @@
 #include "../settings/wizard.h"
+#include "../misc/syncthinglauncher.h"
 #include "../settings/settings.h"
 #include "../settings/setupdetection.h"
 
@@ -48,6 +49,11 @@ void WizardTests::initTestCase()
     qDebug() << QStringLiteral("HOME dir: ") + m_homeDir.path();
     qputenv("HOME", m_homeDir.path().toLocal8Bit());
     QVERIFY(m_homeDir.isValid());
+
+    // assert there's no connection setting present initially
+    QCOMPARE(settings.connection.primary.syncthingUrl, QString());
+    QCOMPARE(settings.connection.primary.apiKey, QByteArray());
+    QCOMPARE(settings.connection.secondary.size(), 0);
 }
 
 void WizardTests::cleanup()
@@ -80,6 +86,15 @@ void WizardTests::testShowingSettings()
 
 void WizardTests::testConfiguringLauncher()
 {
+    // pretend libsyncthing / systemd is already enabled
+    // note: Should be unset as we're selecting to use an external binary.
+    auto &settings = Settings::values();
+    settings.launcher.useLibSyncthing = true;
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    settings.systemd.considerForReconnect = true;
+    settings.systemd.showButton = true;
+#endif
+
     // init new wizard and do some basic checks
     auto wizardDlg = Wizard();
     QVERIFY(!wizardDlg.setupDetection().hasConfig());
@@ -159,7 +174,47 @@ void WizardTests::testConfiguringLauncher()
     m_eventLoop.exec();
     QVERIFY(label->text().contains(QStringLiteral("The internal launcher has not been initialized.")));
     QVERIFY(label->text().contains(QStringLiteral("You may try to head back")));
+
+    // try again with launcher being initialized
+    wizardDlg.back();
+    auto launcher = Data::SyncthingLauncher();
+    Data::SyncthingLauncher::setMainInstance(&launcher);
     wizardDlg.next();
+
+    // wait again
+    qDebug() << "waiting for Syncthing to write config file";
+    auto settingsChanged = false;
+    connect(&wizardDlg, &Wizard::settingsChanged, this, [&] { settingsChanged = true; });
+    waitForCfg = [&] {
+        if (!label->isHidden() && progressBar->isHidden()) {
+            m_eventLoop.quit();
+        } else {
+            if (settingsChanged) {
+                settings.connection.addConfigFromWizard(wizardDlg.setupDetection().config);
+                wizardDlg.handleConfigurationApplied();
+            }
+            QTimer::singleShot(0, this, waitForCfg);
+        }
+    };
+    QTimer::singleShot(0, this, waitForCfg);
+    m_eventLoop.exec();
+    QVERIFY(label->text().contains(QStringLiteral("changed successfully")));
+    QVERIFY(label->text().contains(QStringLiteral("open Syncthing")));
+
+    // verify settings
+    QVERIFY(settings.launcher.autostartEnabled);
+    QVERIFY(settings.launcher.considerForReconnect);
+    QVERIFY(settings.launcher.showButton);
+    QVERIFY(!settings.launcher.syncthingPath.isEmpty());
+    QVERIFY(!settings.launcher.syncthingArgs.isEmpty());
+    QVERIFY(!settings.launcher.useLibSyncthing);
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    QVERIFY(!settings.systemd.considerForReconnect);
+    QVERIFY(!settings.systemd.showButton);
+#endif
+    QVERIFY(settings.connection.primary.syncthingUrl.startsWith(QStringLiteral("http://127.0.0.1")));
+    QVERIFY(!settings.connection.primary.apiKey.isEmpty());
+    QCOMPARE(settings.connection.secondary.size(), 0);
 }
 
 void WizardTests::confirmMessageBox()
