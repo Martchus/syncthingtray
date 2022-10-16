@@ -136,3 +136,8 @@ use_qt_module(LIBRARIES_VARIABLE "QT_TEST_LIBRARIES" PREFIX "${QT_PACKAGE_PREFIX
 foreach (TEST ${QT_TESTS})
     configure_test_target(TEST_NAME "${TEST}_tests" SRC_FILES "tests/${TEST}.cpp" LIBRARIES "${QT_TEST_LIBRARIES}")
 endforeach ()
+
+# avoid running this test in parallel with other tests spawning a Syncthing test instance
+if (META_MAIN_TEST_NAME)
+    set_tests_properties("${META_TARGET_NAME}_run_${TEST}_tests" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
+endif ()
