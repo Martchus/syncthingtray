@@ -20,7 +20,7 @@
 
 namespace QtGui {
 
-class SetupDetection : public QObject {
+class SYNCTHINGWIDGETS_EXPORT SetupDetection : public QObject {
     Q_OBJECT
 
 public:

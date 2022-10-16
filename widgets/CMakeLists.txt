@@ -82,6 +82,8 @@ set(REQUIRED_ICONS
     tools-wizard
     help-contents)
 
+set(QT_TESTS wizard)
+
 # find c++utilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.20.0 REQUIRED)
 use_cpp_utilities(VISIBILITY PUBLIC)
@@ -126,3 +128,11 @@ include(WindowsResources)
 include(LibraryTarget)
 include(Doxygen)
 include(ConfigHeader)
+
+# configure test target
+include(TestUtilities)
+list(APPEND QT_TEST_LIBRARIES ${CPP_UTILITIES_LIB} ${META_TARGET_NAME})
+use_qt_module(LIBRARIES_VARIABLE "QT_TEST_LIBRARIES" PREFIX "${QT_PACKAGE_PREFIX}" MODULE "Test")
+foreach (TEST ${QT_TESTS})
+    configure_test_target(TEST_NAME "${TEST}_tests" SRC_FILES "tests/${TEST}.cpp" LIBRARIES "${QT_TEST_LIBRARIES}")
+endforeach ()

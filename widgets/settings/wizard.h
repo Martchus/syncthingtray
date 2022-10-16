@@ -39,12 +39,14 @@ enum class ExtraConfiguration : quint64 {
 
 class SYNCTHINGWIDGETS_EXPORT Wizard : public QWizard {
     Q_OBJECT
+    friend class WizardTests;
 
 public:
     explicit Wizard(QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
     ~Wizard() override;
 
     static Wizard *instance();
+    static bool hasInstance();
     SetupDetection &setupDetection();
     MainConfiguration mainConfig() const;
     ExtraConfiguration extraConfig() const;
@@ -81,6 +83,11 @@ private:
     QString m_configError;
     int m_elapsedPollTime;
 };
+
+inline bool Wizard::hasInstance()
+{
+    return s_instance != nullptr;
+}
 
 inline MainConfiguration Wizard::mainConfig() const
 {

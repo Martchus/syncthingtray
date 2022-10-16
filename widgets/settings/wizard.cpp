@@ -410,6 +410,7 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     QCommandLinkButton *startWizardCommand = nullptr;
     if (settings.enableWipFeatures) {
         startWizardCommand = new QCommandLinkButton(this);
+        startWizardCommand->setObjectName(QStringLiteral("startWizardCommand"));
         startWizardCommand->setText(tr("Start guided setup"));
         startWizardCommand->setDescription(
             tr("Allows to configure Syncthing Tray automatically for the local Syncthing instance and helps you starting Syncthing if wanted."));
@@ -419,6 +420,7 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     }
 
     auto *const showSettingsCommand = new QCommandLinkButton(this);
+    showSettingsCommand->setObjectName(QStringLiteral("showSettingsCommand"));
     if (settings.firstLaunch) {
         showSettingsCommand->setText(tr("Configure connection and launcher settings manually"));
     } else {
@@ -906,8 +908,10 @@ FinalWizardPage::FinalWizardPage(QWidget *parent)
     layout->addWidget(m_label = new QLabel());
     setLayout(layout);
 
+    m_label->setObjectName(QStringLiteral("label"));
     m_label->setWordWrap(true);
     m_progressBar->setMaximum(0);
+    m_progressBar->setObjectName(QStringLiteral("progressBar"));
 
     connect(m_label, &QLabel::linkActivated, this, &FinalWizardPage::handleLinkActivated);
 }
