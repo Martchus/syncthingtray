@@ -151,8 +151,10 @@ bool Wizard::changeSettings()
     }
 
     // enable/disable integrations accordingly
-    settings.launcher.considerForReconnect = settings.launcher.showButton = settings.launcher.autostartEnabled
-        = (mainConfig() == MainConfiguration::LauncherExternal || mainConfig() == MainConfiguration::LauncherBuiltIn);
+    if (mainConfig() != MainConfiguration::CurrentlyRunning) {
+        settings.launcher.considerForReconnect = settings.launcher.showButton = settings.launcher.autostartEnabled
+            = (mainConfig() == MainConfiguration::LauncherExternal || mainConfig() == MainConfiguration::LauncherBuiltIn);
+    }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     settings.systemd.considerForReconnect = settings.systemd.showButton = extraConfig() & ExtraConfiguration::SystemdIntegration;
 #endif
