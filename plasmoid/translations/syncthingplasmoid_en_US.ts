@@ -166,7 +166,7 @@
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="108"/>
-        <source>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
+        <source>Note that the size is ignored when the Plasmoid is displayed on the desktop, in full screen mode or as entry of the system tray Plasmoid. Then the Plasmoid can be resized using Plasma&apos;s UI. On Plasma older than 5.26, when displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
