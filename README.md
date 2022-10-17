@@ -507,7 +507,8 @@ for_window [title="^Syncthing Tray( \(.*\))?$"] floating enable, border none, re
 
 ### Workaround broken High-DPI scaling of Plasmoid under X11
 Setting the environment variable `PLASMA_USE_QT_SCALING=1` should fix the
-[issue](https://bugs.kde.org/show_bug.cgi?id=356446) on recent Plasma versions.
+[issue](https://bugs.kde.org/show_bug.cgi?id=356446) on recent Plasma versions but
+there are still [some problems](https://bugs.kde.org/show_bug.cgi?id=457802#c1).
 
 ### Workaround missing support for Windows 10 dark mode
 The dark mode introduced in Windows 10 does not affect traditional desktop
@@ -582,7 +583,8 @@ section.
         * The dark mode introduced in Windows 10 is not supported, see https://bugreports.qt.io/browse/QTBUG-72028.
 * KDE limitations
     * High-DPI scaling of Plasmoid is broken under X11 (https://bugs.kde.org/show_bug.cgi?id=356446).
-    * The Plasmoid contents are possibly clipped when shown within the system notifications plasmoid.
+    * Plasma < 5.26.0:
+        * The Plasmoid contents are possibly clipped when shown within the system notifications plasmoid.
 * Systemd integration
     * This feature relies especially on the system being correctly configured. Checkout the *Required system configuration* section
       for details.
