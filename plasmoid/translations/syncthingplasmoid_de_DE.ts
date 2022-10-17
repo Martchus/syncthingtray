@@ -237,12 +237,12 @@
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="159"/>
         <source>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</source>
-        <translation type="unfinished"></translation>
+        <translation>Bevorzuge Symbole vom System-Theme anstelle von ForkAwesome-Symbolen (wird erst nach Neustart angewendet)</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="168"/>
         <source>Icons</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbole</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -307,7 +307,7 @@
     <message>
         <location filename="../lib/syncthingapplet.cpp" line="513"/>
         <source>Unable to establish connection to Syncthing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung zu Syncthing kann nicht hergestellt werden.</translation>
     </message>
     <message>
         <location filename="../lib/syncthingapplet.cpp" line="583"/>
