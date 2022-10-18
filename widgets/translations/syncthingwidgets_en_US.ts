@@ -1738,7 +1738,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="358"/>
-        <source>Ran into timeout while waiting for Syncthing to create config file.Maybe Syncthing created its config file under an unexpected location. </source>
+        <source>Ran into timeout while waiting for Syncthing to create config file. Maybe Syncthing created its config file under an unexpected location. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -355,7 +355,7 @@ void Wizard::pollForSyncthingConfig()
 
     // keep polling
     if (m_elapsedPollTime > syncthingPollTimeout) {
-        handleConfigurationApplied(tr("Ran into timeout while waiting for Syncthing to create config file."
+        handleConfigurationApplied(tr("Ran into timeout while waiting for Syncthing to create config file. "
                                       "Maybe Syncthing created its config file under an unexpected location. ")
             + hintAboutSyncthingLog());
         return;

@@ -1907,8 +1907,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="358"/>
-        <source>Ran into timeout while waiting for Syncthing to create config file.Maybe Syncthing created its config file under an unexpected location. </source>
+        <source>Ran into timeout while waiting for Syncthing to create config file. Maybe Syncthing created its config file under an unexpected location. </source>
         <translation>Die Wartezeit, dass Syncthing eine Konfigurationsdatei anlegt, wurde überschritten. Vielleichtg hat Syncthing die Konfigurationsdatei an einem unerwarteten Ort angelegt. </translation>
+    </message>
+    <message>
+        <source>Ran into timeout while waiting for Syncthing to create config file.Maybe Syncthing created its config file under an unexpected location. </source>
+        <translation type="vanished">Die Wartezeit, dass Syncthing eine Konfigurationsdatei anlegt, wurde überschritten. Vielleichtg hat Syncthing die Konfigurationsdatei an einem unerwarteten Ort angelegt. </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="369"/>
