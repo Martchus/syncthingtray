@@ -528,10 +528,16 @@ void DetectionWizardPage::refresh()
 
 void DetectionWizardPage::tryToConnect()
 {
+    // skip if the wizard has been closed
+    auto *const wizard = qobject_cast<Wizard *>(this->wizard());
+    if (!wizard || wizard->isHidden()) {
+        return;
+    }
+
     // determine path of Syncthing's config file, possibly ask user to select it
     m_setupDetection->determinePaths();
     if (m_setupDetection->configFilePath.isEmpty()) {
-        auto msgbox = QMessageBox(wizard());
+        auto msgbox = QMessageBox(wizard);
         auto yesButton = QPushButton(tr("Yes, continue configuration"));
         auto noButton = QPushButton(tr("No, let me select Syncthing's configuration file manually"));
         msgbox.setIcon(QMessageBox::Question);
@@ -542,7 +548,7 @@ void DetectionWizardPage::tryToConnect()
         msgbox.exec();
         if (msgbox.clickedButton() == &noButton) {
             m_setupDetection->configFilePath = QFileDialog::getOpenFileName(
-                wizard(), tr("Select Syncthing's configuration file"), QString(), QStringLiteral("XML files (*.xml);All files (*.*)"));
+                wizard, tr("Select Syncthing's configuration file"), QString(), QStringLiteral("XML files (*.xml);All files (*.*)"));
         }
     }
 
