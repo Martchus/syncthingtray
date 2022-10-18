@@ -740,7 +740,7 @@ void MainConfigWizardPage::handleSelectionChanged()
     auto configSelected = false;
     for (auto *const option : std::initializer_list<QRadioButton *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
              m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgSystemdUserUnitRadioButton, m_ui->cfgSystemdSystemUnitRadioButton }) {
-        if ((configSelected = option->isChecked())) {
+        if ((configSelected = !option->isHidden() && option->isChecked())) {
             break;
         }
     }
