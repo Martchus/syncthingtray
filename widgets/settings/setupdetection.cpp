@@ -79,7 +79,9 @@ void SetupDetection::reset()
     timeout.stop();
     timedOut = false;
     configOk = false;
-    connection.abortAllRequests();
+    config.guiAddress.clear();
+    config.guiApiKey.clear();
+    connection.disconnect();
     launcher.terminate();
     connectionErrors.clear();
     launcherExitCode.reset();
