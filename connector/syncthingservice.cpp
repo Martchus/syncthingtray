@@ -492,10 +492,10 @@ void SyncthingService::handlePropertiesChanged(
         emit stateChanged(m_activeState, m_subState, m_activeSince);
     }
     const bool currentlyRunning = isRunning();
-    if (currentlyRunning) {
-        m_manuallyStopped = false;
-    }
     if (wasRunningBefore != currentlyRunning) {
+        if (currentlyRunning) {
+            m_manuallyStopped = false;
+        }
         emit runningChanged(currentlyRunning);
     }
 

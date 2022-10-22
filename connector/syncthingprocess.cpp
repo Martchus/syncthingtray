@@ -106,7 +106,7 @@ SyncthingProcess *SyncthingProcess::s_mainInstance = nullptr;
  */
 SyncthingProcess::SyncthingProcess(QObject *parent)
     : SyncthingProcessBase(parent)
-    , m_manuallyStopped(true)
+    , m_manuallyStopped(false)
 {
     m_killTimer.setInterval(3000);
     m_killTimer.setSingleShot(true);
