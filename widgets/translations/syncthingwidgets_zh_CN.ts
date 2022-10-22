@@ -886,102 +886,109 @@
         <translation>Syncthing 启动器</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="22"/>
+        <location filename="../settings/launcheroptionpage.ui" line="21"/>
         <source>Launch Syncthing when starting the tray icon</source>
         <translation>启动托盘图标时启动 Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="44"/>
+        <location filename="../settings/launcheroptionpage.ui" line="43"/>
         <source>Syncthing executable</source>
         <translation>Syncthing 可执行文件</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="54"/>
+        <location filename="../settings/launcheroptionpage.ui" line="53"/>
         <source>Arguments</source>
         <translation>参数</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="64"/>
+        <location filename="../settings/launcheroptionpage.ui" line="63"/>
         <source>Use built-in Syncthing library</source>
         <translation>使用内置 Syncthing 库</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="71"/>
+        <location filename="../settings/launcheroptionpage.ui" line="70"/>
         <source>Config directory</source>
         <translation>配置目录</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="81"/>
+        <location filename="../settings/launcheroptionpage.ui" line="80"/>
         <source>Log level</source>
         <translation>日志等级</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="89"/>
+        <location filename="../settings/launcheroptionpage.ui" line="88"/>
         <source>Debug</source>
         <translation>Debug</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="94"/>
+        <location filename="../settings/launcheroptionpage.ui" line="93"/>
         <source>Verbose</source>
         <translation>Verbose</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="99"/>
+        <location filename="../settings/launcheroptionpage.ui" line="98"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="104"/>
+        <location filename="../settings/launcheroptionpage.ui" line="103"/>
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="109"/>
+        <location filename="../settings/launcheroptionpage.ui" line="108"/>
         <source>Fatal</source>
         <translation>Fatal</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="117"/>
+        <location filename="../settings/launcheroptionpage.ui" line="116"/>
         <source>Data directory</source>
         <translation>数据目录</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="130"/>
+        <location filename="../settings/launcheroptionpage.ui" line="129"/>
         <source>Show start/stop button on tray for local instance</source>
         <translation>在托盘上为本地实例显示开始/停止按钮</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="137"/>
+        <location filename="../settings/launcheroptionpage.ui" line="136"/>
+        <source>Consider process status for notifications and reconnect attempts concerning local instance
+ • Don&apos;t reconnect when the process is not running
+ • Try to reconnect when starting the process
+ • Suppress notification about disconnect when Syncthing has been stopped manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Consider process status for reconnect attempts to local instance
  • Don&apos;t reconnect when the process is not running
  • Try to reconnect when starting the process</source>
-        <translation>考虑重新连接到本地实例的尝试的进程状态
+        <translation type="vanished">考虑重新连接到本地实例的尝试的进程状态
   • 进程未运行时不要重新连接
   • 启动进程时尝试重新连接</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="167"/>
+        <location filename="../settings/launcheroptionpage.ui" line="166"/>
         <source>Syncthing log (interleaved stdout/stderr)</source>
         <translation>同步日志（交错的标准输出/标准错误）</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="180"/>
+        <location filename="../settings/launcheroptionpage.ui" line="179"/>
         <source>Apply and launch now</source>
         <translation>立即应用并启动</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="197"/>
+        <location filename="../settings/launcheroptionpage.ui" line="196"/>
         <location filename="../settings/settingsdialog.cpp" line="1049"/>
         <source>Stop launched instance</source>
         <translation>停止启动的实例</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="216"/>
+        <location filename="../settings/launcheroptionpage.ui" line="215"/>
         <source>No log messages available yet</source>
         <translation>尚无可用的日志消息</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="223"/>
+        <location filename="../settings/launcheroptionpage.ui" line="222"/>
         <source>Ensure latest log is visible</source>
         <translation>确保最新日志可见</translation>
     </message>
@@ -1461,65 +1468,72 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>当 systemd 可用时，在托盘上为本地实例显示启动/停止按钮</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="28"/>
         <source>Consider systemd unit status for reconnect attempts to local instance
  • Don&apos;t reconnect when unit not active/running
  • Try to reconnect when unit becomes active/running</source>
-        <translation>考虑重新连接到本地实例的 systemd 单元状态
+        <translation type="vanished">考虑重新连接到本地实例的 systemd 单元状态
   • 当设备不活动/运行时不要重新连接
   • 当设备变为活动/运行时尝试重新连接</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="71"/>
+        <location filename="../settings/systemdoptionpage.ui" line="28"/>
+        <source>Consider systemd unit status for notifications and reconnect attempts concerning local instance
+ • Don&apos;t reconnect when unit not active/running
+ • Try to reconnect when unit becomes active/running
+ • Suppress notification about disconnect when Syncthing has been stopped manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/systemdoptionpage.ui" line="72"/>
         <source>Syncthing unit</source>
         <translation>Syncthing 单元</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="81"/>
+        <location filename="../settings/systemdoptionpage.ui" line="82"/>
         <source>System unit</source>
         <translation>系统单元</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="94"/>
+        <location filename="../settings/systemdoptionpage.ui" line="95"/>
         <source>Description</source>
         <translation>描述</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="109"/>
-        <location filename="../settings/systemdoptionpage.ui" line="164"/>
-        <location filename="../settings/systemdoptionpage.ui" line="253"/>
+        <location filename="../settings/systemdoptionpage.ui" line="110"/>
+        <location filename="../settings/systemdoptionpage.ui" line="165"/>
+        <location filename="../settings/systemdoptionpage.ui" line="254"/>
         <location filename="../settings/settingsdialog.cpp" line="1329"/>
         <location filename="../settings/settingsdialog.cpp" line="1338"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="124"/>
+        <location filename="../settings/systemdoptionpage.ui" line="125"/>
         <source>Current status</source>
         <translation>目前状态</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="177"/>
+        <location filename="../settings/systemdoptionpage.ui" line="178"/>
         <source>Start</source>
         <translation>启动</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="194"/>
+        <location filename="../settings/systemdoptionpage.ui" line="195"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="213"/>
+        <location filename="../settings/systemdoptionpage.ui" line="214"/>
         <source>Unit file state</source>
         <translation>单元文件状态</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="266"/>
+        <location filename="../settings/systemdoptionpage.ui" line="267"/>
         <source>Enable</source>
         <translation>启用</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="283"/>
+        <location filename="../settings/systemdoptionpage.ui" line="284"/>
         <source>Disable</source>
         <translation>禁用</translation>
     </message>
@@ -1868,7 +1882,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="617"/>
+        <location filename="../settings/settings.cpp" line="625"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation type="unfinished"></translation>
     </message>

@@ -254,47 +254,47 @@
 <context>
     <name>Data::SyncthingNotifier</name>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="74"/>
+        <location filename="../syncthingnotifier.cpp" line="75"/>
         <source>Device %1 (%2) wants to connect.</source>
         <translation>设备 %1 (%2) 想要连接。</translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="88"/>
+        <location filename="../syncthingnotifier.cpp" line="89"/>
         <source>Device </source>
         <translation>设备 </translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="88"/>
+        <location filename="../syncthingnotifier.cpp" line="89"/>
         <source>Unknown device </source>
         <translation>未知设备 </translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="90"/>
+        <location filename="../syncthingnotifier.cpp" line="91"/>
         <source> wants to share directory %1.</source>
         <translation> 想要分享目录 %1。</translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="92"/>
+        <location filename="../syncthingnotifier.cpp" line="93"/>
         <source> wants to share directory %1 (%2).</source>
         <translation> 想要分享目录  %1 (%2)。</translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="107"/>
+        <location filename="../syncthingnotifier.cpp" line="108"/>
         <source>Failed to start Syncthing</source>
         <translation>启动 Syncthing 失败</translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="108"/>
+        <location filename="../syncthingnotifier.cpp" line="109"/>
         <source>Maybe the configured binary path is wrong or the binary is not marked as executable.</source>
         <translation>也许配置的二进制文件路径是错误的，或者二进制文件没有被标记为可执行文件。</translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="111"/>
+        <location filename="../syncthingnotifier.cpp" line="112"/>
         <source>Syncthing crashed</source>
         <translation>Syncthing 崩溃了</translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="114"/>
+        <location filename="../syncthingnotifier.cpp" line="115"/>
         <source>Syncthing launcher error occurred</source>
         <translation>Syncthing 启动器发生错误</translation>
     </message>

@@ -254,47 +254,47 @@
 <context>
     <name>Data::SyncthingNotifier</name>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="74"/>
+        <location filename="../syncthingnotifier.cpp" line="75"/>
         <source>Device %1 (%2) wants to connect.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="88"/>
+        <location filename="../syncthingnotifier.cpp" line="89"/>
         <source>Device </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="88"/>
+        <location filename="../syncthingnotifier.cpp" line="89"/>
         <source>Unknown device </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="90"/>
+        <location filename="../syncthingnotifier.cpp" line="91"/>
         <source> wants to share directory %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="92"/>
+        <location filename="../syncthingnotifier.cpp" line="93"/>
         <source> wants to share directory %1 (%2).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="107"/>
+        <location filename="../syncthingnotifier.cpp" line="108"/>
         <source>Failed to start Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="108"/>
+        <location filename="../syncthingnotifier.cpp" line="109"/>
         <source>Maybe the configured binary path is wrong or the binary is not marked as executable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="111"/>
+        <location filename="../syncthingnotifier.cpp" line="112"/>
         <source>Syncthing crashed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingnotifier.cpp" line="114"/>
+        <location filename="../syncthingnotifier.cpp" line="115"/>
         <source>Syncthing launcher error occurred</source>
         <translation type="unfinished"></translation>
     </message>

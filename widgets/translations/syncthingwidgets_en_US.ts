@@ -876,100 +876,101 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="22"/>
+        <location filename="../settings/launcheroptionpage.ui" line="21"/>
         <source>Launch Syncthing when starting the tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="44"/>
+        <location filename="../settings/launcheroptionpage.ui" line="43"/>
         <source>Syncthing executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="54"/>
+        <location filename="../settings/launcheroptionpage.ui" line="53"/>
         <source>Arguments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="64"/>
+        <location filename="../settings/launcheroptionpage.ui" line="63"/>
         <source>Use built-in Syncthing library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="71"/>
+        <location filename="../settings/launcheroptionpage.ui" line="70"/>
         <source>Config directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="81"/>
+        <location filename="../settings/launcheroptionpage.ui" line="80"/>
         <source>Log level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="89"/>
+        <location filename="../settings/launcheroptionpage.ui" line="88"/>
         <source>Debug</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="94"/>
+        <location filename="../settings/launcheroptionpage.ui" line="93"/>
         <source>Verbose</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="99"/>
+        <location filename="../settings/launcheroptionpage.ui" line="98"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="104"/>
+        <location filename="../settings/launcheroptionpage.ui" line="103"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="109"/>
+        <location filename="../settings/launcheroptionpage.ui" line="108"/>
         <source>Fatal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="117"/>
+        <location filename="../settings/launcheroptionpage.ui" line="116"/>
         <source>Data directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="130"/>
+        <location filename="../settings/launcheroptionpage.ui" line="129"/>
         <source>Show start/stop button on tray for local instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="137"/>
-        <source>Consider process status for reconnect attempts to local instance
+        <location filename="../settings/launcheroptionpage.ui" line="136"/>
+        <source>Consider process status for notifications and reconnect attempts concerning local instance
  • Don&apos;t reconnect when the process is not running
- • Try to reconnect when starting the process</source>
+ • Try to reconnect when starting the process
+ • Suppress notification about disconnect when Syncthing has been stopped manually</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="167"/>
+        <location filename="../settings/launcheroptionpage.ui" line="166"/>
         <source>Syncthing log (interleaved stdout/stderr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="180"/>
+        <location filename="../settings/launcheroptionpage.ui" line="179"/>
         <source>Apply and launch now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="197"/>
+        <location filename="../settings/launcheroptionpage.ui" line="196"/>
         <location filename="../settings/settingsdialog.cpp" line="1049"/>
         <source>Stop launched instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="216"/>
+        <location filename="../settings/launcheroptionpage.ui" line="215"/>
         <source>No log messages available yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="223"/>
+        <location filename="../settings/launcheroptionpage.ui" line="222"/>
         <source>Ensure latest log is visible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1436,62 +1437,63 @@ This dialog closes automatically when the process finally terminates.</source>
     </message>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="28"/>
-        <source>Consider systemd unit status for reconnect attempts to local instance
+        <source>Consider systemd unit status for notifications and reconnect attempts concerning local instance
  • Don&apos;t reconnect when unit not active/running
- • Try to reconnect when unit becomes active/running</source>
+ • Try to reconnect when unit becomes active/running
+ • Suppress notification about disconnect when Syncthing has been stopped manually</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="71"/>
+        <location filename="../settings/systemdoptionpage.ui" line="72"/>
         <source>Syncthing unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="94"/>
+        <location filename="../settings/systemdoptionpage.ui" line="95"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="109"/>
-        <location filename="../settings/systemdoptionpage.ui" line="164"/>
-        <location filename="../settings/systemdoptionpage.ui" line="253"/>
+        <location filename="../settings/systemdoptionpage.ui" line="110"/>
+        <location filename="../settings/systemdoptionpage.ui" line="165"/>
+        <location filename="../settings/systemdoptionpage.ui" line="254"/>
         <location filename="../settings/settingsdialog.cpp" line="1329"/>
         <location filename="../settings/settingsdialog.cpp" line="1338"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="124"/>
+        <location filename="../settings/systemdoptionpage.ui" line="125"/>
         <source>Current status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="177"/>
+        <location filename="../settings/systemdoptionpage.ui" line="178"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="194"/>
+        <location filename="../settings/systemdoptionpage.ui" line="195"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="213"/>
+        <location filename="../settings/systemdoptionpage.ui" line="214"/>
         <source>Unit file state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="266"/>
+        <location filename="../settings/systemdoptionpage.ui" line="267"/>
         <source>Enable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="283"/>
+        <location filename="../settings/systemdoptionpage.ui" line="284"/>
         <source>Disable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="81"/>
+        <location filename="../settings/systemdoptionpage.ui" line="82"/>
         <source>System unit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1835,7 +1837,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="617"/>
+        <location filename="../settings/settings.cpp" line="625"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation type="unfinished"></translation>
     </message>
