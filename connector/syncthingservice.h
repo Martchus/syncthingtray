@@ -256,7 +256,7 @@ inline bool SyncthingService::isDisabled() const
  */
 inline bool Data::SyncthingService::canEnableOrStart() const
 {
-    return isUnitAvailable() && (isDisabled() || !isRunning());
+    return (isUnitAvailable() && !isRunning()) || isDisabled();
 }
 
 /*!
