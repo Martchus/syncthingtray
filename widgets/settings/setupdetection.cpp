@@ -1,5 +1,8 @@
 #include "./setupdetection.h"
 
+// use meta-data of syncthingtray application here
+#include "resources/../../tray/resources/config.h"
+
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD) && (defined(PLATFORM_UNIX) || defined(PLATFORM_MINGW) || defined(PLATFORM_CYGWIN))
 #define PLATFORM_HAS_GETLOGIN
 #include <unistd.h>
@@ -11,8 +14,17 @@ SetupDetection::SetupDetection(QObject *parent)
     : QObject(parent)
 {
     // assume default service names
+    const auto defaultUserUnit =
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+        qEnvironmentVariable(PROJECT_VARNAME_UPPER "_SYSTEMD_USER_UNIT",
+#endif
+            QStringLiteral("syncthing.service")
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+        )
+#endif
+        ;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    userService.setUnitName(QStringLiteral("syncthing.service"));
+    userService.setUnitName(defaultUserUnit);
     systemService.setUnitName(QStringLiteral("syncthing@") %
 #ifdef PLATFORM_HAS_GETLOGIN
         QString::fromLocal8Bit(getlogin()) %
