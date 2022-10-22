@@ -528,7 +528,8 @@ void save()
  */
 void Settings::apply(SyncthingNotifier &notifier) const
 {
-    auto notifications(SyncthingHighLevelNotification::None);
+    auto notifications = SyncthingHighLevelNotification::None;
+    auto integrations = SyncthingStartupIntegration::None;
     if (notifyOn.disconnect) {
         notifications |= SyncthingHighLevelNotification::ConnectedDisconnected;
     }
@@ -547,7 +548,14 @@ void Settings::apply(SyncthingNotifier &notifier) const
     if (notifyOn.launcherErrors) {
         notifications |= SyncthingHighLevelNotification::SyncthingProcessError;
     }
+    if (launcher.considerForReconnect) {
+        integrations |= SyncthingStartupIntegration::Process;
+    }
+    if (systemd.considerForReconnect) {
+        integrations |= SyncthingStartupIntegration::Service;
+    }
     notifier.setEnabledNotifications(notifications);
+    notifier.setConsideredIntegrations(integrations);
     notifier.setIgnoreInavailabilityAfterStart(ignoreInavailabilityAfterStart);
 }
 

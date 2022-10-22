@@ -33,6 +33,7 @@ SyncthingNotifier::SyncthingNotifier(const SyncthingConnection &connection, QObj
 #endif
     , m_process(SyncthingProcess::mainInstance())
     , m_enabledNotifications(SyncthingHighLevelNotification::None)
+    , m_consideredIntegrations(SyncthingStartupIntegration::None)
     , m_previousStatus(SyncthingStatus::Disconnected)
     , m_ignoreInavailabilityAfterStart(15)
     , m_initialized(false)
@@ -132,20 +133,20 @@ bool SyncthingNotifier::isDisconnectRelevant() const
     }
 
     // consider process/launcher or systemd unit status
-    if (m_process && m_process->isManuallyStopped()) {
+    if ((m_consideredIntegrations & SyncthingStartupIntegration::Process) && m_process && m_process->isManuallyStopped()) {
         return false;
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    if (m_service && m_service->isManuallyStopped()) {
+    if ((m_consideredIntegrations & SyncthingStartupIntegration::Service) && m_service && m_service->isManuallyStopped()) {
         return false;
     }
 #endif
 
     // ignore inavailability after start or standby-wakeup
     if (m_ignoreInavailabilityAfterStart) {
-        if ((m_process && m_process->isRunning())
+        if (((m_consideredIntegrations & SyncthingStartupIntegration::Process) && m_process && m_process->isRunning())
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-            && ((m_service && m_service->isSystemdAvailable()
+            && (((m_consideredIntegrations & SyncthingStartupIntegration::Service) && m_service && m_service->isSystemdAvailable()
                     && !m_service->isActiveWithoutSleepFor(m_process->activeSince(), m_ignoreInavailabilityAfterStart))
                 || !m_process->isActiveFor(m_ignoreInavailabilityAfterStart))
 #else
@@ -155,7 +156,8 @@ bool SyncthingNotifier::isDisconnectRelevant() const
             return false;
         }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        if (m_service && m_service->isRunning() && !m_service->isActiveWithoutSleepFor(m_ignoreInavailabilityAfterStart)) {
+        if ((m_consideredIntegrations & SyncthingStartupIntegration::Service) && m_service && m_service->isRunning()
+            && !m_service->isActiveWithoutSleepFor(m_ignoreInavailabilityAfterStart)) {
             return false;
         }
 #endif

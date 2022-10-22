@@ -6,14 +6,14 @@
    <string>Systemd</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="preferences-system-services"/>
+   <iconset theme="preferences-system-services">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QCheckBox" name="showButtonCheckBox">
      <property name="font">
       <font>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -25,9 +25,10 @@
    <item>
     <widget class="QCheckBox" name="considerForReconnectCheckBox">
      <property name="text">
-      <string>Consider systemd unit status for reconnect attempts to local instance
+      <string>Consider systemd unit status for notifications and reconnect attempts concerning local instance
  • Don't reconnect when unit not active/running
- • Try to reconnect when unit becomes active/running</string>
+ • Try to reconnect when unit becomes active/running
+ • Suppress notification about disconnect when Syncthing has been stopped manually</string>
      </property>
     </widget>
    </item>

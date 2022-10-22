@@ -41,9 +41,20 @@ enum class SyncthingHighLevelNotification {
     SyncthingProcessError = (1 << 5),
 };
 
+/*!
+ * \brief The SyncthingStartupIntegration enum specifies one or more startup integrations for Syncthing.
+ * \remarks The enum is supposed to be used as flag-enum.
+ */
+enum class SyncthingStartupIntegration {
+    None = 0,
+    Process = (1 << 0),
+    Service = (1 << 1),
+};
+
 class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingNotifier : public QObject {
     Q_OBJECT
     Q_PROPERTY(SyncthingHighLevelNotification enabledNotifications READ enabledNotifications WRITE setEnabledNotifications)
+    Q_PROPERTY(SyncthingStartupIntegration consideredIntegrations READ consideredIntegrations WRITE setConsideredIntegrations)
     Q_PROPERTY(bool ignoreInavailabilityAfterStart READ ignoreInavailabilityAfterStart WRITE setIgnoreInavailabilityAfterStart)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Q_PROPERTY(const SyncthingService *service READ service WRITE setService)
@@ -51,10 +62,11 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingNotifier : public QObject {
     Q_PROPERTY(const SyncthingProcess *process READ process WRITE setProcess)
 
 public:
-    SyncthingNotifier(const SyncthingConnection &connection, QObject *parent = nullptr);
+    explicit SyncthingNotifier(const SyncthingConnection &connection, QObject *parent = nullptr);
 
     const SyncthingConnection &connection() const;
     SyncthingHighLevelNotification enabledNotifications() const;
+    SyncthingStartupIntegration consideredIntegrations() const;
     unsigned int ignoreInavailabilityAfterStart() const;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     const SyncthingService *service() const;
@@ -63,6 +75,7 @@ public:
 
 public Q_SLOTS:
     void setEnabledNotifications(SyncthingHighLevelNotification enabledNotifications);
+    void setConsideredIntegrations(SyncthingStartupIntegration consideredIntegrations);
     void setIgnoreInavailabilityAfterStart(unsigned int seconds);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     void setService(const SyncthingService *service);
@@ -103,6 +116,7 @@ private:
 #endif
     const SyncthingProcess *m_process;
     SyncthingHighLevelNotification m_enabledNotifications;
+    SyncthingStartupIntegration m_consideredIntegrations;
     SyncthingStatus m_previousStatus;
     unsigned int m_ignoreInavailabilityAfterStart;
     bool m_initialized;
@@ -125,11 +139,27 @@ inline SyncthingHighLevelNotification SyncthingNotifier::enabledNotifications() 
 }
 
 /*!
+ * \brief Returns which startup integrations are considered for filtering notifications (by default none).
+ */
+inline SyncthingStartupIntegration SyncthingNotifier::consideredIntegrations() const
+{
+    return m_consideredIntegrations;
+}
+
+/*!<
  * \brief Sets which notifications are enabled.
  */
 inline void SyncthingNotifier::setEnabledNotifications(SyncthingHighLevelNotification enabledNotifications)
 {
     m_enabledNotifications = enabledNotifications;
+}
+
+/*!
+ * \brief Sets which startup integrations are considered for filtering notifications.
+ */
+inline void SyncthingNotifier::setConsideredIntegrations(SyncthingStartupIntegration consideredIntegrations)
+{
+    m_consideredIntegrations = consideredIntegrations;
 }
 
 /*!
@@ -185,5 +215,6 @@ inline void SyncthingNotifier::setProcess(const SyncthingProcess *process)
 } // namespace Data
 
 CPP_UTILITIES_MARK_FLAG_ENUM_CLASS(Data, Data::SyncthingHighLevelNotification)
+CPP_UTILITIES_MARK_FLAG_ENUM_CLASS(Data, Data::SyncthingStartupIntegration)
 
 #endif // DATA_SYNCTHINGNOTIFIER_H
