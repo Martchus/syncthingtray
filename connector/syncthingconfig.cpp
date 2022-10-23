@@ -1,6 +1,8 @@
 #include "./syncthingconfig.h"
 #include "./utils.h"
 
+#include "resources/config.h"
+
 #include <QFile>
 #include <QStandardPaths>
 #include <QXmlStreamReader>
@@ -15,7 +17,15 @@ namespace Data {
 
 QString SyncthingConfig::locateConfigFile()
 {
-    QString path = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("syncthing/config.xml"));
+    auto
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+        path
+        = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_SYNCTHING_CONFIG_DIR");
+    if (!path.isEmpty() && QFile::exists(path += QStringLiteral("/config.xml"))) {
+        return path;
+    }
+#endif
+    path = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("syncthing/config.xml"));
     if (path.isEmpty()) {
         path = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("Syncthing/config.xml"));
     }
