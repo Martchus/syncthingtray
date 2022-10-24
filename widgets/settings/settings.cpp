@@ -551,9 +551,11 @@ void Settings::apply(SyncthingNotifier &notifier) const
     if (launcher.considerForReconnect) {
         integrations |= SyncthingStartupIntegration::Process;
     }
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     if (systemd.considerForReconnect) {
         integrations |= SyncthingStartupIntegration::Service;
     }
+#endif
     notifier.setEnabledNotifications(notifications);
     notifier.setConsideredIntegrations(integrations);
     notifier.setIgnoreInavailabilityAfterStart(ignoreInavailabilityAfterStart);
