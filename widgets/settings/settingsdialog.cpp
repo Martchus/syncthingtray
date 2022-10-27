@@ -1475,9 +1475,6 @@ void SettingsDialog::init()
         QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))));
 
     // add button for starting wizard
-    if (!::Settings::values().enableWipFeatures) {
-        return;
-    }
     auto *startWizardButton = new QPushButton(this);
     startWizardButton->setToolTip(tr("Start wizard"));
     startWizardButton->setIcon(

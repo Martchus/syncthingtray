@@ -50,9 +50,8 @@ void WizardTests::initTestCase()
     // ensure all text is English as checks rely on it
     QLocale::setDefault(QLocale::English);
 
-    // assume first launch and enable WIP guided setup
+    // assume first launch
     auto &settings = Settings::values();
-    settings.enableWipFeatures = true;
     settings.fakeFirstLaunch = true;
 
     // use an empty dir as HOME to simulate a prestine setup

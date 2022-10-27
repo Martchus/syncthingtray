@@ -406,24 +406,20 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
         setTitle(tr("Welcome to Syncthing Tray"));
         setSubTitle(tr("It looks like you're launching Syncthing Tray for the first time."));
         infoLabel->setText(tr("You must configure how to connect to Syncthing and how to launch Syncthing (if that's wanted) when using Syncthing "
-                              "Tray the first time.  A "
-                              "guided/automated setup is still in the works so the manual setup is currently the only option."));
+                              "Tray the first time."));
     } else {
         setTitle(tr("Wizard's start page"));
         setSubTitle(tr("This wizard will help you configuring Syncthing Tray."));
     }
 
-    QCommandLinkButton *startWizardCommand = nullptr;
-    if (settings.enableWipFeatures) {
-        startWizardCommand = new QCommandLinkButton(this);
-        startWizardCommand->setObjectName(QStringLiteral("startWizardCommand"));
-        startWizardCommand->setText(tr("Start guided setup"));
-        startWizardCommand->setDescription(
-            tr("Allows to configure Syncthing Tray automatically for the local Syncthing instance and helps you starting Syncthing if wanted."));
-        startWizardCommand->setIcon(
-            QIcon::fromTheme(QStringLiteral("quickwizard"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/tools-wizard.svg"))));
-        connect(startWizardCommand, &QCommandLinkButton::clicked, this, [this] { this->wizard()->next(); });
-    }
+    auto *const startWizardCommand = new QCommandLinkButton(this);
+    startWizardCommand->setObjectName(QStringLiteral("startWizardCommand"));
+    startWizardCommand->setText(tr("Start guided setup"));
+    startWizardCommand->setDescription(
+        tr("Allows to configure Syncthing Tray automatically for the local Syncthing instance and helps you starting Syncthing if wanted."));
+    startWizardCommand->setIcon(
+        QIcon::fromTheme(QStringLiteral("quickwizard"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/tools-wizard.svg"))));
+    connect(startWizardCommand, &QCommandLinkButton::clicked, this, [this] { this->wizard()->next(); });
 
     auto *const showSettingsCommand = new QCommandLinkButton(this);
     showSettingsCommand->setObjectName(QStringLiteral("showSettingsCommand"));
@@ -469,9 +465,7 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
 
     auto *const layout = new QVBoxLayout;
     layout->addWidget(infoLabel);
-    if (startWizardCommand) {
-        layout->addWidget(startWizardCommand);
-    }
+    layout->addWidget(startWizardCommand);
     layout->addWidget(showSettingsCommand);
     layout->addStretch();
     layout->addWidget(line);
