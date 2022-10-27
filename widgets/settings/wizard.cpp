@@ -49,7 +49,11 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     : QWizard(parent, flags)
 {
     setWindowTitle(tr("Setup wizard - ") + QStringLiteral(APP_NAME));
-    setWindowIcon(QIcon(QString::fromUtf8(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+    setWindowIcon(QIcon(QString::fromUtf8(":/icons/hicolor/scalable/app/syncthingtray.svg"))
+#ifdef Q_OS_WINDOWS
+                      .pixmap(16)
+#endif
+    );
     setMinimumSize(770, 550);
 
     auto *const welcomePage = new WelcomeWizardPage(this);
