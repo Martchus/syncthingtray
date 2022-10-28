@@ -755,15 +755,15 @@ QWidget *AutostartOptionPage::setupWidget()
 bool isAutostartEnabled()
 {
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
-    QFile desktopFile(QStandardPaths::locate(QStandardPaths::ConfigLocation, QStringLiteral("autostart/" PROJECT_NAME ".desktop")));
+    auto desktopFile = QFile(QStandardPaths::locate(QStandardPaths::ConfigLocation, QStringLiteral("autostart/" PROJECT_NAME ".desktop")));
     // check whether the file can be opened and whether it is enabled but prevent reading large files
     if (desktopFile.open(QFile::ReadOnly) && (desktopFile.size() > (5 * 1024) || !desktopFile.readAll().contains("Hidden=true"))) {
         return true;
     }
     return false;
 #elif defined(PLATFORM_WINDOWS)
-    QSettings settings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat);
-    return settings.contains(QStringLiteral(PROJECT_NAME));
+    return QSettings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat)
+        .contains(QStringLiteral(PROJECT_NAME));
 #elif defined(PLATFORM_MAC)
     return QFileInfo(QDir::home(), QStringLiteral("Library/LaunchAgents/" PROJECT_NAME ".plist")).isReadable();
 #else
@@ -775,7 +775,7 @@ bool isAutostartEnabled()
 /*!
  * \brief Provides a fallback for qEnvironmentVariable() when using old Qt versions.
  */
-QString qEnvironmentVariable(const char *varName, const QString &defaultValue)
+static QString qEnvironmentVariable(const char *varName, const QString &defaultValue)
 {
     const auto val(qgetenv(varName));
     return !val.isEmpty() ? QString::fromLocal8Bit(val) : defaultValue;
@@ -796,14 +796,14 @@ bool setAutostartEnabled(bool enabled)
     }
 
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
-    const QString configPath(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation));
+    const auto configPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
     if (configPath.isEmpty()) {
         return !enabled;
     }
     if (enabled && !QDir().mkpath(configPath + QStringLiteral("/autostart"))) {
         return false;
     }
-    QFile desktopFile(configPath + QStringLiteral("/autostart/" PROJECT_NAME ".desktop"));
+    auto desktopFile = QFile(configPath + QStringLiteral("/autostart/" PROJECT_NAME ".desktop"));
     if (enabled) {
         if (!desktopFile.open(QFile::WriteOnly | QFile::Truncate)) {
             return false;
@@ -825,7 +825,7 @@ bool setAutostartEnabled(bool enabled)
     }
 
 #elif defined(PLATFORM_WINDOWS)
-    QSettings settings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat);
+    auto settings = QSettings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat);
     if (enabled) {
         settings.setValue(QStringLiteral(PROJECT_NAME), QCoreApplication::applicationFilePath().replace(QChar('/'), QChar('\\')));
     } else {
@@ -835,11 +835,11 @@ bool setAutostartEnabled(bool enabled)
     return true;
 
 #elif defined(PLATFORM_MAC)
-    const QString libraryPath(QDir::home().filePath(QStringLiteral("Library")));
+    const auto libraryPath = QDir::home().filePath(QStringLiteral("Library"));
     if (enabled && !QDir().mkpath(libraryPath + QStringLiteral("/LaunchAgents"))) {
         return false;
     }
-    QFile launchdPlistFile(libraryPath + QStringLiteral("/LaunchAgents/" PROJECT_NAME ".plist"));
+    auto launchdPlistFile = QFile(libraryPath + QStringLiteral("/LaunchAgents/" PROJECT_NAME ".plist"));
     if (enabled) {
         if (!launchdPlistFile.open(QFile::WriteOnly | QFile::Truncate)) {
             return false;
