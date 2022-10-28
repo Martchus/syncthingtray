@@ -66,6 +66,7 @@ public:
     QTimer timeout;
     bool timedOut = false;
     bool configOk = false;
+    bool autostartEnabled = false;
 };
 
 } // namespace QtGui

@@ -165,7 +165,7 @@ bool Wizard::changeSettings()
 
     // enable/disable auto start
 #ifdef SETTINGS_WIZARD_AUTOSTART
-    if (!settings.isPlasmoid && autoStart() != isAutostartEnabled()) {
+    if (!settings.isPlasmoid && autoStart() != detection.autostartEnabled) {
         setAutostartEnabled(autoStart());
     }
 #endif
@@ -284,6 +284,12 @@ void Wizard::showDetailsFromSetupDetection()
     infoItems << tr("Built-in Syncthing available: ") + (Data::SyncthingLauncher::isLibSyncthingAvailable() ? tr("yes") : tr("no"));
     addParagraph(tr("Launcher:"));
     addList(infoItems);
+
+#ifdef SETTINGS_WIZARD_AUTOSTART
+    addParagraph(tr("Autostart:"));
+    infoItems << tr("Currently %1").arg(detection.autostartEnabled ? tr("enabled") : tr("disabled"));
+    addList(infoItems);
+#endif
 
     // show info in dialog
     auto dlg = QDialog(this);
@@ -801,9 +807,7 @@ void AutostartWizardPage::initializePage()
         break;
     }
 
-#ifdef SETTINGS_WIZARD_AUTOSTART
-    m_ui->enableAutostartCheckBox->setChecked(isAutostartEnabled());
-#endif
+    m_ui->enableAutostartCheckBox->setChecked(wizard->setupDetection().autostartEnabled);
 }
 
 void AutostartWizardPage::cleanupPage()
@@ -895,7 +899,7 @@ void ApplyWizardPage::initializePage()
 #endif
 #ifdef SETTINGS_WIZARD_AUTOSTART
     if (!currentSettings.isPlasmoid) {
-        logFeature(tr("autostart of Syncthing Tray"), wizard->autoStart(), isAutostartEnabled());
+        logFeature(tr("autostart of Syncthing Tray"), wizard->autoStart(), detection.autostartEnabled);
     }
 #endif
     html.append(QStringLiteral("</ul><p><b>%1</b></p><ul><li>%2</li><li>%3</li><li>%4</li></ul>")

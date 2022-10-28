@@ -1,4 +1,5 @@
 #include "./setupdetection.h"
+#include "./settingsdialog.h"
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
@@ -91,6 +92,7 @@ void SetupDetection::reset()
     timeout.stop();
     timedOut = false;
     configOk = false;
+    autostartEnabled = false;
     config.guiAddress.clear();
     config.guiApiKey.clear();
     connection.disconnect();
@@ -108,6 +110,7 @@ void SetupDetection::startTest()
     initConnection();
     connection.reconnect();
     launcher.launch(launcherSettings);
+    autostartEnabled = isAutostartEnabled();
     timeout.start();
 }
 
