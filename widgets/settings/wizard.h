@@ -135,6 +135,7 @@ public:
 
 public Q_SLOTS:
     void refresh();
+    void showCheckAgainButton();
 
 private Q_SLOTS:
     void tryToConnect();
@@ -142,6 +143,10 @@ private Q_SLOTS:
 
 private:
     SetupDetection *m_setupDetection;
+    QString m_defaultTitle;
+    QString m_defaultSubTitle;
+    QProgressBar *m_progressBar;
+    QPushButton *m_checkAgainButton;
 };
 
 class SYNCTHINGWIDGETS_EXPORT MainConfigWizardPage final : public QWizardPage {

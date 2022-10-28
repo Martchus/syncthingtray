@@ -21,6 +21,7 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QFrame>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QMessageBox>
 #include <QProgressBar>
@@ -61,7 +62,7 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     auto *const mainConfigPage = new MainConfigWizardPage(this);
     auto *const applyPage = new ApplyWizardPage(this);
     auto *const finalPage = new FinalWizardPage(this);
-    connect(mainConfigPage, &MainConfigWizardPage::retry, detectionPage, &DetectionWizardPage::refresh);
+    connect(mainConfigPage, &MainConfigWizardPage::retry, detectionPage, &DetectionWizardPage::showCheckAgainButton);
     connect(mainConfigPage, &MainConfigWizardPage::configurationSelected, this, &Wizard::handleConfigurationSelected);
     connect(this, &Wizard::configApplied, finalPage, &FinalWizardPage::completeChanged);
     connect(this, &Wizard::configApplied, finalPage, &FinalWizardPage::showResults);
@@ -488,15 +489,25 @@ bool WelcomeWizardPage::isComplete() const
 DetectionWizardPage::DetectionWizardPage(QWidget *parent)
     : QWizardPage(parent)
 {
-    setTitle(tr("Checking current Syncthing setup"));
-    setSubTitle(tr("Checking Syncthing configuration and whether Syncthing is already running or can be started …"));
+    setTitle(m_defaultTitle = tr("Checking current Syncthing setup"));
+    setSubTitle(m_defaultSubTitle = tr("Checking Syncthing configuration and whether Syncthing is already running or can be started …"));
 
-    auto *const progressBar = new QProgressBar(this);
-    progressBar->setMinimum(0);
-    progressBar->setMaximum(0);
+    m_progressBar = new QProgressBar(this);
+    m_progressBar->setMinimum(0);
+    m_progressBar->setMaximum(0);
+    m_checkAgainButton = new QPushButton(this);
+    m_checkAgainButton->setText(tr("Check again"));
+    m_checkAgainButton->hide();
+    m_checkAgainButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh")));
+    m_checkAgainButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    connect(m_checkAgainButton, &QPushButton::clicked, this, &DetectionWizardPage::refresh);
 
-    auto *const layout = new QVBoxLayout;
-    layout->addWidget(progressBar);
+    auto *const layout = new QVBoxLayout(this);
+    auto *const buttonLayout = new QHBoxLayout(this);
+    buttonLayout->addWidget(m_checkAgainButton);
+    buttonLayout->addStretch();
+    layout->addWidget(m_progressBar);
+    layout->addLayout(buttonLayout);
     setLayout(layout);
 }
 
@@ -530,6 +541,14 @@ void DetectionWizardPage::refresh()
     initializePage();
 }
 
+void DetectionWizardPage::showCheckAgainButton()
+{
+    setTitle(tr("Re-visit setup detection"));
+    setSubTitle(tr("You might trigger checking the Syncthing setup again"));
+    m_progressBar->hide();
+    m_checkAgainButton->show();
+}
+
 void DetectionWizardPage::tryToConnect()
 {
     // skip if the wizard has been closed
@@ -537,6 +556,9 @@ void DetectionWizardPage::tryToConnect()
     if (!wizard || wizard->isHidden()) {
         return;
     }
+
+    setTitle(m_defaultTitle);
+    setSubTitle(m_defaultSubTitle);
 
     // determine path of Syncthing's config file, possibly ask user to select it
     m_setupDetection->determinePaths();

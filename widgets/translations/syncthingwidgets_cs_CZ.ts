@@ -163,127 +163,127 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="827"/>
+        <location filename="../settings/wizard.cpp" line="849"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="828"/>
+        <location filename="../settings/wizard.cpp" line="850"/>
         <source>Apply selected configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="829"/>
+        <location filename="../settings/wizard.cpp" line="851"/>
         <source>Review the summary of the configuration changes before applying them</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="853"/>
+        <location filename="../settings/wizard.cpp" line="875"/>
         <source>Summary:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="860"/>
+        <location filename="../settings/wizard.cpp" line="882"/>
         <source>Keep %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="860"/>
+        <location filename="../settings/wizard.cpp" line="882"/>
         <source>enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="860"/>
+        <location filename="../settings/wizard.cpp" line="882"/>
         <source>disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="861"/>
+        <location filename="../settings/wizard.cpp" line="883"/>
         <source>%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="861"/>
+        <location filename="../settings/wizard.cpp" line="883"/>
         <source>Enable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="861"/>
+        <location filename="../settings/wizard.cpp" line="883"/>
         <source>Disable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="867"/>
+        <location filename="../settings/wizard.cpp" line="889"/>
         <source>Keeping connection and launcher configuration as-is</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="870"/>
+        <location filename="../settings/wizard.cpp" line="892"/>
         <source>Configure Syncthing Tray to use the currently running Syncthing instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="871"/>
+        <location filename="../settings/wizard.cpp" line="893"/>
         <source>Do &lt;i&gt;not&lt;/i&gt; change how Syncthing is launched</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="875"/>
+        <location filename="../settings/wizard.cpp" line="897"/>
         <source>Start Syncthing via Syncthing Tray&apos;s launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="877"/>
+        <location filename="../settings/wizard.cpp" line="899"/>
         <source>executable from PATH as separate process, &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="878"/>
+        <location filename="../settings/wizard.cpp" line="900"/>
         <source>built-in Syncthing library, &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="883"/>
+        <location filename="../settings/wizard.cpp" line="905"/>
         <source>Start Syncthing by enabling and starting its systemd unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="885"/>
+        <location filename="../settings/wizard.cpp" line="907"/>
         <source>Using user unit &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="886"/>
+        <location filename="../settings/wizard.cpp" line="908"/>
         <source>Using system unit &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="897"/>
+        <location filename="../settings/wizard.cpp" line="919"/>
         <source>systemd integration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="902"/>
+        <location filename="../settings/wizard.cpp" line="924"/>
         <source>autostart of Syncthing Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="906"/>
+        <location filename="../settings/wizard.cpp" line="928"/>
         <source>Further information:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="906"/>
+        <location filename="../settings/wizard.cpp" line="928"/>
         <source>Click on &quot;Show details from setup detection&quot; for further details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="907"/>
+        <location filename="../settings/wizard.cpp" line="929"/>
         <source>If you want to do amendments, you can head back one or more steps.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="907"/>
+        <location filename="../settings/wizard.cpp" line="929"/>
         <source>If you abort now, nothing will be changed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -354,12 +354,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="769"/>
+        <location filename="../settings/wizard.cpp" line="791"/>
         <source>Configure autostart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="770"/>
+        <location filename="../settings/wizard.cpp" line="792"/>
         <source>Select whether to start Syncthing Tray automatically</source>
         <translation type="unfinished"></translation>
     </message>
@@ -622,32 +622,47 @@
 <context>
     <name>QtGui::DetectionWizardPage</name>
     <message>
-        <location filename="../settings/wizard.cpp" line="491"/>
+        <location filename="../settings/wizard.cpp" line="492"/>
         <source>Checking current Syncthing setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="492"/>
+        <location filename="../settings/wizard.cpp" line="493"/>
         <source>Checking Syncthing configuration and whether Syncthing is already running or can be started …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="549"/>
-        <source>It looks like Syncthing has not been running on this system before as its configuration cannot be found. Is that correct?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/wizard.cpp" line="545"/>
-        <source>Yes, continue configuration</source>
+        <location filename="../settings/wizard.cpp" line="499"/>
+        <source>Check again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="546"/>
+        <source>Re-visit setup detection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="547"/>
+        <source>You might trigger checking the Syncthing setup again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="571"/>
+        <source>It looks like Syncthing has not been running on this system before as its configuration cannot be found. Is that correct?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="567"/>
+        <source>Yes, continue configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="568"/>
         <source>No, let me select Syncthing&apos;s configuration file manually</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="555"/>
+        <location filename="../settings/wizard.cpp" line="577"/>
         <source>Select Syncthing&apos;s configuration file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -692,37 +707,37 @@
 <context>
     <name>QtGui::FinalWizardPage</name>
     <message>
-        <location filename="../settings/wizard.cpp" line="963"/>
+        <location filename="../settings/wizard.cpp" line="985"/>
         <source>Waiting for configuration wizard completed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="964"/>
+        <location filename="../settings/wizard.cpp" line="986"/>
         <source>Changes are being applied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="970"/>
+        <location filename="../settings/wizard.cpp" line="992"/>
         <source>Configuration wizard completed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="974"/>
+        <location filename="../settings/wizard.cpp" line="996"/>
         <source>All changes have been applied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="975"/>
+        <location filename="../settings/wizard.cpp" line="997"/>
         <source>The configuration has been changed successfully. You can close the wizard and &lt;a href=&quot;openSyncthing&quot;&gt;open Syncthing&lt;/a&gt; to pair remote devices and add folders for sharing. If you need further help, read the &lt;a href=&quot;openDocs&quot;&gt;documentation to get started&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="979"/>
+        <location filename="../settings/wizard.cpp" line="1001"/>
         <source>Not all changes could be applied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="983"/>
+        <location filename="../settings/wizard.cpp" line="1005"/>
         <source>You may try to head back one or more steps and try again or finish the wizard and configure Syncthing Tray manually.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1060,37 +1075,37 @@
 <context>
     <name>QtGui::MainConfigWizardPage</name>
     <message>
-        <location filename="../settings/wizard.cpp" line="576"/>
+        <location filename="../settings/wizard.cpp" line="598"/>
         <source>Select what configuration to apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="577"/>
+        <location filename="../settings/wizard.cpp" line="599"/>
         <source>Something when wrong when checking the Syncthing setup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="578"/>
+        <location filename="../settings/wizard.cpp" line="600"/>
         <source>Show details from setup detection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="653"/>
+        <location filename="../settings/wizard.cpp" line="675"/>
         <source>Systemd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="685"/>
+        <location filename="../settings/wizard.cpp" line="707"/>
         <source>&lt;b&gt;The Syncthing config could be located under &quot;%1&quot; but it seems invalid/incomplete.&lt;/b&gt; Hence Syncthing is assumed to be not running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="677"/>
+        <location filename="../settings/wizard.cpp" line="699"/>
         <source>Looks like Syncthing is not running yet. You can launch it via %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="677"/>
+        <location filename="../settings/wizard.cpp" line="699"/>
         <source> and </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1135,17 +1150,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="626"/>
+        <location filename="../settings/wizard.cpp" line="648"/>
         <source>Looks like Syncthing is already running and Syncthing Tray can be configured accordingly automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="660"/>
+        <location filename="../settings/wizard.cpp" line="682"/>
         <source>Syncthing Tray&apos;s launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="679"/>
+        <location filename="../settings/wizard.cpp" line="701"/>
         <source>Looks like Syncthing is not running yet and needs to be installed before Syncthing Tray can be configured.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1589,72 +1604,72 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::WelcomeWizardPage</name>
     <message>
-        <location filename="../settings/wizard.cpp" line="412"/>
+        <location filename="../settings/wizard.cpp" line="413"/>
         <source>Welcome to Syncthing Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="413"/>
+        <location filename="../settings/wizard.cpp" line="414"/>
         <source>It looks like you&apos;re launching Syncthing Tray for the first time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="414"/>
+        <location filename="../settings/wizard.cpp" line="415"/>
         <source>You must configure how to connect to Syncthing and how to launch Syncthing (if that&apos;s wanted) when using Syncthing Tray the first time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="417"/>
+        <location filename="../settings/wizard.cpp" line="418"/>
         <source>Wizard&apos;s start page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="418"/>
+        <location filename="../settings/wizard.cpp" line="419"/>
         <source>This wizard will help you configuring Syncthing Tray.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="423"/>
+        <location filename="../settings/wizard.cpp" line="424"/>
         <source>Start guided setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="425"/>
+        <location filename="../settings/wizard.cpp" line="426"/>
         <source>Allows to configure Syncthing Tray automatically for the local Syncthing instance and helps you starting Syncthing if wanted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="433"/>
+        <location filename="../settings/wizard.cpp" line="434"/>
         <source>Configure connection and launcher settings manually</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="435"/>
+        <location filename="../settings/wizard.cpp" line="436"/>
         <source>Head back to settings to configure connection and launcher manually</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="438"/>
+        <location filename="../settings/wizard.cpp" line="439"/>
         <source>Note that the connection settings allow importing URL, credentials and API-key from the local Syncthing configuration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="454"/>
+        <location filename="../settings/wizard.cpp" line="455"/>
         <source>Show Syncthing&apos;s documentation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="455"/>
+        <location filename="../settings/wizard.cpp" line="456"/>
         <source>It contains general information about configuring Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="461"/>
+        <location filename="../settings/wizard.cpp" line="462"/>
         <source>Show Syncthing Tray&apos;s README</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="462"/>
+        <location filename="../settings/wizard.cpp" line="463"/>
         <source>It contains documentation about this GUI integration specifically.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1662,192 +1677,192 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::Wizard</name>
     <message>
-        <location filename="../settings/wizard.cpp" line="51"/>
+        <location filename="../settings/wizard.cpp" line="52"/>
         <source>Setup wizard - </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="187"/>
+        <location filename="../settings/wizard.cpp" line="188"/>
         <source>The internal launcher has not been initialized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="199"/>
+        <location filename="../settings/wizard.cpp" line="200"/>
         <source>The service handler has not been initialized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="232"/>
+        <location filename="../settings/wizard.cpp" line="233"/>
         <source>Unable to locate Syncthing config file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="234"/>
+        <location filename="../settings/wizard.cpp" line="235"/>
         <source>Located Syncthing config file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="236"/>
+        <location filename="../settings/wizard.cpp" line="237"/>
         <source>Syncthing config file looks ok.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="238"/>
+        <location filename="../settings/wizard.cpp" line="239"/>
         <source>Syncthing config file looks invalid/incomplete.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="241"/>
+        <location filename="../settings/wizard.cpp" line="242"/>
         <source>Syncthing configuration:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="249"/>
+        <location filename="../settings/wizard.cpp" line="250"/>
         <source>Could connect to Syncthing under: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="250"/>
+        <location filename="../settings/wizard.cpp" line="251"/>
         <source>Syncthing version: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="251"/>
+        <location filename="../settings/wizard.cpp" line="252"/>
         <source>Syncthing device ID: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="252"/>
+        <location filename="../settings/wizard.cpp" line="253"/>
         <source>Syncthing status: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="254"/>
+        <location filename="../settings/wizard.cpp" line="255"/>
         <source>Additional Syncthing status info: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="289"/>
+        <location filename="../settings/wizard.cpp" line="290"/>
         <source>Autostart:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="290"/>
+        <location filename="../settings/wizard.cpp" line="291"/>
         <source>Currently %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="290"/>
+        <location filename="../settings/wizard.cpp" line="291"/>
         <source>enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="290"/>
+        <location filename="../settings/wizard.cpp" line="291"/>
         <source>disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="331"/>
+        <location filename="../settings/wizard.cpp" line="332"/>
         <source>The Syncthing process exited prematurely. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="344"/>
+        <location filename="../settings/wizard.cpp" line="345"/>
         <source>The Syncthing service stopped prematurely. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="368"/>
+        <location filename="../settings/wizard.cpp" line="369"/>
         <source>Ran into timeout while waiting for Syncthing to create config file. Maybe Syncthing created its config file under an unexpected location. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="379"/>
+        <location filename="../settings/wizard.cpp" line="380"/>
         <source>Checkout Syncthing&apos;s log for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="383"/>
+        <location filename="../settings/wizard.cpp" line="384"/>
         <source> It can be accessed within the &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="388"/>
+        <location filename="../settings/wizard.cpp" line="389"/>
         <source> It is normally written to the system journal (and can be accessed via e.g. journalctl).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="259"/>
+        <location filename="../settings/wizard.cpp" line="260"/>
         <source>API connection:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="262"/>
+        <location filename="../settings/wizard.cpp" line="263"/>
         <source>API connection errors:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="269"/>
+        <location filename="../settings/wizard.cpp" line="270"/>
         <source>State of user unit file &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="270"/>
+        <location filename="../settings/wizard.cpp" line="271"/>
         <source>State of system unit file &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="267"/>
+        <location filename="../settings/wizard.cpp" line="268"/>
         <source>Systemd:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="257"/>
+        <location filename="../settings/wizard.cpp" line="258"/>
         <source>Could NOT connect to Syncthing under: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="273"/>
+        <location filename="../settings/wizard.cpp" line="274"/>
         <source>No available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="279"/>
+        <location filename="../settings/wizard.cpp" line="280"/>
         <source>Could test-launch Syncthing successfully, exit code: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="280"/>
+        <location filename="../settings/wizard.cpp" line="281"/>
         <source>Syncthing version returned from test-launch: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="282"/>
+        <location filename="../settings/wizard.cpp" line="283"/>
         <source>Unable to test-launch Syncthing: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="284"/>
+        <location filename="../settings/wizard.cpp" line="285"/>
         <source>Built-in Syncthing available: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="284"/>
+        <location filename="../settings/wizard.cpp" line="285"/>
         <source>yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="284"/>
+        <location filename="../settings/wizard.cpp" line="285"/>
         <source>no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="285"/>
+        <location filename="../settings/wizard.cpp" line="286"/>
         <source>Launcher:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="297"/>
+        <location filename="../settings/wizard.cpp" line="298"/>
         <source>Details from setup detection - </source>
         <translation type="unfinished"></translation>
     </message>
