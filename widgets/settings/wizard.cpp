@@ -800,6 +800,10 @@ void AutostartWizardPage::initializePage()
         m_ui->systemdEnabledLabel->show();
         break;
     }
+
+#ifdef SETTINGS_WIZARD_AUTOSTART
+    m_ui->enableAutostartCheckBox->setChecked(isAutostartEnabled());
+#endif
 }
 
 void AutostartWizardPage::cleanupPage()
