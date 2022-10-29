@@ -27,7 +27,7 @@ public:
     QCoreApplication &application();
     Data::SyncthingProcess &syncthingProcess();
 
-public Q_SLOTS:
+public:
     void start();
     void stop();
     bool isInterleavedOutputEnabled() const;
