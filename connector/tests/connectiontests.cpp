@@ -121,17 +121,17 @@ void ConnectionTests::setUp()
     m_connection.setSyncthingUrl(QStringLiteral("http://127.0.0.1:") + syncthingPort());
 
     // keep track of status changes
-    QObject::connect(&m_connection, &SyncthingConnection::statusChanged,
+    QObject::connect(&m_connection, &SyncthingConnection::statusChanged, &m_connection,
         [this] { cerr << " - Connection status changed to: " << m_connection.statusText().toLocal8Bit().data() << endl; });
 
     // log configuration change
     if (qEnvironmentVariableIsSet("SYNCTHING_TEST_DUMP_CONFIG_UPDATES")) {
-        QObject::connect(&m_connection, &SyncthingConnection::newConfig,
+        QObject::connect(&m_connection, &SyncthingConnection::newConfig, &m_connection,
             [](const QJsonObject &config) { cerr << " - New config: " << QJsonDocument(config).toJson(QJsonDocument::Indented).data() << endl; });
     }
 
     // log errors
-    QObject::connect(&m_connection, &SyncthingConnection::error,
+    QObject::connect(&m_connection, &SyncthingConnection::error, &m_connection,
         [](const QString &message) { cerr << " - Connection error: " << message.toLocal8Bit().data() << endl; });
 
     // reduce traffic poll interval to 10 seconds
