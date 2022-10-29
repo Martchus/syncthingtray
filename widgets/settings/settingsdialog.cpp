@@ -4,6 +4,8 @@
 
 #include "../misc/syncthinglauncher.h"
 
+#include <qtutilities/misc/compat.h>
+
 #include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingprocess.h>
@@ -770,17 +772,6 @@ bool isAutostartEnabled()
     return false;
 #endif
 }
-
-#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
-/*!
- * \brief Provides a fallback for qEnvironmentVariable() when using old Qt versions.
- */
-static QString qEnvironmentVariable(const char *varName, const QString &defaultValue)
-{
-    const auto val(qgetenv(varName));
-    return !val.isEmpty() ? QString::fromLocal8Bit(val) : defaultValue;
-}
-#endif
 
 /*!
  * \brief Sets whether the application is launchedc on startup.
