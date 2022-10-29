@@ -2,13 +2,18 @@
 #include "./helper.h"
 
 #include <c++utilities/conversion/conversionexception.h>
+#include <c++utilities/conversion/stringbuilder.h>
 #include <c++utilities/conversion/stringconversion.h>
 #include <c++utilities/tests/testutils.h>
 
 #include <QDir>
 #include <QFileInfo>
 
+#include <functional>
+#include <stdexcept>
+
 using namespace std;
+using namespace std::placeholders;
 
 namespace CppUtilities {
 
@@ -19,7 +24,12 @@ SyncthingTestInstance::SyncthingTestInstance()
     : m_apiKey(QStringLiteral("syncthingtestinstance"))
     , m_app(dummy1, &dummy2)
     , m_interleavedOutput(false)
+    , m_processSupposedToRun(false)
 {
+    QObject::connect(&m_syncthingProcess, &Data::SyncthingProcess::errorOccurred, &m_syncthingProcess,
+        std::bind(&SyncthingTestInstance::handleError, this, _1), Qt::QueuedConnection);
+    QObject::connect(&m_syncthingProcess, &Data::SyncthingProcess::finished, &m_syncthingProcess,
+        std::bind(&SyncthingTestInstance::handleFinished, this, _1, _2), Qt::QueuedConnection);
 }
 
 /*!
@@ -85,6 +95,7 @@ void SyncthingTestInstance::start()
     cerr << "\n - Launching Syncthing: "
          << syncthingPath.toStdString()
          << ' ' << args.join(QChar(' ')).toStdString() << endl;
+    m_processSupposedToRun = true;
     m_syncthingProcess.start(syncthingPath, args);
     // clang-format on
 }
@@ -94,6 +105,7 @@ void SyncthingTestInstance::start()
  */
 void SyncthingTestInstance::stop()
 {
+    m_processSupposedToRun = false;
     if (m_syncthingProcess.isRunning()) {
         cerr << "\n - Waiting for Syncthing to terminate ..." << endl;
         m_syncthingProcess.terminate();
@@ -135,4 +147,25 @@ void SyncthingTestInstance::setInterleavedOutputEnabledFromEnv()
         setInterleavedOutputEnabled(true);
     }
 }
+
+/*!
+ * \brief Throws an exception to abort testing when the process cannot be started.
+ */
+void SyncthingTestInstance::handleError(QProcess::ProcessError error)
+{
+    Q_UNUSED(error)
+    throw std::runtime_error(argsToString("Unable to start Syncthing ("sv, m_syncthingProcess.errorString().toStdString(), ')'));
+}
+
+/*!
+ * \brief Throws an exception to abort testing when the process exists unexpectedly.
+ */
+void SyncthingTestInstance::handleFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    if (m_processSupposedToRun) {
+        throw std::runtime_error(argsToString("Syncthing exited unexpectedly ("sv,
+            exitStatus == QProcess::NormalExit ? "normal exit"sv : "exited with error"sv, ", exit code: "sv, exitCode, ')'));
+    }
+}
+
 } // namespace CppUtilities

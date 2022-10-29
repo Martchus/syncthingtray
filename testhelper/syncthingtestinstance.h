@@ -35,11 +35,16 @@ public:
     void setInterleavedOutputEnabledFromEnv();
 
 private:
+    void handleError(QProcess::ProcessError error);
+    void handleFinished(int exitCode, QProcess::ExitStatus exitStatus);
+
+private:
     QString m_apiKey;
     QString m_syncthingPort;
     QCoreApplication m_app;
     Data::SyncthingProcess m_syncthingProcess;
     bool m_interleavedOutput;
+    bool m_processSupposedToRun;
 };
 
 inline const QString &SyncthingTestInstance::apiKey() const
