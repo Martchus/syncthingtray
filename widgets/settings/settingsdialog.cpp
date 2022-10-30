@@ -1469,7 +1469,7 @@ void SettingsDialog::init()
     auto *startWizardButton = new QPushButton(this);
     startWizardButton->setToolTip(tr("Start wizard"));
     startWizardButton->setIcon(
-        QIcon::fromTheme(QStringLiteral("tools-wizard"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/tools-wizard.svg"))));
+        QIcon::fromTheme(QStringLiteral("quickwizard"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/tools-wizard.svg"))));
     startWizardButton->setFlat(true);
     startWizardButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     connect(startWizardButton, &QPushButton::clicked, this, &SettingsDialog::wizardRequested);

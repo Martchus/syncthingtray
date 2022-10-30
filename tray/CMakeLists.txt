@@ -90,7 +90,7 @@ set(REQUIRED_ICONS
     system-search
     system-file-manager
     text-x-generic
-    tools-wizard
+    quickwizard
     view-refresh
     window-close
     window-pin)

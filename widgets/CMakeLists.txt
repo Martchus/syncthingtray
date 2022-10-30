@@ -79,7 +79,7 @@ set(REQUIRED_ICONS
     emblem-remove
     go-down
     go-up
-    tools-wizard
+    quickwizard
     help-contents)
 
 set(QT_TESTS wizard)
