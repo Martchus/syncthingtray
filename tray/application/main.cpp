@@ -170,10 +170,10 @@ int runApplication(int argc, const char *const *argv)
     connectionArg.setRequiredValueCount(Argument::varValueCount);
     auto configPathArg = ConfigValueArgument("config-dir-path", '\0', "specifies the path to the configuration directory", { "path" });
     configPathArg.setEnvironmentVariable(PROJECT_VARNAME_UPPER "_CONFIG_DIR");
-    auto singleInstance = Argument("single-instance", '\0', "does nothing if a tray icon is already shown");
+    auto singleInstanceArg = Argument("single-instance", '\0', "does nothing if a tray icon is already shown");
     auto newInstanceArg = Argument("new-instance", '\0', "disable the usual single-process behavior");
     auto &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
-    widgetsGuiArg.addSubArguments({ &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstance,
+    widgetsGuiArg.addSubArguments({ &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstanceArg,
         &newInstanceArg, &showWizardArg, &assumeFirstLaunchArg, &wipArg });
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
     auto cliArg = OperationArgument("cli", 'c', "run Syncthing's CLI");
@@ -259,7 +259,7 @@ int runApplication(int argc, const char *const *argv)
     }
 
     // don't create a new instance if --single-instance has been specified
-    if (!firstInstance && singleInstance.isPresent()) {
+    if (!firstInstance && singleInstanceArg.isPresent()) {
         return 0;
     }
 
