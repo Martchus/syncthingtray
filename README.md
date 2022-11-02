@@ -30,6 +30,7 @@ GitHub only contains a fraction of the available options.
     * Deepin Desktop Environment
     * Xfce
     * Sway/Swaybar/Waybar
+    * i3
     * Windows 10
     * macOS 10.14 Mojave
 
