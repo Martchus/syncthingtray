@@ -14,6 +14,7 @@
 #include <QMessageBox>
 #include <QProgressBar>
 #include <QRadioButton>
+#include <QRegularExpression>
 #include <QTemporaryDir>
 #include <QTextBrowser>
 
@@ -281,11 +282,13 @@ void WizardTests::testConfiguringCurrentlyRunningSyncthing()
     setupDetection.determinePaths();
     auto configFile = QFile(setupDetection.configFilePath);
     QVERIFY(configFile.open(QFile::ReadOnly));
-    auto config = configFile.readAll();
+    auto config = QString::fromUtf8(configFile.readAll());
     configFile.close();
-    config.replace(QByteArray(":8384"), (QChar(':') + m_syncthingPort).toUtf8());
+    config.replace(QRegularExpression("<address>127.0.0.1:.*</address>"),
+        QStringLiteral("<address>127.0.0.1:") % m_syncthingPort % QStringLiteral("</address>"));
+    const auto configData = config.toUtf8();
     QVERIFY(configFile.open(QFile::WriteOnly | QFile::Truncate));
-    QCOMPARE(configFile.write(config), config.size());
+    QCOMPARE(configFile.write(configData), configData.size());
     configFile.close();
 
     // show wizard and proceed with guided setup
