@@ -71,7 +71,7 @@ void WizardTests::initTestCase()
 
     // read syncthing port from env so it can be customized should the default port already be used otherwise
     // notes: This is passed via "--gui-address=http://127.0.0.1:$port" so the Syncthing test instance will not interfere with the actual Syncthing setup.
-    //        The config file will still contain "127.0.0.1:8384", though.
+    //        The config file will still contain "127.0.0.1:8384" (or a random port if 8384 is already used by another application), though.
     const auto syncthingPortFromEnv = qEnvironmentVariableIntValue("SYNCTHING_PORT");
     m_syncthingPort = !syncthingPortFromEnv ? QStringLiteral("4001") : QString::number(syncthingPortFromEnv);
     m_syncthingGuiAddress = QStringLiteral("http://127.0.0.1:") + m_syncthingPort;
@@ -263,7 +263,8 @@ void WizardTests::testConfiguringLauncher()
     QVERIFY(!settings.systemd.considerForReconnect);
     QVERIFY(!settings.systemd.showButton);
 #endif
-    QCOMPARE(settings.connection.primary.syncthingUrl, QStringLiteral("http://127.0.0.1:8384"));
+    // cannot verify the port from Syncthing's config, see comment in setup function
+    //QCOMPARE(settings.connection.primary.syncthingUrl, QStringLiteral("http://127.0.0.1:8384"));
     QVERIFY(!settings.connection.primary.apiKey.isEmpty());
     QCOMPARE(settings.connection.secondary.size(), 0);
 }
