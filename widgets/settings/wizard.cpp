@@ -298,12 +298,11 @@ void Wizard::showDetailsFromSetupDetection()
     dlg.setWindowTitle(tr("Details from setup detection - ") + QStringLiteral(APP_NAME));
     dlg.resize(500, 400);
     QtUtilities::centerWidgetAvoidingOverflow(&dlg);
-    auto layout = QBoxLayout(QBoxLayout::Up);
-    layout.setContentsMargins(0, 0, 0, 0);
+    auto *const layout = new QBoxLayout(QBoxLayout::Up, &dlg);
+    layout->setContentsMargins(0, 0, 0, 0);
     auto textEdit = QTextEdit(this);
     textEdit.setHtml(info);
-    layout.addWidget(&textEdit);
-    dlg.setLayout(&layout);
+    layout->addWidget(&textEdit);
     dlg.exec();
 }
 
@@ -470,7 +469,7 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
         }
     });
 
-    auto *const layout = new QVBoxLayout;
+    auto *const layout = new QVBoxLayout(this);
     layout->addWidget(infoLabel);
     layout->addWidget(startWizardCommand);
     layout->addWidget(showSettingsCommand);
@@ -478,7 +477,6 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     layout->addWidget(line);
     layout->addWidget(showDocsCommand);
     layout->addWidget(showReadmeCommand);
-    setLayout(layout);
 }
 
 bool WelcomeWizardPage::isComplete() const
@@ -503,12 +501,11 @@ DetectionWizardPage::DetectionWizardPage(QWidget *parent)
     connect(m_checkAgainButton, &QPushButton::clicked, this, &DetectionWizardPage::refresh);
 
     auto *const layout = new QVBoxLayout(this);
-    auto *const buttonLayout = new QHBoxLayout(this);
+    auto *const buttonLayout = new QHBoxLayout;
     buttonLayout->addWidget(m_checkAgainButton);
     buttonLayout->addStretch();
     layout->addWidget(m_progressBar);
     layout->addLayout(buttonLayout);
-    setLayout(layout);
 }
 
 bool DetectionWizardPage::isComplete() const
@@ -939,10 +936,9 @@ bool ApplyWizardPage::validatePage()
 FinalWizardPage::FinalWizardPage(QWidget *parent)
     : QWizardPage(parent)
 {
-    auto *const layout = new QVBoxLayout;
+    auto *const layout = new QVBoxLayout(this);
     layout->addWidget(m_progressBar = new QProgressBar());
     layout->addWidget(m_label = new QLabel());
-    setLayout(layout);
 
     m_label->setObjectName(QStringLiteral("label"));
     m_label->setWordWrap(true);
