@@ -58,6 +58,7 @@ void WizardTests::initTestCase()
     // use an empty dir as HOME to simulate a prestine setup
     qDebug() << QStringLiteral("HOME dir: ") + m_homeDir.path();
     qputenv("HOME", m_homeDir.path().toLocal8Bit());
+    qputenv("LIB_SYNCTHING_CONNECTOR_SYNCTHING_CONFIG_DIR", (m_homeDir.path() + QStringLiteral("/.config/syncthing")).toLocal8Bit());
     QVERIFY(m_homeDir.isValid());
 
     // assert there's no connection setting present initially

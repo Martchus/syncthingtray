@@ -20,7 +20,10 @@ namespace Data {
 QString SyncthingConfig::locateConfigFile()
 {
     auto path = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_SYNCTHING_CONFIG_DIR");
-    if (!path.isEmpty() && QFile::exists(path += QStringLiteral("/config.xml"))) {
+    if (!path.isEmpty()) {
+        if (!QFile::exists(path += QStringLiteral("/config.xml"))) {
+            path.clear();
+        }
         return path;
     }
     path = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("syncthing/config.xml"));
