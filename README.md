@@ -491,6 +491,19 @@ It is possible to turn on logging of the underlying library by setting environme
 * `LIB_SYNCTHING_CONNECTOR_LOG_EVENTS`: log events emitted by Syncthing's events REST-API endpoint
 * `LIB_SYNCTHING_CONNECTOR_LOG_DIRS_OR_DEVS_RESETTED`: log when directories/devices are internally reset
 
+### Useful environment variables for development
+* `QT_QPA_PLATFORM`: set to `offscreen` to disable graphical output, e.g. to run tests in headless
+  environment
+* `LIB_SYNCTHING_CONNECTOR_SYNCTHING_CONFIG_DIR`: override the path where Syncthing Tray's backend expects
+  Syncthing's `config.xml` file to be in
+* `SYNCTHINGTRAY_FAKE_FIRST_LAUNCH`: assume Syncthing Tray (or the Plasmoid) has been launched for the
+  first time
+* `SYNCTHINGTRAY_ENABLE_WIP_FEATURES`: enable work-in-progress/experimental features
+* `SYNCTHING_PATH`: override the path of Syncthing's executable when running tests
+* `SYNCTHING_PORT`: override the port of the Syncthing test instance spawned when running tests
+* `SYNCTHINGTRAY_SYSTEMD_USER_UNIT`: override the name of the systemd user-unit checked by the wizard's
+  setup detection
+
 ## Known bugs and workarounds
 The following bugs are caused by dependencies or limitations of certain
 platforms. For bugs of Syncthing Tray itself, checkout the issues on GitHub.
