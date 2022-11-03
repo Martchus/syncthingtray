@@ -40,6 +40,7 @@ private:
     QString m_syncthingPort;
     QString m_syncthingGuiAddress;
     Data::SyncthingLauncher m_launcher;
+    QByteArray m_syncthingLog;
 };
 
 /*!
@@ -77,6 +78,10 @@ void WizardTests::initTestCase()
     const auto syncthingPortFromEnv = qEnvironmentVariableIntValue("SYNCTHING_PORT");
     m_syncthingPort = !syncthingPortFromEnv ? QStringLiteral("4001") : QString::number(syncthingPortFromEnv);
     m_syncthingGuiAddress = QStringLiteral("http://127.0.0.1:") + m_syncthingPort;
+
+    // gather Syncthing's output
+    m_launcher.setEmittingOutput(true);
+    connect(&m_launcher, &Data::SyncthingLauncher::outputAvailable, this, [this](const QByteArray &output) { m_syncthingLog += output; });
 }
 
 void WizardTests::cleanupTestCase()
@@ -85,6 +90,7 @@ void WizardTests::cleanupTestCase()
         qDebug() << "terminating Syncthing";
         m_launcher.terminate();
     }
+    qDebug().noquote() << "Syncthing log during testrun:\n" << m_syncthingLog;
 }
 
 /*!
