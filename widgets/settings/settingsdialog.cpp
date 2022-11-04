@@ -277,7 +277,7 @@ void ConnectionOptionPage::removeSelectedConfig()
     }
 
     if (index == 0) {
-        m_primarySettings = move(m_secondarySettings.front());
+        m_primarySettings = std::move(m_secondarySettings.front());
         m_secondarySettings.erase(m_secondarySettings.begin());
     } else {
         m_secondarySettings.erase(m_secondarySettings.begin() + (index - 1));

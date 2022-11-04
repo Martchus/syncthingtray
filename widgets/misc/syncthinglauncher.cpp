@@ -57,7 +57,7 @@ void SyncthingLauncher::setEmittingOutput(bool emittingOutput)
     }
     QByteArray data;
     m_outputBuffer.swap(data);
-    emit outputAvailable(move(data));
+    emit outputAvailable(std::move(data));
 }
 
 /*!
@@ -241,7 +241,7 @@ void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, cons
     messageData.append(message, static_cast<int>(messageSize));
     messageData.append('\n');
 
-    handleOutputAvailable(move(messageData));
+    handleOutputAvailable(std::move(messageData));
 }
 #endif
 

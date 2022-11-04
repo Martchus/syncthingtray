@@ -582,7 +582,7 @@ SyncthingDir *SyncthingConnection::addDirInfo(std::vector<SyncthingDir> &dirs, c
     }
     int row;
     if (auto *const existingDirInfo = findDirInfo(dirId, row)) {
-        dirs.emplace_back(move(*existingDirInfo));
+        dirs.emplace_back(std::move(*existingDirInfo));
     } else {
         dirs.emplace_back(dirId);
     }
@@ -685,7 +685,7 @@ SyncthingDev *SyncthingConnection::addDevInfo(std::vector<SyncthingDev> &devs, c
     }
     int row;
     if (SyncthingDev *const existingDevInfo = findDevInfo(devId, row)) {
-        devs.emplace_back(move(*existingDevInfo));
+        devs.emplace_back(std::move(*existingDevInfo));
     } else {
         devs.emplace_back(devId);
     }

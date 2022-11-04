@@ -441,7 +441,7 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
                 const QString dirIdentifier(argToQString(dirArg.values(i).front()));
                 const RelevantDir relevantDir(findDirectory(dirIdentifier));
                 if (relevantDir.dirObj) {
-                    m_relevantDirs.emplace_back(move(relevantDir));
+                    m_relevantDirs.emplace_back(std::move(relevantDir));
                 }
             }
         }

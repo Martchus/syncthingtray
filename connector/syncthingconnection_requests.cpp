@@ -1557,7 +1557,7 @@ void SyncthingConnection::readChangeEvent(DateTime eventTime, const QString &eve
     change.modifiedBy = eventData.value(QLatin1String("modifiedBy")).toString();
     change.path = eventData.value(QLatin1String("path")).toString();
     if (m_recordFileChanges) {
-        dirInfo->recentChanges.emplace_back(move(change));
+        dirInfo->recentChanges.emplace_back(std::move(change));
         emit dirStatusChanged(*dirInfo, index);
         emit fileChanged(*dirInfo, index, dirInfo->recentChanges.back());
     } else {

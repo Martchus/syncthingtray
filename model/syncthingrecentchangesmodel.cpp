@@ -141,7 +141,7 @@ QVariant SyncthingRecentChangesModel::data(const QModelIndex &index, int role) c
     case ExtendedAction: {
         auto extendedAction = change.fileChange.action;
         extendedAction[0] = extendedAction[0].toUpper();
-        return QVariant(move(extendedAction));
+        return QVariant(std::move(extendedAction));
     }
     case ItemType:
         return change.fileChange.type;
