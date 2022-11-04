@@ -13,6 +13,7 @@
 
 #include <QAction>
 #include <QEvent>
+#include <QRegularExpression>
 
 #include <functional>
 #include <utility>
