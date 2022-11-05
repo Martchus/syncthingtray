@@ -33,6 +33,7 @@ private Q_SLOTS:
 
 private:
     bool confirmMessageBox();
+    void configureSyncthingArgs(SetupDetection &setupDetection) const;
 
     QTemporaryDir m_homeDir;
     QEventLoop m_eventLoop;
@@ -219,12 +220,7 @@ void WizardTests::testConfiguringLauncher()
     m_eventLoop.exec();
     QVERIFY(label->text().contains(QStringLiteral("The internal launcher has not been initialized.")));
     QVERIFY(label->text().contains(QStringLiteral("You may try to head back")));
-
-    // override launcher settings so tests can use a custom Syncthing binary and a custom port
-    auto &setupDetection = wizardDlg.setupDetection();
-    setupDetection.launcherSettings.syncthingPath = m_syncthingPath;
-    setupDetection.defaultSyncthingArgs.append(QStringLiteral(" --gui-address="));
-    setupDetection.defaultSyncthingArgs.append(m_syncthingGuiAddress);
+    configureSyncthingArgs(wizardDlg.setupDetection());
 
     // try again with launcher being initialized
     wizardDlg.back();
@@ -338,11 +334,7 @@ void WizardTests::testConfiguringCurrentlyRunningSyncthing()
     auto *const autostartPage = qobject_cast<AutostartWizardPage *>(wizardDlg.currentPage());
     QVERIFY(autostartPage != nullptr);
     wizardDlg.next();
-
-    // override launcher settings so tests can use a custom Syncthing binary and a custom port
-    setupDetection.launcherSettings.syncthingPath = m_syncthingPath;
-    setupDetection.defaultSyncthingArgs.append(QStringLiteral(" --gui-address="));
-    setupDetection.defaultSyncthingArgs.append(m_syncthingGuiAddress);
+    configureSyncthingArgs(setupDetection);
 
     // apply settings
     auto *const applyPage = qobject_cast<ApplyWizardPage *>(wizardDlg.currentPage());
@@ -406,6 +398,16 @@ bool WizardTests::confirmMessageBox()
         }
     }
     return false;
+}
+
+/*!
+ * \brief Overrides launcher settings so tests can use a custom Syncthing binary and a custom port.
+ */
+void WizardTests::configureSyncthingArgs(SetupDetection &setupDetection) const
+{
+    setupDetection.launcherSettings.syncthingPath = m_syncthingPath;
+    setupDetection.defaultSyncthingArgs.append(QStringLiteral(" --gui-address="));
+    setupDetection.defaultSyncthingArgs.append(m_syncthingGuiAddress);
 }
 
 QTEST_MAIN(WizardTests)
