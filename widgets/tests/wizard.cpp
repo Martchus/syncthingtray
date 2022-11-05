@@ -58,9 +58,9 @@ void WizardTests::initTestCase()
     settings.fakeFirstLaunch = true;
 
     // use an empty dir as HOME to simulate a prestine setup
-    qDebug() << QStringLiteral("HOME dir: ") + m_homeDir.path();
-    qputenv("HOME", m_homeDir.path().toLocal8Bit());
-    qputenv("LIB_SYNCTHING_CONNECTOR_SYNCTHING_CONFIG_DIR", (m_homeDir.path() + QStringLiteral("/.config/syncthing")).toLocal8Bit());
+    const auto homePath = m_homeDir.path();
+    qDebug() << QStringLiteral("HOME dir: ") + homePath;
+    qputenv("LIB_SYNCTHING_CONNECTOR_SYNCTHING_CONFIG_DIR", homePath.toLocal8Bit());
     QVERIFY(m_homeDir.isValid());
 
     // assert there's no connection setting present initially
@@ -408,6 +408,9 @@ void WizardTests::configureSyncthingArgs(SetupDetection &setupDetection) const
     setupDetection.launcherSettings.syncthingPath = m_syncthingPath;
     setupDetection.defaultSyncthingArgs.append(QStringLiteral(" --gui-address="));
     setupDetection.defaultSyncthingArgs.append(m_syncthingGuiAddress);
+    setupDetection.defaultSyncthingArgs.append(QStringLiteral(" --home='"));
+    setupDetection.defaultSyncthingArgs.append(m_homeDir.path());
+    setupDetection.defaultSyncthingArgs.append(QChar('\''));
 }
 
 QTEST_MAIN(WizardTests)
