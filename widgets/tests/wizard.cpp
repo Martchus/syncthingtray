@@ -3,6 +3,9 @@
 #include "../settings/settings.h"
 #include "../settings/setupdetection.h"
 
+// use meta-data of syncthingtray application here
+#include "resources/../../tray/resources/config.h"
+
 #include <QtTest/QtTest>
 
 #include <QApplication>
@@ -62,6 +65,11 @@ void WizardTests::initTestCase()
     qDebug() << QStringLiteral("HOME dir: ") + homePath;
     qputenv("LIB_SYNCTHING_CONNECTOR_SYNCTHING_CONFIG_DIR", homePath.toLocal8Bit());
     QVERIFY(m_homeDir.isValid());
+
+    // create a config file for Syncthing Tray in the working dir so it'll be picked up instead of the user's config file
+    auto testConfigFile = QFile(QStringLiteral(PROJECT_NAME ".ini"));
+    QVERIFY(testConfigFile.open(QFile::WriteOnly | QFile::Truncate));
+    testConfigFile.close();
 
     // assert there's no connection setting present initially
     settings.connection.primary.label = QStringLiteral("testconfig");
