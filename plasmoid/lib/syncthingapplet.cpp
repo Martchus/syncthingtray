@@ -166,6 +166,13 @@ void SyncthingApplet::init()
         Data::setForkAwesomeThemeOverrides();
     }
 
+    // show wizard on first launch
+    if (settings.firstLaunch || settings.fakeFirstLaunch) {
+        showWizard();
+        settings.firstLaunch = false;
+        Settings::save();
+    }
+
     m_initialized = true;
 }
 
