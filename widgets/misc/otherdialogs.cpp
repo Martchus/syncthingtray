@@ -21,9 +21,8 @@ using namespace Data;
 
 namespace QtGui {
 
-QDialog *ownDeviceIdDialog(Data::SyncthingConnection &connection)
+static void setupOwnDeviceIdDialog(Data::SyncthingConnection &connection, int size, QWidget *dlg)
 {
-    auto *dlg = new QDialog(nullptr, Qt::Window);
     dlg->setWindowTitle(QCoreApplication::translate("QtGui::OtherDialogs", "Own device ID") + QStringLiteral(" - " APP_NAME));
     dlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
@@ -50,15 +49,31 @@ QDialog *ownDeviceIdDialog(Data::SyncthingConnection &connection)
     QObject::connect(dlg, &QObject::destroyed,
         bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
             QObject::connect(&connection, &SyncthingConnection::qrCodeAvailable,
-                [pixmapLabel, devId = connection.myId()](const QString &text, const QByteArray &data) {
+                [pixmapLabel, devId = connection.myId(), size](const QString &text, const QByteArray &data) {
                     if (text != devId) {
                         return;
                     }
-                    QPixmap pixmap;
+                    auto pixmap = QPixmap();
                     pixmap.loadFromData(data);
+                    if (size) {
+                        pixmap = pixmap.scaledToHeight(size, Qt::SmoothTransformation);
+                    }
                     pixmapLabel->setPixmap(pixmap);
                 })));
     dlg->setLayout(layout);
+}
+
+QDialog *ownDeviceIdDialog(Data::SyncthingConnection &connection)
+{
+    auto *dlg = new QDialog(nullptr, Qt::Window);
+    setupOwnDeviceIdDialog(connection, 0, dlg);
     return dlg;
+}
+
+QWidget *ownDeviceIdWidget(Data::SyncthingConnection &connection, int size, QWidget *parent)
+{
+    auto *widget = new QWidget(parent);
+    setupOwnDeviceIdDialog(connection, size, widget);
+    return widget;
 }
 } // namespace QtGui

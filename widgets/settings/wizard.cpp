@@ -2,6 +2,7 @@
 #include "./settingsdialog.h"
 #include "./setupdetection.h"
 
+#include "../misc/otherdialogs.h"
 #include "../misc/statusinfo.h"
 #include "../misc/syncthinglauncher.h"
 
@@ -935,10 +936,11 @@ bool ApplyWizardPage::validatePage()
 
 FinalWizardPage::FinalWizardPage(QWidget *parent)
     : QWizardPage(parent)
+    , m_ownDeviceIdWidget(nullptr)
 {
-    auto *const layout = new QVBoxLayout(this);
-    layout->addWidget(m_progressBar = new QProgressBar());
-    layout->addWidget(m_label = new QLabel());
+    m_layout = new QVBoxLayout(this);
+    m_layout->addWidget(m_progressBar = new QProgressBar());
+    m_layout->addWidget(m_label = new QLabel());
 
     m_label->setObjectName(QStringLiteral("label"));
     m_label->setWordWrap(true);
@@ -977,6 +979,9 @@ void QtGui::FinalWizardPage::showResults()
         return;
     }
 
+    // delete possibly previously shown own device ID in any case
+    delete m_ownDeviceIdWidget;
+
     if (!wizard->isConfigApplied()) {
         setTitle(tr("Waiting for configuration wizard completed"));
         setSubTitle(tr("Changes are being applied"));
@@ -990,9 +995,11 @@ void QtGui::FinalWizardPage::showResults()
     m_progressBar->hide();
     if (wizard->configError().isEmpty()) {
         setSubTitle(tr("All changes have been applied"));
-        m_label->setText(tr("The configuration has been changed successfully. You can close the wizard and <a href=\"openSyncthing\">open "
+        m_label->setText(tr("<p>The configuration has been changed successfully. You can close the wizard and <a href=\"openSyncthing\">open "
                             "Syncthing</a> to pair remote devices and add folders for sharing. If you need further help, read the "
-                            "<a href=\"openDocs\">documentation to get started</a>."));
+                            "<a href=\"openDocs\">documentation to get started</a>.</p>"
+                            "<p>To initiate the pairing from another device, the device ID of this Syncthing device is displayed below.</p>"));
+        m_layout->addWidget(m_ownDeviceIdWidget = ownDeviceIdWidget(wizard->setupDetection().connection, 256));
     } else {
         setSubTitle(tr("Not all changes could be applied"));
         m_label->setText(

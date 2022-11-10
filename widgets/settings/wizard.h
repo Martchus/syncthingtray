@@ -12,6 +12,7 @@
 
 QT_FORWARD_DECLARE_CLASS(QLabel)
 QT_FORWARD_DECLARE_CLASS(QProgressBar)
+QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
 
 namespace QtGui {
 
@@ -226,8 +227,10 @@ private Q_SLOTS:
     void handleLinkActivated(const QString &href);
 
 private:
+    QVBoxLayout *m_layout;
     QLabel *m_label;
     QProgressBar *m_progressBar;
+    QWidget *m_ownDeviceIdWidget;
 };
 
 } // namespace QtGui
