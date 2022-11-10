@@ -46,20 +46,18 @@ static void setupOwnDeviceIdDialog(Data::SyncthingConnection &connection, int si
         copyPushButton, &QPushButton::clicked, bind(&QClipboard::setText, QGuiApplication::clipboard(), connection.myId(), QClipboard::Clipboard));
     layout->addWidget(copyPushButton);
     connection.requestQrCode(connection.myId());
-    QObject::connect(dlg, &QObject::destroyed,
-        bind(static_cast<bool (*)(const QMetaObject::Connection &)>(&QObject::disconnect),
-            QObject::connect(&connection, &SyncthingConnection::qrCodeAvailable,
-                [pixmapLabel, devId = connection.myId(), size](const QString &text, const QByteArray &data) {
-                    if (text != devId) {
-                        return;
-                    }
-                    auto pixmap = QPixmap();
-                    pixmap.loadFromData(data);
-                    if (size) {
-                        pixmap = pixmap.scaledToHeight(size, Qt::SmoothTransformation);
-                    }
-                    pixmapLabel->setPixmap(pixmap);
-                })));
+    QObject::connect(&connection, &SyncthingConnection::qrCodeAvailable, pixmapLabel,
+        [pixmapLabel, devId = connection.myId(), size](const QString &text, const QByteArray &data) {
+            if (text != devId) {
+                return;
+            }
+            auto pixmap = QPixmap();
+            pixmap.loadFromData(data);
+            if (size) {
+                pixmap = pixmap.scaledToHeight(size, Qt::SmoothTransformation);
+            }
+            pixmapLabel->setPixmap(pixmap);
+        });
     dlg->setLayout(layout);
 }
 
