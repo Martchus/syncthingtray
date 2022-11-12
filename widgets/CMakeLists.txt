@@ -119,6 +119,14 @@ endif ()
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network Concurrent)
 
+# configure use of Qt Quick features
+option(ENABLE_QT_QUICK_LIBRARY "enables building features for Qt Quick" OFF)
+if (ENABLE_QT_QUICK_LIBRARY)
+    list(APPEND QML_HEADER_FILES)
+    list(APPEND QML_SRC_FILES)
+    list(APPEND QML_QML_FILES quick/DirsPage.qml)
+endif ()
+
 # include modules to apply configuration
 include(BasicConfig)
 include(QtGuiConfig)
@@ -128,6 +136,41 @@ include(WindowsResources)
 include(LibraryTarget)
 include(Doxygen)
 include(ConfigHeader)
+
+# link against Qml/Quick module and enable QML Type Compiler for building Qt Quick features
+if (ENABLE_QT_QUICK_LIBRARY)
+    set(QT_QUICK_LIBRARIES_VARIABLE LIBRARIES_QML_MODULE)
+    use_qt_module(
+        LIBRARIES_VARIABLE
+        LIBRARIES_QML_MODULE
+        PREFIX
+        "${QT_PACKAGE_PREFIX}"
+        MODULE
+        Qml
+        TARGETS
+        Qt::Qml
+        Qt::QmlPrivate)
+    use_qt_module(
+        LIBRARIES_VARIABLE
+        LIBRARIES_QML_MODULE
+        PREFIX
+        "${QT_PACKAGE_PREFIX}"
+        MODULE
+        Quick
+        TARGETS
+        Qt::Quick
+        Qt::QuickPrivate)
+    qt_add_qml_module(
+        ${META_TARGET_NAME}_quick
+        VERSION
+        "${META_VERSION_MAJOR}.${META_VERSION_MINOR}"
+        URI
+        SyncthingWidgets
+        QML_FILES
+        ${QML_QML_FILES}
+        ENABLE_TYPE_COMPILER)
+    target_link_libraries(${META_TARGET_NAME}_quick PRIVATE ${LIBRARIES_QML_MODULE})
+endif ()
 
 # configure test target
 include(TestUtilities)
