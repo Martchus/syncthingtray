@@ -317,6 +317,9 @@ void WebPage::injectJavaScripts(bool ok)
 {
     Q_UNUSED(ok)
     // show folder path selection when double-clicking input
+    if (!Settings::values().enableWipFeatures) {
+        return;
+    }
     injectJavaScript(QStringLiteral("var button = jQuery('<button type=\"button\" class=\"btn btn-sm\" "
                                     "style=\"float: right;\">Select directory …</button>');"
                                     "button.click(function(event) {"
