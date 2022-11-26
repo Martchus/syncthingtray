@@ -132,6 +132,18 @@ endif ()
 # apply basic configuration
 include(BasicConfig)
 
+# configure support for layer-shell protocol
+if (LINUX)
+    option(LAYER_SHELL_PROTOCOL_SUPPORT "whether to compile with support for the layer-shell protocol" OFF)
+    if (LAYER_SHELL_PROTOCOL_SUPPORT)
+        use_package(TARGET_NAME LayerShellQt::Interface PACKAGE_NAME LayerShellQt PACKAGE_ARGS "REQUIRED")
+        set_property(
+            SOURCE application/main.cpp
+            APPEND
+            PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_LAYER_SHELL_PROTOCOL_SUPPORT)
+    endif ()
+endif ()
+
 # add an option to unify left- and right-click context menus useful on Mac OS
 if (APPLE)
     set(UNIFY_TRAY_MENUS_BY_DEFAULT ON)

@@ -30,6 +30,10 @@
 #include <qtutilities/resources/resources.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 
+#ifdef SYNCTHINGTRAY_LAYER_SHELL_PROTOCOL_SUPPORT
+#include <LayerShellQt/Shell>
+#endif
+
 #include <QApplication>
 #include <QMessageBox>
 #include <QNetworkAccessManager>
@@ -106,6 +110,14 @@ int initSyncthingTray(bool windowed, bool waitForTray, const Argument &connectio
         auto *const trayIcon = new TrayIcon(QString::fromLocal8Bit(connectionConfig), QApplication::instance());
         trayIcon->show();
         widget = &trayIcon->trayMenu().widget();
+#ifdef SYNCTHINGTRAY_LAYER_SHELL_PROTOCOL_SUPPORT
+        if (auto *const qtWindow = trayIcon->trayMenu().windowHandle()) {
+            if (auto *const layerShellWindow = LayerShellQt::Window::get(qtWindow)) {
+                layerShellWindow->setAnchors(
+                    static_cast<LayerShellQt::Window::Anchors>(LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorRight));
+            }
+        }
+#endif
     }
 
     // show wizard on first launch
@@ -211,6 +223,9 @@ int runApplication(int argc, const char *const *argv)
 
         // do first-time initializations
         SET_QT_APPLICATION_INFO;
+#ifdef SYNCTHINGTRAY_LAYER_SHELL_PROTOCOL_SUPPORT
+        LayerShellQt::Shell::useLayerShell();
+#endif
         QApplication application(argc, const_cast<char **>(argv));
         QGuiApplication::setQuitOnLastWindowClosed(false);
         SingleInstance singleInstance(argc, argv, newInstanceArg.isPresent());
