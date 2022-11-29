@@ -245,7 +245,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="assumeIconPosLabel">
+      <widget class="QCheckBox" name="assumeIconPosCheckBox">
        <property name="text">
         <string>Otherwise assume tray icon coordinates to be:</string>
        </property>
@@ -255,6 +255,9 @@
       <layout class="QHBoxLayout" name="positioningHorizontalLayout">
        <property name="spacing">
         <number>10</number>
+       </property>
+       <property name="leftMargin">
+        <number>30</number>
        </property>
        <item>
         <widget class="QSpinBox" name="xPosSpinBox">

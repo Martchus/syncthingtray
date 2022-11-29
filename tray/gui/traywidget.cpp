@@ -388,10 +388,12 @@ void TrayWidget::showUsingPositioningSettings()
 {
     if (m_menu) {
         m_menu->showUsingPositioningSettings();
-    } else {
-        move(Settings::values().appearance.positioning.positionToUse());
-        show();
+        return;
     }
+    if (const auto pos = Settings::values().appearance.positioning.positionToUse(); pos.has_value()) {
+        move(pos.value());
+    }
+    show();
 }
 
 void TrayWidget::showInternalError(

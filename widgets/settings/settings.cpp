@@ -57,9 +57,9 @@ constexpr auto minActiveTimeInSeconds = 5;
 /*!
  * \brief Returns the position to use.
  */
-QPoint Appearance::Positioning::positionToUse() const
+std::optional<QPoint> Appearance::Positioning::positionToUse() const
 {
-    return useCursorPosition ? QCursor::pos() : assumedIconPosition;
+    return useCursorPosition ? std::optional<QPoint>(QCursor::pos()) : (useAssumedIconPosition ? std::optional<QPoint>(assumedIconPosition) : std::nullopt);
 }
 
 /*!
@@ -358,6 +358,7 @@ void restore()
     settings.beginGroup(QStringLiteral("positioning"));
     auto &positioning = appearance.positioning;
     positioning.useCursorPosition = settings.value(QStringLiteral("useCursorPos"), positioning.useCursorPosition).toBool();
+    positioning.useAssumedIconPosition = settings.value(QStringLiteral("useAssumedIconPosition"), positioning.useAssumedIconPosition).toBool();
     positioning.assumedIconPosition = settings.value(QStringLiteral("assumedIconPos"), positioning.assumedIconPosition).toPoint();
     settings.endGroup();
     settings.endGroup();
@@ -474,6 +475,7 @@ void save()
     settings.setValue(QStringLiteral("preferIconsFromTheme"), v.icons.preferIconsFromTheme);
     settings.beginGroup(QStringLiteral("positioning"));
     settings.setValue(QStringLiteral("useCursorPos"), appearance.positioning.useCursorPosition);
+    settings.setValue(QStringLiteral("useAssumedIconPosition"), appearance.positioning.useAssumedIconPosition);
     settings.setValue(QStringLiteral("assumedIconPos"), appearance.positioning.assumedIconPosition);
     settings.endGroup();
     settings.endGroup();

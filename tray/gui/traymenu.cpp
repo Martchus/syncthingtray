@@ -57,8 +57,12 @@ void TrayMenu::showUsingPositioningSettings()
 {
     resize(sizeHint());
     auto pos = Settings::values().appearance.positioning.positionToUse();
-    moveInside(pos, size(), availableScreenGeometryAtPoint(pos));
-    popup(pos);
+    if (pos.has_value()) {
+        moveInside(pos.value(), size(), availableScreenGeometryAtPoint(pos.value()));
+        popup(pos.value());
+    } else {
+        show();
+    }
     activateWindow();
 }
 

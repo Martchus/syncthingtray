@@ -20,6 +20,7 @@
 #include <QString>
 #include <QTabWidget>
 
+#include <optional>
 #include <tuple>
 #include <vector>
 
@@ -70,7 +71,8 @@ struct SYNCTHINGWIDGETS_EXPORT Appearance {
     struct SYNCTHINGWIDGETS_EXPORT Positioning {
         QPoint assumedIconPosition;
         bool useCursorPosition = true;
-        QPoint positionToUse() const;
+        bool useAssumedIconPosition = false;
+        std::optional<QPoint> positionToUse() const;
     } positioning;
 };
 

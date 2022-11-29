@@ -499,6 +499,7 @@ bool AppearanceOptionPage::apply()
     settings.tabPosition = ui()->tabPosComboBox->currentIndex();
 
     settings.positioning.useCursorPosition = ui()->useCursorPosCheckBox->isChecked();
+    settings.positioning.useAssumedIconPosition = ui()->assumeIconPosCheckBox->isChecked();
     settings.positioning.assumedIconPosition = QPoint(ui()->xPosSpinBox->value(), ui()->yPosSpinBox->value());
     return true;
 }
@@ -542,6 +543,7 @@ void AppearanceOptionPage::reset()
     ui()->tabPosComboBox->setCurrentIndex(settings.tabPosition);
 
     ui()->useCursorPosCheckBox->setChecked(settings.positioning.useCursorPosition);
+    ui()->assumeIconPosCheckBox->setChecked(settings.positioning.useAssumedIconPosition);
     ui()->xPosSpinBox->setValue(settings.positioning.assumedIconPosition.x());
     ui()->yPosSpinBox->setValue(settings.positioning.assumedIconPosition.y());
 }
