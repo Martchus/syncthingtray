@@ -8,6 +8,7 @@
 
 #include <QApplication>
 #include <QHBoxLayout>
+#include <QWindow>
 
 using namespace QtUtilities;
 
@@ -16,7 +17,7 @@ namespace QtGui {
 TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     : QMenu(parent)
     , m_trayIcon(trayIcon)
-    , m_pinned(false)
+    , m_windowed(false)
 {
     setObjectName(QStringLiteral("QtGui::TrayMenu"));
     auto *const menuLayout = new QHBoxLayout;
@@ -26,6 +27,7 @@ TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     setLayout(menuLayout);
     setPlatformMenu(nullptr);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+    setWindowIcon(m_trayWidget->windowIcon());
 }
 
 QSize TrayMenu::sizeHint() const
@@ -60,23 +62,23 @@ void TrayMenu::showUsingPositioningSettings()
     activateWindow();
 }
 
-void TrayMenu::setPinned(bool pinned)
+void TrayMenu::setWindowed(bool windowed)
 {
-    setWindowFlags(Qt::FramelessWindowHint | ((m_pinned = pinned) ? Qt::Window : Qt::Popup));
-    show();
-    activateWindow();
+    if (m_windowed != windowed) {
+        setWindowFlags((m_windowed = windowed) ? Qt::Window : Qt::FramelessWindowHint | Qt::Popup);
+    }
 }
 
 void TrayMenu::mousePressEvent(QMouseEvent *event)
 {
-    if (!m_pinned) {
+    if (!m_windowed) {
         QMenu::mousePressEvent(event);
     }
 }
 
 void TrayMenu::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (!m_pinned) {
+    if (!m_windowed) {
         QMenu::mouseReleaseEvent(event);
     }
 }

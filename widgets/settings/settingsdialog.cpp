@@ -465,6 +465,7 @@ bool AppearanceOptionPage::apply()
 {
     auto &v = values();
     auto &settings = v.appearance;
+    settings.windowed = ui()->windowTypeComboBox->currentIndex() == 1;
     settings.trayMenuSize.setWidth(ui()->widthSpinBox->value());
     settings.trayMenuSize.setHeight(ui()->heightSpinBox->value());
     settings.showTraffic = ui()->showTrafficCheckBox->isChecked();
@@ -506,6 +507,7 @@ void AppearanceOptionPage::reset()
 {
     const auto &v = values();
     const auto &settings = v.appearance;
+    ui()->windowTypeComboBox->setCurrentIndex(settings.windowed ? 1 : 0);
     ui()->widthSpinBox->setValue(settings.trayMenuSize.width());
     ui()->heightSpinBox->setValue(settings.trayMenuSize.height());
     ui()->showTrafficCheckBox->setChecked(settings.showTraffic);

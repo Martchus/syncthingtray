@@ -84,7 +84,6 @@ protected:
 
 private Q_SLOTS:
     void handleStatusChanged(Data::SyncthingStatus status);
-    void handlePinnedChanged(bool pinned);
     static void applySettingsOnAllInstances();
     void openDir(const Data::SyncthingDir &dir);
     void openItemDir(const Data::SyncthingItemDownloadProgress &item);

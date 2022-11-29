@@ -519,6 +519,11 @@ configuration like this:
 for_window [title="^Syncthing Tray( \(.*\))?$"] floating enable, border none, resize set 450 400, move position 916 0
 ```
 
+Alternatively, one can also configure Syncthing Tray to use a normal window in
+the appearance settings. That doesn't fix the positioning issue but then it
+looks just like a normal application so not being positioned in the tray area is
+less problematic.
+
 ### Workaround broken High-DPI scaling of Plasmoid under X11
 Setting the environment variable `PLASMA_USE_QT_SCALING=1` should fix the
 [issue](https://bugs.kde.org/show_bug.cgi?id=356446) on recent Plasma versions but

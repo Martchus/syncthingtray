@@ -10,7 +10,7 @@ class TrayWidget;
 
 class TrayMenu : public QMenu {
     Q_OBJECT
-    Q_PROPERTY(bool pinned READ isPinned WRITE setPinned)
+    Q_PROPERTY(bool windowed READ isWindowed WRITE setWindowed)
 
 public:
     explicit TrayMenu(TrayIcon *trayIcon = nullptr, QWidget *parent = nullptr);
@@ -19,11 +19,11 @@ public:
     TrayWidget &widget();
     const TrayWidget &widget() const;
     TrayIcon *icon();
-    bool isPinned() const;
+    bool isWindowed() const;
 
 public Q_SLOTS:
     void showUsingPositioningSettings();
-    void setPinned(bool pinned);
+    void setWindowed(bool windowed);
 
 protected:
     void mouseReleaseEvent(QMouseEvent *) override;
@@ -32,7 +32,7 @@ protected:
 private:
     TrayWidget *m_trayWidget;
     TrayIcon *m_trayIcon;
-    bool m_pinned = false;
+    bool m_windowed = false;
 };
 
 inline TrayWidget &TrayMenu::widget()
@@ -50,9 +50,9 @@ inline TrayIcon *TrayMenu::icon()
     return m_trayIcon;
 }
 
-inline bool TrayMenu::isPinned() const
+inline bool TrayMenu::isWindowed() const
 {
-    return m_pinned;
+    return m_windowed;
 }
 
 } // namespace QtGui

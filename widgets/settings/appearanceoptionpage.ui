@@ -19,14 +19,17 @@
    <property name="verticalSpacing">
     <number>4</number>
    </property>
-   <item row="3" column="0">
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <item row="5" column="0">
     <widget class="QLabel" name="frameShapeLabel">
      <property name="text">
       <string>Frame shape</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="5" column="1">
     <widget class="QComboBox" name="frameShapeComboBox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -56,14 +59,14 @@
      </item>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="frameShadowLabel">
      <property name="text">
       <string>Frame shadow</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="6" column="1">
     <widget class="QComboBox" name="frameShadowComboBox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -88,14 +91,14 @@
      </item>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="8" column="0">
     <widget class="QLabel" name="tabPosLabel">
      <property name="text">
       <string>Tab position</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="8" column="1">
     <widget class="QComboBox" name="tabPosComboBox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -125,14 +128,14 @@
      </item>
     </widget>
    </item>
-   <item row="7" column="0">
+   <item row="9" column="0">
     <widget class="QLabel" name="sizeLabel">
      <property name="text">
       <string>Menu size</string>
      </property>
     </widget>
    </item>
-   <item row="7" column="1">
+   <item row="9" column="1">
     <layout class="QHBoxLayout" name="menuSizeHorizontalLayout">
      <item>
       <widget class="QSpinBox" name="widthSpinBox">
@@ -212,14 +215,14 @@
      </item>
     </layout>
    </item>
-   <item row="8" column="0">
+   <item row="10" column="0">
     <widget class="QLabel" name="guiElementsLabel">
      <property name="text">
       <string>Optional GUI elements</string>
      </property>
     </widget>
    </item>
-   <item row="11" column="0">
+   <item row="13" column="0">
     <widget class="QLabel" name="positioningLabel">
      <property name="text">
       <string>Positioning</string>
@@ -229,7 +232,7 @@
      </property>
     </widget>
    </item>
-   <item row="11" column="1">
+   <item row="13" column="1">
     <layout class="QVBoxLayout" name="positioningVerticalLayout">
      <item>
       <widget class="QCheckBox" name="useCursorPosCheckBox">
@@ -317,7 +320,7 @@
      </item>
     </layout>
    </item>
-   <item row="8" column="1">
+   <item row="10" column="1">
     <layout class="QVBoxLayout" name="optionalGuiElementsVerticalLayout">
      <property name="spacing">
       <number>0</number>
@@ -338,7 +341,7 @@
      </item>
     </layout>
    </item>
-   <item row="9" column="1">
+   <item row="11" column="1">
     <layout class="QVBoxLayout" name="iconsVerticalLayout">
      <property name="spacing">
       <number>0</number>
@@ -352,10 +355,37 @@
      </item>
     </layout>
    </item>
-   <item row="9" column="0">
+   <item row="11" column="0">
     <widget class="QLabel" name="iconsLabel">
      <property name="text">
       <string>Icons</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="windowTypeComboBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <item>
+      <property name="text">
+       <string>Popup</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Normal window</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="windowTypeLabel">
+     <property name="text">
+      <string>Window type</string>
      </property>
     </widget>
    </item>

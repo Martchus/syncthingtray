@@ -156,29 +156,6 @@
         </item>
        </layout>
       </item>
-      <item>
-       <widget class="QPushButton" name="pinPushButton">
-        <property name="toolTip">
-         <string>Pin window</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset theme="window-pin" resource="../resources/syncthingtrayicons.qrc">
-          <normaloff>:/icons/hicolor/scalable/actions/window-pin.svg</normaloff>:/icons/hicolor/scalable/actions/window-pin.svg</iconset>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -575,7 +552,6 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
  </customwidgets>
  <resources>
   <include location="../../model/resources/syncthingmodelicons.qrc"/>
-  <include location="../resources/syncthingtrayicons.qrc"/>
   <include location="../../widgets/resources/syncthingwidgetsicons.qrc"/>
  </resources>
  <connections/>
