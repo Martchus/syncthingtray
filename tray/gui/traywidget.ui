@@ -346,15 +346,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="font">
-         <font>
-          <family>Noto Sans</family>
-          <bold>true</bold>
-         </font>
-        </property>
         <property name="toolTip">
          <string>Click to show &lt;i&gt;new&lt;/i&gt; notifications&lt;br&gt;
 For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font-weight: bold;</string>
         </property>
         <property name="text">
          <string>New notifications</string>
