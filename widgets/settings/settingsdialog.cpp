@@ -802,7 +802,11 @@ bool setAutostartEnabled(bool enabled)
         desktopFile.write("[Desktop Entry]\n"
                           "Name=" APP_NAME "\n"
                           "Exec=\"");
+#if defined(AUTOSTART_EXEC_PATH)
+        desktopFile.write(qEnvironmentVariable("APPIMAGE", AUTOSTART_EXEC_PATH).toUtf8().data());
+#else
         desktopFile.write(qEnvironmentVariable("APPIMAGE", QCoreApplication::applicationFilePath()).toUtf8().data());
+#endif
         desktopFile.write("\" qt-widgets-gui --single-instance\nComment=" APP_DESCRIPTION "\n"
                           "Icon=" PROJECT_NAME "\n"
                           "Type=Application\n"
