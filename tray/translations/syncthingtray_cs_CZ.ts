@@ -238,46 +238,46 @@
         <translation>Odchozí provoz</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="356"/>
+        <location filename="../gui/traywidget.ui" line="350"/>
         <source>Click to show &lt;i&gt;new&lt;/i&gt; notifications&lt;br&gt;
 For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Kliknutím na &lt;i&gt;nové &lt;/i&gt; oznámení&lt;br&gt;
 (pro &lt;i&gt;alle&lt;/i&gt; oznámení, nahlédněte do záznamu událostí)</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="360"/>
+        <location filename="../gui/traywidget.ui" line="357"/>
         <location filename="../gui/traywidget.cpp" line="157"/>
         <location filename="../gui/traywidget.cpp" line="380"/>
         <source>New notifications</source>
         <translation>Nová oznámení</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="391"/>
+        <location filename="../gui/traywidget.ui" line="388"/>
         <source>Directories</source>
         <translation>Adresáře</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="424"/>
+        <location filename="../gui/traywidget.ui" line="421"/>
         <source>Devices</source>
         <translation>Zařízení</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="457"/>
+        <location filename="../gui/traywidget.ui" line="454"/>
         <source>Downloads</source>
         <translation>Stahování</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="486"/>
+        <location filename="../gui/traywidget.ui" line="483"/>
         <source>Recent changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="522"/>
+        <location filename="../gui/traywidget.ui" line="519"/>
         <source>Show</source>
         <translation>Zobrazit</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="532"/>
+        <location filename="../gui/traywidget.ui" line="529"/>
         <source>Dismiss</source>
         <translation>Zahodit</translation>
     </message>
