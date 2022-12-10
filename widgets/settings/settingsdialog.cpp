@@ -802,11 +802,10 @@ bool setAutostartEnabled(bool enabled)
         desktopFile.write("[Desktop Entry]\n"
                           "Name=" APP_NAME "\n"
                           "Exec=\"");
-#if defined(SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH)
-        desktopFile.write(qEnvironmentVariable("APPIMAGE", SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH).toUtf8().data());
-#else
-        desktopFile.write(qEnvironmentVariable("APPIMAGE", QCoreApplication::applicationFilePath()).toUtf8().data());
+#ifndef SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH
+#define SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH QCoreApplication::applicationFilePath()
 #endif
+        desktopFile.write(qEnvironmentVariable("APPIMAGE", SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH).toUtf8().data());
         desktopFile.write("\" qt-widgets-gui --single-instance\nComment=" APP_DESCRIPTION "\n"
                           "Icon=" PROJECT_NAME "\n"
                           "Type=Application\n"
