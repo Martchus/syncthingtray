@@ -59,7 +59,8 @@ constexpr auto minActiveTimeInSeconds = 5;
  */
 std::optional<QPoint> Appearance::Positioning::positionToUse() const
 {
-    return useCursorPosition ? std::optional<QPoint>(QCursor::pos()) : (useAssumedIconPosition ? std::optional<QPoint>(assumedIconPosition) : std::nullopt);
+    return useCursorPosition ? std::optional<QPoint>(QCursor::pos())
+                             : (useAssumedIconPosition ? std::optional<QPoint>(assumedIconPosition) : std::nullopt);
 }
 
 /*!

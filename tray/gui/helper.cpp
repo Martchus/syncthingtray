@@ -23,7 +23,7 @@ void showViewMenu(const QPoint &position, const QTreeView &view, QMenu &menu)
 #endif
     const QMenu *topLevelWidget;
     if (needsHack && (topLevelWidget = qobject_cast<const QMenu *>(view.topLevelWidget()))
-            && (topLevelWidget->windowFlags() & Qt::Popup) == Qt::Popup) {
+        && (topLevelWidget->windowFlags() & Qt::Popup) == Qt::Popup) {
         menu.exec(topLevelWidget->mapToGlobal(position));
     } else {
         menu.exec(view.viewport()->mapToGlobal(position));
