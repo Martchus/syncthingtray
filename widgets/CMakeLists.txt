@@ -117,10 +117,15 @@ if (SYNCTHING_WIDGETS_LOG_JAVASCRIPT_CONSOLE)
 endif ()
 
 # configure autostart .desktop file exec path
-option(AUTOSTART_EXEC_PATH "Set the Exec= path for Linux' autostart/syncthingtray.desktop file - useful for Nix & Guix")
+set(AUTOSTART_EXEC_PATH
+    ""
+    CACHE STRING "Set the Exec= path for Linux' autostart/syncthingtray.desktop file - useful for Nix & Guix")
 if (AUTOSTART_EXEC_PATH)
-    add_compile_definitions(AUTOSTART_EXEC_PATH="${AUTOSTART_EXEC_PATH}")
-endif()
+    set_property(
+        SOURCE settings/settingsdialog.cpp
+        APPEND
+        PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH="${AUTOSTART_EXEC_PATH}")
+endif ()
 
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network Concurrent)
