@@ -8,6 +8,8 @@
 
 #include <QApplication>
 #include <QHBoxLayout>
+#include <QPaintEvent>
+#include <QPainter>
 #include <QWindow>
 
 using namespace QtUtilities;
@@ -77,6 +79,16 @@ void TrayMenu::mousePressEvent(QMouseEvent *event)
 {
     if (!m_windowed) {
         QMenu::mousePressEvent(event);
+    }
+}
+
+void TrayMenu::paintEvent(QPaintEvent *event)
+{
+    if (!m_windowed) {
+        QMenu::paintEvent(event);
+    } else {
+        QPainter(this).fillRect(event->rect(), palette().window());
+        QWidget::paintEvent(event);
     }
 }
 

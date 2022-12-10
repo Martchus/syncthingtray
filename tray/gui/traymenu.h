@@ -28,6 +28,7 @@ public Q_SLOTS:
 protected:
     void mouseReleaseEvent(QMouseEvent *) override;
     void mousePressEvent(QMouseEvent *) override;
+    void paintEvent(QPaintEvent *) override;
 
 private:
     TrayWidget *m_trayWidget;
