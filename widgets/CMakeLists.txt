@@ -145,10 +145,17 @@ include(TestUtilities)
 list(APPEND QT_TEST_LIBRARIES ${CPP_UTILITIES_LIB} ${META_TARGET_NAME})
 use_qt_module(LIBRARIES_VARIABLE "QT_TEST_LIBRARIES" PREFIX "${QT_PACKAGE_PREFIX}" MODULE "Test")
 foreach (TEST ${QT_TESTS})
-    configure_test_target(TEST_NAME "${TEST}_tests" SRC_FILES "tests/${TEST}.cpp" LIBRARIES "${QT_TEST_LIBRARIES}")
+    configure_test_target(
+        TEST_NAME
+        "${TEST}_tests"
+        SRC_FILES
+        "tests/${TEST}.cpp"
+        LIBRARIES
+        "${QT_TEST_LIBRARIES}"
+        FULL_TEST_NAME_OUT_VAR
+        FULL_TEST_NAME_${TEST})
+    # avoid running wizard tests in parallel with other tests spawning a Syncthing test instance
+    if ("${TEST}" STREQUAL "wizard")
+        set_tests_properties("${FULL_TEST_NAME_${TEST}}" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
+    endif ()
 endforeach ()
-
-# avoid running this test in parallel with other tests spawning a Syncthing test instance
-if (META_MAIN_TEST_NAME)
-    set_tests_properties("${META_TARGET_NAME}_run_${TEST}_tests" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
-endif ()
