@@ -179,9 +179,20 @@ void WizardTests::testConfiguringLauncher()
     // configure external launcher
     auto *const mainConfigPage = qobject_cast<MainConfigWizardPage *>(wizardDlg.currentPage());
     QVERIFY(mainConfigPage != nullptr);
-    QVERIFY(!wizardDlg.setupDetection().hasConfig());
-    QVERIFY(wizardDlg.setupDetection().launcherExitCode.has_value());
-    QCOMPARE(wizardDlg.setupDetection().launcherExitCode.value(), 0);
+    auto &setupDetection = wizardDlg.setupDetection();
+    QVERIFY(!setupDetection.hasConfig());
+    // -> print debug output in certain launcher error cases to get the full picture if any of the subsequent checks fail
+    if (setupDetection.launcherError.has_value()) {
+        qDebug() << "a launcher error occurred: " << setupDetection.launcherError.value();
+    }
+    if (!setupDetection.launcherError.has_value() || setupDetection.launcherExitCode.value_or(-1) != 0) {
+        qDebug() << "launcher output: " << setupDetection.launcherOutput;
+    }
+    // -> verify whether the launcher setup detection is in the expected state before checking UI itself
+    QVERIFY(setupDetection.launcherExitCode.has_value());
+    QCOMPARE(setupDetection.launcherExitCode.value(), 0);
+    QVERIFY(!setupDetection.launcherError.has_value());
+    // -> check UI, select the external launcher and continue
     auto *const cfgCurrentlyRunningRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgCurrentlyRunningRadioButton"));
     QVERIFY(cfgCurrentlyRunningRadioButton != nullptr);
     QVERIFY(cfgCurrentlyRunningRadioButton->isHidden());
