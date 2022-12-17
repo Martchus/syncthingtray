@@ -12,6 +12,7 @@
 #include <KPluginLoader>
 
 #include <QAction>
+#include <QDir>
 #include <QEvent>
 #include <QRegularExpression>
 
@@ -116,7 +117,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
             // don't show any actions when remote files are selected
             return actions;
         }
-        paths << item.localPath();
+        paths << QDir::cleanPath(item.localPath());
     }
 
     // determine relevant Syncthing dirs
@@ -125,15 +126,16 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     QList<SyncthingItem> detectedItems;
     const SyncthingDir *lastDir = nullptr;
     for (const SyncthingDir &dir : dirs) {
-        QStringRef dirPath(dir.pathWithoutTrailingSlash());
+        auto dirPath = QDir::cleanPath(dir.path);
+        auto dirPathWithSlash = dirPath + QChar('/');
         for (const QString &path : std::as_const(paths)) {
             if (path == dirPath) {
                 lastDir = &dir;
                 if (!detectedDirs.contains(lastDir)) {
                     detectedDirs << lastDir;
                 }
-            } else if (path.startsWith(dir.path)) {
-                detectedItems << SyncthingItem(&dir, path.mid(dir.path.size()));
+            } else if (path.startsWith(dirPathWithSlash)) {
+                detectedItems << SyncthingItem(&dir, path.mid(dirPathWithSlash.size()));
                 lastDir = &dir;
                 if (!containingDirs.contains(lastDir)) {
                     containingDirs << lastDir;
