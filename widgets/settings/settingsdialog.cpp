@@ -583,6 +583,10 @@ QWidget *IconsOptionPage::setupWidget()
         break;
     }
 
+    // allow changing stroke thickness
+    QObject::connect(ui()->thickStrokeWidthCheckBox, &QCheckBox::toggled, widget,
+        [this](bool thick) { m_settings.strokeWidth = thick ? StatusIconStrokeWidth::Thick : StatusIconStrokeWidth::Normal; });
+
     // populate form for status icon colors
     auto *const gridLayout = ui()->gridLayout;
     auto *const statusIconsGroupBox = ui()->statusIconsGroupBox;
@@ -606,19 +610,20 @@ QWidget *IconsOptionPage::setupWidget()
 
         // setup preview
         gridLayout->addWidget(widgetsForColor.previewLabel, index, 4, Qt::AlignCenter);
-        const auto updatePreview = [&widgetsForColor] {
+        const auto updatePreview = [this, &widgetsForColor] {
             widgetsForColor.previewLabel->setPixmap(renderSvgImage(makeSyncthingIcon(
                                                                        StatusIconColorSet{
                                                                            widgetsForColor.colorButtons[0]->color(),
                                                                            widgetsForColor.colorButtons[1]->color(),
                                                                            widgetsForColor.colorButtons[2]->color(),
                                                                        },
-                                                                       widgetsForColor.statusEmblem),
+                                                                       widgetsForColor.statusEmblem, m_settings.strokeWidth),
                 widgetsForColor.previewLabel->maximumSize()));
         };
         for (const auto &colorButton : widgetsForColor.colorButtons) {
-            QObject::connect(colorButton, &ColorButton::colorChanged, updatePreview);
+            QObject::connect(colorButton, &ColorButton::colorChanged, widget, updatePreview);
         }
+        QObject::connect(ui()->thickStrokeWidthCheckBox, &QCheckBox::toggled, widget, updatePreview);
 
         // setup color buttons
         widgetsForColor.colorButtons[0]->setColor(colorMapping.setting.backgroundStart);
@@ -635,27 +640,27 @@ QWidget *IconsOptionPage::setupWidget()
 
     // setup presets menu
     auto *const presetsMenu = new QMenu(widget);
-    presetsMenu->addAction(QCoreApplication::translate("QtGui::IconsOptionPageBase", "Colorful background with gradient (default)"), [this] {
+    presetsMenu->addAction(QCoreApplication::translate("QtGui::IconsOptionPageBase", "Colorful background with gradient (default)"), widget, [this] {
         m_settings = Data::StatusIconSettings();
         update();
     });
     presetsMenu->addAction(
-        QCoreApplication::translate("QtGui::IconsOptionPageBase", "Transparent background and dark foreground (for bright themes)"), [this] {
+        QCoreApplication::translate("QtGui::IconsOptionPageBase", "Transparent background and dark foreground (for bright themes)"), widget, [this] {
             m_settings = Data::StatusIconSettings(Data::StatusIconSettings::BrightTheme{});
             update();
         });
     presetsMenu->addAction(
-        QCoreApplication::translate("QtGui::IconsOptionPageBase", "Transparent background and bright foreground (for dark themes)"), [this] {
+        QCoreApplication::translate("QtGui::IconsOptionPageBase", "Transparent background and bright foreground (for dark themes)"), widget, [this] {
             m_settings = Data::StatusIconSettings(Data::StatusIconSettings::DarkTheme{});
             update();
         });
 
     // setup additional buttons
     ui()->restoreDefaultsPushButton->setMenu(presetsMenu);
-    QObject::connect(ui()->restorePreviousPushButton, &QPushButton::clicked, [this] { reset(); });
+    QObject::connect(ui()->restorePreviousPushButton, &QPushButton::clicked, widget, [this] { reset(); });
 
     // setup slider
-    QObject::connect(ui()->renderingSizeSlider, &QSlider::valueChanged, [this](int value) {
+    QObject::connect(ui()->renderingSizeSlider, &QSlider::valueChanged, widget, [this](int value) {
         m_settings.renderSize = QSize(value, value);
         auto *const label = ui()->renderingSizeLabel;
         if (const auto scaleFactor = label->devicePixelRatioF(); scaleFactor == 1.0) {
@@ -695,6 +700,7 @@ bool IconsOptionPage::apply()
 void IconsOptionPage::update()
 {
     ui()->renderingSizeSlider->setValue(std::max(m_settings.renderSize.width(), m_settings.renderSize.height()));
+    ui()->thickStrokeWidthCheckBox->setChecked(m_settings.strokeWidth == StatusIconStrokeWidth::Thick);
     for (auto &widgetsForColor : m_widgets) {
         widgetsForColor.colorButtons[0]->setColor(widgetsForColor.setting->backgroundStart);
         widgetsForColor.colorButtons[1]->setColor(widgetsForColor.setting->backgroundEnd);

@@ -25,7 +25,7 @@ namespace Data {
 /*!
  * \brief Generates the SVG code for the Syncthing icon with the specified \a colors and status emblem.
  */
-QByteArray makeSyncthingIcon(const StatusIconColorSet &colors, StatusEmblem statusEmblem)
+QByteArray makeSyncthingIcon(const StatusIconColorSet &colors, StatusEmblem statusEmblem, StatusIconStrokeWidth strokeWidth)
 {
     // serialize colors
     auto gradientStartColor = colors.backgroundStart.name(QColor::HexRgb);
@@ -93,7 +93,11 @@ QByteArray makeSyncthingIcon(const StatusIconColorSet &colors, StatusEmblem stat
             "</g>"
         ),
     };
+    static const auto normalStrokeWidth = QStringLiteral("0.81771719"), thickStrokeWidth = QStringLiteral("1.22");
+    static const auto normalCircleRadius = QStringLiteral("1.22"), largeCircleRadius = QStringLiteral("1.5");
     const auto &emblemData = emblems[static_cast<int>(statusEmblem)];
+    const auto &strokeWidthF = strokeWidth == StatusIconStrokeWidth::Normal ? normalStrokeWidth : thickStrokeWidth;
+    const auto &circleRadius = strokeWidth == StatusIconStrokeWidth::Normal ? normalCircleRadius : largeCircleRadius;
     return (QStringLiteral(
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
       "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 16 16\">"
@@ -111,16 +115,16 @@ QByteArray makeSyncthingIcon(const StatusIconColorSet &colors, StatusEmblem stat
           "</defs>"
           "<g id=\"syncthing-logo\" mask=\"url(#bitemask)\">"
               "<circle id=\"outer\" cx=\"8\" cy=\"8\" r=\"8\" style=\"fill:url(#grad)\"/>"
-              "<circle id=\"inner\" cx=\"8\" cy=\"7.9727402\" r=\"5.9557071\" style=\"fill:none;stroke:") % strokeColor % QStringLiteral(";stroke-width:0.81771719\"/>"
-              "<line id=\"arm-l\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"2.262351\" y2=\"9.4173737\" style=\"stroke:") % strokeColor % QStringLiteral(";stroke-width:0.81771719\"/>"
-              "<line id=\"arm-tr\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"13.301533\" y2=\"5.3696747\" style=\"stroke:") % strokeColor % QStringLiteral(";stroke-width:0.81771719\"/>"
-              "<line id=\"arm-br\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"11.788756\" y2=\"12.51107\" style=\"stroke:") % strokeColor % QStringLiteral(";stroke-width:0.81771719\"/>"
-              "<circle id=\"node-c\" cx=\"9.1993189\" cy=\"8.776825\" r=\"1.22\" style=\"fill:") % fillColor % QStringLiteral("\"/>"
-              "<circle id=\"node-l\" cx=\"2.262351\" cy=\"9.4173737\" r=\"1.22\" style=\"fill:") % fillColor % QStringLiteral("\"/>"
-              "<circle id=\"node-tr\" cx=\"13.301533\" cy=\"5.3696747\" r=\"1.22\" style=\"fill:") % fillColor % QStringLiteral("\"/>"
-              "<circle id=\"node-br\" cx=\"11.788756\" cy=\"12.51107\" r=\"1.22\" style=\"fill:") % fillColor % QStringLiteral("\"/>"
+              "<circle id=\"inner\" cx=\"8\" cy=\"7.9727402\" r=\"5.9557071\" style=\"fill:none;stroke:") % strokeColor % QStringLiteral(";stroke-width:") % strokeWidthF % QStringLiteral("\"/>"
+              "<line id=\"arm-l\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"2.262351\" y2=\"9.4173737\" style=\"stroke:") % strokeColor % QStringLiteral(";stroke-width:") % strokeWidthF % QStringLiteral("\"/>"
+              "<line id=\"arm-tr\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"13.301533\" y2=\"5.3696747\" style=\"stroke:") % strokeColor % QStringLiteral(";stroke-width:") % strokeWidthF % QStringLiteral("\"/>"
+              "<line id=\"arm-br\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"11.788756\" y2=\"12.51107\" style=\"stroke:") % strokeColor % QStringLiteral(";stroke-width:") % strokeWidthF % QStringLiteral("\"/>"
+              "<circle id=\"node-c\" cx=\"9.1993189\" cy=\"8.776825\" r=\"") % circleRadius % QStringLiteral("\" style=\"fill:") % fillColor % QStringLiteral("\"/>"
+              "<circle id=\"node-l\" cx=\"2.262351\" cy=\"9.4173737\" r=\"") % circleRadius % QStringLiteral("\" style=\"fill:") % fillColor % QStringLiteral("\"/>"
+              "<circle id=\"node-tr\" cx=\"13.301533\" cy=\"5.3696747\" r=\"") % circleRadius % QStringLiteral("\" style=\"fill:") % fillColor % QStringLiteral("\"/>"
+              "<circle id=\"node-br\" cx=\"11.788756\" cy=\"12.51107\" r=\"") % circleRadius % QStringLiteral("\" style=\"fill:") % fillColor % QStringLiteral("\"/>"
           "</g>") %
-          (emblemData.isEmpty() ? QString() : emblemData) % QStringLiteral(
+          emblemData % QStringLiteral(
       "</svg>"
     )).toUtf8();
     // clang-format on
@@ -266,16 +270,18 @@ QString StatusIconSettings::toString() const
 }
 
 StatusIcons::StatusIcons(const StatusIconSettings &settings)
-    : disconnected(QIcon(renderSvgImage(makeSyncthingIcon(settings.disconnectedColor, StatusEmblem::None), settings.renderSize)))
-    , idling(QIcon(renderSvgImage(makeSyncthingIcon(settings.idleColor, StatusEmblem::None), settings.renderSize)))
-    , scanninig(QIcon(renderSvgImage(makeSyncthingIcon(settings.scanningColor, StatusEmblem::Scanning), settings.renderSize)))
-    , notify(QIcon(renderSvgImage(makeSyncthingIcon(settings.warningColor, StatusEmblem::Alert), settings.renderSize)))
-    , pause(QIcon(renderSvgImage(makeSyncthingIcon(settings.pausedColor, StatusEmblem::Paused), settings.renderSize)))
-    , sync(QIcon(renderSvgImage(makeSyncthingIcon(settings.synchronizingColor, StatusEmblem::Synchronizing), settings.renderSize)))
-    , syncComplete(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Complete), settings.renderSize)))
-    , error(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Alert), settings.renderSize)))
-    , errorSync(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Synchronizing), settings.renderSize)))
-    , newItem(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Add), settings.renderSize)))
+    : disconnected(
+        QIcon(renderSvgImage(makeSyncthingIcon(settings.disconnectedColor, StatusEmblem::None, settings.strokeWidth), settings.renderSize)))
+    , idling(QIcon(renderSvgImage(makeSyncthingIcon(settings.idleColor, StatusEmblem::None, settings.strokeWidth), settings.renderSize)))
+    , scanninig(QIcon(renderSvgImage(makeSyncthingIcon(settings.scanningColor, StatusEmblem::Scanning, settings.strokeWidth), settings.renderSize)))
+    , notify(QIcon(renderSvgImage(makeSyncthingIcon(settings.warningColor, StatusEmblem::Alert, settings.strokeWidth), settings.renderSize)))
+    , pause(QIcon(renderSvgImage(makeSyncthingIcon(settings.pausedColor, StatusEmblem::Paused, settings.strokeWidth), settings.renderSize)))
+    , sync(QIcon(
+          renderSvgImage(makeSyncthingIcon(settings.synchronizingColor, StatusEmblem::Synchronizing, settings.strokeWidth), settings.renderSize)))
+    , syncComplete(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Complete, settings.strokeWidth), settings.renderSize)))
+    , error(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Alert, settings.strokeWidth), settings.renderSize)))
+    , errorSync(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Synchronizing, settings.strokeWidth), settings.renderSize)))
+    , newItem(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Add, settings.strokeWidth), settings.renderSize)))
     , isValid(true)
 {
 }

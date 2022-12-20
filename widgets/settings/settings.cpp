@@ -354,6 +354,10 @@ void restore()
     v.icons.tray = StatusIconSettings(settings.value(QStringLiteral("trayIcons")).toString());
     v.icons.status.renderSize = settings.value(QStringLiteral("statusIconsRenderSize"), v.icons.status.renderSize).toSize();
     v.icons.tray.renderSize = settings.value(QStringLiteral("trayIconsRenderSize"), v.icons.tray.renderSize).toSize();
+    v.icons.status.strokeWidth = static_cast<StatusIconStrokeWidth>(
+        settings.value(QStringLiteral("statusIconsStrokeWidth"), static_cast<int>(v.icons.status.strokeWidth)).toInt());
+    v.icons.tray.strokeWidth = static_cast<StatusIconStrokeWidth>(
+        settings.value(QStringLiteral("trayIconsStrokeWidth"), static_cast<int>(v.icons.tray.strokeWidth)).toInt());
     v.icons.distinguishTrayIcons = settings.value(QStringLiteral("distinguishTrayIcons")).toBool();
     v.icons.preferIconsFromTheme = settings.value(QStringLiteral("preferIconsFromTheme")).toBool();
     settings.beginGroup(QStringLiteral("positioning"));
@@ -472,6 +476,8 @@ void save()
     settings.setValue(QStringLiteral("trayIcons"), v.icons.tray.toString());
     settings.setValue(QStringLiteral("statusIconsRenderSize"), v.icons.status.renderSize);
     settings.setValue(QStringLiteral("trayIconsRenderSize"), v.icons.tray.renderSize);
+    settings.setValue(QStringLiteral("statusIconsStrokeWidth"), static_cast<int>(v.icons.status.strokeWidth));
+    settings.setValue(QStringLiteral("trayIconsStrokeWidth"), static_cast<int>(v.icons.tray.strokeWidth));
     settings.setValue(QStringLiteral("distinguishTrayIcons"), v.icons.distinguishTrayIcons);
     settings.setValue(QStringLiteral("preferIconsFromTheme"), v.icons.preferIconsFromTheme);
     settings.beginGroup(QStringLiteral("positioning"));

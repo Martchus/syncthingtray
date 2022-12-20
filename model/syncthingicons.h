@@ -28,6 +28,11 @@ enum class StatusEmblem {
     Add,
 };
 
+enum class StatusIconStrokeWidth {
+    Normal,
+    Thick,
+};
+
 struct LIB_SYNCTHING_MODEL_EXPORT StatusIconColorSet {
     StatusIconColorSet(const QColor &backgroundStart, const QColor &backgroundEnd, const QColor &foreground);
     StatusIconColorSet(QColor &&backgroundStart, QColor &&backgroundEnd, QColor &&foreground);
@@ -61,7 +66,7 @@ inline StatusIconColorSet::StatusIconColorSet(const QString &backgroundStart, co
 
 LIB_SYNCTHING_MODEL_EXPORT QByteArray makeSyncthingIcon(
     const StatusIconColorSet &colors = StatusIconColorSet{ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8"), QStringLiteral("#FFFFFF") },
-    StatusEmblem statusEmblem = StatusEmblem::None);
+    StatusEmblem statusEmblem = StatusEmblem::None, StatusIconStrokeWidth strokeWidth = StatusIconStrokeWidth::Normal);
 LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QString &path, const QSize &size = QSize(32, 32), int margin = 0);
 LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QByteArray &contents, const QSize &size = QSize(32, 32), int margin = 0);
 
@@ -83,6 +88,7 @@ struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
     StatusIconColorSet pausedColor;
     StatusIconColorSet disconnectedColor;
     QSize renderSize = QSize(32, 32);
+    StatusIconStrokeWidth strokeWidth = StatusIconStrokeWidth::Normal;
 
     static constexpr auto distinguishableColorCount = 8;
 
