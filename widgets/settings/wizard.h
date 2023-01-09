@@ -14,6 +14,10 @@ QT_FORWARD_DECLARE_CLASS(QLabel)
 QT_FORWARD_DECLARE_CLASS(QProgressBar)
 QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
 
+namespace Data {
+class SyncthingConnection;
+}
+
 namespace QtGui {
 
 class SetupDetection;
@@ -54,10 +58,11 @@ public:
     bool autoStart() const;
     bool isConfigApplied() const;
     const QString &configError() const;
+    Data::SyncthingConnection *appliedConnection();
 
 public Q_SLOTS:
     bool changeSettings();
-    void handleConfigurationApplied(const QString &configError = QString());
+    void handleConfigurationApplied(const QString &configError = QString(), Data::SyncthingConnection *connection = nullptr);
 
 Q_SIGNALS:
     void settingsDialogRequested();
@@ -82,6 +87,7 @@ private:
     bool m_autoStart = false;
     bool m_configApplied = false;
     QString m_configError;
+    Data::SyncthingConnection *m_appliedConnection = nullptr;
     int m_elapsedPollTime;
 };
 
@@ -113,6 +119,11 @@ inline bool Wizard::isConfigApplied() const
 inline const QString &Wizard::configError() const
 {
     return m_configError;
+}
+
+inline Data::SyncthingConnection *Wizard::appliedConnection()
+{
+    return m_appliedConnection;
 }
 
 class SYNCTHINGWIDGETS_EXPORT WelcomeWizardPage final : public QWizardPage {

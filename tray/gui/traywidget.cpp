@@ -297,7 +297,7 @@ void TrayWidget::applySettingsChangesFromWizard()
     // consider the settings applied instantly if there's no tray widget instance
     if (s_instances.empty()) {
         if (s_wizard) {
-            s_wizard->handleConfigurationApplied();
+            s_wizard->handleConfigurationApplied(QString(), &m_connection);
         }
         return;
     }
@@ -926,7 +926,7 @@ void TrayWidget::concludeWizard(const QString &errorMessage)
     }
     m_applyingSettingsForWizard = false;
     if (s_wizard) {
-        s_wizard->handleConfigurationApplied(errorMessage);
+        s_wizard->handleConfigurationApplied(errorMessage, &m_connection);
     }
 }
 

@@ -388,7 +388,7 @@ void SyncthingApplet::concludeWizard(const QString &errorMessage)
     }
     m_applyingSettingsForWizard = false;
     if (m_wizard) {
-        m_wizard->handleConfigurationApplied(errorMessage);
+        m_wizard->handleConfigurationApplied(errorMessage, &m_connection);
     }
 }
 

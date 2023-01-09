@@ -394,11 +394,14 @@ QString Wizard::hintAboutSyncthingLog() const
     return res;
 }
 
-void Wizard::handleConfigurationApplied(const QString &configError)
+void Wizard::handleConfigurationApplied(const QString &configError, Data::SyncthingConnection *connection)
 {
     m_configApplied = true;
     if (m_configError.isEmpty()) {
         m_configError = configError;
+    }
+    if ((m_appliedConnection = connection)) {
+        connect(connection, &Data::SyncthingConnection::destroyed, this, [this] { m_appliedConnection = nullptr; });
     }
     emit configApplied();
 }
@@ -1005,7 +1008,9 @@ void QtGui::FinalWizardPage::showResults()
                             "Syncthing</a> to pair remote devices and add folders for sharing. If you need further help, read the "
                             "<a href=\"openDocs\">documentation to get started</a>.</p>"
                             "<p>To initiate the pairing from another device, the device ID of this Syncthing device is displayed below.</p>"));
-        m_layout->addWidget(m_ownDeviceIdWidget = ownDeviceIdWidget(wizard->setupDetection().connection, 256));
+        if (wizard->appliedConnection()) {
+            m_layout->addWidget(m_ownDeviceIdWidget = ownDeviceIdWidget(*(wizard->appliedConnection()), 256));
+        }
     } else {
         setSubTitle(tr("Not all changes could be applied"));
         m_label->setText(
