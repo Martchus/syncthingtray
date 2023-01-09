@@ -807,16 +807,22 @@ void AutostartWizardPage::initializePage()
         return;
     }
 
-    for (auto *const widget :
-        std::initializer_list<QWidget *>{ m_ui->launcherEnabledLabel, m_ui->systemdEnabledLabel, m_ui->launcherDisabledLabel }) {
+    for (auto *const widget : std::initializer_list<QWidget *>{
+             m_ui->launcherEnabledLabel, m_ui->systemdEnabledLabel, m_ui->launcherDisabledLabel, m_ui->launcherAlreadyEnabledLabel }) {
         widget->hide();
     }
 
     switch (wizard->mainConfig()) {
     case MainConfiguration::None:
-    case MainConfiguration::CurrentlyRunning:
-        m_ui->launcherDisabledLabel->show();
+    case MainConfiguration::CurrentlyRunning: {
+        auto *const launcher = Data::SyncthingLauncher::mainInstance();
+        if (launcher && launcher->guiUrl().port(-1) == QUrl(wizard->setupDetection().config.syncthingUrl()).port(-2)) {
+            m_ui->launcherAlreadyEnabledLabel->show();
+        } else {
+            m_ui->launcherDisabledLabel->show();
+        }
         break;
+    }
     case MainConfiguration::LauncherExternal:
     case MainConfiguration::LauncherBuiltIn:
         m_ui->launcherEnabledLabel->show();

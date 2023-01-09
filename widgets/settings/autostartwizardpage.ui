@@ -67,6 +67,16 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QLabel" name="launcherAlreadyEnabledLabel">
+     <property name="text">
+      <string>The currently running Syncthing instance is started via Syncthing Tray so Syncthing itself will be started automatically on login as well.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources>
