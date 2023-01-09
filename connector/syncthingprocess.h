@@ -56,9 +56,9 @@ public:
 #endif
 
 public Q_SLOTS:
-    void restartSyncthing(const QString &program, const QStringList &arguments, SyncthingConnection *currentConnection = nullptr);
+    void restartSyncthing(const QString &program, const QStringList &arguments, Data::SyncthingConnection *currentConnection = nullptr);
     void startSyncthing(const QString &program, const QStringList &arguments);
-    void stopSyncthing(SyncthingConnection *currentConnection = nullptr);
+    void stopSyncthing(Data::SyncthingConnection *currentConnection = nullptr);
     void killSyncthing();
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     void terminate();

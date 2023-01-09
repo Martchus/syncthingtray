@@ -42,7 +42,7 @@ public Q_SLOTS:
     const SyncthingDir *info(const QModelIndex &index) const;
 
 private Q_SLOTS:
-    void dirStatusChanged(const SyncthingDir &dir, int index);
+    void dirStatusChanged(const Data::SyncthingDir &dir, int index);
     void handleConfigInvalidated() override;
     void handleNewConfigAvailable() override;
     void handleStatusIconsChanged() override;

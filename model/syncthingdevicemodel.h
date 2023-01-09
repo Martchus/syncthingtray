@@ -41,7 +41,7 @@ public Q_SLOTS:
     const SyncthingDev *info(const QModelIndex &index) const;
 
 private Q_SLOTS:
-    void devStatusChanged(const SyncthingDev &, int index);
+    void devStatusChanged(const Data::SyncthingDev &, int index);
     void handleStatusIconsChanged() override;
     void handleForkAwesomeIconsChanged() override;
 

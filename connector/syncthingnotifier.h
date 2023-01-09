@@ -74,17 +74,17 @@ public:
     const SyncthingProcess *process() const;
 
 public Q_SLOTS:
-    void setEnabledNotifications(SyncthingHighLevelNotification enabledNotifications);
-    void setConsideredIntegrations(SyncthingStartupIntegration consideredIntegrations);
+    void setEnabledNotifications(Data::SyncthingHighLevelNotification enabledNotifications);
+    void setConsideredIntegrations(Data::SyncthingStartupIntegration consideredIntegrations);
     void setIgnoreInavailabilityAfterStart(unsigned int seconds);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    void setService(const SyncthingService *service);
+    void setService(const Data::SyncthingService *service);
 #endif
-    void setProcess(const SyncthingProcess *process);
+    void setProcess(const Data::SyncthingProcess *process);
 
 Q_SIGNALS:
     ///! \brief Emitted when the connection status changes. Also provides the previous status.
-    void statusChanged(SyncthingStatus previousStatus, SyncthingStatus newStatus);
+    void statusChanged(Data::SyncthingStatus previousStatus, Data::SyncthingStatus newStatus);
     ///! \brief Emitted when the connection to Syncthing has been established.
     void connected();
     ///! \brief Emitted when the connection to Syncthing has been interrupted.
@@ -100,15 +100,16 @@ Q_SIGNALS:
     void syncthingProcessError(const QString &message, const QString &additionalInfo);
 
 private Q_SLOTS:
-    void handleStatusChangedEvent(SyncthingStatus newStatus);
+    void handleStatusChangedEvent(Data::SyncthingStatus newStatus);
     void handleNewDevEvent(CppUtilities::DateTime when, const QString &devId, const QString &address);
-    void handleNewDirEvent(CppUtilities::DateTime when, const QString &devId, const SyncthingDev *dev, const QString &dirId, const QString &dirLabel);
+    void handleNewDirEvent(
+        CppUtilities::DateTime when, const QString &devId, const Data::SyncthingDev *dev, const QString &dirId, const QString &dirLabel);
     void handleSyncthingProcessError(QProcess::ProcessError syncthingProcessError);
 
 private:
     bool isDisconnectRelevant() const;
     void emitConnectedAndDisconnected(SyncthingStatus newStatus);
-    void emitSyncComplete(CppUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev);
+    void emitSyncComplete(CppUtilities::DateTime when, const SyncthingDir &dir, int index, const Data::SyncthingDev *remoteDev);
 
     const SyncthingConnection &m_connection;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

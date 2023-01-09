@@ -103,7 +103,7 @@ Q_SIGNALS:
     void runningChanged(bool running);
     void enabledChanged(bool enable);
     void errorOccurred(const QString &context, const QString &name, const QString &message);
-    void scopeChanged(SystemdScope scope);
+    void scopeChanged(Data::SystemdScope scope);
 
 private Q_SLOTS:
     void handleUnitAdded(const QString &unitName, const QDBusObjectPath &unitPath);

@@ -49,10 +49,10 @@ public Q_SLOTS:
     void setMaxRows(int maxRows);
 
 private Q_SLOTS:
-    void fileChanged(const SyncthingDir &dir, int index, const SyncthingFileChange &change);
+    void fileChanged(const Data::SyncthingDir &dir, int index, const Data::SyncthingFileChange &change);
     void handleConfigInvalidated() override;
     void handleNewConfigAvailable() override;
-    void handleStatusChanged(SyncthingStatus status);
+    void handleStatusChanged(Data::SyncthingStatus status);
     void handleForkAwesomeIconsChanged() override;
 
 private:

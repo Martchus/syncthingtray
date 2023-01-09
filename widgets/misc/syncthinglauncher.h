@@ -68,7 +68,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     void launch(const QString &program, const QStringList &arguments);
     void launch(const Settings::Launcher &launcherSettings);
-    void terminate(SyncthingConnection *relevantConnection = nullptr);
+    void terminate(Data::SyncthingConnection *relevantConnection = nullptr);
     void kill();
     void tearDownLibSyncthing();
 

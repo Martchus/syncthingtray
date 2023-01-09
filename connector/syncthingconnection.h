@@ -192,15 +192,15 @@ public:
 
 public Q_SLOTS:
     bool loadSelfSignedCertificate();
-    bool applySettings(SyncthingConnectionSettings &connectionSettings);
+    bool applySettings(Data::SyncthingConnectionSettings &connectionSettings);
 
     // methods to initiate/close connection
     void connect();
-    void connect(SyncthingConnectionSettings &connectionSettings);
+    void connect(Data::SyncthingConnectionSettings &connectionSettings);
     void connectLater(int milliSeconds);
     void disconnect();
     void reconnect();
-    void reconnect(SyncthingConnectionSettings &connectionSettings);
+    void reconnect(Data::SyncthingConnectionSettings &connectionSettings);
     void reconnectLater(int milliSeconds);
     void abortAllRequests();
 
@@ -245,18 +245,19 @@ Q_SIGNALS:
     void newDevices(const std::vector<SyncthingDev> &devs);
     void newConfigApplied();
     void newEvents(const QJsonArray &events);
-    void dirStatusChanged(const SyncthingDir &dir, int index);
-    void devStatusChanged(const SyncthingDev &dev, int index);
-    void fileChanged(const SyncthingDir &dir, int index, const SyncthingFileChange &fileChange);
+    void dirStatusChanged(const Data::SyncthingDir &dir, int index);
+    void devStatusChanged(const Data::SyncthingDev &dev, int index);
+    void fileChanged(const Data::SyncthingDir &dir, int index, const Data::SyncthingFileChange &fileChange);
     void downloadProgressChanged();
     void dirStatisticsChanged();
-    void dirCompleted(CppUtilities::DateTime when, const SyncthingDir &dir, int index, const SyncthingDev *remoteDev = nullptr);
+    void dirCompleted(CppUtilities::DateTime when, const Data::SyncthingDir &dir, int index, const Data::SyncthingDev *remoteDev = nullptr);
     void newNotification(CppUtilities::DateTime when, const QString &message);
     void newDevAvailable(CppUtilities::DateTime when, const QString &devId, const QString &address);
-    void newDirAvailable(CppUtilities::DateTime when, const QString &devId, const SyncthingDev *dev, const QString &dirId, const QString &dirLabel);
-    void error(const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request = QNetworkRequest(),
-        const QByteArray &response = QByteArray());
-    void statusChanged(SyncthingStatus newStatus);
+    void newDirAvailable(
+        CppUtilities::DateTime when, const QString &devId, const Data::SyncthingDev *dev, const QString &dirId, const QString &dirLabel);
+    void error(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError,
+        const QNetworkRequest &request = QNetworkRequest(), const QByteArray &response = QByteArray());
+    void statusChanged(Data::SyncthingStatus newStatus);
     void configDirChanged(const QString &newConfigDir);
     void myIdChanged(const QString &myNewId);
     void tildeChanged(const QString &tilde);
@@ -294,16 +295,16 @@ private Q_SLOTS:
     void readDeviceEvent(CppUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
     void readItemStarted(CppUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readItemFinished(CppUtilities::DateTime eventTime, const QJsonObject &eventData);
-    void readFolderErrors(CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
+    void readFolderErrors(CppUtilities::DateTime eventTime, const QJsonObject &eventData, Data::SyncthingDir &dirInfo, int index);
     void readFolderCompletion(
-        CppUtilities::DateTime eventTime, const QJsonObject &eventData, const QString &dirId, SyncthingDir *dirInfo, int dirIndex);
-    void readFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, const QString &devId, SyncthingDev *devInfo,
-        int devIndex, const QString &dirId, SyncthingDir *dirInfo, int dirIndex);
-    void readLocalFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index);
-    void readRemoteFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, const QString &devId, SyncthingDev *devInfo,
-        int devIndex, const QString &dirId, SyncthingDir *dirInfo, int dirIndex);
-    void readRemoteFolderCompletion(const SyncthingCompletion &completion, const QString &devId, SyncthingDev *devInfo, int devIndex,
-        const QString &dirId, SyncthingDir *dirInfo, int dirIndex);
+        CppUtilities::DateTime eventTime, const QJsonObject &eventData, const QString &dirId, Data::SyncthingDir *dirInfo, int dirIndex);
+    void readFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, const QString &devId, Data::SyncthingDev *devInfo,
+        int devIndex, const QString &dirId, Data::SyncthingDir *dirInfo, int dirIndex);
+    void readLocalFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, Data::SyncthingDir &dirInfo, int index);
+    void readRemoteFolderCompletion(CppUtilities::DateTime eventTime, const QJsonObject &eventData, const QString &devId, Data::SyncthingDev *devInfo,
+        int devIndex, const QString &dirId, Data::SyncthingDir *dirInfo, int dirIndex);
+    void readRemoteFolderCompletion(const Data::SyncthingCompletion &completion, const QString &devId, Data::SyncthingDev *devInfo, int devIndex,
+        const QString &dirId, Data::SyncthingDir *dirInfo, int dirIndex);
     void readRemoteIndexUpdated(CppUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readPostConfig();
     void readRescan();
@@ -313,7 +314,7 @@ private Q_SLOTS:
     void readShutdown();
     void readDirStatus();
     void readDirPullErrors();
-    void readDirSummary(CppUtilities::DateTime eventTime, const QJsonObject &summary, SyncthingDir &dirInfo, int index);
+    void readDirSummary(CppUtilities::DateTime eventTime, const QJsonObject &summary, Data::SyncthingDir &dirInfo, int index);
     void readDirRejected(CppUtilities::DateTime eventTime, const QString &dirId, const QJsonObject &eventData);
     void readDevRejected(CppUtilities::DateTime eventTime, const QString &devId, const QJsonObject &eventData);
     void readCompletion();
@@ -327,10 +328,10 @@ private Q_SLOTS:
     void continueConnecting();
     void continueReconnecting();
     void autoReconnect();
-    void setStatus(SyncthingStatus status);
+    void setStatus(Data::SyncthingStatus status);
     void emitNotification(CppUtilities::DateTime when, const QString &message);
     void emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response = QByteArray());
-    void emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply);
+    void emitError(const QString &message, Data::SyncthingErrorCategory category, QNetworkReply *reply);
     void emitMyIdChanged(const QString &newId);
     void emitTildeChanged(const QString &newTilde, const QString &newPathSeparator);
     void emitDirStatisticsChanged();

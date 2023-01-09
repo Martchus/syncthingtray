@@ -68,7 +68,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void showDetailsFromSetupDetection();
-    void handleConfigurationSelected(MainConfiguration mainConfig, ExtraConfiguration extraConfig);
+    void handleConfigurationSelected(QtGui::MainConfiguration mainConfig, QtGui::ExtraConfiguration extraConfig);
     void handleAutostartSelected(bool autostartEnabled);
     void pollForSyncthingConfig();
 
