@@ -120,7 +120,7 @@ void WizardTests::testShowingSettings()
     // obtain global wizard instance and do some basic checks
     auto settingsDlgRequested = 0;
     auto *wizardDlg = Wizard::instance();
-    connect(wizardDlg, &Wizard::settingsDialogRequested, [&] { ++settingsDlgRequested; });
+    auto c = connect(wizardDlg, &Wizard::settingsDialogRequested, [&] { ++settingsDlgRequested; });
     QVERIFY(!wizardDlg->setupDetection().hasConfig());
 
     // show wizard and request settings though welcome page
@@ -133,6 +133,9 @@ void WizardTests::testShowingSettings()
     settingsButton->click();
     m_eventLoop.processEvents();
     QCOMPARE(settingsDlgRequested, 1);
+
+    // other tests might trigger settingsDialogRequested() so better disconnect lambda
+    disconnect(c);
 }
 
 /*!
