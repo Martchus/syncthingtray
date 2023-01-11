@@ -490,6 +490,7 @@ bool WelcomeWizardPage::isComplete() const
 
 DetectionWizardPage::DetectionWizardPage(QWidget *parent)
     : QWizardPage(parent)
+    , m_setupDetection(nullptr)
 {
     setTitle(m_defaultTitle = tr("Checking current Syncthing setup"));
     setSubTitle(m_defaultSubTitle = tr("Checking Syncthing configuration and whether Syncthing is already running or can be started …"));
@@ -523,7 +524,10 @@ void DetectionWizardPage::initializePage()
     if (!wizard) {
         return;
     }
-    m_setupDetection = &wizard->setupDetection();
+    if (!m_setupDetection) {
+        m_setupDetection = &wizard->setupDetection();
+        connect(m_setupDetection, &SetupDetection::done, this, &DetectionWizardPage::continueIfDone);
+    }
     m_setupDetection->reset();
     emit completeChanged();
     QTimer::singleShot(0, this, &DetectionWizardPage::tryToConnect);
@@ -580,7 +584,6 @@ void DetectionWizardPage::tryToConnect()
     }
 
     // start setup detection tests
-    connect(m_setupDetection, &SetupDetection::done, this, &DetectionWizardPage::continueIfDone);
     m_setupDetection->startTest();
 }
 
