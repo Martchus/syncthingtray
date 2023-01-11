@@ -116,6 +116,7 @@ public:
     ~LauncherOptionPage() override;
     bool apply() override;
     void reset() override;
+    bool isRunning() const;
 
 private Q_SLOTS:
     void handleSyncthingLaunched(bool running);
@@ -123,7 +124,6 @@ private Q_SLOTS:
     void handleSyncthingOutputAvailable(const QByteArray &output);
     void handleSyncthingExited(int exitCode, QProcess::ExitStatus exitStatus);
     void handleSyncthingError(QProcess::ProcessError error);
-    bool isRunning() const;
     void launch();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void updateLibSyncthingLogLevel();
