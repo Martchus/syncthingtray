@@ -191,7 +191,11 @@ void WizardTests::testConfiguringLauncher()
     if (!setupDetection.launcherError.has_value() || setupDetection.launcherExitCode.value_or(-1) != 0) {
         qDebug() << "launcher output: " << setupDetection.launcherOutput;
     }
+    if (setupDetection.launcherExitCode.has_value()) {
+        qDebug() << "launcher exit code: " << setupDetection.launcherExitCode.value();
+    }
     // -> verify whether the launcher setup detection is in the expected state before checking UI itself
+    QVERIFY(!setupDetection.timedOut);
     QVERIFY(setupDetection.launcherExitCode.has_value());
     QCOMPARE(setupDetection.launcherExitCode.value(), 0);
     QVERIFY(!setupDetection.launcherError.has_value());
