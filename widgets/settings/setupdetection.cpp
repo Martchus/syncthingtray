@@ -33,7 +33,9 @@ SetupDetection::SetupDetection(QObject *parent)
     launcher.setEmittingOutput(true);
 
     // configure timeout
-    timeout.setInterval(2500);
+    auto hasConfiguredTimeout = false;
+    auto configuredTimeout = qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_WIZARD_SETUP_DETECTION_TIMEOUT", &hasConfiguredTimeout);
+    timeout.setInterval(hasConfiguredTimeout ? configuredTimeout : 2500);
     timeout.setSingleShot(true);
 
     // connect signals & slots
