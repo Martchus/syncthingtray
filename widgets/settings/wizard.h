@@ -175,7 +175,7 @@ public:
 
 Q_SIGNALS:
     void retry();
-    void configurationSelected(MainConfiguration mainConfig, ExtraConfiguration extraConfig);
+    void configurationSelected(QtGui::MainConfiguration mainConfig, QtGui::ExtraConfiguration extraConfig);
 
 private Q_SLOTS:
     void handleSelectionChanged();
