@@ -6,8 +6,6 @@
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
 
-#include <c++utilities/conversion/stringbuilder.h>
-
 #include <QtTest/QtTest>
 
 #include <QApplication>
@@ -196,9 +194,12 @@ void WizardTests::testConfiguringLauncher()
     if (setupDetection.launcherExitCode.has_value()) {
         qDebug() << "launcher exit code: " << setupDetection.launcherExitCode.value();
     }
+    qDebug() << "user service state: " << setupDetection.userService.unitFileState();
+    qDebug() << "system service state: " << setupDetection.systemService.unitFileState();
+    if (setupDetection.timedOut) {
+        qDebug() << "timeout of " << setupDetection.timeout.interval() << " ms has been exceeded (normal if systemd units not available)";
+    }
     // -> verify whether the launcher setup detection is in the expected state before checking UI itself
-    const auto timeoutStr = CppUtilities::argsToString("timeout of ", setupDetection.timeout.interval(), " ms not exceeded");
-    QVERIFY2(!setupDetection.timedOut, timeoutStr.data());
     QVERIFY(setupDetection.launcherExitCode.has_value());
     QCOMPARE(setupDetection.launcherExitCode.value(), 0);
     QVERIFY(!setupDetection.launcherError.has_value());
