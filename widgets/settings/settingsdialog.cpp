@@ -1451,7 +1451,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     category = new OptionCategory(this);
     category->setDisplayName(tr("Startup"));
     category->assignPages({ new AutostartOptionPage, new LauncherOptionPage,
-        new LauncherOptionPage(QStringLiteral("Inotify"), tr("additional tool"), tr("Extra launcher"))
+        new LauncherOptionPage(QStringLiteral("Process"), tr("additional tool"), tr("Extra launcher"))
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
             ,
         new SystemdOptionPage
