@@ -331,7 +331,7 @@ Data::SyncthingProcessInternalData::SyncthingProcessInternalData(boost::asio::io
 
 Data::SyncthingProcessInternalData::Lock::Lock(const std::weak_ptr<SyncthingProcessInternalData> &weak)
     : process(weak.lock())
-    , lock(process ? decltype(lock)(process->mutex, std::try_to_lock) : decltype(lock)())
+    , lock(process ? decltype(lock)(process->mutex) : decltype(lock)())
 {
 }
 
