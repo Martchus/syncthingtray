@@ -479,8 +479,18 @@ void SyncthingProcess::start(const QString &program, const QStringList &argument
     // start the process within a new process group (or job object under Windows)
     try {
         auto path = boost::filesystem::path(prog);
+        if (path.empty()) {
+            std::cerr << EscapeCodes::Phrases::Error << "Unable to launch process: no executable specified" << EscapeCodes::Phrases::End;
+            emit stateChanged(m_process->state = QProcess::NotRunning);
+            handleError(QProcess::FailedToStart, QStringLiteral("no executable specified"), false);
+            return;
+        }
         if (path.is_relative()) {
             path = boost::process::search_path(path);
+        }
+        if (path.empty()) {
+            throw boost::process::process_error(
+                std::make_error_code(std::errc::no_such_file_or_directory), "unable to find the specified executable in the search paths");
         }
         switch (m_mode) {
         case QProcess::MergedChannels:
