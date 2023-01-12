@@ -204,6 +204,17 @@ QStringList SyncthingProcess::splitArguments(const QString &arguments)
 }
 
 /*!
+ * \brief Emits errorOccurred() as if the specified \a error had occurred and sets the specified \a errorString.
+ * \remarks May be called if a precondition for starting the process (that is checked outside of the SyncthingProcess
+ *          class itself) has failed (instead of starting the process).
+ */
+void SyncthingProcess::reportError(QProcess::ProcessError error, const QString &errorString)
+{
+    setErrorString(errorString);
+    emit errorOccurred(error);
+}
+
+/*!
  * \brief Stops the currently running process gracefully. If it has been stopped, starts the specified \a program with the specified \a arguments.
  * \sa See stopSyncthing() for details about \a currentConnection.
  */

@@ -40,6 +40,7 @@ public:
     static SyncthingProcess *mainInstance();
     static void setMainInstance(SyncthingProcess *mainInstance);
     static QStringList splitArguments(const QString &arguments);
+    void reportError(QProcess::ProcessError error, const QString &errorString);
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     QProcess::ProcessState state() const;
     void start(const QString &program, const QStringList &arguments, QIODevice::OpenMode openMode = QIODevice::ReadOnly);

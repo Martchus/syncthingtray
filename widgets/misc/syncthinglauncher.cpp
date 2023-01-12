@@ -123,7 +123,7 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
         return;
     }
     if (!launcherSettings.useLibSyncthing && launcherSettings.syncthingPath.isEmpty()) {
-        emit errorOccurred(QProcess::FailedToStart);
+        m_process.reportError(QProcess::FailedToStart, QStringLiteral("executable path is empty"));
         return;
     }
     if (launcherSettings.useLibSyncthing) {
