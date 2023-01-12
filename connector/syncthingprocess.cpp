@@ -612,7 +612,7 @@ void SyncthingProcess::bufferOutput()
 }
 
 /*!
- * \brief Terminates all process in the group forcefully and waits until they're gone.
+ * \brief Terminates all processes in the group forcefully and waits until they're gone.
  */
 void SyncthingProcess::handleLeftoverProcesses()
 {
