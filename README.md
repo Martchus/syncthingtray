@@ -609,7 +609,7 @@ section.
       for details.
 
 ## Copyright notice and license
-Copyright © 2016-2022 Marius Kittler
+Copyright © 2016-2023 Marius Kittler
 
 All code is licensed under [GPL-2-or-later](LICENSE). This does *not* apply to
 code contained in Git repositories included as Git submodule (which contain
