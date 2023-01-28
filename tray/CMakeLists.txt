@@ -50,6 +50,7 @@ set(REQUIRED_ICONS
     dialog-ok
     dialog-ok-apply
     document-open
+    download
     edit-copy
     edit-clear
     edit-cut
