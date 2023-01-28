@@ -506,8 +506,15 @@ bool Application::findPwd()
 void Application::printDir(const RelevantDir &relevantDir) const
 {
     const SyncthingDir *const dir = relevantDir.dirObj;
-    cout << " - " << TextAttribute::Bold << dir->id.toLocal8Bit().data() << '\n' << TextAttribute::Reset;
-    printProperty("Label", dir->label);
+    cout << " - " << TextAttribute::Bold;
+    if (dir->label.isEmpty()) {
+        cout  << dir->id.toLocal8Bit().data() << '\n' << TextAttribute::Reset;
+    } else {
+        cout << dir->label.toLocal8Bit().data() << '\n' << TextAttribute::Reset;
+        if (dir->id != dir->label) {
+            printProperty("ID", dir->id);
+        }
+    }
     printProperty("Path", dir->path);
     printProperty("Status", dir->statusString());
     if (!dir->paused) {
