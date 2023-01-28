@@ -508,7 +508,7 @@ void Application::printDir(const RelevantDir &relevantDir) const
     const SyncthingDir *const dir = relevantDir.dirObj;
     cout << " - " << TextAttribute::Bold;
     if (dir->label.isEmpty()) {
-        cout  << dir->id.toLocal8Bit().data() << '\n' << TextAttribute::Reset;
+        cout << dir->id.toLocal8Bit().data() << '\n' << TextAttribute::Reset;
     } else {
         cout << dir->label.toLocal8Bit().data() << '\n' << TextAttribute::Reset;
         if (dir->id != dir->label) {

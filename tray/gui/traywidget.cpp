@@ -326,8 +326,8 @@ void TrayWidget::applySettingsChangesFromWizard()
 void TrayWidget::showAboutDialog()
 {
     if (!s_aboutDlg) {
-        s_aboutDlg = new AboutDialog(
-            nullptr, QString(), aboutDialogAttribution(), QString(), {}, QStringLiteral(APP_URL), QString(), aboutDialogImage());
+        s_aboutDlg
+            = new AboutDialog(nullptr, QString(), aboutDialogAttribution(), QString(), {}, QStringLiteral(APP_URL), QString(), aboutDialogImage());
         s_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         s_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     }
