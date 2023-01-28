@@ -23,7 +23,6 @@
     <widget class="QLabel" name="instanceLabel">
      <property name="font">
       <font>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -187,19 +186,27 @@
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QtUtilities::ClearLineEdit" name="urlLineEdit"/>
+    <widget class="QtUtilities::ClearLineEdit" name="urlLineEdit">
+     <property name="placeholderText">
+      <string>&quot;http://host:port/…&quot; or &quot;https://host:port/…&quot;, e.g. &quot;http://127.0.0.1:8384&quot; for local instance with default settings</string>
+     </property>
+    </widget>
    </item>
-   <item row="4" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="authLabel">
      <property name="text">
       <string>Authentication</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
-    <widget class="QCheckBox" name="authCheckBox"/>
+   <item row="6" column="1">
+    <widget class="QCheckBox" name="authCheckBox">
+     <property name="text">
+      <string>Supply credentials for HTTP authentication (normally the API key is sufficient)</string>
+     </property>
+    </widget>
    </item>
-   <item row="5" column="0">
+   <item row="7" column="0">
     <widget class="QLabel" name="userNameLabel">
      <property name="enabled">
       <bool>false</bool>
@@ -209,14 +216,14 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="7" column="1">
     <widget class="QtUtilities::ClearLineEdit" name="userNameLineEdit">
      <property name="enabled">
       <bool>false</bool>
      </property>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="8" column="0">
     <widget class="QLabel" name="passwordLabel">
      <property name="enabled">
       <bool>false</bool>
@@ -226,7 +233,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="8" column="1">
     <widget class="QtUtilities::ClearLineEdit" name="passwordLineEdit">
      <property name="enabled">
       <bool>false</bool>
@@ -236,24 +243,14 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="0">
-    <widget class="QLabel" name="apiKeyLabel">
-     <property name="text">
-      <string>API key</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="1">
-    <widget class="QtUtilities::ClearLineEdit" name="apiKeyLineEdit"/>
-   </item>
-   <item row="9" column="0">
+   <item row="11" column="0">
     <widget class="QLabel" name="certificateLabel">
      <property name="text">
       <string>HTTPS certificate</string>
      </property>
     </widget>
    </item>
-   <item row="9" column="1">
+   <item row="11" column="1">
     <widget class="QtUtilities::PathSelection" name="certPathSelection" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -263,7 +260,7 @@
      </property>
     </widget>
    </item>
-   <item row="10" column="1">
+   <item row="12" column="1">
     <layout class="QHBoxLayout" name="insertFromConfigFileLayout">
      <property name="spacing">
       <number>0</number>
@@ -308,7 +305,7 @@
      </item>
     </layout>
    </item>
-   <item row="11" column="1">
+   <item row="13" column="1">
     <widget class="Line" name="line2">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -321,7 +318,7 @@
      </property>
     </widget>
    </item>
-   <item row="12" column="0">
+   <item row="14" column="0">
     <widget class="QLabel" name="pollLabel">
      <property name="text">
       <string>Poll interval</string>
@@ -331,7 +328,7 @@
      </property>
     </widget>
    </item>
-   <item row="12" column="1">
+   <item row="14" column="1">
     <layout class="QGridLayout" name="gridLayout">
      <property name="horizontalSpacing">
       <number>10</number>
@@ -471,7 +468,7 @@
      </item>
     </layout>
    </item>
-   <item row="13" column="1">
+   <item row="15" column="1">
     <widget class="QCheckBox" name="autoConnectCheckBox">
      <property name="toolTip">
       <string>Whether to connect automatically on startup. This setting might be overruled by systemd and launcher settings.</string>
@@ -481,7 +478,7 @@
      </property>
     </widget>
    </item>
-   <item row="14" column="0">
+   <item row="16" column="0">
     <widget class="QLabel" name="overallStatusLabel">
      <property name="text">
       <string>Overall status</string>
@@ -491,7 +488,7 @@
      </property>
     </widget>
    </item>
-   <item row="14" column="1">
+   <item row="16" column="1">
     <layout class="QVBoxLayout" name="statusComputionFlagsVerticalLayout">
      <property name="spacing">
       <number>2</number>
@@ -536,21 +533,21 @@
      </item>
     </layout>
    </item>
-   <item row="15" column="0">
+   <item row="17" column="0">
     <widget class="QLabel" name="statusTextLabel">
      <property name="text">
       <string>Current status</string>
      </property>
     </widget>
    </item>
-   <item row="15" column="1">
+   <item row="17" column="1">
     <widget class="QLabel" name="statusLabel">
      <property name="text">
       <string>disconnected</string>
      </property>
     </widget>
    </item>
-   <item row="18" column="1">
+   <item row="20" column="1">
     <widget class="QPushButton" name="connectPushButton">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -564,6 +561,20 @@
      <property name="icon">
       <iconset theme="view-refresh" resource="../resources/syncthingwidgetsicons.qrc">
        <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="apiKeyLabel">
+     <property name="text">
+      <string>API key</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QtUtilities::ClearLineEdit" name="apiKeyLineEdit">
+     <property name="placeholderText">
+      <string>The API key displayed in Syncthing's settings dialog</string>
      </property>
     </widget>
    </item>
