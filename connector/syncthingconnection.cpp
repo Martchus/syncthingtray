@@ -529,6 +529,28 @@ SyncthingDir *SyncthingConnection::findDirInfo(const QString &dirId, int &row)
 }
 
 /*!
+ * \brief Returns the directory info object for the directory with the specified ID or label.
+ * \returns Returns a pointer to the object or nullptr if not found.
+ * \remarks
+ * - IDs have precedence, labels are checked as fallback.
+ * - The returned object becomes invalid when the newDirs() signal is emitted or the connection is destroyed.
+ */
+SyncthingDir *SyncthingConnection::findDirInfoConsideringLabels(const QString &dirIdOrLabel, int &row)
+{
+    if (auto *const dir = findDirInfo(dirIdOrLabel, row)) {
+        return dir;
+    }
+    row = 0;
+    for (SyncthingDir &d : m_dirs) {
+        if (d.label == dirIdOrLabel) {
+            return &d;
+        }
+        ++row;
+    }
+    return nullptr;
+}
+
+/*!
  * \brief Returns the directory info object for the directory with the ID stored in the specified \a object with the specified \a key.
  */
 SyncthingDir *SyncthingConnection::findDirInfo(QLatin1String key, const QJsonObject &object, int *row)

@@ -1118,7 +1118,7 @@ RelevantDir Application::findDirectory(const QString &dirIdentifier)
     // check whether the specified identifier is a known Syncthing directory or a relative path to an item in a
     // known Syncthing directory
     auto firstSlash = dirIdentifier.indexOf(QChar('/'));
-    relevantDir.dirObj = m_connection.findDirInfo(firstSlash >= 0 ? dirIdentifier.mid(0, firstSlash) : dirIdentifier, dummy);
+    relevantDir.dirObj = m_connection.findDirInfoConsideringLabels(firstSlash >= 0 ? dirIdentifier.mid(0, firstSlash) : dirIdentifier, dummy);
     if (relevantDir) {
         if (firstSlash >= 0) {
             relevantDir.subDir = dirIdentifier.mid(firstSlash + 1);

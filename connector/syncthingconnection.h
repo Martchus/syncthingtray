@@ -181,6 +181,7 @@ public:
     std::vector<const SyncthingDev *> connectedDevices() const;
     const QJsonObject &rawConfig() const;
     SyncthingDir *findDirInfo(const QString &dirId, int &row);
+    SyncthingDir *findDirInfoConsideringLabels(const QString &dirIdOrLabel, int &row);
     const SyncthingDir *findDirInfo(const QString &dirId, int &row) const;
     SyncthingDir *findDirInfo(QLatin1String key, const QJsonObject &object, int *row = nullptr);
     SyncthingDir *findDirInfoByPath(const QString &path, QString &relativePath, int &row);
