@@ -166,7 +166,7 @@ void ApplicationTests::test()
     const char *const statusDirsOnlyArgs[] = { "syncthingctl", "status", "--all-dirs", nullptr };
     TESTUTILS_ASSERT_EXEC(resumeArgs);
     TESTUTILS_ASSERT_EXEC(statusDirsOnlyArgs);
-    CPPUNIT_ASSERT(stdout.find(" - test2") != string::npos);
+    CPPUNIT_ASSERT(stdout.find(" - Test dir 2") != string::npos);
     CPPUNIT_ASSERT(stdout.find("paused") == string::npos);
 
     // test pause, verify via status on specific dir
@@ -177,7 +177,7 @@ void ApplicationTests::test()
     TESTUTILS_ASSERT_EXEC(statusTest2Args);
     cout << stdout;
     CPPUNIT_ASSERT(stdout.find(" - test1") == string::npos);
-    CPPUNIT_ASSERT(stdout.find(" - test2") != string::npos);
+    CPPUNIT_ASSERT(stdout.find(" - Test dir 2") != string::npos);
     CPPUNIT_ASSERT(stdout.find("paused") != string::npos);
 
     // test cat
@@ -201,7 +201,7 @@ void ApplicationTests::test()
     TESTUTILS_ASSERT_EXEC(statusTest1Args);
     cout << stdout;
     CPPUNIT_ASSERT(stdout.find(" - test1") != string::npos);
-    CPPUNIT_ASSERT(stdout.find(" - test2") == string::npos);
+    CPPUNIT_ASSERT(stdout.find(" - Test dir 2") == string::npos);
     CPPUNIT_ASSERT(stdout.find("Rescan interval               file system watcher and periodic rescan disabled") != string::npos);
 #endif
 

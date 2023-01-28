@@ -8,8 +8,8 @@ Overall statistics
    Version                       syncthing v.*
 
 Directories
- - test2
-   Label                         Test dir 2
+ - Test dir 2
+   ID                            test2
    Path                          /tmp/some/path/2/
    Status                        paused
    Shared with                   Test dev 2
