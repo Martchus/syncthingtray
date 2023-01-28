@@ -57,7 +57,6 @@ using namespace std;
 
 namespace QtGui {
 
-QWidget *TrayWidget::s_dialogParent = nullptr;
 SettingsDialog *TrayWidget::s_settingsDlg = nullptr;
 Wizard *TrayWidget::s_wizard = nullptr;
 QtUtilities::AboutDialog *TrayWidget::s_aboutDlg = nullptr;
@@ -235,7 +234,8 @@ TrayWidget::~TrayWidget()
         s_instances.erase(i);
     }
     if (s_instances.empty()) {
-        delete s_dialogParent;
+        delete s_settingsDlg;
+        delete s_aboutDlg;
         QCoreApplication::quit();
     } else if (s_instances.size() == 1) {
         s_instances.front()->updateIconAndTooltip();
@@ -244,11 +244,8 @@ TrayWidget::~TrayWidget()
 
 SettingsDialog *TrayWidget::settingsDialog()
 {
-    if (!s_dialogParent) {
-        s_dialogParent = new QWidget();
-    }
     if (!s_settingsDlg) {
-        s_settingsDlg = new SettingsDialog(s_instances.size() < 2 ? &m_connection : nullptr, s_dialogParent);
+        s_settingsDlg = new SettingsDialog(s_instances.size() < 2 ? &m_connection : nullptr);
         connect(s_settingsDlg, &SettingsDialog::wizardRequested, this, &TrayWidget::showWizard);
         connect(s_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettingsOnAllInstances);
 
@@ -328,12 +325,9 @@ void TrayWidget::applySettingsChangesFromWizard()
 
 void TrayWidget::showAboutDialog()
 {
-    if (!s_dialogParent) {
-        s_dialogParent = new QWidget();
-    }
     if (!s_aboutDlg) {
         s_aboutDlg = new AboutDialog(
-            s_dialogParent, QString(), aboutDialogAttribution(), QString(), {}, QStringLiteral(APP_URL), QString(), aboutDialogImage());
+            nullptr, QString(), aboutDialogAttribution(), QString(), {}, QStringLiteral(APP_URL), QString(), aboutDialogImage());
         s_aboutDlg->setWindowTitle(tr("About") + QStringLiteral(" - " APP_NAME));
         s_aboutDlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     }
