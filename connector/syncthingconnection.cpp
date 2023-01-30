@@ -959,7 +959,8 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
 void SyncthingConnection::emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response)
 {
     if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiReplies) {
-        cerr << Phrases::Error << "JSON parsing error: " << message.toLocal8Bit().data() << jsonError.errorString().toLocal8Bit().data() << " (at offset " << jsonError.offset << ')' << endl;
+        cerr << Phrases::Error << "JSON parsing error: " << message.toLocal8Bit().data() << jsonError.errorString().toLocal8Bit().data()
+             << " (at offset " << jsonError.offset << ')' << endl;
     }
     emit error(message % jsonError.errorString() % QChar(' ') % QChar('(') % tr("at offset %1").arg(jsonError.offset) % QChar(')'),
         SyncthingErrorCategory::Parsing, QNetworkReply::NoError, reply->request(), response);
