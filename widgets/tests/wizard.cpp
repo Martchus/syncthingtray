@@ -361,13 +361,28 @@ void WizardTests::testConfiguringCurrentlyRunningSyncthing()
     auto *const mainConfigPage = qobject_cast<MainConfigWizardPage *>(wizardDlg.currentPage());
     QVERIFY(mainConfigPage != nullptr);
     QVERIFY(setupDetection.hasConfig());
+    auto *const invalidConfigLabel = mainConfigPage->findChild<QLabel *>(QStringLiteral("invalidConfigLabel"));
+    QVERIFY(invalidConfigLabel != nullptr);
+    if (!invalidConfigLabel->isHidden()) {
+        qDebug() << "invalid config label shown: " << invalidConfigLabel->text();
+    }
+    QVERIFY(invalidConfigLabel->isHidden());
+    auto *const cfgLauncherExternalRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgLauncherExternalRadioButton"));
+    QVERIFY(cfgLauncherExternalRadioButton != nullptr);
+    QVERIFY(cfgLauncherExternalRadioButton->isHidden());
+    auto *const cfgLauncherBuiltInRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgLauncherBuiltInRadioButton"));
+    QVERIFY(cfgLauncherBuiltInRadioButton != nullptr);
+    QVERIFY(cfgLauncherBuiltInRadioButton->isHidden());
+    auto *const cfgSystemdUserUnitRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgSystemdUserUnitRadioButton"));
+    QVERIFY(cfgSystemdUserUnitRadioButton != nullptr);
+    QVERIFY(cfgSystemdUserUnitRadioButton->isHidden());
+    auto *const cfgSystemdSystemUnitRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgSystemdSystemUnitRadioButton"));
+    QVERIFY(cfgSystemdSystemUnitRadioButton != nullptr);
+    QVERIFY(cfgSystemdSystemUnitRadioButton->isHidden());
     auto *const cfgCurrentlyRunningRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgCurrentlyRunningRadioButton"));
     QVERIFY(cfgCurrentlyRunningRadioButton != nullptr);
     QVERIFY(!cfgCurrentlyRunningRadioButton->isHidden());
     QVERIFY(cfgCurrentlyRunningRadioButton->isChecked());
-    auto *const cfgLauncherExternalRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgLauncherExternalRadioButton"));
-    QVERIFY(cfgLauncherExternalRadioButton != nullptr);
-    QVERIFY(cfgLauncherExternalRadioButton->isHidden());
     wizardDlg.next();
 
     // keep autostart setting as-is
