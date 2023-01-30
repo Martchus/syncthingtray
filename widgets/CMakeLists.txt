@@ -157,5 +157,6 @@ foreach (TEST ${QT_TESTS})
     # avoid running wizard tests in parallel with other tests spawning a Syncthing test instance
     if ("${TEST}" STREQUAL "wizard")
         set_tests_properties("${FULL_TEST_NAME_${TEST}}" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
+        set_tests_properties("${FULL_TEST_NAME_${TEST}}" PROPERTIES ENVIRONMENT "LIB_SYNCTHING_CONNECTOR_LOG_ALL=1")
     endif ()
 endforeach ()

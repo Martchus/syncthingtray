@@ -958,6 +958,9 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
  */
 void SyncthingConnection::emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response)
 {
+    if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiReplies) {
+        cerr << Phrases::Error << "JSON parsing error: " << message.toLocal8Bit().data() << jsonError.errorString().toLocal8Bit().data() << " (at offset " << jsonError.offset << ')' << endl;
+    }
     emit error(message % jsonError.errorString() % QChar(' ') % QChar('(') % tr("at offset %1").arg(jsonError.offset) % QChar(')'),
         SyncthingErrorCategory::Parsing, QNetworkReply::NoError, reply->request(), response);
 }
@@ -967,6 +970,9 @@ void SyncthingConnection::emitError(const QString &message, const QJsonParseErro
  */
 void SyncthingConnection::emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply)
 {
+    if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiReplies) {
+        cerr << Phrases::Error << "Syncthing connection error: " << message.toLocal8Bit().data() << reply->errorString().toLocal8Bit().data() << endl;
+    }
     emit error(message + reply->errorString(), category, reply->error(), reply->request(), reply->bytesAvailable() ? reply->readAll() : QByteArray());
 }
 

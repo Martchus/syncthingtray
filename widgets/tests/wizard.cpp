@@ -95,6 +95,10 @@ void WizardTests::initTestCase()
 
 void WizardTests::cleanupTestCase()
 {
+    auto syncthingConfig = QFile(m_homeDir.path() + QStringLiteral("/config.xml"));
+    qDebug() << "Syncthing config: ";
+    !syncthingConfig.open(QFile::ReadOnly) ? (qDebug() << "unable to open") : (qDebug().noquote() << syncthingConfig.readAll());
+
     if (m_launcher.isRunning()) {
         qDebug() << "terminating Syncthing";
         m_launcher.terminate();
@@ -348,6 +352,12 @@ void WizardTests::testConfiguringCurrentlyRunningSyncthing()
     m_eventLoop.exec();
 
     // configure external launcher
+    const auto &url = setupDetection.connection.syncthingUrl();
+    const auto &apiKey = setupDetection.connection.apiKey();
+    qDebug() << "configured URL: " << url;
+    qDebug() << "configured API key: " << apiKey;
+    QVERIFY(!url.isEmpty());
+    QVERIFY(!apiKey.isEmpty());
     auto *const mainConfigPage = qobject_cast<MainConfigWizardPage *>(wizardDlg.currentPage());
     QVERIFY(mainConfigPage != nullptr);
     QVERIFY(setupDetection.hasConfig());
