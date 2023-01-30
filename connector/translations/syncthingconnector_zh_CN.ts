@@ -226,27 +226,27 @@
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="265"/>
-        <location filename="../syncthingconnection.cpp" line="460"/>
+        <location filename="../syncthingconnection.cpp" line="452"/>
         <source>Connection configuration is insufficient.</source>
         <translation>缺少连接配置。</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="706"/>
+        <location filename="../syncthingconnection.cpp" line="720"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
         <translation>无法解析时间戳 &quot;%1&quot; (%2): %3</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="774"/>
+        <location filename="../syncthingconnection.cpp" line="788"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>无法找到 Syncthing 使用的证书。</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="780"/>
+        <location filename="../syncthingconnection.cpp" line="794"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>无法加载 Syncthing 使用的证书。</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="947"/>
+        <location filename="../syncthingconnection.cpp" line="964"/>
         <source>at offset %1</source>
         <translation>在偏移量 %1 处</translation>
     </message>

@@ -162,20 +162,20 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="99"/>
-        <location filename="../gui/traywidget.cpp" line="337"/>
+        <location filename="../gui/traywidget.cpp" line="331"/>
         <source>About</source>
         <translation>Über Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="58"/>
-        <location filename="../gui/traywidget.cpp" line="462"/>
+        <location filename="../gui/traywidget.cpp" line="456"/>
         <source>Connect</source>
         <translation>Verbinden</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="72"/>
-        <location filename="../gui/traywidget.cpp" line="838"/>
-        <location filename="../gui/traywidget.cpp" line="880"/>
+        <location filename="../gui/traywidget.cpp" line="832"/>
+        <location filename="../gui/traywidget.cpp" line="874"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
@@ -250,8 +250,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="357"/>
-        <location filename="../gui/traywidget.cpp" line="157"/>
-        <location filename="../gui/traywidget.cpp" line="380"/>
+        <location filename="../gui/traywidget.cpp" line="156"/>
+        <location filename="../gui/traywidget.cpp" line="374"/>
         <source>New notifications</source>
         <translation>Neue Benachrichtigungen</translation>
     </message>
@@ -287,118 +287,118 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Ignorieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="129"/>
+        <location filename="../gui/traywidget.cpp" line="128"/>
         <source>View own device ID</source>
         <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="134"/>
+        <location filename="../gui/traywidget.cpp" line="133"/>
         <source>Restart Syncthing</source>
         <translation>Syncthing neustarten</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="139"/>
+        <location filename="../gui/traywidget.cpp" line="138"/>
         <source>Show Syncthing log</source>
         <translation>Syncthing-Log zeigen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="144"/>
+        <location filename="../gui/traywidget.cpp" line="143"/>
         <source>Rescan all directories</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="151"/>
+        <location filename="../gui/traywidget.cpp" line="150"/>
         <source>Connection</source>
         <translation>Verbindung</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="173"/>
+        <location filename="../gui/traywidget.cpp" line="172"/>
         <source>Show internal errors</source>
         <translation>Interne Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="188"/>
+        <location filename="../gui/traywidget.cpp" line="187"/>
         <source>Quit Syncthing Tray</source>
         <translation>Syncthing Tray schließen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="437"/>
+        <location filename="../gui/traywidget.cpp" line="431"/>
         <source>Do you really want to restart Syncthing?</source>
         <translation>Soll Syncthing wirklich neu gestartet werden?</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="463"/>
+        <location filename="../gui/traywidget.cpp" line="457"/>
         <source>Not connected to Syncthing, click to connect</source>
         <translation>Verbindung zu Syncthing getrennt, klicke um zu verbinden</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="468"/>
+        <location filename="../gui/traywidget.cpp" line="462"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Verbindung zu Syncthing kann nicht hergestellt werden.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="478"/>
+        <location filename="../gui/traywidget.cpp" line="472"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="479"/>
+        <location filename="../gui/traywidget.cpp" line="473"/>
         <source>Syncthing is running, click to pause all devices</source>
         <translation>Syncthing läuft, klicke um alle Geräte zu pausieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="484"/>
+        <location filename="../gui/traywidget.cpp" line="478"/>
         <source>Continue</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="485"/>
+        <location filename="../gui/traywidget.cpp" line="479"/>
         <source>At least one device is paused, click to resume</source>
         <translation>Mind. ein Gerät ist pausiert, klicke um fortzusetzen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="608"/>
+        <location filename="../gui/traywidget.cpp" line="602"/>
         <source>The specified connection configuration &lt;em&gt;%1&lt;/em&gt; is not defined and hence ignored.</source>
         <translation>Die angegebene Verbindungskonfiguration &lt;em&gt;%1&lt;/em&gt; ist nicht definiert und wird daher ignoriert.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="643"/>
+        <location filename="../gui/traywidget.cpp" line="637"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Das Verzeichnis &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="654"/>
+        <location filename="../gui/traywidget.cpp" line="648"/>
         <source>The containing directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Das beinhaltende Verzeichnis &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="697"/>
+        <location filename="../gui/traywidget.cpp" line="691"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="701"/>
+        <location filename="../gui/traywidget.cpp" line="695"/>
         <source>Copy device ID</source>
         <translation>Geräte-ID kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="704"/>
+        <location filename="../gui/traywidget.cpp" line="698"/>
         <source>Copy directory ID</source>
         <translation>Verzeichnis-ID kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="834"/>
-        <location filename="../gui/traywidget.cpp" line="874"/>
+        <location filename="../gui/traywidget.cpp" line="828"/>
+        <location filename="../gui/traywidget.cpp" line="868"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="835"/>
+        <location filename="../gui/traywidget.cpp" line="829"/>
         <source>Stop Syncthing instance launched via tray icon</source>
         <translation>Stoppe Syncthing-Instanz, die mit dem internen Starter gestartet wurde</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="839"/>
+        <location filename="../gui/traywidget.cpp" line="833"/>
         <source>Start Syncthing with the built-in launcher configured in the settings</source>
         <translation>Starte Syncthing mit dem eingebauten Starter, der in den Einstellungen konfiguriert wird</translation>
     </message>
