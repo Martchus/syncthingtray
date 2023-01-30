@@ -313,6 +313,16 @@ void SyncthingConnection::disconnect()
 }
 
 /*!
+ * \brief Aborts the specified \a reply if it is not nullptr.
+ */
+static inline void abortMaybe(QNetworkReply *reply)
+{
+    if (reply) {
+        reply->abort();
+    }
+}
+
+/*!
  * \brief Aborts status-relevant, pending requests.
  * \remarks Status-relevant means that requests for triggering actions like rescan() or restart() are excluded. requestQrCode() does not
  *          contribute to the status as well and is excluded as well.
@@ -320,36 +330,18 @@ void SyncthingConnection::disconnect()
 void SyncthingConnection::abortAllRequests()
 {
     m_connectionAborted = m_abortingAllRequests = true;
-    if (m_configReply) {
-        m_configReply->abort();
-    }
-    if (m_statusReply) {
-        m_statusReply->abort();
-    }
-    if (m_connectionsReply) {
-        m_connectionsReply->abort();
-    }
-    if (m_errorsReply) {
-        m_errorsReply->abort();
-    }
-    if (m_dirStatsReply) {
-        m_dirStatsReply->abort();
-    }
-    if (m_devStatsReply) {
-        m_devStatsReply->abort();
-    }
-    if (m_eventsReply) {
-        m_eventsReply->abort();
-    }
-    if (m_versionReply) {
-        m_versionReply->abort();
-    }
-    if (m_diskEventsReply) {
-        m_diskEventsReply->abort();
-    }
-    if (m_logReply) {
-        m_logReply->abort();
-    }
+    abortMaybe(m_configReply);
+    abortMaybe(m_statusReply);
+    abortMaybe(m_connectionsReply);
+    abortMaybe(m_errorsReply);
+    abortMaybe(m_dirStatsReply);
+    abortMaybe(m_devStatsReply);
+    abortMaybe(m_eventsReply);
+    abortMaybe(m_versionReply);
+    abortMaybe(m_diskEventsReply);
+    abortMaybe(m_logReply);
+    abortMaybe(m_configReply);
+    abortMaybe(m_configReply);
     for (auto *const reply : std::as_const(m_otherReplies)) {
         reply->abort();
     }
