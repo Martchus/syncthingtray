@@ -271,6 +271,8 @@ See the release section on GitHub.
           native Wayland support if it does not work on your system)
 * Windows
     * for binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
+        * Windows SmartScreen will likely block the execution (you'll get a window saying "Windows protected your PC");
+          right click on the executable, select properties and tick the checkbox to allow the execution
         * the Qt 6 based version is stable and preferable but only supports Windows 10 and newer
         * the Qt 5 based version should still work on older versions down to Windows 7 although this is not regularly checked
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
