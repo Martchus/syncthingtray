@@ -44,6 +44,7 @@ private:
     QString m_syncthingPort;
     QString m_syncthingGuiAddress;
     Data::SyncthingLauncher m_launcher;
+    Data::SyncthingConnection m_connection;
     QByteArray m_syncthingLog;
 };
 
@@ -280,10 +281,44 @@ void WizardTests::testConfiguringLauncher()
             QTimer::singleShot(0, this, waitForCfg);
         }
     };
+    // -> assign handler to connect to Syncthing with applied settings
     connect(&wizardDlg, &Wizard::settingsChanged, this, [&] {
-        wizardDlg.handleConfigurationApplied();
+        m_connection.applySettings(settings.connection.primary);
+        m_connection.setSyncthingUrl(QStringLiteral("http://127.0.0.1:") + m_syncthingPort);
+        m_connection.reconnect();
+        qDebug() << "configured URL: " << m_connection.syncthingUrl();
+        qDebug() << "configured API key: " << m_connection.apiKey();
         QTimer::singleShot(0, this, waitForCfg);
     });
+    // -> assign handler to re-try connecting to Syncthing or handle a successful connection
+    connect(&m_connection, &Data::SyncthingConnection::statusChanged, &wizardDlg,
+        [this, &wizardDlg, connectAttempts = 10](Data::SyncthingStatus status) mutable {
+            switch (status) {
+            case Data::SyncthingStatus::Disconnected:
+                // try to connect up to 10 times while Syncthing is still running; otherwise consider test failed
+                if (--connectAttempts > 0 && m_launcher.isRunning()) {
+                    qDebug() << "attempting to connect to Syncthing again ( remaining attempts:" << connectAttempts << ')';
+                    m_connection.reconnectLater(1000);
+                } else {
+                    qWarning() << "giving up connecting to Syncthing";
+                    qDebug() << (m_launcher.isRunning() ? "Syncthing is still running" : "Syncthing is not running (anymore)");
+                    wizardDlg.handleConfigurationApplied(QStringLiteral("Unable to connect to Syncthing"), &m_connection);
+                }
+                return;
+            case Data::SyncthingStatus::Reconnecting:
+                return;
+            case Data::SyncthingStatus::Idle:
+            case Data::SyncthingStatus::Scanning:
+            case Data::SyncthingStatus::Synchronizing:
+            case Data::SyncthingStatus::RemoteNotInSync:
+            case Data::SyncthingStatus::Paused:
+                qDebug() << "connected to Syncthing: " << m_connection.statusText();
+            default:;
+            }
+            // consider connection to Syncthing successful
+            wizardDlg.handleConfigurationApplied(QString(), &m_connection);
+        });
+    // -> invoke the whole procedure
     wizardDlg.next();
     m_eventLoop.exec();
     QVERIFY(finalPage != nullptr);
@@ -303,6 +338,7 @@ void WizardTests::testConfiguringLauncher()
 #endif
     // cannot verify the port from Syncthing's config, see comment in setup function
     //QCOMPARE(settings.connection.primary.syncthingUrl, QStringLiteral("http://127.0.0.1:8384"));
+    QVERIFY(!settings.connection.primary.syncthingUrl.isEmpty());
     QVERIFY(!settings.connection.primary.apiKey.isEmpty());
     QCOMPARE(settings.connection.secondary.size(), 0);
 }
