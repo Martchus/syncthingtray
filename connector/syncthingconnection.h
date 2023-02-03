@@ -240,6 +240,8 @@ public Q_SLOTS:
     void requestDiskEvents(int limit = 25);
     void requestQrCode(const QString &text);
     void requestLog();
+    void requestOverride(const QString &dirId);
+    void requestRevert(const QString &dirId);
     void postConfigFromJsonObject(const QJsonObject &rawConfig);
     void postConfigFromByteArray(const QByteArray &rawConfig);
 
@@ -276,6 +278,8 @@ Q_SIGNALS:
     void shutdownTriggered();
     void logAvailable(const std::vector<SyncthingLogEntry> &logEntries);
     void qrCodeAvailable(const QString &text, const QByteArray &qrCodeData);
+    void overrideTriggered(const QString &dirId);
+    void revertTriggered(const QString &dirId);
 
 private Q_SLOTS:
     // handler to evaluate results from request...() methods
@@ -327,6 +331,8 @@ private Q_SLOTS:
     void readChangeEvent(CppUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
     void readLog();
     void readQrCode();
+    void readOverride();
+    void readRevert();
 
     // internal helper methods
     void continueConnecting();

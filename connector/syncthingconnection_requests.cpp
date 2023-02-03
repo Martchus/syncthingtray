@@ -1426,6 +1426,72 @@ void SyncthingConnection::readLog()
     }
 }
 
+/*!
+ * \brief Request the override of the send only folder with the specified \a dirId.
+ * \remarks
+ * - Override means to make the local version latest, overriding changes made on other devices.
+ * - This call does nothing if the folder is not a send only folder.
+ */
+void SyncthingConnection::requestOverride(const QString &dirId)
+{
+    auto query = QUrlQuery();
+    query.addQueryItem(QStringLiteral("folder"), dirId);
+    auto *const reply = postData(QStringLiteral("db/override"), query);
+    reply->setProperty("dirId", dirId);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readOverride, Qt::QueuedConnection);
+}
+
+/*!
+ * \brief Reads data from requestOverride().
+ */
+void SyncthingConnection::readOverride()
+{
+    auto const [reply, response] = prepareReply(false);
+    if (!reply) {
+        return;
+    }
+    switch (reply->error()) {
+    case QNetworkReply::NoError:
+        emit overrideTriggered(reply->property("dirId").toString());
+        break;
+    default:
+        emitError(tr("Unable to request directory override: "), SyncthingErrorCategory::SpecificRequest, reply);
+    }
+}
+
+/*!
+ * \brief Request the revert of the receive only folder with the specified \a dirId.
+ * \remarks
+ * - Reverting a folder means to undo all local changes.
+ * - This call does nothing if the folder is not a receive only folder.
+ */
+void SyncthingConnection::requestRevert(const QString &dirId)
+{
+    auto query = QUrlQuery();
+    query.addQueryItem(QStringLiteral("folder"), dirId);
+    auto *const reply = postData(QStringLiteral("db/revert"), query);
+    reply->setProperty("dirId", dirId);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readRevert, Qt::QueuedConnection);
+}
+
+/*!
+ * \brief Reads data from requestOverride().
+ */
+void SyncthingConnection::readRevert()
+{
+    auto const [reply, response] = prepareReply(false);
+    if (!reply) {
+        return;
+    }
+    switch (reply->error()) {
+    case QNetworkReply::NoError:
+        emit revertTriggered(reply->property("dirId").toString());
+        break;
+    default:
+        emitError(tr("Unable to request directory revert: "), SyncthingErrorCategory::SpecificRequest, reply);
+    }
+}
+
 // post config
 
 /*!
