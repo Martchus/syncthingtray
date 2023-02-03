@@ -372,7 +372,7 @@ void ConnectionTests::testErrorCases()
             return;
         }
         if ((errorMessage.startsWith(QStringLiteral("Unable to request Syncthing config: Error transferring "))
-                && errorMessage.endsWith(QStringLiteral("/rest/system/config - server replied: Forbidden")))) {
+                && errorMessage.endsWith(QStringLiteral("config - server replied: Forbidden")))) {
             apiKeyErrorConfig = true;
             return;
         }

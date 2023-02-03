@@ -76,6 +76,19 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
 }
 
 /*!
+ * \brief Invokes an asynchronous request using the rest API.
+ */
+QNetworkReply *SyncthingConnection::sendData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data)
+{
+    auto *const reply = networkAccessManager().sendCustomRequest(prepareRequest(path, query), verb, data);
+    QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
+    if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
+        cerr << Phrases::Info << "Querying API: " << verb.data() << ' ' << reply->url().toString().toStdString() << Phrases::EndFlush;
+    }
+    return reply;
+}
+
+/*!
  * \brief Prepares the current reply.
  */
 SyncthingConnection::Reply SyncthingConnection::prepareReply(bool readData, bool handleAborting)
@@ -195,6 +208,22 @@ SyncthingConnection::Reply SyncthingConnection::handleReply(QNetworkReply *reply
     return data;
 }
 
+/*!
+ * \brief Returns the path to Syncthing's "config" route depending on whether deprecated routes should be used.
+ */
+QString SyncthingConnection::configPath() const
+{
+    return isUsingDeprecatedRoutes() ? QStringLiteral("system/config") : QStringLiteral("config");
+}
+
+/*!
+ * \brief Returns the verb for posting the Syncthing config in accordance to the path returned by configPath().
+ */
+QByteArray SyncthingConnection::changeConfigVerb() const
+{
+    return isUsingDeprecatedRoutes() ? QByteArray("POST") : QByteArray("PUT");
+}
+
 // pause/resume devices
 
 /*!
@@ -261,7 +290,7 @@ bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paus
 
     QJsonDocument doc;
     doc.setObject(config);
-    QNetworkReply *const reply = postData(QStringLiteral("system/config"), QUrlQuery(), doc.toJson(QJsonDocument::Compact));
+    QNetworkReply *const reply = sendData(changeConfigVerb(), configPath(), QUrlQuery(), doc.toJson(QJsonDocument::Compact));
     reply->setProperty("devIds", devIds);
     reply->setProperty("resume", !paused);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDevPauseResume);
@@ -366,7 +395,7 @@ bool SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool p
     if (setDirectoriesPaused(config, dirIds, paused)) {
         QJsonDocument doc;
         doc.setObject(config);
-        QNetworkReply *const reply = postData(QStringLiteral("system/config"), QUrlQuery(), doc.toJson(QJsonDocument::Compact));
+        QNetworkReply *const reply = sendData(changeConfigVerb(), configPath(), QUrlQuery(), doc.toJson(QJsonDocument::Compact));
         reply->setProperty("dirIds", dirIds);
         reply->setProperty("resume", !paused);
         QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirPauseResume);
@@ -563,8 +592,7 @@ void SyncthingConnection::requestConfig()
     if (m_configReply) {
         return;
     }
-    QObject::connect(
-        m_configReply = requestData(QStringLiteral("system/config"), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readConfig);
+    QObject::connect(m_configReply = requestData(configPath(), QUrlQuery()), &QNetworkReply::finished, this, &SyncthingConnection::readConfig);
 }
 
 /*!
@@ -1407,7 +1435,7 @@ void SyncthingConnection::readLog()
  */
 void SyncthingConnection::postConfigFromJsonObject(const QJsonObject &rawConfig)
 {
-    QObject::connect(postData(QStringLiteral("system/config"), QUrlQuery(), QJsonDocument(rawConfig).toJson(QJsonDocument::Compact)),
+    QObject::connect(sendData(changeConfigVerb(), configPath(), QUrlQuery(), QJsonDocument(rawConfig).toJson(QJsonDocument::Compact)),
         &QNetworkReply::finished, this, &SyncthingConnection::readPostConfig);
 }
 
@@ -1420,7 +1448,7 @@ void SyncthingConnection::postConfigFromJsonObject(const QJsonObject &rawConfig)
 void SyncthingConnection::postConfigFromByteArray(const QByteArray &rawConfig)
 {
     QObject::connect(
-        postData(QStringLiteral("system/config"), QUrlQuery(), rawConfig), &QNetworkReply::finished, this, &SyncthingConnection::readPostConfig);
+        sendData(changeConfigVerb(), configPath(), QUrlQuery(), rawConfig), &QNetworkReply::finished, this, &SyncthingConnection::readPostConfig);
 }
 
 /*!

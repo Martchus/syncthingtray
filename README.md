@@ -505,6 +505,8 @@ It is possible to turn on logging of the underlying library by setting environme
 * `SYNCTHING_PORT`: override the port of the Syncthing test instance spawned when running tests
 * `SYNCTHINGTRAY_SYSTEMD_USER_UNIT`: override the name of the systemd user-unit checked by the wizard's
   setup detection
+* `LIB_SYNCTHING_CONNECTOR_USE_DEPRECATED_ROUTES`: change whether to use deprecated routes (enabled by
+  default for compatibility with older Syncthing versions, set to `0` to change the behavior)
 
 ## Known bugs and workarounds
 The following bugs are caused by dependencies or limitations of certain

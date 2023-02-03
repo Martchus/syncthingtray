@@ -109,6 +109,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(QStringList directoryIds READ directoryIds)
     Q_PROPERTY(QStringList deviceIds READ deviceIds)
     Q_PROPERTY(QJsonObject rawConfig READ rawConfig NOTIFY newConfig)
+    Q_PROPERTY(bool useDeprecatedRoutes READ isUsingDeprecatedRoutes WRITE setUseDeprecatedRoutes)
 
 public:
     explicit SyncthingConnection(const QString &syncthingUrl = QStringLiteral("http://localhost:8080"), const QByteArray &apiKey = QByteArray(),
@@ -124,6 +125,8 @@ public:
     const QString &user() const;
     const QString &password() const;
     void setCredentials(const QString &user, const QString &password);
+    bool isUsingDeprecatedRoutes() const;
+    void setUseDeprecatedRoutes(bool useLegacyRoutes);
 
     // getter for the status of the connection to Syncthing and of Syncthing itself
     SyncthingStatus status() const;
@@ -340,6 +343,8 @@ private Q_SLOTS:
     void handleAdditionalRequestCanceled();
     void handleSslErrors(const QList<QSslError> &errors);
     void recalculateStatus();
+    QString configPath() const;
+    QByteArray changeConfigVerb() const;
 
 private:
     // internal helper methods
@@ -350,6 +355,7 @@ private:
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
+    QNetworkReply *sendData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
     Reply prepareReply(bool readData = true, bool handleAborting = true);
     Reply prepareReply(QNetworkReply *&expectedReply, bool readData = true, bool handleAborting = true);
     Reply prepareReply(QList<QNetworkReply *> &expectedReplies, bool readData = true, bool handleAborting = true);
@@ -420,6 +426,7 @@ private:
     QJsonObject m_rawConfig;
     bool m_dirStatsAltered;
     bool m_recordFileChanges;
+    bool m_useDeprecatedRoutes;
 };
 
 /*!
@@ -477,6 +484,27 @@ inline void SyncthingConnection::setCredentials(const QString &user, const QStri
 {
     m_user = user;
     m_password = password;
+}
+
+/*!
+ * \brief Returns whether deprecated routes should still be used in order to support older versions of Syncthing.
+ * \remarks
+ * - This is still enabled by default but may cease to work once those deprecated routes have been removed by
+ *   Syncthing itself.
+ * - Disabling this will require Syncthing 1.12.0 or newer.
+ */
+inline bool SyncthingConnection::isUsingDeprecatedRoutes() const
+{
+    return m_useDeprecatedRoutes;
+}
+
+/*!
+ * \brief Returns whether deprecated routes should still be used in order to support older versions of Syncthing.
+ * \sa See isUsingLegacyRoutes() for details.
+ */
+inline void SyncthingConnection::setUseDeprecatedRoutes(bool useDeprecatedRoutes)
+{
+    m_useDeprecatedRoutes = useDeprecatedRoutes;
 }
 
 /*!

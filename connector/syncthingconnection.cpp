@@ -103,6 +103,7 @@ SyncthingConnection::SyncthingConnection(
     , m_lastFileDeleted(false)
     , m_dirStatsAltered(false)
     , m_recordFileChanges(false)
+    , m_useDeprecatedRoutes(true)
 {
     m_trafficPollTimer.setInterval(SyncthingConnectionSettings::defaultTrafficPollInterval);
     m_trafficPollTimer.setTimerType(Qt::VeryCoarseTimer);
@@ -125,6 +126,13 @@ SyncthingConnection::SyncthingConnection(
 #endif
 
     setLoggingFlags(loggingFlags);
+
+    // allow initializing the default value for m_useDeprecatedRoutes via environment variable
+    auto useDeprecatedRoutesIsInt = false;
+    auto useDeprecatedRoutesInt = qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_USE_DEPRECATED_ROUTES", &useDeprecatedRoutesIsInt);
+    if (useDeprecatedRoutesIsInt) {
+        m_useDeprecatedRoutes = useDeprecatedRoutesInt;
+    }
 }
 
 /*!
