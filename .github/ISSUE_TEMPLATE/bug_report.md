@@ -1,9 +1,27 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Report an existing feature not working as designated
 title: ''
 labels: bug
 assignees: ''
+
+---
+
+**Before reporting, please have a look at "[Known bugs and workarounds](https://github.com/Martchus/syncthingtray/blob/master/README.md#known-bugs-and-workarounds)".**
+
+Note that I cannot support all operating systems, their flavors and different
+tooling you might be using (Anti Virus scanners, GNU/Linux desktop environments,
+AUR helpers, …). So please avoid filing bug reports specific to them and contact
+the respective vendors instead.
+
+Note that adaptions for newer versions of certain platforms (or for completely
+new platforms) would be *feature requests* and **not** bugs. So for instance,
+making Syncthing Tray work under an updated/new GNU/Linux desktop environment
+should be filed as a feature request and *not* a bug report.
+
+Note that I will likely have to reject bug reports about Wayland-specific
+problems due to limitations of that protocol which I cannot workaround from my
+side.
 
 ---
 
@@ -17,7 +35,7 @@ assignees: ''
 
 **Environment and versions**
 * Versions of `syncthingtray`, `qtutilities` and `c++utilities`: …, …, …
-* Qt version: 5.….…
+* Qt version: ….….…
 * C++ compiler (name and version): …
 * C++ standard library (name and version): …
 * Operating system (name and version): …

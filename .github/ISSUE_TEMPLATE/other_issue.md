@@ -1,24 +1,21 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
+name: Other issue
+about: Ask a question or file an issue that doesn't fit into the other categories
 title: ''
-labels: feature request
+labels:
 assignees: ''
 
 ---
 
 **Please browse through the [README](https://github.com/Martchus/syncthingtray/blob/master/README.md) before asking a question.**
-Maybe what you've been asking is already implemented
-or a known limitation with a documented workaround.
+Most likely your question is already answered.
+Before asking questions about the AUR package, please read the [pinned comment
+on the AUR](https://aur.archlinux.org/packages/syncthingtray#comment-568348).
 
-Note that I cannot support all operating systems, their flavors and different
-tooling you might be using (Anti Virus scanners, GNU/Linux desktop environments,
-AUR helpers, …). So please avoid filing feature requests specific to them and
-contact the respective vendors instead.
-
-Note that I will likely have to reject feature reports about Wayland-specific
-behavior due to limitations of that protocol which I cannot workaround from my
-side.
+Note that I cannot give concrete help for all operating systems, their flavors
+and different tooling you might be using (Anti Virus scanners, GNU/Linux desktop
+environments, AUR helpers, …). So if you want concrete advice about those you
+must ask the respective vendors instead.
 
 ---
 
