@@ -351,6 +351,7 @@ private Q_SLOTS:
     void recalculateStatus();
     QString configPath() const;
     QByteArray changeConfigVerb() const;
+    QString folderErrorsPath() const;
 
 private:
     // internal helper methods

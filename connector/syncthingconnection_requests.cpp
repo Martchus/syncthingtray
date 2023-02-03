@@ -224,6 +224,14 @@ QByteArray SyncthingConnection::changeConfigVerb() const
     return isUsingDeprecatedRoutes() ? QByteArray("POST") : QByteArray("PUT");
 }
 
+/*!
+ * \brief Returns the path to Syncthing's route to retrieve errors depending on whether deprecated routes should be used.
+ */
+QString SyncthingConnection::folderErrorsPath() const
+{
+    return isUsingDeprecatedRoutes() ? QStringLiteral("folder/pullerrors") : QStringLiteral("folder/errors");
+}
+
 // pause/resume devices
 
 /*!
@@ -1113,7 +1121,7 @@ void SyncthingConnection::requestDirPullErrors(const QString &dirId, int page, i
         query.addQueryItem(QStringLiteral("page"), QString::number(page));
         query.addQueryItem(QStringLiteral("perpage"), QString::number(perPage));
     }
-    auto *const reply = requestData(QStringLiteral("folder/pullerrors"), query);
+    auto *const reply = requestData(folderErrorsPath(), query);
     reply->setProperty("dirId", dirId);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirPullErrors);
 }
