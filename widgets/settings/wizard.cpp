@@ -526,9 +526,10 @@ void DetectionWizardPage::initializePage()
     }
     if (!m_setupDetection) {
         m_setupDetection = &wizard->setupDetection();
-        connect(m_setupDetection, &SetupDetection::done, this, &DetectionWizardPage::continueIfDone);
     }
+
     m_setupDetection->reset();
+    connect(m_setupDetection, &SetupDetection::done, this, &DetectionWizardPage::continueIfDone);
     emit completeChanged();
     QTimer::singleShot(0, this, &DetectionWizardPage::tryToConnect);
 }
@@ -543,6 +544,9 @@ void DetectionWizardPage::cleanupPage()
 
 void DetectionWizardPage::refresh()
 {
+    if (m_setupDetection && !m_setupDetection->isDone()) {
+        return;
+    }
     initializePage();
 }
 
