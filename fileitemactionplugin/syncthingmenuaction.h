@@ -7,6 +7,8 @@
 
 #include <QAction>
 
+QT_FORWARD_DECLARE_CLASS(QWidget)
+
 namespace Data {
 enum class SyncthingStatus;
 }
@@ -19,7 +21,7 @@ class SyncthingMenuAction : public QAction {
 
 public:
     explicit SyncthingMenuAction(const KFileItemListProperties &properties = KFileItemListProperties(),
-        const QList<QAction *> &actions = QList<QAction *>(), QObject *parent = nullptr);
+        const QList<QAction *> &actions = QList<QAction *>(), QWidget *parentWidget = nullptr);
 #ifdef CPP_UTILITIES_DEBUG_BUILD
     ~SyncthingMenuAction() override;
 #endif
@@ -33,6 +35,7 @@ private:
 
     KFileItemListProperties m_properties;
     Data::SyncthingNotifier m_notifier;
+    QWidget *m_parentWidget;
 };
 
 #endif // SYNCTHINGMENUACTION_H

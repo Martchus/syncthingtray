@@ -19,10 +19,11 @@
 using namespace CppUtilities;
 using namespace Data;
 
-SyncthingMenuAction::SyncthingMenuAction(const KFileItemListProperties &properties, const QList<QAction *> &actions, QObject *parent)
-    : QAction(parent)
+SyncthingMenuAction::SyncthingMenuAction(const KFileItemListProperties &properties, const QList<QAction *> &actions, QWidget *parentWidget)
+    : QAction(parentWidget)
     , m_properties(properties)
     , m_notifier(SyncthingFileItemAction::staticData().connection())
+    , m_parentWidget(parentWidget)
 {
 #ifdef CPP_UTILITIES_DEBUG_BUILD
     std::cerr << EscapeCodes::Phrases::Info << "Creating SyncthingMenuAction: " << this << EscapeCodes::Phrases::EndFlush;
@@ -88,7 +89,7 @@ void SyncthingMenuAction::createMenu(const QList<QAction *> &actions)
     if (actions.isEmpty()) {
         return;
     }
-    auto *const menu = new QMenu(parentWidget());
+    auto *const menu = new QMenu(m_parentWidget);
     menu->addActions(actions);
     setMenu(menu);
 }

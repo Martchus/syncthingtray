@@ -31,7 +31,19 @@ use_syncthingmodel()
 # link also explicitly against the following Qt and KF modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 list(APPEND ADDITIONAL_KF_MODULES KIO)
-set(KIO_MODULE_TARGETS KF5::KIOCore KF5::KIOFileWidgets KF5::KIOWidgets KF5::KIONTLM)
+set(KF_PACKAGE_PREFIX
+    "KF5"
+    CACHE STRING "specifies the prefix for KDE Frameworks packages")
+set(KIO_MODULE_TARGETS "${KF_PACKAGE_PREFIX}::KIOCore" "${KF_PACKAGE_PREFIX}::KIOFileWidgets"
+                       "${KF_PACKAGE_PREFIX}::KIOWidgets")
+if (KF_PACKAGE_PREFIX MATCHES ".*KF([0-9]+).*")
+    set(KF_VERSION ${CMAKE_MATCH_1})
+    if (KF_VERSION GREATER_EQUAL 6)
+        list(APPEND KIO_MODULE_TARGETS)
+    else ()
+        list(APPEND KIO_MODULE_TARGETS "${KF_PACKAGE_PREFIX}::KIONTLM")
+    endif ()
+endif ()
 
 # include modules to apply configuration
 include(BasicConfig)

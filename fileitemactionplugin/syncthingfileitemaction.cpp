@@ -9,7 +9,6 @@
 
 #include <KFileItem>
 #include <KPluginFactory>
-#include <KPluginLoader>
 
 #include <QAction>
 #include <QDir>
@@ -70,7 +69,7 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
         parentWidget->installEventFilter(this);
     }
 
-    topLevelActions << new SyncthingMenuAction(fileItemInfo, subActions, this);
+    topLevelActions << new SyncthingMenuAction(fileItemInfo, subActions, parentWidget);
     return topLevelActions;
 }
 
