@@ -30,12 +30,15 @@ set(PLASMOID_FILES
     package/contents/ui/StatisticsView.qml
     package/contents/ui/main.qml)
 
-# find ECM (required by KF5Plasma)
+# find ECM (required by Plasma)
 find_package(ECM REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} ${CMAKE_MODULE_PATH})
 
-# find KF5Plasma
-find_package(KF5Plasma REQUIRED)
+# find Plasma
+set(KF_PACKAGE_PREFIX
+    "KF5"
+    CACHE STRING "specifies the prefix for KDE Frameworks packages")
+find_package(${KF_PACKAGE_PREFIX}Plasma REQUIRED)
 
 # find c++utilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.20.0 REQUIRED)
