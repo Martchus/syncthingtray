@@ -737,9 +737,9 @@ bool MainConfigWizardPage::validatePage()
         mainConfig = MainConfiguration::LauncherExternal;
     } else if (m_ui->cfgLauncherBuiltInRadioButton->isChecked()) {
         mainConfig = MainConfiguration::LauncherBuiltIn;
-    } else if (m_ui->cfgSystemdUserUnitRadioButton) {
+    } else if (m_ui->cfgSystemdUserUnitRadioButton->isChecked()) {
         mainConfig = MainConfiguration::SystemdUserUnit;
-    } else if (m_ui->cfgSystemdSystemUnitRadioButton) {
+    } else if (m_ui->cfgSystemdSystemUnitRadioButton->isChecked()) {
         mainConfig = MainConfiguration::SystemdSystemUnit;
     }
 
