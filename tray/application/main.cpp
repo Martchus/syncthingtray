@@ -159,7 +159,6 @@ int runApplication(int argc, const char *const *argv)
     auto showWebUiArg = ConfigValueArgument("webui", '\0', "instantly shows the web UI - meant for creating shortcut to web UI");
     auto triggerArg = ConfigValueArgument("trigger", '\0', "instantly shows the left-click tray menu - meant for creating a shortcut");
     auto showWizardArg = ConfigValueArgument("show-wizard", '\0', "instantly shows the setup  wizard");
-    showWizardArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is WIP
     auto assumeFirstLaunchArg = ConfigValueArgument("assume-first-launch", '\0', "assumes first launch");
     assumeFirstLaunchArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is debug-only
     auto wipArg = ConfigValueArgument("wip", '\0', "enables WIP features");
