@@ -9,10 +9,8 @@
 #include <QJsonObject>
 #include <QJsonValue>
 
+#include <filesystem>
 #include <regex>
-
-#include <sys/stat.h>
-#include <unistd.h>
 
 using namespace std;
 using namespace Data;
@@ -41,6 +39,9 @@ public:
 
 private:
     DateTime m_startTime;
+    std::error_code m_ecCwd;
+    std::filesystem::path m_initialCwd;
+    std::filesystem::path m_tempPath;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ApplicationTests);
@@ -54,12 +55,14 @@ ApplicationTests::ApplicationTests()
  */
 void ApplicationTests::setUp()
 {
-    remove("/tmp/some/path/1/new-file.txt");
-    remove("/tmp/some/path/1/newdir/yet-another-file.txt");
-    remove("/tmp/some/path/1/newdir/default.profraw");
-    rmdir("/tmp/some/path/1/newdir");
+    auto ec = std::error_code();
+    std::filesystem::remove_all((m_tempPath = std::filesystem::temp_directory_path()) / "some/path/1", ec);
+    if (ec && ec != std::errc::no_such_file_or_directory) {
+        CPPUNIT_FAIL(argsToString("Unable to clean-up temporary directory \"", m_tempPath.string(), "/some/path/1\": ", ec.message()));
+    }
 
     SyncthingTestInstance::start();
+    m_initialCwd = std::filesystem::current_path(m_ecCwd);
     m_startTime = DateTime::gmtNow();
 }
 
@@ -68,6 +71,10 @@ void ApplicationTests::setUp()
  */
 void ApplicationTests::tearDown()
 {
+    // restore initial cwd
+    if (!m_initialCwd.empty() && !m_ecCwd) {
+        std::filesystem::current_path(m_initialCwd);
+    }
     SyncthingTestInstance::stop();
 }
 
@@ -95,10 +102,6 @@ void ApplicationTests::test()
         expectedStatusPatterns.emplace_back(line);
     }
     CPPUNIT_ASSERT(!expectedStatusPatterns.empty());
-
-    // save cwd (to restore later)
-    char cwd[1024];
-    const bool hasCwd(getcwd(cwd, sizeof(cwd)));
 
     // wait till Syncthing GUI becomes available
     {
@@ -206,7 +209,7 @@ void ApplicationTests::test()
 #endif
 
     // test rescan: create new file, trigger rescan, check status
-    CPPUNIT_ASSERT(ofstream("/tmp/some/path/1/new-file.txt") << "foo");
+    CPPUNIT_ASSERT(std::ofstream(m_tempPath / "some/path/1/new-file.txt") << "foo");
     const char *const rescanArgs[] = { "syncthingctl", "rescan", "test1", nullptr };
     TESTUTILS_ASSERT_EXEC(rescanArgs);
     cout << stdout;
@@ -217,9 +220,9 @@ void ApplicationTests::test()
 
     // test pwd
     // -> create and enter new dir, also create a 2nd file in it
-    chdir("/tmp/some/path/1");
-    mkdir("newdir", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-    chdir("newdir");
+    std::filesystem::current_path(m_tempPath / "some/path/1");
+    std::filesystem::create_directory("newdir");
+    std::filesystem::current_path("newdir");
     CPPUNIT_ASSERT(ofstream("yet-another-file.txt") << "bar");
     // -> change LLVM_PROFILE_FILE to prevent default.profraw file being created in the new directory
     const char *const llvmProfileFile(getenv("LLVM_PROFILE_FILE"));
@@ -240,10 +243,5 @@ void ApplicationTests::test()
     cout << stdout;
     CPPUNIT_ASSERT(stdout.find(" - test1") != string::npos);
     CPPUNIT_ASSERT(stdout.find("Local                         2 file(s), 1 dir(s)") != string::npos);
-
-    // switch back to initial working dir
-    if (hasCwd) {
-        chdir(cwd);
-    }
 }
 #endif

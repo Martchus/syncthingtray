@@ -25,8 +25,10 @@ use_qt_utilities(ONLY_HEADERS VISIBILITY PUBLIC)
 find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector()
 
+# find libraries used by tests
 find_package(syncthingtesthelper ${META_APP_VERSION} REQUIRED)
 list(APPEND TEST_LIBRARIES ${SYNCTHINGTESTHELPER_LIB})
+use_standard_filesystem(LIBRARIES_VARIABLE "TEST_LIBRARIES" PACKAGES_VARIABLE "TEST_PACKAGES" OPTIONAL)
 
 # include modules to apply configuration
 include(BasicConfig)

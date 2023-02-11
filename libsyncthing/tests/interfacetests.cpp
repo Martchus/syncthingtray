@@ -10,12 +10,11 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
+#include <chrono>
 #include <cstdlib>
 #include <filesystem>
 #include <functional>
 #include <thread>
-
-#include <unistd.h>
 
 using namespace std;
 using namespace CppUtilities;
@@ -224,7 +223,7 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction, bool
     if (assertTestConfig) {
         cerr << "\nkeep running a bit longer to check whether the application would not crash in the next few seconds"
                 "\n(could happen if Syncthing's extra threads haven't been stopped correctly)";
-        sleep(5);
+        std::this_thread::sleep_for(std::chrono::seconds(5));
     }
 }
 
