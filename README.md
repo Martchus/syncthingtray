@@ -23,15 +23,14 @@ GitHub only contains a fraction of the available options.
 * No desktop environment specific libraries required (only for optional features/integrations)
 * Known to work under
     * Plasma
-    * Openbox/lxqt/LXDE
-    * Openbox/qt5ct/Tint2
+    * Openbox using lxqt/LXDE or using qt5ct/Tint2
     * Awesome/qt5ct
     * Cinnamon (native look and feel using [adwaita-qt](https://github.com/FedoraQt/adwaita-qt))
     * Deepin Desktop Environment
     * Xfce
-    * Sway/Swaybar/Waybar
+    * Sway/Swaybar/Waybar (with caveats, see "Known bugs and workarounds")
     * i3
-    * Windows 10
+    * Windows 10 and 11
     * macOS 10.14 Mojave
 
 For Plasma, there's (in addition to the Qt Widgets based version) also a
@@ -78,7 +77,6 @@ workarounds for certain caveats.
     * Rescan entire Syncthing directory
     * Pause/resume Syncthing directory
     * See also screenshots section
-* Also has an implementation as Plasmoid for Plasma 5 desktop
 * Allows building Syncthing as a library to run it in the same process as the tray/GUI (optional build configuration
   which is not enabled by default)
 * English and German localization
