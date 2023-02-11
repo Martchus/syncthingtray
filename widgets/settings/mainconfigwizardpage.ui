@@ -53,6 +53,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QRadioButton" name="cfgNoneRadioButton">
+     <property name="text">
+      <string>Keep settings for how to connect to Syncthing and start Syncthing as they are</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="enableSystemdIntegrationCheckBox">
      <property name="text">
       <string>Enable systemd-integration</string>

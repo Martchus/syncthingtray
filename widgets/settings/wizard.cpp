@@ -175,6 +175,9 @@ bool Wizard::changeSettings()
     // invoke next step
     switch (mainConfig()) {
     case MainConfiguration::None:
+        // just conclude the wizard immediately
+        handleConfigurationApplied();
+        return true;
     case MainConfiguration::CurrentlyRunning:
         // let the tray widget / plasmoid apply the settings immediately
         // note: The tray widget / plasmoid is expected to call handleConfigurationApplied().
@@ -610,7 +613,8 @@ MainConfigWizardPage::MainConfigWizardPage(QWidget *parent)
 
     // connect signals & slots
     for (auto *const option : std::initializer_list<QRadioButton *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
-             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgSystemdUserUnitRadioButton, m_ui->cfgSystemdSystemUnitRadioButton }) {
+             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgSystemdUserUnitRadioButton, m_ui->cfgSystemdSystemUnitRadioButton,
+             m_ui->cfgNoneRadioButton }) {
         connect(option, &QRadioButton::toggled, this, &MainConfigWizardPage::handleSelectionChanged);
     }
 }
@@ -779,7 +783,8 @@ void MainConfigWizardPage::handleSelectionChanged()
     // set completed state according to selection
     auto configSelected = false;
     for (auto *const option : std::initializer_list<QRadioButton *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
-             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgSystemdUserUnitRadioButton, m_ui->cfgSystemdSystemUnitRadioButton }) {
+             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgSystemdUserUnitRadioButton, m_ui->cfgSystemdSystemUnitRadioButton,
+             m_ui->cfgNoneRadioButton }) {
         if ((configSelected = !option->isHidden() && option->isChecked())) {
             break;
         }
@@ -817,13 +822,15 @@ void AutostartWizardPage::initializePage()
         return;
     }
 
-    for (auto *const widget : std::initializer_list<QWidget *>{
-             m_ui->launcherEnabledLabel, m_ui->systemdEnabledLabel, m_ui->launcherDisabledLabel, m_ui->launcherAlreadyEnabledLabel }) {
+    for (auto *const widget : std::initializer_list<QWidget *>{ m_ui->launcherEnabledLabel, m_ui->systemdEnabledLabel, m_ui->launcherDisabledLabel,
+             m_ui->launcherAlreadyEnabledLabel, m_ui->generalLabel }) {
         widget->hide();
     }
 
     switch (wizard->mainConfig()) {
     case MainConfiguration::None:
+        m_ui->generalLabel->show();
+        break;
     case MainConfiguration::CurrentlyRunning: {
         auto *const launcher = Data::SyncthingLauncher::mainInstance();
         if (launcher && launcher->guiUrl().port(-1) == QUrl(wizard->setupDetection().config.syncthingUrl()).port(-2)) {
@@ -900,7 +907,7 @@ void ApplyWizardPage::initializePage()
     auto extraInfo = QString();
     switch (wizard->mainConfig()) {
     case MainConfiguration::None:
-        mainConfig = tr("Keeping connection and launcher configuration as-is");
+        mainConfig = tr("Keep connection and launcher configuration as-is");
         break;
     case MainConfiguration::CurrentlyRunning:
         mainConfig = tr("Configure Syncthing Tray to use the currently running Syncthing instance");
@@ -1011,10 +1018,15 @@ void QtGui::FinalWizardPage::showResults()
     m_progressBar->hide();
     if (wizard->configError().isEmpty()) {
         setSubTitle(tr("All changes have been applied"));
-        m_label->setText(tr("<p>The configuration has been changed successfully. You can close the wizard and <a href=\"openSyncthing\">open "
-                            "Syncthing</a> to pair remote devices and add folders for sharing. If you need further help, read the "
-                            "<a href=\"openDocs\">documentation to get started</a>.</p>"
-                            "<p>To initiate the pairing from another device, the device ID of this Syncthing device is displayed below.</p>"));
+        if (wizard->mainConfig() == MainConfiguration::None) {
+            m_label->setText(tr("<p>The configuration has been changed successfully. The way Syncthing Tray connects to and starts Syncthing "
+                                "has not changed, though. You may configure this manually in the settings.</p>"));
+        } else {
+            m_label->setText(tr("<p>The configuration has been changed successfully. You can close the wizard and <a href=\"openSyncthing\">open "
+                                "Syncthing</a> to pair remote devices and add folders for sharing. If you need further help, read the "
+                                "<a href=\"openDocs\">documentation to get started</a>.</p>"
+                                "<p>To initiate the pairing from another device, the device ID of this Syncthing device is displayed below.</p>"));
+        }
         if (wizard->appliedConnection()) {
             m_layout->addWidget(m_ownDeviceIdWidget = ownDeviceIdWidget(*(wizard->appliedConnection()), 256));
         }

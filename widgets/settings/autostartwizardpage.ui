@@ -13,7 +13,7 @@
    <item>
     <widget class="QCheckBox" name="enableAutostartCheckBox">
      <property name="text">
-      <string>Start Syncthing-Tray on login (only affects sessions of the current user)</string>
+      <string>Start Syncthing Tray on login (only affects sessions of the current user)</string>
      </property>
     </widget>
    </item>
@@ -71,6 +71,16 @@
     <widget class="QLabel" name="launcherAlreadyEnabledLabel">
      <property name="text">
       <string>The currently running Syncthing instance is started via Syncthing Tray so Syncthing itself will be started automatically on login as well.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="generalLabel">
+     <property name="text">
+      <string>This setting is about Syncthing Tray itself. If Syncthing is started via Syncthing Tray's launcher it will indirectly affect Syncthing as well, though.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

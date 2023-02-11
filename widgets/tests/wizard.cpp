@@ -419,6 +419,10 @@ void WizardTests::testConfiguringCurrentlyRunningSyncthing()
     QVERIFY(cfgCurrentlyRunningRadioButton != nullptr);
     QVERIFY(!cfgCurrentlyRunningRadioButton->isHidden());
     QVERIFY(cfgCurrentlyRunningRadioButton->isChecked());
+    auto *const cfgNoneRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgNoneRadioButton"));
+    QVERIFY(cfgNoneRadioButton != nullptr);
+    QVERIFY(!cfgNoneRadioButton->isHidden());
+    QVERIFY(!cfgNoneRadioButton->isChecked());
     wizardDlg.next();
 
     // keep autostart setting as-is
