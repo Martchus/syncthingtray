@@ -532,7 +532,6 @@ void DetectionWizardPage::initializePage()
     }
 
     m_setupDetection->reset();
-    connect(m_setupDetection, &SetupDetection::done, this, &DetectionWizardPage::continueIfDone);
     emit completeChanged();
     QTimer::singleShot(0, this, &DetectionWizardPage::tryToConnect);
 }
@@ -591,6 +590,7 @@ void DetectionWizardPage::tryToConnect()
     }
 
     // start setup detection tests
+    connect(m_setupDetection, &SetupDetection::done, this, &DetectionWizardPage::continueIfDone, Qt::QueuedConnection);
     m_setupDetection->startTest();
 }
 

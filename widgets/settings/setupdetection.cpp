@@ -98,10 +98,15 @@ void SetupDetection::reset()
     launcherExitStatus.reset();
     launcherError.reset();
     launcherOutput.clear();
+    m_testStarted = false;
 }
 
 void SetupDetection::startTest()
 {
+    if (m_testStarted) {
+        return;
+    }
+    m_testStarted = true;
     restoreConfig();
     initConnection();
     connection.reconnect();
@@ -141,8 +146,12 @@ void SetupDetection::handleTimeout()
 
 void SetupDetection::checkDone()
 {
+    if (!m_testStarted) {
+        return;
+    }
     if (isDone()) {
         timeout.stop();
+        m_testStarted = false;
         emit done();
     }
 }
