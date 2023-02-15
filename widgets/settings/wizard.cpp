@@ -570,6 +570,8 @@ void DetectionWizardPage::tryToConnect()
 
     setTitle(m_defaultTitle);
     setSubTitle(m_defaultSubTitle);
+    m_progressBar->show();
+    m_checkAgainButton->hide();
 
     // determine path of Syncthing's config file, possibly ask user to select it
     m_setupDetection->determinePaths();
