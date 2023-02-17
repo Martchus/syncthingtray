@@ -542,9 +542,8 @@ achieve a dark theming:
 
 * To enable dark colors for Syncthing Tray's UI elements, configure a dark color
   palette in Syncthing Tray's settings under "Qt/Appearance". You can download and
-  load the file as a base
-  https://raw.githubusercontent.com/Martchus/syncthingtray/master/tray/resources/dark-palette.ini
-  and tweak the colors to your liking.
+  load [dark-palette.ini](https://raw.githubusercontent.com/Martchus/syncthingtray/master/tray/resources/dark-palette.ini)
+  as a base and tweak the colors to your liking.
 * As of Qt 6.4 dark Window borders will be enabled automatically if Windows'
   dark mode setting is enabled and a dark color palette has been selected as
   mentioned in the previous step.
