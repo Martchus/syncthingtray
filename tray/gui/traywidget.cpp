@@ -253,7 +253,7 @@ SettingsDialog *TrayWidget::settingsDialog()
         // note: QCoreApplication::aboutToQuit() does not work reliably but terminating only at the
         //       end of the session is a common use-case for the tray application. So workaround this
         //       by simply saving the settings immediately.
-        connect(s_settingsDlg, &SettingsDialog::applied, &Settings::save);
+        connect(s_settingsDlg, &SettingsDialog::applied, this, &TrayWidget::saveSettings);
     }
     return s_settingsDlg;
 }
@@ -320,6 +320,14 @@ void TrayWidget::applySettingsChangesFromWizard()
         } else {
             instance->applySettings();
         }
+    }
+}
+
+void TrayWidget::saveSettings()
+{
+    Settings::save();
+    if (const auto &error = Settings::values().error; !error.isEmpty()) {
+        QMessageBox::critical(nullptr, QCoreApplication::applicationName(), error);
     }
 }
 

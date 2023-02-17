@@ -265,11 +265,12 @@ static void setVarFromEnv(bool &var, const char *envVar)
     }
 }
 
-void restore()
+bool restore()
 {
     auto s = QtUtilities::getSettings(QStringLiteral(PROJECT_NAME));
     auto &v = values();
     auto &settings = *s;
+    v.error = QtUtilities::errorMessageForSettings(settings);
 
     const auto version = QVersionNumber::fromString(settings.value(QStringLiteral("v")).toString());
     settings.beginGroup(QStringLiteral("tray"));
@@ -417,13 +418,15 @@ void restore()
     // restore developer settings from environment variables
     setVarFromEnv(v.fakeFirstLaunch, PROJECT_VARNAME_UPPER "_FAKE_FIRST_LAUNCH");
     setVarFromEnv(v.enableWipFeatures, PROJECT_VARNAME_UPPER "_ENABLE_WIP_FEATURES");
+
+    return v.error.isEmpty();
 }
 
-void save()
+bool save()
 {
     auto s = QtUtilities::getSettings(QStringLiteral(PROJECT_NAME));
     auto &settings = *s;
-    const auto &v = values();
+    auto &v = values();
 
     settings.setValue(QStringLiteral("v"), QStringLiteral(APP_VERSION));
     settings.beginGroup(QStringLiteral("tray"));
@@ -530,6 +533,10 @@ void save()
 #endif
 
     v.qt.save(settings);
+
+    settings.sync();
+    v.error = QtUtilities::errorMessageForSettings(settings);
+    return v.error.isEmpty();
 }
 
 /*!

@@ -78,6 +78,7 @@ public Q_SLOTS:
     void quitTray();
     void applySettings(const QString &connectionConfig = QString());
     void applySettingsChangesFromWizard();
+    void saveSettings();
 
 protected:
     bool event(QEvent *event) override;

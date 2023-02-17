@@ -40,6 +40,7 @@
 #include <QDesktopServices>
 #include <QGuiApplication>
 #include <QMap>
+#include <QMessageBox>
 #include <QNetworkReply>
 #include <QPalette>
 #include <QQmlEngine>
@@ -111,6 +112,19 @@ SyncthingApplet::~SyncthingApplet()
 #endif
 }
 
+void showErrorIfSet(const QString &errorMessage)
+{
+    if (errorMessage.isEmpty()) {
+        return;
+    }
+    auto msgBox = new QMessageBox();
+    msgBox->setWindowTitle(QStringLiteral(APP_NAME));
+    msgBox->setAttribute(Qt::WA_DeleteOnClose, true);
+    msgBox->setText(errorMessage);
+    msgBox->setIcon(QMessageBox::Critical);
+    msgBox->show();
+}
+
 void SyncthingApplet::init()
 {
     LOAD_QT_TRANSLATIONS;
@@ -170,8 +184,11 @@ void SyncthingApplet::init()
     if (settings.firstLaunch || settings.fakeFirstLaunch) {
         showWizard();
         settings.firstLaunch = false;
-        Settings::save();
+        saveSettings();
     }
+
+    // show error when settings cannot be restored
+    showErrorIfSet(settings.error);
 
     m_initialized = true;
 }
@@ -319,6 +336,12 @@ void SyncthingApplet::updateStatusIconAndTooltip()
     emit connectionStatusChanged();
 }
 
+void SyncthingApplet::saveSettings()
+{
+    Settings::save();
+    showErrorIfSet(Settings::values().error);
+}
+
 QIcon SyncthingApplet::loadForkAwesomeIcon(const QString &name, int size) const
 {
     const auto icon = QtForkAwesome::iconFromId(name);
@@ -348,7 +371,7 @@ void SyncthingApplet::showSettingsDlg()
         // save plasmoid specific settings to disk when applied
         connect(m_settingsDlg, &SettingsDialog::applied, this, &SyncthingApplet::configChanged);
         // save global/general settings to disk when applied
-        connect(m_settingsDlg, &SettingsDialog::applied, &Settings::save);
+        connect(m_settingsDlg, &SettingsDialog::applied, this, &SyncthingApplet::saveSettings);
     }
     centerWidget(m_settingsDlg);
     m_settingsDlg->show();

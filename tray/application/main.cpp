@@ -144,6 +144,9 @@ static void trigger(bool tray, bool webUi, bool wizard)
 void shutdownSyncthingTray()
 {
     Settings::save();
+    if (const auto &error = Settings::values().error; !error.isEmpty()) {
+        QMessageBox::critical(nullptr, QCoreApplication::applicationName(), error);
+    }
     Settings::Launcher::terminate();
 }
 
@@ -226,6 +229,9 @@ int runApplication(int argc, const char *const *argv)
             settings.enableWipFeatures = true;
         }
         LOAD_QT_TRANSLATIONS;
+        if (!settings.error.isEmpty()) {
+            QMessageBox::critical(nullptr, QCoreApplication::applicationName(), settings.error);
+        }
         SyncthingLauncher launcher;
         SyncthingLauncher::setMainInstance(&launcher);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
