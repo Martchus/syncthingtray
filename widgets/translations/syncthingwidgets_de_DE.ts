@@ -237,7 +237,12 @@
         <translation>Normales Fenster</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="391"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="388"/>
+        <source>Window without titlebar</source>
+        <translation>Fenster ohne Titelleiste</translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="396"/>
         <source>Window type</source>
         <translation>Fensterart</translation>
     </message>
@@ -2139,7 +2144,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="643"/>
+        <location filename="../settings/settings.cpp" line="647"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation>Sicherung von %1 (vom Einrichtungsassistenten erstellt)</translation>
     </message>

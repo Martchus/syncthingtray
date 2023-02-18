@@ -112,7 +112,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="391"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="388"/>
+        <source>Window without titlebar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="396"/>
         <source>Window type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1977,7 +1982,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="643"/>
+        <location filename="../settings/settings.cpp" line="647"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation type="unfinished"></translation>
     </message>
