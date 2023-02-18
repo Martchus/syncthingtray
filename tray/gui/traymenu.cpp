@@ -19,7 +19,7 @@ namespace QtGui {
 TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     : QMenu(parent)
     , m_trayIcon(trayIcon)
-    , m_windowed(false)
+    , m_windowType(WindowType::Popup)
 {
     setObjectName(QStringLiteral("QtGui::TrayMenu"));
     auto *const menuLayout = new QHBoxLayout;
@@ -68,23 +68,50 @@ void TrayMenu::showUsingPositioningSettings()
     activateWindow();
 }
 
-void TrayMenu::setWindowed(bool windowed)
+void TrayMenu::setWindowType(int windowType)
 {
-    if (m_windowed != windowed) {
-        setWindowFlags((m_windowed = windowed) ? Qt::Window : Qt::FramelessWindowHint | Qt::Popup);
+    if (windowType >= 0 && windowType <= 2) {
+        setWindowType(static_cast<WindowType>(windowType));
     }
+}
+
+void TrayMenu::setWindowType(WindowType windowType)
+{
+    if (m_windowType == windowType) {
+        return;
+    }
+    auto flags = Qt::WindowFlags();
+    switch (m_windowType = windowType) {
+    case WindowType::Popup:
+        flags = Qt::FramelessWindowHint | Qt::Popup;
+        break;
+    case WindowType::NormalWindow:
+        flags = Qt::Window;
+        break;
+    case WindowType::CustomWindow:
+        flags = Qt::Dialog | Qt::CustomizeWindowHint;
+        break;
+    }
+    setWindowFlags(flags);
 }
 
 void TrayMenu::mousePressEvent(QMouseEvent *event)
 {
-    if (!m_windowed) {
+    if (m_windowType != TrayMenu::WindowType::NormalWindow) {
         QMenu::mousePressEvent(event);
+    }
+}
+
+void TrayMenu::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (m_windowType != TrayMenu::WindowType::NormalWindow) {
+        QMenu::mouseReleaseEvent(event);
     }
 }
 
 void TrayMenu::paintEvent(QPaintEvent *event)
 {
-    if (!m_windowed) {
+    if (m_windowType == WindowType::Popup) {
         QMenu::paintEvent(event);
     } else {
         QPainter(this).fillRect(event->rect(), palette().window());
@@ -92,10 +119,13 @@ void TrayMenu::paintEvent(QPaintEvent *event)
     }
 }
 
-void TrayMenu::mouseReleaseEvent(QMouseEvent *event)
+void TrayMenu::focusOutEvent(QFocusEvent *)
 {
-    if (!m_windowed) {
-        QMenu::mouseReleaseEvent(event);
+    if (m_windowType == WindowType::CustomWindow) {
+        if (const auto *fw = focusWidget(); fw->hasFocus()) {
+            return;
+        }
+        close();
     }
 }
 

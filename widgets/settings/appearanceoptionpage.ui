@@ -383,6 +383,11 @@
        <string>Normal window</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>Window without titlebar</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="2" column="0">

@@ -596,7 +596,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
         }
     }
     if (m_menu) {
-        m_menu->setWindowed(settings.appearance.windowed);
+        m_menu->setWindowType(settings.appearance.windowType);
     }
 
     // update status icon and text of tray icon because reconnect interval might have changed
@@ -934,7 +934,7 @@ void TrayWidget::concludeWizard(const QString &errorMessage)
 
 void TrayWidget::showDialog(QWidget *dlg, bool maximized)
 {
-    if (m_menu && !m_menu->isWindowed()) {
+    if (m_menu && m_menu->windowType() != TrayMenu::WindowType::NormalWindow) {
         m_menu->close();
     }
     if (maximized) {

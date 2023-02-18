@@ -347,7 +347,11 @@ bool restore()
     auto &appearance = v.appearance;
     appearance.showTraffic = settings.value(QStringLiteral("showTraffic"), appearance.showTraffic).toBool();
     appearance.showTabTexts = settings.value(QStringLiteral("showTabTexts"), appearance.showTabTexts).toBool();
-    appearance.windowed = settings.value(QStringLiteral("windowed"), appearance.windowed).toBool();
+    if (auto windowType = settings.value(QStringLiteral("windowType")); windowType.isValid()) {
+        appearance.windowType = windowType.toInt();
+    } else if (auto windowed = settings.value(QStringLiteral("windowed")); windowed.isValid()) {
+        appearance.windowType = !windowed.toBool() ? 0 : 1;
+    }
     appearance.trayMenuSize = settings.value(QStringLiteral("trayMenuSize"), appearance.trayMenuSize).toSize();
     appearance.frameStyle = settings.value(QStringLiteral("frameStyle"), appearance.frameStyle).toInt();
     appearance.tabPosition = settings.value(QStringLiteral("tabPos"), appearance.tabPosition).toInt();
@@ -471,7 +475,7 @@ bool save()
     const auto &appearance = v.appearance;
     settings.setValue(QStringLiteral("showTraffic"), appearance.showTraffic);
     settings.setValue(QStringLiteral("showTabTexts"), appearance.showTabTexts);
-    settings.setValue(QStringLiteral("windowed"), appearance.windowed);
+    settings.setValue(QStringLiteral("windowType"), appearance.windowType);
     settings.setValue(QStringLiteral("trayMenuSize"), appearance.trayMenuSize);
     settings.setValue(QStringLiteral("frameStyle"), appearance.frameStyle);
     settings.setValue(QStringLiteral("tabPos"), appearance.tabPosition);

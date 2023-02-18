@@ -10,30 +10,37 @@ class TrayWidget;
 
 class TrayMenu : public QMenu {
     Q_OBJECT
-    Q_PROPERTY(bool windowed READ isWindowed WRITE setWindowed)
 
 public:
+    enum class WindowType {
+        Popup,
+        NormalWindow,
+        CustomWindow,
+    };
+
     explicit TrayMenu(TrayIcon *trayIcon = nullptr, QWidget *parent = nullptr);
 
     QSize sizeHint() const override;
     TrayWidget &widget();
     const TrayWidget &widget() const;
     TrayIcon *icon();
-    bool isWindowed() const;
+    WindowType windowType() const;
+    void setWindowType(int windowType);
+    void setWindowType(WindowType windowType);
 
 public Q_SLOTS:
     void showUsingPositioningSettings();
-    void setWindowed(bool windowed);
 
 protected:
     void mouseReleaseEvent(QMouseEvent *) override;
     void mousePressEvent(QMouseEvent *) override;
     void paintEvent(QPaintEvent *) override;
+    void focusOutEvent(QFocusEvent *) override;
 
 private:
     TrayWidget *m_trayWidget;
     TrayIcon *m_trayIcon;
-    bool m_windowed = false;
+    WindowType m_windowType;
 };
 
 inline TrayWidget &TrayMenu::widget()
@@ -51,9 +58,9 @@ inline TrayIcon *TrayMenu::icon()
     return m_trayIcon;
 }
 
-inline bool TrayMenu::isWindowed() const
+inline TrayMenu::WindowType TrayMenu::windowType() const
 {
-    return m_windowed;
+    return m_windowType;
 }
 
 } // namespace QtGui

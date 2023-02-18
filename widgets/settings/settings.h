@@ -64,7 +64,7 @@ struct SYNCTHINGWIDGETS_EXPORT NotifyOn {
 struct SYNCTHINGWIDGETS_EXPORT Appearance {
     bool showTraffic = true;
     bool showTabTexts = true;
-    bool windowed = false;
+    int windowType = 0; // corresponds to TrayMenu::WindowType
     QSize trayMenuSize = QSize(575, 475);
     int frameStyle = static_cast<int>(QFrame::NoFrame) | static_cast<int>(QFrame::Plain);
     int tabPosition = QTabWidget::South;
