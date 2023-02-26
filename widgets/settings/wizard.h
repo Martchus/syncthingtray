@@ -18,6 +18,8 @@ namespace Data {
 class SyncthingConnection;
 }
 
+class WizardTests;
+
 namespace QtGui {
 
 class SetupDetection;
