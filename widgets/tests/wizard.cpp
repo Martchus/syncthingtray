@@ -199,8 +199,10 @@ void WizardTests::testConfiguringLauncher()
     if (setupDetection.launcherExitCode.has_value()) {
         qDebug() << "launcher exit code: " << setupDetection.launcherExitCode.value();
     }
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     qDebug() << "user service state: " << setupDetection.userService.unitFileState();
     qDebug() << "system service state: " << setupDetection.systemService.unitFileState();
+#endif
     if (setupDetection.timedOut) {
         qDebug() << "timeout of " << setupDetection.timeout.interval() << " ms has been exceeded (normal if systemd units not available)";
     }
