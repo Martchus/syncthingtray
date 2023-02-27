@@ -11,6 +11,9 @@ set(META_NO_CPP_UNIT ON)
 set(META_TEST_TARGET_IS_MANUAL ON)
 set(META_ADD_DEFAULT_CPP_UNIT_TEST_APPLICATION OFF)
 
+# use testfiles directory from syncthingconnector
+set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
+
 # add project files
 set(HEADER_FILES helper.h syncthingtestinstance.h)
 set(SRC_FILES helper.cpp syncthingtestinstance.cpp)

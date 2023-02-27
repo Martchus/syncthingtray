@@ -6,6 +6,9 @@ set(META_APP_NAME "Syncthing Tray")
 set(META_APP_ACTIONS OPEN_WEBUI)
 set(META_APP_ACTION_OPEN_WEBUI "open-webui" "Open web UI" "--webui")
 
+# use testfiles directory from syncthingconnector
+set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
+
 # add project files
 set(WIDGETS_HEADER_FILES
     application/singleinstance.h

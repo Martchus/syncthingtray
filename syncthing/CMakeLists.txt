@@ -8,6 +8,9 @@ set(META_APP_DESCRIPTION "Syncthing itself, built as a shared or static library"
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING)
 set(META_SYNCTHING_VERSION "v1.23.1")
 
+# use testfiles directory from syncthingconnector
+set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
+
 # add project files
 set(HEADER_FILES interface.h)
 set(SRC_FILES "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.h" interface.cpp)

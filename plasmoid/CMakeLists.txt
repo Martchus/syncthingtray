@@ -8,6 +8,9 @@ set(META_PROJECT_TYPE qtplugin)
 set(META_PLUGIN_CATEGORY plasma/applets)
 set(META_QT5_VERSION 5.8)
 
+# use testfiles directory from syncthingconnector
+set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
+
 # source files
 set(PLASMOID_FILES
     package/contents/ui/CompactRepresentation.qml
