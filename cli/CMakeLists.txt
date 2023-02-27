@@ -13,8 +13,8 @@ set(SRC_FILES main.cpp args.cpp application.cpp)
 set(TEST_HEADER_FILES)
 set(TEST_SRC_FILES tests/application.cpp)
 
-# use testfiles directory from connector
-set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../connector")
+# use testfiles directory from syncthingconnector
+set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
 
 # find c++utilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.21.0 REQUIRED)

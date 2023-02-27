@@ -32,7 +32,7 @@ Makefile*
 *.qmlproject.user.*
 
 # Go modules
-/libsyncthing/go/pkg
+/syncthing/go/pkg
 
 # Dolphin
 .directory
@@ -47,12 +47,12 @@ testfiles/output.*
 scripts/
 
 # clang-format
-/libsyncthing/.clang-format
+/syncthing/.clang-format
 /cli/.clang-format
-/connector/.clang-format
+/syncthingconnector/.clang-format
 /fileitemactionplugin/.clang-format
-/model/.clang-format
+/syncthingmodel/.clang-format
 /testhelper/.clang-format
 /tray/.clang-format
 /plasmoid/lib/.clang-format
-/widgets/.clang-format
+/syncthingwidgets/.clang-format

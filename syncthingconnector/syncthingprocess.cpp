@@ -1,6 +1,5 @@
 #include "./syncthingprocess.h"
-
-#include <syncthingconnector/syncthingconnection.h>
+#include "./syncthingconnection.h"
 
 #include <QEventLoop>
 #include <QStringBuilder>
