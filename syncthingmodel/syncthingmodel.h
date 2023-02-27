@@ -6,7 +6,7 @@
 #include <QAbstractItemModel>
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-Q_MOC_INCLUDE("../connector/syncthingconnection.h")
+Q_MOC_INCLUDE("../syncthingconnector/syncthingconnection.h")
 #endif
 
 namespace Data {
