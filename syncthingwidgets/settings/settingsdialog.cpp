@@ -809,13 +809,18 @@ bool setAutostartEnabled(bool enabled)
         if (!desktopFile.open(QFile::WriteOnly | QFile::Truncate)) {
             return false;
         }
+#ifndef SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH
+        // Use the syncthingtray executable located in the directory of the applicationFilePath.
+        // Not using applicationFilePath directly to accomodate for NixOS as well, see:
+        // https://github.com/Martchus/syncthingtray/issues/176
+        const QString execPath = QCoreApplication::applicationDirPath() + PROJECT_NAME;
+#else
+        const QString execPath = SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH;
+#endif
         desktopFile.write("[Desktop Entry]\n"
                           "Name=" APP_NAME "\n"
                           "Exec=\"");
-#ifndef SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH
-#define SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH QCoreApplication::applicationFilePath()
-#endif
-        desktopFile.write(qEnvironmentVariable("APPIMAGE", SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH).toUtf8().data());
+        desktopFile.write(qEnvironmentVariable("APPIMAGE", execPath).toUtf8().data());
         desktopFile.write("\" qt-widgets-gui --single-instance\nComment=" APP_DESCRIPTION "\n"
                           "Icon=" PROJECT_NAME "\n"
                           "Type=Application\n"
