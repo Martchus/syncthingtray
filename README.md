@@ -346,8 +346,12 @@ a test instance of Syncthing that does not affect a possibly existing Syncthing 
    git clone https://github.com/Martchus/qtforkawesome.git
    git clone https://github.com/ForkAwesome/Fork-Awesome.git forkawesome
    git clone https://github.com/Martchus/syncthingtray.git
-   git clone https://github.com/Martchus/subdirs.git
+   git clone -c core.symlinks=true https://github.com/Martchus/subdirs.git
    ```
+   Note that `-c core.symlinks=true` is only required under Windows to handle symlinks correctly.
+   This requires a recent Git version and a filesystem which supports symlinks (NTFS works).
+   If you run into "not found" errors on symlink creation use `git reset --hard` within the repository to
+   fix this.
 2. Configure the build
    ```
    cd "$BUILD_DIR"
