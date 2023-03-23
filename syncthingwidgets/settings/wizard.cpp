@@ -15,6 +15,7 @@
 
 #include <qtutilities/misc/dialogutils.h>
 
+#include <QApplication>
 #include <QCheckBox>
 #include <QCommandLinkButton>
 #include <QDesktopServices>
@@ -28,6 +29,7 @@
 #include <QProgressBar>
 #include <QPushButton>
 #include <QStringList>
+#include <QStyle>
 #include <QTextEdit>
 #include <QUrl>
 #include <QVBoxLayout>
@@ -50,12 +52,27 @@ Wizard *Wizard::s_instance = nullptr;
 Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     : QWizard(parent, flags)
 {
-    setWindowTitle(tr("Setup wizard - ") + QStringLiteral(APP_NAME));
-    setWindowIcon(QIcon(QString::fromUtf8(":/icons/hicolor/scalable/app/syncthingtray.svg"))
 #ifdef Q_OS_WINDOWS
-                      .pixmap(16)
+    // avoid using QWizard::AeroStyle when not also the Qt Widgets style "windowsvista" is used
+    // note: Otherwise the wizard is quite unusable with a dark color palette.
+    if (const auto *const style = QApplication::style()) {
+        if (style->name().compare(QLatin1String("windowsvista"), Qt::CaseInsensitive) != 0) {
+            setWizardStyle(QWizard::ModernStyle);
+        }
+    }
 #endif
-    );
+
+    setWindowTitle(tr("Setup wizard - ") + QStringLiteral(APP_NAME));
+
+    auto icon = QIcon(QString::fromUtf8(":/icons/hicolor/scalable/app/syncthingtray.svg"));
+#ifdef Q_OS_WINDOWS
+    if (wizardStyle() == QWizard::AeroStyle) {
+        // workaround displaying issues with bigger icons when QWizard::AeroStyle is used
+        icon = icon.pixmap(16);
+    }
+#endif
+    setWindowIcon(icon);
+
     setMinimumSize(770, 550);
 
     auto *const welcomePage = new WelcomeWizardPage(this);
