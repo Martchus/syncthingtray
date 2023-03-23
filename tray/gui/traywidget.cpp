@@ -947,7 +947,9 @@ void TrayWidget::showDialog(QWidget *dlg, bool maximized)
 
 void TrayWidget::setBrightColorsOfModelsAccordingToPalette()
 {
-    const auto brightColors = isPaletteDark(palette());
+    auto &qtSettings = Settings::values().qt;
+    qtSettings.reevaluatePaletteAndDefaultIconTheme();
+    const auto brightColors = qtSettings.isPaletteDark();
     m_dirModel.setBrightColors(brightColors);
     m_devModel.setBrightColors(brightColors);
     m_dlModel.setBrightColors(brightColors);
