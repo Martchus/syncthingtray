@@ -543,10 +543,12 @@ desktop apps and follow the dark mode setting (as
 
 It is also recommended to apply some further tweaks:
 
-* To make general icons fit with the dark color palette, configure an
-  appropriate icon them, e.g. select "Breeze Dark" as icon theme in Syncthing
-  Tray's settings under "Qt/Appearance".
-* To make Syncthing icons fit with the dark color palette, configure their
+* Ensure an icon theme that looks good on dark backgrounds is selected. The Windows
+  builds provided on GitHub bundle a version of Breeze for light and dark themes. By
+  default the version matching the current color palette is selected automatically.
+  If you had an icon theme configured explicitly, you may need to manually select a
+  different icon theme in the settings under "Qt/Appearance" when enabling dark mode.
+* To make Syncthing icons fit better with the dark color palette, configure their
   colors in Syncthing Tray's settings under "Tray/UI icons" and "Tray/System
   icons". The "Use preset" button allows to select pre-defined colors suitable for
   a dark color palette.
