@@ -631,6 +631,7 @@ bool TrayWidget::event(QEvent *event)
 
 void TrayWidget::applySettingsOnAllInstances()
 {
+    Settings::values().qt.apply();
     for (TrayWidget *instance : s_instances) {
         instance->applySettings();
     }

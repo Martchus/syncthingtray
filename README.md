@@ -571,8 +571,9 @@ tweaking:
   WindowsArguments = darkmode=1
   ```
 
-After changing these settings, restart Syncthing Tray. It is not sufficient to
-close the last Windows; the process needs to be restarted.
+When using Syncthing Tray 1.3.x or older, you need to restart Syncthing Tray for
+these changes to have any effect. It is not sufficient to close the last window;
+the process needs to be restarted.
 
 Note that one can alternatively also enable Windows' "High contrast" setting which
 seems to bring back the traditional theming/coloring (which has normally been

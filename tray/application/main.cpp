@@ -220,6 +220,7 @@ int runApplication(int argc, const char *const *argv)
         QObject::connect(&singleInstance, &SingleInstance::newInstance, &runApplication);
         Settings::restore();
         auto &settings = Settings::values();
+        settings.qt.disableNotices();
         settings.qt.apply();
         qtConfigArgs.applySettings(true);
         if (assumeFirstLaunchArg.isPresent()) {
