@@ -23,7 +23,7 @@ using namespace QtUtilities;
 
 namespace Plasmoid {
 
-void addPlasmoidSpecificNote(QLayout *layout, QWidget *parent)
+static void addPlasmoidSpecificNote(QLayout *layout, QWidget *parent)
 {
     auto *const infoLabel = new QLabel(
         QCoreApplication::translate("Plasmoid::Settings", "The settings on this page are specific to the current instance of the Plasmoid."), parent);
