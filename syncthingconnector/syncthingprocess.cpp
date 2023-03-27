@@ -44,10 +44,15 @@ namespace Data {
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
 #ifdef PLATFORM_WINDOWS
 #define LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS boost::process::windows::create_no_window,
-#define LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION toStdWString
+#ifdef Q_CC_MSVC
+// fix crashes using MSVC; for some reason using tStdWString() leads to crashes with Qt 6.5.0 and MSVC 2022
+#define LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(s) std::wstring(reinterpret_cast<const wchar_t *>(s.utf16()), s.size())
+#else
+#define LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(s) s.toStdWString()
+#endif
 #else
 #define LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS
-#define LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION toLocal8Bit().toStdString
+#define LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(s) s.toLocal8Bit().toStdString()
 #endif
 
 /// \brief Holds data related to the process execution via Boost.Process.
@@ -415,11 +420,10 @@ void SyncthingProcess::start(const QString &program, const QStringList &argument
     emit stateChanged(m_process->state = QProcess::Starting);
 
     // convert args
-    auto prog = program.LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION();
-    auto args = std::vector<decltype(arguments.front().LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION())>();
-    args.reserve(static_cast<std::size_t>(arguments.size()));
+    auto prog = LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(program);
+    auto args = std::vector<decltype(LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(arguments.front()))>();
     for (const auto &arg : arguments) {
-        args.emplace_back(arg.LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION());
+        args.emplace_back(LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(arg));
     }
     m_process->program = program;
     m_process->arguments = arguments;
