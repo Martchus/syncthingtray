@@ -96,7 +96,7 @@
         <translation type="obsolete">Einstellungen</translation>
     </message>
     <message>
-        <location filename="../webview/webviewdialog.cpp" line="178"/>
+        <location filename="../webview/webviewdialog.cpp" line="179"/>
         <source>Unable to open Syncthing UI via &quot;%1&quot;: %2</source>
         <translation>Die Syncthing-Oberfläche konnte nicht via &quot;%1&quot; geöffnet werden: %2</translation>
     </message>
@@ -1004,7 +1004,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="41"/>
         <source>Chromium-based browser in &quot;app mode&quot;</source>
-        <translation>als &quot;App&quot; in einem auf Chromium basierenden Browser</translation>
+        <translation>einem auf Chromium basierenden Browser als &quot;App&quot;</translation>
     </message>
 </context>
 <context>

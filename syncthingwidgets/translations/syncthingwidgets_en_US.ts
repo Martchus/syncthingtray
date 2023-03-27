@@ -12,7 +12,7 @@
 <context>
     <name>QtGui</name>
     <message>
-        <location filename="../webview/webviewdialog.cpp" line="178"/>
+        <location filename="../webview/webviewdialog.cpp" line="179"/>
         <source>Unable to open Syncthing UI via &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
