@@ -410,7 +410,11 @@ bool restore()
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     settings.beginGroup(QStringLiteral("webview"));
     auto &webView = v.webView;
-    webView.disabled = settings.value(QStringLiteral("disabled"), webView.disabled).toBool();
+    if (auto mode = settings.value(QStringLiteral("mode")); mode.isValid()) {
+        webView.mode = static_cast<WebView::Mode>(mode.toInt());
+    } else if (auto disabled = settings.value(QStringLiteral("disabled")); disabled.isValid()) {
+        webView.mode = disabled.toBool() ? WebView::Mode::Browser : WebView::Mode::Builtin;
+    }
     webView.zoomFactor = settings.value(QStringLiteral("zoomFactor"), webView.zoomFactor).toDouble();
     webView.geometry = settings.value(QStringLiteral("geometry")).toByteArray();
     webView.keepRunning = settings.value(QStringLiteral("keepRunning"), webView.keepRunning).toBool();
@@ -529,7 +533,8 @@ bool save()
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     settings.beginGroup(QStringLiteral("webview"));
     const auto &webView = v.webView;
-    settings.setValue(QStringLiteral("disabled"), webView.disabled);
+    settings.setValue(QStringLiteral("mode"), static_cast<int>(webView.mode));
+    settings.setValue(QStringLiteral("disabled"), webView.mode == WebView::Mode::Browser);
     settings.setValue(QStringLiteral("zoomFactor"), webView.zoomFactor);
     settings.setValue(QStringLiteral("geometry"), webView.geometry);
     settings.setValue(QStringLiteral("keepRunning"), webView.keepRunning);

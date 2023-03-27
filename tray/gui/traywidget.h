@@ -34,7 +34,11 @@ class AboutDialog;
 
 namespace QtGui {
 
+#ifdef SYNCTHINGWIDGETS_NO_WEBVIEW
+using WebViewDialog = void;
+#else
 class WebViewDialog;
+#endif
 class SettingsDialog;
 class Wizard;
 class TrayMenu;
@@ -64,7 +68,7 @@ public Q_SLOTS:
     void showLauncherSettings();
     void showWizard();
     void showAboutDialog();
-    void showWebUi();
+    void showWebUI();
     void showOwnDeviceId();
     void showLog();
     void showNotifications();
@@ -104,9 +108,7 @@ private Q_SLOTS:
     Settings::Systemd::ServiceStatus handleSystemdStatusChanged();
     Settings::Systemd::ServiceStatus applySystemdSettings(bool reconnectRequired = false);
 #endif
-#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     void handleWebViewDeleted();
-#endif
     void handleNewNotification(CppUtilities::DateTime when, const QString &msg);
     void handleConnectionSelected(QAction *connectionAction);
     void concludeWizard(const QString &errorMessage = QString());
@@ -119,9 +121,7 @@ private:
     static SettingsDialog *s_settingsDlg;
     static Wizard *s_wizard;
     static QtUtilities::AboutDialog *s_aboutDlg;
-#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     WebViewDialog *m_webViewDlg;
-#endif
     QFrame *m_cornerFrame;
     QPushButton *m_internalErrorsButton;
     Data::SyncthingConnection m_connection;

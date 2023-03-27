@@ -141,14 +141,16 @@ struct SYNCTHINGWIDGETS_EXPORT Systemd {
 };
 #endif
 
-#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
 struct SYNCTHINGWIDGETS_EXPORT WebView {
-    bool disabled = false;
+    enum class Mode { Builtin, Browser, Command };
+    Mode mode;
+    QString customCommand;
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     double zoomFactor = 1.0;
     QByteArray geometry;
     bool keepRunning = true;
-};
 #endif
+};
 
 struct SYNCTHINGWIDGETS_EXPORT Settings {
     bool firstLaunch = false;
@@ -173,9 +175,7 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Systemd systemd;
 #endif
-#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     WebView webView;
-#endif
     QtUtilities::QtSettings qt;
 
     void apply(Data::SyncthingNotifier &notifier) const;

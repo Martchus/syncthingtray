@@ -506,6 +506,8 @@ It is possible to turn on logging of the underlying library by setting environme
 * `SYNCTHING_PORT`: override the port of the Syncthing test instance spawned when running tests
 * `SYNCTHINGTRAY_SYSTEMD_USER_UNIT`: override the name of the systemd user-unit checked by the wizard's
   setup detection
+* `SYNCTHINGWIDGETS_CHROMIUM_BASED_BROWSER`: override the path of the Chromium-based browser to open
+  Syncthing in app mode
 * `LIB_SYNCTHING_CONNECTOR_USE_DEPRECATED_ROUTES`: change whether to use deprecated routes (enabled by
   default for compatibility with older Syncthing versions, set to `0` to change the behavior)
 

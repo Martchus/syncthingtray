@@ -132,15 +132,17 @@ SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
     categories << category;
 
     // most startup options don't make much sense for a Plasmoid, so merge webview with startup
-    auto *const webViewPage = new WebViewOptionPage;
-    webViewPage->widget()->setWindowTitle(QCoreApplication::translate("Plasmoid::SettingsDialog", "Web view"));
+    auto *const generalWebViewPage = new GeneralWebViewOptionPage;
+    generalWebViewPage->widget()->setWindowTitle(QCoreApplication::translate("Plasmoid::SettingsDialog", "General web view settings"));
+    auto *const builtinWebViewPage = new BuiltinWebViewOptionPage;
+    builtinWebViewPage->widget()->setWindowTitle(QCoreApplication::translate("Plasmoid::SettingsDialog", "Built-in web view"));
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     auto *const systemdPage = new SystemdOptionPage;
 #endif
 
     category = new OptionCategory;
     category->setDisplayName(QCoreApplication::translate("Plasmoid::SettingsDialog", "Extras"));
-    category->assignPages({ webViewPage
+    category->assignPages({ generalWebViewPage, builtinWebViewPage
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         ,
         systemdPage

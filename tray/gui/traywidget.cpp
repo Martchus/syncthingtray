@@ -72,9 +72,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     : QWidget(parent)
     , m_menu(parent)
     , m_ui(new Ui::TrayWidget)
-#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     , m_webViewDlg(nullptr)
-#endif
     , m_internalErrorsButton(nullptr)
     , m_notifier(m_connection)
     , m_dirModel(m_connection)
@@ -194,7 +192,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     // connect signals and slots
     connect(m_ui->statusPushButton, &QPushButton::clicked, this, &TrayWidget::changeStatus);
     connect(m_ui->aboutPushButton, &QPushButton::clicked, this, &TrayWidget::showAboutDialog);
-    connect(m_ui->webUiPushButton, &QPushButton::clicked, this, &TrayWidget::showWebUi);
+    connect(m_ui->webUiPushButton, &QPushButton::clicked, this, &TrayWidget::showWebUI);
     connect(m_ui->settingsPushButton, &QPushButton::clicked, this, &TrayWidget::showSettingsDialog);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &TrayWidget::handleStatusChanged);
     connect(&m_connection, &SyncthingConnection::trafficChanged, this, &TrayWidget::updateTraffic);
@@ -278,7 +276,7 @@ void TrayWidget::showWizard()
         connect(s_wizard, &Wizard::destroyed, this, [] { s_wizard = nullptr; });
         connect(s_wizard, &Wizard::settingsDialogRequested, this, &TrayWidget::showSettingsDialog);
         connect(s_wizard, &Wizard::openLauncherSettingsRequested, this, &TrayWidget::showLauncherSettings);
-        connect(s_wizard, &Wizard::openSyncthingRequested, this, &TrayWidget::showWebUi);
+        connect(s_wizard, &Wizard::openSyncthingRequested, this, &TrayWidget::showWebUI);
         connect(s_wizard, &Wizard::settingsChanged, this, &TrayWidget::applySettingsChangesFromWizard);
     }
     showDialog(s_wizard, centerWidgetAvoidingOverflow(s_wizard));
@@ -343,23 +341,20 @@ void TrayWidget::showAboutDialog()
     showDialog(s_aboutDlg);
 }
 
-void TrayWidget::showWebUi()
+void TrayWidget::showWebUI()
 {
+    auto *const dlg = QtGui::showWebUI(m_connection.syncthingUrl(), m_selectedConnection, m_webViewDlg, this);
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-    if (Settings::values().webView.disabled) {
-#endif
-        QDesktopServices::openUrl(m_connection.syncthingUrl());
-#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-    } else {
-        if (!m_webViewDlg) {
-            m_webViewDlg = new WebViewDialog(this);
-            if (m_selectedConnection) {
-                m_webViewDlg->applySettings(*m_selectedConnection, true);
-            }
-            connect(m_webViewDlg, &WebViewDialog::destroyed, this, &TrayWidget::handleWebViewDeleted);
-        }
-        showDialog(m_webViewDlg);
+    if (!dlg) {
+        return;
     }
+    if (!m_webViewDlg) {
+        m_webViewDlg = dlg;
+        connect(m_webViewDlg, &WebViewDialog::destroyed, this, &TrayWidget::handleWebViewDeleted);
+    }
+    showDialog(m_webViewDlg);
+#else
+    Q_UNUSED(dlg)
 #endif
 }
 
@@ -890,12 +885,10 @@ Settings::Systemd::ServiceStatus TrayWidget::applySystemdSettings(bool reconnect
 }
 #endif
 
-#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 void TrayWidget::handleWebViewDeleted()
 {
     m_webViewDlg = nullptr;
 }
-#endif
 
 void TrayWidget::handleNewNotification(DateTime when, const QString &msg)
 {

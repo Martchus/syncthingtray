@@ -1,19 +1,20 @@
 #ifndef WEBVIEW_DIALOG_H
 #define WEBVIEW_DIALOG_H
+
+#include "../global.h"
+
+#include <syncthingconnector/syncthingconnectionsettings.h>
+
+QT_FORWARD_DECLARE_CLASS(QString)
+QT_FORWARD_DECLARE_CLASS(QWidget)
+
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-
 #include "./webviewdefs.h"
-
-#include "../settings/settings.h"
 
 #include <QMainWindow>
 
 QT_FORWARD_DECLARE_CLASS(WEB_VIEW_PROVIDER)
 QT_FORWARD_DECLARE_CLASS(QWebEngineProfile)
-
-namespace Settings {
-struct ConnectionSettings;
-}
 
 namespace QtGui {
 
@@ -53,5 +54,16 @@ inline const Data::SyncthingConnectionSettings &WebViewDialog::connectionSetting
 
 } // namespace QtGui
 
+#else // SYNCTHINGWIDGETS_NO_WEBVIEW
+namespace QtGui {
+using WebViewDialog = void;
+}
+
 #endif // SYNCTHINGWIDGETS_NO_WEBVIEW
+
+namespace QtGui {
+SYNCTHINGWIDGETS_EXPORT WebViewDialog *showWebUI(
+    const QString &url, const Data::SyncthingConnectionSettings *settings, WebViewDialog *dlg = nullptr, QWidget *parent = nullptr);
+}
+
 #endif // WEBVIEW_DIALOG_H

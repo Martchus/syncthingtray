@@ -35,7 +35,11 @@ class IconManager;
 } // namespace Data
 
 namespace QtGui {
+#ifdef SYNCTHINGWIDGETS_NO_WEBVIEW
+using WebViewDialog = void;
+#else
 class WebViewDialog;
+#endif
 class Wizard;
 } // namespace QtGui
 
@@ -181,9 +185,7 @@ private Q_SLOTS:
     void handleDirStatisticsChanged();
     void handleErrorsCleared();
     void handleAboutDialogDeleted();
-#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     void handleWebViewDeleted();
-#endif
     void handleNewNotification(CppUtilities::DateTime when, const QString &msg);
     void handleSystemdServiceError(const QString &context, const QString &name, const QString &message);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -222,9 +224,7 @@ private:
     QtGui::DBusStatusNotifier m_dbusNotifier;
     std::vector<Data::SyncthingLogEntry> m_notifications;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
-#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     QtGui::WebViewDialog *m_webViewDlg;
-#endif
     int m_currentConnectionConfig;
     bool m_hasInternalErrors;
     bool m_initialized;

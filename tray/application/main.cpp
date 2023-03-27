@@ -131,7 +131,7 @@ static void trigger(bool tray, bool webUi, bool wizard)
     }
     auto *const trayWidget = TrayWidget::instances().front();
     if (webUi) {
-        trayWidget->showWebUi();
+        trayWidget->showWebUI();
     }
     if (tray) {
         trayWidget->showUsingPositioningSettings();

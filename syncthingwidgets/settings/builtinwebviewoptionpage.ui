@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>QtGui::WebViewOptionPage</class>
- <widget class="QWidget" name="QtGui::WebViewOptionPage">
+ <class>QtGui::BuiltinWebViewOptionPage</class>
+ <widget class="QWidget" name="QtGui::BuiltinWebViewOptionPage">
   <property name="sizePolicy">
    <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
     <horstretch>0</horstretch>
@@ -9,7 +9,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>General</string>
+   <string>Built-in web view</string>
   </property>
   <property name="windowIcon">
    <iconset theme="internet-web-browser" resource="../resources/syncthingwidgetsicons.qrc">
@@ -17,27 +17,13 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="1" column="0">
-    <widget class="QLabel" name="usageLabel">
-     <property name="text">
-      <string>Usage</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QCheckBox" name="disableCheckBox">
-     <property name="text">
-      <string>Disable web view (open regular web browser instead)</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
     <widget class="QLabel" name="zoomLabel">
      <property name="text">
       <string>Zoom factor</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="1" column="1">
     <widget class="QDoubleSpinBox" name="zoomDoubleSpinBox">
      <property name="buttonSymbols">
       <enum>QAbstractSpinBox::PlusMinus</enum>
@@ -53,14 +39,14 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="2" column="0">
     <widget class="QLabel" name="keepRunningLabel">
      <property name="text">
       <string>Hiding</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="2" column="1">
     <widget class="QCheckBox" name="keepRunningCheckBox">
      <property name="text">
       <string>Keep web view running when currently not shown</string>

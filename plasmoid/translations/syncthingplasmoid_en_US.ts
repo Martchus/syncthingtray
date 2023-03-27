@@ -212,11 +212,16 @@
     </message>
     <message>
         <location filename="../lib/settingsdialog.cpp" line="136"/>
-        <source>Web view</source>
+        <source>General web view settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="142"/>
+        <location filename="../lib/settingsdialog.cpp" line="138"/>
+        <source>Built-in web view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/settingsdialog.cpp" line="144"/>
         <source>Extras</source>
         <translation type="unfinished"></translation>
     </message>
@@ -237,22 +242,22 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="460"/>
+        <location filename="../lib/syncthingapplet.cpp" line="455"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="472"/>
+        <location filename="../lib/syncthingapplet.cpp" line="467"/>
         <source>New notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="543"/>
+        <location filename="../lib/syncthingapplet.cpp" line="538"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="613"/>
+        <location filename="../lib/syncthingapplet.cpp" line="606"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>

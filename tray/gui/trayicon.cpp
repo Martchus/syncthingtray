@@ -52,7 +52,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("syncthing"), QIcon(QStringLiteral(":/icons/hicolor/scalable/status/syncthing-default.svg"))),
                 tr("Open Syncthing")),
-        &QAction::triggered, &widget, &TrayWidget::showWebUi);
+        &QAction::triggered, &widget, &TrayWidget::showWebUI);
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))),
                 tr("Settings")),
@@ -102,7 +102,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, &widget, &TrayWidget::dismissNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, &widget, &TrayWidget::showNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &TrayIcon::showInternalErrorsDialog);
-    connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, &widget, &TrayWidget::showWebUi);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, &widget, &TrayWidget::showWebUI);
     connect(&notifier, &SyncthingNotifier::connected, &m_dbusNotifier, &DBusStatusNotifier::hideDisconnect);
 #endif
 
@@ -136,7 +136,7 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
         // can't catch that event on Plasma 5 anyways
         break;
     case QSystemTrayIcon::MiddleClick:
-        trayMenu().widget().showWebUi();
+        trayMenu().widget().showWebUI();
         break;
     case QSystemTrayIcon::Trigger: {
         trayMenu().showUsingPositioningSettings();
@@ -158,7 +158,7 @@ void TrayIcon::handleMessageClicked()
         showInternalErrorsDialog();
         break;
     case TrayIconMessageClickedAction::ShowWebUi:
-        trayMenu().widget().showWebUi();
+        trayMenu().widget().showWebUI();
         break;
     }
 }

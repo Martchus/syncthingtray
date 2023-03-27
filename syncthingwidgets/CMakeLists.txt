@@ -51,7 +51,8 @@ set(WIDGETS_UI_FILES
     settings/autostartoptionpage.ui
     settings/launcheroptionpage.ui
     settings/systemdoptionpage.ui
-    settings/webviewoptionpage.ui
+    settings/generalwebviewoptionpage.ui
+    settings/builtinwebviewoptionpage.ui
     settings/mainconfigwizardpage.ui
     settings/autostartwizardpage.ui
     settings/applywizardpage.ui)

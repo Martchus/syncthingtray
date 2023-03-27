@@ -84,9 +84,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_settingsDlg(nullptr)
     , m_wizard(nullptr)
     , m_imageProvider(nullptr)
-#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     , m_webViewDlg(nullptr)
-#endif
     , m_currentConnectionConfig(-1)
     , m_hasInternalErrors(false)
     , m_initialized(false)
@@ -417,22 +415,19 @@ void SyncthingApplet::concludeWizard(const QString &errorMessage)
 
 void SyncthingApplet::showWebUI()
 {
+    auto *const dlg = QtGui::showWebUI(m_connection.syncthingUrl(), currentConnectionConfig(), m_webViewDlg);
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-    if (Settings::values().webView.disabled) {
-#endif
-        QDesktopServices::openUrl(m_connection.syncthingUrl());
-#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-    } else {
-        if (!m_webViewDlg) {
-            m_webViewDlg = new WebViewDialog;
-            if (const auto *connectionConfig = currentConnectionConfig()) {
-                m_webViewDlg->applySettings(*connectionConfig, true);
-            }
-            connect(m_webViewDlg, &WebViewDialog::destroyed, this, &SyncthingApplet::handleWebViewDeleted);
-        }
-        m_webViewDlg->show();
-        m_webViewDlg->activateWindow();
+    if (!dlg) {
+        return;
     }
+    if (!m_webViewDlg) {
+        m_webViewDlg = dlg;
+        connect(m_webViewDlg, &WebViewDialog::destroyed, this, &SyncthingApplet::handleWebViewDeleted);
+    }
+    m_webViewDlg->show();
+    m_webViewDlg->activateWindow();
+#else
+    Q_UNUSED(dlg)
 #endif
 }
 
@@ -588,12 +583,10 @@ void SyncthingApplet::handleAboutDialogDeleted()
     m_aboutDlg = nullptr;
 }
 
-#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 void SyncthingApplet::handleWebViewDeleted()
 {
     m_webViewDlg = nullptr;
 }
-#endif
 
 void SyncthingApplet::handleNewNotification(DateTime when, const QString &msg)
 {

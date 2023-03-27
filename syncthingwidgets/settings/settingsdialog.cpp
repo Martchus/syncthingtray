@@ -26,7 +26,8 @@
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "ui_systemdoptionpage.h"
 #endif
-#include "ui_webviewoptionpage.h"
+#include "ui_builtinwebviewoptionpage.h"
+#include "ui_generalwebviewoptionpage.h"
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
@@ -1368,45 +1369,91 @@ void SystemdOptionPage::updateColors()
 }
 #endif
 
-// WebViewOptionPage
-WebViewOptionPage::WebViewOptionPage(QWidget *parentWidget)
-    : WebViewOptionPageBase(parentWidget)
+// GeneralWebViewOptionPage
+GeneralWebViewOptionPage::GeneralWebViewOptionPage(QWidget *parentWidget)
+    : GeneralWebViewOptionPageBase(parentWidget)
 {
 }
 
-WebViewOptionPage::~WebViewOptionPage()
+GeneralWebViewOptionPage::~GeneralWebViewOptionPage()
+{
+}
+
+QWidget *GeneralWebViewOptionPage::setupWidget()
+{
+    auto *const widget = GeneralWebViewOptionPageBase::setupWidget();
+#ifdef SYNCTHINGWIDGETS_NO_WEBVIEW
+    ui()->builtinRadioButton->setEnabled(false);
+#endif
+    return widget;
+}
+
+bool GeneralWebViewOptionPage::apply()
+{
+    auto &webView = values().webView;
+    if (ui()->builtinRadioButton->isChecked()) {
+        webView.mode = ::Settings::WebView::Mode::Builtin;
+    } else if (ui()->browserRadioButton->isChecked()) {
+        webView.mode = ::Settings::WebView::Mode::Browser;
+    } else if (ui()->appModeRadioButton->isChecked()) {
+        webView.mode = ::Settings::WebView::Mode::Command;
+    }
+    return true;
+}
+
+void GeneralWebViewOptionPage::reset()
+{
+    const auto &webView = values().webView;
+    switch (webView.mode) {
+    case ::Settings::WebView::Mode::Builtin:
+        ui()->builtinRadioButton->setChecked(true);
+        break;
+    case ::Settings::WebView::Mode::Browser:
+        ui()->browserRadioButton->setChecked(true);
+        break;
+    case ::Settings::WebView::Mode::Command:
+        ui()->appModeRadioButton->setChecked(true);
+        break;
+    }
+}
+
+// BuiltinWebViewOptionPage
+BuiltinWebViewOptionPage::BuiltinWebViewOptionPage(QWidget *parentWidget)
+    : BuiltinWebViewOptionPageBase(parentWidget)
+{
+}
+
+BuiltinWebViewOptionPage::~BuiltinWebViewOptionPage()
 {
 }
 
 #ifdef SYNCTHINGWIDGETS_NO_WEBVIEW
-QWidget *WebViewOptionPage::setupWidget()
+QWidget *BuiltinWebViewOptionPage::setupWidget()
 {
     auto *label = new QLabel;
-    label->setWindowTitle(QCoreApplication::translate("QtGui::WebViewOptionPage", "General"));
+    label->setWindowTitle(QCoreApplication::translate("QtGui::BuiltinWebViewOptionPage", "Built-in web view"));
     label->setAlignment(Qt::AlignCenter);
-    label->setText(QCoreApplication::translate("QtGui::WebViewOptionPage",
+    label->setText(QCoreApplication::translate("QtGui::BuiltinWebViewOptionPage",
         "Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit "
         "or Qt WebEngine.\nThe Web UI will be opened in the default web browser instead."));
     return label;
 }
 #endif
 
-bool WebViewOptionPage::apply()
+bool BuiltinWebViewOptionPage::apply()
 {
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     auto &webView = values().webView;
-    webView.disabled = ui()->disableCheckBox->isChecked();
     webView.zoomFactor = ui()->zoomDoubleSpinBox->value();
     webView.keepRunning = ui()->keepRunningCheckBox->isChecked();
 #endif
     return true;
 }
 
-void WebViewOptionPage::reset()
+void BuiltinWebViewOptionPage::reset()
 {
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     const auto &webView = values().webView;
-    ui()->disableCheckBox->setChecked(webView.disabled);
     ui()->zoomDoubleSpinBox->setValue(webView.zoomFactor);
     ui()->keepRunningCheckBox->setChecked(webView.keepRunning);
 #endif
@@ -1443,7 +1490,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     category = new OptionCategory(this);
     category->setDisplayName(tr("Web view"));
-    category->assignPages({ new WebViewOptionPage });
+    category->assignPages({ new GeneralWebViewOptionPage, new BuiltinWebViewOptionPage });
     category->setIcon(
         QIcon::fromTheme(QStringLiteral("internet-web-browser"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))));
     categories << category;
@@ -1515,6 +1562,7 @@ INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, LauncherOptionPage)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, SystemdOptionPage)
 #endif
+INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, GeneralWebViewOptionPage)
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, WebViewOptionPage)
+INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, BuiltinWebViewOptionPage)
 #endif

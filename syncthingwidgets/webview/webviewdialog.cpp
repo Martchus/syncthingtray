@@ -1,10 +1,20 @@
-#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 #include "./webviewdialog.h"
+#include "../settings/settings.h"
+
+#include "resources/config.h"
+
+#include <syncthingconnector/syncthingprocess.h>
+
+#include <QCoreApplication>
+#include <QDesktopServices>
+#include <QMessageBox>
+#include <QUrl>
+
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 #include "./webpage.h"
 #include "./webviewinterceptor.h"
 
-#include "../settings/settings.h"
-
+#include <qtutilities/misc/compat.h>
 #include <qtutilities/misc/dialogutils.h>
 
 #include <QCloseEvent>
@@ -149,3 +159,61 @@ bool WebViewDialog::eventFilter(QObject *watched, QEvent *event)
 } // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_NO_WEBVIEW
+
+namespace QtGui {
+
+/*!
+ * \brief Opens the specified \a url as "app" in a Chromium-based web browser.
+ * \todo Check for other Chromium-based browsers and use the Windows registry to find apps under Windows.
+ */
+static void openBrowserInAppMode(const QString &url)
+{
+    static const auto app = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_CHROMIUM_BASED_BROWSER", QStringLiteral("chromium"));
+    auto *const process = new Data::SyncthingProcess();
+    QObject::connect(process, &Data::SyncthingProcess::finished, process, &QObject::deleteLater);
+    QObject::connect(process, &Data::SyncthingProcess::errorOccurred, process, [process] {
+        auto messageBox = QMessageBox();
+        messageBox.setWindowTitle(QStringLiteral("Syncthing"));
+        messageBox.setIcon(QMessageBox::Critical);
+        messageBox.setText(QCoreApplication::translate("QtGui", "Unable to open Syncthing UI via \"%1\": %2").arg(app, process->errorString()));
+        messageBox.exec();
+    });
+    process->setProcessChannelMode(QProcess::ForwardedChannels);
+    process->startSyncthing(app, QStringList{ QStringLiteral("--app=") + url });
+}
+
+/*!
+ * \brief Opens the Syncthing UI using the configured web view mode.
+ * \param url The URL of the Syncthing UI.
+ * \param settings The connection settings to be used (instead of the \a url) in case a WebViewDialog is used. Allowed to be nullptr.
+ * \param dlg An existing WebViewDialog that may be reused in case a WebViewDialog is used.
+ * \param parent The parent to use when creating a new WebViewDialog. Allowed to be nullptr (as usual with parents).
+ * \returns Returns the used WebViewDialog or nullptr if another method was used.
+ */
+WebViewDialog *showWebUI(const QString &url, const Data::SyncthingConnectionSettings *settings, WebViewDialog *dlg, QWidget *parent)
+{
+    switch (Settings::values().webView.mode) {
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
+    case Settings::WebView::Mode::Builtin:
+        if (!dlg) {
+            dlg = new WebViewDialog(parent);
+        }
+        if (settings) {
+            dlg->applySettings(*settings, true);
+        }
+        return dlg;
+#else
+        Q_UNUSED(settings)
+        Q_UNUSED(dlg)
+        Q_UNUSED(parent)
+#endif
+    case Settings::WebView::Mode::Command:
+        openBrowserInAppMode(url);
+        break;
+    default:
+        QDesktopServices::openUrl(url);
+    }
+    return nullptr;
+}
+
+} // namespace QtGui

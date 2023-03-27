@@ -274,11 +274,20 @@
     </message>
     <message>
         <location filename="../lib/settingsdialog.cpp" line="136"/>
-        <source>Web view</source>
-        <translation>Weboberfläche</translation>
+        <source>General web view settings</source>
+        <translation>Allgemeine Webanzeigeneinstellungen</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="142"/>
+        <location filename="../lib/settingsdialog.cpp" line="138"/>
+        <source>Built-in web view</source>
+        <translation>Eingebaute Webanzeige</translation>
+    </message>
+    <message>
+        <source>Web view</source>
+        <translation type="vanished">Weboberfläche</translation>
+    </message>
+    <message>
+        <location filename="../lib/settingsdialog.cpp" line="144"/>
         <source>Extras</source>
         <translation></translation>
     </message>
@@ -299,22 +308,22 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="460"/>
+        <location filename="../lib/syncthingapplet.cpp" line="455"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="472"/>
+        <location filename="../lib/syncthingapplet.cpp" line="467"/>
         <source>New notifications</source>
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="543"/>
+        <location filename="../lib/syncthingapplet.cpp" line="538"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Verbindung zu Syncthing kann nicht hergestellt werden.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="613"/>
+        <location filename="../lib/syncthingapplet.cpp" line="606"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
     </message>
