@@ -174,6 +174,7 @@ static void openBrowserInAppMode(const QString &url)
     QObject::connect(process, &Data::SyncthingProcess::errorOccurred, process, [process] {
         auto messageBox = QMessageBox();
         messageBox.setWindowTitle(QStringLiteral("Syncthing"));
+        messageBox.setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
         messageBox.setIcon(QMessageBox::Critical);
         messageBox.setText(QCoreApplication::translate("QtGui", "Unable to open Syncthing UI via \"%1\": %2").arg(app, process->errorString()));
         messageBox.exec();
