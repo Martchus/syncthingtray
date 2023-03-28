@@ -44,6 +44,7 @@ public:
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     QProcess::ProcessState state() const;
     void start(const QString &program, const QStringList &arguments, QIODevice::OpenMode openMode = QIODevice::ReadOnly);
+    void start(const QStringList &program, const QStringList &arguments, QIODevice::OpenMode openMode = QIODevice::ReadOnly);
     qint64 bytesAvailable() const override;
     void close() override;
     int exitCode() const;

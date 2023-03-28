@@ -373,8 +373,26 @@ QProcess::ProcessState SyncthingProcess::state() const
  * - Only one process can be started at a time. Starting another process while the previous one or any child
  *   process of it is still running is an error.
  * - In case of an error the error strinng is set and errorOccurred() is emitted.
+ * - If \a program is a relative path, it is tried to be located in PATH.
  */
 void SyncthingProcess::start(const QString &program, const QStringList &arguments, QIODevice::OpenMode openMode)
+{
+    start(QStringList{program}, arguments, openMode);
+}
+
+/*!
+ * \brief Starts a new process within a new process group (or job object under Windows) with the specified parameters.
+ *
+ * This function is generally the same as the overload that just takes a single program (see its remarks for details).
+ * The difference is that it allows one to specify fallback \a programs which will be tried to be located in PATH in
+ * case the first program cannot be located in PATH.
+ *
+ * \remarks
+ * If an absolute path is given, no lookup via PATH will happen. Instead, the absolute path is used as-is and further
+ * fallbacks are not considered. This is even the case when the absolute path does not exist.
+ *
+ */
+void SyncthingProcess::start(const QStringList &programs, const QStringList &arguments, OpenMode openMode)
 {
     // get Boost.Process' code converter to provoke and handle a possible error when it is setting up its default locale via e.g. `std::locale("")`
     try {
@@ -418,15 +436,6 @@ void SyncthingProcess::start(const QString &program, const QStringList &argument
     }
     m_process = std::make_shared<SyncthingProcessInternalData>(m_handler->ioc);
     emit stateChanged(m_process->state = QProcess::Starting);
-
-    // convert args
-    auto prog = LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(program);
-    auto args = std::vector<decltype(LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(arguments.front()))>();
-    for (const auto &arg : arguments) {
-        args.emplace_back(LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(arg));
-    }
-    m_process->program = program;
-    m_process->arguments = arguments;
 
     // define handler
     auto successHandler = boost::process::extend::on_success = [this, maybeProcess = m_process->weak_from_this()](auto &executor) {
@@ -479,18 +488,39 @@ void SyncthingProcess::start(const QString &program, const QStringList &argument
             this, "handleError", Qt::QueuedConnection, Q_ARG(int, error), Q_ARG(QString, QString::fromStdString(msg)), Q_ARG(bool, false));
     };
 
-    // start the process within a new process group (or job object under Windows)
-    try {
-        auto path = boost::filesystem::path(prog);
+    // convert args
+    m_process->arguments = arguments;
+    auto args = std::vector<decltype(LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(arguments.front()))>();
+    for (const auto &arg : arguments) {
+        args.emplace_back(LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(arg));
+    }
+
+    // locate program
+    auto hasProgram = false;
+    auto path = boost::filesystem::path();
+    for (const auto &program : programs) {
+        m_process->program = program;
+        path = boost::filesystem::path(LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(program));
         if (path.empty()) {
-            std::cerr << EscapeCodes::Phrases::Error << "Unable to launch process: no executable specified" << EscapeCodes::Phrases::End;
-            emit stateChanged(m_process->state = QProcess::NotRunning);
-            handleError(QProcess::FailedToStart, QStringLiteral("no executable specified"), false);
-            return;
+            continue;
         }
+        hasProgram = true;
         if (path.is_relative()) {
             path = boost::process::search_path(path);
         }
+        if (!path.empty()) {
+            break;
+        }
+    }
+    if (!hasProgram) {
+        std::cerr << EscapeCodes::Phrases::Error << "Unable to launch process: no executable specified" << EscapeCodes::Phrases::End;
+        emit stateChanged(m_process->state = QProcess::NotRunning);
+        handleError(QProcess::FailedToStart, QStringLiteral("no executable specified"), false);
+        return;
+    }
+
+    // start the process within a new process group (or job object under Windows)
+    try {
         if (path.empty()) {
             throw boost::process::process_error(
                 std::make_error_code(std::errc::no_such_file_or_directory), "unable to find the specified executable in the search paths");

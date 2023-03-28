@@ -10,6 +10,11 @@
 #include <QMessageBox>
 #include <QUrl>
 
+#ifdef Q_OS_WINDOWS
+#include <QFile>
+#include <QSettings> // for reading registry
+#endif
+
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 #include "./webpage.h"
 #include "./webviewinterceptor.h"
@@ -24,6 +29,8 @@
 #include <QWebEngineProfile>
 #include <QtWebEngineWidgetsVersion>
 #endif
+
+#include <initializer_list>
 
 using namespace QtUtilities;
 
@@ -162,13 +169,38 @@ bool WebViewDialog::eventFilter(QObject *watched, QEvent *event)
 
 namespace QtGui {
 
+static QStringList chromiumBasedBrowserBinaries()
+{
+    static const auto envOverride = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_CHROMIUM_BASED_BROWSER");
+    if (!envOverride.isEmpty()) {
+        return {envOverride};
+    }
+    static const auto relevantBinaries = std::initializer_list<QString>{
+#ifdef Q_OS_WINDOWS
+        QStringLiteral("msedge.exe"), QStringLiteral("chromium.exe"), QStringLiteral("chrome.exe"),
+#else
+        QStringLiteral("chromium"), QStringLiteral("chrome"), QStringLiteral("msedge"),
+#endif
+    };
+#ifdef Q_OS_WINDOWS
+    const auto appPath = QSettings(QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths"), QSettings::NativeFormat);
+    for (const auto &binaryName : relevantBinaries) {
+        const auto binaryPath = appPath.value(binaryName + QStringLiteral("/Default")).toString();
+        if (!binaryPath.isEmpty() && QFile::exists(binaryPath)) {
+            return {binaryPath};
+        }
+    }
+#endif
+    return relevantBinaries;
+}
+
 /*!
  * \brief Opens the specified \a url as "app" in a Chromium-based web browser.
  * \todo Check for other Chromium-based browsers and use the Windows registry to find apps under Windows.
  */
 static void openBrowserInAppMode(const QString &url)
 {
-    static const auto app = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_CHROMIUM_BASED_BROWSER", QStringLiteral("chromium"));
+    const auto appList = chromiumBasedBrowserBinaries();
     auto *const process = new Data::SyncthingProcess();
     QObject::connect(process, &Data::SyncthingProcess::finished, process, &QObject::deleteLater);
     QObject::connect(process, &Data::SyncthingProcess::errorOccurred, process, [process] {
@@ -176,11 +208,17 @@ static void openBrowserInAppMode(const QString &url)
         messageBox.setWindowTitle(QStringLiteral("Syncthing"));
         messageBox.setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
         messageBox.setIcon(QMessageBox::Critical);
-        messageBox.setText(QCoreApplication::translate("QtGui", "Unable to open Syncthing UI via \"%1\": %2").arg(app, process->errorString()));
+        messageBox.setText(QCoreApplication::translate("QtGui", "Unable to open Syncthing UI via \"%1\": %2").arg(process->program(), process->errorString()));
         messageBox.exec();
     });
     process->setProcessChannelMode(QProcess::ForwardedChannels);
-    process->startSyncthing(app, QStringList{ QStringLiteral("--app=") + url });
+    process->start(
+                appList
+#ifndef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+                .first()
+#endif
+                , QStringList{ QStringLiteral("--app=") + url });
+
 }
 
 /*!
