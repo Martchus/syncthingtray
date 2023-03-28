@@ -172,7 +172,7 @@ void MiscTests::testConnectionSettingsAndLoadingSelfSignedCert()
 {
     SyncthingConnectionSettings settings;
     settings.syncthingUrl = QStringLiteral("http://localhost:8080");
-    settings.apiKey = QByteArray("foo");
+    settings.apiKey = QByteArrayLiteral("foo");
     settings.httpsCertPath = SyncthingConfig::locateHttpsCertificate();
     if (!settings.httpsCertPath.isEmpty() && settings.loadHttpsCert()) {
         CPPUNIT_ASSERT_GREATER(static_cast<decltype(settings.expectedSslErrors.size())>(0), settings.expectedSslErrors.size());

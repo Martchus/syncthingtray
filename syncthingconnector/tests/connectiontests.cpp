@@ -325,7 +325,7 @@ void ConnectionTests::testErrorCases()
     }));
 
     // setup/define test for error handling
-    m_connection.setApiKey(QByteArray("wrong API key"));
+    m_connection.setApiKey(QByteArrayLiteral("wrong API key"));
     bool syncthingAvailable = false;
     constexpr auto syncthingCheckInterval = TimeSpan::fromMilliseconds(200.0);
     const auto maxSyncthingStartupTime = TimeSpan::fromSeconds(15.0 * max(timeoutFactor, 5.0));

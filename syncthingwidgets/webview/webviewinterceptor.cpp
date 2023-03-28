@@ -10,7 +10,7 @@ namespace QtGui {
 
 void WebViewInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
 {
-    info.setHttpHeader(QByteArray("X-API-Key"), m_settings.apiKey);
+    info.setHttpHeader(QByteArrayLiteral("X-API-Key"), m_settings.apiKey);
 }
 
 } // namespace QtGui

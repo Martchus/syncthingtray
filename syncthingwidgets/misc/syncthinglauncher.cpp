@@ -280,7 +280,7 @@ void SyncthingLauncher::stopLibSyncthing()
 #else
 void SyncthingLauncher::showLibSyncthingNotSupported()
 {
-    handleOutputAvailable(QByteArray("libsyncthing support not enabled"));
+    handleOutputAvailable(QByteArrayLiteral("libsyncthing support not enabled"));
     emit exited(-1, QProcess::CrashExit);
 }
 #endif

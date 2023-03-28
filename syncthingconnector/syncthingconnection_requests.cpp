@@ -40,7 +40,7 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
     url.setPassword(password());
     url.setQuery(query);
     QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArray("application/x-www-form-urlencoded"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
     request.setRawHeader("X-API-Key", m_apiKey);
     return request;
 }
@@ -221,7 +221,7 @@ QString SyncthingConnection::configPath() const
  */
 QByteArray SyncthingConnection::changeConfigVerb() const
 {
-    return isUsingDeprecatedRoutes() ? QByteArray("POST") : QByteArray("PUT");
+    return isUsingDeprecatedRoutes() ? QByteArrayLiteral("POST") : QByteArrayLiteral("PUT");
 }
 
 /*!
