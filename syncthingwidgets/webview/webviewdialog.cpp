@@ -169,6 +169,14 @@ bool WebViewDialog::eventFilter(QObject *watched, QEvent *event)
 
 namespace QtGui {
 
+/*!
+ * \brief Returns a list of binaries of Chromium-based browsers to consider.
+ * \remarks
+ * The binary names will be passed to SyncthingProcess which will try to locate them in path. On Windows,
+ * the absolute binary path might be pre-determined by this function checking the "Application Registry",
+ * though.
+ * \sa documentation of "Application Registry": https://learn.microsoft.com/en-us/windows/win32/shell/app-registration
+ */
 static QStringList chromiumBasedBrowserBinaries()
 {
     static const auto envOverride = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_CHROMIUM_BASED_BROWSER");
@@ -218,7 +226,6 @@ static void openBrowserInAppMode(const QString &url)
                 .first()
 #endif
                 , QStringList{ QStringLiteral("--app=") + url });
-
 }
 
 /*!
