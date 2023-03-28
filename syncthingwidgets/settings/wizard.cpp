@@ -55,9 +55,11 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
 #ifdef Q_OS_WINDOWS
     // avoid using QWizard::AeroStyle when not also the Qt Widgets style "windowsvista" is used
     // note: Otherwise the wizard is quite unusable with a dark color palette.
+    auto fallbackToModernStyle = false;
     if (const auto *const style = QApplication::style()) {
         if (style->name().compare(QLatin1String("windowsvista"), Qt::CaseInsensitive) != 0) {
             setWizardStyle(QWizard::ModernStyle);
+            fallbackToModernStyle = true;
         }
     }
 #endif
@@ -66,7 +68,7 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
 
     auto icon = QIcon(QString::fromUtf8(":/icons/hicolor/scalable/app/syncthingtray.svg"));
 #ifdef Q_OS_WINDOWS
-    if (wizardStyle() == QWizard::AeroStyle) {
+    if (!fallbackToModernStyle) {
         // workaround displaying issues with bigger icons when QWizard::AeroStyle is used
         icon = icon.pixmap(16);
     }
