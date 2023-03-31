@@ -51,6 +51,7 @@
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QHostAddress>
+#include <QInputDialog>
 #include <QMessageBox>
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
 #include <QStandardPaths>
@@ -1382,9 +1383,15 @@ GeneralWebViewOptionPage::~GeneralWebViewOptionPage()
 QWidget *GeneralWebViewOptionPage::setupWidget()
 {
     auto *const widget = GeneralWebViewOptionPageBase::setupWidget();
+    auto *const cfgToolButton = ui()->appModeCfgToolButton;
 #ifdef SYNCTHINGWIDGETS_NO_WEBVIEW
     ui()->builtinRadioButton->setEnabled(false);
 #endif
+    const auto minHeight = cfgToolButton->height();
+    ui()->builtinRadioButton->setMinimumHeight(minHeight);
+    ui()->browserRadioButton->setMinimumHeight(minHeight);
+    ui()->appModeRadioButton->setMinimumHeight(minHeight);
+    QObject::connect(cfgToolButton, &QToolButton::clicked, cfgToolButton, [this] { showCustomCommandPrompt(); });
     return widget;
 }
 
@@ -1398,6 +1405,7 @@ bool GeneralWebViewOptionPage::apply()
     } else if (ui()->appModeRadioButton->isChecked()) {
         webView.mode = ::Settings::WebView::Mode::Command;
     }
+    webView.customCommand = m_customCommand;
     return true;
 }
 
@@ -1414,6 +1422,22 @@ void GeneralWebViewOptionPage::reset()
     case ::Settings::WebView::Mode::Command:
         ui()->appModeRadioButton->setChecked(true);
         break;
+    }
+    m_customCommand = webView.customCommand;
+}
+
+void GeneralWebViewOptionPage::showCustomCommandPrompt()
+{
+    auto dlg = QInputDialog();
+    dlg.setInputMode(QInputDialog::TextInput);
+    dlg.setWindowTitle(
+        QCoreApplication::translate("QtGui::GeneralWebViewOptionPage", "Custom command to launch Syncthing's UI - ") + QStringLiteral(APP_NAME));
+    dlg.setLabelText(QCoreApplication::translate("QtGui::GeneralWebViewOptionPage",
+        "<p>Enter a custom command to launch Syncthing's UI. The expression <code>%SYNCTHING_URL%</code> will be replaced with the "
+        "Syncthing-URL.</p><p>Leave the command empty to use the auto-detection.</p>"));
+    dlg.setTextValue(m_customCommand);
+    if (dlg.exec() == QDialog::Accepted) {
+        m_customCommand = dlg.textValue();
     }
 }
 

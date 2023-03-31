@@ -162,7 +162,13 @@ QMetaObject::Connection m_enabledChangedConn;
 END_DECLARE_OPTION_PAGE
 #endif
 
-DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_SETUP(GeneralWebViewOptionPage)
+BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(GeneralWebViewOptionPage)
+private:
+DECLARE_SETUP_WIDGETS
+void showCustomCommandPrompt();
+QString m_customCommand;
+END_DECLARE_OPTION_PAGE
+
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
 DECLARE_UI_FILE_BASED_OPTION_PAGE(BuiltinWebViewOptionPage)
 #else

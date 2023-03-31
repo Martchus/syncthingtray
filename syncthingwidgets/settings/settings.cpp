@@ -415,6 +415,7 @@ bool restore()
     } else if (auto disabled = settings.value(QStringLiteral("disabled")); disabled.isValid()) {
         webView.mode = disabled.toBool() ? WebView::Mode::Browser : WebView::Mode::Builtin;
     }
+    webView.customCommand = settings.value(QStringLiteral("customCommand"), webView.customCommand).toString();
     webView.zoomFactor = settings.value(QStringLiteral("zoomFactor"), webView.zoomFactor).toDouble();
     webView.geometry = settings.value(QStringLiteral("geometry")).toByteArray();
     webView.keepRunning = settings.value(QStringLiteral("keepRunning"), webView.keepRunning).toBool();
@@ -534,6 +535,7 @@ bool save()
     settings.beginGroup(QStringLiteral("webview"));
     const auto &webView = v.webView;
     settings.setValue(QStringLiteral("mode"), static_cast<int>(webView.mode));
+    settings.setValue(QStringLiteral("customCommand"), webView.customCommand);
     settings.setValue(QStringLiteral("disabled"), webView.mode == WebView::Mode::Browser);
     settings.setValue(QStringLiteral("zoomFactor"), webView.zoomFactor);
     settings.setValue(QStringLiteral("geometry"), webView.geometry);

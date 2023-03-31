@@ -12,7 +12,8 @@
    <string>General</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="preferences-other"/>
+   <iconset theme="preferences-other">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -36,11 +37,31 @@
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="appModeRadioButton">
-        <property name="text">
-         <string>Chromium-based browser in &quot;app mode&quot;</string>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>0</number>
         </property>
-       </widget>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QRadioButton" name="appModeRadioButton">
+          <property name="text">
+           <string>Chromium-based browser in &quot;app mode&quot;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="appModeCfgToolButton">
+          <property name="text">
+           <string>...</string>
+          </property>
+          <property name="icon">
+           <iconset theme="system-run"/>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>

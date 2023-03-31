@@ -208,7 +208,12 @@ static QStringList chromiumBasedBrowserBinaries()
  */
 static void openBrowserInAppMode(const QString &url)
 {
-    const auto appList = chromiumBasedBrowserBinaries();
+    const auto &configuredCustomCommand = Settings::values().webView.customCommand;
+    const auto customCommand
+        = Data::SyncthingProcess::splitArguments(QString(configuredCustomCommand).replace(QLatin1String("%SYNCTHING_URL%"), url));
+    const auto appList = customCommand.isEmpty() ? chromiumBasedBrowserBinaries() : QStringList{ customCommand.first() };
+    const auto args
+        = customCommand.isEmpty() ? QStringList{ QStringLiteral("--app=") + url } : QStringList(customCommand.cbegin() + 1, customCommand.cend());
     auto *const process = new Data::SyncthingProcess();
     QObject::connect(process, &Data::SyncthingProcess::finished, process, &QObject::deleteLater);
     QObject::connect(process, &Data::SyncthingProcess::errorOccurred, process, [process] {
@@ -216,16 +221,17 @@ static void openBrowserInAppMode(const QString &url)
         messageBox.setWindowTitle(QStringLiteral("Syncthing"));
         messageBox.setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
         messageBox.setIcon(QMessageBox::Critical);
-        messageBox.setText(QCoreApplication::translate("QtGui", "Unable to open Syncthing UI via \"%1\": %2").arg(process->program(), process->errorString()));
+        messageBox.setText(
+            QCoreApplication::translate("QtGui", "Unable to open Syncthing UI via \"%1\": %2").arg(process->program(), process->errorString()));
         messageBox.exec();
     });
     process->setProcessChannelMode(QProcess::ForwardedChannels);
-    process->start(
-                appList
+    process->start(appList
 #ifndef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
-                .first()
+                       .first()
 #endif
-                , QStringList{ QStringLiteral("--app=") + url });
+                       ,
+        args);
 }
 
 /*!
