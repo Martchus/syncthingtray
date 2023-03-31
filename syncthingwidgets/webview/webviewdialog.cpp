@@ -181,21 +181,26 @@ static QStringList chromiumBasedBrowserBinaries()
 {
     static const auto envOverride = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_CHROMIUM_BASED_BROWSER");
     if (!envOverride.isEmpty()) {
-        return {envOverride};
+        return { envOverride };
     }
     static const auto relevantBinaries = std::initializer_list<QString>{
 #ifdef Q_OS_WINDOWS
-        QStringLiteral("msedge.exe"), QStringLiteral("chromium.exe"), QStringLiteral("chrome.exe"),
+        QStringLiteral("msedge.exe"),
+        QStringLiteral("chromium.exe"),
+        QStringLiteral("chrome.exe"),
 #else
-        QStringLiteral("chromium"), QStringLiteral("chrome"), QStringLiteral("msedge"),
+        QStringLiteral("chromium"),
+        QStringLiteral("chrome"),
+        QStringLiteral("msedge"),
 #endif
     };
 #ifdef Q_OS_WINDOWS
-    const auto appPath = QSettings(QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths"), QSettings::NativeFormat);
+    const auto appPath
+        = QSettings(QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths"), QSettings::NativeFormat);
     for (const auto &binaryName : relevantBinaries) {
         const auto binaryPath = appPath.value(binaryName + QStringLiteral("/Default")).toString();
         if (!binaryPath.isEmpty() && QFile::exists(binaryPath)) {
-            return {binaryPath};
+            return { binaryPath };
         }
     }
 #endif

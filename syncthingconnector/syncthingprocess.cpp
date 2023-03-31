@@ -377,7 +377,7 @@ QProcess::ProcessState SyncthingProcess::state() const
  */
 void SyncthingProcess::start(const QString &program, const QStringList &arguments, QIODevice::OpenMode openMode)
 {
-    start(QStringList{program}, arguments, openMode);
+    start(QStringList{ program }, arguments, openMode);
 }
 
 /*!
