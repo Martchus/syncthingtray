@@ -550,11 +550,11 @@ void SyncthingService::handlePrepareForSleep(bool rightBefore)
 bool SyncthingService::handlePropertyChanged(QString &variable, void (SyncthingService::*signal)(const QString &), const QString &propertyName,
     const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
-    const QVariant valueVariant(changedProperties[propertyName]);
-    if (valueVariant.isValid()) {
-        const QString valueString(valueVariant.toString());
+    const auto valueVariant = changedProperties.find(propertyName);
+    if (valueVariant != changedProperties.end()) {
+        auto valueString = valueVariant->toString();
         if (valueString != variable) {
-            emit(this->*signal)(variable = valueString);
+            emit(this->*signal)(variable = std::move(valueString));
             return true;
         }
     } else if (invalidatedProperties.contains(propertyName) && !variable.isEmpty()) {
@@ -571,10 +571,10 @@ bool SyncthingService::handlePropertyChanged(QString &variable, void (SyncthingS
 bool SyncthingService::handlePropertyChanged(
     DateTime &variable, const QString &propertyName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
-    const QVariant valueVariant(changedProperties[propertyName]);
-    if (valueVariant.isValid()) {
+    const auto valueVariant = changedProperties.find(propertyName);
+    if (valueVariant != changedProperties.end()) {
         bool ok;
-        const qulonglong valueInt = valueVariant.toULongLong(&ok);
+        const qulonglong valueInt = valueVariant->toULongLong(&ok);
         if (ok) {
             variable = dateTimeFromSystemdTimeStamp(valueInt);
             return true;
