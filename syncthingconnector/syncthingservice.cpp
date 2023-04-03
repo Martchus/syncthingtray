@@ -484,11 +484,12 @@ void SyncthingService::handlePropertiesChanged(
 #endif
     handlePropertyChanged(m_activeSince, QStringLiteral("ActiveEnterTimestamp"), changedProperties, invalidatedProperties);
 
-    const bool wasRunningBefore = isRunning();
-    if (handlePropertyChanged(
-            m_activeState, &SyncthingService::activeStateChanged, QStringLiteral("ActiveState"), changedProperties, invalidatedProperties)
-        || handlePropertyChanged(
-            m_subState, &SyncthingService::subStateChanged, QStringLiteral("SubState"), changedProperties, invalidatedProperties)) {
+    const auto wasRunningBefore = isRunning();
+    const auto activeStateChanged = handlePropertyChanged(
+        m_activeState, &SyncthingService::activeStateChanged, QStringLiteral("ActiveState"), changedProperties, invalidatedProperties);
+    const auto subStateChanged
+        = handlePropertyChanged(m_subState, &SyncthingService::subStateChanged, QStringLiteral("SubState"), changedProperties, invalidatedProperties);
+    if (activeStateChanged || subStateChanged) {
         emit stateChanged(m_activeState, m_subState, m_activeSince);
     }
     const bool currentlyRunning = isRunning();
