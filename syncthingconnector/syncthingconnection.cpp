@@ -300,7 +300,7 @@ void SyncthingConnection::connect(SyncthingConnectionSettings &connectionSetting
 void SyncthingConnection::connectLater(int milliSeconds)
 {
     // skip if conneting via auto-reconnect anyways
-    if (autoReconnectInterval() > 0 && milliSeconds > autoReconnectInterval()) {
+    if (m_autoReconnectTimer.isActive() && milliSeconds > m_autoReconnectTimer.interval()) {
         return;
     }
     QTimer::singleShot(milliSeconds, this, static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
