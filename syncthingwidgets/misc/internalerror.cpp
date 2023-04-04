@@ -39,11 +39,12 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
     const auto remoteHostClosed = networkError == QNetworkReply::ConnectionRefusedError || networkError == QNetworkReply::RemoteHostClosedError
         || networkError == QNetworkReply::ProxyConnectionClosedError;
     // ignore "remote host closed" error if we've just stopped Syncthing ourselves (or "connection refused" which can also be the result of stopping Syncthing ourselves)
+    const auto *launcher = SyncthingLauncher::mainInstance();
     if (settings.launcher.considerForReconnect && remoteHostClosed && launcher && launcher->isManuallyStopped()) {
         return false;
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    const auto *const service(SyncthingService::mainInstance());
+    const auto *const service = SyncthingService::mainInstance();
     if (settings.systemd.considerForReconnect && remoteHostClosed && service && service->isManuallyStopped()) {
         return false;
     }
