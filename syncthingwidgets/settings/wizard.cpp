@@ -56,12 +56,14 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     // avoid using QWizard::AeroStyle when not also the Qt Widgets style "windowsvista" is used
     // note: Otherwise the wizard is quite unusable with a dark color palette.
     auto fallbackToModernStyle = false;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
     if (const auto *const style = QApplication::style()) {
         if (style->name().compare(QLatin1String("windowsvista"), Qt::CaseInsensitive) != 0) {
             setWizardStyle(QWizard::ModernStyle);
             fallbackToModernStyle = true;
         }
     }
+#endif
 #endif
 
     setWindowTitle(tr("Setup wizard - ") + QStringLiteral(APP_NAME));
