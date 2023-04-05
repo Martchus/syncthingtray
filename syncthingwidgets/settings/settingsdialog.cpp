@@ -1414,8 +1414,10 @@ void GeneralWebViewOptionPage::reset()
     const auto &webView = values().webView;
     switch (webView.mode) {
     case ::Settings::WebView::Mode::Builtin:
+#ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
         ui()->builtinRadioButton->setChecked(true);
         break;
+#endif
     case ::Settings::WebView::Mode::Browser:
         ui()->browserRadioButton->setChecked(true);
         break;
