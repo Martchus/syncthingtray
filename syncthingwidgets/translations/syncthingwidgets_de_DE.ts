@@ -1019,7 +1019,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1435"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Gib den Befehl ein, mit dem die Syncthing-Oberfläche gestartet werden soll. Der Ausdruck &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; wird durch die Syncthing-URL ersetzt.&lt;/p&gt;&lt;p&gt;Lasse den Befehl lehr, um die automatische Erkennung zu verwenden.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Gib den Befehl ein, mit dem die Syncthing-Oberfläche gestartet werden soll. Der Ausdruck &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; wird durch die Syncthing-URL ersetzt.&lt;/p&gt;&lt;p&gt;Lasse den Befehl leer, um die automatische Erkennung zu verwenden.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
