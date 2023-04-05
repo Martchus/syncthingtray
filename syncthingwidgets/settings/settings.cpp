@@ -407,7 +407,6 @@ bool restore()
 #endif
     settings.endGroup();
 
-#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     settings.beginGroup(QStringLiteral("webview"));
     auto &webView = v.webView;
     if (auto mode = settings.value(QStringLiteral("mode")); mode.isValid()) {
@@ -416,6 +415,7 @@ bool restore()
         webView.mode = disabled.toBool() ? WebView::Mode::Browser : WebView::Mode::Builtin;
     }
     webView.customCommand = settings.value(QStringLiteral("customCommand"), webView.customCommand).toString();
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     webView.zoomFactor = settings.value(QStringLiteral("zoomFactor"), webView.zoomFactor).toDouble();
     webView.geometry = settings.value(QStringLiteral("geometry")).toByteArray();
     webView.keepRunning = settings.value(QStringLiteral("keepRunning"), webView.keepRunning).toBool();
@@ -531,12 +531,12 @@ bool save()
 #endif
     settings.endGroup();
 
-#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     settings.beginGroup(QStringLiteral("webview"));
     const auto &webView = v.webView;
     settings.setValue(QStringLiteral("mode"), static_cast<int>(webView.mode));
     settings.setValue(QStringLiteral("customCommand"), webView.customCommand);
     settings.setValue(QStringLiteral("disabled"), webView.mode == WebView::Mode::Browser);
+#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     settings.setValue(QStringLiteral("zoomFactor"), webView.zoomFactor);
     settings.setValue(QStringLiteral("geometry"), webView.geometry);
     settings.setValue(QStringLiteral("keepRunning"), webView.keepRunning);
