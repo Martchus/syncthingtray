@@ -126,8 +126,8 @@ constexpr bool SyncthingStatistics::operator!=(const SyncthingStatistics &other)
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     explicit SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
-    bool assignStatus(const QString &statusStr, CppUtilities::DateTime time);
-    bool assignStatus(SyncthingDirStatus newStatus, CppUtilities::DateTime time);
+    bool assignStatus(const QString &statusStr, SyncthingEventId eventId, CppUtilities::DateTime time);
+    bool assignStatus(SyncthingDirStatus newStatus, SyncthingEventId eventId, CppUtilities::DateTime time);
     bool assignDirType(const QString &dirType);
     const QString &displayName() const;
     QString statusString() const;
@@ -146,8 +146,10 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     int rescanInterval = 0;
     int minDiskFreePercentage = 0;
     SyncthingDirStatus status = SyncthingDirStatus::Unknown;
-    CppUtilities::DateTime lastStatusUpdate;
-    CppUtilities::DateTime lastSyncStarted;
+    SyncthingEventId lastStatusUpdateEvent = 0;
+    CppUtilities::DateTime lastStatusUpdateTime;
+    SyncthingEventId lastSyncStartedEvent = 0;
+    CppUtilities::DateTime lastSyncStartedTime;
     int completionPercentage = 0;
     int scanningPercentage = 0;
     double scanningRate = 0;
@@ -158,8 +160,10 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     std::vector<SyncthingItemError> itemErrors;
     std::vector<SyncthingFileChange> recentChanges;
     SyncthingStatistics globalStats, localStats, neededStats;
-    CppUtilities::DateTime lastStatisticsUpdate;
+    SyncthingEventId lastStatisticsUpdateEvent = 0;
+    CppUtilities::DateTime lastStatisticsUpdateTime;
     CppUtilities::DateTime lastScanTime;
+    SyncthingEventId lastFileEvent;
     CppUtilities::DateTime lastFileTime;
     QString lastFileName;
     std::vector<SyncthingItemDownloadProgress> downloadingItems;
@@ -177,8 +181,8 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     bool paused = false;
 
 private:
-    bool checkWhetherStatusUpdateRelevant(CppUtilities::DateTime time);
-    bool finalizeStatusUpdate(SyncthingDirStatus newStatus, CppUtilities::DateTime time);
+    bool checkWhetherStatusUpdateRelevant(SyncthingEventId eventId, CppUtilities::DateTime time);
+    bool finalizeStatusUpdate(SyncthingDirStatus newStatus, SyncthingEventId eventId, CppUtilities::DateTime time);
 };
 
 inline SyncthingDir::SyncthingDir(const QString &id, const QString &label, const QString &path)
@@ -208,13 +212,13 @@ inline bool SyncthingDir::isUnshared() const
     return deviceIds.empty() && (status == SyncthingDirStatus::Idle || status == SyncthingDirStatus::Unknown);
 }
 
-inline bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, CppUtilities::DateTime time)
+inline bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, SyncthingEventId eventId, CppUtilities::DateTime time)
 {
-    if (!checkWhetherStatusUpdateRelevant(time)) {
+    if (!checkWhetherStatusUpdateRelevant(eventId, time)) {
         return false;
     }
     rawStatus.clear();
-    return finalizeStatusUpdate(newStatus, time);
+    return finalizeStatusUpdate(newStatus, eventId, time);
 }
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingOverallDirStatistics {

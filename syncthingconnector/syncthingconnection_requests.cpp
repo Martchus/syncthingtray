@@ -18,6 +18,7 @@
 #include <QTimer>
 #include <QUrlQuery>
 
+#include <algorithm>
 #include <iostream>
 #include <utility>
 
@@ -808,8 +809,9 @@ void SyncthingConnection::requestConnections()
     if (m_connectionsReply) {
         return;
     }
-    QObject::connect(m_connectionsReply = requestData(QStringLiteral("system/connections"), QUrlQuery()), &QNetworkReply::finished, this,
-        &SyncthingConnection::readConnections);
+    m_connectionsReply = requestData(QStringLiteral("system/connections"), QUrlQuery());
+    m_connectionsReply->setProperty("lastEventId", m_lastEventId);
+    QObject::connect(m_connectionsReply, &QNetworkReply::finished, this, &SyncthingConnection::readConnections);
 }
 
 /*!
@@ -841,7 +843,7 @@ void SyncthingConnection::readConnections()
         const std::uint64_t totalOutgoingTraffic = totalOutgoingTrafficValue.isDouble() ? jsonValueToInt(totalOutgoingTrafficValue) : unknownTraffic;
         double transferTime = 0.0;
         const bool hasDelta
-            = !m_lastConnectionsUpdate.isNull() && ((transferTime = (DateTime::gmtNow() - m_lastConnectionsUpdate).totalSeconds()) != 0.0);
+            = !m_lastConnectionsUpdateTime.isNull() && ((transferTime = (DateTime::gmtNow() - m_lastConnectionsUpdateTime).totalSeconds()) != 0.0);
         m_totalIncomingRate = (hasDelta && totalIncomingTraffic != unknownTraffic && m_totalIncomingTraffic != unknownTraffic)
             ? static_cast<double>(totalIncomingTraffic - m_totalIncomingTraffic) * 0.008 / transferTime
             : 0.0;
@@ -886,7 +888,8 @@ void SyncthingConnection::readConnections()
             ++index;
         }
 
-        m_lastConnectionsUpdate = DateTime::gmtNow();
+        m_lastConnectionsUpdateEvent = reply->property("lastEventId").toULongLong();
+        m_lastConnectionsUpdateTime = DateTime::gmtNow();
 
         // since there seems no event for this data, keep polling
         if (m_keepPolling) {
@@ -980,8 +983,9 @@ void SyncthingConnection::requestDirStatistics()
     if (m_dirStatsReply) {
         return;
     }
-    QObject::connect(m_dirStatsReply = requestData(QStringLiteral("stats/folder"), QUrlQuery()), &QNetworkReply::finished, this,
-        &SyncthingConnection::readDirStatistics);
+    m_dirStatsReply = requestData(QStringLiteral("stats/folder"), QUrlQuery());
+    m_dirStatsReply->setProperty("lastEventId", m_lastEventId);
+    QObject::connect(m_dirStatsReply, &QNetworkReply::finished, this, &SyncthingConnection::readDirStatistics);
 }
 
 /*!
@@ -1012,20 +1016,23 @@ void SyncthingConnection::readDirStatistics()
                 continue;
             }
 
-            bool dirModified = false;
+            auto dirModified = false;
+            const auto eventId = reply->property("lastEventId").toULongLong();
             const auto lastScan = dirObj.value(QLatin1String("lastScan")).toString().toUtf8();
             if (!lastScan.isEmpty()) {
                 dirModified = true;
                 dirInfo.lastScanTime = parseTimeStamp(dirObj.value(QLatin1String("lastScan")), QStringLiteral("last scan"));
             }
-            const QJsonObject lastFileObj(dirObj.value(QLatin1String("lastFile")).toObject());
+            const auto lastFileObj = dirObj.value(QLatin1String("lastFile")).toObject();
             if (!lastFileObj.isEmpty()) {
+                dirInfo.lastFileEvent = eventId;
                 dirInfo.lastFileName = lastFileObj.value(QLatin1String("filename")).toString();
                 dirModified = true;
                 if (!dirInfo.lastFileName.isEmpty()) {
                     dirInfo.lastFileDeleted = lastFileObj.value(QLatin1String("deleted")).toBool(false);
                     dirInfo.lastFileTime = parseTimeStamp(lastFileObj.value(QLatin1String("at")), QStringLiteral("dir statistics"));
-                    if (!dirInfo.lastFileTime.isNull() && dirInfo.lastFileTime > m_lastFileTime) {
+                    if (!dirInfo.lastFileTime.isNull() && eventId >= m_lastFileEvent) {
+                        m_lastFileEvent = eventId;
                         m_lastFileTime = dirInfo.lastFileTime;
                         m_lastFileName = dirInfo.lastFileName;
                         m_lastFileDeleted = dirInfo.lastFileDeleted;
@@ -1060,6 +1067,7 @@ void SyncthingConnection::requestDirStatus(const QString &dirId)
     query.addQueryItem(QStringLiteral("folder"), dirId);
     auto *const reply = requestData(QStringLiteral("db/status"), query);
     reply->setProperty("dirId", dirId);
+    reply->setProperty("lastEventId", m_lastEventId);
     m_otherReplies << reply;
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirStatus, Qt::QueuedConnection);
 }
@@ -1078,7 +1086,7 @@ void SyncthingConnection::readDirStatus()
     case QNetworkReply::NoError: {
         // determine relevant dir
         int index;
-        const QString dirId(reply->property("dirId").toString());
+        const auto dirId = reply->property("dirId").toString();
         SyncthingDir *const dir = findDirInfo(dirId, index);
         if (!dir) {
             // discard status for unknown dirs
@@ -1093,7 +1101,7 @@ void SyncthingConnection::readDirStatus()
             return;
         }
 
-        readDirSummary(DateTime::now(), replyDoc.object(), *dir, index);
+        readDirSummary(reply->property("lastEventId").toULongLong(), DateTime::now(), replyDoc.object(), *dir, index);
 
         if (m_keepPolling) {
             concludeConnection();
@@ -1123,6 +1131,7 @@ void SyncthingConnection::requestDirPullErrors(const QString &dirId, int page, i
     }
     auto *const reply = requestData(folderErrorsPath(), query);
     reply->setProperty("dirId", dirId);
+    reply->setProperty("lastEventId", m_lastEventId);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirPullErrors);
 }
 
@@ -1155,7 +1164,7 @@ void SyncthingConnection::readDirPullErrors()
             return;
         }
 
-        readFolderErrors(DateTime::now(), replyDoc.object(), *dir, index);
+        readFolderErrors(reply->property("lastEventId").toULongLong(), DateTime::now(), replyDoc.object(), *dir, index);
         break;
     }
     case QNetworkReply::OperationCanceledError:
@@ -1184,10 +1193,10 @@ void SyncthingConnection::requestCompletion(const QString &devId, const QString 
 static void ensureCompletionNotConsideredRequested(const QString &devId, SyncthingDev *devInfo, const QString &dirId, SyncthingDir *dirInfo)
 {
     if (devInfo) {
-        devInfo->completionByDir[dirId].requested = false;
+        devInfo->completionByDir[dirId].requestedForEventId = 0;
     }
     if (dirInfo) {
-        dirInfo->completionByDevice[devId].requested = false;
+        dirInfo->completionByDevice[devId].requestedForEventId = 0;
     }
 }
 /// \endcond
@@ -1543,9 +1552,9 @@ void SyncthingConnection::readPostConfig()
 /*!
  * \brief Reads data from requestDirStatus() and FolderSummary-event and stores them to \a dir.
  */
-void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &summary, SyncthingDir &dir, int index)
+void SyncthingConnection::readDirSummary(SyncthingEventId eventId, DateTime eventTime, const QJsonObject &summary, SyncthingDir &dir, int index)
 {
-    if (summary.isEmpty() || dir.lastStatisticsUpdate > eventTime) {
+    if (summary.isEmpty() || dir.lastStatisticsUpdateEvent > eventId) {
         return;
     }
 
@@ -1553,7 +1562,7 @@ void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     auto &globalStats(dir.globalStats);
     auto &localStats(dir.localStats);
     auto &neededStats(dir.neededStats);
-    const auto previouslyUpdated(!dir.lastStatisticsUpdate.isNull());
+    const auto previouslyUpdated(!dir.lastStatisticsUpdateTime.isNull());
     const auto previouslyGlobal(globalStats);
     const auto previouslyNeeded(neededStats);
 
@@ -1577,17 +1586,19 @@ void SyncthingConnection::readDirSummary(DateTime eventTime, const QJsonObject &
     m_dirStatsAltered = true;
 
     dir.ignorePatterns = summary.value(QLatin1String("ignorePatterns")).toBool();
-    dir.lastStatisticsUpdate = eventTime;
+    dir.lastStatisticsUpdateEvent = eventId;
+    dir.lastStatisticsUpdateTime = eventTime;
 
     // update status
-    const auto lastStatusUpdate = parseTimeStamp(summary.value(QLatin1String("stateChanged")), QStringLiteral("state changed"), dir.lastStatusUpdate);
+    const auto lastStatusUpdate
+        = parseTimeStamp(summary.value(QLatin1String("stateChanged")), QStringLiteral("state changed"), dir.lastStatusUpdateTime);
     if (dir.pullErrorCount) {
         // consider the directory still as out-of-sync if there are still pull errors
         // note: Syncthing can report an "idle" status despite pull errors.
         dir.status = SyncthingDirStatus::OutOfSync;
-        dir.lastStatusUpdate = std::max(dir.lastStatusUpdate, lastStatusUpdate);
+        dir.lastStatusUpdateTime = std::max(dir.lastStatusUpdateTime, lastStatusUpdate);
     } else if (const auto state = summary.value(QLatin1String("state")).toString(); !state.isEmpty()) {
-        dir.assignStatus(state, lastStatusUpdate);
+        dir.assignStatus(state, eventId, lastStatusUpdate);
     }
 
     dir.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
@@ -1746,32 +1757,34 @@ void SyncthingConnection::readEvents()
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, int &idVariable)
+void SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, quint64 &idVariable)
 {
     for (const auto &eventVal : events) {
         const auto event = eventVal.toObject();
         const auto eventTime = parseTimeStamp(event.value(QLatin1String("time")), QStringLiteral("event time"));
         const auto eventType = event.value(QLatin1String("type")).toString();
         const auto eventData = event.value(QLatin1String("data")).toObject();
-
-        idVariable = event.value(QLatin1String("id")).toInt(idVariable);
-
+        const auto eventIdValue = event.value(QLatin1String("id"));
+        const auto eventId = static_cast<quint64>(std::max(eventIdValue.toDouble(), 0.0));
+        if (eventIdValue.isDouble()) {
+            idVariable = eventId;
+        }
         if (eventType == QLatin1String("Starting")) {
             readStartingEvent(eventData);
         } else if (eventType == QLatin1String("StateChanged")) {
-            readStatusChangedEvent(eventTime, eventData);
+            readStatusChangedEvent(eventId, eventTime, eventData);
         } else if (eventType == QLatin1String("DownloadProgress")) {
-            readDownloadProgressEvent(eventTime, eventData);
+            readDownloadProgressEvent(eventData);
         } else if (eventType.startsWith(QLatin1String("Folder"))) {
-            readDirEvent(eventTime, eventType, eventData);
+            readDirEvent(eventId, eventTime, eventType, eventData);
         } else if (eventType.startsWith(QLatin1String("Device"))) {
-            readDeviceEvent(eventTime, eventType, eventData);
+            readDeviceEvent(eventId, eventTime, eventType, eventData);
         } else if (eventType == QLatin1String("ItemStarted")) {
-            readItemStarted(eventTime, eventData);
+            readItemStarted(eventId, eventTime, eventData);
         } else if (eventType == QLatin1String("ItemFinished")) {
-            readItemFinished(eventTime, eventData);
+            readItemFinished(eventId, eventTime, eventData);
         } else if (eventType == QLatin1String("RemoteIndexUpdated")) {
-            readRemoteIndexUpdated(eventTime, eventData);
+            readRemoteIndexUpdated(eventId, eventData);
         } else if (eventType == QLatin1String("ConfigSaved")) {
             requestConfig(); // just consider current config as invalidated
         } else if (eventType.endsWith(QLatin1String("ChangeDetected"))) {
@@ -1796,7 +1809,7 @@ void SyncthingConnection::readStartingEvent(const QJsonObject &eventData)
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readStatusChangedEvent(DateTime eventTime, const QJsonObject &eventData)
+void SyncthingConnection::readStatusChangedEvent(SyncthingEventId eventId, DateTime eventTime, const QJsonObject &eventData)
 {
     const QString dir(eventData.value(QLatin1String("folder")).toString());
     if (dir.isEmpty()) {
@@ -1815,7 +1828,7 @@ void SyncthingConnection::readStatusChangedEvent(DateTime eventTime, const QJson
     }
 
     // assign new status
-    bool statusChanged = dirInfo->assignStatus(eventData.value(QLatin1String("to")).toString(), eventTime);
+    bool statusChanged = dirInfo->assignStatus(eventData.value(QLatin1String("to")).toString(), eventId, eventTime);
     if (dirInfo->status == SyncthingDirStatus::OutOfSync) {
         const QString errorMessage(eventData.value(QLatin1String("error")).toString());
         if (!errorMessage.isEmpty()) {
@@ -1837,9 +1850,8 @@ void SyncthingConnection::readStatusChangedEvent(DateTime eventTime, const QJson
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readDownloadProgressEvent(DateTime eventTime, const QJsonObject &eventData)
+void SyncthingConnection::readDownloadProgressEvent(const QJsonObject &eventData)
 {
-    CPP_UTILITIES_UNUSED(eventTime)
     for (SyncthingDir &dirInfo : m_dirs) {
         // disappearing implies that the download has been finished so just wipe old entries
         dirInfo.downloadingItems.clear();
@@ -1877,7 +1889,7 @@ void SyncthingConnection::readDownloadProgressEvent(DateTime eventTime, const QJ
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
+void SyncthingConnection::readDirEvent(SyncthingEventId eventId, DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
 {
     // read dir ID
     const auto dirId([&eventData] {
@@ -1890,7 +1902,7 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
     if (dirId.isEmpty()) {
         // handle events which don't necessarily require a corresponding dir info
         if (eventType == QLatin1String("FolderCompletion")) {
-            readFolderCompletion(eventTime, eventData, dirId, nullptr, -1);
+            readFolderCompletion(eventId, eventTime, eventData, dirId, nullptr, -1);
         }
         return;
     }
@@ -1910,11 +1922,11 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
 
     // distinguish specific events
     if (eventType == QLatin1String("FolderErrors")) {
-        readFolderErrors(eventTime, eventData, *dirInfo, index);
+        readFolderErrors(eventId, eventTime, eventData, *dirInfo, index);
     } else if (eventType == QLatin1String("FolderSummary")) {
-        readDirSummary(eventTime, eventData.value(QLatin1String("summary")).toObject(), *dirInfo, index);
-    } else if (eventType == QLatin1String("FolderCompletion") && dirInfo->lastStatisticsUpdate < eventTime) {
-        readFolderCompletion(eventTime, eventData, dirId, dirInfo, index);
+        readDirSummary(eventId, eventTime, eventData.value(QLatin1String("summary")).toObject(), *dirInfo, index);
+    } else if (eventType == QLatin1String("FolderCompletion") && dirInfo->lastStatisticsUpdateEvent <= eventId) {
+        readFolderCompletion(eventId, eventTime, eventData, dirId, dirInfo, index);
     } else if (eventType == QLatin1String("FolderScanProgress")) {
         const double current = eventData.value(QLatin1String("current")).toDouble(0);
         const double total = eventData.value(QLatin1String("total")).toDouble(0);
@@ -1922,7 +1934,7 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
         if (current > 0 && total > 0) {
             dirInfo->scanningPercentage = static_cast<int>(current * 100 / total);
             dirInfo->scanningRate = rate;
-            dirInfo->assignStatus(SyncthingDirStatus::Scanning, eventTime); // ensure state is scanning
+            dirInfo->assignStatus(SyncthingDirStatus::Scanning, eventId, eventTime); // ensure state is scanning
             emit dirStatusChanged(*dirInfo, index);
         }
     } else if (eventType == QLatin1String("FolderPaused")) {
@@ -1941,10 +1953,10 @@ void SyncthingConnection::readDirEvent(DateTime eventTime, const QString &eventT
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
+void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
 {
     // ignore device events happened before the last connections update
-    if (eventTime.isNull() && m_lastConnectionsUpdate.isNull() && eventTime < m_lastConnectionsUpdate) {
+    if (eventId < m_lastConnectionsUpdateEvent) {
         return;
     }
     const QString dev(eventData.value(QLatin1String("device")).toString());
@@ -2004,8 +2016,9 @@ void SyncthingConnection::readDeviceEvent(DateTime eventTime, const QString &eve
  * \brief Reads results of requestEvents().
  * \todo Implement this.
  */
-void SyncthingConnection::readItemStarted(DateTime eventTime, const QJsonObject &eventData)
+void SyncthingConnection::readItemStarted(SyncthingEventId eventId, DateTime eventTime, const QJsonObject &eventData)
 {
+    CPP_UTILITIES_UNUSED(eventId)
     CPP_UTILITIES_UNUSED(eventTime)
     CPP_UTILITIES_UNUSED(eventData)
 }
@@ -2013,7 +2026,7 @@ void SyncthingConnection::readItemStarted(DateTime eventTime, const QJsonObject 
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject &eventData)
+void SyncthingConnection::readItemFinished(SyncthingEventId eventId, DateTime eventTime, const QJsonObject &eventData)
 {
     int index;
     auto *const dirInfo = findDirInfo(QLatin1String("folder"), eventData, &index);
@@ -2046,11 +2059,13 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
     }
 
     // update last file
-    if (dirInfo->lastFileTime.isNull() || eventTime < dirInfo->lastFileTime) {
+    if (dirInfo->lastFileTime.isNull() || eventId >= dirInfo->lastFileEvent) {
+        dirInfo->lastFileEvent = eventId;
         dirInfo->lastFileTime = eventTime;
         dirInfo->lastFileName = item;
         dirInfo->lastFileDeleted = (eventData.value(QLatin1String("action")) != QLatin1String("delete"));
-        if (eventTime > m_lastFileTime) {
+        if (eventId >= m_lastFileEvent) {
+            m_lastFileEvent = eventId;
             m_lastFileTime = dirInfo->lastFileTime;
             m_lastFileName = dirInfo->lastFileName;
             m_lastFileDeleted = dirInfo->lastFileDeleted;
@@ -2062,10 +2077,11 @@ void SyncthingConnection::readItemFinished(DateTime eventTime, const QJsonObject
 /*!
  * \brief Reads results of requestEvents() and requestDirPullErrors().
  */
-void SyncthingConnection::readFolderErrors(DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index)
+void SyncthingConnection::readFolderErrors(
+    SyncthingEventId eventId, DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index)
 {
     // ignore errors occurred before the last time the directory was in "sync" state (Syncthing re-emits recurring errors)
-    if (dirInfo.lastSyncStarted > eventTime) {
+    if (dirInfo.lastSyncStartedEvent > eventId) {
         return;
     }
 
@@ -2090,7 +2106,7 @@ void SyncthingConnection::readFolderErrors(DateTime eventTime, const QJsonObject
 
     // ensure the directory is considered out-of-sync
     if (dirInfo.pullErrorCount) {
-        dirInfo.assignStatus(SyncthingDirStatus::OutOfSync, eventTime);
+        dirInfo.assignStatus(SyncthingDirStatus::OutOfSync, eventId, eventTime);
     }
 
     emit dirStatusChanged(dirInfo, index);
@@ -2100,44 +2116,46 @@ void SyncthingConnection::readFolderErrors(DateTime eventTime, const QJsonObject
  * \brief Reads results of requestEvents().
  */
 void SyncthingConnection::readFolderCompletion(
-    DateTime eventTime, const QJsonObject &eventData, const QString &dirId, SyncthingDir *dirInfo, int dirIndex)
+    SyncthingEventId eventId, DateTime eventTime, const QJsonObject &eventData, const QString &dirId, SyncthingDir *dirInfo, int dirIndex)
 {
     const auto devId = eventData.value(QLatin1String("device")).toString();
     int devIndex;
     auto *const devInfo = findDevInfo(devId, devIndex);
-    readFolderCompletion(eventTime, eventData, devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
+    readFolderCompletion(eventId, eventTime, eventData, devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
 }
 
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readFolderCompletion(DateTime eventTime, const QJsonObject &eventData, const QString &devId, SyncthingDev *devInfo,
-    int devIndex, const QString &dirId, SyncthingDir *dirInfo, int dirIndex)
+void SyncthingConnection::readFolderCompletion(SyncthingEventId eventId, DateTime eventTime, const QJsonObject &eventData, const QString &devId,
+    SyncthingDev *devInfo, int devIndex, const QString &dirId, SyncthingDir *dirInfo, int dirIndex)
 {
     if (devInfo && !devId.isEmpty() && devId != myId()) {
         readRemoteFolderCompletion(eventTime, eventData, devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
     } else if (dirInfo) {
-        readLocalFolderCompletion(eventTime, eventData, *dirInfo, dirIndex);
+        readLocalFolderCompletion(eventId, eventTime, eventData, *dirInfo, dirIndex);
     }
 }
 
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readLocalFolderCompletion(DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index)
+void SyncthingConnection::readLocalFolderCompletion(
+    SyncthingEventId eventId, DateTime eventTime, const QJsonObject &eventData, SyncthingDir &dirInfo, int index)
 {
     auto &neededStats(dirInfo.neededStats);
     auto &globalStats(dirInfo.globalStats);
     // backup previous statistics -> if there's no difference after all, don't emit completed event
-    const auto previouslyUpdated(!dirInfo.lastStatisticsUpdate.isNull());
-    const auto previouslyNeeded(neededStats);
-    const auto previouslyGlobal(globalStats);
+    const auto previouslyUpdated = !dirInfo.lastStatisticsUpdateTime.isNull();
+    const auto previouslyNeeded = neededStats;
+    const auto previouslyGlobal = globalStats;
     // read values from event data
     globalStats.bytes = jsonValueToInt(eventData.value(QLatin1String("globalBytes")), static_cast<double>(globalStats.bytes));
     neededStats.bytes = jsonValueToInt(eventData.value(QLatin1String("needBytes")), static_cast<double>(neededStats.bytes));
     neededStats.deletes = jsonValueToInt(eventData.value(QLatin1String("needDeletes")), static_cast<double>(neededStats.deletes));
     neededStats.deletes = jsonValueToInt(eventData.value(QLatin1String("needItems")), static_cast<double>(neededStats.files));
-    dirInfo.lastStatisticsUpdate = eventTime;
+    dirInfo.lastStatisticsUpdateEvent = eventId;
+    dirInfo.lastStatisticsUpdateTime = eventTime;
     dirInfo.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
     emit dirStatusChanged(dirInfo, index);
     if (neededStats.isNull() && previouslyUpdated && (neededStats != previouslyNeeded || globalStats != previouslyGlobal)
@@ -2154,7 +2172,7 @@ void SyncthingConnection::readRemoteFolderCompletion(DateTime eventTime, const Q
 {
     // make new completion
     auto completion = SyncthingCompletion();
-    auto &needed(completion.needed);
+    auto &needed = completion.needed;
     completion.lastUpdate = eventTime;
     completion.percentage = eventData.value(QLatin1String("completion")).toDouble();
     completion.globalBytes = jsonValueToInt(eventData.value(QLatin1String("globalBytes")));
@@ -2201,7 +2219,7 @@ void SyncthingConnection::readRemoteFolderCompletion(const SyncthingCompletion &
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readRemoteIndexUpdated(DateTime eventTime, const QJsonObject &eventData)
+void SyncthingConnection::readRemoteIndexUpdated(SyncthingEventId eventId, const QJsonObject &eventData)
 {
     // ignore those events if we're not updating completion automatically
     if (!m_requestCompletion && !m_keepPolling) {
@@ -2234,20 +2252,15 @@ void SyncthingConnection::readRemoteIndexUpdated(DateTime eventTime, const QJson
     //       might meddle with that.
     auto *const completionFromDirInfo = dirInfo ? &dirInfo->completionByDevice[devId] : nullptr;
     auto *const completionFromDevInfo = devInfo ? &devInfo->completionByDir[dirId] : nullptr;
-    if ((completionFromDirInfo && completionFromDirInfo->requested) || (completionFromDevInfo && completionFromDevInfo->requested)) {
-        return;
-    }
-    const auto lastUpdate = completionFromDirInfo && completionFromDevInfo
-        ? min(completionFromDirInfo->lastUpdate, completionFromDevInfo->lastUpdate)
-        : (completionFromDirInfo ? completionFromDirInfo->lastUpdate : completionFromDevInfo->lastUpdate);
-    if (lastUpdate >= eventTime) {
+    if ((completionFromDirInfo && completionFromDirInfo->requestedForEventId >= eventId)
+        || (completionFromDevInfo && completionFromDevInfo->requestedForEventId >= eventId)) {
         return;
     }
     if (completionFromDirInfo) {
-        completionFromDirInfo->requested = true;
+        completionFromDirInfo->requestedForEventId = eventId;
     }
     if (completionFromDevInfo) {
-        completionFromDevInfo->requested = true;
+        completionFromDevInfo->requestedForEventId = eventId;
     }
     if (devInfo && dirInfo && !devInfo->paused && !dirInfo->paused) {
         requestCompletion(devId, dirId);

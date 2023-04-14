@@ -199,74 +199,76 @@ void MiscTests::testSyncthingDir()
     SyncthingDir dir;
     dir.status = SyncthingDirStatus::Unknown;
 
-    DateTime updateTime(DateTime::fromDate(2005, 2, 3));
-    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Idle, updateTime));
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("unshared"), dir.statusString());
-    CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastStatusUpdate);
+    auto updateEvent = static_cast<SyncthingEventId>(42);
+    auto updateTime = DateTime(DateTime::fromDate(2005, 2, 3));
+    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Idle, updateEvent, updateTime));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("status updated", QStringLiteral("unshared"), dir.statusString());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("event updated", updateEvent, dir.lastStatusUpdateEvent);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("time updated", updateTime, dir.lastStatusUpdateTime);
 
     dir.deviceIds << QStringLiteral("dev1") << QStringLiteral("dev2");
 
-    CPPUNIT_ASSERT(!dir.assignStatus(SyncthingDirStatus::Scanning, DateTime::fromDate(2003, 6, 7)));
-    CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastStatusUpdate);
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("idle"), dir.statusString());
+    CPPUNIT_ASSERT(!dir.assignStatus(SyncthingDirStatus::Scanning, updateEvent - 1, updateTime + TimeSpan::fromDays(1.0)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("status not updated", QStringLiteral("idle"), dir.statusString());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("event not updated", updateEvent, dir.lastStatusUpdateEvent);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("time not updated", updateTime, dir.lastStatusUpdateTime);
 
-    const DateTime lastScanTime(DateTime::now());
-    updateTime += TimeSpan::fromSeconds(5);
-    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::WaitingToScan, updateTime));
+    const auto lastScanTime = DateTime(DateTime::now());
+    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::WaitingToScan, updateEvent += 1, updateTime += TimeSpan::fromSeconds(5)));
     CPPUNIT_ASSERT(dir.lastScanTime.isNull());
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("waiting to scan"), dir.statusString());
-    updateTime += TimeSpan::fromSeconds(5);
-    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Scanning, updateTime));
+
+    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Scanning, updateEvent += 1, updateTime += TimeSpan::fromSeconds(5)));
     CPPUNIT_ASSERT(dir.lastScanTime.isNull());
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("scanning"), dir.statusString());
 
-    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Idle, updateTime += TimeSpan::fromSeconds(2)));
-    CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastStatusUpdate);
+    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Idle, updateEvent += 1, updateTime += TimeSpan::fromSeconds(2)));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("event updated", updateEvent, dir.lastStatusUpdateEvent);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("time updated", updateTime, dir.lastStatusUpdateTime);
     CPPUNIT_ASSERT(dir.lastScanTime >= lastScanTime);
 
     dir.status = SyncthingDirStatus::Unknown;
-    dir.lastSyncStarted = DateTime(1);
+    dir.lastSyncStartedTime = DateTime(1);
     dir.itemErrors.emplace_back(QStringLiteral("message"), QStringLiteral("path"));
-    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Idle, updateTime += TimeSpan::fromMinutes(1.5)));
+    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Idle, updateEvent += 1, updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("idle"), dir.statusString());
     CPPUNIT_ASSERT_EQUAL(1_st, dir.itemErrors.size());
-    dir.lastSyncStarted = DateTime();
-    CPPUNIT_ASSERT(!dir.assignStatus(SyncthingDirStatus::Idle, updateTime += TimeSpan::fromMinutes(1.5)));
-    CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastSyncStarted);
-    const auto lastSyncTime(updateTime += TimeSpan::fromMinutes(1.5));
+    dir.lastSyncStartedTime = DateTime();
+    CPPUNIT_ASSERT(!dir.assignStatus(SyncthingDirStatus::Idle, updateEvent += 1, updateTime += TimeSpan::fromMinutes(1.5)));
+    CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastSyncStartedTime);
+    const auto lastSyncTime = updateTime += TimeSpan::fromMinutes(1.5);
     dir.itemErrors.emplace_back();
-    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Synchronizing, lastSyncTime));
+    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Synchronizing, updateEvent += 1, lastSyncTime));
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("synchronizing"), dir.statusString());
     CPPUNIT_ASSERT_EQUAL(0_st, dir.itemErrors.size());
-    CPPUNIT_ASSERT_EQUAL(lastSyncTime, dir.lastSyncStarted);
-    const auto lastSyncTime2(updateTime += TimeSpan::fromMinutes(2.0));
+    CPPUNIT_ASSERT_EQUAL(lastSyncTime, dir.lastSyncStartedTime);
+    const auto lastSyncTime2 = updateTime += TimeSpan::fromMinutes(2.0);
     dir.itemErrors.emplace_back();
-    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::PreparingToSync, lastSyncTime2));
+    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::PreparingToSync, updateEvent += 1, lastSyncTime2));
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("preparing to sync"), dir.statusString());
     CPPUNIT_ASSERT_EQUAL(0_st, dir.itemErrors.size());
-    CPPUNIT_ASSERT_EQUAL(lastSyncTime2, dir.lastSyncStarted);
+    CPPUNIT_ASSERT_EQUAL(lastSyncTime2, dir.lastSyncStartedTime);
 
-    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Idle, updateTime += TimeSpan::fromMinutes(1.5)));
-    CPPUNIT_ASSERT_EQUAL(lastSyncTime2, dir.lastSyncStarted);
-    CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("syncing"), updateTime += TimeSpan::fromMinutes(1.5)));
-    CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastSyncStarted);
+    CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Idle, updateEvent += 1, updateTime += TimeSpan::fromMinutes(1.5)));
+    CPPUNIT_ASSERT_EQUAL(lastSyncTime2, dir.lastSyncStartedTime);
+    CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("syncing"), updateEvent += 1, updateTime += TimeSpan::fromMinutes(1.5)));
+    CPPUNIT_ASSERT_EQUAL(updateTime, dir.lastSyncStartedTime);
 
     dir.itemErrors.clear();
-    CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("error"), updateTime += TimeSpan::fromMinutes(1.5)));
+    CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("error"), updateEvent += 1, updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("out of sync"), dir.statusString());
 
-    CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("wrong status"), updateTime += TimeSpan::fromMinutes(1.5)));
+    CPPUNIT_ASSERT(dir.assignStatus(QStringLiteral("wrong status"), updateEvent += 1, updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("wrong status treated as idle", QStringLiteral("idle"), dir.statusString());
 
-    CPPUNIT_ASSERT_MESSAGE("older status discarded", !dir.assignStatus(QStringLiteral("scanning"), updateTime - TimeSpan::fromSeconds(1)));
+    CPPUNIT_ASSERT_MESSAGE("older status discarded", !dir.assignStatus(QStringLiteral("scanning"), updateEvent - 1, updateTime));
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("idle"), dir.statusString());
 
     dir.deviceIds.clear();
-    CPPUNIT_ASSERT(!dir.assignStatus(QStringLiteral("idle"), updateTime += TimeSpan::fromMinutes(1.5)));
+    CPPUNIT_ASSERT(!dir.assignStatus(QStringLiteral("idle"), updateEvent += 1, updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("dir considered unshared when no devs present", QStringLiteral("unshared"), dir.statusString());
-    CPPUNIT_ASSERT(!dir.assignStatus(SyncthingDirStatus::Idle, updateTime += TimeSpan::fromMinutes(1.5)));
+    CPPUNIT_ASSERT(!dir.assignStatus(SyncthingDirStatus::Idle, updateEvent += 1, updateTime += TimeSpan::fromMinutes(1.5)));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("dir considered unshared when no devs present", QStringLiteral("unshared"), dir.statusString());
-
-    updateTime += TimeSpan::fromMinutes(1.5);
-    CPPUNIT_ASSERT_MESSAGE("same status again not considered an update", !dir.assignStatus(QStringLiteral("idle"), updateTime));
+    CPPUNIT_ASSERT_MESSAGE("same status again not considered an update",
+        !dir.assignStatus(QStringLiteral("idle"), updateEvent += 1, updateTime += TimeSpan::fromMinutes(1.5)));
 }

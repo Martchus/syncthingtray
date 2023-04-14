@@ -441,7 +441,9 @@ void SyncthingConnection::continueReconnecting()
     m_hasDiskEvents = false;
     m_dirs.clear();
     m_devs.clear();
-    m_lastConnectionsUpdate = DateTime();
+    m_lastConnectionsUpdateEvent = 0;
+    m_lastConnectionsUpdateTime = DateTime();
+    m_lastFileEvent = 0;
     m_lastFileTime = DateTime();
     m_lastErrorTime = DateTime();
     m_startTime = DateTime();

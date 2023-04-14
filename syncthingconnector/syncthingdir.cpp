@@ -52,27 +52,30 @@ QString dirTypeString(SyncthingDirType dirType)
     return QString();
 }
 
-bool SyncthingDir::checkWhetherStatusUpdateRelevant(DateTime time)
+bool SyncthingDir::checkWhetherStatusUpdateRelevant(SyncthingEventId eventId, DateTime time)
 {
     // ignore old updates
-    if (lastStatusUpdate > time) {
+    if (lastStatusUpdateEvent > eventId) {
         return false;
     }
-    lastStatusUpdate = time;
+    lastStatusUpdateEvent = eventId;
+    lastStatusUpdateTime = time;
     return true;
 }
 
-bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus, DateTime time)
+bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus, SyncthingEventId eventId, DateTime time)
 {
     // handle obsoletion of out-of-sync items: no FolderErrors are accepted older than the last "sync" state are accepted
     if (newStatus == SyncthingDirStatus::PreparingToSync || newStatus == SyncthingDirStatus::Synchronizing) {
         // update time of last "sync" state and obsolete currently assigned errors
-        lastSyncStarted = time; // used internally and not displayed, hence keep it GMT
+        lastSyncStartedEvent = eventId;
+        lastSyncStartedTime = time; // used internally and not displayed, hence keep it GMT
         itemErrors.clear();
         pullErrorCount = 0;
-    } else if (lastSyncStarted.isNull() && newStatus != SyncthingDirStatus::OutOfSync) {
+    } else if (lastSyncStartedTime.isNull() && newStatus != SyncthingDirStatus::OutOfSync) {
         // prevent adding new errors from "before the first status" if the time of the last "sync" state is unknown
-        lastSyncStarted = time;
+        lastSyncStartedEvent = eventId;
+        lastSyncStartedTime = time;
     }
 
     // clear global error if not out-of-sync anymore
@@ -105,9 +108,9 @@ bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus, DateTime t
  * \brief Assigns the status from the specified status string.
  * \returns Returns whether the status has actually changed.
  */
-bool SyncthingDir::assignStatus(const QString &statusStr, CppUtilities::DateTime time)
+bool SyncthingDir::assignStatus(const QString &statusStr, SyncthingEventId eventId, CppUtilities::DateTime time)
 {
-    if (!checkWhetherStatusUpdateRelevant(time)) {
+    if (!checkWhetherStatusUpdateRelevant(eventId, time)) {
         return false;
     }
 
@@ -147,7 +150,7 @@ bool SyncthingDir::assignStatus(const QString &statusStr, CppUtilities::DateTime
 
     rawStatus = statusStr;
 
-    return finalizeStatusUpdate(newStatus, time);
+    return finalizeStatusUpdate(newStatus, eventId, time);
 }
 
 bool SyncthingDir::assignDirType(const QString &dirTypeStr)

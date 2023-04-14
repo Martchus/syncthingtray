@@ -9,6 +9,8 @@
 
 namespace Data {
 
+using SyncthingEventId = quint64;
+
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingCompletion {
     CppUtilities::DateTime lastUpdate;
     double percentage = 0;
@@ -23,7 +25,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingCompletion {
         constexpr Needed &operator+=(const Needed &other);
         constexpr Needed &operator-=(const Needed &other);
     } needed;
-    bool requested = false;
+    SyncthingEventId requestedForEventId = 0;
     constexpr SyncthingCompletion &operator+=(const SyncthingCompletion &other);
     constexpr SyncthingCompletion &operator-=(const SyncthingCompletion &other);
     void recomputePercentage();
