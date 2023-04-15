@@ -280,15 +280,9 @@ bool restore()
     if (connectionCount > 0) {
         auto &secondaryConnectionSettings = v.connection.secondary;
         secondaryConnectionSettings.clear();
-        secondaryConnectionSettings.reserve(static_cast<size_t>(connectionCount));
+        secondaryConnectionSettings.reserve(static_cast<std::size_t>(connectionCount));
         for (int i = 0; i < connectionCount; ++i) {
-            SyncthingConnectionSettings *connectionSettings;
-            if (i == 0) {
-                connectionSettings = &primaryConnectionSettings;
-            } else {
-                secondaryConnectionSettings.emplace_back();
-                connectionSettings = &secondaryConnectionSettings.back();
-            }
+            SyncthingConnectionSettings *const connectionSettings = i == 0 ? &primaryConnectionSettings : &secondaryConnectionSettings.emplace_back();
             settings.setArrayIndex(i);
             connectionSettings->label = settings.value(QStringLiteral("label")).toString();
             if (connectionSettings->label.isEmpty()) {

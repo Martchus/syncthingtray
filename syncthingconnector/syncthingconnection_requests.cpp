@@ -469,7 +469,7 @@ void SyncthingConnection::rescan(const QString &dirId, const QString &relpath)
         return;
     }
 
-    QUrlQuery query;
+    auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("folder"), dirId);
     if (!relpath.isEmpty()) {
         query.addQueryItem(QStringLiteral("sub"), relpath);
@@ -616,8 +616,8 @@ void SyncthingConnection::readConfig()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        auto jsonError = QJsonParseError();
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse Syncthing config: "), jsonError, reply, response);
             handleFatalConnectionError();
@@ -658,7 +658,7 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
 {
     // store the new dirs in a temporary list which is assigned to m_dirs later
     std::vector<SyncthingDir> newDirs;
-    newDirs.reserve(static_cast<size_t>(dirs.size()));
+    newDirs.reserve(static_cast<std::size_t>(dirs.size()));
 
     int dummy;
     for (const QJsonValue &dirVal : dirs) {
@@ -759,7 +759,7 @@ void SyncthingConnection::readStatus()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        QJsonParseError jsonError;
+        auto jsonError = QJsonParseError();
         const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse Syncthing status: "), jsonError, reply, response);
@@ -826,14 +826,14 @@ void SyncthingConnection::readConnections()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        auto jsonError = QJsonParseError();
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse connections: "), jsonError, reply, response);
             return;
         }
 
-        const QJsonObject replyObj(replyDoc.object());
+        const auto replyObj = replyDoc.object();
         const QJsonObject totalObj(replyObj.value(QLatin1String("total")).toObject());
 
         // read traffic, the conversion to double is neccassary because toInt() doesn't work for high values
@@ -940,8 +940,8 @@ void SyncthingConnection::readErrors()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        auto jsonError = QJsonParseError();
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse errors: "), jsonError, reply, response);
             return;
@@ -1000,14 +1000,14 @@ void SyncthingConnection::readDirStatistics()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        auto jsonError = QJsonParseError();
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse directory statistics: "), jsonError, reply, response);
             return;
         }
 
-        const QJsonObject replyObj(replyDoc.object());
+        const auto replyObj = replyDoc.object();
         int index = 0;
         for (SyncthingDir &dirInfo : m_dirs) {
             const QJsonObject dirObj(replyObj.value(dirInfo.id).toObject());
@@ -1063,7 +1063,7 @@ void SyncthingConnection::readDirStatistics()
  */
 void SyncthingConnection::requestDirStatus(const QString &dirId)
 {
-    QUrlQuery query;
+    auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("folder"), dirId);
     auto *const reply = requestData(QStringLiteral("db/status"), query);
     reply->setProperty("dirId", dirId);
@@ -1094,8 +1094,8 @@ void SyncthingConnection::readDirStatus()
         }
 
         // parse JSON
-        QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        auto jsonError = QJsonParseError();
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse status for directory %1: ").arg(dirId), jsonError, reply, response);
             return;
@@ -1123,7 +1123,7 @@ void SyncthingConnection::readDirStatus()
  */
 void SyncthingConnection::requestDirPullErrors(const QString &dirId, int page, int perPage)
 {
-    QUrlQuery query;
+    auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("folder"), dirId);
     if (page > 0 && perPage > 0) {
         query.addQueryItem(QStringLiteral("page"), QString::number(page));
@@ -1147,7 +1147,7 @@ void SyncthingConnection::readDirPullErrors()
 
     // determine relevant dir
     int index;
-    const QString dirId(reply->property("dirId").toString());
+    const auto dirId = reply->property("dirId").toString();
     SyncthingDir *const dir = findDirInfo(dirId, index);
     if (!dir) {
         // discard errors for unknown dirs
@@ -1157,8 +1157,8 @@ void SyncthingConnection::readDirPullErrors()
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         // parse JSON
-        QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        auto jsonError = QJsonParseError();
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse pull errors for directory %1: ").arg(dirId), jsonError, reply, response);
             return;
@@ -1179,7 +1179,7 @@ void SyncthingConnection::readDirPullErrors()
  */
 void SyncthingConnection::requestCompletion(const QString &devId, const QString &dirId)
 {
-    QUrlQuery query;
+    auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("device"), devId);
     query.addQueryItem(QStringLiteral("folder"), dirId);
     auto *const reply = requestData(QStringLiteral("db/completion"), query);
@@ -1227,7 +1227,7 @@ void SyncthingConnection::readCompletion()
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         // parse JSON
-        QJsonParseError jsonError;
+        auto jsonError = QJsonParseError();
         const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error == QJsonParseError::NoError) {
             // update the relevant completion info
@@ -1280,14 +1280,14 @@ void SyncthingConnection::readDeviceStatistics()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        auto jsonError = QJsonParseError();
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse device statistics: "), jsonError, reply, response);
             return;
         }
 
-        const QJsonObject replyObj(replyDoc.object());
+        const auto replyObj = replyDoc.object();
         int index = 0;
         for (SyncthingDev &devInfo : m_devs) {
             const QJsonObject devObj(replyObj.value(devInfo.id).toObject());
@@ -1335,16 +1335,14 @@ void SyncthingConnection::readVersion()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        QJsonParseError jsonError;
+        auto jsonError = QJsonParseError();
         const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse version: "), jsonError, reply, response);
             return;
         }
-
-        const auto replyObj(replyDoc.object());
+        const auto replyObj = replyDoc.object();
         m_syncthingVersion = replyObj.value(QLatin1String("longVersion")).toString();
-
         if (m_keepPolling) {
             concludeConnection();
         }
@@ -1365,7 +1363,7 @@ void SyncthingConnection::readVersion()
  */
 void SyncthingConnection::requestQrCode(const QString &text)
 {
-    QUrlQuery query;
+    auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("text"), text);
     QNetworkReply *reply = requestData(QStringLiteral("/qr/"), query, false);
     reply->setProperty("qrText", text);
@@ -1419,8 +1417,8 @@ void SyncthingConnection::readLog()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        auto jsonError = QJsonParseError();
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
             emit error(tr("Unable to parse Syncthing log: ") + jsonError.errorString(), SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
             return;
@@ -1619,7 +1617,7 @@ void SyncthingConnection::readDirRejected(DateTime eventTime, const QString &dir
 {
     // ignore if dir has already been added
     int row;
-    const auto *const dir(findDirInfo(dirId, row));
+    const auto *const dir = findDirInfo(dirId, row);
     if (dir) {
         return;
     }
@@ -1641,7 +1639,7 @@ void SyncthingConnection::readDevRejected(DateTime eventTime, const QString &dev
 {
     // ignore if dev has already been added
     int row;
-    const auto *const dev(findDevInfo(devId, row));
+    const auto *const dev = findDevInfo(devId, row);
     if (dev) {
         return;
     }
@@ -1690,7 +1688,7 @@ void SyncthingConnection::requestEvents()
     if (m_eventsReply) {
         return;
     }
-    QUrlQuery query;
+    auto query = QUrlQuery();
     if (m_lastEventId && m_hasEvents) {
         query.addQueryItem(QStringLiteral("since"), QString::number(m_lastEventId));
     } else {
@@ -1715,8 +1713,8 @@ void SyncthingConnection::readEvents()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        QJsonParseError jsonError;
-        const QJsonDocument replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        auto jsonError = QJsonParseError();
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse Syncthing events: "), jsonError, reply, response);
             handleFatalConnectionError();
@@ -1823,8 +1821,7 @@ void SyncthingConnection::readStatusChangedEvent(SyncthingEventId eventId, DateT
     // add a new directory if the dir is not present yet
     const bool dirAlreadyPresent = dirInfo;
     if (!dirAlreadyPresent) {
-        m_dirs.emplace_back(dir);
-        dirInfo = &m_dirs.back();
+        dirInfo = &m_dirs.emplace_back(dir);
     }
 
     // assign new status
@@ -1862,8 +1859,8 @@ void SyncthingConnection::readDownloadProgressEvent(const QJsonObject &eventData
         if (!dirObj.isEmpty()) {
             dirInfo.downloadingItems.reserve(static_cast<size_t>(dirObj.size()));
             for (auto filePair = dirObj.constBegin(), end = dirObj.constEnd(); filePair != end; ++filePair) {
-                dirInfo.downloadingItems.emplace_back(dirInfo.path, filePair.key(), filePair.value().toObject());
-                const SyncthingItemDownloadProgress &itemProgress = dirInfo.downloadingItems.back();
+                const SyncthingItemDownloadProgress &itemProgress
+                    = dirInfo.downloadingItems.emplace_back(dirInfo.path, filePair.key(), filePair.value().toObject());
                 dirInfo.blocksAlreadyDownloaded += itemProgress.blocksAlreadyDownloaded;
                 dirInfo.blocksToBeDownloaded += itemProgress.totalNumberOfBlocks;
             }
@@ -2275,7 +2272,7 @@ void SyncthingConnection::requestDiskEvents(int limit)
     if (m_diskEventsReply) {
         return;
     }
-    QUrlQuery query;
+    auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("limit"), QString::number(limit));
     if (m_lastDiskEventId && m_hasDiskEvents) {
         query.addQueryItem(QStringLiteral("since"), QString::number(m_lastDiskEventId));
@@ -2300,7 +2297,7 @@ void SyncthingConnection::readDiskEvents()
 
     switch (reply->error()) {
     case QNetworkReply::NoError: {
-        QJsonParseError jsonError;
+        auto jsonError = QJsonParseError();
         const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse disk events: "), jsonError, reply, response);
