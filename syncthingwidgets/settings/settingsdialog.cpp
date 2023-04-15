@@ -1461,7 +1461,7 @@ QWidget *BuiltinWebViewOptionPage::setupWidget()
     label->setAlignment(Qt::AlignCenter);
     label->setText(QCoreApplication::translate("QtGui::BuiltinWebViewOptionPage",
         "Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit "
-        "or Qt WebEngine.\nThe Web UI will be opened in the default web browser instead."));
+        "or Qt WebEngine."));
     return label;
 }
 #endif
