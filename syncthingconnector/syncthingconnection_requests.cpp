@@ -184,11 +184,9 @@ void SyncthingConnection::handleSslErrors(const QList<QSslError> &errors)
 SyncthingConnection::Reply SyncthingConnection::handleReply(QNetworkReply *reply, bool readData, bool handleAborting)
 {
     const auto log = m_loggingFlags & SyncthingConnectionLoggingFlags::ApiReplies;
-    readData = (readData || log) && reply->isOpen();
-    handleAborting = handleAborting && m_abortingAllRequests;
     const auto data = Reply{
-        .reply = handleAborting ? nullptr : reply, // skip further processing if aborting to reconnect
-        .response = readData ? reply->readAll() : QByteArray(),
+        .reply = (handleAborting && m_abortingAllRequests) ? nullptr : reply, // skip further processing if aborting to reconnect
+        .response = ((readData || log) && reply->isOpen()) ? reply->readAll() : QByteArray(),
     };
     reply->deleteLater();
 
@@ -202,9 +200,6 @@ SyncthingConnection::Reply SyncthingConnection::handleReply(QNetworkReply *reply
             && path != "/rest/events/disk") { // events are logged separately because they are not always useful but make the log very verbose
             cerr << std::string_view(data.response.data(), static_cast<std::string_view::size_type>(data.response.size()));
         }
-    }
-    if (handleAborting) {
-        handleAdditionalRequestCanceled();
     }
     return data;
 }
