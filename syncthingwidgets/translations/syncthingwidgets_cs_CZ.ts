@@ -405,12 +405,6 @@
 <context>
     <name>QtGui::BuiltinWebViewOptionPage</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1462"/>
-        <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
-The Web UI will be opened in the default web browser instead.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
         <location filename="../settings/settingsdialog.cpp" line="1460"/>
         <source>Built-in web view</source>
@@ -429,6 +423,11 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="52"/>
         <source>Keep web view running when currently not shown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1462"/>
+        <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1976,7 +1975,7 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="654"/>
+        <location filename="../settings/settings.cpp" line="648"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1984,7 +1983,7 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="324"/>
+        <location filename="../settings/settings.cpp" line="318"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation type="unfinished"></translation>
     </message>

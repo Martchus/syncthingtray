@@ -542,10 +542,9 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation type="obsolete">Allgemein</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1462"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
-        <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.
+        <translation type="vanished">Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.
 Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation>
     </message>
     <message>
@@ -568,6 +567,11 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <location filename="../settings/builtinwebviewoptionpage.ui" line="52"/>
         <source>Keep web view running when currently not shown</source>
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1462"/>
+        <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
+        <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.</translation>
     </message>
 </context>
 <context>
@@ -2246,7 +2250,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="654"/>
+        <location filename="../settings/settings.cpp" line="648"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation>Sicherung von %1 (vom Einrichtungsassistenten erstellt)</translation>
     </message>
@@ -2254,7 +2258,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="324"/>
+        <location filename="../settings/settings.cpp" line="318"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Fehler beim laden des Zertifikats &quot;%1&quot; beim wiederherstellen der Einstellungen.</translation>
     </message>

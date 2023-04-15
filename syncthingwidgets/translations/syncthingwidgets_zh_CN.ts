@@ -417,10 +417,9 @@
         <translation type="obsolete">一般</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1462"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.
 The Web UI will be opened in the default web browser instead.</source>
-        <translation type="unfinished">Syncthing Tray 尚未使用 Qt WebKit 或 Qt WebEngine 构建支持网页视图。
+        <translation type="obsolete">Syncthing Tray 尚未使用 Qt WebKit 或 Qt WebEngine 构建支持网页视图。
 网页 UI 将改为在默认网页浏览器中打开。</translation>
     </message>
     <message>
@@ -443,6 +442,11 @@ The Web UI will be opened in the default web browser instead.</source>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="52"/>
         <source>Keep web view running when currently not shown</source>
         <translation type="unfinished">当前未显示时保持网页视图运行</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1462"/>
+        <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2060,7 +2064,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="654"/>
+        <location filename="../settings/settings.cpp" line="648"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2068,7 +2072,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="324"/>
+        <location filename="../settings/settings.cpp" line="318"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>还原设置时无法加载证书 &quot;%1&quot;。</translation>
     </message>
