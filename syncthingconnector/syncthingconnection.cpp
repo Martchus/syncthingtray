@@ -954,7 +954,7 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
         }
     }
     if (m_status != status || status == SyncthingStatus::Disconnected) {
-        // emit event if status changed and always for disconnects so isConnecting() is re-evaluated
+        // emit event if status changed always for disconnects so isConnecting() is re-evaluated
         emit statusChanged(m_status = status);
     }
 }
