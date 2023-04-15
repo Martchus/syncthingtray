@@ -1691,7 +1691,7 @@ void SyncthingConnection::requestEvents()
         return;
     }
     QUrlQuery query;
-    if (m_lastEventId) {
+    if (m_lastEventId && m_hasEvents) {
         query.addQueryItem(QStringLiteral("since"), QString::number(m_lastEventId));
     } else {
         query.addQueryItem(QStringLiteral("limit"), QStringLiteral("1"));
@@ -2277,7 +2277,7 @@ void SyncthingConnection::requestDiskEvents(int limit)
     }
     QUrlQuery query;
     query.addQueryItem(QStringLiteral("limit"), QString::number(limit));
-    if (m_lastDiskEventId) {
+    if (m_lastDiskEventId && m_hasDiskEvents) {
         query.addQueryItem(QStringLiteral("since"), QString::number(m_lastDiskEventId));
     }
     // force to return immediately after the first call

@@ -761,7 +761,6 @@ void SyncthingConnection::continueConnecting()
     }
 
     // poll for events
-    m_lastEventId = m_lastDiskEventId = 0;
     requestEvents();
     requestDiskEvents();
 }
