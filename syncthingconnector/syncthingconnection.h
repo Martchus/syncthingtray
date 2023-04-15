@@ -295,7 +295,7 @@ private Q_SLOTS:
     void readErrors();
     void readClearingErrors();
     void readEvents();
-    void readEventsFromJsonArray(const QJsonArray &events, quint64 &idVariable);
+    bool readEventsFromJsonArray(const QJsonArray &events, quint64 &idVariable);
     void readStartingEvent(const QJsonObject &eventData);
     void readStatusChangedEvent(SyncthingEventId eventId, CppUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readDownloadProgressEvent(const QJsonObject &eventData);

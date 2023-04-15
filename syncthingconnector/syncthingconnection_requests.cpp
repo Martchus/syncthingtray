@@ -1717,9 +1717,11 @@ void SyncthingConnection::readEvents()
         }
 
         m_hasEvents = true;
-        const auto replyArray(replyDoc.array());
+        const auto replyArray = replyDoc.array();
         emit newEvents(replyArray);
-        readEventsFromJsonArray(replyArray, m_lastEventId);
+        if (!readEventsFromJsonArray(replyArray, m_lastEventId)) {
+            return;
+        }
 
         if (!replyArray.isEmpty() && (loggingFlags() & SyncthingConnectionLoggingFlags::Events)) {
             const auto log = replyDoc.toJson(QJsonDocument::Indented);
@@ -1750,8 +1752,9 @@ void SyncthingConnection::readEvents()
 /*!
  * \brief Reads results of requestEvents().
  */
-void SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, quint64 &idVariable)
+bool SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, quint64 &idVariable)
 {
+    const auto lastId = idVariable;
     for (const auto &eventVal : events) {
         const auto event = eventVal.toObject();
         const auto eventTime = parseTimeStamp(event.value(QLatin1String("time")), QStringLiteral("event time"));
@@ -1760,7 +1763,19 @@ void SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, quin
         const auto eventIdValue = event.value(QLatin1String("id"));
         const auto eventId = static_cast<quint64>(std::max(eventIdValue.toDouble(), 0.0));
         if (eventIdValue.isDouble()) {
-            idVariable = eventId;
+            if (eventId < lastId) {
+                // re-connect if the event ID decreases as this indicates something weird on the other end happened
+                // note: The Syncthing docs say "A unique ID for this event on the events API. It always increases by 1: the
+                // first event generated has id 1, the next has id 2 etc.".
+                if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
+                    std::cerr << Phrases::Info << "Re-connecting as event ID is decreasing (" << eventId << " < " << lastId << ')' << Phrases::End;
+                }
+                reconnect();
+                return false;
+            }
+            if (eventId > idVariable) {
+                idVariable = eventId;
+            }
         }
         if (eventType == QLatin1String("Starting")) {
             readStartingEvent(eventData);
@@ -1785,6 +1800,7 @@ void SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, quin
         }
     }
     emitDirStatisticsChanged();
+    return true;
 }
 
 /*!
@@ -2293,15 +2309,17 @@ void SyncthingConnection::readDiskEvents()
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         auto jsonError = QJsonParseError();
-        const auto replyDoc(QJsonDocument::fromJson(response, &jsonError));
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
             emitError(tr("Unable to parse disk events: "), jsonError, reply, response);
             return;
         }
 
-        const auto replyArray = replyDoc.array();
         m_hasDiskEvents = true;
-        readEventsFromJsonArray(replyArray, m_lastDiskEventId);
+        const auto replyArray = replyDoc.array();
+        if (!readEventsFromJsonArray(replyArray, m_lastDiskEventId)) {
+            return;
+        }
 
         if (!replyArray.isEmpty() && (loggingFlags() & SyncthingConnectionLoggingFlags::Events)) {
             const auto log = replyDoc.toJson(QJsonDocument::Indented);
