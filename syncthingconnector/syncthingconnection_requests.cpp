@@ -201,6 +201,9 @@ SyncthingConnection::Reply SyncthingConnection::handleReply(QNetworkReply *reply
             cerr << std::string_view(data.response.data(), static_cast<std::string_view::size_type>(data.response.size()));
         }
     }
+    if (handleAborting && m_abortingToReconnect) {
+        handleAdditionalRequestCanceled();
+    }
     return data;
 }
 
@@ -1764,11 +1767,12 @@ bool SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, quin
         const auto eventId = static_cast<quint64>(std::max(eventIdValue.toDouble(), 0.0));
         if (eventIdValue.isDouble()) {
             if (eventId < lastId) {
-                // re-connect if the event ID decreases as this indicates something weird on the other end happened
+                // re-connect if the event ID decreases as this indicates Syncthing has been restarted
                 // note: The Syncthing docs say "A unique ID for this event on the events API. It always increases by 1: the
                 // first event generated has id 1, the next has id 2 etc.".
                 if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
-                    std::cerr << Phrases::Info << "Re-connecting as event ID is decreasing (" << eventId << " < " << lastId << ')' << Phrases::End;
+                    std::cerr << Phrases::Info << "Re-connecting as event ID is decreasing (" << eventId << " < " << lastId
+                              << "), Syncthing has likely been restarted" << Phrases::End;
                 }
                 reconnect();
                 return false;
