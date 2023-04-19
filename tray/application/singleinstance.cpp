@@ -4,9 +4,11 @@
 #include <c++utilities/io/ansiescapecodes.h>
 
 #include <QCoreApplication>
+#include <QFile>
 #include <QLocalServer>
 #include <QLocalSocket>
 #include <QStringBuilder>
+#include <QThread>
 
 #include <iostream>
 #include <memory>
@@ -64,57 +66,81 @@ static QString getCurrentProcessSIDAsString()
 }
 #endif
 
-SingleInstance::SingleInstance(int argc, const char *const *argv, bool newInstance, QObject *parent)
+SingleInstance::SingleInstance(int argc, const char *const *argv, bool skipSingleInstanceBehavior, bool skipPassing, QObject *parent)
     : QObject(parent)
     , m_server(nullptr)
 {
-    if (newInstance) {
+    // just do nothing if supposed to skip single instance behavior
+    if (skipSingleInstanceBehavior) {
         return;
     }
 
-    // check for running instance
-    static const auto appId = QString(QCoreApplication::applicationName() % QChar('-') % QCoreApplication::organizationName() % QChar('-') %
+    // check for running instance; if there is one pass parameters and exit
+    static const auto appId = applicationId();
+    if (!skipPassing && passArgsToRunningInstance(argc, argv, appId)) {
+        std::exit(EXIT_SUCCESS);
+    }
+
+    // create local server; at this point no previous instance is running anymore
+    // -> cleanup possible leftover (previous instance might have crashed)
+    QLocalServer::removeServer(appId);
+    // -> setup server
+    m_server = new QLocalServer(this);
+    connect(m_server, &QLocalServer::newConnection, this, &SingleInstance::handleNewConnection);
+    if (!m_server->listen(appId)) {
+        cerr << Phrases::Error << "Unable to launch as single instance application as " << appId.toStdString() << Phrases::EndFlush;
+    } else {
+        cerr << Phrases::Info << "Single instance application ID: " << appId.toStdString() << Phrases::EndFlush;
+    }
+}
+
+const QString &SingleInstance::applicationId()
+{
+    static const auto id = QString(QCoreApplication::applicationName() % QChar('-') % QCoreApplication::organizationName() % QChar('-') %
 #ifdef Q_OS_WINDOWS
         getCurrentProcessSIDAsString()
 #else
         QString::number(getuid())
 #endif
     );
-    passArgsToRunningInstance(argc, argv, appId);
-
-    // no previous instance running
-    // -> however, previous server instance might not have been cleaned up dute to crash
-    QLocalServer::removeServer(appId);
-    // -> start server
-    m_server = new QLocalServer(this);
-    connect(m_server, &QLocalServer::newConnection, this, &SingleInstance::handleNewConnection);
-    if (!m_server->listen(appId)) {
-        cerr << Phrases::Error << "Unable to launch as single instance application as " << appId.toStdString() << Phrases::EndFlush;
-    }
+    return id;
 }
 
-void SingleInstance::passArgsToRunningInstance(int argc, const char *const *argv, const QString &appId)
+bool SingleInstance::passArgsToRunningInstance(int argc, const char *const *argv, const QString &appId, bool waitUntilGone)
 {
-    QLocalSocket socket;
-    socket.connectToServer(appId, QLocalSocket::ReadWrite);
-    if (socket.waitForConnected(1000)) {
-        cerr << Phrases::Info << "Application already running, sending args to previous instance" << Phrases::EndFlush;
-        if (argc >= 0 && argc <= 0xFFFF) {
-            char buffer[2];
-            BE::getBytes(static_cast<std::uint16_t>(argc), buffer);
-            socket.write(buffer, 2);
-            *buffer = '\0';
-            for (const char *const *end = argv + argc; argv != end; ++argv) {
-                socket.write(*argv);
-                socket.write(buffer, 1);
-            }
-        } else {
-            cerr << Phrases::Error << "Unable to pass the specified number of arguments" << Phrases::EndFlush;
-        }
-        socket.flush();
-        socket.close();
-        exit(0);
+    if (argc < 0 || argc > 0xFFFF) {
+        cerr << Phrases::Error << "Unable to pass the specified number of arguments" << Phrases::EndFlush;
+        return false;
     }
+    auto socket = QLocalSocket();
+    socket.connectToServer(appId, QLocalSocket::ReadWrite);
+    const auto fullServerName = socket.fullServerName();
+    if (!socket.waitForConnected(1000)) {
+        return false;
+    }
+    cerr << Phrases::Info << "Application already running, sending args to previous instance" << Phrases::EndFlush;
+    char buffer[2];
+    BE::getBytes(static_cast<std::uint16_t>(argc), buffer);
+    auto error = socket.write(buffer, 2) < 0;
+    *buffer = '\0';
+    for (const char *const *end = argv + argc; argv != end && !error; ++argv) {
+        error = socket.write(*argv) < 0 || socket.write(buffer, 1) < 0;
+    }
+    error = error || !socket.flush();
+    socket.disconnectFromServer();
+    if (socket.state() != QLocalSocket::UnconnectedState) {
+        error = !socket.waitForDisconnected(1000) || error;
+    }
+    if (error) {
+        cerr << Phrases::Error << "Unable to pass args to previous instance: " << socket.errorString().toStdString() << Phrases::EndFlush;
+    }
+    if (waitUntilGone) {
+        cerr << Phrases::Info << "Waiting for previous instance to shutdown" << Phrases::EndFlush;
+        while (QFile::exists(fullServerName)) {
+            QThread::msleep(500);
+        }
+    }
+    return !error;
 }
 
 void SingleInstance::handleNewConnection()
@@ -142,7 +168,7 @@ void SingleInstance::readArgs()
 
     // reconstruct argc and argv array
     const auto argc = BE::toUInt16(argData.get());
-    vector<const char *> args;
+    auto args = vector<const char *>();
     args.reserve(argc + 1);
     for (const char *argv = argData.get() + 2, *end = argData.get() + argDataSize, *i = argv; i != end && *argv;) {
         if (!*i) {

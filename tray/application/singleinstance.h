@@ -14,18 +14,21 @@ namespace QtGui {
 class SingleInstance : public QObject {
     Q_OBJECT
 public:
-    SingleInstance(int argc, const char *const *argv, bool newInstance = false, QObject *parent = nullptr);
+    explicit SingleInstance(
+        int argc, const char *const *argv, bool skipSingleInstanceBehavior = false, bool skipPassing = false, QObject *parent = nullptr);
 
 Q_SIGNALS:
     void newInstance(int argc, const char *const *argv);
+
+public:
+    static const QString &applicationId();
+    static bool passArgsToRunningInstance(int argc, const char *const *argv, const QString &appId, bool waitUntilGone = false);
 
 private Q_SLOTS:
     void handleNewConnection();
     void readArgs();
 
 private:
-    void passArgsToRunningInstance(int argc, const char *const *argv, const QString &appId);
-
     QLocalServer *m_server;
 };
 } // namespace QtGui

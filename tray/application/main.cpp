@@ -22,6 +22,7 @@
 
 #include <c++utilities/application/argumentparser.h>
 #include <c++utilities/application/commandlineutils.h>
+#include <c++utilities/io/ansiescapecodes.h>
 #include <c++utilities/misc/parseerror.h>
 
 #include <qtutilities/misc/dialogutils.h>
@@ -52,7 +53,7 @@ Q_IMPORT_PLUGIN(ForkAwesomeIconEnginePlugin)
 ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-void handleSystemdServiceError(const QString &context, const QString &name, const QString &message)
+static void handleSystemdServiceError(const QString &context, const QString &name, const QString &message)
 {
     auto *const msgBox = new QMessageBox;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
@@ -63,7 +64,9 @@ void handleSystemdServiceError(const QString &context, const QString &name, cons
 }
 #endif
 
-int initSyncthingTray(bool windowed, bool waitForTray, const Argument &connectionConfigArg)
+QObject *parentObject = nullptr;
+
+static int initSyncthingTray(bool windowed, bool waitForTray, const Argument &connectionConfigArg)
 {
     // get settings
     auto &settings = Settings::values();
@@ -103,7 +106,7 @@ int initSyncthingTray(bool windowed, bool waitForTray, const Argument &connectio
     // show a tray icon for each connection
     TrayWidget *widget;
     for (const auto *const connectionConfig : connectionConfigurations) {
-        auto *const trayIcon = new TrayIcon(QString::fromLocal8Bit(connectionConfig), QApplication::instance());
+        auto *const trayIcon = new TrayIcon(QString::fromLocal8Bit(connectionConfig), parentObject);
         trayIcon->show();
         widget = &trayIcon->trayMenu().widget();
     }
@@ -141,7 +144,7 @@ static void trigger(bool tray, bool webUi, bool wizard)
     }
 }
 
-void shutdownSyncthingTray()
+static void shutdownSyncthingTray()
 {
     Settings::save();
     if (const auto &error = Settings::values().error; !error.isEmpty()) {
@@ -150,7 +153,7 @@ void shutdownSyncthingTray()
     Settings::Launcher::terminate();
 }
 
-int runApplication(int argc, const char *const *argv)
+static int runApplication(int argc, const char *const *argv)
 {
     // setup argument parser
     SET_APPLICATION_INFO;
@@ -174,9 +177,12 @@ int runApplication(int argc, const char *const *argv)
     configPathArg.setEnvironmentVariable(PROJECT_VARNAME_UPPER "_CONFIG_DIR");
     auto singleInstanceArg = Argument("single-instance", '\0', "does nothing if a tray icon is already shown");
     auto newInstanceArg = Argument("new-instance", '\0', "disable the usual single-process behavior");
+    auto replaceArg = Argument("replace", '\0', "replaces a currently running instance");
+    auto quitArg = OperationArgument("quit", '\0', "quits the currently running instance");
+    quitArg.setFlags(Argument::Flags::Deprecated, true); // hide as only used internally for --replace
     auto &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
     widgetsGuiArg.addSubArguments({ &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstanceArg,
-        &newInstanceArg, &showWizardArg, &assumeFirstLaunchArg, &wipArg });
+        &newInstanceArg, &replaceArg, &showWizardArg, &assumeFirstLaunchArg, &wipArg });
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
     auto cliArg = OperationArgument("cli", 'c', "run Syncthing's CLI");
     auto cliHelp = ConfigValueArgument("help", 'h', "show help for Syncthing's CLI");
@@ -189,7 +195,9 @@ int runApplication(int argc, const char *const *argv)
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
         &cliArg,
 #endif
-        &parser.noColorArg(), &parser.helpArg() });
+        &parser.noColorArg(), &parser.helpArg(), &quitArg });
+
+    // parse arguments
     parser.parseArgs(argc, argv);
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
     if (cliArg.isPresent()) {
@@ -197,8 +205,18 @@ int runApplication(int argc, const char *const *argv)
         return static_cast<int>(LibSyncthing::runCli(cliArg.values()));
     }
 #endif
+
+    // quit already running application if quit is present
+    static auto firstRun = true;
+    if (quitArg.isPresent() && !firstRun) {
+        std::cerr << EscapeCodes::Phrases::Info << "Quitting as told by another instance" << EscapeCodes::Phrases::EndFlush;
+        QCoreApplication::quit();
+        return EXIT_SUCCESS;
+    }
+
+    // quit unless Qt Widgets GUI should be shown
     if (!qtConfigArgs.qtWidgetsGuiArg().isPresent()) {
-        return 0;
+        return EXIT_SUCCESS;
     }
 
     // handle override for config dir
@@ -206,16 +224,18 @@ int runApplication(int argc, const char *const *argv)
         QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, QString::fromLocal8Bit(configPathDir));
     }
 
-    // check whether runApplication() has been called for the first time
-    static auto firstRun = true;
+    // do first-time initializations
     if (firstRun) {
         firstRun = false;
-
-        // do first-time initializations
         SET_QT_APPLICATION_INFO;
-        QApplication application(argc, const_cast<char **>(argv));
+        auto application = QApplication(argc, const_cast<char **>(argv));
         QGuiApplication::setQuitOnLastWindowClosed(false);
-        SingleInstance singleInstance(argc, argv, newInstanceArg.isPresent());
+        // stop possibly running instance if --replace is present
+        if (replaceArg.isPresent()) {
+            const char *const argv[] = { parser.executable(), quitArg.name() };
+            SingleInstance::passArgsToRunningInstance(2, argv, SingleInstance::applicationId(), true);
+        }
+        auto singleInstance = SingleInstance(argc, argv, newInstanceArg.isPresent(), replaceArg.isPresent());
         networkAccessManager().setParent(&singleInstance);
         QObject::connect(&singleInstance, &SingleInstance::newInstance, &runApplication);
         Settings::restore();
@@ -233,10 +253,10 @@ int runApplication(int argc, const char *const *argv)
         if (!settings.error.isEmpty()) {
             QMessageBox::critical(nullptr, QCoreApplication::applicationName(), settings.error);
         }
-        SyncthingLauncher launcher;
+        auto launcher = SyncthingLauncher();
         SyncthingLauncher::setMainInstance(&launcher);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        SyncthingService service;
+        auto service = SyncthingService();
         SyncthingService::setMainInstance(&service);
         settings.systemd.setupService(service);
         QObject::connect(&service, &SyncthingService::errorOccurred, &handleSystemdServiceError);
@@ -246,6 +266,8 @@ int runApplication(int argc, const char *const *argv)
         }
 
         // init Syncthing Tray and immediately shutdown on failure
+        auto parent = QObject();
+        parentObject = &parent;
         if (const auto res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg)) {
             shutdownSyncthingTray();
             return res;
