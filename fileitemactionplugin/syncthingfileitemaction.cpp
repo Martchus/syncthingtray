@@ -102,13 +102,13 @@ DirStats::DirStats(const QList<const SyncthingDir *> &dirs)
 
 QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListProperties &fileItemInfo, QObject *parent)
 {
-    QList<QAction *> actions;
+    auto actions = QList<QAction *>();
     auto &data = s_data;
     auto &connection = data.connection();
     const auto &dirs = connection.dirInfo();
 
     // get all paths
-    QStringList paths;
+    auto paths = QStringList();
     paths.reserve(fileItemInfo.items().size());
     const auto items = fileItemInfo.items();
     for (const KFileItem &item : items) {
