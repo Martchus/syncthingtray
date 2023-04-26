@@ -85,7 +85,7 @@ ColumnLayout {
                                 visible: pullErrorCount > 0
                                 onClicked: {
                                     plasmoid.nativeInterface.showDirectoryErrors(
-                                                index)
+                                                dirId)
                                     plasmoid.expanded = false
                                 }
                             }

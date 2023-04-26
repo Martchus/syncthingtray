@@ -492,17 +492,15 @@ void SyncthingApplet::showInternalErrorsDialog()
     errorViewDlg->show();
 }
 
-void SyncthingApplet::showDirectoryErrors(unsigned int directoryIndex)
+void SyncthingApplet::showDirectoryErrors(const QString &dirId)
 {
-    const auto &dirs = m_connection.dirInfo();
-    if (directoryIndex >= dirs.size()) {
+    auto row = 0;
+    auto *const dir = m_connection.findDirInfo(dirId, row);
+    if (!dir) {
         return;
     }
-
-    const auto &dir(dirs[directoryIndex]);
-    m_connection.requestDirPullErrors(dir.id);
-
-    auto *const dlg = new DirectoryErrorsDialog(m_connection, dir);
+    m_connection.requestDirPullErrors(dirId);
+    auto *const dlg = new DirectoryErrorsDialog(m_connection, *dir);
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
     centerWidget(dlg);
     dlg->show();
