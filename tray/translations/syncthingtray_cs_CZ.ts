@@ -401,12 +401,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="60"/>
+        <location filename="../application/main.cpp" line="61"/>
         <source>Unable to </source>
         <translation>Nedaří se </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="93"/>
+        <location filename="../application/main.cpp" line="96"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>Oznamovací oblast systémového panelu je (pro tuto chvíli) nedostupná. Je možné otevřít nabídku oznamovací oblasti jako běžné okno pomocí příznaku „--windowed“. Dále je možné spustit s volbou „--wait“ a čekat na to, až bude oznamovací oblast k dispozici (namísto zobrazení této zprávy).</translation>
     </message>
@@ -419,7 +419,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="vanished">Poznamenejme, že dialog nastavení umožňuje importovat URL adresu, přihlašovací údaje a klíč k API z místního nastavení Syncthing.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="120"/>
+        <location filename="../application/main.cpp" line="123"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Knihovny Qt byly sestaveny bez podpory pro ikonu v oznamovací oblasti. Měli byste otevřít nabídku pro oznamovací oblast jako běžné okno pomocí příznaku -w.</translation>
     </message>

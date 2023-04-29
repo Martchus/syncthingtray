@@ -401,12 +401,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="60"/>
+        <location filename="../application/main.cpp" line="61"/>
         <source>Unable to </source>
         <translation>无法 </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="93"/>
+        <location filename="../application/main.cpp" line="96"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>系统托盘当前不可用。不过，您可以使用 --windowed 将托盘菜单作为常规窗口打开。也可以使用 --wait 启动 Syncthing Tray 以等待系统托盘可用，而不是显示此消息。</translation>
     </message>
@@ -419,7 +419,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="vanished">请注意，设置对话框允许从本地 Syncthing 配置导入 URL、凭据和 API 密钥。</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="120"/>
+        <location filename="../application/main.cpp" line="123"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Qt 库没有使用托盘图标支持构建。不过，您可以使用 -w 将托盘菜单作为常规窗口打开。</translation>
     </message>

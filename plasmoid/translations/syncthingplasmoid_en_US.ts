@@ -252,12 +252,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="538"/>
+        <location filename="../lib/syncthingapplet.cpp" line="536"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="606"/>
+        <location filename="../lib/syncthingapplet.cpp" line="604"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
