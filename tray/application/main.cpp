@@ -156,9 +156,6 @@ static void shutdownSyncthingTray()
 static int runApplication(int argc, const char *const *argv)
 {
     // setup argument parser
-    SET_APPLICATION_INFO;
-    CMD_UTILS_CONVERT_ARGS_TO_UTF8;
-    CMD_UTILS_HANDLE_VIRTUAL_TERMINAL_PROCESSING;
     auto parser = ArgumentParser();
     auto qtConfigArgs = QT_CONFIG_ARGUMENTS();
     auto windowedArg = ConfigValueArgument("windowed", 'w', "opens the tray menu as a regular window");
@@ -301,5 +298,8 @@ static int runApplication(int argc, const char *const *argv)
 
 int main(int argc, char *argv[])
 {
+    SET_APPLICATION_INFO;
+    CMD_UTILS_CONVERT_ARGS_TO_UTF8;
+    CMD_UTILS_HANDLE_VIRTUAL_TERMINAL_PROCESSING;
     return runApplication(argc, argv);
 }

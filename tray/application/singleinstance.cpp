@@ -21,7 +21,6 @@
 #include <unistd.h>
 #endif
 
-using namespace std;
 using namespace CppUtilities;
 using namespace CppUtilities::EscapeCodes;
 
@@ -88,9 +87,9 @@ SingleInstance::SingleInstance(int argc, const char *const *argv, bool skipSingl
     m_server = new QLocalServer(this);
     connect(m_server, &QLocalServer::newConnection, this, &SingleInstance::handleNewConnection);
     if (!m_server->listen(appId)) {
-        cerr << Phrases::Error << "Unable to launch as single instance application as " << appId.toStdString() << Phrases::EndFlush;
+        std::cerr << Phrases::Error << "Unable to launch as single instance application as " << appId.toStdString() << Phrases::EndFlush;
     } else {
-        cerr << Phrases::Info << "Single instance application ID: " << appId.toStdString() << Phrases::EndFlush;
+        std::cerr << Phrases::Info << "Single instance application ID: " << appId.toStdString() << Phrases::EndFlush;
     }
 }
 
@@ -109,7 +108,7 @@ const QString &SingleInstance::applicationId()
 bool SingleInstance::passArgsToRunningInstance(int argc, const char *const *argv, const QString &appId, bool waitUntilGone)
 {
     if (argc < 0 || argc > 0xFFFF) {
-        cerr << Phrases::Error << "Unable to pass the specified number of arguments" << Phrases::EndFlush;
+        std::cerr << Phrases::Error << "Unable to pass the specified number of arguments" << Phrases::EndFlush;
         return false;
     }
     auto socket = QLocalSocket();
@@ -118,7 +117,7 @@ bool SingleInstance::passArgsToRunningInstance(int argc, const char *const *argv
     if (!socket.waitForConnected(1000)) {
         return false;
     }
-    cerr << Phrases::Info << "Application already running, sending args to previous instance" << Phrases::EndFlush;
+    std::cerr << Phrases::Info << "Application already running, sending args to previous instance" << Phrases::EndFlush;
     char buffer[2];
     BE::getBytes(static_cast<std::uint16_t>(argc), buffer);
     auto error = socket.write(buffer, 2) < 0;
@@ -126,19 +125,20 @@ bool SingleInstance::passArgsToRunningInstance(int argc, const char *const *argv
     for (const char *const *end = argv + argc; argv != end && !error; ++argv) {
         error = socket.write(*argv) < 0 || socket.write(buffer, 1) < 0;
     }
-    error = error || !socket.flush();
+    error = error || !socket.waitForBytesWritten(1000);
     socket.disconnectFromServer();
     if (socket.state() != QLocalSocket::UnconnectedState) {
         error = !socket.waitForDisconnected(1000) || error;
     }
     if (error) {
-        cerr << Phrases::Error << "Unable to pass args to previous instance: " << socket.errorString().toStdString() << Phrases::EndFlush;
+        std::cerr << Phrases::Error << "Unable to pass args to previous instance: " << socket.errorString().toStdString() << Phrases::EndFlush;
     }
-    if (waitUntilGone) {
-        cerr << Phrases::Info << "Waiting for previous instance to shutdown" << Phrases::EndFlush;
-        while (QFile::exists(fullServerName)) {
+    if (waitUntilGone && QFile::exists(fullServerName)) {
+        const auto fullServerNameStd = fullServerName.toStdString();
+        std::cerr << Phrases::Info << "Waiting for previous instance to shutdown (" << fullServerNameStd << " still exists)" << Phrases::EndFlush;
+        do {
             QThread::msleep(500);
-        }
+        } while (QFile::exists(fullServerName));
     }
     return !error;
 }
@@ -152,33 +152,30 @@ void SingleInstance::handleNewConnection()
 void SingleInstance::readArgs()
 {
     auto *const socket = static_cast<QLocalSocket *>(sender());
-
-    // check arg data size
-    const auto argDataSize = socket->bytesAvailable();
-    if (argDataSize < 2 && argDataSize > (1024 * 1024)) {
-        cerr << Phrases::Error << "Another application instance sent invalid argument data." << Phrases::EndFlush;
+    const auto argData = socket->readAll();
+    if (argData.size() < 2) {
+        std::cerr << Phrases::Error << "Another application instance sent invalid argument data (payload only " << argData.size() << " bytes)." << Phrases::EndFlush;
         return;
     }
-
-    // read arg data
-    auto argData = make_unique<char[]>(static_cast<size_t>(argDataSize));
-    socket->read(argData.get(), argDataSize);
     socket->close();
     socket->deleteLater();
 
     // reconstruct argc and argv array
-    const auto argc = BE::toUInt16(argData.get());
-    auto args = vector<const char *>();
+    const auto argc = BE::toUInt16(argData.data());
+    auto args = std::vector<const char *>();
     args.reserve(argc + 1);
-    for (const char *argv = argData.get() + 2, *end = argData.get() + argDataSize, *i = argv; i != end && *argv;) {
+    std::cerr << Phrases::Info << "Evaluating " << argc << " arguments from another instance: " << Phrases::End;
+    for (const char *argv = argData.data() + 2, *end = argData.data() + argData.size(), *i = argv; i != end && *argv;) {
         if (!*i) {
             args.push_back(argv);
+            std::cerr << ' ' << argv;
             argv = ++i;
         } else {
             ++i;
         }
     }
     args.push_back(nullptr);
+    std::cerr << '\n';
 
     emit newInstance(static_cast<int>(args.size() - 1), args.data());
 }
