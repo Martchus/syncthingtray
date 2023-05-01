@@ -73,6 +73,12 @@ if (USE_BOOST_PROCESS)
             SOURCE syncthingprocess.cpp
             APPEND
             PROPERTY COMPILE_DEFINITIONS BOOST_USE_WINDOWS_H WIN32_LEAN_AND_MEAN)
+    elseif (MSVC)
+        # prevent "Please define _WIN32_WINNT or _WIN32_WINDOWS appropriately."
+        set_property(
+            SOURCE syncthingprocess.cpp
+            APPEND
+            PROPERTY COMPILE_DEFINITIONS _WIN32_WINNT=0x0601)
     endif ()
     # add threading library as it is needed by Boost.Process
     use_package(TARGET_NAME Threads::Threads PACKAGE_NAME Threads PACKAGE_ARGS REQUIRED)
