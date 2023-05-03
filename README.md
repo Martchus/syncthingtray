@@ -536,7 +536,7 @@ Setting the environment variable `PLASMA_USE_QT_SCALING=1` should fix the
 [issue](https://bugs.kde.org/show_bug.cgi?id=356446) on recent Plasma versions but
 there are still [some problems](https://bugs.kde.org/show_bug.cgi?id=457802#c1).
 
-### Workaround missing support for Windows 10 dark mode
+### Tweak GUI settings for dark mode under Windows
 The dark mode introduced in Windows 10 does not affect traditional desktop
 applications like Syncthing Tray. If you select the widgets style "Fusion" under
 "Qt/Appearance", Syncthing Tray will no longer use native styling of traditional
