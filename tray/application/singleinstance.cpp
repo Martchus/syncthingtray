@@ -1,5 +1,7 @@
 #include "./singleinstance.h"
 
+#include "resources/config.h"
+
 #include <c++utilities/conversion/binaryconversion.h>
 #include <c++utilities/io/ansiescapecodes.h>
 
@@ -95,6 +97,10 @@ SingleInstance::SingleInstance(int argc, const char *const *argv, bool skipSingl
 
 const QString &SingleInstance::applicationId()
 {
+    static const auto envOverride = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_SINGLE_INSTANCE_ID");
+    if (!envOverride.isEmpty()) {
+        return envOverride;
+    }
     static const auto id = QString(QCoreApplication::applicationName() % QChar('-') % QCoreApplication::organizationName() % QChar('-') %
 #ifdef Q_OS_WINDOWS
         getCurrentProcessSIDAsString()
