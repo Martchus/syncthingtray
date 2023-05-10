@@ -112,7 +112,7 @@ SYNCTHINGWIDGETS_EXPORT std::optional<QString> configuredAutostartPath();
 SYNCTHINGWIDGETS_EXPORT QString supposedAutostartPath();
 SYNCTHINGWIDGETS_EXPORT bool setAutostartPath(const QString &path);
 SYNCTHINGWIDGETS_EXPORT bool isAutostartEnabled();
-SYNCTHINGWIDGETS_EXPORT bool setAutostartEnabled(bool enabled);
+SYNCTHINGWIDGETS_EXPORT bool setAutostartEnabled(bool enabled, bool force = false);
 
 BEGIN_DECLARE_TYPEDEF_UI_FILE_BASED_OPTION_PAGE(LauncherOptionPage)
 class QT_UTILITIES_EXPORT LauncherOptionPage : public QObject, public ::QtUtilities::UiFileBasedOptionPage<Ui::LauncherOptionPage> {

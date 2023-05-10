@@ -89,6 +89,7 @@ void SetupDetection::reset()
     timedOut = false;
     configOk = false;
     autostartEnabled = false;
+    autostartConfiguredPath.reset();
     config.guiAddress.clear();
     config.guiApiKey.clear();
     connection.disconnect();
@@ -111,7 +112,9 @@ void SetupDetection::startTest()
     initConnection();
     connection.reconnect();
     launcher.launch(launcherSettings);
-    autostartEnabled = isAutostartEnabled();
+    autostartConfiguredPath = configuredAutostartPath();
+    autostartEnabled = autostartConfiguredPath.has_value() ? !autostartConfiguredPath.value().isEmpty() : isAutostartEnabled();
+    autostartSupposedPath = supposedAutostartPath();
     timeout.start();
 }
 

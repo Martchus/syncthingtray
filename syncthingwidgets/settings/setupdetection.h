@@ -67,6 +67,8 @@ public:
     bool timedOut = false;
     bool configOk = false;
     bool autostartEnabled = false;
+    std::optional<QString> autostartConfiguredPath;
+    QString autostartSupposedPath;
 
 private:
     bool m_testStarted = false;

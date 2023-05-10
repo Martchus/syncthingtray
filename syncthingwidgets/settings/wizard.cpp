@@ -188,8 +188,8 @@ bool Wizard::changeSettings()
 
     // enable/disable auto start
 #ifdef SETTINGS_WIZARD_AUTOSTART
-    if (!settings.isPlasmoid && autoStart() != detection.autostartEnabled) {
-        setAutostartEnabled(autoStart());
+    if (!settings.isPlasmoid) {
+        setAutostartEnabled(autoStart(), true);
     }
 #endif
 
@@ -314,6 +314,9 @@ void Wizard::showDetailsFromSetupDetection()
 #ifdef SETTINGS_WIZARD_AUTOSTART
     addParagraph(tr("Autostart:"));
     infoItems << tr("Currently %1").arg(detection.autostartEnabled ? tr("enabled") : tr("disabled"));
+    if (detection.autostartConfiguredPath.has_value()) {
+        infoItems << tr("Points to \"%1\"").arg(detection.autostartConfiguredPath.value());
+    }
     addList(infoItems);
 #endif
 
@@ -917,14 +920,25 @@ void ApplyWizardPage::initializePage()
     const auto &detection = wizard->setupDetection();
     const auto &currentSettings = Settings::values();
     auto html = QStringLiteral("<p><b>%1</b></p><ul>").arg(tr("Summary:"));
-    auto addListItem = [&html](const QString &text) {
-        html.append(QStringLiteral("<li>"));
-        html.append(text);
-        html.append(QStringLiteral("</li>"));
+    auto makeListItem = [](QString &output, const QString &text) {
+        output.append(QStringLiteral("<li>"));
+        output.append(text);
+        output.append(QStringLiteral("</li>"));
     };
-    auto logFeature = [&addListItem](const QString &feature, bool enabled, bool enabledBefore) {
-        addListItem(enabled == enabledBefore ? (tr("Keep %1 %2").arg(feature, enabled ? tr("enabled") : tr("disabled")))
-                                             : (tr("%1 %2").arg(enabled ? tr("Enable") : tr("Disable"), feature)));
+    auto makeNestedListItem = [](QString &output, const QString &text) {
+        output.append(QStringLiteral("<ul><li>"));
+        output.append(text);
+        output.append(QStringLiteral("</li></ul>"));
+    };
+    auto addListItem = [&makeListItem, &html](const QString &text) {
+        makeListItem(html, text);
+    };
+    auto logFeature = [&makeNestedListItem, &addListItem](const QString &feature, bool enabled, bool enabledBefore, const QString &remark = QString()) {
+        auto text = enabled == enabledBefore ? (tr("Keep %1 %2").arg(feature, enabled ? tr("enabled") : tr("disabled")))                                      : (tr("%1 %2").arg(enabled ? tr("Enable") : tr("Disable"), feature));
+        if (!remark.isEmpty()) {
+            makeNestedListItem(text, remark);
+        }
+        addListItem(text);
     };
     auto mainConfig = QString();
     auto extraInfo = QString();
@@ -954,9 +968,7 @@ void ApplyWizardPage::initializePage()
         break;
     }
     if (!extraInfo.isEmpty()) {
-        mainConfig.append(QStringLiteral("<ul><li>"));
-        mainConfig.append(extraInfo);
-        mainConfig.append(QStringLiteral("</li></ul>"));
+        makeNestedListItem(mainConfig, extraInfo);
     }
     addListItem(mainConfig);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -965,7 +977,13 @@ void ApplyWizardPage::initializePage()
 #endif
 #ifdef SETTINGS_WIZARD_AUTOSTART
     if (!currentSettings.isPlasmoid) {
-        logFeature(tr("autostart of Syncthing Tray"), wizard->autoStart(), detection.autostartEnabled);
+        auto remark = QString();
+        auto action = QString();
+        if (detection.autostartConfiguredPath.has_value() && !detection.autostartConfiguredPath.value().isEmpty() && detection.autostartConfiguredPath.value() != detection.autostartSupposedPath) {
+            action = wizard->autoStart() ? tr("Override") : tr("Delete");
+            remark = tr("%1 existing autostart entry for \"%2\"").arg(action, detection.autostartConfiguredPath.value());
+        }
+        logFeature(tr("autostart of Syncthing Tray"), wizard->autoStart(), detection.autostartEnabled, remark);
     }
 #endif
     html.append(QStringLiteral("</ul><p><b>%1</b></p><ul><li>%2</li><li>%3</li><li>%4</li></ul>")

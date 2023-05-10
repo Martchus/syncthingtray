@@ -926,18 +926,19 @@ bool isAutostartEnabled()
  * \remarks
  * - Only implemented under Linux/Windows/Mac. Does nothing on other platforms.
  * - If a startup entry already exists and \a enabled is true, this function will not touch the existing entry - even if it points
- *   to another application. Delete the existing entry first if it is no longer wanted. If the currently configured path cannot be
- *   determined it will always be overridden, though.
+ *   to another application. Delete the existing entry first if it is no longer wanted or set \a force to true.
+ *     - Note that is might not be possible to determine the currently configured path. If the path cannot be determined an
+ *       existing autostart entry will always be overridden (despite \a force being false).
  * - If no startup entry could be detected via isAutostartEnabled() and \a enabled is false this function doesn't touch anything.
  */
-bool setAutostartEnabled(bool enabled)
+bool setAutostartEnabled(bool enabled, bool force)
 {
     const auto configuredPath = configuredAutostartPath();
     if (!(configuredPath.has_value() ? !configuredPath.value().isEmpty() : isAutostartEnabled()) && !enabled) {
         return true;
     }
     const auto supposedPath = supposedAutostartPath();
-    if (enabled && configuredPath.has_value() && !configuredPath.value().isEmpty() && configuredPath.value() != supposedPath) {
+    if (!force && enabled && configuredPath.has_value() && !configuredPath.value().isEmpty() && configuredPath.value() != supposedPath) {
         return true; // don't touch existing entry
     }
    return setAutostartPath(enabled ? supposedPath : QString());
