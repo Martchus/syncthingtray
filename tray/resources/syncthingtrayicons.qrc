@@ -17,5 +17,6 @@
         <file>icons/hicolor/scalable/actions/appointment-new.svg</file>
         <file>icons/hicolor/scalable/actions/download.svg</file>
         <file>icons/hicolor/scalable/actions/window-pin.svg</file>
+        <file>icons/hicolor/scalable/actions/edit-delete.svg</file>
     </qresource>
 </RCC>

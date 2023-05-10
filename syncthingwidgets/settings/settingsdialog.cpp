@@ -57,6 +57,8 @@
 #include <QStandardPaths>
 #elif defined(PLATFORM_WINDOWS)
 #include <QSettings>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 #elif defined(PLATFORM_MAC)
 #include <QFileInfo>
 #endif
@@ -739,9 +741,16 @@ AutostartOptionPage::~AutostartOptionPage()
 QWidget *AutostartOptionPage::setupWidget()
 {
     auto *widget = AutostartOptionPageBase::setupWidget();
+    auto *style = QApplication::style();
 
     ui()->infoIconLabel->setPixmap(
-        QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation, nullptr, ui()->infoIconLabel).pixmap(ui()->infoIconLabel->size()));
+        style->standardIcon(QStyle::SP_MessageBoxInformation, nullptr, ui()->infoIconLabel).pixmap(ui()->infoIconLabel->size()));
+    ui()->pathWarningIconLabel->setPixmap(
+        style->standardIcon(QStyle::SP_MessageBoxWarning, nullptr, ui()->pathWarningIconLabel).pixmap(ui()->pathWarningIconLabel->size()));
+    QObject::connect(ui()->deleteExistingEntryPushButton, &QPushButton::clicked, widget, [this] {
+        setAutostartPath(QString());
+        reset();
+    });
 #if defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
     ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage",
         "This is achieved by adding a *.desktop file under <i>~/.config/autostart</i> so the setting only affects the current user."));
@@ -755,16 +764,143 @@ QWidget *AutostartOptionPage::setupWidget()
 #else
     ui()->platformNoteLabel->setText(
         QCoreApplication::translate("QtGui::AutostartOptionPage", "This feature has not been implemented for your platform (yet)."));
+    m_unsupported = true;
+    ui()->pathWidget->setVisible(false);
     ui()->autostartCheckBox->setEnabled(false);
 #endif
     return widget;
 }
 
+std::optional<QString> configuredAutostartPath()
+{
+#if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
+    auto desktopFile = QFile(QStandardPaths::locate(QStandardPaths::ConfigLocation, QStringLiteral("autostart/" PROJECT_NAME ".desktop")));
+    // check whether the file can be opened and whether it is enabled but prevent reading large files
+    if (!desktopFile.open(QFile::ReadOnly)) {
+        return QString();
+    }
+    if (desktopFile.size() > (5 * 1024)) {
+        return std::nullopt;
+    }
+    const auto data = QString::fromUtf8(desktopFile.readAll());
+    if (data.contains(QLatin1String("Hidden=true"))) {
+        return QString();
+    }
+    static const auto regex = QRegularExpression(QStringLiteral("Exec=\"?([^\"]*)\"?"));
+    const auto match = regex.match(data);
+    return match.hasCaptured(1) ? std::make_optional(match.captured(1)) : std::nullopt;
+#elif defined(PLATFORM_WINDOWS)
+    return QSettings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat)
+        .value(QStringLiteral(PROJECT_NAME)).toString();
+#else
+    return std::nullopt;
+#endif
+}
+
+/*!
+ * \brief Returns the autostart path that will be configured by invoking setAutostartEnabled(true).
+ * \remarks
+ * - Only implemented under Linux/Windows/Mac. Always returns false on other platforms.
+ * - Does not check whether the startup entry is functional (eg. the specified path is still valid and points to the
+ *   currently running instance of the application).
+ */
+QString supposedAutostartPath()
+{
+#if 1 || defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
+#ifndef SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH
+#define SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH QCoreApplication::applicationFilePath()
+#endif
+    return qEnvironmentVariable("APPIMAGE", SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH);
+#elif defined(PLATFORM_WINDOWS)
+    return QCoreApplication::applicationFilePath().replace(QChar('/'), QChar('\\');
+#else
+    return QCoreApplication::applicationFilePath();
+#endif
+}
+
+/*!
+ * \brief Sets the \a path of the application's autostart entry or removes the entry if \a path is empty.
+ */
+bool setAutostartPath(const QString &path)
+{
+#if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
+    const auto configPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
+    if (configPath.isEmpty()) {
+        return false;
+    }
+    if (!path.isEmpty() && !QDir().mkpath(configPath + QStringLiteral("/autostart"))) {
+        return false;
+    }
+    auto desktopFile = QFile(configPath + QStringLiteral("/autostart/" PROJECT_NAME ".desktop"));
+    if (!path.isEmpty()) {
+        if (!desktopFile.open(QFile::WriteOnly | QFile::Truncate)) {
+            return false;
+        }
+        desktopFile.write("[Desktop Entry]\n"
+                          "Name=" APP_NAME "\n"
+                          "Exec=\"");
+        desktopFile.write(path.toUtf8());
+        desktopFile.write("\" qt-widgets-gui --single-instance\nComment=" APP_DESCRIPTION "\n"
+                          "Icon=" PROJECT_NAME "\n"
+                          "Type=Application\n"
+                          "Terminal=false\n"
+                          "X-GNOME-Autostart-Delay=0\n"
+                          "X-GNOME-Autostart-enabled=true");
+        return desktopFile.error() == QFile::NoError && desktopFile.flush();
+
+    } else {
+        return !desktopFile.exists() || desktopFile.remove();
+    }
+
+#elif defined(PLATFORM_WINDOWS)
+    auto settings = QSettings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat);
+    if (!path.isEmpty()) {
+        settings.setValue(QStringLiteral(PROJECT_NAME), path);
+    } else {
+        settings.remove(QStringLiteral(PROJECT_NAME));
+    }
+    settings.sync();
+    return true;
+
+#elif defined(PLATFORM_MAC)
+    const auto libraryPath = QDir::home().filePath(QStringLiteral("Library"));
+    if (!path.isEmpty() && !QDir().mkpath(libraryPath + QStringLiteral("/LaunchAgents"))) {
+        return false;
+    }
+    auto launchdPlistFile = QFile(libraryPath + QStringLiteral("/LaunchAgents/" PROJECT_NAME ".plist"));
+    if (!path.isEmpty()) {
+        if (!launchdPlistFile.open(QFile::WriteOnly | QFile::Truncate)) {
+            return false;
+        }
+        launchdPlistFile.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                               "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n"
+                               "<plist version=\"1.0\">\n"
+                               "    <dict>\n"
+                               "        <key>Label</key>\n"
+                               "        <string>" PROJECT_NAME "</string>\n"
+                               "        <key>ProgramArguments</key>\n"
+                               "        <array>\n"
+                               "            <string>");
+        launchdPlistFile.write(path.toUtf8());
+        launchdPlistFile.write("</string>\n"
+                               "        </array>\n"
+                               "        <key>KeepAlive</key>\n"
+                               "        <true/>\n"
+                               "    </dict>\n"
+                               "</plist>\n");
+        return launchdPlistFile.error() == QFile::NoError && launchdPlistFile.flush();
+    } else {
+        return !launchdPlistFile.exists() || launchdPlistFile.remove();
+    }
+#endif
+}
+
 /*!
  * \brief Returns whether the application is launched on startup.
  * \remarks
- * - Only implemented under Linux/Windows. Always returns false on other platforms.
- * - Does not check whether the startup entry is functional (eg. the specified path is still valid).
+ * - Only implemented under Linux/Windows/Mac. Always returns false on other platforms.
+ * - Does not check whether the startup entry is functional (eg. the specified path is still valid and points to the
+ *   currently running instance of the application).
  */
 bool isAutostartEnabled()
 {
@@ -786,96 +922,32 @@ bool isAutostartEnabled()
 }
 
 /*!
- * \brief Sets whether the application is launchedc on startup.
+ * \brief Sets whether the application is launched on startup.
  * \remarks
- * - Only implemented under Linux/Windows. Does nothing on other platforms.
- * - If a startup entry already exists and \a enabled is true, this function will ensure the path of the existing entry is valid.
+ * - Only implemented under Linux/Windows/Mac. Does nothing on other platforms.
+ * - If a startup entry already exists and \a enabled is true, this function will not touch the existing entry - even if it points
+ *   to another application. Delete the existing entry first if it is no longer wanted. If the currently configured path cannot be
+ *   determined it will always be overridden, though.
  * - If no startup entry could be detected via isAutostartEnabled() and \a enabled is false this function doesn't touch anything.
  */
 bool setAutostartEnabled(bool enabled)
 {
-    if (!isAutostartEnabled() && !enabled) {
+    const auto configuredPath = configuredAutostartPath();
+    if (!(configuredPath.has_value() ? !configuredPath.value().isEmpty() : isAutostartEnabled()) && !enabled) {
         return true;
     }
-
-#if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
-    const auto configPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
-    if (configPath.isEmpty()) {
-        return !enabled;
+    const auto supposedPath = supposedAutostartPath();
+    if (enabled && configuredPath.has_value() && !configuredPath.value().isEmpty() && configuredPath.value() != supposedPath) {
+        return true; // don't touch existing entry
     }
-    if (enabled && !QDir().mkpath(configPath + QStringLiteral("/autostart"))) {
-        return false;
-    }
-    auto desktopFile = QFile(configPath + QStringLiteral("/autostart/" PROJECT_NAME ".desktop"));
-    if (enabled) {
-        if (!desktopFile.open(QFile::WriteOnly | QFile::Truncate)) {
-            return false;
-        }
-        desktopFile.write("[Desktop Entry]\n"
-                          "Name=" APP_NAME "\n"
-                          "Exec=\"");
-#ifndef SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH
-#define SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH QCoreApplication::applicationFilePath()
-#endif
-        desktopFile.write(qEnvironmentVariable("APPIMAGE", SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH).toUtf8().data());
-        desktopFile.write("\" qt-widgets-gui --single-instance\nComment=" APP_DESCRIPTION "\n"
-                          "Icon=" PROJECT_NAME "\n"
-                          "Type=Application\n"
-                          "Terminal=false\n"
-                          "X-GNOME-Autostart-Delay=0\n"
-                          "X-GNOME-Autostart-enabled=true");
-        return desktopFile.error() == QFile::NoError && desktopFile.flush();
-
-    } else {
-        return !desktopFile.exists() || desktopFile.remove();
-    }
-
-#elif defined(PLATFORM_WINDOWS)
-    auto settings = QSettings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat);
-    if (enabled) {
-        settings.setValue(QStringLiteral(PROJECT_NAME), QCoreApplication::applicationFilePath().replace(QChar('/'), QChar('\\')));
-    } else {
-        settings.remove(QStringLiteral(PROJECT_NAME));
-    }
-    settings.sync();
-    return true;
-
-#elif defined(PLATFORM_MAC)
-    const auto libraryPath = QDir::home().filePath(QStringLiteral("Library"));
-    if (enabled && !QDir().mkpath(libraryPath + QStringLiteral("/LaunchAgents"))) {
-        return false;
-    }
-    auto launchdPlistFile = QFile(libraryPath + QStringLiteral("/LaunchAgents/" PROJECT_NAME ".plist"));
-    if (enabled) {
-        if (!launchdPlistFile.open(QFile::WriteOnly | QFile::Truncate)) {
-            return false;
-        }
-        launchdPlistFile.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                               "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n"
-                               "<plist version=\"1.0\">\n"
-                               "    <dict>\n"
-                               "        <key>Label</key>\n"
-                               "        <string>" PROJECT_NAME "</string>\n"
-                               "        <key>ProgramArguments</key>\n"
-                               "        <array>\n"
-                               "            <string>");
-        launchdPlistFile.write(QCoreApplication::applicationFilePath().toUtf8().data());
-        launchdPlistFile.write("</string>\n"
-                               "        </array>\n"
-                               "        <key>KeepAlive</key>\n"
-                               "        <true/>\n"
-                               "    </dict>\n"
-                               "</plist>\n");
-        return launchdPlistFile.error() == QFile::NoError && launchdPlistFile.flush();
-
-    } else {
-        return !launchdPlistFile.exists() || launchdPlistFile.remove();
-    }
-#endif
+   return setAutostartPath(enabled ? supposedPath : QString());
 }
 
 bool AutostartOptionPage::apply()
 {
+    if (m_unsupported) {
+        return true; // don't treat this as an error
+    }
     if (!setAutostartEnabled(ui()->autostartCheckBox->isChecked())) {
         errors() << QCoreApplication::translate("QtGui::AutostartOptionPage", "unable to modify startup entry");
         return false;
@@ -885,8 +957,31 @@ bool AutostartOptionPage::apply()
 
 void AutostartOptionPage::reset()
 {
-    if (hasBeenShown()) {
+    if (!hasBeenShown() || m_unsupported) {
+        return;
+    }
+    const auto configuredPath = configuredAutostartPath();
+    if (!configuredPath.has_value()) { // we can't determine the currently configured path
+        ui()->pathWidget->setVisible(false);
+        ui()->autostartCheckBox->setEnabled(true);
         ui()->autostartCheckBox->setChecked(isAutostartEnabled());
+        return;
+    }
+    const auto autostartEnabled = !configuredPath.value().isEmpty();
+    ui()->autostartCheckBox->setChecked(autostartEnabled);
+    if (!autostartEnabled) {
+        ui()->pathWidget->setVisible(false);
+        ui()->autostartCheckBox->setEnabled(true);
+        return;
+    }
+    const auto supposedPath = supposedAutostartPath();
+    const auto pathMismatch = configuredPath != supposedPath;
+    ui()->pathWidget->setVisible(pathMismatch);
+    ui()->autostartCheckBox->setEnabled(!pathMismatch);
+    if (pathMismatch) {
+        ui()->pathWarningLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage", "There is already an autostart entry for \"%1\". "
+                                           "It will not be overridden when applying changes unless you delete it first.")
+                                            .arg(configuredPath.value()));
     }
 }
 

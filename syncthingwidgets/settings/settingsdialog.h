@@ -15,6 +15,8 @@
 #include <QStringList>
 #include <QWidget>
 
+#include <optional>
+
 QT_FORWARD_DECLARE_CLASS(QAction)
 QT_FORWARD_DECLARE_CLASS(QLabel)
 
@@ -101,7 +103,14 @@ struct {
 } m_widgets[Data::StatusIconSettings::distinguishableColorCount];
 END_DECLARE_OPTION_PAGE
 
-DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_SETUP(AutostartOptionPage)
+BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(AutostartOptionPage)
+private:
+bool m_unsupported = false;
+DECLARE_SETUP_WIDGETS
+END_DECLARE_OPTION_PAGE
+SYNCTHINGWIDGETS_EXPORT std::optional<QString> configuredAutostartPath();
+SYNCTHINGWIDGETS_EXPORT QString supposedAutostartPath();
+SYNCTHINGWIDGETS_EXPORT bool setAutostartPath(const QString &path);
 SYNCTHINGWIDGETS_EXPORT bool isAutostartEnabled();
 SYNCTHINGWIDGETS_EXPORT bool setAutostartEnabled(bool enabled);
 
