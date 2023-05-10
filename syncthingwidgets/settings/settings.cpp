@@ -639,6 +639,7 @@ void Connection::addConfigFromWizard(const Data::SyncthingConfig &config)
     const auto apiKey = config.guiApiKey.toUtf8();
     if (url == primary.syncthingUrl && config.guiUser == primary.userName && config.guiApiKey == primary.apiKey) {
         primary.authEnabled = false; // just disable auth to solely rely on the API key
+        primary.autoConnect = true; // ensure the connection is actually established when applying
         return;
     }
 
@@ -653,6 +654,7 @@ void Connection::addConfigFromWizard(const Data::SyncthingConfig &config)
     primary.authEnabled = false;
     primary.password.clear();
     primary.apiKey = apiKey;
+    primary.autoConnect = true; // ensure the connection is actually established when applying
 }
 
 } // namespace Settings
