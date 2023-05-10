@@ -45,7 +45,9 @@ namespace QtGui {
 
 constexpr int syncthingPollTimeout = 60 * 1000;
 constexpr int syncthingPollInterval = 2000;
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 constexpr int systemdPollTimeout = 10 * 1000;
+#endif
 
 Wizard *Wizard::s_instance = nullptr;
 
@@ -786,10 +788,10 @@ void MainConfigWizardPage::handleSelectionChanged()
     if (!wizard) {
         return;
     }
-    const auto &detection = wizard->setupDetection();
 
     // enable/disable option for Systemd integration
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    const auto &detection = wizard->setupDetection();
     if (!m_ui->cfgCurrentlyRunningRadioButton->isHidden()) {
         const auto &systemdSettings = Settings::values().systemd;
         m_ui->enableSystemdIntegrationCheckBox->setChecked(systemdSettings.showButton || systemdSettings.considerForReconnect
