@@ -56,9 +56,9 @@
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
 #include <QStandardPaths>
 #elif defined(PLATFORM_WINDOWS)
-#include <QSettings>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QSettings>
 #elif defined(PLATFORM_MAC)
 #include <QFileInfo>
 #endif
@@ -803,7 +803,8 @@ std::optional<QString> configuredAutostartPath()
     return captured.isNull() ? std::nullopt : std::make_optional(captured);
 #elif defined(PLATFORM_WINDOWS)
     return QSettings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat)
-        .value(QStringLiteral(PROJECT_NAME)).toString();
+        .value(QStringLiteral(PROJECT_NAME))
+        .toString();
 #else
     return std::nullopt;
 #endif
@@ -953,7 +954,7 @@ bool setAutostartEnabled(bool enabled, bool force)
     if (!force && enabled && configuredPath.has_value() && !configuredPath.value().isEmpty() && configuredPath.value() != supposedPath) {
         return true; // don't touch existing entry
     }
-   return setAutostartPath(enabled ? supposedPath : QString());
+    return setAutostartPath(enabled ? supposedPath : QString());
 }
 
 bool AutostartOptionPage::apply()
@@ -992,8 +993,9 @@ void AutostartOptionPage::reset()
     ui()->pathWidget->setVisible(pathMismatch);
     ui()->autostartCheckBox->setEnabled(!pathMismatch);
     if (pathMismatch) {
-        ui()->pathWarningLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage", "There is already an autostart entry for \"%1\". "
-                                           "It will not be overridden when applying changes unless you delete it first.")
+        ui()->pathWarningLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage",
+            "There is already an autostart entry for \"%1\". "
+            "It will not be overridden when applying changes unless you delete it first.")
                                             .arg(configuredPath.value()));
     }
 }

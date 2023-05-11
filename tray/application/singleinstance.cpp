@@ -160,7 +160,8 @@ void SingleInstance::readArgs()
     auto *const socket = static_cast<QLocalSocket *>(sender());
     const auto argData = socket->readAll();
     if (argData.size() < 2) {
-        std::cerr << Phrases::Error << "Another application instance sent invalid argument data (payload only " << argData.size() << " bytes)." << Phrases::EndFlush;
+        std::cerr << Phrases::Error << "Another application instance sent invalid argument data (payload only " << argData.size() << " bytes)."
+                  << Phrases::EndFlush;
         return;
     }
     socket->close();

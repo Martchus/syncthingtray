@@ -932,16 +932,16 @@ void ApplyWizardPage::initializePage()
         output.append(text);
         output.append(QStringLiteral("</li></ul>"));
     };
-    auto addListItem = [&makeListItem, &html](const QString &text) {
-        makeListItem(html, text);
-    };
-    auto logFeature = [&makeNestedListItem, &addListItem](const QString &feature, bool enabled, bool enabledBefore, const QString &remark = QString()) {
-        auto text = enabled == enabledBefore ? (tr("Keep %1 %2").arg(feature, enabled ? tr("enabled") : tr("disabled")))                                      : (tr("%1 %2").arg(enabled ? tr("Enable") : tr("Disable"), feature));
-        if (!remark.isEmpty()) {
-            makeNestedListItem(text, remark);
-        }
-        addListItem(text);
-    };
+    auto addListItem = [&makeListItem, &html](const QString &text) { makeListItem(html, text); };
+    auto logFeature
+        = [&makeNestedListItem, &addListItem](const QString &feature, bool enabled, bool enabledBefore, const QString &remark = QString()) {
+              auto text = enabled == enabledBefore ? (tr("Keep %1 %2").arg(feature, enabled ? tr("enabled") : tr("disabled")))
+                                                   : (tr("%1 %2").arg(enabled ? tr("Enable") : tr("Disable"), feature));
+              if (!remark.isEmpty()) {
+                  makeNestedListItem(text, remark);
+              }
+              addListItem(text);
+          };
     auto mainConfig = QString();
     auto extraInfo = QString();
     switch (wizard->mainConfig()) {
@@ -981,7 +981,8 @@ void ApplyWizardPage::initializePage()
     if (!currentSettings.isPlasmoid) {
         auto remark = QString();
         auto action = QString();
-        if (detection.autostartConfiguredPath.has_value() && !detection.autostartConfiguredPath.value().isEmpty() && detection.autostartConfiguredPath.value() != detection.autostartSupposedPath) {
+        if (detection.autostartConfiguredPath.has_value() && !detection.autostartConfiguredPath.value().isEmpty()
+            && detection.autostartConfiguredPath.value() != detection.autostartSupposedPath) {
             action = wizard->autoStart() ? tr("Override") : tr("Delete");
             remark = tr("%1 existing autostart entry for \"%2\"").arg(action, detection.autostartConfiguredPath.value());
         }
