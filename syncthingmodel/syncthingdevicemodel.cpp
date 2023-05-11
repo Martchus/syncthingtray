@@ -106,7 +106,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
         const auto &dev = m_devs[static_cast<size_t>(index.parent().row())];
-        const auto row = !dev.isConnected() && index.row() >= 2 ? index.row() + 1 : index.row();
+        const auto row = !dev.isConnected() && index.row() >= 2 ? index.row() + 2 : index.row();
         switch (role) {
         case Qt::DisplayRole:
         case Qt::EditRole:
@@ -329,9 +329,9 @@ int SyncthingDeviceModel::rowCount(const QModelIndex &parent) const
     if (!parent.isValid()) {
         return static_cast<int>(m_devs.size());
     } else if (!parent.parent().isValid()) {
-        // hide connection type and everything after introducer (eg. traffic) unless connected
+        // hide connection type, last seen and everything after introducer (eg. traffic) unless connected
         const auto *const dev(devInfo(parent));
-        return dev && dev->isConnected() ? 10 : 6;
+        return dev && dev->isConnected() ? 10 : 5;
     } else {
         return 0;
     }
