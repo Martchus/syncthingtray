@@ -771,6 +771,14 @@ QWidget *AutostartOptionPage::setupWidget()
     return widget;
 }
 
+/*!
+ * \brief Returns the currently configured autostart path or an empty string if autostart is disabled; returns std::nullopt when the
+ *        path cannot be determined.
+ * \remarks
+ * - At this point the path cannot be determined on MacOS.
+ * - Use isAutostartEnabled() if you just need to know whether autostart is generally enabled as this is a simpler check. This
+ *   function is also generally useful as a fallback.
+ */
 std::optional<QString> configuredAutostartPath()
 {
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
@@ -786,9 +794,13 @@ std::optional<QString> configuredAutostartPath()
     if (data.contains(QLatin1String("Hidden=true"))) {
         return QString();
     }
-    static const auto regex = QRegularExpression(QStringLiteral("Exec=\"?([^\"]*)\"?"));
+    static const auto regex = QRegularExpression(QStringLiteral("Exec=(\"([^\"\\n]*)\"|([^\\s\\n]*))"));
     const auto match = regex.match(data);
-    return match.hasCaptured(1) ? std::make_optional(match.captured(1)) : std::nullopt;
+    auto captured = match.captured(2);
+    if (captured.isNull()) {
+        captured = match.captured(3);
+    }
+    return captured.isNull() ? std::nullopt : std::make_optional(captured);
 #elif defined(PLATFORM_WINDOWS)
     return QSettings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat)
         .value(QStringLiteral(PROJECT_NAME)).toString();
@@ -899,7 +911,7 @@ bool setAutostartPath(const QString &path)
  * \brief Returns whether the application is launched on startup.
  * \remarks
  * - Only implemented under Linux/Windows/Mac. Always returns false on other platforms.
- * - Does not check whether the startup entry is functional (eg. the specified path is still valid and points to the
+ * - Does not check whether the startup entry is functional (e.g. whether the specified path is still valid and points to the
  *   currently running instance of the application).
  */
 bool isAutostartEnabled()
