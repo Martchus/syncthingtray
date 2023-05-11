@@ -706,7 +706,15 @@ bool SyncthingProcess::waitForFinished(int msecs)
     if (msecs < 0) {
         m_process->group.wait(ec);
     } else {
+        // disable warning about deprecated/unreliable function `wait_for`; it is good enough for now
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
         m_process->group.wait_for(std::chrono::milliseconds(msecs), ec);
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
     }
     return !ec || ec == std::errc::no_such_process || ec == std::errc::no_child_process;
 }
