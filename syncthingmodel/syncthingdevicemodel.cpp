@@ -105,29 +105,33 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
         if (static_cast<size_t>(index.parent().row()) >= m_devs.size()) {
             return QVariant();
         }
+        const auto &dev = m_devs[static_cast<size_t>(index.parent().row())];
+        const auto row = !dev.isConnected() && index.row() >= 2 ? index.row() + 1 : index.row();
         switch (role) {
         case Qt::DisplayRole:
         case Qt::EditRole:
             if (index.column() == 0) {
                 // attribute names
-                switch (index.row()) {
+                switch (row) {
                 case 0:
                     return tr("ID");
                 case 1:
                     return tr("Address");
                 case 2:
-                    return tr("Last seen");
+                    return tr("Connection type");
                 case 3:
-                    return tr("Compression");
+                    return tr("Last seen");
                 case 4:
-                    return tr("Certificate");
+                    return tr("Compression");
                 case 5:
-                    return tr("Introducer");
+                    return tr("Certificate");
                 case 6:
-                    return tr("Incoming traffic");
+                    return tr("Introducer");
                 case 7:
-                    return tr("Outgoing traffic");
+                    return tr("Incoming traffic");
                 case 8:
+                    return tr("Outgoing traffic");
+                case 9:
                     return tr("Version");
                 }
                 break;
@@ -136,8 +140,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
         case DeviceDetail:
             if (index.column() == 1 || role == DeviceDetail) {
                 // attribute values
-                const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
-                switch (index.row()) {
+                switch (row) {
                 case 0:
                     return dev.id;
                 case 1:
@@ -148,19 +151,25 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                             dev.connectionAddress % QStringLiteral(" (") % dev.addresses.join(QStringLiteral(", ")) % QStringLiteral(")"));
                     }
                 case 2:
+                    if (!dev.connectionType.isEmpty()) {
+                        return QVariant(dev.connectionType % QStringLiteral(" (") % (dev.connectionLocal ? tr("local") : tr("remote")) % QStringLiteral(")"));
+                    } else {
+                        return QVariant();
+                    }
+                case 3:
                     return dev.lastSeen.isNull() ? tr("unknown or own device")
                                                  : QString::fromLatin1(dev.lastSeen.toString(DateTimeOutputFormat::DateAndTime, true).data());
-                case 3:
-                    return dev.compression;
                 case 4:
-                    return dev.certName.isEmpty() ? tr("none") : dev.certName;
+                    return dev.compression;
                 case 5:
-                    return dev.introducer ? tr("yes") : tr("no");
+                    return dev.certName.isEmpty() ? tr("none") : dev.certName;
                 case 6:
-                    return QString::fromStdString(dataSizeToString(dev.totalIncomingTraffic));
+                    return dev.introducer ? tr("yes") : tr("no");
                 case 7:
-                    return QString::fromStdString(dataSizeToString(dev.totalOutgoingTraffic));
+                    return QString::fromStdString(dataSizeToString(dev.totalIncomingTraffic));
                 case 8:
+                    return QString::fromStdString(dataSizeToString(dev.totalOutgoingTraffic));
+                case 9:
                     return dev.clientVersion;
                 }
             }
@@ -170,24 +179,26 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             if (index.column() == 0) {
                 // attribute icons
                 const auto &icons = commonForkAwesomeIcons();
-                switch (index.row()) {
+                switch (row) {
                 case 0:
                     return icons.hashtag;
                 case 1:
                     return icons.link;
                 case 2:
-                    return icons.eye;
+                    return icons.exchange;
                 case 3:
-                    return icons.fileArchive;
+                    return icons.eye;
                 case 4:
-                    return icons.certificate;
+                    return icons.fileArchive;
                 case 5:
-                    return icons.networkWired;
+                    return icons.certificate;
                 case 6:
-                    return icons.cloudDownloadAlt;
+                    return icons.networkWired;
                 case 7:
-                    return icons.cloudUploadAlt;
+                    return icons.cloudDownloadAlt;
                 case 8:
+                    return icons.cloudUploadAlt;
+                case 9:
                     return icons.tag;
                 }
             }
@@ -196,13 +207,13 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             switch (index.column()) {
             case 1:
                 const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
-                switch (index.row()) {
-                case 2:
+                switch (row) {
+                case 3:
                     if (dev.lastSeen.isNull()) {
                         return Colors::gray(m_brightColors);
                     }
                     break;
-                case 4:
+                case 5:
                     if (dev.certName.isEmpty()) {
                         return Colors::gray(m_brightColors);
                     }
@@ -214,13 +225,13 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             switch (index.column()) {
             case 1:
                 const SyncthingDev &dev = m_devs[static_cast<size_t>(index.parent().row())];
-                switch (index.row()) {
+                switch (row) {
                 case 1:
                     if (!dev.connectionType.isEmpty()) {
                         return dev.connectionType;
                     }
                     break;
-                case 2:
+                case 3:
                     if (!dev.lastSeen.isNull()) {
                         return agoString(dev.lastSeen);
                     }
@@ -318,9 +329,9 @@ int SyncthingDeviceModel::rowCount(const QModelIndex &parent) const
     if (!parent.isValid()) {
         return static_cast<int>(m_devs.size());
     } else if (!parent.parent().isValid()) {
-        // hide everything after introducer (eg. traffic) unless connected
+        // hide connection type and everything after introducer (eg. traffic) unless connected
         const auto *const dev(devInfo(parent));
-        return dev && dev->isConnected() ? 9 : 6;
+        return dev && dev->isConnected() ? 10 : 6;
     } else {
         return 0;
     }

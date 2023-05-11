@@ -54,6 +54,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
     SyncthingCompletion overallCompletion;
     bool introducer = false;
     bool paused = false;
+    bool connectionLocal = false;
 };
 
 inline SyncthingDev::SyncthingDev(const QString &id, const QString &name)

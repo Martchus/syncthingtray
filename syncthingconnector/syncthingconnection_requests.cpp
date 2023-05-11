@@ -881,6 +881,7 @@ void SyncthingConnection::readConnections()
             dev.totalOutgoingTraffic = jsonValueToInt(connectionObj.value(QLatin1String("outBytesTotal")));
             dev.connectionAddress = connectionObj.value(QLatin1String("address")).toString();
             dev.connectionType = connectionObj.value(QLatin1String("type")).toString();
+            dev.connectionLocal = connectionObj.value(QLatin1String("isLocal")).toBool();
             dev.clientVersion = connectionObj.value(QLatin1String("clientVersion")).toString();
             emit devStatusChanged(dev, index);
             ++index;

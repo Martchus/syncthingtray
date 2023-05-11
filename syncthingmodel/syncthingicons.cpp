@@ -306,6 +306,7 @@ ForkAwesomeIcons::ForkAwesomeIcons(QtForkAwesome::Renderer &renderer, const QCol
     , cloudDownloadAlt(renderer.pixmap(QtForkAwesome::Icon::CloudDownload, size, color))
     , cloudUploadAlt(renderer.pixmap(QtForkAwesome::Icon::CloudUpload, size, color))
     , tag(renderer.pixmap(QtForkAwesome::Icon::Tag, size, color))
+    , exchange(renderer.pixmap(QtForkAwesome::Icon::Exchange, size, color))
 {
 }
 

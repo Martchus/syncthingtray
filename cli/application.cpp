@@ -565,6 +565,7 @@ void Application::printDev(const SyncthingDev *dev) const
     printProperty("Cert name", dev->certName);
     printProperty("Connection address", dev->connectionAddress);
     printProperty("Connection type", dev->connectionType);
+    printProperty("Connection local", dev->connectionLocal);
     printProperty("Client version", dev->clientVersion);
     printProperty("Last seen", dev->lastSeen);
     if (dev->totalIncomingTraffic > 0) {

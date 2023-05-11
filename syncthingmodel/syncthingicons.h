@@ -145,6 +145,7 @@ struct LIB_SYNCTHING_MODEL_EXPORT ForkAwesomeIcons {
     QIcon cloudDownloadAlt;
     QIcon cloudUploadAlt;
     QIcon tag;
+    QIcon exchange;
 };
 
 class LIB_SYNCTHING_MODEL_EXPORT IconManager : public QObject {
