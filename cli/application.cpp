@@ -609,7 +609,7 @@ void Application::printStatus(const ArgumentOccurrence &)
         if (!EscapeCodes::enabled) {
             printProperty("Status", statusString);
         } else {
-            printProperty("Status", argsToString('\e', '[', statusColor, 'm', statusString, "\e[0m"));
+            printProperty("Status", argsToString('\033', '[', statusColor, 'm', statusString, "\033[0m"));
         }
         printProperty("Global", directoryStatusString(overallStats.global), nullptr, 6);
         printProperty("Local", directoryStatusString(overallStats.local), nullptr, 6);
