@@ -168,7 +168,7 @@ void SingleInstance::readArgs()
     socket->deleteLater();
 
     // reconstruct argc and argv array
-    const auto argc = BE::toUInt16(argData.data());
+    const auto argc = BE::toInt<std::uint16_t>(argData.data());
     auto args = std::vector<const char *>();
     args.reserve(argc + 1);
     std::cerr << Phrases::Info << "Evaluating " << argc << " arguments from another instance: " << Phrases::End;
