@@ -152,7 +152,8 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                     }
                 case 2:
                     if (!dev.connectionType.isEmpty()) {
-                        return QVariant(dev.connectionType % QStringLiteral(" (") % (dev.connectionLocal ? tr("local") : tr("remote")) % QStringLiteral(")"));
+                        return QVariant(
+                            dev.connectionType % QStringLiteral(" (") % (dev.connectionLocal ? tr("local") : tr("remote")) % QStringLiteral(")"));
                     } else {
                         return QVariant();
                     }

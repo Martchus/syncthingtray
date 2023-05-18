@@ -190,7 +190,7 @@ bool Wizard::changeSettings()
 
     // enable/disable auto start
 #ifdef SETTINGS_WIZARD_AUTOSTART
-    if (!settings.isPlasmoid) {
+    if (!settings.isPlasmoid && !keepExistingAutoStartEntry()) {
         setAutostartEnabled(autoStart(), true);
     }
 #endif
@@ -343,10 +343,11 @@ void Wizard::handleConfigurationSelected(MainConfiguration mainConfig, ExtraConf
     m_extraConfig = extraConfig;
 }
 
-void Wizard::handleAutostartSelected(bool autostartEnabled)
+void Wizard::handleAutostartSelected(bool autostartEnabled, bool keepExisting)
 {
     m_configApplied = false;
     m_autoStart = autostartEnabled;
+    m_autoStartKeepExisting = keepExisting;
 }
 
 void Wizard::pollForSyncthingConfig()
@@ -878,7 +879,17 @@ void AutostartWizardPage::initializePage()
         break;
     }
 
-    m_ui->enableAutostartCheckBox->setChecked(wizard->setupDetection().autostartEnabled);
+    const auto &detection = wizard->setupDetection();
+    const auto hasExistingEntry = detection.autostartConfiguredPath.has_value() && !detection.autostartConfiguredPath.value().isEmpty()
+        && detection.autostartConfiguredPath.value() != detection.autostartSupposedPath;
+    m_ui->keepExistingCheckBox->setVisible(hasExistingEntry);
+    if (hasExistingEntry) {
+        m_ui->keepExistingCheckBox->setText(
+            tr("Do not modify the existing autostart entry for\n\"%1\"").arg(detection.autostartConfiguredPath.value()));
+    } else {
+        m_ui->keepExistingCheckBox->setChecked(false);
+    }
+    m_ui->enableAutostartCheckBox->setChecked(detection.autostartEnabled);
 }
 
 void AutostartWizardPage::cleanupPage()
@@ -887,7 +898,7 @@ void AutostartWizardPage::cleanupPage()
 
 bool AutostartWizardPage::validatePage()
 {
-    emit autostartSelected(m_ui->enableAutostartCheckBox->isChecked());
+    emit autostartSelected(m_ui->enableAutostartCheckBox->isChecked(), m_ui->keepExistingCheckBox->isChecked());
     return true;
 }
 
@@ -979,14 +990,18 @@ void ApplyWizardPage::initializePage()
 #endif
 #ifdef SETTINGS_WIZARD_AUTOSTART
     if (!currentSettings.isPlasmoid) {
-        auto remark = QString();
-        auto action = QString();
-        if (detection.autostartConfiguredPath.has_value() && !detection.autostartConfiguredPath.value().isEmpty()
-            && detection.autostartConfiguredPath.value() != detection.autostartSupposedPath) {
-            action = wizard->autoStart() ? tr("Override") : tr("Delete");
-            remark = tr("%1 existing autostart entry for \"%2\"").arg(action, detection.autostartConfiguredPath.value());
+        if (wizard->keepExistingAutoStartEntry()) {
+            addListItem(tr("Preserve existing autostart entry for \"%1\"").arg(detection.autostartConfiguredPath.value_or(QStringLiteral("?"))));
+        } else {
+            auto remark = QString();
+            auto action = QString();
+            if (detection.autostartConfiguredPath.has_value() && !detection.autostartConfiguredPath.value().isEmpty()
+                && detection.autostartConfiguredPath.value() != detection.autostartSupposedPath) {
+                action = wizard->autoStart() ? tr("Override") : tr("Delete");
+                remark = tr("%1 existing autostart entry for \"%2\"").arg(action, detection.autostartConfiguredPath.value());
+            }
+            logFeature(tr("autostart of Syncthing Tray"), wizard->autoStart(), detection.autostartEnabled, remark);
         }
-        logFeature(tr("autostart of Syncthing Tray"), wizard->autoStart(), detection.autostartEnabled, remark);
     }
 #endif
     html.append(QStringLiteral("</ul><p><b>%1</b></p><ul><li>%2</li><li>%3</li><li>%4</li></ul>")

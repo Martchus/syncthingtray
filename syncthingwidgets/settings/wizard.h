@@ -58,6 +58,7 @@ public:
     MainConfiguration mainConfig() const;
     ExtraConfiguration extraConfig() const;
     bool autoStart() const;
+    bool keepExistingAutoStartEntry() const;
     bool isConfigApplied() const;
     const QString &configError() const;
     Data::SyncthingConnection *appliedConnection();
@@ -76,7 +77,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void showDetailsFromSetupDetection();
     void handleConfigurationSelected(QtGui::MainConfiguration mainConfig, QtGui::ExtraConfiguration extraConfig);
-    void handleAutostartSelected(bool autostartEnabled);
+    void handleAutostartSelected(bool autostartEnabled, bool keepExisting);
     void pollForSyncthingConfig();
 
 private:
@@ -87,6 +88,7 @@ private:
     MainConfiguration m_mainConfig = MainConfiguration::None;
     ExtraConfiguration m_extraConfig = ExtraConfiguration::None;
     bool m_autoStart = false;
+    bool m_autoStartKeepExisting = false;
     bool m_configApplied = false;
     QString m_configError;
     Data::SyncthingConnection *m_appliedConnection = nullptr;
@@ -111,6 +113,11 @@ inline ExtraConfiguration Wizard::extraConfig() const
 inline bool Wizard::autoStart() const
 {
     return m_autoStart;
+}
+
+inline bool Wizard::keepExistingAutoStartEntry() const
+{
+    return m_autoStartKeepExisting;
 }
 
 inline bool Wizard::isConfigApplied() const
@@ -200,7 +207,7 @@ public:
     bool validatePage() override;
 
 Q_SIGNALS:
-    void autostartSelected(bool autostartEnabled);
+    void autostartSelected(bool autostartEnabled, bool keepExisting);
 
 private:
     std::unique_ptr<Ui::AutostartWizardPage> m_ui;

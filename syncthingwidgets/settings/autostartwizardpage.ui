@@ -11,6 +11,9 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QCheckBox" name="keepExistingCheckBox"/>
+   </item>
+   <item>
     <widget class="QCheckBox" name="enableAutostartCheckBox">
      <property name="text">
       <string>Start Syncthing Tray on login (only affects sessions of the current user)</string>
@@ -92,5 +95,22 @@
  <resources>
   <include location="../resources/syncthingwidgetsicons.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>keepExistingCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>enableAutostartCheckBox</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>202</x>
+     <y>19</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>46</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
