@@ -316,7 +316,7 @@ void Wizard::showDetailsFromSetupDetection()
 #ifdef SETTINGS_WIZARD_AUTOSTART
     addParagraph(tr("Autostart:"));
     infoItems << tr("Currently %1").arg(detection.autostartEnabled ? tr("enabled") : tr("disabled"));
-    if (detection.autostartConfiguredPath.has_value()) {
+    if (detection.autostartEnabled && detection.autostartConfiguredPath.has_value()) {
         infoItems << tr("Points to \"%1\"").arg(detection.autostartConfiguredPath.value());
     }
     addList(infoItems);
