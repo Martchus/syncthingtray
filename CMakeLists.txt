@@ -28,6 +28,22 @@ else()
     set(PLASMOID_DISABLED_BY_DEFAULT OFF)
 endif()
 
+# determine Qt and KDE Frameworks version bases on the package prefix
+set(QT_PACKAGE_PREFIX
+    "Qt5"
+    CACHE STRING "specifies the prefix for Qt packages")
+set(KF_PACKAGE_PREFIX
+    "KF5"
+    CACHE STRING "specifies the prefix for KDE Frameworks packages")
+set(QT_MAJOR_VERSION 5)
+if (QT_PACKAGE_PREFIX MATCHES ".*Qt([0-9]+).*")
+    set(QT_MAJOR_VERSION "${CMAKE_MATCH_1}")
+endif ()
+set(KF_MAJOR_VERSION 5)
+if (KF_PACKAGE_PREFIX MATCHES ".*KF([0-9]+).*")
+    set(KF_MAJOR_VERSION "${CMAKE_MATCH_1}")
+endif ()
+
 # add options for partial build
 option(NO_LIBSYNCTHING "whether building Syncthing itself as a library should be skipped" ON)
 option(NO_CLI "whether building CLI should be skipped" OFF)
