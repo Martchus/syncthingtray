@@ -229,8 +229,8 @@ static int runApplication(int argc, const char *const *argv)
         QGuiApplication::setQuitOnLastWindowClosed(false);
         // stop possibly running instance if --replace is present
         if (replaceArg.isPresent()) {
-            const char *const argv[] = { parser.executable(), quitArg.name() };
-            SingleInstance::passArgsToRunningInstance(2, argv, SingleInstance::applicationId(), true);
+            const char *const replaceArgs[] = { parser.executable(), quitArg.name() };
+            SingleInstance::passArgsToRunningInstance(2, replaceArgs, SingleInstance::applicationId(), true);
         }
         auto singleInstance = SingleInstance(argc, argv, newInstanceArg.isPresent(), replaceArg.isPresent());
         networkAccessManager().setParent(&singleInstance);
