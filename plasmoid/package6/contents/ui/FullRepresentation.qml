@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15 as QQ2
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.kirigami 2.20 as Kirigami
 
 PlasmaExtras.Representation {
     // disable margins as they don't look good together with the scroll view
@@ -21,7 +22,7 @@ PlasmaExtras.Representation {
     footer: PlasmaExtras.PlasmoidHeading {
         spacing: 0
         topPadding: 0
-        height: units.iconSizes.medium
+        height: Kirigami.Units.iconSizes.medium
         PlasmaComponents3.TabBar {
             id: tabBar
             readonly property double buttonWidth: parent.width / count
@@ -31,25 +32,25 @@ PlasmaExtras.Representation {
             TabButton {
                 id: dirsTabButton
                 text: qsTr("Directories")
-                icon.source: plasmoid.nativeInterface.faUrl + "folder"
+                icon.source: plasmoid.faUrl + "folder"
                 width: tabBar.buttonWidth
             }
             TabButton {
                 id: devsTabButton
                 text: qsTr("Devices")
-                icon.source: plasmoid.nativeInterface.faUrl + "sitemap"
+                icon.source: plasmoid.faUrl + "sitemap"
                 width: tabBar.buttonWidth
             }
             TabButton {
                 id: downloadsTabButton
                 text: qsTr("Downloads")
-                icon.source: plasmoid.nativeInterface.faUrl + "download"
+                icon.source: plasmoid.faUrl + "download"
                 width: tabBar.buttonWidth
             }
             TabButton {
                 id: recentChangesTabButton
                 text: qsTr("History")
-                icon.source: plasmoid.nativeInterface.faUrl + "history"
+                icon.source: plasmoid.faUrl + "history"
                 width: tabBar.buttonWidth
             }
         }
@@ -89,15 +90,14 @@ PlasmaExtras.Representation {
     // main contents
     FocusScope {
         anchors.fill: parent
-        anchors.topMargin: PlasmaCore.Units.smallSpacing * 2
+        anchors.topMargin: Kirigami.Units.smallSpacing * 2
 
         TinyButton {
             id: searchButton
             anchors.right: mainLayout.right
-            anchors.rightMargin: PlasmaCore.Units.smallSpacing * 2
-            anchors.verticalCenter: infoLayout.verticalCenter
-            icon.source: plasmoid.nativeInterface.faUrl + "search"
-            width: PlasmaCore.Units.iconSizes.smallMedium
+            anchors.rightMargin: Kirigami.Units.smallSpacing * 2
+            icon.source: plasmoid.faUrl + "search"
+            width: Kirigami.Units.iconSizes.smallMedium
             height: width
             enabled: tabBar.currentIndex === 0
             opacity: enabled ? 1.0 : 0.25
@@ -143,7 +143,7 @@ PlasmaExtras.Representation {
                 }
                 filter.forceActiveFocus()
             }
-            Keys.onPressed: {
+            Keys.onPressed: function(event) {
                 // note: event only received after clicking the tab buttons in plasmoidviewer
                 // but works as expected in plasmashell
                 switch (event.key) {
@@ -155,7 +155,7 @@ PlasmaExtras.Representation {
                         break
                     case Qt.ShiftModifier:
                         // select previous connection
-                        --plasmoid.nativeInterface.currentConnectionConfigIndex
+                        --plasmoid.currentConnectionConfigIndex
                         break
                     }
                     break
@@ -167,7 +167,7 @@ PlasmaExtras.Representation {
                         break
                     case Qt.ShiftModifier:
                         // select previous connection
-                        ++plasmoid.nativeInterface.currentConnectionConfigIndex
+                        ++plasmoid.currentConnectionConfigIndex
                         break
                     }
                     break
@@ -223,8 +223,8 @@ PlasmaExtras.Representation {
             // global statistics and traffic
             GridLayout {
                 id: infoLayout
-                Layout.leftMargin: PlasmaCore.Units.smallSpacing * 2
-                Layout.rightMargin: PlasmaCore.Units.smallSpacing * 2
+                Layout.leftMargin: Kirigami.Units.smallSpacing * 2
+                Layout.rightMargin: Kirigami.Units.smallSpacing * 2
                 Layout.fillWidth: true
                 Layout.fillHeight: false
                 Layout.maximumWidth: parent.width
@@ -237,19 +237,19 @@ PlasmaExtras.Representation {
                     Layout.preferredHeight: 16
                     height: 16
                     fillMode: Image.PreserveAspectFit
-                    source: plasmoid.nativeInterface.faUrl + "globe"
+                    source: plasmoid.faUrl + "globe"
                     cache: false
                 }
                 StatisticsView {
                     Layout.leftMargin: 4
-                    statistics: plasmoid.nativeInterface.globalStatistics
+                    statistics: plasmoid.globalStatistics
                     context: qsTr("Global")
                 }
                 IconLabel {
                     Layout.leftMargin: 5
-                    iconSource: plasmoid.nativeInterface.faUrl + "cloud-download"
-                    iconOpacity: plasmoid.nativeInterface.hasIncomingTraffic ? 1.0 : 0.5
-                    text: plasmoid.nativeInterface.incomingTraffic
+                    iconSource: plasmoid.faUrl + "cloud-download"
+                    iconOpacity: plasmoid.hasIncomingTraffic ? 1.0 : 0.5
+                    text: plasmoid.incomingTraffic
                     tooltip: qsTr("Global incoming traffic")
                 }
 
@@ -262,19 +262,19 @@ PlasmaExtras.Representation {
                     Layout.preferredHeight: 16
                     height: 16
                     fillMode: Image.PreserveAspectFit
-                    source: plasmoid.nativeInterface.faUrl + "home"
+                    source: plasmoid.faUrl + "home"
                     cache: false
                 }
                 StatisticsView {
                     Layout.leftMargin: 4
-                    statistics: plasmoid.nativeInterface.localStatistics
+                    statistics: plasmoid.localStatistics
                     context: qsTr("Local")
                 }
                 IconLabel {
                     Layout.leftMargin: 5
-                    iconSource: plasmoid.nativeInterface.faUrl + "cloud-upload"
-                    iconOpacity: plasmoid.nativeInterface.hasOutgoingTraffic ? 1.0 : 0.5
-                    text: plasmoid.nativeInterface.outgoingTraffic
+                    iconSource: plasmoid.faUrl + "cloud-upload"
+                    iconOpacity: plasmoid.hasOutgoingTraffic ? 1.0 : 0.5
+                    text: plasmoid.outgoingTraffic
                     tooltip: qsTr("Global outgoing traffic")
                 }
             }

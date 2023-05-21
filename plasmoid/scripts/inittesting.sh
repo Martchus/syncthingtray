@@ -5,7 +5,7 @@ source "$script_dir/settestenv.sh"
 
 # use the package dir within the source-tree so one does not need to run CMake again for updating
 # build-tree copy all the time
-package_dir=$script_dir/../package
+package_dir=$script_dir/../$2
 
 # copy the generated desktop file back into the source-tree package dir so it can actually be used
 meta_data_file=$1

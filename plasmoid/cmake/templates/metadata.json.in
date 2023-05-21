@@ -1,0 +1,19 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [{"Name": "@META_APP_AUTHOR@"}],
+        "BugReportUrl": "@META_APP_BUGTRACKER_URL@",
+        "Category": "SystemServices",
+        "Description": "@META_APP_DESCRIPTION@",
+        "EnabledByDefault": false,
+        "Icon": "syncthingtray",
+        "Id": "@META_ID@",
+        "License": "@META_PROJECT_LICENSE@",
+        "Name": "Syncthing",
+        "Version": "@META_APP_VERSION@",
+        "Website": "@META_APP_URL@"
+    },
+    "Keywords": "syncthing;sync;",
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-MainScript": "ui/main.qml"
+}

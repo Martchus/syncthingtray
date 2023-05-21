@@ -34,6 +34,10 @@ use_syncthingwidgets()
 
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network Qml)
+if (KF_MAJOR_VERSION GREATER_EQUAL 6)
+    set(Config_MODULE_TARGETS ${KF_PACKAGE_PREFIX}::ConfigCore)
+    list(APPEND ADDITIONAL_KF_MODULES Config)
+endif ()
 list(APPEND ADDITIONAL_KF_MODULES Plasma)
 
 include(BasicConfig)
@@ -55,9 +59,16 @@ set(META_PROJECT_LICENSE
     "${META_PROJECT_LICENSE}"
     PARENT_SCOPE)
 
-# what ever this does, it is done
-kcoreaddons_desktop_to_json("${META_TARGET_NAME}" "${PLASMOID_CONFIG_TARGET_FILE}" DESKTOP_TO_JSON_OUTPUT_DIR
-                            "${PLASMOID_PACKAGE_DIR}")
+# convert meta-data file to JSON
+if (KF_MAJOR_VERSION LESS 6)
+    kcoreaddons_desktop_to_json("${META_TARGET_NAME}" "${PLASMOID_CONFIG_TARGET_FILE}" DESKTOP_TO_JSON_OUTPUT_DIR
+                                "${PLASMOID_PACKAGE_DIR}")
+endif ()
+
+# set the library prefix so it doesn't start with "lib" and is rather prefixed with "martchus."
+if (KF_MAJOR_VERSION GREATER_EQUAL 6)
+    set_target_properties(${META_TARGET_NAME} PROPERTIES PREFIX "martchus.")
+endif ()
 
 # install appstream file
 add_appstream_file()

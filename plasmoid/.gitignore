@@ -1,2 +1,3 @@
-# the generated desktop file is required by inittesting.sh
+# the generated desktop/JSON file is required by inittesting.sh
 metadata.desktop
+metadata.json

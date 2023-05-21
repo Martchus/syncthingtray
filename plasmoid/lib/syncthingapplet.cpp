@@ -69,7 +69,11 @@ static inline QPalette paletteFromTheme(const Plasma::Theme &theme)
 }
 
 SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
+#if PLASMA_VERSION >= QT_VERSION_CHECK(5, 240, 0)
+    : Applet(parent, KPluginMetaData(), data)
+#else
     : Applet(parent, data)
+#endif
     , m_faUrl(QStringLiteral("image://fa/"))
     , m_iconManager(IconManager::instance(&m_palette))
     , m_aboutDlg(nullptr)
@@ -678,6 +682,12 @@ void SyncthingApplet::handleSystemdStatusChanged()
 
 } // namespace Plasmoid
 
+#if PLASMA_VERSION >= QT_VERSION_CHECK(5, 240, 0)
+namespace Plasmoid {
+K_PLUGIN_CLASS(SyncthingApplet)
+}
+#else
 K_EXPORT_PLASMA_APPLET_WITH_JSON(syncthing, Plasmoid::SyncthingApplet, "metadata.json")
+#endif
 
 #include "syncthingapplet.moc"
