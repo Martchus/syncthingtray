@@ -48,9 +48,13 @@
         <property name="Following" type="s" access="read">
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false" />
         </property>
+        <!--
+        This property would conflict with the C++20 keyword "requires". It is not used anyways so
+        it has been disabled for now.
         <property name="Requires" type="as" access="read">
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
         </property>
+        -->
         <property name="Requisite" type="as" access="read">
             <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const" />
         </property>
