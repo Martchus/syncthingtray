@@ -1,9 +1,11 @@
-# [Syncthing](https://github.com/syncthing/syncthing) Tray
-* Qt-based tray application
-* [Dolphin](https://www.kde.org/applications/system/dolphin)/[Plasma](https://www.kde.org/plasma-desktop)
-  integration
-* command-line interface
-* Qt-ish C++ interface to control Syncthing
+# Syncthing Tray
+This project contains the following integrations for [Syncthing](https://github.com/syncthing/syncthing):
+
+* Tray application (using the Qt framework)
+* Context menu extension for the [Dolphin](https://www.kde.org/applications/system/dolphin) file manager
+* Plasmoid for [KDE Plasma](https://www.kde.org/plasma-desktop)
+* Command-line interface
+* Qt-ish C++ library
 
 ---
 
@@ -13,36 +15,38 @@ and announcement of new features.
 Issues can be created on GitHub but please read the "Known bugs and workarounds" section in this document
 before.
 
-I provide binaries/repositories for some platforms. There are also binaries/repositories provided by other
-distributors. For a list with links, checkout the *Download* section of this document. The release section on
-GitHub only contains a fraction of the available options.
-
 ## Supported platforms
-* Designed to work under any desktop environment supported by Qt with tray icon support (can be shown as
-  regular window if tray icon support is not available)
-* No desktop environment specific libraries required (only for optional features/integrations)
-* Known to work under
-    * Plasma
-    * Openbox using lxqt/LXDE or using qt5ct/Tint2
-    * Awesome/qt5ct
-    * Cinnamon (native look and feel using [adwaita-qt](https://github.com/FedoraQt/adwaita-qt))
-    * Deepin Desktop Environment
-    * Xfce
-    * Sway/Swaybar/Waybar (with caveats, see "Known bugs and workarounds")
-    * i3
-    * Windows 10 and 11
-    * macOS 10.14 Mojave
+Official binaries are provided for Windows and GNU/Linux for the x86_64 architecture and can be download from
+the release section on GitHub. This is only a fraction of the available downloads, though. I also provide
+further repositories for some GNU/Linux distributions. There are also binaries/repositories provided by other
+distributors. For a list with links, checkout the *Download* section of this document.
 
-For Plasma, there's (in addition to the Qt Widgets based version) also a
-"native" Plasmoid. Note that the latest version of Syncthing Tray generally also
-requires the latest version of Plasma as no testing on earlier versions is done.
-Use the Qt Widgets based version on older Plasma versions.
+Syncthing Tray is known to work under:
 
-The section "Known bugs and workarounds" below contains information and
-workarounds for certain caveats.
+* Windows 10 and 11
+* KDE Plasma
+* Openbox using lxqt/LXDE or using Tint2
+* Cinnamon (native look and feel using [adwaita-qt](https://github.com/FedoraQt/adwaita-qt))
+* Xfce
+* Awesome
+* i3
+* macOS
+* Deepin Desktop Environment
+* Sway/Swaybar/Waybar (with caveats, see "Known bugs and workarounds")
+
+This does *not* mean Syncthing Tray is actively tested on all those platforms or
+desktop environments.
+
+For Plasma, there is in addition to the Qt Widgets based version also a "native"
+Plasmoid. Note that the latest version of Syncthing Tray generally also requires the
+latest version of Plasma as no testing on earlier versions is done. Use the Qt Widgets
+based version on older Plasma versions.
+
+The section "Known bugs and workarounds" below contains information and workarounds for
+certain caveats.
 
 ## Features
-* Provides quick access to most frequently used features but does not intend to replace the official web UI
+* Provides quick access to most frequently used features but does not intend to replace the official web-based UI
     * Check state of directories and devices
     * Check current traffic statistics
     * Display further details about directories and devices, like last file, last
@@ -54,16 +58,18 @@ workarounds for certain caveats.
     * Pause/resume a specific device or all devices at once
     * Pause/resume a specific directory
     * View recent history of changes (done locally and remotely)
-* Shows notifications
-    * The notification to show is configurable
+* Shows "desktop" notifications
+    * The events to show notifications for can be configured
     * Uses Qt's notification support or a D-Bus notification daemon directly
-* Reads connection parameters from Syncthing config file for quick setup (when just connecting to local instance)
+* Provides a wizard for a quick setup
 * Allows monitoring the status of the Syncthing systemd unit and to start and stop it (see section *Configuring systemd integration*)
 * Provides an option to conveniently add the tray to the applications launched when the desktop environment starts
 * Can launch Syncthing automatically when started and display stdout/stderr (useful under Windows)
-* Provides quick access to the official web UI
-    * Utilizes either Qt WebEngine or Qt WebKit
-    * Can be built without web view support as well (then the web UI is opened in the regular browser)
+* Provides quick access to the official web-based UI
+    * Can be opened as regular browser tab
+    * Can be opened in a dedicated window utilizing either
+        * Qt WebEngine/WebKit
+        * the "app mode" of a Chromium-based browser (e.g. Chrome and Edge)
 * Allows switching quickly between multiple Syncthing instances
 * Also features a simple command line utility `syncthingctl`
     * Check status
@@ -72,13 +78,12 @@ workarounds for certain caveats.
     * View and modify raw configuration
     * Supports Bash completion, even for directory and device names
 * Also bundles a KIO plugin which shows the status of a Syncthing directory and allows to trigger Syncthing actions
-  in Dolphin file manager
+  in the Dolphin file manager
     * Rescan selected items
     * Rescan entire Syncthing directory
     * Pause/resume Syncthing directory
     * See also screenshots section
-* Allows building Syncthing as a library to run it in the same process as the tray/GUI (optional build configuration
-  which is not enabled by default)
+* Allows building Syncthing as a library to run it in the same process as the tray/GUI
 * English and German localization
 
 ## Does this launch or bundle Syncthing itself? What about my existing Syncthing installation?
@@ -297,7 +302,7 @@ The following Qt modules are required (only the latest Qt 5 and Qt 6 version tes
 It is recommended to use at least Qt 5.14 to avoid limitations in previous versions (see *Known bugs* section).
 
 The built-in web view and therefore the modules webenginewidgets/webkitwidgets are optional (see
-section *Select Qt module for WebView*).
+section *Select Qt module for web view and JavaScript*).
 
 To build the plugin for Dolphin integration KIO is also required. To skip building the plugin,
 add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
