@@ -239,7 +239,7 @@ long long runCli(const std::vector<const char *> &arguments)
 long long runCommand(const std::vector<const char *> &arguments)
 {
     if (arguments.empty()) {
-        setArguments("--help", std::vector<const char *>::const_iterator(), std::vector<const char *>::const_iterator());
+        setArguments("serve", std::vector<const char *>::const_iterator(), std::vector<const char *>::const_iterator());
     } else {
         setArguments(arguments.front(), ++arguments.begin(), arguments.end());
     }

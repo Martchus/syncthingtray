@@ -186,7 +186,7 @@ static int runApplication(int argc, const char *const *argv)
     cliArg.setRequiredValueCount(Argument::varValueCount);
     cliArg.setFlags(Argument::Flags::Greedy, true);
     cliArg.setSubArguments({ &cliHelp });
-    auto syncthingArg = OperationArgument("syncthing", '\n', "runs Syncthing");
+    auto syncthingArg = OperationArgument("syncthing", '\0', "runs Syncthing");
     auto syncthingHelp = ConfigValueArgument("help", 'h', "lists Syncthing's top-level commands");
     syncthingArg.setRequiredValueCount(Argument::varValueCount);
     syncthingArg.setFlags(Argument::Flags::Greedy, true);
