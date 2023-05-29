@@ -213,15 +213,37 @@ string longSyncthingVersion()
 }
 
 /*!
- * \brief Runs Syncthing's CLI with the specified \a args.
+ * \brief Sets the \a command and arguments to be run via ::libst_run_cli().
  */
-long long runCli(const std::vector<const char *> &args)
+static void setArguments(
+    const char *command, std::vector<const char *>::const_iterator argumentsBegin, std::vector<const char *>::const_iterator argumentsEnd)
 {
-    ::libst_clear_cli_args();
-    for (const auto *const arg : args) {
-        ::libst_append_cli_arg(gostr(arg));
+    ::libst_clear_cli_args(gostr(command));
+    for (; argumentsBegin != argumentsEnd; ++argumentsBegin) {
+        ::libst_append_cli_arg(gostr(*argumentsBegin));
     }
+}
+
+/*!
+ * \brief Runs Syncthing's top-level command "cli" with the specified \a arguments.
+ */
+long long runCli(const std::vector<const char *> &arguments)
+{
+    setArguments("cli", arguments.cbegin(), arguments.cend());
     return ::libst_run_cli();
+}
+
+/*!
+ * \brief Runs the Syncthing command using the specified \a arguments.
+ */
+long long runCommand(const std::vector<const char *> &arguments)
+{
+    if (arguments.empty()) {
+        setArguments("--help", std::vector<const char *>::const_iterator(), std::vector<const char *>::const_iterator());
+    } else {
+        setArguments(arguments.front(), ++arguments.begin(), arguments.end());
+    }
+    return ::libst_run_main();
 }
 
 } // namespace LibSyncthing

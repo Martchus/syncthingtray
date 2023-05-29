@@ -59,7 +59,8 @@ LIB_SYNCTHING_EXPORT std::int64_t stopSyncthing();
 LIB_SYNCTHING_EXPORT std::string ownDeviceId();
 LIB_SYNCTHING_EXPORT std::string syncthingVersion();
 LIB_SYNCTHING_EXPORT std::string longSyncthingVersion();
-LIB_SYNCTHING_EXPORT long long runCli(const std::vector<const char *> &args);
+LIB_SYNCTHING_EXPORT long long runCli(const std::vector<const char *> &arguments);
+LIB_SYNCTHING_EXPORT long long runCommand(const std::vector<const char *> &arguments);
 
 } // namespace LibSyncthing
 

@@ -181,16 +181,21 @@ static int runApplication(int argc, const char *const *argv)
     widgetsGuiArg.addSubArguments({ &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstanceArg,
         &newInstanceArg, &replaceArg, &showWizardArg, &assumeFirstLaunchArg, &wipArg });
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
-    auto cliArg = OperationArgument("cli", 'c', "run Syncthing's CLI");
-    auto cliHelp = ConfigValueArgument("help", 'h', "show help for Syncthing's CLI");
+    auto cliArg = OperationArgument("cli", 'c', "runs Syncthing's CLI");
+    auto cliHelp = ConfigValueArgument("help", 'h', "shows help for Syncthing's CLI");
     cliArg.setRequiredValueCount(Argument::varValueCount);
     cliArg.setFlags(Argument::Flags::Greedy, true);
     cliArg.setSubArguments({ &cliHelp });
+    auto syncthingArg = OperationArgument("syncthing", '\n', "runs Syncthing");
+    auto syncthingHelp = ConfigValueArgument("help", 'h', "lists Syncthing's top-level commands");
+    syncthingArg.setRequiredValueCount(Argument::varValueCount);
+    syncthingArg.setFlags(Argument::Flags::Greedy, true);
+    syncthingArg.setSubArguments({ &syncthingHelp });
 #endif
 
     parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(),
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
-        &cliArg,
+        &cliArg, &syncthingArg,
 #endif
         &parser.noColorArg(), &parser.helpArg(), &quitArg });
 
@@ -200,6 +205,10 @@ static int runApplication(int argc, const char *const *argv)
     if (cliArg.isPresent()) {
         CMD_UTILS_START_CONSOLE;
         return static_cast<int>(LibSyncthing::runCli(cliArg.values()));
+    }
+    if (syncthingArg.isPresent()) {
+        CMD_UTILS_START_CONSOLE;
+        return static_cast<int>(LibSyncthing::runCommand(syncthingArg.values()));
     }
 #endif
 

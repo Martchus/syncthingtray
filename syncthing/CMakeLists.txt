@@ -123,7 +123,7 @@ file(
     "${SYNCTHING_PATH}/c-bindings/*.go"
     "${SYNCTHING_PATH}/c-bindings/*.h"
     "${SYNCTHING_PATH}/c-bindings/*.c"
-    "${SYNCTHING_PATH}/cmd/syncthing/cli/*.go"
+    "${SYNCTHING_PATH}/cmd/syncthing/*.go"
     "${SYNCTHING_PATH}/lib/*.go"
     "${SYNCTHING_PATH}/lib/*.h"
     "${SYNCTHING_PATH}/lib/*.c")
@@ -186,19 +186,6 @@ add_custom_command(
     DEPENDS ${SRC_FILES_SYNCTHING}
     WORKING_DIRECTORY "${SYNCTHING_PATH}"
     COMMENT "Building Syncthing itself (as library)")
-
-# add target to compile Syncthing as standalone executable (helpful for testing)
-set(SYNCTHING_EXECUTABLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/syncthing")
-add_custom_target(
-    syncthing_executable
-    COMMAND
-        "CC=${CMAKE_C_COMPILER}" "CXX=${CMAKE_CXX_COMPILER}" "AR=${CMAKE_C_COMPILER_AR}" "GOOS=${GO_TARGET_OS}"
-        "CGO_CFLAGS=${CGO_CFLAGS}" "CGO_CXXFLAGS=${CGO_CXXFLAGS}" "CGO_LDFLAGS=${CGO_LDFLAGS}" "GOARCH=${GO_TARGET_ARCH}"
-        "CGO_ENABLED=1" "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" build -v
-        -buildmode exe -o "${SYNCTHING_EXECUTABLE_PATH}" -ldflags "${GO_LINKER_FLAGS}" ./cmd/syncthing
-    DEPENDS ${SRC_FILES_SYNCTHING}
-    WORKING_DIRECTORY "${SYNCTHING_PATH}"
-    COMMENT "Building Syncthing itself (as executable, ${SYNCTHING_EXECUTABLE_PATH})")
 
 # find c++utilities to use CMake modules and headers from it privately
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)

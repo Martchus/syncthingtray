@@ -31,7 +31,8 @@ class InterfaceTests : public TestFixture {
     CPPUNIT_TEST(testVersion);
     CPPUNIT_TEST(testRunWithoutConfig);
     CPPUNIT_TEST(testRunWithConfig);
-    CPPUNIT_TEST(testCli);
+    CPPUNIT_TEST(testRunCli);
+    CPPUNIT_TEST(testRunCommand);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -41,7 +42,8 @@ public:
     void testVersion();
     void testRunWithoutConfig();
     void testRunWithConfig();
-    void testCli();
+    void testRunCli();
+    void testRunCommand();
 
     void setUp() override;
     void tearDown() override;
@@ -254,7 +256,15 @@ void InterfaceTests::testRunWithConfig()
 /*!
  * \brief Tests running Syncthing's CLI.
  */
-void InterfaceTests::testCli()
+void InterfaceTests::testRunCli()
 {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("run arbitrary CLI command", 0ll, runCli({ "config", "version", "--help" }));
+}
+
+/*!
+ * \brief Tests running Syncthing command.
+ */
+void InterfaceTests::testRunCommand()
+{
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("run arbitrary CLI command", 0ll, runCommand({ "--help" }));
 }
