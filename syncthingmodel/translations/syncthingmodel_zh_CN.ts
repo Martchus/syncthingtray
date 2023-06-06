@@ -133,47 +133,47 @@
         <translation>否</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="380"/>
+        <location filename="../syncthingdevicemodel.cpp" line="378"/>
         <source>Paused</source>
         <translation>已暂停</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="384"/>
+        <location filename="../syncthingdevicemodel.cpp" line="382"/>
         <source>Unknown status</source>
         <translation>未知状态</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="386"/>
+        <location filename="../syncthingdevicemodel.cpp" line="384"/>
         <source>Own device</source>
         <translation>本设备</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="388"/>
+        <location filename="../syncthingdevicemodel.cpp" line="386"/>
         <source>Idle</source>
         <translation>空闲</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="390"/>
+        <location filename="../syncthingdevicemodel.cpp" line="388"/>
         <source>Disconnected</source>
         <translation>已断连</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="392"/>
+        <location filename="../syncthingdevicemodel.cpp" line="390"/>
         <source>Synchronizing (%1 %, %2)</source>
         <translation>同步中 (%1 %, %2)</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="395"/>
+        <location filename="../syncthingdevicemodel.cpp" line="393"/>
         <source>Synchronizing</source>
         <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="397"/>
+        <location filename="../syncthingdevicemodel.cpp" line="395"/>
         <source>Out of sync</source>
         <translation>未同步</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="399"/>
+        <location filename="../syncthingdevicemodel.cpp" line="397"/>
         <source>Rejected</source>
         <translation>被拒绝</translation>
     </message>

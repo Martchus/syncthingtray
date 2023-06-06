@@ -133,47 +133,47 @@
         <translation>ne</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="380"/>
+        <location filename="../syncthingdevicemodel.cpp" line="378"/>
         <source>Paused</source>
         <translation>Pozastaveno</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="384"/>
+        <location filename="../syncthingdevicemodel.cpp" line="382"/>
         <source>Unknown status</source>
         <translation>Neznámý stav</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="386"/>
+        <location filename="../syncthingdevicemodel.cpp" line="384"/>
         <source>Own device</source>
         <translation>Vlastní zařízení</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="388"/>
+        <location filename="../syncthingdevicemodel.cpp" line="386"/>
         <source>Idle</source>
         <translation>Nečinné</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="390"/>
+        <location filename="../syncthingdevicemodel.cpp" line="388"/>
         <source>Disconnected</source>
         <translation>Odpojeno</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="395"/>
+        <location filename="../syncthingdevicemodel.cpp" line="393"/>
         <source>Synchronizing</source>
         <translation>Synchronizuje se</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="392"/>
+        <location filename="../syncthingdevicemodel.cpp" line="390"/>
         <source>Synchronizing (%1 %, %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="397"/>
+        <location filename="../syncthingdevicemodel.cpp" line="395"/>
         <source>Out of sync</source>
         <translation>Nesesynchronizováno</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="399"/>
+        <location filename="../syncthingdevicemodel.cpp" line="397"/>
         <source>Rejected</source>
         <translation>Odmítnuto</translation>
     </message>
