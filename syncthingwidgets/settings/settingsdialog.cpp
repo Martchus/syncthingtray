@@ -819,13 +819,13 @@ std::optional<QString> configuredAutostartPath()
  */
 QString supposedAutostartPath()
 {
-#if 1 || defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
+#if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
 #ifndef SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH
 #define SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH QCoreApplication::applicationFilePath()
 #endif
     return qEnvironmentVariable("APPIMAGE", SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH);
 #elif defined(PLATFORM_WINDOWS)
-    return QCoreApplication::applicationFilePath().replace(QChar('/'), QChar('\\');
+    return QCoreApplication::applicationFilePath().replace(QChar('/'), QChar('\\'));
 #else
     return QCoreApplication::applicationFilePath();
 #endif
