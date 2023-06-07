@@ -14,6 +14,7 @@ set(HEADER_FILES
     syncthingdir.h
     syncthingdev.h
     syncthingconnection.h
+    syncthingconnectionenums.h
     syncthingconnectionstatus.h
     syncthingconnectionsettings.h
     syncthingnotifier.h

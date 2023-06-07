@@ -1054,7 +1054,7 @@ bool FinalWizardPage::validatePage()
     return true;
 }
 
-void QtGui::FinalWizardPage::showResults()
+void FinalWizardPage::showResults()
 {
     auto *const wizard = qobject_cast<Wizard *>(this->wizard());
     if (!wizard) {

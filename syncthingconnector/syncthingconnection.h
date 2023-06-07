@@ -1,6 +1,7 @@
 #ifndef SYNCTHINGCONNECTION_H
 #define SYNCTHINGCONNECTION_H
 
+#include "./syncthingconnectionenums.h"
 #include "./syncthingconnectionstatus.h"
 #include "./syncthingdev.h"
 #include "./syncthingdir.h"
@@ -30,12 +31,6 @@ QT_FORWARD_DECLARE_CLASS(QJsonParseError)
 class ConnectionTests;
 class MiscTests;
 
-#define SYNCTHING_CONNECTOR_ENUM_CLASS enum class
-namespace Data {
-SYNCTHING_CONNECTOR_ENUM_CLASS SyncthingStatusComputionFlags : quint64;
-}
-#undef SYNCTHING_CONNECTOR_ENUM_CLASS
-
 namespace Data {
 
 struct SyncthingConnectionSettings;
@@ -51,22 +46,6 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry {
     QString when;
     QString message;
 };
-
-enum class SyncthingConnectionLoggingFlags : quint64 {
-    None, /**< loggingn is disabled */
-    FromEnvironment = (1 << 0), /**< environment variables are checked to pull in any of the other flags dynamically */
-    ApiCalls = (1 << 1), /**< log calls to Syncthing's REST-API and responses */
-    ApiReplies = (1 << 2), /**< log replies from Syncthing's REST-API */
-    Events = (1 << 3), /**< log events received via Syncthing's event API */
-    DirsOrDevsResetted = (1 << 4), /**< log list of directories/devices when list is reset */
-    All = ApiCalls | ApiReplies | Events | DirsOrDevsResetted, /** log as much as possible */
-};
-
-} // namespace Data
-
-CPP_UTILITIES_MARK_FLAG_ENUM_CLASS(Data, Data::SyncthingConnectionLoggingFlags)
-
-namespace Data {
 
 class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     friend ConnectionTests;

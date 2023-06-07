@@ -12,6 +12,7 @@ set(WIDGETS_HEADER_FILES
     settings/settings.h
     settings/settingsdialog.h
     settings/wizard.h
+    settings/wizardenums.h
     webview/webpage.h
     webview/webviewdialog.h
     misc/textviewdialog.h

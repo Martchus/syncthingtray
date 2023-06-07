@@ -2,8 +2,7 @@
 #define SETTINGS_WIZARD_H
 
 #include "../global.h"
-
-#include <c++utilities/misc/flagenumclass.h>
+#include "./wizardenums.h"
 
 #include <QWizard>
 #include <QWizardPage>
@@ -29,20 +28,6 @@ class MainConfigWizardPage;
 class AutostartWizardPage;
 class ApplyWizardPage;
 } // namespace Ui
-
-enum class MainConfiguration : quint64 {
-    None,
-    CurrentlyRunning,
-    LauncherExternal,
-    LauncherBuiltIn,
-    SystemdUserUnit,
-    SystemdSystemUnit,
-};
-
-enum class ExtraConfiguration : quint64 {
-    None,
-    SystemdIntegration = (1 << 0),
-};
 
 class SYNCTHINGWIDGETS_EXPORT Wizard : public QWizard {
     Q_OBJECT
@@ -254,7 +239,5 @@ private:
 };
 
 } // namespace QtGui
-
-CPP_UTILITIES_MARK_FLAG_ENUM_CLASS(QtGui, QtGui::ExtraConfiguration)
 
 #endif // SETTINGS_WIZARD_H

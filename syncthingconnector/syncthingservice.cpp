@@ -402,7 +402,7 @@ void SyncthingService::setEnabled(bool enabled)
 /*!
  * \brief Reload all unit files.
  */
-void Data::SyncthingService::reloadAllUnitFiles()
+void SyncthingService::reloadAllUnitFiles()
 {
     registerErrorHandler(m_currentSystemdInterface->Reload(), QT_TR_NOOP_UTF8("reload all unit files"), false, false);
 }
