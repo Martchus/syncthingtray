@@ -658,7 +658,7 @@ void Application::printLog(const std::vector<SyncthingLogEntry> &logEntries)
         const auto when = entry.when.toUtf8();
         try {
             cout << DateTime::fromIsoStringLocal(when.data()).toString(DateTimeOutputFormat::DateAndTime, true);
-        } catch (const ConversionException &e) {
+        } catch (const ConversionException &) {
             cout << when.data();
         }
         cout << ':' << ' ' << entry.message.toLocal8Bit().data() << '\n';
