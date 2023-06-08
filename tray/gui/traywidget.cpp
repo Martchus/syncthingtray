@@ -158,9 +158,9 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 
     // setup other widgets
     m_ui->notificationsPushButton->setHidden(true);
-    m_ui->globalTextLabel->setPixmap(QIcon(QStringLiteral("globe.fa")).pixmap(16));
-    m_ui->localTextLabel->setPixmap(QIcon(QStringLiteral("home.fa")).pixmap(16));
-    updateTraffic();
+    updateTrafficText();
+    setTrafficPixmaps(true);
+    setLabelPixmaps();
 
     // add actions from right-click menu if it is not available
 #ifndef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
@@ -615,13 +615,16 @@ void TrayWidget::applySettings(const QString &connectionConfig)
 
 bool TrayWidget::event(QEvent *event)
 {
+    const auto res = QWidget::event(event);
     switch (event->type()) {
     case QEvent::PaletteChange:
         setBrightColorsOfModelsAccordingToPalette();
+        setLabelPixmaps();
+        setTrafficPixmaps(true);
         break;
     default:;
     }
-    return QWidget::event(event);
+    return res;
 }
 
 void TrayWidget::applySettingsOnAllInstances()
@@ -727,38 +730,21 @@ void TrayWidget::changeStatus()
 
 void TrayWidget::updateTraffic()
 {
-    if (m_ui->trafficFormWidget->isHidden()) {
-        return;
+    if (updateTrafficText()) {
+        setTrafficPixmaps();
     }
+}
 
-    // render traffic icons the first time the function is called
-    static const auto trafficIcons = [this]() {
-        const auto size = QSize(16, 13);
-        const auto &palette = m_ui->trafficFormWidget->palette(); // FIXME: make this aware of palette changes
-        const auto colorBackground = palette.color(QPalette::Window);
-        const auto colorActive = palette.color(QPalette::WindowText);
-        const auto colorInactive = QColor((colorActive.red() + colorBackground.red()) / 2, (colorActive.green() + colorBackground.green()) / 2,
-            (colorActive.blue() + colorBackground.blue()) / 2);
-        const auto renderIcon
-            = [&size](QtForkAwesome::Icon icon, const QColor &color) { return QtForkAwesome::Renderer::global().pixmap(icon, size, color); };
-        struct {
-            QPixmap uploadIconActive;
-            QPixmap uploadIconInactive;
-            QPixmap downloadIconActive;
-            QPixmap downloadIconInactive;
-        } icons;
-        icons.uploadIconActive = renderIcon(QtForkAwesome::Icon::CloudUpload, colorActive);
-        icons.uploadIconInactive = renderIcon(QtForkAwesome::Icon::CloudUpload, colorInactive);
-        icons.downloadIconActive = renderIcon(QtForkAwesome::Icon::CloudDownload, colorActive);
-        icons.downloadIconInactive = renderIcon(QtForkAwesome::Icon::CloudDownload, colorInactive);
-        return icons;
-    }();
+bool TrayWidget::updateTrafficText()
+{
+    if (m_ui->trafficFormWidget->isHidden()) {
+        return false;
+    }
 
     // update text and whether to use active/inactive icons
     m_ui->inTrafficLabel->setText(trafficString(m_connection.totalIncomingTraffic(), m_connection.totalIncomingRate()));
     m_ui->outTrafficLabel->setText(trafficString(m_connection.totalOutgoingTraffic(), m_connection.totalOutgoingRate()));
-    m_ui->trafficInTextLabel->setPixmap(m_connection.totalIncomingRate() > 0.0 ? trafficIcons.downloadIconActive : trafficIcons.downloadIconInactive);
-    m_ui->trafficOutTextLabel->setPixmap(m_connection.totalOutgoingRate() > 0.0 ? trafficIcons.uploadIconActive : trafficIcons.uploadIconInactive);
+    return true;
 }
 
 void TrayWidget::updateOverallStatistics()
@@ -948,6 +934,33 @@ void TrayWidget::setBrightColorsOfModelsAccordingToPalette()
     m_devModel.setBrightColors(brightColors);
     m_dlModel.setBrightColors(brightColors);
     m_recentChangesModel.setBrightColors(brightColors);
+}
+
+void TrayWidget::setLabelPixmaps()
+{
+    m_ui->globalTextLabel->setPixmap(QIcon(QStringLiteral("globe.fa")).pixmap(16));
+    m_ui->localTextLabel->setPixmap(QIcon(QStringLiteral("home.fa")).pixmap(16));
+}
+
+void TrayWidget::setTrafficPixmaps(bool recompute)
+{
+    if (recompute) {
+        const auto size = QSize(16, 13);
+        const auto &palette = m_ui->trafficFormWidget->palette();
+        const auto colorBackground = palette.color(QPalette::Window);
+        const auto colorActive = palette.color(QPalette::WindowText);
+        const auto colorInactive = QColor((colorActive.red() + colorBackground.red()) / 2, (colorActive.green() + colorBackground.green()) / 2,
+                                          (colorActive.blue() + colorBackground.blue()) / 2);
+        const auto renderIcon
+            = [&size](QtForkAwesome::Icon icon, const QColor &color) { return QtForkAwesome::Renderer::global().pixmap(icon, size, color); };
+        m_trafficIcons.uploadIconActive = renderIcon(QtForkAwesome::Icon::CloudUpload, colorActive);
+        m_trafficIcons.uploadIconInactive = renderIcon(QtForkAwesome::Icon::CloudUpload, colorInactive);
+        m_trafficIcons.downloadIconActive = renderIcon(QtForkAwesome::Icon::CloudDownload, colorActive);
+        m_trafficIcons.downloadIconInactive = renderIcon(QtForkAwesome::Icon::CloudDownload, colorInactive);
+    }
+
+    m_ui->trafficInTextLabel->setPixmap(m_connection.totalIncomingRate() > 0.0 ? m_trafficIcons.downloadIconActive : m_trafficIcons.downloadIconInactive);
+    m_ui->trafficOutTextLabel->setPixmap(m_connection.totalOutgoingRate() > 0.0 ? m_trafficIcons.uploadIconActive : m_trafficIcons.uploadIconInactive);
 }
 
 } // namespace QtGui

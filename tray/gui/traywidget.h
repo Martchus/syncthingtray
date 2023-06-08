@@ -98,6 +98,7 @@ private Q_SLOTS:
     void showRecentChangesContextMenu(const QPoint &position);
     void changeStatus();
     void updateTraffic();
+    bool updateTrafficText();
     void updateOverallStatistics();
     void updateIconAndTooltip();
     void toggleRunning();
@@ -114,6 +115,8 @@ private Q_SLOTS:
     void concludeWizard(const QString &errorMessage = QString());
     void showDialog(QWidget *dlg, bool maximized = false);
     void setBrightColorsOfModelsAccordingToPalette();
+    void setLabelPixmaps();
+    void setTrafficPixmaps(bool recompute = false);
 
 private:
     TrayMenu *m_menu;
@@ -139,6 +142,12 @@ private:
     std::vector<Data::SyncthingLogEntry> m_notifications;
     enum class StartStopButtonTarget { None, Service, Launcher } m_startStopButtonTarget;
     QStringList m_tabTexts;
+    struct {
+        QPixmap uploadIconActive;
+        QPixmap uploadIconInactive;
+        QPixmap downloadIconActive;
+        QPixmap downloadIconInactive;
+    } m_trafficIcons;
     bool m_tabTextsShown;
     bool m_applyingSettingsForWizard;
     static std::vector<TrayWidget *> s_instances;
