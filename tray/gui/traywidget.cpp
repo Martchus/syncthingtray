@@ -950,7 +950,7 @@ void TrayWidget::setTrafficPixmaps(bool recompute)
         const auto colorBackground = palette.color(QPalette::Window);
         const auto colorActive = palette.color(QPalette::WindowText);
         const auto colorInactive = QColor((colorActive.red() + colorBackground.red()) / 2, (colorActive.green() + colorBackground.green()) / 2,
-                                          (colorActive.blue() + colorBackground.blue()) / 2);
+            (colorActive.blue() + colorBackground.blue()) / 2);
         const auto renderIcon
             = [&size](QtForkAwesome::Icon icon, const QColor &color) { return QtForkAwesome::Renderer::global().pixmap(icon, size, color); };
         m_trafficIcons.uploadIconActive = renderIcon(QtForkAwesome::Icon::CloudUpload, colorActive);
@@ -959,8 +959,10 @@ void TrayWidget::setTrafficPixmaps(bool recompute)
         m_trafficIcons.downloadIconInactive = renderIcon(QtForkAwesome::Icon::CloudDownload, colorInactive);
     }
 
-    m_ui->trafficInTextLabel->setPixmap(m_connection.totalIncomingRate() > 0.0 ? m_trafficIcons.downloadIconActive : m_trafficIcons.downloadIconInactive);
-    m_ui->trafficOutTextLabel->setPixmap(m_connection.totalOutgoingRate() > 0.0 ? m_trafficIcons.uploadIconActive : m_trafficIcons.uploadIconInactive);
+    m_ui->trafficInTextLabel->setPixmap(
+        m_connection.totalIncomingRate() > 0.0 ? m_trafficIcons.downloadIconActive : m_trafficIcons.downloadIconInactive);
+    m_ui->trafficOutTextLabel->setPixmap(
+        m_connection.totalOutgoingRate() > 0.0 ? m_trafficIcons.uploadIconActive : m_trafficIcons.uploadIconInactive);
 }
 
 } // namespace QtGui
