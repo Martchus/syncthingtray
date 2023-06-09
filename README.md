@@ -346,17 +346,16 @@ a test instance of Syncthing that does not affect a possibly existing Syncthing 
 1. Get the sources. For the latest version from Git clone the following repositories:
    ```
    cd "$SOURCES"
-   git config core.symlinks true                                          # only required on Windows
-   git clone https://github.com/Martchus/cpp-utilities.git c++utilities
-   git clone https://github.com/Martchus/qtutilities.git
-   git clone https://github.com/Martchus/qtforkawesome.git
-   git clone https://github.com/ForkAwesome/Fork-Awesome.git forkawesome
-   git clone https://github.com/Martchus/syncthingtray.git
-   git clone https://github.com/Martchus/subdirs.git
+   export MSYS=winsymlinks:nativestrict # only required when using MSYS2
+   git clone -c core.symlinks=true https://github.com/Martchus/cpp-utilities.git c++utilities
+   git clone -c core.symlinks=true https://github.com/Martchus/qtutilities.git
+   git clone -c core.symlinks=true https://github.com/Martchus/qtforkawesome.git
+   git clone -c core.symlinks=true https://github.com/ForkAwesome/Fork-Awesome.git forkawesome
+   git clone -c core.symlinks=true https://github.com/Martchus/syncthingtray.git
+   git clone -c core.symlinks=true https://github.com/Martchus/subdirs.git
    ```
-   Note that `git config core.symlinks=true` is only required under Windows to handle symlinks correctly.
-   This requires a recent Git version and a filesystem which supports symlinks (NTFS works). Additionally,
-   you need to
+   Note that `core.symlinks=true` is only required under Windows to handle symlinks correctly. This requires a
+   recent Git version and a filesystem which supports symlinks (NTFS works). Additionally, you need to
    [enable Windows Developer Mode](https://learn.microsoft.com/en-us/gaming/game-bar/guide/developer-mode).
    If you run into "not found" errors on symlink creation use `git reset --hard` within the repository to
    fix this.
