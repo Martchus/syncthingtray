@@ -154,11 +154,19 @@ void Launcher::autostart() const
  */
 void Launcher::terminate()
 {
+    // trigger termination of all pending processes
+    // note: This covers the process launched via SyncthingLauncher and additional tool processes. It does *not* cover
+    //       the built-in Syncthing instance.
+    auto killer = QtGui::SyncthingKiller(allProcesses());
+    // stop the built-in Syncthing instance and wait until it has terminated
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     auto *const launcher = SyncthingLauncher::mainInstance();
     if (launcher) {
-        launcher->tearDownLibSyncthing();
+        launcher->stopLibSyncthing();
     }
-    QtGui::SyncthingKiller(allProcesses()).waitForFinished();
+#endif
+    // wait until all pending processes have terminated, possibly ask user to kill a process if it does not react
+    killer.waitForFinished();
 }
 
 static bool isActiveFor(const SyncthingLauncher &launcher, unsigned int atLeastSeconds)

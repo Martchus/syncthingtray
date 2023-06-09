@@ -176,6 +176,12 @@ void SyncthingLauncher::kill()
     }
 }
 
+/*!
+ * \brief Stops the built-in Syncthing instance.
+ * \remarks
+ * - Does nothing if Syncthing is starting or stopping or has already been stopped or never been started.
+ * - Returns immediately. The stopping is performed asynchronously.
+ */
 void SyncthingLauncher::tearDownLibSyncthing()
 {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
@@ -184,6 +190,20 @@ void SyncthingLauncher::tearDownLibSyncthing()
     }
     m_manuallyStopped = true;
     m_stopFuture = QtConcurrent::run(std::bind(&SyncthingLauncher::stopLibSyncthing, this));
+#endif
+}
+
+/*!
+ * \brief Stops the built-in Syncthing instance.
+ * \remarks
+ * - Does nothing if Syncthing has already been stopped or never been started.
+ * - Blocks the current thread until Syncthing has been stopped.
+ */
+void SyncthingLauncher::stopLibSyncthing()
+{
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    LibSyncthing::stopSyncthing();
+    // no need to emit exited/runningChanged here; that is already done in runLibSyncthing()
 #endif
 }
 
@@ -270,13 +290,6 @@ void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runt
     emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
     emit runningChanged(false);
 }
-
-void SyncthingLauncher::stopLibSyncthing()
-{
-    LibSyncthing::stopSyncthing();
-    // no need to emit exited/runningChanged here; that is already done in runLibSyncthing()
-}
-
 #else
 void SyncthingLauncher::showLibSyncthingNotSupported()
 {

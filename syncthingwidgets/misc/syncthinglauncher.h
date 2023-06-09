@@ -71,6 +71,7 @@ public Q_SLOTS:
     void terminate(Data::SyncthingConnection *relevantConnection = nullptr);
     void kill();
     void tearDownLibSyncthing();
+    void stopLibSyncthing();
 
 private Q_SLOTS:
     void handleProcessReadyRead();
@@ -78,7 +79,6 @@ private Q_SLOTS:
     void handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions);
-    void stopLibSyncthing();
 #else
     void showLibSyncthingNotSupported();
 #endif
