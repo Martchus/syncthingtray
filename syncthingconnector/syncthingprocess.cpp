@@ -743,7 +743,7 @@ bool SyncthingProcess::waitForReadyRead(int msecs)
  */
 qint64 SyncthingProcess::processId() const
 {
-    return m_process ? m_process->child.id() : -1;
+    return m_process ? static_cast<qint64>(m_process->child.id()) : static_cast<qint64>(-1);
 }
 
 /*!
