@@ -214,11 +214,22 @@ static QStringList chromiumBasedBrowserBinaries()
 static void openBrowserInAppMode(const QString &url)
 {
     const auto &configuredCustomCommand = Settings::values().webView.customCommand;
-    const auto customCommand
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    const
+#endif
+        auto customCommand
         = Data::SyncthingProcess::splitArguments(QString(configuredCustomCommand).replace(QLatin1String("%SYNCTHING_URL%"), url));
     const auto appList = customCommand.isEmpty() ? chromiumBasedBrowserBinaries() : QStringList{ customCommand.first() };
-    const auto args
-        = customCommand.isEmpty() ? QStringList{ QStringLiteral("--app=") + url } : QStringList(customCommand.cbegin() + 1, customCommand.cend());
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    customCommand.removeFirst();
+#endif
+    const auto args = customCommand.isEmpty() ? QStringList{ QStringLiteral("--app=") + url } :
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+                                              QStringList(customCommand.cbegin() + 1, customCommand.cend())
+#else
+                                              customCommand
+#endif
+        ;
     auto *const process = new Data::SyncthingProcess();
     QObject::connect(process, &Data::SyncthingProcess::finished, process, &QObject::deleteLater);
     QObject::connect(process, &Data::SyncthingProcess::errorOccurred, process, [process] {
