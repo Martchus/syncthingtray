@@ -24,14 +24,16 @@ RowLayout {
                     target: connectButton
                     text: qsTr("Connect")
                     icon.source: plasmoid.nativeInterface.faUrl + "refresh"
-                    visible: true
+                    enabled: true
                 }
             },
             State {
                 name: "connecting"
                 PropertyChanges {
                     target: connectButton
-                    visible: false
+                    text: qsTr("Connecting …")
+                    icon.source: plasmoid.nativeInterface.faUrl + "refresh"
+                    enabled: false
                 }
             },
             State {
@@ -40,7 +42,7 @@ RowLayout {
                     target: connectButton
                     text: qsTr("Resume")
                     icon.source: plasmoid.nativeInterface.faUrl + "play"
-                    visible: true
+                    enabled: true
                 }
             },
             State {
@@ -49,14 +51,14 @@ RowLayout {
                     target: connectButton
                     text: qsTr("Pause")
                     icon.source: plasmoid.nativeInterface.faUrl + "pause"
-                    visible: true
+                    enabled: true
                 }
             }
         ]
         state: {
             switch (plasmoid.nativeInterface.connection.status) {
             case SyncthingPlasmoid.Data.Disconnected:
-                return "disconnected"
+                return plasmoid.nativeInterface.connection.connecting ? "connecting" : "disconnected"
             case SyncthingPlasmoid.Data.Reconnecting:
                 return "connecting";
             case SyncthingPlasmoid.Data.Paused:

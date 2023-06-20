@@ -456,17 +456,22 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
 {
     switch (status) {
     case SyncthingStatus::Disconnected:
-        m_ui->statusPushButton->setText(tr("Connect"));
-        m_ui->statusPushButton->setToolTip(tr("Not connected to Syncthing, click to connect"));
-        m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("refresh.fa")));
-        m_ui->statusPushButton->setHidden(false);
-        updateTraffic(); // ensure previous traffic statistics are no longer shown
-        if (m_applyingSettingsForWizard) {
-            concludeWizard(tr("Unable to establish connection to Syncthing."));
-        }
-        return;
     case SyncthingStatus::Reconnecting:
-        m_ui->statusPushButton->setHidden(true);
+        if (status == SyncthingStatus::Reconnecting || m_connection.isConnecting()) {
+            m_ui->statusPushButton->setText(tr("Connecting …"));
+            m_ui->statusPushButton->setToolTip(tr("Establishing connection to Syncthing …"));
+            m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("refresh.fa")));
+            m_ui->statusPushButton->setEnabled(false);
+        } else {
+            m_ui->statusPushButton->setText(tr("Connect"));
+            m_ui->statusPushButton->setToolTip(tr("Not connected to Syncthing, click to connect"));
+            m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("refresh.fa")));
+            m_ui->statusPushButton->setEnabled(true);
+            updateTraffic(); // ensure previous traffic statistics are no longer shown
+            if (m_applyingSettingsForWizard) {
+                concludeWizard(tr("Unable to establish connection to Syncthing."));
+            }
+        }
         return;
     case SyncthingStatus::Idle:
     case SyncthingStatus::Scanning:
@@ -475,13 +480,13 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
         m_ui->statusPushButton->setText(tr("Pause"));
         m_ui->statusPushButton->setToolTip(tr("Syncthing is running, click to pause all devices"));
         m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("pause.fa")));
-        m_ui->statusPushButton->setHidden(false);
+        m_ui->statusPushButton->setEnabled(true);
         break;
     case SyncthingStatus::Paused:
         m_ui->statusPushButton->setText(tr("Continue"));
         m_ui->statusPushButton->setToolTip(tr("At least one device is paused, click to resume"));
         m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("play.fa")));
-        m_ui->statusPushButton->setHidden(false);
+        m_ui->statusPushButton->setEnabled(true);
         break;
     default:;
     }
