@@ -166,6 +166,9 @@ Q_SIGNALS:
     void statusIconsChanged(const Data::StatusIcons &newStatusIcons, const Data::StatusIcons &newTrayIcons);
     void forkAwesomeIconsChanged(const Data::ForkAwesomeIcons &newForkAwesomeIcons);
 
+protected:
+    bool event(QEvent *event) override;
+
 private:
     explicit IconManager(const QPalette *palette = nullptr);
 
@@ -173,6 +176,7 @@ private:
     StatusIcons m_trayIcons;
     QtForkAwesome::Renderer m_forkAwesomeRenderer;
     ForkAwesomeIcons m_commonForkAwesomeIcons;
+    bool m_usesApplicationPalette;
 };
 
 inline void IconManager::applySettings(const StatusIconSettings *statusIconSettings, const StatusIconSettings *trayIconSettings)

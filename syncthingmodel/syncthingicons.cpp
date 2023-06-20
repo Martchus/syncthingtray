@@ -9,12 +9,15 @@
 
 #include <qtforkawesome/icon.h>
 
+#include <QEvent>
 #include <QFile>
 #include <QGuiApplication>
 #include <QPainter>
 #include <QPalette>
 #include <QStringBuilder>
 #include <QSvgRenderer>
+
+#include <iostream>
 
 #ifndef LIB_SYNCTHING_MODEL_STATIC
 ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
@@ -315,23 +318,27 @@ IconManager::IconManager(const QPalette *palette)
     , m_trayIcons(m_statusIcons)
     , m_commonForkAwesomeIcons(
           m_forkAwesomeRenderer, (palette ? *palette : QGuiApplication::palette()).color(QPalette::Normal, QPalette::Text), QSize(64, 64))
+    , m_usesApplicationPalette(palette == nullptr)
 {
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#endif
-    if (!palette) {
-        QObject::connect(qGuiApp, &QGuiApplication::paletteChanged, this, &IconManager::setPalette);
-    }
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
 }
 
 void IconManager::setPalette(const QPalette &palette)
 {
     emit forkAwesomeIconsChanged(
         m_commonForkAwesomeIcons = ForkAwesomeIcons(m_forkAwesomeRenderer, palette.color(QPalette::Normal, QPalette::Text), QSize(64, 64)));
+}
+
+bool IconManager::event(QEvent *event)
+{
+    switch (event->type()) {
+    case QEvent::ApplicationPaletteChange:
+        std::cout << "this is unfortunately never executed" << std::endl;
+        setPalette(QGuiApplication::palette());
+        break;
+    default:
+        ;
+    }
+    return QObject::event(event);
 }
 
 IconManager &IconManager::instance(const QPalette *palette)
