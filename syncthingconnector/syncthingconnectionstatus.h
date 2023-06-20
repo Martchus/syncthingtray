@@ -30,6 +30,7 @@ enum class SyncthingStatus {
     Paused = 4, /**< connected, at least one device is paused */
     Synchronizing = 5, /**< connected, at least one local directory is waiting to sync, preparing to sync or synchronizing */
     RemoteNotInSync = 8, /**< connected, at least one directory of a connected remote device is not in sync (still synchronizing, error, …) */
+    Connecting = 9, /**< disconnected, currently connecting */
 };
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
 Q_ENUM_NS(SyncthingStatus)

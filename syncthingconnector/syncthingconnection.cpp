@@ -160,6 +160,8 @@ QString SyncthingConnection::statusText(SyncthingStatus status)
     switch (status) {
     case SyncthingStatus::Disconnected:
         return tr("disconnected");
+    case SyncthingStatus::Connecting:
+        return tr("connecting");
     case SyncthingStatus::Reconnecting:
         return tr("reconnecting");
     case SyncthingStatus::Idle:
@@ -279,6 +281,7 @@ void SyncthingConnection::connect()
     requestConfig();
     requestStatus();
     m_keepPolling = true;
+    setStatus(SyncthingStatus::Connecting);
 }
 
 /*!
@@ -859,9 +862,10 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
 
 /*!
  * \brief Sets the connection status. Ensures statusChanged() is emitted if the status has actually changed.
- * \param status Specifies the status; should be either SyncthingStatus::Disconnected, SyncthingStatus::Reconnecting, or
- *        SyncthingStatus::Idle. There is no use in specifying other values such as SyncthingStatus::Synchronizing as
- *        these are determined automatically within the method according to SyncthingConnection::statusComputionFlags().
+ * \param status Specifies the status; should be either SyncthingStatus::Disconnected, SyncthingStatus::Connecting,
+ *        SyncthingStatus::Reconnecting, or SyncthingStatus::Idle. There is no use in specifying other values such as
+ *        SyncthingStatus::Synchronizing as these are determined automatically within the method according to
+ *        SyncthingConnection::statusComputionFlags().
  *
  * The precedence of the "connected" states from highest to lowest is:
  * 1. SyncthingStatus::Synchronizing
@@ -887,6 +891,7 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
         m_keepPolling = false;
         m_connectionAborted = true;
         [[fallthrough]];
+    case SyncthingStatus::Connecting:
     case SyncthingStatus::Reconnecting:
         m_devStatsPollTimer.stop();
         m_trafficPollTimer.stop();
