@@ -552,7 +552,7 @@ void SyncthingApplet::handleDevicesChanged()
 void SyncthingApplet::handleInternalError(
     const QString &errorMsg, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    if (!InternalError::isRelevant(m_connection, category, networkError)) {
+    if (!InternalError::isRelevant(m_connection, category, errorMsg, networkError)) {
         return;
     }
     auto error = InternalError(errorMsg, request.url(), response);

@@ -199,7 +199,7 @@ void TrayIcon::handleErrorsCleared()
 void TrayIcon::showInternalError(
     const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    if (!InternalError::isRelevant(trayMenu().widget().connection(), category, networkError)) {
+    if (!InternalError::isRelevant(trayMenu().widget().connection(), category, errorMessage, networkError)) {
         return;
     }
     auto error = InternalError(errorMessage, request.url(), response);

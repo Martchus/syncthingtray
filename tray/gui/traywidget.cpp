@@ -396,7 +396,7 @@ void TrayWidget::showUsingPositioningSettings()
 void TrayWidget::showInternalError(
     const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    if (!InternalError::isRelevant(connection(), category, networkError)) {
+    if (!InternalError::isRelevant(connection(), category, errorMessage, networkError)) {
         return;
     }
     InternalErrorsDialog::addError(errorMessage, request.url(), response);
