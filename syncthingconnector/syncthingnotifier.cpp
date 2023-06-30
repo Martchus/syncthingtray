@@ -118,7 +118,6 @@ void SyncthingNotifier::handleSyncthingProcessError(QProcess::ProcessError proce
 
 /*!
  * \brief Returns whether a "disconnected" notification should be shown.
- * \todo Unify with InternalError::isRelevant().
  */
 bool SyncthingNotifier::isDisconnectRelevant() const
 {
