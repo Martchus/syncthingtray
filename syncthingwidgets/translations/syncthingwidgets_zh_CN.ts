@@ -12,7 +12,7 @@
 <context>
     <name>QtGui</name>
     <message>
-        <location filename="../webview/webviewdialog.cpp" line="230"/>
+        <location filename="../webview/webviewdialog.cpp" line="241"/>
         <source>Unable to open Syncthing UI via &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2105,7 +2105,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="649"/>
+        <location filename="../settings/settings.cpp" line="657"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2113,7 +2113,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="318"/>
+        <location filename="../settings/settings.cpp" line="326"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>还原设置时无法加载证书 &quot;%1&quot;。</translation>
     </message>

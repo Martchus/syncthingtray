@@ -372,57 +372,62 @@
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/ToolBar.qml" line="41"/>
+        <location filename="../package/contents/ui/ToolBar.qml" line="34"/>
+        <source>Connecting …</source>
+        <translation>Verbinde …</translation>
+    </message>
+    <message>
+        <location filename="../package/contents/ui/ToolBar.qml" line="43"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/ToolBar.qml" line="50"/>
+        <location filename="../package/contents/ui/ToolBar.qml" line="52"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/ToolBar.qml" line="99"/>
+        <location filename="../package/contents/ui/ToolBar.qml" line="101"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/ToolBar.qml" line="113"/>
+        <location filename="../package/contents/ui/ToolBar.qml" line="115"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/ToolBar.qml" line="169"/>
+        <location filename="../package/contents/ui/ToolBar.qml" line="171"/>
         <source>Show new notifications</source>
         <translation>Neue Benachrichtigungen anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/ToolBar.qml" line="188"/>
+        <location filename="../package/contents/ui/ToolBar.qml" line="190"/>
         <source>About Syncthing Tray</source>
         <translation>Über Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/ToolBar.qml" line="200"/>
+        <location filename="../package/contents/ui/ToolBar.qml" line="202"/>
         <source>Show own device ID</source>
         <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/ToolBar.qml" line="216"/>
+        <location filename="../package/contents/ui/ToolBar.qml" line="218"/>
         <source>Show Syncthing log</source>
         <translation>Syncthing-Log anzeigen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/ToolBar.qml" line="228"/>
+        <location filename="../package/contents/ui/ToolBar.qml" line="230"/>
         <source>Rescan all directories</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/ToolBar.qml" line="244"/>
+        <location filename="../package/contents/ui/ToolBar.qml" line="246"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/ToolBar.qml" line="259"/>
+        <location filename="../package/contents/ui/ToolBar.qml" line="261"/>
         <source>Open Syncthing</source>
         <translation>Syncthing öffnen</translation>
     </message>
