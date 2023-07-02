@@ -273,12 +273,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="136"/>
+        <location filename="../lib/settingsdialog.cpp" line="138"/>
         <source>General web view settings</source>
         <translation>Allgemeine Webanzeigeneinstellungen</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="138"/>
+        <location filename="../lib/settingsdialog.cpp" line="139"/>
         <source>Built-in web view</source>
         <translation>Eingebaute Webanzeige</translation>
     </message>
@@ -287,7 +287,7 @@
         <translation type="vanished">Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="144"/>
+        <location filename="../lib/settingsdialog.cpp" line="148"/>
         <source>Extras</source>
         <translation></translation>
     </message>
