@@ -1618,21 +1618,21 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     OptionCategory *category;
 
     category = new OptionCategory(this);
-    category->setDisplayName(tr("Tray"));
+    translateCategory(category, [] { return tr("Tray"); });
     category->assignPages({ m_connectionsOptionPage = new ConnectionOptionPage(connection), new NotificationsOptionPage, new AppearanceOptionPage,
         new IconsOptionPage(IconsOptionPage::Context::UI), new IconsOptionPage(IconsOptionPage::Context::System) });
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     categories << category;
 
     category = new OptionCategory(this);
-    category->setDisplayName(tr("Web view"));
+    translateCategory(category, [] { return tr("Web view"); });
     category->assignPages({ new GeneralWebViewOptionPage, new BuiltinWebViewOptionPage });
     category->setIcon(
         QIcon::fromTheme(QStringLiteral("internet-web-browser"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/internet-web-browser.svg"))));
     categories << category;
 
     category = new OptionCategory(this);
-    category->setDisplayName(tr("Startup"));
+    translateCategory(category, [] { return tr("Startup"); });
     category->assignPages({ new AutostartOptionPage, new LauncherOptionPage,
         new LauncherOptionPage(QStringLiteral("Process"), tr("additional tool"), tr("Extra launcher"))
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

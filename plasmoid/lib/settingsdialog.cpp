@@ -125,7 +125,7 @@ SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
 
     category = new OptionCategory;
     m_appearanceOptionPage = new AppearanceOptionPage(applet);
-    category->setDisplayName(QCoreApplication::translate("Plasmoid::SettingsDialog", "Plasmoid"));
+    translateCategory(category, [] { return QCoreApplication::translate("Plasmoid::SettingsDialog", "Plasmoid"); });
     category->assignPages({ new ConnectionOptionPage(applet.connection()), new NotificationsOptionPage(GuiType::Plasmoid), m_appearanceOptionPage,
         new IconsOptionPage, new ShortcutOptionPage(applet) });
     category->setIcon(QIcon::fromTheme(QStringLiteral("plasma")));
@@ -133,15 +133,19 @@ SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
 
     // most startup options don't make much sense for a Plasmoid, so merge webview with startup
     auto *const generalWebViewPage = new GeneralWebViewOptionPage;
-    generalWebViewPage->widget()->setWindowTitle(QCoreApplication::translate("Plasmoid::SettingsDialog", "General web view settings"));
     auto *const builtinWebViewPage = new BuiltinWebViewOptionPage;
-    builtinWebViewPage->widget()->setWindowTitle(QCoreApplication::translate("Plasmoid::SettingsDialog", "Built-in web view"));
+    auto setWindowTitle = [generalWebViewPage, builtinWebViewPage] {
+        generalWebViewPage->widget()->setWindowTitle(QCoreApplication::translate("Plasmoid::SettingsDialog", "General web view settings"));
+        builtinWebViewPage->widget()->setWindowTitle(QCoreApplication::translate("Plasmoid::SettingsDialog", "Built-in web view"));
+    };
+    setWindowTitle();
+    connect(this, &QtUtilities::SettingsDialog::retranslationRequired, this, std::move(setWindowTitle));
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     auto *const systemdPage = new SystemdOptionPage;
 #endif
 
     category = new OptionCategory;
-    category->setDisplayName(QCoreApplication::translate("Plasmoid::SettingsDialog", "Extras"));
+    translateCategory(category, [] { return QCoreApplication::translate("Plasmoid::SettingsDialog", "Extras"); });
     category->assignPages({ generalWebViewPage, builtinWebViewPage
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         ,

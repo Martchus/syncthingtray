@@ -20,6 +20,7 @@
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
+#include "resources/../../tray/resources/qtconfig.h"
 
 #include "ui_traywidget.h"
 
@@ -627,6 +628,14 @@ bool TrayWidget::event(QEvent *event)
         setLabelPixmaps();
         setTrafficPixmaps(true);
         break;
+    case QEvent::LanguageChange:
+        m_ui->retranslateUi(this);
+        applyLauncherSettings(false, true, false);
+        handleStatusChanged(m_connection.status());
+        if (m_menu && m_menu->icon()) {
+            m_menu->icon()->updateStatusIconAndText();
+        }
+        break;
     default:;
     }
     return res;
@@ -634,7 +643,12 @@ bool TrayWidget::event(QEvent *event)
 
 void TrayWidget::applySettingsOnAllInstances()
 {
-    Settings::values().qt.apply();
+    auto &qtSettings = Settings::values().qt;
+    qtSettings.apply();
+    if (qtSettings.hasLocaleChanged()) {
+        QtUtilities::TranslationFiles::clearTranslationFiles();
+        LOAD_QT_TRANSLATIONS;
+    }
     for (TrayWidget *instance : s_instances) {
         instance->applySettings();
     }
