@@ -207,6 +207,7 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
     ui()->passwordLineEdit->setText(connectionSettings.password);
     ui()->apiKeyLineEdit->setText(connectionSettings.apiKey);
     ui()->certPathSelection->lineEdit()->setText(connectionSettings.httpsCertPath);
+    ui()->timeoutSpinBox->setValue(connectionSettings.requestTimeout);
     ui()->pollTrafficSpinBox->setValue(connectionSettings.trafficPollInterval);
     ui()->pollDevStatsSpinBox->setValue(connectionSettings.devStatsPollInterval);
     ui()->pollErrorsSpinBox->setValue(connectionSettings.errorsPollInterval);
@@ -232,6 +233,7 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
     connectionSettings.apiKey = ui()->apiKeyLineEdit->text().toUtf8();
     connectionSettings.expectedSslErrors.clear();
     connectionSettings.httpsCertPath = ui()->certPathSelection->lineEdit()->text();
+    connectionSettings.requestTimeout = ui()->timeoutSpinBox->value();
     connectionSettings.trafficPollInterval = ui()->pollTrafficSpinBox->value();
     connectionSettings.devStatsPollInterval = ui()->pollDevStatsSpinBox->value();
     connectionSettings.errorsPollInterval = ui()->pollErrorsSpinBox->value();
