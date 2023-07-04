@@ -72,6 +72,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(int trafficPollInterval READ trafficPollInterval WRITE setTrafficPollInterval)
     Q_PROPERTY(int devStatsPollInterval READ devStatsPollInterval WRITE setDevStatsPollInterval)
     Q_PROPERTY(bool recordFileChanges READ recordFileChanges WRITE setRecordFileChanges)
+    Q_PROPERTY(int requestTimeout READ requestTimeout WRITE setRequestTimeout)
     Q_PROPERTY(QString myId READ myId NOTIFY myIdChanged)
     Q_PROPERTY(QString tilde READ tilde NOTIFY tildeChanged)
     Q_PROPERTY(QString pathSeparator READ pathSeparator NOTIFY tildeChanged)
@@ -138,6 +139,8 @@ public:
     void disablePolling();
     bool recordFileChanges() const;
     void setRecordFileChanges(bool recordFileChanges);
+    int requestTimeout() const;
+    void setRequestTimeout(int requestTimeout);
 
     // getter for information retrieved from Syncthing
     const QString &configDir() const;
@@ -377,6 +380,7 @@ private:
     QTimer m_errorsPollTimer;
     QTimer m_autoReconnectTimer;
     unsigned int m_autoReconnectTries;
+    int m_requestTimeout;
     QString m_configDir;
     QString m_myId;
     QString m_tilde;
@@ -713,6 +717,25 @@ inline bool SyncthingConnection::recordFileChanges() const
 inline void SyncthingConnection::setRecordFileChanges(bool recordFileChanges)
 {
     m_recordFileChanges = recordFileChanges;
+}
+
+/*!
+ * \brief Returns the transfer timeout for requests in milliseconds.
+ * \sa QNetworkRequest::transferTimeout()
+ */
+inline int SyncthingConnection::requestTimeout() const
+{
+    return m_requestTimeout;
+}
+
+/*!
+ * \brief Sets the transfer timeout for requests in milliseconds.
+ * \remarks Existing requests are not affected.
+ * \sa QNetworkRequest::setTransferTimeout()
+ */
+inline void SyncthingConnection::setRequestTimeout(int requestTimeout)
+{
+    m_requestTimeout = requestTimeout;
 }
 
 /*!
