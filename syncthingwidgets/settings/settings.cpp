@@ -309,6 +309,7 @@ bool restore()
                 = settings.value(QStringLiteral("errorsPollInterval"), connectionSettings->errorsPollInterval).toInt();
             connectionSettings->reconnectInterval
                 = settings.value(QStringLiteral("reconnectInterval"), connectionSettings->reconnectInterval).toInt();
+            connectionSettings->requestTimeout = settings.value(QStringLiteral("requestTimeout"), connectionSettings->requestTimeout).toInt();
             connectionSettings->autoConnect = settings.value(QStringLiteral("autoConnect"), connectionSettings->autoConnect).toBool();
             const auto statusComputionFlags = settings.value(QStringLiteral("statusComputionFlags"),
                 QVariant::fromValue(static_cast<UnderlyingFlagType>(connectionSettings->statusComputionFlags)));
@@ -459,6 +460,7 @@ bool save()
         settings.setValue(QStringLiteral("devStatsPollInterval"), connectionSettings->devStatsPollInterval);
         settings.setValue(QStringLiteral("errorsPollInterval"), connectionSettings->errorsPollInterval);
         settings.setValue(QStringLiteral("reconnectInterval"), connectionSettings->reconnectInterval);
+        settings.setValue(QStringLiteral("requestTimeout"), connectionSettings->requestTimeout);
         settings.setValue(QStringLiteral("autoConnect"), connectionSettings->autoConnect);
         settings.setValue(QStringLiteral("statusComputionFlags"),
             QVariant::fromValue(static_cast<std::underlying_type_t<Data::SyncthingStatusComputionFlags>>(connectionSettings->statusComputionFlags)));

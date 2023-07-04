@@ -853,6 +853,7 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
     setDevStatsPollInterval(connectionSettings.devStatsPollInterval);
     setErrorsPollInterval(connectionSettings.errorsPollInterval);
     setAutoReconnectInterval(connectionSettings.reconnectInterval);
+    setRequestTimeout(connectionSettings.requestTimeout);
     setStatusComputionFlags(connectionSettings.statusComputionFlags);
 
     return reconnectRequired;
