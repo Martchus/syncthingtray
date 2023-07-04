@@ -153,7 +153,7 @@ int Application::exec(int argc, const char *const *argv)
     return QCoreApplication::exec();
 }
 
-int assignIntegerFromArg(const Argument &arg, int &integer)
+static int assignIntegerFromArg(const Argument &arg, int &integer)
 {
     if (!arg.isPresent()) {
         return 0;
