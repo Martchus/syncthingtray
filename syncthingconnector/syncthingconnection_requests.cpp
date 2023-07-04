@@ -33,7 +33,7 @@ namespace Data {
 /*!
  * \brief Prepares a request for the specified \a path and \a query.
  */
-QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const QUrlQuery &query, bool rest)
+QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const QUrlQuery &query, bool rest, bool noTimeout)
 {
     QUrl url(m_syncthingUrl);
     url.setPath(rest ? (url.path() % QStringLiteral("/rest/") % path) : (url.path() + path));
@@ -43,17 +43,17 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
     request.setRawHeader("X-API-Key", m_apiKey);
-    request.setTransferTimeout(m_requestTimeout);
+    request.setTransferTimeout(noTimeout ? 0 : m_requestTimeout);
     return request;
 }
 
 /*!
  * \brief Requests asynchronously data using the rest API.
  */
-QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQuery &query, bool rest)
+QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQuery &query, bool rest, bool noTimeout)
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
-    auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest));
+    auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest, noTimeout));
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
     if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: GET " << reply->url().toString().toStdString() << Phrases::EndFlush;
@@ -1698,7 +1698,8 @@ void SyncthingConnection::requestEvents()
     if (!m_hasEvents) {
         query.addQueryItem(QStringLiteral("timeout"), QStringLiteral("0"));
     }
-    QObject::connect(m_eventsReply = requestData(QStringLiteral("events"), query), &QNetworkReply::finished, this, &SyncthingConnection::readEvents);
+    QObject::connect(m_eventsReply = requestData(QStringLiteral("events"), query, true, m_hasEvents), &QNetworkReply::finished, this,
+        &SyncthingConnection::readEvents);
 }
 
 /*!
@@ -2298,8 +2299,8 @@ void SyncthingConnection::requestDiskEvents(int limit)
     if (!m_hasDiskEvents) {
         query.addQueryItem(QStringLiteral("timeout"), QStringLiteral("0"));
     }
-    QObject::connect(
-        m_diskEventsReply = requestData(QStringLiteral("events/disk"), query), &QNetworkReply::finished, this, &SyncthingConnection::readDiskEvents);
+    QObject::connect(m_diskEventsReply = requestData(QStringLiteral("events/disk"), query, true, m_hasDiskEvents), &QNetworkReply::finished, this,
+        &SyncthingConnection::readDiskEvents);
 }
 
 /*!

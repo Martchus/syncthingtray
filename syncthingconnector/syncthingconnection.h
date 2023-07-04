@@ -344,8 +344,8 @@ private:
         QNetworkReply *reply;
         QByteArray response;
     };
-    QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true);
-    QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true);
+    QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true, bool noTimeout = false);
+    QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true, bool noTimeout = false);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
     QNetworkReply *sendData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
     Reply prepareReply(bool readData = true, bool handleAborting = true);
