@@ -1089,6 +1089,7 @@ void Application::initDirCompletion(Argument &arg, const ArgumentOccurrence &)
     if (loadConfig()) {
         return;
     }
+    m_settings.requestTimeout = 5000; // avoid blocking shell for too long
     waitForConfig();
     // set directory IDs as completion values
     m_dirCompletion = m_connection.directoryIds().join(QChar(' ')).toUtf8();
@@ -1105,6 +1106,7 @@ void Application::initDevCompletion(Argument &arg, const ArgumentOccurrence &)
     if (loadConfig()) {
         return;
     }
+    m_settings.requestTimeout = 5000; // avoid blocking shell for too long
     waitForConfig();
     // set device IDs and names as completion values
     QStringList completionValues;
