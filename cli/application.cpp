@@ -1081,7 +1081,9 @@ void Application::initDirCompletion(Argument &arg, const ArgumentOccurrence &)
         return;
     }
     // load config and wait for connected
-    loadConfig();
+    if (loadConfig()) {
+        return;
+    }
     waitForConfig();
     // set directory IDs as completion values
     m_dirCompletion = m_connection.directoryIds().join(QChar(' ')).toUtf8();
@@ -1095,7 +1097,9 @@ void Application::initDevCompletion(Argument &arg, const ArgumentOccurrence &)
         return;
     }
     // load config and wait for connected
-    loadConfig();
+    if (loadConfig()) {
+        return;
+    }
     waitForConfig();
     // set device IDs and names as completion values
     QStringList completionValues;
