@@ -226,6 +226,11 @@ int Application::loadConfig()
         return res;
     }
 
+    // read request timeout
+    if (const int res = assignIntegerFromArg(m_args.requestTimeout, m_settings.requestTimeout)) {
+        return res;
+    }
+
     // disable polling for information which is not used by any CLI operation so far
     m_settings.trafficPollInterval = 0;
     m_settings.devStatsPollInterval = 0;
