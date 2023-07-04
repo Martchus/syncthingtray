@@ -7,7 +7,6 @@
 
 #include <QByteArray>
 #include <QList>
-#include <QNetworkRequest>
 #include <QSslError>
 #include <QString>
 
@@ -55,7 +54,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     static constexpr int defaultDevStatusPollInterval = 60000;
     static constexpr int defaultErrorsPollInterval = 30000;
     static constexpr int defaultReconnectInterval = 30000;
-    static constexpr int defaultRequestTimeout = QNetworkRequest::DefaultTransferTimeoutConstant;
+    static constexpr int defaultRequestTimeout = 0;
 };
 } // namespace Data
 

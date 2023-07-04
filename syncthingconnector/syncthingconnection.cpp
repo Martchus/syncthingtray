@@ -81,7 +81,7 @@ SyncthingConnection::SyncthingConnection(
     , m_lastEventId(0)
     , m_lastDiskEventId(0)
     , m_autoReconnectTries(0)
-    , m_requestTimeout(QNetworkRequest::DefaultTransferTimeoutConstant)
+    , m_requestTimeout(SyncthingConnectionSettings::defaultRequestTimeout)
     , m_totalIncomingTraffic(unknownTraffic)
     , m_totalOutgoingTraffic(unknownTraffic)
     , m_totalIncomingRate(0.0)
