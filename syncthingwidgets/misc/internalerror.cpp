@@ -15,8 +15,11 @@ namespace QtGui {
 /*!
  * \brief Returns whether to ignore inavailability after start or standby-wakeup.
  */
-static bool ignoreInavailabilityAfterStart(
-    const Settings::Settings &settings, const SyncthingLauncher *launcher, const SyncthingService *service, const QString &message, int networkError)
+static bool ignoreInavailabilityAfterStart(const Settings::Settings &settings, const SyncthingLauncher *launcher,
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    const SyncthingService *service,
+#endif
+    const QString &message, int networkError)
 {
     if (!settings.ignoreInavailabilityAfterStart) {
         return false;
@@ -97,6 +100,10 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
     }
 #endif
 
-    return !ignoreInavailabilityAfterStart(settings, launcher, service, message, networkError);
+    return !ignoreInavailabilityAfterStart(settings, launcher,
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        service,
+#endif
+        message, networkError);
 }
 } // namespace QtGui
