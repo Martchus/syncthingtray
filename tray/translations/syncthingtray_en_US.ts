@@ -174,8 +174,8 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="72"/>
-        <location filename="../gui/traywidget.cpp" line="842"/>
-        <location filename="../gui/traywidget.cpp" line="884"/>
+        <location filename="../gui/traywidget.cpp" line="841"/>
+        <location filename="../gui/traywidget.cpp" line="883"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -366,43 +366,43 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="664"/>
+        <location filename="../gui/traywidget.cpp" line="663"/>
         <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="675"/>
+        <location filename="../gui/traywidget.cpp" line="674"/>
         <source>The containing directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="718"/>
+        <location filename="../gui/traywidget.cpp" line="717"/>
         <source>Copy path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="722"/>
+        <location filename="../gui/traywidget.cpp" line="721"/>
         <source>Copy device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="725"/>
+        <location filename="../gui/traywidget.cpp" line="724"/>
         <source>Copy directory ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="838"/>
-        <location filename="../gui/traywidget.cpp" line="878"/>
+        <location filename="../gui/traywidget.cpp" line="837"/>
+        <location filename="../gui/traywidget.cpp" line="877"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="839"/>
+        <location filename="../gui/traywidget.cpp" line="838"/>
         <source>Stop Syncthing instance launched via tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="843"/>
+        <location filename="../gui/traywidget.cpp" line="842"/>
         <source>Start Syncthing with the built-in launcher configured in the settings</source>
         <translation type="unfinished"></translation>
     </message>

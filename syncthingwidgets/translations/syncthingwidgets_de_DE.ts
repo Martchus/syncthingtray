@@ -450,32 +450,32 @@
         <translation>Lösche existierenden Eintrag</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="755"/>
+        <location filename="../settings/settingsdialog.cpp" line="757"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Durch das Hinzufügen einer *.desktop-Datei unter &lt;i&gt;~/.config/autostart&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="758"/>
+        <location filename="../settings/settingsdialog.cpp" line="760"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation>Durch das Hinzufügen eines Registry-Schlüssels unter &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="762"/>
+        <location filename="../settings/settingsdialog.cpp" line="764"/>
         <source>This is achieved by adding a *.plist file under &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Durch das Hinzufügen einer *.plist-Datei unter &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="766"/>
+        <location filename="../settings/settingsdialog.cpp" line="768"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation>Diese Funktion wurde für die aktuelle Plattform nicht nicht implementiert.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="966"/>
+        <location filename="../settings/settingsdialog.cpp" line="968"/>
         <source>unable to modify startup entry</source>
         <translation>Fehler beim aktualisieren des Auto-Start-Eintrags</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="996"/>
+        <location filename="../settings/settingsdialog.cpp" line="998"/>
         <source>There is already an autostart entry for &quot;%1&quot;. It will not be overridden when applying changes unless you delete it first.</source>
         <translation>Es gibt bereits einen Autostart-Eintrag für &quot;%1&quot;. Dieser Eintrag wird beim Anwenden der Einstellungen nicht verändert außer er wird zuvor gelöscht.</translation>
     </message>
@@ -586,7 +586,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1570"/>
+        <location filename="../settings/settingsdialog.cpp" line="1572"/>
         <source>Built-in web view</source>
         <translation>Eingebaute Webanzeige</translation>
     </message>
@@ -606,7 +606,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1572"/>
+        <location filename="../settings/settingsdialog.cpp" line="1574"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.</translation>
     </message>
@@ -739,6 +739,16 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Der API-Schlüssel, der im Einstellungsdialog von Syncthing angezeigt wird</translation>
     </message>
     <message>
+        <location filename="../settings/connectionoptionpage.ui" line="584"/>
+        <source>Transfer timeout</source>
+        <translation>Timeout</translation>
+    </message>
+    <message>
+        <location filename="../settings/connectionoptionpage.ui" line="591"/>
+        <source>no timeout</source>
+        <translation>kein Limit für die Dauer von Abfragen</translation>
+    </message>
+    <message>
         <location filename="../settings/connectionoptionpage.ui" line="474"/>
         <source>Whether to connect automatically on startup. This setting might be overruled by systemd and launcher settings.</source>
         <translation>Ob die Verbindung automatisch beim Starten hergestellt werden soll; kann von Systemd- und Starter-Einstellungen überschrieben werden</translation>
@@ -763,6 +773,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <location filename="../settings/connectionoptionpage.ui" line="394"/>
         <location filename="../settings/connectionoptionpage.ui" line="423"/>
         <location filename="../settings/connectionoptionpage.ui" line="455"/>
+        <location filename="../settings/connectionoptionpage.ui" line="594"/>
         <source> ms</source>
         <translation></translation>
     </message>
@@ -812,12 +823,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Fehler beim Auslesen der Syncthing-Konfigurationsdatei.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="242"/>
+        <location filename="../settings/settingsdialog.cpp" line="244"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
         <translation>Fehler beim Auslesen des angegebenen Zertifikats: %1</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="267"/>
+        <location filename="../settings/settingsdialog.cpp" line="269"/>
         <source>Instance %1</source>
         <translation>Instanz %1</translation>
     </message>
@@ -1053,12 +1064,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1546"/>
+        <location filename="../settings/settingsdialog.cpp" line="1548"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation>Befehl zum Starten der Syncthing-Oberfläche - </translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1547"/>
+        <location filename="../settings/settingsdialog.cpp" line="1549"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Gib den Befehl ein, mit dem die Syncthing-Oberfläche gestartet werden soll. Der Ausdruck &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; wird durch die Syncthing-URL ersetzt.&lt;/p&gt;&lt;p&gt;Lasse den Befehl leer, um die automatische Erkennung zu verwenden.&lt;/p&gt;</translation>
     </message>
@@ -1139,7 +1150,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>QtGui::IconsOptionPageBase</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="577"/>
+        <location filename="../settings/settingsdialog.cpp" line="579"/>
         <source>UI icons</source>
         <translation>UI-Icons</translation>
     </message>
@@ -1148,7 +1159,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation type="vanished">Diese Icon-Farben werden innerhalb der Oberfläche von Syncthing Tray verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="583"/>
+        <location filename="../settings/settingsdialog.cpp" line="585"/>
         <source>System icons</source>
         <translation>System-Icons</translation>
     </message>
@@ -1161,37 +1172,37 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation type="vanished">Die selben Farben wie für UI-Icons verwenden</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="579"/>
+        <location filename="../settings/settingsdialog.cpp" line="581"/>
         <source>These icon settings are used within Syncthing Tray&apos;s UI.</source>
         <translation>Diese Icon-Einstellungen werden innerhalb der Oberfläche von Syncthing Tray verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="584"/>
+        <location filename="../settings/settingsdialog.cpp" line="586"/>
         <source>These icon settings are used for the system tray icon and the notifications.</source>
         <translation>Diese Icon-Einstellungen werden für das System-Tray-Icon und Benachrichtigungen verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="586"/>
+        <location filename="../settings/settingsdialog.cpp" line="588"/>
         <source>Use same settings as for UI icons</source>
         <translation>Die selben Einstellungen wie für UI-Icons verwenden</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="647"/>
+        <location filename="../settings/settingsdialog.cpp" line="649"/>
         <source>Colorful background with gradient (default)</source>
         <translation>Hintergrund mit Farbverlauf (Standard)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="652"/>
+        <location filename="../settings/settingsdialog.cpp" line="654"/>
         <source>Transparent background and dark foreground (for bright themes)</source>
         <translation>Transparenter Hintergrund und dunkler Vordergrund (für helle Themes)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="657"/>
+        <location filename="../settings/settingsdialog.cpp" line="659"/>
         <source>Transparent background and bright foreground (for dark themes)</source>
         <translation>Transparenter Hintergrund und heller Vordergrund (für dunkle Themes)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="673"/>
+        <location filename="../settings/settingsdialog.cpp" line="675"/>
         <source>%1 px (scaled to %2 px)</source>
         <translation>%1 px (skaliert zu %2 px)</translation>
     </message>
@@ -1337,7 +1348,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="196"/>
-        <location filename="../settings/settingsdialog.cpp" line="1165"/>
+        <location filename="../settings/settingsdialog.cpp" line="1167"/>
         <source>Stop launched instance</source>
         <translation>Stoppen</translation>
     </message>
@@ -1352,12 +1363,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Log folgen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1037"/>
+        <location filename="../settings/settingsdialog.cpp" line="1039"/>
         <source>%1-launcher</source>
         <translation>%1-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1038"/>
+        <location filename="../settings/settingsdialog.cpp" line="1040"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation>Starte %1 beim Starten des Tray-Icons</translation>
     </message>
@@ -1366,72 +1377,72 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation type="obsolete">%1-Starter {1 ?}</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1041"/>
+        <location filename="../settings/settingsdialog.cpp" line="1043"/>
         <source>%1 executable</source>
         <translation>Ausführbare Datei von %1</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1042"/>
+        <location filename="../settings/settingsdialog.cpp" line="1044"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation>Log von %1 (stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1058"/>
+        <location filename="../settings/settingsdialog.cpp" line="1060"/>
         <source>Restore default</source>
         <translation>Auf Vorgabe zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1064"/>
+        <location filename="../settings/settingsdialog.cpp" line="1066"/>
         <source>Show Syncthing releases/downloads</source>
         <translation>Syncthing Releases/Downloads zeigen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1200"/>
+        <location filename="../settings/settingsdialog.cpp" line="1202"/>
         <source>%1 exited with exit code %2</source>
         <translation>%1 wurde mit dem Statuscode %2 beendet</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1203"/>
+        <location filename="../settings/settingsdialog.cpp" line="1205"/>
         <source>%1 crashed with exit code %2</source>
         <translation>%1 ist mit dem Statuscode %2 abgestürzt</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1236"/>
+        <location filename="../settings/settingsdialog.cpp" line="1238"/>
         <source>failed to start (e.g. executable does not exist or not permission error)</source>
         <translation>Start fehlgeschlagen (z. B. weil Programmdatei nicht existiert oder nicht ausführbar ist)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1239"/>
+        <location filename="../settings/settingsdialog.cpp" line="1241"/>
         <source>process crashed</source>
         <translation>Prozess ist abgestürzt</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1242"/>
+        <location filename="../settings/settingsdialog.cpp" line="1244"/>
         <source>timeout error</source>
         <translation>Time-out</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1245"/>
+        <location filename="../settings/settingsdialog.cpp" line="1247"/>
         <source>read error</source>
         <translation>Lesefehler</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1248"/>
+        <location filename="../settings/settingsdialog.cpp" line="1250"/>
         <source>write error</source>
         <translation>Schreibfehler</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1251"/>
+        <location filename="../settings/settingsdialog.cpp" line="1253"/>
         <source>unknown process error</source>
         <translation>unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1254"/>
+        <location filename="../settings/settingsdialog.cpp" line="1256"/>
         <source>An error occurred when running %1: %2</source>
         <translation>Beim Ausführen von %1 ist ein Fehler aufgetreten: %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1307"/>
+        <location filename="../settings/settingsdialog.cpp" line="1309"/>
         <source>Kill launched instance</source>
         <translation>Töten</translation>
     </message>
@@ -1630,7 +1641,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="429"/>
+        <location filename="../settings/settingsdialog.cpp" line="431"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation>Benachrichtigungen via D-Bus wurden eingestellt, aber es scheint kein Daemon zu laufen der den Dienst bereitstellt.</translation>
     </message>
@@ -1656,12 +1667,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1628"/>
+        <location filename="../settings/settingsdialog.cpp" line="1630"/>
         <source>Web view</source>
         <translation>Webanzeige</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1635"/>
+        <location filename="../settings/settingsdialog.cpp" line="1637"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
@@ -1670,27 +1681,27 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation type="vanished">Zusatztool</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1621"/>
+        <location filename="../settings/settingsdialog.cpp" line="1623"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1637"/>
+        <location filename="../settings/settingsdialog.cpp" line="1639"/>
         <source>Extra launcher</source>
         <translation>Extra-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1637"/>
+        <location filename="../settings/settingsdialog.cpp" line="1639"/>
         <source>additional tool</source>
         <translation>Zusatztool</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1660"/>
+        <location filename="../settings/settingsdialog.cpp" line="1662"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1666"/>
+        <location filename="../settings/settingsdialog.cpp" line="1668"/>
         <source>Start wizard</source>
         <translation>Einrichtungsassistenten öffnen</translation>
     </message>
@@ -1883,8 +1894,8 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <location filename="../settings/systemdoptionpage.ui" line="110"/>
         <location filename="../settings/systemdoptionpage.ui" line="165"/>
         <location filename="../settings/systemdoptionpage.ui" line="254"/>
-        <location filename="../settings/settingsdialog.cpp" line="1445"/>
-        <location filename="../settings/settingsdialog.cpp" line="1454"/>
+        <location filename="../settings/settingsdialog.cpp" line="1447"/>
+        <location filename="../settings/settingsdialog.cpp" line="1456"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -1917,27 +1928,27 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1343"/>
+        <location filename="../settings/settingsdialog.cpp" line="1345"/>
         <source>Reload all unit files</source>
         <translation>Alle Unit-Dateien neu laden</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1381"/>
+        <location filename="../settings/settingsdialog.cpp" line="1383"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Start-/Stop-Button für den Systemd-Dienst und den internen Starter gleichzeitig anzugeigen. Wenn verfügbar, wird der Button den Systemd-Dienst kontrollieren.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1387"/>
+        <location filename="../settings/settingsdialog.cpp" line="1389"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Status des Systemd-Dienstes und den des internen Starters gleichzeitig für Verbindungsveruche einzubeziehen. Wenn verfügbar, wird der Status des Systemd-Dienstes verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1418"/>
+        <location filename="../settings/settingsdialog.cpp" line="1420"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1440"/>
+        <location filename="../settings/settingsdialog.cpp" line="1442"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -2292,7 +2303,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="657"/>
+        <location filename="../settings/settings.cpp" line="659"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation>Sicherung von %1 (vom Einrichtungsassistenten erstellt)</translation>
     </message>
@@ -2300,7 +2311,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="326"/>
+        <location filename="../settings/settings.cpp" line="327"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Fehler beim laden des Zertifikats &quot;%1&quot; beim wiederherstellen der Einstellungen.</translation>
     </message>
