@@ -7,18 +7,19 @@ assignees: ''
 
 ---
 
-**Please browse through the [README](https://github.com/Martchus/syncthingtray/blob/master/README.md) before asking a question.**
-Maybe what you've been asking is already implemented
-or a known limitation with a documented workaround.
+Please read the following points before filing an issue but remove them before
+filing the issue:
 
-Note that I cannot support all operating systems, their flavors and different
-tooling you might be using (Anti Virus scanners, GNU/Linux desktop environments,
-AUR helpers, …). So please avoid filing feature requests specific to them and
-contact the respective vendors instead.
-
-Note that I will likely have to reject feature reports about Wayland-specific
-behavior due to limitations of that protocol which I cannot workaround from my
-side.
+* **Please browse through the [README](https://github.com/Martchus/syncthingtray/blob/master/README.md) before asking a question.**
+  Maybe what you've been asking is already implemented
+  or a known limitation with a documented workaround.
+* Note that I cannot support all operating systems, their flavors and different
+  tooling you might be using (Antivirus software, GNU/Linux desktop environments,
+  AUR helpers, …). So please avoid filing feature requests specific to them and
+  contact the respective vendors instead.
+* Note that I will likely have to reject feature reports about Wayland-specific
+  behavior due to limitations of that protocol which I cannot workaround from my
+  side.
 
 ---
 

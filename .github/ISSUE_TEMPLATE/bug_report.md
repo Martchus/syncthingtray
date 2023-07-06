@@ -7,21 +7,26 @@ assignees: ''
 
 ---
 
-**Before reporting, please have a look at "[Known bugs and workarounds](https://github.com/Martchus/syncthingtray/blob/master/README.md#known-bugs-and-workarounds)".**
+Please read the following points before filing an issue but remove them before
+filing the issue:
 
-Note that I cannot support all operating systems, their flavors and different
-tooling you might be using (Anti Virus scanners, GNU/Linux desktop environments,
-AUR helpers, …). So please avoid filing bug reports specific to them and contact
-the respective vendors instead.
-
-Note that adaptions for newer versions of certain platforms (or for completely
-new platforms) would be *feature requests* and **not** bugs. So for instance,
-making Syncthing Tray work under an updated/new GNU/Linux desktop environment
-should be filed as a feature request and *not* a bug report.
-
-Note that I will likely have to reject bug reports about Wayland-specific
-problems due to limitations of that protocol which I cannot workaround from my
-side.
+* **Do not file an issue if the executable is framed as malicious by Antivirus
+  software.** If you have actual evidence that the executable is doing anything
+  malicious you can of course file a report. Note that the executable being
+  detected by Antivirus software is not good enough evidence as false positives
+  are very common and no concrete description of the problem is provided.
+* **Before reporting, please have a look at "[Known bugs and workarounds](https://github.com/Martchus/syncthingtray/blob/master/README.md#known-bugs-and-workarounds)".**
+* Note that I cannot support all operating systems, their flavors and different
+  tooling you might be using (Antivirus scanners, GNU/Linux desktop environments,
+  AUR helpers, …). So please avoid filing bug reports specific to them and contact
+  the respective vendors instead.
+* Note that adaptions for newer versions of certain platforms (or for completely
+  new platforms) would be *feature requests* and **not** bugs. So for instance,
+  making Syncthing Tray work under an updated/new GNU/Linux desktop environment
+  should be filed as a feature request and *not* a bug report.
+* Note that I will likely have to reject bug reports about Wayland-specific
+  problems due to limitations of that protocol which I cannot workaround from my
+  side.
 
 ---
 
