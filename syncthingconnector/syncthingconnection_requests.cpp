@@ -43,7 +43,9 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
     request.setRawHeader("X-API-Key", m_apiKey);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
     request.setTransferTimeout(noTimeout ? 0 : m_requestTimeout);
+#endif
     return request;
 }
 

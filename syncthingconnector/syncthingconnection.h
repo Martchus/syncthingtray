@@ -730,7 +730,7 @@ inline int SyncthingConnection::requestTimeout() const
 
 /*!
  * \brief Sets the transfer timeout for requests in milliseconds.
- * \remarks Existing requests are not affected.
+ * \remarks Existing requests are not affected. Only effective when compiled against Qt 5.15 or higher.
  * \sa QNetworkRequest::setTransferTimeout()
  */
 inline void SyncthingConnection::setRequestTimeout(int requestTimeout)

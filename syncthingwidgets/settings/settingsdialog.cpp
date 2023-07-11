@@ -131,6 +131,9 @@ QWidget *ConnectionOptionPage::setupWidget()
     QObject::connect(ui()->upPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::moveSelectedConfigUp, this));
     QObject::connect(ui()->addPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::addNewConfig, this));
     QObject::connect(ui()->removePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::removeSelectedConfig, this));
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
+    ui()->timeoutSpinBox->setEnabled(false);
+#endif
     return widget;
 }
 
