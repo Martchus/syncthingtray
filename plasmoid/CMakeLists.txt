@@ -14,7 +14,7 @@ set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/.
 # find Plasma
 find_package(${KF_PACKAGE_PREFIX}Plasma REQUIRED)
 
-# source files
+# define list of QML files; there is a distinct directory for each major Plasma version
 set(PLASMOID_FILES_BASE "package${KF_MAJOR_VERSION}")
 set(PLASMOID_FILES_UI "${PLASMOID_FILES_BASE}/contents/ui")
 set(PLASMOID_FILES
@@ -68,18 +68,17 @@ endif ()
 get_filename_component(PLASMOID_CONFIG_TARGET_FILE_ABSOLUTE_PATH "${PLASMOID_CONFIG_TARGET_FILE}" REALPATH BASE_DIR "${CMAKE_BINARY_DIR}")
 configure_file("${PLASMOID_CONFIG_TEMPLATE_FILE}" "${PLASMOID_CONFIG_TARGET_FILE}")
 
-# make plasmoid package folder
+# copy plasmoid package folder plus metadata file into build directory and install it from there
 foreach (PLASMOID_FILE ${PLASMOID_FILES})
     get_filename_component(PLASMOID_FILE_DIR "${PLASMOID_FILE}" DIRECTORY)
     string(REGEX REPLACE "package[0-9]+" "package" PLASMOID_FILE_DIR "${PLASMOID_FILE_DIR}")
     file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${PLASMOID_FILE_DIR}")
     file(COPY "${PLASMOID_FILE}" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/${PLASMOID_FILE_DIR}")
 endforeach ()
-
-# install plasmoid files
 plasma_install_package("${PLASMOID_PACKAGE_DIR}" "${META_ID}")
 
-# add target to ease testing the plasmoid (see testing.md)
+# add target to ease testing the plasmoid - using files from source directory directly instead of
+# copy in build directory so one does not need to run CMake again to apply changes (see testing.md)
 set(PLASMOID_TESTDIR "${CMAKE_BINARY_DIR}" CACHE STRING "specifies the Plasmoid test directory")
 file(MAKE_DIRECTORY "${PLASMOID_TESTDIR}")
 add_custom_target(init_plasmoid_testing
