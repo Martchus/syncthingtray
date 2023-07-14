@@ -5,6 +5,9 @@ set(WIDGETS_UI_FILES appearanceoptionpage.ui)
 foreach (PLASMOID_FILE ${PLASMOID_FILES})
     list(APPEND QML_SRC_FILES "../${PLASMOID_FILE}")
 endforeach ()
+foreach (PLASMOID_FILE ${PLASMOID_EXCLUDED_FILES})
+    list(APPEND EXCLUDED_FILES "../${PLASMOID_FILE}")
+endforeach ()
 set(TS_FILES ../translations/${META_PROJECT_NAME}_de_DE.ts ../translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find qtutilities

@@ -15,28 +15,33 @@ set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/.
 find_package(${KF_PACKAGE_PREFIX}Plasma REQUIRED)
 
 # define list of QML files; there is a distinct directory for each major Plasma version
+set(PLASMOID_FILE_NAMES
+    CompactRepresentation.qml
+    FullRepresentation.qml
+    DirectoriesPage.qml
+    DevicesPage.qml
+    DownloadsPage.qml
+    RecentChangesPage.qml
+    TopLevelView.qml
+    TopLevelItem.qml
+    DetailView.qml
+    DetailItem.qml
+    TabButton.qml
+    ToolTipTrigger.qml
+    ToolTipView.qml
+    ToolBar.qml
+    ToolButton.qml
+    TinyButton.qml
+    IconLabel.qml
+    StatisticsView.qml
+    main.qml)
 set(PLASMOID_FILES_BASE "package${KF_MAJOR_VERSION}")
 set(PLASMOID_FILES_UI "${PLASMOID_FILES_BASE}/contents/ui")
-set(PLASMOID_FILES
-    ${PLASMOID_FILES_UI}/CompactRepresentation.qml
-    ${PLASMOID_FILES_UI}/FullRepresentation.qml
-    ${PLASMOID_FILES_UI}/DirectoriesPage.qml
-    ${PLASMOID_FILES_UI}/DevicesPage.qml
-    ${PLASMOID_FILES_UI}/DownloadsPage.qml
-    ${PLASMOID_FILES_UI}/RecentChangesPage.qml
-    ${PLASMOID_FILES_UI}/TopLevelView.qml
-    ${PLASMOID_FILES_UI}/TopLevelItem.qml
-    ${PLASMOID_FILES_UI}/DetailView.qml
-    ${PLASMOID_FILES_UI}/DetailItem.qml
-    ${PLASMOID_FILES_UI}/TabButton.qml
-    ${PLASMOID_FILES_UI}/ToolTipTrigger.qml
-    ${PLASMOID_FILES_UI}/ToolTipView.qml
-    ${PLASMOID_FILES_UI}/ToolBar.qml
-    ${PLASMOID_FILES_UI}/ToolButton.qml
-    ${PLASMOID_FILES_UI}/TinyButton.qml
-    ${PLASMOID_FILES_UI}/IconLabel.qml
-    ${PLASMOID_FILES_UI}/StatisticsView.qml
-    ${PLASMOID_FILES_UI}/main.qml)
+foreach (PLASMOID_FILE_NAME ${PLASMOID_FILE_NAMES})
+    list(APPEND PLASMOID_FILES "${PLASMOID_FILES_UI}/${PLASMOID_FILE_NAME}")
+endforeach ()
+file(GLOB_RECURSE PLASMOID_EXCLUDED_FILES LIST_DIRECTORIES false RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "package*/*.qml")
+list(REMOVE_ITEM PLASMOID_EXCLUDED_FILES ${PLASMOID_FILES})
 
 # find ECM (required by Plasma)
 find_package(ECM REQUIRED NO_MODULE)
