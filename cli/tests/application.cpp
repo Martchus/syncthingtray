@@ -1,3 +1,4 @@
+#include "../../testhelper/helper.h"
 #include "../../testhelper/syncthingtestinstance.h"
 
 #include <c++utilities/io/misc.h>
@@ -94,14 +95,21 @@ void ApplicationTests::test()
     setenv("ENABLE_ESCAPE_CODES", "0", true);
 
     // load expected status
-    const auto expectedStatusData(readFile(testFilePath("expected-status.txt"), 4000));
-    const auto expectedStatusLines(splitString<vector<string>>(expectedStatusData, "\n"));
-    vector<regex> expectedStatusPatterns;
-    expectedStatusPatterns.reserve(expectedStatusLines.size());
-    for (const auto &line : expectedStatusLines) {
-        expectedStatusPatterns.emplace_back(line);
-    }
-    CPPUNIT_ASSERT(!expectedStatusPatterns.empty());
+    const auto expectedStatusData = [] {
+        auto data = readFile(testFilePath("expected-status.txt"), 4000);
+        findAndReplace(data, "/tmp/", tempDirectory());
+        return data;
+    }();
+    const auto expectedStatusLines = splitString<vector<string>>(expectedStatusData, "\n");
+    const auto expectedStatusPatterns = [&] {
+        auto regex = std::vector<std::regex>();
+        regex.reserve(expectedStatusLines.size());
+        for (const auto &line : expectedStatusLines) {
+            regex.emplace_back(line);
+        }
+        CPPUNIT_ASSERT(!regex.empty());
+        return regex;
+    }();
 
     // wait till Syncthing GUI becomes available
     {

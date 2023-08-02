@@ -1,9 +1,13 @@
 #include "./syncthingtestinstance.h"
 #include "./helper.h"
 
+#include <qtutilities/misc/compat.h>
+#include <qtutilities/misc/conversion.h>
+
 #include <c++utilities/conversion/conversionexception.h>
 #include <c++utilities/conversion/stringbuilder.h>
 #include <c++utilities/conversion/stringconversion.h>
+#include <c++utilities/io/misc.h>
 #include <c++utilities/tests/testutils.h>
 
 #include <QDir>
@@ -40,10 +44,9 @@ void SyncthingTestInstance::start()
     cerr << "\n - Setup configuration for Syncthing tests ..." << endl;
 
     // set timeout factor for helper
-    const QByteArray timeoutFactorEnv(qgetenv("SYNCTHING_TEST_TIMEOUT_FACTOR"));
-    if (!timeoutFactorEnv.isEmpty()) {
+    if (const auto timeoutFactorEnv = qgetenv("SYNCTHING_TEST_TIMEOUT_FACTOR"); !timeoutFactorEnv.isEmpty()) {
         try {
-            timeoutFactor = stringToNumber<double>(string(timeoutFactorEnv.data()));
+            timeoutFactor = stringToNumber<double>(timeoutFactorEnv.data());
             cerr << " - Using timeout factor " << timeoutFactor << endl;
         } catch (const ConversionException &) {
             cerr << " - Specified SYNCTHING_TEST_TIMEOUT_FACTOR \"" << timeoutFactorEnv.data()
@@ -55,49 +58,56 @@ void SyncthingTestInstance::start()
     }
 
     // setup st config
-    const string configFilePath = workingCopyPath("testconfig/config.xml");
-    if (configFilePath.empty()) {
+    const auto tempDir = tempDirectory();
+    const auto relativeConfigFilePath = "testconfig/config.xml"s;
+    const auto configFilePathTemplate = testFilePath(relativeConfigFilePath);
+    const auto configFilePath = workingCopyPath(relativeConfigFilePath, WorkingCopyMode::NoCopy);
+    if (configFilePathTemplate.empty() || configFilePath.empty()) {
         throw runtime_error("Unable to setup Syncthing config directory.");
     }
-    const QFileInfo configFile(QString::fromLocal8Bit(configFilePath.data()));
+    auto configFile = readFile(configFilePathTemplate);
+    findAndReplace(configFile, "/tmp/", tempDir);
+    writeFile(configFilePath, configFile);
+
     // clean config dir
-    const QDir configDir(configFile.dir());
-    for (QFileInfo &configEntry : configDir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+    const auto configFilePathFileInfo = QFileInfo(QtUtilities::fromNativeFileName(configFilePath));
+    const auto configDir = QDir(configFilePathFileInfo.dir());
+    for (const auto &configEntry : configDir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
         if (configEntry.isDir()) {
             QDir(configEntry.absoluteFilePath()).removeRecursively();
-        } else if (configEntry.fileName() != QStringLiteral("config.xml")) {
+        } else if (configEntry.fileName() != QLatin1String("config.xml")) {
             QFile::remove(configEntry.absoluteFilePath());
         }
     }
 
     // ensure dirs exist
-    const QDir parentDir(QStringLiteral("/tmp/some/path"));
+    const auto parentDir = QDir(QtUtilities::fromNativeFileName(tempDir) + QStringLiteral("some/path"));
     parentDir.mkpath(QStringLiteral("1"));
     parentDir.mkpath(QStringLiteral("2"));
 
     // determine st path
-    const QByteArray syncthingPathFromEnv(qgetenv("SYNCTHING_PATH"));
-    const QString syncthingPath(syncthingPathFromEnv.isEmpty() ? QStringLiteral("syncthing") : QString::fromLocal8Bit(syncthingPathFromEnv));
+    auto syncthingPath = qEnvironmentVariable("SYNCTHING_PATH");
+    if (syncthingPath.isEmpty()) {
+        syncthingPath = QStringLiteral("syncthing");
+    }
 
     // determine st port
-    const int syncthingPortFromEnv(qEnvironmentVariableIntValue("SYNCTHING_PORT"));
+    const auto syncthingPortFromEnv = qEnvironmentVariableIntValue("SYNCTHING_PORT");
     m_syncthingPort = !syncthingPortFromEnv ? QStringLiteral("4001") : QString::number(syncthingPortFromEnv);
 
     // start st
     // clang-format off
-    const QStringList args{
+    const auto args = QStringList{
         QStringLiteral("-gui-address=http://127.0.0.1:") + m_syncthingPort,
         QStringLiteral("-gui-apikey=") + m_apiKey,
-        QStringLiteral("-home=") + configFile.absolutePath(),
+        QStringLiteral("-home=") + configFilePathFileInfo.absolutePath(),
         QStringLiteral("-no-browser"),
         QStringLiteral("-verbose"),
     };
-    cerr << "\n - Launching Syncthing: "
-         << syncthingPath.toStdString()
-         << ' ' << args.join(QChar(' ')).toStdString() << endl;
+    // clang-format on
+    cerr << "\n - Launching Syncthing: " << syncthingPath.toStdString() << ' ' << args.join(QChar(' ')).toStdString() << endl;
     m_processSupposedToRun = true;
     m_syncthingProcess.start(syncthingPath, args);
-    // clang-format on
 }
 
 /*!

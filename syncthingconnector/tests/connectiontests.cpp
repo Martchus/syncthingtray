@@ -4,6 +4,8 @@
 #include "../../testhelper/helper.h"
 #include "../../testhelper/syncthingtestinstance.h"
 
+#include <qtutilities/misc/conversion.h>
+
 #include <c++utilities/tests/testutils.h>
 
 #include <cppunit/TestFixture.h>
@@ -472,10 +474,11 @@ void ConnectionTests::checkDirectories() const
     const auto &dirInfo = m_connection.dirInfo();
     CPPUNIT_ASSERT_EQUAL_MESSAGE("2 dirs present", 2_st, dirInfo.size());
     const SyncthingDir &dir1 = dirInfo.front();
+    const auto tempDir = QtUtilities::fromNativeFileName(tempDirectory());
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("test1"), dir1.id);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral(""), dir1.label);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("test1"), dir1.displayName());
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("/tmp/some/path/1/"), dir1.path);
+    CPPUNIT_ASSERT_EQUAL(tempDir + QStringLiteral("some/path/1/"), dir1.path);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("idle"), dir1.statusString());
     CPPUNIT_ASSERT_EQUAL(SyncthingDirType::SendReceive, dir1.dirType);
     CPPUNIT_ASSERT(!dir1.paused);
@@ -494,8 +497,8 @@ void ConnectionTests::checkDirectories() const
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("test2"), dir2.id);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("Test dir 2"), dir2.label);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("Test dir 2"), dir2.displayName());
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("/tmp/some/path/2/"), dir2.path);
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("/tmp/some/path/2"), dir2.pathWithoutTrailingSlash().toString());
+    CPPUNIT_ASSERT_EQUAL(tempDir + QStringLiteral("some/path/2/"), dir2.path);
+    CPPUNIT_ASSERT_EQUAL(tempDir + QStringLiteral("some/path/2"), dir2.pathWithoutTrailingSlash().toString());
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("paused"), dir2.statusString());
     CPPUNIT_ASSERT_EQUAL(SyncthingDirType::SendReceive, dir2.dirType);
     CPPUNIT_ASSERT(dir2.paused);

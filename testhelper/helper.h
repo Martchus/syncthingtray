@@ -15,6 +15,7 @@
 #include <QString>
 #include <QTimer>
 
+#include <filesystem>
 #include <functional>
 #include <ostream>
 
@@ -53,6 +54,19 @@ inline std::ostream &operator<<(std::ostream &o, const QSet<QString> &qstringset
 namespace CppUtilities {
 
 extern SYNCTHINGTESTHELPER_EXPORT double timeoutFactor;
+
+/*!
+ * \brief Returns the temp directory using "/" consistently and ensuring a trailing "/" is always present.
+ */
+inline std::string tempDirectory()
+{
+    auto dir = std::filesystem::temp_directory_path().make_preferred().string();
+    findAndReplace(dir, "\\", "/");
+    if (!dir.empty() && (dir.back() != '/' || dir.back() != '\\')) {
+        dir += '/';
+    }
+    return dir;
+}
 
 /*!
  * \brief Waits for the \a duration specified in ms while keeping the event loop running.
