@@ -13,6 +13,7 @@
 #include <c++utilities/io/ansiescapecodes.h>
 
 #include <QAuthenticator>
+#include <QDir>
 #include <QHostAddress>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -579,12 +580,14 @@ SyncthingDir *SyncthingConnection::findDirInfo(QLatin1String key, const QJsonObj
 SyncthingDir *SyncthingConnection::findDirInfoByPath(const QString &path, QString &relativePath, int &row)
 {
     row = 0;
+    const auto cleanPath = QDir::cleanPath(path);
     for (SyncthingDir &dir : m_dirs) {
-        if (path == dir.pathWithoutTrailingSlash()) {
+        const auto dirCleanPath = QDir::cleanPath(dir.path);
+        if (cleanPath == dirCleanPath) {
             relativePath.clear();
             return &dir;
-        } else if (path.startsWith(dir.path)) {
-            relativePath = path.mid(dir.path.size());
+        } else if (cleanPath.startsWith(dirCleanPath)) {
+            relativePath = cleanPath.mid(dirCleanPath.size());
             return &dir;
         }
         ++row;
