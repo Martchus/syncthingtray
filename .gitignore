@@ -41,7 +41,8 @@ Makefile*
 /doc
 
 # tests
-testfiles/output.*
+/*/testfiles/output.*
+/*/testfiles/workingdir/*
 
 # experimental
 scripts/
