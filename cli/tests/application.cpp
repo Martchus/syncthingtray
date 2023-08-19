@@ -13,6 +13,13 @@
 #include <filesystem>
 #include <regex>
 
+#ifdef stdout
+#undef stdout
+#endif
+#ifdef stderr
+#undef stderr
+#endif
+
 using namespace std;
 using namespace Data;
 using namespace CppUtilities;
@@ -25,7 +32,7 @@ using namespace CPPUNIT_NS;
  */
 class ApplicationTests : public TestFixture, private SyncthingTestInstance {
     CPPUNIT_TEST_SUITE(ApplicationTests);
-#ifdef PLATFORM_UNIX
+#if defined(PLATFORM_UNIX) || defined(CPP_UTILITIES_HAS_EXEC_APP)
     CPPUNIT_TEST(test);
 #endif
     CPPUNIT_TEST_SUITE_END();
@@ -79,7 +86,7 @@ void ApplicationTests::tearDown()
     SyncthingTestInstance::stop();
 }
 
-#ifdef PLATFORM_UNIX
+#if defined(PLATFORM_UNIX) || defined(CPP_UTILITIES_HAS_EXEC_APP)
 /*!
  * \brief Tests the overall CLI application.
  * \remarks Tests for rescan are currently disabled for release mode because they sometimes fail.
@@ -92,7 +99,7 @@ void ApplicationTests::test()
     const auto url(argsToString("http://localhost:", syncthingPort().toInt()));
 
     // disable colorful output
-    setenv("ENABLE_ESCAPE_CODES", "0", true);
+    qputenv("ENABLE_ESCAPE_CODES", "0");
 
     // load expected status
     const auto expectedStatusData = [] {
@@ -169,8 +176,8 @@ void ApplicationTests::test()
     CPPUNIT_ASSERT(stdout.find("Access the GUI via the following URL") != string::npos);
 
     // use environment variables to specify API-key and URL
-    setenv("SYNCTHING_CTL_API_KEY", apiKey.data(), true);
-    setenv("SYNCTHING_CTL_URL", url.data(), true);
+    qputenv("SYNCTHING_CTL_API_KEY", apiKey);
+    qputenv("SYNCTHING_CTL_URL", url);
 
     // test resume, verify via status for dirs only
     const char *const resumeArgs[] = { "syncthingctl", "resume", "--dir", "test2", nullptr };
@@ -234,16 +241,16 @@ void ApplicationTests::test()
     CPPUNIT_ASSERT(ofstream("yet-another-file.txt") << "bar");
     // -> change LLVM_PROFILE_FILE to prevent default.profraw file being created in the new directory
     const char *const llvmProfileFile(getenv("LLVM_PROFILE_FILE"));
-    setenv("LLVM_PROFILE_FILE", "/tmp/syncthingctl-%p.profraw", true);
+    qputenv("LLVM_PROFILE_FILE", "/tmp/syncthingctl-%p.profraw");
     // -> do actual test
     const char *const pwdRescanArgs[] = { "syncthingctl", "pwd", "rescan", nullptr };
     TESTUTILS_ASSERT_EXEC(pwdRescanArgs);
     cout << stdout;
     // -> restore LLVM_PROFILE_FILE
     if (llvmProfileFile) {
-        setenv("LLVM_PROFILE_FILE", llvmProfileFile, true);
+        qputenv("LLVM_PROFILE_FILE", llvmProfileFile);
     } else {
-        unsetenv("LLVM_PROFILE_FILE");
+        qunsetenv("LLVM_PROFILE_FILE");
     }
     // -> verify result
     const char *const pwdStatusArgs[] = { "syncthingctl", "pwd", "status", nullptr };
