@@ -26,8 +26,7 @@ Syncthing Tray is known to work under:
 * Windows 10 and 11
 * KDE Plasma
 * Openbox using lxqt/LXDE or using Tint2
-* Cinnamon (native look and feel using [adwaita-qt](https://github.com/FedoraQt/adwaita-qt))
-* Xfce
+* GTK-centered desktops such as Cinnamon, GNOME and Xfce (read hints below)
 * Awesome
 * i3
 * macOS
@@ -41,6 +40,10 @@ For Plasma, there is in addition to the Qt Widgets based version also a "native"
 Plasmoid. Note that the latest version of Syncthing Tray generally also requires the
 latest version of Plasma as no testing on earlier versions is done. Use the Qt Widgets
 based version on older Plasma versions.
+
+On GTK-centered desktops is may make sense to install [adwaita-qt](https://github.com/FedoraQt/adwaita-qt)
+for a native look-and-feel. Under GNOME one needs to install
+[an extension](https://github.com/ubuntu/gnome-shell-extension-appindicator) for tray icon support.
 
 The section "Known bugs and workarounds" below contains information and workarounds for
 certain caveats.
