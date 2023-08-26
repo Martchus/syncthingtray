@@ -14,7 +14,7 @@ struct Args {
     OperationArgument statusPwd, rescanPwd, pausePwd, resumePwd;
     ConfigValueArgument script, jsLines, dryRun;
     ConfigValueArgument stats, dir, dev, allDirs, allDevs;
-    ConfigValueArgument atLeast, timeout;
+    ConfigValueArgument atLeast, timeout, requireDevsConnected;
     ConfigValueArgument editor;
     ConfigValueArgument configFile, apiKey, url, credentials, certificate, requestTimeout;
 };

@@ -32,6 +32,7 @@ Args::Args()
     , atLeast("at-least", 'a', "specifies for how many milliseconds Syncthing must idle (prevents exiting too early in case of flaky status)",
           { "number" })
     , timeout("timeout", 't', "specifies how many milliseconds to wait at most", { "number" })
+    , requireDevsConnected("require-devs-connected", '\0', "require the specified devices to be connected")
     , editor("editor", '\0', "specifies the editor to be opened", { "editor name", "editor option" })
     , configFile("config-file", 'f', "specifies the Syncthing config file to read API key and URL from, when not explicitly specified", { "path" })
     , apiKey("api-key", 'k', "specifies the API key", { "key" })
@@ -47,7 +48,7 @@ Args::Args()
     dev.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
     status.setSubArguments({ &stats, &dir, &dev, &allDirs, &allDevs });
     status.setExample(PROJECT_NAME " status # shows all dirs and devs\n" PROJECT_NAME " status --dir dir1 --dir dir2 --dev dev1 --dev dev2");
-    waitForIdle.setSubArguments({ &dir, &dev, &allDirs, &allDevs, &atLeast, &timeout });
+    waitForIdle.setSubArguments({ &dir, &dev, &allDirs, &allDevs, &atLeast, &timeout, &requireDevsConnected });
     waitForIdle.setExample(PROJECT_NAME " wait-for-idle --timeout 1800000 --at-least 5000 && systemctl poweroff\n" PROJECT_NAME
                                         " wait-for-idle --dir dir1 --dir dir2 --dev dev1 --dev dev2 --at-least 5000");
     pwd.setSubArguments({ &statusPwd, &rescanPwd, &pausePwd, &resumePwd });

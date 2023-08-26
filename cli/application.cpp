@@ -1005,6 +1005,10 @@ bool Application::checkWhetherIdle() const
         switch (dev->status) {
         case SyncthingDevStatus::Unknown:
         case SyncthingDevStatus::Disconnected:
+            if (m_args.requireDevsConnected.isPresent()) {
+                return false;
+            }
+            break;
         case SyncthingDevStatus::OwnDevice:
         case SyncthingDevStatus::Idle:
             break;
