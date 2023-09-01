@@ -4,53 +4,53 @@
 <context>
     <name>Data::SyncthingConnection</name>
     <message>
-        <location filename="../syncthingconnection.cpp" line="163"/>
+        <location filename="../syncthingconnection.cpp" line="164"/>
         <source>disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="165"/>
+        <location filename="../syncthingconnection.cpp" line="166"/>
         <source>reconnecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="167"/>
+        <location filename="../syncthingconnection.cpp" line="168"/>
         <source>connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="169"/>
+        <location filename="../syncthingconnection.cpp" line="170"/>
         <source>connected, scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="171"/>
+        <location filename="../syncthingconnection.cpp" line="172"/>
         <source>connected, paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="173"/>
+        <location filename="../syncthingconnection.cpp" line="174"/>
         <source>connected, synchronizing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="175"/>
+        <location filename="../syncthingconnection.cpp" line="176"/>
         <source>connected, remote not in sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="177"/>
+        <location filename="../syncthingconnection.cpp" line="178"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="274"/>
-        <location filename="../syncthingconnection.cpp" line="463"/>
+        <location filename="../syncthingconnection.cpp" line="275"/>
+        <location filename="../syncthingconnection.cpp" line="464"/>
         <source>Connection configuration is insufficient.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="729"/>
+        <location filename="../syncthingconnection.cpp" line="732"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -85,12 +85,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="796"/>
+        <location filename="../syncthingconnection.cpp" line="799"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="802"/>
+        <location filename="../syncthingconnection.cpp" line="805"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -246,17 +246,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2323"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2328"/>
         <source>Unable to parse disk events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2346"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2351"/>
         <source>Unable to request disk events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="974"/>
+        <location filename="../syncthingconnection.cpp" line="977"/>
         <source>at offset %1</source>
         <translation type="unfinished"></translation>
     </message>
