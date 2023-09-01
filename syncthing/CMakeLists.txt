@@ -160,8 +160,11 @@ if (BUILD_HOST)
     set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.Host=${BUILD_HOST}")
 endif ()
 if (DEFINED $ENV{BUILD_STAMP})
-    set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.Stamp=$ENV{BUILD_STAMP}")
+    set(BUILD_STAMP "$ENV{BUILD_STAMP}")
+else ()
+    string(TIMESTAMP BUILD_STAMP "%s" UTC)
 endif ()
+set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.Stamp=${BUILD_STAMP}")
 
 # generate Syncthing's assets (not setting GOARCH/GOOS here, this is supposed to run on the host)
 add_custom_command(
