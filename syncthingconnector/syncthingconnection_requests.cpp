@@ -1976,20 +1976,26 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
     if (eventId < m_lastConnectionsUpdateEvent) {
         return;
     }
-    const QString dev(eventData.value(QLatin1String("device")).toString());
-    if (dev.isEmpty()) {
+    const auto devId = [&eventData] {
+        const auto dev = eventData.value(QLatin1String("device")).toString();
+        if (!dev.isEmpty()) {
+            return dev;
+        }
+        return eventData.value(QLatin1String("id")).toString();
+    }();
+    if (devId.isEmpty()) {
         return;
     }
 
     // handle "DeviceRejected"-event
     if (eventType == QLatin1String("DeviceRejected")) {
-        readDevRejected(eventTime, dev, eventData);
+        readDevRejected(eventTime, devId, eventData);
         return;
     }
 
     // find relevant device info
     int index;
-    auto *const devInfo(findDevInfo(dev, index));
+    auto *const devInfo = findDevInfo(devId, index);
     if (!devInfo) {
         return;
     }
@@ -1998,7 +2004,7 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
     SyncthingDevStatus status = devInfo->status;
     bool paused = devInfo->paused;
     if (eventType == QLatin1String("DeviceConnected")) {
-        devInfo->setConnectedStateAccordingToCompletion();
+        status = devInfo->computeConnectedStateAccordingToCompletion();
     } else if (eventType == QLatin1String("DeviceDisconnected")) {
         status = SyncthingDevStatus::Disconnected;
     } else if (eventType == QLatin1String("DevicePaused")) {
