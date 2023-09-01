@@ -2001,12 +2001,15 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
     }
 
     // distinguish specific events
-    SyncthingDevStatus status = devInfo->status;
-    bool paused = devInfo->paused;
+    auto status = devInfo->status;
+    auto paused = devInfo->paused;
+    auto disconnectReason = devInfo->disconnectReason;
     if (eventType == QLatin1String("DeviceConnected")) {
         status = devInfo->computeConnectedStateAccordingToCompletion();
+        disconnectReason.clear();
     } else if (eventType == QLatin1String("DeviceDisconnected")) {
         status = SyncthingDevStatus::Disconnected;
+        disconnectReason = eventData.value(QLatin1String("error")).toString();
     } else if (eventType == QLatin1String("DevicePaused")) {
         paused = true;
     } else if (eventType == QLatin1String("DeviceRejected")) {
@@ -2020,11 +2023,12 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
     }
 
     // assign new status
-    if (devInfo->status != status || devInfo->paused != paused) {
+    if (devInfo->status != status || devInfo->paused != paused || devInfo->disconnectReason != disconnectReason) {
         // don't mess with the status of the own device
         if (devInfo->status != SyncthingDevStatus::OwnDevice) {
             devInfo->status = status;
             devInfo->paused = paused;
+            devInfo->disconnectReason = disconnectReason;
         }
         emit devStatusChanged(*devInfo, index);
     }

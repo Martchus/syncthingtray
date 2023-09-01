@@ -50,6 +50,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
     QString connectionAddress;
     QString connectionType;
     QString clientVersion;
+    QString disconnectReason;
     CppUtilities::DateTime lastSeen;
     std::unordered_map<QString, SyncthingCompletion> completionByDir;
     SyncthingCompletion overallCompletion;
