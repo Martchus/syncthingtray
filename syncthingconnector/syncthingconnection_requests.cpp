@@ -1909,13 +1909,13 @@ void SyncthingConnection::readDownloadProgressEvent(const QJsonObject &eventData
 void SyncthingConnection::readDirEvent(SyncthingEventId eventId, DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
 {
     // read dir ID
-    const auto dirId([&eventData] {
-        const auto folder(eventData.value(QLatin1String("folder")).toString());
+    const auto dirId = [&eventData] {
+        const auto folder = eventData.value(QLatin1String("folder")).toString();
         if (!folder.isEmpty()) {
             return folder;
         }
         return eventData.value(QLatin1String("id")).toString();
-    }());
+    }();
     if (dirId.isEmpty()) {
         // handle events which don't necessarily require a corresponding dir info
         if (eventType == QLatin1String("FolderCompletion")) {
