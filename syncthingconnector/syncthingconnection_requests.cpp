@@ -2013,13 +2013,8 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
         status = SyncthingDevStatus::Rejected;
     } else if (eventType == QLatin1String("DeviceResumed")) {
         paused = false;
-        // FIXME: correct to assume device which has just been resumed is still disconnected?
-        status = SyncthingDevStatus::Disconnected;
     } else if (eventType == QLatin1String("DeviceDiscovered")) {
-        // we know about this device already, set status anyways because it might still be unknown
-        if (status == SyncthingDevStatus::Unknown) {
-            status = SyncthingDevStatus::Disconnected;
-        }
+        return; // we know about this device already, nothing to do
     } else {
         return; // can't handle other event types currently
     }
