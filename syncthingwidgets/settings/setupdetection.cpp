@@ -64,8 +64,12 @@ void SetupDetection::restoreConfig()
 
 void SetupDetection::initConnection()
 {
-    connection.setSyncthingUrl(config.syncthingUrl());
-    connection.setApiKey(config.guiApiKey.toLocal8Bit());
+    auto settings = Data::SyncthingConnectionSettings();
+    settings.syncthingUrl = config.syncthingUrl();
+    settings.apiKey = config.guiApiKey.toLocal8Bit();
+    settings.httpsCertPath = certPath;
+    settings.loadHttpsCert();
+    connection.applySettings(settings);
 }
 
 bool SetupDetection::hasConfig() const

@@ -665,6 +665,7 @@ void Connection::addConfigFromWizard(const Data::SyncthingConfig &config)
     primary.password.clear();
     primary.apiKey = apiKey;
     primary.autoConnect = true; // ensure the connection is actually established when applying
+    primary.httpsCertPath = Data::SyncthingConfig::locateHttpsCertificate();
 }
 
 } // namespace Settings
