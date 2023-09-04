@@ -7,6 +7,7 @@
 
 #include <QFile>
 #include <QStandardPaths>
+#include <QStringBuilder>
 #include <QXmlStreamReader>
 
 namespace Data {
@@ -17,33 +18,46 @@ namespace Data {
  * \remarks Only a few fields are required since most of the Syncthing config can be accessed via SyncthingConnection class.
  */
 
-QString SyncthingConfig::locateConfigFile()
+/*!
+ * \brief Locates the file with the specified \a fileName in Syncthing's config directory.
+ * \remarks The lookup within QStandardPaths::RuntimeLocation is mainly for macOS where the full path
+ *          is "$HOME/Library/Application Support/Syncthing/config.xml".
+ */
+QString SyncthingConfig::locateConfigFile(const QString &fileName)
 {
     auto path = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_SYNCTHING_CONFIG_DIR");
     if (!path.isEmpty()) {
-        if (!QFile::exists(path += QStringLiteral("/config.xml"))) {
+        if (!QFile::exists(path = path % QChar('/') % fileName)) {
             path.clear();
         }
         return path;
     }
-    path = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("syncthing/config.xml"));
-    if (path.isEmpty()) {
-        path = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("Syncthing/config.xml"));
-    }
-    // The default Syncthing config path on macOS. The full path is "$HOME/Library/Application Support/Syncthing/config.xml".
-    if (path.isEmpty()) {
-        path = QStandardPaths::locate(QStandardPaths::RuntimeLocation, QStringLiteral("Syncthing/config.xml"));
+    static const QString casings[] = { QStringLiteral("syncthing/"), QStringLiteral("Syncthing/") };
+    static const QStandardPaths::StandardLocation locations[] = { QStandardPaths::GenericConfigLocation, QStandardPaths::RuntimeLocation };
+    for (const auto location : locations) {
+        for (const auto &casing : casings) {
+            if (!(path = QStandardPaths::locate(location, casing + fileName)).isEmpty()) {
+                return path;
+            }
+        }
     }
     return path;
 }
 
+/*!
+ * \brief Locates Syncthing's main config file ("config.xml").
+ */
+QString SyncthingConfig::locateConfigFile()
+{
+    return locateConfigFile(QStringLiteral("config.xml"));
+}
+
+/*!
+ * \brief Locates Syncthing's GUI HTTPS certificate.
+ */
 QString SyncthingConfig::locateHttpsCertificate()
 {
-    QString path = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("syncthing/https-cert.pem"));
-    if (path.isEmpty()) {
-        path = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("Syncthing/https-cert.pem"));
-    }
-    return path;
+    return locateConfigFile(QStringLiteral("https-cert.pem"));
 }
 
 bool SyncthingConfig::restore(const QString &configFilePath)

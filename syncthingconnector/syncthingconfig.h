@@ -16,6 +16,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConfig {
     QString guiPasswordHash;
     QString guiApiKey;
 
+    static QString locateConfigFile(const QString &fileName);
     static QString locateConfigFile();
     static QString locateHttpsCertificate();
     bool restore(const QString &configFilePath);
