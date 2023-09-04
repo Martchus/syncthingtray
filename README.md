@@ -616,6 +616,8 @@ section.
         * Pausing/resuming folders and devices doesn't work when using scan-intervals with a lot of zeros because of
           Syncthing bug https://github.com/syncthing/syncthing/issues/4001. This has already been fixed on the Qt-side with
           https://codereview.qt-project.org/#/c/187069/. However, the fix is only available in Qt 5.9 and above.
+        * Redirections cannot be followed (e.g. from HTTP to HTTPS) because
+          `QNetworkRequest::RedirectPolicyAttribute` and `QNetworkRequest::NoLessSafeRedirectPolicy` are not available yet.
     * any Qt version:
         * The tray disconnects from the local instance when the network connection goes down. The network connection must be restored
           or the tray restarted to be able to connect to local Syncthing again. This is caused by Qt bug

@@ -43,6 +43,11 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
     request.setRawHeader("X-API-Key", m_apiKey);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
+    // ensure redirects to HTTPS are enabled/allowed regardless of the Qt version
+    // note: This setting is only the default as of Qt 6 and only supported as of Qt 5.9.
+    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+#endif
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
     request.setTransferTimeout(noTimeout ? 0 : m_requestTimeout);
 #endif
