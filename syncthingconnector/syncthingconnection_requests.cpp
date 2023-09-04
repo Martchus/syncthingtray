@@ -2016,10 +2016,8 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
         status = SyncthingDevStatus::Rejected;
     } else if (eventType == QLatin1String("DeviceResumed")) {
         paused = false;
-    } else if (eventType == QLatin1String("DeviceDiscovered")) {
-        return; // we know about this device already, nothing to do
     } else {
-        return; // can't handle other event types currently
+        return;
     }
 
     // assign new status
