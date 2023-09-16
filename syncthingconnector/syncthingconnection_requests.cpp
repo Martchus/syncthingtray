@@ -709,12 +709,18 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
 void SyncthingConnection::readDevs(const QJsonArray &devs)
 {
     // store the new devs in a temporary list which is assigned to m_devs later
-    vector<SyncthingDev> newDevs;
-    newDevs.reserve(static_cast<size_t>(devs.size()));
+    auto newDevs = std::vector<SyncthingDev>();
+    newDevs.reserve(static_cast<std::size_t>(devs.size()));
+    auto *const thisDevice = addDevInfo(newDevs, m_myId);
+    thisDevice->id = m_myId;
+    thisDevice->status = SyncthingDevStatus::ThisDevice;
+    thisDevice->paused = false;
 
-    for (const QJsonValue &devVal : devs) {
-        const QJsonObject devObj(devVal.toObject());
-        SyncthingDev *const devItem = addDevInfo(newDevs, devObj.value(QLatin1String("deviceID")).toString());
+    for (const auto &devVal : devs) {
+        const auto devObj = devVal.toObject();
+        const auto deviceId = devObj.value(QLatin1String("deviceID")).toString();
+        const auto isThisDevice = deviceId == m_myId;
+        auto *const devItem = isThisDevice ? thisDevice : addDevInfo(newDevs, deviceId);
         if (!devItem) {
             continue;
         }
@@ -724,10 +730,7 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
         devItem->compression = devObj.value(QLatin1String("compression")).toString();
         devItem->certName = devObj.value(QLatin1String("certName")).toString();
         devItem->introducer = devObj.value(QLatin1String("introducer")).toBool(false);
-        if (devItem->id == m_myId) {
-            devItem->status = SyncthingDevStatus::ThisDevice;
-            devItem->paused = false;
-        } else {
+        if (!isThisDevice) {
             devItem->status = SyncthingDevStatus::Unknown;
             devItem->paused = devObj.value(QLatin1String("paused")).toBool(devItem->paused);
         }

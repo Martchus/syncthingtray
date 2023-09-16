@@ -15,7 +15,7 @@ class LIB_SYNCTHING_MODEL_EXPORT SyncthingDirectoryModel : public SyncthingModel
     Q_OBJECT
 public:
     enum SyncthingDirectoryModelRole {
-        DirectoryStatus = Qt::UserRole + 1,
+        DirectoryStatus = SyncthingModelUserRole + 1,
         DirectoryPaused,
         DirectoryStatusString,
         DirectoryStatusColor,

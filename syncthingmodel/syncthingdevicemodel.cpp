@@ -29,6 +29,7 @@ QHash<int, QByteArray> SyncthingDeviceModel::roleNames() const
         { Qt::DecorationRole, "statusIcon" },
         { DevicePaused, "paused" },
         { IsOwnDevice, "isOwnDevice" },
+        { IsPinned, "isPinned" },
         { DeviceStatusString, "statusString" },
         { DeviceStatusColor, "statusColor" },
         { DeviceId, "devId" },
@@ -298,12 +299,13 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             return devStatusColor(dev);
         }
         break;
+    case IsPinned:
+    case IsOwnDevice:
+        return dev.status == SyncthingDevStatus::ThisDevice;
     case DeviceStatus:
         return static_cast<int>(dev.status);
     case DevicePaused:
         return dev.paused;
-    case IsOwnDevice:
-        return dev.status == SyncthingDevStatus::ThisDevice;
     case DeviceStatusString:
         return devStatusString(dev);
     case DeviceStatusColor:

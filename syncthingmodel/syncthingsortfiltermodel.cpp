@@ -1,4 +1,5 @@
 #include "./syncthingsortfiltermodel.h"
+#include "./syncthingmodel.h"
 
 #include <QSortFilterProxyModel>
 
@@ -19,6 +20,12 @@ bool SyncthingSortFilterModel::lessThan(const QModelIndex &left, const QModelInd
     // keep order within nested structures
     if (m_behavior == SyncthingSortBehavior::KeepRawOrder || left.parent().isValid() || right.parent().isValid()) {
         return left.row() < right.row();
+    }
+    // show pinned items before all other items
+    const auto leftPinned = left.data(SyncthingModel::IsPinned).toBool();
+    const auto rightPinned = right.data(SyncthingModel::IsPinned).toBool();
+    if (leftPinned != rightPinned) {
+        return leftPinned;
     }
     // use the default sorting for the top-level
     return QSortFilterProxyModel::lessThan(left, right);

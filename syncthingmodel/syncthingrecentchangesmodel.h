@@ -23,7 +23,7 @@ class LIB_SYNCTHING_MODEL_EXPORT SyncthingRecentChangesModel : public SyncthingM
     Q_PROPERTY(int maxRows READ maxRows WRITE setMaxRows)
 public:
     enum SyncthingRecentChangesModelRole {
-        Action = Qt::UserRole + 1,
+        Action = SyncthingModelUserRole + 1,
         ActionIcon,
         ModifiedBy,
         DirectoryId,

@@ -19,6 +19,11 @@ class LIB_SYNCTHING_MODEL_EXPORT SyncthingModel : public QAbstractItemModel {
     Q_PROPERTY(bool brightColors READ brightColors WRITE setBrightColors)
 
 public:
+    enum SyncthingModelRole {
+        IsPinned = Qt::UserRole + 1,
+        SyncthingModelUserRole = Qt::UserRole + 100,
+    };
+
     explicit SyncthingModel(SyncthingConnection &connection, QObject *parent = nullptr);
     Data::SyncthingConnection *connection();
     const Data::SyncthingConnection *connection() const;

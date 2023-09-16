@@ -20,7 +20,7 @@ class LIB_SYNCTHING_MODEL_EXPORT SyncthingDownloadModel : public SyncthingModel 
 public:
     explicit SyncthingDownloadModel(SyncthingConnection &connection, QObject *parent = nullptr);
 
-    enum SyncthingDownloadModelRole { ItemPercentage = Qt::UserRole + 1, ItemProgressLabel, ItemPath };
+    enum SyncthingDownloadModelRole { ItemPercentage = SyncthingModelUserRole + 1, ItemProgressLabel, ItemPath };
 
 public Q_SLOTS:
     QHash<int, QByteArray> roleNames() const override;
