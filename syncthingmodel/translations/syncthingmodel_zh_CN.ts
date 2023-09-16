@@ -144,7 +144,7 @@
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="386"/>
-        <source>Own device</source>
+        <source>This device</source>
         <translation>本设备</translation>
     </message>
     <message>

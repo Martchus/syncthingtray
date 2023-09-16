@@ -383,7 +383,7 @@ QString SyncthingDeviceModel::devStatusString(const SyncthingDev &dev)
     case SyncthingDevStatus::Unknown:
         return tr("Unknown status");
     case SyncthingDevStatus::ThisDevice:
-        return tr("Own device");
+        return tr("This device");
     case SyncthingDevStatus::Idle:
         return tr("Idle");
     case SyncthingDevStatus::Disconnected:
