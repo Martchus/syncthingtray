@@ -53,7 +53,7 @@ void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         painter->drawText(textRect, displayText(index.data(Qt::DisplayRole), option.locale), textOption);
 
         // draw buttons
-        if (index.data(SyncthingDeviceModel::IsOwnDevice).toBool()) {
+        if (index.data(SyncthingDeviceModel::IsThisDevice).toBool()) {
             return;
         }
         const int buttonY = option.rect.y() + centerObj(option.rect.height(), 16);

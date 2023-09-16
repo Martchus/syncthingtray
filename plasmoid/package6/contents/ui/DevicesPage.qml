@@ -63,7 +63,7 @@ Item {
                                 icon.source: plasmoid.faUrl + (paused ? "play" : "pause")
                                 icon.cache: false
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
-                                enabled: !isOwnDevice
+                                enabled: !isThisDevice
                                 onClicked: {
                                     paused ? plasmoid.connection.resumeDevice(
                                                  [devId]) : plasmoid.connection.pauseDevice(

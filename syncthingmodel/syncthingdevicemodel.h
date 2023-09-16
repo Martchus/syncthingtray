@@ -17,7 +17,7 @@ public:
     enum SyncthingDeviceModelRole {
         DeviceStatus = SyncthingModelUserRole + 1,
         DevicePaused,
-        IsOwnDevice,
+        IsThisDevice,
         DeviceStatusString,
         DeviceStatusColor,
         DeviceId,
