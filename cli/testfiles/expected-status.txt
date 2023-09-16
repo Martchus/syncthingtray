@@ -34,7 +34,7 @@ Directories
 Devices
  - .*
    ID                            \w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w
-   Status                        own device
+   Status                        this device
    Addresses                     dynamic
    Compression                   metadata
 

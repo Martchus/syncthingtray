@@ -432,7 +432,7 @@ void ConnectionTests::checkDevices()
     for (const SyncthingDev &dev : devInfo) {
         if (dev.id != QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7")
             && dev.id != QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4")) {
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("own device", QStringLiteral("own device"), dev.statusString());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("this device", QStringLiteral("this device"), dev.statusString());
             m_ownDevId = dev.id;
             m_ownDevName = dev.name;
         }

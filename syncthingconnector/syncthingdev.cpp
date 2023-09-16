@@ -12,7 +12,7 @@ QString statusString(SyncthingDevStatus status)
     case SyncthingDevStatus::Disconnected:
         return QCoreApplication::translate("SyncthingDevStatus", "disconnected");
     case SyncthingDevStatus::OwnDevice:
-        return QCoreApplication::translate("SyncthingDevStatus", "own device");
+        return QCoreApplication::translate("SyncthingDevStatus", "this device");
     case SyncthingDevStatus::Idle:
         return QCoreApplication::translate("SyncthingDevStatus", "idle");
     case SyncthingDevStatus::Synchronizing:

@@ -435,7 +435,7 @@
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="15"/>
-        <source>own device</source>
+        <source>this device</source>
         <translation>本设备</translation>
     </message>
     <message>

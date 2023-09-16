@@ -447,7 +447,7 @@
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="15"/>
-        <source>own device</source>
+        <source>this device</source>
         <translation>vlastní zařízení</translation>
     </message>
     <message>

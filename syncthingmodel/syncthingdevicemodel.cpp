@@ -158,7 +158,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                         return QVariant();
                     }
                 case 3:
-                    return dev.lastSeen.isNull() ? tr("unknown or own device")
+                    return dev.lastSeen.isNull() ? tr("unknown or this device")
                                                  : QString::fromLatin1(dev.lastSeen.toString(DateTimeOutputFormat::DateAndTime, true).data());
                 case 4:
                     return dev.compression;

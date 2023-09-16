@@ -114,7 +114,7 @@
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="161"/>
-        <source>unknown or own device</source>
+        <source>unknown or this device</source>
         <translation>未知或本设备</translation>
     </message>
     <message>
