@@ -269,7 +269,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 case SyncthingDevStatus::Unknown:
                 case SyncthingDevStatus::Disconnected:
                     return statusIcons().disconnected;
-                case SyncthingDevStatus::OwnDevice:
+                case SyncthingDevStatus::ThisDevice:
                 case SyncthingDevStatus::Idle:
                     return statusIcons().idling;
                 case SyncthingDevStatus::Synchronizing:
@@ -303,7 +303,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
     case DevicePaused:
         return dev.paused;
     case IsOwnDevice:
-        return dev.status == SyncthingDevStatus::OwnDevice;
+        return dev.status == SyncthingDevStatus::ThisDevice;
     case DeviceStatusString:
         return devStatusString(dev);
     case DeviceStatusColor:
@@ -380,7 +380,7 @@ QString SyncthingDeviceModel::devStatusString(const SyncthingDev &dev)
     switch (dev.status) {
     case SyncthingDevStatus::Unknown:
         return tr("Unknown status");
-    case SyncthingDevStatus::OwnDevice:
+    case SyncthingDevStatus::ThisDevice:
         return tr("Own device");
     case SyncthingDevStatus::Idle:
         return tr("Idle");
@@ -409,7 +409,7 @@ QVariant SyncthingDeviceModel::devStatusColor(const SyncthingDev &dev) const
         break;
     case SyncthingDevStatus::Disconnected:
         break;
-    case SyncthingDevStatus::OwnDevice:
+    case SyncthingDevStatus::ThisDevice:
     case SyncthingDevStatus::Idle:
         return Colors::green(m_brightColors);
     case SyncthingDevStatus::Synchronizing:

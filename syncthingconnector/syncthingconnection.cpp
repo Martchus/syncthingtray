@@ -1002,12 +1002,12 @@ void SyncthingConnection::emitMyIdChanged(const QString &newId)
     int row = 0;
     for (SyncthingDev &dev : m_devs) {
         if (dev.id == newId) {
-            if (dev.status != SyncthingDevStatus::OwnDevice) {
-                dev.status = SyncthingDevStatus::OwnDevice;
+            if (dev.status != SyncthingDevStatus::ThisDevice) {
+                dev.status = SyncthingDevStatus::ThisDevice;
                 dev.paused = false;
                 emit devStatusChanged(dev, row);
             }
-        } else if (dev.status == SyncthingDevStatus::OwnDevice) {
+        } else if (dev.status == SyncthingDevStatus::ThisDevice) {
             dev.status = SyncthingDevStatus::Unknown;
             emit devStatusChanged(dev, row);
         }

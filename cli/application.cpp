@@ -645,7 +645,7 @@ void Application::printStatus(const ArgumentOccurrence &)
     if (!m_relevantDevs.empty()) {
         cout << TextAttribute::Bold << "Devices\n" << TextAttribute::Reset;
         std::sort(m_relevantDevs.begin(), m_relevantDevs.end(), [](const SyncthingDev *lhs, const SyncthingDev *rhs) {
-            const auto lhsIsOwn = lhs->status == SyncthingDevStatus::OwnDevice, rhsIsOwn = rhs->status == SyncthingDevStatus::OwnDevice;
+            const auto lhsIsOwn = lhs->status == SyncthingDevStatus::ThisDevice, rhsIsOwn = rhs->status == SyncthingDevStatus::ThisDevice;
             return lhsIsOwn != rhsIsOwn ? lhsIsOwn : lhs->displayName() < rhs->displayName();
         });
         std::for_each(m_relevantDevs.cbegin(), m_relevantDevs.cend(), bind(&Application::printDev, this, std::placeholders::_1));
@@ -1009,7 +1009,7 @@ bool Application::checkWhetherIdle() const
                 return false;
             }
             break;
-        case SyncthingDevStatus::OwnDevice:
+        case SyncthingDevStatus::ThisDevice:
         case SyncthingDevStatus::Idle:
             break;
         default:

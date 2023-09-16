@@ -725,7 +725,7 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
         devItem->certName = devObj.value(QLatin1String("certName")).toString();
         devItem->introducer = devObj.value(QLatin1String("introducer")).toBool(false);
         if (devItem->id == m_myId) {
-            devItem->status = SyncthingDevStatus::OwnDevice;
+            devItem->status = SyncthingDevStatus::ThisDevice;
             devItem->paused = false;
         } else {
             devItem->status = SyncthingDevStatus::Unknown;
@@ -869,7 +869,7 @@ void SyncthingConnection::readConnections()
             }
 
             switch (dev.status) {
-            case SyncthingDevStatus::OwnDevice:
+            case SyncthingDevStatus::ThisDevice:
                 break;
             case SyncthingDevStatus::Disconnected:
             case SyncthingDevStatus::Unknown:
@@ -884,7 +884,7 @@ void SyncthingConnection::readConnections()
                     dev.status = SyncthingDevStatus::Disconnected;
                 }
             }
-            dev.paused = dev.status == SyncthingDevStatus::OwnDevice ? false : connectionObj.value(QLatin1String("paused")).toBool(false);
+            dev.paused = dev.status == SyncthingDevStatus::ThisDevice ? false : connectionObj.value(QLatin1String("paused")).toBool(false);
             dev.totalIncomingTraffic = jsonValueToInt(connectionObj.value(QLatin1String("inBytesTotal")));
             dev.totalOutgoingTraffic = jsonValueToInt(connectionObj.value(QLatin1String("outBytesTotal")));
             dev.connectionAddress = connectionObj.value(QLatin1String("address")).toString();
@@ -2028,7 +2028,7 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
     // assign new status
     if (devInfo->status != status || devInfo->paused != paused || devInfo->disconnectReason != disconnectReason) {
         // don't mess with the status of the own device
-        if (devInfo->status != SyncthingDevStatus::OwnDevice) {
+        if (devInfo->status != SyncthingDevStatus::ThisDevice) {
             devInfo->status = status;
             devInfo->paused = paused;
             devInfo->disconnectReason = disconnectReason;
