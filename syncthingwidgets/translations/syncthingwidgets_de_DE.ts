@@ -857,7 +857,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="30"/>
-        <source> - new directory</source>
+        <source> - new folder</source>
         <translation>- neues Verzeichnis</translation>
     </message>
     <message>
@@ -952,7 +952,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <name>QtGui::DirectoryErrorsDialog</name>
     <message>
         <location filename="../misc/direrrorsdialog.cpp" line="28"/>
-        <source>Errors for directory %1</source>
+        <source>Errors for folder %1</source>
         <translation>Fehler für Verzeichnis %1</translation>
     </message>
     <message>
@@ -1577,12 +1577,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="43"/>
-        <source>sync of local directory complete</source>
+        <source>sync of local folder complete</source>
         <translation>die Synchronisation lokaler Verzeichnisse abgeschlossen wurde</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="50"/>
-        <source>sync of remote directory complete</source>
+        <source>sync of remote folder complete</source>
         <translation>die Synchronisation von Verzeichnissen auf anderen Geräten abgeschlossen wurde</translation>
     </message>
     <message>
@@ -1592,7 +1592,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="64"/>
-        <source>remote device shares new/unknown directory</source>
+        <source>remote device shares new/unknown folder</source>
         <translation>ein anderes Geräte ein neues/unbekanntes Verzeichnis teilen möchte</translation>
     </message>
     <message>
@@ -1724,7 +1724,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../misc/statusinfo.cpp" line="63"/>
         <location filename="../misc/statusinfo.cpp" line="67"/>
-        <source>At least one directory is out of sync</source>
+        <source>At least one folder is out of sync</source>
         <translation>Mind. ein Verzeichnis hat Fehler</translation>
     </message>
     <message>
@@ -1749,7 +1749,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="92"/>
-        <source>At least one remote directory is not in sync</source>
+        <source>At least one remote folder is not in sync</source>
         <translation>Mind. ein entferntes Verzeichnis ist nicht synchronisiert</translation>
     </message>
     <message numerus="yes">

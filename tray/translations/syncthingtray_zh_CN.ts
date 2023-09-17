@@ -149,7 +149,7 @@
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="296"/>
-        <source>New Syncthing directory - click for web UI</source>
+        <source>New Syncthing folder - click for web UI</source>
         <translation>新 Syncthing 目录 - 点击打开网页 UI</translation>
     </message>
 </context>
@@ -253,7 +253,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="388"/>
-        <source>Directories</source>
+        <source>Folders</source>
         <translation>目录</translation>
     </message>
     <message>
@@ -298,7 +298,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="142"/>
-        <source>Rescan all directories</source>
+        <source>Rescan all folders</source>
         <translation>重新扫描全部目录</translation>
     </message>
     <message>
@@ -368,12 +368,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="663"/>
-        <source>The directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
+        <source>The folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>本地设备上不存在目录 &lt;i&gt;%1&lt;/i&gt;。</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="674"/>
-        <source>The containing directory &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
+        <source>The containing folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>本地设备上不存在包含目录 &lt;i&gt;%1&lt;/i&gt;。</translation>
     </message>
     <message>
@@ -388,7 +388,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="724"/>
-        <source>Copy directory ID</source>
+        <source>Copy folder ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -364,7 +364,7 @@ void Application::requestRescan(const ArgumentOccurrence &occurrence)
         ++m_expectedResponse;
     }
     if (!m_expectedResponse) {
-        cerr << Phrases::Error << "No (valid) directories specified." << Phrases::End << flush;
+        cerr << Phrases::Error << "No (valid) folders specified." << Phrases::End << flush;
         exit(1);
     }
     cerr << flush;
@@ -374,7 +374,7 @@ void Application::requestRescanAll(const ArgumentOccurrence &)
 {
     m_expectedResponse = m_connection.dirInfo().size();
     connect(&m_connection, &SyncthingConnection::rescanTriggered, this, &Application::handleResponse);
-    cerr << "Request rescanning all directories ..." << endl;
+    cerr << "Request rescanning all folders ..." << endl;
     m_connection.rescanAllDirs();
 }
 
@@ -390,7 +390,7 @@ void Application::requestPauseResume(bool pause)
         connect(&m_connection, &SyncthingConnection::directoryResumeTriggered, this, &Application::handleResponse);
     }
     if (m_relevantDirs.empty() && m_relevantDevs.empty()) {
-        cerr << Phrases::Error << "No directories or devices specified." << Phrases::End << flush;
+        cerr << Phrases::Error << "No folders or devices specified." << Phrases::End << flush;
         exit(1);
     }
     if (!m_relevantDirs.empty()) {
@@ -400,9 +400,9 @@ void Application::requestPauseResume(bool pause)
             dirIds << dir.dirObj->id;
         }
         if (pause) {
-            cerr << "Request pausing directories ";
+            cerr << "Request pausing folders ";
         } else {
-            cerr << "Request resuming directories ";
+            cerr << "Request resuming folders ";
         }
         cerr << dirIds.join(QStringLiteral(", ")).toLocal8Bit().data() << " ...\n";
         if (pause ? m_connection.pauseDirectories(dirIds) : m_connection.resumeDirectories(dirIds)) {
@@ -426,7 +426,7 @@ void Application::requestPauseResume(bool pause)
         }
     }
     if (!m_expectedResponse) {
-        cerr << Phrases::Warning << "No directories or devices altered." << Phrases::End << flush;
+        cerr << Phrases::Warning << "No folders or devices altered." << Phrases::End << flush;
         exit(0);
     }
     cerr << flush;
@@ -502,7 +502,7 @@ bool Application::findPwd()
     }
 
     // handle error
-    cerr << Phrases::Error << "The current working directory \"" << pwd.toLocal8Bit().data() << "\" is not (part of) a Syncthing directory.";
+    cerr << Phrases::Error << "The current working directory \"" << pwd.toLocal8Bit().data() << "\" is not (part of) a Syncthing folder.";
     cerr << Phrases::End << flush;
     QCoreApplication::exit(2);
     return false;
@@ -635,7 +635,7 @@ void Application::printStatus(const ArgumentOccurrence &)
 
     // display dirs
     if (!m_relevantDirs.empty()) {
-        cout << TextAttribute::Bold << "Directories\n" << TextAttribute::Reset;
+        cout << TextAttribute::Bold << "Folders\n" << TextAttribute::Reset;
         std::sort(m_relevantDirs.begin(), m_relevantDirs.end(),
             [](const RelevantDir &lhs, const RelevantDir &rhs) { return lhs.dirObj->displayName() < rhs.dirObj->displayName(); });
         std::for_each(m_relevantDirs.cbegin(), m_relevantDirs.cend(), bind(&Application::printDir, this, std::placeholders::_1));
@@ -1056,12 +1056,12 @@ void Application::requestPausePwd(const ArgumentOccurrence &)
         return;
     }
     if (m_connection.pauseDirectories(QStringList(m_pwd.dirObj->id))) {
-        cerr << "Request pausing directory \"" << m_pwd.dirObj->path.toLocal8Bit().data() << "\" ..." << endl;
+        cerr << "Request pausing folder \"" << m_pwd.dirObj->path.toLocal8Bit().data() << "\" ..." << endl;
         connect(&m_connection, &SyncthingConnection::directoryPauseTriggered, this, &Application::handleResponse);
         m_preventDisconnect = true;
         m_expectedResponse = 1;
     } else {
-        cerr << "Directory \"" << m_pwd.dirObj->path.toLocal8Bit().data() << " already paused" << endl;
+        cerr << "Folder \"" << m_pwd.dirObj->path.toLocal8Bit().data() << " already paused" << endl;
         QCoreApplication::quit();
     }
 }
@@ -1072,13 +1072,13 @@ void Application::requestResumePwd(const ArgumentOccurrence &)
         return;
     }
     if (m_connection.resumeDirectories(QStringList(m_pwd.dirObj->id))) {
-        cerr << "Request resuming directory \"" << m_pwd.dirObj->path.toLocal8Bit().data() << "\" ..." << endl;
+        cerr << "Request resuming folder \"" << m_pwd.dirObj->path.toLocal8Bit().data() << "\" ..." << endl;
         connect(&m_connection, &SyncthingConnection::directoryResumeTriggered, this, &Application::handleResponse);
         m_preventDisconnect = true;
         m_expectedResponse = 1;
         return;
     } else {
-        cerr << "Directory \"" << m_pwd.dirObj->path.toLocal8Bit().data() << " not paused" << endl;
+        cerr << "Folder \"" << m_pwd.dirObj->path.toLocal8Bit().data() << " not paused" << endl;
         QCoreApplication::quit();
     }
 }
@@ -1149,7 +1149,7 @@ RelevantDir Application::findDirectory(const QString &dirIdentifier)
         return relevantDir;
     }
 
-    cerr << Phrases::Warning << "Specified directory \"" << dirIdentifier.toLocal8Bit().data() << "\" is no Syncthing directory (or not part of any)."
+    cerr << Phrases::Warning << "Specified folder \"" << dirIdentifier.toLocal8Bit().data() << "\" is no Syncthing folder (or not part of any)."
          << Phrases::End;
     return relevantDir;
 }
@@ -1158,7 +1158,7 @@ void RelevantDir::notifyAboutRescan() const
 {
     cerr << Phrases::Info;
     if (subDir.isEmpty()) {
-        cerr << "Request rescanning directory \"" << dirObj->path.toLocal8Bit().data() << "\" ...";
+        cerr << "Request rescanning folder \"" << dirObj->path.toLocal8Bit().data() << "\" ...";
     } else {
         cerr << "Request rescanning item \"" << subDir.toLocal8Bit().data() << "\" in directory \"" << dirObj->path.toLocal8Bit().data() << "\" ...";
     }

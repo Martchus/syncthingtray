@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../syncthingdiractions.cpp" line="43"/>
-        <source>Directory info for %1</source>
+        <source>Folder info for %1</source>
         <translation>%1 的目录信息</translation>
     </message>
     <message>
@@ -62,7 +62,7 @@
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="174"/>
-        <source>Rescan selected directories</source>
+        <source>Rescan selected folders</source>
         <translation>重新扫描选定的目录</translation>
     </message>
     <message>
@@ -73,7 +73,7 @@
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="187"/>
-        <source>Resume selected directories</source>
+        <source>Resume selected folders</source>
         <translation>恢复选定的目录</translation>
     </message>
     <message>
@@ -84,22 +84,22 @@
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="190"/>
-        <source>Pause selected directories</source>
+        <source>Pause selected folders</source>
         <translation>暂停选定的目录</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="205"/>
-        <source>Rescan containing directories</source>
+        <source>Rescan containing folders</source>
         <translation>重新扫描包含的目录</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="218"/>
-        <source>Resume containing directories</source>
+        <source>Resume containing folders</source>
         <translation>恢复包含的目录</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="222"/>
-        <source>Pause containing directories</source>
+        <source>Pause containing folders</source>
         <translation>暂停包含的目录</translation>
     </message>
     <message>

@@ -31,7 +31,7 @@ PlasmoidItem {
             onTriggered: Plasmoid.showWebUI()
         },
         PlasmaCore.Action {
-            text: qsTr("Rescan all directories")
+            text: qsTr("Rescan all folders")
             icon.name: "folder-sync"
             onTriggered: Plasmoid.connection.rescanAllDirs()
         },

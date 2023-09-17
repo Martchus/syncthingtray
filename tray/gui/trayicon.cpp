@@ -293,7 +293,7 @@ void TrayIcon::showNewDir(const QString &devId, const QString &dirId, const QStr
 #endif
     {
         m_messageClickedAction = TrayIconMessageClickedAction::ShowWebUi;
-        showMessage(tr("New Syncthing directory - click for web UI"), message, QSystemTrayIcon::Information);
+        showMessage(tr("New Syncthing folder - click for web UI"), message, QSystemTrayIcon::Information);
     }
 }
 

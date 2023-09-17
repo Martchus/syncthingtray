@@ -226,7 +226,7 @@ RowLayout {
         icon.source: plasmoid.faUrl + "refresh"
         onClicked: plasmoid.connection.rescanAllDirs()
         PlasmaComponents3.ToolTip {
-            text: qsTr("Rescan all directories")
+            text: qsTr("Rescan all folders")
         }
         Shortcut {
             sequence: "Ctrl+Shift+R"

@@ -15,17 +15,17 @@
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="405"/>
-        <source>Unable to pause/resume a directories when not connected</source>
+        <source>Unable to pause/resume a folders when not connected</source>
         <translation>未连接时无法暂停/恢复目录</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="442"/>
-        <source>Unable to request directory pause/resume: </source>
+        <source>Unable to request folder pause/resume: </source>
         <translation>无法请求目录暂停/恢复： </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="473"/>
-        <source>Unable to rescan: No directory ID specified.</source>
+        <source>Unable to rescan: No folder ID specified.</source>
         <translation>无法重新扫描：未指定目录 ID。</translation>
     </message>
     <message>
@@ -90,38 +90,38 @@
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1016"/>
-        <source>Unable to parse directory statistics: </source>
+        <source>Unable to parse folder statistics: </source>
         <translation>无法解析目录统计信息： </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1067"/>
         <location filename="../syncthingconnection_requests.cpp" line="1125"/>
-        <source>Unable to request directory statistics: </source>
+        <source>Unable to request folder statistics: </source>
         <translation>无法请求目录统计信息： </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1110"/>
-        <source>Unable to parse status for directory %1: </source>
+        <source>Unable to parse status for folder %1: </source>
         <translation>无法解析目录 %1 的状态： </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1173"/>
-        <source>Unable to parse pull errors for directory %1: </source>
+        <source>Unable to parse pull errors for folder %1: </source>
         <translation>无法解析目录 %1 的拉取错误： </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1183"/>
-        <source>Unable to request pull errors for directory %1: </source>
+        <source>Unable to request pull errors for folder %1: </source>
         <translation>无法请求目录 %1 的拉取错误： </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1249"/>
-        <source>Unable to parse completion for device/directory %1/%2: </source>
+        <source>Unable to parse completion for device/folder %1/%2: </source>
         <translation>无法解析设备/目录 %1/%2 的完成情况： </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1264"/>
-        <source>Unable to request completion for device/directory %1/%2: </source>
+        <source>Unable to request completion for device/folder %1/%2: </source>
         <translation>无法请求设备/目录 %1/%2 的完成情况： </translation>
     </message>
     <message>
@@ -280,12 +280,12 @@
     </message>
     <message>
         <location filename="../syncthingnotifier.cpp" line="91"/>
-        <source> wants to share directory %1.</source>
+        <source> wants to share folder %1.</source>
         <translation> 想要分享目录 %1。</translation>
     </message>
     <message>
         <location filename="../syncthingnotifier.cpp" line="93"/>
-        <source> wants to share directory %1 (%2).</source>
+        <source> wants to share folder %1 (%2).</source>
         <translation> 想要分享目录  %1 (%2)。</translation>
     </message>
     <message>
@@ -370,7 +370,7 @@
     </message>
     <message>
         <location filename="../utils.cpp" line="76"/>
-        <source>Synchronization of local directory %1 complete</source>
+        <source>Synchronization of local folder %1 complete</source>
         <translation>完成本地目录 %1 的同步</translation>
     </message>
     <message>
@@ -380,14 +380,14 @@
     </message>
     <message>
         <location filename="../utils.cpp" line="84"/>
-        <source>Synchronization of the following local directories complete:
+        <source>Synchronization of the following local folders complete:
 </source>
         <translation>完成以下本地目录的同步：
 </translation>
     </message>
     <message>
         <location filename="../utils.cpp" line="87"/>
-        <source>Synchronization of the following directories on %1 complete:
+        <source>Synchronization of the following folders on %1 complete:
 </source>
         <translation>完成以下目录在 %1 上的同步：
 </translation>

@@ -88,9 +88,9 @@ void SyncthingNotifier::handleNewDirEvent(DateTime when, const QString &devId, c
     const auto message([&devId, dev, &dirId, &dirLabel] {
         const auto devPrefix(dev ? (tr("Device ") + dev->displayName()) : (tr("Unknown device ") + devId));
         if (dirLabel.isEmpty()) {
-            return devPrefix + tr(" wants to share directory %1.").arg(dirId);
+            return devPrefix + tr(" wants to share folder %1.").arg(dirId);
         } else {
-            return devPrefix + tr(" wants to share directory %1 (%2).").arg(dirLabel, dirId);
+            return devPrefix + tr(" wants to share folder %1 (%2).").arg(dirLabel, dirId);
         }
     }());
     emit newDir(devId, dirId, message);

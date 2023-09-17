@@ -40,7 +40,7 @@ bool SyncthingDirActions::updateStatus(const SyncthingDir &dir)
     if (dir.id != m_dirId) {
         return false;
     }
-    m_infoAction.setText(tr("Directory info for %1").arg(dir.displayName()));
+    m_infoAction.setText(tr("Folder info for %1").arg(dir.displayName()));
     m_statusAction.setText(tr("Status: ") + dir.statusString());
     if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
         m_statusAction.setIcon(statusIcons().pause);

@@ -385,7 +385,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
         <normaloff>folder.fa</normaloff>folder.fa</iconset>
       </attribute>
       <attribute name="title">
-       <string>Directories</string>
+       <string>Folders</string>
       </attribute>
       <layout class="QVBoxLayout" name="dirsTabVerticalLayout">
        <property name="spacing">

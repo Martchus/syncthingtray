@@ -402,7 +402,7 @@ bool SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool p
         return false;
     }
     if (!isConnected()) {
-        emit error(tr("Unable to pause/resume a directories when not connected"), SyncthingErrorCategory::SpecificRequest, QNetworkReply::NoError);
+        emit error(tr("Unable to pause/resume a folders when not connected"), SyncthingErrorCategory::SpecificRequest, QNetworkReply::NoError);
         return false;
     }
 
@@ -439,7 +439,7 @@ void SyncthingConnection::readDirPauseResume()
         break;
     }
     default:
-        emitError(tr("Unable to request directory pause/resume: "), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request folder pause/resume: "), SyncthingErrorCategory::SpecificRequest, reply);
     }
 }
 
@@ -470,7 +470,7 @@ void SyncthingConnection::rescanAllDirs()
 void SyncthingConnection::rescan(const QString &dirId, const QString &relpath)
 {
     if (dirId.isEmpty()) {
-        emit error(tr("Unable to rescan: No directory ID specified."), SyncthingErrorCategory::SpecificRequest, QNetworkReply::NoError,
+        emit error(tr("Unable to rescan: No folder ID specified."), SyncthingErrorCategory::SpecificRequest, QNetworkReply::NoError,
             QNetworkRequest(), QByteArray());
         return;
     }
@@ -1013,7 +1013,7 @@ void SyncthingConnection::readDirStatistics()
         auto jsonError = QJsonParseError();
         const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
-            emitError(tr("Unable to parse directory statistics: "), jsonError, reply, response);
+            emitError(tr("Unable to parse folder statistics: "), jsonError, reply, response);
             return;
         }
 
@@ -1064,7 +1064,7 @@ void SyncthingConnection::readDirStatistics()
         handleAdditionalRequestCanceled();
         return;
     default:
-        emitError(tr("Unable to request directory statistics: "), SyncthingErrorCategory::OverallConnection, reply);
+        emitError(tr("Unable to request folder statistics: "), SyncthingErrorCategory::OverallConnection, reply);
     }
 }
 
@@ -1107,7 +1107,7 @@ void SyncthingConnection::readDirStatus()
         auto jsonError = QJsonParseError();
         const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
-            emitError(tr("Unable to parse status for directory %1: ").arg(dirId), jsonError, reply, response);
+            emitError(tr("Unable to parse status for folder %1: ").arg(dirId), jsonError, reply, response);
             return;
         }
 
@@ -1122,7 +1122,7 @@ void SyncthingConnection::readDirStatus()
         handleAdditionalRequestCanceled();
         return;
     default:
-        emitError(tr("Unable to request directory statistics: "), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request folder statistics: "), SyncthingErrorCategory::SpecificRequest, reply);
     }
 }
 
@@ -1170,7 +1170,7 @@ void SyncthingConnection::readDirPullErrors()
         auto jsonError = QJsonParseError();
         const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
-            emitError(tr("Unable to parse pull errors for directory %1: ").arg(dirId), jsonError, reply, response);
+            emitError(tr("Unable to parse pull errors for folder %1: ").arg(dirId), jsonError, reply, response);
             return;
         }
 
@@ -1180,7 +1180,7 @@ void SyncthingConnection::readDirPullErrors()
     case QNetworkReply::OperationCanceledError:
         return;
     default:
-        emitError(tr("Unable to request pull errors for directory %1: ").arg(dirId), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request pull errors for folder %1: ").arg(dirId), SyncthingErrorCategory::SpecificRequest, reply);
     }
 }
 
@@ -1246,7 +1246,7 @@ void SyncthingConnection::readCompletion()
             return;
         }
 
-        emitError(tr("Unable to parse completion for device/directory %1/%2: ").arg(devId, dirId), jsonError, reply, response);
+        emitError(tr("Unable to parse completion for device/folder %1/%2: ").arg(devId, dirId), jsonError, reply, response);
         break;
     }
     case QNetworkReply::ContentNotFoundError:
@@ -1261,7 +1261,7 @@ void SyncthingConnection::readCompletion()
         handleAdditionalRequestCanceled();
         break;
     default:
-        emitError(tr("Unable to request completion for device/directory %1/%2: ").arg(devId, dirId), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request completion for device/folder %1/%2: ").arg(devId, dirId), SyncthingErrorCategory::SpecificRequest, reply);
     }
     ensureCompletionNotConsideredRequested(devId, devInfo, dirId, dirInfo);
 }

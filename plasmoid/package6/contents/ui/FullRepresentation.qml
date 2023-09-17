@@ -31,7 +31,7 @@ PlasmaExtras.Representation {
             Layout.fillHeight: true
             TabButton {
                 id: dirsTabButton
-                text: qsTr("Directories")
+                text: qsTr("Folders")
                 icon.source: plasmoid.faUrl + "folder"
                 width: tabBar.buttonWidth
             }

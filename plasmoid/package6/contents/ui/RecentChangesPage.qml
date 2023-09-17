@@ -117,7 +117,7 @@ Item {
                     onClicked: recentChangesView.currentItem.copyDeviceId()
                 }
                 PlasmaExtras.MenuItem {
-                    text: qsTr("Copy directory ID")
+                    text: qsTr("Copy folder ID")
                     icon: "folder"
                     onClicked: recentChangesView.currentItem.copyFolderId()
                 }

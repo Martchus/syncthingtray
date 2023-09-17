@@ -150,7 +150,7 @@
         <translation type="vanished">Syncthing-Log anzeigen</translation>
     </message>
     <message>
-        <source>Rescan all directories</source>
+        <source>Rescan all folders</source>
         <translation type="vanished">Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
@@ -188,7 +188,7 @@
     <message>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="34"/>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="33"/>
-        <source>Directories</source>
+        <source>Folders</source>
         <translation>Verzeichnisse</translation>
     </message>
     <message>
@@ -230,7 +230,7 @@
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="25"/>
-        <source>Size of directory/device/download list</source>
+        <source>Size of folder/device/download list</source>
         <translation>Größe der Verzeichnis-/Geräte-/Downloadliste</translation>
     </message>
     <message>
@@ -375,7 +375,7 @@
     <message>
         <location filename="../package6/contents/ui/RecentChangesPage.qml" line="120"/>
         <location filename="../package5/contents/ui/RecentChangesPage.qml" line="119"/>
-        <source>Copy directory ID</source>
+        <source>Copy folder ID</source>
         <translation>Verzeichnis-ID kopieren</translation>
     </message>
 </context>
@@ -465,7 +465,7 @@
     <message>
         <location filename="../package6/contents/ui/ToolBar.qml" line="229"/>
         <location filename="../package5/contents/ui/ToolBar.qml" line="230"/>
-        <source>Rescan all directories</source>
+        <source>Rescan all folders</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>
@@ -520,7 +520,7 @@
     <message>
         <location filename="../package6/contents/ui/main.qml" line="34"/>
         <location filename="../package5/contents/ui/main.qml" line="61"/>
-        <source>Rescan all directories</source>
+        <source>Rescan all folders</source>
         <translation>Alle Verzeichnisse neu scannen</translation>
     </message>
     <message>

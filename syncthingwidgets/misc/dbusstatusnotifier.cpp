@@ -27,7 +27,7 @@ DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
     , m_syncthingNotification(tr("Syncthing notification"), NotificationIcon::Warning, 10000)
     , m_syncCompleteNotification(QStringLiteral(APP_NAME), NotificationIcon::Information, 5000)
     , m_newDevNotification(QStringLiteral(APP_NAME) + tr(" - new device"), NotificationIcon::Information, 5000)
-    , m_newDirNotification(QStringLiteral(APP_NAME) + tr(" - new directory"), NotificationIcon::Information, 5000)
+    , m_newDirNotification(QStringLiteral(APP_NAME) + tr(" - new folder"), NotificationIcon::Information, 5000)
 {
     m_disconnectedNotification.setApplicationName(QStringLiteral(APP_NAME));
     m_disconnectedNotification.setMessage(tr("Disconnected from Syncthing"));
