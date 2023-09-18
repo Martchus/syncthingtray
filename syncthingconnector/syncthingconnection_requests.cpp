@@ -712,9 +712,11 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
     auto newDevs = std::vector<SyncthingDev>();
     newDevs.reserve(static_cast<std::size_t>(devs.size()));
     auto *const thisDevice = addDevInfo(newDevs, m_myId);
-    thisDevice->id = m_myId;
-    thisDevice->status = SyncthingDevStatus::ThisDevice;
-    thisDevice->paused = false;
+    if (thisDevice) { // m_myId might be empty, then thisDevice will be nullptr
+        thisDevice->id = m_myId;
+        thisDevice->status = SyncthingDevStatus::ThisDevice;
+        thisDevice->paused = false;
+    }
 
     for (const auto &devVal : devs) {
         const auto devObj = devVal.toObject();
