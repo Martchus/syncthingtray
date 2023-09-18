@@ -45,7 +45,7 @@
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="23"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="23"/>
         <source>Filter folders</source>
-        <translation>Verzeichnisse filtern</translation>
+        <translation>Ordner filtern</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="84"/>
@@ -151,7 +151,7 @@
     </message>
     <message>
         <source>Rescan all folders</source>
-        <translation type="vanished">Alle Verzeichnisse neu scannen</translation>
+        <translation type="vanished">Alle Ordner neu scannen</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -189,7 +189,7 @@
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="34"/>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="33"/>
         <source>Folders</source>
-        <translation>Verzeichnisse</translation>
+        <translation>Ordner</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="40"/>
@@ -231,7 +231,7 @@
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="25"/>
         <source>Size of folder/device/download list</source>
-        <translation>Größe der Verzeichnis-/Geräte-/Downloadliste</translation>
+        <translation>Größe der Ordner-/Geräte-/Downloadliste</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="64"/>
@@ -376,7 +376,7 @@
         <location filename="../package6/contents/ui/RecentChangesPage.qml" line="120"/>
         <location filename="../package5/contents/ui/RecentChangesPage.qml" line="119"/>
         <source>Copy folder ID</source>
-        <translation>Verzeichnis-ID kopieren</translation>
+        <translation>Ordner-ID kopieren</translation>
     </message>
 </context>
 <context>
@@ -391,7 +391,7 @@
         <location filename="../package6/contents/ui/StatisticsView.qml" line="17"/>
         <location filename="../package5/contents/ui/StatisticsView.qml" line="17"/>
         <source> directories</source>
-        <translation> Verzeichnisse</translation>
+        <translation> Ordner</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/StatisticsView.qml" line="23"/>
@@ -466,7 +466,7 @@
         <location filename="../package6/contents/ui/ToolBar.qml" line="229"/>
         <location filename="../package5/contents/ui/ToolBar.qml" line="230"/>
         <source>Rescan all folders</source>
-        <translation>Alle Verzeichnisse neu scannen</translation>
+        <translation>Alle Ordner neu scannen</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/ToolBar.qml" line="245"/>
@@ -521,7 +521,7 @@
         <location filename="../package6/contents/ui/main.qml" line="34"/>
         <location filename="../package5/contents/ui/main.qml" line="61"/>
         <source>Rescan all folders</source>
-        <translation>Alle Verzeichnisse neu scannen</translation>
+        <translation>Alle Ordner neu scannen</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/main.qml" line="44"/>

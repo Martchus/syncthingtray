@@ -369,7 +369,7 @@
     <message>
         <location filename="../syncthingdownloadmodel.cpp" line="96"/>
         <source>Dir/item</source>
-        <translation>Verzeichnis/Element</translation>
+        <translation>Ordner/Element</translation>
     </message>
     <message>
         <location filename="../syncthingdownloadmodel.cpp" line="98"/>
@@ -392,7 +392,7 @@
     <message>
         <location filename="../syncthingrecentchangesmodel.cpp" line="75"/>
         <source>Folder</source>
-        <translation>Verzeichnis</translation>
+        <translation>Ordner</translation>
     </message>
     <message>
         <location filename="../syncthingrecentchangesmodel.cpp" line="77"/>
@@ -415,17 +415,17 @@
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="37"/>
         <source>Local dir is scanning</source>
-        <translation>Lokales Verzeichnis wird gescannt</translation>
+        <translation>Lokales Ordner wird gescannt</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="39"/>
         <source>Local dir is synchronizing</source>
-        <translation>Lokales Verzeichnis wird synchronisiert</translation>
+        <translation>Lokales Ordner wird synchronisiert</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="41"/>
         <source>Remote dir has outstanding progress</source>
-        <translation>Entferntes Verzeichnis hat ausstehende Elemente</translation>
+        <translation>Entferntes Ordner hat ausstehende Elemente</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="43"/>
@@ -435,7 +435,7 @@
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="45"/>
         <source>Local dir is out of sync</source>
-        <translation>Lokales Verzeichnis ist nicht synchronisiert</translation>
+        <translation>Lokales Ordner ist nicht synchronisiert</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="47"/>

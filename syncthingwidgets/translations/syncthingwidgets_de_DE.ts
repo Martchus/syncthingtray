@@ -858,7 +858,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="30"/>
         <source> - new folder</source>
-        <translation>- neues Verzeichnis</translation>
+        <translation>- neues Ordner</translation>
     </message>
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="33"/>
@@ -953,12 +953,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../misc/direrrorsdialog.cpp" line="28"/>
         <source>Errors for folder %1</source>
-        <translation>Fehler für Verzeichnis %1</translation>
+        <translation>Fehler für Ordner %1</translation>
     </message>
     <message>
         <location filename="../misc/direrrorsdialog.cpp" line="46"/>
         <source>Remove non-empty directories</source>
-        <translation>Nicht-leere Verzeichnisse löschen</translation>
+        <translation>Nicht-leere Ordner löschen</translation>
     </message>
     <message numerus="yes">
         <location filename="../misc/direrrorsdialog.cpp" line="83"/>
@@ -971,17 +971,17 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../misc/direrrorsdialog.cpp" line="113"/>
         <source>Remove non-empty directories for folder &quot;%1&quot;</source>
-        <translation>Nicht-leere Verzeichnisse für den Ordner &quot;%1&quot; löschen</translation>
+        <translation>Nicht-leere Ordner für den Ordner &quot;%1&quot; löschen</translation>
     </message>
     <message>
         <location filename="../misc/direrrorsdialog.cpp" line="114"/>
         <source>Do you really want to remove the following directories:</source>
-        <translation>Sollen die folgenden Verzeichnisse wirklich gelöscht werden?</translation>
+        <translation>Sollen die folgenden Ordner wirklich gelöscht werden?</translation>
     </message>
     <message>
         <location filename="../misc/direrrorsdialog.cpp" line="137"/>
         <source>Unable to remove the following dirs:</source>
-        <translation>Die folgenden Verzeichnisse konnten nicht gelöscht werden:</translation>
+        <translation>Die folgenden Ordner konnten nicht gelöscht werden:</translation>
     </message>
 </context>
 <context>
@@ -1014,11 +1014,11 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/wizard.cpp" line="1084"/>
         <source>&lt;p&gt;The configuration has been changed successfully. You can close the wizard and &lt;a href=&quot;openSyncthing&quot;&gt;open Syncthing&lt;/a&gt; to pair remote devices and add folders for sharing. If you need further help, read the &lt;a href=&quot;openDocs&quot;&gt;documentation to get started&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;To initiate the pairing from another device, the device ID of this Syncthing device is displayed below.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Die Konfiguration wurde erfolgreich geändert. Du kannst den Assistenten jetzt schließen und &lt;a href=&quot;openSyncthing&quot;&gt;Syncthing öffnen&lt;/a&gt;, um entfernte Geräte hinzuzufügen und Verzeichnisse zu teilen. Für weitere Hilfe, lese die &lt;a href=&quot;openDocs&quot;&gt;Dokumentation für die Einrichtung von Syncthing&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;ID des aktuellen Geräts (um die Verbindung von einem anderen Gerät aus herzustellen):&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Die Konfiguration wurde erfolgreich geändert. Du kannst den Assistenten jetzt schließen und &lt;a href=&quot;openSyncthing&quot;&gt;Syncthing öffnen&lt;/a&gt;, um entfernte Geräte hinzuzufügen und Ordner zu teilen. Für weitere Hilfe, lese die &lt;a href=&quot;openDocs&quot;&gt;Dokumentation für die Einrichtung von Syncthing&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;ID des aktuellen Geräts (um die Verbindung von einem anderen Gerät aus herzustellen):&lt;/p&gt;</translation>
     </message>
     <message>
         <source>The configuration has been changed successfully. You can close the wizard and &lt;a href=&quot;openSyncthing&quot;&gt;open Syncthing&lt;/a&gt; to pair remote devices and add folders for sharing. If you need further help, read the &lt;a href=&quot;openDocs&quot;&gt;documentation to get started&lt;/a&gt;.</source>
-        <translation type="vanished">Die Konfiguration wurde erfolgreich geändert. Du kannst den Assistenten jetzt schließen und &lt;a href=&quot;openSyncthing&quot;&gt;Syncthing öffnen&lt;/a&gt;, um entfernte Geräte hinzuzufügen und Verzeichnisse zu teilen. Für weitere Hilfe, lese die &lt;a href=&quot;openDocs&quot;&gt;Dokumentation für die Einrichtung von Syncthing&lt;/a&gt;.</translation>
+        <translation type="vanished">Die Konfiguration wurde erfolgreich geändert. Du kannst den Assistenten jetzt schließen und &lt;a href=&quot;openSyncthing&quot;&gt;Syncthing öffnen&lt;/a&gt;, um entfernte Geräte hinzuzufügen und Ordner zu teilen. Für weitere Hilfe, lese die &lt;a href=&quot;openDocs&quot;&gt;Dokumentation für die Einrichtung von Syncthing&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1093"/>
@@ -1275,7 +1275,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="70"/>
         <source>Config directory</source>
-        <translation>Konfigurationsverzeichnis</translation>
+        <translation>KonfigurationsOrdner</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="80"/>
@@ -1310,7 +1310,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="116"/>
         <source>Data directory</source>
-        <translation>Datenverzeichnis</translation>
+        <translation>DatenOrdner</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="129"/>
@@ -1578,12 +1578,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="43"/>
         <source>sync of local folder complete</source>
-        <translation>die Synchronisation lokaler Verzeichnisse abgeschlossen wurde</translation>
+        <translation>die Synchronisation lokaler Ordner abgeschlossen wurde</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="50"/>
         <source>sync of remote folder complete</source>
-        <translation>die Synchronisation von Verzeichnissen auf anderen Geräten abgeschlossen wurde</translation>
+        <translation>die Synchronisation von Ordnern auf anderen Geräten abgeschlossen wurde</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="57"/>
@@ -1593,7 +1593,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="64"/>
         <source>remote device shares new/unknown folder</source>
-        <translation>ein anderes Geräte ein neues/unbekanntes Verzeichnis teilen möchte</translation>
+        <translation>ein anderes Geräte ein neues/unbekanntes Ordner teilen möchte</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="71"/>
@@ -1725,7 +1725,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <location filename="../misc/statusinfo.cpp" line="63"/>
         <location filename="../misc/statusinfo.cpp" line="67"/>
         <source>At least one folder is out of sync</source>
-        <translation>Mind. ein Verzeichnis hat Fehler</translation>
+        <translation>Mind. ein Ordner hat Fehler</translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="71"/>
@@ -1750,7 +1750,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../misc/statusinfo.cpp" line="92"/>
         <source>At least one remote folder is not in sync</source>
-        <translation>Mind. ein entferntes Verzeichnis ist nicht synchronisiert</translation>
+        <translation>Mind. ein entferntes Ordner ist nicht synchronisiert</translation>
     </message>
     <message numerus="yes">
         <location filename="../misc/statusinfo.cpp" line="143"/>
@@ -1966,12 +1966,12 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <name>QtGui::WebPage</name>
     <message>
         <source>Select path for Syncthing directory ...</source>
-        <translation type="vanished">Pfad für Syncthing-Verzeichnis auswählen ...</translation>
+        <translation type="vanished">Pfad für Syncthing-Ordner auswählen ...</translation>
     </message>
     <message>
         <location filename="../webview/webpage.cpp" line="354"/>
         <source>Select path for Syncthing directory …</source>
-        <translation>Pfad für Syncthing-Verzeichnis auswählen …</translation>
+        <translation>Pfad für Syncthing-Ordner auswählen …</translation>
     </message>
 </context>
 <context>

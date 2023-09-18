@@ -11,7 +11,7 @@
     <message>
         <location filename="../syncthingdiractions.cpp" line="43"/>
         <source>Folder info for %1</source>
-        <translation>Verzeichnisinfo für %1</translation>
+        <translation>Ordnerinfo für %1</translation>
     </message>
     <message>
         <location filename="../syncthingdiractions.cpp" line="44"/>
@@ -57,12 +57,12 @@
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="174"/>
         <source>Rescan selected folders</source>
-        <translation>Ausgewählte Verzeichnisse neu scannen</translation>
+        <translation>Ausgewählte Ordner neu scannen</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="187"/>
         <source>Resume selected folders</source>
-        <translation>Ausgewählte verzeichnisse fortsetzen</translation>
+        <translation>Ausgewählte Ordner fortsetzen</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="157"/>
@@ -74,22 +74,22 @@
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="190"/>
         <source>Pause selected folders</source>
-        <translation>Ausgewählte Verzeichnisse pausieren</translation>
+        <translation>Ausgewählte Ordner pausieren</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="205"/>
         <source>Rescan containing folders</source>
-        <translation>Beinhaltendes Verzeichnis neu scannen</translation>
+        <translation>Beinhaltendes Ordner neu scannen</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="217"/>
         <source>Resume containing folders</source>
-        <translation>Beinhaltendes Verzeichnis fortsetzen</translation>
+        <translation>Beinhaltendes Ordner fortsetzen</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="245"/>
         <source>Not a shared directory</source>
-        <translation>Kein geteiltes Verzeichnis</translation>
+        <translation>Kein geteiltes Ordner</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="187"/>
@@ -100,7 +100,7 @@
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="221"/>
         <source>Pause containing folders</source>
-        <translation>Beinhaltendes Verzeichnis pausieren</translation>
+        <translation>Beinhaltendes Ordner pausieren</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="190"/>

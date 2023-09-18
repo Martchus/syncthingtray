@@ -135,7 +135,7 @@
     <message>
         <location filename="../gui/trayicon.cpp" line="296"/>
         <source>New Syncthing folder - click for web UI</source>
-        <translation>Neues Syncthing-Verzeichnis</translation>
+        <translation>Neues Syncthing-Ordner</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="175"/>
@@ -258,7 +258,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/traywidget.ui" line="388"/>
         <source>Folders</source>
-        <translation>Verzeichnisse</translation>
+        <translation>Ordner</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="421"/>
@@ -304,7 +304,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="142"/>
         <source>Rescan all folders</source>
-        <translation>Alle Verzeichnisse neu scannen</translation>
+        <translation>Alle Ordner neu scannen</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="149"/>
@@ -374,12 +374,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="663"/>
         <source>The folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
-        <translation>Das Verzeichnis &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
+        <translation>Das Ordner &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="674"/>
         <source>The containing folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
-        <translation>Das beinhaltende Verzeichnis &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
+        <translation>Das beinhaltende Ordner &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="717"/>
@@ -394,7 +394,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="724"/>
         <source>Copy folder ID</source>
-        <translation>Verzeichnis-ID kopieren</translation>
+        <translation>Ordner-ID kopieren</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="837"/>
