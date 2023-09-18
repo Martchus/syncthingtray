@@ -20,7 +20,7 @@ ColumnLayout {
         clearButtonShown: true
         Layout.fillWidth: true
         visible: explicitelyShown || text !== ""
-        placeholderText: qsTr("Filter directories")
+        placeholderText: qsTr("Filter folders")
         onTextChanged: directoryView.model.filterRegularExpression = new RegExp(text)
     }
 

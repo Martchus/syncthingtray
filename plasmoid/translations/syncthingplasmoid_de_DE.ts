@@ -44,7 +44,7 @@
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="23"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="23"/>
-        <source>Filter directories</source>
+        <source>Filter folders</source>
         <translation>Verzeichnisse filtern</translation>
     </message>
     <message>
