@@ -7,7 +7,7 @@ Overall statistics
    Connected to                  no other devices
    Version                       syncthing v.*
 
-Directories
+Folders
  - Test dir 2
    ID                            test2
    Path                          /tmp/some/path/2/
