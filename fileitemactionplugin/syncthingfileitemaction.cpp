@@ -202,8 +202,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     if (!containingDirs.isEmpty()) {
         // rescan item
         actions << new QAction(QIcon::fromTheme(QStringLiteral("folder-sync")),
-            containingDirs.size() == 1 ? tr("Rescan \"%1\"").arg(containingDirs.front()->displayName()) : tr("Rescan containing folders"),
-            parent);
+            containingDirs.size() == 1 ? tr("Rescan \"%1\"").arg(containingDirs.front()->displayName()) : tr("Rescan containing folders"), parent);
         if (connection.isConnected() && !containingDirsStats.allPaused) {
             for (const SyncthingDir *dir : std::as_const(containingDirs)) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, dir->id, QString()));
@@ -219,8 +218,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
                 parent);
         } else {
             actions << new QAction(QIcon::fromTheme(QStringLiteral("media-playback-pause")),
-                containingDirs.size() == 1 ? tr("Pause \"%1\"").arg(containingDirs.front()->displayName()) : tr("Pause containing folders"),
-                parent);
+                containingDirs.size() == 1 ? tr("Pause \"%1\"").arg(containingDirs.front()->displayName()) : tr("Pause containing folders"), parent);
         }
         if (connection.isConnected()) {
             connect(actions.back(), &QAction::triggered,
