@@ -60,7 +60,7 @@
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="473"/>
-        <source>Unable to rescan: No directory ID specified.</source>
+        <source>Unable to rescan: No folder ID specified.</source>
         <translation>Fehler beim Anfordern eines Scans: keine Verzeichnis-ID angegeben.</translation>
     </message>
     <message>
@@ -70,7 +70,7 @@
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="405"/>
-        <source>Unable to pause/resume a directories when not connected</source>
+        <source>Unable to pause/resume a folders when not connected</source>
         <translation>Fehler beim Anfordern Gerät zu Pausieren/Fortzusetzen</translation>
     </message>
     <message>
@@ -130,13 +130,13 @@
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1016"/>
-        <source>Unable to parse directory statistics: </source>
+        <source>Unable to parse folder statistics: </source>
         <translation>Fehler beim Auslesen der Verzeichnisstatistiken: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1067"/>
         <location filename="../syncthingconnection_requests.cpp" line="1125"/>
-        <source>Unable to request directory statistics: </source>
+        <source>Unable to request folder statistics: </source>
         <translation>Fehler beim Abfragen der Verzeichnisstatistiken: </translation>
     </message>
     <message>
@@ -191,7 +191,7 @@
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="442"/>
-        <source>Unable to request directory pause/resume: </source>
+        <source>Unable to request folder pause/resume: </source>
         <translation>Fehler beim Anfordern Verzeichnis zu Pausieren/Fortzusetzen: </translation>
     </message>
     <message>
@@ -206,27 +206,27 @@
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1110"/>
-        <source>Unable to parse status for directory %1: </source>
+        <source>Unable to parse status for folder %1: </source>
         <translation>Fehler beim Auslesen des Status von Verzeichnis %1: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1173"/>
-        <source>Unable to parse pull errors for directory %1: </source>
+        <source>Unable to parse pull errors for folder %1: </source>
         <translation>Fehler beim Auslesen der Fehler von Verzeichnis %1: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1183"/>
-        <source>Unable to request pull errors for directory %1: </source>
+        <source>Unable to request pull errors for folder %1: </source>
         <translation>Fehler beim Anfordern der Fehler von Verzeichnis %1: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1249"/>
-        <source>Unable to parse completion for device/directory %1/%2: </source>
+        <source>Unable to parse completion for device/folder %1/%2: </source>
         <translation>Fehler beim Auslesen des Fortschrittes von Verzeichnis %1/%2: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1264"/>
-        <source>Unable to request completion for device/directory %1/%2: </source>
+        <source>Unable to request completion for device/folder %1/%2: </source>
         <translation>Fehler beim Anfordern des Fortschrittes von Verzeichnis %1/%2: </translation>
     </message>
     <message>
@@ -284,12 +284,12 @@
     </message>
     <message>
         <location filename="../syncthingnotifier.cpp" line="91"/>
-        <source> wants to share directory %1.</source>
+        <source> wants to share folder %1.</source>
         <translation> möchte das Verzeichnis %1 teilen.</translation>
     </message>
     <message>
         <location filename="../syncthingnotifier.cpp" line="93"/>
-        <source> wants to share directory %1 (%2).</source>
+        <source> wants to share folder %1 (%2).</source>
         <translation> möchte das Verzeichnis %1 (%2) teilen.</translation>
     </message>
     <message>
@@ -380,12 +380,12 @@
     </message>
     <message>
         <location filename="../utils.cpp" line="76"/>
-        <source>Synchronization of local directory %1 complete</source>
+        <source>Synchronization of local folder %1 complete</source>
         <translation>%1 wurde lokal synchronisiert</translation>
     </message>
     <message>
         <location filename="../utils.cpp" line="84"/>
-        <source>Synchronization of the following local directories complete:
+        <source>Synchronization of the following local folders complete:
 </source>
         <translation>Folgende Verzeichnisse wurden lokal synchronisiert:
 </translation>
@@ -417,7 +417,7 @@
     </message>
     <message>
         <location filename="../utils.cpp" line="87"/>
-        <source>Synchronization of the following directories on %1 complete:
+        <source>Synchronization of the following folders on %1 complete:
 </source>
         <translation>Folgende Verzeichnisse wurden auf %1 synchronisiert:
 </translation>

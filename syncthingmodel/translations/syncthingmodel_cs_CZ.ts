@@ -393,7 +393,7 @@
     </message>
     <message>
         <location filename="../syncthingrecentchangesmodel.cpp" line="75"/>
-        <source>Directory</source>
+        <source>Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -58,7 +58,7 @@ Item {
         plasmoid.removeAction("configure")
         plasmoid.setAction("showWebUI", qsTr("Open Syncthing"), "syncthing")
         plasmoid.setAction("configure", qsTr("Settings"), "configure")
-        plasmoid.setAction("rescanAllDirs", qsTr("Rescan all directories"),
+        plasmoid.setAction("rescanAllDirs", qsTr("Rescan all folders"),
                            "folder-sync")
         plasmoid.setAction("showOwnId", qsTr("Show own device ID"),
                            "view-barcode-qr")

@@ -139,7 +139,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     showLogButton->setFlat(true);
     cornerFrameLayout->addWidget(showLogButton);
     auto *scanAllButton = new QPushButton(m_cornerFrame);
-    scanAllButton->setToolTip(tr("Rescan all directories"));
+    scanAllButton->setToolTip(tr("Rescan all folders"));
     scanAllButton->setIcon(QIcon(QStringLiteral("refresh.fa")));
     scanAllButton->setFlat(true);
     cornerFrameLayout->addWidget(scanAllButton);
@@ -660,7 +660,7 @@ void TrayWidget::openDir(const SyncthingDir &dir)
     if (QDir(path).exists()) {
         openLocalFileOrDir(path);
     } else {
-        QMessageBox::warning(this, QCoreApplication::applicationName(), tr("The directory <i>%1</i> does not exist on the local machine.").arg(path));
+        QMessageBox::warning(this, QCoreApplication::applicationName(), tr("The folder <i>%1</i> does not exist on the local machine.").arg(path));
     }
 }
 
@@ -671,7 +671,7 @@ void TrayWidget::openItemDir(const SyncthingItemDownloadProgress &item)
         openLocalFileOrDir(containingDir.path());
     } else {
         QMessageBox::warning(this, QCoreApplication::applicationName(),
-            tr("The containing directory <i>%1</i> does not exist on the local machine.").arg(item.fileInfo.filePath()));
+            tr("The containing folder <i>%1</i> does not exist on the local machine.").arg(item.fileInfo.filePath()));
     }
 }
 
@@ -721,7 +721,7 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
                 tr("Copy device ID")),
         &QAction::triggered, this, copyRole(SyncthingRecentChangesModel::ModifiedBy));
     connect(menu.addAction(QIcon::fromTheme(QStringLiteral("folder"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder.svg"))),
-                tr("Copy directory ID")),
+                tr("Copy folder ID")),
         &QAction::triggered, this, copyRole(SyncthingRecentChangesModel::DirectoryId));
     showViewMenu(position, *m_ui->recentChangesTreeView, menu);
 }

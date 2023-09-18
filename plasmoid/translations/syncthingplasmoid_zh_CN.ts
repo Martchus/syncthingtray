@@ -138,7 +138,7 @@
     </message>
     <message>
         <location filename="../package/contents/ui/FullRepresentation.qml" line="399"/>
-        <source>Rescan all directories</source>
+        <source>Rescan all folders</source>
         <translation>重新扫描所有目录</translation>
     </message>
     <message>
@@ -186,7 +186,7 @@
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="25"/>
-        <source>Size of directory/device/download list</source>
+        <source>Size of folder/device/download list</source>
         <translation>目录/设备/下载列表的大小</translation>
     </message>
     <message>
@@ -332,7 +332,7 @@
     </message>
     <message>
         <location filename="../package/contents/ui/main.qml" line="72"/>
-        <source>Rescan all directories</source>
+        <source>Rescan all folders</source>
         <translation>重新扫描所有目录</translation>
     </message>
     <message>

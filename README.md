@@ -50,16 +50,16 @@ certain caveats.
 
 ## Features
 * Provides quick access to most frequently used features but does not intend to replace the official web-based UI
-    * Check state of directories and devices
+    * Check state of folders and devices
     * Check current traffic statistics
-    * Display further details about directories and devices, like last file, last
+    * Display further details about folders and devices, like last file, last
       scan, items out of sync, ...
     * Display ongoing downloads
     * Display Syncthing log
-    * Trigger re-scan of a specific directory or all directories at once
-    * Open a directory with the default file browser
+    * Trigger re-scan of a specific folder or all folders at once
+    * Open a folder with the default file browser
     * Pause/resume a specific device or all devices at once
-    * Pause/resume a specific directory
+    * Pause/resume a specific folder
     * View recent history of changes (done locally and remotely)
 * Shows "desktop" notifications
     * The events to show notifications for can be configured
@@ -79,12 +79,12 @@ certain caveats.
     * Trigger rescan/pause/resume/restart
     * Wait for idle
     * View and modify raw configuration
-    * Supports Bash completion, even for directory and device names
-* Also bundles a KIO plugin which shows the status of a Syncthing directory and allows to trigger Syncthing actions
+    * Supports Bash completion, even for folder and device names
+* Also bundles a KIO plugin which shows the status of a Syncthing folder and allows to trigger Syncthing actions
   in the Dolphin file manager
     * Rescan selected items
-    * Rescan entire Syncthing directory
-    * Pause/resume Syncthing directory
+    * Rescan entire Syncthing folder
+    * Pause/resume Syncthing folder
     * See also screenshots section
 * Allows building Syncthing as a library to run it in the same process as the tray/GUI
 * English and German localization
@@ -499,7 +499,7 @@ It is possible to turn on logging of the underlying library by setting environme
 * `LIB_SYNCTHING_CONNECTOR_LOG_API_CALLS`: log calls to Syncthing's REST-API
 * `LIB_SYNCTHING_CONNECTOR_LOG_API_REPLIES`: log replies from Syncthing's REST-API (except events)
 * `LIB_SYNCTHING_CONNECTOR_LOG_EVENTS`: log events emitted by Syncthing's events REST-API endpoint
-* `LIB_SYNCTHING_CONNECTOR_LOG_DIRS_OR_DEVS_RESETTED`: log when directories/devices are internally reset
+* `LIB_SYNCTHING_CONNECTOR_LOG_DIRS_OR_DEVS_RESETTED`: log when folders/devices are internally reset
 
 ### Useful environment variables for development
 * `QT_QPA_PLATFORM`: set to `offscreen` to disable graphical output, e.g. to run tests in headless

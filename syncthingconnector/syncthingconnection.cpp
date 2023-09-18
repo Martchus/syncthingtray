@@ -208,7 +208,7 @@ void SyncthingConnection::setLoggingFlags(SyncthingConnectionLoggingFlags flags)
         && !(m_loggingFlagsHandler & SyncthingConnectionLoggingFlags::DirsOrDevsResetted)) {
         QObject::connect(this, &SyncthingConnection::newDirs, [this](const auto &dirs) {
             if (m_loggingFlags & SyncthingConnectionLoggingFlags::DirsOrDevsResetted) {
-                std::cerr << Phrases::Info << "Directory list renewed:" << Phrases::End;
+                std::cerr << Phrases::Info << "Folder list renewed:" << Phrases::End;
                 std::cerr << displayNames(dirs).join(QStringLiteral(", ")).toStdString() << endl;
             }
         });

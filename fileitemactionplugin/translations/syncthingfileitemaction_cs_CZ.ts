@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../syncthingdiractions.cpp" line="43"/>
-        <source>Directory info for %1</source>
+        <source>Folder info for %1</source>
         <translation>Informace o adresáři pro %1</translation>
     </message>
     <message>
@@ -56,12 +56,12 @@
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="174"/>
-        <source>Rescan selected directories</source>
+        <source>Rescan selected folders</source>
         <translation>Znovu prohledat označené adresáře</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="187"/>
-        <source>Resume selected directories</source>
+        <source>Resume selected folders</source>
         <translation>Pokračovat označené adresáře</translation>
     </message>
     <message>
@@ -73,17 +73,17 @@
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="190"/>
-        <source>Pause selected directories</source>
+        <source>Pause selected folders</source>
         <translation>Pozastavit označené adresáře</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="205"/>
-        <source>Rescan containing directories</source>
+        <source>Rescan containing folders</source>
         <translation>Znovu prohledat obsažené adresáře</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="218"/>
-        <source>Resume containing directories</source>
+        <source>Resume containing folders</source>
         <translation>Pokračovat obsažené adresáře</translation>
     </message>
     <message>
@@ -94,7 +94,7 @@
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="222"/>
-        <source>Pause containing directories</source>
+        <source>Pause containing folders</source>
         <translation>Pozastavit obsažené adresáře</translation>
     </message>
     <message>

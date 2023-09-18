@@ -731,7 +731,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="30"/>
-        <source> - new directory</source>
+        <source> - new folder</source>
         <translation> - 新目录</translation>
     </message>
     <message>
@@ -822,7 +822,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <name>QtGui::DirectoryErrorsDialog</name>
     <message>
         <location filename="../misc/direrrorsdialog.cpp" line="28"/>
-        <source>Errors for directory %1</source>
+        <source>Errors for folder %1</source>
         <translation>目录 %1 的错误</translation>
     </message>
     <message>
@@ -1420,12 +1420,12 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="43"/>
-        <source>sync of local directory complete</source>
+        <source>sync of local folder complete</source>
         <translation>本地目录同步完成</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="50"/>
-        <source>sync of remote directory complete</source>
+        <source>sync of remote folder complete</source>
         <translation>远程目录同步完成</translation>
     </message>
     <message>
@@ -1435,7 +1435,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="64"/>
-        <source>remote device shares new/unknown directory</source>
+        <source>remote device shares new/unknown folder</source>
         <translation>远程设备共享新/未知目录</translation>
     </message>
     <message>
@@ -1584,7 +1584,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../misc/statusinfo.cpp" line="63"/>
         <location filename="../misc/statusinfo.cpp" line="67"/>
-        <source>At least one directory is out of sync</source>
+        <source>At least one folder is out of sync</source>
         <translation>至少有一个目录未同步</translation>
     </message>
     <message>
@@ -1609,7 +1609,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="92"/>
-        <source>At least one remote directory is not in sync</source>
+        <source>At least one remote folder is not in sync</source>
         <translation>至少有一个远程目录未同步</translation>
     </message>
     <message>

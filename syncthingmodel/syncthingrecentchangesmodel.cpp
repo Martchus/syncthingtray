@@ -72,7 +72,7 @@ QVariant SyncthingRecentChangesModel::headerData(int section, Qt::Orientation or
             case 1:
                 return tr("Device");
             case 2:
-                return tr("Directory");
+                return tr("Folder");
             case 3:
                 return tr("Path");
             }

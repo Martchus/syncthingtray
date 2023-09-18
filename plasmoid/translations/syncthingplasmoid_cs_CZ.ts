@@ -108,7 +108,7 @@
     </message>
     <message>
         <location filename="../package/contents/ui/FullRepresentation.qml" line="361"/>
-        <source>Rescan all directories</source>
+        <source>Rescan all folders</source>
         <translation>Znovu proskenovat všechny adresáře</translation>
     </message>
     <message>
@@ -294,7 +294,7 @@
     </message>
     <message>
         <location filename="../package/contents/ui/main.qml" line="64"/>
-        <source>Rescan all directories</source>
+        <source>Rescan all folders</source>
         <translation>Znovu proskenovat všechny adresáře</translation>
     </message>
     <message>

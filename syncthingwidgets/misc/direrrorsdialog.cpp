@@ -25,7 +25,7 @@ using namespace Data;
 namespace QtGui {
 
 DirectoryErrorsDialog::DirectoryErrorsDialog(const Data::SyncthingConnection &connection, const Data::SyncthingDir &dir, QWidget *parent)
-    : TextViewDialog(tr("Errors for directory %1").arg(dir.displayName()), parent)
+    : TextViewDialog(tr("Errors for folder %1").arg(dir.displayName()), parent)
     , m_connection(connection)
     , m_dirId(dir.id)
 {
