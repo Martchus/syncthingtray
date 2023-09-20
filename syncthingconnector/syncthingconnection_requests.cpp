@@ -1737,7 +1737,9 @@ void SyncthingConnection::readEvents()
         m_hasEvents = true;
         const auto replyArray = replyDoc.array();
         emit newEvents(replyArray);
-        if (!readEventsFromJsonArray(replyArray, m_lastEventId)) {
+        const auto res = readEventsFromJsonArray(replyArray, m_lastEventId);
+        emit allEventsProcessed();
+        if (!res) {
             return;
         }
 

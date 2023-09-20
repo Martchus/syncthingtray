@@ -943,46 +943,45 @@ void Application::waitForIdle(const ArgumentOccurrence &)
 {
     m_preventDisconnect = true;
 
-    // setup timer
-    QTimer idleTime;
+    // setup timer for handling minimum idle duration
+    auto idleTime = QTimer();
     idleTime.setSingleShot(true);
     idleTime.setInterval(m_idleDuration);
 
-    // define variable which is set to true if handleTimeout to indicate the idle state has persisted long enough
-    bool isLongEnoughIdle = false;
-
-    // define handler for timer timeout
-    function<void(void)> handleTimeout([this, &isLongEnoughIdle] {
+    // define event handlers
+    auto isLongEnoughIdle = false, dirsOrDevsChanged = true, newDirsOrDevs = true;
+    const auto handleStatusChange = [&dirsOrDevsChanged] { dirsOrDevsChanged = true; };
+    const auto handleNewDirsOrDevs = [&newDirsOrDevs] { newDirsOrDevs = true; };
+    const auto handleAllEventsProcessed = [this, &newDirsOrDevs, &dirsOrDevsChanged, &idleTime] {
+        if (newDirsOrDevs) {
+            findRelevantDirsAndDevs(OperationType::WaitForIdle);
+        }
+        if (newDirsOrDevs || dirsOrDevsChanged) {
+            if (!checkWhetherIdle()) {
+                idleTime.stop();
+                return;
+            }
+            if (!idleTime.isActive()) {
+                idleTime.start();
+            }
+        }
+        newDirsOrDevs = dirsOrDevsChanged = false;
+    };
+    const auto handleIdleTimer = [this, &isLongEnoughIdle] {
         if (checkWhetherIdle()) {
             isLongEnoughIdle = true;
         }
-    });
-
-    // define handler for dirStatusChanged/devStatusChanged
-    function<void(void)> handleStatusChange([this, &idleTime] {
-        if (!checkWhetherIdle()) {
-            idleTime.stop();
-            return;
-        }
-        if (!idleTime.isActive()) {
-            idleTime.start();
-        }
-    });
-
-    // define handler for newDirs/newDevices to call findRelevantDirsAndDevs() in that case
-    function<void(void)> handleNewDirsOrDevs([this, &handleStatusChange] {
-        findRelevantDirsAndDevs(OperationType::WaitForIdle);
-        handleStatusChange();
-    });
+    };
 
     // invoke handler manually because Syncthing could already be idling
-    handleNewDirsOrDevs();
+    handleAllEventsProcessed();
 
     waitForSignals(&noop, m_idleTimeout, signalInfo(&m_connection, &SyncthingConnection::dirStatusChanged, handleStatusChange, &isLongEnoughIdle),
         signalInfo(&m_connection, &SyncthingConnection::devStatusChanged, handleStatusChange, &isLongEnoughIdle),
         signalInfo(&m_connection, &SyncthingConnection::newDirs, handleNewDirsOrDevs, &isLongEnoughIdle),
         signalInfo(&m_connection, &SyncthingConnection::newDevices, handleNewDirsOrDevs, &isLongEnoughIdle),
-        signalInfo(&idleTime, &QTimer::timeout, handleTimeout, &isLongEnoughIdle));
+        signalInfo(&m_connection, &SyncthingConnection::allEventsProcessed, handleAllEventsProcessed, &isLongEnoughIdle),
+        signalInfo(&idleTime, &QTimer::timeout, handleIdleTimer, &isLongEnoughIdle));
 
     if (!isLongEnoughIdle) {
         cerr << Phrases::Warning << "Exiting after timeout" << Phrases::End << flush;

@@ -1114,6 +1114,16 @@ void SyncthingConnection::recalculateStatus()
  */
 
 /*!
+ * \fn SyncthingConnection::allEventsProcesses()
+ * \brief Indicates all new events have been processed.
+ * \remarks
+ * This event is emitted after newEvents() and dirStatusChanged(), devStatusChanged() and other specific events.
+ * If you would go through the list of all directories on every dirStatusChanged() event using instead might
+ * be a more efficient alternative allEventsProcesses(). Just set a flag on dirStatusChanged() and go though the
+ * list of directories only once on the allEventsProcesses() event when the flag has been set.
+ */
+
+/*!
  * \fn SyncthingConnection::dirStatusChanged()
  * \brief Indicates the status of the specified \a dir changed.
  */

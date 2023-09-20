@@ -233,6 +233,7 @@ Q_SIGNALS:
     void newDevices(const std::vector<SyncthingDev> &devs);
     void newConfigApplied();
     void newEvents(const QJsonArray &events);
+    void allEventsProcessed();
     void dirStatusChanged(const Data::SyncthingDir &dir, int index);
     void devStatusChanged(const Data::SyncthingDev &dev, int index);
     void fileChanged(const Data::SyncthingDir &dir, int index, const Data::SyncthingFileChange &fileChange);
