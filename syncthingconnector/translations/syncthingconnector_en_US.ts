@@ -166,7 +166,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1757"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1759"/>
         <source>Unable to request Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -246,12 +246,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2336"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2338"/>
         <source>Unable to parse disk events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2359"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2361"/>
         <source>Unable to request disk events: </source>
         <translation type="unfinished"></translation>
     </message>
