@@ -84,7 +84,10 @@ DECLARE_SETUP_WIDGETS
 const GuiType m_guiType;
 END_DECLARE_OPTION_PAGE
 
-DECLARE_UI_FILE_BASED_OPTION_PAGE(AppearanceOptionPage)
+BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(AppearanceOptionPage)
+public:
+void resetPositioningSettings();
+END_DECLARE_OPTION_PAGE
 
 BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(IconsOptionPage)
 public:
@@ -197,10 +200,14 @@ public:
 Q_SIGNALS:
     void wizardRequested();
 
+public Q_SLOTS:
+    void resetPositioningSettings();
+
 private:
     void init();
 
-    ConnectionOptionPage *m_connectionsOptionPage;
+    ConnectionOptionPage *m_connectionsOptionPage = nullptr;
+    AppearanceOptionPage *m_appearanceOptionPage = nullptr;
     int m_launcherSettingsCategory = -1, m_launcherSettingsPageIndex = -1;
 };
 } // namespace QtGui

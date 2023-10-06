@@ -156,6 +156,21 @@ void TrayMenu::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
+void TrayMenu::moveEvent(QMoveEvent *event)
+{
+    auto &settings = Settings::values().appearance.positioning;
+    if (settings.useAssumedIconPosition) {
+        Settings::values().appearance.positioning.assumedIconPosition = event->pos();
+        emit positioningSettingsChanged();
+    }
+}
+
+void TrayMenu::resizeEvent(QResizeEvent *event)
+{
+    Settings::values().appearance.trayMenuSize = event->size();
+    emit positioningSettingsChanged();
+}
+
 void TrayMenu::paintEvent(QPaintEvent *event)
 {
     if (m_windowType == WindowType::Popup) {

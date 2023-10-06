@@ -247,6 +247,9 @@ SettingsDialog *TrayWidget::settingsDialog()
         s_settingsDlg = new SettingsDialog(s_instances.size() < 2 ? &m_connection : nullptr);
         connect(s_settingsDlg, &SettingsDialog::wizardRequested, this, &TrayWidget::showWizard);
         connect(s_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettingsOnAllInstances);
+        if (m_menu) {
+            connect(m_menu, &TrayMenu::positioningSettingsChanged, s_settingsDlg, &SettingsDialog::resetPositioningSettings);
+        }
 
         // save settings to disk when applied
         // note: QCoreApplication::aboutToQuit() does not work reliably but terminating only at the

@@ -28,12 +28,17 @@ public:
     void setWindowType(int windowType);
     void setWindowType(WindowType windowType);
 
+Q_SIGNALS:
+    void positioningSettingsChanged();
+
 public Q_SLOTS:
     void showUsingPositioningSettings();
 
 protected:
     void mouseReleaseEvent(QMouseEvent *) override;
     void mousePressEvent(QMouseEvent *) override;
+    void moveEvent(QMoveEvent *) override;
+    void resizeEvent(QResizeEvent *) override;
     void paintEvent(QPaintEvent *) override;
     void focusOutEvent(QFocusEvent *) override;
 

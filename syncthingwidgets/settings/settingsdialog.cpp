@@ -513,13 +513,22 @@ bool AppearanceOptionPage::apply()
     return true;
 }
 
+void AppearanceOptionPage::resetPositioningSettings()
+{
+    const auto &v = values();
+    const auto &settings = v.appearance;
+    ui()->widthSpinBox->setValue(settings.trayMenuSize.width());
+    ui()->heightSpinBox->setValue(settings.trayMenuSize.height());
+    ui()->xPosSpinBox->setValue(settings.positioning.assumedIconPosition.x());
+    ui()->yPosSpinBox->setValue(settings.positioning.assumedIconPosition.y());
+}
+
 void AppearanceOptionPage::reset()
 {
     const auto &v = values();
     const auto &settings = v.appearance;
+    resetPositioningSettings();
     ui()->windowTypeComboBox->setCurrentIndex(settings.windowType);
-    ui()->widthSpinBox->setValue(settings.trayMenuSize.width());
-    ui()->heightSpinBox->setValue(settings.trayMenuSize.height());
     ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
     ui()->showTabTextsCheckBox->setChecked(settings.showTabTexts);
     ui()->preferIconsFromThemeCheckBox->setChecked(v.icons.preferIconsFromTheme);
@@ -553,8 +562,6 @@ void AppearanceOptionPage::reset()
 
     ui()->useCursorPosCheckBox->setChecked(settings.positioning.useCursorPosition);
     ui()->assumeIconPosCheckBox->setChecked(settings.positioning.useAssumedIconPosition);
-    ui()->xPosSpinBox->setValue(settings.positioning.assumedIconPosition.x());
-    ui()->yPosSpinBox->setValue(settings.positioning.assumedIconPosition.y());
 }
 
 // IconsOptionPage
@@ -1624,8 +1631,9 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
     category = new OptionCategory(this);
     translateCategory(category, [] { return tr("Tray"); });
-    category->assignPages({ m_connectionsOptionPage = new ConnectionOptionPage(connection), new NotificationsOptionPage, new AppearanceOptionPage,
-        new IconsOptionPage(IconsOptionPage::Context::UI), new IconsOptionPage(IconsOptionPage::Context::System) });
+    category->assignPages({ m_connectionsOptionPage = new ConnectionOptionPage(connection), new NotificationsOptionPage,
+                           m_appearanceOptionPage = new AppearanceOptionPage, new IconsOptionPage(IconsOptionPage::Context::UI),
+                           new IconsOptionPage(IconsOptionPage::Context::System) });
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     categories << category;
 
@@ -1682,7 +1690,16 @@ void SettingsDialog::init()
 
 void SettingsDialog::hideConnectionStatus()
 {
-    m_connectionsOptionPage->hideConnectionStatus();
+    if (m_connectionsOptionPage) {
+        m_connectionsOptionPage->hideConnectionStatus();
+    }
+}
+
+void SettingsDialog::resetPositioningSettings()
+{
+    if (m_appearanceOptionPage && m_appearanceOptionPage->hasBeenShown()) {
+        m_appearanceOptionPage->resetPositioningSettings();
+    }
 }
 
 void SettingsDialog::selectLauncherSettings()
