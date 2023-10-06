@@ -112,6 +112,17 @@ void TrayMenu::mousePressEvent(QMouseEvent *event)
     // try starting a system window resize/move to allow resizing/moving the borderless window
 #ifdef QT_SUPPORTS_SYSTEM_WINDOW_COMMANDS
     if (auto *const window = this->windowHandle()) {
+        // keep default behavior on X11 for popups as the start functions don't work there (even though they return true)
+#if defined(Q_OS_UNIX) && !(defined(Q_OS_ANDROID) || defined(Q_OS_DARWIN))
+        if (m_windowType == TrayMenu::WindowType::Popup) {
+            static const auto platform = QGuiApplication::platformName();
+            if (!platform.compare(QLatin1String("xcb"), Qt::CaseInsensitive)) {
+                QMenu::mousePressEvent(event);
+                return;
+            }
+        }
+#endif
+        // check relevant edges and start the appropriate system resize/move
         const auto pos = event->pos();
         auto edges = Qt::Edges();
         if (pos.x() < border)
