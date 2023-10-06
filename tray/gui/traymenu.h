@@ -41,6 +41,7 @@ private:
     TrayWidget *m_trayWidget;
     TrayIcon *m_trayIcon;
     WindowType m_windowType;
+    bool m_startedSystemWindowCommand;
 };
 
 inline TrayWidget &TrayMenu::widget()

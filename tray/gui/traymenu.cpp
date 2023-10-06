@@ -12,14 +12,21 @@
 #include <QPainter>
 #include <QWindow>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+#define QT_SUPPORTS_SYSTEM_WINDOW_COMMANDS
+#endif
+
 using namespace QtUtilities;
 
 namespace QtGui {
+
+static constexpr auto border = 10;
 
 TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     : QMenu(parent)
     , m_trayIcon(trayIcon)
     , m_windowType(WindowType::Popup)
+    , m_startedSystemWindowCommand(false)
 {
     setObjectName(QStringLiteral("QtGui::TrayMenu"));
     auto *const menuLayout = new QHBoxLayout;
@@ -41,7 +48,7 @@ QSize TrayMenu::sizeHint() const
  * \brief Moves the specified \a innerRect at the specified \a point into the specified \a outerRect
  *        by altering \a point.
  */
-void moveInside(QPoint &point, const QSize &innerRect, const QRect &outerRect)
+static void moveInside(QPoint &point, const QSize &innerRect, const QRect &outerRect)
 {
     if (point.y() < outerRect.top()) {
         point.setY(outerRect.top());
@@ -97,14 +104,43 @@ void TrayMenu::setWindowType(WindowType windowType)
 
 void TrayMenu::mousePressEvent(QMouseEvent *event)
 {
-    if (m_windowType != TrayMenu::WindowType::NormalWindow) {
+    // skip any special behavior if the tray menu is shown as a regular window
+    if (m_windowType == TrayMenu::WindowType::NormalWindow) {
+        return;
+    }
+
+    // try starting a system window resize/move to allow resizing/moving the borderless window
+#ifdef QT_SUPPORTS_SYSTEM_WINDOW_COMMANDS
+    if (auto *const window = this->windowHandle()) {
+        const auto pos = event->pos();
+        auto edges = Qt::Edges();
+        if (pos.x() < border)
+            edges |= Qt::LeftEdge;
+        if (pos.x() >= width() - border)
+            edges |= Qt::RightEdge;
+        if (pos.y() < border)
+            edges |= Qt::TopEdge;
+        if (pos.y() >= height() - border)
+            edges |= Qt::BottomEdge;
+        m_startedSystemWindowCommand = edges ? window->startSystemResize(edges) : window->startSystemMove();
+    }
+#endif
+
+    // fallback to the default behavior for the current window type if system window resize/move is not possible
+    if (!m_startedSystemWindowCommand) {
         QMenu::mousePressEvent(event);
     }
 }
 
 void TrayMenu::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (m_windowType != TrayMenu::WindowType::NormalWindow) {
+    // cover cases analogous to TrayMenu::mousePressEvent()
+    if (m_windowType == TrayMenu::WindowType::NormalWindow) {
+        return;
+    }
+    if (m_startedSystemWindowCommand) {
+        m_startedSystemWindowCommand = false;
+    } else {
         QMenu::mouseReleaseEvent(event);
     }
 }
