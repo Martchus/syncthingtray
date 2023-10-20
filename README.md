@@ -283,6 +283,7 @@ See the release section on GitHub.
           issues about it.
         * the Qt 6 based version is stable and preferable but only supports Windows 10 and newer
         * the Qt 5 based version should still work on older versions down to Windows 7 although this is not regularly checked
+    * there is also a [Chocolatey package](https://community.chocolatey.org/packages/syncthingtray) maintained by yan12125
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
 * FreeBSD
     * the package syncthingtray is available from [FreeBSD Ports](https://www.freshports.org/deskutils/syncthingtray)
