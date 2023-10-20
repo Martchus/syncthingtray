@@ -1275,7 +1275,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="70"/>
         <source>Config directory</source>
-        <translation>KonfigurationsOrdner</translation>
+        <translation>Konfigurationsverzeichnis</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="80"/>
@@ -1310,7 +1310,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="116"/>
         <source>Data directory</source>
-        <translation>DatenOrdner</translation>
+        <translation>Datenverzeichnis</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="129"/>
