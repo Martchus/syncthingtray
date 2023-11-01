@@ -29,7 +29,7 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
     Q_PROPERTY(CppUtilities::DateTime activeSince READ activeSince)
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
     Q_PROPERTY(bool emittingOutput READ isEmittingOutput WRITE setEmittingOutput)
-    Q_PROPERTY(QUrl guiUrl READ guiUrl WRITE guiUrlChanged)
+    Q_PROPERTY(QUrl guiUrl READ guiUrl NOTIFY guiUrlChanged)
     Q_PROPERTY(SyncthingProcess *process READ process)
 
 public:
