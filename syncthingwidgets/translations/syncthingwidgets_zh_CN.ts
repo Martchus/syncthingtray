@@ -362,32 +362,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="760"/>
+        <location filename="../settings/settingsdialog.cpp" line="783"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>这是通过在 &lt;i&gt;~/.config/autostart&lt;/i&gt; 下添加 *.desktop 文件来实现的，因此该设置仅影响当前用户。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="763"/>
+        <location filename="../settings/settingsdialog.cpp" line="786"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation>这是通过在 &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; 下添加注册表项来实现的，因此该设置仅影响当前用户。 请注意，移动 &lt;i&gt;syncthingtray.exe&lt;/i&gt; 时启动项无效。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="767"/>
+        <location filename="../settings/settingsdialog.cpp" line="790"/>
         <source>This is achieved by adding a *.plist file under &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>这是通过在 &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; 下添加 *.plist 文件来实现的，因此该设置仅影响当前用户。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="771"/>
+        <location filename="../settings/settingsdialog.cpp" line="794"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation>此功能尚未为您的平台实现。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="971"/>
+        <location filename="../settings/settingsdialog.cpp" line="994"/>
         <source>unable to modify startup entry</source>
         <translation>无法修改启动项</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1001"/>
+        <location filename="../settings/settingsdialog.cpp" line="1024"/>
         <source>There is already an autostart entry for &quot;%1&quot;. It will not be overridden when applying changes unless you delete it first.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -460,7 +460,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1575"/>
+        <location filename="../settings/settingsdialog.cpp" line="1598"/>
         <source>Built-in web view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -480,7 +480,7 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished">当前未显示时保持网页视图运行</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1577"/>
+        <location filename="../settings/settingsdialog.cpp" line="1600"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -523,186 +523,191 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>可以保存多个配置。 这允许使用托盘菜单右上角的连接按钮在多个 Syncthing 实例之间快速切换。 配置标签是用于标识配置的任意名称，不必与相应 Syncthing 设备的名称匹配。 第一个配置是主要/默认配置。</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="184"/>
+        <location filename="../settings/connectionoptionpage.ui" line="171"/>
         <source>Syncthing URL</source>
         <translation>Syncthing URL</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="198"/>
+        <location filename="../settings/connectionoptionpage.ui" line="185"/>
         <source>Authentication</source>
         <translation>验证</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="215"/>
+        <location filename="../settings/connectionoptionpage.ui" line="202"/>
         <source>User</source>
         <translation>用户</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="232"/>
+        <location filename="../settings/connectionoptionpage.ui" line="219"/>
         <source>Password</source>
         <translation>密码</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="570"/>
+        <location filename="../settings/connectionoptionpage.ui" line="557"/>
         <source>API key</source>
         <translation>API 密钥</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="249"/>
+        <location filename="../settings/connectionoptionpage.ui" line="236"/>
         <source>HTTPS certificate</source>
         <translation>HTTPS 证书</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="191"/>
+        <location filename="../settings/connectionoptionpage.ui" line="178"/>
         <source>&quot;http://host:port/…&quot; or &quot;https://host:port/…&quot;, e.g. &quot;http://127.0.0.1:8384&quot; for local instance with default settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="205"/>
+        <location filename="../settings/connectionoptionpage.ui" line="192"/>
         <source>Supply credentials for HTTP authentication (normally the API key is sufficient)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="280"/>
+        <location filename="../settings/connectionoptionpage.ui" line="267"/>
         <source>Insert values from local Syncthing configuration</source>
         <translation>从本地 Syncthing 配置插入值</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="297"/>
+        <location filename="../settings/connectionoptionpage.ui" line="284"/>
         <source>Select config file manually</source>
         <translation>手动选择配置文件</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="324"/>
+        <location filename="../settings/connectionoptionpage.ui" line="311"/>
         <source>Poll interval</source>
         <translation>拉取间隔</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="348"/>
+        <location filename="../settings/connectionoptionpage.ui" line="335"/>
         <source>Frequency for updating traffic statistics and download speed</source>
         <translation>更新流量数据和下载速度的频率</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="351"/>
-        <location filename="../settings/connectionoptionpage.ui" line="394"/>
-        <location filename="../settings/connectionoptionpage.ui" line="423"/>
-        <location filename="../settings/connectionoptionpage.ui" line="455"/>
-        <location filename="../settings/connectionoptionpage.ui" line="594"/>
+        <location filename="../settings/connectionoptionpage.ui" line="338"/>
+        <location filename="../settings/connectionoptionpage.ui" line="381"/>
+        <location filename="../settings/connectionoptionpage.ui" line="410"/>
+        <location filename="../settings/connectionoptionpage.ui" line="442"/>
+        <location filename="../settings/connectionoptionpage.ui" line="581"/>
         <source> ms</source>
         <translation> 毫秒</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="364"/>
+        <location filename="../settings/connectionoptionpage.ui" line="351"/>
         <source>Traffic</source>
         <translation>流量</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="371"/>
+        <location filename="../settings/connectionoptionpage.ui" line="358"/>
         <source>Device statistics</source>
         <translation>设备数据</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="391"/>
+        <location filename="../settings/connectionoptionpage.ui" line="378"/>
         <source>Frequency for updating device statistics</source>
         <translation>更新设备数据的频率</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="407"/>
+        <location filename="../settings/connectionoptionpage.ui" line="394"/>
         <source>Errors</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="420"/>
+        <location filename="../settings/connectionoptionpage.ui" line="407"/>
         <source>Frequency to poll for new errors</source>
         <translation>拉取新错误的频率</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="436"/>
+        <location filename="../settings/connectionoptionpage.ui" line="423"/>
         <source>Reconnect</source>
         <translation>重连</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="449"/>
+        <location filename="../settings/connectionoptionpage.ui" line="436"/>
         <source>Time to wait for reconnecting again when the connection to Syncthing has been lost. This setting might be overruled by systemd and launcher settings.</source>
         <translation>当与 Syncthing 的连接丢失时，等待重新连接的时间。 此设置可能会被 systemd 和启动器设置覆盖。</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="452"/>
+        <location filename="../settings/connectionoptionpage.ui" line="439"/>
         <source>no</source>
         <translation>否</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="474"/>
+        <location filename="../settings/connectionoptionpage.ui" line="461"/>
         <source>Whether to connect automatically on startup. This setting might be overruled by systemd and launcher settings.</source>
         <translation>是否在启动时自动连接。 此设置可能会被 systemd 和启动器设置覆盖。</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="477"/>
+        <location filename="../settings/connectionoptionpage.ui" line="464"/>
         <source>Connect automatically on startup</source>
         <translation>启动时自动连接</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="484"/>
+        <location filename="../settings/connectionoptionpage.ui" line="471"/>
         <source>Overall status</source>
         <translation>总体状态</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="499"/>
+        <location filename="../settings/connectionoptionpage.ui" line="486"/>
         <source>Select what information should be considered to compute the overall status:</source>
         <translation>选择应考虑哪些信息来计算总体状态：</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="539"/>
+        <location filename="../settings/connectionoptionpage.ui" line="526"/>
         <source>Current status</source>
         <translation>目前状态</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="546"/>
+        <location filename="../settings/connectionoptionpage.ui" line="533"/>
         <source>disconnected</source>
         <translation>已断连</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="559"/>
+        <location filename="../settings/connectionoptionpage.ui" line="546"/>
         <source>Apply connection settings and try to reconnect with the currently selected config</source>
         <translation>应用连接设置并尝试使用当前选择的配置重新连接</translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="577"/>
+        <location filename="../settings/connectionoptionpage.ui" line="564"/>
         <source>The API key displayed in Syncthing&apos;s settings dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="584"/>
+        <location filename="../settings/connectionoptionpage.ui" line="571"/>
         <source>Transfer timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/connectionoptionpage.ui" line="591"/>
+        <location filename="../settings/connectionoptionpage.ui" line="578"/>
         <source>no timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="110"/>
+        <location filename="../settings/connectionoptionpage.ui" line="610"/>
+        <source>Show advanced configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="111"/>
         <source>Auto-detected for local instance</source>
         <translation>本地实例自动检测</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="146"/>
+        <location filename="../settings/settingsdialog.cpp" line="149"/>
         <source>Select Syncthing config file</source>
         <translation>选择 Syncthing 配置文件</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="154"/>
+        <location filename="../settings/settingsdialog.cpp" line="157"/>
         <source>Unable to parse the Syncthing config file.</source>
         <translation>无法解析 Syncthing 配置文件。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="247"/>
+        <location filename="../settings/settingsdialog.cpp" line="250"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
         <translation>无法加载指定的证书 &quot;%1&quot;。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="272"/>
+        <location filename="../settings/settingsdialog.cpp" line="275"/>
         <source>Instance %1</source>
         <translation>实例 %1</translation>
     </message>
@@ -929,12 +934,12 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1551"/>
+        <location filename="../settings/settingsdialog.cpp" line="1574"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1552"/>
+        <location filename="../settings/settingsdialog.cpp" line="1575"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1015,47 +1020,47 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::IconsOptionPageBase</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="582"/>
+        <location filename="../settings/settingsdialog.cpp" line="605"/>
         <source>UI icons</source>
         <translation>UI 图标</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="584"/>
+        <location filename="../settings/settingsdialog.cpp" line="607"/>
         <source>These icon settings are used within Syncthing Tray&apos;s UI.</source>
         <translation>这些图标设置在 Syncthing Tray 的 UI 中使用。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="588"/>
+        <location filename="../settings/settingsdialog.cpp" line="611"/>
         <source>System icons</source>
         <translation>系统图标</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="589"/>
+        <location filename="../settings/settingsdialog.cpp" line="612"/>
         <source>These icon settings are used for the system tray icon and the notifications.</source>
         <translation>这些图标设置用于系统托盘图标和通知。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="591"/>
+        <location filename="../settings/settingsdialog.cpp" line="614"/>
         <source>Use same settings as for UI icons</source>
         <translation>使用与 UI 图标相同的设置</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="652"/>
+        <location filename="../settings/settingsdialog.cpp" line="675"/>
         <source>Colorful background with gradient (default)</source>
         <translation>带渐变的彩色背景（默认）</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="657"/>
+        <location filename="../settings/settingsdialog.cpp" line="680"/>
         <source>Transparent background and dark foreground (for bright themes)</source>
         <translation>透明背景和深色前景（适用于明亮的主题）</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="662"/>
+        <location filename="../settings/settingsdialog.cpp" line="685"/>
         <source>Transparent background and bright foreground (for dark themes)</source>
         <translation>透明背景和明亮前景（用于深色主题）</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="678"/>
+        <location filename="../settings/settingsdialog.cpp" line="701"/>
         <source>%1 px (scaled to %2 px)</source>
         <translation>%1 像素（缩放到 %2 像素）</translation>
     </message>
@@ -1190,7 +1195,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="196"/>
-        <location filename="../settings/settingsdialog.cpp" line="1170"/>
+        <location filename="../settings/settingsdialog.cpp" line="1193"/>
         <source>Stop launched instance</source>
         <translation>停止启动的实例</translation>
     </message>
@@ -1205,82 +1210,82 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>确保最新日志可见</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1042"/>
+        <location filename="../settings/settingsdialog.cpp" line="1065"/>
         <source>%1-launcher</source>
         <translation>%1-启动器</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1043"/>
+        <location filename="../settings/settingsdialog.cpp" line="1066"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation>启动托盘图标时启动 %1</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1046"/>
+        <location filename="../settings/settingsdialog.cpp" line="1069"/>
         <source>%1 executable</source>
         <translation>%1 可执行文件</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1047"/>
+        <location filename="../settings/settingsdialog.cpp" line="1070"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation>%1 日志（交错的标准输出/标准错误）</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1063"/>
+        <location filename="../settings/settingsdialog.cpp" line="1086"/>
         <source>Restore default</source>
         <translation>还原至默认</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1069"/>
+        <location filename="../settings/settingsdialog.cpp" line="1092"/>
         <source>Show Syncthing releases/downloads</source>
         <translation>显示 Syncthing 发布/下载</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1205"/>
+        <location filename="../settings/settingsdialog.cpp" line="1228"/>
         <source>%1 exited with exit code %2</source>
         <translation>%1 退出，退出代码为 %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1208"/>
+        <location filename="../settings/settingsdialog.cpp" line="1231"/>
         <source>%1 crashed with exit code %2</source>
         <translation>%1 崩溃，退出代码为 %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1241"/>
+        <location filename="../settings/settingsdialog.cpp" line="1264"/>
         <source>failed to start (e.g. executable does not exist or not permission error)</source>
         <translation>启动失败（例如可执行文件不存在或没有权限）</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1244"/>
+        <location filename="../settings/settingsdialog.cpp" line="1267"/>
         <source>process crashed</source>
         <translation>进程崩溃</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1247"/>
+        <location filename="../settings/settingsdialog.cpp" line="1270"/>
         <source>timeout error</source>
         <translation>超时错误</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1250"/>
+        <location filename="../settings/settingsdialog.cpp" line="1273"/>
         <source>read error</source>
         <translation>读取错误</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1253"/>
+        <location filename="../settings/settingsdialog.cpp" line="1276"/>
         <source>write error</source>
         <translation>写入错误</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1256"/>
+        <location filename="../settings/settingsdialog.cpp" line="1279"/>
         <source>unknown process error</source>
         <translation>未知进程错误</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1259"/>
+        <location filename="../settings/settingsdialog.cpp" line="1282"/>
         <source>An error occurred when running %1: %2</source>
         <translation>运行 %1 时出错: %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1312"/>
+        <location filename="../settings/settingsdialog.cpp" line="1335"/>
         <source>Kill launched instance</source>
         <translation>强制终止启动的实例</translation>
     </message>
@@ -1479,7 +1484,7 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation> 秒</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="434"/>
+        <location filename="../settings/settingsdialog.cpp" line="450"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation>配置为使用 DBus 通知，但 D-Bus 通知守护程序似乎不可用。</translation>
     </message>
@@ -1505,37 +1510,37 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1626"/>
+        <location filename="../settings/settingsdialog.cpp" line="1649"/>
         <source>Tray</source>
         <translation>托盘</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1633"/>
+        <location filename="../settings/settingsdialog.cpp" line="1657"/>
         <source>Web view</source>
         <translation>网页视图</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1640"/>
+        <location filename="../settings/settingsdialog.cpp" line="1664"/>
         <source>Startup</source>
         <translation>启动</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1642"/>
+        <location filename="../settings/settingsdialog.cpp" line="1666"/>
         <source>additional tool</source>
         <translation>附加工具</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1642"/>
+        <location filename="../settings/settingsdialog.cpp" line="1666"/>
         <source>Extra launcher</source>
         <translation>额外启动器</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1665"/>
+        <location filename="../settings/settingsdialog.cpp" line="1689"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1671"/>
+        <location filename="../settings/settingsdialog.cpp" line="1695"/>
         <source>Start wizard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1719,8 +1724,8 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../settings/systemdoptionpage.ui" line="110"/>
         <location filename="../settings/systemdoptionpage.ui" line="165"/>
         <location filename="../settings/systemdoptionpage.ui" line="254"/>
-        <location filename="../settings/settingsdialog.cpp" line="1450"/>
-        <location filename="../settings/settingsdialog.cpp" line="1459"/>
+        <location filename="../settings/settingsdialog.cpp" line="1473"/>
+        <location filename="../settings/settingsdialog.cpp" line="1482"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
@@ -1755,27 +1760,27 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>禁用</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1348"/>
+        <location filename="../settings/settingsdialog.cpp" line="1371"/>
         <source>Reload all unit files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1386"/>
+        <location filename="../settings/settingsdialog.cpp" line="1409"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>无法同时显示 systemd 服务和内部启动器的启动/停止按钮。 systemd 服务优先。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1392"/>
+        <location filename="../settings/settingsdialog.cpp" line="1415"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>无法同时考虑 systemd 服务和内部启动器进行重新连接。 systemd 服务优先。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1423"/>
+        <location filename="../settings/settingsdialog.cpp" line="1446"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>指定的单位不活动或不存在</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1445"/>
+        <location filename="../settings/settingsdialog.cpp" line="1468"/>
         <source>since </source>
         <translation>自从 </translation>
     </message>
