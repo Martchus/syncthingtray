@@ -305,7 +305,7 @@
      </property>
     </widget>
    </item>
-   <item row="18" column="0">
+   <item row="19" column="0">
     <widget class="QLabel" name="pollLabel">
      <property name="text">
       <string>Poll interval</string>
@@ -315,7 +315,7 @@
      </property>
     </widget>
    </item>
-   <item row="18" column="1">
+   <item row="19" column="1">
     <layout class="QGridLayout" name="gridLayout">
      <property name="horizontalSpacing">
       <number>10</number>
@@ -455,7 +455,7 @@
      </item>
     </layout>
    </item>
-   <item row="19" column="1">
+   <item row="20" column="1">
     <widget class="QCheckBox" name="autoConnectCheckBox">
      <property name="toolTip">
       <string>Whether to connect automatically on startup. This setting might be overruled by systemd and launcher settings.</string>
@@ -465,7 +465,7 @@
      </property>
     </widget>
    </item>
-   <item row="20" column="0">
+   <item row="21" column="0">
     <widget class="QLabel" name="overallStatusLabel">
      <property name="text">
       <string>Overall status</string>
@@ -475,7 +475,7 @@
      </property>
     </widget>
    </item>
-   <item row="20" column="1">
+   <item row="21" column="1">
     <layout class="QVBoxLayout" name="statusComputionFlagsVerticalLayout">
      <property name="spacing">
       <number>2</number>
@@ -520,21 +520,21 @@
      </item>
     </layout>
    </item>
-   <item row="21" column="0">
+   <item row="22" column="0">
     <widget class="QLabel" name="statusTextLabel">
      <property name="text">
       <string>Current status</string>
      </property>
     </widget>
    </item>
-   <item row="21" column="1">
+   <item row="22" column="1">
     <widget class="QLabel" name="statusLabel">
      <property name="text">
       <string>disconnected</string>
      </property>
     </widget>
    </item>
-   <item row="24" column="1">
+   <item row="25" column="1">
     <widget class="QPushButton" name="connectPushButton">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -567,6 +567,9 @@
    </item>
    <item row="17" column="0">
     <widget class="QLabel" name="timeoutLabel">
+     <property name="toolTip">
+      <string>The timeout for normal requests to Syncthing's API. Set to zero to enforce no timeout.</string>
+     </property>
      <property name="text">
       <string>Transfer timeout</string>
      </property>
@@ -611,6 +614,32 @@
      </property>
      <property name="checked">
       <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="18" column="0">
+    <widget class="QLabel" name="longPollingLabel">
+     <property name="toolTip">
+      <string>The timeout for long-polling requests to Syncthing's event API. Set to zero to use Syncthing's default timeout and no timeout being enforced from Syncthing Tray's side.</string>
+     </property>
+     <property name="text">
+      <string>Long polling int.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="18" column="1">
+    <widget class="QSpinBox" name="longPollingSpinBox">
+     <property name="specialValueText">
+      <string>Syncthing's default with no timeout</string>
+     </property>
+     <property name="suffix">
+      <string> ms</string>
+     </property>
+     <property name="maximum">
+      <number>1000000000</number>
+     </property>
+     <property name="value">
+      <number>60000</number>
      </property>
     </widget>
    </item>

@@ -33,7 +33,7 @@ namespace Data {
 /*!
  * \brief Prepares a request for the specified \a path and \a query.
  */
-QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const QUrlQuery &query, bool rest, bool noTimeout)
+QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const QUrlQuery &query, bool rest, bool longPolling)
 {
     QUrl url(m_syncthingUrl);
     url.setPath(rest ? (url.path() % QStringLiteral("/rest/") % path) : (url.path() + path));
@@ -49,7 +49,8 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
     request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
 #endif
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
-    request.setTransferTimeout(noTimeout ? 0 : m_requestTimeout);
+    // give it a few seconds more time than the actual long polling interval set via the timeout query parameter
+    request.setTransferTimeout(longPolling ? (m_longPollingTimeout ? m_longPollingTimeout + 5000 : 0) : m_requestTimeout);
 #endif
     return request;
 }
@@ -57,16 +58,17 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
 /*!
  * \brief Requests asynchronously data using the rest API.
  */
-QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQuery &query, bool rest, bool noTimeout)
+QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQuery &query, bool rest, bool longPolling)
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
-    auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest, noTimeout));
+    auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest, longPolling));
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
     if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: GET " << reply->url().toString().toStdString() << Phrases::EndFlush;
     }
     return reply;
 #else
+    Q_UNUSED(longPolling)
     return MockedReply::forRequest(QStringLiteral("GET"), path, query, rest);
 #endif
 }
@@ -1709,6 +1711,8 @@ void SyncthingConnection::requestEvents()
     // force to return immediately after the first call
     if (!m_hasEvents) {
         query.addQueryItem(QStringLiteral("timeout"), QStringLiteral("0"));
+    } else if (m_longPollingTimeout) {
+        query.addQueryItem(QStringLiteral("timeout"), QString::number(m_longPollingTimeout / 1000));
     }
     QObject::connect(m_eventsReply = requestData(QStringLiteral("events"), query, true, m_hasEvents), &QNetworkReply::finished, this,
         &SyncthingConnection::readEvents);
@@ -2315,6 +2319,8 @@ void SyncthingConnection::requestDiskEvents(int limit)
     // force to return immediately after the first call
     if (!m_hasDiskEvents) {
         query.addQueryItem(QStringLiteral("timeout"), QStringLiteral("0"));
+    } else if (m_longPollingTimeout) {
+        query.addQueryItem(QStringLiteral("timeout"), QString::number(m_longPollingTimeout / 1000));
     }
     QObject::connect(m_diskEventsReply = requestData(QStringLiteral("events/disk"), query, true, m_hasDiskEvents), &QNetworkReply::finished, this,
         &SyncthingConnection::readDiskEvents);

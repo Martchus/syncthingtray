@@ -214,6 +214,7 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
     ui()->apiKeyLineEdit->setText(connectionSettings.apiKey);
     ui()->certPathSelection->lineEdit()->setText(connectionSettings.httpsCertPath);
     ui()->timeoutSpinBox->setValue(connectionSettings.requestTimeout);
+    ui()->longPollingSpinBox->setValue(connectionSettings.longPollingTimeout);
     ui()->pollTrafficSpinBox->setValue(connectionSettings.trafficPollInterval);
     ui()->pollDevStatsSpinBox->setValue(connectionSettings.devStatsPollInterval);
     ui()->pollErrorsSpinBox->setValue(connectionSettings.errorsPollInterval);
@@ -240,6 +241,7 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
     connectionSettings.expectedSslErrors.clear();
     connectionSettings.httpsCertPath = ui()->certPathSelection->lineEdit()->text();
     connectionSettings.requestTimeout = ui()->timeoutSpinBox->value();
+    connectionSettings.longPollingTimeout = ui()->longPollingSpinBox->value();
     connectionSettings.trafficPollInterval = ui()->pollTrafficSpinBox->value();
     connectionSettings.devStatsPollInterval = ui()->pollDevStatsSpinBox->value();
     connectionSettings.errorsPollInterval = ui()->pollErrorsSpinBox->value();
@@ -364,9 +366,9 @@ void ConnectionOptionPage::toggleAdvancedSettings(bool show)
         return;
     }
     for (auto *const widget : std::initializer_list<QWidget *>{ ui()->authLabel, ui()->authCheckBox, ui()->userNameLabel, ui()->userNameLineEdit,
-             ui()->passwordLabel, ui()->passwordLineEdit, ui()->timeoutLabel, ui()->timeoutSpinBox, ui()->pollLabel, ui()->pollDevStatsLabel,
-             ui()->pollDevStatsSpinBox, ui()->pollErrorsLabel, ui()->pollErrorsSpinBox, ui()->pollTrafficLabel, ui()->pollTrafficSpinBox,
-             ui()->reconnectLabel, ui()->reconnectSpinBox }) {
+             ui()->passwordLabel, ui()->passwordLineEdit, ui()->timeoutLabel, ui()->timeoutSpinBox, ui()->longPollingLabel, ui()->longPollingSpinBox,
+             ui()->pollLabel, ui()->pollDevStatsLabel, ui()->pollDevStatsSpinBox, ui()->pollErrorsLabel, ui()->pollErrorsSpinBox,
+             ui()->pollTrafficLabel, ui()->pollTrafficSpinBox, ui()->reconnectLabel, ui()->reconnectSpinBox }) {
         widget->setVisible(show);
     }
 }

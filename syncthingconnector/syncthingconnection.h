@@ -73,6 +73,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(int devStatsPollInterval READ devStatsPollInterval WRITE setDevStatsPollInterval)
     Q_PROPERTY(bool recordFileChanges READ recordFileChanges WRITE setRecordFileChanges)
     Q_PROPERTY(int requestTimeout READ requestTimeout WRITE setRequestTimeout)
+    Q_PROPERTY(int longPollingTimeout READ longPollingTimeout WRITE setLongPollingTimeout)
     Q_PROPERTY(QString myId READ myId NOTIFY myIdChanged)
     Q_PROPERTY(QString tilde READ tilde NOTIFY tildeChanged)
     Q_PROPERTY(QString pathSeparator READ pathSeparator NOTIFY tildeChanged)
@@ -141,6 +142,8 @@ public:
     void setRecordFileChanges(bool recordFileChanges);
     int requestTimeout() const;
     void setRequestTimeout(int requestTimeout);
+    int longPollingTimeout() const;
+    void setLongPollingTimeout(int longPollingTimeout);
 
     // getter for information retrieved from Syncthing
     const QString &configDir() const;
@@ -345,8 +348,8 @@ private:
         QNetworkReply *reply;
         QByteArray response;
     };
-    QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true, bool noTimeout = false);
-    QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true, bool noTimeout = false);
+    QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true, bool longPolling = false);
+    QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true, bool longPolling = false);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
     QNetworkReply *sendData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
     Reply prepareReply(bool readData = true, bool handleAborting = true);
@@ -382,6 +385,7 @@ private:
     QTimer m_autoReconnectTimer;
     unsigned int m_autoReconnectTries;
     int m_requestTimeout;
+    int m_longPollingTimeout;
     QString m_configDir;
     QString m_myId;
     QString m_tilde;
@@ -737,6 +741,25 @@ inline int SyncthingConnection::requestTimeout() const
 inline void SyncthingConnection::setRequestTimeout(int requestTimeout)
 {
     m_requestTimeout = requestTimeout;
+}
+
+/*!
+ * \brief Returns the transfer timeout for long polling requests (event APIs) in milliseconds.
+ * \sa QNetworkRequest::transferTimeout()
+ */
+inline int SyncthingConnection::longPollingTimeout() const
+{
+    return m_longPollingTimeout;
+}
+
+/*!
+ * \brief Sets the transfer timeout for long polling requests (event APIs) in milliseconds.
+ * \remarks Existing requests are not affected. Only effective when compiled against Qt 5.15 or higher.
+ * \sa QNetworkRequest::setTransferTimeout()
+ */
+inline void SyncthingConnection::setLongPollingTimeout(int longPollingTimeout)
+{
+    m_longPollingTimeout = longPollingTimeout;
 }
 
 /*!

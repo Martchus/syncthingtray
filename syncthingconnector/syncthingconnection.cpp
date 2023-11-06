@@ -83,6 +83,7 @@ SyncthingConnection::SyncthingConnection(
     , m_lastDiskEventId(0)
     , m_autoReconnectTries(0)
     , m_requestTimeout(SyncthingConnectionSettings::defaultRequestTimeout)
+    , m_longPollingTimeout(SyncthingConnectionSettings::defaultLongPollingTimeout)
     , m_totalIncomingTraffic(unknownTraffic)
     , m_totalOutgoingTraffic(unknownTraffic)
     , m_totalIncomingRate(0.0)
@@ -857,6 +858,7 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
     setErrorsPollInterval(connectionSettings.errorsPollInterval);
     setAutoReconnectInterval(connectionSettings.reconnectInterval);
     setRequestTimeout(connectionSettings.requestTimeout);
+    setLongPollingTimeout(connectionSettings.longPollingTimeout);
     setStatusComputionFlags(connectionSettings.statusComputionFlags);
 
     return reconnectRequired;
