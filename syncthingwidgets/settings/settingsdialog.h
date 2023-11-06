@@ -68,6 +68,7 @@ void removeSelectedConfig();
 void moveSelectedConfigDown();
 void moveSelectedConfigUp();
 void setCurrentIndex(int currentIndex);
+void toggleAdvancedSettings(bool show);
 Data::SyncthingConnection *m_connection;
 Data::SyncthingConnectionSettings m_primarySettings;
 std::vector<Data::SyncthingConnectionSettings> m_secondarySettings;

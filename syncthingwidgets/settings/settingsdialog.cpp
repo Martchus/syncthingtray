@@ -71,6 +71,7 @@
 #include <QTextCursor>
 
 #include <functional>
+#include <initializer_list>
 
 using namespace std;
 using namespace std::placeholders;
@@ -131,9 +132,11 @@ QWidget *ConnectionOptionPage::setupWidget()
     QObject::connect(ui()->upPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::moveSelectedConfigUp, this));
     QObject::connect(ui()->addPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::addNewConfig, this));
     QObject::connect(ui()->removePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::removeSelectedConfig, this));
+    QObject::connect(ui()->advancedCheckBox, &QCheckBox::toggled, bind(&ConnectionOptionPage::toggleAdvancedSettings, this, std::placeholders::_1));
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
     ui()->timeoutSpinBox->setEnabled(false);
 #endif
+    toggleAdvancedSettings(false);
     return widget;
 }
 
@@ -353,6 +356,19 @@ void ConnectionOptionPage::setCurrentIndex(int currentIndex)
     m_currentIndex = currentIndex;
     ui()->downPushButton->setEnabled(currentIndex >= 0 && static_cast<unsigned>(currentIndex) < m_secondarySettings.size());
     ui()->upPushButton->setEnabled(currentIndex > 0 && static_cast<unsigned>(currentIndex) - 1 < m_secondarySettings.size());
+}
+
+void ConnectionOptionPage::toggleAdvancedSettings(bool show)
+{
+    if (!ui()) {
+        return;
+    }
+    for (auto *const widget : std::initializer_list<QWidget *>{ ui()->authLabel, ui()->authCheckBox, ui()->userNameLabel, ui()->userNameLineEdit,
+             ui()->passwordLabel, ui()->passwordLineEdit, ui()->timeoutLabel, ui()->timeoutSpinBox, ui()->pollLabel, ui()->pollDevStatsLabel,
+             ui()->pollDevStatsSpinBox, ui()->pollErrorsLabel, ui()->pollErrorsSpinBox, ui()->pollTrafficLabel, ui()->pollTrafficSpinBox,
+             ui()->reconnectLabel, ui()->reconnectSpinBox }) {
+        widget->setVisible(show);
+    }
 }
 
 bool ConnectionOptionPage::apply()
@@ -1632,8 +1648,8 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     category = new OptionCategory(this);
     translateCategory(category, [] { return tr("Tray"); });
     category->assignPages({ m_connectionsOptionPage = new ConnectionOptionPage(connection), new NotificationsOptionPage,
-                           m_appearanceOptionPage = new AppearanceOptionPage, new IconsOptionPage(IconsOptionPage::Context::UI),
-                           new IconsOptionPage(IconsOptionPage::Context::System) });
+        m_appearanceOptionPage = new AppearanceOptionPage, new IconsOptionPage(IconsOptionPage::Context::UI),
+        new IconsOptionPage(IconsOptionPage::Context::System) });
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     categories << category;
 
