@@ -43,8 +43,9 @@ based version on older Plasma versions. A restart of Plasma might be required fo
 Plasmoid to become selectable after installation. Checkout the "Troubleshooting KDE integration"
 section below for further help if it still won't show up.
 
-On GTK-centered desktops is may make sense to install [adwaita-qt](https://github.com/FedoraQt/adwaita-qt)
-for a native look-and-feel. Under GNOME one needs to install
+On GTK-centered desktops have a look at the
+[Arch Wiki](https://wiki.archlinux.org/title/Uniform_look_for_Qt_and_GTK_applications)
+for how to achieve a more native look and feel. Under GNOME one needs to install
 [an extension](https://github.com/ubuntu/gnome-shell-extension-appindicator) for tray icon support.
 
 The section "Known bugs and workarounds" below contains information and workarounds for
