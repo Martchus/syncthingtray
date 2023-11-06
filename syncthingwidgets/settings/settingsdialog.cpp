@@ -365,12 +365,19 @@ void ConnectionOptionPage::toggleAdvancedSettings(bool show)
     if (!ui()) {
         return;
     }
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    for (auto *const widget : std::initializer_list<QWidget *>{
+             ui()->authLabel, ui()->userNameLabel, ui()->passwordLabel, ui()->timeoutLabel, ui()->longPollingLabel, ui()->pollLabel }) {
+        ui()->formLayout->setRowVisible(widget, show);
+    }
+#else
     for (auto *const widget : std::initializer_list<QWidget *>{ ui()->authLabel, ui()->authCheckBox, ui()->userNameLabel, ui()->userNameLineEdit,
              ui()->passwordLabel, ui()->passwordLineEdit, ui()->timeoutLabel, ui()->timeoutSpinBox, ui()->longPollingLabel, ui()->longPollingSpinBox,
              ui()->pollLabel, ui()->pollDevStatsLabel, ui()->pollDevStatsSpinBox, ui()->pollErrorsLabel, ui()->pollErrorsSpinBox,
              ui()->pollTrafficLabel, ui()->pollTrafficSpinBox, ui()->reconnectLabel, ui()->reconnectSpinBox }) {
         widget->setVisible(show);
     }
+#endif
 }
 
 bool ConnectionOptionPage::apply()
