@@ -39,7 +39,9 @@ desktop environments.
 For Plasma, there is in addition to the Qt Widgets based version also a "native"
 Plasmoid. Note that the latest version of Syncthing Tray generally also requires the
 latest version of Plasma as no testing on earlier versions is done. Use the Qt Widgets
-based version on older Plasma versions.
+based version on older Plasma versions. A restart of Plasma might be required for the
+Plasmoid to become selectable after installation. Checkout the "Troubleshooting KDE integration"
+section below for further help if it still won't show up.
 
 On GTK-centered desktops is may make sense to install [adwaita-qt](https://github.com/FedoraQt/adwaita-qt)
 for a native look-and-feel. Under GNOME one needs to install
