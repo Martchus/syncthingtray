@@ -109,10 +109,7 @@ file(
     RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
     "${SYNCTHING_PATH}/gui/*")
 if (NOT SRC_FILES_SYNCTHING_ASSETS)
-    message(
-        FATAL_ERROR
-            "No asset files found in Syncthing checkout \"${CMAKE_CURRENT_SOURCE_DIR}/go/src/github.com/syncthing/syncthing\"."
-    )
+    message(FATAL_ERROR "No asset files found in Syncthing checkout \"${SYNCTHING_PATH}\".")
 endif ()
 
 # find Syncthing's source code (caveat: newly added files will not cause CMake to automatically regenerate)
@@ -128,10 +125,7 @@ file(
     "${SYNCTHING_PATH}/lib/*.h"
     "${SYNCTHING_PATH}/lib/*.c")
 if (NOT SRC_FILES_SYNCTHING)
-    message(
-        FATAL_ERROR
-            "No *.go files found in Syncthing checkout \"${CMAKE_CURRENT_SOURCE_DIR}/go/src/github.com/syncthing/syncthing\"."
-    )
+    message(FATAL_ERROR "No *.go files found in Syncthing checkout \"${SYNCTHING_PATH}\".")
 endif ()
 set(GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH "lib/api/auto/gui.files.go")
 list(APPEND SRC_FILES_SYNCTHING "${SYNCTHING_PATH}/${GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH}")
