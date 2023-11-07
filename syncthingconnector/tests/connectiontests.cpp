@@ -356,27 +356,29 @@ void ConnectionTests::testErrorCases()
         }
         syncthingAvailable = true;
 
-        // check for HTTP authentication error
-        if (errorMessage == QStringLiteral("Unable to request Syncthing status: Host requires authentication")) {
-            authErrorStatus = true;
-            return;
-        }
-        if (errorMessage == QStringLiteral("Unable to request Syncthing config: Host requires authentication")) {
-            authErrorConfig = true;
-            return;
+        // check API key error
+        if (errorMessage.contains(QStringLiteral("nobody:supersecret@")) && errorMessage.endsWith(QStringLiteral("server replied: Forbidden"))) {
+            if (errorMessage.startsWith(QStringLiteral("Unable to request Syncthing status: "))) {
+                apiKeyErrorStatus = true;
+                return;
+            }
+            if (errorMessage.startsWith(QStringLiteral("Unable to request Syncthing config: "))) {
+                apiKeyErrorConfig = true;
+                return;
+            }
         }
 
-        // check API key error
-        if ((errorMessage.startsWith(QStringLiteral("Unable to request Syncthing status: Error transferring "))
-                && errorMessage.endsWith(QStringLiteral("/rest/system/status - server replied: Forbidden")))) {
-            m_connection.setApiKey(apiKey().toUtf8());
-            apiKeyErrorStatus = true;
-            return;
-        }
-        if ((errorMessage.startsWith(QStringLiteral("Unable to request Syncthing config: Error transferring "))
-                && errorMessage.endsWith(QStringLiteral("config - server replied: Forbidden")))) {
-            apiKeyErrorConfig = true;
-            return;
+        // check for HTTP authentication error
+        if (errorMessage.endsWith(QStringLiteral("Host requires authentication"))
+            || errorMessage.endsWith(QStringLiteral("server replied: Forbidden"))) {
+            if (errorMessage.startsWith(QStringLiteral("Unable to request Syncthing status: "))) {
+                authErrorStatus = true;
+                return;
+            }
+            if (errorMessage.startsWith(QStringLiteral("Unable to request Syncthing config: "))) {
+                authErrorConfig = true;
+                return;
+            }
         }
 
         // fail on unexpected error messages
