@@ -415,17 +415,17 @@
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="37"/>
         <source>Local dir is scanning</source>
-        <translation>Lokales Ordner wird gescannt</translation>
+        <translation>Lokaler Ordner wird gescannt</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="39"/>
         <source>Local dir is synchronizing</source>
-        <translation>Lokales Ordner wird synchronisiert</translation>
+        <translation>Lokaler Ordner wird synchronisiert</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="41"/>
         <source>Remote dir has outstanding progress</source>
-        <translation>Entferntes Ordner hat ausstehende Elemente</translation>
+        <translation>Entfernter Ordner hat ausstehende Elemente</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="43"/>
@@ -435,7 +435,7 @@
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="45"/>
         <source>Local dir is out of sync</source>
-        <translation>Lokales Ordner ist nicht synchronisiert</translation>
+        <translation>Lokaler Ordner ist nicht synchronisiert</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="47"/>

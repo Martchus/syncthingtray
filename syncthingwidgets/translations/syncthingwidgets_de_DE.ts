@@ -884,7 +884,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="30"/>
         <source> - new folder</source>
-        <translation>- neues Ordner</translation>
+        <translation>- neuer Ordner</translation>
     </message>
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="33"/>
@@ -1619,7 +1619,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="64"/>
         <source>remote device shares new/unknown folder</source>
-        <translation>ein anderes Geräte ein neues/unbekanntes Ordner teilen möchte</translation>
+        <translation>ein anderes Geräte einen neuen/unbekannten Ordner teilen möchte</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="71"/>
@@ -1776,7 +1776,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../misc/statusinfo.cpp" line="92"/>
         <source>At least one remote folder is not in sync</source>
-        <translation>Mind. ein entferntes Ordner ist nicht synchronisiert</translation>
+        <translation>Mind. ein entfernter Ordner ist nicht synchronisiert</translation>
     </message>
     <message numerus="yes">
         <location filename="../misc/statusinfo.cpp" line="143"/>

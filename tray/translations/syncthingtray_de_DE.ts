@@ -135,7 +135,7 @@
     <message>
         <location filename="../gui/trayicon.cpp" line="296"/>
         <source>New Syncthing folder - click for web UI</source>
-        <translation>Neues Syncthing-Ordner</translation>
+        <translation>Neuer Syncthing-Ordner</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="175"/>
@@ -374,12 +374,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="663"/>
         <source>The folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
-        <translation>Das Ordner &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
+        <translation>Der Ordner &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="674"/>
         <source>The containing folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
-        <translation>Das beinhaltende Ordner &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
+        <translation>Der beinhaltende Ordner &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="717"/>

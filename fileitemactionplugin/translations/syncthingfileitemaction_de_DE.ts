@@ -79,17 +79,17 @@
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="205"/>
         <source>Rescan containing folders</source>
-        <translation>Beinhaltendes Ordner neu scannen</translation>
+        <translation>Beinhaltenden Ordner neu scannen</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="217"/>
         <source>Resume containing folders</source>
-        <translation>Beinhaltendes Ordner fortsetzen</translation>
+        <translation>Beinhaltende Ordner fortsetzen</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="245"/>
         <source>Not a shared directory</source>
-        <translation>Kein geteiltes Ordner</translation>
+        <translation>Kein geteilter Ordner</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="187"/>
@@ -100,7 +100,7 @@
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="221"/>
         <source>Pause containing folders</source>
-        <translation>Beinhaltendes Ordner pausieren</translation>
+        <translation>Beinhaltenden Ordner pausieren</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="190"/>

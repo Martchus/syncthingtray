@@ -285,12 +285,12 @@
     <message>
         <location filename="../syncthingnotifier.cpp" line="91"/>
         <source> wants to share folder %1.</source>
-        <translation> möchte das Ordner %1 teilen.</translation>
+        <translation> möchte den Ordner %1 teilen.</translation>
     </message>
     <message>
         <location filename="../syncthingnotifier.cpp" line="93"/>
         <source> wants to share folder %1 (%2).</source>
-        <translation> möchte das Ordner %1 (%2) teilen.</translation>
+        <translation> möchte den Ordner %1 (%2) teilen.</translation>
     </message>
     <message>
         <location filename="../syncthingnotifier.cpp" line="108"/>
