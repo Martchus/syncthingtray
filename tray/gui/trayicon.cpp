@@ -138,10 +138,9 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
     case QSystemTrayIcon::MiddleClick:
         trayMenu().widget().showWebUI();
         break;
-    case QSystemTrayIcon::Trigger: {
+    case QSystemTrayIcon::Trigger:
         trayMenu().showUsingPositioningSettings();
         break;
-    }
     default:;
     }
 }
