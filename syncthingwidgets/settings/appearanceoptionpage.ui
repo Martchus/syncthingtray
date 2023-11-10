@@ -388,6 +388,11 @@
        <string>Window without titlebar</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>None - open Syncthing directly</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="2" column="0">

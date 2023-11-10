@@ -544,6 +544,9 @@ the appearance settings. That doesn't fix the positioning issue but then it
 looks just like a normal application so not being positioned in the tray area is
 less problematic.
 
+You can also select the window type "None". This disables Syncthing Tray's own UI
+completely and instead opens Syncthing directly when the tray icon is clicked.
+
 ### Workaround broken High-DPI scaling of Plasmoid under X11
 Setting the environment variable `PLASMA_USE_QT_SCALING=1` should fix the
 [issue](https://bugs.kde.org/show_bug.cgi?id=356446) on recent Plasma versions but

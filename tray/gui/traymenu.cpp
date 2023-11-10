@@ -64,6 +64,10 @@ static void moveInside(QPoint &point, const QSize &innerRect, const QRect &outer
 
 void TrayMenu::showUsingPositioningSettings()
 {
+    if (m_windowType == WindowType::None) {
+        widget().showWebUI();
+        return;
+    }
     resize(sizeHint());
     auto pos = Settings::values().appearance.positioning.positionToUse();
     if (pos.has_value()) {
@@ -77,7 +81,7 @@ void TrayMenu::showUsingPositioningSettings()
 
 void TrayMenu::setWindowType(int windowType)
 {
-    if (windowType >= 0 && windowType <= 2) {
+    if (windowType >= 0 && windowType <= 3) {
         setWindowType(static_cast<WindowType>(windowType));
     }
 }
@@ -97,6 +101,8 @@ void TrayMenu::setWindowType(WindowType windowType)
         break;
     case WindowType::CustomWindow:
         flags = Qt::Dialog | Qt::CustomizeWindowHint;
+        break;
+    case WindowType::None:
         break;
     }
     setWindowFlags(flags);

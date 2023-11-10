@@ -16,6 +16,7 @@ public:
         Popup,
         NormalWindow,
         CustomWindow,
+        None,
     };
 
     explicit TrayMenu(TrayIcon *trayIcon = nullptr, QWidget *parent = nullptr);
