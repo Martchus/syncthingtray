@@ -11,8 +11,12 @@ set(META_QT5_VERSION 5.8)
 # use testfiles directory from syncthingconnector
 set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
 
-# find Plasma
+# find Plasma and its dependencies (which are not pulled-in automatically as of Plasma 6)
 find_package(${KF_PACKAGE_PREFIX}Plasma REQUIRED)
+if (KF_MAJOR_VERSION GREATER_EQUAL 6)
+    find_package(${QT_PACKAGE_PREFIX}Qml REQUIRED)
+    find_package(${KF_PACKAGE_PREFIX}Config REQUIRED)
+endif ()
 
 # define list of QML files; there is a distinct directory for each major Plasma version
 set(PLASMOID_FILE_NAMES
