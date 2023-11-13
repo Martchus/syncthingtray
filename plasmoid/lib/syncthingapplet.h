@@ -127,6 +127,9 @@ public:
     const QList<QtUtilities::ChecklistItem> &passiveStates() const;
     void setPassiveStates(const QList<QtUtilities::ChecklistItem> &passiveStates);
     QString faUrl();
+    Q_INVOKABLE QIcon loadForkAwesomeIcon(const QString &name, int size = 32) const;
+    Q_INVOKABLE QString formatFileSize(quint64 fileSizeInByte) const;
+    Q_INVOKABLE QString substituteTilde(const QString &path) const;
 
 public Q_SLOTS:
     void init() override;
@@ -144,9 +147,6 @@ public Q_SLOTS:
     void copyToClipboard(const QString &text);
     void updateStatusIconAndTooltip();
     void saveSettings();
-    QIcon loadForkAwesomeIcon(const QString &name, int size = 32) const;
-    QString formatFileSize(quint64 fileSizeInByte) const;
-    QString substituteTilde(const QString &path) const;
 
 Q_SIGNALS:
     /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
