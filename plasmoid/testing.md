@@ -22,7 +22,7 @@ rather than the regular home to separate testing from production.
       by setting `TEST_HOME`; make sure that `TEST_HOME` and the CMake variable `PLASMOID_TESTDIR` are
       set in accordance.
     * If not already set, `QT_PLUGIN_PATH` is set to `$CMAKE_CURRENT_BINARY_DIR/plasmoid/lib` which
-      should contain the plugin for the Plasmoid under `plasma/applets/libsyncthingplasmoid.so`.
+      should contain the plugin for the Plasmoid under `plasma/applets/*syncthingplasmoid*.so`.
     * Set `QT_DEBUG_PLUGINS` to 1 for verbose plugin detection.
 7. Ignore warning that executable is no debug build, it is sufficient when
    the plugin is a debug build (see next section for QML debugging).

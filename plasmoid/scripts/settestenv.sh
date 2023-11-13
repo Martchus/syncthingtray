@@ -12,9 +12,9 @@ export XDG_CONFIG_HOME=
 
 # set QT_PLUGIN_PATH if it has not already been set
 if ! [[ $QT_PLUGIN_PATH ]]; then
-    if [[ -f $PWD/syncthingtray/plasmoid/lib/plasma/applets/libsyncthingplasmoid.so ]]; then
+    if [ -f "$PWD"/syncthingtray/plasmoid/lib/plasma/applets/*syncthingplasmoid*.so ]; then
         export QT_PLUGIN_PATH=$PWD/syncthingtray/plasmoid/lib
-    elif [[ -f $PWD/plasmoid/lib/plasma/applets/libsyncthingplasmoid.so ]]; then
+    elif [ -f "$PWD"/plasmoid/lib/plasma/applets/*syncthingplasmoid*.so ]; then
         export QT_PLUGIN_PATH=$PWD/plasmoid/lib
     fi
     echo "QT_PLUGIN_PATH used for Plasmoid testing: $QT_PLUGIN_PATH"
