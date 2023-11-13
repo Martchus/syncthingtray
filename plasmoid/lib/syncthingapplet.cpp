@@ -69,7 +69,7 @@ static inline QPalette paletteFromTheme(const Plasma::Theme &theme)
 }
 
 SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
-#if PLASMA_VERSION >= QT_VERSION_CHECK(5, 240, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     : Applet(parent, KPluginMetaData(), data)
 #else
     : Applet(parent, data)
@@ -682,7 +682,7 @@ void SyncthingApplet::handleSystemdStatusChanged()
 
 } // namespace Plasmoid
 
-#if PLASMA_VERSION >= QT_VERSION_CHECK(5, 240, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 namespace Plasmoid {
 K_PLUGIN_CLASS(SyncthingApplet)
 }
