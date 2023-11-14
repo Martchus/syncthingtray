@@ -15,6 +15,8 @@ rather than the regular home to separate testing from production.
     looks like within the system tray plasmoid.
   * This usage of `%{sourceDir}` assumes one used the "Building this straight" instructions
     from the main README.md.
+  * When using a suffix (e.g. development build via CMake presets), this suffix needs to be appended
+    to the applet name.
 5. Keep `%{buildDir}` as working directory.
 6. In execution environment there's nothing mandatory to be set because `starttesting.sh` should
    already take care of setting the environment.
@@ -23,7 +25,8 @@ rather than the regular home to separate testing from production.
       set in accordance.
     * If not already set, `QT_PLUGIN_PATH` is set to `$CMAKE_CURRENT_BINARY_DIR/plasmoid/lib` which
       should contain the plugin for the Plasmoid under `plasma/applets/*syncthingplasmoid*.so`.
-    * Set `QT_DEBUG_PLUGINS` to 1 for verbose plugin detection.
+    * Set `QT_DEBUG_PLUGINS` to 1 for verbose plugin detection (the verbose output might be suppressed
+      when starting via Qt Creator so it may be worthwile to start this from a terminal).
 7. Ignore warning that executable is no debug build, it is sufficient when
    the plugin is a debug build (see next section for QML debugging).
 

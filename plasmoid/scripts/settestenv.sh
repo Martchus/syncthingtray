@@ -25,3 +25,6 @@ export TEST_FILE_PATH=$(dirname "${BASH_SOURCE[0]}")/../testfiles
 
 # log working directory
 echo "Working directory used for Plasmoid testing: $PWD"
+
+# debug plugin loading (run this script from terminal if Qt Creator suppresses the debugging output)
+export QT_DEBUG_PLUGINS=1
