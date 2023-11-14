@@ -17,7 +17,7 @@ Item {
         id: detailRow
         width: parent.width
 
-        PlasmaCore.IconItem {
+        Kirigami.Icon {
             source: detailIcon
             Layout.leftMargin: Kirigami.Units.iconSizes.small * 1.1
             Layout.preferredWidth: Kirigami.Units.iconSizes.small

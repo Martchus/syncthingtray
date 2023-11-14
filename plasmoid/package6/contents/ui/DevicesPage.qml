@@ -34,7 +34,7 @@ Item {
                     RowLayout {
                         Layout.fillWidth: true
 
-                        PlasmaCore.IconItem {
+                        Kirigami.Icon {
                             Layout.preferredWidth: Kirigami.Units.iconSizes.small
                             Layout.preferredHeight: Kirigami.Units.iconSizes.small
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft

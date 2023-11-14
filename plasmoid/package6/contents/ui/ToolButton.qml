@@ -11,7 +11,7 @@ PlasmaComponents3.ToolButton {
         columns: 2
         columnSpacing: label.visible ? Kirigami.Units.smallSpacing : 0
         verticalItemAlignment: Grid.AlignVCenter
-        PlasmaCore.ColorScope.inherit: true
+        Kirigami.Theme.inherit: true
         Image {
             source: root.icon.source
             cache: false

@@ -7,7 +7,7 @@ import org.kde.kirigami 2.20 as Kirigami
 RowLayout {
     spacing: Kirigami.Units.smallSpacing
 
-    PlasmaCore.IconItem {
+    Kirigami.Icon {
         id: tooltipIcon
         source: plasmoid.statusIcon
         Layout.alignment: Qt.AlignCenter

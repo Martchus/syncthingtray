@@ -53,7 +53,7 @@ ColumnLayout {
                         id: itemSummary
                         Layout.fillWidth: true
 
-                        PlasmaCore.IconItem {
+                        Kirigami.Icon {
                             Layout.preferredWidth: units.iconSizes.small
                             Layout.preferredHeight: units.iconSizes.small
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft

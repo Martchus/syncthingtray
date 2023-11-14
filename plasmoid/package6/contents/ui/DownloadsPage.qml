@@ -85,7 +85,7 @@ Item {
                             delegate: RowLayout {
                                 width: detailsView.width
 
-                                PlasmaCore.IconItem {
+                                Kirigami.Icon {
                                     Layout.preferredWidth: Kirigami.Units.iconSizes.medium
                                     Layout.preferredHeight: Kirigami.Units.iconSizes.medium
                                     Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft

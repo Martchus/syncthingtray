@@ -20,7 +20,7 @@ PlasmaComponents3.TabButton {
 
     contentItem: RowLayout {
         spacing: label.visible ? Kirigami.Units.smallSpacing : 0
-        PlasmaCore.ColorScope.inherit: true
+        Kirigami.Theme.inherit: true
         width: parent.width
         Item {
             Layout.fillWidth: true
