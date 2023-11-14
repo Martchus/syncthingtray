@@ -14,7 +14,8 @@ PlasmaExtras.Representation {
 
     // header ("toolbar" with buttons and combo box) and footer ("tabbar")
     header: PlasmaExtras.PlasmoidHeading {
-        ToolBar {
+        focus: true
+        contentItem: ToolBar {
             id: toolbar
             width: parent.width
         }
@@ -23,7 +24,7 @@ PlasmaExtras.Representation {
         spacing: 0
         topPadding: 0
         height: Kirigami.Units.iconSizes.medium
-        PlasmaComponents3.TabBar {
+        contentItem: PlasmaComponents3.TabBar {
             id: tabBar
             readonly property double buttonWidth: parent.width / count
             position: PlasmaComponents3.TabBar.Footer

@@ -8,18 +8,16 @@ import org.kde.kirigami 2.20 as Kirigami
 PlasmoidItem {
     id: syncthingApplet
 
-    // FIXME: adding title causes plasmawindowed to segfault
-    //Plasmoid.title: "Syncthing"
+    Plasmoid.title: "Syncthing"
     Plasmoid.icon: "syncthing"
-    // FIXME: not sure whether assigning switchWidth/switchHeight like this works
-    switchWidth: fullRepresentationItem ? fullRepresentationItem.Layout.minimumWidth : -1
-    switchHeight: fullRepresentationItem ? fullRepresentationItem.Layout.minimumHeight : -1
-    preferredRepresentation: fullRepresentation
+    switchWidth: Kirigami.Units.gridUnit * Plasmoid.size.width
+    switchHeight: Kirigami.Units.gridUnit * Plasmoid.size.height
     compactRepresentation: CompactRepresentation {}
     fullRepresentation: FullRepresentation {
-        Layout.minimumWidth: Kirigami.Units.gridUnit * Plasmoid.size.width
-        Layout.minimumHeight: Kirigami.Units.gridUnit * Plasmoid.size.height
+        Layout.minimumWidth: syncthingApplet.switchWidth
+        Layout.minimumHeight: syncthingApplet.switchHeight
     }
+
     toolTipMainText: Plasmoid.statusText
     toolTipSubText: Plasmoid.additionalStatusText
     toolTipItem: ToolTipView {}

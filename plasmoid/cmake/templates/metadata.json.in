@@ -6,6 +6,7 @@
         "Category": "SystemServices",
         "Description": "@META_APP_DESCRIPTION@",
         "EnabledByDefault": false,
+        "FormFactors": ["desktop"],
         "Icon": "syncthingtray",
         "Id": "@META_ID@",
         "License": "@META_PROJECT_LICENSE@",
@@ -13,7 +14,8 @@
         "Version": "@META_APP_VERSION@",
         "Website": "@META_APP_URL@"
     },
-    "Keywords": "syncthing;sync;",
+    "X-KDE-Keywords": "syncthing,sync",
     "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-NotificationAreaCategory": "SystemServices",
     "X-Plasma-MainScript": "ui/main.qml"
 }

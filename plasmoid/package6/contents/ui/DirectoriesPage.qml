@@ -54,8 +54,8 @@ ColumnLayout {
                         Layout.fillWidth: true
 
                         Kirigami.Icon {
-                            Layout.preferredWidth: units.iconSizes.small
-                            Layout.preferredHeight: units.iconSizes.small
+                            Layout.preferredWidth: Kirigami.Units.iconSizes.small
+                            Layout.preferredHeight: Kirigami.Units.iconSizes.small
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             source: statusIcon
                         }
@@ -72,11 +72,11 @@ ColumnLayout {
                             PlasmaComponents3.Label {
                                 height: implicitHeight
                                 text: statusString
-                                color: statusColor ? statusColor : PlasmaCore.ColorScope.textColor
+                                color: statusColor ? statusColor : Kirigami.Theme.textColor
                                 Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             }
                             Item {
-                                width: units.smallSpacing
+                                width: Kirigami.Units.smallSpacing
                             }
                             TinyButton {
                                 id: errorsButton

@@ -52,7 +52,7 @@ Item {
                             PlasmaComponents3.Label {
                                 height: implicitHeight
                                 text: statusString
-                                color: statusColor ? statusColor : PlasmaCore.ColorScope.textColor
+                                color: statusColor ? statusColor : Kirigami.Theme.textColor
                                 Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             }
                             Item {

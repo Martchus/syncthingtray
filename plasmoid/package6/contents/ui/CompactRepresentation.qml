@@ -5,9 +5,18 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.20 as Kirigami
 
 MouseArea {
+    property bool wasExpanded
     Layout.fillWidth: false
     hoverEnabled: true
-    onClicked: plasmoid.expanded = !plasmoid.expanded
+
+    onPressed: wasExpanded = syncthingApplet.expanded
+    onClicked: mouse => {
+       if (mouse.button === Qt.MiddleButton) {
+           Plasmoid.showWebUI();
+       } else {
+           syncthingApplet.expanded = !wasExpanded;
+       }
+    }
 
     Kirigami.Icon {
         id: icon

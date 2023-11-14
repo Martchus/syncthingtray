@@ -26,7 +26,7 @@ ListView {
 
     function activate(index) {
         if (typeof contextMenu !== "undefined"
-                && contextMenu.status !== PlasmaExtras.DialogStatus.Closed) {
+                && contextMenu.status !== PlasmaExtras.Menu.Closed) {
             return
         }
         currentIndex = index

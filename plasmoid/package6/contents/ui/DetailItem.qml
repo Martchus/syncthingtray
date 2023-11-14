@@ -30,7 +30,7 @@ Item {
             font.weight: Font.DemiBold
         }
         PlasmaComponents3.Label {
-            Layout.leftMargin: theme.defaultFont.pointSize * 0.9
+            Layout.leftMargin: Kirigami.Theme.defaultFont.pointSize * 0.9
             Layout.fillWidth: true
             text: detailValue
             elide: Text.ElideRight

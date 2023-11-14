@@ -6,7 +6,12 @@ ListView {
     property DetailItem contextMenuItem: null
     currentIndex: -1
     interactive: false
-    height: contentHeight
+
+    onCountChanged: {
+        var d = delegate.createObject(detailView, {detailName: "", detailValue: ""});
+        height = count * d.height
+        d.destroy()
+    }
 
     PlasmaExtras.Menu {
         id: contextMenu

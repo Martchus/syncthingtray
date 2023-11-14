@@ -35,7 +35,7 @@ Item {
                         Layout.fillWidth: true
 
                         RowLayout {
-                            spacing: units.smallSpacing
+                            spacing: Kirigami.Units.smallSpacing
                             PlasmaComponents3.Label {
                                 Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                                 elide: Text.ElideRight
