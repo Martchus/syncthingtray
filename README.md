@@ -36,10 +36,10 @@ Syncthing Tray is known to work under:
 This does *not* mean Syncthing Tray is actively tested on all those platforms or
 desktop environments.
 
-For Plasma, there is in addition to the Qt Widgets based version also a "native"
+For Plasma 5, there is in addition to the Qt Widgets based version also a "native"
 Plasmoid. Note that the latest version of Syncthing Tray generally also requires the
-latest version of Plasma as no testing on earlier versions is done. Use the Qt Widgets
-based version on older Plasma versions. A restart of Plasma might be required for the
+latest version of Plasma 5 as no testing on earlier versions is done. Use the Qt Widgets
+based version on other Plasma versions. A restart of Plasma might be required for the
 Plasmoid to become selectable after installation. Checkout the "Troubleshooting KDE integration"
 section below for further help if it still won't show up.
 
@@ -406,6 +406,11 @@ a test instance of Syncthing that does not affect a possibly existing Syncthing 
   will be opened in the regular web browser anyways.
 
 ### Troubleshooting KDE integration
+All KDE integrations are only provided for KDE 5. At this point they will not work under KDE 6. Porting
+to KDE 6 is in the works and a build against KF6 is possible. However, there is more work required because
+compatibility was severely broken by KF6 and https://develop.kde.org/docs/plasma/widget/porting_kf6 only
+covers a fraction of the breakage.
+
 If the Dolphin integration or the Plasmoid does not work, check whether the files for those components
 have been installed in the right directories.
 
