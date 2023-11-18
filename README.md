@@ -606,12 +606,11 @@ https://github.com/tomasz1986/classic2000 to see how Windows looks like with hig
 contrast applied, or if you're in need for themes that look at least nicer than
 what's shipped with Windows.
 
-### Enable experimental support for Windows' per-monitor DPI awareness (V2)
+### DPI awareness under Windows
+Syncthing Tray supports
 [PMv2](https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows#per-monitor-and-per-monitor-v2-dpi-awareness)
-is not working out of the box but experimental support can be enabled in the
-Qt 6 build by setting the environment variable `QT_QPA_PLATFORM` to
-`windows:dpiawareness=3` or set it via `qt.conf` as described in the previous
-section.
+out of the box as of Qt 6. You may tweak settings according to the
+[Qt documentation](https://doc.qt.io/qt-6/highdpi.html#configuring-windows).
 
 ### List of bugs
 * Wayland limitations
