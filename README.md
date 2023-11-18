@@ -284,7 +284,7 @@ See the release section on GitHub.
           right click on the executable, select properties and tick the checkbox to allow the execution
         * Antivirus software often **wrongly** considers the executable harmful. This is a known problem. Please don't create
           issues about it.
-        * the Qt 6 based version is stable and preferable but only supports Windows 10 and newer
+        * the Qt 6 based version is stable and preferable but only supports Windows 10 version 1809 and newer
         * the Qt 5 based version should still work on older versions down to Windows 7 although this is not regularly checked
     * there is also a [Chocolatey package](https://community.chocolatey.org/packages/syncthingtray) maintained by yan12125
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
