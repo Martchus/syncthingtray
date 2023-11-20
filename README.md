@@ -36,12 +36,12 @@ Syncthing Tray is known to work under:
 This does *not* mean Syncthing Tray is actively tested on all those platforms or
 desktop environments.
 
-For Plasma 5, there is in addition to the Qt Widgets based version also a "native"
+For Plasma 5 and 6, there is in addition to the Qt Widgets based version also a "native"
 Plasmoid. Note that the latest version of Syncthing Tray generally also requires the
-latest version of Plasma 5 as no testing on earlier versions is done. Use the Qt Widgets
-based version on other Plasma versions. A restart of Plasma might be required for the
-Plasmoid to become selectable after installation. Checkout the "Troubleshooting KDE integration"
-section below for further help if it still won't show up.
+latest version of Plasma 5 or 6 as no testing on earlier versions is done. Use the Qt
+Widgets based version on other Plasma versions. A restart of Plasma might be required for
+the Plasmoid to become selectable after installation. Checkout the "Troubleshooting KDE
+integration" section below for further help if it still won't show up.
 
 On GTK-centered desktops have a look at the
 [Arch Wiki](https://wiki.archlinux.org/title/Uniform_look_for_Qt_and_GTK_applications)
@@ -406,10 +406,8 @@ a test instance of Syncthing that does not affect a possibly existing Syncthing 
   will be opened in the regular web browser anyways.
 
 ### Troubleshooting KDE integration
-All KDE integrations are only provided for KDE 5. At this point they will not work under KDE 6. Porting
-to KDE 6 is in the works and a build against KF6 is possible. However, there is more work required because
-compatibility was severely broken by KF6 and https://develop.kde.org/docs/plasma/widget/porting_kf6 only
-covers a fraction of the breakage.
+All KDE integrations are provided for KDE 5 and 6. The Qt version you have built Syncthing Tray against
+must match the KDE version you want to build the integrations for.
 
 If the Dolphin integration or the Plasmoid does not work, check whether the files for those components
 have been installed in the right directories.
@@ -429,6 +427,9 @@ The files for the Dolphin integration look like this under Tumbleweed:
 /usr/lib64/qt5/plugins/libsyncthingfileitemaction.so
 /usr/share/kservices5/syncthingfileitemaction.desktop
 ```
+
+These examples were for KDE 5. It looks a bit different for KDE 6. Checkout my Arch Linux and
+openSUSE packaging for further examples.
 
 The directory where the `*.so` file needs to be installed to, seems to differ from distribution to
 distribution. The right directory for your distribution can be queried from qmake using
@@ -501,7 +502,7 @@ directly to this repository. Then I will be able to take it into account when ch
 ### KDE integration
 Since the Dolphin integration and the Plasmoid are plugins, testing and debugging requires a few extra steps.
 See [Testing and debugging Dolphin/KIO plugin with Qt Creator](/fileitemactionplugin/testing.md)
-and [Testing and debugging Plasma 5 plasmoid with Qt Creator](/plasmoid/testing.md).
+and [Testing and debugging Plasmoid with Qt Creator](/plasmoid/testing.md).
 
 ### Logging
 It is possible to turn on logging of the underlying library by setting environment variables:
