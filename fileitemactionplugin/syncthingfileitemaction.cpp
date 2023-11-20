@@ -21,7 +21,11 @@
 using namespace std;
 using namespace Data;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+K_PLUGIN_CLASS_WITH_JSON(SyncthingFileItemAction, "metadata.json");
+#else
 K_PLUGIN_FACTORY(SyncthingFileItemActionFactory, registerPlugin<SyncthingFileItemAction>();)
+#endif
 
 struct SyncthingItem {
     SyncthingItem(const SyncthingDir *dir, const QString &path);

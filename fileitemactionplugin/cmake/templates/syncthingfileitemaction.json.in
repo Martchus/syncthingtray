@@ -1,0 +1,23 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "@META_APP_AUTHOR_MAIL@",
+                "Name": "@META_APP_AUTHOR@"
+            }
+        ],
+        "Icon": "syncthing.fa",
+        "Id": "@META_ID@",
+        "License": "@META_PROJECT_LICENSE@",
+        "MimeTypes": [
+            "application/octet-stream",
+            "inode/directory"
+        ],
+        "Name": "Trigger Syncthing scan",
+        "Name[de]": "\"Syncthing-Rescan\" im Servicemenü",
+        "ServiceTypes": ["KFileItemAction/Plugin"],
+        "Version": "@META_VERSION_MAJOR@.@META_VERSION_MINOR@.@META_VERSION_PATCH@"
+    },
+    "MimeType": "application/octet-stream;inode/directory",
+    "X-KDE-Submenu": "Syncthing"
+}

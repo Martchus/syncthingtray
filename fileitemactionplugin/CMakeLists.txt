@@ -40,6 +40,7 @@ if (KF_PACKAGE_PREFIX MATCHES ".*KF([0-9]+).*")
     set(KF_VERSION ${CMAKE_MATCH_1})
     if (KF_VERSION GREATER_EQUAL 6)
         list(APPEND KIO_MODULE_TARGETS)
+        set(META_PLUGIN_CATEGORY kf${KF_VERSION}/kfileitemaction)
     else ()
         list(APPEND KIO_MODULE_TARGETS "${KF_PACKAGE_PREFIX}::KIONTLM")
     endif ()
@@ -56,13 +57,19 @@ include(AppUtilities)
 
 # configure and install desktop file
 include(TemplateFinder)
-find_template_file("${META_PROJECT_NAME}.desktop" "${META_PROJECT_NAME}" DESKTOP_TEMPLATE_FILE)
-set(DESKTOP_TARGET_FILE "${CMAKE_CURRENT_BINARY_DIR}/${META_TARGET_NAME}.desktop")
-configure_file("${DESKTOP_TEMPLATE_FILE}" "${DESKTOP_TARGET_FILE}")
-install(
-    FILES "${DESKTOP_TARGET_FILE}"
-    DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/kservices${KF_MAJOR_VERSION}"
-    COMPONENT desktop)
+if (KF_MAJOR_VERSION LESS 6)
+    find_template_file("${META_PROJECT_NAME}.desktop" "${META_PROJECT_NAME}" DESKTOP_TEMPLATE_FILE)
+    set(DESKTOP_TARGET_FILE "${CMAKE_CURRENT_BINARY_DIR}/${META_TARGET_NAME}.desktop")
+    configure_file("${DESKTOP_TEMPLATE_FILE}" "${DESKTOP_TARGET_FILE}")
+    install(
+        FILES "${DESKTOP_TARGET_FILE}"
+        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/kservices${KF_MAJOR_VERSION}"
+        COMPONENT desktop)
+else ()
+    find_template_file("${META_PROJECT_NAME}.json" "${META_PROJECT_NAME}" JSON_TEMPLATE_FILE)
+    set(JSON_TARGET_FILE "${CMAKE_CURRENT_BINARY_DIR}/metadata.json")
+    configure_file("${JSON_TEMPLATE_FILE}" "${JSON_TARGET_FILE}")
+endif ()
 
 # install appstream file
 add_appstream_file()
