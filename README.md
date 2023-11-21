@@ -553,11 +553,6 @@ less problematic.
 You can also select the window type "None". This disables Syncthing Tray's own UI
 completely and instead opens Syncthing directly when the tray icon is clicked.
 
-### Workaround broken High-DPI scaling of Plasmoid under X11
-Setting the environment variable `PLASMA_USE_QT_SCALING=1` should fix the
-[issue](https://bugs.kde.org/show_bug.cgi?id=356446) on recent Plasma versions but
-there are still [some problems](https://bugs.kde.org/show_bug.cgi?id=457802#c1).
-
 ### Tweak GUI settings for dark mode under Windows
 The dark mode introduced in Windows 10 does not affect traditional desktop
 applications like Syncthing Tray. If you select the widgets style "Fusion" under
@@ -612,6 +607,11 @@ Syncthing Tray supports
 [PMv2](https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows#per-monitor-and-per-monitor-v2-dpi-awareness)
 out of the box as of Qt 6. You may tweak settings according to the
 [Qt documentation](https://doc.qt.io/qt-6/highdpi.html#configuring-windows).
+
+### Workaround broken High-DPI scaling of Plasmoid under X11
+This problem [has been resolved](https://bugs.kde.org/show_bug.cgi?id=356446#c88) so
+make sure you are using an up-to-date Plasma version. Otherwise, setting the environment
+variable `PLASMA_USE_QT_SCALING=1` might help.
 
 ### List of bugs
 * Wayland limitations
