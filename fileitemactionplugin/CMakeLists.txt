@@ -36,14 +36,11 @@ set(KF_PACKAGE_PREFIX
     CACHE STRING "specifies the prefix for KDE Frameworks packages")
 set(KIO_MODULE_TARGETS "${KF_PACKAGE_PREFIX}::KIOCore" "${KF_PACKAGE_PREFIX}::KIOFileWidgets"
                        "${KF_PACKAGE_PREFIX}::KIOWidgets")
-if (KF_PACKAGE_PREFIX MATCHES ".*KF([0-9]+).*")
-    set(KF_VERSION ${CMAKE_MATCH_1})
-    if (KF_VERSION GREATER_EQUAL 6)
-        list(APPEND KIO_MODULE_TARGETS)
-        set(META_PLUGIN_CATEGORY kf${KF_VERSION}/kfileitemaction)
-    else ()
-        list(APPEND KIO_MODULE_TARGETS "${KF_PACKAGE_PREFIX}::KIONTLM")
-    endif ()
+if (KF_MAJOR_VERSION GREATER_EQUAL 6)
+    list(APPEND KIO_MODULE_TARGETS)
+    set(META_PLUGIN_CATEGORY kf${KF_VERSION}/kfileitemaction)
+else ()
+    list(APPEND KIO_MODULE_TARGETS "${KF_PACKAGE_PREFIX}::KIONTLM")
 endif ()
 
 # include modules to apply configuration
