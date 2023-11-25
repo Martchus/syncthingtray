@@ -56,7 +56,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     static constexpr int defaultErrorsPollInterval = 30000;
     static constexpr int defaultReconnectInterval = 30000;
     static constexpr int defaultRequestTimeout = 0;
-    static constexpr int defaultLongPollingTimeout = 0;
+    static constexpr int defaultLongPollingTimeout = 60000;
 };
 } // namespace Data
 
