@@ -16,6 +16,7 @@
     },
     "X-KDE-Keywords": "syncthing,sync",
     "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-API-Minimum-Version": "6.0",
     "X-Plasma-NotificationAreaCategory": "SystemServices",
     "X-Plasma-MainScript": "ui/main.qml"
 }
