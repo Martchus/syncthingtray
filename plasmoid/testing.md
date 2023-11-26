@@ -48,6 +48,9 @@ It works quite well within a Plasma session when both shells are placed on diffe
 edges.
 
 ## Enable QML debugging
+It is not clear whether the following instructions are still valid for Plasma 6.
+It seems that QML debugging can be enabled under Plasma 6 by setting the environment variable
+`PLASMA_ENABLE_QML_DEBUG` but this has not been tested yet.
 
 To enable QML debugging, it is required to rebuild `plasmoidviewer` with QML debugging
 enabled.
