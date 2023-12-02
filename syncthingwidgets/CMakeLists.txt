@@ -115,7 +115,7 @@ if (SYNCTHING_WIDGETS_LOG_JAVASCRIPT_CONSOLE)
         SOURCE webview/webpage.cpp
         APPEND
         PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE)
-    message(WARNING "JavaScript console of web view will be logged to stderr")
+    message(STATUS_MESSAGE "JavaScript console of web view will be logged to stderr")
 endif ()
 
 # configure autostart .desktop file exec path

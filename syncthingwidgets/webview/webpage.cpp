@@ -200,6 +200,23 @@ void WebPage::javaScriptConsoleMessage(
     Q_UNUSED(level)
     Q_UNUSED(lineNumber)
     Q_UNUSED(sourceID)
+#ifdef SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE
+    auto levelName = std::string_view();
+    switch (level) {
+    case QWebEnginePage::InfoMessageLevel:
+        levelName = "info";
+        break;
+    case QWebEnginePage::WarningMessageLevel:
+        levelName = "warning";
+        break;
+    case QWebEnginePage::ErrorMessageLevel:
+        levelName = "error";
+        break;
+    default:
+        levelName = "message";
+    }
+    std::cerr << "JS " << levelName << ": line " << lineNumber << ": " << message.toLocal8Bit().data() << '\n';
+#endif
     if (level == QWebEnginePage::InfoMessageLevel) {
         processJavaScriptConsoleMessage(message);
     }
@@ -223,6 +240,9 @@ void WebPage::javaScriptConsoleMessage(const QString &message, int lineNumber, c
 {
     Q_UNUSED(lineNumber)
     Q_UNUSED(sourceID)
+#ifdef SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE
+    std::cerr << "JS console: line " << lineNumber << ": " << message.toLocal8Bit().data() << '\n';
+#endif
     processJavaScriptConsoleMessage(message);
 }
 #endif
@@ -336,9 +356,6 @@ void WebPage::injectJavaScripts(bool ok)
  */
 void WebPage::processJavaScriptConsoleMessage(const QString &message)
 {
-#ifdef SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE
-    std::cerr << "JS console: " << message.toLocal8Bit().data() << std::endl;
-#endif
     if (message.startsWith(QLatin1String("nativeInterface.showFolderPathSelection: "))) {
         showFolderPathSelection(message.mid(41));
     } else if (message == QLatin1String("UIOnline")) {
