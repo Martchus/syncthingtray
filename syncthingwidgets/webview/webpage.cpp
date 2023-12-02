@@ -26,6 +26,13 @@
 #include <QWebView>
 #endif
 
+#ifdef SYNCTHINGWIDGETS_STYLE_SCROLL_BARS
+#include <QApplication>
+#include <QStyle>
+#include <QWebEngineScript>
+#include <QWebEngineScriptCollection>
+#endif
+
 #ifdef SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE
 #include <iostream>
 #endif
@@ -73,6 +80,10 @@ WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view)
         m_view->setPage(this);
         setParent(m_view);
     }
+
+#ifdef SYNCTHINGWIDGETS_STYLE_SCROLL_BARS
+    styleScrollBars();
+#endif
 }
 
 bool WebPage::isSamePage(const QUrl &url1, const QUrl &url2)
@@ -155,6 +166,84 @@ bool WebPage::canIgnoreCertificateError(const QWebEngineCertificateError &certif
     // accept the self-signed certificate
     return true;
 }
+
+#ifdef SYNCTHINGWIDGETS_STYLE_SCROLL_BARS
+/*!
+ * \brief Inserts the specified \a cssCode which must *not* contain single quotes.
+ * \remarks This is done as demonstrated in Qt's "WebEngine StyleSheet Browser Example".
+ */
+void WebPage::insertStyleSheet(const QString &name, const QString &cssCode)
+{
+    auto script = QWebEngineScript();
+    auto s = QString::fromLatin1("(function() {"
+                                 "    css = document.createElement('style');"
+                                 "    css.type = 'text/css';"
+                                 "    css.id = '%1';"
+                                 "    css.innerText = '%2';"
+                                 "    document.head.appendChild(css);"
+                                 "})()")
+                 .arg(name)
+                 .arg(cssCode.simplified());
+    script.setName(name);
+    script.setSourceCode(s);
+    script.setInjectionPoint(QWebEngineScript::DocumentReady);
+    script.setRunsOnSubFrames(true);
+    script.setWorldId(QWebEngineScript::ApplicationWorld);
+    scripts().insert(script);
+}
+
+/*!
+ * \brief Use Breeze-style scroll bars when the Breeze-style is being used.
+ * \remarks The CSS code is taken from KDE's PIM Messagelib:
+ *          https://invent.kde.org/pim/messagelib/-/blob/74192072a305cceccdeea2dd0bc10c98e36445ac/messageviewer/src/viewer/csshelperbase.cpp#L512
+ */
+void WebPage::styleScrollBars()
+{
+    const auto *const currentStyle = QApplication::style();
+    if (!currentStyle->name().contains(QStringLiteral("breeze"), Qt::CaseInsensitive)) {
+        return;
+    }
+    // clang-format off
+    insertStyleSheet(QStringLiteral("breeze-scroll-bars"), QStringLiteral(
+         "html::-webkit-scrollbar {\n"
+         "    /* we will add padding as \"border\" in the thumb*/\n"
+         "    height: 20px;\n"
+         "    width: 20px;\n"
+         "    background: white;\n"
+         "    border-left: 1px solid #e5e5e5;\n"
+         "    padding-left: 1px;\n"
+         "}\n\n"
+
+         "html::-webkit-scrollbar-track {\n"
+         "    border-radius: 20px;\n"
+         "    width: 6px !important;\n"
+         "    box-sizing: content-box;\n"
+         "}\n\n"
+
+         "html::-webkit-scrollbar-thumb {\n"
+         "    background-color: #CBCDCD;\n"
+         "    border: 6px solid transparent;\n"
+         "    border-radius: 20px;\n"
+         "    background-clip: content-box;\n"
+         "    width: 8px !important; /* 20px scrollbar - 2 * 6px border */\n"
+         "    box-sizing: content-box;\n"
+         "    min-height: 30px;\n"
+         "}\n\n"
+
+         "html::-webkit-scrollbar-thumb:window-inactive {\n"
+         "   background-color: #949699; /* when window is inactive it is gray */\n"
+         "}\n\n"
+
+         "html::-webkit-scrollbar-thumb:hover {\n"
+         "    background-color: #93CEE9; /* hovered is a lighter blue */\n"
+         "}\n\n"
+
+         "html::-webkit-scrollbar-corner {\n"
+         "    background-color: white;\n"
+         "}\n\n"));
+    // clang-format on
+}
+#endif
 
 /*!
  * \brief Accepts self-signed certificates used by the Syncthing GUI as configured.
