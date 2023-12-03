@@ -15,7 +15,10 @@
 #include <QNetworkReply>
 #include <QStringBuilder>
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
+#include <QPalette>
 #include <QWebEngineCertificateError>
+#include <QWebEngineScript>
+#include <QWebEngineScriptCollection>
 #include <QWebEngineSettings>
 #include <QWebEngineView>
 #elif defined(SYNCTHINGWIDGETS_USE_WEBKIT)
@@ -24,13 +27,6 @@
 #include <QWebFrame>
 #include <QWebSettings>
 #include <QWebView>
-#endif
-
-#ifdef SYNCTHINGWIDGETS_STYLE_SCROLL_BARS
-#include <QApplication>
-#include <QStyle>
-#include <QWebEngineScript>
-#include <QWebEngineScriptCollection>
 #endif
 
 #include <iostream>
@@ -79,7 +75,7 @@ WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view)
         setParent(m_view);
     }
 
-#ifdef SYNCTHINGWIDGETS_STYLE_SCROLL_BARS
+#ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
     styleScrollBars();
 #endif
 }
@@ -165,28 +161,46 @@ bool WebPage::canIgnoreCertificateError(const QWebEngineCertificateError &certif
     return true;
 }
 
-#ifdef SYNCTHINGWIDGETS_STYLE_SCROLL_BARS
 /*!
  * \brief Inserts the specified \a cssCode which must *not* contain single quotes.
  * \remarks This is done as demonstrated in Qt's "WebEngine StyleSheet Browser Example".
  */
-void WebPage::insertStyleSheet(const QString &name, const QString &cssCode)
+void WebPage::insertStyleSheet(const QString &name, const QString &cssCode, bool immediate)
 {
     auto script = QWebEngineScript();
     auto s = QString::fromLatin1("(function() {"
-                                 "    css = document.createElement('style');"
+                                 "    existing = document.getElementById('%1');"
+                                 "    css = existing || document.createElement('style');"
                                  "    css.type = 'text/css';"
-                                 "    css.id = '%1';"
-                                 "    css.innerText = '%2';"
-                                 "    document.head.appendChild(css);"
+                                 "    css.id = '%2';"
+                                 "    css.innerText = '%3';"
+                                 "    existing ? null : document.head.appendChild(css);"
                                  "})()")
-                 .arg(name, cssCode.simplified());
+                 .arg(name, name, cssCode.simplified());
+    if (immediate) {
+        runJavaScript(s, QWebEngineScript::ApplicationWorld);
+    }
     script.setName(name);
     script.setSourceCode(s);
     script.setInjectionPoint(QWebEngineScript::DocumentReady);
     script.setRunsOnSubFrames(true);
     script.setWorldId(QWebEngineScript::ApplicationWorld);
-    scripts().insert(script);
+    auto &sc = scripts();
+    auto existingScripts = sc.find(name);
+    for (const auto &existingScript : existingScripts) {
+        sc.remove(existingScript);
+        sc.remove(existingScript);
+    }
+    sc.insert(script);
+}
+
+/*!
+ * \brief Returns a CSS "rgba(…)"-specification for the specified \a color.
+ */
+static QString rgba(const QColor &color)
+{
+    return QStringLiteral("rgba(%1, %2, %3, %4)")
+        .arg(QString::number(color.red()), QString::number(color.green()), QString::number(color.blue()), QString::number(color.alphaF()));
 }
 
 /*!
@@ -194,20 +208,36 @@ void WebPage::insertStyleSheet(const QString &name, const QString &cssCode)
  * \remarks The CSS code is taken from KDE's PIM Messagelib:
  *          https://invent.kde.org/pim/messagelib/-/blob/74192072a305cceccdeea2dd0bc10c98e36445ac/messageviewer/src/viewer/csshelperbase.cpp#L512
  */
-void WebPage::styleScrollBars()
+void WebPage::styleScrollBars(bool immediate)
 {
-    const auto *const currentStyle = QApplication::style();
-    if (!currentStyle->name().contains(QStringLiteral("breeze"), Qt::CaseInsensitive)) {
+    if (!m_view) {
         return;
     }
+
+    // determine colors from palette
+    const auto palette = m_view->palette();
+    const auto alphaF = 0.75f;
+    auto highlightColor = palette.color(QPalette::Active, QPalette::Highlight);
+    auto highlightColorInactive = QColor::fromHsv(highlightColor.hue(), 0, highlightColor.value());
+    highlightColor.setAlphaF(alphaF);
+    highlightColorInactive.setAlphaF(alphaF);
+    const auto frameColorN = QStringLiteral("#e5e5e5");
+    const auto backgroundColor = palette.color(QPalette::Active, QPalette::Base);
+    const auto backgroundColorN = backgroundColor.name();
+    if (backgroundColor.value() > 200 && highlightColorInactive.value() > 200) {
+        highlightColorInactive = highlightColorInactive.darker(125);
+    }
+    const auto highlightColorN = rgba(highlightColor);
+    const auto highlightColorInactiveN = rgba(highlightColorInactive);
+
     // clang-format off
     insertStyleSheet(QStringLiteral("breeze-scroll-bars"), QStringLiteral(
          "html::-webkit-scrollbar {\n"
          "    /* we will add padding as \"border\" in the thumb*/\n"
          "    height: 20px;\n"
          "    width: 20px;\n"
-         "    background: white;\n"
-         "    border-left: 1px solid #e5e5e5;\n"
+         "    background: %1;\n"
+         "    border-left: 1px solid %2;\n"
          "    padding-left: 1px;\n"
          "}\n\n"
 
@@ -218,7 +248,7 @@ void WebPage::styleScrollBars()
          "}\n\n"
 
          "html::-webkit-scrollbar-thumb {\n"
-         "    background-color: #CBCDCD;\n"
+         "    background-color: %3;\n"
          "    border: 6px solid transparent;\n"
          "    border-radius: 20px;\n"
          "    background-clip: content-box;\n"
@@ -228,19 +258,18 @@ void WebPage::styleScrollBars()
          "}\n\n"
 
          "html::-webkit-scrollbar-thumb:window-inactive {\n"
-         "   background-color: #949699; /* when window is inactive it is gray */\n"
+         "   background-color: %4; /* when window is inactive it is gray */\n"
          "}\n\n"
 
          "html::-webkit-scrollbar-thumb:hover {\n"
-         "    background-color: #93CEE9; /* hovered is a lighter blue */\n"
+         "    background-color: %5; /* hovered is a lighter blue */\n"
          "}\n\n"
 
          "html::-webkit-scrollbar-corner {\n"
-         "    background-color: white;\n"
-         "}\n\n"));
+         "    background-color: %6;\n"
+         "}\n\n").arg(backgroundColorN, frameColorN, highlightColorInactiveN, highlightColorInactiveN, highlightColorN, backgroundColorN), immediate);
     // clang-format on
 }
-#endif
 
 /*!
  * \brief Accepts self-signed certificates used by the Syncthing GUI as configured.

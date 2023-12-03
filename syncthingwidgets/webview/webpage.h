@@ -16,11 +16,6 @@ QT_FORWARD_DECLARE_CLASS(QNetworkReply)
 QT_FORWARD_DECLARE_CLASS(QNetworkRequest)
 QT_FORWARD_DECLARE_CLASS(QSslError)
 
-#if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) && QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)                                                               \
-    && (defined(Q_OS_UNIX) && !defined(Q_OS_ANDROID) && !defined(Q_OS_DARWIN))
-#define SYNCTHINGWIDGETS_STYLE_SCROLL_BARS
-#endif
-
 namespace QtGui {
 
 class WebViewDialog;
@@ -35,6 +30,9 @@ public:
 #endif
 
     static bool isSamePage(const QUrl &url1, const QUrl &url2);
+#ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
+    void styleScrollBars(bool immediate = false);
+#endif
 
 protected:
     SYNCTHINGWIDGETS_WEB_PAGE *createWindow(WebWindowType type) override;
@@ -70,10 +68,7 @@ private Q_SLOTS:
 private:
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
     bool canIgnoreCertificateError(const QWebEngineCertificateError &certificateError) const;
-#endif
-#ifdef SYNCTHINGWIDGETS_STYLE_SCROLL_BARS
-    void insertStyleSheet(const QString &name, const QString &source);
-    void styleScrollBars();
+    void insertStyleSheet(const QString &name, const QString &cssCode, bool immediate);
 #endif
     static bool handleNavigationRequest(const QUrl &currentUrl, const QUrl &url);
 

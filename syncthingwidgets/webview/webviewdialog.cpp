@@ -157,6 +157,11 @@ bool WebViewDialog::eventFilter(QObject *watched, QEvent *event)
     case QEvent::KeyPress:
         keyPressEvent(static_cast<QKeyEvent *>(event));
         break;
+    case QEvent::PaletteChange:
+        if (auto *const page = qobject_cast<WebPage *>(m_view->page())) {
+            page->styleScrollBars(true);
+        }
+        break;
     default:;
     }
     return QMainWindow::eventFilter(watched, event);
