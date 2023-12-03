@@ -182,8 +182,7 @@ void WebPage::insertStyleSheet(const QString &name, const QString &cssCode)
                                  "    css.innerText = '%2';"
                                  "    document.head.appendChild(css);"
                                  "})()")
-                 .arg(name)
-                 .arg(cssCode.simplified());
+                 .arg(name, cssCode.simplified());
     script.setName(name);
     script.setSourceCode(s);
     script.setInjectionPoint(QWebEngineScript::DocumentReady);
