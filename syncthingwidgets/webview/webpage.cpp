@@ -33,9 +33,7 @@
 #include <QWebEngineScriptCollection>
 #endif
 
-#ifdef SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE
 #include <iostream>
-#endif
 
 using namespace Data;
 
@@ -285,26 +283,25 @@ bool WebPage::acceptNavigationRequest(const QUrl &url, SYNCTHINGWIDGETS_WEB_PAGE
 void WebPage::javaScriptConsoleMessage(
     QWebEnginePage::JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID)
 {
-    Q_UNUSED(level)
-    Q_UNUSED(lineNumber)
     Q_UNUSED(sourceID)
-#ifdef SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE
-    auto levelName = std::string_view();
-    switch (level) {
-    case QWebEnginePage::InfoMessageLevel:
-        levelName = "info";
-        break;
-    case QWebEnginePage::WarningMessageLevel:
-        levelName = "warning";
-        break;
-    case QWebEnginePage::ErrorMessageLevel:
-        levelName = "error";
-        break;
-    default:
-        levelName = "message";
+    static const auto loggingEnabled = qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_JS_CONSOLE");
+    if (loggingEnabled) {
+        auto levelName = std::string_view();
+        switch (level) {
+        case QWebEnginePage::InfoMessageLevel:
+            levelName = "info";
+            break;
+        case QWebEnginePage::WarningMessageLevel:
+            levelName = "warning";
+            break;
+        case QWebEnginePage::ErrorMessageLevel:
+            levelName = "error";
+            break;
+        default:
+            levelName = "message";
+        }
+        std::cerr << "JS " << levelName << ": line " << lineNumber << ": " << message.toLocal8Bit().data() << '\n';
     }
-    std::cerr << "JS " << levelName << ": line " << lineNumber << ": " << message.toLocal8Bit().data() << '\n';
-#endif
     if (level == QWebEnginePage::InfoMessageLevel) {
         processJavaScriptConsoleMessage(message);
     }
@@ -326,11 +323,11 @@ bool WebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &r
  */
 void WebPage::javaScriptConsoleMessage(const QString &message, int lineNumber, const QString &sourceID)
 {
-    Q_UNUSED(lineNumber)
     Q_UNUSED(sourceID)
-#ifdef SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE
-    std::cerr << "JS console: line " << lineNumber << ": " << message.toLocal8Bit().data() << '\n';
-#endif
+    static const auto loggingEnabled = qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_JS_CONSOLE");
+    if (loggingEnabled) {
+        std::cerr << "JS console: line " << lineNumber << ": " << message.toLocal8Bit().data() << '\n';
+    }
     processJavaScriptConsoleMessage(message);
 }
 #endif

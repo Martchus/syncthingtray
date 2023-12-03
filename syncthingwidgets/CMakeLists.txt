@@ -108,16 +108,6 @@ if (USE_LIBSYNCTHING)
     list(APPEND META_PUBLIC_COMPILE_DEFINITIONS SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
 endif ()
 
-# configure logging JavaScript events to stderr
-option(SYNCTHING_WIDGETS_LOG_JAVASCRIPT_CONSOLE "enables logging JavaScript events of webview to stderr" OFF)
-if (SYNCTHING_WIDGETS_LOG_JAVASCRIPT_CONSOLE)
-    set_property(
-        SOURCE webview/webpage.cpp
-        APPEND
-        PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_LOG_JAVASCRIPT_CONSOLE)
-    message(STATUS_MESSAGE "JavaScript console of web view will be logged to stderr")
-endif ()
-
 # configure autostart .desktop file exec path
 set(AUTOSTART_EXEC_PATH
     ""

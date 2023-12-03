@@ -512,6 +512,7 @@ It is possible to turn on logging of the underlying library by setting environme
 * `LIB_SYNCTHING_CONNECTOR_LOG_API_REPLIES`: log replies from Syncthing's REST-API (except events)
 * `LIB_SYNCTHING_CONNECTOR_LOG_EVENTS`: log events emitted by Syncthing's events REST-API endpoint
 * `LIB_SYNCTHING_CONNECTOR_LOG_DIRS_OR_DEVS_RESETTED`: log when folders/devices are internally reset
+* `SYNCTHINGWIDGETS_LOG_JS_CONSOLE`: log message from the JavaScript console of the built-in web view
 
 ### Useful environment variables for development
 * `QT_QPA_PLATFORM`: set to `offscreen` to disable graphical output, e.g. to run tests in headless
