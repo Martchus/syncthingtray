@@ -186,7 +186,11 @@ void WebPage::insertStyleSheet(const QString &name, const QString &cssCode, bool
     script.setRunsOnSubFrames(true);
     script.setWorldId(QWebEngineScript::ApplicationWorld);
     auto &sc = scripts();
+#if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     auto existingScripts = sc.find(name);
+#else
+    auto existingScripts = sc.findScripts(name);
+#endif
     for (const auto &existingScript : existingScripts) {
         sc.remove(existingScript);
         sc.remove(existingScript);
