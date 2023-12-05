@@ -96,7 +96,7 @@
         <translation type="obsolete">Einstellungen</translation>
     </message>
     <message>
-        <location filename="../webview/webviewdialog.cpp" line="241"/>
+        <location filename="../webview/webviewdialog.cpp" line="246"/>
         <source>Unable to open Syncthing UI via &quot;%1&quot;: %2</source>
         <translation>Die Syncthing-Oberfläche konnte nicht via &quot;%1&quot; geöffnet werden: %2</translation>
     </message>
@@ -247,7 +247,12 @@
         <translation>Fenster ohne Titelleiste</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="396"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="393"/>
+        <source>None - open Syncthing directly</source>
+        <translation>Kein Fenster - öffne Syncthing direkt</translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="401"/>
         <source>Window type</source>
         <translation>Fensterart</translation>
     </message>
@@ -766,7 +771,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="626"/>
         <source>Long polling int.</source>
-        <translation>Long-Polling Intervall</translation>
+        <translation>Long-Polling-Intervall</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="633"/>
@@ -1995,7 +2000,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation type="vanished">Pfad für Syncthing-Ordner auswählen ...</translation>
     </message>
     <message>
-        <location filename="../webview/webpage.cpp" line="354"/>
+        <location filename="../webview/webpage.cpp" line="485"/>
         <source>Select path for Syncthing directory …</source>
         <translation>Pfad für Syncthing-Ordner auswählen …</translation>
     </message>

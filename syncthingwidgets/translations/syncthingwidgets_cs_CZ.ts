@@ -12,7 +12,7 @@
 <context>
     <name>QtGui</name>
     <message>
-        <location filename="../webview/webviewdialog.cpp" line="241"/>
+        <location filename="../webview/webviewdialog.cpp" line="246"/>
         <source>Unable to open Syncthing UI via &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -178,7 +178,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="396"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="393"/>
+        <source>None - open Syncthing directly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="401"/>
         <source>Window type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1766,7 +1771,7 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>QtGui::WebPage</name>
     <message>
-        <location filename="../webview/webpage.cpp" line="354"/>
+        <location filename="../webview/webpage.cpp" line="485"/>
         <source>Select path for Syncthing directory …</source>
         <translation type="unfinished"></translation>
     </message>

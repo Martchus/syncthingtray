@@ -49,61 +49,61 @@
 <context>
     <name>SyncthingFileItemAction</name>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="155"/>
+        <location filename="../syncthingfileitemaction.cpp" line="159"/>
         <source>Rescan selected items</source>
         <translation>重新扫描选定的项目</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="157"/>
-        <location filename="../syncthingfileitemaction.cpp" line="174"/>
-        <location filename="../syncthingfileitemaction.cpp" line="205"/>
+        <location filename="../syncthingfileitemaction.cpp" line="161"/>
+        <location filename="../syncthingfileitemaction.cpp" line="178"/>
+        <location filename="../syncthingfileitemaction.cpp" line="209"/>
         <source>Rescan &quot;%1&quot;</source>
         <translation>重新扫描 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="174"/>
+        <location filename="../syncthingfileitemaction.cpp" line="178"/>
         <source>Rescan selected folders</source>
         <translation>重新扫描选定的目录</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="187"/>
-        <location filename="../syncthingfileitemaction.cpp" line="217"/>
+        <location filename="../syncthingfileitemaction.cpp" line="191"/>
+        <location filename="../syncthingfileitemaction.cpp" line="221"/>
         <source>Resume &quot;%1&quot;</source>
         <translation>恢复 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="187"/>
+        <location filename="../syncthingfileitemaction.cpp" line="191"/>
         <source>Resume selected folders</source>
         <translation>恢复选定的目录</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="190"/>
-        <location filename="../syncthingfileitemaction.cpp" line="221"/>
+        <location filename="../syncthingfileitemaction.cpp" line="194"/>
+        <location filename="../syncthingfileitemaction.cpp" line="225"/>
         <source>Pause &quot;%1&quot;</source>
         <translation>暂停 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="190"/>
+        <location filename="../syncthingfileitemaction.cpp" line="194"/>
         <source>Pause selected folders</source>
         <translation>暂停选定的目录</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="205"/>
+        <location filename="../syncthingfileitemaction.cpp" line="209"/>
         <source>Rescan containing folders</source>
         <translation>重新扫描包含的目录</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="217"/>
+        <location filename="../syncthingfileitemaction.cpp" line="221"/>
         <source>Resume containing folders</source>
         <translation>恢复包含的目录</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="221"/>
+        <location filename="../syncthingfileitemaction.cpp" line="225"/>
         <source>Pause containing folders</source>
         <translation>暂停包含的目录</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="245"/>
+        <location filename="../syncthingfileitemaction.cpp" line="249"/>
         <source>Not a shared directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -112,12 +112,12 @@
         <translation type="vanished">使用明亮的自定义颜色</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="279"/>
+        <location filename="../syncthingfileitemaction.cpp" line="283"/>
         <source>Select Syncthing config ...</source>
         <translation>选择 Syncthing 配置 ...</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="284"/>
+        <location filename="../syncthingfileitemaction.cpp" line="288"/>
         <source>About</source>
         <translation>关于</translation>
     </message>

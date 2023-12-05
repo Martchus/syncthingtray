@@ -4,7 +4,7 @@
 <context>
     <name>DetailView</name>
     <message>
-        <location filename="../package6/contents/ui/DetailView.qml" line="14"/>
+        <location filename="../package6/contents/ui/DetailView.qml" line="19"/>
         <location filename="../package5/contents/ui/DetailView.qml" line="14"/>
         <source>Copy value</source>
         <translation type="unfinished"></translation>
@@ -118,55 +118,55 @@
 <context>
     <name>FullRepresentation</name>
     <message>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="246"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="247"/>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="245"/>
         <source>Global</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="253"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="254"/>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="252"/>
         <source>Global incoming traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="271"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="272"/>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="270"/>
         <source>Local</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="278"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="279"/>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="277"/>
         <source>Global outgoing traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="34"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="35"/>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="33"/>
         <source>Folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="40"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="41"/>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="39"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="46"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="47"/>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="45"/>
         <source>Downloads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="52"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="53"/>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="51"/>
         <source>History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="104"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="105"/>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="103"/>
         <source>Toggle filter</source>
         <translation type="unfinished"></translation>
@@ -418,49 +418,49 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../package6/contents/ui/main.qml" line="29"/>
+        <location filename="../package6/contents/ui/main.qml" line="27"/>
         <location filename="../package5/contents/ui/main.qml" line="59"/>
         <source>Open Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/main.qml" line="68"/>
+        <location filename="../package6/contents/ui/main.qml" line="66"/>
         <location filename="../package5/contents/ui/main.qml" line="60"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/main.qml" line="34"/>
+        <location filename="../package6/contents/ui/main.qml" line="32"/>
         <location filename="../package5/contents/ui/main.qml" line="61"/>
         <source>Rescan all folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/main.qml" line="39"/>
+        <location filename="../package6/contents/ui/main.qml" line="37"/>
         <location filename="../package5/contents/ui/main.qml" line="63"/>
         <source>Show own device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/main.qml" line="44"/>
+        <location filename="../package6/contents/ui/main.qml" line="42"/>
         <location filename="../package5/contents/ui/main.qml" line="65"/>
         <source>Restart Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/main.qml" line="49"/>
+        <location filename="../package6/contents/ui/main.qml" line="47"/>
         <location filename="../package5/contents/ui/main.qml" line="67"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/main.qml" line="54"/>
+        <location filename="../package6/contents/ui/main.qml" line="52"/>
         <location filename="../package5/contents/ui/main.qml" line="68"/>
         <source>Internal errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/main.qml" line="60"/>
+        <location filename="../package6/contents/ui/main.qml" line="58"/>
         <location filename="../package5/contents/ui/main.qml" line="70"/>
         <source>About</source>
         <translation type="unfinished"></translation>
