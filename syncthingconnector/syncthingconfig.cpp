@@ -25,6 +25,7 @@ namespace Data {
  */
 QString SyncthingConfig::locateConfigFile(const QString &fileName)
 {
+    // check override via environment variable
     auto path = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_SYNCTHING_CONFIG_DIR");
     if (!path.isEmpty()) {
         if (!QFile::exists(path = path % QChar('/') % fileName)) {
@@ -32,6 +33,8 @@ QString SyncthingConfig::locateConfigFile(const QString &fileName)
         }
         return path;
     }
+
+    // check usual standard locations
     static const QString casings[] = { QStringLiteral("syncthing/"), QStringLiteral("Syncthing/") };
     static const QStandardPaths::StandardLocation locations[] = { QStandardPaths::GenericConfigLocation, QStandardPaths::RuntimeLocation };
     for (const auto location : locations) {
@@ -41,6 +44,22 @@ QString SyncthingConfig::locateConfigFile(const QString &fileName)
             }
         }
     }
+
+    // check state dir used by Syncthing on Unix systems as of v1.27.0 (commit b5082f6af8b0a70afd3bc42977dad26920e72b68)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
+    if (!(path = qEnvironmentVariable("XDG_STATE_HOME")).isEmpty()) {
+        if (QFile::exists(path = path % QStringLiteral("/syncthing/") % fileName)) {
+            return path;
+        }
+    }
+    if (!(path = QStandardPaths::writableLocation(QStandardPaths::HomeLocation)).isEmpty()) {
+        if (QFile::exists(path = path % QStringLiteral("/.local/state/syncthing/") % fileName)) {
+            return path;
+        }
+    }
+#endif
+
+    path.clear();
     return path;
 }
 
