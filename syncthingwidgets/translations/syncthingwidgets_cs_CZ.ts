@@ -1771,7 +1771,7 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>QtGui::WebPage</name>
     <message>
-        <location filename="../webview/webpage.cpp" line="485"/>
+        <location filename="../webview/webpage.cpp" line="489"/>
         <source>Select path for Syncthing directory …</source>
         <translation type="unfinished"></translation>
     </message>

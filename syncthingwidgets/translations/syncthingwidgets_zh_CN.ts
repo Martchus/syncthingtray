@@ -1827,7 +1827,7 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="vanished">选择 Syncthing 目录的路径 ...</translation>
     </message>
     <message>
-        <location filename="../webview/webpage.cpp" line="485"/>
+        <location filename="../webview/webpage.cpp" line="489"/>
         <source>Select path for Syncthing directory …</source>
         <translation type="unfinished"></translation>
     </message>

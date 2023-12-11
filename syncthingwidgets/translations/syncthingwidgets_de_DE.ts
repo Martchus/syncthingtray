@@ -2000,7 +2000,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation type="vanished">Pfad für Syncthing-Ordner auswählen ...</translation>
     </message>
     <message>
-        <location filename="../webview/webpage.cpp" line="485"/>
+        <location filename="../webview/webpage.cpp" line="489"/>
         <source>Select path for Syncthing directory …</source>
         <translation>Pfad für Syncthing-Ordner auswählen …</translation>
     </message>
