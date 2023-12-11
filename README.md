@@ -12,6 +12,11 @@ This project contains the following integrations for [Syncthing](https://github.
 Checkout the [official forum thread](https://forum.syncthing.net/t/yet-another-syncthing-tray) for discussions
 and announcement of new features.
 
+This README document currently serves as the only and main documentation. So read on for details about
+the configuration. If you are not familiar with Syncthing itself already you should also have a look at
+the [Syncthing documentation](https://docs.syncthing.net) as this README is only going to cover the
+Syncthing Tray integration.
+
 Issues can be created on GitHub but please read the "Known bugs and workarounds" section in this document
 before.
 
@@ -134,17 +139,61 @@ The screenshots are not up-to-date.
 ### Syncthing actions for Dolphin
 ![Rescan/pause/status](/fileitemactionplugin/resources/screenshots/dolphin.png?raw=true)
 
-## Configuring Plasmoid and Dolphin integration
+## General remarks on the configuration
+You need to configure how Syncthing Tray should connect to Syncthing itself. The previous
+section "Does this launch or bundle Syncthing itself…" mentions available options. Additionally,
+a wizard is shown on the first launch which can guide though the configuration for common
+setups. If you have dismissed the wizard you can still open it at any point via a button on the
+top-right corner of the settings dialog.
+
+It may be worthwhile to browse though the pages of the configuration dialog to tweak Syncthing
+Tray to your needs, e.g. to turn off notification you may find annoying.
+
+### Location of the configuration file
+The configuration file is usually located under `~/.config/syncthingtray.ini` on GNU/Linux and
+under `%appdata%\syncthingtray.ini` on Windows. For other platforms and further details,
+checkout the
+[Qt documentation](https://doc.qt.io/qt-6/qsettings.html#locations-where-application-settings-are-stored)
+(Syncthing Tray uses the "IniFormat"). For portable installations it is also possible to place
+an empty file called `syncthingtray.ini` directly next to the executable.
+
+You may remove the configuration file under the mentioned location to start from scratch.
+
+Note that this only counts for Syncthing Tray. For Syncthing itself, checkout
+[its own documentation](https://docs.syncthing.net/users/config.html).
+
+The Plasmoid is using the same configuration file but in addition also Plasma's configuration
+management for settings specific to a concrete instance of the Plasmoid.
+
+## Configuring Plasmoid
+The Plasmoid can be added/shown in two different ways:
+
+1. It can be shown as part of the system tray Plasmoid.
+    * This is likely the preferred way of showing it and may also happen by default.
+    * Whether the Plasmoid is shown as part of the system tray Plasmoid can be configured
+      in the settings of the system tray Plasmoid. You can access the settings of the
+      system tray Plasmoid from its context-menu which can be opened by right-clicking on
+      the arrow for expanding/collapsing.
+    * This way it is also possible to show the icon only in certain states by choosing to
+      show it only when important and selecting the states in the Plasmoid's settings.
+    * Configuring the size has no effect when the Plasmoid is displayed as part of the
+      system tray Plasmoid.
+2. It can be added to a panel or the desktop like any other Plasmoid.
+
+This allows you to add multiple instances of the Plasmoid but it is recommended to pick
+only one place. For that it makes also most sense to ensure the autostart of the
+stand-alone tray application is disabled. Otherwise you would end up having two icons
+at the same time (one of the Plasmoid and one of the stand-alone application).
+
+The Plasmoid cannot be closed via its context menu like the stand-alone application.
+Instead, you have to disable it in the settings of the system tray Plasmoid as explained
+before. If you have added the Plasmoid to a panel or the desktop you can delete it like
+any other Plasmoid.
+
+## Configuring Dolphin integration
 The Dolphin integration can be enabled/disabled in Dolphin's context menu settings. It will
 read Syncthing's API key automatically from its config file. If your Syncthing config file is
 not in the default location you need to select it via the corresponding menu action.
-
-The Plasmoid can be added to a panel or the desktop like any other Plasmoid. It can also be shown
-as part of the system tray Plasmoid. That can be configured in the settings of the system
-tray Plasmoid. This way it is also possible to show the icon only in certain states by choosing to
-show it only when important and selecting the states in the Plasmoid's settings. Note that
-configuring the size has no effect when the Plasmoid is displayed as part of the system tray
-Plasmoid.
 
 ## Configuring systemd integration
 The next section explains what it is good for and how to use it. If it doesn't work on your
