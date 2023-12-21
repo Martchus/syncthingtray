@@ -93,9 +93,20 @@ QByteArray makeSyncthingIcon(const StatusIconColorSet &colors, StatusEmblem stat
             "</g>"
         ),
     };
+    static const auto emblemAreaMaskAttribute = QStringLiteral(" mask=\"url(#bitemask)\"");
+    static const auto emblemAreaMask = QStringLiteral(
+          "<mask id=\"bitemask\" maskUnits=\"userSpaceOnUse\">"
+              "<g>"
+                  "<rect id=\"mask-bg\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" style=\"fill:#ffffff\"/>"
+                  "<circle id=\"mask-subtract\" cx=\"11.5\" cy=\"11.5\" r=\"5.5\" style=\"fill:#000000\"/>"
+              "</g>"
+          "</mask>"
+    );
     static const auto normalStrokeWidth = QStringLiteral("0.81771719"), thickStrokeWidth = QStringLiteral("1.22");
     static const auto normalCircleRadius = QStringLiteral("1.22"), largeCircleRadius = QStringLiteral("1.5");
     const auto &emblemData = emblems[static_cast<int>(statusEmblem)];
+    const auto &emblemAreaMaskAttributeData = statusEmblem != StatusEmblem::None ? emblemAreaMaskAttribute : emblems[0];
+    const auto &emblemAreaMaskData = statusEmblem != StatusEmblem::None ? emblemAreaMask : emblems[0];
     const auto &strokeWidthF = strokeWidth == StatusIconStrokeWidth::Normal ? normalStrokeWidth : thickStrokeWidth;
     const auto &circleRadius = strokeWidth == StatusIconStrokeWidth::Normal ? normalCircleRadius : largeCircleRadius;
     return (QStringLiteral(
@@ -105,15 +116,9 @@ QByteArray makeSyncthingIcon(const StatusIconColorSet &colors, StatusEmblem stat
               "<linearGradient id=\"grad\" gradientUnits=\"userSpaceOnUse\" x1=\"8\" y1=\"0\" x2=\"8\" y2=\"16\">"
                   "<stop offset=\"0\" style=\"stop-color:") % gradientStartColor % QStringLiteral("\"/>"
                   "<stop offset=\"1\" style=\"stop-color:") % gradientEndColor % QStringLiteral("\"/>"
-              "</linearGradient>"
-              "<mask id=\"bitemask\" maskUnits=\"userSpaceOnUse\">"
-                  "<g>"
-                      "<rect id=\"mask-bg\" x=\"0\" y=\"0\" width=\"16\" height=\"16\" style=\"fill:#ffffff\"/>"
-                      "<circle id=\"mask-subtract\" cx=\"11.5\" cy=\"11.5\" r=\"5.5\" style=\"fill:#000000\"/>"
-                  "</g>"
-              "</mask>"
+              "</linearGradient>") % emblemAreaMaskData % QStringLiteral(
           "</defs>"
-          "<g id=\"syncthing-logo\" mask=\"url(#bitemask)\">"
+          "<g id=\"syncthing-logo\"") % emblemAreaMaskAttributeData % QStringLiteral(">"
               "<circle id=\"outer\" cx=\"8\" cy=\"8\" r=\"8\" style=\"fill:url(#grad)\"/>"
               "<circle id=\"inner\" cx=\"8\" cy=\"7.9727402\" r=\"5.9557071\" style=\"fill:none;stroke:") % strokeColor % QStringLiteral(";stroke-width:") % strokeWidthF % QStringLiteral("\"/>"
               "<line id=\"arm-l\" x1=\"9.1993189\" y1=\"8.776825\" x2=\"2.262351\" y2=\"9.4173737\" style=\"stroke:") % strokeColor % QStringLiteral(";stroke-width:") % strokeWidthF % QStringLiteral("\"/>"
