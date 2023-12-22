@@ -818,6 +818,10 @@ QWidget *AutostartOptionPage::setupWidget()
  */
 std::optional<QString> configuredAutostartPath()
 {
+    if (qEnvironmentVariableIsSet(PROJECT_VARNAME_UPPER "_AUTOSTART_PATH_MOCK")) {
+        auto mockedPath = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_AUTOSTART_PATH_MOCK");
+        return mockedPath.isEmpty() ? std::nullopt : std::make_optional(mockedPath);
+    }
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
     auto desktopFile = QFile(QStandardPaths::locate(QStandardPaths::ConfigLocation, QStringLiteral("autostart/" PROJECT_NAME ".desktop")));
     // check whether the file can be opened and whether it is enabled but prevent reading large files
@@ -873,6 +877,9 @@ QString supposedAutostartPath()
  */
 bool setAutostartPath(const QString &path)
 {
+    if (qEnvironmentVariableIsSet(PROJECT_VARNAME_UPPER "_AUTOSTART_PATH_MOCK")) {
+        return qputenv(PROJECT_VARNAME_UPPER "_AUTOSTART_PATH_MOCK", path.toLocal8Bit());
+    }
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
     const auto configPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
     if (configPath.isEmpty()) {
