@@ -55,14 +55,14 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     : QWizard(parent, flags)
 {
 #ifdef Q_OS_WINDOWS
-    // avoid using QWizard::AeroStyle when not also the Qt Widgets style "windowsvista"/"windows11" is used
-    // note: Otherwise the wizard is quite unusable with a dark color palette.
+    // avoid using QWizard::AeroStyle when not also the Qt Widgets style "windowsvista" is used
+    // note: Otherwise the wizard is quite unusable with a dark or otherwise customized color palette.
+    //       The Windows 11 style also supports dark/custom palettes so also then the fallback makes
+    //       sense.
     auto fallbackToModernStyle = false;
 #if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
     if (const auto *const style = QApplication::style()) {
-        const auto name = style->name();
-        if (name.compare(QLatin1String("windowsvista"), Qt::CaseInsensitive) != 0
-            && name.compare(QLatin1String("windows11"), Qt::CaseInsensitive) != 0) {
+        if (style->name().compare(QLatin1String("windowsvista"), Qt::CaseInsensitive) != 0) {
             setWizardStyle(QWizard::ModernStyle);
             fallbackToModernStyle = true;
         }
