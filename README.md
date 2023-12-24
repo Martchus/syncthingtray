@@ -265,8 +265,22 @@ ready to serve API requests when started. Hence it is still required to configur
 The re-connect interval will only be in effect while the Syncthing process is running. So despite the
 re-connect interval there will be no connection attempts while the Syncthing process is not running.
 
+## Using the command-line interface
+Syncthing Tray provides two command-line interfaces:
+
+* The separate executable `syncthingctl` allows to interact with a running instance of Syncthing to
+  trigger certain actions like rescans, editing the Syncthing config and more. It complements
+  Syncthing's own command-line interface. Invoke `syncthingctl --help` for details.
+* The GUI/tray executable `syncthingtray` also exposes a command-line interface to interact with
+  a running instance of the GUI/tray. Invoke `syncthingtray --help` for details. Additional remarks:
+    * If Syncthing itself is built into Syncthing Tray (like the Linux and Windows builds found in
+      the release-section on GitHub) then Syncthing's own command-line interface is exposed via
+      `syncthingtray` as well.
+    * On Windows, you'll have to use the `syncthingtray-cli` executable to see output in the terminal.
+
 ## Configuring hotkeys
-Use the same approach as for launching an arbitrary application via a hotkey. Make it invoke
+Use the same approach as for launching an arbitrary application via a hotkey in your graphical
+environment. Make it invoke
 
 * `syncthingtray --trigger` to show the Qt Widgets based tray menu.
 * `syncthingtray --webui` to show the web UI.
