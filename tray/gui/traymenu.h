@@ -3,6 +3,12 @@
 
 #include <QMenu>
 
+QT_FORWARD_DECLARE_CLASS(QHBoxLayout)
+
+#if defined(Q_OS_WINDOWS) && (QT_VERSION >= QT_VERSION_CHECK(6, 1, 0))
+#define TRAY_MENU_HANDLE_WINDOWS11_STYLE
+#endif
+
 namespace QtGui {
 
 class TrayIcon;
@@ -36,6 +42,7 @@ public Q_SLOTS:
     void showUsingPositioningSettings();
 
 protected:
+    bool event(QEvent *) override;
     void mouseReleaseEvent(QMouseEvent *) override;
     void mousePressEvent(QMouseEvent *) override;
     void moveEvent(QMoveEvent *) override;
@@ -44,10 +51,16 @@ protected:
     void focusOutEvent(QFocusEvent *) override;
 
 private:
+    void updateContentMargins();
+
+    QHBoxLayout *m_layout;
     TrayWidget *m_trayWidget;
     TrayIcon *m_trayIcon;
     WindowType m_windowType;
     bool m_startedSystemWindowCommand;
+#ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
+    bool m_isWindows11Style;
+#endif
 };
 
 inline TrayWidget &TrayMenu::widget()

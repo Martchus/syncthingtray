@@ -12,6 +12,10 @@
 #include <QPainter>
 #include <QWindow>
 
+#ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
+#include <QStyle>
+#endif
+
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
 #define QT_SUPPORTS_SYSTEM_WINDOW_COMMANDS
 #endif
@@ -22,18 +26,29 @@ namespace QtGui {
 
 static constexpr auto border = 10;
 
+#ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
+static bool isWindows11Style(const QWidget *widget)
+{
+    const auto *const s = widget->style();
+    return s && s->name().compare(QLatin1String("windows11"), Qt::CaseInsensitive) == 0;
+}
+#endif
+
 TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     : QMenu(parent)
+    , m_layout(new QHBoxLayout)
     , m_trayIcon(trayIcon)
     , m_windowType(WindowType::Popup)
     , m_startedSystemWindowCommand(false)
+#ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
+    , m_isWindows11Style(isWindows11Style(this))
+#endif
 {
     setObjectName(QStringLiteral("QtGui::TrayMenu"));
-    auto *const menuLayout = new QHBoxLayout;
-    menuLayout->setContentsMargins(0, 0, 0, 0);
-    menuLayout->setSpacing(0);
-    menuLayout->addWidget(m_trayWidget = new TrayWidget(this));
-    setLayout(menuLayout);
+    setLayout(m_layout);
+    updateContentMargins();
+    m_layout->setSpacing(0);
+    m_layout->addWidget(m_trayWidget = new TrayWidget(this));
     setPlatformMenu(nullptr);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     setWindowIcon(m_trayWidget->windowIcon());
@@ -79,6 +94,29 @@ void TrayMenu::showUsingPositioningSettings()
     activateWindow();
 }
 
+bool TrayMenu::event(QEvent *event)
+{
+#ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
+    switch (event->type()) {
+    case QEvent::StyleChange:
+        m_isWindows11Style = isWindows11Style(this);
+        updateContentMargins();
+        break;
+    case QEvent::PolishRequest:
+    case QEvent::Polish:
+        if (m_windowType != TrayMenu::WindowType::Popup && m_isWindows11Style) {
+            // avoid polishing via the Windows 11 style as it would break behavior if we don't actually show this as popup
+            event->accept();
+            return true;
+        }
+        break;
+    default:
+        ;
+    }
+#endif
+    return QMenu::event(event);
+}
+
 void TrayMenu::setWindowType(int windowType)
 {
     if (windowType >= 0 && windowType <= 3) {
@@ -106,6 +144,16 @@ void TrayMenu::setWindowType(WindowType windowType)
         break;
     }
     setWindowFlags(flags);
+
+#ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
+    // ensure correct margins and polishing when using Windows 11 style
+    if (m_isWindows11Style) {
+        updateContentMargins();
+        if (windowType == WindowType::Popup) {
+            style()->polish(this);
+        }
+    }
+#endif
 }
 
 void TrayMenu::mousePressEvent(QMouseEvent *event)
@@ -182,7 +230,13 @@ void TrayMenu::paintEvent(QPaintEvent *event)
     if (m_windowType == WindowType::Popup) {
         QMenu::paintEvent(event);
     } else {
-        QPainter(this).fillRect(event->rect(), palette().window());
+#ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
+        const auto p = m_windowType != TrayMenu::WindowType::Popup && m_isWindows11Style
+            ?  QGuiApplication::palette() : palette();
+#else
+        const auto p = palette();
+#endif
+        QPainter(this).fillRect(event->rect(), p.color(backgroundRole()));
         QWidget::paintEvent(event);
     }
 }
@@ -195,6 +249,19 @@ void TrayMenu::focusOutEvent(QFocusEvent *)
         }
         close();
     }
+}
+
+void TrayMenu::updateContentMargins()
+{
+#ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
+    // set higher margins to account for the shadow effects of the Windows 11 style
+    // note: Not sure whether there's a way to determine the required margins dynamically.
+    if (m_windowType == TrayMenu::WindowType::Popup && m_isWindows11Style) {
+        m_layout->setContentsMargins(2, 2, 10, 2);
+        return;
+    }
+#endif
+    m_layout->setContentsMargins(0, 0, 0, 0);
 }
 
 } // namespace QtGui
