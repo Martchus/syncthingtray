@@ -802,14 +802,11 @@ bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
     }
     // add exception
     const QList<QSslCertificate> certs = QSslCertificate::fromPath(certPath);
-    if (certs.isEmpty()) {
+    if (certs.isEmpty() || certs.at(0).isNull()) {
         emit error(tr("Unable to load certificate used by Syncthing."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return false;
     }
-    const QSslCertificate &cert = certs.at(0);
-    m_expectedSslErrors.reserve(4);
-    m_expectedSslErrors << QSslError(QSslError::UnableToGetLocalIssuerCertificate, cert) << QSslError(QSslError::UnableToVerifyFirstCertificate, cert)
-                        << QSslError(QSslError::SelfSignedCertificate, cert) << QSslError(QSslError::HostNameMismatch, cert);
+    m_expectedSslErrors = SyncthingConnectionSettings::compileSslErrors(certs.at(0));
     return true;
 }
 

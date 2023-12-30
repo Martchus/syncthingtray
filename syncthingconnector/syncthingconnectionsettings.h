@@ -10,6 +10,8 @@
 #include <QSslError>
 #include <QString>
 
+QT_FORWARD_DECLARE_CLASS(QSslCertificate)
+
 namespace Data {
 
 /*!
@@ -49,6 +51,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     QList<QSslError> expectedSslErrors;
     SyncthingStatusComputionFlags statusComputionFlags = SyncthingStatusComputionFlags::Default;
     bool autoConnect = false;
+    static QList<QSslError> compileSslErrors(const QSslCertificate &trustedCert);
     bool loadHttpsCert();
 
     static constexpr int defaultTrafficPollInterval = 5000;
