@@ -22,7 +22,7 @@ bool SyncthingConnectionSettings::loadHttpsCert()
     if (httpsCertPath.isEmpty()) {
         return true;
     }
-    const auto certs(QSslCertificate::fromPath(httpsCertPath));
+    const auto certs = QSslCertificate::fromPath(httpsCertPath);
     if (certs.isEmpty() || certs.at(0).isNull()) {
         return false;
     }

@@ -795,13 +795,13 @@ bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
     }
 
     // find cert
-    const QString certPath = !m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate();
+    const auto certPath = !m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate();
     if (certPath.isEmpty()) {
         emit error(tr("Unable to locate certificate used by Syncthing."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return false;
     }
     // add exception
-    const QList<QSslCertificate> certs = QSslCertificate::fromPath(certPath);
+    const auto certs = QSslCertificate::fromPath(certPath);
     if (certs.isEmpty() || certs.at(0).isNull()) {
         emit error(tr("Unable to load certificate used by Syncthing."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return false;
