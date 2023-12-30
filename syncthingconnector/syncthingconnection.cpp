@@ -778,13 +778,13 @@ void SyncthingConnection::continueConnecting()
  *    only do the cleanup of previous certificates but not emit any errors.
  * \returns Returns whether a certificate could be loaded.
  */
-bool SyncthingConnection::loadSelfSignedCertificate()
+bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
 {
     // ensure current exceptions for self-signed certificates are cleared
     m_expectedSslErrors.clear();
 
     // not required when not using secure connection
-    const QUrl syncthingUrl(m_syncthingUrl);
+    const auto syncthingUrl = url.isEmpty() ? m_syncthingUrl : url;
     if (!syncthingUrl.scheme().endsWith(QChar('s'))) {
         return false;
     }

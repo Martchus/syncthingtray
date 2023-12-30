@@ -188,7 +188,7 @@ void MiscTests::testConnectionSettingsAndLoadingSelfSignedCert()
     bool errorOccured = false;
     const function<void(const QString &)> errorHandler
         = [&errorOccured](const QString &message) { errorOccured |= message == QStringLiteral("Unable to load certificate used by Syncthing."); };
-    waitForSignals(bind(&SyncthingConnection::loadSelfSignedCertificate, &connection), 1,
+    waitForSignals(bind(&SyncthingConnection::loadSelfSignedCertificate, &connection, QUrl()), 1,
         signalInfo(&connection, &SyncthingConnection::error, errorHandler, &errorOccured));
     settings.expectedSslErrors.clear();
     CPPUNIT_ASSERT(!connection.applySettings(settings));

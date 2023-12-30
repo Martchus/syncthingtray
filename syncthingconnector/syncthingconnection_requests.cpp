@@ -63,6 +63,7 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 #ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest, longPolling));
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
+    QObject::connect(reply, &QNetworkReply::redirected, this, &SyncthingConnection::handleRedirection);
     if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: GET " << reply->url().toString().toStdString() << Phrases::EndFlush;
     }
@@ -185,6 +186,24 @@ void SyncthingConnection::handleSslErrors(const QList<QSslError> &errors)
     // proceed if all errors are expected
     if (!hasUnexpectedErrors) {
         reply->ignoreSslErrors();
+    }
+}
+
+/*!
+ * \brief Handles redirections.
+ * \remarks The redirect policy will decide whether to follow the redirection or not.
+ *          This function merely handles logging and loading the certificate in case this
+ *          hasn't happened before (e.g. a redirection from http to https).
+ */
+void SyncthingConnection::handleRedirection(const QUrl &url)
+{
+    if (m_loggingFlags & SyncthingConnectionLoggingFlags::ApiReplies) {
+        const auto urlStr = url.toString().toUtf8();
+        cerr << Phrases::Info << "Got redirected to: " << std::string_view(urlStr.data(), static_cast<std::string_view::size_type>(urlStr.size()))
+             << Phrases::EndFlush;
+    }
+    if (m_expectedSslErrors.isEmpty() && url.scheme().endsWith(QChar('s'))) {
+        loadSelfSignedCertificate(url);
     }
 }
 

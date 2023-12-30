@@ -180,7 +180,7 @@ public:
     const QList<QSslError> &expectedSslErrors() const;
 
 public Q_SLOTS:
-    bool loadSelfSignedCertificate();
+    bool loadSelfSignedCertificate(const QUrl &url = QUrl());
     bool applySettings(Data::SyncthingConnectionSettings &connectionSettings);
 
     // methods to initiate/close connection
@@ -337,6 +337,7 @@ private Q_SLOTS:
     void handleFatalConnectionError();
     void handleAdditionalRequestCanceled();
     void handleSslErrors(const QList<QSslError> &errors);
+    void handleRedirection(const QUrl &url);
     void recalculateStatus();
     QString configPath() const;
     QByteArray changeConfigVerb() const;
