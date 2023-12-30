@@ -10,6 +10,11 @@
 #define __declspec(foo)
 #endif
 
+// enforce use of the C header for complex types as cgo's typedefs rely on it
+#ifdef _MSC_VER
+#define _CRT_USE_C_COMPLEX_H
+#endif
+
 #include "libsyncthinginternal.h"
 
 #include <atomic>
