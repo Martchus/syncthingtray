@@ -8,7 +8,7 @@
     directly, for KF6 it is in the sub directory `kf6/kfileitemaction`)
   * `QT_DEBUG_PLUGINS` to 1 for verbose plugin detection.
   * `QT_XCB_NO_GRAB_SERVER` to 1 to prevent grabbing so the debugger is usable.
-5. Ignore warning that executable is no debug build, it is sufficiant when plugin is debug build.
+5. Ignore warning that executable is no debug build, it is sufficient when plugin is debug build.
 
 ## Testing against a development build of Dolphin
 1. Build the whole dependency chain up to `dolphin` installing it under some custom prefix.

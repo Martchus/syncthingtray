@@ -644,7 +644,7 @@ void SyncthingApplet::applySettings(int changeConnectionIndex)
     const KConfigGroup config = this->config();
     const auto &settings = Settings::values();
 
-    // apply notifiction settings
+    // apply notification settings
     settings.apply(m_notifier);
 
     // apply appearance settings

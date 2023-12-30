@@ -26,7 +26,7 @@ rather than the regular home to separate testing from production.
     * If not already set, `QT_PLUGIN_PATH` is set to `$CMAKE_CURRENT_BINARY_DIR/plasmoid/lib` which
       should contain the plugin for the Plasmoid under `plasma/applets/*syncthingplasmoid*.so`.
     * Set `QT_DEBUG_PLUGINS` to 1 for verbose plugin detection (the verbose output might be suppressed
-      when starting via Qt Creator so it may be worthwile to start this from a terminal).
+      when starting via Qt Creator so it may be worthwhile to start this from a terminal).
 7. Ignore warning that executable is no debug build, it is sufficient when
    the plugin is a debug build (see next section for QML debugging).
 
