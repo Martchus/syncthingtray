@@ -16,6 +16,10 @@
 #include <functional>
 #include <thread>
 
+#ifdef PLATFORM_WINDOWS
+#include <windows.h>
+#endif
+
 using namespace std;
 using namespace CppUtilities;
 using namespace LibSyncthing;
@@ -57,7 +61,11 @@ CPPUNIT_TEST_SUITE_REGISTRATION(InterfaceTests);
 
 InterfaceTests::InterfaceTests()
 {
+#ifdef PLATFORM_WINDOWS
+    SetEnvironmentVariableW(L"STNOUPGRADE", L"1");
+#else
     setenv("STNOUPGRADE", "1", 1);
+#endif
 }
 
 void InterfaceTests::setUp()
