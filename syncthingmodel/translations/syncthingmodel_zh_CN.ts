@@ -4,42 +4,42 @@
 <context>
     <name>Data::StatusIconSettings</name>
     <message>
-        <location filename="../syncthingicons.cpp" line="224"/>
+        <location filename="../syncthingicons.cpp" line="229"/>
         <source>Misc. notifications</source>
         <translation>杂项通知</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="225"/>
+        <location filename="../syncthingicons.cpp" line="230"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="226"/>
+        <location filename="../syncthingicons.cpp" line="231"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="227"/>
+        <location filename="../syncthingicons.cpp" line="232"/>
         <source>Idle</source>
         <translation>空闲</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="228"/>
+        <location filename="../syncthingicons.cpp" line="233"/>
         <source>Scanning</source>
         <translation>扫描中</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="229"/>
+        <location filename="../syncthingicons.cpp" line="234"/>
         <source>Synchronizing</source>
         <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="230"/>
+        <location filename="../syncthingicons.cpp" line="235"/>
         <source>Paused</source>
         <translation>已暂停</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="231"/>
+        <location filename="../syncthingicons.cpp" line="236"/>
         <source>Disconnected</source>
         <translation>已断连</translation>
     </message>

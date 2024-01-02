@@ -4,42 +4,42 @@
 <context>
     <name>Data::StatusIconSettings</name>
     <message>
-        <location filename="../syncthingicons.cpp" line="224"/>
+        <location filename="../syncthingicons.cpp" line="229"/>
         <source>Misc. notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="225"/>
+        <location filename="../syncthingicons.cpp" line="230"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="226"/>
+        <location filename="../syncthingicons.cpp" line="231"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="227"/>
+        <location filename="../syncthingicons.cpp" line="232"/>
         <source>Idle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="228"/>
+        <location filename="../syncthingicons.cpp" line="233"/>
         <source>Scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="229"/>
+        <location filename="../syncthingicons.cpp" line="234"/>
         <source>Synchronizing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="230"/>
+        <location filename="../syncthingicons.cpp" line="235"/>
         <source>Paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="231"/>
+        <location filename="../syncthingicons.cpp" line="236"/>
         <source>Disconnected</source>
         <translation type="unfinished"></translation>
     </message>
