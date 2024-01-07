@@ -6,7 +6,7 @@
    <string>Syncthing Tray</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../widgets/resources/syncthingwidgetsicons.qrc">
+   <iconset resource="../../syncthingwidgets/resources/syncthingwidgetsicons.qrc">
     <normaloff>:/icons/hicolor/scalable/app/syncthingtray.svg</normaloff>:/icons/hicolor/scalable/app/syncthingtray.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -512,7 +512,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
   </layout>
   <action name="actionShowNotifications">
    <property name="icon">
-    <iconset theme="text-x-generic" resource="../../model/resources/syncthingmodelicons.qrc">
+    <iconset theme="text-x-generic" resource="../../syncthingmodel/resources/syncthingmodelicons.qrc">
      <normaloff>:/icons/hicolor/scalable/mimetypes/text-x-generic.svg</normaloff>:/icons/hicolor/scalable/mimetypes/text-x-generic.svg</iconset>
    </property>
    <property name="text">
@@ -562,8 +562,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
   <tabstop>recentChangesTreeView</tabstop>
  </tabstops>
  <resources>
-  <include location="../../model/resources/syncthingmodelicons.qrc"/>
-  <include location="../../widgets/resources/syncthingwidgetsicons.qrc"/>
+  <include location="../../syncthingmodel/resources/syncthingmodelicons.qrc"/>
+  <include location="../../syncthingwidgets/resources/syncthingwidgetsicons.qrc"/>
  </resources>
  <connections/>
 </ui>
