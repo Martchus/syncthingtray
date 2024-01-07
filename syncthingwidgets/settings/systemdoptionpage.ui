@@ -318,7 +318,9 @@
  </customwidgets>
  <tabstops>
   <tabstop>showButtonCheckBox</tabstop>
+  <tabstop>considerForReconnectCheckBox</tabstop>
   <tabstop>syncthingUnitLineEdit</tabstop>
+  <tabstop>systemUnitCheckBox</tabstop>
   <tabstop>startPushButton</tabstop>
   <tabstop>stopPushButton</tabstop>
   <tabstop>enablePushButton</tabstop>

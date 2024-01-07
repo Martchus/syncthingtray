@@ -246,6 +246,18 @@
    <header location="global">qtutilities/widgets/clearplaintextedit.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>enabledCheckBox</tabstop>
+  <tabstop>useBuiltInVersionCheckBox</tabstop>
+  <tabstop>argumentsLineEdit</tabstop>
+  <tabstop>logLevelComboBox</tabstop>
+  <tabstop>showButtonCheckBox</tabstop>
+  <tabstop>considerForReconnectCheckBox</tabstop>
+  <tabstop>launchNowPushButton</tabstop>
+  <tabstop>stopPushButton</tabstop>
+  <tabstop>logTextEdit</tabstop>
+  <tabstop>ensureCursorVisibleCheckBox</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources/syncthingwidgetsicons.qrc"/>
  </resources>

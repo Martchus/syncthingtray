@@ -187,6 +187,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>widthSpinBox</tabstop>
+  <tabstop>heightSpinBox</tabstop>
+  <tabstop>showTabTextsCheckBox</tabstop>
+  <tabstop>preferIconsFromThemeCheckBox</tabstop>
+  <tabstop>passiveListView</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

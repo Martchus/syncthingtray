@@ -658,6 +658,30 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>selectionComboBox</tabstop>
+  <tabstop>downPushButton</tabstop>
+  <tabstop>upPushButton</tabstop>
+  <tabstop>addPushButton</tabstop>
+  <tabstop>removePushButton</tabstop>
+  <tabstop>advancedCheckBox</tabstop>
+  <tabstop>urlLineEdit</tabstop>
+  <tabstop>apiKeyLineEdit</tabstop>
+  <tabstop>authCheckBox</tabstop>
+  <tabstop>userNameLineEdit</tabstop>
+  <tabstop>passwordLineEdit</tabstop>
+  <tabstop>insertFromConfigFilePushButton</tabstop>
+  <tabstop>insertFromCustomConfigFilePushButton</tabstop>
+  <tabstop>timeoutSpinBox</tabstop>
+  <tabstop>longPollingSpinBox</tabstop>
+  <tabstop>pollTrafficSpinBox</tabstop>
+  <tabstop>pollDevStatsSpinBox</tabstop>
+  <tabstop>pollErrorsSpinBox</tabstop>
+  <tabstop>reconnectSpinBox</tabstop>
+  <tabstop>autoConnectCheckBox</tabstop>
+  <tabstop>statusComputionFlagsListView</tabstop>
+  <tabstop>connectPushButton</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources/syncthingwidgetsicons.qrc"/>
   <include location="../../tray/resources/syncthingtrayicons.qrc"/>

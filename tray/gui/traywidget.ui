@@ -547,6 +547,20 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
    <header>./gui/downloadview.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>statusPushButton</tabstop>
+  <tabstop>startStopPushButton</tabstop>
+  <tabstop>aboutPushButton</tabstop>
+  <tabstop>settingsPushButton</tabstop>
+  <tabstop>webUiPushButton</tabstop>
+  <tabstop>connectionsPushButton</tabstop>
+  <tabstop>notificationsPushButton</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>dirsTreeView</tabstop>
+  <tabstop>devsTreeView</tabstop>
+  <tabstop>downloadsTreeView</tabstop>
+  <tabstop>recentChangesTreeView</tabstop>
+ </tabstops>
  <resources>
   <include location="../../model/resources/syncthingmodelicons.qrc"/>
   <include location="../../widgets/resources/syncthingwidgetsicons.qrc"/>

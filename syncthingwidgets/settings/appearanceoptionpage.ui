@@ -404,6 +404,21 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>windowTypeComboBox</tabstop>
+  <tabstop>frameShapeComboBox</tabstop>
+  <tabstop>frameShadowComboBox</tabstop>
+  <tabstop>tabPosComboBox</tabstop>
+  <tabstop>widthSpinBox</tabstop>
+  <tabstop>heightSpinBox</tabstop>
+  <tabstop>showTrafficCheckBox</tabstop>
+  <tabstop>showTabTextsCheckBox</tabstop>
+  <tabstop>preferIconsFromThemeCheckBox</tabstop>
+  <tabstop>useCursorPosCheckBox</tabstop>
+  <tabstop>assumeIconPosCheckBox</tabstop>
+  <tabstop>xPosSpinBox</tabstop>
+  <tabstop>yPosSpinBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
