@@ -621,9 +621,12 @@ completely and instead opens Syncthing directly when the tray icon is clicked.
 
 ### Tweak GUI settings for dark mode under Windows
 The dark mode introduced in Windows 10 does not affect traditional desktop
-applications like Syncthing Tray. If you select the widgets style "Fusion" under
-"Qt/Appearance", Syncthing Tray will no longer use native styling of traditional
-desktop apps and follow the dark mode setting (as
+applications like Syncthing Tray. As of version 6.7 the underlying toolkit Qt
+nevertheless provides a style specifically for Windows 11 that supports dark mode.
+So as of Qt 6.7 the dark mode should work out of the box on Windows 11. Otherwise
+you can select the widgets style "Fusion" under "Qt/Appearance". Then Syncthing
+Tray will no longer use native styling of traditional desktop apps and follow the
+dark mode setting (as
 [Qt 6.5 added dark mode support](https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5)).
 
 It is also recommended to apply some further tweaks:
@@ -687,7 +690,9 @@ variable `PLASMA_USE_QT_SCALING=1` might help.
       See discussion on [freedesktop.org](https://lists.freedesktop.org/archives/wayland-devel/2014-August/017584.html).
       Note that the Plasmoid is not affected by this limitation.
     * While the tray menu is shown its entry is shown in the taskbar. Not sure whether there is a way to avoid this.
-* Qt bugs
+* Qt limitations and bugs
+    * Qt < 6.7:
+        * The native style does not look good under Windows 11. Therefore the style "Fusion" is used instead by default.
     * Qt < 6.5:
         * The dark mode introduced in Windows 10 is not supported, see https://bugreports.qt.io/browse/QTBUG-72028.
     * Qt < 5.14
