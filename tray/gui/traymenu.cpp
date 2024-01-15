@@ -110,8 +110,7 @@ bool TrayMenu::event(QEvent *event)
             return true;
         }
         break;
-    default:
-        ;
+    default:;
     }
 #endif
     return QMenu::event(event);
@@ -231,8 +230,7 @@ void TrayMenu::paintEvent(QPaintEvent *event)
         QMenu::paintEvent(event);
     } else {
 #ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
-        const auto p = m_windowType != TrayMenu::WindowType::Popup && m_isWindows11Style
-            ?  QGuiApplication::palette() : palette();
+        const auto p = m_windowType != TrayMenu::WindowType::Popup && m_isWindows11Style ? QGuiApplication::palette() : palette();
 #else
         const auto p = palette();
 #endif
