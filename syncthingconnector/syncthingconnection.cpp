@@ -14,6 +14,7 @@
 
 #include <QAuthenticator>
 #include <QDir>
+#include <QFileInfo>
 #include <QHostAddress>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -776,6 +777,10 @@ void SyncthingConnection::continueConnecting()
  *  - Loading the certificate is only possible if the connection object is configured
  *    to connect to the locally running Syncthing instance. Otherwise this method will
  *    only do the cleanup of previous certificates but not emit any errors.
+ *  - This function uses m_certificatePath which is set by applySettings() if the user
+ *    specified a certificate path manually. Otherwise the path is detected automatically
+ *    and stored in m_dynamicallyDeterminedCertificatePath so the certificate path is
+ *    known in handleSslErrors().
  * \returns Returns whether a certificate could be loaded.
  */
 bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
@@ -795,7 +800,9 @@ bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
     }
 
     // find cert
-    const auto certPath = !m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate();
+    const auto certPath = !m_certificatePath.isEmpty()
+        ? m_certificatePath
+        : (!m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate());
     if (certPath.isEmpty()) {
         emit error(tr("Unable to locate certificate used by Syncthing."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return false;
@@ -807,13 +814,21 @@ bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
         return false;
     }
     m_expectedSslErrors = SyncthingConnectionSettings::compileSslErrors(certs.at(0));
+    // keep track of the dynamically determined certificate path for handleSslErrors()
+    if (m_certificatePath.isEmpty()) {
+        m_dynamicallyDeterminedCertificatePath = certPath;
+        m_certificateLastModified = QFileInfo(certPath).lastModified();
+    }
     return true;
 }
 
 /*!
  * \brief Applies the specified configuration.
  * \remarks
- * - The expected SSL errors of the specified configuration are updated accordingly.
+ * - The expected SSL errors are taken from the specified \a connectionSettings. If empty, this
+ *   function attempts to load expected SSL errors automatically as needed/possible via
+ *   loadSelfSignedCertificate(). It then writes back those SSL errors to \a connectionSettings.
+ *   This way \a connectionSettings can act as a cache for SSL exceptions.
  * - The configuration is not used instantly. It will be used on the next reconnect.
  * \returns Returns whether at least one property requiring a reconnect to take effect has changed.
  * \sa reconnect()
@@ -838,6 +853,8 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
         }
         reconnectRequired = true;
     }
+    m_certificatePath = connectionSettings.httpsCertPath;
+    m_certificateLastModified = connectionSettings.httpCertLastModified;
     if (connectionSettings.expectedSslErrors.isEmpty()) {
         const bool previouslyHadExpectedSslErrors = !expectedSslErrors().isEmpty();
         const bool ok = loadSelfSignedCertificate();

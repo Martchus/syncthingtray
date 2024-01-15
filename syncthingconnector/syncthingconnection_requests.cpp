@@ -146,7 +146,14 @@ static QString certText(const QSslCertificate &cert)
 /// \endcond
 
 /*!
- * \brief Handles SSL errors of replies; just for logging purposes at this point.
+ * \brief Handles SSL errors of replies.
+ * \remarks
+ * - Ignores expected errors which are usually assigned via applySettings() or loadSelfSignedCertificate() to handle a self-signed
+ *   certificate.
+ * - If expected errors have previously been assigned to handle a self-signed certificate this function attempts to reload the
+ *   certificate via loadSelfSignedCertificate() if it appears to be re-generated. This is done because Syncthing might re-generate
+ *   the certificate if it will expire soon (indicated by the log message "Loading HTTPS certificate: certificate will soon expire"
+ *   followed by "Creating new HTTPS certificate").
  */
 void SyncthingConnection::handleSslErrors(const QList<QSslError> &errors)
 {
@@ -160,6 +167,20 @@ void SyncthingConnection::handleSslErrors(const QList<QSslError> &errors)
         //       are omitting that call and just check it here.
         if (m_expectedSslErrors.contains(error)) {
             continue;
+        }
+
+        // check whether the certificate has changed and reload it before emitting error
+        if (const auto &certPath = m_certificatePath.isEmpty() ? m_dynamicallyDeterminedCertificatePath : m_certificatePath;
+            !certPath.isEmpty() && m_certificateLastModified.isValid()) {
+            if (const auto lastModified = QFileInfo(certPath).lastModified(); lastModified > m_certificateLastModified) {
+                if (const auto ok = loadSelfSignedCertificate(); ok && !m_certificatePath.isEmpty()) {
+                    m_certificateLastModified = lastModified;
+                }
+                // re-check whether error is expected after reloading and skip it accordingly
+                if (m_expectedSslErrors.contains(error)) {
+                    continue;
+                }
+            }
         }
 
         // handle the error by emitting the error signal with all the details including the certificate

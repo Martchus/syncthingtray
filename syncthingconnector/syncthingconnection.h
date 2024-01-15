@@ -9,6 +9,7 @@
 #include <c++utilities/misc/flagenumclass.h>
 
 #include <QByteArray>
+#include <QDateTime>
 #include <QJsonObject>
 #include <QList>
 #include <QNetworkRequest>
@@ -422,6 +423,9 @@ private:
     QString m_lastFileName;
     QString m_syncthingVersion;
     bool m_lastFileDeleted;
+    QString m_certificatePath;
+    QString m_dynamicallyDeterminedCertificatePath;
+    QDateTime m_certificateLastModified;
     QList<QSslError> m_expectedSslErrors;
     QSslCertificate m_certFromLastSslError;
     QJsonObject m_rawConfig;

@@ -1,5 +1,7 @@
 #include "./syncthingconnectionsettings.h"
 
+#include <QFileInfo>
+
 namespace Data {
 
 QList<QSslError> SyncthingConnectionSettings::compileSslErrors(const QSslCertificate &trustedCert)
@@ -27,6 +29,7 @@ bool SyncthingConnectionSettings::loadHttpsCert()
         return false;
     }
 
+    httpCertLastModified = QFileInfo(httpsCertPath).lastModified();
     expectedSslErrors = compileSslErrors(certs.at(0));
     return true;
 }

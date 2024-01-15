@@ -6,6 +6,7 @@
 #include <c++utilities/misc/flagenumclass.h>
 
 #include <QByteArray>
+#include <QDateTime>
 #include <QList>
 #include <QSslError>
 #include <QString>
@@ -48,6 +49,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     int requestTimeout = defaultRequestTimeout;
     int longPollingTimeout = defaultLongPollingTimeout;
     QString httpsCertPath;
+    QDateTime httpCertLastModified;
     QList<QSslError> expectedSslErrors;
     SyncthingStatusComputionFlags statusComputionFlags = SyncthingStatusComputionFlags::Default;
     bool autoConnect = false;
