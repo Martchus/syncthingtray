@@ -716,7 +716,7 @@ variable `PLASMA_USE_QT_SCALING=1` might help.
       for details.
 
 ## Copyright notice and license
-Copyright © 2016-2023 Marius Kittler
+Copyright © 2016-2024 Marius Kittler
 
 All code is licensed under [GPL-2-or-later](LICENSE). This does *not* apply to
 code contained in Git repositories included as Git submodule (which contain
