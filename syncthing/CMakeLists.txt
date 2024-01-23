@@ -182,8 +182,8 @@ set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/bu
 # generate Syncthing's assets (not setting GOARCH/GOOS here, this is supposed to run on the host)
 add_custom_command(
     OUTPUT "${SYNCTHING_PATH}/${GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH}"
-    COMMAND "${CMAKE_COMMAND}" -E env "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" run ./script/genassets.go gui
-            > "${GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH}"
+    COMMAND "${CMAKE_COMMAND}" -E env "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" run
+            ./script/genassets.go gui > "${GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH}"
     DEPENDS ${SRC_FILES_SYNCTHING_ASSETS}
     WORKING_DIRECTORY "${SYNCTHING_PATH}"
     COMMENT "Building Syncthing's assets")
@@ -192,11 +192,10 @@ add_custom_command(
 add_custom_command(
     OUTPUT "${SYNCTHINGINTERNAL_LIBRARY_PATH}" "${SYNCTHINGINTERNAL_HEADER_PATH}"
     COMMAND
-        "${CMAKE_COMMAND}" -E env ${GO_COMPILER_ARGS}
-        "GOOS=${GO_TARGET_OS}" "CGO_CFLAGS=${CGO_CFLAGS}" "CGO_CXXFLAGS=${CGO_CXXFLAGS}" "CGO_LDFLAGS=${CGO_LDFLAGS}"
-        "GOARCH=${GO_TARGET_ARCH}" "CGO_ENABLED=1" "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}"
-        "${GO_BIN}" build -v -buildmode c-archive -o "${SYNCTHINGINTERNAL_LIBRARY_PATH}" -ldflags "${GO_LINKER_FLAGS}"
-        ./c-bindings ${GO_RANLIB_ARGS}
+        "${CMAKE_COMMAND}" -E env ${GO_COMPILER_ARGS} "GOOS=${GO_TARGET_OS}" "CGO_CFLAGS=${CGO_CFLAGS}"
+        "CGO_CXXFLAGS=${CGO_CXXFLAGS}" "CGO_LDFLAGS=${CGO_LDFLAGS}" "GOARCH=${GO_TARGET_ARCH}" "CGO_ENABLED=1"
+        "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" build -v -buildmode c-archive -o
+        "${SYNCTHINGINTERNAL_LIBRARY_PATH}" -ldflags "${GO_LINKER_FLAGS}" ./c-bindings ${GO_RANLIB_ARGS}
     DEPENDS ${SRC_FILES_SYNCTHING}
     WORKING_DIRECTORY "${SYNCTHING_PATH}"
     COMMENT "Building Syncthing itself (as library)")
