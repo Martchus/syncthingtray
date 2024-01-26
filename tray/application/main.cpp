@@ -185,11 +185,21 @@ static int runApplication(int argc, const char *const *argv)
     auto cliHelp = ConfigValueArgument("help", 'h', "shows help for Syncthing's CLI");
     cliArg.setRequiredValueCount(Argument::varValueCount);
     cliArg.setFlags(Argument::Flags::Greedy, true);
+    cliArg.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
+    cliArg.setCallback([] (const ArgumentOccurrence &occurrence) {
+        CMD_UTILS_START_CONSOLE;
+        std::exit(static_cast<int>(LibSyncthing::runCli(occurrence.values)));
+    });
     cliArg.setSubArguments({ &cliHelp });
     auto syncthingArg = OperationArgument("syncthing", '\0', "runs Syncthing");
     auto syncthingHelp = ConfigValueArgument("help", 'h', "lists Syncthing's top-level commands");
     syncthingArg.setRequiredValueCount(Argument::varValueCount);
     syncthingArg.setFlags(Argument::Flags::Greedy, true);
+    syncthingArg.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
+    syncthingArg.setCallback([] (const ArgumentOccurrence &occurrence) {
+        CMD_UTILS_START_CONSOLE;
+        std::exit(static_cast<int>(LibSyncthing::runCommand(occurrence.values)));
+    });
     syncthingArg.setSubArguments({ &syncthingHelp });
 #endif
 
@@ -201,16 +211,6 @@ static int runApplication(int argc, const char *const *argv)
 
     // parse arguments
     parser.parseArgs(argc, argv);
-#ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
-    if (cliArg.isPresent()) {
-        CMD_UTILS_START_CONSOLE;
-        return static_cast<int>(LibSyncthing::runCli(cliArg.values()));
-    }
-    if (syncthingArg.isPresent()) {
-        CMD_UTILS_START_CONSOLE;
-        return static_cast<int>(LibSyncthing::runCommand(syncthingArg.values()));
-    }
-#endif
 
     // quit already running application if quit is present
     static auto firstRun = true;

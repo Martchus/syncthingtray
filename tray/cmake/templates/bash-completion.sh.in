@@ -1,0 +1,12 @@
+_@META_TARGET_NAME@()
+{
+  export COMP_LINE=${COMP_WORDS[@]} # for Syncthing's own completion which is invoked via `complete -C ...`
+  reply=$(@TARGET_EXECUTABLE@ --bash-completion-for "$((COMP_CWORD - 1))" "${COMP_WORDS[@]:1}")
+  if [[ $reply =~ COMPREPLY=.* ]]; then
+    eval "$reply"  # for own completions which output `COMPREPLY=(...)`
+  else
+    COMPREPLY=($reply)  # for Syncthing's own completion which outputs just the values
+  fi
+  return 0;
+}
+complete -F _@META_TARGET_NAME@ @META_TARGET_NAME@
