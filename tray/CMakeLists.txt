@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.17.0 FATAL_ERROR)
 # metadata
 set(META_PROJECT_TYPE application)
 set(META_APP_NAME "Syncthing Tray")
-set(META_APP_ACTIONS OPEN_WEBUI)
-set(META_APP_ACTION_OPEN_WEBUI "open-webui" "Open web UI" "--webui")
 
 # use testfiles directory from syncthingconnector
 set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
@@ -147,6 +145,29 @@ if (UNIFY_TRAY_MENUS)
     list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_UNIFY_TRAY_MENUS)
     message(STATUS "left- and right-click context menus will be unified")
 endif ()
+
+# add shortcuts/actions to desktop file
+set(ACTIONS
+    "Actions=ShowTrayMenu;ShowSyncthing;RescanAll;PauseAllDevs;ResumeAllDevs;Restart\n\n\
+[Desktop Action ShowTrayMenu]\n\
+Name=Show tray menu\n\
+Exec=${META_TARGET_NAME} qt-widgets-gui --trigger\n\
+[Desktop Action ShowSyncthing]\n\
+Name=Show Syncthing (currently selected instance)\n\
+Exec=${META_TARGET_NAME} qt-widgets-gui --webui\n\
+[Desktop Action RescanAll]\n\
+Name=Rescan all folders (of local Syncthing instance)\n\
+Exec=${SYNCTHINGCTL_TARGET_NAME} rescan-all\n\
+[Desktop Action PauseAllDevs]\n\
+Name=Pause all devices (of local Syncthing instance)\n\
+Exec=${SYNCTHINGCTL_TARGET_NAME} pause --all-devs\n\
+[Desktop Action ResumeAllDevs]\n\
+Name=Resume all devices (of local Syncthing instance)\n\
+Exec=${SYNCTHINGCTL_TARGET_NAME} resume --all-devs\n\
+[Desktop Action Restart]\n\
+Name=Restart Syncthing (local instance)\n\
+Exec=${SYNCTHINGCTL_TARGET_NAME} restart")
+set(DESKTOP_FILE_ADDITIONAL_ENTRIES "${DESKTOP_FILE_ADDITIONAL_ENTRIES}${ACTIONS}\n")
 
 # include modules to apply configuration
 include(QtGuiConfig)

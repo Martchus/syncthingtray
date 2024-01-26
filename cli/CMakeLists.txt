@@ -49,6 +49,11 @@ include(ShellCompletion)
 include(Doxygen)
 include(ConfigHeader)
 
+# export target name to use syncthingctl for shortcuts in syncthingtray's desktop file
+set(${META_PROJECT_VARNAME_UPPER}_TARGET_NAME
+    "${META_TARGET_NAME}"
+    PARENT_SCOPE)
+
 # avoid running this test in parallel with other tests spawning a Syncthing test instance
 if (META_MAIN_TEST_NAME)
     set_tests_properties("${META_MAIN_TEST_NAME}" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
