@@ -186,7 +186,7 @@ static int runApplication(int argc, const char *const *argv)
     cliArg.setRequiredValueCount(Argument::varValueCount);
     cliArg.setFlags(Argument::Flags::Greedy, true);
     cliArg.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
-    cliArg.setCallback([] (const ArgumentOccurrence &occurrence) {
+    cliArg.setCallback([](const ArgumentOccurrence &occurrence) {
         CMD_UTILS_START_CONSOLE;
         std::exit(static_cast<int>(LibSyncthing::runCli(occurrence.values)));
     });
@@ -196,7 +196,7 @@ static int runApplication(int argc, const char *const *argv)
     syncthingArg.setRequiredValueCount(Argument::varValueCount);
     syncthingArg.setFlags(Argument::Flags::Greedy, true);
     syncthingArg.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
-    syncthingArg.setCallback([] (const ArgumentOccurrence &occurrence) {
+    syncthingArg.setCallback([](const ArgumentOccurrence &occurrence) {
         CMD_UTILS_START_CONSOLE;
         std::exit(static_cast<int>(LibSyncthing::runCommand(occurrence.values)));
     });
