@@ -823,6 +823,18 @@ bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
 }
 
 /*!
+ * \brief Clears the self-signed certificate that might be loaded via loadSelfSignedCertificate().
+ * \remarks This function mainly exists to ease testing; one normally doesn't need to invoke it explicitly.
+ */
+void SyncthingConnection::clearSelfSignedCertificate()
+{
+    m_expectedSslErrors.clear();
+    m_certificatePath.clear();
+    m_dynamicallyDeterminedCertificatePath.clear();
+    m_certificateLastModified = QDateTime();
+}
+
+/*!
  * \brief Applies the specified configuration.
  * \remarks
  * - The expected SSL errors are taken from the specified \a connectionSettings. If empty, this

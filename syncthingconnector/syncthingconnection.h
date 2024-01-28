@@ -182,6 +182,7 @@ public:
 
 public Q_SLOTS:
     bool loadSelfSignedCertificate(const QUrl &url = QUrl());
+    void clearSelfSignedCertificate();
     bool applySettings(Data::SyncthingConnectionSettings &connectionSettings);
 
     // methods to initiate/close connection

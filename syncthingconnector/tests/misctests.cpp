@@ -17,6 +17,8 @@
 #include <QFile>
 #include <QUrl>
 
+#include <iostream>
+
 using namespace std;
 using namespace Data;
 using namespace CppUtilities;
@@ -185,12 +187,18 @@ void MiscTests::testConnectionSettingsAndLoadingSelfSignedCert()
     settings.syncthingUrl = QStringLiteral("https://localhost:8080");
     CPPUNIT_ASSERT(connection.applySettings(settings));
     connection.m_configDir = QStringLiteral("some-non/existent-dir");
-    bool errorOccured = false;
+    connection.clearSelfSignedCertificate();
+    const auto expectedErrorMessage = QStringLiteral("Unable to load certificate used by Syncthing.");
+    auto expectedErrorOccured = false;
     const function<void(const QString &)> errorHandler
-        = [&errorOccured](const QString &message) { errorOccured |= message == QStringLiteral("Unable to load certificate used by Syncthing."); };
-    waitForSignals(bind(&SyncthingConnection::loadSelfSignedCertificate, &connection, QUrl()), 1,
-        signalInfo(&connection, &SyncthingConnection::error, errorHandler, &errorOccured));
+        = [&expectedErrorOccured, &expectedErrorMessage](const QString &message) {
+              std::cout << "\n - error: " << message.toLocal8Bit().data() << '\n';
+              expectedErrorOccured |= message == expectedErrorMessage;
+          };
+    waitForSignals(bind(&SyncthingConnection::loadSelfSignedCertificate, &connection, QUrl()), 1000,
+        signalInfo(&connection, &SyncthingConnection::error, errorHandler, &expectedErrorOccured));
     settings.expectedSslErrors.clear();
+    settings.httpsCertPath.clear();
     CPPUNIT_ASSERT(!connection.applySettings(settings));
 }
 
