@@ -256,7 +256,7 @@
         <translation>无法加载 Syncthing 使用的证书。</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="993"/>
+        <location filename="../syncthingconnection.cpp" line="1005"/>
         <source>at offset %1</source>
         <translation>在偏移量 %1 处</translation>
     </message>

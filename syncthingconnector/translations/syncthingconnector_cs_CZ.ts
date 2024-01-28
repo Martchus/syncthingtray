@@ -260,7 +260,7 @@
         <translation>Nedaří se vyžádat si události úložiště: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="993"/>
+        <location filename="../syncthingconnection.cpp" line="1005"/>
         <source>at offset %1</source>
         <translation>na posunu %1</translation>
     </message>
