@@ -676,7 +676,7 @@ void ConnectionTests::testRequestingRescan()
     bool errorOccured = false;
     const auto errorHandler = [&errorOccured](const QString &message) {
         errorOccured |= message.startsWith(QStringLiteral("Unable to request rescan: Error transferring"))
-            && message.endsWith(QStringLiteral("/rest/db/scan?folder=non-existing-dir&sub=sub/path - server replied: Internal Server Error"));
+            && message.endsWith(QStringLiteral("/rest/db/scan?folder=non-existing-dir&sub=sub%2Fpath - server replied: Internal Server Error"));
     };
     waitForSignals(bind(&SyncthingConnection::rescan, &m_connection, QStringLiteral("non-existing-dir"), QStringLiteral("sub/path")), 5000,
         connectionSignal(&SyncthingConnection::error, errorHandler, &errorOccured));
