@@ -31,6 +31,18 @@ namespace Data {
 // helper to create QNetworkRequest
 
 /*!
+ * \brief Formats the specified \a value so it can be passed to QUrlQuery::addQueryItem().
+ * \remarks
+ * The function QUrlQuery::addQueryItem() does *not* treat spaces and plus signs as the same,
+ * ike HTML forms and Syncthing do. So it is required to use QUrl::toPercentEncoding() as Syncthing
+ * would otherwise misinterpret plus signs as spaces.
+ */
+inline QString formatQueryItem(const QString &value)
+{
+    return QString::fromUtf8(QUrl::toPercentEncoding(value));
+}
+
+/*!
  * \brief Prepares a request for the specified \a path and \a query.
  */
 QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const QUrlQuery &query, bool rest, bool longPolling)
@@ -518,9 +530,9 @@ void SyncthingConnection::rescan(const QString &dirId, const QString &relpath)
     }
 
     auto query = QUrlQuery();
-    query.addQueryItem(QStringLiteral("folder"), dirId);
+    query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
     if (!relpath.isEmpty()) {
-        query.addQueryItem(QStringLiteral("sub"), relpath);
+        query.addQueryItem(QStringLiteral("sub"), formatQueryItem(relpath));
     }
     QNetworkReply *reply = postData(QStringLiteral("db/scan"), query);
     reply->setProperty("dirId", dirId);
@@ -1118,7 +1130,7 @@ void SyncthingConnection::readDirStatistics()
 void SyncthingConnection::requestDirStatus(const QString &dirId)
 {
     auto query = QUrlQuery();
-    query.addQueryItem(QStringLiteral("folder"), dirId);
+    query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
     auto *const reply = requestData(QStringLiteral("db/status"), query);
     reply->setProperty("dirId", dirId);
     reply->setProperty("lastEventId", m_lastEventId);
@@ -1178,7 +1190,7 @@ void SyncthingConnection::readDirStatus()
 void SyncthingConnection::requestDirPullErrors(const QString &dirId, int page, int perPage)
 {
     auto query = QUrlQuery();
-    query.addQueryItem(QStringLiteral("folder"), dirId);
+    query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
     if (page > 0 && perPage > 0) {
         query.addQueryItem(QStringLiteral("page"), QString::number(page));
         query.addQueryItem(QStringLiteral("perpage"), QString::number(perPage));
@@ -1234,8 +1246,8 @@ void SyncthingConnection::readDirPullErrors()
 void SyncthingConnection::requestCompletion(const QString &devId, const QString &dirId)
 {
     auto query = QUrlQuery();
-    query.addQueryItem(QStringLiteral("device"), devId);
-    query.addQueryItem(QStringLiteral("folder"), dirId);
+    query.addQueryItem(QStringLiteral("device"), formatQueryItem(devId));
+    query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
     auto *const reply = requestData(QStringLiteral("db/completion"), query);
     reply->setProperty("devId", devId);
     reply->setProperty("dirId", dirId);
@@ -1418,7 +1430,7 @@ void SyncthingConnection::readVersion()
 void SyncthingConnection::requestQrCode(const QString &text)
 {
     auto query = QUrlQuery();
-    query.addQueryItem(QStringLiteral("text"), text);
+    query.addQueryItem(QStringLiteral("text"), formatQueryItem(text));
     QNetworkReply *reply = requestData(QStringLiteral("/qr/"), query, false);
     reply->setProperty("qrText", text);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readQrCode);
@@ -1504,7 +1516,7 @@ void SyncthingConnection::readLog()
 void SyncthingConnection::requestOverride(const QString &dirId)
 {
     auto query = QUrlQuery();
-    query.addQueryItem(QStringLiteral("folder"), dirId);
+    query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
     auto *const reply = postData(QStringLiteral("db/override"), query);
     reply->setProperty("dirId", dirId);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readOverride, Qt::QueuedConnection);
@@ -1537,7 +1549,7 @@ void SyncthingConnection::readOverride()
 void SyncthingConnection::requestRevert(const QString &dirId)
 {
     auto query = QUrlQuery();
-    query.addQueryItem(QStringLiteral("folder"), dirId);
+    query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
     auto *const reply = postData(QStringLiteral("db/revert"), query);
     reply->setProperty("dirId", dirId);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readRevert, Qt::QueuedConnection);
