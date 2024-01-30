@@ -4,6 +4,7 @@
 #ifndef SYNCTHINGTESTHELPER_GLOBAL
 #define SYNCTHINGTESTHELPER_GLOBAL
 
+#include "syncthingtesthelper-definitions.h"
 #include <c++utilities/application/global.h>
 
 #ifdef SYNCTHINGTESTHELPER_STATIC

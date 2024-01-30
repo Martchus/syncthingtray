@@ -4,6 +4,7 @@
 #ifndef LIB_SYNCTHING_CONNECTOR_GLOBAL
 #define LIB_SYNCTHING_CONNECTOR_GLOBAL
 
+#include "syncthingconnector-devel-definitions.h"
 #include <c++utilities/application/global.h>
 
 #ifdef LIB_SYNCTHING_CONNECTOR_STATIC

@@ -4,6 +4,7 @@
 #ifndef LIB_SYNCTHING_MODEL_GLOBAL
 #define LIB_SYNCTHING_MODEL_GLOBAL
 
+#include "syncthingmodel-devel-definitions.h"
 #include <c++utilities/application/global.h>
 
 #ifdef LIB_SYNCTHING_MODEL_STATIC

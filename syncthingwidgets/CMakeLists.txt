@@ -99,12 +99,14 @@ find_package(syncthingconnector ${META_APP_VERSION} REQUIRED)
 use_syncthingconnector(VISIBILITY PUBLIC)
 find_package(syncthingmodel ${META_APP_VERSION} REQUIRED)
 use_syncthingmodel(VISIBILITY PUBLIC)
+find_package(syncthingtesthelper ${META_APP_VERSION} REQUIRED)
+list(APPEND PRIVATE_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../testhelper/include")
 
 # configure libsyncthing
 option(USE_LIBSYNCTHING "whether libsyncthing should be included for the launcher" OFF)
 if (USE_LIBSYNCTHING)
     find_package(syncthing ${META_APP_VERSION} REQUIRED)
-    use_syncthing()
+    use_syncthing(VISIBILITY PUBLIC)
     list(APPEND META_PUBLIC_COMPILE_DEFINITIONS SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
 endif ()
 

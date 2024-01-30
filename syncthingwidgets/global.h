@@ -4,6 +4,7 @@
 #ifndef SYNCTHINGWIDGETS_GLOBAL
 #define SYNCTHINGWIDGETS_GLOBAL
 
+#include "syncthingwidgets-devel-definitions.h"
 #include <c++utilities/application/global.h>
 
 #ifdef SYNCTHINGWIDGETS_STATIC

@@ -31,6 +31,7 @@ use_syncthingconnector()
 # find libraries used by tests
 find_package(syncthingtesthelper ${META_APP_VERSION} REQUIRED)
 list(APPEND TEST_LIBRARIES ${SYNCTHINGTESTHELPER_LIB})
+list(APPEND PRIVATE_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../testhelper/include")
 use_standard_filesystem(LIBRARIES_VARIABLE "TEST_LIBRARIES" PACKAGES_VARIABLE "TEST_PACKAGES" OPTIONAL)
 
 # include modules to apply configuration

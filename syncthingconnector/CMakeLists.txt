@@ -142,6 +142,7 @@ include(LibraryTarget)
 
 # link tests against test helper (can't use find_package because testhelper target is not present at this point)
 list(APPEND TEST_LIBRARIES syncthingtesthelper)
+list(APPEND PRIVATE_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../testhelper/include")
 include(TestTarget)
 
 # avoid running this test in parallel with other tests spawning a Syncthing test instance
