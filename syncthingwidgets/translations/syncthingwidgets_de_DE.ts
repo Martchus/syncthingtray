@@ -96,7 +96,7 @@
         <translation type="obsolete">Einstellungen</translation>
     </message>
     <message>
-        <location filename="../webview/webviewdialog.cpp" line="246"/>
+        <location filename="../webview/webviewdialog.cpp" line="249"/>
         <source>Unable to open Syncthing UI via &quot;%1&quot;: %2</source>
         <translation>Die Syncthing-Oberfläche konnte nicht via &quot;%1&quot; geöffnet werden: %2</translation>
     </message>
@@ -2000,7 +2000,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation type="vanished">Pfad für Syncthing-Ordner auswählen ...</translation>
     </message>
     <message>
-        <location filename="../webview/webpage.cpp" line="489"/>
+        <location filename="../webview/webpage.cpp" line="492"/>
         <source>Select path for Syncthing directory …</source>
         <translation>Pfad für Syncthing-Ordner auswählen …</translation>
     </message>
@@ -2008,7 +2008,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>QtGui::WebViewDialog</name>
     <message>
-        <location filename="../webview/webviewdialog.cpp" line="43"/>
+        <location filename="../webview/webviewdialog.cpp" line="46"/>
         <source>Syncthing</source>
         <translation></translation>
     </message>
