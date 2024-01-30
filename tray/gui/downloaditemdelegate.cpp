@@ -1,5 +1,7 @@
 #include "./downloaditemdelegate.h"
 
+#include "./helper.h"
+
 #include <syncthingmodel/syncthingdownloadmodel.h>
 #include <syncthingmodel/syncthingicons.h>
 
@@ -22,11 +24,6 @@ using namespace std;
 using namespace Data;
 
 namespace QtGui {
-
-inline int centerObj(int avail, int size)
-{
-    return (avail - size) / 2;
-}
 
 DownloadItemDelegate::DownloadItemDelegate(QObject *parent)
     : QStyledItemDelegate(parent)

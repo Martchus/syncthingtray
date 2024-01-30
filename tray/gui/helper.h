@@ -103,6 +103,11 @@ template <typename ViewType, typename ActionType> inline auto triggerActionForSe
     };
 }
 
+inline int centerObj(int avail, int size)
+{
+    return (avail - size) / 2;
+}
+
 } // namespace QtGui
 
 #endif // TRAY_GUI_HELPER_H

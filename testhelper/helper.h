@@ -4,6 +4,7 @@
 #include "./global.h"
 
 #include <c++utilities/conversion/stringbuilder.h>
+#include <c++utilities/tests/testutils.h>
 
 #ifndef SYNCTHINGTESTHELPER_FOR_CLI
 #include <cppunit/extensions/HelperMacros.h>

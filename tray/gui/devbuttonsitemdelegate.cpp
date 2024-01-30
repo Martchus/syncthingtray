@@ -1,5 +1,7 @@
 #include "./devbuttonsitemdelegate.h"
 
+#include "./helper.h"
+
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingmodel/syncthingdevicemodel.h>
 #include <syncthingmodel/syncthingicons.h>
@@ -19,11 +21,6 @@
 using namespace Data;
 
 namespace QtGui {
-
-inline int centerObj(int avail, int size)
-{
-    return (avail - size) / 2;
-}
 
 DevButtonsItemDelegate::DevButtonsItemDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
