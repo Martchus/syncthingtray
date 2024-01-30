@@ -4,9 +4,12 @@
 
 #include "../settings/settings.h"
 
-#include <syncthingconnector/syncthingconnection.h>
+// use meta-data of syncthingtray application here
+// note: Using the meta-data from the library would make more sense but this breaks
+//       unity builds.
+#include "resources/../../tray/resources/config.h"
 
-#include "resources/config.h"
+#include <syncthingconnector/syncthingconnection.h>
 
 #include <QAuthenticator>
 #include <QDesktopServices>

@@ -1,7 +1,10 @@
 #include "./webviewdialog.h"
 #include "../settings/settings.h"
 
-#include "resources/config.h"
+// use meta-data of syncthingtray application here
+// note: Using the meta-data from the library would make more sense but this breaks
+//       unity builds.
+#include "resources/../../tray/resources/config.h"
 
 #include <syncthingconnector/syncthingprocess.h>
 
