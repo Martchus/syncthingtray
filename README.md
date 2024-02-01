@@ -247,7 +247,7 @@ Note that the Plasma Wayland session screwed things up in the way I've described
 but this change might not be available on older distributions.
 
 ### Build-time configuration
-The systemd integration can be explicitly enabled/disabled add compile time by adding
+The systemd integration can be explicitly enabled/disabled at compile time by adding
 `-DSYSTEMD_SUPPORT=ON/OFF` to the CMake arguments. If the systemd integration does not work be sure your
 version of Syncthing Tray has been compiled with systemd support.
 
