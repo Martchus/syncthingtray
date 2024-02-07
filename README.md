@@ -341,6 +341,8 @@ See the release section on GitHub.
               the package `libopengl0` is installed on Debian/Ubuntu)
         * Supports X11 and Wayland (set the environment variable `QT_QPA_PLATFORM=xcb` to disable
           native Wayland support if it does not work on your system)
+        * Binaries are signed with the GPG key
+          [`B9E36A7275FC61B464B67907E06FE8F53CDC6A4C`](https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index).
 * Windows
     * for binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
         * Windows SmartScreen will likely block the execution (you'll get a window saying "Windows protected your PC");
@@ -351,6 +353,8 @@ See the release section on GitHub.
         * the Qt 5 based version should still work on older versions down to Windows 7 although this is not regularly checked
             * on Windows 7 the bundled Go/Syncthing will nevertheless be too new; use a version of Go/Syncthing that is *older*
               than 1.21/1.27.0 instead
+        * Binaries are signed with the GPG key
+          [`B9E36A7275FC61B464B67907E06FE8F53CDC6A4C`](https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index).
     * there is also a [Chocolatey package](https://community.chocolatey.org/packages/syncthingtray) maintained by yan12125
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
 * FreeBSD
