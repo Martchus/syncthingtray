@@ -39,6 +39,7 @@ SyncthingLauncher *SyncthingLauncher::s_mainInstance = nullptr;
 SyncthingLauncher::SyncthingLauncher(QObject *parent)
     : QObject(parent)
     , m_lastLauncherSettings(nullptr)
+    , m_relevantConnection(nullptr)
     , m_guiListeningUrlSearch("Access the GUI via the following URL: ", "\n\r", std::string_view(),
           std::bind(&SyncthingLauncher::handleGuiListeningUrlFound, this, std::placeholders::_1, std::placeholders::_2))
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
