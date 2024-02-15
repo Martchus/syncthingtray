@@ -1,8 +1,15 @@
 #include "./syncthinglauncher.h"
 
+#include <syncthingconnector/syncthingconnection.h>
+
 #include "../settings/settings.h"
 
 #include <QtConcurrentRun>
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+#include <QNetworkInformation>
+#define SYNCTHINGCONNECTION_SUPPORT_METERED
+#endif
 
 #include <algorithm>
 #include <functional>
@@ -31,13 +38,17 @@ SyncthingLauncher *SyncthingLauncher::s_mainInstance = nullptr;
  */
 SyncthingLauncher::SyncthingLauncher(QObject *parent)
     : QObject(parent)
+    , m_lastLauncherSettings(nullptr)
     , m_guiListeningUrlSearch("Access the GUI via the following URL: ", "\n\r", std::string_view(),
           std::bind(&SyncthingLauncher::handleGuiListeningUrlFound, this, std::placeholders::_1, std::placeholders::_2))
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_libsyncthingLogLevel(LibSyncthing::LogLevel::Info)
 #endif
     , m_manuallyStopped(true)
+    , m_stoppedMetered(false)
     , m_emittingOutput(false)
+    , m_useLibSyncthing(false)
+    , m_stopOnMeteredConnection(false)
 {
     connect(&m_process, &SyncthingProcess::readyRead, this, &SyncthingLauncher::handleProcessReadyRead, Qt::QueuedConnection);
     connect(&m_process, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
@@ -45,6 +56,15 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     connect(&m_process, &SyncthingProcess::stateChanged, this, &SyncthingLauncher::handleProcessStateChanged, Qt::QueuedConnection);
     connect(&m_process, &SyncthingProcess::errorOccurred, this, &SyncthingLauncher::errorOccurred, Qt::QueuedConnection);
     connect(&m_process, &SyncthingProcess::confirmKill, this, &SyncthingLauncher::confirmKill);
+
+    // initialize handling of metered connections
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+    QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Metered);
+    if (const auto *const networkInformation = QNetworkInformation::instance(); networkInformation->supports(QNetworkInformation::Feature::Metered)) {
+        connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) { setNetworkConnectionMetered(isMetered); });
+        setNetworkConnectionMetered(networkInformation->isMetered());
+    }
+#endif
 }
 
 /*!
@@ -58,6 +78,38 @@ void SyncthingLauncher::setEmittingOutput(bool emittingOutput)
     QByteArray data;
     m_outputBuffer.swap(data);
     emit outputAvailable(std::move(data));
+}
+
+/*!
+ * \brief Sets whether the current network connection is metered and stops/starts Syncthing accordingly as needed.
+ * \remarks
+ * - This is detected and monitored automatically. A manually set value will be overridden again on the next change.
+ * - One may set this manually for testing purposes or in case the automatic detection is not supported (then
+ *   isNetworkConnectionMetered() returns a std::optional<bool> without value).
+ */
+void SyncthingLauncher::setNetworkConnectionMetered(std::optional<bool> metered)
+{
+    if (metered != m_metered) {
+        m_metered = metered;
+        if (m_stopOnMeteredConnection) {
+            if (metered.value_or(false)) {
+                terminateDueToMeteredConnection();
+            } else if (!metered.value_or(true) && m_stoppedMetered && m_lastLauncherSettings) {
+                launch(*m_lastLauncherSettings);
+            }
+        }
+        emit networkConnectionMeteredChanged(metered);
+    }
+}
+
+/*!
+ * \brief Sets whether Syncthing should automatically be stopped as long as the network connection is metered.
+ */
+void SyncthingLauncher::setStoppingOnMeteredConnection(bool stopOnMeteredConnection)
+{
+    if ((stopOnMeteredConnection != m_stopOnMeteredConnection) && (m_stopOnMeteredConnection = stopOnMeteredConnection) && m_metered) {
+        terminateDueToMeteredConnection();
+    }
 }
 
 /*!
@@ -139,6 +191,8 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
     } else {
         launch(launcherSettings.syncthingPath, SyncthingProcess::splitArguments(launcherSettings.syncthingArgs));
     }
+    m_stopOnMeteredConnection = launcherSettings.stopOnMeteredConnection;
+    m_lastLauncherSettings = &launcherSettings;
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
@@ -233,6 +287,9 @@ void SyncthingLauncher::handleProcessFinished(int exitCode, QProcess::ExitStatus
 void SyncthingLauncher::resetState()
 {
     m_manuallyStopped = false;
+    m_stoppedMetered = false;
+    delete m_relevantConnection;
+    m_relevantConnection = nullptr;
     m_guiListeningUrlSearch.reset();
     if (!m_guiListeningUrl.isEmpty()) {
         m_guiListeningUrl.clear();
@@ -279,6 +336,15 @@ void SyncthingLauncher::handleGuiListeningUrlFound(CppUtilities::BufferSearch &,
 {
     m_guiListeningUrl.setUrl(QString::fromStdString(searchResult));
     emit guiUrlChanged(m_guiListeningUrl);
+}
+
+void SyncthingLauncher::terminateDueToMeteredConnection()
+{
+    if (m_lastLauncherSettings && !m_relevantConnection) {
+        m_relevantConnection = m_lastLauncherSettings->connectionForLauncher(this);
+    }
+    terminate(m_relevantConnection);
+    m_stoppedMetered = true;
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING

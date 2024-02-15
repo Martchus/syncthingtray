@@ -82,6 +82,15 @@ using namespace QtUtilities;
 
 namespace QtGui {
 
+/// \brief Returns the tooltip text for the specified \a isMetered value.
+static QString meteredToolTip(std::optional<bool> isMetered)
+{
+    return isMetered.has_value()
+        ? (isMetered.value() ? QCoreApplication::translate("QtGui", "The network connection is currently considered metered.")
+                             : QCoreApplication::translate("QtGui", "The network connection is currently not considered metered."))
+        : QCoreApplication::translate("QtGui", "Unable to determine whether the network connection is metered; assuming an unmetered connection.");
+}
+
 // ConnectionOptionPage
 ConnectionOptionPage::ConnectionOptionPage(Data::SyncthingConnection *connection, QWidget *parentWidget)
     : ConnectionOptionPageBase(parentWidget)
@@ -133,6 +142,11 @@ QWidget *ConnectionOptionPage::setupWidget()
     QObject::connect(ui()->addPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::addNewConfig, this));
     QObject::connect(ui()->removePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::removeSelectedConfig, this));
     QObject::connect(ui()->advancedCheckBox, &QCheckBox::toggled, bind(&ConnectionOptionPage::toggleAdvancedSettings, this, std::placeholders::_1));
+    if (const auto *const launcher = SyncthingLauncher::mainInstance()) {
+        handleNetworkConnectionMeteredChanged(launcher->isNetworkConnectionMetered());
+        QObject::connect(launcher, &SyncthingLauncher::networkConnectionMeteredChanged,
+            bind(&ConnectionOptionPage::handleNetworkConnectionMeteredChanged, this, std::placeholders::_1));
+    }
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
     ui()->timeoutSpinBox->setEnabled(false);
 #endif
@@ -220,6 +234,7 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
     ui()->pollErrorsSpinBox->setValue(connectionSettings.errorsPollInterval);
     ui()->reconnectSpinBox->setValue(connectionSettings.reconnectInterval);
     ui()->autoConnectCheckBox->setChecked(connectionSettings.autoConnect);
+    ui()->pauseOnMeteredConnectionCheckBox->setChecked(connectionSettings.pauseOnMeteredConnection);
     m_statusComputionModel->setStatusComputionFlags(connectionSettings.statusComputionFlags);
     setCurrentIndex(index);
     return true;
@@ -247,6 +262,7 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
     connectionSettings.errorsPollInterval = ui()->pollErrorsSpinBox->value();
     connectionSettings.reconnectInterval = ui()->reconnectSpinBox->value();
     connectionSettings.autoConnect = ui()->autoConnectCheckBox->isChecked();
+    connectionSettings.pauseOnMeteredConnection = ui()->pauseOnMeteredConnectionCheckBox->isChecked();
     connectionSettings.statusComputionFlags = m_statusComputionModel->statusComputionFlags();
     if (!connectionSettings.loadHttpsCert()) {
         const QString errorMessage = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to load specified certificate \"%1\".")
@@ -366,18 +382,24 @@ void ConnectionOptionPage::toggleAdvancedSettings(bool show)
         return;
     }
 #if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
-    for (auto *const widget : std::initializer_list<QWidget *>{
-             ui()->authLabel, ui()->userNameLabel, ui()->passwordLabel, ui()->timeoutLabel, ui()->longPollingLabel, ui()->pollLabel }) {
+    for (auto *const widget : std::initializer_list<QWidget *>{ ui()->authLabel, ui()->userNameLabel, ui()->passwordLabel, ui()->timeoutLabel,
+             ui()->longPollingLabel, ui()->pollLabel, ui()->pauseOnMeteredConnectionCheckBox }) {
         ui()->formLayout->setRowVisible(widget, show);
     }
 #else
-    for (auto *const widget : std::initializer_list<QWidget *>{ ui()->authLabel, ui()->authCheckBox, ui()->userNameLabel, ui()->userNameLineEdit,
-             ui()->passwordLabel, ui()->passwordLineEdit, ui()->timeoutLabel, ui()->timeoutSpinBox, ui()->longPollingLabel, ui()->longPollingSpinBox,
-             ui()->pollLabel, ui()->pollDevStatsLabel, ui()->pollDevStatsSpinBox, ui()->pollErrorsLabel, ui()->pollErrorsSpinBox,
-             ui()->pollTrafficLabel, ui()->pollTrafficSpinBox, ui()->reconnectLabel, ui()->reconnectSpinBox }) {
+    for (auto *const widget :
+        std::initializer_list<QWidget *>{ ui()->authLabel, ui()->authCheckBox, ui()->userNameLabel, ui()->userNameLineEdit, ui()->passwordLabel,
+            ui()->passwordLineEdit, ui()->timeoutLabel, ui()->timeoutSpinBox, ui()->longPollingLabel, ui()->longPollingSpinBox, ui()->pollLabel,
+            ui()->pollDevStatsLabel, ui()->pollDevStatsSpinBox, ui()->pollErrorsLabel, ui()->pollErrorsSpinBox, ui()->pollTrafficLabel,
+            ui()->pollTrafficSpinBox, ui()->reconnectLabel, ui()->reconnectSpinBox, ui()->pauseOnMeteredConnectionCheckBox }) {
         widget->setVisible(show);
     }
 #endif
+}
+
+void ConnectionOptionPage::handleNetworkConnectionMeteredChanged(std::optional<bool> isMetered)
+{
+    ui()->pauseOnMeteredConnectionCheckBox->setToolTip(meteredToolTip(isMetered));
 }
 
 bool ConnectionOptionPage::apply()
@@ -1088,6 +1110,7 @@ QWidget *LauncherOptionPage::setupWidget()
         // hide "consider for reconnect" and "show start/stop button on tray" checkboxes for tools
         ui()->considerForReconnectCheckBox->setVisible(false);
         ui()->showButtonCheckBox->setVisible(false);
+        ui()->stopOnMeteredCheckBox->setVisible(false);
     }
 
     // hide libsyncthing-controls by default (as the checkbox is unchecked by default)
@@ -1126,7 +1149,7 @@ QWidget *LauncherOptionPage::setupWidget()
         ui()->useBuiltInVersionCheckBox->setToolTip(SyncthingLauncher::libSyncthingVersionInfo());
     }
 
-    // connect signals & slots
+    // setup process/launcher
     if (m_process) {
         connect(m_process, &SyncthingProcess::readyRead, this, &LauncherOptionPage::handleSyncthingReadyRead, Qt::QueuedConnection);
         connect(m_process, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
@@ -1141,6 +1164,10 @@ QWidget *LauncherOptionPage::setupWidget()
         connect(ui()->logLevelComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
             &LauncherOptionPage::updateLibSyncthingLogLevel);
 #endif
+
+        handleNetworkConnectionMeteredChanged(m_launcher->isNetworkConnectionMetered());
+        connect(m_launcher, &SyncthingLauncher::networkConnectionMeteredChanged, this, &LauncherOptionPage::handleNetworkConnectionMeteredChanged);
+
         m_launcher->setEmittingOutput(true);
     }
     connect(ui()->launchNowPushButton, &QPushButton::clicked, this, &LauncherOptionPage::launch);
@@ -1164,6 +1191,7 @@ bool LauncherOptionPage::apply()
         settings.syncthingArgs = ui()->argumentsLineEdit->text();
         settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
         settings.showButton = ui()->showButtonCheckBox->isChecked();
+        settings.stopOnMeteredConnection = ui()->stopOnMeteredCheckBox->isChecked();
     } else {
         ToolParameter &params = settings.tools[m_tool];
         params.autostart = ui()->enabledCheckBox->isChecked();
@@ -1189,6 +1217,7 @@ void LauncherOptionPage::reset()
         ui()->argumentsLineEdit->setText(settings.syncthingArgs);
         ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
         ui()->showButtonCheckBox->setChecked(settings.showButton);
+        ui()->stopOnMeteredCheckBox->setChecked(settings.stopOnMeteredConnection);
     } else {
         const ToolParameter params = settings.tools.value(m_tool);
         ui()->useBuiltInVersionCheckBox->setChecked(false);
@@ -1302,6 +1331,11 @@ void LauncherOptionPage::handleSyncthingError(QProcess::ProcessError error)
         ui()->stopPushButton->hide();
         ui()->launchNowPushButton->show();
     }
+}
+
+void LauncherOptionPage::handleNetworkConnectionMeteredChanged(std::optional<bool> isMetered)
+{
+    ui()->stopOnMeteredCheckBox->setToolTip(meteredToolTip(isMetered));
 }
 
 bool LauncherOptionPage::isRunning() const

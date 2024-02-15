@@ -17,6 +17,11 @@
 #include <QSslError>
 #include <QTimer>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 3, 0))
+#include <QNetworkInformation>
+#define SYNCTHINGCONNECTION_SUPPORT_METERED
+#endif
+
 #include <cstdint>
 #include <functional>
 #include <limits>
@@ -92,6 +97,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(QStringList deviceIds READ deviceIds)
     Q_PROPERTY(QJsonObject rawConfig READ rawConfig NOTIFY newConfig)
     Q_PROPERTY(bool useDeprecatedRoutes READ isUsingDeprecatedRoutes WRITE setUseDeprecatedRoutes)
+    Q_PROPERTY(bool pausingOnMeteredConnection READ isPausingOnMeteredConnection WRITE setPausingOnMeteredConnection)
 
 public:
     explicit SyncthingConnection(const QString &syncthingUrl = QStringLiteral("http://localhost:8080"), const QByteArray &apiKey = QByteArray(),
@@ -145,6 +151,8 @@ public:
     void setRequestTimeout(int requestTimeout);
     int longPollingTimeout() const;
     void setLongPollingTimeout(int longPollingTimeout);
+    bool isPausingOnMeteredConnection() const;
+    void setPausingOnMeteredConnection(bool pausingOnMeteredConnection);
 
     // getter for information retrieved from Syncthing
     const QString &configDir() const;
@@ -340,6 +348,7 @@ private Q_SLOTS:
     void handleAdditionalRequestCanceled();
     void handleSslErrors(const QList<QSslError> &errors);
     void handleRedirection(const QUrl &url);
+    void handleMeteredConnection();
     void recalculateStatus();
     QString configPath() const;
     QByteArray changeConfigVerb() const;
@@ -415,6 +424,7 @@ private:
     bool m_hasDiskEvents;
     std::vector<SyncthingDir> m_dirs;
     std::vector<SyncthingDev> m_devs;
+    QStringList m_devsPausedDueToMeteredConnection;
     SyncthingEventId m_lastConnectionsUpdateEvent;
     CppUtilities::DateTime m_lastConnectionsUpdateTime;
     SyncthingEventId m_lastFileEvent = 0;
@@ -433,6 +443,7 @@ private:
     bool m_dirStatsAltered;
     bool m_recordFileChanges;
     bool m_useDeprecatedRoutes;
+    bool m_pausingOnMeteredConnection;
 };
 
 /*!
@@ -766,6 +777,14 @@ inline int SyncthingConnection::longPollingTimeout() const
 inline void SyncthingConnection::setLongPollingTimeout(int longPollingTimeout)
 {
     m_longPollingTimeout = longPollingTimeout;
+}
+
+/*!
+ * \brief Returns whether to pause all devices on metered connections.
+ */
+inline bool SyncthingConnection::isPausingOnMeteredConnection() const
+{
+    return m_pausingOnMeteredConnection;
 }
 
 /*!

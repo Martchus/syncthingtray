@@ -15,6 +15,8 @@
 #include <QFuture>
 #include <QUrl>
 
+#include <optional>
+
 namespace Settings {
 struct Launcher;
 }
@@ -29,6 +31,9 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
     Q_PROPERTY(CppUtilities::DateTime activeSince READ activeSince)
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
     Q_PROPERTY(bool emittingOutput READ isEmittingOutput WRITE setEmittingOutput)
+    Q_PROPERTY(std::optional<bool> networkConnectionMetered READ isNetworkConnectionMetered WRITE setNetworkConnectionMetered NOTIFY
+            networkConnectionMeteredChanged)
+    Q_PROPERTY(bool stoppingOnMeteredConnection READ isStoppingOnMeteredConnection WRITE setStoppingOnMeteredConnection)
     Q_PROPERTY(QUrl guiUrl READ guiUrl NOTIFY guiUrlChanged)
     Q_PROPERTY(SyncthingProcess *process READ process)
 
@@ -41,6 +46,10 @@ public:
     bool isManuallyStopped() const;
     bool isEmittingOutput() const;
     void setEmittingOutput(bool emittingOutput);
+    std::optional<bool> isNetworkConnectionMetered() const;
+    void setNetworkConnectionMetered(std::optional<bool> metered);
+    bool isStoppingOnMeteredConnection() const;
+    void setStoppingOnMeteredConnection(bool stopOnMeteredConnection);
     QString errorString() const;
     QUrl guiUrl() const;
     SyncthingProcess *process();
@@ -64,6 +73,7 @@ Q_SIGNALS:
     void exited(int exitCode, QProcess::ExitStatus exitStatus);
     void errorOccurred(QProcess::ProcessError error);
     void guiUrlChanged(const QUrl &newUrl);
+    void networkConnectionMeteredChanged(std::optional<bool> isMetered);
 
 public Q_SLOTS:
     void launch(const QString &program, const QStringList &arguments);
@@ -90,9 +100,12 @@ private:
 #endif
     void handleOutputAvailable(QByteArray &&data);
     void handleGuiListeningUrlFound(CppUtilities::BufferSearch &bufferSearch, std::string &&searchResult);
+    void terminateDueToMeteredConnection();
 
     SyncthingProcess m_process;
     QUrl m_guiListeningUrl;
+    const Settings::Launcher *m_lastLauncherSettings;
+    SyncthingConnection *m_relevantConnection;
     QFuture<void> m_startFuture;
     QFuture<void> m_stopFuture;
     QByteArray m_outputBuffer;
@@ -102,8 +115,11 @@ private:
     LibSyncthing::LogLevel m_libsyncthingLogLevel;
 #endif
     bool m_manuallyStopped;
+    bool m_stoppedMetered;
     bool m_emittingOutput;
     bool m_useLibSyncthing;
+    bool m_stopOnMeteredConnection;
+    std::optional<bool> m_metered;
     static SyncthingLauncher *s_mainInstance;
 };
 
@@ -143,6 +159,19 @@ inline bool SyncthingLauncher::isManuallyStopped() const
 inline bool SyncthingLauncher::isEmittingOutput() const
 {
     return m_emittingOutput;
+}
+
+/// \brief Returns whether the current network connection is metered.
+/// \remarks Returns an std::optional<bool> without value if it is unknown whether the network connection is metered.
+inline std::optional<bool> SyncthingLauncher::isNetworkConnectionMetered() const
+{
+    return m_metered;
+}
+
+/// \brief Returns whether Syncthing should automatically be stopped as long as the network connection is metered.
+inline bool SyncthingLauncher::isStoppingOnMeteredConnection() const
+{
+    return m_stopOnMeteredConnection;
 }
 
 /// \brief Returns the last error message.

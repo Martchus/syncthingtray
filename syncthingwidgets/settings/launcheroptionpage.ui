@@ -141,6 +141,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="stopOnMeteredCheckBox">
+     <property name="text">
+      <string>Stop automatically when network connection is metered</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="Line" name="line">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">

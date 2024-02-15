@@ -95,6 +95,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
     QHash<QString, ToolParameter> tools;
     bool considerForReconnect = false;
     bool showButton = false;
+    bool stopOnMeteredConnection = false;
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     struct SYNCTHINGWIDGETS_EXPORT LibSyncthing {

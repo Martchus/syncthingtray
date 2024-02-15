@@ -347,7 +347,7 @@ bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paus
     if (devIds.isEmpty()) {
         return false;
     }
-    if (!isConnected()) {
+    if (!m_hasConfig) {
         emit error(tr("Unable to pause/resume a devices when not connected"), SyncthingErrorCategory::SpecificRequest, QNetworkReply::NoError);
         return false;
     }
@@ -794,6 +794,9 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
 
     m_devs.swap(newDevs);
     emit this->newDevices(m_devs);
+    if (m_pausingOnMeteredConnection) {
+        handleMeteredConnection();
+    }
 }
 
 // status of Syncthing (own ID, startup time)

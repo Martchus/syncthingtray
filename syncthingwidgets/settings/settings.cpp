@@ -313,6 +313,8 @@ bool restore()
             connectionSettings->longPollingTimeout
                 = settings.value(QStringLiteral("longPollingTimeout"), connectionSettings->longPollingTimeout).toInt();
             connectionSettings->autoConnect = settings.value(QStringLiteral("autoConnect"), connectionSettings->autoConnect).toBool();
+            connectionSettings->pauseOnMeteredConnection
+                = settings.value(QStringLiteral("pauseOnMetered"), connectionSettings->pauseOnMeteredConnection).toBool();
             const auto statusComputionFlags = settings.value(QStringLiteral("statusComputionFlags"),
                 QVariant::fromValue(static_cast<UnderlyingFlagType>(connectionSettings->statusComputionFlags)));
             if (statusComputionFlags.canConvert<UnderlyingFlagType>()) {
@@ -392,6 +394,7 @@ bool restore()
     launcher.syncthingArgs = settings.value(QStringLiteral("syncthingArgs"), launcher.syncthingArgs).toString();
     launcher.considerForReconnect = settings.value(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect).toBool();
     launcher.showButton = settings.value(QStringLiteral("showLauncherButton"), launcher.showButton).toBool();
+    launcher.stopOnMeteredConnection = settings.value(QStringLiteral("stopOnMetered"), launcher.stopOnMeteredConnection).toBool();
     settings.beginGroup(QStringLiteral("tools"));
     const auto childGroups = settings.childGroups();
     for (const QString &tool : childGroups) {
@@ -465,6 +468,7 @@ bool save()
         settings.setValue(QStringLiteral("requestTimeout"), connectionSettings->requestTimeout);
         settings.setValue(QStringLiteral("longPollingTimeout"), connectionSettings->longPollingTimeout);
         settings.setValue(QStringLiteral("autoConnect"), connectionSettings->autoConnect);
+        settings.setValue(QStringLiteral("pauseOnMetered"), connectionSettings->pauseOnMeteredConnection);
         settings.setValue(QStringLiteral("statusComputionFlags"),
             QVariant::fromValue(static_cast<std::underlying_type_t<Data::SyncthingStatusComputionFlags>>(connectionSettings->statusComputionFlags)));
         settings.setValue(QStringLiteral("httpsCertPath"), connectionSettings->httpsCertPath);
@@ -519,6 +523,7 @@ bool save()
     settings.setValue(QStringLiteral("syncthingArgs"), launcher.syncthingArgs);
     settings.setValue(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect);
     settings.setValue(QStringLiteral("showLauncherButton"), launcher.showButton);
+    settings.setValue(QStringLiteral("stopOnMetered"), launcher.stopOnMeteredConnection);
     settings.beginGroup(QStringLiteral("tools"));
     for (auto i = launcher.tools.cbegin(), end = launcher.tools.cend(); i != end; ++i) {
         const ToolParameter &toolParams = i.value();

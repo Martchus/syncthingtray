@@ -25,6 +25,11 @@
 #include <QStringBuilder>
 #include <QTimer>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+#include <QNetworkInformation>
+#define SYNCTHINGCONNECTION_SUPPORT_METERED
+#endif
+
 #include <iostream>
 #include <utility>
 
@@ -108,6 +113,7 @@ SyncthingConnection::SyncthingConnection(
     , m_dirStatsAltered(false)
     , m_recordFileChanges(false)
     , m_useDeprecatedRoutes(true)
+    , m_pausingOnMeteredConnection(false)
 {
     m_trafficPollTimer.setInterval(SyncthingConnectionSettings::defaultTrafficPollInterval);
     m_trafficPollTimer.setTimerType(Qt::VeryCoarseTimer);
@@ -127,6 +133,14 @@ SyncthingConnection::SyncthingConnection(
 
 #ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     setupTestData();
+#endif
+
+    // initialize handling of metered connections
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+    QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Metered);
+    if (const auto *const networkInformation = QNetworkInformation::instance()) {
+        QObject::connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, &SyncthingConnection::handleMeteredConnection);
+    }
 #endif
 
     setLoggingFlags(loggingFlags);
@@ -246,6 +260,50 @@ void SyncthingConnection::disablePolling()
     setTrafficPollInterval(0);
     setDevStatsPollInterval(0);
     setErrorsPollInterval(0);
+}
+
+/*!
+ * \brief Sets whether to pause all devices on metered connections.
+ */
+void SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredConnection)
+{
+    if (m_pausingOnMeteredConnection != pausingOnMeteredConnection) {
+        m_pausingOnMeteredConnection = pausingOnMeteredConnection;
+        if (m_hasConfig) {
+            handleMeteredConnection();
+        }
+    }
+}
+
+/*!
+ * \brief Ensures that devices are paused/resumed depending on whether the network connection is metered.
+ */
+void SyncthingConnection::handleMeteredConnection()
+{
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+    const auto *const networkInformation = QNetworkInformation::instance();
+    if (!networkInformation->supports(QNetworkInformation::Feature::Metered)) {
+        return;
+    }
+    if (networkInformation->isMetered() && m_pausingOnMeteredConnection) {
+        auto hasDevicesToPause = false;
+        m_devsPausedDueToMeteredConnection.reserve(static_cast<qsizetype>(m_devs.size()));
+        for (const auto &device : m_devs) {
+            if (!device.paused && device.status != SyncthingDevStatus::ThisDevice) {
+                if (!m_devsPausedDueToMeteredConnection.contains(device.id)) {
+                    m_devsPausedDueToMeteredConnection << device.id;
+                    hasDevicesToPause = true;
+                }
+            }
+        }
+        if (hasDevicesToPause) {
+            pauseDevice(m_devsPausedDueToMeteredConnection);
+        }
+    } else {
+        resumeDevice(m_devsPausedDueToMeteredConnection);
+        m_devsPausedDueToMeteredConnection.clear();
+    }
+#endif
 }
 
 /*!
@@ -445,6 +503,7 @@ void SyncthingConnection::continueReconnecting()
     m_hasDiskEvents = false;
     m_dirs.clear();
     m_devs.clear();
+    m_devsPausedDueToMeteredConnection.clear();
     m_lastConnectionsUpdateEvent = 0;
     m_lastConnectionsUpdateTime = DateTime();
     m_lastFileEvent = 0;
@@ -886,6 +945,7 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
     setRequestTimeout(connectionSettings.requestTimeout);
     setLongPollingTimeout(connectionSettings.longPollingTimeout);
     setStatusComputionFlags(connectionSettings.statusComputionFlags);
+    setPausingOnMeteredConnection(connectionSettings.pauseOnMeteredConnection);
 
     return reconnectRequired;
 }
