@@ -338,9 +338,8 @@ bool SyncthingConnection::resumeAllDevs()
 /*!
  * \brief Internally used to pause/resume directories.
  * \returns Returns whether a request has been made.
- * \remarks This might currently result in errors caused by Syncthing not
- *          handling E notation correctly when using Qt < 5.9:
- *          https://github.com/syncthing/syncthing/issues/4001
+ * \remarks This might result in errors caused by Syncthing not handling E notation correctly when using Qt < 5.9,
+ *          see https://github.com/syncthing/syncthing/issues/4001.
  */
 bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paused)
 {
