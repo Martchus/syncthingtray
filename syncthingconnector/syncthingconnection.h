@@ -350,9 +350,6 @@ private Q_SLOTS:
     void handleRedirection(const QUrl &url);
     void handleMeteredConnection();
     void recalculateStatus();
-    QString configPath() const;
-    QByteArray changeConfigVerb() const;
-    QString folderErrorsPath() const;
 
 private:
     // internal helper methods
@@ -374,6 +371,9 @@ private:
     SyncthingDev *addDevInfo(std::vector<SyncthingDev> &devs, const QString &devId);
     CppUtilities::DateTime parseTimeStamp(const QJsonValue &jsonValue, const QString &context,
         CppUtilities::DateTime defaultValue = CppUtilities::DateTime(), bool greaterThanEpoch = false);
+    QString configPath() const;
+    QByteArray changeConfigVerb() const;
+    QString folderErrorsPath() const;
 
     QString m_syncthingUrl;
     QByteArray m_apiKey;
