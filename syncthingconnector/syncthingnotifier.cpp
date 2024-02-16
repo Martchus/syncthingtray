@@ -207,7 +207,7 @@ void SyncthingNotifier::emitSyncComplete(CppUtilities::DateTime when, const Sync
 
     // discard event if not enabled
     if (!m_initialized || (!remoteDev && (m_enabledNotifications & SyncthingHighLevelNotification::LocalSyncComplete) == 0)
-        || (remoteDev && (m_enabledNotifications & SyncthingHighLevelNotification::LocalSyncComplete) == 0)) {
+        || (remoteDev && (m_enabledNotifications & SyncthingHighLevelNotification::RemoteSyncComplete) == 0)) {
         return;
     }
 
