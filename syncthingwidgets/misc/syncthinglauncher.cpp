@@ -61,7 +61,8 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     // initialize handling of metered connections
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
     QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Metered);
-    if (const auto *const networkInformation = QNetworkInformation::instance(); networkInformation->supports(QNetworkInformation::Feature::Metered)) {
+    if (const auto *const networkInformation = QNetworkInformation::instance();
+        networkInformation && networkInformation->supports(QNetworkInformation::Feature::Metered)) {
         connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) { setNetworkConnectionMetered(isMetered); });
         setNetworkConnectionMetered(networkInformation->isMetered());
     }
