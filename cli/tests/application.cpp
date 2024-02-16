@@ -177,7 +177,7 @@ void ApplicationTests::test()
 
     // use environment variables to specify API-key and URL
     qputenv("SYNCTHING_CTL_API_KEY", apiKey);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     qputenv("SYNCTHING_CTL_URL", url);
 #else
     qputenv("SYNCTHING_CTL_URL", QByteArray(url.data(), static_cast<int>(url.size())));
