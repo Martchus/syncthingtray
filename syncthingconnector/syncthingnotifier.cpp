@@ -3,11 +3,16 @@
 #include "./syncthingprocess.h"
 #include "./utils.h"
 
+#include "resources/config.h"
+
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include "./syncthingservice.h"
 #endif
 
 #include <c++utilities/chrono/datetime.h>
+#include <c++utilities/io/ansiescapecodes.h>
+
+#include <iostream>
 
 using namespace CppUtilities;
 
@@ -37,6 +42,7 @@ SyncthingNotifier::SyncthingNotifier(const SyncthingConnection &connection, QObj
     , m_previousStatus(SyncthingStatus::Disconnected)
     , m_ignoreInavailabilityAfterStart(15)
     , m_initialized(false)
+    , m_logOnStderr(qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_ALL") || qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_NOTIFICATIONS"))
 {
     connect(&connection, &SyncthingConnection::statusChanged, this, &SyncthingNotifier::handleStatusChangedEvent);
     connect(&connection, &SyncthingConnection::dirCompleted, this, &SyncthingNotifier::emitSyncComplete);
@@ -72,7 +78,7 @@ void SyncthingNotifier::handleNewDevEvent(DateTime when, const QString &devId, c
         return;
     }
 
-    emit newDevice(devId, tr("Device %1 (%2) wants to connect.").arg(devId, address));
+    emit newDevice(devId, log(tr("Device %1 (%2) wants to connect.").arg(devId, address)));
 }
 
 void SyncthingNotifier::handleNewDirEvent(DateTime when, const QString &devId, const SyncthingDev *dev, const QString &dirId, const QString &dirLabel)
@@ -93,7 +99,7 @@ void SyncthingNotifier::handleNewDirEvent(DateTime when, const QString &devId, c
             return devPrefix + tr(" wants to share folder %1 (%2).").arg(dirLabel, dirId);
         }
     }());
-    emit newDir(devId, dirId, message);
+    emit newDir(devId, dirId, log(message));
 }
 
 void SyncthingNotifier::handleSyncthingProcessError(QProcess::ProcessError processError)
@@ -214,8 +220,16 @@ void SyncthingNotifier::emitSyncComplete(CppUtilities::DateTime when, const Sync
     // format the notification message
     const auto message(syncCompleteString(std::vector<const SyncthingDir *>{ &dir }, remoteDev));
     if (!message.isEmpty()) {
-        emit syncComplete(message);
+        emit syncComplete(log(message));
     }
+}
+
+const QString &SyncthingNotifier::log(const QString &message)
+{
+    if (m_logOnStderr) {
+        std::cerr << EscapeCodes::Phrases::Info << message.toStdString() << EscapeCodes::Phrases::End;
+    }
+    return message;
 }
 
 } // namespace Data

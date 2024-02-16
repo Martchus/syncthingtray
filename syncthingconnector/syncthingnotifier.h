@@ -110,6 +110,7 @@ private:
     bool isDisconnectRelevant() const;
     void emitConnectedAndDisconnected(SyncthingStatus newStatus);
     void emitSyncComplete(CppUtilities::DateTime when, const SyncthingDir &dir, int index, const Data::SyncthingDev *remoteDev);
+    const QString &log(const QString &message);
 
     const SyncthingConnection &m_connection;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -121,6 +122,7 @@ private:
     SyncthingStatus m_previousStatus;
     unsigned int m_ignoreInavailabilityAfterStart;
     bool m_initialized;
+    bool m_logOnStderr;
 };
 
 /*!
