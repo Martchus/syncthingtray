@@ -342,6 +342,12 @@ void SyncthingLauncher::handleGuiListeningUrlFound(CppUtilities::BufferSearch &,
 
 void SyncthingLauncher::terminateDueToMeteredConnection()
 {
+    if (!isRunning()) {
+        // do not set m_stoppedMetered (and basically don't do anything) if not running anyway; otherwise we'd
+        // always start Syncthing once the connection is not metered anymore (even if Syncthing has not even been
+        // running before)
+        return;
+    }
     if (m_lastLauncherSettings && !m_relevantConnection) {
         m_relevantConnection = m_lastLauncherSettings->connectionForLauncher(this);
     }
