@@ -362,6 +362,13 @@ bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paus
     reply->setProperty("devIds", devIds);
     reply->setProperty("resume", !paused);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDevPauseResume);
+
+    // avoid considering manually paused or resumed devices when the network connection is no longer metered
+    if (!m_devsPausedDueToMeteredConnection.isEmpty()) {
+        for (const auto &devId : devIds) {
+            m_devsPausedDueToMeteredConnection.removeAll(devId);
+        }
+    }
     return true;
 }
 
