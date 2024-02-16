@@ -313,10 +313,10 @@ See the release section on GitHub.
           [repositories URL](https://download.opensuse.org/repositories/home:/mkittler:/vcs),
           [project page](https://build.opensuse.org/project/show/home:mkittler:vcs)
     * available split packages
-        * `syncthingtray`: Qt-widgets based GUI
-        * `syncthingplasmoid`: applet/plasmoid for Plasma desktop
-        * `syncthingfileitemaction`: Dolphin/KIO integration
-        * `syncthingctl`: command-line interface
+        * `syncthingtray`/`syncthingtray-qt6`: Qt-widgets based GUI
+        * `syncthingplasmoid`/`syncthingplasmoid-qt6`: applet/plasmoid for Plasma desktop
+        * `syncthingfileitemaction`/`syncthingfileitemaction-qt6`: Dolphin/KIO integration
+        * `syncthingctl`/`syncthingctl-qt6`: command-line interface
 * Debian 12 "bookworm" and its derivatives (Ubuntu, Pop!_OS, Neon, etc.)
     * `sudo apt install syncthingtray-kde-plasma` if using KDE Plasma;
       otherwise, `sudo apt install syncthingtray`.  Please test installation from a Software Centre such as [GNOME Software](https://apps.gnome.org/en-GB/app/org.gnome.Software) or [Discover](https://apps.kde.org/en-gb/discover/).
