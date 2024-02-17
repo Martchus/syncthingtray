@@ -341,7 +341,7 @@ bool SyncthingConnection::resumeAllDevs()
  * \remarks This might result in errors caused by Syncthing not handling E notation correctly when using Qt < 5.9,
  *          see https://github.com/syncthing/syncthing/issues/4001.
  */
-bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paused)
+bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paused, bool dueToMetered)
 {
     if (devIds.isEmpty()) {
         return false;
@@ -364,7 +364,7 @@ bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paus
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDevPauseResume);
 
     // avoid considering manually paused or resumed devices when the network connection is no longer metered
-    if (!m_devsPausedDueToMeteredConnection.isEmpty()) {
+    if (!dueToMetered && !m_devsPausedDueToMeteredConnection.isEmpty()) {
         for (const auto &devId : devIds) {
             m_devsPausedDueToMeteredConnection.removeAll(devId);
         }

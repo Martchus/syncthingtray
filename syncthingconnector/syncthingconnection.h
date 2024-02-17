@@ -365,7 +365,7 @@ private:
     Reply prepareReply(QNetworkReply *&expectedReply, bool readData = true, bool handleAborting = true);
     Reply prepareReply(QList<QNetworkReply *> &expectedReplies, bool readData = true, bool handleAborting = true);
     Reply handleReply(QNetworkReply *reply, bool readData, bool handleAborting);
-    bool pauseResumeDevice(const QStringList &devIds, bool paused);
+    bool pauseResumeDevice(const QStringList &devIds, bool paused, bool dueToMetered = false);
     bool pauseResumeDirectory(const QStringList &dirIds, bool paused);
     SyncthingDir *addDirInfo(std::vector<SyncthingDir> &dirs, const QString &dirId);
     SyncthingDev *addDevInfo(std::vector<SyncthingDev> &devs, const QString &devId);

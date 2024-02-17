@@ -297,10 +297,10 @@ void SyncthingConnection::handleMeteredConnection()
             }
         }
         if (hasDevicesToPause) {
-            pauseDevice(m_devsPausedDueToMeteredConnection);
+            pauseResumeDevice(m_devsPausedDueToMeteredConnection, true, true);
         }
     } else {
-        resumeDevice(m_devsPausedDueToMeteredConnection);
+        pauseResumeDevice(m_devsPausedDueToMeteredConnection, false, true);
         m_devsPausedDueToMeteredConnection.clear();
     }
 #endif
