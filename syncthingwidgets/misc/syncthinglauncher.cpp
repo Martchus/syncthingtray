@@ -69,7 +69,8 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
         connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) { setNetworkConnectionMetered(isMetered); });
         setNetworkConnectionMetered(networkInformation->isMetered());
     } else {
-        std::cerr << EscapeCodes::Phrases::Error << "Unable to load network information backend to monitor metered connections, available backends:" <<  EscapeCodes::Phrases::End;
+        std::cerr << EscapeCodes::Phrases::Error
+                  << "Unable to load network information backend to monitor metered connections, available backends:" << EscapeCodes::Phrases::End;
         const auto availableBackends = QNetworkInformation::availableBackends();
         if (availableBackends.isEmpty()) {
             std::cerr << "none\n";

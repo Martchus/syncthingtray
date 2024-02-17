@@ -42,7 +42,8 @@ SyncthingNotifier::SyncthingNotifier(const SyncthingConnection &connection, QObj
     , m_previousStatus(SyncthingStatus::Disconnected)
     , m_ignoreInavailabilityAfterStart(15)
     , m_initialized(false)
-    , m_logOnStderr(qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_ALL") || qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_NOTIFICATIONS"))
+    , m_logOnStderr(
+          qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_ALL") || qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_NOTIFICATIONS"))
 {
     connect(&connection, &SyncthingConnection::statusChanged, this, &SyncthingNotifier::handleStatusChangedEvent);
     connect(&connection, &SyncthingConnection::dirCompleted, this, &SyncthingNotifier::emitSyncComplete);
