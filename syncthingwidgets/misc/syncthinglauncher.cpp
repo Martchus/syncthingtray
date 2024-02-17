@@ -4,6 +4,8 @@
 
 #include "../settings/settings.h"
 
+#include <c++utilities/io/ansiescapecodes.h>
+
 #include <QtConcurrentRun>
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
@@ -13,6 +15,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <iostream>
 #include <limits>
 #include <string_view>
 
@@ -65,6 +68,16 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
         networkInformation && networkInformation->supports(QNetworkInformation::Feature::Metered)) {
         connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) { setNetworkConnectionMetered(isMetered); });
         setNetworkConnectionMetered(networkInformation->isMetered());
+    } else {
+        std::cerr << EscapeCodes::Phrases::Error << "Unable to load network information backend to monitor metered connections, available backends:" <<  EscapeCodes::Phrases::End;
+        const auto availableBackends = QNetworkInformation::availableBackends();
+        if (availableBackends.isEmpty()) {
+            std::cerr << "none\n";
+        } else {
+            for (const auto &backend : availableBackends) {
+                std::cerr << " - " << backend.toStdString() << '\n';
+            }
+        }
     }
 #endif
 }
