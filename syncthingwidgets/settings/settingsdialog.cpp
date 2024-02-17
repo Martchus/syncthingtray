@@ -91,6 +91,13 @@ static QString meteredToolTip(std::optional<bool> isMetered)
         : QCoreApplication::translate("QtGui", "Unable to determine whether the network connection is metered; assuming an unmetered connection.");
 }
 
+/// \brief Configures the specified \a checkBox for the specified \a isMetered value.
+static void configureMeteredCheckbox(QCheckBox *checkBox, std::optional<bool> isMetered)
+{
+    checkBox->setEnabled(isMetered.has_value());
+    checkBox->setToolTip(meteredToolTip(isMetered));
+}
+
 // ConnectionOptionPage
 ConnectionOptionPage::ConnectionOptionPage(Data::SyncthingConnection *connection, QWidget *parentWidget)
     : ConnectionOptionPageBase(parentWidget)
@@ -143,9 +150,9 @@ QWidget *ConnectionOptionPage::setupWidget()
     QObject::connect(ui()->removePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::removeSelectedConfig, this));
     QObject::connect(ui()->advancedCheckBox, &QCheckBox::toggled, bind(&ConnectionOptionPage::toggleAdvancedSettings, this, std::placeholders::_1));
     if (const auto *const launcher = SyncthingLauncher::mainInstance()) {
-        handleNetworkConnectionMeteredChanged(launcher->isNetworkConnectionMetered());
+        configureMeteredCheckbox(ui()->pauseOnMeteredConnectionCheckBox, launcher->isNetworkConnectionMetered());
         QObject::connect(launcher, &SyncthingLauncher::networkConnectionMeteredChanged,
-            bind(&ConnectionOptionPage::handleNetworkConnectionMeteredChanged, this, std::placeholders::_1));
+            bind(&configureMeteredCheckbox, ui()->pauseOnMeteredConnectionCheckBox, std::placeholders::_1));
     }
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
     ui()->timeoutSpinBox->setEnabled(false);
@@ -395,11 +402,6 @@ void ConnectionOptionPage::toggleAdvancedSettings(bool show)
         widget->setVisible(show);
     }
 #endif
-}
-
-void ConnectionOptionPage::handleNetworkConnectionMeteredChanged(std::optional<bool> isMetered)
-{
-    ui()->pauseOnMeteredConnectionCheckBox->setToolTip(meteredToolTip(isMetered));
 }
 
 bool ConnectionOptionPage::apply()
@@ -1164,9 +1166,9 @@ QWidget *LauncherOptionPage::setupWidget()
         connect(ui()->logLevelComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
             &LauncherOptionPage::updateLibSyncthingLogLevel);
 #endif
-
-        handleNetworkConnectionMeteredChanged(m_launcher->isNetworkConnectionMetered());
-        connect(m_launcher, &SyncthingLauncher::networkConnectionMeteredChanged, this, &LauncherOptionPage::handleNetworkConnectionMeteredChanged);
+        configureMeteredCheckbox(ui()->stopOnMeteredCheckBox, m_launcher->isNetworkConnectionMetered());
+        connect(m_launcher, &SyncthingLauncher::networkConnectionMeteredChanged, this,
+            std::bind(&configureMeteredCheckbox, ui()->stopOnMeteredCheckBox, std::placeholders::_1));
 
         m_launcher->setEmittingOutput(true);
     }
@@ -1331,11 +1333,6 @@ void LauncherOptionPage::handleSyncthingError(QProcess::ProcessError error)
         ui()->stopPushButton->hide();
         ui()->launchNowPushButton->show();
     }
-}
-
-void LauncherOptionPage::handleNetworkConnectionMeteredChanged(std::optional<bool> isMetered)
-{
-    ui()->stopOnMeteredCheckBox->setToolTip(meteredToolTip(isMetered));
 }
 
 bool LauncherOptionPage::isRunning() const

@@ -69,7 +69,6 @@ void moveSelectedConfigDown();
 void moveSelectedConfigUp();
 void setCurrentIndex(int currentIndex);
 void toggleAdvancedSettings(bool show);
-void handleNetworkConnectionMeteredChanged(std::optional<bool> isMetered);
 Data::SyncthingConnection *m_connection;
 Data::SyncthingConnectionSettings m_primarySettings;
 std::vector<Data::SyncthingConnectionSettings> m_secondarySettings;
@@ -138,7 +137,6 @@ private Q_SLOTS:
     void handleSyncthingOutputAvailable(const QByteArray &output);
     void handleSyncthingExited(int exitCode, QProcess::ExitStatus exitStatus);
     void handleSyncthingError(QProcess::ProcessError error);
-    void handleNetworkConnectionMeteredChanged(std::optional<bool> isMetered);
     void launch();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void updateLibSyncthingLogLevel();
