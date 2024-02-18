@@ -796,7 +796,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="649"/>
         <source>Pause all devices while the local network connection is metered</source>
-        <translation>Pausiere alle Geräte solange die lokele Netzwerkverbindung getaktet ist.</translation>
+        <translation>Pausiere alle Geräte solange die lokele Netzwerkverbindung getaktet ist</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="461"/>
