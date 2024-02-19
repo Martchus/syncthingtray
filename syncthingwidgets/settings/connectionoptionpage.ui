@@ -465,7 +465,7 @@
      </property>
     </widget>
    </item>
-   <item row="21" column="0">
+   <item row="22" column="0">
     <widget class="QLabel" name="overallStatusLabel">
      <property name="text">
       <string>Overall status</string>
@@ -475,66 +475,21 @@
      </property>
     </widget>
    </item>
-   <item row="22" column="1">
-    <layout class="QVBoxLayout" name="statusComputionFlagsVerticalLayout">
-     <property name="spacing">
-      <number>2</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="statusComputionFlagsLabel">
-       <property name="text">
-        <string>Select what information should be considered to compute the overall status:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QListView" name="statusComputionFlagsListView">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>100</height>
-        </size>
-       </property>
-       <property name="flow">
-        <enum>QListView::LeftToRight</enum>
-       </property>
-       <property name="isWrapping" stdset="0">
-        <bool>true</bool>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="23" column="0">
+   <item row="24" column="0">
     <widget class="QLabel" name="statusTextLabel">
      <property name="text">
       <string>Current status</string>
      </property>
     </widget>
    </item>
-   <item row="23" column="1">
+   <item row="24" column="1">
     <widget class="QLabel" name="statusLabel">
      <property name="text">
       <string>disconnected</string>
      </property>
     </widget>
    </item>
-   <item row="26" column="1">
+   <item row="27" column="1">
     <widget class="QPushButton" name="connectPushButton">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -649,6 +604,58 @@
       <string>Pause all devices while the local network connection is metered</string>
      </property>
     </widget>
+   </item>
+   <item row="20" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Options</string>
+     </property>
+    </widget>
+   </item>
+   <item row="22" column="1">
+    <layout class="QVBoxLayout" name="statusComputionFlagsVerticalLayout">
+     <property name="spacing">
+      <number>2</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="statusComputionFlagsLabel">
+       <property name="text">
+        <string>Select what information should be considered to compute the overall status:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QListView" name="statusComputionFlagsListView">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="flow">
+        <enum>QListView::LeftToRight</enum>
+       </property>
+       <property name="isWrapping" stdset="0">
+        <bool>true</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
