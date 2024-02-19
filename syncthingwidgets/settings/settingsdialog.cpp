@@ -149,8 +149,9 @@ QWidget *ConnectionOptionPage::setupWidget()
     QObject::connect(ui()->addPushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::addNewConfig, this));
     QObject::connect(ui()->removePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::removeSelectedConfig, this));
     QObject::connect(ui()->advancedCheckBox, &QCheckBox::toggled, bind(&ConnectionOptionPage::toggleAdvancedSettings, this, std::placeholders::_1));
-    if (const auto *const launcher = SyncthingLauncher::mainInstance()) {
-        configureMeteredCheckbox(ui()->pauseOnMeteredConnectionCheckBox, launcher->isNetworkConnectionMetered());
+    const auto *const launcher = SyncthingLauncher::mainInstance();
+    configureMeteredCheckbox(ui()->pauseOnMeteredConnectionCheckBox, launcher ? launcher->isNetworkConnectionMetered() : std::nullopt);
+    if (launcher) {
         QObject::connect(launcher, &SyncthingLauncher::networkConnectionMeteredChanged,
             bind(&configureMeteredCheckbox, ui()->pauseOnMeteredConnectionCheckBox, std::placeholders::_1));
     }
@@ -1157,6 +1158,7 @@ QWidget *LauncherOptionPage::setupWidget()
         connect(m_process, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
             &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
         connect(m_process, &SyncthingProcess::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
+        configureMeteredCheckbox(ui()->stopOnMeteredCheckBox, std::nullopt);
     } else if (m_launcher) {
         connect(m_launcher, &SyncthingLauncher::runningChanged, this, &LauncherOptionPage::handleSyncthingLaunched);
         connect(m_launcher, &SyncthingLauncher::outputAvailable, this, &LauncherOptionPage::handleSyncthingOutputAvailable, Qt::QueuedConnection);
