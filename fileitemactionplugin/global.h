@@ -4,7 +4,7 @@
 #ifndef SYNCTHINGFILEITEMACTION_GLOBAL
 #define SYNCTHINGFILEITEMACTION_GLOBAL
 
-#include "syncthingfileitemaction-devel-definitions.h"
+#include "syncthingfileitemaction-definitions.h"
 #include <c++utilities/application/global.h>
 
 #ifdef SYNCTHINGFILEITEMACTION_STATIC

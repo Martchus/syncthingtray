@@ -4,7 +4,7 @@
 #ifndef LIB_SYNCTHING_GLOBAL
 #define LIB_SYNCTHING_GLOBAL
 
-#include "syncthing-devel-definitions.h"
+#include "syncthing-definitions.h"
 #include <c++utilities/application/global.h>
 
 #ifdef LIB_SYNCTHING_STATIC

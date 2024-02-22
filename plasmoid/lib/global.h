@@ -4,7 +4,7 @@
 #ifndef SYNCTHINGPLASMOID_GLOBAL
 #define SYNCTHINGPLASMOID_GLOBAL
 
-#include "syncthingplasmoid-devel-definitions.h"
+#include "syncthingplasmoid-definitions.h"
 #include <c++utilities/application/global.h>
 
 #ifdef SYNCTHINGPLASMOID_STATIC
