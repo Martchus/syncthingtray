@@ -4,8 +4,8 @@
 <context>
     <name>DetailView</name>
     <message>
-        <location filename="../package5/contents/ui/DetailView.qml" line="14"/>
         <location filename="../package6/contents/ui/DetailView.qml" line="19"/>
+        <location filename="../package5/contents/ui/DetailView.qml" line="14"/>
         <source>Copy value</source>
         <translation>Wert kopieren</translation>
     </message>
@@ -13,28 +13,28 @@
 <context>
     <name>DevicesPage</name>
     <message>
-        <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="65"/>
+        <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
-        <location filename="../package5/contents/ui/DevicesPage.qml" line="116"/>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="65"/>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="117"/>
+        <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
+        <location filename="../package5/contents/ui/DevicesPage.qml" line="116"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DevicesPage.qml" line="102"/>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="103"/>
+        <location filename="../package5/contents/ui/DevicesPage.qml" line="102"/>
         <source>Copy name</source>
         <translation>Namen kopieren</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DevicesPage.qml" line="107"/>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="108"/>
+        <location filename="../package5/contents/ui/DevicesPage.qml" line="107"/>
         <source>Copy ID</source>
         <translation>ID kopieren</translation>
     </message>
@@ -42,56 +42,56 @@
 <context>
     <name>DirectoriesPage</name>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="23"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="23"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="23"/>
         <source>Filter folders</source>
         <translation>Ordner filtern</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="84"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="84"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="84"/>
         <source>Show errors</source>
         <translation>Zeige Fehler</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="95"/>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="164"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="95"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="164"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="95"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="164"/>
         <source>Rescan</source>
         <translation>Scannen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="103"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="103"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="103"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="103"/>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="171"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="103"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="171"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="103"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="171"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="113"/>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="178"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="113"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="178"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="113"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="178"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="150"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="150"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="150"/>
         <source>Copy label/ID</source>
         <translation>Namen/ID kopieren</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="155"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="155"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="155"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
@@ -99,18 +99,18 @@
 <context>
     <name>DownloadsPage</name>
     <message>
-        <location filename="../package5/contents/ui/DownloadsPage.qml" line="66"/>
-        <location filename="../package5/contents/ui/DownloadsPage.qml" line="122"/>
-        <location filename="../package5/contents/ui/DownloadsPage.qml" line="147"/>
         <location filename="../package6/contents/ui/DownloadsPage.qml" line="67"/>
         <location filename="../package6/contents/ui/DownloadsPage.qml" line="123"/>
         <location filename="../package6/contents/ui/DownloadsPage.qml" line="148"/>
+        <location filename="../package5/contents/ui/DownloadsPage.qml" line="66"/>
+        <location filename="../package5/contents/ui/DownloadsPage.qml" line="122"/>
+        <location filename="../package5/contents/ui/DownloadsPage.qml" line="147"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DownloadsPage.qml" line="138"/>
         <location filename="../package6/contents/ui/DownloadsPage.qml" line="139"/>
+        <location filename="../package5/contents/ui/DownloadsPage.qml" line="138"/>
         <source>Copy label/ID</source>
         <translation>Namen/ID kopieren</translation>
     </message>
@@ -162,57 +162,57 @@
         <translation type="vanished">Syncthing öffnen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="245"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="247"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="245"/>
         <source>Global</source>
         <translation>Globale</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="252"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="254"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="252"/>
         <source>Global incoming traffic</source>
         <translation>Globaler eingehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="270"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="272"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="270"/>
         <source>Local</source>
         <translation>Lokale</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="277"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="279"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="277"/>
         <source>Global outgoing traffic</source>
         <translation>Globaler ausgehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="33"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="35"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="33"/>
         <source>Folders</source>
         <translation>Ordner</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="39"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="41"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="39"/>
         <source>Devices</source>
         <translation>Geräte</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="45"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="47"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="45"/>
         <source>Downloads</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="51"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="53"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="51"/>
         <source>History</source>
         <translatorcomment>&quot;Letzte Änderungen&quot; is too long</translatorcomment>
         <translation>Änderungen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="103"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="105"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="103"/>
         <source>Toggle filter</source>
         <translation>Filter ein-/ausblenden</translation>
     </message>
@@ -338,22 +338,22 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="459"/>
+        <location filename="../lib/syncthingapplet.cpp" line="466"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="471"/>
+        <location filename="../lib/syncthingapplet.cpp" line="478"/>
         <source>New notifications</source>
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="540"/>
+        <location filename="../lib/syncthingapplet.cpp" line="547"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Verbindung zu Syncthing kann nicht hergestellt werden.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="608"/>
+        <location filename="../lib/syncthingapplet.cpp" line="615"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
     </message>
@@ -361,20 +361,20 @@
 <context>
     <name>RecentChangesPage</name>
     <message>
-        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="109"/>
         <location filename="../package6/contents/ui/RecentChangesPage.qml" line="110"/>
+        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="109"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="114"/>
         <location filename="../package6/contents/ui/RecentChangesPage.qml" line="115"/>
+        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="114"/>
         <source>Copy device ID</source>
         <translation>Geräte-ID kopieren</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="119"/>
         <location filename="../package6/contents/ui/RecentChangesPage.qml" line="120"/>
+        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="119"/>
         <source>Copy folder ID</source>
         <translation>Ordner-ID kopieren</translation>
     </message>
@@ -382,20 +382,20 @@
 <context>
     <name>StatisticsView</name>
     <message>
-        <location filename="../package5/contents/ui/StatisticsView.qml" line="12"/>
         <location filename="../package6/contents/ui/StatisticsView.qml" line="12"/>
+        <location filename="../package5/contents/ui/StatisticsView.qml" line="12"/>
         <source> files</source>
         <translation> Dateien</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/StatisticsView.qml" line="17"/>
         <location filename="../package6/contents/ui/StatisticsView.qml" line="17"/>
+        <location filename="../package5/contents/ui/StatisticsView.qml" line="17"/>
         <source> directories</source>
         <translation> Ordner</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/StatisticsView.qml" line="23"/>
         <location filename="../package6/contents/ui/StatisticsView.qml" line="23"/>
+        <location filename="../package5/contents/ui/StatisticsView.qml" line="23"/>
         <source> size</source>
         <translation> Datengröße</translation>
     </message>
@@ -403,80 +403,80 @@
 <context>
     <name>ToolBar</name>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="25"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="26"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="25"/>
         <source>Connect</source>
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="34"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="35"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="34"/>
         <source>Connecting …</source>
         <translation>Verbinde …</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="43"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="44"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="43"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="52"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="53"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="52"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="101"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="102"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="101"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="115"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="116"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="115"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="171"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="170"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="171"/>
         <source>Show new notifications</source>
         <translation>Neue Benachrichtigungen anzeigen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="190"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="189"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="190"/>
         <source>About Syncthing Tray</source>
         <translation>Über Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="202"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="201"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="202"/>
         <source>Show own device ID</source>
         <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="218"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="217"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="218"/>
         <source>Show Syncthing log</source>
         <translation>Syncthing-Log anzeigen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="230"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="229"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="230"/>
         <source>Rescan all folders</source>
         <translation>Alle Ordner neu scannen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="246"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="245"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="246"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="261"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="260"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="261"/>
         <source>Open Syncthing</source>
         <translation>Syncthing öffnen</translation>
     </message>
@@ -488,50 +488,50 @@
         <translation type="vanished">Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/main.qml" line="59"/>
         <location filename="../package6/contents/ui/main.qml" line="27"/>
+        <location filename="../package5/contents/ui/main.qml" line="59"/>
         <source>Open Syncthing</source>
         <translation>Syncthing öffnen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/main.qml" line="60"/>
         <location filename="../package6/contents/ui/main.qml" line="66"/>
+        <location filename="../package5/contents/ui/main.qml" line="60"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/main.qml" line="63"/>
         <location filename="../package6/contents/ui/main.qml" line="37"/>
+        <location filename="../package5/contents/ui/main.qml" line="63"/>
         <source>Show own device ID</source>
         <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/main.qml" line="67"/>
         <location filename="../package6/contents/ui/main.qml" line="47"/>
+        <location filename="../package5/contents/ui/main.qml" line="67"/>
         <source>Log</source>
         <translation>Log</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/main.qml" line="68"/>
         <location filename="../package6/contents/ui/main.qml" line="52"/>
+        <location filename="../package5/contents/ui/main.qml" line="68"/>
         <source>Internal errors</source>
         <translation>Interne Fehler</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/main.qml" line="61"/>
         <location filename="../package6/contents/ui/main.qml" line="32"/>
+        <location filename="../package5/contents/ui/main.qml" line="61"/>
         <source>Rescan all folders</source>
         <translation>Alle Ordner neu scannen</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/main.qml" line="65"/>
         <location filename="../package6/contents/ui/main.qml" line="42"/>
+        <location filename="../package5/contents/ui/main.qml" line="65"/>
         <source>Restart Syncthing</source>
         <translation>Syncthing neustarten</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/main.qml" line="70"/>
         <location filename="../package6/contents/ui/main.qml" line="58"/>
+        <location filename="../package5/contents/ui/main.qml" line="70"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
