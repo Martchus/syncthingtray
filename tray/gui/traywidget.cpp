@@ -639,6 +639,11 @@ bool TrayWidget::event(QEvent *event)
             m_menu->icon()->updateStatusIconAndText();
         }
         break;
+    case QEvent::DevicePixelRatioChange:
+        setLabelPixmaps();
+        setTrafficPixmaps(true);
+        IconManager::instance().update();
+        break;
     default:;
     }
     return res;

@@ -161,6 +161,7 @@ public:
 
 public Q_SLOTS:
     void setPalette(const QPalette &palette);
+    void update();
 
 Q_SIGNALS:
     void statusIconsChanged(const Data::StatusIcons &newStatusIcons, const Data::StatusIcons &newTrayIcons);
@@ -208,6 +209,12 @@ inline QtForkAwesome::Renderer &IconManager::forkAwesomeRenderer()
 inline const ForkAwesomeIcons &IconManager::commonForkAwesomeIcons() const
 {
     return m_commonForkAwesomeIcons;
+}
+
+inline void IconManager::update()
+{
+    emit statusIconsChanged(m_statusIcons, m_trayIcons);
+    emit forkAwesomeIconsChanged(m_commonForkAwesomeIcons);
 }
 
 inline const StatusIcons &statusIcons()
