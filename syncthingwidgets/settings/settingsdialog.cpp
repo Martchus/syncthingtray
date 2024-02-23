@@ -1196,6 +1196,9 @@ bool LauncherOptionPage::apply()
         settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
         settings.showButton = ui()->showButtonCheckBox->isChecked();
         settings.stopOnMeteredConnection = ui()->stopOnMeteredCheckBox->isChecked();
+        if (m_launcher) {
+            m_launcher->setStoppingOnMeteredConnection(settings.stopOnMeteredConnection);
+        }
     } else {
         ToolParameter &params = settings.tools[m_tool];
         params.autostart = ui()->enabledCheckBox->isChecked();
