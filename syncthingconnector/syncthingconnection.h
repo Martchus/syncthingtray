@@ -444,6 +444,9 @@ private:
     bool m_recordFileChanges;
     bool m_useDeprecatedRoutes;
     bool m_pausingOnMeteredConnection;
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+    bool m_handlingMeteredConnectionInitialized;
+#endif
 };
 
 /*!

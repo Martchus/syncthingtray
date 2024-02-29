@@ -114,6 +114,9 @@ SyncthingConnection::SyncthingConnection(
     , m_recordFileChanges(false)
     , m_useDeprecatedRoutes(true)
     , m_pausingOnMeteredConnection(false)
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+    , m_handlingMeteredConnectionInitialized(false)
+#endif
 {
     m_trafficPollTimer.setInterval(SyncthingConnectionSettings::defaultTrafficPollInterval);
     m_trafficPollTimer.setTimerType(Qt::VeryCoarseTimer);
@@ -133,14 +136,6 @@ SyncthingConnection::SyncthingConnection(
 
 #ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     setupTestData();
-#endif
-
-    // initialize handling of metered connections
-#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-    QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Metered);
-    if (const auto *const networkInformation = QNetworkInformation::instance()) {
-        QObject::connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, &SyncthingConnection::handleMeteredConnection);
-    }
 #endif
 
     setLoggingFlags(loggingFlags);
@@ -268,7 +263,17 @@ void SyncthingConnection::disablePolling()
 void SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredConnection)
 {
     if (m_pausingOnMeteredConnection != pausingOnMeteredConnection) {
-        m_pausingOnMeteredConnection = pausingOnMeteredConnection;
+        if ((m_pausingOnMeteredConnection = pausingOnMeteredConnection)) {
+            // initialize handling of metered connections
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+            if (!m_handlingMeteredConnectionInitialized) {
+                QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Metered);
+                if (const auto *const networkInformation = QNetworkInformation::instance()) {
+                    QObject::connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, &SyncthingConnection::handleMeteredConnection);
+                }
+            }
+#endif
+        }
         if (m_hasConfig) {
             handleMeteredConnection();
         }
