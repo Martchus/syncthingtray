@@ -8,12 +8,12 @@
 #include <QTimer>
 #include <QUrlQuery>
 
+#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <limits>
 #include <string>
 
-using namespace std;
 using namespace CppUtilities;
 using namespace CppUtilities::EscapeCodes;
 
@@ -24,21 +24,21 @@ namespace Data {
  */
 namespace TestData {
 static bool initialized = false;
-static string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty;
-static string events[7];
+static std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty;
+static std::string events[7];
 } // namespace TestData
 
 /*!
  * \brief Returns the contents of the specified file and exits with an error message if an error occurs.
  */
-static string readMockFile(const string &filePath)
+static std::string readMockFile(const std::string &filePath)
 {
     try {
         return readFile(filePath);
     } catch (const std::ios_base::failure &failure) {
-        cerr << Phrases::Error << "An IO error occurred when reading mock config file \"" << filePath << "\": " << failure.what()
+        std::cerr << Phrases::Error << "An IO error occurred when reading mock config file \"" << filePath << "\": " << failure.what()
              << Phrases::EndFlush;
-        exit(-2);
+        std::exit(-2);
     }
 }
 
@@ -64,7 +64,7 @@ void setupTestData()
     const char *const fileNames[] = { "config", "status", "folderstats", "devicestats", "errors", "folderstatus-01", "folderstatus-02",
         "folderstatus-03", "pullerrors-01", "connections", "version", "empty" };
     const char *const *fileName = fileNames;
-    for (string *testDataVariable : { &config, &status, &folderStats, &deviceStats, &errors, &folderStatus, &folderStatus2, &folderStatus3,
+    for (auto *const testDataVariable : { &config, &status, &folderStats, &deviceStats, &errors, &folderStatus, &folderStatus2, &folderStatus3,
              &pullErrors, &connections, &version, &empty }) {
         *testDataVariable = readMockFile(testApp.testFilePath(argsToString("mocks/", *fileName, ".json")));
         ++fileName;
@@ -72,7 +72,7 @@ void setupTestData()
 
     // read mock files for Event-API
     unsigned int index = 1;
-    for (string &event : events) {
+    for (auto &event : events) {
         const char *const pad = index < 10 ? "0" : "";
         event = readMockFile(testApp.testFilePath(argsToString("mocks/events-", pad, index, ".json")));
         ++index;
@@ -81,7 +81,7 @@ void setupTestData()
     initialized = true;
 }
 
-MockedReply::MockedReply(const string &buffer, int delay, QObject *parent)
+MockedReply::MockedReply(const std::string &buffer, int delay, QObject *parent)
     : QNetworkReply(parent)
     , m_buffer(buffer)
     , m_pos(buffer.data())
@@ -124,11 +124,11 @@ qint64 MockedReply::readData(char *data, qint64 maxlen)
     if (!m_bytesLeft) {
         return -1;
     }
-    const qint64 bytesToRead = static_cast<int>(min<qint64>(m_bytesLeft, maxlen));
+    const auto bytesToRead = std::min<qint64>(m_bytesLeft, maxlen);
     if (!bytesToRead) {
         return 0;
     }
-    copy(m_pos, m_pos + bytesToRead, data);
+    std::copy(m_pos, m_pos + bytesToRead, data);
     m_pos += bytesToRead;
     m_bytesLeft -= bytesToRead;
     return bytesToRead;
@@ -146,8 +146,8 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
     url.setQuery(query);
 
     // find the correct buffer for the request
-    static const string emptyBuffer;
-    const string *buffer = &emptyBuffer;
+    static const auto emptyBuffer = std::string();
+    const auto *buffer = &emptyBuffer;
     int delay = 5;
     {
         using namespace TestData;
@@ -182,7 +182,7 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
                 buffer = &version;
             } else if (path == QLatin1String("events")) {
                 buffer = &events[s_eventIndex];
-                cerr << "mocking: at event index " << s_eventIndex << endl;
+                std::cerr << "mocking: at event index " << s_eventIndex << std::endl;
                 // "emit" the first event almost immediately and further events each 2.5 seconds
                 switch (s_eventIndex) {
                 case 0:
