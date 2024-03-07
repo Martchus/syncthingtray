@@ -136,7 +136,7 @@ std::vector<QtGui::ProcessWithConnection> Launcher::allProcesses()
 void Launcher::autostart() const
 {
     auto *const launcher(SyncthingLauncher::mainInstance());
-    if (autostartEnabled && launcher) {
+    if (autostartEnabled && launcher && (!stopOnMeteredConnection || !launcher->isNetworkConnectionMetered().value_or(false))) {
         launcher->launch(*this);
     }
     auto &toolProcs = toolProcesses();
