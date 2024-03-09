@@ -66,6 +66,9 @@
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="configDirLabel">
+        <property name="toolTip">
+         <string>Set directory for configuration and keys</string>
+        </property>
         <property name="text">
          <string>Config directory</string>
         </property>
@@ -112,6 +115,9 @@
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="dataDirLabel">
+        <property name="toolTip">
+         <string>Set database directory (falls back to config directory if empty)</string>
+        </property>
         <property name="text">
          <string>Data directory</string>
         </property>
