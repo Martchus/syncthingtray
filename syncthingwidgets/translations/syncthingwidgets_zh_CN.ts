@@ -1175,51 +1175,61 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="70"/>
+        <source>Set directory for configuration and keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/launcheroptionpage.ui" line="73"/>
         <source>Config directory</source>
         <translation>配置目录</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="80"/>
+        <location filename="../settings/launcheroptionpage.ui" line="83"/>
         <source>Log level</source>
         <translation>日志等级</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="88"/>
+        <location filename="../settings/launcheroptionpage.ui" line="91"/>
         <source>Debug</source>
         <translation>Debug</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="93"/>
+        <location filename="../settings/launcheroptionpage.ui" line="96"/>
         <source>Verbose</source>
         <translation>Verbose</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="98"/>
+        <location filename="../settings/launcheroptionpage.ui" line="101"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="103"/>
+        <location filename="../settings/launcheroptionpage.ui" line="106"/>
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="108"/>
+        <location filename="../settings/launcheroptionpage.ui" line="111"/>
         <source>Fatal</source>
         <translation>Fatal</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="116"/>
+        <location filename="../settings/launcheroptionpage.ui" line="119"/>
+        <source>Set database directory (falls back to config directory if empty)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/launcheroptionpage.ui" line="122"/>
         <source>Data directory</source>
         <translation>数据目录</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="129"/>
+        <location filename="../settings/launcheroptionpage.ui" line="135"/>
         <source>Show start/stop button on tray for local instance</source>
         <translation>在托盘上为本地实例显示开始/停止按钮</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="136"/>
+        <location filename="../settings/launcheroptionpage.ui" line="142"/>
         <source>Consider process status for notifications and reconnect attempts concerning local instance
  • Don&apos;t reconnect when the process is not running
  • Try to reconnect when starting the process
@@ -1227,7 +1237,7 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="146"/>
+        <location filename="../settings/launcheroptionpage.ui" line="152"/>
         <source>Stop automatically when network connection is metered</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1240,28 +1250,28 @@ The Web UI will be opened in the default web browser instead.</source>
   • 启动进程时尝试重新连接</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="173"/>
+        <location filename="../settings/launcheroptionpage.ui" line="179"/>
         <source>Syncthing log (interleaved stdout/stderr)</source>
         <translation>同步日志（交错的标准输出/标准错误）</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="186"/>
+        <location filename="../settings/launcheroptionpage.ui" line="192"/>
         <source>Apply and launch now</source>
         <translation>立即应用并启动</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="203"/>
+        <location filename="../settings/launcheroptionpage.ui" line="209"/>
         <location filename="../settings/settingsdialog.cpp" line="1245"/>
         <source>Stop launched instance</source>
         <translation>停止启动的实例</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="222"/>
+        <location filename="../settings/launcheroptionpage.ui" line="228"/>
         <source>No log messages available yet</source>
         <translation>尚无可用的日志消息</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="229"/>
+        <location filename="../settings/launcheroptionpage.ui" line="235"/>
         <source>Ensure latest log is visible</source>
         <translation>确保最新日志可见</translation>
     </message>

@@ -1154,52 +1154,62 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="70"/>
+        <location filename="../settings/launcheroptionpage.ui" line="73"/>
         <source>Config directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="80"/>
+        <location filename="../settings/launcheroptionpage.ui" line="83"/>
         <source>Log level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="88"/>
+        <location filename="../settings/launcheroptionpage.ui" line="91"/>
         <source>Debug</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="93"/>
+        <location filename="../settings/launcheroptionpage.ui" line="96"/>
         <source>Verbose</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="98"/>
+        <location filename="../settings/launcheroptionpage.ui" line="101"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="103"/>
+        <location filename="../settings/launcheroptionpage.ui" line="106"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="108"/>
+        <location filename="../settings/launcheroptionpage.ui" line="111"/>
         <source>Fatal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="116"/>
+        <location filename="../settings/launcheroptionpage.ui" line="70"/>
+        <source>Set directory for configuration and keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/launcheroptionpage.ui" line="119"/>
+        <source>Set database directory (falls back to config directory if empty)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/launcheroptionpage.ui" line="122"/>
         <source>Data directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="129"/>
+        <location filename="../settings/launcheroptionpage.ui" line="135"/>
         <source>Show start/stop button on tray for local instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="136"/>
+        <location filename="../settings/launcheroptionpage.ui" line="142"/>
         <source>Consider process status for notifications and reconnect attempts concerning local instance
  • Don&apos;t reconnect when the process is not running
  • Try to reconnect when starting the process
@@ -1207,33 +1217,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="146"/>
+        <location filename="../settings/launcheroptionpage.ui" line="152"/>
         <source>Stop automatically when network connection is metered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="173"/>
+        <location filename="../settings/launcheroptionpage.ui" line="179"/>
         <source>Syncthing log (interleaved stdout/stderr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="186"/>
+        <location filename="../settings/launcheroptionpage.ui" line="192"/>
         <source>Apply and launch now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="203"/>
+        <location filename="../settings/launcheroptionpage.ui" line="209"/>
         <location filename="../settings/settingsdialog.cpp" line="1245"/>
         <source>Stop launched instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="222"/>
+        <location filename="../settings/launcheroptionpage.ui" line="228"/>
         <source>No log messages available yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="229"/>
+        <location filename="../settings/launcheroptionpage.ui" line="235"/>
         <source>Ensure latest log is visible</source>
         <translation type="unfinished"></translation>
     </message>

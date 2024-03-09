@@ -1330,51 +1330,61 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="70"/>
+        <source>Set directory for configuration and keys</source>
+        <translation>Setze das Verzeichnis für die Konfiguration und Schlüssel</translation>
+    </message>
+    <message>
+        <location filename="../settings/launcheroptionpage.ui" line="73"/>
         <source>Config directory</source>
         <translation>Konfigurationsverzeichnis</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="80"/>
+        <location filename="../settings/launcheroptionpage.ui" line="83"/>
         <source>Log level</source>
         <translation>Log-Level</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="88"/>
+        <location filename="../settings/launcheroptionpage.ui" line="91"/>
         <source>Debug</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="93"/>
+        <location filename="../settings/launcheroptionpage.ui" line="96"/>
         <source>Verbose</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="98"/>
+        <location filename="../settings/launcheroptionpage.ui" line="101"/>
         <source>Info</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="103"/>
+        <location filename="../settings/launcheroptionpage.ui" line="106"/>
         <source>Warning</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="108"/>
+        <location filename="../settings/launcheroptionpage.ui" line="111"/>
         <source>Fatal</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="116"/>
+        <location filename="../settings/launcheroptionpage.ui" line="119"/>
+        <source>Set database directory (falls back to config directory if empty)</source>
+        <translation>Setze das Verzeichnis für die Datenbank (ansonsten wird das Konfigurationsverzeichnis verwendet)</translation>
+    </message>
+    <message>
+        <location filename="../settings/launcheroptionpage.ui" line="122"/>
         <source>Data directory</source>
         <translation>Datenverzeichnis</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="129"/>
+        <location filename="../settings/launcheroptionpage.ui" line="135"/>
         <source>Show start/stop button on tray for local instance</source>
         <translation>Zeige Start/Stop-Button für die lokale Instanz</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="136"/>
+        <location filename="../settings/launcheroptionpage.ui" line="142"/>
         <source>Consider process status for notifications and reconnect attempts concerning local instance
  • Don&apos;t reconnect when the process is not running
  • Try to reconnect when starting the process
@@ -1385,7 +1395,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
  • Unterdrücke Benachrichtigung über Verbindungsabbruch, wenn Syncthing manuell gestoppt wurde</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="146"/>
+        <location filename="../settings/launcheroptionpage.ui" line="152"/>
         <source>Stop automatically when network connection is metered</source>
         <translation>Stoppe Syncthing automatisch solange die Netzwerkverbindung getaktet ist</translation>
     </message>
@@ -1398,28 +1408,28 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
  • Automatisch neu verbinden, wenn Syncthing gestartet wird</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="173"/>
+        <location filename="../settings/launcheroptionpage.ui" line="179"/>
         <source>Syncthing log (interleaved stdout/stderr)</source>
         <translation>Syncthing-Log (stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="186"/>
+        <location filename="../settings/launcheroptionpage.ui" line="192"/>
         <source>Apply and launch now</source>
         <translation>Jetzt starten</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="203"/>
+        <location filename="../settings/launcheroptionpage.ui" line="209"/>
         <location filename="../settings/settingsdialog.cpp" line="1245"/>
         <source>Stop launched instance</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="222"/>
+        <location filename="../settings/launcheroptionpage.ui" line="228"/>
         <source>No log messages available yet</source>
         <translation>Bisher keine Log-Meldungen</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="229"/>
+        <location filename="../settings/launcheroptionpage.ui" line="235"/>
         <source>Ensure latest log is visible</source>
         <translation>Log folgen</translation>
     </message>
