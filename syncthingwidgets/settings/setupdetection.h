@@ -15,7 +15,6 @@
 #include <QStringBuilder>
 #include <QTimer>
 
-#include <memory>
 #include <optional>
 
 namespace QtGui {
