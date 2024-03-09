@@ -196,10 +196,11 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
     }
     if (launcherSettings.useLibSyncthing) {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-        LibSyncthing::RuntimeOptions options;
-        options.configDir = launcherSettings.libSyncthing.configDir.toStdString();
-        options.dataDir = launcherSettings.libSyncthing.dataDir.toStdString();
-        setLibSyncthingLogLevel(launcherSettings.libSyncthing.logLevel);
+        const auto &libSyncthingSettings = launcherSettings.libSyncthing;
+        auto options = LibSyncthing::RuntimeOptions();
+        options.configDir = libSyncthingSettings.configDir.toStdString();
+        options.dataDir = libSyncthingSettings.dataDir.isEmpty() ? options.configDir : libSyncthingSettings.dataDir.toStdString();
+        setLibSyncthingLogLevel(libSyncthingSettings.logLevel);
         launch(options);
 #else
         showLibSyncthingNotSupported();
