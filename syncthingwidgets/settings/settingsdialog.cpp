@@ -922,12 +922,13 @@ bool setAutostartPath(const QString &path)
                           "Name=" APP_NAME "\n"
                           "Exec=\"");
         desktopFile.write(path.toUtf8());
-        desktopFile.write("\" qt-widgets-gui --single-instance\nComment=" APP_DESCRIPTION "\n"
+        desktopFile.write("\" qt-widgets-gui --single-instance --wait\nComment=" APP_DESCRIPTION "\n"
                           "Icon=" PROJECT_NAME "\n"
                           "Type=Application\n"
                           "Terminal=false\n"
                           "X-GNOME-Autostart-Delay=0\n"
-                          "X-GNOME-Autostart-enabled=true");
+                          "X-GNOME-Autostart-enabled=true\n"
+                          "X-LXQt-Need-Tray=true\n");
         return desktopFile.error() == QFile::NoError && desktopFile.flush();
 
     } else {
