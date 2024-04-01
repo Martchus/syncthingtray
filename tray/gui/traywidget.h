@@ -95,6 +95,7 @@ private Q_SLOTS:
     void scanDir(const Data::SyncthingDir &dir);
     void pauseResumeDev(const Data::SyncthingDev &dev);
     void pauseResumeDir(const Data::SyncthingDir &dir);
+    void browseRemoteFiles(const Data::SyncthingDir &dir);
     void showRecentChangesContextMenu(const QPoint &position);
     void changeStatus();
     void updateTraffic();

@@ -14,6 +14,7 @@ set(HEADER_FILES
     syncthingdirectorymodel.h
     syncthingdevicemodel.h
     syncthingdownloadmodel.h
+    syncthingfilemodel.h
     syncthingrecentchangesmodel.h
     syncthingsortfiltermodel.h
     syncthingstatuscomputionmodel.h
@@ -25,6 +26,7 @@ set(SRC_FILES
     syncthingdirectorymodel.cpp
     syncthingdevicemodel.cpp
     syncthingdownloadmodel.cpp
+    syncthingfilemodel.cpp
     syncthingrecentchangesmodel.cpp
     syncthingsortfiltermodel.cpp
     syncthingstatuscomputionmodel.cpp

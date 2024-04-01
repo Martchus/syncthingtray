@@ -304,6 +304,7 @@ ForkAwesomeIcons::ForkAwesomeIcons(QtForkAwesome::Renderer &renderer, const QCol
     , cogs(renderer.pixmap(QtForkAwesome::Icon::Cogs, size, color))
     , link(renderer.pixmap(QtForkAwesome::Icon::Link, size, color))
     , eye(renderer.pixmap(QtForkAwesome::Icon::Eye, size, color))
+    , file(renderer.pixmap(QtForkAwesome::Icon::FileO, size, color))
     , fileArchive(renderer.pixmap(QtForkAwesome::Icon::FileArchiveO, size, color))
     , folder(renderer.pixmap(QtForkAwesome::Icon::Folder, size, color))
     , certificate(renderer.pixmap(QtForkAwesome::Icon::Certificate, size, color))
@@ -366,7 +367,10 @@ QImage aboutDialogImage()
 void setForkAwesomeThemeOverrides()
 {
     auto &renderer = QtForkAwesome::Renderer::global();
+    renderer.addThemeOverride(QtForkAwesome::Icon::File, QStringLiteral("text-plain"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Folder, QStringLiteral("folder-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::FileO, QStringLiteral("text-plain"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::FolderO, QStringLiteral("folder-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Sitemap, QStringLiteral("network-server-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Download, QStringLiteral("folder-download-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::History, QStringLiteral("shallow-history"));

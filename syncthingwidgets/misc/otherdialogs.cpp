@@ -3,6 +3,8 @@
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingdir.h>
 
+#include <syncthingmodel/syncthingfilemodel.h>
+
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
 
@@ -12,8 +14,10 @@
 #include <QGuiApplication>
 #include <QIcon>
 #include <QLabel>
+#include <QMenu>
 #include <QPixmap>
 #include <QPushButton>
+#include <QTreeView>
 #include <QVBoxLayout>
 
 using namespace std;
@@ -74,4 +78,51 @@ QWidget *ownDeviceIdWidget(Data::SyncthingConnection &connection, int size, QWid
     setupOwnDeviceIdDialog(connection, size, widget);
     return widget;
 }
+
+QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Data::SyncthingDir &dir, QWidget *parent)
+{
+    auto dlg = new QDialog(parent);
+    dlg->setWindowTitle(QCoreApplication::translate("QtGui::OtherDialogs", "Remote/global tree of folder \"%1\"").arg(dir.displayName())
+        + QStringLiteral(" - " APP_NAME));
+    dlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+
+    // setup model/view
+    auto model = new Data::SyncthingFileModel(connection, dir.id, &connection);
+    auto view = new QTreeView(dlg);
+    view->setModel(model);
+    view->setContextMenuPolicy(Qt::CustomContextMenu);
+    QObject::connect(view, &QTreeView::customContextMenuRequested, view, [view, model](const QPoint &pos) {
+        const auto index = view->indexAt(pos);
+        if (!index.isValid()) {
+            return;
+        }
+        const auto actions = model->data(index, SyncthingFileModel::Actions).toStringList();
+        if (actions.isEmpty()) {
+            return;
+        }
+        const auto actionNames = model->data(index, SyncthingFileModel::ActionNames).toStringList();
+        const auto actionIcons = model->data(index, SyncthingFileModel::ActionIcons).toStringList();
+        auto menu = QMenu(view);
+        auto actionIndex = qsizetype();
+        for (const auto &action : actions) {
+            QObject::connect(menu.addAction(actionIndex < actionIcons.size() ? QIcon::fromTheme(actionIcons.at(actionIndex)) : QIcon(),
+                                 actionIndex < actionNames.size() ? actionNames.at(actionIndex) : action),
+                &QAction::triggered, model, [model, action, index]() { model->triggerAction(action, index); });
+            ++actionIndex;
+        }
+        menu.exec(pos);
+    });
+
+    // setup layout
+    auto layout = new QVBoxLayout;
+    layout->setAlignment(Qt::AlignCenter);
+    layout->setSpacing(0);
+    layout->setContentsMargins(QMargins());
+    layout->addWidget(view);
+    dlg->setLayout(layout);
+
+    return dlg;
+}
+
 } // namespace QtGui

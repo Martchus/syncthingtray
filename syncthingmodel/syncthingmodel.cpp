@@ -40,6 +40,23 @@ void SyncthingModel::invalidateNestedIndicies(const QVector<int> &affectedRoles)
     }
 }
 
+void SyncthingModel::invalidateAllIndicies(const QVector<int> &affectedRoles, const QModelIndex &parentIndex)
+{
+    const auto rows = rowCount(parentIndex);
+    const auto columns = columnCount(parentIndex);
+    if (rows <= 0 || columns <= 0) {
+        return;
+    }
+    const auto topLeftIndex = index(0, 0, parentIndex);
+    const auto bottomRightIndex = index(rows - 1, columns - 1, parentIndex);
+    emit dataChanged(topLeftIndex, bottomRightIndex, affectedRoles);
+    for (auto row = 0; row != rows; ++row) {
+        if (const auto idx = index(row, 0, parentIndex); idx.isValid()) {
+            invalidateAllIndicies(affectedRoles, idx);
+        }
+    }
+}
+
 void SyncthingModel::setBrightColors(bool brightColors)
 {
     if (m_brightColors == brightColors) {

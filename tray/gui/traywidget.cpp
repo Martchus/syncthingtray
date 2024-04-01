@@ -203,6 +203,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     connect(m_ui->dirsTreeView, &DirView::scanDir, this, &TrayWidget::scanDir);
     connect(m_ui->dirsTreeView, &DirView::pauseResumeDir, this, &TrayWidget::pauseResumeDir);
     connect(m_ui->devsTreeView, &DevView::pauseResumeDev, this, &TrayWidget::pauseResumeDev);
+    connect(m_ui->dirsTreeView, &DirView::browseRemoteFiles, this, &TrayWidget::browseRemoteFiles);
     connect(m_ui->downloadsTreeView, &DownloadView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->downloadsTreeView, &DownloadView::openItemDir, this, &TrayWidget::openItemDir);
     connect(m_ui->recentChangesTreeView, &QTreeView::customContextMenuRequested, this, &TrayWidget::showRecentChangesContextMenu);
@@ -706,6 +707,14 @@ void TrayWidget::pauseResumeDir(const SyncthingDir &dir)
     } else {
         m_connection.pauseDirectories(QStringList(dir.id));
     }
+}
+
+void TrayWidget::browseRemoteFiles(const Data::SyncthingDir &dir)
+{
+    auto *const dlg = browseRemoteFilesDialog(m_connection, dir, this);
+    dlg->resize(600, 500);
+    centerWidget(this);
+    dlg->show();
 }
 
 void TrayWidget::showRecentChangesContextMenu(const QPoint &position)

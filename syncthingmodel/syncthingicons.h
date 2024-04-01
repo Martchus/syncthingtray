@@ -138,6 +138,7 @@ struct LIB_SYNCTHING_MODEL_EXPORT ForkAwesomeIcons {
     QIcon cogs;
     QIcon link;
     QIcon eye;
+    QIcon file;
     QIcon fileArchive;
     QIcon folder;
     QIcon certificate;

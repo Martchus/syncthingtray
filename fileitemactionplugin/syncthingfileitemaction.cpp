@@ -19,7 +19,6 @@
 #include <utility>
 
 using namespace std;
-using namespace Data;
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 K_PLUGIN_CLASS_WITH_JSON(SyncthingFileItemAction, "metadata.json");
@@ -28,13 +27,13 @@ K_PLUGIN_FACTORY(SyncthingFileItemActionFactory, registerPlugin<SyncthingFileIte
 #endif
 
 struct SyncthingItem {
-    SyncthingItem(const SyncthingDir *dir, const QString &path);
-    const SyncthingDir *dir;
+    SyncthingItem(const Data::SyncthingDir *dir, const QString &path);
+    const Data::SyncthingDir *dir;
     QString path;
     QString name;
 };
 
-SyncthingItem::SyncthingItem(const SyncthingDir *dir, const QString &path)
+SyncthingItem::SyncthingItem(const Data::SyncthingDir *dir, const QString &path)
     : dir(dir)
     , path(path)
 {
@@ -78,17 +77,17 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
 }
 
 struct DirStats {
-    explicit DirStats(const QList<const SyncthingDir *> &dirs);
+    explicit DirStats(const QList<const Data::SyncthingDir *> &dirs);
 
     QStringList ids;
     bool anyPaused = false;
     bool allPaused = true;
 };
 
-DirStats::DirStats(const QList<const SyncthingDir *> &dirs)
+DirStats::DirStats(const QList<const Data::SyncthingDir *> &dirs)
 {
     ids.reserve(dirs.size());
-    for (const SyncthingDir *const dir : dirs) {
+    for (const Data::SyncthingDir *const dir : dirs) {
         ids << dir->id;
         if (dir->paused) {
             anyPaused = true;
@@ -124,11 +123,11 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     }
 
     // determine relevant Syncthing dirs
-    QList<const SyncthingDir *> detectedDirs;
-    QList<const SyncthingDir *> containingDirs;
+    QList<const Data::SyncthingDir *> detectedDirs;
+    QList<const Data::SyncthingDir *> containingDirs;
     QList<SyncthingItem> detectedItems;
-    const SyncthingDir *lastDir = nullptr;
-    for (const SyncthingDir &dir : dirs) {
+    const Data::SyncthingDir *lastDir = nullptr;
+    for (const Data::SyncthingDir &dir : dirs) {
         auto dirPath = QDir::cleanPath(dir.path);
         auto dirPathWithSlash = dirPath + QChar('/');
         for (const QString &path : std::as_const(paths)) {
@@ -177,7 +176,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         actions << new QAction(QIcon::fromTheme(QStringLiteral("folder-sync")),
             detectedDirs.size() == 1 ? tr("Rescan \"%1\"").arg(detectedDirs.front()->displayName()) : tr("Rescan selected folders"), parent);
         if (connection.isConnected() && !detectedDirsStats.allPaused) {
-            for (const SyncthingDir *dir : std::as_const(detectedDirs)) {
+            for (const Data::SyncthingDir *dir : std::as_const(detectedDirs)) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, dir->id, QString()));
                 containingDirs.removeAll(dir);
             }
@@ -195,8 +194,8 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         }
         if (connection.isConnected()) {
             connect(actions.back(), &QAction::triggered,
-                bind(detectedDirsStats.anyPaused ? &SyncthingConnection::resumeDirectories : &SyncthingConnection::pauseDirectories, &connection,
-                    detectedDirsStats.ids));
+                bind(detectedDirsStats.anyPaused ? &Data::SyncthingConnection::resumeDirectories : &Data::SyncthingConnection::pauseDirectories,
+                    &connection, detectedDirsStats.ids));
         } else {
             actions.back()->setEnabled(false);
         }
@@ -208,7 +207,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         actions << new QAction(QIcon::fromTheme(QStringLiteral("folder-sync")),
             containingDirs.size() == 1 ? tr("Rescan \"%1\"").arg(containingDirs.front()->displayName()) : tr("Rescan containing folders"), parent);
         if (connection.isConnected() && !containingDirsStats.allPaused) {
-            for (const SyncthingDir *dir : std::as_const(containingDirs)) {
+            for (const Data::SyncthingDir *dir : std::as_const(containingDirs)) {
                 connect(actions.back(), &QAction::triggered, bind(&SyncthingFileItemActionStaticData::rescanDir, &data, dir->id, QString()));
             }
         } else {
@@ -226,8 +225,8 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
         }
         if (connection.isConnected()) {
             connect(actions.back(), &QAction::triggered,
-                bind(containingDirsStats.anyPaused ? &SyncthingConnection::resumeDirectories : &SyncthingConnection::pauseDirectories, &connection,
-                    containingDirsStats.ids));
+                bind(containingDirsStats.anyPaused ? &Data::SyncthingConnection::resumeDirectories : &Data::SyncthingConnection::pauseDirectories,
+                    &connection, containingDirsStats.ids));
         } else {
             actions.back()->setEnabled(false);
         }
@@ -236,10 +235,10 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     // add actions to show further information about directory if the selection is only about one particular Syncthing dir
     if (lastDir && detectedDirs.size() + containingDirs.size() == 1) {
         auto *statusActions = new SyncthingDirActions(*lastDir, &data, parent);
-        connect(&connection, &SyncthingConnection::newDirs, statusActions,
-            static_cast<void (SyncthingDirActions::*)(const vector<SyncthingDir> &)>(&SyncthingDirActions::updateStatus));
-        connect(&connection, &SyncthingConnection::dirStatusChanged, statusActions,
-            static_cast<bool (SyncthingDirActions::*)(const SyncthingDir &)>(&SyncthingDirActions::updateStatus));
+        connect(&connection, &Data::SyncthingConnection::newDirs, statusActions,
+            static_cast<void (SyncthingDirActions::*)(const std::vector<Data::SyncthingDir> &)>(&SyncthingDirActions::updateStatus));
+        connect(&connection, &Data::SyncthingConnection::dirStatusChanged, statusActions,
+            static_cast<bool (SyncthingDirActions::*)(const Data::SyncthingDir &)>(&SyncthingDirActions::updateStatus));
         actions << *statusActions;
     }
 

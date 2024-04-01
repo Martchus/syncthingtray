@@ -1582,6 +1582,89 @@ void SyncthingConnection::readRevert()
     }
 }
 
+/*!
+ * \brief Lists items in the directory with the specified \a dirId down to \a levels (or fully if \a levels is 0) as of \a prefix.
+ * \sa https://docs.syncthing.net/rest/db-browse-get.html
+ * \remarks
+ * In contrast to other functions, this one uses a \a callback to return results (instead of a signal). This makes it easier to
+ * consume results of a specific request. Errors are still reported via the error() signal so there's no extra error handling
+ * required. Note that \a callback is *not* invoked in the error case.
+ */
+QMetaObject::Connection SyncthingConnection::browse(
+    const QString &dirId, const QString &prefix, int levels, std::function<void(std::vector<SyncthingItem> &&)> &&callback)
+{
+    auto query = QUrlQuery();
+    query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
+    if (!prefix.isEmpty()) {
+        query.addQueryItem(QStringLiteral("prefix"), formatQueryItem(prefix));
+    }
+    if (levels > 0) {
+        query.addQueryItem(QStringLiteral("levels"), QString::number(levels));
+    }
+    return QObject::connect(
+        requestData(QStringLiteral("db/browse"), query), &QNetworkReply::finished, this,
+        [this, id = dirId, l = levels, cb = std::move(callback)]() mutable { readBrowse(id, l, std::move(cb)); }, Qt::QueuedConnection);
+}
+
+/// \cond
+static void readSyncthingItems(const QJsonArray &array, std::vector<SyncthingItem> &into, int level, int levels)
+{
+    into.reserve(static_cast<std::size_t>(array.size()));
+    for (const auto &jsonItem : array) {
+        if (!jsonItem.isObject()) {
+            continue;
+        }
+        const auto jsonItemObj = jsonItem.toObject();
+        const auto type = jsonItemObj.value(QLatin1String("type")).toString();
+        const auto index = into.size();
+        const auto children = jsonItemObj.value(QLatin1String("children"));
+        auto &item = into.emplace_back();
+        item.name = jsonItemObj.value(QLatin1String("name")).toString();
+        item.modificationTime = CppUtilities::DateTime::fromIsoStringGmt(jsonItemObj.value(QLatin1String("modTime")).toString().toUtf8().data());
+        item.size = static_cast<std::size_t>(jsonItemObj.value(QLatin1String("size")).toInteger());
+        item.index = index;
+        item.level = level;
+        if (type == QLatin1String("FILE_INFO_TYPE_FILE")) {
+            item.type = SyncthingItemType::File;
+        } else if (type == QLatin1String("FILE_INFO_TYPE_DIRECTORY")) {
+            item.type = SyncthingItemType::Directory;
+        }
+        readSyncthingItems(children.toArray(), item.children, level + 1, levels);
+        item.childrenPopulated = !levels || level < levels;
+    }
+}
+/// \endcond
+
+/*!
+ * \brief Reads the response of browse() and reports results via the specified \a callback or emits error() in case of an error.
+ */
+void SyncthingConnection::readBrowse(const QString &dirId, int levels, std::function<void(std::vector<SyncthingItem> &&)> &&callback)
+{
+    auto const [reply, response] = prepareReply();
+    if (!reply) {
+        return;
+    }
+    auto items = std::vector<SyncthingItem>();
+    switch (reply->error()) {
+    case QNetworkReply::NoError: {
+        auto jsonError = QJsonParseError();
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        if (jsonError.error != QJsonParseError::NoError) {
+            emit error(tr("Unable to parse response for browsing \"%1\": ").arg(dirId) + jsonError.errorString(), SyncthingErrorCategory::Parsing,
+                QNetworkReply::NoError);
+            return;
+        }
+        readSyncthingItems(replyDoc.array(), items, 0, levels);
+        if (callback) {
+            callback(std::move(items));
+        }
+        break;
+    }
+    default:
+        emitError(tr("Unable to browse \"%1\": ").arg(dirId), SyncthingErrorCategory::SpecificRequest, reply);
+    }
+}
+
 // post config
 
 /*!

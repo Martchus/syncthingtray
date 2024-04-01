@@ -34,6 +34,7 @@ protected:
     virtual const QVector<int> &colorRoles() const;
     void invalidateTopLevelIndicies(const QVector<int> &affectedRoles);
     void invalidateNestedIndicies(const QVector<int> &affectedRoles);
+    void invalidateAllIndicies(const QVector<int> &affectedRoles, const QModelIndex &parentIndex = QModelIndex());
 
 private Q_SLOTS:
     virtual void handleConfigInvalidated();

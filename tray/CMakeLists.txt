@@ -51,6 +51,7 @@ set(REQUIRED_ICONS
     dialog-ok
     dialog-ok-apply
     document-open
+    document-open-remote
     download
     edit-copy
     edit-clear

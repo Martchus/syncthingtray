@@ -6,6 +6,7 @@
 #include <syncthingmodel/syncthingdirectorymodel.h>
 #include <syncthingmodel/syncthingsortfiltermodel.h>
 #include <syncthingwidgets/misc/direrrorsdialog.h>
+#include <syncthingwidgets/settings/settings.h>
 
 #include <QClipboard>
 #include <QGuiApplication>
@@ -102,6 +103,12 @@ void DirView::showContextMenu(const QPoint &position)
         connect(menu.addAction(QIcon::fromTheme(QStringLiteral("folder"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg"))),
                     tr("Open in file browser")),
             &QAction::triggered, triggerActionForSelectedRow(this, &DirView::openDir));
+        if (Settings::values().enableWipFeatures) {
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("document-open-remote"),
+                                       QIcon(QStringLiteral(":/icons/hicolor/scalable/places/document-open-remote.svg"))),
+                        tr("Browse remote files")),
+                &QAction::triggered, triggerActionForSelectedRow(this, &DirView::browseRemoteFiles));
+        }
     }
     showViewMenu(position, *this, menu);
 }
