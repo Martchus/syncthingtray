@@ -481,7 +481,12 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
         if (started) {
             emit finished(0, QProcess::CrashExit);
         }
-        const auto error = ec == std::errc::timed_out || ec == std::errc::stream_timeout ? QProcess::Timedout : QProcess::Crashed;
+        const auto error = ec == std::errc::timed_out
+#ifdef ETIME
+                || ec == std::errc::stream_timeout
+#endif
+            ? QProcess::Timedout
+            : QProcess::Crashed;
         const auto msg = ec.message();
         std::cerr << EscapeCodes::Phrases::Error << "Unable to launch process: " << msg << EscapeCodes::Phrases::End;
         QMetaObject::invokeMethod(
