@@ -276,7 +276,7 @@ QString StatusIconSettings::toString() const
 
 StatusIcons::StatusIcons(const StatusIconSettings &settings)
     : disconnected(
-        QIcon(renderSvgImage(makeSyncthingIcon(settings.disconnectedColor, StatusEmblem::None, settings.strokeWidth), settings.renderSize)))
+          QIcon(renderSvgImage(makeSyncthingIcon(settings.disconnectedColor, StatusEmblem::None, settings.strokeWidth), settings.renderSize)))
     , idling(QIcon(renderSvgImage(makeSyncthingIcon(settings.idleColor, StatusEmblem::None, settings.strokeWidth), settings.renderSize)))
     , scanninig(QIcon(renderSvgImage(makeSyncthingIcon(settings.scanningColor, StatusEmblem::Scanning, settings.strokeWidth), settings.renderSize)))
     , notify(QIcon(renderSvgImage(makeSyncthingIcon(settings.warningColor, StatusEmblem::Alert, settings.strokeWidth), settings.renderSize)))
