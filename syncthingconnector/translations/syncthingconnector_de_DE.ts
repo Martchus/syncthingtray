@@ -165,17 +165,17 @@
         <translation>Fehler beim Löschen der Fehlermeldungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1797"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1880"/>
         <source>Unable to parse Syncthing events: </source>
         <translation>Fehler beim Auslesen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1824"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1907"/>
         <source>Unable to request Syncthing events: </source>
         <translation>Fehler beim Abfragen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1621"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1704"/>
         <source>Unable to post config: </source>
         <translation>Fehler beim Senden der neuen Konfiguration: </translation>
     </message>
@@ -250,12 +250,22 @@
         <translation>Fehler beim Zurücksetzen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2405"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1653"/>
+        <source>Unable to parse response for browsing &quot;%1&quot;: </source>
+        <translation>Fehler beim Auslesen der Inhalte des Ordners &quot;%1&quot;: </translation>
+    </message>
+    <message>
+        <location filename="../syncthingconnection_requests.cpp" line="1664"/>
+        <source>Unable to browse &quot;%1&quot;: </source>
+        <translation>Fehler beim Durchsuchen des Ordners &quot;%1&quot;: </translation>
+    </message>
+    <message>
+        <location filename="../syncthingconnection_requests.cpp" line="2488"/>
         <source>Unable to parse disk events: </source>
         <translation>Fehler beim Auslesen der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2428"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2511"/>
         <source>Unable to request disk events: </source>
         <translation>Fehler beim Anfordern der letzten Änderungen: </translation>
     </message>
