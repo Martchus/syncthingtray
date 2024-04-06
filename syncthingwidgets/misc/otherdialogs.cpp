@@ -111,7 +111,7 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
                 &QAction::triggered, model, [model, action, index]() { model->triggerAction(action, index); });
             ++actionIndex;
         }
-        menu.exec(pos);
+        menu.exec(view->viewport()->mapToGlobal(pos));
     });
 
     // setup layout

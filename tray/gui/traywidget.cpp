@@ -713,7 +713,7 @@ void TrayWidget::browseRemoteFiles(const Data::SyncthingDir &dir)
 {
     auto *const dlg = browseRemoteFilesDialog(m_connection, dir, this);
     dlg->resize(600, 500);
-    centerWidget(this);
+    centerWidget(dlg);
     dlg->show();
 }
 
