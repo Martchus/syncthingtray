@@ -363,6 +363,11 @@ QString SyncthingApplet::substituteTilde(const QString &path) const
     return Data::substituteTilde(path, m_connection.tilde(), m_connection.pathSeparator());
 }
 
+bool SyncthingApplet::areWipFeaturesEnabled() const
+{
+    return Settings::values().enableWipFeatures;
+}
+
 void SyncthingApplet::showSettingsDlg()
 {
     if (!m_settingsDlg) {
@@ -513,6 +518,19 @@ void SyncthingApplet::showDirectoryErrors(const QString &dirId)
     m_connection.requestDirPullErrors(dirId);
     auto *const dlg = new DirectoryErrorsDialog(m_connection, *dir);
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
+    centerWidget(dlg);
+    dlg->show();
+}
+
+void SyncthingApplet::browseRemoteFiles(const QString &dirId)
+{
+    auto row = 0;
+    auto *const dir = m_connection.findDirInfo(dirId, row);
+    if (!dir) {
+        return;
+    }
+    auto *const dlg = QtGui::browseRemoteFilesDialog(m_connection, *dir);
+    dlg->resize(600, 500);
     centerWidget(dlg);
     dlg->show();
 }

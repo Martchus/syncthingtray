@@ -86,6 +86,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(bool passive READ isPassive NOTIFY passiveChanged)
     Q_PROPERTY(QList<QtUtilities::ChecklistItem> passiveStates READ passiveStates WRITE setPassiveStates)
     Q_PROPERTY(QString faUrl READ faUrl NOTIFY faUrlChanged)
+    Q_PROPERTY(bool wipFeaturesEnabled READ areWipFeaturesEnabled NOTIFY wipFeaturesEnabledChanged)
 
 public:
     SyncthingApplet(QObject *parent, const QVariantList &data);
@@ -132,6 +133,7 @@ public:
     Q_INVOKABLE QIcon loadForkAwesomeIcon(const QString &name, int size = 32) const;
     Q_INVOKABLE QString formatFileSize(quint64 fileSizeInByte) const;
     Q_INVOKABLE QString substituteTilde(const QString &path) const;
+    bool areWipFeaturesEnabled() const;
 
 public Q_SLOTS:
     void init() override;
@@ -146,6 +148,7 @@ public Q_SLOTS:
     void dismissNotifications();
     void showInternalErrorsDialog();
     void showDirectoryErrors(const QString &dirId);
+    void browseRemoteFiles(const QString &dirId);
     void copyToClipboard(const QString &text);
     void updateStatusIconAndTooltip();
     void saveSettings();
@@ -177,6 +180,8 @@ Q_SIGNALS:
     void notificationsAvailableChanged(bool notificationsAvailable);
     void passiveChanged(bool passive);
     void faUrlChanged(const QString &faUrl);
+    /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
+    void wipFeaturesEnabledChanged();
 
 private Q_SLOTS:
     void handleSettingsChanged();

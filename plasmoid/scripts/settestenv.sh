@@ -17,8 +17,8 @@ if ! [[ $QT_PLUGIN_PATH ]]; then
     elif [ -f "$PWD"/plasmoid/lib/plasma/applets/*syncthingplasmoid*.so ]; then
         export QT_PLUGIN_PATH=$PWD/plasmoid/lib
     fi
-    echo "QT_PLUGIN_PATH used for Plasmoid testing: $QT_PLUGIN_PATH"
 fi
+echo "QT_PLUGIN_PATH used for Plasmoid testing: $QT_PLUGIN_PATH"
 
 # set TEST_FILE_PATH so files for the mocked configuration can be found
 export TEST_FILE_PATH=$(dirname "${BASH_SOURCE[0]}")/../testfiles

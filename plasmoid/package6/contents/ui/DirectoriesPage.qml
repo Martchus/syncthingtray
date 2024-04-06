@@ -38,6 +38,7 @@ ColumnLayout {
             delegate: TopLevelItem {
                 id: item
                 width: directoryView.effectiveWidth()
+                readonly property string dirId_: dirId
                 readonly property string dirName: name
                 readonly property string dirPath: path
                 property alias errorsButton: errorsButton
@@ -141,7 +142,7 @@ ColumnLayout {
 
                 function init(item) {
                     // use value for properties depending on paused state from buttons
-                    rescanItem.enabled = item.rescanButton.enabled
+                    rescanItem.enabled = browseRemoteFilesItem.enabled = item.rescanButton.enabled
                     resumePauseItem.text = item.resumePauseButton.tooltip
                     resumePauseItem.icon = item.resumePauseButton.icon
                 }
@@ -179,6 +180,14 @@ ColumnLayout {
                     icon: "folder"
                     onClicked: directoryView.clickCurrentItemButton(
                                    "openButton")
+                }
+                PlasmaExtras.MenuItem {
+                    id: browseRemoteFilesItem
+                    text: qsTr("Browse remote files")
+                    icon: "document-open-remote"
+                    onClicked: directoryView.triggerNativeActionWithCurrentItemData(
+                                   "browseRemoteFiles", "dirId_")
+                    visible: plasmoid.wipFeaturesEnabled
                 }
             }
         }

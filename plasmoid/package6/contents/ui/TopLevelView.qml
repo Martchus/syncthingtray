@@ -42,14 +42,18 @@ ListView {
         }
     }
 
-    function copyCurrentItemData(fieldName) {
+    function triggerNativeActionWithCurrentItemData(actionName, fieldName) {
         if (!currentItem) {
             return
         }
-        var data = currentItem[fieldName]
+        const data = currentItem[fieldName]
         if (data) {
-            plasmoid.copyToClipboard(data)
+            plasmoid[actionName](data)
         }
+    }
+
+    function copyCurrentItemData(fieldName) {
+        this.triggerNativeActionWithCurrentItemData("copyToClipboard", fieldName)
     }
 
     function showContextMenu(item, x, y) {
