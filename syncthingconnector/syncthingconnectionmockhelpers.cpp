@@ -24,7 +24,7 @@ namespace Data {
  */
 namespace TestData {
 static bool initialized = false;
-static std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty;
+static std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse;
 static std::string events[7];
 } // namespace TestData
 
@@ -62,10 +62,10 @@ void setupTestData()
 
     // read mock files for REST-API
     const char *const fileNames[] = { "config", "status", "folderstats", "devicestats", "errors", "folderstatus-01", "folderstatus-02",
-        "folderstatus-03", "pullerrors-01", "connections", "version", "empty" };
+        "folderstatus-03", "pullerrors-01", "connections", "version", "empty", "browse" };
     const char *const *fileName = fileNames;
     for (auto *const testDataVariable : { &config, &status, &folderStats, &deviceStats, &errors, &folderStatus, &folderStatus2, &folderStatus3,
-             &pullErrors, &connections, &version, &empty }) {
+             &pullErrors, &connections, &version, &empty, &browse }) {
         *testDataVariable = readMockFile(testApp.testFilePath(argsToString("mocks/", *fileName, ".json")));
         ++fileName;
     }
@@ -170,6 +170,11 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
                     buffer = &folderStatus2;
                 } else if (folder == QLatin1String("forever-alone")) {
                     buffer = &folderStatus3;
+                }
+            } else if (path == QLatin1String("db/browse") && !query.hasQueryItem(QStringLiteral("prefix"))) {
+                const auto folder = query.queryItemValue(QStringLiteral("folder"));
+                if (folder == QLatin1String("GXWxf-3zgnU")) {
+                    buffer = &browse;
                 }
             } else if (path == QLatin1String("folder/pullerrors")) {
                 const QString folder(query.queryItemValue(QStringLiteral("folder")));

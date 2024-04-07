@@ -88,7 +88,7 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 
     // setup model/view
-    auto model = new Data::SyncthingFileModel(connection, dir.id, &connection);
+    auto model = new Data::SyncthingFileModel(connection, dir, &connection);
     auto view = new QTreeView(dlg);
     view->setModel(model);
     view->setContextMenuPolicy(Qt::CustomContextMenu);

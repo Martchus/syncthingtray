@@ -39,7 +39,8 @@ set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJ
              translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
 set(QT_TESTS models)
-set(QT_TEST_SRC_FILES_models syncthingicons.cpp syncthingmodel.cpp syncthingdirectorymodel.cpp syncthingdevicemodel.cpp)
+set(QT_TEST_SRC_FILES_models syncthingicons.cpp syncthingmodel.cpp syncthingdirectorymodel.cpp syncthingdevicemodel.cpp
+                             syncthingfilemodel.cpp)
 
 # find c++utilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)

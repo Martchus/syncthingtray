@@ -1,13 +1,14 @@
-#include "../syncthingdirectorymodel.h"
 #include "../syncthingdevicemodel.h"
+#include "../syncthingdirectorymodel.h"
+#include "../syncthingfilemodel.h"
 
 #include <syncthingconnector/syncthingconnection.h>
 
 #include <QtTest/QtTest>
 
 #include <QEventLoop>
-#include <QTimer>
 #include <QLocale>
+#include <QTimer>
 
 #include <qtutilities/misc/compat.h>
 
@@ -20,6 +21,7 @@ private Q_SLOTS:
 
     void testDirectoryModel();
     void testDevicesModel();
+    void testFileModel();
 
 private:
     QTimer m_timeout;
@@ -38,7 +40,7 @@ void ModelTests::initTestCase()
     m_timeout.start();
     connect(&m_timeout, &QTimer::timeout, this, [this] {
         m_loop.quit();
-        QFAIL("Timeout exceeded when loading mocked config/status for test");
+        QFAIL("Timeout exceeded");
     });
 
     // request config and status and wait until available
@@ -95,6 +97,92 @@ void ModelTests::testDevicesModel()
     QCOMPARE(model.rowCount(dev2Idx), 5);
     QCOMPARE(model.index(0, 1, dev2Idx).data(), QStringLiteral("53STGR7-YBM6FCX-PAZ2RHM-YPY6OEJ-WYHVZO7-PCKQRCK-PZLTP7T"));
     QCOMPARE(model.index(1, 1, dev2Idx).data(), QStringLiteral("dynamic, tcp://192.168.1.3:22000"));
+}
+
+void ModelTests::testFileModel()
+{
+    auto row = 0;
+    const auto *dirInfo = m_connection.findDirInfo(QStringLiteral("GXWxf-3zgnU"), row);
+    QVERIFY(dirInfo);
+
+    // test behavior of empty/unpopulated model
+    auto model = Data::SyncthingFileModel(m_connection, *dirInfo);
+    QCOMPARE(model.rowCount(QModelIndex()), 1);
+    const auto rootIdx = QPersistentModelIndex(model.index(0, 0));
+    QVERIFY(rootIdx.isValid());
+    QVERIFY(!model.index(1, 0).isValid());
+    QCOMPARE(model.rowCount(rootIdx), 1);
+    QCOMPARE(model.index(0, 0, rootIdx).data(), QVariant());
+    QCOMPARE(model.index(1, 0, rootIdx).data(), QVariant());
+    QVERIFY(model.canFetchMore(rootIdx));
+
+    // wait until the root has been updated
+    connect(&model, &QAbstractItemModel::rowsInserted, this, [this](const QModelIndex &parent, int first, int last) {
+        Q_UNUSED(first)
+        Q_UNUSED(last)
+        if (!parent.parent().isValid() && parent.row() == 0 && parent.column() == 0) {
+            m_timeout.stop();
+            m_loop.quit();
+        }
+    });
+    m_timeout.start();
+    m_loop.exec();
+
+    QVERIFY(rootIdx.isValid());
+    QCOMPARE(model.rowCount(rootIdx), 2);
+
+    // test access to nested folders
+    const auto androidIdx = QPersistentModelIndex(model.index(0, 0, rootIdx));
+    const auto cameraIdx = QPersistentModelIndex(model.index(1, 0, rootIdx));
+    const auto nestedIdx = QPersistentModelIndex(model.index(0, 0, cameraIdx));
+    const auto initialAndroidPtr = androidIdx.constInternalPointer();
+    const auto initialCameraPtr = cameraIdx.constInternalPointer();
+    QVERIFY(androidIdx.isValid());
+    QVERIFY(cameraIdx.isValid());
+    QCOMPARE(androidIdx.parent(), rootIdx);
+    QCOMPARE(cameraIdx.parent(), rootIdx);
+    QCOMPARE(nestedIdx.parent(), cameraIdx);
+    QCOMPARE(model.rowCount(androidIdx), 0);
+    QCOMPARE(model.rowCount(cameraIdx), 5);
+    QCOMPARE(androidIdx.data(), QStringLiteral("100ANDRO"));
+    QCOMPARE(cameraIdx.data(), QStringLiteral("Camera"));
+    QCOMPARE(model.index(0, 0, cameraIdx).data(), QStringLiteral("IMG_20201114_124821.jpg"));
+    QCOMPARE(model.index(0, 1, cameraIdx).data(), QStringLiteral("10.19 MiB"));
+    QCOMPARE(model.index(0, 2, cameraIdx).data(), QStringLiteral("2020-12-16 22:31:34.500"));
+    QCOMPARE(model.index(1, 0, cameraIdx).data(), QStringLiteral("IMG_20201213_122451.jpg"));
+    QCOMPARE(model.index(2, 0, cameraIdx).data(), QStringLiteral("IMG_20201213_122504.jpg"));
+    QCOMPARE(model.index(3, 0, cameraIdx).data(), QStringLiteral("IMG_20201213_122505.jpg"));
+    QCOMPARE(model.index(4, 0, cameraIdx).data(), QStringLiteral("IMG_20201213_125329.jpg"));
+    QCOMPARE(model.index(5, 0, cameraIdx).data(), QVariant());
+    QCOMPARE(model.index(5, 1, cameraIdx).data(), QVariant());
+    QCOMPARE(model.index(5, 2, cameraIdx).data(), QVariant());
+    QCOMPARE(model.index(5, 3, cameraIdx).data(), QVariant());
+
+    // test conversion of indexes to/from paths
+    const auto testPath = QStringLiteral("Camera/IMG_20201213_122504.jpg/");
+    const auto testPathIdx = model.index(2, 0, cameraIdx);
+    QCOMPARE(model.path(testPathIdx), testPath);
+    QCOMPARE(model.index(testPath), testPathIdx);
+
+    // re-load the data again and wait for the update
+    model.fetchMore(rootIdx);
+    m_timeout.start();
+    m_loop.exec();
+
+    // verify that only the root index is still valid (all other indexes have been invalidated)
+    QVERIFY(rootIdx.isValid());
+    QCOMPARE(model.rowCount(rootIdx), 2);
+    QVERIFY(androidIdx.constInternalPointer() != initialAndroidPtr);
+    QVERIFY(!androidIdx.isValid());
+    QVERIFY(cameraIdx.constInternalPointer() != initialCameraPtr);
+    QVERIFY(!cameraIdx.isValid());
+    QVERIFY(!nestedIdx.isValid());
+
+    // verify that data was re-loaded
+    const auto androidIdx2 = QPersistentModelIndex(model.index(0, 0, rootIdx));
+    const auto cameraIdx2 = QPersistentModelIndex(model.index(1, 0, rootIdx));
+    QCOMPARE(androidIdx2.data(), QStringLiteral("100ANDRO"));
+    QCOMPARE(cameraIdx2.data(), QStringLiteral("Camera"));
 }
 
 QTEST_MAIN(ModelTests)

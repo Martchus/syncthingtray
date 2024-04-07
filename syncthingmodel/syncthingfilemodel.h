@@ -3,23 +3,25 @@
 
 #include "./syncthingmodel.h"
 
+#include <syncthingconnector/syncthingconnection.h>
+
+#include <memory>
 #include <vector>
 
 namespace Data {
-
-struct SyncthingItem;
 
 class LIB_SYNCTHING_MODEL_EXPORT SyncthingFileModel : public SyncthingModel {
     Q_OBJECT
 public:
     enum SyncthingFileModelRole { NameRole = SyncthingModelUserRole + 1, SizeRole, ModificationTimeRole, Actions, ActionNames, ActionIcons };
 
-    explicit SyncthingFileModel(SyncthingConnection &connection, const QString &dirId, QObject *parent = nullptr);
+    explicit SyncthingFileModel(SyncthingConnection &connection, const SyncthingDir &dir, QObject *parent = nullptr);
     ~SyncthingFileModel() override;
 
 public Q_SLOTS:
     QHash<int, QByteArray> roleNames() const override;
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex index(const QString &path) const;
     QModelIndex parent(const QModelIndex &child) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -44,9 +46,9 @@ private:
 private:
     SyncthingConnection &m_connection;
     QString m_dirId;
-    QModelIndexList m_fetchQueue;
+    QStringList m_fetchQueue;
     QMetaObject::Connection m_pendingRequest;
-    mutable std::vector<SyncthingItem> m_items;
+    std::unique_ptr<SyncthingItem> m_root;
 };
 
 } // namespace Data
