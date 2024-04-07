@@ -53,7 +53,7 @@ enum class SyncthingItemType { Unknown, File, Directory };
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItem {
     QString name;
-    CppUtilities::DateTime modificationTime;
+    CppUtilities::DateTime modificationTime = CppUtilities::DateTime();
     std::size_t size = std::size_t();
     SyncthingItemType type = SyncthingItemType::Unknown;
     std::vector<SyncthingItem> children;
@@ -254,7 +254,7 @@ public Q_SLOTS:
 public:
     // methods to GET or POST information from/to Syncthing (non-slots)
     QMetaObject::Connection browse(
-        const QString &dirId, const QString &prefix, int level, std::function<void(std::vector<SyncthingItem> &&)> &&callback);
+        const QString &dirId, const QString &prefix, int level, std::function<void(std::vector<SyncthingItem> &&, QString &&error)> &&callback);
 
 Q_SIGNALS:
     void newConfig(const QJsonObject &rawConfig);
@@ -369,7 +369,7 @@ private Q_SLOTS:
 
 private:
     // handler to evaluate results from request...() methods
-    void readBrowse(const QString &dirId, int levels, std::function<void(std::vector<SyncthingItem> &&)> &&callback);
+    void readBrowse(const QString &dirId, int levels, std::function<void (std::vector<SyncthingItem> &&, QString &&)> &&callback);
 
     // internal helper methods
     struct Reply {

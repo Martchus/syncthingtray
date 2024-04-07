@@ -1590,8 +1590,7 @@ void SyncthingConnection::readRevert()
  * consume results of a specific request. Errors are still reported via the error() signal so there's no extra error handling
  * required. Note that \a callback is *not* invoked in the error case.
  */
-QMetaObject::Connection SyncthingConnection::browse(
-    const QString &dirId, const QString &prefix, int levels, std::function<void(std::vector<SyncthingItem> &&)> &&callback)
+QMetaObject::Connection SyncthingConnection::browse(const QString &dirId, const QString &prefix, int levels, std::function<void (std::vector<SyncthingItem> &&, QString &&)> &&callback)
 {
     auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
@@ -1643,9 +1642,10 @@ static void readSyncthingItems(const QJsonArray &array, std::vector<SyncthingIte
 /// \endcond
 
 /*!
- * \brief Reads the response of browse() and reports results via the specified \a callback or emits error() in case of an error.
+ * \brief Reads the response of browse() and reports results via the specified \a callback. Emits error() in case of an error.
+ * \remarks The \a callback is also emitted in the error case (with the error message as second parameter and an empty list of items).
  */
-void SyncthingConnection::readBrowse(const QString &dirId, int levels, std::function<void(std::vector<SyncthingItem> &&)> &&callback)
+void SyncthingConnection::readBrowse(const QString &dirId, int levels, std::function<void (std::vector<SyncthingItem> &&, QString &&)> &&callback)
 {
     auto const [reply, response] = prepareReply();
     if (!reply) {
@@ -1657,18 +1657,25 @@ void SyncthingConnection::readBrowse(const QString &dirId, int levels, std::func
         auto jsonError = QJsonParseError();
         const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
-            emit error(tr("Unable to parse response for browsing \"%1\": ").arg(dirId) + jsonError.errorString(), SyncthingErrorCategory::Parsing,
-                QNetworkReply::NoError);
+            auto errorMessage = tr("Unable to parse response for browsing \"%1\": ").arg(dirId) + jsonError.errorString();
+            emit error(errorMessage, SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
+            if (callback) {
+                callback(std::move(items), std::move(errorMessage));
+            }
             return;
         }
         readSyncthingItems(replyDoc.array(), items, 0, levels);
         if (callback) {
-            callback(std::move(items));
+            callback(std::move(items), QString());
         }
         break;
     }
     default:
-        emitError(tr("Unable to browse \"%1\": ").arg(dirId), SyncthingErrorCategory::SpecificRequest, reply);
+        auto errorMessage = tr("Unable to browse \"%1\": ").arg(dirId);
+        emitError(errorMessage, SyncthingErrorCategory::SpecificRequest, reply);
+        if (callback) {
+            callback(std::move(items), std::move(errorMessage));
+        }
     }
 }
 
