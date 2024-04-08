@@ -107,7 +107,7 @@ bool WebPage::isSamePage(const QUrl &url1, const QUrl &url2)
 SYNCTHINGWIDGETS_WEB_PAGE *WebPage::createWindow(SYNCTHINGWIDGETS_WEB_PAGE::WebWindowType type)
 {
     Q_UNUSED(type)
-    return new WebPage;
+    return new WebPage(profile());
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_WEBENGINE
