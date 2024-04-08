@@ -72,7 +72,7 @@ WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view)
 #else
         connect(this->mainFrame(), &QWebFrame::urlChanged, this, &WebPage::delegateNewWindowToExternalBrowser);
 #endif
-        // -> there need to be a view, though
+        // -> there needs to be a temporariy view, though
         m_view = new SYNCTHINGWIDGETS_WEB_VIEW;
         m_view->setPage(this);
         setParent(m_view);
