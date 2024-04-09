@@ -77,7 +77,8 @@ QString SyncthingFileModel::path(const QModelIndex &index) const
     auto size = QString::size_type();
     parts.reserve(reinterpret_cast<SyncthingItem *>(index.internalPointer())->level + 1);
     for (auto i = index; i.isValid(); i = i.parent()) {
-        size += parts.emplace_back(reinterpret_cast<SyncthingItem *>(i.internalPointer())->name).size();
+        parts.append(reinterpret_cast<SyncthingItem *>(i.internalPointer())->name);
+        size += parts.back().size();
     }
     res.reserve(size + parts.size());
     for (auto i = parts.rbegin(), end = parts.rend(); i != end; ++i) {
