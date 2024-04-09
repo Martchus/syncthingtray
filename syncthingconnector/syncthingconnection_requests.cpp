@@ -1621,13 +1621,14 @@ static void readSyncthingItems(const QJsonArray &array, std::vector<SyncthingIte
         auto &item = into.emplace_back();
         item.name = jsonItemObj.value(QLatin1String("name")).toString();
         item.modificationTime = CppUtilities::DateTime::fromIsoStringGmt(jsonItemObj.value(QLatin1String("modTime")).toString().toUtf8().data());
-        item.size = static_cast<std::size_t>(jsonItemObj.value(QLatin1String("size"))
+        item.size = static_cast<std::size_t>(jsonItemObj
+                                                 .value(QLatin1String("size"))
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-                                             .toInteger()
+                                                 .toInteger()
 #else
-                                             .toDouble()
+                                                 .toDouble()
 #endif
-                                             );
+        );
         item.index = index;
         item.level = level;
         if (type == QLatin1String("FILE_INFO_TYPE_FILE")) {
