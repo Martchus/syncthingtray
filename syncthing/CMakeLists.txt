@@ -6,7 +6,7 @@ set(META_PROJECT_TYPE library)
 set(META_APP_NAME "Syncthing library")
 set(META_APP_DESCRIPTION "Syncthing itself, built as a shared or static library")
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING)
-set(META_SYNCTHING_VERSION "v1.27.5")
+set(META_SYNCTHING_VERSION "v1.27.6")
 
 # use testfiles directory from syncthingconnector
 set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
