@@ -380,22 +380,22 @@
 <context>
     <name>Data::SyncthingFileModel</name>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="110"/>
+        <location filename="../syncthingfilemodel.cpp" line="141"/>
         <source>Name</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="112"/>
+        <location filename="../syncthingfilemodel.cpp" line="143"/>
         <source>Size</source>
         <translation>Größe</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="114"/>
+        <location filename="../syncthingfilemodel.cpp" line="145"/>
         <source>Last modified</source>
         <translation>Zuletzt geändert</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="170"/>
+        <location filename="../syncthingfilemodel.cpp" line="201"/>
         <source>Refresh</source>
         <translation>Aktualisieren</translation>
     </message>

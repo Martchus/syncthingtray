@@ -161,17 +161,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1880"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1894"/>
         <source>Unable to parse Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1907"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1921"/>
         <source>Unable to request Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1704"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1718"/>
         <source>Unable to post config: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -246,22 +246,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1653"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1660"/>
         <source>Unable to parse response for browsing &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1664"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1674"/>
         <source>Unable to browse &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2488"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2502"/>
         <source>Unable to parse disk events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2511"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2525"/>
         <source>Unable to request disk events: </source>
         <translation type="unfinished"></translation>
     </message>
