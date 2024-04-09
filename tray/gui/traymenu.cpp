@@ -149,7 +149,9 @@ void TrayMenu::setWindowType(WindowType windowType)
     if (m_isWindows11Style) {
         updateContentMargins();
         if (windowType == WindowType::Popup) {
-            style()->polish(this);
+            if (auto *const s = style()) {
+                s->polish(this);
+            }
         }
     }
 #endif
@@ -230,9 +232,9 @@ void TrayMenu::paintEvent(QPaintEvent *event)
         QMenu::paintEvent(event);
     } else {
 #ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
-        const auto p = m_windowType != TrayMenu::WindowType::Popup && m_isWindows11Style ? QGuiApplication::palette() : palette();
+        const auto p = m_windowType != TrayMenu::WindowType::Popup && m_isWindows11Style ? QGuiApplication::palette() : QPalette(palette());
 #else
-        const auto p = palette();
+        const auto &p = palette();
 #endif
         QPainter(this).fillRect(event->rect(), p.color(backgroundRole()));
         QWidget::paintEvent(event);
