@@ -5,6 +5,7 @@
 
 #include <syncthingconnector/syncthingconnection.h>
 
+#include <memory>
 #include <vector>
 
 namespace Data {
@@ -47,7 +48,7 @@ private:
     QString m_dirId;
     QStringList m_fetchQueue;
     QMetaObject::Connection m_pendingRequest;
-    SyncthingItem m_root;
+    std::unique_ptr<SyncthingItem> m_root;
 };
 
 } // namespace Data

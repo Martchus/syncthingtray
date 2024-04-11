@@ -1590,7 +1590,7 @@ void SyncthingConnection::readRevert()
  * consume results of a specific request. Errors are still reported via the error() signal so there's no extra error handling
  * required. Note that \a callback is *not* invoked in the error case.
  */
-QMetaObject::Connection SyncthingConnection::browse(const QString &dirId, const QString &prefix, int levels, std::function<void (std::vector<SyncthingItem> &&, QString &&)> &&callback)
+QMetaObject::Connection SyncthingConnection::browse(const QString &dirId, const QString &prefix, int levels, std::function<void (std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback)
 {
     auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
@@ -1606,7 +1606,7 @@ QMetaObject::Connection SyncthingConnection::browse(const QString &dirId, const 
 }
 
 /// \cond
-static void readSyncthingItems(const QJsonArray &array, std::vector<SyncthingItem> &into, int level, int levels)
+static void readSyncthingItems(const QJsonArray &array, std::vector<std::unique_ptr<SyncthingItem>> &into, int level, int levels)
 {
     into.reserve(static_cast<std::size_t>(array.size()));
     for (const auto &jsonItem : array) {
@@ -1617,10 +1617,10 @@ static void readSyncthingItems(const QJsonArray &array, std::vector<SyncthingIte
         const auto type = jsonItemObj.value(QLatin1String("type")).toString();
         const auto index = into.size();
         const auto children = jsonItemObj.value(QLatin1String("children"));
-        auto &item = into.emplace_back();
-        item.name = jsonItemObj.value(QLatin1String("name")).toString();
-        item.modificationTime = CppUtilities::DateTime::fromIsoStringGmt(jsonItemObj.value(QLatin1String("modTime")).toString().toUtf8().data());
-        item.size = static_cast<std::size_t>(jsonItemObj
+        auto &item = into.emplace_back(std::make_unique<SyncthingItem>());
+        item->name = jsonItemObj.value(QLatin1String("name")).toString();
+        item->modificationTime = CppUtilities::DateTime::fromIsoStringGmt(jsonItemObj.value(QLatin1String("modTime")).toString().toUtf8().data());
+        item->size = static_cast<std::size_t>(jsonItemObj
                                                  .value(QLatin1String("size"))
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
                                                  .toInteger()
@@ -1628,15 +1628,15 @@ static void readSyncthingItems(const QJsonArray &array, std::vector<SyncthingIte
                                                  .toDouble()
 #endif
         );
-        item.index = index;
-        item.level = level;
+        item->index = index;
+        item->level = level;
         if (type == QLatin1String("FILE_INFO_TYPE_FILE")) {
-            item.type = SyncthingItemType::File;
+            item->type = SyncthingItemType::File;
         } else if (type == QLatin1String("FILE_INFO_TYPE_DIRECTORY")) {
-            item.type = SyncthingItemType::Directory;
+            item->type = SyncthingItemType::Directory;
         }
-        readSyncthingItems(children.toArray(), item.children, level + 1, levels);
-        item.childrenPopulated = !levels || level < levels;
+        readSyncthingItems(children.toArray(), item->children, level + 1, levels);
+        item->childrenPopulated = !levels || level < levels;
     }
 }
 /// \endcond
@@ -1645,13 +1645,13 @@ static void readSyncthingItems(const QJsonArray &array, std::vector<SyncthingIte
  * \brief Reads the response of browse() and reports results via the specified \a callback. Emits error() in case of an error.
  * \remarks The \a callback is also emitted in the error case (with the error message as second parameter and an empty list of items).
  */
-void SyncthingConnection::readBrowse(const QString &dirId, int levels, std::function<void (std::vector<SyncthingItem> &&, QString &&)> &&callback)
+void SyncthingConnection::readBrowse(const QString &dirId, int levels, std::function<void (std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback)
 {
     auto const [reply, response] = prepareReply();
     if (!reply) {
         return;
     }
-    auto items = std::vector<SyncthingItem>();
+    auto items = std::vector<std::unique_ptr<SyncthingItem>>();
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         auto jsonError = QJsonParseError();

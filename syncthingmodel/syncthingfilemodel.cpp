@@ -19,14 +19,18 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     : SyncthingModel(connection, parent)
     , m_connection(connection)
     , m_dirId(dir.id)
-    , m_root({ .name = dir.displayName(), .modificationTime = dir.lastFileTime, .size = dir.globalStats.bytes, .type = SyncthingItemType::Directory })
+    , m_root(std::make_unique<SyncthingItem>())
 {
-    m_connection.browse(m_dirId, QString(), 1, [this](std::vector<SyncthingItem> &&items, QString &&errorMessage) {
+    m_root->name = dir.displayName();
+    m_root->modificationTime = dir.lastFileTime;
+    m_root->size = dir.globalStats.bytes;
+    m_root->type = SyncthingItemType::Directory;
+    m_connection.browse(m_dirId, QString(), 1, [this](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) {
         Q_UNUSED(errorMessage)
         const auto last = items.size() - 1;
         beginInsertRows(index(0, 0), 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
-        m_root.children = std::move(items);
-        m_root.childrenPopulated = true;
+        m_root->children = std::move(items);
+        m_root->childrenPopulated = true;
         endInsertRows();
     });
 }
@@ -55,7 +59,7 @@ QModelIndex SyncthingFileModel::index(int row, int column, const QModelIndex &pa
         return QModelIndex();
     }
     if (!parent.isValid()) {
-        return static_cast<std::size_t>(row) ? QModelIndex() : createIndex(row, column, &m_root);
+        return static_cast<std::size_t>(row) ? QModelIndex() : createIndex(row, column, m_root.get());
     }
     auto *const parentItem = reinterpret_cast<SyncthingItem *>(parent.internalPointer());
     if (!parentItem) {
@@ -66,21 +70,21 @@ QModelIndex SyncthingFileModel::index(int row, int column, const QModelIndex &pa
         return QModelIndex();
     }
     auto &item = items[static_cast<std::size_t>(row)];
-    item.parent = parentItem;
-    return createIndex(row, column, &item);
+    item->parent = parentItem;
+    return createIndex(row, column, item.get());
 }
 
 QModelIndex SyncthingFileModel::index(const QString &path) const
 {
     auto parts = path.split(QChar('/'), Qt::SkipEmptyParts);
     auto res = index(0, 0);
-    auto *parent = &m_root;
+    auto *parent = m_root.get();
     for (const auto &part : parts) {
         auto foundPart = false;
         for (const auto &child : parent->children) {
-            if (child.name == part) {
-                parent = &child;
-                res = index(static_cast<int>(child.index), 0, res);
+            if (child->name == part) {
+                parent = child.get();
+                res = index(static_cast<int>(child->index), 0, res);
                 foundPart = true;
                 break;
             }
@@ -105,7 +109,7 @@ QString SyncthingFileModel::path(const QModelIndex &index) const
     parts.reserve(reinterpret_cast<SyncthingItem *>(index.internalPointer())->level + 1);
     for (auto i = index; i.isValid(); i = i.parent()) {
         const auto *const item = reinterpret_cast<SyncthingItem *>(i.internalPointer());
-        if (item == &m_root) {
+        if (item == m_root.get()) {
             break;
         }
         parts.append(reinterpret_cast<SyncthingItem *>(i.internalPointer())->name);
@@ -247,11 +251,11 @@ bool SyncthingFileModel::canFetchMore(const QModelIndex &parent) const
 }
 
 /// \cond
-static void addLevel(std::vector<SyncthingItem> &items, int level)
+static void addLevel(std::vector<std::unique_ptr<SyncthingItem>> &items, int level)
 {
     for (auto &item : items) {
-        item.level += level;
-        addLevel(item.children, level);
+        item->level += level;
+        addLevel(item->children, level);
     }
 }
 /// \endcond
@@ -293,7 +297,7 @@ void SyncthingFileModel::processFetchQueue()
         return;
     }
     const auto &path = m_fetchQueue.front();
-    m_pendingRequest = m_connection.browse(m_dirId, path, 1, [this, p = path](std::vector<SyncthingItem> &&items, QString &&errorMessage) {
+    m_pendingRequest = m_connection.browse(m_dirId, path, 1, [this, p = path](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) {
         Q_UNUSED(errorMessage)
         m_fetchQueue.removeAll(p);
 
@@ -303,15 +307,23 @@ void SyncthingFileModel::processFetchQueue()
         }
         auto *const refreshedItem = reinterpret_cast<SyncthingItem *>(refreshedIndex.internalPointer());
         if (!refreshedItem->children.empty()) {
-            beginRemoveRows(refreshedIndex, 0, static_cast<int>(refreshedItem->children.size() - 1));
+            if (refreshedItem == m_root.get()) {
+                beginResetModel();
+            } else {
+                beginRemoveRows(refreshedIndex, 0, static_cast<int>(refreshedItem->children.size() - 1));
+            }
             refreshedItem->children.clear();
-            endRemoveRows();
+            if (refreshedItem == m_root.get()) {
+                endResetModel();
+            } else {
+                endRemoveRows();
+            }
         }
         if (!items.empty()) {
             const auto last = items.size() - 1;
             addLevel(items, refreshedItem->level);
             for (auto &item : items) {
-                item.parent = refreshedItem;
+                item->parent = refreshedItem;
             }
             beginInsertRows(refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
             refreshedItem->children = std::move(items);
