@@ -6,7 +6,6 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QModelIndex>
-#include <QPoint>
 #include <QTreeView>
 
 #include <functional>
