@@ -9,7 +9,7 @@ namespace QtGui {
 class DevButtonsItemDelegate : public QStyledItemDelegate {
     Q_OBJECT
 public:
-    DevButtonsItemDelegate(QObject *parent);
+    explicit DevButtonsItemDelegate(QObject *parent);
 
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
 };

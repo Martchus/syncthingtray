@@ -17,7 +17,7 @@ public:
     using ModelType = Data::SyncthingDirectoryModel;
     using SortFilterModelType = Data::SyncthingSortFilterModel;
 
-    DirView(QWidget *parent = nullptr);
+    explicit DirView(QWidget *parent = nullptr);
 
 Q_SIGNALS:
     void openDir(const Data::SyncthingDir &dir);

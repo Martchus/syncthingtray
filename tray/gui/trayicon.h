@@ -28,7 +28,7 @@ class TrayIcon : public QSystemTrayIcon {
     Q_OBJECT
 
 public:
-    TrayIcon(const QString &connectionConfig = QString(), QObject *parent = nullptr);
+    explicit TrayIcon(const QString &connectionConfig = QString(), QObject *parent = nullptr);
     TrayMenu &trayMenu();
 
 public Q_SLOTS:

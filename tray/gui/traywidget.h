@@ -51,7 +51,7 @@ class TrayWidget : public QWidget {
     Q_OBJECT
 
 public:
-    TrayWidget(TrayMenu *parent = nullptr);
+    explicit TrayWidget(TrayMenu *parent = nullptr);
     ~TrayWidget() override;
 
     Data::SyncthingConnection &connection();

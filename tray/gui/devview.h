@@ -17,7 +17,7 @@ public:
     using ModelType = Data::SyncthingDeviceModel;
     using SortFilterModelType = Data::SyncthingSortFilterModel;
 
-    DevView(QWidget *parent = nullptr);
+    explicit DevView(QWidget *parent = nullptr);
 
 Q_SIGNALS:
     void pauseResumeDev(const Data::SyncthingDev &dev);

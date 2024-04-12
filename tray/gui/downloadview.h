@@ -17,7 +17,7 @@ public:
     using ModelType = Data::SyncthingDownloadModel;
     using SortFilterModelType = void;
 
-    DownloadView(QWidget *parent = nullptr);
+    explicit DownloadView(QWidget *parent = nullptr);
 
 Q_SIGNALS:
     void openDir(const Data::SyncthingDir &dir);
