@@ -1590,7 +1590,8 @@ void SyncthingConnection::readRevert()
  * consume results of a specific request. Errors are still reported via the error() signal so there's no extra error handling
  * required. Note that \a callback is *not* invoked in the error case.
  */
-QMetaObject::Connection SyncthingConnection::browse(const QString &dirId, const QString &prefix, int levels, std::function<void (std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback)
+QMetaObject::Connection SyncthingConnection::browse(const QString &dirId, const QString &prefix, int levels,
+    std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback)
 {
     auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
@@ -1621,11 +1622,11 @@ static void readSyncthingItems(const QJsonArray &array, std::vector<std::unique_
         item->name = jsonItemObj.value(QLatin1String("name")).toString();
         item->modificationTime = CppUtilities::DateTime::fromIsoStringGmt(jsonItemObj.value(QLatin1String("modTime")).toString().toUtf8().data());
         item->size = static_cast<std::size_t>(jsonItemObj
-                                                 .value(QLatin1String("size"))
+                                                  .value(QLatin1String("size"))
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-                                                 .toInteger()
+                                                  .toInteger()
 #else
-                                                 .toDouble()
+                                                  .toDouble()
 #endif
         );
         item->index = index;
@@ -1645,7 +1646,8 @@ static void readSyncthingItems(const QJsonArray &array, std::vector<std::unique_
  * \brief Reads the response of browse() and reports results via the specified \a callback. Emits error() in case of an error.
  * \remarks The \a callback is also emitted in the error case (with the error message as second parameter and an empty list of items).
  */
-void SyncthingConnection::readBrowse(const QString &dirId, int levels, std::function<void (std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback)
+void SyncthingConnection::readBrowse(
+    const QString &dirId, int levels, std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback)
 {
     auto const [reply, response] = prepareReply();
     if (!reply) {
