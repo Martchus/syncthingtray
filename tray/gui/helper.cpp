@@ -3,8 +3,11 @@
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0) && QT_VERSION < QT_VERSION_CHECK(6, 3, 0)
 #include <QLibraryInfo>
 #endif
+
+#include <QApplication>
 #include <QMenu>
 #include <QPoint>
+#include <QStyleOptionViewItem>
 #include <QTreeView>
 
 namespace QtGui {
@@ -27,6 +30,13 @@ void showViewMenu(const QPoint &position, const QTreeView &view, QMenu &menu)
         menu.exec(topLevelWidget->mapToGlobal(position));
     } else {
         menu.exec(view.viewport()->mapToGlobal(position));
+    }
+}
+
+void drawBasicItemViewItem(QPainter &painter, const QStyleOptionViewItem &option)
+{
+    if (auto *const style = option.widget ? option.widget->style() : QApplication::style()) {
+        style->drawControl(QStyle::CE_ItemViewItem, &option, &painter, option.widget);
     }
 }
 

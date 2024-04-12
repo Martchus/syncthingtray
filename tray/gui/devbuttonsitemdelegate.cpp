@@ -38,7 +38,7 @@ void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         initStyleOption(&opt, index);
         opt.text.clear();
         opt.features = QStyleOptionViewItem::None;
-        QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
+        drawBasicItemViewItem(*painter, opt);
 
         // draw text
         QRectF textRect = option.rect;

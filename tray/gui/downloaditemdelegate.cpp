@@ -45,7 +45,7 @@ void DownloadItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     } else {
         opt.text = option.fontMetrics.elidedText(opt.text, Qt::ElideMiddle, opt.rect.width() / 2 - 4);
     }
-    QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
+    drawBasicItemViewItem(*painter, opt);
 
     // draw progress bar
     const QAbstractItemModel *model = index.model();

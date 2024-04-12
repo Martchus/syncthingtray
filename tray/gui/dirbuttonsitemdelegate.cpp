@@ -33,11 +33,11 @@ void DirButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         QStyledItemDelegate::paint(painter, option, index);
     } else {
         // init style options to use drawControl(), except for the text
-        QStyleOptionViewItem opt = option;
+        auto opt = option;
         initStyleOption(&opt, index);
         opt.text.clear();
         opt.features = QStyleOptionViewItem::None;
-        QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
+        drawBasicItemViewItem(*painter, opt);
 
         // draw text
         auto textRect = QRectF(option.rect);

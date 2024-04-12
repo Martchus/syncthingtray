@@ -12,12 +12,15 @@
 #include <functional>
 #include <type_traits>
 
+QT_FORWARD_DECLARE_CLASS(QPainter)
 QT_FORWARD_DECLARE_CLASS(QPoint)
 QT_FORWARD_DECLARE_CLASS(QMenu)
+QT_FORWARD_DECLARE_CLASS(QStyleOptionViewItem)
 
 namespace QtGui {
 
 void showViewMenu(const QPoint &position, const QTreeView &view, QMenu &menu);
+void drawBasicItemViewItem(QPainter &painter, const QStyleOptionViewItem &option);
 
 inline auto copyToClipboard(const QString &text)
 {
