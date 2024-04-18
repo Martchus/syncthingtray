@@ -1426,6 +1426,7 @@ QWidget *SystemdOptionPage::setupWidget()
         QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
     ui()->syncthingUnitLineEdit->addCustomAction(refreshAction);
     if (!m_service) {
+        ui()->stopOnMeteredCheckBox->setHidden(true);
         return widget;
     }
     QObject::connect(refreshAction, &QAction::triggered, m_service, &SyncthingService::reloadAllUnitFiles);
@@ -1434,6 +1435,8 @@ QWidget *SystemdOptionPage::setupWidget()
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, m_service, &SyncthingService::stop);
     QObject::connect(ui()->enablePushButton, &QPushButton::clicked, m_service, &SyncthingService::enable);
     QObject::connect(ui()->disablePushButton, &QPushButton::clicked, m_service, &SyncthingService::disable);
+    QObject::connect(ui()->stopOnMeteredCheckBox, &QCheckBox::checkStateChanged, m_service,
+        [s = m_service](Qt::CheckState checkState) { s->setStoppingOnMeteredConnection(checkState == Qt::Checked); });
     m_unitChangedConn
         = QObject::connect(ui()->systemUnitCheckBox, &QCheckBox::clicked, m_service, bind(&SystemdOptionPage::handleSystemUnitChanged, this));
     m_descChangedConn
@@ -1445,6 +1448,9 @@ QWidget *SystemdOptionPage::setupWidget()
     if (const auto *optionPageWidget = qobject_cast<OptionPageWidget *>(widget)) {
         QObject::connect(optionPageWidget, &OptionPageWidget::paletteChanged, std::bind(&SystemdOptionPage::updateColors, this));
     }
+    configureMeteredCheckbox(ui()->stopOnMeteredCheckBox, m_service->isNetworkConnectionMetered());
+    QObject::connect(m_service, &SyncthingService::networkConnectionMeteredChanged,
+        std::bind(&configureMeteredCheckbox, ui()->stopOnMeteredCheckBox, std::placeholders::_1));
     return widget;
 }
 
@@ -1457,6 +1463,7 @@ bool SystemdOptionPage::apply()
     systemdSettings.systemUnit = ui()->systemUnitCheckBox->isChecked();
     systemdSettings.showButton = ui()->showButtonCheckBox->isChecked();
     systemdSettings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
+    systemdSettings.stopOnMeteredConnection = ui()->stopOnMeteredCheckBox->isChecked();
     auto result = true;
     if (systemdSettings.showButton && launcherSettings.showButton) {
         errors().append(QCoreApplication::translate("QtGui::SystemdOptionPage",
@@ -1480,6 +1487,7 @@ void SystemdOptionPage::reset()
     ui()->systemUnitCheckBox->setChecked(settings.systemUnit);
     ui()->showButtonCheckBox->setChecked(settings.showButton);
     ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
+    ui()->stopOnMeteredCheckBox->setChecked(settings.stopOnMeteredConnection);
     if (!m_service) {
         return;
     }

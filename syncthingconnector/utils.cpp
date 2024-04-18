@@ -5,6 +5,7 @@
 
 #include <c++utilities/chrono/datetime.h>
 #include <c++utilities/conversion/stringconversion.h>
+#include <c++utilities/io/ansiescapecodes.h>
 
 #include <QCoreApplication>
 #include <QHostAddress>
@@ -15,6 +16,12 @@
 #include <QString>
 #include <QStringBuilder>
 #include <QUrl>
+
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+#include <QNetworkInformation>
+#endif
+
+#include <iostream>
 
 using namespace CppUtilities;
 
@@ -250,5 +257,34 @@ QString substituteTilde(const QString &path, const QString &tilde, const QString
     }
     return path;
 }
+
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+/*!
+ * \brief Loads the QNetworkInformation backend for determining whether the connection is metered.
+ */
+const QNetworkInformation *loadNetworkInformationBackendForMetered()
+{
+    static const auto *const backend = []() -> const QNetworkInformation * {
+        QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Metered);
+        if (const auto *const networkInformation = QNetworkInformation::instance();
+            networkInformation && networkInformation->supports(QNetworkInformation::Feature::Metered)) {
+            return networkInformation;
+        }
+
+        std::cerr << EscapeCodes::Phrases::Error
+                  << "Unable to load network information backend to monitor metered connections, available backends:" << EscapeCodes::Phrases::End;
+        const auto availableBackends = QNetworkInformation::availableBackends();
+        if (availableBackends.isEmpty()) {
+            std::cerr << "none\n";
+        } else {
+            for (const auto &backendName : availableBackends) {
+                std::cerr << " - " << backendName.toStdString() << '\n';
+            }
+        }
+        return nullptr;
+    }();
+    return backend;
+}
+#endif
 
 } // namespace Data

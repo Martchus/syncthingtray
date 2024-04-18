@@ -412,6 +412,7 @@ bool restore()
     systemd.systemUnit = settings.value(QStringLiteral("systemUnit"), systemd.systemUnit).toBool();
     systemd.showButton = settings.value(QStringLiteral("showButton"), systemd.showButton).toBool();
     systemd.considerForReconnect = settings.value(QStringLiteral("considerForReconnect"), systemd.considerForReconnect).toBool();
+    systemd.stopOnMeteredConnection = settings.value(QStringLiteral("stopServiceOnMetered"), systemd.stopOnMeteredConnection).toBool();
 #endif
     settings.endGroup();
 
@@ -540,6 +541,7 @@ bool save()
     settings.setValue(QStringLiteral("systemUnit"), systemd.systemUnit);
     settings.setValue(QStringLiteral("showButton"), systemd.showButton);
     settings.setValue(QStringLiteral("considerForReconnect"), systemd.considerForReconnect);
+    settings.setValue(QStringLiteral("stopServiceOnMetered"), systemd.stopOnMeteredConnection);
 #endif
     settings.endGroup();
 
@@ -606,6 +608,7 @@ void Settings::apply(SyncthingNotifier &notifier) const
  */
 void Systemd::setupService(SyncthingService &service) const
 {
+    service.setStoppingOnMeteredConnection(stopOnMeteredConnection);
     service.setScopeAndUnitName(systemUnit ? SystemdScope::System : SystemdScope::User, syncthingUnit);
 }
 

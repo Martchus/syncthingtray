@@ -14,6 +14,11 @@
 
 QT_FORWARD_DECLARE_CLASS(QJsonObject)
 QT_FORWARD_DECLARE_CLASS(QHostAddress)
+QT_FORWARD_DECLARE_CLASS(QNetworkInformation)
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+#define SYNCTHINGCONNECTION_SUPPORT_METERED
+#endif
 
 namespace CppUtilities {
 class DateTime;
@@ -39,6 +44,9 @@ LIB_SYNCTHING_CONNECTOR_EXPORT bool isLocal(const QString &hostName, const QHost
 LIB_SYNCTHING_CONNECTOR_EXPORT bool setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused);
 LIB_SYNCTHING_CONNECTOR_EXPORT bool setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);
 LIB_SYNCTHING_CONNECTOR_EXPORT QString substituteTilde(const QString &path, const QString &tilde, const QString &pathSeparator);
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+LIB_SYNCTHING_CONNECTOR_EXPORT const QNetworkInformation *loadNetworkInformationBackendForMetered();
+#endif
 
 /*!
  * \brief Returns whether the host specified by the given \a url is the local machine.

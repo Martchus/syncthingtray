@@ -127,6 +127,7 @@ struct SYNCTHINGWIDGETS_EXPORT Systemd {
     bool systemUnit = false;
     bool showButton = false;
     bool considerForReconnect = false;
+    bool stopOnMeteredConnection = false;
 
     struct SYNCTHINGWIDGETS_EXPORT ServiceStatus {
         bool relevant = false;

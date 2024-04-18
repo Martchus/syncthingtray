@@ -5,6 +5,7 @@
 #include "./syncthingconnectionstatus.h"
 #include "./syncthingdev.h"
 #include "./syncthingdir.h"
+#include "./utils.h"
 
 #include <c++utilities/misc/flagenumclass.h>
 
@@ -16,11 +17,6 @@
 #include <QObject>
 #include <QSslError>
 #include <QTimer>
-
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 3, 0))
-#include <QNetworkInformation>
-#define SYNCTHINGCONNECTION_SUPPORT_METERED
-#endif
 
 #include <cstdint>
 #include <functional>

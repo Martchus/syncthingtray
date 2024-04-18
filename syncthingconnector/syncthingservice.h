@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QVariantMap>
 
+#include <optional>
 #include <unordered_set>
 
 QT_FORWARD_DECLARE_CLASS(QDBusServiceWatcher)
@@ -52,6 +53,9 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingService : public QObject {
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
     Q_PROPERTY(SystemdScope scope READ scope WRITE setScope NOTIFY scopeChanged)
     Q_PROPERTY(bool userScope READ isUserScope NOTIFY scopeChanged)
+    Q_PROPERTY(std::optional<bool> networkConnectionMetered READ isNetworkConnectionMetered WRITE setNetworkConnectionMetered NOTIFY
+            networkConnectionMeteredChanged)
+    Q_PROPERTY(bool stoppingOnMeteredConnection READ isStoppingOnMeteredConnection WRITE setStoppingOnMeteredConnection)
 
 public:
     explicit SyncthingService(SystemdScope scope = SystemdScope::User, QObject *parent = nullptr);
@@ -77,6 +81,10 @@ public:
     void setScope(SystemdScope scope);
     void setScopeAndUnitName(SystemdScope scope, const QString &unitName);
     bool isUserScope() const;
+    std::optional<bool> isNetworkConnectionMetered() const;
+    void setNetworkConnectionMetered(std::optional<bool> metered);
+    bool isStoppingOnMeteredConnection() const;
+    void setStoppingOnMeteredConnection(bool stopOnMeteredConnection);
     static SyncthingService *mainInstance();
     static void setMainInstance(SyncthingService *mainInstance);
 
@@ -104,6 +112,7 @@ Q_SIGNALS:
     void enabledChanged(bool enable);
     void errorOccurred(const QString &context, const QString &name, const QString &message);
     void scopeChanged(Data::SystemdScope scope);
+    void networkConnectionMeteredChanged(std::optional<bool> isMetered);
 
 private Q_SLOTS:
     void handleUnitAdded(const QString &unitName, const QDBusObjectPath &unitPath);
@@ -132,6 +141,7 @@ private:
         const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
     bool handlePropertyChanged(CppUtilities::DateTime &variable, const QString &propertyName, const QVariantMap &changedProperties,
         const QStringList &invalidatedProperties);
+    void stopDueToMeteredConnection();
 
     static OrgFreedesktopSystemd1ManagerInterface *s_systemdUserInterface;
     static OrgFreedesktopSystemd1ManagerInterface *s_systemdSystemInterface;
@@ -153,7 +163,10 @@ private:
     std::unordered_set<QDBusPendingCallWatcher *> m_pendingCalls;
     SystemdScope m_scope;
     bool m_manuallyStopped;
+    bool m_stoppedMetered;
     bool m_unitAvailable;
+    bool m_stopOnMeteredConnection;
+    std::optional<bool> m_metered;
 };
 
 /*!
@@ -332,6 +345,19 @@ inline void SyncthingService::enable()
 inline void SyncthingService::disable()
 {
     setEnabled(false);
+}
+
+/// \brief Returns whether the current network connection is metered.
+/// \remarks Returns an std::optional<bool> without value if it is unknown whether the network connection is metered.
+inline std::optional<bool> SyncthingService::isNetworkConnectionMetered() const
+{
+    return m_metered;
+}
+
+/// \brief Returns whether Syncthing should automatically be stopped as long as the network connection is metered.
+inline bool SyncthingService::isStoppingOnMeteredConnection() const
+{
+    return m_stopOnMeteredConnection;
 }
 
 /*!

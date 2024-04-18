@@ -1,6 +1,7 @@
 #include "./syncthinglauncher.h"
 
 #include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/utils.h>
 
 #include "../settings/settings.h"
 
@@ -8,9 +9,8 @@
 
 #include <QtConcurrentRun>
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
 #include <QNetworkInformation>
-#define SYNCTHINGCONNECTION_SUPPORT_METERED
 #endif
 
 #include <algorithm>
@@ -63,22 +63,9 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
 
     // initialize handling of metered connections
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-    QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Metered);
-    if (const auto *const networkInformation = QNetworkInformation::instance();
-        networkInformation && networkInformation->supports(QNetworkInformation::Feature::Metered)) {
+    if (const auto *const networkInformation = loadNetworkInformationBackendForMetered()) {
         connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) { setNetworkConnectionMetered(isMetered); });
         setNetworkConnectionMetered(networkInformation->isMetered());
-    } else {
-        std::cerr << EscapeCodes::Phrases::Error
-                  << "Unable to load network information backend to monitor metered connections, available backends:" << EscapeCodes::Phrases::End;
-        const auto availableBackends = QNetworkInformation::availableBackends();
-        if (availableBackends.isEmpty()) {
-            std::cerr << "none\n";
-        } else {
-            for (const auto &backend : availableBackends) {
-                std::cerr << " - " << backend.toStdString() << '\n';
-            }
-        }
     }
 #endif
 }
