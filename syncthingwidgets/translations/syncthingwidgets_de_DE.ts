@@ -4,7 +4,7 @@
 <context>
     <name>Data::SyncthingLauncher</name>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="151"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="138"/>
         <source>Not built with libsyncthing support.</source>
         <translation>Unterstützung für libsyncthing nicht aktiviert.</translation>
     </message>
@@ -606,7 +606,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1651"/>
+        <location filename="../settings/settingsdialog.cpp" line="1659"/>
         <source>Built-in web view</source>
         <translation>Eingebaute Webanzeige</translation>
     </message>
@@ -626,7 +626,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1653"/>
+        <location filename="../settings/settingsdialog.cpp" line="1661"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.</translation>
     </message>
@@ -1120,12 +1120,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1627"/>
+        <location filename="../settings/settingsdialog.cpp" line="1635"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation>Befehl zum Starten der Syncthing-Oberfläche - </translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1628"/>
+        <location filename="../settings/settingsdialog.cpp" line="1636"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Gib den Befehl ein, mit dem die Syncthing-Oberfläche gestartet werden soll. Der Ausdruck &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; wird durch die Syncthing-URL ersetzt.&lt;/p&gt;&lt;p&gt;Lasse den Befehl leer, um die automatische Erkennung zu verwenden.&lt;/p&gt;</translation>
     </message>
@@ -1743,12 +1743,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1710"/>
+        <location filename="../settings/settingsdialog.cpp" line="1718"/>
         <source>Web view</source>
         <translation>Webanzeige</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1717"/>
+        <location filename="../settings/settingsdialog.cpp" line="1725"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
@@ -1757,27 +1757,27 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation type="vanished">Zusatztool</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1702"/>
+        <location filename="../settings/settingsdialog.cpp" line="1710"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1719"/>
+        <location filename="../settings/settingsdialog.cpp" line="1727"/>
         <source>Extra launcher</source>
         <translation>Extra-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1719"/>
+        <location filename="../settings/settingsdialog.cpp" line="1727"/>
         <source>additional tool</source>
         <translation>Zusatztool</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1742"/>
+        <location filename="../settings/settingsdialog.cpp" line="1750"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1748"/>
+        <location filename="../settings/settingsdialog.cpp" line="1756"/>
         <source>Start wizard</source>
         <translation>Einrichtungsassistenten öffnen</translation>
     </message>
@@ -1942,36 +1942,41 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
  • Unterdrücke Benachrichtigung über Verbindungsabbruch, wenn Syncthing-Unit manuell gestoppt wurde</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="72"/>
+        <location filename="../settings/systemdoptionpage.ui" line="38"/>
+        <source>Stop automatically when network connection is metered</source>
+        <translation>Stoppe Syncthing automatisch solange die Netzwerkverbindung getaktet ist</translation>
+    </message>
+    <message>
+        <location filename="../settings/systemdoptionpage.ui" line="79"/>
         <source>Syncthing unit</source>
         <translation>Syncthing-Unit</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="95"/>
+        <location filename="../settings/systemdoptionpage.ui" line="102"/>
         <source>Description</source>
         <translation>Beschreibung</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="125"/>
+        <location filename="../settings/systemdoptionpage.ui" line="132"/>
         <source>Current status</source>
         <translation>Aktueller Status</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="214"/>
+        <location filename="../settings/systemdoptionpage.ui" line="221"/>
         <source>Unit file state</source>
         <translation>Status des Unit files</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="82"/>
+        <location filename="../settings/systemdoptionpage.ui" line="89"/>
         <source>System unit</source>
         <translation>System-Unit</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="110"/>
-        <location filename="../settings/systemdoptionpage.ui" line="165"/>
-        <location filename="../settings/systemdoptionpage.ui" line="254"/>
-        <location filename="../settings/settingsdialog.cpp" line="1526"/>
-        <location filename="../settings/settingsdialog.cpp" line="1535"/>
+        <location filename="../settings/systemdoptionpage.ui" line="117"/>
+        <location filename="../settings/systemdoptionpage.ui" line="172"/>
+        <location filename="../settings/systemdoptionpage.ui" line="261"/>
+        <location filename="../settings/settingsdialog.cpp" line="1534"/>
+        <location filename="../settings/settingsdialog.cpp" line="1543"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -1984,22 +1989,22 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
  • Automatisch neu verbinden, wenn die Syncthing-Unit gestartet wird</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="267"/>
+        <location filename="../settings/systemdoptionpage.ui" line="274"/>
         <source>Enable</source>
         <translation>Autom. starten</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="284"/>
+        <location filename="../settings/systemdoptionpage.ui" line="291"/>
         <source>Disable</source>
         <translation>Nicht autom. starten</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="178"/>
+        <location filename="../settings/systemdoptionpage.ui" line="185"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="195"/>
+        <location filename="../settings/systemdoptionpage.ui" line="202"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
@@ -2009,22 +2014,22 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Alle Unit-Dateien neu laden</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1462"/>
+        <location filename="../settings/settingsdialog.cpp" line="1469"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Start-/Stop-Button für den Systemd-Dienst und den internen Starter gleichzeitig anzugeigen. Wenn verfügbar, wird der Button den Systemd-Dienst kontrollieren.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1468"/>
+        <location filename="../settings/settingsdialog.cpp" line="1475"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Status des Systemd-Dienstes und den des internen Starters gleichzeitig für Verbindungsveruche einzubeziehen. Wenn verfügbar, wird der Status des Systemd-Dienstes verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1499"/>
+        <location filename="../settings/settingsdialog.cpp" line="1507"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1521"/>
+        <location filename="../settings/settingsdialog.cpp" line="1529"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -2379,7 +2384,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="667"/>
+        <location filename="../settings/settings.cpp" line="670"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation>Sicherung von %1 (vom Einrichtungsassistenten erstellt)</translation>
     </message>
