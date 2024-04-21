@@ -1,0 +1,60 @@
+/* style for basic HTML elements */
+
+html, body {
+    background: white;
+    color: #222;
+    font: normal 16px sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    padding: 0px;
+}
+h1 {
+    font-size: 150%;
+    margin: 15px 0px;
+}
+h2 {
+    font-size: 130%;
+    margin: 10px 0px;
+}
+h3 {
+    font-size: 110%;
+    margin: 10px 0px;
+}
+
+a:link {
+    color: #07b;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+a:visited {
+    color: #666;
+} 
+
+pre {
+    border: 1px solid #aaa;
+    background-color: white;
+    margin: 5px;
+    padding: 5px;
+    white-space: pre-wrap;
+    overflow-x: auto;
+}
+
+fieldset {
+    border: 1px dotted #999;
+    background: #f6f9fc;
+    font-size: .846em;
+}
+fieldset legend {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+button, input[type="button"] {
+    border: 1px solid #aaa;
+    padding: 3px;
+}

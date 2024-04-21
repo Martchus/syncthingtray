@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Syncthing Tray</title>
+  <meta charset="UTF-8" />
+  <meta name="description" content="A GUI integration" />
+  <meta name="author" content="Martchus" />
+  <meta name="keywords" content="Syncthing Tray, Syncthing, GUI" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <script type="module" src="js/main.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/basics.css" />
+  <link rel="stylesheet" type="text/css" href="css/layout.css" />
+  <link rel="stylesheet" type="text/css" href="css/specifics.css" />
+  <link rel="shortcut icon" href="img/logo.svg" />
+</head>
+<body>
+  <header>
+    <nav>
+      <div>
+        <img src="img/logo.svg" alt="Logo" />
+        Syncthing Tray<br />
+        <span>Tray application and Dolphin/Plasma integration for Syncthing</span>
+      </div>
+      <ul>
+        <li id="intro-nav-link">
+          <a href="#intro-section" title="Intro">Intro</a>
+        </li>
+        <li id="downloads-nav-link">
+          <a href="#downloads-section" title="Downloads">Downloads</a>
+        </li>
+        <li id="doc-nav-link">
+          <a href="#doc-section" title="Documentation">Docs</a>
+        </li>
+        <li id="contact-nav-link">
+          <a href="#contact-section" title="Contact">Contact</a>
+        </li>
+        <li id="code-nav-link">
+          <a href="https://github.com/Martchus/syncthingtray" target="blank" title="Code">Code</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section id="intro-section">
+      <div class="banner">
+      </div>
+      <div class="banner-info">
+        <p>
+          <strong>Syncthing Tray provides a tray icon and further platform integration for Syncthing.</strong><br />
+          It focuses on GNU/Linux and Windows.
+          If you don't know Syncthing yet, it makes most sense to checkout the <a href="https://syncthing.net" target="blank">website of Syncthing</a> itself first.
+        </p>
+        <p>
+          This website is meant to provide an overview. Checkout the <a href="https://github.com/Martchus/syncthingtray/blob/master/README.md" target="blank">README
+        on GitHub</a> for many more (technical) details.
+        </p>
+      </div>
+      Syncthing Tray complements the normal web-based UI of Syncthing itself providing the following features:
+      <ul>
+        <li>A tray icon showing the overall status of Syncthing</li>
+        <li>A tray menu showing more detailed status information that also allows to quickly perform common actions such as triggering a rescan</li>
+        <li>Quick access to the normal web-based UI of Syncthing</li>
+        <li>A launcher for Syncthing (e.g. useful under Windows to avoid having a console window around)</li>
+        <li>
+          A context menu for the <a href="https://apps.kde.org/de/dolphin" target="blank">Dolphin file manager</a> to show the status of a folder and triggering
+          common actions
+        </li>
+      </ul>
+      <p>
+        The screenshot shows Syncthing Tray on <a href="https://kde.org/de/plasma-desktop" target="blank">KDE Plasma</a>.
+        Checkout the <a href="https://github.com/Martchus/syncthingtray?tab=readme-ov-file#screenshots" target="blank">screenshots section in the README</a> for
+        screenshots on other platforms.
+      </p>
+    </section>
+    <section id="downloads-section" style="display: none">
+      <h2>Downloads</h2>
+      <p id="downloads-loading">
+        Loading the latest release info from GitHub…
+      </p>
+      <p id="downloads-release-info" style="display: none">
+        The latest release is <span id="downloads-latest-release"></span>.
+        Checkout the <a href="https://github.com/Martchus/syncthingtray/releases" target="blank">releases section
+        on GitHub</a> for older releases.
+      </p>
+      <p>
+        This page is supposed to provide an overview. Checkout the <a href="https://github.com/Martchus/syncthingtray/blob/master/README.md#download" target="blank">"Downloads"-section</a>
+        of the README for all options and further details.
+      </p>
+      <div class="downloads-grid">
+        <div id="official-downloads">
+          <h3>Official downloads</h3>
+          <p>
+            Official downloads are signed with the GPG key
+            <a href="https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index" target="blank">B9E36A7275FC61B464B67907E06FE8F53CDC6A4C</a>
+            (except those hosted on OBS).
+          </p>
+          <div class="downloads-by-platform">
+            <div class="downloads-platform">
+              <input type="checkbox" id="downloads-checkbox-arch"/><label for="downloads-checkbox-arch">Arch Linux</label>
+              <ul id="downloads-platform-obs">
+                <li><a href="https://aur.archlinux.org/packages?K=Martchus&SeB=m" target="blank">AUR</a></li>
+                <li><a href="https://martchus.no-ip.biz/repo/arch/ownstuff" target="blank">Binary repository</a></li>
+              </ul>
+              <div>
+                Available packages:
+                <ul style="border: none;">
+                  <li><code>syncthingtray</code>/<code>syncthingtray-qt6</code>: the latest release</li>
+                  <li><code>syncthingtray-git</code>: Git version</li>
+                </ul>
+              </div>
+              <p>
+                <strong>Install preferably the <code>*-qt6</code> package.</strong> For KDE integrations, the major Qt version must match the
+                major KDE version.
+              </p>
+              <p>
+                <strong>Manually built packages from the AUR need to be re-built manually</strong> when a dependency such as Boost changes its
+                <a href="https://en.wikipedia.org/wiki/Soname" target="blank">soname</a>. This does <em>not</em> mean the package is out of date.
+                Note that this also counts when using an AUR helper.
+              </p>
+              <p>The binary repository can <strong>not</strong> be used on derivats such as Manjaro Linux.</p>
+            </div>
+            <div class="downloads-platform">
+              <input type="checkbox" id="downloads-checkbox-obs"/><label for="downloads-checkbox-obs">openSUSE Tumbleweed and Leap, Fedora</label>
+              <ul id="downloads-platform-obs">
+                <li>
+                  <a href="https://software.opensuse.org/download.html?project=home:mkittler&package=syncthingtray" target="blank">Latest releases</a>
+                  (<a href="https://download.opensuse.org/repositories/home:/mkittler">repository URL</a>)
+                </li>
+                <li>
+                  <a href="https://software.opensuse.org/download.html?project=home:mkittler:vcs&package=syncthingtray" target="blank">Git versions</a>
+                  (<a href="https://download.opensuse.org/repositories/home:/mkittler:/vcs">repository URL</a>)
+                </li>
+              </ul>
+              <div>
+                Available packages:
+                <ul style="border: none;">
+                  <li><code>syncthingtray</code>/<code>syncthingtray-qt6</code>: Qt-widgets based GUI</li>
+                  <li><code>syncthingplasmoid</code>/<code>syncthingplasmoid-qt6</code>: applet/plasmoid for Plasma desktop</li>
+                  <li><code>syncthingfileitemaction</code>/<code>syncthingfileitemaction-qt6</code>: Dolphin/KIO integration</li>
+                  <li><code>syncthingctl</code>/<code>syncthingctl-qt6</code>: command-line interface</li>
+                </ul>
+              </div>
+              <p>Install preferably the <code>*-qt6</code> packages if available for your OS.</p>
+              <p>Be sure to add the repository that matches the version of your OS and to keep it in sync when upgrading.</p>
+              <p>The linked download pages might be incomplete, use the repositories URL for a full list.</p>
+            </div>
+            <div class="downloads-platform">
+              <input type="checkbox" id="downloads-checkbox-pc-linux-gnu"/><label for="downloads-checkbox-pc-linux-gnu">GNU/Linux</label>
+              <ul id="downloads-platform-pc-linux-gnu"></ul>
+              <p>Requires <code>glibc>=2.26</code>, OpenGL and libX11. The distributions openSUSE Leap 15, Fedora 27, Debian 10 and Ubuntu 18.04 are recent enough (be sure the package <code>libopengl0</code> is installed on Debian/Ubuntu).</p>
+              <p>These downloads cannot include the Plasmoid/Applet (for the Plasma desktop) and the Dolphin integration for technical reasons. The KDE integrations therefore need to be installed via distribution-specific packages.</p>
+            </div>
+            <div class="downloads-platform">
+              <input type="checkbox" id="downloads-checkbox-windows10"/><label for="downloads-checkbox-windows10">Windows 10 and 11</label>
+              <ul id="downloads-platform-windows10"></ul>
+              <p>
+                These downloads require Windows 10 version 1809 or newer.
+              </p>
+              <p>
+                Windows SmartScreen will likely block the execution (you'll get a window saying "Windows protected your PC"); right click on the executable, select properties and tick the checkbox to allow the execution.
+              </p>
+              <p>
+                Antivirus software often <strong>wrongly</strong> considers the executable harmful. This is a known problem. Please don't create issues about it.
+              </p>
+              <p>
+                32-bit releases work and Pentium Pro or newer Intel/AMD-CPUs.
+              </p>
+            </div>
+            <div class="downloads-platform">
+              <input type="checkbox" id="downloads-checkbox-windows"/><label for="downloads-checkbox-windows">Windows 7 and newer</label>
+              <ul id="downloads-platform-windows"></ul>
+              <p>
+                On Windows 7 the bundled Go/Syncthing does not work. Use a version of Go/Syncthing that is older than 1.21/1.27.0 instead.
+              </p>
+              <p>
+                32-bit releases work on Pentium Pro or newer Intel/AMD-CPUs.
+              </p>
+            </div>
+            <div class="downloads-platform">
+              <input type="checkbox" id="downloads-checkbox-other"/><label for="downloads-checkbox-other">Other</label>
+              <ul id="downloads-platform-other"></ul>
+            </div>
+          </div>
+        </div>
+        <div id="community-downloads">
+          <h3>Community downloads</h3>
+              <p>
+                Those packages are provided by the community and might be more convenient to use depending on preferences. Community packages might not always
+                be up-to-date, though. Checkout <a href="https://repology.org/project/syncthingtray" target="blank">Repology</a> for a more detailed
+                list of packages and their versions.
+              </p>
+              <div class="downloads-platform">
+                <input type="checkbox" id="downloads-community-checkbox-debian"/><label for="downloads-community-checkbox-debian">Debian</label>
+                <ul>
+                  <li>Generic tray application: <code>sudo apt install syncthingtray</code></li>
+                  <li>KDE integrations: <code>sudo apt install syncthingtray-kde-plasma</code></li>
+                </ul>
+                <p>
+                  Those packages <em>may</em> be available on Debian derivats (Ubuntu, Pop!_OS, …) as well.
+                </p>
+              </div>
+              <div class="downloads-platform">
+                <input type="checkbox" id="downloads-community-checkbox-windows10"/><label for="downloads-community-checkbox-windows10">Windows 10 and 11</label>
+                <ul>
+                  <li><a href="https://community.chocolatey.org/packages/syncthingtray" target="blank">Chocolatey package</a></li>
+                  <li><a href="https://winstall.app/apps/Martchus.syncthingtray" target="blank"><code>winget</code> package</a></li>
+                </ul>
+            </div>
+        </div>
+      </div>
+    </section>
+    <section id="doc-section" style="display: none">
+      <h2>Documentation</h2>
+      <p>
+        Syncthing Tray contains a wizard that will guide you though the setup of Syncthing Tray and Syncthing. It will allow you to use your currently running
+        Syncthing instance but can also start Syncthing for you (checkout
+        <a href="https://github.com/Martchus/syncthingtray/blob/master/README.md#does-this-launch-or-bundle-syncthing-itself-what-about-my-existing-syncthing-installation" target="blank">
+        the relevant README section</a> for details). Then you are ready to use Syncthing. That means pairing devices and adding folders to sync. For this, you should proceed
+        reading the <a href="https://docs.syncthing.net/intro/getting-started.html#configuring" target="blank">"Getting started" documentation of Syncthing itself</a>.
+      </p>
+      <p>
+        Syncthing Tray itself also has many configuration options. So it may be worthwhile to browse though the pages of the configuration dialog to tweak Syncthing
+        Tray to your needs, e.g. to turn off notification you may find annoying. Further documentation on how to configure Syncthing Tray can also be found in the README
+        as of the <a href="https://github.com/Martchus/syncthingtray/blob/master/README.md#general-remarks-on-the-configuration" target="blank">"General remarks on the configuration"
+        section</a>.
+      </p>
+      <h3>License and attribution</h3>
+      <p>
+        Copyright © Marius Kittler
+      </p>
+      <p>
+        Syncthing Tray is licensed under GPL-2-or-later. It also contains 3rd party content. Checkout the sections about licensing and attributions in
+        the <a href="https://github.com/Martchus/syncthingtray/blob/master/README.md">README on GitHub</a> for details. The icons on this website are from
+        <a href="https://materialdesignicons.com" target="blank">Material Design Icons</a>.
+      </p>
+    </section>
+    <section id="contact-section" style="display: none">
+      <h2>Contact</h2>
+      <p>
+        Issues can be <a href="https://github.com/Martchus/syncthingtray/issues/new/choose" target="blank">reported on GitHub</a>.
+        Please read the instructions in the issue template before filing an issue.
+      </p>
+      <p>
+        Discussions are welcome <a href="https://github.com/Martchus/syncthingtray/discussions" target="blank">on GitHub</a> and in the
+        <a href="https://forum.syncthing.net/t/yet-another-syncthing-tray" target="blank">Syncthing Tray thread</a> on the Syncthing forum.
+      </p>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

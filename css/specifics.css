@@ -1,0 +1,154 @@
+/* style for page-specific elements */
+
+/* icons of buttons within navigation */
+#back-nav-link {
+    background-image: url(../img/icon/chevron-left.svg);
+    background-size: contain;
+    margin-right: -5px;
+    filter: invert(100%);
+}
+#back-nav-link a {
+    margin-right: 0px;
+    filter: none;
+}
+#intro-nav-link {
+    background-image: url(../img/icon/information.svg);
+}
+#downloads-nav-link {
+    background-image: url(../img/icon/download.svg);
+}
+#doc-nav-link {
+    background-image: url(../img/icon/book-open-variant.svg);
+}
+#contact-nav-link {
+    background-image: url(../img/icon/forum.svg);
+}
+#code-nav-link {
+    background-image: url(../img/icon/code-braces.svg);
+}
+
+/* elements of intro section */
+#intro-section {
+    font-size: 120%;
+    line-height: 140%;
+}
+.banner {
+    margin: -23px;
+    margin-bottom: 10px;
+    background-image: url(../img/screenshots/plasma.png);
+    background-position-y: -758px;
+    background-position-x: right;
+    background-repeat: no-repeat;
+    background-color: #416da0;
+    height: 655px;
+    width: calc(100% + 41px);
+    box-sizing: border-box;
+    border-bottom: 5px #08c solid!important;
+}
+@media (max-width: 1050px) {
+    .banner {
+        background-position-x: -1500px;
+    }
+}
+@media (min-width: 1010px) {
+    .banner-info {
+        height: 0px;
+    }
+    .banner-info p {
+        position: relative;
+        top: -610px;
+        right: 50px;
+        margin-left: auto;
+        width: 300px;
+        background-color: #ffffffad;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        padding: 10px;
+        line-height: 170%;
+        box-sizing: border-box;
+    }
+}
+@media (min-width: 1730px) {
+    .banner-info p {
+        margin-left: 0px;
+        left: 100px;
+        width: 30%;
+    }
+}
+@media (max-width: 1010px) {
+    .banner-info p {
+    }
+}
+@media (max-width: 950px) {
+    .banner {
+        margin-top: -10px;
+    }
+}
+
+/* elements of downloads section */
+.downloads-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+.downloads-grid h3 {
+    margin-top: 20px;
+}
+.downloads-grid h3 + p {
+    margin: 10px 0px;
+}
+@media (max-width: 900px) {
+    .downloads-grid {
+        display: block;
+    }
+}
+.downloads-platform {
+    padding: 5px;
+}
+.downloads-platform input[type="checkbox"] {
+    display: none;
+}
+.downloads-platform label {
+    display: block;
+    margin: 0px -5px -10px -5px;
+    padding: 0px;
+    font-weight: bold;
+    /*background-color: #e0e0ff;*/
+    cursor: pointer;
+    user-select: none;
+}
+.downloads-platform label:before {
+    display: inline-block;
+    width: 20px;
+    content: "⮞ ";
+    opacity: 0.5;
+}
+.downloads-platform > ul {
+    list-style: none;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #aaa;
+}
+.downloads-platform input + label ~ * {
+    margin-top: 10px;
+    display: none;
+    padding-left: 0px;
+    margin-left: 20px;
+}
+.downloads-platform input:checked + label ~ * {
+    display: block;
+}
+.downloads-platform input:checked + label:before {
+    content: "⮟ ";
+}
+.downloads-platform p {
+    font-size: 90%;
+    padding: 5px !important;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: #e5f3ff;
+}
+
+/* elements of the documentation section */
+#doc-section p {
+    line-height: 140%;
+}

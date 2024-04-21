@@ -1,0 +1,144 @@
+/* style for defining the overall layout of the page (header, navigation, main container) */
+
+ul {
+    margin: 0px;
+}
+
+header nav {
+    margin: 0px;
+    display: block;
+    background-color: #ffffff;
+    border-bottom: 5px #08c solid!important;
+    color: #0891d1;
+    font-weight: bold;
+    cursor: default;
+    width: 100%;
+    z-index: 1000;
+}
+header nav > div {
+    box-sizing: border-box;
+    list-style-type: none;
+    width: 100%;
+    padding-top: 8px;
+    margin-bottom: 10px;
+    padding-left: 0em;
+}
+header nav > div > span {
+    font-size: 90%;
+    font-weight: normal;
+}
+header nav > div img {
+    float: left;
+    height: 40px;
+    margin-left: 15px;
+    margin-right: 10px;
+}
+header nav ul {
+    padding: 0px;
+    margin: 0px;
+    border-top: 1px solid #222;
+}
+header nav li {
+    display: inline-block;
+    margin: 0px;
+    padding: 0px;
+    background-repeat: no-repeat;
+    background-size: auto 45%;
+    background-position: center 20%;
+    opacity: .6;
+}
+header nav li.active {
+    filter: invert(100%);
+}
+header nav ul li a, header nav ul li a:link, header nav ul li a:visited {
+    display: inline-block;
+    position: relative;
+    box-sizing: border-box;
+    text-decoration: none;
+    padding-left: 20px;
+    padding-top: 35px;
+    padding-bottom: 5px;
+    padding-right: 20px;
+    /*color: #08c;*/
+    color: #000;
+    font-weight: bold;
+    font-size: 90%;
+}
+header nav ul li a:hover {
+    text-decoration: none;
+}
+header nav ul li.active a {
+    color: #000;
+    text-decoration: none;
+}
+header nav ul li.progress a:after {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    height: 5px;
+    width: 100%;
+    background: #ff7733;
+    animation: loading 2s infinite;
+}
+@keyframes loading {
+    0% {
+        margin-left: 0%;
+        width: 30%;
+    }
+    15% {
+        margin-left: 35%;
+        width: 50%;
+    }
+    50% {
+        margin-left: 70%;
+        width: 30%;
+    }
+    65% {
+        margin-left: 15%;
+        width: 50%;
+    }
+    100% {
+        margin-left: 0%;
+        width: 30%;
+    }
+}
+header nav li.active {
+    background-color: #ff7733; /* inverted from #0088cc */
+}
+header nav ul li:hover {
+    opacity: .9;
+}
+@media (min-width: 950px) {
+    header nav {
+        position: fixed;
+    }
+    header nav ul {
+        float: right;
+        border-top: none;
+    }
+    header nav > div {
+        position: absolute;
+        top: 50%;
+        transform: translate(0%, -50%);
+        margin: 0px;
+        padding: 0px;
+        z-index: -1000;
+    }
+}
+
+main {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+@media (min-width: 950px) {
+    main {
+        padding-top: 55px;
+    }
+}
+
+section {
+    background-color: white;
+    padding: 10px;
+}
