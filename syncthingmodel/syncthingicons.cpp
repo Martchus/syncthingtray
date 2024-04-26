@@ -208,6 +208,7 @@ StatusIconSettings::StatusIconSettings(StatusIconSettings::DarkTheme)
     , synchronizingColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA5EFFF") })
     , pausedColor({ QStringLiteral("#00000000"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA7A7A7") })
     , disconnectedColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FFA7A7A7") })
+    , strokeWidth(StatusIconStrokeWidth::Thick)
 {
 }
 
@@ -220,6 +221,7 @@ StatusIconSettings::StatusIconSettings(StatusIconSettings::BrightTheme)
     , synchronizingColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FF26B6DB") })
     , pausedColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA7A7A7") })
     , disconnectedColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA7A7A7") })
+    , strokeWidth(StatusIconStrokeWidth::Thick)
 {
 }
 
