@@ -150,5 +150,39 @@ if (META_MAIN_TEST_NAME)
     set_tests_properties("${META_MAIN_TEST_NAME}" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
 endif ()
 
+# add additional library with mocked SyncthingConnector class so models can be tested without running Syncthing itself
+if (EXCLUDE_TESTS_FROM_ALL)
+    set(TESTS_EXCLUSION EXCLUDE_FROM_ALL)
+else ()
+    unset(TESTS_EXCLUSION)
+endif ()
+add_library(
+    ${META_TARGET_NAME}_mocked
+    ${TESTS_EXCLUSION}
+    OBJECT
+    syncthingconnection.h
+    syncthingconnection.cpp
+    syncthingconnection_requests.cpp
+    syncthingconnectionmockhelpers.h
+    syncthingconnectionmockhelpers.cpp)
+target_link_libraries(
+    ${META_TARGET_NAME}_mocked
+    PUBLIC ${META_ADDITIONAL_LINK_FLAGS} "${PUBLIC_LIBRARIES}"
+    PRIVATE "${PRIVATE_LIBRARIES}")
+target_include_directories(
+    ${META_TARGET_NAME}_mocked
+    PUBLIC ${TARGET_INCLUDE_DIRECTORY_BUILD_INTERFACE} ${TARGET_GENERATED_INCLUDE_DIRECTORY} ${PUBLIC_INCLUDE_DIRS}
+    PRIVATE ${PRIVATE_INCLUDE_DIRS})
+target_compile_definitions(
+    ${META_TARGET_NAME}_mocked
+    PUBLIC ${META_PUBLIC_COMPILE_DEFINITIONS} ${META_PROJECT_VARNAME_UPPER}_MOCKED
+           ${META_PROJECT_VARNAME_UPPER}_CONNECTION_MOCKED SyncthingConnection=SyncthingConnectionMocked
+    PRIVATE "${META_PRIVATE_COMPILE_DEFINITIONS}")
+target_compile_options(
+    ${META_TARGET_NAME}_mocked
+    PUBLIC "${META_PUBLIC_COMPILE_OPTIONS}"
+    PRIVATE "${META_PRIVATE_COMPILE_OPTIONS}")
+set_target_properties(${META_TARGET_NAME}_mocked PROPERTIES CXX_STANDARD "${META_CXX_STANDARD}")
+
 include(Doxygen)
 include(ConfigHeader)

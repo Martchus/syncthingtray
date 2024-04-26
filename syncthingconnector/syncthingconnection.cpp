@@ -39,6 +39,7 @@ using namespace CppUtilities::EscapeCodes;
 
 namespace Data {
 
+#ifndef LIB_SYNCTHING_CONNECTOR_MOCKED
 /*!
  * \brief Returns the QNetworkAccessManager instance used by SyncthingConnection instances.
  */
@@ -47,6 +48,7 @@ QNetworkAccessManager &networkAccessManager()
     static auto networkAccessManager = new QNetworkAccessManager;
     return *networkAccessManager;
 }
+#endif
 
 /*!
  * \class SyncthingConnection

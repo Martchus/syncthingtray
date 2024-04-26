@@ -7,6 +7,7 @@ set(META_APP_NAME "Data models of Syncthing Tray")
 set(META_APP_DESCRIPTION "Data models of Syncthing Tray")
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING_MODEL)
 set(META_PUBLIC_QT_MODULES Gui Widgets)
+set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
 
 # add project files
 set(HEADER_FILES
@@ -37,6 +38,9 @@ set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
              translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
+set(QT_TESTS models)
+set(QT_TEST_SRC_FILES_models syncthingicons.cpp syncthingmodel.cpp syncthingdirectorymodel.cpp)
+
 # find c++utilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 use_cpp_utilities()
@@ -63,3 +67,20 @@ include(WindowsResources)
 include(LibraryTarget)
 include(Doxygen)
 include(ConfigHeader)
+
+# configure test target
+include(TestUtilities)
+list(APPEND QT_TEST_LIBRARIES ${LIB_SYNCTHING_CONNECTOR_LIB}_mocked ${CPP_UTILITIES_LIB})
+use_qt_module(LIBRARIES_VARIABLE "QT_TEST_LIBRARIES" PREFIX "${QT_PACKAGE_PREFIX}" MODULE "Test")
+foreach (TEST ${QT_TESTS})
+    configure_test_target(
+        TEST_NAME
+        "${TEST}_tests"
+        SRC_FILES
+        ${QT_TEST_SRC_FILES_${TEST}}
+        "tests/${TEST}.cpp"
+        LIBRARIES
+        "${QT_TEST_LIBRARIES}"
+        FULL_TEST_NAME_OUT_VAR
+        FULL_TEST_NAME_${TEST})
+endforeach ()
