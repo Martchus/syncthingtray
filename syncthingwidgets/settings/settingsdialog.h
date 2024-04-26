@@ -96,7 +96,7 @@ enum class Context { Combined, UI, System };
 explicit IconsOptionPage(Context context = Context::Combined, QWidget *parentWidget = nullptr);
 DECLARE_SETUP_WIDGETS
 private:
-void update();
+void update(bool preserveSize = false);
 Context m_context;
 Data::StatusIconSettings m_settings;
 struct {

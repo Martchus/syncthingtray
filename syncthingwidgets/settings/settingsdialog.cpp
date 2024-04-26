@@ -708,17 +708,17 @@ QWidget *IconsOptionPage::setupWidget()
     auto *const presetsMenu = new QMenu(widget);
     presetsMenu->addAction(QCoreApplication::translate("QtGui::IconsOptionPageBase", "Colorful background with gradient (default)"), widget, [this] {
         m_settings = Data::StatusIconSettings();
-        update();
+        update(true);
     });
     presetsMenu->addAction(
         QCoreApplication::translate("QtGui::IconsOptionPageBase", "Transparent background and dark foreground (for bright themes)"), widget, [this] {
             m_settings = Data::StatusIconSettings(Data::StatusIconSettings::BrightTheme{});
-            update();
+            update(true);
         });
     presetsMenu->addAction(
         QCoreApplication::translate("QtGui::IconsOptionPageBase", "Transparent background and bright foreground (for dark themes)"), widget, [this] {
             m_settings = Data::StatusIconSettings(Data::StatusIconSettings::DarkTheme{});
-            update();
+            update(true);
         });
 
     // setup additional buttons
@@ -763,9 +763,14 @@ bool IconsOptionPage::apply()
     return true;
 }
 
-void IconsOptionPage::update()
+void IconsOptionPage::update(bool preserveSize)
 {
-    ui()->renderingSizeSlider->setValue(std::max(m_settings.renderSize.width(), m_settings.renderSize.height()));
+    if (preserveSize) {
+        const auto size = ui()->renderingSizeSlider->value();
+        m_settings.renderSize = QSize(size, size);
+    } else {
+        ui()->renderingSizeSlider->setValue(std::max(m_settings.renderSize.width(), m_settings.renderSize.height()));
+    }
     ui()->thickStrokeWidthCheckBox->setChecked(m_settings.strokeWidth == StatusIconStrokeWidth::Thick);
     for (auto &widgetsForColor : m_widgets) {
         widgetsForColor.colorButtons[0]->setColor(widgetsForColor.setting->backgroundStart);
