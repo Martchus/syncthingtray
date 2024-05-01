@@ -8,8 +8,6 @@
 
 #include <QStringBuilder>
 
-#include <iostream>
-
 using namespace std;
 using namespace CppUtilities;
 
@@ -25,8 +23,11 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     m_root->modificationTime = dir.lastFileTime;
     m_root->size = dir.globalStats.bytes;
     m_root->type = SyncthingItemType::Directory;
+    m_fetchQueue.append(QString());
     m_connection.browse(m_dirId, QString(), 1, [this](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) {
         Q_UNUSED(errorMessage)
+
+        m_fetchQueue.removeAll(QString());
         if (items.empty()) {
             return;
         }
@@ -99,7 +100,6 @@ QModelIndex SyncthingFileModel::index(const QString &path) const
             return res;
         }
     }
-    std::cerr << "index for path " << path.toStdString() << ": " << this->path(res).toStdString() << '\n';
     return res;
 }
 
@@ -137,7 +137,7 @@ QModelIndex SyncthingFileModel::parent(const QModelIndex &child) const
     if (!childItem) {
         return QModelIndex();
     }
-    return !childItem->parent ? QModelIndex() : createIndex(static_cast<int>(childItem->index), 0, childItem->parent);
+    return !childItem->parent ? QModelIndex() : createIndex(static_cast<int>(childItem->parent->index), 0, childItem->parent);
 }
 
 QVariant SyncthingFileModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -263,14 +263,6 @@ static void addLevel(std::vector<std::unique_ptr<SyncthingItem>> &items, int lev
         addLevel(item->children, level);
     }
 }
-
-static void considerFetched(std::vector<std::unique_ptr<SyncthingItem>> &items)
-{
-    for (auto &item : items) {
-        item->childrenPopulated = true;
-        considerFetched(item->children);
-    }
-}
 /// \endcond
 
 void SyncthingFileModel::fetchMore(const QModelIndex &parent)
@@ -314,60 +306,30 @@ void SyncthingFileModel::processFetchQueue()
         m_dirId, path, 1, [this, p = path](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) mutable {
             Q_UNUSED(errorMessage)
 
-            {
-                const auto refreshedIndex = index(p);
-                if (!refreshedIndex.isValid()) {
-                    m_fetchQueue.removeAll(p);
-                    processFetchQueue();
-                    return;
-                }
-                auto *const refreshedItem = reinterpret_cast<SyncthingItem *>(refreshedIndex.internalPointer());
-                if (!refreshedItem->children.empty()) {
-                    if (false && refreshedItem == m_root.get()) {
-                        beginResetModel();
-                    } else {
-                        considerFetched(refreshedItem->children);
-                        std::cout << "begin remove rows at: " << this->path(refreshedIndex).toStdString() << std::endl;
-                        std::cout << " - from 0 to " << static_cast<int>(refreshedItem->children.size() - 1) << std::endl;
-                        for (int row = 0; row < static_cast<int>(refreshedItem->children.size()); ++row) {
-                            std::cout << " - " << row << " - " << index(row, 0, refreshedIndex).data().toString().toStdString() << std::endl;
-                        }
-                        beginRemoveRows(refreshedIndex, 0, static_cast<int>(refreshedItem->children.size() - 1));
-                    }
-                    std::cout << "old row count: " << rowCount(refreshedIndex) << std::endl;
-                    refreshedItem->children.clear();
-                    if (false && refreshedItem == m_root.get()) {
-                        endResetModel();
-                    } else {
-                        endRemoveRows();
-                    }
-                    std::cout << "new row count: " << rowCount(refreshedIndex) << std::endl;
-                }
+            m_fetchQueue.removeAll(p);
+            const auto refreshedIndex = index(p);
+            if (!refreshedIndex.isValid()) {
+                processFetchQueue();
+                return;
+            }
+            auto *const refreshedItem = reinterpret_cast<SyncthingItem *>(refreshedIndex.internalPointer());
+            if (!refreshedItem->children.empty()) {
+                beginRemoveRows(refreshedIndex, 0, static_cast<int>(refreshedItem->children.size() - 1));
+                refreshedItem->children.clear();
+                endRemoveRows();
             }
             if (!items.empty()) {
-                QTimer::singleShot(400, this, [this, p = std::move(p), items = std::move(items)]() mutable {
-                    const auto refreshedIndex = index(p);
-                    if (!refreshedIndex.isValid()) {
-                        m_fetchQueue.removeAll(p);
-                        processFetchQueue();
-                        return;
-                    }
-                    auto *const refreshedItem = reinterpret_cast<SyncthingItem *>(refreshedIndex.internalPointer());
-                    const auto last = items.size() - 1;
-                    addLevel(items, refreshedItem->level);
-                    for (auto &item : items) {
-                        item->parent = refreshedItem;
-                    }
-                    beginInsertRows(
-                        refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
-                    refreshedItem->children = std::move(items);
-                    refreshedItem->childrenPopulated = true;
-                    endInsertRows();
-
-                    m_fetchQueue.removeAll(p);
-                    processFetchQueue();
-                });
+                const auto last = items.size() - 1;
+                addLevel(items, refreshedItem->level);
+                for (auto &item : items) {
+                    item->parent = refreshedItem;
+                }
+                beginInsertRows(refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
+                refreshedItem->children = std::move(items);
+                refreshedItem->childrenPopulated = true;
+                endInsertRows();
             }
+            processFetchQueue();
         });
 }
 
