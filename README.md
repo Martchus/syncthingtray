@@ -1,5 +1,9 @@
 # Syncthing Tray
-This project contains the following integrations for [Syncthing](https://github.com/syncthing/syncthing):
+Syncthing Tray provides a tray icon and further platform integrations for
+[Syncthing](https://github.com/syncthing/syncthing). Checkout the
+[website](https://martchus.github.io/syncthingtray) for an overview.
+
+The following integrations are provided:
 
 * Tray application (using the Qt framework)
 * Context menu extension for the [Dolphin](https://www.kde.org/applications/system/dolphin) file manager
