@@ -1586,9 +1586,9 @@ void SyncthingConnection::readRevert()
  * \brief Lists items in the directory with the specified \a dirId down to \a levels (or fully if \a levels is 0) as of \a prefix.
  * \sa https://docs.syncthing.net/rest/db-browse-get.html
  * \remarks
- * In contrast to other functions, this one uses a \a callback to return results (instead of a signal). This makes it easier to
- * consume results of a specific request. Errors are still reported via the error() signal so there's no extra error handling
- * required. Note that \a callback is *not* invoked in the error case.
+ * In contrast to most other functions, this one uses a \a callback to return results (instead of a signal). This makes it easier
+ * to consume results of a specific request. Errors are still reported via the error() signal so there's no extra error handling
+ * required. Note that in case of an error \a callback is invoked with a non-empty string containing the error message.
  */
 QMetaObject::Connection SyncthingConnection::browse(const QString &dirId, const QString &prefix, int levels,
     std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback)
@@ -1604,6 +1604,23 @@ QMetaObject::Connection SyncthingConnection::browse(const QString &dirId, const 
     return QObject::connect(
         requestData(QStringLiteral("db/browse"), query), &QNetworkReply::finished, this,
         [this, id = dirId, l = levels, cb = std::move(callback)]() mutable { readBrowse(id, l, std::move(cb)); }, Qt::QueuedConnection);
+}
+
+/*!
+ * \brief Queries the contents of ".stignore" and expansions of the directory with the specified \a dirId.
+ * \sa https://docs.syncthing.net/rest/db-ignores-get.html
+ * \remarks
+ * In contrast to most other functions, this one uses a \a callback to return results (instead of a signal). This makes it easier
+ * to consume results of a specific request. Errors are still reported via the error() signal so there's no extra error handling
+ * required. Note that in case of an error \a callback is invoked with a non-empty string containing the error message.
+ */
+QMetaObject::Connection SyncthingConnection::ignores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback)
+{
+    auto query = QUrlQuery();
+    query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
+    return QObject::connect(
+        requestData(QStringLiteral("db/ignores"), query), &QNetworkReply::finished, this,
+        [this, id = dirId, cb = std::move(callback)]() mutable { readIgnores(id, std::move(cb)); }, Qt::QueuedConnection);
 }
 
 /// \cond
@@ -1679,6 +1696,54 @@ void SyncthingConnection::readBrowse(
         emitError(errorMessage, SyncthingErrorCategory::SpecificRequest, reply);
         if (callback) {
             callback(std::move(items), std::move(errorMessage));
+        }
+    }
+}
+
+/*!
+ * \brief Reads the response of ignores() and reports results via the specified \a callback. Emits error() in case of an error.
+ * \remarks The \a callback is also emitted in the error case (with the error message as second parameter and an empty list of items).
+ */
+void SyncthingConnection::readIgnores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback)
+{
+    auto const [reply, response] = prepareReply();
+    if (!reply) {
+        return;
+    }
+    auto res = SyncthingIgnores();
+    switch (reply->error()) {
+    case QNetworkReply::NoError: {
+        auto jsonError = QJsonParseError();
+        const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
+        if (jsonError.error != QJsonParseError::NoError) {
+            auto errorMessage = tr("Unable to query ignore patterns of \"%1\": ").arg(dirId) + jsonError.errorString();
+            emit error(errorMessage, SyncthingErrorCategory::Parsing, QNetworkReply::NoError);
+            if (callback) {
+                callback(std::move(res), std::move(errorMessage));
+            }
+            return;
+        }
+        const auto docObj = replyDoc.object();
+        const auto ignores = docObj.value(QLatin1String("ignore")).toArray();
+        const auto expanded = docObj.value(QLatin1String("expanded")).toArray();
+        res.ignore.reserve(ignores.size());
+        res.expanded.reserve(expanded.size());
+        for (const auto &ignore : ignores) {
+            res.ignore.append(ignore.toString());
+        }
+        for (const auto &expand : expanded) {
+            res.expanded.append(expand.toString());
+        }
+        if (callback) {
+            callback(std::move(res), QString());
+        }
+        break;
+    }
+    default:
+        auto errorMessage = tr("Unable to query ignore patterns of \"%1\": ").arg(dirId);
+        emitError(errorMessage, SyncthingErrorCategory::SpecificRequest, reply);
+        if (callback) {
+            callback(std::move(res), std::move(errorMessage));
         }
     }
 }

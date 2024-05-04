@@ -65,6 +65,11 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItem {
     bool checked = false; // not populated but might be set to flag an item for some mass-action
 };
 
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingIgnores {
+    QStringList ignore;
+    QStringList expanded;
+};
+
 class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     friend ConnectionTests;
     friend MiscTests;
@@ -256,6 +261,7 @@ public:
     // methods to GET or POST information from/to Syncthing (non-slots)
     QMetaObject::Connection browse(const QString &dirId, const QString &prefix, int level,
         std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback);
+    QMetaObject::Connection ignores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback);
 
 Q_SIGNALS:
     void newConfig(const QJsonObject &rawConfig);
@@ -371,6 +377,7 @@ private Q_SLOTS:
 private:
     // handler to evaluate results from request...() methods
     void readBrowse(const QString &dirId, int levels, std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback);
+    void readIgnores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback);
 
     // internal helper methods
     struct Reply {
