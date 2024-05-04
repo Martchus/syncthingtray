@@ -4,8 +4,12 @@
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/utils.h>
 
+#include <qtutilities/misc/desktoputils.h>
+
 #include <c++utilities/conversion/stringconversion.h>
 
+#include <QClipboard>
+#include <QGuiApplication>
 #include <QStringBuilder>
 
 using namespace std;
@@ -13,12 +17,30 @@ using namespace CppUtilities;
 
 namespace Data {
 
+/// \cond
+static void populatePath(const QString &root, std::vector<std::unique_ptr<SyncthingItem>> &items)
+{
+    if (root.isEmpty()) {
+        for (auto &item : items) {
+            populatePath(item->path = item->name, item->children);
+        }
+    } else {
+        for (auto &item : items) {
+            populatePath(item->path = root % QChar('/') % item->name, item->children);
+        }
+    }
+}
+/// \endcond
+
 SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const SyncthingDir &dir, QObject *parent)
     : SyncthingModel(connection, parent)
     , m_connection(connection)
     , m_dirId(dir.id)
     , m_root(std::make_unique<SyncthingItem>())
 {
+    if (m_connection.isLocal()) {
+        m_localPath = dir.pathWithoutTrailingSlash().toString();
+    }
     m_root->name = dir.displayName();
     m_root->modificationTime = dir.lastFileTime;
     m_root->size = dir.globalStats.bytes;
@@ -33,6 +55,7 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
         }
         const auto last = items.size() - 1;
         beginInsertRows(index(0, 0), 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
+        populatePath(QString(), items);
         m_root->children = std::move(items);
         m_root->childrenPopulated = true;
         endInsertRows();
@@ -50,6 +73,7 @@ QHash<int, QByteArray> SyncthingFileModel::roleNames() const
         { NameRole, "name" },
         { SizeRole, "size" },
         { ModificationTimeRole, "modificationTime" },
+        { PathRole, "path" },
         { Actions, "actions" },
         { ActionNames, "actionNames" },
         { ActionIcons, "actionIcons" },
@@ -175,9 +199,22 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         case 0:
             return item->name;
         case 1:
-            return QString::fromStdString(CppUtilities::dataSizeToString(item->size));
+            switch (item->type) {
+            case SyncthingItemType::File:
+                return QString::fromStdString(CppUtilities::dataSizeToString(item->size));
+            case SyncthingItemType::Directory:
+                return item->childrenPopulated ? tr("%1 elements").arg(item->children.size()) : QString();
+            default:
+                return QString();
+            }
         case 2:
-            return QString::fromStdString(item->modificationTime.toString());
+            switch (item->type) {
+            case SyncthingItemType::File:
+            case SyncthingItemType::Directory:
+                return QString::fromStdString(item->modificationTime.toString());
+            default:
+                return QString();
+            }
         }
         break;
     case Qt::DecorationRole: {
@@ -189,33 +226,64 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
                 return icons.file;
             case SyncthingItemType::Directory:
                 return icons.folder;
+            case SyncthingItemType::Symlink:
+                return icons.link;
             default:
                 return icons.cogs;
             }
         }
         break;
     }
+    case Qt::ToolTipRole:
+        switch (index.column()) {
+        case 0:
+            return item->path;
+        case 2:
+            return agoString(item->modificationTime);
+        }
+        break;
     case NameRole:
         return item->name;
     case SizeRole:
         return static_cast<qsizetype>(item->size);
     case ModificationTimeRole:
         return QString::fromStdString(item->modificationTime.toString());
-    case Actions:
+    case PathRole:
+        return item->path;
+    case Actions: {
+        auto res = QStringList();
+        res.reserve(3);
         if (item->type == SyncthingItemType::Directory) {
-            return QStringList({ QStringLiteral("refresh") });
+            res << QStringLiteral("refresh");
         }
-        break;
-    case ActionNames:
+        if (!m_localPath.isEmpty()) {
+            res << QStringLiteral("open") << QStringLiteral("copy-path");
+        }
+        return res;
+    }
+    case ActionNames: {
+        auto res = QStringList();
+        res.reserve(3);
         if (item->type == SyncthingItemType::Directory) {
-            return QStringList({ tr("Refresh") });
+            res << tr("Refresh");
         }
-        break;
-    case ActionIcons:
+        if (!m_localPath.isEmpty()) {
+            res << (item->type == SyncthingItemType::Directory ? tr("Browse locally") : tr("Open local version")) << tr("Copy local path");
+        }
+        return res;
+    }
+    case ActionIcons: {
+        auto res = QVariantList();
+        res.reserve(3);
         if (item->type == SyncthingItemType::Directory) {
-            return QStringList({ QStringLiteral("view-refresh") });
+            res << QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg")));
         }
-        break;
+        if (!m_localPath.isEmpty()) {
+            res << QIcon::fromTheme(QStringLiteral("folder"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg")));
+            res << QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/edit-copy.svg")));
+        }
+        return res;
+    }
     }
     return QVariant();
 }
@@ -281,6 +349,18 @@ void SyncthingFileModel::triggerAction(const QString &action, const QModelIndex 
     if (action == QLatin1String("refresh")) {
         fetchMore(index);
     }
+    if (m_localPath.isEmpty()) {
+        return;
+    }
+    const auto relPath = index.data(PathRole).toString();
+    const auto path = relPath.isEmpty() ? m_localPath : QString(m_localPath % QChar('/') % relPath);
+    if (action == QLatin1String("open")) {
+        QtUtilities::openLocalFileOrDir(path);
+    } else if (action == QLatin1String("copy-path")) {
+        if (auto *const clipboard = QGuiApplication::clipboard()) {
+            clipboard->setText(path);
+        }
+    }
 }
 
 void SyncthingFileModel::handleConfigInvalidated()
@@ -313,7 +393,8 @@ void SyncthingFileModel::processFetchQueue()
                 return;
             }
             auto *const refreshedItem = reinterpret_cast<SyncthingItem *>(refreshedIndex.internalPointer());
-            if (!refreshedItem->children.empty()) {
+            const auto previousChildCount = refreshedItem->children.size();
+            if (previousChildCount) {
                 beginRemoveRows(refreshedIndex, 0, static_cast<int>(refreshedItem->children.size() - 1));
                 refreshedItem->children.clear();
                 endRemoveRows();
@@ -324,10 +405,15 @@ void SyncthingFileModel::processFetchQueue()
                 for (auto &item : items) {
                     item->parent = refreshedItem;
                 }
+                populatePath(refreshedItem->path, items);
                 beginInsertRows(refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
                 refreshedItem->children = std::move(items);
                 refreshedItem->childrenPopulated = true;
                 endInsertRows();
+            }
+            if (refreshedItem->children.size() != previousChildCount) {
+                const auto sizeIndex = refreshedIndex.siblingAtColumn(1);
+                emit dataChanged(sizeIndex, sizeIndex, QList<int>{ Qt::DisplayRole });
             }
             processFetchQueue();
         });

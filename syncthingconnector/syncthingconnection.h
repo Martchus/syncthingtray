@@ -49,7 +49,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry {
     QString message;
 };
 
-enum class SyncthingItemType { Unknown, File, Directory };
+enum class SyncthingItemType { Unknown, File, Directory, Symlink };
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItem {
     QString name;
@@ -58,6 +58,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItem {
     SyncthingItemType type = SyncthingItemType::Unknown;
     std::vector<std::unique_ptr<SyncthingItem>> children;
     SyncthingItem *parent = nullptr; // not populated but might be set as needed (take care in case the pointer gets invalidated)
+    QString path; // not populated but might be set as needed
     std::size_t index = std::size_t();
     int level = 0; // the level of nesting, does *not* include levels of the prefix
     bool childrenPopulated = false; // populated depending on requested level

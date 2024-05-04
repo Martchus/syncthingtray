@@ -6,14 +6,21 @@
 #include <syncthingconnector/syncthingconnection.h>
 
 #include <memory>
-#include <vector>
 
 namespace Data {
 
 class LIB_SYNCTHING_MODEL_EXPORT SyncthingFileModel : public SyncthingModel {
     Q_OBJECT
 public:
-    enum SyncthingFileModelRole { NameRole = SyncthingModelUserRole + 1, SizeRole, ModificationTimeRole, Actions, ActionNames, ActionIcons };
+    enum SyncthingFileModelRole {
+        NameRole = SyncthingModelUserRole + 1,
+        SizeRole,
+        ModificationTimeRole,
+        PathRole,
+        Actions,
+        ActionNames,
+        ActionIcons
+    };
 
     explicit SyncthingFileModel(SyncthingConnection &connection, const SyncthingDir &dir, QObject *parent = nullptr);
     ~SyncthingFileModel() override;
@@ -46,6 +53,7 @@ private:
 private:
     SyncthingConnection &m_connection;
     QString m_dirId;
+    QString m_localPath;
     QStringList m_fetchQueue;
     QMetaObject::Connection m_pendingRequest;
     std::unique_ptr<SyncthingItem> m_root;

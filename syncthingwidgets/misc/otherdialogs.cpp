@@ -102,11 +102,11 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
             return;
         }
         const auto actionNames = model->data(index, SyncthingFileModel::ActionNames).toStringList();
-        const auto actionIcons = model->data(index, SyncthingFileModel::ActionIcons).toStringList();
+        const auto actionIcons = model->data(index, SyncthingFileModel::ActionIcons).toList();
         auto menu = QMenu(view);
         auto actionIndex = qsizetype();
         for (const auto &action : actions) {
-            QObject::connect(menu.addAction(actionIndex < actionIcons.size() ? QIcon::fromTheme(actionIcons.at(actionIndex)) : QIcon(),
+            QObject::connect(menu.addAction(actionIndex < actionIcons.size() ? actionIcons.at(actionIndex).value<QIcon>() : QIcon(),
                                  actionIndex < actionNames.size() ? actionNames.at(actionIndex) : action),
                 &QAction::triggered, model, [model, action, index]() { model->triggerAction(action, index); });
             ++actionIndex;

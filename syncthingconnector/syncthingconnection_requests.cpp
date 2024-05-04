@@ -1635,6 +1635,8 @@ static void readSyncthingItems(const QJsonArray &array, std::vector<std::unique_
             item->type = SyncthingItemType::File;
         } else if (type == QLatin1String("FILE_INFO_TYPE_DIRECTORY")) {
             item->type = SyncthingItemType::Directory;
+        } else if (type == QLatin1String("FILE_INFO_TYPE_SYMLINK")) {
+            item->type = SyncthingItemType::Symlink;
         }
         readSyncthingItems(children.toArray(), item->children, level + 1, levels);
         item->childrenPopulated = !levels || level < levels;
