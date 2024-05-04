@@ -46,7 +46,7 @@ set(QT_TEST_SRC_FILES_models syncthingicons.cpp syncthingmodel.cpp syncthingdire
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 use_cpp_utilities()
 
-# find qtutilities (only CMake modules used)
+# find qtutilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.3.0 REQUIRED)
 use_qt_utilities()
 
