@@ -262,6 +262,7 @@ public:
     QMetaObject::Connection browse(const QString &dirId, const QString &prefix, int level,
         std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback);
     QMetaObject::Connection ignores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback);
+    QMetaObject::Connection setIgnores(const QString &dirId, const SyncthingIgnores &ignores, std::function<void(QString &&)> &&callback);
 
 Q_SIGNALS:
     void newConfig(const QJsonObject &rawConfig);
@@ -378,6 +379,7 @@ private:
     // handler to evaluate results from request...() methods
     void readBrowse(const QString &dirId, int levels, std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback);
     void readIgnores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback);
+    void readSetIgnores(const QString &dirId, std::function<void(QString &&)> &&callback);
 
     // internal helper methods
     struct Reply {

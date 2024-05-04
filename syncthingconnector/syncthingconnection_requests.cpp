@@ -1623,6 +1623,32 @@ QMetaObject::Connection SyncthingConnection::ignores(const QString &dirId, std::
         [this, id = dirId, cb = std::move(callback)]() mutable { readIgnores(id, std::move(cb)); }, Qt::QueuedConnection);
 }
 
+/*!
+ * \brief Sets the contents of ".stignore" of the directory with the specified \a dirId.
+ * \sa https://docs.syncthing.net/rest/db-ignores-post.html
+ * \remarks
+ * In contrast to most other functions, this one uses a \a callback to return results (instead of a signal). This makes it easier
+ * to consume results of a specific request. Errors are still reported via the error() signal so there's no extra error handling
+ * required. Note that in case of an error \a callback is invoked with a non-empty string containing the error message.
+ */
+QMetaObject::Connection SyncthingConnection::setIgnores(
+    const QString &dirId, const SyncthingIgnores &ignores, std::function<void(QString &&)> &&callback)
+{
+    auto query = QUrlQuery();
+    query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
+    auto ignoreArray = QJsonArray();
+    for (const auto &ignore : ignores.ignore) {
+        ignoreArray.append(ignore);
+    }
+    auto jsonObj = QJsonObject();
+    jsonObj.insert(QLatin1String("ignore"), ignoreArray);
+    auto jsonDoc = QJsonDocument();
+    jsonDoc.setObject(jsonObj);
+    return QObject::connect(
+        postData(QStringLiteral("db/ignores"), query, jsonDoc.toJson(QJsonDocument::Compact)), &QNetworkReply::finished, this,
+        [this, id = dirId, cb = std::move(callback)]() mutable { readSetIgnores(id, std::move(cb)); }, Qt::QueuedConnection);
+}
+
 /// \cond
 static void readSyncthingItems(const QJsonArray &array, std::vector<std::unique_ptr<SyncthingItem>> &into, int level, int levels)
 {
@@ -1744,6 +1770,28 @@ void SyncthingConnection::readIgnores(const QString &dirId, std::function<void(S
         emitError(errorMessage, SyncthingErrorCategory::SpecificRequest, reply);
         if (callback) {
             callback(std::move(res), std::move(errorMessage));
+        }
+    }
+}
+
+void SyncthingConnection::readSetIgnores(const QString &dirId, std::function<void(QString &&)> &&callback)
+{
+    auto const [reply, response] = prepareReply();
+    if (!reply) {
+        return;
+    }
+    switch (reply->error()) {
+    case QNetworkReply::NoError: {
+        if (callback) {
+            callback(QString());
+        }
+        break;
+    }
+    default:
+        auto errorMessage = tr("Unable to change ignore patterns of \"%1\": ").arg(dirId);
+        emitError(errorMessage, SyncthingErrorCategory::SpecificRequest, reply);
+        if (callback) {
+            callback(std::move(errorMessage));
         }
     }
 }
