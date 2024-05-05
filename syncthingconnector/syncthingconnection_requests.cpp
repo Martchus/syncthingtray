@@ -1780,6 +1780,10 @@ void SyncthingConnection::readIgnores(const QString &dirId, std::function<void(S
     }
 }
 
+/*!
+ * \brief Reads the response of setIgnores() and reports results via the specified \a callback. Emits error() in case of an error.
+ * \remarks The \a callback is also emitted in the error case (with the error message as second parameter and an empty list of items).
+ */
 void SyncthingConnection::readSetIgnores(const QString &dirId, std::function<void(QString &&)> &&callback)
 {
     auto const [reply, response] = prepareReply();
