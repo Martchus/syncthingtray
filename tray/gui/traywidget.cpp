@@ -204,6 +204,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     connect(m_ui->dirsTreeView, &DirView::pauseResumeDir, this, &TrayWidget::pauseResumeDir);
     connect(m_ui->devsTreeView, &DevView::pauseResumeDev, this, &TrayWidget::pauseResumeDev);
     connect(m_ui->dirsTreeView, &DirView::browseRemoteFiles, this, &TrayWidget::browseRemoteFiles);
+    connect(m_ui->dirsTreeView, &DirView::showIgnorePatterns, this, &TrayWidget::showIgnorePatterns);
     connect(m_ui->downloadsTreeView, &DownloadView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->downloadsTreeView, &DownloadView::openItemDir, this, &TrayWidget::openItemDir);
     connect(m_ui->recentChangesTreeView, &QTreeView::customContextMenuRequested, this, &TrayWidget::showRecentChangesContextMenu);
@@ -711,10 +712,12 @@ void TrayWidget::pauseResumeDir(const SyncthingDir &dir)
 
 void TrayWidget::browseRemoteFiles(const Data::SyncthingDir &dir)
 {
-    auto *const dlg = browseRemoteFilesDialog(m_connection, dir, this);
-    dlg->resize(600, 500);
-    centerWidget(dlg);
-    dlg->show();
+    showCenteredDialog(browseRemoteFilesDialog(m_connection, dir, this), QSize(600, 500));
+}
+
+void TrayWidget::showIgnorePatterns(const Data::SyncthingDir &dir)
+{
+    showCenteredDialog(ignorePatternsDialog(m_connection, dir, this), QSize(600, 500));
 }
 
 void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
@@ -961,6 +964,16 @@ void TrayWidget::showDialog(QWidget *dlg, bool maximized)
         dlg->show();
     }
     dlg->activateWindow();
+}
+
+void TrayWidget::showCenteredDialog(QWidget *dlg, const QSize &size)
+{
+    if (m_menu && m_menu->windowType() != TrayMenu::WindowType::NormalWindow) {
+        m_menu->close();
+    }
+    dlg->resize(size);
+    centerWidget(dlg);
+    dlg->show();
 }
 
 void TrayWidget::setBrightColorsOfModelsAccordingToPalette()

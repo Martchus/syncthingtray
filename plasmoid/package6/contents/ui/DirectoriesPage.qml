@@ -189,6 +189,14 @@ ColumnLayout {
                                    "browseRemoteFiles", "dirId_")
                     visible: plasmoid.wipFeaturesEnabled
                 }
+                PlasmaExtras.MenuItem {
+                    id: showIgnorePatternsItem
+                    text: qsTr("Show ignore patterns")
+                    icon: "selection-symbolic"
+                    onClicked: directoryView.triggerNativeActionWithCurrentItemData(
+                                   "showIgnorePatterns", "dirId_")
+                    visible: plasmoid.wipFeaturesEnabled
+                }
             }
         }
     }

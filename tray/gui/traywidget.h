@@ -96,6 +96,7 @@ private Q_SLOTS:
     void pauseResumeDev(const Data::SyncthingDev &dev);
     void pauseResumeDir(const Data::SyncthingDir &dir);
     void browseRemoteFiles(const Data::SyncthingDir &dir);
+    void showIgnorePatterns(const Data::SyncthingDir &dir);
     void showRecentChangesContextMenu(const QPoint &position);
     void changeStatus();
     void updateTraffic();
@@ -115,6 +116,7 @@ private Q_SLOTS:
     void handleConnectionSelected(QAction *connectionAction);
     void concludeWizard(const QString &errorMessage = QString());
     void showDialog(QWidget *dlg, bool maximized = false);
+    void showCenteredDialog(QWidget *dlg, const QSize &size);
     void setBrightColorsOfModelsAccordingToPalette();
     void setLabelPixmaps();
     void setTrafficPixmaps(bool recompute = false);

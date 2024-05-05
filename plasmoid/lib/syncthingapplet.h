@@ -149,6 +149,7 @@ public Q_SLOTS:
     void showInternalErrorsDialog();
     void showDirectoryErrors(const QString &dirId);
     void browseRemoteFiles(const QString &dirId);
+    void showIgnorePatterns(const QString &dirId);
     void copyToClipboard(const QString &text);
     void updateStatusIconAndTooltip();
     void saveSettings();
@@ -207,6 +208,8 @@ private Q_SLOTS:
     void concludeWizard(const QString &errorMessage = QString());
 
 private:
+    void showCenteredDialog(QWidget *dlg);
+
     Plasma::Theme m_theme;
     QString m_faUrl;
     QPalette m_palette;

@@ -89,6 +89,7 @@ set(REQUIRED_ICONS
     preferences-other
     process-stop
     qtcreator
+    selection-symbolic
     system-run
     system-search
     system-file-manager

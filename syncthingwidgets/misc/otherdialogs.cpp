@@ -1,4 +1,5 @@
 #include "./otherdialogs.h"
+#include "./textviewdialog.h"
 
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingdir.h>
@@ -15,8 +16,10 @@
 #include <QIcon>
 #include <QLabel>
 #include <QMenu>
+#include <QNetworkReply>
 #include <QPixmap>
 #include <QPushButton>
+#include <QTextBrowser>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -122,6 +125,26 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
     layout->addWidget(view);
     dlg->setLayout(layout);
 
+    return dlg;
+}
+
+TextViewDialog *ignorePatternsDialog(Data::SyncthingConnection &connection, const Data::SyncthingDir &dir, QWidget *parent)
+{
+    auto *const dlg
+        = new TextViewDialog(QCoreApplication::translate("QtGui::OtherDialogs", "Ignore patterns of folder \"%1\"").arg(dir.displayName()), parent);
+    dlg->browser()->setText(QStringLiteral("Loading…"));
+    auto res = connection.ignores(dir.id, [dlg](Data::SyncthingIgnores &&ignores, QString &&errorMessage) {
+        auto *const browser = dlg->browser();
+        browser->clear();
+        if (!errorMessage.isEmpty()) {
+            browser->setText(errorMessage);
+            return;
+        }
+        for (const auto &ignore : ignores.ignore) {
+            browser->append(ignore);
+        }
+    });
+    QObject::connect(dlg, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
     return dlg;
 }
 

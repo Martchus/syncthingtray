@@ -24,6 +24,7 @@ Q_SIGNALS:
     void scanDir(const Data::SyncthingDir &dir);
     void pauseResumeDir(const Data::SyncthingDir &dir);
     void browseRemoteFiles(const Data::SyncthingDir &dir);
+    void showIgnorePatterns(const Data::SyncthingDir &dir);
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event) override;

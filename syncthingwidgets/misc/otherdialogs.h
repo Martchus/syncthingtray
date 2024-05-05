@@ -14,11 +14,15 @@ struct SyncthingDir;
 } // namespace Data
 
 namespace QtGui {
+class TextViewDialog;
 
 SYNCTHINGWIDGETS_EXPORT QDialog *ownDeviceIdDialog(Data::SyncthingConnection &connection);
 SYNCTHINGWIDGETS_EXPORT QWidget *ownDeviceIdWidget(Data::SyncthingConnection &connection, int size, QWidget *parent = nullptr);
 SYNCTHINGWIDGETS_EXPORT QDialog *browseRemoteFilesDialog(
     Data::SyncthingConnection &connection, const Data::SyncthingDir &dir, QWidget *parent = nullptr);
+SYNCTHINGWIDGETS_EXPORT TextViewDialog *ignorePatternsDialog(
+    Data::SyncthingConnection &connection, const Data::SyncthingDir &dir, QWidget *parent = nullptr);
+
 } // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_OTHERDIALOGS_H
