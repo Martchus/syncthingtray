@@ -49,20 +49,36 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry {
     QString message;
 };
 
-enum class SyncthingItemType { Unknown, File, Directory, Symlink };
+enum class SyncthingItemType {
+    Unknown, /**< the type is unknown */
+    File, /**< the item is a regular file */
+    Directory, /**< the item is a directory */
+    Symlink, /**< the item is a symlink (pointing to a file or directory) */
+};
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItem {
+    /// \brief The name of the filesystem item or error/loading message in case of those item types.
     QString name;
+    /// \brief The modification time. Only populated with a meaningful value for files and directories.
     CppUtilities::DateTime modificationTime = CppUtilities::DateTime();
+    /// \brief The file size. Only populated with a meaningful value for files.
     std::size_t size = std::size_t();
+    /// \brief The type of the item.
     SyncthingItemType type = SyncthingItemType::Unknown;
+    /// \brief The child items, if populated as indicated by childrenPopulated.
     std::vector<std::unique_ptr<SyncthingItem>> children;
-    SyncthingItem *parent = nullptr; // not populated but might be set as needed (take care in case the pointer gets invalidated)
-    QString path; // not populated but might be set as needed
+    /// \brief The parent item; not populated by default but might be set as needed (take care in case the pointer gets invalidated).
+    SyncthingItem *parent = nullptr;
+    /// \brief The path of the item; not populated by default but might be set as needed.
+    QString path;
+    /// \brief The index of the item within its parent.
     std::size_t index = std::size_t();
-    int level = 0; // the level of nesting, does *not* include levels of the prefix
-    bool childrenPopulated = false; // populated depending on requested level
-    bool checked = false; // not populated but might be set to flag an item for some mass-action
+    /// \brief The level of nesting, does *not* include levels of the prefix.
+    int level = 0;
+    /// \brief Whether children are populated (depends on the requested level).
+    bool childrenPopulated = false;
+    /// \brief Whether the item is "checked"; not set by default but might be set to flag an item for some mass-action.
+    bool checked = false;
 };
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingIgnores {
