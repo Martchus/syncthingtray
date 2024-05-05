@@ -1073,7 +1073,7 @@ void SyncthingConnection::emitError(const QString &message, const QJsonParseErro
 }
 
 /*!
- * \brief Internally called to emit a network error (server replied error code are connection or server could not be reached at all).
+ * \brief Internally called to emit a network error (server replied error code or server could not be reached at all).
  */
 void SyncthingConnection::emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply)
 {
@@ -1081,6 +1081,19 @@ void SyncthingConnection::emitError(const QString &message, SyncthingErrorCatego
         cerr << Phrases::Error << "Syncthing connection error: " << message.toLocal8Bit().data() << reply->errorString().toLocal8Bit().data() << endl;
     }
     emit error(message + reply->errorString(), category, reply->error(), reply->request(), reply->bytesAvailable() ? reply->readAll() : QByteArray());
+}
+
+/*!
+ * \brief Internally called to emit a network error for a specific request (server replied error code or server could not be reached at all).
+ * \remarks The \a message is supposed to already contain the error string of the reply.
+ */
+void SyncthingConnection::emitError(const QString &message, QNetworkReply *reply)
+{
+    if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiReplies) {
+        cerr << Phrases::Error << "Syncthing API error: " << message.toLocal8Bit().data() << reply->errorString().toLocal8Bit().data() << endl;
+    }
+    emit error(message, SyncthingErrorCategory::SpecificRequest, reply->error(), reply->request(),
+        reply->bytesAvailable() ? reply->readAll() : QByteArray());
 }
 
 /*!

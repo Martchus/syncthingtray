@@ -1724,8 +1724,8 @@ void SyncthingConnection::readBrowse(
         break;
     }
     default:
-        auto errorMessage = tr("Unable to browse \"%1\": ").arg(dirId);
-        emitError(errorMessage, SyncthingErrorCategory::SpecificRequest, reply);
+        auto errorMessage = tr("Unable to browse \"%1\": ").arg(dirId) + reply->errorString();
+        emitError(errorMessage, reply);
         if (callback) {
             callback(std::move(items), std::move(errorMessage));
         }
@@ -1772,8 +1772,8 @@ void SyncthingConnection::readIgnores(const QString &dirId, std::function<void(S
         break;
     }
     default:
-        auto errorMessage = tr("Unable to query ignore patterns of \"%1\": ").arg(dirId);
-        emitError(errorMessage, SyncthingErrorCategory::SpecificRequest, reply);
+        auto errorMessage = tr("Unable to query ignore patterns of \"%1\": ").arg(dirId) + reply->errorString();
+        emitError(errorMessage, reply);
         if (callback) {
             callback(std::move(res), std::move(errorMessage));
         }
@@ -1794,8 +1794,8 @@ void SyncthingConnection::readSetIgnores(const QString &dirId, std::function<voi
         break;
     }
     default:
-        auto errorMessage = tr("Unable to change ignore patterns of \"%1\": ").arg(dirId);
-        emitError(errorMessage, SyncthingErrorCategory::SpecificRequest, reply);
+        auto errorMessage = tr("Unable to change ignore patterns of \"%1\": ").arg(dirId) + reply->errorString();
+        emitError(errorMessage, reply);
         if (callback) {
             callback(std::move(errorMessage));
         }

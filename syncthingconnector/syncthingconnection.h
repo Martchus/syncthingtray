@@ -403,6 +403,7 @@ private Q_SLOTS:
     void emitNotification(CppUtilities::DateTime when, const QString &message);
     void emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response = QByteArray());
     void emitError(const QString &message, Data::SyncthingErrorCategory category, QNetworkReply *reply);
+    void emitError(const QString &message, QNetworkReply *reply);
     void emitMyIdChanged(const QString &newId);
     void emitTildeChanged(const QString &newTilde, const QString &newPathSeparator);
     void emitDirStatisticsChanged();
