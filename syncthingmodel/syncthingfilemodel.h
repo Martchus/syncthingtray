@@ -55,7 +55,7 @@ private:
     QString m_dirId;
     QString m_localPath;
     QStringList m_fetchQueue;
-    QMetaObject::Connection m_pendingRequest;
+    SyncthingConnection::QueryResult m_pendingRequest;
     std::unique_ptr<SyncthingItem> m_root;
 };
 

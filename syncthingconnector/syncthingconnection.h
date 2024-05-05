@@ -137,6 +137,11 @@ public:
         SyncthingConnectionLoggingFlags loggingFlags = SyncthingConnectionLoggingFlags::FromEnvironment, QObject *parent = nullptr);
     ~SyncthingConnection() override;
 
+    struct QueryResult {
+        QNetworkReply *reply = nullptr;
+        QMetaObject::Connection connection;
+    };
+
     // getter/setter for
     const QString &syncthingUrl() const;
     void setSyncthingUrl(const QString &url);
@@ -275,10 +280,10 @@ public Q_SLOTS:
 
 public:
     // methods to GET or POST information from/to Syncthing (non-slots)
-    QMetaObject::Connection browse(const QString &dirId, const QString &prefix, int level,
+    QueryResult browse(const QString &dirId, const QString &prefix, int level,
         std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback);
-    QMetaObject::Connection ignores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback);
-    QMetaObject::Connection setIgnores(const QString &dirId, const SyncthingIgnores &ignores, std::function<void(QString &&)> &&callback);
+    QueryResult ignores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback);
+    QueryResult setIgnores(const QString &dirId, const SyncthingIgnores &ignores, std::function<void(QString &&)> &&callback);
 
 Q_SIGNALS:
     void newConfig(const QJsonObject &rawConfig);

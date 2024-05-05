@@ -10,6 +10,7 @@
 
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QNetworkReply>
 #include <QStringBuilder>
 
 using namespace std;
@@ -46,25 +47,28 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     m_root->size = dir.globalStats.bytes;
     m_root->type = SyncthingItemType::Directory;
     m_fetchQueue.append(QString());
-    m_connection.browse(m_dirId, QString(), 1, [this](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) {
-        Q_UNUSED(errorMessage)
+    m_pendingRequest
+        = m_connection.browse(m_dirId, QString(), 1, [this](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) {
+              m_pendingRequest.reply = nullptr;
+              Q_UNUSED(errorMessage)
 
-        m_fetchQueue.removeAll(QString());
-        if (items.empty()) {
-            return;
-        }
-        const auto last = items.size() - 1;
-        beginInsertRows(index(0, 0), 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
-        populatePath(QString(), items);
-        m_root->children = std::move(items);
-        m_root->childrenPopulated = true;
-        endInsertRows();
-    });
+              m_fetchQueue.removeAll(QString());
+              if (items.empty()) {
+                  return;
+              }
+              const auto last = items.size() - 1;
+              beginInsertRows(index(0, 0), 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
+              populatePath(QString(), items);
+              m_root->children = std::move(items);
+              m_root->childrenPopulated = true;
+              endInsertRows();
+          });
 }
 
 SyncthingFileModel::~SyncthingFileModel()
 {
-    QObject::disconnect(m_pendingRequest);
+    QObject::disconnect(m_pendingRequest.connection);
+    delete m_pendingRequest.reply;
 }
 
 QHash<int, QByteArray> SyncthingFileModel::roleNames() const
@@ -384,6 +388,7 @@ void SyncthingFileModel::processFetchQueue()
     const auto &path = m_fetchQueue.front();
     m_pendingRequest = m_connection.browse(
         m_dirId, path, 1, [this, p = path](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) mutable {
+            m_pendingRequest.reply = nullptr;
             Q_UNUSED(errorMessage)
 
             m_fetchQueue.removeAll(p);

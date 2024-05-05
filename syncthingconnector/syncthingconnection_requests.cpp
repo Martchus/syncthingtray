@@ -1590,7 +1590,7 @@ void SyncthingConnection::readRevert()
  * to consume results of a specific request. Errors are still reported via the error() signal so there's no extra error handling
  * required. Note that in case of an error \a callback is invoked with a non-empty string containing the error message.
  */
-QMetaObject::Connection SyncthingConnection::browse(const QString &dirId, const QString &prefix, int levels,
+SyncthingConnection::QueryResult SyncthingConnection::browse(const QString &dirId, const QString &prefix, int levels,
     std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback)
 {
     auto query = QUrlQuery();
@@ -1601,9 +1601,11 @@ QMetaObject::Connection SyncthingConnection::browse(const QString &dirId, const 
     if (levels > 0) {
         query.addQueryItem(QStringLiteral("levels"), QString::number(levels));
     }
-    return QObject::connect(
-        requestData(QStringLiteral("db/browse"), query), &QNetworkReply::finished, this,
-        [this, id = dirId, l = levels, cb = std::move(callback)]() mutable { readBrowse(id, l, std::move(cb)); }, Qt::QueuedConnection);
+    auto *const reply = requestData(QStringLiteral("db/browse"), query);
+    return { reply,
+        QObject::connect(
+            reply, &QNetworkReply::finished, this,
+            [this, id = dirId, l = levels, cb = std::move(callback)]() mutable { readBrowse(id, l, std::move(cb)); }, Qt::QueuedConnection) };
 }
 
 /*!
@@ -1614,13 +1616,15 @@ QMetaObject::Connection SyncthingConnection::browse(const QString &dirId, const 
  * to consume results of a specific request. Errors are still reported via the error() signal so there's no extra error handling
  * required. Note that in case of an error \a callback is invoked with a non-empty string containing the error message.
  */
-QMetaObject::Connection SyncthingConnection::ignores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback)
+SyncthingConnection::QueryResult SyncthingConnection::ignores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback)
 {
     auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("folder"), formatQueryItem(dirId));
-    return QObject::connect(
-        requestData(QStringLiteral("db/ignores"), query), &QNetworkReply::finished, this,
-        [this, id = dirId, cb = std::move(callback)]() mutable { readIgnores(id, std::move(cb)); }, Qt::QueuedConnection);
+    auto *const reply = requestData(QStringLiteral("db/ignores"), query);
+    return { reply,
+        QObject::connect(
+            reply, &QNetworkReply::finished, this, [this, id = dirId, cb = std::move(callback)]() mutable { readIgnores(id, std::move(cb)); },
+            Qt::QueuedConnection) };
 }
 
 /*!
@@ -1631,7 +1635,7 @@ QMetaObject::Connection SyncthingConnection::ignores(const QString &dirId, std::
  * to consume results of a specific request. Errors are still reported via the error() signal so there's no extra error handling
  * required. Note that in case of an error \a callback is invoked with a non-empty string containing the error message.
  */
-QMetaObject::Connection SyncthingConnection::setIgnores(
+SyncthingConnection::QueryResult SyncthingConnection::setIgnores(
     const QString &dirId, const SyncthingIgnores &ignores, std::function<void(QString &&)> &&callback)
 {
     auto query = QUrlQuery();
@@ -1644,9 +1648,11 @@ QMetaObject::Connection SyncthingConnection::setIgnores(
     jsonObj.insert(QLatin1String("ignore"), ignoreArray);
     auto jsonDoc = QJsonDocument();
     jsonDoc.setObject(jsonObj);
-    return QObject::connect(
-        postData(QStringLiteral("db/ignores"), query, jsonDoc.toJson(QJsonDocument::Compact)), &QNetworkReply::finished, this,
-        [this, id = dirId, cb = std::move(callback)]() mutable { readSetIgnores(id, std::move(cb)); }, Qt::QueuedConnection);
+    auto *const reply = postData(QStringLiteral("db/ignores"), query, jsonDoc.toJson(QJsonDocument::Compact));
+    return { reply,
+        QObject::connect(
+            reply, &QNetworkReply::finished, this, [this, id = dirId, cb = std::move(callback)]() mutable { readSetIgnores(id, std::move(cb)); },
+            Qt::QueuedConnection) };
 }
 
 /// \cond
