@@ -250,7 +250,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         switch (index.column()) {
         case 0:
-            return item->isFilesystemItem() ? item->path : QString();
+            return item->isFilesystemItem() ? item->path : item->name;
         case 2:
             return agoString(item->modificationTime);
         }
