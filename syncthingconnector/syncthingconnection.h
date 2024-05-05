@@ -54,6 +54,8 @@ enum class SyncthingItemType {
     File, /**< the item is a regular file */
     Directory, /**< the item is a directory */
     Symlink, /**< the item is a symlink (pointing to a file or directory) */
+    Error, /**< the item represents an error message (e.g. the API query ran into an error); used by SyncthingFileModel */
+    Loading, /**< the item represents a loading indication; used by SyncthingFileModel */
 };
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItem {
@@ -79,7 +81,22 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItem {
     bool childrenPopulated = false;
     /// \brief Whether the item is "checked"; not set by default but might be set to flag an item for some mass-action.
     bool checked = false;
+
+    bool isFilesystemItem() const;
 };
+
+/// \brief Returns whether the item is actually a filesystem item.
+inline bool SyncthingItem::isFilesystemItem() const
+{
+    switch (type) {
+    case Data::SyncthingItemType::File:
+    case Data::SyncthingItemType::Directory:
+    case Data::SyncthingItemType::Symlink:
+        return true;
+    default:
+        return false;
+    }
+}
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingIgnores {
     QStringList ignore;

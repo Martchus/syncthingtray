@@ -31,6 +31,28 @@ static void populatePath(const QString &root, std::vector<std::unique_ptr<Syncth
         }
     }
 }
+
+static void addErrorItem(std::vector<std::unique_ptr<SyncthingItem>> &items, QString &&errorMessage)
+{
+    if (errorMessage.isEmpty()) {
+        return;
+    }
+    auto &errorItem = items.emplace_back(std::make_unique<SyncthingItem>());
+    errorItem->name = std::move(errorMessage);
+    errorItem->type = SyncthingItemType::Error;
+    errorItem->childrenPopulated = true;
+}
+
+static void addLoadingItem(std::vector<std::unique_ptr<SyncthingItem>> &items)
+{
+    if (!items.empty()) {
+        return;
+    }
+    auto &loadingItem = items.emplace_back(std::make_unique<SyncthingItem>());
+    loadingItem->name = QStringLiteral("Loading…");
+    loadingItem->type = SyncthingItemType::Loading;
+    loadingItem->childrenPopulated = true;
+}
 /// \endcond
 
 SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const SyncthingDir &dir, QObject *parent)
@@ -46,19 +68,20 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     m_root->modificationTime = dir.lastFileTime;
     m_root->size = dir.globalStats.bytes;
     m_root->type = SyncthingItemType::Directory;
+    m_root->path = QStringLiteral(""); // assign an empty QString that is not null
+    addLoadingItem(m_root->children);
     m_fetchQueue.append(QString());
     m_pendingRequest
         = m_connection.browse(m_dirId, QString(), 1, [this](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) {
               m_pendingRequest.reply = nullptr;
-              Q_UNUSED(errorMessage)
-
               m_fetchQueue.removeAll(QString());
+              addErrorItem(items, std::move(errorMessage));
               if (items.empty()) {
                   return;
               }
               const auto last = items.size() - 1;
-              beginInsertRows(index(0, 0), 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
               populatePath(QString(), items);
+              beginInsertRows(index(0, 0), 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
               m_root->children = std::move(items);
               m_root->childrenPopulated = true;
               endInsertRows();
@@ -133,27 +156,11 @@ QModelIndex SyncthingFileModel::index(const QString &path) const
 
 QString SyncthingFileModel::path(const QModelIndex &index) const
 {
-    auto res = QString();
     if (!index.isValid()) {
-        return res;
+        return QString();
     }
-    auto parts = QStringList();
-    auto size = QString::size_type();
-    parts.reserve(reinterpret_cast<SyncthingItem *>(index.internalPointer())->level + 1);
-    for (auto i = index; i.isValid(); i = i.parent()) {
-        const auto *const item = reinterpret_cast<SyncthingItem *>(i.internalPointer());
-        if (item == m_root.get()) {
-            break;
-        }
-        parts.append(reinterpret_cast<SyncthingItem *>(i.internalPointer())->name);
-        size += parts.back().size();
-    }
-    res.reserve(size + parts.size());
-    for (auto i = parts.rbegin(), end = parts.rend(); i != end; ++i) {
-        res += *i;
-        res += QChar('/');
-    }
-    return res;
+    auto *item = reinterpret_cast<SyncthingItem *>(index.internalPointer());
+    return item->isFilesystemItem() ? item->path : QString();
 }
 
 QModelIndex SyncthingFileModel::parent(const QModelIndex &child) const
@@ -232,6 +239,8 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
                 return icons.folder;
             case SyncthingItemType::Symlink:
                 return icons.link;
+            case SyncthingItemType::Error:
+                return icons.exclamationTriangle;
             default:
                 return icons.cogs;
             }
@@ -241,7 +250,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         switch (index.column()) {
         case 0:
-            return item->path;
+            return item->isFilesystemItem() ? item->path : QString();
         case 2:
             return agoString(item->modificationTime);
         }
@@ -253,14 +262,14 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
     case ModificationTimeRole:
         return QString::fromStdString(item->modificationTime.toString());
     case PathRole:
-        return item->path;
+        return item->isFilesystemItem() ? item->path : QString();
     case Actions: {
         auto res = QStringList();
         res.reserve(3);
         if (item->type == SyncthingItemType::Directory) {
             res << QStringLiteral("refresh");
         }
-        if (!m_localPath.isEmpty()) {
+        if (!m_localPath.isEmpty() && item->isFilesystemItem()) {
             res << QStringLiteral("open") << QStringLiteral("copy-path");
         }
         return res;
@@ -271,7 +280,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         if (item->type == SyncthingItemType::Directory) {
             res << tr("Refresh");
         }
-        if (!m_localPath.isEmpty()) {
+        if (!m_localPath.isEmpty() && item->isFilesystemItem()) {
             res << (item->type == SyncthingItemType::Directory ? tr("Browse locally") : tr("Open local version")) << tr("Copy local path");
         }
         return res;
@@ -282,7 +291,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         if (item->type == SyncthingItemType::Directory) {
             res << QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg")));
         }
-        if (!m_localPath.isEmpty()) {
+        if (!m_localPath.isEmpty() && item->isFilesystemItem()) {
             res << QIcon::fromTheme(QStringLiteral("folder"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg")));
             res << QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/edit-copy.svg")));
         }
@@ -327,22 +336,13 @@ bool SyncthingFileModel::canFetchMore(const QModelIndex &parent) const
     return !parentItem->childrenPopulated && parentItem->type == SyncthingItemType::Directory;
 }
 
-/// \cond
-static void addLevel(std::vector<std::unique_ptr<SyncthingItem>> &items, int level)
-{
-    for (auto &item : items) {
-        item->level += level;
-        addLevel(item->children, level);
-    }
-}
-/// \endcond
-
 void SyncthingFileModel::fetchMore(const QModelIndex &parent)
 {
-    if (!parent.isValid()) {
+    const auto parentPath = path(parent);
+    if (parentPath.isNull() || m_fetchQueue.contains(parentPath)) {
         return;
     }
-    m_fetchQueue.append(path(parent));
+    m_fetchQueue.append(parentPath);
     if (m_fetchQueue.size() == 1) {
         processFetchQueue();
     }
@@ -386,12 +386,19 @@ void SyncthingFileModel::processFetchQueue()
         return;
     }
     const auto &path = m_fetchQueue.front();
+    const auto rootIndex = index(path);
+    if (!rootIndex.isValid()) {
+        m_fetchQueue.removeAll(path);
+        processFetchQueue();
+        return;
+    }
+    addLoadingItem(reinterpret_cast<SyncthingItem *>(rootIndex.internalPointer())->children);
     m_pendingRequest = m_connection.browse(
         m_dirId, path, 1, [this, p = path](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) mutable {
             m_pendingRequest.reply = nullptr;
-            Q_UNUSED(errorMessage)
-
             m_fetchQueue.removeAll(p);
+            addErrorItem(items, std::move(errorMessage));
+
             const auto refreshedIndex = index(p);
             if (!refreshedIndex.isValid()) {
                 processFetchQueue();
@@ -406,7 +413,6 @@ void SyncthingFileModel::processFetchQueue()
             }
             if (!items.empty()) {
                 const auto last = items.size() - 1;
-                addLevel(items, refreshedItem->level);
                 for (auto &item : items) {
                     item->parent = refreshedItem;
                 }

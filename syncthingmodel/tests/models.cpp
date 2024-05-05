@@ -112,7 +112,7 @@ void ModelTests::testFileModel()
     QVERIFY(rootIdx.isValid());
     QVERIFY(!model.index(1, 0).isValid());
     QCOMPARE(model.rowCount(rootIdx), 1);
-    QCOMPARE(model.index(0, 0, rootIdx).data(), QVariant());
+    QCOMPARE(model.index(0, 0, rootIdx).data(), QStringLiteral("Loading…"));
     QCOMPARE(model.index(1, 0, rootIdx).data(), QVariant());
     QVERIFY(model.canFetchMore(rootIdx));
 
@@ -159,7 +159,7 @@ void ModelTests::testFileModel()
     QCOMPARE(model.index(5, 3, cameraIdx).data(), QVariant());
 
     // test conversion of indexes to/from paths
-    const auto testPath = QStringLiteral("Camera/IMG_20201213_122504.jpg/");
+    const auto testPath = QStringLiteral("Camera/IMG_20201213_122504.jpg");
     const auto testPathIdx = model.index(2, 0, cameraIdx);
     QCOMPARE(model.path(testPathIdx), testPath);
     QCOMPARE(model.index(testPath), testPathIdx);
