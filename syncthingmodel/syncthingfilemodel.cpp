@@ -76,6 +76,14 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
               m_pendingRequest.reply = nullptr;
               m_fetchQueue.removeAll(QString());
               addErrorItem(items, std::move(errorMessage));
+
+              // delete the initially added loading item
+              if (!m_root->children.empty()) {
+                  beginRemoveRows(index(0, 0), 0, static_cast<int>(m_root->children.size() - 1));
+                  m_root->children.clear();
+                  endRemoveRows();
+              }
+
               if (items.empty()) {
                   return;
               }
@@ -392,7 +400,15 @@ void SyncthingFileModel::processFetchQueue()
         processFetchQueue();
         return;
     }
-    addLoadingItem(reinterpret_cast<SyncthingItem *>(rootIndex.internalPointer())->children);
+
+    // add loading item if there are items yet at all
+    auto *rootItem = reinterpret_cast<SyncthingItem *>(rootIndex.internalPointer());
+    if (rootItem->children.empty()) {
+        beginInsertRows(rootIndex, 0, 0);
+        addLoadingItem(rootItem->children);
+        endInsertRows();
+    }
+
     m_pendingRequest = m_connection.browse(
         m_dirId, path, 1, [this, p = path](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) mutable {
             m_pendingRequest.reply = nullptr;
