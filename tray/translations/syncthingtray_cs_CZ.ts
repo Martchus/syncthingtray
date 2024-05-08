@@ -71,6 +71,11 @@
         <source>Browse remote files</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../gui/dirview.cpp" line="111"/>
+        <source>Show ignore patterns</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtGui::DownloadView</name>
@@ -167,20 +172,20 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="99"/>
-        <location filename="../gui/traywidget.cpp" line="342"/>
+        <location filename="../gui/traywidget.cpp" line="343"/>
         <source>About</source>
         <translation>O Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="58"/>
-        <location filename="../gui/traywidget.cpp" line="471"/>
+        <location filename="../gui/traywidget.cpp" line="472"/>
         <source>Connect</source>
         <translation>Připojit</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="72"/>
-        <location filename="../gui/traywidget.cpp" line="860"/>
-        <location filename="../gui/traywidget.cpp" line="902"/>
+        <location filename="../gui/traywidget.cpp" line="863"/>
+        <location filename="../gui/traywidget.cpp" line="905"/>
         <source>Start</source>
         <translation>Spustit</translation>
     </message>
@@ -252,7 +257,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../gui/traywidget.ui" line="357"/>
         <location filename="../gui/traywidget.cpp" line="155"/>
-        <location filename="../gui/traywidget.cpp" line="382"/>
+        <location filename="../gui/traywidget.cpp" line="383"/>
         <source>New notifications</source>
         <translation>Nová oznámení</translation>
     </message>
@@ -322,93 +327,93 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Ukončit Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="439"/>
+        <location filename="../gui/traywidget.cpp" line="440"/>
         <source>Do you really want to restart Syncthing?</source>
         <translation>Opravdu chcete Syncthing restartovat?</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="466"/>
+        <location filename="../gui/traywidget.cpp" line="467"/>
         <source>Connecting …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="467"/>
+        <location filename="../gui/traywidget.cpp" line="468"/>
         <source>Establishing connection to Syncthing …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="472"/>
+        <location filename="../gui/traywidget.cpp" line="473"/>
         <source>Not connected to Syncthing, click to connect</source>
         <translation>Nepřipojeno k Syncthing, klikněte pro připojení se</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="477"/>
+        <location filename="../gui/traywidget.cpp" line="478"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="485"/>
+        <location filename="../gui/traywidget.cpp" line="486"/>
         <source>Pause</source>
         <translation>Pozastavit</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="486"/>
+        <location filename="../gui/traywidget.cpp" line="487"/>
         <source>Syncthing is running, click to pause all devices</source>
         <translation>Syncthing je spuštěné, kliknutím pozastavíte veškerá zařízení</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="491"/>
+        <location filename="../gui/traywidget.cpp" line="492"/>
         <source>Continue</source>
         <translation>Pokračovat</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="492"/>
+        <location filename="../gui/traywidget.cpp" line="493"/>
         <source>At least one device is paused, click to resume</source>
         <translation>Přinejmenším jedno zařízení je pozastaveno, kliknutím pokračujte</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="615"/>
+        <location filename="../gui/traywidget.cpp" line="616"/>
         <source>The specified connection configuration &lt;em&gt;%1&lt;/em&gt; is not defined and hence ignored.</source>
         <translation>Zadané nastavení spojení &lt;em&gt;%1&lt;/em&gt; není definováno a proto je ignorováno.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="674"/>
+        <location filename="../gui/traywidget.cpp" line="675"/>
         <source>The folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Adresář &lt;i&gt;%1&lt;/i&gt; neexistuje místně.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="685"/>
+        <location filename="../gui/traywidget.cpp" line="686"/>
         <source>The containing folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Obsažený adresář &lt;i&gt;%1&lt;/i&gt; neexistuje místně.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="736"/>
+        <location filename="../gui/traywidget.cpp" line="739"/>
         <source>Copy path</source>
         <translation type="unfinished">Zkopírovat popis umístění</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="740"/>
+        <location filename="../gui/traywidget.cpp" line="743"/>
         <source>Copy device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="743"/>
+        <location filename="../gui/traywidget.cpp" line="746"/>
         <source>Copy folder ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="856"/>
-        <location filename="../gui/traywidget.cpp" line="896"/>
+        <location filename="../gui/traywidget.cpp" line="859"/>
+        <location filename="../gui/traywidget.cpp" line="899"/>
         <source>Stop</source>
         <translation>Zastavit</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="857"/>
+        <location filename="../gui/traywidget.cpp" line="860"/>
         <source>Stop Syncthing instance launched via tray icon</source>
         <translation>Zastavit instanci Syncthing spuštěnou prostřednictvím ikony v oznamovací oblasti</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="861"/>
+        <location filename="../gui/traywidget.cpp" line="864"/>
         <source>Start Syncthing with the built-in launcher configured in the settings</source>
         <translation>Spustit Syncthing s vestavěným spouštěčem nastaveným v nastaveních</translation>
     </message>

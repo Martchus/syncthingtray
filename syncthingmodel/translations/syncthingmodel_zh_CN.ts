@@ -4,42 +4,42 @@
 <context>
     <name>Data::StatusIconSettings</name>
     <message>
-        <location filename="../syncthingicons.cpp" line="229"/>
+        <location filename="../syncthingicons.cpp" line="231"/>
         <source>Misc. notifications</source>
         <translation>杂项通知</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="230"/>
+        <location filename="../syncthingicons.cpp" line="232"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="231"/>
+        <location filename="../syncthingicons.cpp" line="233"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="232"/>
+        <location filename="../syncthingicons.cpp" line="234"/>
         <source>Idle</source>
         <translation>空闲</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="233"/>
+        <location filename="../syncthingicons.cpp" line="235"/>
         <source>Scanning</source>
         <translation>扫描中</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="234"/>
+        <location filename="../syncthingicons.cpp" line="236"/>
         <source>Synchronizing</source>
         <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="235"/>
+        <location filename="../syncthingicons.cpp" line="237"/>
         <source>Paused</source>
         <translation>已暂停</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="236"/>
+        <location filename="../syncthingicons.cpp" line="238"/>
         <source>Disconnected</source>
         <translation>已断连</translation>
     </message>
@@ -378,23 +378,43 @@
 <context>
     <name>Data::SyncthingFileModel</name>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="111"/>
+        <location filename="../syncthingfilemodel.cpp" line="194"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="113"/>
+        <location filename="../syncthingfilemodel.cpp" line="196"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="115"/>
+        <location filename="../syncthingfilemodel.cpp" line="198"/>
         <source>Last modified</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="171"/>
+        <location filename="../syncthingfilemodel.cpp" line="225"/>
+        <source>%1 elements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="289"/>
         <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="292"/>
+        <source>Open local version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="292"/>
+        <source>Copy local path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="292"/>
+        <source>Browse locally</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

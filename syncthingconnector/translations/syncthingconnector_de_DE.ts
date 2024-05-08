@@ -4,42 +4,42 @@
 <context>
     <name>Data::SyncthingConnection</name>
     <message>
-        <location filename="../syncthingconnection.cpp" line="175"/>
+        <location filename="../syncthingconnection.cpp" line="177"/>
         <source>disconnected</source>
         <translation>Verbindung getrennt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="177"/>
+        <location filename="../syncthingconnection.cpp" line="179"/>
         <source>reconnecting</source>
         <translation>Verbindung wird hergestellt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="179"/>
+        <location filename="../syncthingconnection.cpp" line="181"/>
         <source>connected</source>
         <translation>verbunden</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="181"/>
+        <location filename="../syncthingconnection.cpp" line="183"/>
         <source>connected, scanning</source>
         <translation>verbunden, scannt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="183"/>
+        <location filename="../syncthingconnection.cpp" line="185"/>
         <source>connected, paused</source>
         <translation>verbunden, pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="185"/>
+        <location filename="../syncthingconnection.cpp" line="187"/>
         <source>connected, synchronizing</source>
         <translation>verbunden, am Synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="187"/>
+        <location filename="../syncthingconnection.cpp" line="189"/>
         <source>connected, remote not in sync</source>
         <translation>verbunden, entferntes Gerät nicht synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="798"/>
+        <location filename="../syncthingconnection.cpp" line="799"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
         <translation>Fehler beim Parsen des Zeitstempels &quot;%1&quot; (Kontext: &quot;%2&quot;): %3</translation>
     </message>
@@ -48,13 +48,13 @@
         <translation type="vanished">verbunden, nicht synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="189"/>
+        <location filename="../syncthingconnection.cpp" line="191"/>
         <source>unknown</source>
         <translation>Verbindungsstatus unbekannt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="340"/>
-        <location filename="../syncthingconnection.cpp" line="530"/>
+        <location filename="../syncthingconnection.cpp" line="341"/>
+        <location filename="../syncthingconnection.cpp" line="531"/>
         <source>Connection configuration is insufficient.</source>
         <translation>Verbindungskonfiguration is ungenügend</translation>
     </message>
@@ -89,12 +89,12 @@
         <translation>Fehler beim Abfragen des Syncthing-Logs: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="871"/>
+        <location filename="../syncthingconnection.cpp" line="872"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="877"/>
+        <location filename="../syncthingconnection.cpp" line="878"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht ausgelesen werden.</translation>
     </message>
@@ -165,17 +165,17 @@
         <translation>Fehler beim Löschen der Fehlermeldungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1894"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2021"/>
         <source>Unable to parse Syncthing events: </source>
         <translation>Fehler beim Auslesen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1921"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2048"/>
         <source>Unable to request Syncthing events: </source>
         <translation>Fehler beim Abfragen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1718"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1845"/>
         <source>Unable to post config: </source>
         <translation>Fehler beim Senden der neuen Konfiguration: </translation>
     </message>
@@ -250,27 +250,38 @@
         <translation>Fehler beim Zurücksetzen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1660"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1713"/>
         <source>Unable to parse response for browsing &quot;%1&quot;: </source>
         <translation>Fehler beim Auslesen der Inhalte des Ordners &quot;%1&quot;: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1674"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1727"/>
         <source>Unable to browse &quot;%1&quot;: </source>
         <translation>Fehler beim Durchsuchen des Ordners &quot;%1&quot;: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2502"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1751"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1775"/>
+        <source>Unable to query ignore patterns of &quot;%1&quot;: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingconnection_requests.cpp" line="1801"/>
+        <source>Unable to change ignore patterns of &quot;%1&quot;: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingconnection_requests.cpp" line="2629"/>
         <source>Unable to parse disk events: </source>
         <translation>Fehler beim Auslesen der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2525"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2652"/>
         <source>Unable to request disk events: </source>
         <translation>Fehler beim Anfordern der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1070"/>
+        <location filename="../syncthingconnection.cpp" line="1071"/>
         <source>at offset %1</source>
         <translation>bei Zeichen %1</translation>
     </message>
@@ -330,27 +341,27 @@
 <context>
     <name>Data::SyncthingService</name>
     <message>
-        <location filename="../syncthingservice.cpp" line="378"/>
+        <location filename="../syncthingservice.cpp" line="394"/>
         <source>start unit</source>
         <translation>Starten der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="380"/>
+        <location filename="../syncthingservice.cpp" line="396"/>
         <source>stop unit</source>
         <translation>Stoppen der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="395"/>
+        <location filename="../syncthingservice.cpp" line="411"/>
         <source>enable unit</source>
         <translation>Aktivieren der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="397"/>
+        <location filename="../syncthingservice.cpp" line="413"/>
         <source>disable unit</source>
         <translation>Deaktivieren der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="407"/>
+        <location filename="../syncthingservice.cpp" line="423"/>
         <source>reload all unit files</source>
         <translation>Aktualisieren aller Unit-Dateien</translation>
     </message>
@@ -358,22 +369,22 @@
 <context>
     <name>Data::Utils</name>
     <message>
-        <location filename="../utils.cpp" line="30"/>
+        <location filename="../utils.cpp" line="37"/>
         <source>%1 ago</source>
         <translation>vor %1</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="33"/>
+        <location filename="../utils.cpp" line="40"/>
         <source>right now</source>
         <translation>gerade eben</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="44"/>
+        <location filename="../utils.cpp" line="51"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
     <message numerus="yes">
-        <location filename="../utils.cpp" line="60"/>
+        <location filename="../utils.cpp" line="67"/>
         <source>%1 file(s)</source>
         <translation>
             <numerusform>%1 Datei</numerusform>
@@ -381,7 +392,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../utils.cpp" line="61"/>
+        <location filename="../utils.cpp" line="68"/>
         <source>%1 dir(s)</source>
         <translation>
             <numerusform>%1 Verz.</numerusform>
@@ -389,44 +400,44 @@
         </translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="76"/>
+        <location filename="../utils.cpp" line="83"/>
         <source>Synchronization of local folder %1 complete</source>
         <translation>%1 wurde lokal synchronisiert</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="84"/>
+        <location filename="../utils.cpp" line="91"/>
         <source>Synchronization of the following local folders complete:
 </source>
         <translation>Folgende Ordner wurden lokal synchronisiert:
 </translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="98"/>
+        <location filename="../utils.cpp" line="105"/>
         <source>file system watcher and periodic rescan disabled</source>
         <translation>Dateisystemüberwachung und periodischer Scan deaktiviert</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="100"/>
+        <location filename="../utils.cpp" line="107"/>
         <source>file system watcher active, periodic rescan disabled</source>
         <translation>Dateisystemüberwachung aktiv, periodischer Scan deaktiviert</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="103"/>
+        <location filename="../utils.cpp" line="110"/>
         <source>, file system watcher enabled</source>
         <translation>, Dateisystemüberwachung aktiviert</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="104"/>
+        <location filename="../utils.cpp" line="111"/>
         <source>, file system watcher disabled</source>
         <translation>, Dateisystemüberwachung deaktiviert</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="79"/>
+        <location filename="../utils.cpp" line="86"/>
         <source>Synchronization of %1 on %2 complete</source>
         <translation>%1 wurde auf %2 synchronisiert</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="87"/>
+        <location filename="../utils.cpp" line="94"/>
         <source>Synchronization of the following folders on %1 complete:
 </source>
         <translation>Folgende Ordner wurden auf %1 synchronisiert:

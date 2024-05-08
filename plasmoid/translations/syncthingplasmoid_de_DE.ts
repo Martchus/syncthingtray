@@ -100,6 +100,11 @@
         <source>Browse remote files</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="194"/>
+        <source>Show ignore patterns</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DownloadsPage</name>
@@ -353,12 +358,12 @@
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="565"/>
+        <location filename="../lib/syncthingapplet.cpp" line="573"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Verbindung zu Syncthing kann nicht hergestellt werden.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="633"/>
+        <location filename="../lib/syncthingapplet.cpp" line="641"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
     </message>
