@@ -135,8 +135,8 @@ void ModelTests::testFileModel()
     const auto androidIdx = QPersistentModelIndex(model.index(0, 0, rootIdx));
     const auto cameraIdx = QPersistentModelIndex(model.index(1, 0, rootIdx));
     const auto nestedIdx = QPersistentModelIndex(model.index(0, 0, cameraIdx));
-    const auto initialAndroidPtr = androidIdx.constInternalPointer();
-    const auto initialCameraPtr = cameraIdx.constInternalPointer();
+    const auto initialAndroidPtr = androidIdx.internalPointer();
+    const auto initialCameraPtr = cameraIdx.internalPointer();
     QVERIFY(androidIdx.isValid());
     QVERIFY(cameraIdx.isValid());
     QCOMPARE(androidIdx.parent(), rootIdx);
@@ -172,9 +172,9 @@ void ModelTests::testFileModel()
     // verify that only the root index is still valid (all other indexes have been invalidated)
     QVERIFY(rootIdx.isValid());
     QCOMPARE(model.rowCount(rootIdx), 2);
-    QVERIFY(androidIdx.constInternalPointer() != initialAndroidPtr);
+    QVERIFY(androidIdx.internalPointer() != initialAndroidPtr);
     QVERIFY(!androidIdx.isValid());
-    QVERIFY(cameraIdx.constInternalPointer() != initialCameraPtr);
+    QVERIFY(cameraIdx.internalPointer() != initialCameraPtr);
     QVERIFY(!cameraIdx.isValid());
     QVERIFY(!nestedIdx.isValid());
 

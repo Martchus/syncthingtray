@@ -440,7 +440,7 @@ void SyncthingFileModel::processFetchQueue()
             }
             if (refreshedItem->children.size() != previousChildCount) {
                 const auto sizeIndex = refreshedIndex.siblingAtColumn(1);
-                emit dataChanged(sizeIndex, sizeIndex, QList<int>{ Qt::DisplayRole });
+                emit dataChanged(sizeIndex, sizeIndex, QVector<int>{ Qt::DisplayRole });
             }
             processFetchQueue();
         });
