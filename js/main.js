@@ -45,8 +45,8 @@ function queryReleases()
         }
         const releases = JSON.parse(xhr.responseText);
         for (const release of releases) {
-            if (!release.draft) {
-                return renderRelease(release);
+            if (!release.draft && !release.prerelease) {
+                return renderRelease(release, releases);
             }
         }
     });
@@ -98,6 +98,11 @@ function renderAsset(asset)
     }
     const platform = determinePlatformFromAssetName(name);
     const platformList = document.getElementById("downloads-platform-" + platform) ?? document.getElementById("downloads-platform-other");
+    renderAssetIntoList(name, platform, platformList, asset);
+}
+
+function renderAssetIntoList(name, platform, platformList, asset, release)
+{
     const liElement = document.createElement("li");
     const aElement = document.createElement("a");
     const important = name.startsWith("syncthingtray-");
@@ -106,6 +111,14 @@ function renderAsset(asset)
     aElement.href = asset.browser_download_url;
     aElement.appendChild(document.createTextNode(determineDisplayNameForAsset(name)));
     liElement.appendChild(aElement);
+    const releaseName = release?.name;
+    if (releaseName !== undefined) {
+        const spanElement = document.createElement("span");
+        spanElement.className = "download-remark";
+        spanElement.title = "The latest release does not provide downloads for this platform yet. Therefore the download from the next most recent release is shown. Most likely the uploads of the latest release are still in progress and will show up soon.";
+        spanElement.appendChild(document.createTextNode(` from release ${releaseName}`));
+        liElement.appendChild(spanElement);
+    }
     if (important) {
         aElement.style.fontWeight = "bold";
         platformList.prepend(liElement);
@@ -134,7 +147,28 @@ function renderAssetSignature(asset)
     liElement.appendChild(document.createTextNode(")"));
 }
 
-function renderRelease(releaseInfo)
+function findAssetsForPlatform(platform, releases)
+{
+    for (const release of releases) {
+        const assets = release.assets;
+        if (!Array.isArray(assets)) {
+            continue;
+        }
+        const relevantAssets = [];
+        const relevantSignatures = [];
+        for (const asset of assets) {
+            const assetPlatform = "downloads-platform-" + determinePlatformFromAssetName(asset.name);
+            if (assetPlatform === platform) {
+                (asset.name.endsWith(".sig") ? relevantSignatures : relevantAssets).push(asset);
+            }
+        }
+        if (relevantAssets.length !== 0) {
+            return {assets: relevantAssets, signatures: relevantSignatures, release: release};
+        }
+    }
+}
+
+function renderRelease(releaseInfo, otherReleases)
 {
     const releaseName = releaseInfo.name ?? "unknown";
     const releaseDate = releaseInfo.published_at ?? "unknown";
@@ -149,8 +183,26 @@ function renderRelease(releaseInfo)
     }
     const lists = document.querySelectorAll(".downloads-platform ul");
     for (const list of lists) {
-        if (!list.firstChild) {
+        if (list.firstChild) {
+            continue;
+        }
+        if (!list.classList.contains("download-list-important")) {
             list.parentElement.style.display = 'none';
+            continue;
+        }
+        const platform = list.id;
+        const assetsFromOtherRelease = findAssetsForPlatform(platform, otherReleases);
+        if (assetsFromOtherRelease === undefined) {
+            const liElement = document.createElement("li");
+            liElement.appendChild(document.createTextNode("There are no binaries available for this platform at this point. You may find binaries of older releases on GitHub."));
+            list.appendChild(liElement);
+            continue;
+        }
+        for (const asset of assetsFromOtherRelease.assets) {
+            renderAssetIntoList(asset.name, platform, list, asset, assetsFromOtherRelease.release);
+        }
+        for (const signature of assetsFromOtherRelease.signatures) {
+            renderAssetSignature(signature);
         }
     }
 

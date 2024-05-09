@@ -147,6 +147,10 @@
     border: 1px solid #ddd;
     background-color: #e5f3ff;
 }
+.download-remark {
+    color: #555;
+    font-style: italic;
+}
 
 /* elements of the documentation section */
 #doc-section p {
