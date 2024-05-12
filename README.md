@@ -118,6 +118,19 @@ Syncthing installation. You might consider different configurations:
     * Checkout the *Configuring the built-in launcher* section for further details.
 * It is also possible to let Syncthing Tray connect to a Syncthing instance running on a different machine.
 
+## Installation and deinstallation
+Checkout [the website](https://martchus.github.io/syncthingtray/#downloads-section) for obtaining the executable.
+This README also lists more options and instructions for building from sources.
+
+If you are using one of the package manager options you should follow the usual workflow of that package manager.
+
+Otherwise, you just have to extract the archive and launch the contained executable. Especially on Windows, please
+read the notes on the website before filing any issues. Note that automatic updates haven't been implemented yet.
+To uninstall, just delete the executable again.
+
+For further cleanup you may ensure that autostart is disabled (to avoid a dangling autostart entry). You may also
+delete the configuration files (see "Location of the configuration file" section below).
+
 ## Screenshots
 The screenshots are not up-to-date.
 
