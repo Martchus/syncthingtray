@@ -41,6 +41,7 @@ private Q_SLOTS:
     virtual void handleNewConfigAvailable();
     virtual void handleStatusIconsChanged();
     virtual void handleForkAwesomeIconsChanged();
+    virtual void handleBrightColorsChanged();
 
 protected:
     Data::SyncthingConnection &m_connection;

@@ -391,8 +391,8 @@ To avoid building c++utilities/qtutilities/qtforkawesome separately, follow the 
 can be passed to CMake to influence the build.
 
 ### Further dependencies
-The following Qt modules are required (only the latest Qt 5 and Qt 6 version tested): `core`, `network`, `dbus`,
-`gui`, `widgets`, `svg`, `webenginewidgets`/`webkitwidgets`
+The following Qt modules are required (only the latest Qt 5 and Qt 6 version tested): `core`, `concurrent`,
+`network`, `dbus`, `gui`, `widgets`, `svg`, `webenginewidgets`/`webkitwidgets`
 
 It is recommended to use at least Qt 5.14 to avoid limitations in previous versions (see *Known bugs* section).
 

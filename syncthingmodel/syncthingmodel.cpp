@@ -63,10 +63,7 @@ void SyncthingModel::setBrightColors(bool brightColors)
         return;
     }
     m_brightColors = brightColors;
-
-    if (const QVector<int> &affectedRoles = colorRoles(); !affectedRoles.isEmpty()) {
-        invalidateTopLevelIndicies(affectedRoles);
-    }
+    handleBrightColorsChanged();
 }
 
 void SyncthingModel::handleConfigInvalidated()
@@ -85,6 +82,13 @@ void SyncthingModel::handleStatusIconsChanged()
 
 void SyncthingModel::handleForkAwesomeIconsChanged()
 {
+}
+
+void SyncthingModel::handleBrightColorsChanged()
+{
+    if (const QVector<int> &affectedRoles = colorRoles(); !affectedRoles.isEmpty()) {
+        invalidateTopLevelIndicies(affectedRoles);
+    }
 }
 
 } // namespace Data

@@ -5,6 +5,10 @@
 
 #include <syncthingconnector/syncthingconnection.h>
 
+#include <QFuture>
+#include <QFutureWatcher>
+
+#include <map>
 #include <memory>
 
 namespace Data {
@@ -42,20 +46,35 @@ public Q_SLOTS:
 public:
     QString path(const QModelIndex &path) const;
 
+Q_SIGNALS:
+    void fetchQueueEmpty();
+
 private Q_SLOTS:
     void handleConfigInvalidated() override;
     void handleNewConfigAvailable() override;
     void handleForkAwesomeIconsChanged() override;
+    void handleBrightColorsChanged() override;
+    void handleLocalLookupFinished();
 
 private:
-    void processFetchQueue();
+    void processFetchQueue(const QString &lastItemPath = QString());
 
 private:
+    using SyncthingItems = std::vector<std::unique_ptr<SyncthingItem>>;
+    using LocalLookupRes = std::shared_ptr<std::map<QString, SyncthingItem>>;
+    struct QueryResult : SyncthingConnection::QueryResult {
+        QString forPath;
+        QFuture<LocalLookupRes> localLookup;
+        QPersistentModelIndex refreshedIndex;
+        QueryResult &operator=(SyncthingConnection::QueryResult &&);
+    };
+
     SyncthingConnection &m_connection;
     QString m_dirId;
     QString m_localPath;
     QStringList m_fetchQueue;
-    SyncthingConnection::QueryResult m_pendingRequest;
+    QueryResult m_pendingRequest;
+    QFutureWatcher<LocalLookupRes> m_localItemLookup;
     std::unique_ptr<SyncthingItem> m_root;
 };
 

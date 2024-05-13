@@ -81,6 +81,10 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItem {
     bool childrenPopulated = false;
     /// \brief Whether the item is "checked"; not set by default but might be set to flag an item for some mass-action.
     bool checked = false;
+    /// \brief Whether the item is present in the Syncthing database.
+    bool existsInDb = true;
+    /// \brief Whether the item is present in the local file system.
+    bool existsLocally = false;
 
     bool isFilesystemItem() const;
 };

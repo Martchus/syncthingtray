@@ -117,13 +117,9 @@ void ModelTests::testFileModel()
     QVERIFY(model.canFetchMore(rootIdx));
 
     // wait until the root has been updated
-    connect(&model, &QAbstractItemModel::rowsInserted, this, [this](const QModelIndex &parent, int first, int last) {
-        Q_UNUSED(first)
-        Q_UNUSED(last)
-        if (!parent.parent().isValid() && parent.row() == 0 && parent.column() == 0) {
-            m_timeout.stop();
-            m_loop.quit();
-        }
+    connect(&model, &Data::SyncthingFileModel::fetchQueueEmpty, this, [this]() {
+        m_timeout.stop();
+        m_loop.quit();
     });
     m_timeout.start();
     m_loop.exec();
