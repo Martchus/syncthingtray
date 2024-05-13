@@ -69,31 +69,8 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     m_root->size = dir.globalStats.bytes;
     m_root->type = SyncthingItemType::Directory;
     m_root->path = QStringLiteral(""); // assign an empty QString that is not null
-    addLoadingItem(m_root->children);
     m_fetchQueue.append(QString());
-    m_pendingRequest
-        = m_connection.browse(m_dirId, QString(), 1, [this](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) {
-              m_pendingRequest.reply = nullptr;
-              m_fetchQueue.removeAll(QString());
-              addErrorItem(items, std::move(errorMessage));
-
-              // delete the initially added loading item
-              if (!m_root->children.empty()) {
-                  beginRemoveRows(index(0, 0), 0, static_cast<int>(m_root->children.size() - 1));
-                  m_root->children.clear();
-                  endRemoveRows();
-              }
-
-              if (items.empty()) {
-                  return;
-              }
-              const auto last = items.size() - 1;
-              populatePath(QString(), items);
-              beginInsertRows(index(0, 0), 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
-              m_root->children = std::move(items);
-              m_root->childrenPopulated = true;
-              endInsertRows();
-          });
+    processFetchQueue();
 }
 
 SyncthingFileModel::~SyncthingFileModel()
