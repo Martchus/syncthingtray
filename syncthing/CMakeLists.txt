@@ -179,6 +179,22 @@ else ()
 endif ()
 set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.Stamp=${BUILD_STAMP}")
 
+# set Go build arguments
+set(GO_BUILD_MOD "" CACHE STRING "sets the Go module download mode")
+set(GO_BUILD_MODFILE "" CACHE STRING "sets an alternative go.mod file for the Go build")
+set(GO_BUILD_EXTRA_ARGS "" CACHE STRING "additional arguments to add to the Go build (see `go help build`)")
+unset(GO_BUILD_ARGS)
+if (GO_BUILD_MOD)
+    list(APPEND GO_BUILD_ARGS -mod "${GO_BUILD_MOD}")
+endif ()
+if (GO_BUILD_MODFILE)
+    list(APPEND GO_BUILD_ARGS -modfile "${GO_BUILD_MODFILE}")
+endif ()
+list(APPEND GO_BUILD_ARGS -v -buildmode c-archive)
+if (GO_BUILD_EXTRA_ARGS)
+    list(APPEND GO_BUILD_ARGS "${GO_BUILD_EXTRA_ARGS}")
+endif ()
+
 # generate Syncthing's assets (not setting GOARCH/GOOS here, this is supposed to run on the host)
 add_custom_command(
     OUTPUT "${SYNCTHING_PATH}/${GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH}"
@@ -194,7 +210,7 @@ add_custom_command(
     COMMAND
         "${CMAKE_COMMAND}" -E env ${GO_COMPILER_ARGS} "GOOS=${GO_TARGET_OS}" "CGO_CFLAGS=${CGO_CFLAGS}"
         "CGO_CXXFLAGS=${CGO_CXXFLAGS}" "CGO_LDFLAGS=${CGO_LDFLAGS}" "GOARCH=${GO_TARGET_ARCH}" "CGO_ENABLED=1"
-        "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" build -v -buildmode c-archive -o
+        "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" build ${GO_BUILD_ARGS} -o
         "${SYNCTHINGINTERNAL_LIBRARY_PATH}" -ldflags "${GO_LINKER_FLAGS}" ./c-bindings ${GO_RANLIB_ARGS}
     DEPENDS ${SRC_FILES_SYNCTHING}
     WORKING_DIRECTORY "${SYNCTHING_PATH}"
