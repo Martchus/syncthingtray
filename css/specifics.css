@@ -117,11 +117,17 @@
     cursor: pointer;
     user-select: none;
 }
+@keyframes expand-checkbox {
+  from {
+      transform: scale(1.5) translate(5px);
+  }
+}
 .downloads-platform label:before {
     display: inline-block;
     width: 20px;
-    content: "⮞ ";
+    content: "‣ ";
     opacity: 0.5;
+    transform: scale(1.5) translate(5px);
 }
 .downloads-platform > ul {
     list-style: none;
@@ -138,7 +144,9 @@
     display: block;
 }
 .downloads-platform input:checked + label:before {
-    content: "⮟ ";
+    animation-name: expand-checkbox;
+    animation-duration: 0.5s;
+    transform: scale(1.5) translate(-2px, 7px) rotate(0.25turn);
 }
 .downloads-platform p {
     font-size: 90%;
