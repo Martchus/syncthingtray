@@ -180,9 +180,15 @@ endif ()
 set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.Stamp=${BUILD_STAMP}")
 
 # set Go build arguments
-set(GO_BUILD_MOD "" CACHE STRING "sets the Go module download mode")
-set(GO_BUILD_MODFILE "" CACHE STRING "sets an alternative go.mod file for the Go build")
-set(GO_BUILD_EXTRA_ARGS "" CACHE STRING "additional arguments to add to the Go build (see `go help build`)")
+set(GO_BUILD_MOD
+    ""
+    CACHE STRING "sets the Go module download mode")
+set(GO_BUILD_MODFILE
+    ""
+    CACHE STRING "sets an alternative go.mod file for the Go build")
+set(GO_BUILD_EXTRA_ARGS
+    ""
+    CACHE STRING "additional arguments to add to the Go build (see `go help build`)")
 unset(GO_BUILD_ARGS)
 if (GO_BUILD_MOD)
     list(APPEND GO_BUILD_ARGS -mod "${GO_BUILD_MOD}")
