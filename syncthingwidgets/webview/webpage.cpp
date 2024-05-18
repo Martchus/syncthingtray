@@ -207,7 +207,8 @@ void WebPage::insertStyleSheet(const QString &name, const QString &cssCode, bool
 static QString rgba(const QColor &color)
 {
     return QStringLiteral("rgba(%1, %2, %3, %4)")
-        .arg(QString::number(color.red()), QString::number(color.green()), QString::number(color.blue()), QString::number(color.alphaF()));
+        .arg(QString::number(color.red()), QString::number(color.green()), QString::number(color.blue()),
+            QString::number(static_cast<double>(color.alphaF())));
 }
 
 /*!
