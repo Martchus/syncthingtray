@@ -10,10 +10,10 @@
 #include <c++utilities/conversion/stringconversion.h>
 
 #include <QClipboard>
-#include <QtConcurrent>
 #include <QGuiApplication>
 #include <QNetworkReply>
 #include <QStringBuilder>
+#include <QtConcurrent>
 
 using namespace std;
 using namespace CppUtilities;
@@ -404,45 +404,46 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
 
     // query directory entries from Syncthing database
     if (rootItem->existsInDb) {
-        m_pendingRequest = m_connection.browse(
-            m_dirId, path, 1, [this](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) mutable {
-                m_pendingRequest.reply = nullptr;
-                addErrorItem(items, std::move(errorMessage));
+        m_pendingRequest
+            = m_connection.browse(m_dirId, path, 1, [this](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) mutable {
+                  m_pendingRequest.reply = nullptr;
+                  addErrorItem(items, std::move(errorMessage));
 
-                const auto refreshedIndex = index(m_pendingRequest.forPath);
-                if (!refreshedIndex.isValid()) {
-                    processFetchQueue(m_pendingRequest.forPath);
-                    return;
-                }
-                auto *const refreshedItem = reinterpret_cast<SyncthingItem *>(refreshedIndex.internalPointer());
-                const auto previousChildCount = refreshedItem->children.size();
-                if (previousChildCount) {
-                    beginRemoveRows(refreshedIndex, 0, static_cast<int>(refreshedItem->children.size() - 1));
-                    refreshedItem->children.clear();
-                    endRemoveRows();
-                }
-                if (!items.empty()) {
-                    const auto last = items.size() - 1;
-                    for (auto &item : items) {
-                        item->parent = refreshedItem;
-                    }
-                    populatePath(refreshedItem->path, items);
-                    beginInsertRows(refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
-                    refreshedItem->children = std::move(items);
-                    refreshedItem->childrenPopulated = true;
-                    endInsertRows();
-                }
-                if (refreshedItem->children.size() != previousChildCount) {
-                    const auto sizeIndex = refreshedIndex.siblingAtColumn(1);
-                    emit dataChanged(sizeIndex, sizeIndex, QVector<int>{ Qt::DisplayRole });
-                }
-                if (!m_pendingRequest.localLookup.isCanceled()) {
-                    m_pendingRequest.refreshedIndex = refreshedIndex;
-                    m_localItemLookup.setFuture(m_pendingRequest.localLookup);
-                } else {
-                    processFetchQueue(m_pendingRequest.forPath);
-                }
-            });
+                  const auto refreshedIndex = index(m_pendingRequest.forPath);
+                  if (!refreshedIndex.isValid()) {
+                      processFetchQueue(m_pendingRequest.forPath);
+                      return;
+                  }
+                  auto *const refreshedItem = reinterpret_cast<SyncthingItem *>(refreshedIndex.internalPointer());
+                  const auto previousChildCount = refreshedItem->children.size();
+                  if (previousChildCount) {
+                      beginRemoveRows(refreshedIndex, 0, static_cast<int>(refreshedItem->children.size() - 1));
+                      refreshedItem->children.clear();
+                      endRemoveRows();
+                  }
+                  if (!items.empty()) {
+                      const auto last = items.size() - 1;
+                      for (auto &item : items) {
+                          item->parent = refreshedItem;
+                      }
+                      populatePath(refreshedItem->path, items);
+                      beginInsertRows(
+                          refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
+                      refreshedItem->children = std::move(items);
+                      refreshedItem->childrenPopulated = true;
+                      endInsertRows();
+                  }
+                  if (refreshedItem->children.size() != previousChildCount) {
+                      const auto sizeIndex = refreshedIndex.siblingAtColumn(1);
+                      emit dataChanged(sizeIndex, sizeIndex, QVector<int>{ Qt::DisplayRole });
+                  }
+                  if (!m_pendingRequest.localLookup.isCanceled()) {
+                      m_pendingRequest.refreshedIndex = refreshedIndex;
+                      m_localItemLookup.setFuture(m_pendingRequest.localLookup);
+                  } else {
+                      processFetchQueue(m_pendingRequest.forPath);
+                  }
+              });
     } else {
         m_pendingRequest = SyncthingConnection::QueryResult();
     }

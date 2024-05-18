@@ -59,7 +59,14 @@ find_package(${PACKAGE_NAMESPACE_PREFIX}qtforkawesome${CONFIGURATION_PACKAGE_SUF
 use_qt_fork_awesome(VISIBILITY PUBLIC)
 
 # link also explicitly against the following Qt modules
-list(APPEND ADDITIONAL_QT_MODULES Concurrent Network Gui Widgets Svg)
+list(
+    APPEND
+    ADDITIONAL_QT_MODULES
+    Concurrent
+    Network
+    Gui
+    Widgets
+    Svg)
 
 # include modules to apply configuration
 include(BasicConfig)
