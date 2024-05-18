@@ -818,14 +818,14 @@ QWidget *AutostartOptionPage::setupWidget()
         setAutostartPath(QString());
         reset();
     });
-#if defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
+#if !defined(SYNCTHINGWIDGETS_AUTOSTART_DISABLED) && defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
     ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage",
         "This is achieved by adding a *.desktop file under <i>~/.config/autostart</i> so the setting only affects the current user."));
-#elif defined(PLATFORM_WINDOWS)
+#elif !defined(SYNCTHINGWIDGETS_AUTOSTART_DISABLED) && defined(PLATFORM_WINDOWS)
     ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage",
         "This is achieved by adding a registry key under <i>HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run</i> so the setting "
         "only affects the current user. Note that the startup entry is invalidated when moving <i>syncthingtray.exe</i>."));
-#elif defined(PLATFORM_MAC)
+#elif !defined(SYNCTHINGWIDGETS_AUTOSTART_DISABLED) && defined(PLATFORM_MAC)
     ui()->platformNoteLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage",
         "This is achieved by adding a *.plist file under <i>~/Library/LaunchAgents</i> so the setting only affects the current user."));
 #else
@@ -833,7 +833,7 @@ QWidget *AutostartOptionPage::setupWidget()
         QCoreApplication::translate("QtGui::AutostartOptionPage", "This feature has not been implemented for your platform (yet)."));
     m_unsupported = true;
     ui()->pathWidget->setVisible(false);
-    ui()->autostartCheckBox->setEnabled(false);
+    ui()->autostartCheckBox->setVisible(false);
 #endif
     return widget;
 }

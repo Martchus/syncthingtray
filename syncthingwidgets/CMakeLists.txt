@@ -110,6 +110,17 @@ if (USE_LIBSYNCTHING)
     list(APPEND META_PUBLIC_COMPILE_DEFINITIONS SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
 endif ()
 
+# allow disabling autostart configuration
+option(NO_AUTOSTART_SETTINGS
+       "whether autostart settings should be disabled - useful if it would not work anyway on the target platform/packaging"
+       OFF)
+if (NO_AUTOSTART_SETTINGS)
+    set_property(
+        SOURCE settings/settingsdialog.cpp
+        APPEND
+        PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_AUTOSTART_DISABLED)
+endif ()
+
 # configure autostart .desktop file exec path
 set(AUTOSTART_EXEC_PATH
     ""
