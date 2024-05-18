@@ -11,10 +11,14 @@
 #include <map>
 #include <memory>
 
+QT_FORWARD_DECLARE_CLASS(QAction)
+
 namespace Data {
 
 class LIB_SYNCTHING_MODEL_EXPORT SyncthingFileModel : public SyncthingModel {
     Q_OBJECT
+    Q_PROPERTY(bool selectionModeEnabled READ isSelectionModeEnabled WRITE setSelectionModeEnabled)
+
 public:
     enum SyncthingFileModelRole {
         NameRole = SyncthingModelUserRole + 1,
@@ -35,6 +39,7 @@ public Q_SLOTS:
     QModelIndex index(const QString &path) const;
     QModelIndex parent(const QModelIndex &child) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
     int rowCount(const QModelIndex &parent) const override;
@@ -42,6 +47,9 @@ public Q_SLOTS:
     bool canFetchMore(const QModelIndex &parent) const override;
     void fetchMore(const QModelIndex &parent) override;
     void triggerAction(const QString &action, const QModelIndex &index);
+    QList<QAction *> selectionActions();
+    bool isSelectionModeEnabled() const;
+    void setSelectionModeEnabled(bool selectionModeEnabled);
 
 public:
     QString path(const QModelIndex &path) const;
@@ -57,6 +65,7 @@ private Q_SLOTS:
     void handleLocalLookupFinished();
 
 private:
+    void setCheckState(const QModelIndex &index, Qt::CheckState checkState);
     void processFetchQueue(const QString &lastItemPath = QString());
 
 private:
@@ -76,7 +85,13 @@ private:
     QueryResult m_pendingRequest;
     QFutureWatcher<LocalLookupRes> m_localItemLookup;
     std::unique_ptr<SyncthingItem> m_root;
+    bool m_selectionMode;
 };
+
+inline bool SyncthingFileModel::isSelectionModeEnabled() const
+{
+    return m_selectionMode;
+}
 
 } // namespace Data
 

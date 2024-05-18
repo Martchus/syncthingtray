@@ -71,6 +71,8 @@ set(REQUIRED_ICONS
     internet-web-browser
     system-run
     edit-paste
+    edit-select
+    edit-undo
     list-remove
     preferences-desktop-notification
     preferences-system-startup

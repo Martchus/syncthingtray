@@ -114,6 +114,14 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
                 &QAction::triggered, model, [model, action, index]() { model->triggerAction(action, index); });
             ++actionIndex;
         }
+        if (const auto selectionActions = model->selectionActions(); !selectionActions.isEmpty()) {
+            menu.addSeparator();
+            auto *const selectionMenu = menu.addMenu(QCoreApplication::translate("QtGui::OtherDialogs", "Selection"));
+            selectionMenu->addActions(selectionActions);
+            for (auto *const selectionAction : selectionActions) {
+                selectionAction->setParent(&menu);
+            }
+        }
         menu.exec(view->viewport()->mapToGlobal(pos));
     });
 

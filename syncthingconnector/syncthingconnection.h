@@ -80,7 +80,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItem {
     /// \brief Whether children are populated (depends on the requested level).
     bool childrenPopulated = false;
     /// \brief Whether the item is "checked"; not set by default but might be set to flag an item for some mass-action.
-    bool checked = false;
+    Qt::CheckState checked = Qt::Unchecked;
     /// \brief Whether the item is present in the Syncthing database.
     bool existsInDb = true;
     /// \brief Whether the item is present in the local file system.

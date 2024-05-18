@@ -9,6 +9,7 @@
 
 #include <c++utilities/conversion/stringconversion.h>
 
+#include <QAction>
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QNetworkReply>
@@ -186,6 +187,27 @@ QVariant SyncthingFileModel::headerData(int section, Qt::Orientation orientation
     return QVariant();
 }
 
+Qt::ItemFlags SyncthingFileModel::flags(const QModelIndex &index) const
+{
+    auto f = QAbstractItemModel::flags(index);
+    if (index.isValid()) {
+        const auto *const item = reinterpret_cast<SyncthingItem *>(index.internalPointer());
+        switch (item->type) {
+        case SyncthingItemType::File:
+        case SyncthingItemType::Symlink:
+        case SyncthingItemType::Error:
+        case SyncthingItemType::Loading:
+            f |= Qt::ItemNeverHasChildren;
+            break;
+        default:;
+        }
+    }
+    if (m_selectionMode) {
+        f |= Qt::ItemIsUserCheckable;
+    }
+    return f;
+}
+
 QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
@@ -214,6 +236,15 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
             default:
                 return QString();
             }
+        }
+        break;
+    case Qt::CheckStateRole:
+        if (!m_selectionMode) {
+            return QVariant();
+        }
+        switch (index.column()) {
+        case 0:
+            return QVariant(item->checked);
         }
         break;
     case Qt::DecorationRole: {
@@ -262,6 +293,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         if (item->type == SyncthingItemType::Directory) {
             res << QStringLiteral("refresh");
         }
+        res << QStringLiteral("toggle-selection");
         if (!m_localPath.isEmpty() && item->isFilesystemItem()) {
             res << QStringLiteral("open") << QStringLiteral("copy-path");
         }
@@ -273,6 +305,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         if (item->type == SyncthingItemType::Directory) {
             res << tr("Refresh");
         }
+        res << (item->checked ? tr("Deselect") : tr("Select"));
         if (!m_localPath.isEmpty() && item->isFilesystemItem()) {
             res << (item->type == SyncthingItemType::Directory ? tr("Browse locally") : tr("Open local version")) << tr("Copy local path");
         }
@@ -284,6 +317,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         if (item->type == SyncthingItemType::Directory) {
             res << QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg")));
         }
+        res << QIcon::fromTheme(QStringLiteral("edit-select"));
         if (!m_localPath.isEmpty() && item->isFilesystemItem()) {
             res << QIcon::fromTheme(QStringLiteral("folder"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg")));
             res << QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/edit-copy.svg")));
@@ -296,10 +330,70 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
 
 bool SyncthingFileModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    Q_UNUSED(index)
-    Q_UNUSED(value)
-    Q_UNUSED(role)
+    if (!index.isValid()) {
+        return false;
+    }
+    switch (role) {
+    case Qt::CheckStateRole:
+        setCheckState(index, static_cast<Qt::CheckState>(value.toInt()));
+        return true;
+    }
     return false;
+}
+
+/// \brief Sets the whether the children of the specified \a item are checked.
+static void setChildrenChecked(SyncthingItem *item, Qt::CheckState checkState)
+{
+    for (auto &childItem : item->children) {
+        setChildrenChecked(childItem.get(), childItem->checked = checkState);
+    }
+}
+
+/// \brief Sets the check state of the specified \a index updating child and parent indexes accordingly.
+void SyncthingFileModel::setCheckState(const QModelIndex &index, Qt::CheckState checkState)
+{
+    static const auto roles = QVector<int>{ Qt::CheckStateRole };
+    auto *const item = reinterpret_cast<SyncthingItem *>(index.internalPointer());
+    auto affectedParentIndex = index;
+    item->checked = checkState;
+
+    // set the checked state of child items as well
+    if (checkState != Qt::PartiallyChecked) {
+        setChildrenChecked(item, checkState);
+    }
+
+    // update the checked state of parent items accordingly
+    for (auto *parentItem = item->parent; parentItem; parentItem = parentItem->parent) {
+        auto hasUncheckedSiblings = false;
+        auto hasCheckedSiblings = false;
+        for (auto &siblingItem : parentItem->children) {
+            switch (siblingItem->checked) {
+            case Qt::Unchecked:
+                hasUncheckedSiblings = true;
+                break;
+            case Qt::PartiallyChecked:
+                hasUncheckedSiblings = hasCheckedSiblings = true;
+                break;
+            case Qt::Checked:
+                hasCheckedSiblings = true;
+            }
+            if (hasUncheckedSiblings && hasCheckedSiblings) {
+                break;
+            }
+        }
+        auto parentChecked = hasUncheckedSiblings && hasCheckedSiblings ? Qt::PartiallyChecked : (hasUncheckedSiblings ? Qt::Unchecked : Qt::Checked);
+        if (parentItem->checked == parentChecked) {
+            break;
+        }
+        parentItem->checked = parentChecked;
+        affectedParentIndex = createIndex(static_cast<int>(parentItem->index), 0, parentItem);
+    }
+
+    // emit dataChanged() events
+    if (m_selectionMode) {
+        emit dataChanged(affectedParentIndex, index, roles);
+        invalidateAllIndicies(roles, affectedParentIndex);
+    }
 }
 
 int SyncthingFileModel::rowCount(const QModelIndex &parent) const
@@ -345,6 +439,11 @@ void SyncthingFileModel::triggerAction(const QString &action, const QModelIndex 
 {
     if (action == QLatin1String("refresh")) {
         fetchMore(index);
+        return;
+    } else if (action == QLatin1String("toggle-selection")) {
+        auto *const item = static_cast<SyncthingItem *>(index.internalPointer());
+        setSelectionModeEnabled(true);
+        setData(index, item->checked != Qt::Checked ? Qt::Checked : Qt::Unchecked, Qt::CheckStateRole);
     }
     if (m_localPath.isEmpty()) {
         return;
@@ -357,6 +456,30 @@ void SyncthingFileModel::triggerAction(const QString &action, const QModelIndex 
         if (auto *const clipboard = QGuiApplication::clipboard()) {
             clipboard->setText(path);
         }
+    }
+}
+
+QList<QAction *> SyncthingFileModel::selectionActions()
+{
+    auto res = QList<QAction *>();
+    if (!m_selectionMode) {
+        return res;
+    }
+    auto *const discardAction = new QAction(tr("Discard selection"), this);
+    discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo")));
+    connect(discardAction, &QAction::triggered, this, [this] {
+        setSelectionModeEnabled(false);
+        setData(QModelIndex(), Qt::Unchecked, Qt::CheckStateRole);
+    });
+    res << discardAction;
+    return res;
+}
+
+void SyncthingFileModel::setSelectionModeEnabled(bool selectionModeEnabled)
+{
+    if (m_selectionMode != selectionModeEnabled) {
+        m_selectionMode = selectionModeEnabled;
+        invalidateAllIndicies(QVector<int>{ Qt::CheckStateRole });
     }
 }
 
@@ -431,6 +554,9 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
                           refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
                       refreshedItem->children = std::move(items);
                       refreshedItem->childrenPopulated = true;
+                      if (refreshedItem->checked == Qt::Checked) {
+                          setChildrenChecked(refreshedItem, Qt::Checked);
+                      }
                       endInsertRows();
                   }
                   if (refreshedItem->children.size() != previousChildCount) {
@@ -510,7 +636,7 @@ void SyncthingFileModel::handleLocalLookupFinished()
 
     // mark items from the database query as locally existing if they do; mark items from local lookup as existing in the db if they do
     auto &localItems = *res;
-    for (auto &child : refreshedItem->children) {
+    for (auto &child : items) {
         auto localItemIter = localItems.find(child->name);
         if (localItemIter == localItems.end()) {
             continue;
@@ -530,6 +656,9 @@ void SyncthingFileModel::handleLocalLookupFinished()
         auto &item = items.emplace_back(std::make_unique<SyncthingItem>(std::move(localItem)));
         item->parent = refreshedItem;
         item->index = last;
+        if (refreshedItem->checked == Qt::Checked) {
+            setChildrenChecked(item.get(), item->checked = Qt::Checked);
+        }
         populatePath(item->path = refreshedItem->path % QChar('/') % item->name, item->children);
         endInsertRows();
     }
