@@ -224,7 +224,7 @@ void WebPage::styleScrollBars(bool immediate)
 
     // determine colors from palette
     const auto palette = m_view->palette();
-    const auto alphaF = 0.75f;
+    const auto alphaF = static_cast<qreal>(0.75);
     auto highlightColor = palette.color(QPalette::Active, QPalette::Highlight);
     auto highlightColorInactive = QColor::fromHsv(highlightColor.hue(), 0, highlightColor.value());
     highlightColor.setAlphaF(alphaF);

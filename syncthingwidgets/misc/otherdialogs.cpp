@@ -107,7 +107,7 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
         const auto actionNames = model->data(index, SyncthingFileModel::ActionNames).toStringList();
         const auto actionIcons = model->data(index, SyncthingFileModel::ActionIcons).toList();
         auto menu = QMenu(view);
-        auto actionIndex = qsizetype();
+        auto actionIndex = QStringList::size_type();
         for (const auto &action : actions) {
             QObject::connect(menu.addAction(actionIndex < actionIcons.size() ? actionIcons.at(actionIndex).value<QIcon>() : QIcon(),
                                  actionIndex < actionNames.size() ? actionNames.at(actionIndex) : action),
