@@ -26,6 +26,23 @@ namespace QtGui {
 
 static constexpr auto border = 10;
 
+/*
+static QWidget *fullscreenParent()
+{
+    static auto *const fullscreenParent = [] {
+        auto *const parent = new QWidget();
+        auto palette = parent->palette();
+        parent->setWindowState(Qt::WindowFullScreen);
+        parent->setWindowFlags(Qt::CustomizeWindowHint);
+        palette.setColor(QPalette::Window, QColor(Qt::blue));
+        parent->setAutoFillBackground(true);
+        parent->setPalette(palette);
+        return parent;
+    }();
+    return fullscreenParent;
+}
+*/
+
 #ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
 static bool isWindows11Style(const QWidget *widget)
 {
@@ -77,7 +94,7 @@ static void moveInside(QPoint &point, const QSize &innerRect, const QRect &outer
     }
 }
 
-void TrayMenu::showUsingPositioningSettings()
+void TrayMenu::showUsingPositioningSettings(bool asNestedWidget)
 {
     if (m_windowType == WindowType::None) {
         widget().showWebUI();
@@ -91,7 +108,9 @@ void TrayMenu::showUsingPositioningSettings()
     } else {
         show();
     }
-    activateWindow();
+    if (!asNestedWidget) {
+        activateWindow();
+    }
 }
 
 bool TrayMenu::event(QEvent *event)

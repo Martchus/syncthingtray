@@ -41,6 +41,9 @@ public Q_SLOTS:
     void showNewDev(const QString &devId, const QString &message);
     void showNewDir(const QString &devId, const QString &dirId, const QString &message);
 
+protected:
+    bool eventFilter(QObject *object, QEvent *event) override;
+
 private Q_SLOTS:
     void handleActivated(QSystemTrayIcon::ActivationReason reason);
     void handleMessageClicked();

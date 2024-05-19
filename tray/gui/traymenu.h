@@ -39,7 +39,7 @@ Q_SIGNALS:
     void positioningSettingsChanged();
 
 public Q_SLOTS:
-    void showUsingPositioningSettings();
+    void showUsingPositioningSettings(bool asNestedWidget = false);
 
 protected:
     bool event(QEvent *) override;

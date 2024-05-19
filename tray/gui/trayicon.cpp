@@ -42,6 +42,18 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     , m_notifyOnSyncthingErrors(Settings::values().notifyOn.syncthingErrors)
     , m_messageClickedAction(TrayIconMessageClickedAction::None)
 {
+    //auto palette = m_parentWidget.palette();
+    //palette.setColor(QPalette::Window, QColor(Qt::blue));
+    m_parentWidget.setWindowState(Qt::WindowFullScreen);
+    m_parentWidget.setWindowFlags(Qt::CustomizeWindowHint);
+    m_parentWidget.setAutoFillBackground(false);
+    m_parentWidget.setAttribute(Qt::WA_NoSystemBackground, true);
+    m_parentWidget.setAttribute(Qt::WA_TranslucentBackground, true);
+    m_parentWidget.setMouseTracking(true);
+    //m_parentWidget.setPalette(palette);
+    m_parentWidget.installEventFilter(this);
+    m_trayMenu->installEventFilter(this);
+
     // get widget, connection and notifier
     const auto &widget(trayMenu().widget());
     const auto &connection(widget.connection());
@@ -139,7 +151,8 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
         trayMenu().widget().showWebUI();
         break;
     case QSystemTrayIcon::Trigger:
-        trayMenu().showUsingPositioningSettings();
+        m_parentWidget.showFullScreen();
+        //trayMenu().showUsingPositioningSettings();
         break;
     default:;
     }
@@ -294,6 +307,23 @@ void TrayIcon::showNewDir(const QString &devId, const QString &dirId, const QStr
         m_messageClickedAction = TrayIconMessageClickedAction::ShowWebUi;
         showMessage(tr("New Syncthing folder - click for web UI"), message, QSystemTrayIcon::Information);
     }
+}
+
+bool TrayIcon::eventFilter(QObject *object, QEvent *event)
+{
+    if (object == &m_parentWidget && event->type() == QEvent::Show) {
+        QTimer::singleShot(100, Qt::CoarseTimer, this, [this] {
+            if (!trayMenu().isVisible()) {
+                trayMenu().showUsingPositioningSettings(true);
+            }
+            //trayMenu().resize(trayMenu().sizeHint());
+            //auto pos = Settings::values().appearance.positioning.positionToUse();
+            //trayMenu().popup(pos.value_or(QPoint()));
+        });
+    } else if (object == m_trayMenu && event->type() == QEvent::Hide) {
+        m_parentWidget.hide();
+    }
+    return false;
 }
 
 void TrayIcon::showInternalErrorsDialog()
