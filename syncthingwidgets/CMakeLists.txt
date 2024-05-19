@@ -118,7 +118,7 @@ option(NO_AUTOSTART_SETTINGS
        OFF)
 if (NO_AUTOSTART_SETTINGS)
     set_property(
-        SOURCE settings/settingsdialog.cpp
+        SOURCE settings/settingsdialog.cpp settings/wizard.cpp
         APPEND
         PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_AUTOSTART_DISABLED)
 endif ()

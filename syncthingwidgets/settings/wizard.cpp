@@ -37,7 +37,8 @@
 #include <initializer_list>
 #include <string_view>
 
-#if (defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)) || defined(PLATFORM_WINDOWS) || defined(PLATFORM_MAC)
+#if !defined(SYNCTHINGWIDGETS_AUTOSTART_DISABLED)                                                                                                    \
+    && ((defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)) || defined(PLATFORM_WINDOWS) || defined(PLATFORM_MAC))
 #define SETTINGS_WIZARD_AUTOSTART
 #endif
 
