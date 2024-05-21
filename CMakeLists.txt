@@ -53,7 +53,7 @@ option(NO_TRAY "whether building the tray should be skipped" OFF)
 option(NO_FILE_ITEM_ACTION_PLUGIN "whether building the file item action plugin should be skipped" "${FILE_ITEM_ACTION_PLUGIN_DISABLED_BY_DEFAULT}")
 option(NO_MODEL "whether building models should be skipped, implies NO_TRAY" OFF)
 option(NO_WIDGETS "whether building widgets should be skipped, implies NO_TRAY" OFF)
-option(NO_PLASMOID "whether building the Plasma 5 plasmoid should be skipped" "${PLASMOID_DISABLED_BY_DEFAULT}")
+option(NO_PLASMOID "whether building the Plasmoid for the Plasma desktop should be skipped" "${PLASMOID_DISABLED_BY_DEFAULT}")
 
 # allow using non-default configuration
 set(CONFIGURATION_PACKAGE_SUFFIX "" CACHE STRING "sets the suffix for find_package() calls to packages configured via c++utilities")
