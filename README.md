@@ -77,7 +77,7 @@ certain caveats.
     * The events to show notifications for can be configured
     * Uses Qt's notification support or a D-Bus notification daemon directly
 * Provides a wizard for a quick setup
-* Allows monitoring the status of the Syncthing systemd unit and to start and stop it (see section *Configuring systemd integration*)
+* Allows monitoring the status of the Syncthing systemd unit and to start and stop it (see section "Configuring systemd integration")
 * Provides an option to conveniently add the tray to the applications launched when the desktop environment starts
 * Can launch Syncthing automatically when started and display stdout/stderr (useful under Windows)
 * Provides quick access to the official web-based UI
@@ -107,7 +107,7 @@ Syncthing installation. You might consider different configurations:
 
 * If you're happy how Syncthing is started on your system so far just tell Syncthing Tray to connect to your currently
   running Syncthing instance in the settings. If you're currently starting Syncthing via systemd you might consider
-  enabling the systemd integration in the settings (see section *Configuring systemd integration*).
+  enabling the systemd integration in the settings (see section "Configuring systemd integration").
 * If you would like Syncthing Tray to take care of starting Syncthing for you, you can use the Syncthing launcher
   available in the settings. Note that this is *not* supported when using the Plasmoid.
     * The Linux and Windows builds provided in the release section on GitHub come with a built-in version of
@@ -335,8 +335,9 @@ See the release section on GitHub.
         * `syncthingfileitemaction`/`syncthingfileitemaction-qt6`: Dolphin/KIO integration
         * `syncthingctl`/`syncthingctl-qt6`: command-line interface
 * Debian 12 "bookworm" and its derivatives (Ubuntu, Pop!_OS, Neon, etc.)
-    * `sudo apt install syncthingtray-kde-plasma` if using KDE Plasma;
-      otherwise, `sudo apt install syncthingtray`.  Please test installation from a Software Centre such as [GNOME Software](https://apps.gnome.org/en-GB/app/org.gnome.Software) or [Discover](https://apps.kde.org/en-gb/discover/).
+    * `sudo apt install syncthingtray-kde-plasma` if using KDE Plasma; otherwise, `sudo apt install syncthingtray`.
+    * Installation from a Software Centre such as [GNOME Software](https://apps.gnome.org/en-GB/app/org.gnome.Software) or
+      [Discover](https://apps.kde.org/en-gb/discover/) may be possible as well.
     * [backport](https://backports.debian.org/) to Debian 11 "bullseye" available on request.
 * Exherbo
     * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
@@ -397,7 +398,7 @@ The following Qt modules are required (only the latest Qt 5 and Qt 6 version tes
 It is recommended to use at least Qt 5.14 to avoid limitations in previous versions (see *Known bugs* section).
 
 The built-in web view and therefore the modules webenginewidgets/webkitwidgets are optional (see
-section *Select Qt module for web view and JavaScript*).
+section "Select Qt module for web view and JavaScript").
 
 To build the plugin for Dolphin integration KIO is also required. To skip building the plugin,
 add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
@@ -426,7 +427,7 @@ It is also possible to build only the CLI (`syncthingctl`) by adding `-DNO_MODEL
 
 ---
 
-To get rid of systemd support, add `-DENABLE_SYSTEMD_SUPPORT_BY_DEFAULT` to the CMake arguments.
+To get rid of systemd support, add `-DENABLE_SYSTEMD_SUPPORT_BY_DEFAULT:BOOL=OFF` to the CMake arguments.
 In this case the Qt module `dbus` is not required anymore. Note that there is no hard dependency
 to systemd in any case.
 
