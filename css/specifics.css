@@ -1,5 +1,11 @@
 /* style for page-specific elements */
 
+section, .into-text {
+    margin: 0px auto;
+    max-width: 1600px;
+    text-align: justify;
+}
+
 /* icons of buttons within navigation */
 #back-nav-link {
     background-image: url(../img/icon/chevron-left.svg);
@@ -29,12 +35,15 @@
 
 /* elements of intro section */
 #intro-section {
+    margin: 0px;
+    max-width: initial;
     font-size: 120%;
     line-height: 140%;
 }
 .banner {
     margin: -23px;
     margin-bottom: 10px;
+
     background-image: url(../img/screenshots/plasma.jpg);
     background-position-y: -758px;
     background-position-x: right;
@@ -44,6 +53,10 @@
     width: calc(100% + 41px);
     box-sizing: border-box;
     border-bottom: 5px #08c solid!important;
+}
+.banner-info {
+    text-align: left;
+    margin: 0px auto;
 }
 @media (max-width: 1050px) {
     .banner {
@@ -73,10 +86,6 @@
         margin-left: 0px;
         left: 100px;
         width: 30%;
-    }
-}
-@media (max-width: 1010px) {
-    .banner-info p {
     }
 }
 @media (max-width: 950px) {
