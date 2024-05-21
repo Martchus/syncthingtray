@@ -361,6 +361,10 @@ See the release section on GitHub.
           native Wayland support if it does not work on your system)
         * Binaries are signed with the GPG key
           [`B9E36A7275FC61B464B67907E06FE8F53CDC6A4C`](https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index).
+    * a Flatpak is hosted on [Flathub](https://flathub.org/apps/io.github.martchus.syncthingtray)
+        * Read the [README of the Flatpak](https://github.com/flathub/io.github.martchus.syncthingtray/blob/master/README.md) for
+          caveats and workarounds
+        * File any Flatpak-specific issues on [the Flatpak repository](https://github.com/flathub/io.github.martchus.syncthingtray/issues)
 * Windows
     * for binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
         * Windows SmartScreen will likely block the execution (you'll get a window saying "Windows protected your PC");
