@@ -19,6 +19,7 @@ set(HEADER_FILES
     syncthingconnectionsettings.h
     syncthingnotifier.h
     syncthingconfig.h
+    syncthingignorepattern.h
     syncthingprocess.h
     syncthingservice.h
     qstringhash.h
@@ -31,6 +32,7 @@ set(SRC_FILES
     syncthingconnectionsettings.cpp
     syncthingnotifier.cpp
     syncthingconfig.cpp
+    syncthingignorepattern.cpp
     syncthingprocess.cpp
     syncthingservice.cpp
     utils.cpp)

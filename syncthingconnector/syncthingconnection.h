@@ -59,6 +59,11 @@ enum class SyncthingItemType {
 };
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItem {
+    /// \brief The matching ignore pattern was not initialized for this item.
+    static constexpr auto ignorePatternNotInitialized = std::numeric_limits<std::size_t>::max();
+    /// \brief The item did not match any of the current ignore patterns.
+    static constexpr auto ignorePatternNoMatch = ignorePatternNotInitialized - 1;
+
     /// \brief The name of the filesystem item or error/loading message in case of those item types.
     QString name;
     /// \brief The modification time. Only populated with a meaningful value for files and directories.
@@ -75,6 +80,9 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItem {
     QString path;
     /// \brief The index of the item within its parent.
     std::size_t index = std::size_t();
+    /// \brief The index of the ignore pattern (in the current list of ignore patterns) this item matches.
+    /// \remarks Not populated by default.
+    std::size_t ignorePattern = ignorePatternNotInitialized;
     /// \brief The level of nesting, does *not* include levels of the prefix.
     int level = 0;
     /// \brief Whether children are populated (depends on the requested level).

@@ -74,13 +74,16 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     m_root->type = SyncthingItemType::Directory;
     m_root->path = QStringLiteral(""); // assign an empty QString that is not null
     m_fetchQueue.append(m_root->path);
+    queryIgnores();
     processFetchQueue();
 }
 
 SyncthingFileModel::~SyncthingFileModel()
 {
     QObject::disconnect(m_pendingRequest.connection);
+    QObject::disconnect(m_ignorePatternsRequest.connection);
     delete m_pendingRequest.reply;
+    delete m_ignorePatternsRequest.reply;
 }
 
 QHash<int, QByteArray> SyncthingFileModel::roleNames() const
@@ -99,7 +102,7 @@ QHash<int, QByteArray> SyncthingFileModel::roleNames() const
 
 QModelIndex SyncthingFileModel::index(int row, int column, const QModelIndex &parent) const
 {
-    if (row < 0 || column < 0 || column > 2 || parent.column() > 0) {
+    if (row < 0 || column < 0 || column > 3 || parent.column() > 0) {
         return QModelIndex();
     }
     if (!parent.isValid()) {
@@ -177,6 +180,8 @@ QVariant SyncthingFileModel::headerData(int section, Qt::Orientation orientation
                 return tr("Size");
             case 2:
                 return tr("Last modified");
+            case 3:
+                return tr("Ignore pattern");
             }
             break;
         default:;
@@ -235,6 +240,13 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
                 return QString::fromStdString(item->modificationTime.toString());
             default:
                 return QString();
+            }
+        case 3:
+            if (item->ignorePattern == SyncthingItem::ignorePatternNotInitialized) {
+                matchItemAgainstIgnorePatterns(*item);
+            }
+            if (item->ignorePattern < m_presentIgnorePatterns.size()) {
+                return m_presentIgnorePatterns[item->ignorePattern].pattern;
             }
         }
         break;
@@ -411,7 +423,7 @@ int SyncthingFileModel::rowCount(const QModelIndex &parent) const
 int SyncthingFileModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return 3;
+    return 4;
 }
 
 bool SyncthingFileModel::canFetchMore(const QModelIndex &parent) const
@@ -603,6 +615,44 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
     if (!rootItem->existsInDb) {
         m_pendingRequest.refreshedIndex = rootIndex;
         m_localItemLookup.setFuture(m_pendingRequest.localLookup);
+    }
+}
+
+void SyncthingFileModel::queryIgnores()
+{
+    m_connection.ignores(m_dirId, [this](SyncthingIgnores &&ignores, QString &&errorMessage) {
+        m_ignorePatternsRequest.reply = nullptr;
+        m_hasIgnorePatterns = errorMessage.isEmpty();
+        m_presentIgnorePatterns.clear();
+        if (!m_hasIgnorePatterns) {
+            return;
+        }
+        m_presentIgnorePatterns.reserve(static_cast<std::size_t>(ignores.ignore.size()));
+        for (auto &ignorePattern : ignores.ignore) {
+            m_presentIgnorePatterns.emplace_back(std::move(ignorePattern));
+        }
+        invalidateAllIndicies(QVector<int>{ Qt::DisplayRole }, 3, QModelIndex());
+    });
+}
+
+void SyncthingFileModel::matchItemAgainstIgnorePatterns(SyncthingItem &item) const
+{
+    if (!m_hasIgnorePatterns) {
+        item.ignorePattern = SyncthingItem::ignorePatternNotInitialized;
+        return;
+    }
+    item.ignorePattern = SyncthingItem::ignorePatternNoMatch;
+    if (!item.isFilesystemItem()) {
+        return;
+    }
+    auto index = std::size_t();
+    for (const auto &ignorePattern : m_presentIgnorePatterns) {
+        if (ignorePattern.matches(item.path)) {
+            item.ignorePattern = index;
+            break;
+        } else {
+            ++index;
+        }
     }
 }
 

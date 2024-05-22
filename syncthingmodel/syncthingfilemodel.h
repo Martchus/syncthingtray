@@ -4,12 +4,14 @@
 #include "./syncthingmodel.h"
 
 #include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingignorepattern.h>
 
 #include <QFuture>
 #include <QFutureWatcher>
 
 #include <map>
 #include <memory>
+#include <vector>
 
 QT_FORWARD_DECLARE_CLASS(QAction)
 
@@ -67,6 +69,8 @@ private Q_SLOTS:
 private:
     void setCheckState(const QModelIndex &index, Qt::CheckState checkState);
     void processFetchQueue(const QString &lastItemPath = QString());
+    void queryIgnores();
+    void matchItemAgainstIgnorePatterns(SyncthingItem &item) const;
 
 private:
     using SyncthingItems = std::vector<std::unique_ptr<SyncthingItem>>;
@@ -81,11 +85,14 @@ private:
     SyncthingConnection &m_connection;
     QString m_dirId;
     QString m_localPath;
+    std::vector<SyncthingIgnorePattern> m_presentIgnorePatterns;
     QStringList m_fetchQueue;
+    SyncthingConnection::QueryResult m_ignorePatternsRequest;
     QueryResult m_pendingRequest;
     QFutureWatcher<LocalLookupRes> m_localItemLookup;
     std::unique_ptr<SyncthingItem> m_root;
     bool m_selectionMode;
+    bool m_hasIgnorePatterns;
 };
 
 inline bool SyncthingFileModel::isSelectionModeEnabled() const
