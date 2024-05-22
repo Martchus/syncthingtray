@@ -89,7 +89,9 @@ endif ()
 list(APPEND ADDITIONAL_QT_MODULES Network)
 
 # configure support for controlling Syncthing via systemd service
-if (UNIX AND NOT APPLE)
+if (UNIX
+    AND NOT APPLE
+    AND NOT ANDROID)
     set(ENABLE_SYSTEMD_SUPPORT_BY_DEFAULT ON)
 else ()
     set(ENABLE_SYSTEMD_SUPPORT_BY_DEFAULT OFF)
