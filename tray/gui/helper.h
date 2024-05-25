@@ -7,6 +7,7 @@
 #include <QGuiApplication>
 #include <QModelIndex>
 #include <QTreeView>
+#include <QStyledItemDelegate>
 
 #include <functional>
 #include <type_traits>
@@ -17,6 +18,14 @@ QT_FORWARD_DECLARE_CLASS(QMenu)
 QT_FORWARD_DECLARE_CLASS(QStyleOptionViewItem)
 
 namespace QtGui {
+
+class UnifiedItemDelegate : public QStyledItemDelegate {
+    Q_OBJECT
+public:
+    explicit UnifiedItemDelegate(QObject *parent);
+
+    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
+};
 
 void showViewMenu(const QPoint &position, const QTreeView &view, QMenu &menu);
 void drawBasicItemViewItem(QPainter &painter, const QStyleOptionViewItem &option);

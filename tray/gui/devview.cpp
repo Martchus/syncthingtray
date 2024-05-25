@@ -21,6 +21,7 @@ DevView::DevView(QWidget *parent)
 {
     header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     header()->hide();
+    setItemDelegate(new UnifiedItemDelegate(this));
     setItemDelegateForColumn(1, new DevButtonsItemDelegate(this));
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &DevView::customContextMenuRequested, this, &DevView::showContextMenu);

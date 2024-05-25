@@ -12,6 +12,32 @@
 
 namespace QtGui {
 
+/*!
+ * \class UnifiedItemDelegate
+ * \brief The UnifiedItemDelegate class draws view items without visual separation.
+ *
+ * This style sets the view item position to "OnlyOne" to prevent styles from drawing separations
+ * too noisily between items. It is used to achieve a cleaner look of the directory/devices tree
+ * view.
+ *
+ * \remarks
+ * The main motivation for this is the Windows 11 style which otherwise draws vertical lines between
+ * the columns which does not look nice at all in these tree views.
+ */
+
+UnifiedItemDelegate::UnifiedItemDelegate(QObject *parent)
+    : QStyledItemDelegate(parent)
+{
+}
+
+void UnifiedItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    auto opt = option;
+    initStyleOption(&opt, index);
+    opt.viewItemPosition = QStyleOptionViewItem::OnlyOne;
+    QStyledItemDelegate::paint(painter, opt, index);
+}
+
 void showViewMenu(const QPoint &position, const QTreeView &view, QMenu &menu)
 {
     // map the coordinates to top-level widget if it is a QMenu

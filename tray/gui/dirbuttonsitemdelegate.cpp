@@ -28,13 +28,13 @@ DirButtonsItemDelegate::DirButtonsItemDelegate(QObject *parent)
 
 void DirButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    // use the customization only on top-level rows
+    auto opt = option;
+    initStyleOption(&opt, index);
+    opt.viewItemPosition = QStyleOptionViewItem::OnlyOne;
     if (index.parent().isValid()) {
-        QStyledItemDelegate::paint(painter, option, index);
+        QStyledItemDelegate::paint(painter, opt, index);
     } else {
         // init style options to use drawControl(), except for the text
-        auto opt = option;
-        initStyleOption(&opt, index);
         opt.text.clear();
         opt.features = QStyleOptionViewItem::None;
         drawBasicItemViewItem(*painter, opt);
