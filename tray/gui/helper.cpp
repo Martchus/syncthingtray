@@ -6,6 +6,7 @@
 
 #include <QApplication>
 #include <QMenu>
+#include <QPainter>
 #include <QPoint>
 #include <QStyleOptionViewItem>
 #include <QTreeView>
@@ -64,6 +65,33 @@ void drawBasicItemViewItem(QPainter &painter, const QStyleOptionViewItem &option
     if (auto *const style = option.widget ? option.widget->style() : QApplication::style()) {
         style->drawControl(QStyle::CE_ItemViewItem, &option, &painter, option.widget);
     }
+}
+
+void setupPainterToDrawViewItemText(QPainter *painter, QStyleOptionViewItem &opt)
+{
+    painter->setFont(opt.font);
+
+    if (!(opt.state & QStyle::State_Selected)) {
+        painter->setPen(opt.palette.color(QPalette::Text));
+        return;
+    }
+
+    // set pen/palette in accordance with the Windows 11 or Windows Vista style for selected items
+    // note: These styles unfortunately don't just use the highlighted text color and just using it would
+    //       lead to a very bad contrast.
+#if defined(Q_OS_WINDOWS) && QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
+    auto *const style = opt.widget ? opt.widget->style() : nullptr;
+    const auto styleName = style ? style->name() : QString();
+    if (styleName.compare(QLatin1String("windows11"), Qt::CaseInsensitive) == 0) {
+        painter->setPen(QPen(opt.palette.buttonText().color()));
+        return;
+    } else if (styleName.compare(QLatin1String("windowsvista"), Qt::CaseInsensitive) == 0) {
+        opt.palette.setColor(QPalette::All, QPalette::HighlightedText, opt.palette.color(QPalette::Active, QPalette::Text));
+        opt.palette.setColor(QPalette::All, QPalette::Highlight, opt.palette.base().color().darker(108));
+    }
+#endif
+
+    painter->setPen(opt.palette.color(QPalette::HighlightedText));
 }
 
 } // namespace QtGui

@@ -29,6 +29,7 @@ public:
 
 void showViewMenu(const QPoint &position, const QTreeView &view, QMenu &menu);
 void drawBasicItemViewItem(QPainter &painter, const QStyleOptionViewItem &option);
+void setupPainterToDrawViewItemText(QPainter *painter, QStyleOptionViewItem &opt);
 
 inline auto copyToClipboard(const QString &text)
 {

@@ -45,8 +45,7 @@ void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         textRect.setWidth(textRect.width() - 20);
         QTextOption textOption;
         textOption.setAlignment(opt.displayAlignment);
-        painter->setFont(opt.font);
-        painter->setPen(opt.palette.color(opt.state & QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
+        setupPainterToDrawViewItemText(painter, opt);
         painter->drawText(textRect, displayText(index.data(Qt::DisplayRole), option.locale), textOption);
 
         // draw buttons
