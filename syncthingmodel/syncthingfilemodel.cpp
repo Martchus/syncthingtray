@@ -63,6 +63,8 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     , m_connection(connection)
     , m_dirId(dir.id)
     , m_root(std::make_unique<SyncthingItem>())
+    , m_selectionMode(false)
+    , m_hasIgnorePatterns(false)
 {
     if (m_connection.isLocal()) {
         m_localPath = dir.pathWithoutTrailingSlash().toString();
