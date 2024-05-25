@@ -295,11 +295,24 @@ void MiscTests::testIgnorePatternMatching()
     CPPUNIT_ASSERT(!p1.matches(QStringLiteral("foofoo")));
     CPPUNIT_ASSERT(p1.matches(QStringLiteral("foo/foo")));
 
-    auto p2 = SyncthingIgnorePattern(QStringLiteral("foo*"));
+    auto p2 = SyncthingIgnorePattern(QStringLiteral("(?d)(?i)foo*"));
+    CPPUNIT_ASSERT(p2.allowRemovalOnParentDirRemoval);
+    CPPUNIT_ASSERT(p2.caseInsensitive);
     CPPUNIT_ASSERT(p2.matches(QStringLiteral("foo")));
-    CPPUNIT_ASSERT(p2.matches(QStringLiteral("foobar")));
+    CPPUNIT_ASSERT(p2.matches(QStringLiteral("FooBar")));
     CPPUNIT_ASSERT(!p2.matches(QStringLiteral("barfoo")));
     CPPUNIT_ASSERT(p2.matches(QStringLiteral("bar/foo")));
+    CPPUNIT_ASSERT(p2.matches(QStringLiteral("bar/foobaz")));
+    CPPUNIT_ASSERT(!p2.matches(QStringLiteral("bar/foo/baz")));
+
+    auto p2a = SyncthingIgnorePattern(QStringLiteral("(?d)foo**"));
+    CPPUNIT_ASSERT(p2a.allowRemovalOnParentDirRemoval);
+    CPPUNIT_ASSERT(p2a.matches(QStringLiteral("foo")));
+    CPPUNIT_ASSERT(p2a.matches(QStringLiteral("foobar")));
+    CPPUNIT_ASSERT(!p2a.matches(QStringLiteral("barfoo")));
+    CPPUNIT_ASSERT(p2a.matches(QStringLiteral("bar/foo")));
+    CPPUNIT_ASSERT(p2a.matches(QStringLiteral("bar/foobaz")));
+    CPPUNIT_ASSERT(p2a.matches(QStringLiteral("bar/foo/baz")));
 
     auto p3 = SyncthingIgnorePattern(QStringLiteral("fo*ar"));
     CPPUNIT_ASSERT(!p3.matches(QStringLiteral("foo")));
@@ -359,8 +372,9 @@ void MiscTests::testIgnorePatternMatching()
     CPPUNIT_ASSERT(!p11.matches(QStringLiteral("foO/bar")));
     CPPUNIT_ASSERT(!p11.matches(QStringLiteral("fo?/bar")));
 
-    p11.caseInsensitive = true;
-    CPPUNIT_ASSERT(p11.matches(QStringLiteral("foO/bar")));
+    auto p11a = SyncthingIgnorePattern(QStringLiteral("(?i)/fo[o0.]/bar"));
+    CPPUNIT_ASSERT(p11a.caseInsensitive);
+    CPPUNIT_ASSERT(p11a.matches(QStringLiteral("foO/bar")));
 
     auto p12 = SyncthingIgnorePattern(QStringLiteral("/f[oA-C0-3.]o/bar"));
     CPPUNIT_ASSERT(p12.matches(QStringLiteral("f0o/bar")));
@@ -400,4 +414,8 @@ void MiscTests::testIgnorePatternMatching()
     CPPUNIT_ASSERT(p16.matches(QStringLiteral("foo/bar")));
     CPPUNIT_ASSERT(p16.matches(QStringLiteral("foo}/bar")));
     CPPUNIT_ASSERT(!p16.matches(QStringLiteral("/foo\\,o}/bar")));
+
+    auto p17 = SyncthingIgnorePattern(QStringLiteral("///fo{o\\},o}/bar"));
+    CPPUNIT_ASSERT(p17.comment);
+    CPPUNIT_ASSERT(!p17.matches(QStringLiteral("foo/bar")));
 }

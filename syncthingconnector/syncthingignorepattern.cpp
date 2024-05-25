@@ -39,12 +39,22 @@ struct AlternativeRange {
 /// \endcond
 
 /*!
+ * \struct SyncthingIgnorePattern
+ * \brief The SyncthingIgnorePattern struct allows matching a Syncthing ignore pattern against a path.
+ * \remarks
+ * - The `#include`-syntax is not supported.
+ * \sa
+ * - https://docs.syncthing.net/users/ignoring.html
+ * - https://docs.syncthing.net/rest/db-ignores-get.html
+ */
+
+/*!
  * \brief Parses the specified \a pattern populating the struct's fields.
  */
 SyncthingIgnorePattern::SyncthingIgnorePattern(QString &&pattern)
     : pattern(std::move(pattern))
 {
-    if (glob.startsWith(QLatin1String("//"))) {
+    if (this->pattern.startsWith(QLatin1String("//"))) {
         comment = true;
         ignore = false;
         return;
@@ -87,8 +97,9 @@ SyncthingIgnorePattern::~SyncthingIgnorePattern()
  *   Syncthing folder it is contained by. A pattern that is only supposed to match from the root of the Syncthing folder
  *   is supposed to start with a "/", though.
  * - This function probably doesn't work if the pattern or \a path contain a surrogate pair.
+ * - By default, the path separator is "/". If \a path uses a different separator you must specify it as second argument.
  */
-bool SyncthingIgnorePattern::matches(const QString &path) const
+bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) const
 {
     if (comment || glob.isEmpty()) {
         return false;
@@ -99,8 +110,7 @@ bool SyncthingIgnorePattern::matches(const QString &path) const
     auto pathIter = path.begin(), pathEnd = path.end();
 
     // handle pattners starting with "/" indicating the pattern must match from the root (see last remark in docstring)
-    static constexpr auto pathSep = QChar('/');
-    const auto matchFromRoot = *globIter == pathSep;
+    const auto matchFromRoot = *globIter == pathSeparator;
     if (matchFromRoot) {
         ++globIter;
     }
@@ -134,7 +144,7 @@ bool SyncthingIgnorePattern::matches(const QString &path) const
         // deal with the mismatch by checking the path as of the next path element
         for (; pathIter != pathEnd; ++pathIter) {
             // forward to the next path separator
-            if (*pathIter != pathSep) {
+            if (*pathIter != pathSeparator) {
                 continue;
             }
             // skip the path separator itself and give up when the end of the path is reached
@@ -168,10 +178,29 @@ bool SyncthingIgnorePattern::matches(const QString &path) const
     const auto matchSingleChar
         = [&, this](QChar singleChar) { return caseInsensitive ? pathIter->toCaseFolded() == singleChar.toCaseFolded() : *pathIter == singleChar; };
 
+    // define function to transition to verbatim matching (which makes only sense when not in any of the "Append…"-states)
+    const auto transitionToVerbatimMatching = [&] {
+        switch (state) {
+        case AppendRangeLower:
+        case AppendRangeUpper:
+        case AppendAlternative:
+            break;
+        default:
+            state = MatchVerbatimly;
+        }
+    };
+
     // try to match each character of the glob against a character in the path
 match:
     while (globIter != globEnd) {
         // decide what to do next depending on the current glob pattern character and state transitioning the state accordingly
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        static constexpr auto escapeCharacter = QChar('\\');
+        static constexpr auto escapeCharacterUnicode = escapeCharacter.unicode();
+#else
+#define escapeCharacterUnicode '\\'
+#define escapeCharacter QChar(escapeCharacterUnicode)
+#endif
         switch (state) {
         case Escaping:
             // treat every character as-is in "escaping" state
@@ -180,10 +209,17 @@ match:
         default:
             // transition state according to special meaning of the current glob pattern character
             switch (globIter->unicode()) {
-            case '\\':
-                // transition into "escaping" state
-                escapedState = state;
-                state = Escaping;
+            case escapeCharacterUnicode:
+                if (pathSeparator != escapeCharacter) {
+                    // transition into "escaping" state
+                    escapedState = state;
+                    state = Escaping;
+                } else {
+                    // treat the escape character as normal character if it is the path separator
+                    // quote from Syncthing documentation: Escaped characters are not supported on Windows, where "\" is the path
+                    //                                     separator.
+                    transitionToVerbatimMatching();
+                }
                 break;
             case '[':
                 state = AppendRangeLower;
@@ -197,7 +233,7 @@ match:
                     state = MatchRange;
                     break;
                 default:
-                    state = MatchVerbatimly;
+                    transitionToVerbatimMatching();
                 }
                 break;
             case '-':
@@ -207,7 +243,7 @@ match:
                     ++globIter;
                     continue;
                 default:
-                    state = MatchVerbatimly;
+                    transitionToVerbatimMatching();
                 }
                 break;
             case '{':
@@ -227,7 +263,7 @@ match:
                     state = MatchAlternatives;
                     break;
                 default:
-                    state = MatchVerbatimly;
+                    transitionToVerbatimMatching();
                 }
                 break;
             case ',':
@@ -237,7 +273,7 @@ match:
                     alternatives.emplace_back(++globIter);
                     continue;
                 default:
-                    state = MatchVerbatimly;
+                    transitionToVerbatimMatching();
                 }
                 break;
             case '?':
@@ -256,14 +292,7 @@ match:
                 break;
             default:
                 // try to match/append all other non-special characters as-is
-                switch (state) {
-                case AppendRangeLower:
-                case AppendRangeUpper:
-                case AppendAlternative:
-                    break;
-                default:
-                    state = MatchVerbatimly;
-                }
+                transitionToVerbatimMatching();
             }
         }
 
@@ -290,7 +319,7 @@ match:
             if (pathIter != pathEnd && matchSingleChar(*globIter)) {
                 ++pathIter;
                 handleSingleMatch();
-            } else if (inAsterisk && (asterisks.back().state == MatchManyAnyIncludingDirSep || (pathIter == pathEnd || *pathIter != pathSep))) {
+            } else if (inAsterisk && (asterisks.back().state == MatchManyAnyIncludingDirSep || (pathIter == pathEnd || *pathIter != pathSeparator))) {
                 // consider the path character dealt with despite no match if we have just passed an asterisk in the glob pattern
                 if (pathIter != pathEnd) {
                     ++pathIter;
@@ -333,7 +362,7 @@ match:
                     // note: Special characters like "*" are matched verbatimly. Is that the correct behavior?
                     pathIter = pathStart;
                     for (; alternative.beg != alternative.end && pathIter != pathEnd; ++alternative.beg) {
-                        if (*alternative.beg == QChar('\\')) {
+                        if (*alternative.beg == escapeCharacter) {
                             continue;
                         }
                         if (!matchSingleChar(*alternative.beg)) {
@@ -360,7 +389,7 @@ match:
             break;
         case MatchAny:
             // allow the current character in the path to be anything but a path separator; otherwise consider it as mismatch as in the case for an exact match
-            if (pathIter == pathEnd || *pathIter != pathSep) {
+            if (pathIter == pathEnd || *pathIter != pathSeparator) {
                 ++globIter, ++pathIter;
             } else if (!handleMismatch()) {
                 return false;
@@ -386,12 +415,15 @@ match:
 
     // check whether all characters of the glob have been matched against all characters of the path
     if (globIter == globEnd) {
-        if (pathIter == pathEnd) {
+        // consider the match a success if all characters of the path were matched or the glob ended with a "**"
+        if (pathIter == pathEnd || state == MatchManyAnyIncludingDirSep
+            || (state == MatchManyAny && !QStringView(pathIter, pathEnd).contains(pathSeparator))) {
             return true;
         }
+
         // try again as of the next path segment if the glob fully matched but there are still characters in the path to be matched
         // note: This allows "foo" to match against "foo/foo" even tough the glob characters have already consumed after matching the first path segment.
-        if (!matchFromRoot && *pathIter == pathSep) {
+        if (!matchFromRoot && *pathIter == pathSeparator) {
             state = MatchVerbatimly;
             ++pathIter;
             globIter = glob.begin();
@@ -400,9 +432,7 @@ match:
             goto match;
         }
     }
-
-    // consider the match a success if there are still characters in the path to be matched but the glob ended with a "*"
-    return state == MatchManyAny || state == MatchManyAnyIncludingDirSep;
+    return false;
 }
 
 } // namespace Data

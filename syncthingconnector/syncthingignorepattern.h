@@ -5,6 +5,8 @@
 
 #include <QString>
 
+#include <vector>
+
 namespace Data {
 
 namespace SyncthingIgnorePatternState {
@@ -13,18 +15,12 @@ struct CharacterRange;
 struct AlternativeRange;
 } // namespace SyncthingIgnorePatternState
 
-/*!
- * \brief The SyncthingIgnorePattern struct allows matching a Syncthing ignore pattern against a path.
- * \sa
- * - https://docs.syncthing.net/users/ignoring.html
- * - https://docs.syncthing.net/rest/db-ignores-get.html
- */
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingIgnorePattern {
     explicit SyncthingIgnorePattern(QString &&pattern);
     SyncthingIgnorePattern(const SyncthingIgnorePattern &) = delete;
     SyncthingIgnorePattern(SyncthingIgnorePattern &&);
     ~SyncthingIgnorePattern();
-    bool matches(const QString &path) const;
+    bool matches(const QString &path, QChar pathSeparator = QChar('/')) const;
 
     /// \brief The full ignore pattern as passed to the c'tor (unless modified).
     QString pattern;
