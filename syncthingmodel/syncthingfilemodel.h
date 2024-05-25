@@ -67,7 +67,7 @@ private Q_SLOTS:
     void handleLocalLookupFinished();
 
 private:
-    void setCheckState(const QModelIndex &index, Qt::CheckState checkState);
+    void setCheckState(const QModelIndex &index, Qt::CheckState checkState, bool skipChildren = false);
     void processFetchQueue(const QString &lastItemPath = QString());
     void queryIgnores();
     void matchItemAgainstIgnorePatterns(SyncthingItem &item) const;

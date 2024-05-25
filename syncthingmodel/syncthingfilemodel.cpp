@@ -365,7 +365,7 @@ static void setChildrenChecked(SyncthingItem *item, Qt::CheckState checkState)
 }
 
 /// \brief Sets the check state of the specified \a index updating child and parent indexes accordingly.
-void SyncthingFileModel::setCheckState(const QModelIndex &index, Qt::CheckState checkState)
+void SyncthingFileModel::setCheckState(const QModelIndex &index, Qt::CheckState checkState, bool skipChildren)
 {
     static const auto roles = QVector<int>{ Qt::CheckStateRole };
     auto *const item = reinterpret_cast<SyncthingItem *>(index.internalPointer());
@@ -373,7 +373,7 @@ void SyncthingFileModel::setCheckState(const QModelIndex &index, Qt::CheckState 
     item->checked = checkState;
 
     // set the checked state of child items as well
-    if (checkState != Qt::PartiallyChecked) {
+    if (!skipChildren && checkState != Qt::PartiallyChecked) {
         setChildrenChecked(item, checkState);
     }
 
@@ -569,8 +569,14 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
                           refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
                       refreshedItem->children = std::move(items);
                       refreshedItem->childrenPopulated = true;
-                      if (refreshedItem->checked == Qt::Checked) {
+                      switch (refreshedItem->checked) {
+                      case Qt::Checked:
                           setChildrenChecked(refreshedItem, Qt::Checked);
+                          break;
+                      case Qt::PartiallyChecked:
+                          setCheckState(refreshedIndex, Qt::Unchecked, true);
+                          break;
+                      default:;
                       }
                       endInsertRows();
                   }
@@ -709,8 +715,14 @@ void SyncthingFileModel::handleLocalLookupFinished()
         auto &item = items.emplace_back(std::make_unique<SyncthingItem>(std::move(localItem)));
         item->parent = refreshedItem;
         item->index = last;
-        if (refreshedItem->checked == Qt::Checked) {
+        switch (refreshedItem->checked) {
+        case Qt::Checked:
             setChildrenChecked(item.get(), item->checked = Qt::Checked);
+            break;
+        case Qt::PartiallyChecked:
+            setCheckState(refreshedIndex, Qt::Unchecked, true);
+            break;
+        default:;
         }
         populatePath(item->path = refreshedItem->path % m_pathSeparator % item->name, m_pathSeparator, item->children);
         endInsertRows();
