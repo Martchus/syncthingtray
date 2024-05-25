@@ -22,15 +22,15 @@ using namespace CppUtilities;
 namespace Data {
 
 /// \cond
-static void populatePath(const QString &root, std::vector<std::unique_ptr<SyncthingItem>> &items)
+static void populatePath(const QString &root, QChar pathSeparator, std::vector<std::unique_ptr<SyncthingItem>> &items)
 {
     if (root.isEmpty()) {
         for (auto &item : items) {
-            populatePath(item->path = item->name, item->children);
+            populatePath(item->path = item->name, pathSeparator, item->children);
         }
     } else {
         for (auto &item : items) {
-            populatePath(item->path = root % QChar('/') % item->name, item->children);
+            populatePath(item->path = root % pathSeparator % item->name, pathSeparator, item->children);
         }
     }
 }
@@ -70,6 +70,7 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
         m_localPath = dir.pathWithoutTrailingSlash().toString();
         connect(&m_localItemLookup, &QFutureWatcherBase::finished, this, &SyncthingFileModel::handleLocalLookupFinished);
     }
+    m_pathSeparator = m_connection.pathSeparator().size() == 1 ? m_connection.pathSeparator().front() : QDir::separator();
     m_root->name = dir.displayName();
     m_root->modificationTime = dir.lastFileTime;
     m_root->size = dir.globalStats.bytes;
@@ -125,7 +126,7 @@ QModelIndex SyncthingFileModel::index(int row, int column, const QModelIndex &pa
 
 QModelIndex SyncthingFileModel::index(const QString &path) const
 {
-    auto parts = path.split(QChar('/'), Qt::SkipEmptyParts);
+    auto parts = path.split(m_pathSeparator, Qt::SkipEmptyParts);
     auto *parent = m_root.get();
     auto res = createIndex(0, 0, parent);
     for (const auto &part : parts) {
@@ -463,7 +464,7 @@ void SyncthingFileModel::triggerAction(const QString &action, const QModelIndex 
         return;
     }
     const auto relPath = index.data(PathRole).toString();
-    const auto path = relPath.isEmpty() ? m_localPath : QString(m_localPath % QChar('/') % relPath);
+    const auto path = relPath.isEmpty() ? m_localPath : QString(m_localPath % m_pathSeparator % relPath);
     if (action == QLatin1String("open")) {
         QtUtilities::openLocalFileOrDir(path);
     } else if (action == QLatin1String("copy-path")) {
@@ -563,7 +564,7 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
                       for (auto &item : items) {
                           item->parent = refreshedItem;
                       }
-                      populatePath(refreshedItem->path, items);
+                      populatePath(refreshedItem->path, m_pathSeparator, items);
                       beginInsertRows(
                           refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
                       refreshedItem->children = std::move(items);
@@ -593,7 +594,7 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
     if (m_localPath.isEmpty()) {
         return;
     }
-    m_pendingRequest.localLookup = QtConcurrent::run([dir = QDir(m_localPath % QChar('/') % path)] {
+    m_pendingRequest.localLookup = QtConcurrent::run([dir = QDir(m_localPath % m_pathSeparator % path)] {
         auto items = std::make_shared<std::map<QString, SyncthingItem>>();
         auto entries = dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
         for (const auto &entry : entries) {
@@ -649,7 +650,7 @@ void SyncthingFileModel::matchItemAgainstIgnorePatterns(SyncthingItem &item) con
     }
     auto index = std::size_t();
     for (const auto &ignorePattern : m_presentIgnorePatterns) {
-        if (ignorePattern.matches(item.path)) {
+        if (ignorePattern.matches(item.path, m_pathSeparator)) {
             item.ignorePattern = index;
             break;
         } else {
@@ -711,7 +712,7 @@ void SyncthingFileModel::handleLocalLookupFinished()
         if (refreshedItem->checked == Qt::Checked) {
             setChildrenChecked(item.get(), item->checked = Qt::Checked);
         }
-        populatePath(item->path = refreshedItem->path % QChar('/') % item->name, item->children);
+        populatePath(item->path = refreshedItem->path % m_pathSeparator % item->name, m_pathSeparator, item->children);
         endInsertRows();
     }
     if (refreshedItem->children.size() != previousChildCount) {

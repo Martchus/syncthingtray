@@ -91,6 +91,7 @@ private:
     QueryResult m_pendingRequest;
     QFutureWatcher<LocalLookupRes> m_localItemLookup;
     std::unique_ptr<SyncthingItem> m_root;
+    QChar m_pathSeparator;
     bool m_selectionMode;
     bool m_hasIgnorePatterns;
 };
