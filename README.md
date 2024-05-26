@@ -21,14 +21,14 @@ the configuration. If you are not familiar with Syncthing itself already you sho
 the [Syncthing documentation](https://docs.syncthing.net) as this README is only going to cover the
 Syncthing Tray integration.
 
-Issues can be created on GitHub but please read the "Known bugs and workarounds" section in this document
+Issues can be created on GitHub but please read the "[Known bugs and workarounds](#known-bugs-and-workarounds)" section in this document
 before.
 
 ## Supported platforms
 Official binaries are provided for Windows and GNU/Linux for the x86_64 architecture and can be download from
 the release section on GitHub. This is only a fraction of the available downloads, though. I also provide
 further repositories for some GNU/Linux distributions. There are also binaries/repositories provided by other
-distributors. For a list with links, checkout the *Download* section of this document.
+distributors. For a list with links, checkout the *[Download](#Download)* section of this document.
 
 Syncthing Tray is known to work under:
 
@@ -40,7 +40,7 @@ Syncthing Tray is known to work under:
 * i3
 * macOS
 * Deepin Desktop Environment
-* Sway/Swaybar/Waybar (with caveats, see "Known bugs and workarounds")
+* Sway/Swaybar/Waybar (with caveats, see "[Known bugs and workarounds](#known-bugs-and-workarounds)")
 
 This does *not* mean Syncthing Tray is actively tested on all those platforms or
 desktop environments.
@@ -49,15 +49,15 @@ For Plasma 5 and 6, there is in addition to the Qt Widgets based version also a 
 Plasmoid. Note that the latest version of Syncthing Tray generally also requires the
 latest version of Plasma 5 or 6 as no testing on earlier versions is done. Use the Qt
 Widgets based version on other Plasma versions. A restart of Plasma might be required for
-the Plasmoid to become selectable after installation. Checkout the "Troubleshooting KDE
-integration" section below for further help if it still won't show up.
+the Plasmoid to become selectable after installation. Checkout the "[Troubleshooting KDE
+integration](#troubleshooting-kde-integration)" section below for further help if it still won't show up.
 
 On GTK-centered desktops have a look at the
 [Arch Wiki](https://wiki.archlinux.org/title/Uniform_look_for_Qt_and_GTK_applications)
 for how to achieve a more native look and feel. Under GNOME one needs to install
 [an extension](https://github.com/ubuntu/gnome-shell-extension-appindicator) for tray icon support.
 
-The section "Known bugs and workarounds" below contains information and workarounds for
+The section "[Known bugs and workarounds](#known-bugs-and-workarounds)" below contains information and workarounds for
 certain caveats.
 
 ## Features
@@ -107,7 +107,7 @@ Syncthing installation. You might consider different configurations:
 
 * If you're happy how Syncthing is started on your system so far just tell Syncthing Tray to connect to your currently
   running Syncthing instance in the settings. If you're currently starting Syncthing via systemd you might consider
-  enabling the systemd integration in the settings (see section "Configuring systemd integration").
+  enabling the systemd integration in the settings (see section "[Configuring systemd integration](#configuring-systemd-integration)").
 * If you would like Syncthing Tray to take care of starting Syncthing for you, you can use the Syncthing launcher
   available in the settings. Note that this is *not* supported when using the Plasmoid.
     * The Linux and Windows builds provided in the release section on GitHub come with a built-in version of
@@ -115,7 +115,7 @@ Syncthing installation. You might consider different configurations:
       way.
     * In any case you can simply point the launcher to the binary of Syncthing (which you have to download/install
       separately).
-    * Checkout the *Configuring the built-in launcher* section for further details.
+    * Checkout the *[Configuring the built-in launcher](#configuring-the-built-in-launcher)* section for further details.
 * It is also possible to let Syncthing Tray connect to a Syncthing instance running on a different machine.
 
 ## Installation and deinstallation
@@ -377,7 +377,9 @@ See the release section on GitHub.
               than 1.21/1.27.0 instead
         * Binaries are signed with the GPG key
           [`B9E36A7275FC61B464B67907E06FE8F53CDC6A4C`](https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index).
-    * there is also a [Chocolatey package](https://community.chocolatey.org/packages/syncthingtray) maintained by yan12125
+    * or, using Winget, type `winget install Martchus.syncthingtray` in a Command Prompt window.
+    * or, using [Scoop[(https://scoop.sh), type `scoop add bucket extras & scoop install extras/syncthingtray`
+    * or, via this [Chocolatey package](https://community.chocolatey.org/packages/syncthingtray), type `choco install syncthingtray`. (maintained by yan12125).
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
 * FreeBSD
     * the package syncthingtray is available from [FreeBSD Ports](https://www.freshports.org/deskutils/syncthingtray)
@@ -391,7 +393,7 @@ The application depends on [c++utilities](https://github.com/Martchus/cpp-utilit
 For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities).
 
 To avoid building c++utilities/qtutilities/qtforkawesome separately, follow the instructions under
-"Building this straight". There's also documentation about
+"[Building this straight](#Building-this-straight)". There's also documentation about
 [various build variables](https://github.com/Martchus/cpp-utilities/blob/master/doc/buildvariables.md) which
 can be passed to CMake to influence the build.
 
@@ -559,7 +561,7 @@ Translations for further locales can be added quite easily:
    in `connector/CMakeLists.txt`, `model/CMakeLists.txt`, `widgets/CMakeLists.txt`,
    `fileitemactionplugin/CMakeLists.txt`, `plasmoid/CMakeLists.txt` and
    `tray/CMakeLists.txt`.
-2. Configure a new build, e.g. follow steps under *Building this straight*.
+2. Configure a new build, e.g. follow steps under *[Building this straight](#Building-this-straight)*.
 3. Conduct a full build or generate only translation files via the `translations` target.
 4. New translation files should have been created by the build system under
    `connector/translations`, `model/translations`, `widgets/translations`,
@@ -575,7 +577,7 @@ Translations for further locales can be added quite easily:
   "Add a new locale". Check that no translations have been lost (except ones which are no
   longer required of course).
 * Change the strings within the translation files found within the `translations`
-  directories like in step `4.`/`5.` of "Add a new locale".
+  directories like in step `4.`/`5.` of "[Add a new locale](#Add-a-new-locale)".
 
 #### Remarks
 * Syncthing Tray displays also text from [qtutilities](https://github.com/Martchus/qtutilities).
@@ -630,7 +632,7 @@ platforms. For bugs of Syncthing Tray itself, checkout the issues on GitHub.
 ### Workaround positioning issues under Wayland
 The Qt Widgets based version basically works under Wayland but there are
 positioning issues and the settings regarding positioning have no effect (see
-"List of bugs" section below). One can workaround this limitation by telling the
+"[List of bugs](#List-of-bugs)" section below). One can workaround this limitation by telling the
 window manager how to place the window, e.g. under Sway one could add a
 configuration like this:
 
