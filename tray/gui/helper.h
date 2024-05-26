@@ -6,8 +6,8 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QModelIndex>
-#include <QTreeView>
 #include <QStyledItemDelegate>
+#include <QTreeView>
 
 #include <functional>
 #include <type_traits>

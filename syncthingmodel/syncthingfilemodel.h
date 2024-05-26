@@ -8,6 +8,8 @@
 
 #include <QFuture>
 #include <QFutureWatcher>
+#include <QHash>
+#include <QSet>
 
 #include <map>
 #include <memory>
@@ -58,6 +60,8 @@ public:
 
 Q_SIGNALS:
     void fetchQueueEmpty();
+    void notification(const QString &type, const QString &message, const QString &details = QString());
+    void actionNeedsConfirmation(QAction *action, const QString &message, const QString &diff = QString());
 
 private Q_SLOTS:
     void handleConfigInvalidated() override;
@@ -86,6 +90,8 @@ private:
     QString m_dirId;
     QString m_localPath;
     std::vector<SyncthingIgnorePattern> m_presentIgnorePatterns;
+    QHash<std::size_t, QStringList> m_stagedChanges;
+    QSet<QString> m_stagedLocalFileDeletions;
     QStringList m_fetchQueue;
     SyncthingConnection::QueryResult m_ignorePatternsRequest;
     QueryResult m_pendingRequest;

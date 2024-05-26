@@ -479,21 +479,125 @@ void SyncthingFileModel::triggerAction(const QString &action, const QModelIndex 
     }
 }
 
+/// \brief Invokes \a callback for every filesystem item as of and including \a root.
+/// \remarks Traverses children if \a callback returns true.
+template <typename Callback> static void forEachItem(SyncthingItem *root, Callback &&callback)
+{
+    if (!root->isFilesystemItem() || !callback(root) || !root->childrenPopulated) {
+        return;
+    }
+    for (auto &child : root->children) {
+        forEachItem(child.get(), std::forward<Callback>(callback));
+    }
+}
+
 QList<QAction *> SyncthingFileModel::selectionActions()
 {
     auto res = QList<QAction *>();
     if (!m_selectionMode) {
         return res;
     }
-    auto *const discardAction = new QAction(tr("Discard selection"), this);
+    auto *const discardAction = new QAction(tr("Discard selection and staged changes"), this);
     discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo")));
     connect(discardAction, &QAction::triggered, this, [this] {
         if (const auto rootIndex = index(0, 0); rootIndex.isValid()) {
             setCheckState(index(0, 0), Qt::Unchecked);
         }
         setSelectionModeEnabled(false);
+        m_stagedChanges.clear();
+        m_stagedLocalFileDeletions.clear();
     });
     res << discardAction;
+
+    auto *const removeIgnorePatternsAction = new QAction(tr("Remove related ignore patterns"), this);
+    removeIgnorePatternsAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-delete")));
+    connect(removeIgnorePatternsAction, &QAction::triggered, this, [this]() {
+        forEachItem(m_root.get(), [this](SyncthingItem *item) {
+            if (item->checked != Qt::Checked) {
+                return true;
+            }
+            if (item->ignorePattern == SyncthingItem::ignorePatternNotInitialized) {
+                matchItemAgainstIgnorePatterns(*item);
+            }
+            if (item->ignorePattern != SyncthingItem::ignorePatternNoMatch) {
+                m_stagedChanges[item->ignorePattern];
+            }
+            return true;
+        });
+    });
+    res << removeIgnorePatternsAction;
+
+    if (!m_stagedChanges.isEmpty() || !m_stagedLocalFileDeletions.isEmpty()) {
+        auto *const applyStagedChangesAction = new QAction(tr("Review and apply staged changes"), this);
+        applyStagedChangesAction->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")));
+        connect(applyStagedChangesAction, &QAction::triggered, this, [this, action = applyStagedChangesAction, askedConfirmation = false]() mutable {
+            // allow user to review changes before applying them
+            if (!askedConfirmation) {
+                auto diff = QString();
+                auto index = std::size_t();
+                for (const auto &pattern : m_presentIgnorePatterns) {
+                    auto change = m_stagedChanges.find(index++);
+                    diff.append(change != m_stagedChanges.end() ? QChar('-') : QChar(' '));
+                    diff.append(pattern.pattern);
+                    diff.append(QChar('\n'));
+                    if (change != m_stagedChanges.end()) {
+                        for (auto &line : *change) {
+                            diff.append(QChar('+'));
+                            diff.append(line);
+                            diff.append(QChar('\n'));
+                        }
+                    }
+                }
+                askedConfirmation = true;
+                emit actionNeedsConfirmation(action, tr("Do you want to apply the folliwng changes?"), diff);
+                return;
+            }
+
+            // abort if there's a pending API request for ignore patterns
+            if (m_ignorePatternsRequest.reply) {
+                emit notification(
+                    QStringLiteral("error"), tr("Cannot apply ignore patterns while a previous request for ignore patterns is still pending."));
+                return;
+            }
+
+            // make list of new ignore patterns based on staged changes
+            auto newIgnorePatterns = SyncthingIgnores();
+            auto index = std::size_t();
+            for (const auto &pattern : m_presentIgnorePatterns) {
+                auto change = m_stagedChanges.find(index++);
+                if (change == m_stagedChanges.end()) {
+                    newIgnorePatterns.ignore.append(pattern.pattern);
+                    continue;
+                }
+                for (auto &line : *change) {
+                    newIgnorePatterns.ignore.append(line);
+                }
+            }
+
+            // post new ignore patterns via Syncthing API
+            m_ignorePatternsRequest = m_connection.setIgnores(m_dirId, newIgnorePatterns, [this](const QString &error) {
+                m_ignorePatternsRequest.reply = nullptr;
+                if (!error.isEmpty()) {
+                    emit notification(QStringLiteral("error"), tr("Unable to change ignore patterns:\n%1").arg(error));
+                    return;
+                }
+
+                // reset state and query ignore patterns again on success so matching ignore patterns are updated
+                m_stagedChanges.clear();
+                m_stagedLocalFileDeletions.clear();
+                m_hasIgnorePatterns = false;
+                forEachItem(m_root.get(), [](SyncthingItem *item) {
+                    item->ignorePattern = SyncthingItem::ignorePatternNotInitialized;
+                    return true;
+                });
+                queryIgnores();
+
+                emit notification(QStringLiteral("info"), tr("Ignore patterns have been changed."));
+            });
+        });
+        res << applyStagedChangesAction;
+    }
+
     return res;
 }
 
@@ -636,7 +740,11 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
 
 void SyncthingFileModel::queryIgnores()
 {
-    m_connection.ignores(m_dirId, [this](SyncthingIgnores &&ignores, QString &&errorMessage) {
+    if (m_ignorePatternsRequest.reply) {
+        emit notification(QStringLiteral("error"), tr("Cannot query ignore patterns while a previous request for ignore patterns is still pending."));
+        return;
+    }
+    m_ignorePatternsRequest = m_connection.ignores(m_dirId, [this](SyncthingIgnores &&ignores, QString &&errorMessage) {
         m_ignorePatternsRequest.reply = nullptr;
         m_hasIgnorePatterns = errorMessage.isEmpty();
         m_presentIgnorePatterns.clear();

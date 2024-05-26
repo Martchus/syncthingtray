@@ -16,6 +16,7 @@
 #include <QIcon>
 #include <QLabel>
 #include <QMenu>
+#include <QMessageBox>
 #include <QNetworkReply>
 #include <QPixmap>
 #include <QPushButton>
@@ -94,6 +95,8 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
     auto model = new Data::SyncthingFileModel(connection, dir, &connection);
     auto view = new QTreeView(dlg);
     view->setModel(model);
+
+    // setup context menu
     view->setContextMenuPolicy(Qt::CustomContextMenu);
     QObject::connect(view, &QTreeView::customContextMenuRequested, view, [view, model](const QPoint &pos) {
         const auto index = view->indexAt(pos);
@@ -124,6 +127,29 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
         }
         menu.exec(view->viewport()->mapToGlobal(pos));
     });
+
+    // setup handlers for notifications/confirmation
+    QObject::connect(model, &Data::SyncthingFileModel::notification, dlg, [](const QString &type, const QString &message, const QString &details) {
+        auto messageBox
+            = QMessageBox(QMessageBox::Information, QStringLiteral("Confirm action - " APP_NAME), message, QMessageBox::Yes | QMessageBox::No);
+        if (type == QLatin1String("error")) {
+            messageBox.setIcon(QMessageBox::Critical);
+        } else if (type == QLatin1String("warning")) {
+            messageBox.setIcon(QMessageBox::Warning);
+        }
+        messageBox.setDetailedText(details);
+        messageBox.exec();
+    });
+    QObject::connect(
+        model, &Data::SyncthingFileModel::actionNeedsConfirmation, dlg, [](QAction *action, const QString &message, const QString &details) {
+            auto messageBox
+                = QMessageBox(QMessageBox::Warning, QStringLiteral("Confirm action - " APP_NAME), message, QMessageBox::Yes | QMessageBox::No);
+            messageBox.setDetailedText(details);
+            action->setParent(&messageBox);
+            if (messageBox.exec() == QMessageBox::Yes) {
+                action->trigger();
+            }
+        });
 
     // setup layout
     auto layout = new QVBoxLayout;
