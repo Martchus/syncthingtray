@@ -378,7 +378,7 @@ See the release section on GitHub.
         * Binaries are signed with the GPG key
           [`B9E36A7275FC61B464B67907E06FE8F53CDC6A4C`](https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index).
     * or, using Winget, type `winget install Martchus.syncthingtray` in a Command Prompt window.
-    * or, using [Scoop[(https://scoop.sh), type `scoop add bucket extras & scoop install extras/syncthingtray`
+    * or, using [Scoop](https://scoop.sh), type `scoop add bucket extras & scoop install extras/syncthingtray`.
     * or, via this [Chocolatey package](https://community.chocolatey.org/packages/syncthingtray), type `choco install syncthingtray`. (maintained by yan12125).
     * for mingw-w64 PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
 * FreeBSD
