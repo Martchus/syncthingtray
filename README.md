@@ -574,7 +574,7 @@ Translations for further locales can be added quite easily:
 #### Extend/update existing translations
 * For English, update the corresponding string literals within the source code.
 * If necassary, sync the translation files with the source code like in step `2.`/`3.` of
-  "Add a new locale". Check that no translations have been lost (except ones which are no
+  "[Add a new locale](#Add-a-new-locale)". Check that no translations have been lost (except ones which are no
   longer required of course).
 * Change the strings within the translation files found within the `translations`
   directories like in step `4.`/`5.` of "[Add a new locale](#Add-a-new-locale)".
