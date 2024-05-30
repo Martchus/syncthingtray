@@ -313,7 +313,7 @@ See the release section on GitHub.
 * Arch Linux
     * for PKGBUILDs checkout [my GitHub repository](https://github.com/Martchus/PKGBUILDs) or
       [the AUR](https://aur.archlinux.org/packages?SeB=m&K=Martchus)
-    * there is also a [binary repository](https://martchus.no-ip.biz/repo/arch/ownstuff)
+    * there is also a [binary repository](https://martchus.dyn.f3l.de/repo/arch/ownstuff)
 * Tumbleweed, Leap, Fedora
     * RPM \*.spec files and binaries are available via openSUSE Build Service
         * remarks
