@@ -21,6 +21,7 @@
 #include <QPixmap>
 #include <QPushButton>
 #include <QTextBrowser>
+#include <QTextDocument>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -177,6 +178,34 @@ TextViewDialog *ignorePatternsDialog(Data::SyncthingConnection &connection, cons
         for (const auto &ignore : ignores.ignore) {
             browser->append(ignore);
         }
+        browser->setUndoRedoEnabled(true);
+        browser->setReadOnly(false);
+    });
+    dlg->setCloseHandler([&connection, dirId = dir.id, pending = false](TextViewDialog *dlg) mutable {
+        if (pending) {
+            return true;
+        }
+        auto *const browser = dlg->browser();
+        if (!browser->document()->isUndoAvailable()
+            || QMessageBox::question(dlg, dlg->windowTitle(), QCoreApplication::translate("QtGui::OtherDialogs", "Do you want to save the changes?"))
+                != QMessageBox::Yes) {
+            return false;
+        }
+        auto newIgnores = SyncthingIgnores{ .ignore = browser->toPlainText().split(QChar('\n')), .expanded = QStringList() };
+        auto setRes = connection.setIgnores(dirId, newIgnores, [dlg, &pending](const QString &error) {
+            if (error.isEmpty()) {
+                QMessageBox::information(
+                    nullptr, dlg->windowTitle(), QCoreApplication::translate("QtGui::OtherDialogs", "Ignore patterns have been changed."));
+                dlg->setCloseHandler(std::function<bool(TextViewDialog *)>());
+                dlg->close();
+            } else {
+                QMessageBox::critical(
+                    nullptr, dlg->windowTitle(), QCoreApplication::translate("QtGui::OtherDialogs", "Unable to save ignore patterns: %1").arg(error));
+                pending = false;
+            }
+        });
+        QObject::connect(dlg, &QObject::destroyed, setRes.reply, &QNetworkReply::deleteLater);
+        return pending = true;
     });
     QObject::connect(dlg, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
     return dlg;

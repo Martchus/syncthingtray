@@ -8,6 +8,7 @@
 
 #include <qtutilities/misc/dialogutils.h>
 
+#include <QCloseEvent>
 #include <QFontDatabase>
 #include <QHBoxLayout>
 #include <QIcon>
@@ -82,6 +83,13 @@ void TextViewDialog::keyPressEvent(QKeyEvent *event)
         emit reload();
         break;
     default:;
+    }
+}
+
+void TextViewDialog::closeEvent(QCloseEvent *event)
+{
+    if (m_closeHandler && m_closeHandler(this)) {
+        event->ignore();
     }
 }
 
