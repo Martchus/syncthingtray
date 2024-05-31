@@ -4,27 +4,27 @@
 <context>
     <name>QtGui::DevView</name>
     <message>
-        <location filename="../gui/devview.cpp" line="59"/>
+        <location filename="../gui/devview.cpp" line="60"/>
         <source>Copy value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="65"/>
+        <location filename="../gui/devview.cpp" line="66"/>
         <source>Copy name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="68"/>
+        <location filename="../gui/devview.cpp" line="69"/>
         <source>Copy ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="74"/>
+        <location filename="../gui/devview.cpp" line="75"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="79"/>
+        <location filename="../gui/devview.cpp" line="80"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
@@ -32,47 +32,47 @@
 <context>
     <name>QtGui::DirView</name>
     <message>
-        <location filename="../gui/dirview.cpp" line="76"/>
+        <location filename="../gui/dirview.cpp" line="77"/>
         <source>Copy value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="82"/>
+        <location filename="../gui/dirview.cpp" line="83"/>
         <source>Copy label/ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="85"/>
+        <location filename="../gui/dirview.cpp" line="86"/>
         <source>Copy path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="90"/>
+        <location filename="../gui/dirview.cpp" line="91"/>
         <source>Rescan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="95"/>
+        <location filename="../gui/dirview.cpp" line="96"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="100"/>
+        <location filename="../gui/dirview.cpp" line="101"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="104"/>
+        <location filename="../gui/dirview.cpp" line="105"/>
         <source>Open in file browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="109"/>
+        <location filename="../gui/dirview.cpp" line="110"/>
         <source>Browse remote files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="111"/>
+        <location filename="../gui/dirview.cpp" line="112"/>
         <source>Show ignore patterns</source>
         <translation type="unfinished"></translation>
     </message>
