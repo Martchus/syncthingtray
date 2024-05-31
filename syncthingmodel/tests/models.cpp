@@ -102,14 +102,17 @@ void ModelTests::testDevicesModel()
 void ModelTests::testFileModel()
 {
     auto row = 0;
-    const auto *dirInfo = m_connection.findDirInfo(QStringLiteral("GXWxf-3zgnU"), row);
+    const auto dirId = QStringLiteral("GXWxf-3zgnU");
+    const auto *dirInfo = m_connection.findDirInfo(dirId, row);
     QVERIFY(dirInfo);
+    QCOMPARE(dirInfo->displayName(), QStringLiteral("A folder"));
 
     // test behavior of empty/unpopulated model
     auto model = Data::SyncthingFileModel(m_connection, *dirInfo);
     QCOMPARE(model.rowCount(QModelIndex()), 1);
     const auto rootIdx = QPersistentModelIndex(model.index(0, 0));
     QVERIFY(rootIdx.isValid());
+    QCOMPARE(rootIdx.data(Data::SyncthingFileModel::NameRole).toString(), dirInfo->displayName());
     QVERIFY(!model.index(1, 0).isValid());
     QCOMPARE(model.rowCount(rootIdx), 1);
     QCOMPARE(model.index(0, 0, rootIdx).data(), QStringLiteral("Loading…"));
@@ -158,6 +161,7 @@ void ModelTests::testFileModel()
     const auto testPath = QStringLiteral("Camera/IMG_20201213_122504.jpg");
     const auto testPathIdx = model.index(2, 0, cameraIdx);
     QCOMPARE(model.path(testPathIdx), testPath);
+    QCOMPARE(testPathIdx.data(Data::SyncthingFileModel::PathRole), testPath);
     QCOMPARE(model.index(testPath), testPathIdx);
 
     // re-load the data again and wait for the update
@@ -179,6 +183,60 @@ void ModelTests::testFileModel()
     const auto cameraIdx2 = QPersistentModelIndex(model.index(1, 0, rootIdx));
     QCOMPARE(androidIdx2.data(), QStringLiteral("100ANDRO"));
     QCOMPARE(cameraIdx2.data(), QStringLiteral("Camera"));
+
+    // item actions
+    QCOMPARE(androidIdx2.data(Data::SyncthingFileModel::Actions).toStringList(),
+        QStringList({ QStringLiteral("refresh"), QStringLiteral("toggle-selection-recursively"), QStringLiteral("toggle-selection-single"), QStringLiteral("open"), QStringLiteral("copy-path") }));
+    QCOMPARE(androidIdx2.data(Data::SyncthingFileModel::ActionNames).toStringList(),
+        QStringList({ QStringLiteral("Refresh"), QStringLiteral("Select recursively"), QStringLiteral("Select single item"), QStringLiteral("Browse locally"), QStringLiteral("Copy local path") }));
+    QCOMPARE(androidIdx2.data(Data::SyncthingFileModel::ActionIcons).toList().size(), 5);
+
+    // selection actions when selection mode disabled
+    auto actions = model.selectionActions();
+    QVERIFY(!model.isSelectionModeEnabled());
+    QCOMPARE(actions.size(), 0);
+    qDeleteAll(actions);
+
+    // selecting items recursively
+    QCOMPARE(rootIdx.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+    QCOMPARE(androidIdx2.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+    QVERIFY(model.setData(androidIdx2, Qt::Checked, Qt::CheckStateRole));
+    QCOMPARE(rootIdx.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+    QCOMPARE(androidIdx2.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+    model.setSelectionModeEnabled(true);
+    QCOMPARE(rootIdx.data(Qt::CheckStateRole).toInt(), Qt::PartiallyChecked);
+    QCOMPARE(androidIdx2.data(Qt::CheckStateRole).toInt(), Qt::Checked);
+
+    // selection actions when selection mode enabled
+    actions = model.selectionActions();
+    QCOMPARE(actions.size(), 2);
+    QCOMPARE(actions.at(0)->text(), QStringLiteral("Discard selection and staged changes"));
+    QCOMPARE(actions.at(1)->text(), QStringLiteral("Remove related ignore patterns"));
+    actions.at(1)->trigger(); // this won't do much in the test setup
+    actions.at(0)->trigger(); // disables selection mode
+    qDeleteAll(actions);
+    QVERIFY(!model.isSelectionModeEnabled());
+    QCOMPARE(rootIdx.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+    QCOMPARE(androidIdx2.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+
+    // selecting single items
+    model.triggerAction(QStringLiteral("toggle-selection-single"), androidIdx2);
+    QVERIFY(model.isSelectionModeEnabled());
+    QCOMPARE(rootIdx.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+    QCOMPARE(androidIdx2.data(Qt::CheckStateRole).toInt(), Qt::Checked);
+    QCOMPARE(cameraIdx2.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+
+    // select actions recursively via triggerAction() on sibling
+    model.triggerAction(QStringLiteral("toggle-selection-recursively"), cameraIdx2);
+    QCOMPARE(rootIdx.data(Qt::CheckStateRole).toInt(), Qt::Checked);
+    QCOMPARE(androidIdx2.data(Qt::CheckStateRole).toInt(), Qt::Checked);
+    QCOMPARE(cameraIdx2.data(Qt::CheckStateRole).toInt(), Qt::Checked);
+
+    // deselecting actions recursively
+    model.triggerAction(QStringLiteral("toggle-selection-recursively"), rootIdx);
+    QCOMPARE(rootIdx.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+    QCOMPARE(androidIdx2.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+    QCOMPARE(cameraIdx2.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
 }
 
 QTEST_MAIN(ModelTests)
