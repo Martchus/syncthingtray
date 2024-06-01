@@ -37,7 +37,7 @@ public:
     explicit SyncthingFileModel(SyncthingConnection &connection, const SyncthingDir &dir, QObject *parent = nullptr);
     ~SyncthingFileModel() override;
 
-public Q_SLOTS:
+public:
     QHash<int, QByteArray> roleNames() const override;
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex index(const QString &path) const;
@@ -50,13 +50,11 @@ public Q_SLOTS:
     int columnCount(const QModelIndex &parent) const override;
     bool canFetchMore(const QModelIndex &parent) const override;
     void fetchMore(const QModelIndex &parent) override;
-    void triggerAction(const QString &action, const QModelIndex &index);
-    QList<QAction *> selectionActions();
+    Q_INVOKABLE void triggerAction(const QString &action, const QModelIndex &index);
+    Q_INVOKABLE QList<QAction *> selectionActions();
     bool isSelectionModeEnabled() const;
     void setSelectionModeEnabled(bool selectionModeEnabled);
-
-public:
-    QString path(const QModelIndex &path) const;
+    Q_INVOKABLE QString path(const QModelIndex &path) const;
 
 Q_SIGNALS:
     void fetchQueueEmpty();

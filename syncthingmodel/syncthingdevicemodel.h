@@ -27,7 +27,7 @@ public:
 
     explicit SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent = nullptr);
 
-public Q_SLOTS:
+public:
     QHash<int, QByteArray> roleNames() const override;
     const QVector<int> &colorRoles() const override;
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
@@ -37,8 +37,8 @@ public Q_SLOTS:
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
-    const SyncthingDev *devInfo(const QModelIndex &index) const;
-    const SyncthingDev *info(const QModelIndex &index) const;
+    Q_INVOKABLE const SyncthingDev *devInfo(const QModelIndex &index) const;
+    Q_INVOKABLE const SyncthingDev *info(const QModelIndex &index) const;
 
 private Q_SLOTS:
     void devStatusChanged(const Data::SyncthingDev &, int index);

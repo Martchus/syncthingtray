@@ -22,7 +22,7 @@ public:
 
     enum SyncthingDownloadModelRole { ItemPercentage = SyncthingModelUserRole + 1, ItemProgressLabel, ItemPath };
 
-public Q_SLOTS:
+public:
     QHash<int, QByteArray> roleNames() const override;
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &child) const override;
@@ -31,9 +31,9 @@ public Q_SLOTS:
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
-    const SyncthingDir *dirInfo(const QModelIndex &index) const;
-    const SyncthingItemDownloadProgress *progressInfo(const QModelIndex &index) const;
-    QPair<const SyncthingDir *, const SyncthingItemDownloadProgress *> info(const QModelIndex &index) const;
+    Q_INVOKABLE const SyncthingDir *dirInfo(const QModelIndex &index) const;
+    Q_INVOKABLE const SyncthingItemDownloadProgress *progressInfo(const QModelIndex &index) const;
+    Q_INVOKABLE QPair<const SyncthingDir *, const SyncthingItemDownloadProgress *> info(const QModelIndex &index) const;
     unsigned int pendingDownloads() const;
     bool singleColumnMode() const;
     void setSingleColumnMode(bool singleColumnModeEnabled);
