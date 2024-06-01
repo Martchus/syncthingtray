@@ -12,6 +12,8 @@
 
 #include <qtutilities/misc/compat.h>
 
+#include <limits>
+
 class ModelTests : public QObject {
     Q_OBJECT
 
@@ -186,9 +188,11 @@ void ModelTests::testFileModel()
 
     // item actions
     QCOMPARE(androidIdx2.data(Data::SyncthingFileModel::Actions).toStringList(),
-        QStringList({ QStringLiteral("refresh"), QStringLiteral("toggle-selection-recursively"), QStringLiteral("toggle-selection-single"), QStringLiteral("open"), QStringLiteral("copy-path") }));
+        QStringList({ QStringLiteral("refresh"), QStringLiteral("toggle-selection-recursively"), QStringLiteral("toggle-selection-single"),
+            QStringLiteral("open"), QStringLiteral("copy-path") }));
     QCOMPARE(androidIdx2.data(Data::SyncthingFileModel::ActionNames).toStringList(),
-        QStringList({ QStringLiteral("Refresh"), QStringLiteral("Select recursively"), QStringLiteral("Select single item"), QStringLiteral("Browse locally"), QStringLiteral("Copy local path") }));
+        QStringList({ QStringLiteral("Refresh"), QStringLiteral("Select recursively"), QStringLiteral("Select single item"),
+            QStringLiteral("Browse locally"), QStringLiteral("Copy local path") }));
     QCOMPARE(androidIdx2.data(Data::SyncthingFileModel::ActionIcons).toList().size(), 5);
 
     // selection actions when selection mode disabled
@@ -237,6 +241,23 @@ void ModelTests::testFileModel()
     QCOMPARE(rootIdx.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
     QCOMPARE(androidIdx2.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
     QCOMPARE(cameraIdx2.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
+
+    // compute diff and new ignore patterns
+    const auto testPatterns = QStringList{QStringLiteral("foo"), QStringLiteral("bar"), QStringLiteral("baz")};
+    const auto changedTestPatterns = QStringList{QStringLiteral("// new comment at beginning"), testPatterns.front(), testPatterns.back(), QStringLiteral("biz"), QStringLiteral("buz")};
+    model.m_presentIgnorePatterns.reserve(static_cast<std::size_t>(testPatterns.size()));
+    for (const auto &pattern : testPatterns) {
+        model.m_presentIgnorePatterns.emplace_back(QString(pattern));
+    }
+    QCOMPARE(model.computeIgnorePatternDiff(), QStringLiteral(" foo\n bar\n baz\n"));
+    QCOMPARE(model.computeNewIgnorePatterns().ignore, testPatterns);
+    model.m_stagedChanges[std::numeric_limits<std::size_t>::max()].newLines.append(changedTestPatterns.front());
+    model.m_stagedChanges[1]; // removal
+    auto &append = model.m_stagedChanges[2];
+    append.newLines << changedTestPatterns.at(3) << changedTestPatterns.at(4);
+    append.append = true;
+    QCOMPARE(model.computeIgnorePatternDiff(), QStringLiteral("+// new comment at beginning\n foo\n-bar\n baz\n+biz\n+buz\n"));
+    QCOMPARE(model.computeNewIgnorePatterns().ignore, changedTestPatterns);
 }
 
 QTEST_MAIN(ModelTests)

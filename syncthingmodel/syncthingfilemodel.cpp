@@ -16,10 +16,14 @@
 #include <QStringBuilder>
 #include <QtConcurrent>
 
+#include <limits>
+
 using namespace std;
 using namespace CppUtilities;
 
 namespace Data {
+
+static constexpr auto beforeFirstLine = std::numeric_limits<std::size_t>::max();
 
 /// \cond
 static void populatePath(const QString &root, QChar pathSeparator, std::vector<std::unique_ptr<SyncthingItem>> &items)
@@ -156,6 +160,62 @@ QString SyncthingFileModel::path(const QModelIndex &index) const
     }
     auto *item = reinterpret_cast<SyncthingItem *>(index.internalPointer());
     return item->isFilesystemItem() ? item->path : QString();
+}
+
+/*!
+ * \brief Computes a diff between the present ignore patterns and staged changes.
+ */
+QString SyncthingFileModel::computeIgnorePatternDiff() const
+{
+    auto diff = QString();
+    auto index = std::size_t();
+    const auto appendNewLines = [&diff] (const auto &change) {
+        for (const auto &line : change->newLines) {
+            diff.append(QChar('+'));
+            diff.append(line);
+            diff.append(QChar('\n'));
+        }
+    };
+    if (const auto change = m_stagedChanges.find(beforeFirstLine); change != m_stagedChanges.end()) {
+        appendNewLines(change);
+    }
+    for (const auto &pattern : m_presentIgnorePatterns) {
+        auto change = m_stagedChanges.find(index++);
+        diff.append(change == m_stagedChanges.end() || change->append ? QChar(' ') : QChar('-'));
+        diff.append(pattern.pattern);
+        diff.append(QChar('\n'));
+        if (change != m_stagedChanges.end()) {
+            appendNewLines(change);
+        }
+    }
+    return diff;
+}
+
+/*!
+ * \brief Computes new ignore patterns based on the present ignore patterns and staged changes.
+ */
+SyncthingIgnores SyncthingFileModel::computeNewIgnorePatterns() const
+{
+    auto newIgnorePatterns = SyncthingIgnores();
+    auto index = std::size_t();
+    if (const auto change = m_stagedChanges.find(beforeFirstLine); change != m_stagedChanges.end()) {
+        for (const auto &line : change->newLines) {
+            newIgnorePatterns.ignore.append(line);
+        }
+    }
+    for (const auto &pattern : m_presentIgnorePatterns) {
+        auto change = m_stagedChanges.find(index++);
+        if (change == m_stagedChanges.end() || change->append) {
+            newIgnorePatterns.ignore.append(pattern.pattern);
+        }
+        if (change == m_stagedChanges.end()) {
+            continue;
+        }
+        for (const auto &line : change->newLines) {
+            newIgnorePatterns.ignore.append(line);
+        }
+    }
+    return newIgnorePatterns;
 }
 
 QModelIndex SyncthingFileModel::parent(const QModelIndex &child) const
@@ -533,23 +593,8 @@ QList<QAction *> SyncthingFileModel::selectionActions()
         connect(applyStagedChangesAction, &QAction::triggered, this, [this, action = applyStagedChangesAction, askedConfirmation = false]() mutable {
             // allow user to review changes before applying them
             if (!askedConfirmation) {
-                auto diff = QString();
-                auto index = std::size_t();
-                for (const auto &pattern : m_presentIgnorePatterns) {
-                    auto change = m_stagedChanges.find(index++);
-                    diff.append(change != m_stagedChanges.end() ? QChar('-') : QChar(' '));
-                    diff.append(pattern.pattern);
-                    diff.append(QChar('\n'));
-                    if (change != m_stagedChanges.end()) {
-                        for (auto &line : *change) {
-                            diff.append(QChar('+'));
-                            diff.append(line);
-                            diff.append(QChar('\n'));
-                        }
-                    }
-                }
                 askedConfirmation = true;
-                emit actionNeedsConfirmation(action, tr("Do you want to apply the folliwng changes?"), diff);
+                emit actionNeedsConfirmation(action, tr("Do you want to apply the folliwng changes?"), computeIgnorePatternDiff());
                 return;
             }
 
@@ -560,22 +605,8 @@ QList<QAction *> SyncthingFileModel::selectionActions()
                 return;
             }
 
-            // make list of new ignore patterns based on staged changes
-            auto newIgnorePatterns = SyncthingIgnores();
-            auto index = std::size_t();
-            for (const auto &pattern : m_presentIgnorePatterns) {
-                auto change = m_stagedChanges.find(index++);
-                if (change == m_stagedChanges.end()) {
-                    newIgnorePatterns.ignore.append(pattern.pattern);
-                    continue;
-                }
-                for (auto &line : *change) {
-                    newIgnorePatterns.ignore.append(line);
-                }
-            }
-
             // post new ignore patterns via Syncthing API
-            m_ignorePatternsRequest = m_connection.setIgnores(m_dirId, newIgnorePatterns, [this](const QString &error) {
+            m_ignorePatternsRequest = m_connection.setIgnores(m_dirId, computeNewIgnorePatterns(), [this](const QString &error) {
                 m_ignorePatternsRequest.reply = nullptr;
                 if (!error.isEmpty()) {
                     emit notification(QStringLiteral("error"), tr("Unable to change ignore patterns:\n%1").arg(error));

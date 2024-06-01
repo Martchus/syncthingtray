@@ -17,13 +17,18 @@
 
 QT_FORWARD_DECLARE_CLASS(QAction)
 
+class ModelTests;
+
 namespace Data {
 
 class LIB_SYNCTHING_MODEL_EXPORT SyncthingFileModel : public SyncthingModel {
     Q_OBJECT
+    Q_PROPERTY(bool hasIgnorePatterns READ hasIgnorePatterns)
     Q_PROPERTY(bool selectionModeEnabled READ isSelectionModeEnabled WRITE setSelectionModeEnabled)
 
 public:
+    friend class ::ModelTests;
+
     enum SyncthingFileModelRole {
         NameRole = SyncthingModelUserRole + 1,
         SizeRole,
@@ -55,6 +60,8 @@ public:
     bool isSelectionModeEnabled() const;
     void setSelectionModeEnabled(bool selectionModeEnabled);
     Q_INVOKABLE QString path(const QModelIndex &path) const;
+    bool hasIgnorePatterns() const;
+    const std::vector<SyncthingIgnorePattern> &presentIgnorePatterns() const;
 
 Q_SIGNALS:
     void fetchQueueEmpty();
@@ -73,6 +80,8 @@ private:
     void processFetchQueue(const QString &lastItemPath = QString());
     void queryIgnores();
     void matchItemAgainstIgnorePatterns(SyncthingItem &item) const;
+    QString computeIgnorePatternDiff() const;
+    SyncthingIgnores computeNewIgnorePatterns() const;
 
 private:
     using SyncthingItems = std::vector<std::unique_ptr<SyncthingItem>>;
@@ -83,12 +92,16 @@ private:
         QPersistentModelIndex refreshedIndex;
         QueryResult &operator=(SyncthingConnection::QueryResult &&);
     };
+    struct Change {
+        QStringList newLines;
+        bool append = false;
+    };
 
     SyncthingConnection &m_connection;
     QString m_dirId;
     QString m_localPath;
     std::vector<SyncthingIgnorePattern> m_presentIgnorePatterns;
-    QHash<std::size_t, QStringList> m_stagedChanges;
+    QHash<std::size_t, Change> m_stagedChanges;
     QSet<QString> m_stagedLocalFileDeletions;
     QStringList m_fetchQueue;
     SyncthingConnection::QueryResult m_ignorePatternsRequest;
@@ -103,6 +116,16 @@ private:
 inline bool SyncthingFileModel::isSelectionModeEnabled() const
 {
     return m_selectionMode;
+}
+
+inline bool SyncthingFileModel::hasIgnorePatterns() const
+{
+    return m_hasIgnorePatterns;
+}
+
+inline const std::vector<SyncthingIgnorePattern> &SyncthingFileModel::presentIgnorePatterns() const
+{
+    return m_presentIgnorePatterns;
 }
 
 } // namespace Data
