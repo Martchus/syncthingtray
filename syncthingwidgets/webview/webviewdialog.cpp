@@ -77,7 +77,6 @@ WebViewDialog::WebViewDialog(QWidget *parent)
 
 QtGui::WebViewDialog::~WebViewDialog()
 {
-    Settings::values().webView.geometry = saveGeometry();
 }
 
 void QtGui::WebViewDialog::applySettings(const Data::SyncthingConnectionSettings &connectionSettings, bool aboutToShow)
@@ -126,7 +125,9 @@ void WebViewDialog::closeUnlessModalVisible()
 
 void QtGui::WebViewDialog::closeEvent(QCloseEvent *event)
 {
-    if (!Settings::values().webView.keepRunning) {
+    auto &webViewSettings = Settings::values().webView;
+    webViewSettings.geometry = saveGeometry();
+    if (!webViewSettings.keepRunning) {
         deleteLater();
     }
     event->accept();
