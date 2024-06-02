@@ -551,12 +551,30 @@ template <typename Callback> static void forEachItem(SyncthingItem *root, Callba
     }
 }
 
+void SyncthingFileModel::ignoreSelectedItems(bool ignore)
+{
+    forEachItem(m_root.get(), [this, ignore](SyncthingItem *item) {
+        if (item->checked != Qt::Checked || !item->isFilesystemItem()) {
+            return true;
+        }
+        const auto reversePattern = SyncthingIgnorePattern::forPath(m_pathSeparator + item->path, !ignore);
+        const auto wantedPattern = SyncthingIgnorePattern::forPath(m_pathSeparator + item->path, ignore);
+        auto &newLines = m_stagedChanges[beforeFirstLine].newLines;
+        newLines.removeOne(reversePattern);
+        newLines.removeOne(wantedPattern);
+        newLines.prepend(wantedPattern);
+        return false; // no need to add ignore patterns for children as they are applied recursively anyway
+    });
+}
+
 QList<QAction *> SyncthingFileModel::selectionActions()
 {
     auto res = QList<QAction *>();
     if (!m_selectionMode) {
         return res;
     }
+    res.reserve(4);
+
     auto *const discardAction = new QAction(tr("Discard selection and staged changes"), this);
     discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo")));
     connect(discardAction, &QAction::triggered, this, [this] {
@@ -569,7 +587,17 @@ QList<QAction *> SyncthingFileModel::selectionActions()
     });
     res << discardAction;
 
-    auto *const removeIgnorePatternsAction = new QAction(tr("Remove related ignore patterns"), this);
+    auto *const ignoreSelectedAction = new QAction(tr("Ignore selected items (and their children)"), this);
+    ignoreSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-remove")));
+    connect(ignoreSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(); });
+    res << ignoreSelectedAction;
+
+    auto *const includeSelectedAction = new QAction(tr("Include selected items (and their children)"), this);
+    includeSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-add")));
+    connect(includeSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(false); });
+    res << includeSelectedAction;
+
+    auto *const removeIgnorePatternsAction = new QAction(tr("Remove related ignore patterns (may affect other items as well)"), this);
     removeIgnorePatternsAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-delete")));
     connect(removeIgnorePatternsAction, &QAction::triggered, this, [this]() {
         forEachItem(m_root.get(), [this](SyncthingItem *item) {

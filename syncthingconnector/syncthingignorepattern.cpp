@@ -435,4 +435,23 @@ match:
     return false;
 }
 
+/*!
+ * \brief Makes an ignore pattern for \a path with the specified settings.
+ */
+QString SyncthingIgnorePattern::forPath(const QString &path, bool ignore, bool caseInsensitive, bool allowRemovalOnParentDirRemoval)
+{
+    auto res = QString();
+    res.reserve(10 + path.size());
+    if (!ignore) {
+        res += QChar('!');
+    }
+    if (caseInsensitive) {
+        res += QStringLiteral("(?i)");
+    }
+    if (allowRemovalOnParentDirRemoval) {
+        res += QStringLiteral("(?d)");
+    }
+    return res += path;
+}
+
 } // namespace Data

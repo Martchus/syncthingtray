@@ -213,9 +213,11 @@ void ModelTests::testFileModel()
 
     // selection actions when selection mode enabled
     actions = model.selectionActions();
-    QCOMPARE(actions.size(), 2);
+    QCOMPARE(actions.size(), 4);
     QCOMPARE(actions.at(0)->text(), QStringLiteral("Discard selection and staged changes"));
-    QCOMPARE(actions.at(1)->text(), QStringLiteral("Remove related ignore patterns"));
+    QCOMPARE(actions.at(1)->text(), QStringLiteral("Ignore selected items (and their children)"));
+    QCOMPARE(actions.at(2)->text(), QStringLiteral("Include selected items (and their children)"));
+    QCOMPARE(actions.at(3)->text(), QStringLiteral("Remove related ignore patterns (may affect other items as well)"));
     actions.at(1)->trigger(); // this won't do much in the test setup
     actions.at(0)->trigger(); // disables selection mode
     qDeleteAll(actions);

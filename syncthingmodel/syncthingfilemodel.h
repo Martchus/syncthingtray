@@ -80,6 +80,7 @@ private:
     void processFetchQueue(const QString &lastItemPath = QString());
     void queryIgnores();
     void matchItemAgainstIgnorePatterns(SyncthingItem &item) const;
+    void ignoreSelectedItems(bool ignore = true);
     QString computeIgnorePatternDiff() const;
     SyncthingIgnores computeNewIgnorePatterns() const;
 
