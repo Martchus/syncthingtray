@@ -389,6 +389,7 @@ bool restore()
     launcher.libSyncthing.dataDir = settings.value(QStringLiteral("libSyncthingDataDir"), launcher.libSyncthing.dataDir).toString();
     launcher.libSyncthing.logLevel = static_cast<LibSyncthing::LogLevel>(
         settings.value(QStringLiteral("libSyncthingLogLevel"), static_cast<int>(launcher.libSyncthing.logLevel)).toInt());
+    launcher.libSyncthing.expandPaths = settings.value(QStringLiteral("libSyncthingExpandPaths")).toBool();
 #endif
     launcher.syncthingPath = settings.value(QStringLiteral("syncthingPath"), launcher.syncthingPath).toString();
     launcher.syncthingArgs = settings.value(QStringLiteral("syncthingArgs"), launcher.syncthingArgs).toString();
@@ -519,6 +520,7 @@ bool save()
     settings.setValue(QStringLiteral("libSyncthingConfigDir"), launcher.libSyncthing.configDir);
     settings.setValue(QStringLiteral("libSyncthingDataDir"), launcher.libSyncthing.dataDir);
     settings.setValue(QStringLiteral("libSyncthingLogLevel"), static_cast<int>(launcher.libSyncthing.logLevel));
+    settings.setValue(QStringLiteral("libSyncthingExpandPaths"), launcher.libSyncthing.expandPaths);
 #endif
     settings.setValue(QStringLiteral("syncthingPath"), launcher.syncthingPath);
     settings.setValue(QStringLiteral("syncthingArgs"), launcher.syncthingArgs);

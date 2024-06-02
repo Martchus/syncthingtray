@@ -187,6 +187,9 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
         auto options = LibSyncthing::RuntimeOptions();
         options.configDir = libSyncthingSettings.configDir.toStdString();
         options.dataDir = libSyncthingSettings.dataDir.isEmpty() ? options.configDir : libSyncthingSettings.dataDir.toStdString();
+        if (libSyncthingSettings.expandPaths) {
+            options.flags = options.flags | LibSyncthing::RuntimeFlags::ExpandPathsFromEnv;
+        }
         setLibSyncthingLogLevel(libSyncthingSettings.logLevel);
         launch(options);
 #else

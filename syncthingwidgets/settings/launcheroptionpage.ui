@@ -77,14 +77,14 @@
       <item row="3" column="1">
        <widget class="QtUtilities::PathSelection" name="configDirPathSelection" native="true"/>
       </item>
-      <item row="5" column="0">
+      <item row="7" column="0">
        <widget class="QLabel" name="logLevelLabel">
         <property name="text">
          <string>Log level</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="7" column="1">
        <widget class="QComboBox" name="logLevelComboBox">
         <item>
          <property name="text">
@@ -125,6 +125,20 @@
       </item>
       <item row="4" column="1">
        <widget class="QtUtilities::PathSelection" name="dataDirPathSelection" native="true"/>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="optionsLabel">
+        <property name="text">
+         <string>Options</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QCheckBox" name="expandEnvCheckBox">
+        <property name="text">
+         <string>Replace ${var} or $var in directories with values from environment</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -416,6 +430,38 @@
     <hint type="destinationlabel">
      <x>171</x>
      <y>156</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useBuiltInVersionCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>optionsLabel</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>62</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>125</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useBuiltInVersionCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>expandEnvCheckBox</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>62</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>336</x>
+     <y>165</y>
     </hint>
    </hints>
   </connection>

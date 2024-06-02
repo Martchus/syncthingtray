@@ -102,6 +102,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
         QString configDir;
         QString dataDir;
         ::LibSyncthing::LogLevel logLevel = ::LibSyncthing::LogLevel::Info;
+        bool expandPaths = false;
     } libSyncthing;
 #endif
 

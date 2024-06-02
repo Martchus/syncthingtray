@@ -1124,7 +1124,7 @@ QWidget *LauncherOptionPage::setupWidget()
 
     // hide libsyncthing-controls by default (as the checkbox is unchecked by default)
     for (auto *const lstWidget : std::initializer_list<QWidget *>{ ui()->configDirLabel, ui()->configDirPathSelection, ui()->dataDirLabel,
-             ui()->dataDirPathSelection, ui()->logLevelLabel, ui()->logLevelComboBox }) {
+             ui()->dataDirPathSelection, ui()->logLevelLabel, ui()->logLevelComboBox, ui()->optionsLabel, ui()->expandEnvCheckBox }) {
         lstWidget->setVisible(false);
     }
 
@@ -1196,6 +1196,7 @@ bool LauncherOptionPage::apply()
         settings.libSyncthing.configDir = ui()->configDirPathSelection->lineEdit()->text();
         settings.libSyncthing.dataDir = ui()->dataDirPathSelection->lineEdit()->text();
         settings.libSyncthing.logLevel = static_cast<LibSyncthing::LogLevel>(ui()->logLevelComboBox->currentIndex());
+        settings.libSyncthing.expandPaths = ui()->expandEnvCheckBox->isChecked();
 #endif
         settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
         settings.syncthingArgs = ui()->argumentsLineEdit->text();
@@ -1225,6 +1226,7 @@ void LauncherOptionPage::reset()
         ui()->configDirPathSelection->lineEdit()->setText(settings.libSyncthing.configDir);
         ui()->dataDirPathSelection->lineEdit()->setText(settings.libSyncthing.dataDir);
         ui()->logLevelComboBox->setCurrentIndex(static_cast<int>(settings.libSyncthing.logLevel));
+        ui()->expandEnvCheckBox->setChecked(settings.libSyncthing.expandPaths);
 #endif
         ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
         ui()->argumentsLineEdit->setText(settings.syncthingArgs);
