@@ -6,6 +6,7 @@
 
 #include <QtTest/QtTest>
 
+#include <QAction>
 #include <QEventLoop>
 #include <QLocale>
 #include <QTimer>
