@@ -306,6 +306,9 @@ environment. Make it invoke
 The Plasmoid can be shown via a hot-key as well by configuring one in the Plasmoid settings.
 
 ## Download
+Checkout the [download section on the website](https://martchus.github.io/syncthingtray/#downloads-section) for an overview.
+Keep reading here for a more detailed list.
+
 ### Source
 See the release section on GitHub.
 
