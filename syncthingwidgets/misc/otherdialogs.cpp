@@ -130,9 +130,8 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
     });
 
     // setup handlers for notifications/confirmation
-    QObject::connect(model, &Data::SyncthingFileModel::notification, dlg, [](const QString &type, const QString &message, const QString &details) {
-        auto messageBox
-            = QMessageBox(QMessageBox::Information, QStringLiteral("Confirm action - " APP_NAME), message, QMessageBox::Yes | QMessageBox::No);
+    QObject::connect(model, &Data::SyncthingFileModel::notification, dlg, [dlg](const QString &type, const QString &message, const QString &details) {
+        auto messageBox = QMessageBox(QMessageBox::Information, dlg->windowTitle(), message, QMessageBox::Ok);
         if (type == QLatin1String("error")) {
             messageBox.setIcon(QMessageBox::Critical);
         } else if (type == QLatin1String("warning")) {
