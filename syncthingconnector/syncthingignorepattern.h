@@ -21,7 +21,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingIgnorePattern {
     SyncthingIgnorePattern(SyncthingIgnorePattern &&);
     ~SyncthingIgnorePattern();
     bool matches(const QString &path, QChar pathSeparator = QChar('/')) const;
-    static QString forPath(const QString &path, bool ignore = true, bool caseInsensitive = false, bool allowRemovalOnParentDirRemoval  = false);
+    static QString forPath(const QString &path, bool ignore = true, bool caseInsensitive = false, bool allowRemovalOnParentDirRemoval = false);
 
     /// \brief The full ignore pattern as passed to the c'tor (unless modified).
     QString pattern;

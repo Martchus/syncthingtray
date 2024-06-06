@@ -169,7 +169,7 @@ QString SyncthingFileModel::computeIgnorePatternDiff() const
 {
     auto diff = QString();
     auto index = std::size_t();
-    const auto appendNewLines = [&diff] (const auto &change) {
+    const auto appendNewLines = [&diff](const auto &change) {
         for (const auto &line : change->newLines) {
             diff.append(QChar('+'));
             diff.append(line);
