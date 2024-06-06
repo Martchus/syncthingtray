@@ -167,47 +167,63 @@ TextViewDialog *ignorePatternsDialog(Data::SyncthingConnection &connection, cons
     auto *const dlg
         = new TextViewDialog(QCoreApplication::translate("QtGui::OtherDialogs", "Ignore patterns of folder \"%1\"").arg(dir.displayName()), parent);
     dlg->browser()->setText(QStringLiteral("Loading…"));
-    auto res = connection.ignores(dir.id, [dlg](Data::SyncthingIgnores &&ignores, QString &&errorMessage) {
-        auto *const browser = dlg->browser();
-        browser->clear();
-        if (!errorMessage.isEmpty()) {
-            browser->setText(errorMessage);
-            return;
-        }
-        for (const auto &ignore : ignores.ignore) {
-            browser->append(ignore);
-        }
-        browser->setUndoRedoEnabled(true);
-        browser->setReadOnly(false);
+    QObject::connect(dlg, &TextViewDialog::reload, dlg, [&connection, dirId = dir.id, dlg] {
+        dlg->browser()->setReadOnly(true);
+        auto res = connection.ignores(dirId, [dlg](Data::SyncthingIgnores &&ignores, QString &&errorMessage) {
+            auto *const browser = dlg->browser();
+            browser->setUndoRedoEnabled(false);
+            browser->clear();
+            browser->document()->clearUndoRedoStacks();
+            if (!errorMessage.isEmpty()) {
+                browser->setText(errorMessage);
+                return;
+            }
+            for (const auto &ignore : ignores.ignore) {
+                browser->append(ignore);
+            }
+            browser->setUndoRedoEnabled(true);
+            browser->setReadOnly(false);
+            dlg->setProperty("savedRevision", browser->document()->revision());
+        });
+        QObject::connect(dlg, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
     });
-    dlg->setCloseHandler([&connection, dirId = dir.id, pending = false](TextViewDialog *textViewDlg) mutable {
-        if (pending) {
-            return true;
-        }
-        auto *const browser = textViewDlg->browser();
-        if (!browser->document()->isUndoAvailable()
-            || QMessageBox::question(
-                   textViewDlg, textViewDlg->windowTitle(), QCoreApplication::translate("QtGui::OtherDialogs", "Do you want to save the changes?"))
-                != QMessageBox::Yes) {
-            return false;
-        }
+    emit dlg->reload();
+    QObject::connect(dlg, &TextViewDialog::save, dlg, [&connection, dirId = dir.id, dlg] {
+        dlg->setProperty("isSaving", true);
+        auto *const browser = dlg->browser();
         auto newIgnores = SyncthingIgnores{ .ignore = browser->toPlainText().split(QChar('\n')), .expanded = QStringList() };
-        auto setRes = connection.setIgnores(dirId, newIgnores, [textViewDlg, &pending](const QString &error) {
+        auto setRes = connection.setIgnores(dirId, newIgnores, [dlg](const QString &error) {
             if (error.isEmpty()) {
                 QMessageBox::information(
-                    nullptr, textViewDlg->windowTitle(), QCoreApplication::translate("QtGui::OtherDialogs", "Ignore patterns have been changed."));
-                textViewDlg->setCloseHandler(std::function<bool(TextViewDialog *)>());
-                textViewDlg->close();
+                    nullptr, dlg->windowTitle(), QCoreApplication::translate("QtGui::OtherDialogs", "Ignore patterns have been changed."));
+                if (dlg->property("isClosing").toBool()) {
+                    dlg->setCloseHandler(std::function<bool(TextViewDialog *)>());
+                    dlg->close();
+                }
             } else {
-                QMessageBox::critical(nullptr, textViewDlg->windowTitle(),
-                    QCoreApplication::translate("QtGui::OtherDialogs", "Unable to save ignore patterns: %1").arg(error));
-                pending = false;
+                QMessageBox::critical(
+                    nullptr, dlg->windowTitle(), QCoreApplication::translate("QtGui::OtherDialogs", "Unable to save ignore patterns: %1").arg(error));
             }
+            dlg->setProperty("isSaving", false);
+            dlg->setProperty("savedRevision", dlg->browser()->document()->revision());
         });
-        QObject::connect(textViewDlg, &QObject::destroyed, setRes.reply, &QNetworkReply::deleteLater);
-        return pending = true;
+        QObject::connect(dlg, &QObject::destroyed, setRes.reply, &QNetworkReply::deleteLater);
     });
-    QObject::connect(dlg, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
+    dlg->setCloseHandler([](TextViewDialog *textViewDlg) {
+        textViewDlg->setProperty("isClosing", true);
+        if (textViewDlg->property("isSaving").toBool()) {
+            return true;
+        }
+        if (textViewDlg->browser()->document()->revision() <= textViewDlg->property("savedRevision").toInt()) {
+            return false;
+        }
+        const auto question = QMessageBox::question(
+            textViewDlg, textViewDlg->windowTitle(), QCoreApplication::translate("QtGui::OtherDialogs", "Do you want to save the changes?"));
+        if (question == QMessageBox::Yes) {
+            emit textViewDlg->save();
+        }
+        return question != QMessageBox::No;
+    });
     return dlg;
 }
 

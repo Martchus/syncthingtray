@@ -191,8 +191,8 @@ ColumnLayout {
                 }
                 PlasmaExtras.MenuItem {
                     id: showIgnorePatternsItem
-                    text: qsTr("Show ignore patterns")
-                    icon: "selection-symbolic"
+                    text: qsTr("Show/edit ignore patterns")
+                    icon: "document-edit"
                     onClicked: directoryView.triggerNativeActionWithCurrentItemData(
                                    "showIgnorePatterns", "dirId_")
                     visible: plasmoid.wipFeaturesEnabled

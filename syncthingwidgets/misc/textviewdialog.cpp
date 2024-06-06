@@ -82,6 +82,11 @@ void TextViewDialog::keyPressEvent(QKeyEvent *event)
     case Qt::Key_F5:
         emit reload();
         break;
+    case Qt::Key_S:
+        if (event->modifiers() == Qt::ControlModifier) {
+            emit save();
+        }
+        break;
     default:;
     }
 }

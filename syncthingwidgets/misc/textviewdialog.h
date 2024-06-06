@@ -31,6 +31,7 @@ public:
 
 Q_SIGNALS:
     void reload();
+    void save();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;

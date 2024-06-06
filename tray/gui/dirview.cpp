@@ -109,7 +109,7 @@ void DirView::showContextMenu(const QPoint &position)
                                        QIcon(QStringLiteral(":/icons/hicolor/scalable/places/document-open-remote.svg"))),
                         tr("Browse remote files")),
                 &QAction::triggered, triggerActionForSelectedRow(this, &DirView::browseRemoteFiles));
-            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("selection-symbolic")), tr("Show ignore patterns")), &QAction::triggered,
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("document-edit")), tr("Show/edit ignore patterns")), &QAction::triggered,
                 triggerActionForSelectedRow(this, &DirView::showIgnorePatterns));
         }
     }

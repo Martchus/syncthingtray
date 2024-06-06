@@ -50,6 +50,7 @@ set(REQUIRED_ICONS
     dialog-cancel
     dialog-ok
     dialog-ok-apply
+    document-edit
     document-open
     document-open-remote
     download
@@ -89,7 +90,6 @@ set(REQUIRED_ICONS
     preferences-other
     process-stop
     qtcreator
-    selection-symbolic
     system-run
     system-search
     system-file-manager
