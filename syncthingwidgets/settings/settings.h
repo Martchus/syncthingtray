@@ -46,6 +46,7 @@ namespace Settings {
 struct SYNCTHINGWIDGETS_EXPORT Connection {
     Data::SyncthingConnectionSettings primary;
     std::vector<Data::SyncthingConnectionSettings> secondary;
+    bool insecure = false; // not persistent, for testing purposes only
 
     void addConfigFromWizard(const Data::SyncthingConfig &config);
 };

@@ -217,7 +217,7 @@ void SyncthingConnection::handleSslErrors(const QList<QSslError> &errors)
     }
 
     // proceed if all errors are expected
-    if (!hasUnexpectedErrors) {
+    if (!hasUnexpectedErrors || m_insecure) {
         reply->ignoreSslErrors();
     }
 }

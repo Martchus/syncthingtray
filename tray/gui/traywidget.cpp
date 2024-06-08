@@ -107,6 +107,9 @@ TrayWidget::TrayWidget(TrayMenu *parent)
         m_tabTexts << m_ui->tabWidget->tabText(i);
     }
 
+    // configure connection
+    m_connection.setInsecure(Settings::values().connection.insecure);
+
     // setup models and views
     m_ui->dirsTreeView->header()->setSortIndicator(0, Qt::AscendingOrder);
     m_ui->dirsTreeView->setModel(&m_sortFilterDirModel);

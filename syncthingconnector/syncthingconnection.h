@@ -160,6 +160,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(QJsonObject rawConfig READ rawConfig NOTIFY newConfig)
     Q_PROPERTY(bool useDeprecatedRoutes READ isUsingDeprecatedRoutes WRITE setUseDeprecatedRoutes)
     Q_PROPERTY(bool pausingOnMeteredConnection READ isPausingOnMeteredConnection WRITE setPausingOnMeteredConnection)
+    Q_PROPERTY(bool insecure READ isInsecure WRITE setInsecure)
 
 public:
     explicit SyncthingConnection(const QString &syncthingUrl = QStringLiteral("http://localhost:8080"), const QByteArray &apiKey = QByteArray(),
@@ -220,6 +221,8 @@ public:
     void setLongPollingTimeout(int longPollingTimeout);
     bool isPausingOnMeteredConnection() const;
     void setPausingOnMeteredConnection(bool pausingOnMeteredConnection);
+    bool isInsecure() const;
+    void setInsecure(bool insecure);
 
     // getter for information retrieved from Syncthing
     const QString &configDir() const;
@@ -527,6 +530,7 @@ private:
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
     bool m_handlingMeteredConnectionInitialized;
 #endif
+    bool m_insecure;
 };
 
 /*!
@@ -868,6 +872,23 @@ inline void SyncthingConnection::setLongPollingTimeout(int longPollingTimeout)
 inline bool SyncthingConnection::isPausingOnMeteredConnection() const
 {
     return m_pausingOnMeteredConnection;
+}
+
+/*!
+ * \brief Returns whether any certificate errors will be ignored.
+ * \remarks This will only ever be the case when this has been configured via setInsecure().
+ */
+inline bool SyncthingConnection::isInsecure() const
+{
+    return m_insecure;
+}
+
+/*!
+ * \brief Sets whether any certificate errors will be ignored.
+ */
+inline void SyncthingConnection::setInsecure(bool insecure)
+{
+    m_insecure = insecure;
 }
 
 /*!

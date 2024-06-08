@@ -166,6 +166,8 @@ static int runApplication(int argc, const char *const *argv)
     assumeFirstLaunchArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is debug-only
     auto wipArg = ConfigValueArgument("wip", '\0', "enables WIP features");
     wipArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is debug-only
+    auto insecureArg = ConfigValueArgument("insecure", '\0', "allow any self-signed certificate");
+    insecureArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is only for development
     auto waitForTrayArg = ConfigValueArgument("wait", '\0',
         "wait until the system tray becomes available instead of showing an error message if the system tray is not available on start-up");
     auto connectionArg = ConfigValueArgument("connection", '\0', "specifies one or more connection configurations to be used", { "config name" });
@@ -179,7 +181,7 @@ static int runApplication(int argc, const char *const *argv)
     quitArg.setFlags(Argument::Flags::Deprecated, true); // hide as only used internally for --replace
     auto &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
     widgetsGuiArg.addSubArguments({ &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstanceArg,
-        &newInstanceArg, &replaceArg, &showWizardArg, &assumeFirstLaunchArg, &wipArg });
+        &newInstanceArg, &replaceArg, &showWizardArg, &assumeFirstLaunchArg, &wipArg, &insecureArg });
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
     auto cliArg = OperationArgument("cli", 'c', "runs Syncthing's CLI");
     auto cliHelp = ConfigValueArgument("help", 'h', "shows help for Syncthing's CLI");
@@ -254,6 +256,9 @@ static int runApplication(int argc, const char *const *argv)
         }
         if (wipArg.isPresent()) {
             settings.enableWipFeatures = true;
+        }
+        if (insecureArg.isPresent()) {
+            settings.connection.insecure = true;
         }
         LOAD_QT_TRANSLATIONS;
         if (!settings.error.isEmpty()) {

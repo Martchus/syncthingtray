@@ -437,6 +437,7 @@ bool restore()
     // restore developer settings from environment variables
     setVarFromEnv(v.fakeFirstLaunch, PROJECT_VARNAME_UPPER "_FAKE_FIRST_LAUNCH");
     setVarFromEnv(v.enableWipFeatures, PROJECT_VARNAME_UPPER "_ENABLE_WIP_FEATURES");
+    setVarFromEnv(v.connection.insecure, PROJECT_VARNAME_UPPER "_INSECURE");
 
     return v.error.isEmpty();
 }

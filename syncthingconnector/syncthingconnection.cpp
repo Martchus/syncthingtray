@@ -119,6 +119,7 @@ SyncthingConnection::SyncthingConnection(
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
     , m_handlingMeteredConnectionInitialized(false)
 #endif
+    , m_insecure(false)
 {
     m_trafficPollTimer.setInterval(SyncthingConnectionSettings::defaultTrafficPollInterval);
     m_trafficPollTimer.setTimerType(Qt::VeryCoarseTimer);
