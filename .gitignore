@@ -34,6 +34,9 @@ Makefile*
 # Go modules
 /syncthing/go/pkg
 
+# Generated files
+/*/android/AndroidManifest.xml
+
 # Dolphin
 .directory
 

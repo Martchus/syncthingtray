@@ -183,7 +183,29 @@ include(ConfigHeader)
 # create desktop file using previously defined meta data
 add_desktop_file()
 
+# configure macOS bundle
 if (APPLE)
     set_target_properties(${META_TARGET_NAME} PROPERTIES MACOSX_BUNDLE_INFO_PLIST
                                                          "${CMAKE_CURRENT_SOURCE_DIR}/resources/Info.plist.in")
+endif ()
+
+# configure creating an Android package using androiddeployqt
+if (ANDROID)
+    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
+    set_target_properties(${META_TARGET_NAME} PROPERTIES QT_ANDROID_PACKAGE_SOURCE_DIR "${ANDROID_PACKAGE_SOURCE_DIR}")
+
+    set(ANDROID_MANIFEST_PATH "${ANDROID_PACKAGE_SOURCE_DIR}/AndroidManifest.xml")
+    configure_file("resources/AndroidManifest.xml.in" "${ANDROID_MANIFEST_PATH}")
+
+    find_package(OpenSSL)
+    if (OPENSSL_FOUND)
+        set_target_properties(${META_TARGET_NAME} PROPERTIES QT_ANDROID_EXTRA_LIBS
+                                                             "${OPENSSL_CRYPTO_LIBRARY};${OPENSSL_SSL_LIBRARY}")
+    else ()
+        message(WARNING "Unable to find OpenSSL libraries. HTTPS will not be supported.")
+    endif ()
+
+    set(QT_ANDROID_SIGN_APK ON)
+    qt_android_generate_deployment_settings(${META_TARGET_NAME})
+    qt_android_add_apk_target(${META_TARGET_NAME})
 endif ()
