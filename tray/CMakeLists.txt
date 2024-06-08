@@ -199,8 +199,13 @@ if (ANDROID)
 
     find_package(OpenSSL)
     if (OPENSSL_FOUND)
+        # link the OpenSSL libraries into the build directory so they have the names that the Qt framework expects
+        set(OPENSSL_CRYPTO_LIBRARY_LINK "${CMAKE_CURRENT_BINARY_DIR}/libcrypto_3.so")
+        set(OPENSSL_SSL_LIBRARY_LINK "${CMAKE_CURRENT_BINARY_DIR}/libssl_3.so")
+        file(CREATE_LINK "${OPENSSL_CRYPTO_LIBRARY}" "${OPENSSL_CRYPTO_LIBRARY_LINK}" COPY_ON_ERROR SYMBOLIC)
+        file(CREATE_LINK "${OPENSSL_SSL_LIBRARY}" "${OPENSSL_SSL_LIBRARY_LINK}" COPY_ON_ERROR SYMBOLIC)
         set_target_properties(${META_TARGET_NAME} PROPERTIES QT_ANDROID_EXTRA_LIBS
-                                                             "${OPENSSL_CRYPTO_LIBRARY};${OPENSSL_SSL_LIBRARY}")
+                                                             "${OPENSSL_CRYPTO_LIBRARY_LINK};${OPENSSL_SSL_LIBRARY_LINK}")
     else ()
         message(WARNING "Unable to find OpenSSL libraries. HTTPS will not be supported.")
     endif ()
