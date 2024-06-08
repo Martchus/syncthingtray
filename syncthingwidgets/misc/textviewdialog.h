@@ -3,7 +3,7 @@
 
 #include "../global.h"
 
-#include <QWidget>
+#include <QDialog>
 
 #include <functional>
 
@@ -18,7 +18,7 @@ struct SyncthingLogEntry;
 
 namespace QtGui {
 
-class SYNCTHINGWIDGETS_EXPORT TextViewDialog : public QWidget {
+class SYNCTHINGWIDGETS_EXPORT TextViewDialog : public QDialog {
     Q_OBJECT
 public:
     explicit TextViewDialog(const QString &title = QString(), QWidget *parent = nullptr);

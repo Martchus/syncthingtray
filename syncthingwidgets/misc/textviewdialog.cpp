@@ -28,7 +28,7 @@ using namespace Data;
 namespace QtGui {
 
 TextViewDialog::TextViewDialog(const QString &title, QWidget *parent)
-    : QWidget(parent, Qt::Window)
+    : QDialog(parent)
 {
     // set window title and icon
     if (title.isEmpty()) {
