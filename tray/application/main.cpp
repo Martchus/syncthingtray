@@ -39,6 +39,11 @@
 
 #include <iostream>
 
+#ifdef Q_OS_ANDROID
+#include <QDebug>
+#include <QSslSocket>
+#endif
+
 using namespace std;
 using namespace CppUtilities;
 using namespace QtGui;
@@ -260,6 +265,9 @@ static int runApplication(int argc, const char *const *argv)
         if (insecureArg.isPresent()) {
             settings.connection.insecure = true;
         }
+#ifdef Q_OS_ANDROID
+        qDebug() << "TLS support available: " << QSslSocket::supportsSsl();
+#endif
         LOAD_QT_TRANSLATIONS;
         if (!settings.error.isEmpty()) {
             QMessageBox::critical(nullptr, QCoreApplication::applicationName(), settings.error);
