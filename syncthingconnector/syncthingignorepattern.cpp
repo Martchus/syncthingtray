@@ -43,6 +43,11 @@ struct AlternativeRange {
  * \brief The SyncthingIgnorePattern struct allows matching a Syncthing ignore pattern against a path.
  * \remarks
  * - The `#include`-syntax is not supported.
+ * - A "/" is always treated as path separator within the pattern. Additionally, the character specified
+ *   when calling matches() is treated as path separator as well. This means that under Windows where
+ *   patterns can contain a "\" one *must* specify paths with a "\" as separator when invoking the matches()
+ *   function to allow patterns using "/" and "\" to match correctly; otherwiise ignore patterns containing
+ *   "\" do not work.
  * \sa
  * - https://docs.syncthing.net/users/ignoring.html
  * - https://docs.syncthing.net/rest/db-ignores-get.html
@@ -93,11 +98,15 @@ SyncthingIgnorePattern::~SyncthingIgnorePattern()
  * \remarks
  * - Returns always false if the pattern is flagged as comment or the glob is empty.
  * - This function tries to follow rules outlined on https://docs.syncthing.net/users/ignoring.html.
- * - The specified \a path is *not* supposed to start with a "/". It must always be a path relative to the root of the
- *   Syncthing folder it is contained by. A pattern that is only supposed to match from the root of the Syncthing folder
- *   is supposed to start with a "/", though.
+ * - The specified \a path is *not* supposed to start with the \a pathSeparator (or a "/"). It must always be a path
+ *   relative to the root of the Syncthing folder it is contained by. A pattern that is only supposed to match from the
+ *   root of the Syncthing folder is supposed to start with \a pathSeparator (or a "/"), though.
  * - This function probably doesn't work if the pattern or \a path contain a surrogate pair.
  * - By default, the path separator is "/". If \a path uses a different separator you must specify it as second argument.
+ *   Note that "/" is still be treated as path separator in this case and the specified \a pathSeparator is only used in
+ *   addition. This is intended because this way one can specify "\" as \a pathSeparator under Windows but patterns using
+ *   "/" still work (as they should because "/" and "\" can both be used as path separator under Windows in ignore
+ *   patterns).
  */
 bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) const
 {
@@ -110,7 +119,15 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
     auto pathIter = path.begin(), pathEnd = path.end();
 
     // handle pattners starting with "/" indicating the pattern must match from the root (see last remark in docstring)
-    const auto matchFromRoot = *globIter == pathSeparator;
+    static
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        constexpr
+#else
+        const
+#endif
+        auto genericPathSeparator
+        = QChar('/');
+    const auto matchFromRoot = *globIter == pathSeparator || *globIter == genericPathSeparator;
     if (matchFromRoot) {
         ++globIter;
     }
@@ -144,7 +161,7 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
         // deal with the mismatch by checking the path as of the next path element
         for (; pathIter != pathEnd; ++pathIter) {
             // forward to the next path separator
-            if (*pathIter != pathSeparator) {
+            if (*pathIter != pathSeparator && *pathIter != genericPathSeparator) {
                 continue;
             }
             // skip the path separator itself and give up when the end of the path is reached
@@ -175,8 +192,17 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
     };
 
     // define function to match single character against the current character in the path
-    const auto matchSingleChar
-        = [&, this](QChar singleChar) { return caseInsensitive ? pathIter->toCaseFolded() == singleChar.toCaseFolded() : *pathIter == singleChar; };
+    static constexpr auto compareSingleCharBasic = [](QChar expectedChar, QChar presentChar, QChar pathSep, bool caseInsensitive) {
+        Q_UNUSED(pathSep)
+        return caseInsensitive ? presentChar.toCaseFolded() == expectedChar.toCaseFolded() : presentChar == expectedChar;
+    };
+    const auto compareSingleChar = pathSeparator == genericPathSeparator
+        ? compareSingleCharBasic
+        : [](QChar expectedChar, QChar presentChar, QChar pathSep, bool caseInsensitive) {
+              return compareSingleCharBasic(expectedChar, presentChar, pathSep, caseInsensitive)
+                  || (expectedChar == genericPathSeparator && presentChar == pathSep);
+          };
+    const auto matchSingleChar = [&, this](QChar expectedChar) { return compareSingleChar(expectedChar, *pathIter, pathSeparator, caseInsensitive); };
 
     // define function to transition to verbatim matching (which makes only sense when not in any of the "Append…"-states)
     const auto transitionToVerbatimMatching = [&] {
@@ -319,7 +345,9 @@ match:
             if (pathIter != pathEnd && matchSingleChar(*globIter)) {
                 ++pathIter;
                 handleSingleMatch();
-            } else if (inAsterisk && (asterisks.back().state == MatchManyAnyIncludingDirSep || (pathIter == pathEnd || *pathIter != pathSeparator))) {
+            } else if (inAsterisk
+                && (asterisks.back().state == MatchManyAnyIncludingDirSep
+                    || (pathIter == pathEnd || (*pathIter != pathSeparator && *pathIter != genericPathSeparator)))) {
                 // consider the path character dealt with despite no match if we have just passed an asterisk in the glob pattern
                 if (pathIter != pathEnd) {
                     ++pathIter;
@@ -389,7 +417,7 @@ match:
             break;
         case MatchAny:
             // allow the current character in the path to be anything but a path separator; otherwise consider it as mismatch as in the case for an exact match
-            if (pathIter == pathEnd || *pathIter != pathSeparator) {
+            if (pathIter == pathEnd || (*pathIter != pathSeparator && *pathIter != genericPathSeparator)) {
                 ++globIter, ++pathIter;
             } else if (!handleMismatch()) {
                 return false;
@@ -416,14 +444,17 @@ match:
     // check whether all characters of the glob have been matched against all characters of the path
     if (globIter == globEnd) {
         // consider the match a success if all characters of the path were matched or the glob ended with a "**"
-        if (pathIter == pathEnd || state == MatchManyAnyIncludingDirSep
-            || (state == MatchManyAny && !QStringView(pathIter, pathEnd).contains(pathSeparator))) {
+        if (pathIter == pathEnd || state == MatchManyAnyIncludingDirSep) {
+            return true;
+        }
+        if (const auto remainingPath = QStringView(pathIter, pathEnd);
+            state == MatchManyAny && !(remainingPath.contains(pathSeparator) || remainingPath.contains(genericPathSeparator))) {
             return true;
         }
 
         // try again as of the next path segment if the glob fully matched but there are still characters in the path to be matched
         // note: This allows "foo" to match against "foo/foo" even tough the glob characters have already consumed after matching the first path segment.
-        if (!matchFromRoot && *pathIter == pathSeparator) {
+        if (!matchFromRoot && (*pathIter == pathSeparator || *pathIter == genericPathSeparator)) {
             state = MatchVerbatimly;
             ++pathIter;
             globIter = glob.begin();

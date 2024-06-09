@@ -418,4 +418,17 @@ void MiscTests::testIgnorePatternMatching()
     auto p17 = SyncthingIgnorePattern(QStringLiteral("///fo{o\\},o}/bar"));
     CPPUNIT_ASSERT(p17.comment);
     CPPUNIT_ASSERT(!p17.matches(QStringLiteral("foo/bar")));
+
+    auto p18 = SyncthingIgnorePattern(QStringLiteral("!Saved\\Logs"));
+    CPPUNIT_ASSERT(!p18.matches(QStringLiteral("Documents\\Saved\\Logs")));
+    CPPUNIT_ASSERT(p18.matches(QStringLiteral("Documents\\Saved\\Logs"), QChar('\\')));
+    CPPUNIT_ASSERT(!p18.matches(QStringLiteral("Documents/Saved/Logs"), QChar('/'))); // see remarks in doc
+    auto p18a = SyncthingIgnorePattern(QStringLiteral("!Saved/Logs"));
+    CPPUNIT_ASSERT(p18a.matches(QStringLiteral("Documents\\Saved\\Logs"), QChar('\\')));
+    CPPUNIT_ASSERT(p18a.matches(QStringLiteral("Documents/Saved/Logs"), QChar('\\')));
+    auto p18b = SyncthingIgnorePattern(QStringLiteral("!/Documents/Saved/Logs"));
+    CPPUNIT_ASSERT(p18b.matches(QStringLiteral("Documents\\Saved\\Logs"), QChar('\\')));
+    CPPUNIT_ASSERT(p18b.matches(QStringLiteral("Documents/Saved/Logs"), QChar('\\')));
+    CPPUNIT_ASSERT(!p18b.matches(QStringLiteral("Saved\\Logs"), QChar('\\')));
+    CPPUNIT_ASSERT(!p18b.matches(QStringLiteral("Saved/Logs"), QChar('\\')));
 }
