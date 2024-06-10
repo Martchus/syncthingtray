@@ -48,14 +48,18 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     int reconnectInterval = defaultReconnectInterval;
     int requestTimeout = defaultRequestTimeout;
     int longPollingTimeout = defaultLongPollingTimeout;
+#ifndef QT_NO_SSL
     QString httpsCertPath;
     QDateTime httpCertLastModified;
     QList<QSslError> expectedSslErrors;
+#endif
     SyncthingStatusComputionFlags statusComputionFlags = SyncthingStatusComputionFlags::Default;
     bool autoConnect = false;
     bool pauseOnMeteredConnection = false;
+#ifndef QT_NO_SSL
     static QList<QSslError> compileSslErrors(const QSslCertificate &trustedCert);
     bool loadHttpsCert();
+#endif
 
     static constexpr int defaultTrafficPollInterval = 5000;
     static constexpr int defaultDevStatusPollInterval = 60000;

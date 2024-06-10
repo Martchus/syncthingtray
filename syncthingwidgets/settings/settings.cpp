@@ -31,8 +31,6 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QSettings>
-#include <QSslCertificate>
-#include <QSslError>
 #include <QStringBuilder>
 #include <QVersionNumber>
 
@@ -325,12 +323,14 @@ bool restore()
                         += Data::SyncthingStatusComputionFlags::OutOfSync | Data::SyncthingStatusComputionFlags::UnreadNotifications;
                 }
             }
+#ifndef QT_NO_SSL
             connectionSettings->httpsCertPath = settings.value(QStringLiteral("httpsCertPath")).toString();
             if (!connectionSettings->loadHttpsCert()) {
                 QMessageBox::critical(nullptr, QCoreApplication::applicationName(),
                     QCoreApplication::translate("Settings::restore", "Unable to load certificate \"%1\" when restoring settings.")
                         .arg(connectionSettings->httpsCertPath));
             }
+#endif
         }
     } else {
         v.firstLaunch = true;
@@ -474,7 +474,9 @@ bool save()
         settings.setValue(QStringLiteral("pauseOnMetered"), connectionSettings->pauseOnMeteredConnection);
         settings.setValue(QStringLiteral("statusComputionFlags"),
             QVariant::fromValue(static_cast<std::underlying_type_t<Data::SyncthingStatusComputionFlags>>(connectionSettings->statusComputionFlags)));
+#ifndef QT_NO_SSL
         settings.setValue(QStringLiteral("httpsCertPath"), connectionSettings->httpsCertPath);
+#endif
     }
     settings.endArray();
 
@@ -679,7 +681,9 @@ void Connection::addConfigFromWizard(const Data::SyncthingConfig &config)
     primary.password.clear();
     primary.apiKey = apiKey;
     primary.autoConnect = true; // ensure the connection is actually established when applying
+#ifndef QT_NO_SSL
     primary.httpsCertPath = Data::SyncthingConfig::locateHttpsCertificate();
+#endif
 }
 
 } // namespace Settings

@@ -3,10 +3,11 @@
 
 #include "./global.h"
 
+#include <syncthingconnector/syncthingprocess.h>
+
 #include <c++utilities/misc/flagenumclass.h>
 
 #include <QObject>
-#include <QProcess>
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include "./syncthingdev.h"

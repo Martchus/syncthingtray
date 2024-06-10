@@ -4,6 +4,7 @@
 
 namespace Data {
 
+#ifndef QT_NO_SSL
 QList<QSslError> SyncthingConnectionSettings::compileSslErrors(const QSslCertificate &trustedCert)
 {
     // clang-format off
@@ -33,4 +34,6 @@ bool SyncthingConnectionSettings::loadHttpsCert()
     expectedSslErrors = compileSslErrors(certs.at(0));
     return true;
 }
+#endif
+
 } // namespace Data

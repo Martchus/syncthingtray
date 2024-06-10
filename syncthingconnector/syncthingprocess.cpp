@@ -311,6 +311,8 @@ void SyncthingProcess::killToRestart()
     }
 }
 
+#ifdef LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
+
 // The functions below are for using Boost.Process (instead of QProcess) to be able to
 // terminate the process better by using a group.
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
@@ -343,6 +345,7 @@ Data::SyncthingProcessInternalData::Lock::operator bool() const
 {
     return process && lock;
 }
+#endif
 
 /*!
  * \brief Internally handles an error.
@@ -363,7 +366,11 @@ void SyncthingProcess::handleError(int error, const QString &errorMessage, bool 
  */
 QProcess::ProcessState SyncthingProcess::state() const
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     return !m_process ? QProcess::NotRunning : m_process->state;
+#else
+    return QProcess::NotRunning;
+#endif
 }
 
 /*!
@@ -394,6 +401,7 @@ void SyncthingProcess::start(const QString &program, const QStringList &argument
  */
 void SyncthingProcess::start(const QStringList &programs, const QStringList &arguments, OpenMode openMode)
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     // get Boost.Process' code converter to provoke and handle a possible error when it is setting up its default locale via e.g. `std::locale("")`
     try {
         boost::process::codecvt();
@@ -556,6 +564,13 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
     // start reading the process' output
     open(QIODevice::ReadOnly);
     bufferOutput();
+#else
+    Q_UNUSED(programs)
+    Q_UNUSED(arguments)
+    Q_UNUSED(openMode)
+    emit stateChanged(QProcess::NotRunning);
+    handleError(QProcess::FailedToStart, QStringLiteral("process launching is not supported"), false);
+#endif
 }
 
 /*!
@@ -564,6 +579,7 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
  */
 void SyncthingProcess::terminate()
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     if (!m_process) {
         return;
     }
@@ -587,6 +603,7 @@ void SyncthingProcess::terminate()
     // note: Posting a WM_CLOSE message like QProcess would attempt doesn't work for Syncthing.
     kill();
 #endif
+#endif
 }
 
 /*!
@@ -595,6 +612,7 @@ void SyncthingProcess::terminate()
  */
 void SyncthingProcess::kill()
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     if (!m_process) {
         return;
     }
@@ -614,6 +632,7 @@ void SyncthingProcess::kill()
     }
     // note: No need to emit finished() signal here, the on_exit handler will fire
     //       also in case of a forceful termination.
+#endif
 }
 
 /*!
@@ -621,6 +640,7 @@ void SyncthingProcess::kill()
  */
 void SyncthingProcess::bufferOutput()
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     m_process->pipe.async_read_some(boost::asio::buffer(m_process->buffer, m_process->bufferCapacity),
         [this, maybeProcess = m_process->weak_from_this()](const boost::system::error_code &ec, auto bytesRead) {
             const auto lock = SyncthingProcessInternalData::Lock(maybeProcess);
@@ -647,6 +667,7 @@ void SyncthingProcess::bufferOutput()
                 m_process->readCondVar.notify_all();
             }
         });
+#endif
 }
 
 /*!
@@ -654,6 +675,7 @@ void SyncthingProcess::bufferOutput()
  */
 void SyncthingProcess::handleLeftoverProcesses()
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     if (!m_process->group.valid()) {
         return;
     }
@@ -671,21 +693,28 @@ void SyncthingProcess::handleLeftoverProcesses()
         std::cerr << EscapeCodes::Phrases::Error << "Unable to wait for leftover processes in group " << m_process->group.native_handle() << ": "
                   << ec.message() << EscapeCodes::Phrases::End;
     }
+#endif
 }
 
 qint64 SyncthingProcess::bytesAvailable() const
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     return (m_process ? static_cast<qint64>(m_process->bytesBuffered) : 0) + QIODevice::bytesAvailable();
+#else
+    return 0;
+#endif
 }
 
 void SyncthingProcess::close()
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     aboutToClose();
     if (m_process) {
         const auto lock = std::lock_guard<std::mutex>(m_process->mutex);
         m_process->pipe.async_close();
         kill();
     }
+#endif
     setOpenMode(QIODevice::NotOpen);
 }
 
@@ -695,7 +724,11 @@ void SyncthingProcess::close()
  */
 int SyncthingProcess::exitCode() const
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     return m_process ? m_process->child.exit_code() : 0;
+#else
+    return 0;
+#endif
 }
 
 /*!
@@ -704,6 +737,7 @@ int SyncthingProcess::exitCode() const
  */
 bool SyncthingProcess::waitForFinished(int msecs)
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     if (!m_process || !m_process->group.valid()) {
         return false;
     }
@@ -722,10 +756,15 @@ bool SyncthingProcess::waitForFinished(int msecs)
 #endif
     }
     return !ec || ec == std::errc::no_such_process || ec == std::errc::no_child_process;
+#else
+    Q_UNUSED(msecs)
+    return true;
+#endif
 }
 
 bool SyncthingProcess::waitForReadyRead(int msecs)
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     if (!m_process) {
         return false;
     }
@@ -741,6 +780,10 @@ bool SyncthingProcess::waitForReadyRead(int msecs)
         m_process->readCondVar.wait_for(lock, std::chrono::milliseconds(msecs));
     }
     return m_process->bytesBuffered;
+#else
+    Q_UNUSED(msecs)
+    return false;
+#endif
 }
 
 /*!
@@ -748,7 +791,11 @@ bool SyncthingProcess::waitForReadyRead(int msecs)
  */
 qint64 SyncthingProcess::processId() const
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     return m_process ? static_cast<qint64>(m_process->child.id()) : static_cast<qint64>(-1);
+#else
+    return 0;
+#endif
 }
 
 /*!
@@ -756,7 +803,11 @@ qint64 SyncthingProcess::processId() const
  */
 QString SyncthingProcess::program() const
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     return m_process ? m_process->program : QString();
+#else
+    return QString();
+#endif
 }
 
 /*!
@@ -764,11 +815,16 @@ QString SyncthingProcess::program() const
  */
 QStringList SyncthingProcess::arguments() const
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     return m_process ? m_process->arguments : QStringList();
+#else
+    return QStringList();
+#endif
 }
 
 qint64 SyncthingProcess::readData(char *data, qint64 maxSize)
 {
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     if (!m_process) {
         return -1;
     }
@@ -791,6 +847,11 @@ qint64 SyncthingProcess::readData(char *data, qint64 maxSize)
         QMetaObject::invokeMethod(this, "bufferOutput", Qt::QueuedConnection);
         return static_cast<qint64>(bytesAvailable);
     }
+#else
+    Q_UNUSED(data)
+    Q_UNUSED(maxSize)
+    return -1;
+#endif
 }
 
 qint64 SyncthingProcess::writeData(const char *data, qint64 len)

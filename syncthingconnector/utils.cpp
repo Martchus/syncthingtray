@@ -134,7 +134,10 @@ bool isLocal(const QString &hostName)
 bool isLocal(const QString &hostName, const QHostAddress &hostAddress)
 {
     return hostName.compare(QLatin1String("localhost"), Qt::CaseInsensitive) == 0 || hostAddress.isLoopback()
-        || QNetworkInterface::allAddresses().contains(hostAddress);
+#ifndef QT_NO_NETWORKINTERFACE
+        || QNetworkInterface::allAddresses().contains(hostAddress)
+#endif
+        ;
 }
 
 /*!

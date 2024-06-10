@@ -50,7 +50,9 @@ public:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     void testService();
 #endif
+#ifndef QT_NO_SSL
     void testConnectionSettingsAndLoadingSelfSignedCert();
+#endif
     void testSyncthingDir();
 
     void setUp() override;
@@ -170,6 +172,7 @@ void MiscTests::testService()
 }
 #endif
 
+#ifndef QT_NO_SSL
 void MiscTests::testConnectionSettingsAndLoadingSelfSignedCert()
 {
     SyncthingConnectionSettings settings;
@@ -200,6 +203,7 @@ void MiscTests::testConnectionSettingsAndLoadingSelfSignedCert()
     settings.httpsCertPath.clear();
     CPPUNIT_ASSERT(!connection.applySettings(settings));
 }
+#endif
 
 void MiscTests::testSyncthingDir()
 {

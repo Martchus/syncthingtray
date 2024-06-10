@@ -54,7 +54,9 @@ SetupDetection::SetupDetection(QObject *parent)
 void SetupDetection::determinePaths()
 {
     configFilePath = Data::SyncthingConfig::locateConfigFile();
+#ifndef QT_NO_SSL
     certPath = Data::SyncthingConfig::locateHttpsCertificate();
+#endif
 }
 
 void SetupDetection::restoreConfig()
@@ -67,8 +69,10 @@ void SetupDetection::initConnection()
     auto settings = Data::SyncthingConnectionSettings();
     settings.syncthingUrl = config.syncthingUrl();
     settings.apiKey = config.guiApiKey.toLocal8Bit();
+#ifndef QT_NO_SSL
     settings.httpsCertPath = certPath;
     settings.loadHttpsCert();
+#endif
     connection.applySettings(settings);
 }
 

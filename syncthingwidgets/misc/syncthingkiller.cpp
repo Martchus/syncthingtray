@@ -16,14 +16,17 @@ namespace QtGui {
 SyncthingKiller::SyncthingKiller(std::vector<ProcessWithConnection> &&processes)
     : m_processes(processes)
 {
+#ifndef LIB_SYNCTHING_CONNECTOR_NOOP_PROCESS
     for (const auto [process, connection] : m_processes) {
         process->stopSyncthing(connection);
         connect(process, &SyncthingProcess::confirmKill, this, &SyncthingKiller::confirmKill);
     }
+#endif
 }
 
 void SyncthingKiller::waitForFinished()
 {
+#ifndef LIB_SYNCTHING_CONNECTOR_NOOP_PROCESS
     for (const auto [process, connection] : m_processes) {
         if (!process->isRunning()) {
             continue;
@@ -41,10 +44,12 @@ void SyncthingKiller::waitForFinished()
             return;
         }
     }
+#endif
 }
 
 void SyncthingKiller::confirmKill() const
 {
+#ifndef LIB_SYNCTHING_CONNECTOR_NOOP_PROCESS
     auto *const process = static_cast<SyncthingProcess *>(sender());
     if (!process->isRunning()) {
         return;
@@ -72,6 +77,7 @@ void SyncthingKiller::confirmKill() const
     // FIXME: can not really ignore, just keep the process running
     //connect(msgBox, &QMessageBox::rejected, this, &SyncthingKiller::ignored);
     msgBox->show();
+#endif
 }
 
 } // namespace QtGui

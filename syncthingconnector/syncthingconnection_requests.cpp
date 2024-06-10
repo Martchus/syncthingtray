@@ -74,7 +74,9 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest, longPolling));
+#ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
+#endif
     QObject::connect(reply, &QNetworkReply::redirected, this, &SyncthingConnection::handleRedirection);
     if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: GET " << reply->url().toString().toStdString() << Phrases::EndFlush;
@@ -92,7 +94,9 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuery &query, const QByteArray &data)
 {
     auto *const reply = networkAccessManager().post(prepareRequest(path, query), data);
+#ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
+#endif
     if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: POST " << reply->url().toString().toStdString() << Phrases::EndFlush;
     }
@@ -105,7 +109,9 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
 QNetworkReply *SyncthingConnection::sendData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data)
 {
     auto *const reply = networkAccessManager().sendCustomRequest(prepareRequest(path, query), verb, data);
+#ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
+#endif
     if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: " << verb.data() << ' ' << reply->url().toString().toStdString() << Phrases::EndFlush;
     }
@@ -157,6 +163,7 @@ static QString certText(const QSslCertificate &cert)
 }
 /// \endcond
 
+#ifndef QT_NO_SSL
 /*!
  * \brief Handles SSL errors of replies.
  * \remarks
@@ -221,6 +228,7 @@ void SyncthingConnection::handleSslErrors(const QList<QSslError> &errors)
         reply->ignoreSslErrors();
     }
 }
+#endif
 
 /*!
  * \brief Handles redirections.
@@ -235,9 +243,11 @@ void SyncthingConnection::handleRedirection(const QUrl &url)
         cerr << Phrases::Info << "Got redirected to: " << std::string_view(urlStr.data(), static_cast<std::string_view::size_type>(urlStr.size()))
              << Phrases::EndFlush;
     }
+#ifndef QT_NO_SSL
     if (m_expectedSslErrors.isEmpty() && url.scheme().endsWith(QChar('s'))) {
         loadSelfSignedCertificate(url);
     }
+#endif
 }
 
 /*!

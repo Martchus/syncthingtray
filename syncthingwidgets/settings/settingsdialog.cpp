@@ -234,7 +234,9 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
     ui()->userNameLineEdit->setText(connectionSettings.userName);
     ui()->passwordLineEdit->setText(connectionSettings.password);
     ui()->apiKeyLineEdit->setText(connectionSettings.apiKey);
+#ifndef QT_NO_SSL
     ui()->certPathSelection->lineEdit()->setText(connectionSettings.httpsCertPath);
+#endif
     ui()->timeoutSpinBox->setValue(connectionSettings.requestTimeout);
     ui()->longPollingSpinBox->setValue(connectionSettings.longPollingTimeout);
     ui()->pollTrafficSpinBox->setValue(connectionSettings.trafficPollInterval);
@@ -261,8 +263,10 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
     connectionSettings.userName = ui()->userNameLineEdit->text();
     connectionSettings.password = ui()->passwordLineEdit->text();
     connectionSettings.apiKey = ui()->apiKeyLineEdit->text().toUtf8();
+#ifndef QT_NO_SSL
     connectionSettings.expectedSslErrors.clear();
     connectionSettings.httpsCertPath = ui()->certPathSelection->lineEdit()->text();
+#endif
     connectionSettings.requestTimeout = ui()->timeoutSpinBox->value();
     connectionSettings.longPollingTimeout = ui()->longPollingSpinBox->value();
     connectionSettings.trafficPollInterval = ui()->pollTrafficSpinBox->value();
@@ -272,6 +276,7 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
     connectionSettings.autoConnect = ui()->autoConnectCheckBox->isChecked();
     connectionSettings.pauseOnMeteredConnection = ui()->pauseOnMeteredConnectionCheckBox->isChecked();
     connectionSettings.statusComputionFlags = m_statusComputionModel->statusComputionFlags();
+#ifndef QT_NO_SSL
     if (!connectionSettings.loadHttpsCert()) {
         const QString errorMessage = QCoreApplication::translate("QtGui::ConnectionOptionPage", "Unable to load specified certificate \"%1\".")
                                          .arg(connectionSettings.httpsCertPath);
@@ -282,6 +287,7 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
         }
         return false;
     }
+#endif
     return true;
 }
 
@@ -980,6 +986,8 @@ bool setAutostartPath(const QString &path)
     } else {
         return !launchdPlistFile.exists() || launchdPlistFile.remove();
     }
+#else
+    return false;
 #endif
 }
 

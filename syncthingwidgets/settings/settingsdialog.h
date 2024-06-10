@@ -5,13 +5,19 @@
 
 #include "../webview/webviewdefs.h"
 
+#if !QT_CONFIG(process)
+#include <syncthingconnector/syncthingprocess.h>
+#endif
+
 #include <syncthingmodel/syncthingicons.h>
 
 #include <qtutilities/settingsdialog/optionpage.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 #include <qtutilities/settingsdialog/settingsdialog.h>
 
+#if QT_CONFIG(process)
 #include <QProcess>
+#endif
 #include <QStringList>
 #include <QWidget>
 

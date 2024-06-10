@@ -8,10 +8,10 @@
 #include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingconnectionsettings.h>
+#include <syncthingconnector/syncthingprocess.h>
 #include <syncthingconnector/syncthingservice.h>
 
 #include <QByteArray>
-#include <QProcess>
 #include <QStringBuilder>
 #include <QTimer>
 

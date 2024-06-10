@@ -153,7 +153,9 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(QString lastSyncedFile READ lastSyncedFile)
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion)
     Q_PROPERTY(CppUtilities::DateTime lastSyncTime READ lastSyncTime)
+#ifndef QT_NO_SSL
     Q_PROPERTY(QList<QSslError> expectedSslErrors READ expectedSslErrors)
+#endif
     Q_PROPERTY(std::vector<const SyncthingDev *> connectedDevices READ connectedDevices)
     Q_PROPERTY(QStringList directoryIds READ directoryIds)
     Q_PROPERTY(QStringList deviceIds READ deviceIds)
@@ -256,11 +258,15 @@ public:
     const SyncthingDev *findDevInfo(const QString &devId, int &row) const;
     SyncthingDev *findDevInfoByName(const QString &devName, int &row);
 
+#ifndef QT_NO_SSL
     const QList<QSslError> &expectedSslErrors() const;
+#endif
 
 public Q_SLOTS:
+#ifndef QT_NO_SSL
     bool loadSelfSignedCertificate(const QUrl &url = QUrl());
     void clearSelfSignedCertificate();
+#endif
     bool applySettings(Data::SyncthingConnectionSettings &connectionSettings);
 
     // methods to initiate/close connection
@@ -424,7 +430,9 @@ private Q_SLOTS:
     void emitDirStatisticsChanged();
     void handleFatalConnectionError();
     void handleAdditionalRequestCanceled();
+#ifndef QT_NO_SSL
     void handleSslErrors(const QList<QSslError> &errors);
+#endif
     void handleRedirection(const QUrl &url);
     void handleMeteredConnection();
     void recalculateStatus();
@@ -517,11 +525,13 @@ private:
     QString m_lastFileName;
     QString m_syncthingVersion;
     bool m_lastFileDeleted;
+#ifndef QT_NO_SSL
     QString m_certificatePath;
     QString m_dynamicallyDeterminedCertificatePath;
     QDateTime m_certificateLastModified;
     QList<QSslError> m_expectedSslErrors;
     QSslCertificate m_certFromLastSslError;
+#endif
     QJsonObject m_rawConfig;
     bool m_dirStatsAltered;
     bool m_recordFileChanges;
@@ -1050,6 +1060,7 @@ inline const QString &SyncthingConnection::syncthingVersion() const
     return m_syncthingVersion;
 }
 
+#ifndef QT_NO_SSL
 /*!
  * \brief Returns a list of all expected certificate errors. This is meant to allow self-signed certificates.
  * \remarks This list is updated via loadSelfSignedCertificate().
@@ -1058,6 +1069,7 @@ inline const QList<QSslError> &SyncthingConnection::expectedSslErrors() const
 {
     return m_expectedSslErrors;
 }
+#endif
 
 /*!
  * \brief Returns the raw Syncthing configuration.

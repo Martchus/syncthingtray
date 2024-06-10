@@ -265,7 +265,7 @@ static int runApplication(int argc, const char *const *argv)
         if (insecureArg.isPresent()) {
             settings.connection.insecure = true;
         }
-#ifdef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID) && !defined(QT_NO_SSL)
         qDebug() << "TLS support available: " << QSslSocket::supportsSsl();
 #endif
         LOAD_QT_TRANSLATIONS;

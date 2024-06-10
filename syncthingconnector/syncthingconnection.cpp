@@ -835,6 +835,7 @@ void SyncthingConnection::continueConnecting()
     requestDiskEvents();
 }
 
+#ifndef QT_NO_SSL
 /*!
  * \brief Locates and loads the (self-signed) certificate used by the Syncthing GUI.
  * \remarks
@@ -899,6 +900,7 @@ void SyncthingConnection::clearSelfSignedCertificate()
     m_dynamicallyDeterminedCertificatePath.clear();
     m_certificateLastModified = QDateTime();
 }
+#endif
 
 /*!
  * \brief Applies the specified configuration.
@@ -931,6 +933,7 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
         }
         reconnectRequired = true;
     }
+#ifndef QT_NO_SSL
     m_certificatePath = connectionSettings.httpsCertPath;
     m_certificateLastModified = connectionSettings.httpCertLastModified;
     if (connectionSettings.expectedSslErrors.isEmpty()) {
@@ -944,6 +947,7 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
         m_expectedSslErrors = connectionSettings.expectedSslErrors;
         reconnectRequired = true;
     }
+#endif
 
     setTrafficPollInterval(connectionSettings.trafficPollInterval);
     setDevStatsPollInterval(connectionSettings.devStatsPollInterval);

@@ -13,12 +13,30 @@
 #include <memory>
 #endif
 
+#if !QT_CONFIG(process) && !defined(LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS)
+namespace QProcess {
+enum ProcessError { FailedToStart, Crashed, Timedout, ReadError, WriteError, UnknownError };
+enum ProcessState { NotRunning, Starting, Running };
+enum ProcessChannel { StandardOutput, StandardError };
+enum ProcessChannelMode { SeparateChannels, MergedChannels, ForwardedChannels, ForwardedOutputChannel, ForwardedErrorChannel };
+enum InputChannelMode { ManagedInputChannel, ForwardedInputChannel };
+enum ExitStatus { NormalExit, CrashExit };
+} // namespace QProcess
+#endif
+
 namespace Data {
 
 class SyncthingConnection;
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+#define LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
 struct SyncthingProcessInternalData;
 struct SyncthingProcessIOHandler;
+#elif !QT_CONFIG(process)
+#define LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
+#define LIB_SYNCTHING_CONNECTOR_NOOP_PROCESS
+#endif
+
+#ifdef LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
 using SyncthingProcessBase = QIODevice;
 #else
 using SyncthingProcessBase = QProcess;
@@ -41,7 +59,7 @@ public:
     static void setMainInstance(SyncthingProcess *mainInstance);
     static QStringList splitArguments(const QString &arguments);
     void reportError(QProcess::ProcessError error, const QString &errorString);
-#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+#ifdef LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
     QProcess::ProcessState state() const;
     void start(const QString &program, const QStringList &arguments, QIODevice::OpenMode openMode = QIODevice::ReadOnly);
     void start(const QStringList &program, const QStringList &arguments, QIODevice::OpenMode openMode = QIODevice::ReadOnly);
@@ -62,13 +80,13 @@ public Q_SLOTS:
     void startSyncthing(const QString &program, const QStringList &arguments);
     void stopSyncthing(Data::SyncthingConnection *currentConnection = nullptr);
     void killSyncthing();
-#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+#ifdef LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
     void terminate();
     void kill();
 #endif
 
 Q_SIGNALS:
-#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+#ifdef LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
     void started();
     void finished(int exitCode, QProcess::ExitStatus exitStatus);
     void errorOccurred(QProcess::ProcessError error);
@@ -76,7 +94,7 @@ Q_SIGNALS:
 #endif
     void confirmKill();
 
-#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+#ifdef LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
 protected:
     qint64 readData(char *data, qint64 maxSize) override;
     qint64 writeData(const char *data, qint64 len) override;
@@ -86,7 +104,7 @@ private Q_SLOTS:
     void handleStarted();
     void handleFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void killToRestart();
-#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+#ifdef LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
     void handleError(int error, const QString &errorMessage, bool closed);
     void bufferOutput();
     void handleLeftoverProcesses();
@@ -100,6 +118,8 @@ private:
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     std::shared_ptr<SyncthingProcessInternalData> m_process;
     std::unique_ptr<SyncthingProcessIOHandler> m_handler;
+#endif
+#ifdef LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
     QProcess::ProcessChannelMode m_mode;
 #endif
     bool m_manuallyStopped;
@@ -148,7 +168,7 @@ inline void SyncthingProcess::setMainInstance(SyncthingProcess *mainInstance)
     s_mainInstance = mainInstance;
 }
 
-#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+#ifdef LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
 /*!
  * \brief Returns the QProcess::ProcessChannelMode like QProcess::processChannelMode().
  */
