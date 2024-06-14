@@ -62,6 +62,8 @@ public:
     Q_INVOKABLE QString path(const QModelIndex &path) const;
     bool hasIgnorePatterns() const;
     const std::vector<SyncthingIgnorePattern> &presentIgnorePatterns() const;
+    SyncthingIgnores computeNewIgnorePatterns() const;
+    void editIgnorePatternsManually(const QString &ignorePatterns);
 
 Q_SIGNALS:
     void fetchQueueEmpty();
@@ -82,7 +84,6 @@ private:
     void matchItemAgainstIgnorePatterns(SyncthingItem &item) const;
     void ignoreSelectedItems(bool ignore = true);
     QString computeIgnorePatternDiff() const;
-    SyncthingIgnores computeNewIgnorePatterns() const;
 
 private:
     using SyncthingItems = std::vector<std::unique_ptr<SyncthingItem>>;
@@ -109,6 +110,7 @@ private:
     QueryResult m_pendingRequest;
     QFutureWatcher<LocalLookupRes> m_localItemLookup;
     std::unique_ptr<SyncthingItem> m_root;
+    QString m_manuallyEditedIgnorePatterns;
     QChar m_pathSeparator;
     bool m_selectionMode;
     bool m_hasIgnorePatterns;

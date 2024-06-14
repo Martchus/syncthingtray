@@ -4,6 +4,7 @@
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingdir.h>
 
+#include <syncthingmodel/colors.h>
 #include <syncthingmodel/syncthingfilemodel.h>
 
 // use meta-data of syncthingtray application here
@@ -12,6 +13,7 @@
 #include <QClipboard>
 #include <QDialog>
 #include <QFont>
+#include <QFontDatabase>
 #include <QGuiApplication>
 #include <QIcon>
 #include <QLabel>
@@ -29,6 +31,29 @@ using namespace std;
 using namespace Data;
 
 namespace QtGui {
+
+DiffHighlighter::DiffHighlighter(QTextDocument *parent)
+    : QSyntaxHighlighter(parent)
+    , m_enabled(true)
+{
+    auto font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    m_baseFormat.setFont(font);
+
+    font.setBold(true);
+    m_addedFormat.setFont(font);
+    m_addedFormat.setForeground(Colors::green(true));
+    m_deletedFormat.setFont(font);
+    m_deletedFormat.setForeground(Colors::red(true));
+}
+
+void DiffHighlighter::highlightBlock(const QString &text)
+{
+    if (text.startsWith(QChar('-'))) {
+        setFormat(0, static_cast<int>(text.size()), QColor(Qt::red));
+    } else if (text.startsWith(QChar('+'))) {
+        setFormat(0, static_cast<int>(text.size()), QColor(Qt::green));
+    }
+}
 
 static void setupOwnDeviceIdDialog(Data::SyncthingConnection &connection, int size, QWidget *dlg)
 {
@@ -141,14 +166,44 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
         messageBox.exec();
     });
     QObject::connect(
-        model, &Data::SyncthingFileModel::actionNeedsConfirmation, dlg, [](QAction *action, const QString &message, const QString &details) {
-            auto messageBox
-                = QMessageBox(QMessageBox::Warning, QStringLiteral("Confirm action - " APP_NAME), message, QMessageBox::Yes | QMessageBox::No);
-            messageBox.setDetailedText(details);
+        model, &Data::SyncthingFileModel::actionNeedsConfirmation, dlg, [model](QAction *action, const QString &message, const QString &details) {
+            auto messageBox = TextViewDialog(QStringLiteral("Confirm action - " APP_NAME));
+            auto *const browser = messageBox.browser();
+            auto *const highlighter = new DiffHighlighter(browser->document());
+            auto *const buttonLayout = new QHBoxLayout(&messageBox);
+            auto *const editBtn = new QPushButton(
+                QIcon::fromTheme(QStringLiteral("document-edit")), QCoreApplication::translate("QtGui::OtherDialogs", "Edit manually"), &messageBox);
+            auto *const yesBtn = new QPushButton(
+                QIcon::fromTheme(QStringLiteral("dialog-ok")), QCoreApplication::translate("QtGui::OtherDialogs", "Apply"), &messageBox);
+            auto *const noBtn = new QPushButton(
+                QIcon::fromTheme(QStringLiteral("dialog-cancel")), QCoreApplication::translate("QtGui::OtherDialogs", "No"), &messageBox);
+            QObject::connect(yesBtn, &QAbstractButton::clicked, &messageBox, [&messageBox] { messageBox.accept(); });
+            QObject::connect(noBtn, &QAbstractButton::clicked, &messageBox, [&messageBox] { messageBox.reject(); });
+            QObject::connect(editBtn, &QAbstractButton::clicked, &messageBox, [&messageBox, model, editBtn, highlighter] {
+                auto *const b = messageBox.browser();
+                editBtn->hide();
+                b->clear();
+                highlighter->setEnabled(false);
+                b->setText(model->computeNewIgnorePatterns().ignore.join(QChar('\n')));
+                b->setReadOnly(false);
+                b->setUndoRedoEnabled(true);
+            });
+            buttonLayout->addWidget(editBtn);
+            buttonLayout->addStretch();
+            buttonLayout->addWidget(yesBtn);
+            buttonLayout->addWidget(noBtn);
+            browser->setText(details);
+            messageBox.layout()->insertWidget(0, new QLabel(message, &messageBox));
+            messageBox.layout()->addLayout(buttonLayout);
+            messageBox.setAttribute(Qt::WA_DeleteOnClose, false);
             action->setParent(&messageBox);
-            if (messageBox.exec() == QMessageBox::Yes) {
-                action->trigger();
+            if (messageBox.exec() != QDialog::Accepted) {
+                return;
             }
+            if (!browser->isReadOnly()) {
+                model->editIgnorePatternsManually(browser->toPlainText());
+            }
+            action->trigger();
         });
 
     // setup layout

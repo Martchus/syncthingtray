@@ -63,7 +63,10 @@ set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJ
 
 set(REQUIRED_ICONS
     color-profile
+    dialog-ok
+    dialog-cancel
     document-open
+    document-edit
     preferences-other
     process-stop
     list-add

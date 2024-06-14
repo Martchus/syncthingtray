@@ -197,6 +197,10 @@ QString SyncthingFileModel::computeIgnorePatternDiff() const
 SyncthingIgnores SyncthingFileModel::computeNewIgnorePatterns() const
 {
     auto newIgnorePatterns = SyncthingIgnores();
+    if (!m_manuallyEditedIgnorePatterns.isEmpty()) {
+        newIgnorePatterns.ignore = m_manuallyEditedIgnorePatterns.split(QChar('\n'));
+        return newIgnorePatterns;
+    }
     auto index = std::size_t();
     if (const auto change = m_stagedChanges.find(beforeFirstLine); change != m_stagedChanges.end()) {
         for (const auto &line : change->newLines) {
@@ -216,6 +220,11 @@ SyncthingIgnores SyncthingFileModel::computeNewIgnorePatterns() const
         }
     }
     return newIgnorePatterns;
+}
+
+void SyncthingFileModel::editIgnorePatternsManually(const QString &ignorePatterns)
+{
+    m_manuallyEditedIgnorePatterns = ignorePatterns;
 }
 
 QModelIndex SyncthingFileModel::parent(const QModelIndex &child) const
@@ -622,6 +631,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
             // allow user to review changes before applying them
             if (!askedConfirmation) {
                 askedConfirmation = true;
+                m_manuallyEditedIgnorePatterns.clear();
                 emit actionNeedsConfirmation(action, tr("Do you want to apply the folliwng changes?"), computeIgnorePatternDiff());
                 return;
             }
