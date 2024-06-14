@@ -1450,8 +1450,22 @@ QWidget *SystemdOptionPage::setupWidget()
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, m_service, &SyncthingService::stop);
     QObject::connect(ui()->enablePushButton, &QPushButton::clicked, m_service, &SyncthingService::enable);
     QObject::connect(ui()->disablePushButton, &QPushButton::clicked, m_service, &SyncthingService::disable);
-    QObject::connect(ui()->stopOnMeteredCheckBox, &QCheckBox::stateChanged, m_service,
-        [s = m_service](int checkState) { s->setStoppingOnMeteredConnection(checkState == Qt::Checked); });
+    QObject::connect(ui()->stopOnMeteredCheckBox,
+        &QCheckBox::
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
+            checkStateChanged
+#else
+            stateChanged
+#endif
+        ,
+        m_service,
+        [s = m_service](
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
+            Qt::CheckState
+#else
+            int
+#endif
+                checkState) { s->setStoppingOnMeteredConnection(checkState == Qt::Checked); });
     m_unitChangedConn
         = QObject::connect(ui()->systemUnitCheckBox, &QCheckBox::clicked, m_service, bind(&SystemdOptionPage::handleSystemUnitChanged, this));
     m_descChangedConn
