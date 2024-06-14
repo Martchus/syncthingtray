@@ -69,12 +69,14 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     , m_root(std::make_unique<SyncthingItem>())
     , m_selectionMode(false)
     , m_hasIgnorePatterns(false)
+    , m_isIgnoringAllByDefault(false)
 {
     if (m_connection.isLocal()) {
         m_localPath = dir.pathWithoutTrailingSlash().toString();
         connect(&m_localItemLookup, &QFutureWatcherBase::finished, this, &SyncthingFileModel::handleLocalLookupFinished);
     }
     m_pathSeparator = m_connection.pathSeparator().size() == 1 ? m_connection.pathSeparator().front() : QDir::separator();
+    m_ignoreAllByDefaultPattern = m_pathSeparator + QStringLiteral("**");
     m_root->name = dir.displayName();
     m_root->modificationTime = dir.lastFileTime;
     m_root->size = dir.globalStats.bytes;
@@ -566,12 +568,24 @@ void SyncthingFileModel::ignoreSelectedItems(bool ignore)
         if (item->checked != Qt::Checked || !item->isFilesystemItem()) {
             return true;
         }
-        const auto reversePattern = SyncthingIgnorePattern::forPath(m_pathSeparator + item->path, !ignore);
-        const auto wantedPattern = SyncthingIgnorePattern::forPath(m_pathSeparator + item->path, ignore);
-        auto &newLines = m_stagedChanges[beforeFirstLine].newLines;
-        newLines.removeOne(reversePattern);
-        newLines.removeOne(wantedPattern);
-        newLines.prepend(wantedPattern);
+        // remove the pattern and the reverse if those already exists
+        const auto path = m_pathSeparator + item->path;
+        const auto reversePattern = SyncthingIgnorePattern::forPath(path, !ignore);
+        const auto wantedPattern = SyncthingIgnorePattern::forPath(path, ignore);
+        auto line = std::size_t();
+        for (auto &pattern : m_presentIgnorePatterns) {
+            if (pattern.pattern == reversePattern || pattern.pattern == wantedPattern) {
+                m_stagedChanges[line].newLines.removeAll(wantedPattern);
+            }
+            ++line;
+        }
+        auto &firstLine = m_stagedChanges[beforeFirstLine];
+        firstLine.newLines.removeAll(reversePattern);
+        if (!firstLine.newLines.contains(wantedPattern)) {
+            firstLine.newLines.prepend(wantedPattern);
+        }
+
+        // prepent the new pattern making sure it is effective and not shadowed by an existing pattern
         return false; // no need to add ignore patterns for children as they are applied recursively anyway
     });
 }
@@ -579,55 +593,102 @@ void SyncthingFileModel::ignoreSelectedItems(bool ignore)
 QList<QAction *> SyncthingFileModel::selectionActions()
 {
     auto res = QList<QAction *>();
+    res.reserve(8);
     if (!m_selectionMode) {
-        return res;
-    }
-    res.reserve(4);
+        auto *const startSelectionAction = new QAction(tr("Select items to sync/ignore"), this);
+        startSelectionAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-select")));
+        connect(startSelectionAction, &QAction::triggered, this, [this] { setSelectionModeEnabled(true); });
+        res << startSelectionAction;
 
-    auto *const discardAction = new QAction(tr("Discard selection and staged changes"), this);
-    discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo")));
-    connect(discardAction, &QAction::triggered, this, [this] {
-        if (const auto rootIndex = index(0, 0); rootIndex.isValid()) {
-            setCheckState(index(0, 0), Qt::Unchecked);
+        if (!m_stagedChanges.isEmpty() || !m_stagedLocalFileDeletions.isEmpty()) {
+            auto *const discardAction = new QAction(tr("Discard staged changes"), this);
+            discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo")));
+            connect(discardAction, &QAction::triggered, this, [this] {
+                m_stagedChanges.clear();
+                m_stagedLocalFileDeletions.clear();
+            });
+            res << discardAction;
         }
-        setSelectionModeEnabled(false);
-        m_stagedChanges.clear();
-        m_stagedLocalFileDeletions.clear();
-    });
-    res << discardAction;
-
-    auto *const ignoreSelectedAction = new QAction(tr("Ignore selected items (and their children)"), this);
-    ignoreSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-remove")));
-    connect(ignoreSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(); });
-    res << ignoreSelectedAction;
-
-    auto *const includeSelectedAction = new QAction(tr("Include selected items (and their children)"), this);
-    includeSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-add")));
-    connect(includeSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(false); });
-    res << includeSelectedAction;
-
-    auto *const removeIgnorePatternsAction = new QAction(tr("Remove related ignore patterns (may affect other items as well)"), this);
-    removeIgnorePatternsAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-delete")));
-    connect(removeIgnorePatternsAction, &QAction::triggered, this, [this]() {
-        forEachItem(m_root.get(), [this](SyncthingItem *item) {
-            if (item->checked != Qt::Checked) {
-                return true;
+    } else {
+        auto *const discardAction = new QAction(tr("Discard selection and staged changes"), this);
+        discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo")));
+        connect(discardAction, &QAction::triggered, this, [this] {
+            if (const auto rootIndex = index(0, 0); rootIndex.isValid()) {
+                setCheckState(index(0, 0), Qt::Unchecked);
             }
-            if (item->ignorePattern == SyncthingItem::ignorePatternNotInitialized) {
-                matchItemAgainstIgnorePatterns(*item);
-            }
-            if (item->ignorePattern != SyncthingItem::ignorePatternNoMatch) {
-                m_stagedChanges[item->ignorePattern];
-            }
-            return true;
+            setSelectionModeEnabled(false);
+            m_stagedChanges.clear();
+            m_stagedLocalFileDeletions.clear();
         });
+        res << discardAction;
+
+        auto *const ignoreSelectedAction = new QAction(tr("Ignore selected items (and their children)"), this);
+        ignoreSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-remove")));
+        connect(ignoreSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(); });
+        res << ignoreSelectedAction;
+
+        auto *const includeSelectedAction = new QAction(tr("Include selected items (and their children)"), this);
+        includeSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-add")));
+        connect(includeSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(false); });
+        res << includeSelectedAction;
+    }
+
+    auto *const ignoreByDefaultAction
+        = new QAction(m_isIgnoringAllByDefault ? tr("Include all items by default") : tr("Ignore all items by default"), this);
+    ignoreByDefaultAction->setIcon(QIcon::fromTheme(QStringLiteral("question")));
+    connect(ignoreByDefaultAction, &QAction::triggered, this, [this, isIgnoringAllByDefault = m_isIgnoringAllByDefault]() {
+        auto &lastLine = m_stagedChanges[m_presentIgnorePatterns.size() - 1];
+        if (isIgnoringAllByDefault) {
+            // remove all occurrences of "/**"
+            auto line = std::size_t();
+            for (auto &pattern : m_presentIgnorePatterns) {
+                if (pattern.pattern == m_ignoreAllByDefaultPattern) {
+                    m_stagedChanges[line].newLines.removeAll(m_ignoreAllByDefaultPattern);
+                }
+                ++line;
+            }
+            lastLine.newLines.removeAll(m_ignoreAllByDefaultPattern);
+        } else {
+            // append "/**"
+            lastLine.append = m_presentIgnorePatterns.empty() || m_presentIgnorePatterns.back().pattern != m_ignoreAllByDefaultPattern;
+            if (lastLine.append) {
+                lastLine.newLines.append(m_ignoreAllByDefaultPattern);
+            } else {
+                m_stagedChanges.remove(m_presentIgnorePatterns.size() - 1);
+            }
+        }
+        m_isIgnoringAllByDefault = !isIgnoringAllByDefault;
     });
-    res << removeIgnorePatternsAction;
+    res << ignoreByDefaultAction;
+
+    if (m_selectionMode) {
+        auto *const removeIgnorePatternsAction
+            = new QAction(tr("Remove ignore patterns matching against selected items (may affect other items as well)"), this);
+        removeIgnorePatternsAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-delete")));
+        connect(removeIgnorePatternsAction, &QAction::triggered, this, [this]() {
+            forEachItem(m_root.get(), [this](SyncthingItem *item) {
+                if (item->checked != Qt::Checked) {
+                    return true;
+                }
+                if (item->ignorePattern == SyncthingItem::ignorePatternNotInitialized) {
+                    matchItemAgainstIgnorePatterns(*item);
+                }
+                if (item->ignorePattern != SyncthingItem::ignorePatternNoMatch) {
+                    m_stagedChanges[item->ignorePattern];
+                }
+                return true;
+            });
+        });
+        res << removeIgnorePatternsAction;
+    }
 
     if (!m_stagedChanges.isEmpty() || !m_stagedLocalFileDeletions.isEmpty()) {
         auto *const applyStagedChangesAction = new QAction(tr("Review and apply staged changes"), this);
         applyStagedChangesAction->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")));
         connect(applyStagedChangesAction, &QAction::triggered, this, [this, action = applyStagedChangesAction, askedConfirmation = false]() mutable {
+            // ensure newly added lines at the beginning are sorted
+            m_stagedChanges[beforeFirstLine].newLines.sort(Qt::CaseInsensitive);
+
             // allow user to review changes before applying them
             if (!askedConfirmation) {
                 askedConfirmation = true;
@@ -816,12 +877,14 @@ void SyncthingFileModel::queryIgnores()
     m_ignorePatternsRequest = m_connection.ignores(m_dirId, [this](SyncthingIgnores &&ignores, QString &&errorMessage) {
         m_ignorePatternsRequest.reply = nullptr;
         m_hasIgnorePatterns = errorMessage.isEmpty();
+        m_isIgnoringAllByDefault = false;
         m_presentIgnorePatterns.clear();
         if (!m_hasIgnorePatterns) {
             return;
         }
         m_presentIgnorePatterns.reserve(static_cast<std::size_t>(ignores.ignore.size()));
         for (auto &ignorePattern : ignores.ignore) {
+            m_isIgnoringAllByDefault = m_isIgnoringAllByDefault || ignorePattern == m_ignoreAllByDefaultPattern;
             m_presentIgnorePatterns.emplace_back(std::move(ignorePattern));
         }
         invalidateAllIndicies(QVector<int>{ Qt::DisplayRole }, 3, QModelIndex());

@@ -111,9 +111,11 @@ private:
     QFutureWatcher<LocalLookupRes> m_localItemLookup;
     std::unique_ptr<SyncthingItem> m_root;
     QString m_manuallyEditedIgnorePatterns;
+    QString m_ignoreAllByDefaultPattern;
     QChar m_pathSeparator;
     bool m_selectionMode;
     bool m_hasIgnorePatterns;
+    bool m_isIgnoringAllByDefault;
 };
 
 inline bool SyncthingFileModel::isSelectionModeEnabled() const
