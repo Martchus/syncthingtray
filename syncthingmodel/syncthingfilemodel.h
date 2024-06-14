@@ -113,6 +113,7 @@ private:
     QString m_manuallyEditedIgnorePatterns;
     QString m_ignoreAllByDefaultPattern;
     QChar m_pathSeparator;
+    int m_columns;
     bool m_selectionMode;
     bool m_hasIgnorePatterns;
     bool m_isIgnoringAllByDefault;

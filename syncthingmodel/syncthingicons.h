@@ -7,6 +7,7 @@
 
 #include <QIcon>
 #include <QObject>
+#include <QPalette>
 #include <QSize>
 
 #include <vector>
@@ -159,6 +160,7 @@ public:
     const StatusIcons &trayIcons() const;
     QtForkAwesome::Renderer &forkAwesomeRenderer();
     const ForkAwesomeIcons &commonForkAwesomeIcons() const;
+    void renderForkAwesomeIcon(QtForkAwesome::Icon icon, QPainter *painter, const QRect &rect) const;
 
 public Q_SLOTS:
     void setPalette(const QPalette &palette);
@@ -175,6 +177,7 @@ private:
     StatusIcons m_trayIcons;
     QtForkAwesome::Renderer m_forkAwesomeRenderer;
     ForkAwesomeIcons m_commonForkAwesomeIcons;
+    QPalette m_palette;
 };
 
 inline void IconManager::applySettings(const StatusIconSettings *statusIconSettings, const StatusIconSettings *trayIconSettings)

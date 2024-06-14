@@ -5,6 +5,8 @@
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/utils.h>
 
+#include <qtforkawesome/icon.h>
+
 #include <qtutilities/misc/desktoputils.h>
 
 #include <c++utilities/conversion/stringconversion.h>
@@ -13,6 +15,7 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QNetworkReply>
+#include <QPainter>
 #include <QStringBuilder>
 #include <QtConcurrent>
 
@@ -67,12 +70,15 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     , m_connection(connection)
     , m_dirId(dir.id)
     , m_root(std::make_unique<SyncthingItem>())
+    , m_columns(4)
     , m_selectionMode(false)
     , m_hasIgnorePatterns(false)
     , m_isIgnoringAllByDefault(false)
 {
     if (m_connection.isLocal()) {
+        m_root->existsLocally = true;
         m_localPath = dir.pathWithoutTrailingSlash().toString();
+        m_columns += 1;
         connect(&m_localItemLookup, &QFutureWatcherBase::finished, this, &SyncthingFileModel::handleLocalLookupFinished);
     }
     m_pathSeparator = m_connection.pathSeparator().size() == 1 ? m_connection.pathSeparator().front() : QDir::separator();
@@ -111,7 +117,7 @@ QHash<int, QByteArray> SyncthingFileModel::roleNames() const
 
 QModelIndex SyncthingFileModel::index(int row, int column, const QModelIndex &parent) const
 {
-    if (row < 0 || column < 0 || column > 3 || parent.column() > 0) {
+    if (row < 0 || column < 0 || column >= m_columns || parent.column() > 0) {
         return QModelIndex();
     }
     if (!parent.isValid()) {
@@ -349,6 +355,23 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
             default:
                 return icons.cogs;
             }
+            break;
+        case 4: {
+            static constexpr auto size = 16;
+            auto &manager = IconManager::instance();
+            auto icon = QPixmap(size * 2, size);
+            auto painter = QPainter(&icon);
+            auto left = 0;
+            icon.fill(QColor(Qt::transparent));
+            if (item->existsInDb) {
+                manager.renderForkAwesomeIcon(QtForkAwesome::Icon::Globe, &painter, QRect(left, 0, size, size));
+            }
+            left += size;
+            if (item->existsLocally) {
+                manager.renderForkAwesomeIcon(QtForkAwesome::Icon::Home, &painter, QRect(left, 0, size, size));
+            }
+            return icon;
+        } break;
         }
         break;
     }
@@ -363,6 +386,21 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
             return item->isFilesystemItem() ? item->path : item->name;
         case 2:
             return agoString(item->modificationTime);
+        case 4:
+            if (item->existsInDb && item->existsLocally) {
+                return tr("Exists locally and globally");
+            } else if (item->existsInDb) {
+                return tr("Exists only globally");
+            } else if (item->existsLocally) {
+                return tr("Exists only locally");
+            }
+            break;
+        }
+        break;
+    case Qt::SizeHintRole:
+        switch (index.column()) {
+        case 4:
+            return QSize(32, 16);
         }
         break;
     case NameRole:
@@ -502,7 +540,7 @@ int SyncthingFileModel::rowCount(const QModelIndex &parent) const
 int SyncthingFileModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return 4;
+    return m_columns;
 }
 
 bool SyncthingFileModel::canFetchMore(const QModelIndex &parent) const
@@ -843,7 +881,7 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
     }
     m_pendingRequest.localLookup = QtConcurrent::run([dir = QDir(m_localPath % m_pathSeparator % path)] {
         auto items = std::make_shared<std::map<QString, SyncthingItem>>();
-        auto entries = dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+        auto entries = dir.entryInfoList(QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot);
         for (const auto &entry : entries) {
             const auto entryName = entry.fileName();
             auto &item = (*items)[entryName];
@@ -952,13 +990,13 @@ void SyncthingFileModel::handleLocalLookupFinished()
     }
 
     // insert items from local lookup that are not already present via the database query (probably ignored files)
+    const auto last = items.size();
+    const auto firstRow = last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max();
     for (auto &[localItemName, localItem] : localItems) {
         if (localItem.existsInDb) {
             continue;
         }
-        const auto last = items.size();
-        const auto index = last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max();
-        beginInsertRows(refreshedIndex, index, index);
+        beginInsertRows(refreshedIndex, firstRow, firstRow);
         auto &item = items.emplace_back(std::make_unique<SyncthingItem>(std::move(localItem)));
         item->parent = refreshedItem;
         item->index = last;
@@ -977,6 +1015,9 @@ void SyncthingFileModel::handleLocalLookupFinished()
     if (refreshedItem->children.size() != previousChildCount) {
         const auto sizeIndex = refreshedIndex.sibling(refreshedIndex.row(), 1);
         emit dataChanged(sizeIndex, sizeIndex, QVector<int>{ Qt::DisplayRole });
+    }
+    if (firstRow < 0) {
+        emit dataChanged(index(0, 4, refreshedIndex), index(firstRow - 1, 4, refreshedIndex), QVector<int>{ Qt::DecorationRole });
     }
 
     processFetchQueue(m_pendingRequest.forPath);

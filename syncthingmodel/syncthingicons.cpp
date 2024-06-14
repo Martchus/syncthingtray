@@ -338,6 +338,7 @@ IconManager::IconManager(const QPalette *palette)
 
 void IconManager::setPalette(const QPalette &palette)
 {
+    m_palette = palette;
     emit forkAwesomeIconsChanged(
         m_commonForkAwesomeIcons = ForkAwesomeIcons(m_forkAwesomeRenderer, palette.color(QPalette::Normal, QPalette::Text), QSize(64, 64)));
 }
@@ -346,6 +347,11 @@ IconManager &IconManager::instance(const QPalette *palette)
 {
     static auto iconManager = IconManager(palette);
     return iconManager;
+}
+
+void IconManager::renderForkAwesomeIcon(QtForkAwesome::Icon icon, QPainter *painter, const QRect &rect) const
+{
+    m_forkAwesomeRenderer.render(icon, painter, rect, m_palette.color(QPalette::Normal, QPalette::Text));
 }
 
 QString aboutDialogAttribution()
