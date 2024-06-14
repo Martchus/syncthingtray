@@ -199,7 +199,9 @@ void ModelTests::testFileModel()
     // selection actions when selection mode disabled
     auto actions = model.selectionActions();
     QVERIFY(!model.isSelectionModeEnabled());
-    QCOMPARE(actions.size(), 0);
+    QCOMPARE(actions.at(0)->text(), QStringLiteral("Select items to sync/ignore"));
+    QCOMPARE(actions.at(1)->text(), QStringLiteral("Ignore all items by default"));
+    QCOMPARE(actions.size(), 2);
     qDeleteAll(actions);
 
     // selecting items recursively
@@ -214,11 +216,12 @@ void ModelTests::testFileModel()
 
     // selection actions when selection mode enabled
     actions = model.selectionActions();
-    QCOMPARE(actions.size(), 4);
+    QCOMPARE(actions.size(), 5);
     QCOMPARE(actions.at(0)->text(), QStringLiteral("Discard selection and staged changes"));
     QCOMPARE(actions.at(1)->text(), QStringLiteral("Ignore selected items (and their children)"));
     QCOMPARE(actions.at(2)->text(), QStringLiteral("Include selected items (and their children)"));
-    QCOMPARE(actions.at(3)->text(), QStringLiteral("Remove related ignore patterns (may affect other items as well)"));
+    QCOMPARE(actions.at(3)->text(), QStringLiteral("Ignore all items by default"));
+    QCOMPARE(actions.at(4)->text(), QStringLiteral("Remove ignore patterns matching against selected items (may affect other items as well)"));
     actions.at(1)->trigger(); // this won't do much in the test setup
     actions.at(0)->trigger(); // disables selection mode
     qDeleteAll(actions);
@@ -246,8 +249,9 @@ void ModelTests::testFileModel()
     QCOMPARE(cameraIdx2.data(Qt::CheckStateRole).toInt(), Qt::Unchecked);
 
     // compute diff and new ignore patterns
-    const auto testPatterns = QStringList{QStringLiteral("foo"), QStringLiteral("bar"), QStringLiteral("baz")};
-    const auto changedTestPatterns = QStringList{QStringLiteral("// new comment at beginning"), testPatterns.front(), testPatterns.back(), QStringLiteral("biz"), QStringLiteral("buz")};
+    const auto testPatterns = QStringList{ QStringLiteral("foo"), QStringLiteral("bar"), QStringLiteral("baz") };
+    const auto changedTestPatterns = QStringList{ QStringLiteral("// new comment at beginning"), testPatterns.front(), testPatterns.back(),
+        QStringLiteral("biz"), QStringLiteral("buz") };
     model.m_presentIgnorePatterns.reserve(static_cast<std::size_t>(testPatterns.size()));
     for (const auto &pattern : testPatterns) {
         model.m_presentIgnorePatterns.emplace_back(QString(pattern));
