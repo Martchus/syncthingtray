@@ -4,42 +4,42 @@
 <context>
     <name>Data::StatusIconSettings</name>
     <message>
-        <location filename="../syncthingicons.cpp" line="231"/>
+        <location filename="../syncthingicons.cpp" line="232"/>
         <source>Misc. notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="232"/>
+        <location filename="../syncthingicons.cpp" line="233"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="233"/>
+        <location filename="../syncthingicons.cpp" line="234"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="234"/>
+        <location filename="../syncthingicons.cpp" line="235"/>
         <source>Idle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="235"/>
+        <location filename="../syncthingicons.cpp" line="236"/>
         <source>Scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="236"/>
+        <location filename="../syncthingicons.cpp" line="237"/>
         <source>Synchronizing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="237"/>
+        <location filename="../syncthingicons.cpp" line="238"/>
         <source>Paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="238"/>
+        <location filename="../syncthingicons.cpp" line="239"/>
         <source>Disconnected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -380,109 +380,154 @@
 <context>
     <name>Data::SyncthingFileModel</name>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="241"/>
+        <location filename="../syncthingfilemodel.cpp" line="258"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="243"/>
+        <location filename="../syncthingfilemodel.cpp" line="260"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="245"/>
+        <location filename="../syncthingfilemodel.cpp" line="262"/>
         <source>Last modified</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="247"/>
+        <location filename="../syncthingfilemodel.cpp" line="264"/>
         <source>Ignore pattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="295"/>
+        <location filename="../syncthingfilemodel.cpp" line="312"/>
         <source>%1 elements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="381"/>
+        <location filename="../syncthingfilemodel.cpp" line="391"/>
+        <source>Exists locally and globally</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="393"/>
+        <source>Exists only globally</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="395"/>
+        <source>Exists only locally</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="430"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="383"/>
+        <location filename="../syncthingfilemodel.cpp" line="432"/>
         <source>Deselect recursively</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="383"/>
+        <location filename="../syncthingfilemodel.cpp" line="432"/>
         <source>Select recursively</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="384"/>
+        <location filename="../syncthingfilemodel.cpp" line="433"/>
         <source>Deselect single item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="384"/>
+        <location filename="../syncthingfilemodel.cpp" line="433"/>
         <source>Select single item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="386"/>
+        <location filename="../syncthingfilemodel.cpp" line="435"/>
         <source>Open local version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="386"/>
+        <location filename="../syncthingfilemodel.cpp" line="435"/>
         <source>Copy local path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="386"/>
+        <location filename="../syncthingfilemodel.cpp" line="435"/>
         <source>Browse locally</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="560"/>
+        <location filename="../syncthingfilemodel.cpp" line="636"/>
+        <source>Select items to sync/ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="642"/>
+        <source>Discard staged changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="651"/>
         <source>Discard selection and staged changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="591"/>
+        <location filename="../syncthingfilemodel.cpp" line="663"/>
+        <source>Ignore selected items (and their children)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="668"/>
+        <source>Include selected items (and their children)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="675"/>
+        <source>Include all items by default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="675"/>
+        <source>Ignore all items by default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="704"/>
+        <source>Remove ignore patterns matching against selected items (may affect other items as well)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="724"/>
         <source>Review and apply staged changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="597"/>
+        <location filename="../syncthingfilemodel.cpp" line="734"/>
         <source>Do you want to apply the folliwng changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="604"/>
+        <location filename="../syncthingfilemodel.cpp" line="741"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="612"/>
+        <location filename="../syncthingfilemodel.cpp" line="749"/>
         <source>Unable to change ignore patterns:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="626"/>
+        <location filename="../syncthingfilemodel.cpp" line="763"/>
         <source>Ignore patterns have been changed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="775"/>
+        <location filename="../syncthingfilemodel.cpp" line="912"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingfilemodel.cpp" line="572"/>
-        <source>Remove related ignore patterns</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
