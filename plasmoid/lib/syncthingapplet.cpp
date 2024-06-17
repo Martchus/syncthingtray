@@ -683,7 +683,7 @@ void SyncthingApplet::applySettings(int changeConnectionIndex)
     // apply appearance settings
     setSize(config.readEntry<QSize>("size", QSize(25, 25)));
     setShowingTabTexts(config.readEntry<bool>("showTabTexts", false));
-    IconManager::instance().applySettings(&settings.icons.status);
+    IconManager::instance().applySettings(&settings.icons.status, nullptr, settings.icons.usePaletteForStatus, false);
 
     // restore selected states
     // note: The settings dialog writes this to the Plasmoid's config like the other settings. However, it

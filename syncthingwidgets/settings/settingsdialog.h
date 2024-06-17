@@ -105,6 +105,8 @@ private:
 void update(bool preserveSize = false);
 Context m_context;
 Data::StatusIconSettings m_settings;
+QAction *m_paletteAction = nullptr;
+bool m_usePalette = false;
 struct {
     QtUtilities::ColorButton *colorButtons[3] = {};
     QLabel *previewLabel = nullptr;

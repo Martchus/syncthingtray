@@ -6,6 +6,7 @@
 #include "resources/../../tray/resources/config.h"
 
 #include <qtutilities/misc/compat.h>
+#include <qtutilities/misc/desktoputils.h>
 
 #include <qtforkawesome/icon.h>
 
@@ -278,7 +279,7 @@ QString StatusIconSettings::toString() const
 
 StatusIcons::StatusIcons(const StatusIconSettings &settings)
     : disconnected(
-          QIcon(renderSvgImage(makeSyncthingIcon(settings.disconnectedColor, StatusEmblem::None, settings.strokeWidth), settings.renderSize)))
+        QIcon(renderSvgImage(makeSyncthingIcon(settings.disconnectedColor, StatusEmblem::None, settings.strokeWidth), settings.renderSize)))
     , idling(QIcon(renderSvgImage(makeSyncthingIcon(settings.idleColor, StatusEmblem::None, settings.strokeWidth), settings.renderSize)))
     , scanninig(QIcon(renderSvgImage(makeSyncthingIcon(settings.scanningColor, StatusEmblem::Scanning, settings.strokeWidth), settings.renderSize)))
     , notify(QIcon(renderSvgImage(makeSyncthingIcon(settings.warningColor, StatusEmblem::Alert, settings.strokeWidth), settings.renderSize)))
@@ -323,6 +324,9 @@ IconManager::IconManager(const QPalette *palette)
     , m_trayIcons(m_statusIcons)
     , m_commonForkAwesomeIcons(
           m_forkAwesomeRenderer, (palette ? *palette : QGuiApplication::palette()).color(QPalette::Normal, QPalette::Text), QSize(64, 64))
+    , m_distinguishTrayIcons(false)
+    , m_usePaletteForStatus(false)
+    , m_usePaletteForTray(false)
 {
 #ifdef __GNUC__
 #pragma GCC diagnostic push
@@ -336,8 +340,46 @@ IconManager::IconManager(const QPalette *palette)
 #endif
 }
 
+void IconManager::applySettings(
+    const StatusIconSettings *statusIconSettings, const StatusIconSettings *trayIconSettings, bool usePaletteForStatus, bool usePaletteForTray)
+{
+    m_distinguishTrayIcons = trayIconSettings != nullptr;
+    if (usePaletteForStatus || usePaletteForTray) {
+        m_settingsForPalette = QtUtilities::isPaletteDark(m_palette) ? StatusIconSettings(StatusIconSettings::DarkTheme{})
+                                                                     : StatusIconSettings(StatusIconSettings::BrightTheme{});
+    }
+    if ((m_usePaletteForStatus = usePaletteForStatus)) {
+        m_statusIcons = StatusIcons(m_settingsForPalette);
+    } else if (statusIconSettings) {
+        m_statusIcons = StatusIcons(*statusIconSettings);
+    } else {
+        m_statusIcons = StatusIcons(StatusIconSettings());
+    }
+    if ((m_usePaletteForTray = usePaletteForTray) || (!m_distinguishTrayIcons && usePaletteForStatus)) {
+        m_trayIcons = m_distinguishTrayIcons ? StatusIcons(m_settingsForPalette) : m_statusIcons;
+    } else if (trayIconSettings) {
+        m_trayIcons = StatusIcons(*trayIconSettings);
+    } else {
+        m_trayIcons = m_statusIcons;
+    }
+    emit statusIconsChanged(m_statusIcons, m_trayIcons);
+}
+
 void IconManager::setPalette(const QPalette &palette)
 {
+    if (m_usePaletteForStatus || m_usePaletteForTray) {
+        if (const auto wasDark = QtUtilities::isPaletteDark(m_palette), isDark = QtUtilities::isPaletteDark(palette); wasDark != isDark) {
+            m_settingsForPalette
+                = isDark ? StatusIconSettings(StatusIconSettings::DarkTheme{}) : StatusIconSettings(StatusIconSettings::BrightTheme{});
+            if (m_usePaletteForStatus) {
+                m_statusIcons = StatusIcons(m_settingsForPalette);
+            }
+            if (m_usePaletteForTray || (!m_distinguishTrayIcons && m_usePaletteForStatus)) {
+                m_trayIcons = m_distinguishTrayIcons ? StatusIcons(m_settingsForPalette) : m_statusIcons;
+            }
+            emit statusIconsChanged(m_statusIcons, m_trayIcons);
+        }
+    }
     m_palette = palette;
     emit forkAwesomeIconsChanged(
         m_commonForkAwesomeIcons = ForkAwesomeIcons(m_forkAwesomeRenderer, palette.color(QPalette::Normal, QPalette::Text), QSize(64, 64)));

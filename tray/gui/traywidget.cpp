@@ -589,7 +589,9 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     if (settings.appearance.tabPosition >= QTabWidget::North && settings.appearance.tabPosition <= QTabWidget::East) {
         m_ui->tabWidget->setTabPosition(static_cast<QTabWidget::TabPosition>(settings.appearance.tabPosition));
     }
-    IconManager::instance().applySettings(&settings.icons.status, settings.icons.distinguishTrayIcons ? &settings.icons.tray : nullptr);
+    const auto &iconSettings = settings.icons;
+    IconManager::instance().applySettings(&iconSettings.status, iconSettings.distinguishTrayIcons ? &iconSettings.tray : nullptr,
+        iconSettings.usePaletteForStatus, iconSettings.usePaletteForTray);
     if (m_tabTextsShown != settings.appearance.showTabTexts) {
         const auto tabCount = m_ui->tabWidget->count();
         if ((m_tabTextsShown = settings.appearance.showTabTexts)) {

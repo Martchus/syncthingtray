@@ -174,6 +174,8 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
         Data::StatusIconSettings tray;
         bool distinguishTrayIcons = false;
         bool preferIconsFromTheme = false;
+        bool usePaletteForStatus = false;
+        bool usePaletteForTray = false;
     } icons;
     Launcher launcher;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

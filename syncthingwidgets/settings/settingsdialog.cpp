@@ -714,18 +714,25 @@ QWidget *IconsOptionPage::setupWidget()
     auto *const presetsMenu = new QMenu(widget);
     presetsMenu->addAction(QCoreApplication::translate("QtGui::IconsOptionPageBase", "Colorful background with gradient (default)"), widget, [this] {
         m_settings = Data::StatusIconSettings();
+        m_usePalette = false;
         update(true);
     });
     presetsMenu->addAction(
         QCoreApplication::translate("QtGui::IconsOptionPageBase", "Transparent background and dark foreground (for bright themes)"), widget, [this] {
             m_settings = Data::StatusIconSettings(Data::StatusIconSettings::BrightTheme{});
+            m_usePalette = false;
             update(true);
         });
     presetsMenu->addAction(
         QCoreApplication::translate("QtGui::IconsOptionPageBase", "Transparent background and bright foreground (for dark themes)"), widget, [this] {
             m_settings = Data::StatusIconSettings(Data::StatusIconSettings::DarkTheme{});
+            m_usePalette = false;
             update(true);
         });
+    m_paletteAction = presetsMenu->addAction(QString(), widget, [this] {
+        m_usePalette = !m_usePalette;
+        update(true);
+    });
 
     // setup additional buttons
     ui()->restoreDefaultsPushButton->setMenu(presetsMenu);
@@ -760,9 +767,11 @@ bool IconsOptionPage::apply()
     case Context::Combined:
     case Context::UI:
         iconSettings.status = m_settings;
+        iconSettings.usePaletteForStatus = m_usePalette;
         break;
     case Context::System:
         iconSettings.tray = m_settings;
+        iconSettings.usePaletteForTray = m_usePalette;
         iconSettings.distinguishTrayIcons = !ui()->contextCheckBox->isChecked();
         break;
     }
@@ -777,6 +786,10 @@ void IconsOptionPage::update(bool preserveSize)
     } else {
         ui()->renderingSizeSlider->setValue(std::max(m_settings.renderSize.width(), m_settings.renderSize.height()));
     }
+    m_paletteAction->setText(m_usePalette
+            ? QCoreApplication::translate("QtGui::IconsOptionPageBase", "Select colors manually (no longer follow system palette)")
+            : QCoreApplication::translate("QtGui::IconsOptionPageBase", "Transparent background and foreground depending on system palette"));
+    ui()->gridWidget->setDisabled(m_usePalette);
     ui()->thickStrokeWidthCheckBox->setChecked(m_settings.strokeWidth == StatusIconStrokeWidth::Thick);
     for (auto &widgetsForColor : m_widgets) {
         widgetsForColor.colorButtons[0]->setColor(widgetsForColor.setting->backgroundStart);
@@ -792,9 +805,11 @@ void IconsOptionPage::reset()
     case Context::Combined:
     case Context::UI:
         m_settings = iconSettings.status;
+        m_usePalette = iconSettings.usePaletteForStatus;
         break;
     case Context::System:
         m_settings = iconSettings.tray;
+        m_usePalette = iconSettings.usePaletteForTray;
         ui()->contextCheckBox->setChecked(!iconSettings.distinguishTrayIcons);
         break;
     }

@@ -155,7 +155,8 @@ class LIB_SYNCTHING_MODEL_EXPORT IconManager : public QObject {
 public:
     static IconManager &instance(const QPalette *palette = nullptr);
 
-    void applySettings(const StatusIconSettings *statusIconSettings = nullptr, const StatusIconSettings *trayIconSettings = nullptr);
+    void applySettings(const StatusIconSettings *statusIconSettings = nullptr, const StatusIconSettings *trayIconSettings = nullptr,
+        bool usePaletteForStatus = false, bool usePaletteForTray = false);
     const StatusIcons &statusIcons() const;
     const StatusIcons &trayIcons() const;
     QtForkAwesome::Renderer &forkAwesomeRenderer();
@@ -178,22 +179,11 @@ private:
     QtForkAwesome::Renderer m_forkAwesomeRenderer;
     ForkAwesomeIcons m_commonForkAwesomeIcons;
     QPalette m_palette;
+    StatusIconSettings m_settingsForPalette;
+    bool m_distinguishTrayIcons;
+    bool m_usePaletteForStatus;
+    bool m_usePaletteForTray;
 };
-
-inline void IconManager::applySettings(const StatusIconSettings *statusIconSettings, const StatusIconSettings *trayIconSettings)
-{
-    if (statusIconSettings) {
-        m_statusIcons = StatusIcons(*statusIconSettings);
-    } else {
-        m_statusIcons = StatusIcons(StatusIconSettings());
-    }
-    if (trayIconSettings) {
-        m_trayIcons = StatusIcons(*trayIconSettings);
-    } else {
-        m_trayIcons = m_statusIcons;
-    }
-    emit statusIconsChanged(m_statusIcons, m_trayIcons);
-}
 
 inline const StatusIcons &IconManager::statusIcons() const
 {
