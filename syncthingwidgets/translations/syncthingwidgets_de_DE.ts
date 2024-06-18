@@ -1138,67 +1138,67 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Symbole</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="38"/>
+        <location filename="../settings/iconsoptionpage.ui" line="39"/>
         <source>Use Drag &amp; Drop to re-use a selected color at a different position.</source>
         <translation>Verwende Drag &amp; Drop um eine ausgewählte Farbe an eine andere Position zu kopieren.</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="45"/>
+        <location filename="../settings/iconsoptionpage.ui" line="46"/>
         <source>Status icons</source>
         <translation>Status-Icons</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="53"/>
+        <location filename="../settings/iconsoptionpage.ui" line="54"/>
         <source>Increase the rendering size if you&apos;re using a tray area with extraordinarily big icons.</source>
         <translation>Erhöhe den Wert, wenn du ein System-Tray mit großen Icons verwendest.</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="56"/>
+        <location filename="../settings/iconsoptionpage.ui" line="57"/>
         <source>Rendering size</source>
         <translation>Render-Größe</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="96"/>
+        <location filename="../settings/iconsoptionpage.ui" line="97"/>
         <source>? px</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="105"/>
+        <location filename="../settings/iconsoptionpage.ui" line="106"/>
         <source>Stroke width</source>
         <translation>Linienstärke</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="112"/>
+        <location filename="../settings/iconsoptionpage.ui" line="113"/>
         <source>Thick</source>
         <translation>Dick</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="131"/>
+        <location filename="../settings/iconsoptionpage.ui" line="132"/>
         <source>Background color 1</source>
         <translation>Hintergrundfarbe 1</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="141"/>
+        <location filename="../settings/iconsoptionpage.ui" line="142"/>
         <source>Background color 2</source>
         <translation>Hintergrundfarbe 2</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="161"/>
+        <location filename="../settings/iconsoptionpage.ui" line="162"/>
         <source>Preview</source>
         <translation>Vorschau</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="151"/>
+        <location filename="../settings/iconsoptionpage.ui" line="152"/>
         <source>Foreground color</source>
         <translation>Vordergrundfarbe</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="196"/>
+        <location filename="../settings/iconsoptionpage.ui" line="197"/>
         <source>Restore previous settings</source>
         <translation>Auf vorherige Farben zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="206"/>
+        <location filename="../settings/iconsoptionpage.ui" line="208"/>
         <source>Use preset</source>
         <translation>Verwende Standardfarben</translation>
     </message>

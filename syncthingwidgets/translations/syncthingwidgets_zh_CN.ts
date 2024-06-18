@@ -1003,67 +1003,67 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>图标</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="38"/>
+        <location filename="../settings/iconsoptionpage.ui" line="39"/>
         <source>Use Drag &amp; Drop to re-use a selected color at a different position.</source>
         <translation>使用拖放功能在不同位置重复使用选定的颜色。</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="45"/>
+        <location filename="../settings/iconsoptionpage.ui" line="46"/>
         <source>Status icons</source>
         <translation>状态图标</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="53"/>
+        <location filename="../settings/iconsoptionpage.ui" line="54"/>
         <source>Increase the rendering size if you&apos;re using a tray area with extraordinarily big icons.</source>
         <translation>如果您使用带有特大图标的托盘区域，请增加渲染大小。</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="56"/>
+        <location filename="../settings/iconsoptionpage.ui" line="57"/>
         <source>Rendering size</source>
         <translation>渲染大小</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="96"/>
+        <location filename="../settings/iconsoptionpage.ui" line="97"/>
         <source>? px</source>
         <translation>? 像素</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="105"/>
+        <location filename="../settings/iconsoptionpage.ui" line="106"/>
         <source>Stroke width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="112"/>
+        <location filename="../settings/iconsoptionpage.ui" line="113"/>
         <source>Thick</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="131"/>
+        <location filename="../settings/iconsoptionpage.ui" line="132"/>
         <source>Background color 1</source>
         <translation>背景颜色 1</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="141"/>
+        <location filename="../settings/iconsoptionpage.ui" line="142"/>
         <source>Background color 2</source>
         <translation>背景颜色 2</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="161"/>
+        <location filename="../settings/iconsoptionpage.ui" line="162"/>
         <source>Preview</source>
         <translation>预览</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="151"/>
+        <location filename="../settings/iconsoptionpage.ui" line="152"/>
         <source>Foreground color</source>
         <translation>前景色</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="196"/>
+        <location filename="../settings/iconsoptionpage.ui" line="197"/>
         <source>Restore previous settings</source>
         <translation>还原以前的设置</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="206"/>
+        <location filename="../settings/iconsoptionpage.ui" line="208"/>
         <source>Use preset</source>
         <translation>使用预设</translation>
     </message>

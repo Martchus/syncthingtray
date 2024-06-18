@@ -983,67 +983,67 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="38"/>
+        <location filename="../settings/iconsoptionpage.ui" line="39"/>
         <source>Use Drag &amp; Drop to re-use a selected color at a different position.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="45"/>
+        <location filename="../settings/iconsoptionpage.ui" line="46"/>
         <source>Status icons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="53"/>
+        <location filename="../settings/iconsoptionpage.ui" line="54"/>
         <source>Increase the rendering size if you&apos;re using a tray area with extraordinarily big icons.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="56"/>
+        <location filename="../settings/iconsoptionpage.ui" line="57"/>
         <source>Rendering size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="96"/>
+        <location filename="../settings/iconsoptionpage.ui" line="97"/>
         <source>? px</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="105"/>
+        <location filename="../settings/iconsoptionpage.ui" line="106"/>
         <source>Stroke width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="112"/>
+        <location filename="../settings/iconsoptionpage.ui" line="113"/>
         <source>Thick</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="131"/>
+        <location filename="../settings/iconsoptionpage.ui" line="132"/>
         <source>Background color 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="141"/>
+        <location filename="../settings/iconsoptionpage.ui" line="142"/>
         <source>Background color 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="161"/>
+        <location filename="../settings/iconsoptionpage.ui" line="162"/>
         <source>Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="151"/>
+        <location filename="../settings/iconsoptionpage.ui" line="152"/>
         <source>Foreground color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="196"/>
+        <location filename="../settings/iconsoptionpage.ui" line="197"/>
         <source>Restore previous settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="206"/>
+        <location filename="../settings/iconsoptionpage.ui" line="208"/>
         <source>Use preset</source>
         <translation type="unfinished"></translation>
     </message>
