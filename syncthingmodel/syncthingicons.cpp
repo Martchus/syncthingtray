@@ -374,6 +374,7 @@ void IconManager::applySettings(
 
 void IconManager::setPalette(const QPalette &palette)
 {
+    m_palette = palette;
     if (m_usePaletteForStatus || m_usePaletteForTray) {
         m_settingsForPalette = StatusIconSettings::forPalette(m_palette);
         if (m_usePaletteForStatus) {
@@ -384,7 +385,6 @@ void IconManager::setPalette(const QPalette &palette)
         }
         emit statusIconsChanged(m_statusIcons, m_trayIcons);
     }
-    m_palette = palette;
     emit forkAwesomeIconsChanged(
         m_commonForkAwesomeIcons = ForkAwesomeIcons(m_forkAwesomeRenderer, palette.color(QPalette::Normal, QPalette::Text), QSize(64, 64)));
 }
