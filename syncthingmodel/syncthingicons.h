@@ -100,6 +100,8 @@ struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
     };
     std::vector<ColorMapping> colorMapping();
     QString toString() const;
+
+    static StatusIconSettings forPalette(const QPalette &palette);
 };
 
 struct LIB_SYNCTHING_MODEL_EXPORT StatusIcons {

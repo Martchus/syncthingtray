@@ -277,6 +277,14 @@ QString StatusIconSettings::toString() const
     return res;
 }
 
+StatusIconSettings StatusIconSettings::forPalette(const QPalette &palette)
+{
+    auto settings = QtUtilities::isPaletteDark(palette) ? StatusIconSettings(StatusIconSettings::DarkTheme{})
+                                                        : StatusIconSettings(StatusIconSettings::BrightTheme{});
+    settings.defaultColor.foreground = settings.idleColor.foreground = palette.color(QPalette::Normal, QPalette::Text);
+    return settings;
+}
+
 StatusIcons::StatusIcons(const StatusIconSettings &settings)
     : disconnected(
         QIcon(renderSvgImage(makeSyncthingIcon(settings.disconnectedColor, StatusEmblem::None, settings.strokeWidth), settings.renderSize)))
@@ -345,8 +353,7 @@ void IconManager::applySettings(
 {
     m_distinguishTrayIcons = trayIconSettings != nullptr;
     if (usePaletteForStatus || usePaletteForTray) {
-        m_settingsForPalette = QtUtilities::isPaletteDark(m_palette) ? StatusIconSettings(StatusIconSettings::DarkTheme{})
-                                                                     : StatusIconSettings(StatusIconSettings::BrightTheme{});
+        m_settingsForPalette = StatusIconSettings::forPalette(m_palette);
     }
     if ((m_usePaletteForStatus = usePaletteForStatus)) {
         m_statusIcons = StatusIcons(m_settingsForPalette);
@@ -368,17 +375,14 @@ void IconManager::applySettings(
 void IconManager::setPalette(const QPalette &palette)
 {
     if (m_usePaletteForStatus || m_usePaletteForTray) {
-        if (const auto wasDark = QtUtilities::isPaletteDark(m_palette), isDark = QtUtilities::isPaletteDark(palette); wasDark != isDark) {
-            m_settingsForPalette
-                = isDark ? StatusIconSettings(StatusIconSettings::DarkTheme{}) : StatusIconSettings(StatusIconSettings::BrightTheme{});
-            if (m_usePaletteForStatus) {
-                m_statusIcons = StatusIcons(m_settingsForPalette);
-            }
-            if (m_usePaletteForTray || (!m_distinguishTrayIcons && m_usePaletteForStatus)) {
-                m_trayIcons = m_distinguishTrayIcons ? StatusIcons(m_settingsForPalette) : m_statusIcons;
-            }
-            emit statusIconsChanged(m_statusIcons, m_trayIcons);
+        m_settingsForPalette = StatusIconSettings::forPalette(m_palette);
+        if (m_usePaletteForStatus) {
+            m_statusIcons = StatusIcons(m_settingsForPalette);
         }
+        if (m_usePaletteForTray || (!m_distinguishTrayIcons && m_usePaletteForStatus)) {
+            m_trayIcons = m_distinguishTrayIcons ? StatusIcons(m_settingsForPalette) : m_statusIcons;
+        }
+        emit statusIconsChanged(m_statusIcons, m_trayIcons);
     }
     m_palette = palette;
     emit forkAwesomeIconsChanged(
