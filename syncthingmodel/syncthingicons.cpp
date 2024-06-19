@@ -277,11 +277,13 @@ QString StatusIconSettings::toString() const
     return res;
 }
 
-StatusIconSettings StatusIconSettings::forPalette(const QPalette &palette)
+StatusIconSettings StatusIconSettings::forPalette(const QPalette &palette, const StatusIconSettings &otherSettings)
 {
     auto settings = QtUtilities::isPaletteDark(palette) ? StatusIconSettings(StatusIconSettings::DarkTheme{})
                                                         : StatusIconSettings(StatusIconSettings::BrightTheme{});
     settings.defaultColor.foreground = settings.idleColor.foreground = palette.color(QPalette::Normal, QPalette::Text);
+    settings.renderSize = otherSettings.renderSize;
+    settings.strokeWidth = otherSettings.strokeWidth;
     return settings;
 }
 
@@ -333,8 +335,6 @@ IconManager::IconManager(const QPalette *palette)
     , m_commonForkAwesomeIcons(
           m_forkAwesomeRenderer, (palette ? *palette : QGuiApplication::palette()).color(QPalette::Normal, QPalette::Text), QSize(64, 64))
     , m_distinguishTrayIcons(false)
-    , m_usePaletteForStatus(false)
-    , m_usePaletteForTray(false)
 {
 #ifdef __GNUC__
 #pragma GCC diagnostic push
@@ -351,19 +351,29 @@ IconManager::IconManager(const QPalette *palette)
 void IconManager::applySettings(
     const StatusIconSettings *statusIconSettings, const StatusIconSettings *trayIconSettings, bool usePaletteForStatus, bool usePaletteForTray)
 {
+    static const auto defaultSettings = StatusIconSettings();
     m_distinguishTrayIcons = trayIconSettings != nullptr;
-    if (usePaletteForStatus || usePaletteForTray) {
-        m_settingsForPalette = StatusIconSettings::forPalette(m_palette);
+    if (usePaletteForStatus) {
+        m_paletteBasedSettingsForStatus = StatusIconSettings::forPalette(m_palette, statusIconSettings ? *statusIconSettings : defaultSettings);
+    } else {
+        m_paletteBasedSettingsForStatus.reset();
     }
-    if ((m_usePaletteForStatus = usePaletteForStatus)) {
-        m_statusIcons = StatusIcons(m_settingsForPalette);
+    if (!m_distinguishTrayIcons) {
+        m_paletteBasedSettingsForTray = m_paletteBasedSettingsForStatus;
+    } else if (usePaletteForTray) {
+        m_paletteBasedSettingsForTray = StatusIconSettings::forPalette(m_palette, trayIconSettings ? *trayIconSettings : defaultSettings);
+    } else {
+        m_paletteBasedSettingsForTray.reset();
+    }
+    if (m_paletteBasedSettingsForStatus.has_value()) {
+        m_statusIcons = StatusIcons(m_paletteBasedSettingsForStatus.value());
     } else if (statusIconSettings) {
         m_statusIcons = StatusIcons(*statusIconSettings);
     } else {
-        m_statusIcons = StatusIcons(StatusIconSettings());
+        m_statusIcons = StatusIcons(defaultSettings);
     }
-    if ((m_usePaletteForTray = usePaletteForTray) || (!m_distinguishTrayIcons && usePaletteForStatus)) {
-        m_trayIcons = m_distinguishTrayIcons ? StatusIcons(m_settingsForPalette) : m_statusIcons;
+    if (m_paletteBasedSettingsForTray.has_value()) {
+        m_trayIcons = m_paletteBasedSettingsForTray.value();
     } else if (trayIconSettings) {
         m_trayIcons = StatusIcons(*trayIconSettings);
     } else {
@@ -375,14 +385,15 @@ void IconManager::applySettings(
 void IconManager::setPalette(const QPalette &palette)
 {
     m_palette = palette;
-    if (m_usePaletteForStatus || m_usePaletteForTray) {
-        m_settingsForPalette = StatusIconSettings::forPalette(m_palette);
-        if (m_usePaletteForStatus) {
-            m_statusIcons = StatusIcons(m_settingsForPalette);
-        }
-        if (m_usePaletteForTray || (!m_distinguishTrayIcons && m_usePaletteForStatus)) {
-            m_trayIcons = m_distinguishTrayIcons ? StatusIcons(m_settingsForPalette) : m_statusIcons;
-        }
+    if (m_paletteBasedSettingsForStatus.has_value()) {
+        m_paletteBasedSettingsForStatus = StatusIconSettings::forPalette(m_palette, m_paletteBasedSettingsForStatus.value());
+        m_statusIcons = StatusIcons(m_paletteBasedSettingsForStatus.value());
+    }
+    if (m_paletteBasedSettingsForTray.has_value()) {
+        m_paletteBasedSettingsForTray = StatusIconSettings::forPalette(m_palette, m_paletteBasedSettingsForTray.value());
+        m_trayIcons = StatusIcons(m_paletteBasedSettingsForTray.value());
+    }
+    if (m_paletteBasedSettingsForStatus.has_value() || m_paletteBasedSettingsForTray.has_value()) {
         emit statusIconsChanged(m_statusIcons, m_trayIcons);
     }
     emit forkAwesomeIconsChanged(

@@ -10,6 +10,7 @@
 #include <QPalette>
 #include <QSize>
 
+#include <optional>
 #include <vector>
 
 QT_FORWARD_DECLARE_CLASS(QColor)
@@ -101,7 +102,7 @@ struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
     std::vector<ColorMapping> colorMapping();
     QString toString() const;
 
-    static StatusIconSettings forPalette(const QPalette &palette);
+    static StatusIconSettings forPalette(const QPalette &palette, const StatusIconSettings &otherSettings);
 };
 
 struct LIB_SYNCTHING_MODEL_EXPORT StatusIcons {
@@ -181,10 +182,9 @@ private:
     QtForkAwesome::Renderer m_forkAwesomeRenderer;
     ForkAwesomeIcons m_commonForkAwesomeIcons;
     QPalette m_palette;
-    StatusIconSettings m_settingsForPalette;
+    std::optional<StatusIconSettings> m_paletteBasedSettingsForStatus;
+    std::optional<StatusIconSettings> m_paletteBasedSettingsForTray;
     bool m_distinguishTrayIcons;
-    bool m_usePaletteForStatus;
-    bool m_usePaletteForTray;
 };
 
 inline const StatusIcons &IconManager::statusIcons() const
