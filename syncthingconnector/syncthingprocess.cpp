@@ -708,7 +708,7 @@ qint64 SyncthingProcess::bytesAvailable() const
 void SyncthingProcess::close()
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
-    aboutToClose();
+    emit aboutToClose();
     if (m_process) {
         const auto lock = std::lock_guard<std::mutex>(m_process->mutex);
         m_process->pipe.async_close();
