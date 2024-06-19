@@ -45,6 +45,8 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     , m_relevantConnection(nullptr)
     , m_guiListeningUrlSearch("Access the GUI via the following URL: ", "\n\r", std::string_view(),
           std::bind(&SyncthingLauncher::handleGuiListeningUrlFound, this, std::placeholders::_1, std::placeholders::_2))
+    , m_exitSearch("Syncthing exited: ", "\n\r", std::string_view(),
+          std::bind(&SyncthingLauncher::handleExitFound, this, std::placeholders::_1, std::placeholders::_2))
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_libsyncthingLogLevel(LibSyncthing::LogLevel::Info)
 #endif
@@ -332,6 +334,7 @@ void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, cons
 void SyncthingLauncher::handleOutputAvailable(QByteArray &&data)
 {
     m_guiListeningUrlSearch(data.data(), static_cast<std::size_t>(data.size()));
+    m_exitSearch(data.data(), static_cast<std::size_t>(data.size()));
     if (isEmittingOutput()) {
         emit outputAvailable(data);
     } else {
@@ -339,10 +342,21 @@ void SyncthingLauncher::handleOutputAvailable(QByteArray &&data)
     }
 }
 
-void SyncthingLauncher::handleGuiListeningUrlFound(CppUtilities::BufferSearch &, std::string &&searchResult)
+void SyncthingLauncher::handleGuiListeningUrlFound(CppUtilities::BufferSearch &search, std::string &&searchResult)
 {
     m_guiListeningUrl.setUrl(QString::fromStdString(searchResult));
+    std::cerr << EscapeCodes::Phrases::Info << "Syncthing GUI available: " << searchResult << EscapeCodes::Phrases::End;
+    search.reset();
     emit guiUrlChanged(m_guiListeningUrl);
+}
+
+void SyncthingLauncher::handleExitFound(CppUtilities::BufferSearch &search, std::string &&searchResult)
+{
+    m_guiListeningUrl.clear();
+    std::cerr << EscapeCodes::Phrases::Info << "Syncthing exited: " << searchResult << EscapeCodes::Phrases::End;
+    emit guiUrlChanged(m_guiListeningUrl);
+    emit exitLogged(std::move(searchResult));
+    search.reset();
 }
 
 void SyncthingLauncher::terminateDueToMeteredConnection()
@@ -366,6 +380,8 @@ void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runt
     LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
     emit runningChanged(true);
     const auto exitCode = LibSyncthing::runSyncthing(runtimeOptions);
+    m_guiListeningUrl.clear();
+    emit guiUrlChanged(m_guiListeningUrl);
     emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
     emit runningChanged(false);
 }

@@ -105,6 +105,7 @@ private Q_SLOTS:
     void updateIconAndTooltip();
     void toggleRunning();
     Settings::Launcher::LauncherStatus handleLauncherStatusChanged();
+    Settings::Launcher::LauncherStatus handleLauncherGuiAddressChanged(const QUrl &guiAddress);
     Settings::Launcher::LauncherStatus applyLauncherSettings(
         bool reconnectRequired = false, bool skipApplyingToConnection = false, bool skipStartStopButton = false);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

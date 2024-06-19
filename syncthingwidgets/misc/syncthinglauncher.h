@@ -70,6 +70,7 @@ Q_SIGNALS:
     void confirmKill();
     void runningChanged(bool isRunning);
     void outputAvailable(const QByteArray &data);
+    void exitLogged(const std::string &exitMessage);
     void exited(int exitCode, QProcess::ExitStatus exitStatus);
     void errorOccurred(QProcess::ProcessError error);
     void guiUrlChanged(const QUrl &newUrl);
@@ -99,7 +100,8 @@ private:
     void handleLoggingCallback(LibSyncthing::LogLevel, const char *message, std::size_t messageSize);
 #endif
     void handleOutputAvailable(QByteArray &&data);
-    void handleGuiListeningUrlFound(CppUtilities::BufferSearch &bufferSearch, std::string &&searchResult);
+    void handleGuiListeningUrlFound(CppUtilities::BufferSearch &search, std::string &&searchResult);
+    void handleExitFound(CppUtilities::BufferSearch &search, std::string &&searchResult);
     void terminateDueToMeteredConnection();
 
     SyncthingProcess m_process;
@@ -110,6 +112,7 @@ private:
     QFuture<void> m_stopFuture;
     QByteArray m_outputBuffer;
     CppUtilities::BufferSearch m_guiListeningUrlSearch;
+    CppUtilities::BufferSearch m_exitSearch;
     CppUtilities::DateTime m_futureStarted;
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::LogLevel m_libsyncthingLogLevel;

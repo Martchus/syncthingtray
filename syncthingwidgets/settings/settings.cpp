@@ -238,7 +238,7 @@ Launcher::LauncherStatus Launcher::apply(
         return LauncherStatus{};
     }
     const auto isRelevant = connection.isLocal();
-    const auto isRunning = launcher->isRunning();
+    const auto isRunning = launcher->isRunning() && !launcher->guiUrl().isEmpty();
     const auto consideredForReconnect = considerForReconnect && isRelevant;
     connectAccordingToSettings(
         connection, currentConnectionSettings, *launcher, reconnectRequired, considerForReconnect, isRelevant, isRunning, consideredForReconnect);

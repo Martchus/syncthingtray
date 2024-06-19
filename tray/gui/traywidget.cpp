@@ -222,6 +222,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     connect(m_ui->startStopPushButton, &QPushButton::clicked, this, &TrayWidget::toggleRunning);
     if (const auto *const launcher = SyncthingLauncher::mainInstance()) {
         connect(launcher, &SyncthingLauncher::runningChanged, this, &TrayWidget::handleLauncherStatusChanged);
+        connect(launcher, &SyncthingLauncher::guiUrlChanged, this, &TrayWidget::handleLauncherGuiAddressChanged);
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     if (const auto *const service = SyncthingService::mainInstance()) {
@@ -845,6 +846,16 @@ Settings::Launcher::LauncherStatus TrayWidget::handleLauncherStatusChanged()
 #endif
     m_ui->startStopPushButton->setVisible(showStartStopButton);
     return launcherStatus;
+}
+
+Settings::Launcher::LauncherStatus TrayWidget::handleLauncherGuiAddressChanged(const QUrl &guiAddress)
+{
+    Q_UNUSED(guiAddress)
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    return applyLauncherSettings(false, Settings::values().systemd.considerForReconnect, true);
+#else
+    return applyLauncherSettings(false);
+#endif
 }
 
 Settings::Launcher::LauncherStatus TrayWidget::applyLauncherSettings(bool reconnectRequired, bool skipApplyingToConnection, bool skipStartStopButton)
