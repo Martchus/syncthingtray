@@ -465,6 +465,7 @@ private:
     QString configPath() const;
     QByteArray changeConfigVerb() const;
     QString folderErrorsPath() const;
+    bool checkConnectionConfiguration();
 
     QString m_syncthingUrl;
     QByteArray m_apiKey;

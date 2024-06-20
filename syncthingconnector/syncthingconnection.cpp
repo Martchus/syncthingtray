@@ -345,17 +345,25 @@ void SyncthingConnection::connect()
     // reset status
     m_connectionAborted = m_abortingToConnect = m_abortingToReconnect = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
 
-    // check configuration
-    if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
-        emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
-        setStatus(SyncthingStatus::Disconnected);
+    if (!checkConnectionConfiguration()) {
         return;
     }
-
-    // start by requesting config and status; if both are available request further info and events
     requestConfig();
     requestStatus();
     m_keepPolling = true;
+}
+
+/*!
+ * \brief Returns whether the connection configuration is sufficient and sets the connection into the disconnected state if not.
+ */
+bool SyncthingConnection::checkConnectionConfiguration()
+{
+    if (!m_apiKey.isEmpty() && !m_syncthingUrl.isEmpty()) {
+        return true;
+    }
+    emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
+    setStatus(SyncthingStatus::Disconnected);
+    return false;
 }
 
 /*!
@@ -536,15 +544,11 @@ void SyncthingConnection::continueReconnecting()
         emit newConfigApplied();
     }
 
-    if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
-        emit error(tr("Connection configuration is insufficient."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
-        setStatus(SyncthingStatus::Disconnected);
+    if (!checkConnectionConfiguration()) {
         return;
     }
-
     requestConfig();
     requestStatus();
-
     setStatus(SyncthingStatus::Reconnecting);
 }
 
