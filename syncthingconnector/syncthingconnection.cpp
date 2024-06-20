@@ -1158,11 +1158,12 @@ void SyncthingConnection::emitDirStatisticsChanged()
  */
 void SyncthingConnection::handleFatalConnectionError()
 {
-    setStatus(SyncthingStatus::Disconnected);
-    abortAllRequests();
+    // start the timer before emitting the event so its active state can be observed in event handler
     if (m_autoReconnectTimer.interval()) {
         m_autoReconnectTimer.start();
     }
+    setStatus(SyncthingStatus::Disconnected);
+    abortAllRequests();
 }
 
 /*!
