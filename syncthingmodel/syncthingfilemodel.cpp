@@ -11,7 +11,6 @@
 
 #include <c++utilities/conversion/stringconversion.h>
 
-#include <QAction>
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QNetworkReply>

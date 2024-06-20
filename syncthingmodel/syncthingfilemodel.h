@@ -6,6 +6,7 @@
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingignorepattern.h>
 
+#include <QAction>
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QHash>
@@ -14,8 +15,6 @@
 #include <map>
 #include <memory>
 #include <vector>
-
-QT_FORWARD_DECLARE_CLASS(QAction)
 
 class ModelTests;
 
