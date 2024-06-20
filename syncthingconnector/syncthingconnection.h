@@ -478,6 +478,7 @@ private:
     bool m_keepPolling;
     bool m_abortingAllRequests;
     bool m_connectionAborted;
+    bool m_abortingToConnect;
     bool m_abortingToReconnect;
     bool m_requestCompletion;
     SyncthingEventId m_lastEventId;

@@ -85,6 +85,7 @@ SyncthingConnection::SyncthingConnection(
     , m_keepPolling(false)
     , m_abortingAllRequests(false)
     , m_connectionAborted(false)
+    , m_abortingToConnect(false)
     , m_abortingToReconnect(false)
     , m_requestCompletion(true)
     , m_lastEventId(0)
@@ -334,8 +335,15 @@ void SyncthingConnection::connect()
         return;
     }
 
+    // abort pending requests before connecting
+    if (hasPendingRequests()) {
+        m_keepPolling = m_abortingToConnect = true;
+        abortAllRequests();
+        return;
+    }
+
     // reset status
-    m_connectionAborted = m_abortingToReconnect = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
+    m_connectionAborted = m_abortingToConnect = m_abortingToReconnect = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
 
     // check configuration
     if (m_apiKey.isEmpty() || m_syncthingUrl.isEmpty()) {
@@ -380,7 +388,7 @@ void SyncthingConnection::connectLater(int milliSeconds)
  */
 void SyncthingConnection::disconnect()
 {
-    m_abortingToReconnect = m_keepPolling = false;
+    m_abortingToConnect = m_abortingToReconnect = m_keepPolling = false;
     m_trafficPollTimer.stop();
     m_devStatsPollTimer.stop();
     m_errorsPollTimer.stop();
@@ -491,7 +499,7 @@ void SyncthingConnection::continueReconnecting()
     // cleanup information from previous connection
     m_keepPolling = true;
     m_connectionAborted = false;
-    m_abortingToReconnect = false;
+    m_abortingToConnect = m_abortingToReconnect = false;
     m_lastEventId = 0;
     m_lastDiskEventId = 0;
     m_configDir.clear();
@@ -1176,8 +1184,11 @@ void SyncthingConnection::handleAdditionalRequestCanceled()
         return;
     }
     if (m_abortingToReconnect) {
-        // if reconnection flag is set, instantly etstablish a new connection ...
+        // if reconnect-flag is set, instantly etstablish a new connection via reconnect()
         continueReconnecting();
+    } else if (m_abortingToConnect) {
+        // if connect-flag is set, instantly establish a new connection via connect()
+        connect();
     } else {
         // ... otherwise declare we're disconnected if that was the last pending request
         setStatus(SyncthingStatus::Disconnected);
