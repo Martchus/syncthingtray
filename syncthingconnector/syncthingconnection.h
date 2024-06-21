@@ -628,9 +628,7 @@ inline void SyncthingConnection::setUseDeprecatedRoutes(bool useDeprecatedRoutes
  */
 inline QString SyncthingConnection::statusText() const
 {
-    auto text = m_status == SyncthingStatus::Disconnected && !isAborted() && hasPendingRequests()
-        ? tr("connecting")
-        : statusText(m_status);
+    auto text = m_status == SyncthingStatus::Disconnected && !isAborted() && hasPendingRequests() ? tr("connecting") : statusText(m_status);
     if (m_autoReconnectTimer.isActive() && m_autoReconnectTimer.interval()) {
         text += tr(", re-connect attempt every %1 ms").arg(m_autoReconnectTimer.interval());
     }
