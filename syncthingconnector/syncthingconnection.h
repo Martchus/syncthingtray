@@ -826,6 +826,9 @@ inline void SyncthingConnection::setAutoReconnectInterval(int interval)
         m_autoReconnectTimer.stop();
     }
     m_autoReconnectTimer.setInterval(interval);
+    if (m_status == SyncthingStatus::Disconnected) {
+        emit statusChanged(m_status);
+    }
 }
 
 /*!

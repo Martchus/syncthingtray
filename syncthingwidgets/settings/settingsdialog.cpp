@@ -131,7 +131,7 @@ QWidget *ConnectionOptionPage::setupWidget()
     ui()->pollErrorsLabel->setToolTip(ui()->pollErrorsSpinBox->toolTip());
     ui()->reconnectLabel->setToolTip(ui()->reconnectSpinBox->toolTip());
     if (m_connection) {
-        QObject::connect(m_connection, &SyncthingConnection::statusChanged, bind(&ConnectionOptionPage::updateConnectionStatus, this));
+        QObject::connect(m_connection, &SyncthingConnection::statusChanged, widget, bind(&ConnectionOptionPage::updateConnectionStatus, this));
     } else {
         hideConnectionStatus();
     }
