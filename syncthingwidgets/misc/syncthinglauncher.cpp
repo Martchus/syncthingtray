@@ -43,10 +43,8 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     : QObject(parent)
     , m_lastLauncherSettings(nullptr)
     , m_relevantConnection(nullptr)
-    , m_guiListeningUrlSearch("Access the GUI via the following URL: ", "\n\r", std::string_view(),
-          std::bind(&SyncthingLauncher::handleGuiListeningUrlFound, this, std::placeholders::_1, std::placeholders::_2))
-    , m_exitSearch("Syncthing exited: ", "\n\r", std::string_view(),
-          std::bind(&SyncthingLauncher::handleExitFound, this, std::placeholders::_1, std::placeholders::_2))
+    , m_guiListeningUrlSearch("Access the GUI via the following URL: ", "\n\r", std::string_view(), BufferSearch::CallbackType())
+    , m_exitSearch("Syncthing exited: ", "\n\r", std::string_view(), BufferSearch::CallbackType())
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_libsyncthingLogLevel(LibSyncthing::LogLevel::Info)
 #endif
@@ -300,6 +298,7 @@ void SyncthingLauncher::resetState()
     delete m_relevantConnection;
     m_relevantConnection = nullptr;
     m_guiListeningUrlSearch.reset();
+    m_exitSearch.reset();
     if (!m_guiListeningUrl.isEmpty()) {
         m_guiListeningUrl.clear();
         emit guiUrlChanged(m_guiListeningUrl);
@@ -333,30 +332,27 @@ void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, cons
 
 void SyncthingLauncher::handleOutputAvailable(QByteArray &&data)
 {
-    m_guiListeningUrlSearch(data.data(), static_cast<std::size_t>(data.size()));
-    m_exitSearch(data.data(), static_cast<std::size_t>(data.size()));
+    const auto *const exitOffset = m_exitSearch.process(data.data(), static_cast<std::size_t>(data.size()));
+    const auto *const guiAddressOffset = m_guiListeningUrlSearch.process(data.data(), static_cast<std::size_t>(data.size()));
+    if (exitOffset) {
+        std::cerr << EscapeCodes::Phrases::Info << "Syncthing exited: " << m_exitSearch.result() << EscapeCodes::Phrases::End;
+        emit exitLogged(std::move(m_exitSearch.result()));
+        m_exitSearch.reset();
+    }
+    if (guiAddressOffset > exitOffset) {
+        m_guiListeningUrl.setUrl(QString::fromStdString(m_guiListeningUrlSearch.result()));
+        std::cerr << EscapeCodes::Phrases::Info << "Syncthing GUI available: " << m_guiListeningUrlSearch.result() << EscapeCodes::Phrases::End;
+        m_guiListeningUrlSearch.reset();
+        emit guiUrlChanged(m_guiListeningUrl);
+    } else if (exitOffset) {
+        m_guiListeningUrl.clear();
+        emit guiUrlChanged(m_guiListeningUrl);
+    }
     if (isEmittingOutput()) {
         emit outputAvailable(data);
     } else {
         m_outputBuffer += data;
     }
-}
-
-void SyncthingLauncher::handleGuiListeningUrlFound(CppUtilities::BufferSearch &search, std::string &&searchResult)
-{
-    m_guiListeningUrl.setUrl(QString::fromStdString(searchResult));
-    std::cerr << EscapeCodes::Phrases::Info << "Syncthing GUI available: " << searchResult << EscapeCodes::Phrases::End;
-    search.reset();
-    emit guiUrlChanged(m_guiListeningUrl);
-}
-
-void SyncthingLauncher::handleExitFound(CppUtilities::BufferSearch &search, std::string &&searchResult)
-{
-    m_guiListeningUrl.clear();
-    std::cerr << EscapeCodes::Phrases::Info << "Syncthing exited: " << searchResult << EscapeCodes::Phrases::End;
-    emit guiUrlChanged(m_guiListeningUrl);
-    emit exitLogged(std::move(searchResult));
-    search.reset();
 }
 
 void SyncthingLauncher::terminateDueToMeteredConnection()

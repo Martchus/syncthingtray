@@ -92,7 +92,7 @@ set(REQUIRED_ICONS
 set(QT_TESTS wizard)
 
 # find c++utilities
-find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.20.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.25.0 REQUIRED)
 use_cpp_utilities(VISIBILITY PUBLIC)
 
 # find qtutilities

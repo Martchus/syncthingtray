@@ -100,8 +100,6 @@ private:
     void handleLoggingCallback(LibSyncthing::LogLevel, const char *message, std::size_t messageSize);
 #endif
     void handleOutputAvailable(QByteArray &&data);
-    void handleGuiListeningUrlFound(CppUtilities::BufferSearch &search, std::string &&searchResult);
-    void handleExitFound(CppUtilities::BufferSearch &search, std::string &&searchResult);
     void terminateDueToMeteredConnection();
 
     SyncthingProcess m_process;
