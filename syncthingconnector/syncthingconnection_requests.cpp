@@ -2028,8 +2028,10 @@ void SyncthingConnection::readEvents()
         auto jsonError = QJsonParseError();
         const auto replyDoc = QJsonDocument::fromJson(response, &jsonError);
         if (jsonError.error != QJsonParseError::NoError) {
-            emitError(tr("Unable to parse Syncthing events: "), jsonError, reply, response);
-            handleFatalConnectionError();
+            QTimer::singleShot(10000, this, [=] {
+                emit error(tr("Unable to request Syncthing events: "), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
+                handleFatalConnectionError();
+            });
             return;
         }
 
@@ -2055,8 +2057,10 @@ void SyncthingConnection::readEvents()
         handleAdditionalRequestCanceled();
         return;
     default:
-        emitError(tr("Unable to request Syncthing events: "), SyncthingErrorCategory::OverallConnection, reply);
-        handleFatalConnectionError();
+        QTimer::singleShot(10000, this, [=] {
+            emit error(tr("Unable to request Syncthing events: "), SyncthingErrorCategory::OverallConnection, QNetworkReply::ConnectionRefusedError);
+            handleFatalConnectionError();
+        });
         return;
     }
 
@@ -2659,8 +2663,10 @@ void SyncthingConnection::readDiskEvents()
         handleAdditionalRequestCanceled();
         return;
     default:
-        emitError(tr("Unable to request disk events: "), SyncthingErrorCategory::OverallConnection, reply);
-        handleFatalConnectionError();
+        QTimer::singleShot(10000, this, [=] {
+            emit error(tr("Unable to request disk events: "), SyncthingErrorCategory::OverallConnection, QNetworkReply::ConnectionRefusedError);
+            handleFatalConnectionError();
+        });
         return;
     }
 
