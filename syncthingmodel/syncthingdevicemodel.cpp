@@ -46,7 +46,7 @@ const QVector<int> &SyncthingDeviceModel::colorRoles() const
 }
 
 /*!
- * \brief Returns the device info for the spcified \a index. The returned object is not persistent.
+ * \brief Returns the device info for the specified \a index. The returned object is not persistent.
  */
 const SyncthingDev *SyncthingDeviceModel::devInfo(const QModelIndex &index) const
 {

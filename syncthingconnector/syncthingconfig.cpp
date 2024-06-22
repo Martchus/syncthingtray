@@ -91,7 +91,7 @@ bool SyncthingConfig::restore(const QString &configFilePath)
 #include <qtutilities/misc/xmlparsermacros.h>
     children
     {
-        // only version 16 supported, try to parse other versions anyways since the changes might not affect
+        // only version 16 supported, try to parse other versions anyway since the changes might not affect
         // the few parts read here
         version = attribute("version").toString();
         children

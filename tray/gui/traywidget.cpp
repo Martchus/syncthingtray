@@ -624,7 +624,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
         msgBox->show();
     }
 
-    // conclude wizard immediately if no re-connect was required anyways
+    // conclude wizard immediately if no re-connect was required anyway
     if (!reconnectRequired) {
         concludeWizard();
     }

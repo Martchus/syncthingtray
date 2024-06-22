@@ -45,7 +45,7 @@ QHash<int, QByteArray> SyncthingDownloadModel::roleNames() const
 }
 
 /*!
- * \brief Returns the directory info for the spcified \a index. The returned object is not persistent.
+ * \brief Returns the directory info for the specified \a index. The returned object is not persistent.
  */
 const SyncthingDir *SyncthingDownloadModel::dirInfo(const QModelIndex &index) const
 {

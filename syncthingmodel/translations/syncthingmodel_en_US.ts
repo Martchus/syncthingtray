@@ -506,7 +506,7 @@
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="734"/>
-        <source>Do you want to apply the folliwng changes?</source>
+        <source>Do you want to apply the following changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

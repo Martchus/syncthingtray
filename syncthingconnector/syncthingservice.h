@@ -324,7 +324,7 @@ inline bool SyncthingService::isActiveWithoutSleepFor(unsigned int atLeastSecond
 }
 
 /*!
- * \brief Returns when the last standby-wakeup happend.
+ * \brief Returns when the last standby-wakeup happened.
  */
 inline CppUtilities::DateTime SyncthingService::lastWakeUp()
 {

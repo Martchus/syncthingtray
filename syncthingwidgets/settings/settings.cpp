@@ -673,7 +673,7 @@ void Connection::addConfigFromWizard(const Data::SyncthingConfig &config)
         return;
     }
 
-    // backup previous primary config unless fields going to be overridden are empty anyways
+    // backup previous primary config unless fields going to be overridden are empty anyway
     if (!primary.syncthingUrl.isEmpty() || !primary.userName.isEmpty() || !primary.password.isEmpty() || !primary.apiKey.isEmpty()) {
         auto &backup = secondary.emplace_back(primary);
         backup.label = QCoreApplication::translate("Settings::Connection", "Backup of %1 (created by wizard)").arg(backup.label);

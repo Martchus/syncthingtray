@@ -19,12 +19,12 @@ QT_ANNOTATE_CLASS(qt_qnamespace, "") /*end*/
  * these.
  *
  * This is *not* a flag enum even though the "connected" states are not exclusive. That's because only one icon can be
- * shown at the same time anyways. Checkout SyncthingConnection::setStatus() for the precedence.
+ * shown at the same time anyway. Checkout SyncthingConnection::setStatus() for the precedence.
  */
 enum class SyncthingStatus {
     Disconnected = 0, /**< disconnected, possibly currently connecting */
     Reconnecting = 1, /**< disconnected, currently re-connnecting */
-    BeingDestroyed = 7, /**< status is unknown; the SyncthingConnnection object is being destroyed anyways */
+    BeingDestroyed = 7, /**< status is unknown; the SyncthingConnnection object is being destroyed anyway */
     Idle = 2, /**< connected, no special status information available/determined */
     Scanning = 3, /**< connected, at least one directory is scanning */
     Paused = 4, /**< connected, at least one device is paused */

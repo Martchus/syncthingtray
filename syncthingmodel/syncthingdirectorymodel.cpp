@@ -52,7 +52,7 @@ const QVector<int> &SyncthingDirectoryModel::colorRoles() const
 }
 
 /*!
- * \brief Returns the directory info for the spcified \a index. The returned object is not persistent.
+ * \brief Returns the directory info for the specified \a index. The returned object is not persistent.
  */
 const SyncthingDir *SyncthingDirectoryModel::dirInfo(const QModelIndex &index) const
 {

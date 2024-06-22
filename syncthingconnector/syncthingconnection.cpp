@@ -380,11 +380,11 @@ void SyncthingConnection::connect(SyncthingConnectionSettings &connectionSetting
 
 /*!
  * \brief Connects in \a milliSeconds. Useful to "schedule" another attempt in case of a failure.
- * \remarks Does nothing if the connection attempt would happen anyways though auto-reconnect.
+ * \remarks Does nothing if the connection attempt would happen anyway though auto-reconnect.
  */
 void SyncthingConnection::connectLater(int milliSeconds)
 {
-    // skip if conneting via auto-reconnect anyways
+    // skip if connecting via auto-reconnect anyway
     if (m_autoReconnectTimer.isActive() && milliSeconds > m_autoReconnectTimer.interval()) {
         return;
     }
@@ -498,7 +498,7 @@ void SyncthingConnection::reconnectLater(int milliSeconds)
  */
 void SyncthingConnection::continueReconnecting()
 {
-    // notify that we're about to invalidate the configuration if not already invalidated anyways
+    // notify that we're about to invalidate the configuration if not already invalidated anyway
     const auto isConfigInvalidated = m_rawConfig.isEmpty();
     if (!isConfigInvalidated) {
         emit newConfig(m_rawConfig = QJsonObject());
@@ -1038,7 +1038,7 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
                 default:;
                 }
                 if (synchronizing) {
-                    break; // skip remaining dirs, "synchronizing" overrides "scanning" anyways
+                    break; // skip remaining dirs, "synchronizing" overrides "scanning" anyway
                 }
             }
         }

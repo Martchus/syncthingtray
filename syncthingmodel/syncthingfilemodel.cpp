@@ -731,7 +731,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
             if (!askedConfirmation) {
                 askedConfirmation = true;
                 m_manuallyEditedIgnorePatterns.clear();
-                emit actionNeedsConfirmation(action, tr("Do you want to apply the folliwng changes?"), computeIgnorePatternDiff());
+                emit actionNeedsConfirmation(action, tr("Do you want to apply the following changes?"), computeIgnorePatternDiff());
                 return;
             }
 

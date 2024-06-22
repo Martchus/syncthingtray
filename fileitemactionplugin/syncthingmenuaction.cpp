@@ -71,7 +71,7 @@ void SyncthingMenuAction::updateActionStatus()
         return;
     }
 
-    // attempt to connect if not reconnecting anyways and there's no configuration issue
+    // attempt to connect if not reconnecting anyway and there's no configuration issue
     if (connection.status() != SyncthingStatus::Reconnecting && !data.hasError()) {
         connection.connect();
     }

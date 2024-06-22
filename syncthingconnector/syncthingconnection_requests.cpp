@@ -203,7 +203,7 @@ void SyncthingConnection::handleSslErrors(const QList<QSslError> &errors)
         }
 
         // handle the error by emitting the error signal with all the details including the certificate
-        // note: Of course the failing request would cause a QNetworkReply::SslHandshakeFailedError anyways. However,
+        // note: Of course the failing request would cause a QNetworkReply::SslHandshakeFailedError anyway. However,
         //       at this point the concrete SSL error with the certificate is not accessible anymore.
         auto errorMessage
             = QString(QStringLiteral("TLS error: ") % error.errorString() % QChar(' ') % QChar('(') % QString::number(error.error()) % QChar(')'));
@@ -1328,7 +1328,7 @@ void SyncthingConnection::readCompletion()
         // assign empty completion when receiving 404 response
         // note: The connector generally tries to avoid requesting the completion for paused dirs/devs but if the completion is requested
         //       before it is aware that the dir/dev is paused it might still run into this error, e.g. when pausing a directory and completion
-        //       is requested concurrently. Before Syncthing v1.15.0 we've got an empty completion instead of 404 anyways.
+        //       is requested concurrently. Before Syncthing v1.15.0 we've got an empty completion instead of 404 anyway.
         readRemoteFolderCompletion(SyncthingCompletion(), devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
         concludeConnection();
         return;

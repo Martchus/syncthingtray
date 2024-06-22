@@ -161,7 +161,7 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
     bool fakeFirstLaunch = false; // not persistent, for testing purposes only
     bool enableWipFeatures = false; // not persistent, for testing purposes only
     bool isPlasmoid = false; // not persistent, set by the Plasmoid
-    QString error; // not persistent, whether an error occured on last restore()/save()
+    QString error; // not persistent, whether an error occurred on last restore()/save()
     Connection connection;
     NotifyOn notifyOn;
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
