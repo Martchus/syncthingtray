@@ -878,7 +878,6 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
                       beginInsertRows(
                           refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
                       refreshedItem->children = std::move(items);
-                      refreshedItem->childrenPopulated = true;
                       switch (refreshedItem->checked) {
                       case Qt::Checked:
                           setChildrenChecked(refreshedItem, Qt::Checked);
@@ -890,6 +889,7 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
                       }
                       endInsertRows();
                   }
+                  refreshedItem->childrenPopulated = true;
                   if (refreshedItem->children.size() != previousChildCount) {
                       const auto sizeIndex = refreshedIndex.siblingAtColumn(1);
                       emit dataChanged(sizeIndex, sizeIndex, QVector<int>{ Qt::DisplayRole });
