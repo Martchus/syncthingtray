@@ -357,18 +357,21 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
             }
             break;
         case 4: {
-            static constexpr auto size = 16;
-            auto &manager = IconManager::instance();
-            auto icon = QPixmap(size * 2, size);
-            auto painter = QPainter(&icon);
-            auto left = 0;
-            icon.fill(QColor(Qt::transparent));
-            if (item->existsInDb) {
-                manager.renderForkAwesomeIcon(QtForkAwesome::Icon::Globe, &painter, QRect(left, 0, size, size));
-            }
-            left += size;
-            if (item->existsLocally) {
-                manager.renderForkAwesomeIcon(QtForkAwesome::Icon::Home, &painter, QRect(left, 0, size, size));
+            auto &icon = m_statusIcons[(item->existsInDb ? 0x01 : 0x00) | (item->existsLocally ? 0x02 : 0x00)];
+            if (icon.isNull()) {
+                static constexpr auto size = 16;
+                icon = QPixmap(size * 2, size);
+                auto &manager = IconManager::instance();
+                auto painter = QPainter(&icon);
+                auto left = 0;
+                icon.fill(QColor(Qt::transparent));
+                if (item->existsInDb) {
+                    manager.renderForkAwesomeIcon(QtForkAwesome::Icon::Globe, &painter, QRect(left, 0, size, size));
+                }
+                left += size;
+                if (item->existsLocally) {
+                    manager.renderForkAwesomeIcon(QtForkAwesome::Icon::Home, &painter, QRect(left, 0, size, size));
+                }
             }
             return icon;
         } break;
@@ -787,6 +790,9 @@ void SyncthingFileModel::handleNewConfigAvailable()
 
 void SyncthingFileModel::handleForkAwesomeIconsChanged()
 {
+    for (auto &icon : m_statusIcons) {
+        icon = QPixmap();
+    }
     invalidateAllIndicies(QVector<int>({ Qt::DecorationRole }));
 }
 

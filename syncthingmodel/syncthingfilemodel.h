@@ -10,6 +10,7 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QHash>
+#include <QPixmap>
 #include <QSet>
 
 #include <map>
@@ -122,6 +123,7 @@ private:
     QString m_manuallyEditedIgnorePatterns;
     QString m_ignoreAllByDefaultPattern;
     QChar m_pathSeparator;
+    mutable QPixmap m_statusIcons[4];
     int m_columns;
     bool m_selectionMode;
     bool m_hasIgnorePatterns;
