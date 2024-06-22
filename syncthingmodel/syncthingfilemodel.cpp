@@ -18,6 +18,7 @@
 #include <QStringBuilder>
 #include <QtConcurrent>
 
+#include <cassert>
 #include <limits>
 
 using namespace std;
@@ -794,6 +795,31 @@ void SyncthingFileModel::handleBrightColorsChanged()
     invalidateAllIndicies(QVector<int>({ Qt::ForegroundRole }));
 }
 
+void SyncthingFileModel::lookupDirLocally(const QDir &dir, SyncthingFileModel::LocalItemMap &items, int depth)
+{
+    const auto entries = dir.entryInfoList(QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot);
+    for (const auto &entry : entries) {
+        const auto entryName = entry.fileName();
+        auto &item = items[entryName];
+        item.name = entryName;
+        item.existsInDb = false;
+        item.existsLocally = true;
+        item.size = static_cast<std::size_t>(entry.size());
+        item.modificationTime = DateTime::unixEpochStart() + TimeSpan(TimeSpan::ticksPerMillisecond * entry.lastModified().toMSecsSinceEpoch());
+        if (entry.isSymbolicLink()) {
+            item.type = SyncthingItemType::Symlink;
+        } else if (entry.isDir()) {
+            item.type = SyncthingItemType::Directory;
+            if (depth > 0) {
+                lookupDirLocally(QDir(entry.absoluteFilePath()), item.localChildren, depth - 1);
+                item.localChildrenPopulated = true;
+            }
+        } else {
+            item.type = SyncthingItemType::File;
+        }
+    }
+}
+
 void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
 {
     if (!lastItemPath.isNull()) {
@@ -824,8 +850,8 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
             = m_connection.browse(m_dirId, path, 1, [this](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) mutable {
                   m_pendingRequest.reply = nullptr;
                   addErrorItem(items, std::move(errorMessage));
-
                   const auto refreshedIndex = index(m_pendingRequest.forPath);
+
                   if (!refreshedIndex.isValid()) {
                       processFetchQueue(m_pendingRequest.forPath);
                       return;
@@ -879,24 +905,8 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
         return;
     }
     m_pendingRequest.localLookup = QtConcurrent::run([dir = QDir(m_localPath % m_pathSeparator % path)] {
-        auto items = std::make_shared<std::map<QString, SyncthingItem>>();
-        auto entries = dir.entryInfoList(QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot);
-        for (const auto &entry : entries) {
-            const auto entryName = entry.fileName();
-            auto &item = (*items)[entryName];
-            item.name = entryName;
-            item.existsInDb = false;
-            item.existsLocally = true;
-            item.size = static_cast<std::size_t>(entry.size());
-            item.modificationTime = DateTime::unixEpochStart() + TimeSpan(TimeSpan::ticksPerMillisecond * entry.lastModified().toMSecsSinceEpoch());
-            if (entry.isSymbolicLink()) {
-                item.type = SyncthingItemType::Symlink;
-            } else if (entry.isDir()) {
-                item.type = SyncthingItemType::Directory;
-            } else {
-                item.type = SyncthingItemType::File;
-            }
-        }
+        auto items = std::make_shared<LocalItemMap>();
+        lookupDirLocally(dir, *items);
         return items;
     });
     if (!rootItem->existsInDb) {
@@ -949,18 +959,36 @@ void SyncthingFileModel::matchItemAgainstIgnorePatterns(SyncthingItem &item) con
     }
 }
 
-void SyncthingFileModel::handleLocalLookupFinished()
+/*!
+ * \brief Marks items from the database query as locally existing if they do; marks items from local lookup as existing in the db if they do.
+ */
+void SyncthingFileModel::markItemsFromDatabaseAsLocallyExisting(
+    std::vector<std::unique_ptr<SyncthingItem>> &items, SyncthingFileModel::LocalItemMap &localItems)
+{
+    for (auto &child : items) {
+        auto localItemIter = localItems.find(child->name);
+        if (localItemIter == localItems.end()) {
+            continue;
+        }
+        child->existsLocally = true;
+        localItemIter->second.existsInDb = true;
+        localItemIter->second.index = child->index;
+        markItemsFromDatabaseAsLocallyExisting(child->children, localItemIter->second.localChildren);
+    }
+}
+
+/*!
+ * \brief Inserts items from local lookup that are not already present via the database query (usually ignored files).
+ */
+void SyncthingFileModel::insertLocalItems(const QModelIndex &refreshedIndex, SyncthingFileModel::LocalItemMap &localItems)
 {
     // get refreshed index/item
-    const auto &refreshedIndex = m_pendingRequest.refreshedIndex;
-    if (!refreshedIndex.isValid()) {
-        processFetchQueue(m_pendingRequest.forPath);
-        return;
-    }
     auto *const refreshedItem = reinterpret_cast<SyncthingItem *>(refreshedIndex.internalPointer());
     auto &items = refreshedItem->children;
     const auto previousChildCount = items.size();
-    refreshedItem->childrenPopulated = true;
+    if (!refreshedItem->existsInDb) {
+        refreshedItem->childrenPopulated = true;
+    }
 
     // clear loading item
     if (!refreshedItem->existsInDb && !items.empty()) {
@@ -970,35 +998,23 @@ void SyncthingFileModel::handleLocalLookupFinished()
         endRemoveRows();
     }
 
-    // get result from local lookup
-    auto res = m_pendingRequest.localLookup.result();
-    if (!res || res->empty()) {
-        processFetchQueue(m_pendingRequest.forPath);
+    // skip if there are no local items to insert
+    if (localItems.empty()) {
         return;
     }
 
-    // mark items from the database query as locally existing if they do; mark items from local lookup as existing in the db if they do
-    auto &localItems = *res;
-    for (auto &child : items) {
-        auto localItemIter = localItems.find(child->name);
-        if (localItemIter == localItems.end()) {
-            continue;
-        }
-        child->existsLocally = true;
-        localItemIter->second.existsInDb = true;
-    }
-
     // insert items from local lookup that are not already present via the database query (probably ignored files)
-    const auto last = items.size();
-    const auto firstRow = last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max();
+    auto index = items.size();
+    auto row = index < std::numeric_limits<int>::max() ? static_cast<int>(index) : std::numeric_limits<int>::max();
+    auto firstRow = row;
     for (auto &[localItemName, localItem] : localItems) {
         if (localItem.existsInDb) {
             continue;
         }
-        beginInsertRows(refreshedIndex, firstRow, firstRow);
+        beginInsertRows(refreshedIndex, row, row);
         auto &item = items.emplace_back(std::make_unique<SyncthingItem>(std::move(localItem)));
         item->parent = refreshedItem;
-        item->index = last;
+        item->index = localItem.index = index++;
         switch (refreshedItem->checked) {
         case Qt::Checked:
             setChildrenChecked(item.get(), item->checked = Qt::Checked);
@@ -1010,15 +1026,49 @@ void SyncthingFileModel::handleLocalLookupFinished()
         }
         populatePath(item->path = refreshedItem->path % m_pathSeparator % item->name, m_pathSeparator, item->children);
         endInsertRows();
+        ++row;
     }
     if (refreshedItem->children.size() != previousChildCount) {
         const auto sizeIndex = refreshedIndex.sibling(refreshedIndex.row(), 1);
         emit dataChanged(sizeIndex, sizeIndex, QVector<int>{ Qt::DisplayRole });
     }
-    if (firstRow < 0) {
-        emit dataChanged(index(0, 4, refreshedIndex), index(firstRow - 1, 4, refreshedIndex), QVector<int>{ Qt::DecorationRole });
+
+    // insert local child items recursively
+    for (auto &[localItemName, localItem] : localItems) {
+        if (!localItem.localChildrenPopulated) {
+            continue;
+        }
+        if (const auto childIndex = this->index(static_cast<int>(localItem.index), 0, refreshedIndex); childIndex.isValid()) {
+            assert(childIndex.data() == localItemName);
+            insertLocalItems(childIndex, localItem.localChildren);
+        }
     }
 
+    // update global/local icons of items that were already present (at they exist in the database)
+    if (firstRow > 0) {
+        emit dataChanged(
+            this->index(0, 4, refreshedIndex), this->index(firstRow - 1, 4, refreshedIndex), QVector<int>{ Qt::DecorationRole, Qt::ToolTipRole });
+    }
+}
+
+/*!
+ * \brief Incorporates data found by the local lookup into the item-tree.
+ */
+void SyncthingFileModel::handleLocalLookupFinished()
+{
+    // get refreshed index/item and result from local lookup
+    const auto &refreshedIndex = m_pendingRequest.refreshedIndex;
+    const auto res = m_pendingRequest.localLookup.result();
+    if (!refreshedIndex.isValid() || !res) {
+        processFetchQueue(m_pendingRequest.forPath);
+        return;
+    }
+
+    // update items
+    auto &items = reinterpret_cast<SyncthingItem *>(refreshedIndex.internalPointer())->children;
+    auto &localItems = *res;
+    markItemsFromDatabaseAsLocallyExisting(items, localItems);
+    insertLocalItems(refreshedIndex, localItems);
     processFetchQueue(m_pendingRequest.forPath);
 }
 

@@ -86,7 +86,17 @@ private:
 
 private:
     using SyncthingItems = std::vector<std::unique_ptr<SyncthingItem>>;
-    using LocalLookupRes = std::shared_ptr<std::map<QString, SyncthingItem>>;
+    struct LocalItem;
+    using LocalItemMap = std::map<QString, LocalItem>;
+    struct LocalItem : public SyncthingItem {
+        LocalItemMap localChildren;
+        bool localChildrenPopulated = false;
+    };
+    using LocalLookupRes = std::shared_ptr<LocalItemMap>;
+    static void lookupDirLocally(const QDir &dir, SyncthingFileModel::LocalItemMap &items, int depth = 1);
+    static void markItemsFromDatabaseAsLocallyExisting(
+        std::vector<std::unique_ptr<SyncthingItem>> &items, SyncthingFileModel::LocalItemMap &localItems);
+    void insertLocalItems(const QModelIndex &refreshedIndex, SyncthingFileModel::LocalItemMap &localItems);
     struct QueryResult : SyncthingConnection::QueryResult {
         QString forPath;
         QFuture<LocalLookupRes> localLookup;
