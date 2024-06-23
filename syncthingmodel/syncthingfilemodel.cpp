@@ -361,10 +361,10 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
             if (icon.isNull()) {
                 static constexpr auto size = 16;
                 icon = QPixmap(size * 2, size);
+                icon.fill(QColor(Qt::transparent));
                 auto &manager = IconManager::instance();
                 auto painter = QPainter(&icon);
                 auto left = 0;
-                icon.fill(QColor(Qt::transparent));
                 if (item->existsInDb) {
                     manager.renderForkAwesomeIcon(QtForkAwesome::Icon::Globe, &painter, QRect(left, 0, size, size));
                 }
