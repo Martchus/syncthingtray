@@ -184,10 +184,13 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
     // define function to handle single match
     const auto handleSingleMatch = [&, this] {
         // proceed with the next characters on a match
-        ++globIter;
-        inAsterisk = false;
-        if (!asterisks.empty()) {
-            asterisks.back().visited = false;
+        const auto matchedChar = *(globIter++);
+        if (asterisks.empty() || asterisks.back().state != MatchManyAnyIncludingDirSep
+            || !(matchedChar == pathSeparator || matchedChar == genericPathSeparator)) {
+            inAsterisk = false;
+            if (!asterisks.empty()) {
+                asterisks.back().visited = false;
+            }
         }
     };
 

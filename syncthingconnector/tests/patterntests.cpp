@@ -80,6 +80,12 @@ void IgnorePatternTests::testBasicMatching()
     CPPUNIT_ASSERT(!p14a.matches(QStringLiteral("rust/formatter/target")));
     CPPUNIT_ASSERT(!p14a.matches(QStringLiteral("rust/formatter/target/CACHEDIR.TAG")));
 
+    auto p14b = SyncthingIgnorePattern(QStringLiteral("/c++/**/target"));
+    CPPUNIT_ASSERT(p14b.matches(QStringLiteral("c++/cmake/bookmarksync/server/target")));
+
+    auto p14c = SyncthingIgnorePattern(QStringLiteral("/c++/*/target"));
+    CPPUNIT_ASSERT(!p14c.matches(QStringLiteral("c++/cmake/bookmarksync/server/target")));
+
     auto p15 = SyncthingIgnorePattern(QStringLiteral("/fo[\\]o]/bar"));
     CPPUNIT_ASSERT(p15.matches(QStringLiteral("foo/bar")));
     CPPUNIT_ASSERT(p15.matches(QStringLiteral("fo]/bar")));
