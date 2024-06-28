@@ -1,0 +1,4 @@
+module syncthingtray
+singleton Constants 1.0 Constants.qml
+singleton AppSettings 1.0 AppSettings.qml
+RoomsModel 1.0 RoomsModel.qml

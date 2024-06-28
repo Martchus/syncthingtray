@@ -1,0 +1,11 @@
+module ThermostatCustomControls
+CustomSwitch 1.0 CustomSwitch.qml
+CustomComboBox 1.0 CustomComboBox.qml
+StatisticsChart 1.0 StatisticsChart.qml
+ThermostatControl 1.0 ThermostatControl.qml
+TemperatureLabel 1.0 TemperatureLabel.qml
+CustomRoundButton 1.0 CustomRoundButton.qml
+CustomSlider 1.0 CustomSlider.qml
+CustomTextField 1.0 CustomTextField.qml
+TimeSelector 1.0 TimeSelector.qml
+CustomRadioButton 1.0 CustomRadioButton.qml

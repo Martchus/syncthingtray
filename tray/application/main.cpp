@@ -37,6 +37,10 @@
 #include <QSettings>
 #include <QStringBuilder>
 
+#ifdef GUI_QTQUICK
+#include <QQmlApplicationEngine>
+#endif
+
 #include <iostream>
 
 #ifdef Q_OS_ANDROID
@@ -53,6 +57,14 @@ using namespace Data;
 #ifdef QT_FORK_AWESOME_ICON_ENGINE_STATIC
 #include <QtPlugin>
 Q_IMPORT_PLUGIN(ForkAwesomeIconEnginePlugin)
+#endif
+
+// import Qml plugin for Qt Quick GUI
+#ifdef GUI_QTQUICK
+#include <QtQml/qqmlextensionplugin.h>
+Q_IMPORT_QML_PLUGIN(contentPlugin)
+Q_IMPORT_QML_PLUGIN(syncthingtrayCustomControlsPlugin)
+Q_IMPORT_QML_PLUGIN(syncthingtrayPlugin)
 #endif
 
 ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
@@ -211,6 +223,9 @@ static int runApplication(int argc, const char *const *argv)
 #endif
 
     parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(),
+#ifdef GUI_QTQUICK
+        &qtConfigArgs.qtQuickGuiArg(),
+#endif
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
         &cliArg, &syncthingArg,
 #endif
@@ -226,6 +241,27 @@ static int runApplication(int argc, const char *const *argv)
         QCoreApplication::quit();
         return EXIT_SUCCESS;
     }
+
+#ifdef GUI_QTQUICK
+    if (qtConfigArgs.qtQuickGuiArg().isPresent()) {
+        qputenv("QML_COMPAT_RESOLVE_URLS_ON_ASSIGNMENT", "1");
+        SET_QT_APPLICATION_INFO;
+        auto app = QApplication(argc, const_cast<char **>(argv));
+        auto engine = QQmlApplicationEngine();
+        QObject::connect(
+            &engine, &QQmlApplicationEngine::objectCreated, &app,
+            [](QObject *obj, const QUrl &objUrl) {
+                if (!obj) {
+                    std::cerr << "Unable to load " << objUrl.toString().toStdString() << '\n';
+                    QCoreApplication::exit(EXIT_FAILURE);
+                }
+            },
+            Qt::QueuedConnection);
+        QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
+        engine.loadFromModule("Main", "Main");
+        return app.exec();
+    }
+#endif
 
     // quit unless Qt Widgets GUI should be shown
     if (!qtConfigArgs.qtWidgetsGuiArg().isPresent()) {
