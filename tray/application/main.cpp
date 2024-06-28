@@ -1,3 +1,7 @@
+#ifdef GUI_QTQUICK
+#define QT_UTILITIES_GUI_QTQUICK
+#endif
+
 #include "./singleinstance.h"
 
 #include "../gui/trayicon.h"
@@ -36,6 +40,21 @@
 #include <QNetworkAccessManager>
 #include <QSettings>
 #include <QStringBuilder>
+
+#ifdef GUI_QTQUICK
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <QQuickStyle>
+
+#include <qtforkawesome/renderer.h>
+#include <qtquickforkawesome/imageprovider.h>
+
+#include <syncthingmodel/syncthingdirectorymodel.h>
+#include <syncthingmodel/syncthingdevicemodel.h>
+#include <syncthingmodel/syncthingrecentchangesmodel.h>
+
+#include <syncthingconnector/syncthingconnection.h>
+#endif
 
 #include <iostream>
 
@@ -211,6 +230,9 @@ static int runApplication(int argc, const char *const *argv)
 #endif
 
     parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(),
+#ifdef GUI_QTQUICK
+        &qtConfigArgs.qtQuickGuiArg(),
+#endif
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
         &cliArg, &syncthingArg,
 #endif
@@ -226,6 +248,47 @@ static int runApplication(int argc, const char *const *argv)
         QCoreApplication::quit();
         return EXIT_SUCCESS;
     }
+
+#ifdef GUI_QTQUICK
+    if (qtConfigArgs.qtQuickGuiArg().isPresent()) {
+        qputenv("QML_COMPAT_RESOLVE_URLS_ON_ASSIGNMENT", "1");
+        SET_QT_APPLICATION_INFO;
+        auto app = QApplication(argc, const_cast<char **>(argv));
+        auto &settings = Settings::values();
+        Settings::restore();
+        settings.qt.disableNotices();
+        settings.qt.apply();
+        qtConfigArgs.applySettings(true);
+        qtConfigArgs.applySettingsForQuickGui();
+
+        auto engine = QQmlApplicationEngine();
+        auto renderer = QtForkAwesome::Renderer();
+        auto context = engine.rootContext();
+        auto connection = Data::SyncthingConnection();
+        auto dirModel = Data::SyncthingDirectoryModel(connection);
+        auto devModel = Data::SyncthingDeviceModel(connection);
+        auto changesModel = Data::SyncthingRecentChangesModel(connection);
+        networkAccessManager().setParent(&app);
+        connection.connect(settings.connection.primary);
+        context->setContextProperty(QStringLiteral("connection"), &connection);
+        context->setContextProperty(QStringLiteral("dirModel"), &dirModel);
+        context->setContextProperty(QStringLiteral("devModel"), &devModel);
+        context->setContextProperty(QStringLiteral("changesModel"), &changesModel);
+        QObject::connect(
+            &engine, &QQmlApplicationEngine::objectCreated, &app,
+            [](QObject *obj, const QUrl &objUrl) {
+                if (!obj) {
+                    std::cerr << "Unable to load " << objUrl.toString().toStdString() << '\n';
+                    QCoreApplication::exit(EXIT_FAILURE);
+                }
+            },
+            Qt::QueuedConnection);
+        QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
+        engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(renderer));
+        engine.loadFromModule("Main", "Main");
+        return app.exec();
+    }
+#endif
 
     // quit unless Qt Widgets GUI should be shown
     if (!qtConfigArgs.qtWidgetsGuiArg().isPresent()) {
