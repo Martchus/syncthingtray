@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.17.0 FATAL_ERROR)
 # metadata
 set(META_PROJECT_TYPE application)
 set(META_APP_NAME "Syncthing Tray")
+set(META_HAS_QUICK_GUI ON)
+set(META_USE_QQC2 ON)
 
 # use testfiles directory from syncthingconnector
 set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
@@ -173,14 +175,25 @@ Name=Restart Syncthing (local instance)\n\
 Exec=${SYNCTHINGCTL_TARGET_NAME} restart")
 set(DESKTOP_FILE_ADDITIONAL_ENTRIES "${DESKTOP_FILE_ADDITIONAL_ENTRIES}${ACTIONS}\n")
 
-# include modules to apply configuration
+# configure Qt GUI GUI
 include(QtGuiConfig)
+if (QUICK_GUI)
+    list(APPEND ADDITIONAL_QT_MODULES Svg Charts)
+    list(APPEND ADDITIONAL_QT_REPOS svg charts)
+endif ()
+
+# include further modules to apply configuration
 include(QtConfig)
 include(WindowsResources)
 include(AppTarget)
 include(ShellCompletion)
 include(Doxygen)
 include(ConfigHeader)
+
+# add Qml module
+if (QUICK_GUI)
+    include(qmlmodules)
+endif ()
 
 # create desktop file using previously defined meta data
 add_desktop_file()
