@@ -160,11 +160,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2031"/>
-        <source>Unable to parse Syncthing events: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../syncthingconnection_requests.cpp" line="2058"/>
         <source>Unable to request Syncthing events: </source>
         <translation type="unfinished"></translation>
@@ -266,6 +261,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../syncthingconnection_requests.cpp" line="2031"/>
+        <source>Unable to parse Syncthing events: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../syncthingconnection_requests.cpp" line="2639"/>
         <source>Unable to parse disk events: </source>
         <translation type="unfinished"></translation>
@@ -281,12 +281,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="632"/>
+        <location filename="../syncthingconnection.h" line="631"/>
         <source>connecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="635"/>
+        <location filename="../syncthingconnection.h" line="633"/>
         <source>, re-connect attempt every %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
