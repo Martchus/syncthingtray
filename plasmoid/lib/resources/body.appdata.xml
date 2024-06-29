@@ -1,13 +1,16 @@
 <description>
+  <p>
+    Syncthing Plasmoid complements the normal web-based UI of Syncthing itself providing the following features:
+  </p>
   <ul>
-    <li>Plasmoid for Syncthing</li>
-    <li>Provides quick access to most frequently used features but does not intend to replace the official web UI</li>
-    <li>Shows Syncthing notifications</li>
-    <li>Can read the local Syncthing configuration file for quick setup when just connecting to local instance</li>
-    <li>Can show the status of the Syncthing systemd unit and allows to start and stop it</li>
-    <li>Provides quick access to the official web UI</li>
-    <li>Allows quickly switching between multiple Syncthing instances</li>
-​  </ul>
+    <li>A Plasmoid showing the status of Syncthing that also allows to quickly perform common actions such as triggering a rescan</li>
+    <li>Notifications for certain events</li>
+    <li>Quick access to the normal web-based UI of Syncthing</li>
+    <li>Integration with systemd</li>
+  </ul>
+  <p>
+    This is a KDE-tailored version of Syncthing Tray. Install Syncthing Tray for a desktop environment independent version.
+  </p>
 </description>
 <screenshots>
   <screenshot type="default">
