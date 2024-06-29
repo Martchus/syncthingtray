@@ -178,7 +178,10 @@ public:
 #endif
         }
         // register own handler to detect whether signal has been emitted
-        m_emittedConnection = QObject::connect(sender, signal, sender, [this] { m_signalEmitted = true; }, Qt::DirectConnection);
+        // clang-format off
+        m_emittedConnection = QObject::connect(
+            sender, signal, sender, [this] { m_signalEmitted = true; }, Qt::DirectConnection);
+        // clang-format on
 #ifndef SYNCTHINGTESTHELPER_FOR_CLI
         if (!m_emittedConnection) {
             CPPUNIT_FAIL(argsToString("Unable to connect signal ", signalName().data(), " to check for signal emmitation"));
