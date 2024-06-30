@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtCharts
-import syncthingtray
+import syncthingtrayApp
 
 Pane {
     width: 900

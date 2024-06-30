@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import syncthingtray
+import syncthingtrayApp
 
 TextField {
     id: control

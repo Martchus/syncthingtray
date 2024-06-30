@@ -9,7 +9,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Effects
 import syncthingtrayCustomControls
-import syncthingtray
+import syncthingtrayApp
 
 Pane {
     id: root

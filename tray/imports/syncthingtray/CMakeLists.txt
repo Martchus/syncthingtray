@@ -8,9 +8,9 @@ set_source_files_properties(AppSettings.qml
         QT_QML_SINGLETON_TYPE true
 )
 
-qt_add_library(${META_PROJECT_VARNAME} STATIC)
-qt_add_qml_module(${META_PROJECT_VARNAME}
-    URI "${META_PROJECT_VARNAME}"
+qt_add_library(${META_PROJECT_VARNAME}App STATIC)
+qt_add_qml_module(${META_PROJECT_VARNAME}App
+    URI "${META_PROJECT_VARNAME}App"
     VERSION 1.0
     QML_FILES
         AppSettings.qml
