@@ -11,5 +11,5 @@ add_subdirectory(imports)
 target_link_libraries(${META_TARGET_NAME} PRIVATE
     ${META_PROJECT_VARNAME}Contentplugin
     ${META_PROJECT_VARNAME}CustomControlsplugin
-    ${META_PROJECT_VARNAME}plugin
+    ${META_PROJECT_VARNAME}Appplugin
 )
