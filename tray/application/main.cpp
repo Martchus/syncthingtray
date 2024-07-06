@@ -62,9 +62,9 @@ Q_IMPORT_PLUGIN(ForkAwesomeIconEnginePlugin)
 // import Qml plugin for Qt Quick GUI
 #ifdef GUI_QTQUICK
 #include <QtQml/qqmlextensionplugin.h>
+Q_IMPORT_QML_PLUGIN(appPlugin)
 Q_IMPORT_QML_PLUGIN(contentPlugin)
-Q_IMPORT_QML_PLUGIN(syncthingtrayAppPlugin)
-Q_IMPORT_QML_PLUGIN(syncthingtrayCustomControlsPlugin)
+Q_IMPORT_QML_PLUGIN(controlsPlugin)
 #endif
 
 ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES

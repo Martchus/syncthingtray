@@ -1,2 +1,2 @@
-add_subdirectory(${META_PROJECT_VARNAME}CustomControls)
-add_subdirectory(${META_PROJECT_VARNAME})
+add_subdirectory(app)
+add_subdirectory(controls)

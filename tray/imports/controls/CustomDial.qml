@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Shapes
-import syncthingtrayApp
+import app
 
 Dial {
     id: control

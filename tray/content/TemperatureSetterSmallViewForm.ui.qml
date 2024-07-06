@@ -8,8 +8,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Effects
-import syncthingtrayApp
-import syncthingtrayCustomControls
+import app
+import controls
 
 Pane {
     width: 400

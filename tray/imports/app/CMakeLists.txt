@@ -10,7 +10,7 @@ set_source_files_properties(AppSettings.qml
 
 qt_add_library(${META_PROJECT_VARNAME}App STATIC)
 qt_add_qml_module(${META_PROJECT_VARNAME}App
-    URI "${META_PROJECT_VARNAME}App"
+    URI "app"
     VERSION 1.0
     QML_FILES
         AppSettings.qml

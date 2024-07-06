@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Effects
-import syncthingtrayApp
+import app
 
 Row {
     id: root

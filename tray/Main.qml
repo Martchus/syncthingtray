@@ -1,16 +1,16 @@
 import QtQuick
 import content
 
-import syncthingtrayApp
+import app 1.0 as St
 
 Window {
-    width: Constants.width
-    height: Constants.height
+    width: St.Constants.width
+    height: St.Constants.height
     //SideBar {
 
     //}
-    //St.RoomsModel {
-    //}
+    St.RoomsModel {
+    }
 
     visible: true
 }

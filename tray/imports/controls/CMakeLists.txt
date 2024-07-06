@@ -1,6 +1,6 @@
 qt_add_library(${META_PROJECT_VARNAME}CustomControls STATIC)
 qt_add_qml_module(${META_PROJECT_VARNAME}CustomControls
-    URI "${META_PROJECT_VARNAME}CustomControls"
+    URI "controls"
     VERSION 1.0
     QML_FILES
         CustomComboBox.qml

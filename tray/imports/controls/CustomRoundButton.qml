@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import syncthingtrayApp
+import app
 
 RoundButton {
     id: control

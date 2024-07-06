@@ -1,5 +1,5 @@
 import QtQuick
-import syncthingtrayApp
+import app
 
 Window {
     id: window
