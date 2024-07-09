@@ -37,6 +37,8 @@
 #include <QSettings>
 #include <QStringBuilder>
 
+#include <QDir>
+
 #ifdef GUI_QTQUICK
 #include <QQmlApplicationEngine>
 #endif
@@ -248,6 +250,7 @@ static int runApplication(int argc, const char *const *argv)
         SET_QT_APPLICATION_INFO;
         auto app = QApplication(argc, const_cast<char **>(argv));
         auto engine = QQmlApplicationEngine();
+        engine.addImportPath(QStringLiteral(":/"));
         QObject::connect(
             &engine, &QQmlApplicationEngine::objectCreated, &app,
             [](QObject *obj, const QUrl &objUrl) {
