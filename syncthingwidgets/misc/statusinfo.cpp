@@ -56,7 +56,7 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection, c
         m_statusIcon = &icons.disconnected;
         break;
     default:
-        if (connection.hasOutOfSyncDirs() && (connection.statusComputionFlags() & SyncthingStatusComputionFlags::OutOfSync)) {
+        if ((connection.statusComputionFlags() & SyncthingStatusComputionFlags::OutOfSync) && connection.hasOutOfSyncDirs()) {
             switch (connection.status()) {
             case SyncthingStatus::Synchronizing:
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Synchronization is ongoing");
