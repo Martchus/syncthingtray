@@ -706,12 +706,9 @@ void SyncthingConnection::readConfig()
 
         if (m_keepPolling) {
             concludeReadingConfigAndStatus();
-            return;
+        } else {
+            applyRawConfig();
         }
-
-        readDevs(m_rawConfig.value(QLatin1String("devices")).toArray());
-        readDirs(m_rawConfig.value(QLatin1String("folders")).toArray());
-        emit newConfigApplied();
         break;
     }
     case QNetworkReply::OperationCanceledError:

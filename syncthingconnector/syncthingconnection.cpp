@@ -553,6 +553,16 @@ void SyncthingConnection::continueReconnecting()
 }
 
 /*!
+ * \brief Reads devs and dirs from the raw config.
+ */
+void SyncthingConnection::applyRawConfig()
+{
+    readDevs(m_rawConfig.value(QLatin1String("devices")).toArray());
+    readDirs(m_rawConfig.value(QLatin1String("folders")).toArray());
+    emit newConfigApplied();
+}
+
+/*!
  * \brief Reads results of requestConfig() and requestStatus().
  * \remarks Called in readConfig() or readStatus() to conclude reading parts requiring config *and* status
  *          being available. Does nothing if this is not the case (yet).
@@ -563,10 +573,7 @@ void SyncthingConnection::concludeReadingConfigAndStatus()
         return;
     }
 
-    readDevs(m_rawConfig.value(QLatin1String("devices")).toArray());
-    readDirs(m_rawConfig.value(QLatin1String("folders")).toArray());
-    emit newConfigApplied();
-
+    applyRawConfig();
     continueConnecting();
 }
 
