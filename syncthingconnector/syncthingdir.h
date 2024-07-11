@@ -136,6 +136,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     bool isLocallyUpToDate() const;
     bool areRemotesUpToDate() const;
     bool isUnshared() const;
+    bool isOutOfSync() const;
 
     QString id;
     QString label;
@@ -210,6 +211,11 @@ inline bool SyncthingDir::isLocallyUpToDate() const
 inline bool SyncthingDir::isUnshared() const
 {
     return deviceIds.empty() && (status == SyncthingDirStatus::Idle || status == SyncthingDirStatus::Unknown);
+}
+
+inline bool SyncthingDir::isOutOfSync() const
+{
+    return !paused && status == SyncthingDirStatus::OutOfSync;
 }
 
 inline bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, SyncthingEventId eventId, CppUtilities::DateTime time)

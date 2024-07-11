@@ -139,6 +139,7 @@ void SyncthingApplet::init()
     connect(&m_notifier, &SyncthingNotifier::statusChanged, this, &SyncthingApplet::handleConnectionStatusChanged);
     connect(&m_notifier, &SyncthingNotifier::syncComplete, &m_dbusNotifier, &DBusStatusNotifier::showSyncComplete);
     connect(&m_notifier, &SyncthingNotifier::disconnected, &m_dbusNotifier, &DBusStatusNotifier::showDisconnect);
+    connect(&m_connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &SyncthingApplet::updateStatusIconAndTooltip);
     connect(&m_connection, &SyncthingConnection::newDevices, this, &SyncthingApplet::handleDevicesChanged);
     connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &SyncthingApplet::handleDevicesChanged);
     connect(&m_connection, &SyncthingConnection::error, this, &SyncthingApplet::handleInternalError);

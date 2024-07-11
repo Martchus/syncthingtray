@@ -20,6 +20,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <optional>
 #include <limits>
 #include <vector>
 
@@ -133,7 +134,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(bool connecting READ isConnecting NOTIFY statusChanged)
     Q_PROPERTY(bool aborted READ isAborted NOTIFY statusChanged)
     Q_PROPERTY(bool hasUnreadNotifications READ hasUnreadNotifications)
-    Q_PROPERTY(bool hasOutOfSyncDirs READ hasOutOfSyncDirs)
+    Q_PROPERTY(bool hasOutOfSyncDirs READ hasOutOfSyncDirs NOTIFY hasOutOfSyncDirsChanged)
     Q_PROPERTY(bool requestingCompletionEnabled READ isRequestingCompletionEnabled WRITE setRequestingCompletionEnabled)
     Q_PROPERTY(int autoReconnectInterval READ autoReconnectInterval WRITE setAutoReconnectInterval)
     Q_PROPERTY(unsigned int autoReconnectTries READ autoReconnectTries)
@@ -359,6 +360,7 @@ Q_SIGNALS:
     void qrCodeAvailable(const QString &text, const QByteArray &qrCodeData);
     void overrideTriggered(const QString &dirId);
     void revertTriggered(const QString &dirId);
+    void hasOutOfSyncDirsChanged();
 
 private Q_SLOTS:
     // handler to evaluate results from request...() methods
@@ -367,7 +369,7 @@ private Q_SLOTS:
     void readDevs(const QJsonArray &devs);
     void readStatus();
     void concludeReadingConfigAndStatus();
-    void concludeConnection();
+    void concludeConnection(bool careAboutOutOfSyncDirs = false);
     void readConnections();
     void readDirStatistics();
     void readDeviceStatistics();
@@ -417,10 +419,11 @@ private Q_SLOTS:
     void readRevert();
 
     // internal helper methods
+    void applyRawConfig();
     void continueConnecting();
     void continueReconnecting();
     void autoReconnect();
-    void setStatus(Data::SyncthingStatus status);
+    bool setStatus(Data::SyncthingStatus status);
     void emitNotification(CppUtilities::DateTime when, const QString &message);
     void emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response = QByteArray());
     void emitError(const QString &message, Data::SyncthingErrorCategory category, QNetworkReply *reply);
@@ -436,6 +439,7 @@ private Q_SLOTS:
     void handleRedirection(const QUrl &url);
     void handleMeteredConnection();
     void recalculateStatus();
+    void invalidateHasOutOfSyncDirs();
 
 private:
     // handler to evaluate results from request...() methods
@@ -511,6 +515,7 @@ private:
     QNetworkReply *m_logReply;
     QList<QNetworkReply *> m_otherReplies;
     bool m_unreadNotifications;
+    mutable std::optional<bool> m_hasOutOfSyncDirs;
     bool m_hasConfig;
     bool m_hasStatus;
     bool m_hasEvents;

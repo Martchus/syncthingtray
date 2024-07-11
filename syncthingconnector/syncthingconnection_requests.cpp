@@ -768,6 +768,7 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
 
     m_dirs.swap(newDirs);
     emit this->newDirs(m_dirs);
+    m_hasOutOfSyncDirs.reset();
 }
 
 /*!
@@ -1183,10 +1184,14 @@ void SyncthingConnection::readDirStatus()
             return;
         }
 
+        const auto careAboutOutOfSyncDirs = m_hasOutOfSyncDirs.has_value();
+        const auto wasOutOfSync = careAboutOutOfSyncDirs && dir->isOutOfSync();
         readDirSummary(reply->property("lastEventId").toULongLong(), DateTime::now(), replyDoc.object(), *dir, index);
-
+        if (careAboutOutOfSyncDirs && wasOutOfSync != dir->isOutOfSync()) {
+            m_hasOutOfSyncDirs.reset();
+        }
         if (m_keepPolling) {
-            concludeConnection();
+            concludeConnection(careAboutOutOfSyncDirs);
         }
         break;
     }
@@ -1246,7 +1251,11 @@ void SyncthingConnection::readDirPullErrors()
             return;
         }
 
+        const auto wasOutOfSync = dir->isOutOfSync();
         readFolderErrors(reply->property("lastEventId").toULongLong(), DateTime::now(), replyDoc.object(), *dir, index);
+        if (wasOutOfSync != dir->isOutOfSync()) {
+            invalidateHasOutOfSyncDirs();
+        }
         break;
     }
     case QNetworkReply::OperationCanceledError:
@@ -2020,6 +2029,7 @@ void SyncthingConnection::readEvents()
         return;
     }
 
+    const auto careAboutOutOfSyncDirs = m_hasOutOfSyncDirs.has_value();
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         auto jsonError = QJsonParseError();
@@ -2059,7 +2069,7 @@ void SyncthingConnection::readEvents()
 
     if (m_keepPolling) {
         requestEvents();
-        concludeConnection();
+        concludeConnection(careAboutOutOfSyncDirs);
     } else {
         setStatus(SyncthingStatus::Disconnected);
     }
@@ -2147,13 +2157,14 @@ void SyncthingConnection::readStatusChangedEvent(SyncthingEventId eventId, DateT
     SyncthingDir *dirInfo = findDirInfo(dir, index);
 
     // add a new directory if the dir is not present yet
-    const bool dirAlreadyPresent = dirInfo;
+    const auto dirAlreadyPresent = dirInfo != nullptr;
     if (!dirAlreadyPresent) {
         dirInfo = &m_dirs.emplace_back(dir);
     }
 
     // assign new status
-    bool statusChanged = dirInfo->assignStatus(eventData.value(QLatin1String("to")).toString(), eventId, eventTime);
+    const auto wasOutOfSync = dirInfo->isOutOfSync();
+    auto statusChanged = dirInfo->assignStatus(eventData.value(QLatin1String("to")).toString(), eventId, eventTime);
     if (dirInfo->status == SyncthingDirStatus::OutOfSync) {
         const QString errorMessage(eventData.value(QLatin1String("error")).toString());
         if (!errorMessage.isEmpty()) {
@@ -2161,6 +2172,10 @@ void SyncthingConnection::readStatusChangedEvent(SyncthingEventId eventId, DateT
             statusChanged = true;
         }
     }
+    if (wasOutOfSync != dirInfo->isOutOfSync()) {
+        m_hasOutOfSyncDirs.reset();
+    }
+
     if (dirAlreadyPresent) {
         // emit status changed when dir already present
         if (statusChanged) {
@@ -2246,6 +2261,7 @@ void SyncthingConnection::readDirEvent(SyncthingEventId eventId, DateTime eventT
     }
 
     // distinguish specific events
+    const auto wasOutOfSync = dirInfo->isOutOfSync();
     if (eventType == QLatin1String("FolderErrors")) {
         readFolderErrors(eventId, eventTime, eventData, *dirInfo, index);
     } else if (eventType == QLatin1String("FolderSummary")) {
@@ -2272,6 +2288,9 @@ void SyncthingConnection::readDirEvent(SyncthingEventId eventId, DateTime eventT
             dirInfo->paused = false;
             emit dirStatusChanged(*dirInfo, index);
         }
+    }
+    if (wasOutOfSync != dirInfo->isOutOfSync()) {
+        m_hasOutOfSyncDirs.reset();
     }
 }
 

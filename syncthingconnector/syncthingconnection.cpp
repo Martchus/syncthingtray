@@ -242,12 +242,15 @@ void SyncthingConnection::setLoggingFlags(SyncthingConnectionLoggingFlags flags)
  */
 bool SyncthingConnection::hasOutOfSyncDirs() const
 {
+    if (m_hasOutOfSyncDirs.has_value()) {
+        return m_hasOutOfSyncDirs.value();
+    }
     for (const SyncthingDir &dir : m_dirs) {
         if (dir.status == SyncthingDirStatus::OutOfSync) {
-            return true;
+            return m_hasOutOfSyncDirs.emplace(true);
         }
     }
-    return false;
+    return m_hasOutOfSyncDirs.emplace(false);
 }
 
 /*!
@@ -520,6 +523,7 @@ void SyncthingConnection::continueReconnecting()
     m_totalOutgoingRate = 0.0;
     emit trafficChanged(unknownTraffic, unknownTraffic);
     m_unreadNotifications = false;
+    m_hasOutOfSyncDirs.reset();
     m_hasConfig = false;
     m_hasStatus = false;
     m_hasEvents = false;
@@ -582,12 +586,14 @@ void SyncthingConnection::concludeReadingConfigAndStatus()
  * \remarks Called by read...() handlers for requests started in continueConnecting().
  * \sa hasPendingRequests()
  */
-void SyncthingConnection::concludeConnection()
+void SyncthingConnection::concludeConnection(bool careAboutOutOfSyncDirs)
 {
     if (!m_keepPolling || hasPendingRequests()) {
         return;
     }
-    setStatus(SyncthingStatus::Idle);
+    if (!setStatus(SyncthingStatus::Idle) && careAboutOutOfSyncDirs && !m_hasOutOfSyncDirs.has_value()) {
+        emit hasOutOfSyncDirsChanged();
+    }
     emitDirStatisticsChanged();
 }
 
@@ -998,11 +1004,13 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
  *   the SyncthingConnection::hasOutOfSyncDirs() function.
  * - Whether notifications are available is *not* handled by this function. One needs to query this via
  *   SyncthingConnection::hasUnreadNotifications().
+ * \returns Returns whether the status has been changed; the the status remained the same as before false
+ *          is returned. Returns always true if the connection is being destoyed.
  */
-void SyncthingConnection::setStatus(SyncthingStatus status)
+bool SyncthingConnection::setStatus(SyncthingStatus status)
 {
     if (m_status == SyncthingStatus::BeingDestroyed) {
-        return;
+        return true;
     }
     switch (status) {
     case SyncthingStatus::Disconnected:
@@ -1076,10 +1084,12 @@ void SyncthingConnection::setStatus(SyncthingStatus status)
             }
         }
     }
-    if (m_status != status || status == SyncthingStatus::Disconnected) {
+    const auto hasStatusChanged = m_status != status || status == SyncthingStatus::Disconnected;
+    if (hasStatusChanged) {
         // emit event if status changed always for disconnects so isConnecting() is re-evaluated
         emit statusChanged(m_status = status);
     }
+    return hasStatusChanged;
 }
 
 /*!
@@ -1222,6 +1232,18 @@ void SyncthingConnection::recalculateStatus()
 }
 
 /*!
+ * \brief Invalidates whether there are currently out-of-sync dirs and provokes subscribers to the
+ *        hasOutOfSyncDirsChanged() event to re-evaluate it.
+ */
+void SyncthingConnection::invalidateHasOutOfSyncDirs()
+{
+    if (m_hasOutOfSyncDirs.has_value()) {
+        m_hasOutOfSyncDirs.reset();
+        emit hasOutOfSyncDirsChanged();
+    }
+}
+
+/*!
  * \fn SyncthingConnection::newConfig()
  * \brief Indicates new configuration (dirs, devs, ...) is available.
  * \remarks
@@ -1249,13 +1271,13 @@ void SyncthingConnection::recalculateStatus()
  */
 
 /*!
- * \fn SyncthingConnection::allEventsProcesses()
+ * \fn SyncthingConnection::allEventsProcessed()
  * \brief Indicates all new events have been processed.
  * \remarks
- * This event is emitted after newEvents() and dirStatusChanged(), devStatusChanged() and other specific events.
- * If you would go through the list of all directories on every dirStatusChanged() event using instead might
- * be a more efficient alternative allEventsProcesses(). Just set a flag on dirStatusChanged() and go though the
- * list of directories only once on the allEventsProcesses() event when the flag has been set.
+ * This event is emitted after newEvents(), dirStatusChanged(), devStatusChanged() and other specific events.
+ * If you would go through the list of all directories on every dirStatusChanged() event then using allEventsProcessed()
+ * instead might be a more efficient alternative. Just set a flag on dirStatusChanged() and go though the list of
+ * directories only once on the allEventsProcessed() event when the flag has been set.
  */
 
 /*!
@@ -1347,4 +1369,16 @@ void SyncthingConnection::recalculateStatus()
  * \fn SyncthingConnection::restartTriggered()
  * \brief Indicates a restart has been successfully triggered via restart().
  */
+
+/*!
+ * \fn SyncthingConnection::hasOutOfSyncDirsChanged()
+ * \brief Indicates that hasOutOfSyncDirs() might has changed.
+ * \remarks
+ * - This signal is only emitted if hasOutOfSyncDirs() has been called at least once
+ *   since the connection has been established.
+ * - This signal is *not* emitted if the status has changed at the same time. Then only
+ *   statusChanged() is emitted. This is so that UI components subscribed to the event
+ *   are only updated once (as they will also be subscribed to statusChanged()).
+ */
+
 } // namespace Data
