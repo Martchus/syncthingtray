@@ -325,8 +325,8 @@ public:
 
 Q_SIGNALS:
     void newConfig(const QJsonObject &rawConfig);
-    void newDirs(const std::vector<SyncthingDir> &dirs);
-    void newDevices(const std::vector<SyncthingDev> &devs);
+    void newDirs(const std::vector<Data::SyncthingDir> &dirs);
+    void newDevices(const std::vector<Data::SyncthingDev> &devs);
     void newConfigApplied();
     void newEvents(const QJsonArray &events);
     void allEventsProcessed();
@@ -355,7 +355,7 @@ Q_SIGNALS:
     void directoryResumeTriggered(const QStringList &dirIds);
     void restartTriggered();
     void shutdownTriggered();
-    void logAvailable(const std::vector<SyncthingLogEntry> &logEntries);
+    void logAvailable(const std::vector<Data::SyncthingLogEntry> &logEntries);
     void qrCodeAvailable(const QString &text, const QByteArray &qrCodeData);
     void overrideTriggered(const QString &dirId);
     void revertTriggered(const QString &dirId);
