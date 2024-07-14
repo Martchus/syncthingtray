@@ -463,9 +463,9 @@ QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
     }
     switch (dir.status) {
     case SyncthingDirStatus::Unknown:
-        return dir.rawStatus.isEmpty() ? tr("Unknown status") : QString(dir.rawStatus);
+        return dir.rawStatus.isEmpty() ? tr("Unknown") : QString(dir.rawStatus);
     case SyncthingDirStatus::Idle:
-        return tr("Idle");
+        return tr("Up to Date");
     case SyncthingDirStatus::WaitingToScan:
         return tr("Waiting to scan");
     case SyncthingDirStatus::Scanning:
@@ -477,17 +477,17 @@ QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
         }
         return tr("Scanning");
     case SyncthingDirStatus::WaitingToSync:
-        return tr("Waiting to sync");
+        return tr("Waiting to Sync");
     case SyncthingDirStatus::PreparingToSync:
-        return tr("Preparing to sync");
+        return tr("Preparing to Sync");
     case SyncthingDirStatus::Synchronizing:
-        return dir.completionPercentage > 0 ? tr("Synchronizing (%1 %)").arg(dir.completionPercentage) : tr("Synchronizing");
+        return dir.completionPercentage > 0 ? tr("Syncing (%1 %)").arg(dir.completionPercentage) : tr("Syncing");
     case SyncthingDirStatus::Cleaning:
-        return tr("Cleaning");
+        return tr("Cleaning Versions");
     case SyncthingDirStatus::WaitingToClean:
-        return tr("Waiting to clean");
+        return tr("Waiting to Clean");
     case SyncthingDirStatus::OutOfSync:
-        return tr("Out of sync");
+        return tr("Out of Sync");
     }
     return QString();
 }

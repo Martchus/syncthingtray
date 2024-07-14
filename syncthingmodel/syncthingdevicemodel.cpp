@@ -381,20 +381,20 @@ QString SyncthingDeviceModel::devStatusString(const SyncthingDev &dev)
     }
     switch (dev.status) {
     case SyncthingDevStatus::Unknown:
-        return tr("Unknown status");
+        return tr("Unknown");
     case SyncthingDevStatus::ThisDevice:
-        return tr("This device");
+        return tr("This Device");
     case SyncthingDevStatus::Idle:
-        return tr("Idle");
+        return tr("Up to Date");
     case SyncthingDevStatus::Disconnected:
         return tr("Disconnected");
     case SyncthingDevStatus::Synchronizing:
-        return dev.overallCompletion.needed.bytes > 0 ? tr("Synchronizing (%1 %, %2)")
+        return dev.overallCompletion.needed.bytes > 0 ? tr("Syncing (%1 %, %2)")
                                                             .arg(static_cast<int>(dev.overallCompletion.percentage))
                                                             .arg(QString::fromStdString(dataSizeToString(dev.overallCompletion.needed.bytes)))
-                                                      : tr("Synchronizing");
+                                                      : tr("Syncing");
     case SyncthingDevStatus::OutOfSync:
-        return tr("Out of sync");
+        return tr("Out of Sync");
     case SyncthingDevStatus::Rejected:
         return tr("Rejected");
     }
