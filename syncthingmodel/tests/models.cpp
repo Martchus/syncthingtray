@@ -85,9 +85,9 @@ void ModelTests::testDevicesModel()
     const auto model = Data::SyncthingDeviceModel(m_connection);
     QCOMPARE(model.rowCount(QModelIndex()), 2);
     QCOMPARE(model.index(0, 0).data(), QStringLiteral("Myself"));
-    QCOMPARE(model.index(0, 1).data(), QStringLiteral("This device"));
+    QCOMPARE(model.index(0, 1).data(), QStringLiteral("This Device"));
     QCOMPARE(model.index(1, 0).data(), QStringLiteral("Other instance"));
-    QCOMPARE(model.index(1, 1).data(), QStringLiteral("Unknown status"));
+    QCOMPARE(model.index(1, 1).data(), QStringLiteral("Unknown"));
     const auto dev1Idx = model.index(0, 0);
     QCOMPARE(model.rowCount(dev1Idx), 5);
     QCOMPARE(model.index(0, 0, dev1Idx).data(), QStringLiteral("ID"));
