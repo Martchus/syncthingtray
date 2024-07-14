@@ -282,22 +282,22 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="471"/>
+        <location filename="../lib/syncthingapplet.cpp" line="472"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="483"/>
+        <location filename="../lib/syncthingapplet.cpp" line="484"/>
         <source>New notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="573"/>
+        <location filename="../lib/syncthingapplet.cpp" line="574"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="641"/>
+        <location filename="../lib/syncthingapplet.cpp" line="642"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>

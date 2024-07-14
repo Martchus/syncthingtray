@@ -133,32 +133,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="213"/>
+        <location filename="../gui/trayicon.cpp" line="214"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="233"/>
+        <location filename="../gui/trayicon.cpp" line="234"/>
         <source>Launcher error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="249"/>
+        <location filename="../gui/trayicon.cpp" line="250"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="279"/>
+        <location filename="../gui/trayicon.cpp" line="280"/>
         <source>Syncthing device wants to connect - click for web UI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="295"/>
+        <location filename="../gui/trayicon.cpp" line="296"/>
         <source>New Syncthing folder - click for web UI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="174"/>
+        <location filename="../gui/trayicon.cpp" line="175"/>
         <source>Disconnected from Syncthing</source>
         <translation type="unfinished"></translation>
     </message>

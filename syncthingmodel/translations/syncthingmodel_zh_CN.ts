@@ -139,18 +139,45 @@
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="384"/>
-        <source>Unknown status</source>
-        <translation>未知状态</translation>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="386"/>
-        <source>This device</source>
-        <translation>本设备</translation>
+        <source>This Device</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="388"/>
+        <source>Up to Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdevicemodel.cpp" line="392"/>
+        <source>Syncing (%1 %, %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdevicemodel.cpp" line="395"/>
+        <source>Syncing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdevicemodel.cpp" line="397"/>
+        <source>Out of Sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown status</source>
+        <translation type="vanished">未知状态</translation>
+    </message>
+    <message>
+        <source>This device</source>
+        <translation type="vanished">本设备</translation>
+    </message>
+    <message>
         <source>Idle</source>
-        <translation>空闲</translation>
+        <translation type="vanished">空闲</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="390"/>
@@ -158,19 +185,16 @@
         <translation>已断连</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="392"/>
         <source>Synchronizing (%1 %, %2)</source>
-        <translation>同步中 (%1 %, %2)</translation>
+        <translation type="vanished">同步中 (%1 %, %2)</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="395"/>
         <source>Synchronizing</source>
-        <translation>同步中</translation>
+        <translation type="vanished">同步中</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="397"/>
         <source>Out of sync</source>
-        <translation>未同步</translation>
+        <translation type="vanished">未同步</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="399"/>
@@ -298,13 +322,56 @@
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="466"/>
-        <source>Unknown status</source>
-        <translation>未知状态</translation>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="468"/>
+        <source>Up to Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="480"/>
+        <source>Waiting to Sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="482"/>
+        <source>Preparing to Sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="484"/>
+        <source>Syncing (%1 %)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="484"/>
+        <source>Syncing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="486"/>
+        <source>Cleaning Versions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="488"/>
+        <source>Waiting to Clean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="490"/>
+        <source>Out of Sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown status</source>
+        <translation type="vanished">未知状态</translation>
+    </message>
+    <message>
         <source>Idle</source>
-        <translation>空闲</translation>
+        <translation type="vanished">空闲</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="470"/>
@@ -327,39 +394,32 @@
         <translation>扫描中</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="480"/>
         <source>Waiting to sync</source>
-        <translation>等待同步</translation>
+        <translation type="vanished">等待同步</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="482"/>
         <source>Preparing to sync</source>
-        <translation>准备同步</translation>
+        <translation type="vanished">准备同步</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="484"/>
         <source>Synchronizing (%1 %)</source>
-        <translation>同步中 (%1 %)</translation>
+        <translation type="vanished">同步中 (%1 %)</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="484"/>
         <source>Synchronizing</source>
-        <translation>同步中</translation>
+        <translation type="vanished">同步中</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="486"/>
         <source>Cleaning</source>
-        <translation>清理中</translation>
+        <translation type="vanished">清理中</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="488"/>
         <source>Waiting to clean</source>
-        <translation>等待清理</translation>
+        <translation type="vanished">等待清理</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="490"/>
         <source>Out of sync</source>
-        <translation>未同步</translation>
+        <translation type="vanished">未同步</translation>
     </message>
 </context>
 <context>
