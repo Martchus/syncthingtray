@@ -154,17 +154,16 @@ bool SyncthingDir::assignStatus(const QString &statusStr, SyncthingEventId event
 
 bool SyncthingDir::assignDirType(const QString &dirTypeStr)
 {
-    if (dirTypeStr == QLatin1String("sendreceive") || dirTypeStr == QLatin1String("readwrite")) {
-        dirType = SyncthingDirType::SendReceive;
-    } else if (dirTypeStr == QLatin1String("sendonly") || dirTypeStr == QLatin1String("readonly")) {
-        dirType = SyncthingDirType::SendOnly;
-    } else if (dirTypeStr == QLatin1String("receiveonly")) {
-        dirType = SyncthingDirType::ReceiveOnly;
-    } else {
-        dirType = SyncthingDirType::Unknown;
-        return false;
-    }
-    return true;
+    static const auto typeMapping = QHash<QString, SyncthingDirType>{
+        {QStringLiteral("sendreceive"), SyncthingDirType::SendReceive},
+        {QStringLiteral("readwrite"), SyncthingDirType::SendReceive},
+        {QStringLiteral("sendonly"), SyncthingDirType::SendOnly},
+        {QStringLiteral("readonly"), SyncthingDirType::SendOnly},
+        {QStringLiteral("receiveonly"), SyncthingDirType::ReceiveOnly},
+    };
+    const auto i = typeMapping.find(dirTypeStr);
+    dirType = i != typeMapping.cend() ? *i : SyncthingDirType::Unknown;
+    return dirType != SyncthingDirType::Unknown;
 }
 
 QString SyncthingDir::statusString() const
