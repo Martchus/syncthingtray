@@ -164,12 +164,12 @@
         <translation>Fehler beim Löschen der Fehlermeldungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2038"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2049"/>
         <source>Unable to parse Syncthing events: </source>
         <translation>Fehler beim Auslesen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2065"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2076"/>
         <source>Unable to request Syncthing events: </source>
         <translation>Fehler beim Abfragen der Syncthing-Ereignisse: </translation>
     </message>
@@ -270,12 +270,12 @@
         <translation>Fehler beim Ändern des Ignoriermusters von &quot;%1&quot;: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2655"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2666"/>
         <source>Unable to parse disk events: </source>
         <translation>Fehler beim Auslesen der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2678"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2689"/>
         <source>Unable to request disk events: </source>
         <translation>Fehler beim Anfordern der letzten Änderungen: </translation>
     </message>
@@ -456,111 +456,235 @@
 <context>
     <name>SyncthingDev</name>
     <message>
-        <location filename="../syncthingdev.cpp" line="32"/>
         <source>paused</source>
-        <translation>pausiert</translation>
+        <translation type="vanished">pausiert</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdev.cpp" line="36"/>
+        <source>Paused</source>
+        <translation>Pausiert</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdev.cpp" line="39"/>
+        <source>Syncing (%1 %, %2)</source>
+        <translation>Synchronisiere (%1 %, %2)</translation>
     </message>
 </context>
 <context>
     <name>SyncthingDevStatus</name>
     <message>
-        <location filename="../syncthingdev.cpp" line="11"/>
         <source>unknown</source>
-        <translation>unbekannt</translation>
+        <translation type="vanished">unbekannt</translation>
     </message>
     <message>
-        <location filename="../syncthingdev.cpp" line="13"/>
         <source>disconnected</source>
-        <translation>getrennt</translation>
+        <translation type="vanished">getrennt</translation>
+    </message>
+    <message>
+        <source>this device</source>
+        <translation type="vanished">dieses Gerät</translation>
+    </message>
+    <message>
+        <source>idle</source>
+        <translation type="vanished">untätig</translation>
+    </message>
+    <message>
+        <source>synchronizing</source>
+        <translation type="vanished">synchronisiert</translation>
+    </message>
+    <message>
+        <source>out of sync</source>
+        <translation type="vanished">nicht synchronisiert</translation>
+    </message>
+    <message>
+        <source>rejected</source>
+        <translation type="vanished">zurückgewiesen</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="15"/>
-        <source>this device</source>
-        <translation>dieses Gerät</translation>
+        <source>Unknown</source>
+        <translation>Unbekannt</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="17"/>
-        <source>idle</source>
-        <translation>untätig</translation>
+        <source>Disconnected</source>
+        <translation>Getrennt</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="19"/>
-        <source>synchronizing</source>
-        <translation>synchronisiert</translation>
+        <source>This Device</source>
+        <translation>Dieses Gerät</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="21"/>
-        <source>out of sync</source>
-        <translation>nicht synchronisiert</translation>
+        <source>Idle</source>
+        <translation>Leerlauf</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="23"/>
-        <source>rejected</source>
-        <translation>zurückgewiesen</translation>
+        <source>Syncing</source>
+        <translation>Synchronisiere</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdev.cpp" line="25"/>
+        <source>Out of Sync</source>
+        <translation>Nicht synchronisiert</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdev.cpp" line="27"/>
+        <source>Rejected</source>
+        <translation>Zurückgewiesen</translation>
     </message>
 </context>
 <context>
     <name>SyncthingDir</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="174"/>
         <source>paused</source>
-        <translation>pausiert</translation>
+        <translation type="vanished">pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="176"/>
         <source>unshared</source>
-        <translation>nicht geteilt</translation>
+        <translation type="vanished">nicht geteilt</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="180"/>
+        <source>Paused</source>
+        <translation>Pausiert</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="183"/>
+        <source>Unshared</source>
+        <translation>Ungeteilt</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="187"/>
+        <source>Unknown</source>
+        <translation>Unbekannt</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="192"/>
+        <source>Local Additions</source>
+        <translation>Lokal hinzugefügte Elemente</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="194"/>
+        <source>Unexpected Items</source>
+        <translation>Unerwartete Elemente</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="198"/>
+        <source>Up to Date</source>
+        <translation>Aktuell</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="200"/>
+        <source>Waiting to Scan</source>
+        <translation>Warten auf Scannen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="204"/>
+        <source>Scanning (%1 %, %2)</source>
+        <translation>Scannen (%1 %, %2)</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="208"/>
+        <source>Scanning (%1 %)</source>
+        <translation>Scannen (%1 %)</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="210"/>
+        <source>Scanning</source>
+        <translation>Scannen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="212"/>
+        <source>Waiting to Sync</source>
+        <translation>Warten auf die Synchronisation</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="214"/>
+        <source>Preparing to Sync</source>
+        <translation>Vorbereiten auf die Synchronisation</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="216"/>
+        <source>Syncing (%1 %)</source>
+        <translation>Synchronisiere (%1 %)</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="217"/>
+        <source>Syncing</source>
+        <translation>Synchronisiere</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="219"/>
+        <source>Cleaning Versions</source>
+        <translation>Versionen bereinigen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="221"/>
+        <source>Waiting to Clean</source>
+        <translation>Warten auf Bereinigung</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="223"/>
+        <source>Out of Sync</source>
+        <translation>Nicht synchronisiert</translation>
     </message>
 </context>
 <context>
     <name>SyncthingDirStatus</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="17"/>
+        <location filename="../syncthingdir.cpp" line="18"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="19"/>
         <source>idle</source>
-        <translation>untätig</translation>
+        <translation type="vanished">untätig</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="23"/>
+        <location filename="../syncthingdir.cpp" line="24"/>
         <source>waiting to scan</source>
         <translation>wartet aufs Scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="21"/>
+        <location filename="../syncthingdir.cpp" line="22"/>
         <source>scanning</source>
         <translation>scannt</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="25"/>
+        <location filename="../syncthingdir.cpp" line="20"/>
+        <source>up to date</source>
+        <translation>aktuell</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="26"/>
         <source>waiting to sync</source>
         <translation>wartet aufs Synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="27"/>
+        <location filename="../syncthingdir.cpp" line="28"/>
         <source>preparing to sync</source>
         <translation>bereitet Synchronisation vor</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="29"/>
+        <location filename="../syncthingdir.cpp" line="30"/>
         <source>synchronizing</source>
         <translation>synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="31"/>
+        <location filename="../syncthingdir.cpp" line="32"/>
         <source>cleaning</source>
         <translation>Versionen bereinigen</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="33"/>
+        <location filename="../syncthingdir.cpp" line="34"/>
         <source>waiting to clean</source>
         <translation>wartet auf Bereinigung</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="35"/>
+        <location filename="../syncthingdir.cpp" line="36"/>
         <source>out of sync</source>
         <translation>nicht synchronisiert</translation>
     </message>
@@ -568,24 +692,41 @@
 <context>
     <name>SyncthingDirType</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="44"/>
         <source>unknown</source>
-        <translation>unbekannt</translation>
+        <translation type="vanished">unbekannt</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="46"/>
+        <location filename="../syncthingdir.cpp" line="45"/>
+        <source>Unknown</source>
+        <translation>Unbekannt</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="47"/>
         <source>Send &amp; Receive</source>
         <translation>Senden &amp; Empfangen</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="48"/>
-        <source>Send only</source>
+        <location filename="../syncthingdir.cpp" line="49"/>
+        <source>Send Only</source>
         <translation>Nur senden</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="50"/>
-        <source>Receive only</source>
+        <location filename="../syncthingdir.cpp" line="51"/>
+        <source>Receive Only</source>
         <translation>Nur empfangen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingdir.cpp" line="53"/>
+        <source>Receive Encrypted</source>
+        <translation>Empfange verschlüsselt</translation>
+    </message>
+    <message>
+        <source>Send only</source>
+        <translation type="vanished">Nur senden</translation>
+    </message>
+    <message>
+        <source>Receive only</source>
+        <translation type="vanished">Nur empfangen</translation>
     </message>
 </context>
 </TS>

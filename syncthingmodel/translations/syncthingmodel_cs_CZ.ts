@@ -133,39 +133,8 @@
         <translation>ne</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="380"/>
         <source>Paused</source>
-        <translation>Pozastaveno</translation>
-    </message>
-    <message>
-        <location filename="../syncthingdevicemodel.cpp" line="384"/>
-        <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdevicemodel.cpp" line="386"/>
-        <source>This Device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdevicemodel.cpp" line="388"/>
-        <source>Up to Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdevicemodel.cpp" line="392"/>
-        <source>Syncing (%1 %, %2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdevicemodel.cpp" line="395"/>
-        <source>Syncing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdevicemodel.cpp" line="397"/>
-        <source>Out of Sync</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Pozastaveno</translation>
     </message>
     <message>
         <source>Unknown status</source>
@@ -180,9 +149,8 @@
         <translation type="vanished">Nečinné</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="390"/>
         <source>Disconnected</source>
-        <translation>Odpojeno</translation>
+        <translation type="vanished">Odpojeno</translation>
     </message>
     <message>
         <source>Synchronizing</source>
@@ -193,9 +161,8 @@
         <translation type="vanished">Nesesynchronizováno</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="399"/>
         <source>Rejected</source>
-        <translation>Odmítnuto</translation>
+        <translation type="vanished">Odmítnuto</translation>
     </message>
 </context>
 <context>
@@ -257,41 +224,6 @@
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="480"/>
-        <source>Waiting to Sync</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="482"/>
-        <source>Preparing to Sync</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="484"/>
-        <source>Syncing (%1 %)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="484"/>
-        <source>Syncing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="486"/>
-        <source>Cleaning Versions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="488"/>
-        <source>Waiting to Clean</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="490"/>
-        <source>Out of Sync</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../syncthingdirectorymodel.cpp" line="178"/>
         <source>none</source>
         <translation>žádno</translation>
@@ -334,9 +266,8 @@
         <translation type="vanished">Nečinné</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="462"/>
         <source>Unshared</source>
-        <translation>Nesdíleno</translation>
+        <translation type="vanished">Nesdíleno</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="128"/>
@@ -359,34 +290,16 @@
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="466"/>
-        <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="468"/>
-        <source>Up to Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="470"/>
-        <source>Waiting to scan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="474"/>
         <source>Scanning (%1 %, %2)</source>
-        <translation>Skenování (%1 %, %2)</translation>
+        <translation type="vanished">Skenování (%1 %, %2)</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="476"/>
         <source>Scanning (%1 %)</source>
-        <translation>Skenování (%1 %)</translation>
+        <translation type="vanished">Skenování (%1 %)</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="478"/>
         <source>Scanning</source>
-        <translation>Skenování</translation>
+        <translation type="vanished">Skenování</translation>
     </message>
     <message>
         <source>Synchronizing (%1 %)</source>
@@ -397,9 +310,8 @@
         <translation type="vanished">Synchronizace</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="459"/>
         <source>Paused</source>
-        <translation>Pozastaveno</translation>
+        <translation type="vanished">Pozastaveno</translation>
     </message>
     <message>
         <source>Out of sync</source>
