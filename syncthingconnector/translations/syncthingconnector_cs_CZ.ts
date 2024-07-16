@@ -559,77 +559,77 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="187"/>
+        <location filename="../syncthingdir.cpp" line="18"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="192"/>
+        <location filename="../syncthingdir.cpp" line="195"/>
         <source>Local Additions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="194"/>
+        <location filename="../syncthingdir.cpp" line="197"/>
         <source>Unexpected Items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="198"/>
+        <location filename="../syncthingdir.cpp" line="20"/>
         <source>Up to Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="200"/>
+        <location filename="../syncthingdir.cpp" line="22"/>
         <source>Waiting to Scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="204"/>
+        <location filename="../syncthingdir.cpp" line="205"/>
         <source>Scanning (%1 %, %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="208"/>
+        <location filename="../syncthingdir.cpp" line="209"/>
         <source>Scanning (%1 %)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="210"/>
+        <location filename="../syncthingdir.cpp" line="24"/>
         <source>Scanning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="212"/>
+        <location filename="../syncthingdir.cpp" line="26"/>
         <source>Waiting to Sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="214"/>
+        <location filename="../syncthingdir.cpp" line="28"/>
         <source>Preparing to Sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="216"/>
+        <location filename="../syncthingdir.cpp" line="214"/>
         <source>Syncing (%1 %)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="217"/>
+        <location filename="../syncthingdir.cpp" line="30"/>
         <source>Syncing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="219"/>
+        <location filename="../syncthingdir.cpp" line="32"/>
         <source>Cleaning Versions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="221"/>
+        <location filename="../syncthingdir.cpp" line="34"/>
         <source>Waiting to Clean</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="223"/>
+        <location filename="../syncthingdir.cpp" line="36"/>
         <source>Out of Sync</source>
         <translation type="unfinished"></translation>
     </message>
@@ -637,58 +637,24 @@
 <context>
     <name>SyncthingDirStatus</name>
     <message>
-        <location filename="../syncthingdir.cpp" line="18"/>
         <source>unknown</source>
-        <translation>neznámé</translation>
+        <translation type="vanished">neznámé</translation>
     </message>
     <message>
         <source>idle</source>
         <translation type="vanished">nečinné</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="24"/>
-        <source>waiting to scan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdir.cpp" line="22"/>
         <source>scanning</source>
-        <translation>skenuje se</translation>
+        <translation type="vanished">skenuje se</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="20"/>
-        <source>up to date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdir.cpp" line="26"/>
-        <source>waiting to sync</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdir.cpp" line="28"/>
-        <source>preparing to sync</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdir.cpp" line="30"/>
         <source>synchronizing</source>
-        <translation>synchronizuje se</translation>
+        <translation type="vanished">synchronizuje se</translation>
     </message>
     <message>
-        <location filename="../syncthingdir.cpp" line="32"/>
-        <source>cleaning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdir.cpp" line="34"/>
-        <source>waiting to clean</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdir.cpp" line="36"/>
         <source>out of sync</source>
-        <translation>nesesynchronizováno</translation>
+        <translation type="vanished">nesesynchronizováno</translation>
     </message>
 </context>
 <context>

@@ -15,25 +15,25 @@ QString statusString(SyncthingDirStatus status)
 {
     switch (status) {
     case SyncthingDirStatus::Unknown:
-        return QCoreApplication::translate("SyncthingDirStatus", "unknown");
+        return QCoreApplication::translate("SyncthingDir", "Unknown");
     case SyncthingDirStatus::Idle:
-        return QCoreApplication::translate("SyncthingDirStatus", "up to date");
-    case SyncthingDirStatus::Scanning:
-        return QCoreApplication::translate("SyncthingDirStatus", "scanning");
+        return QCoreApplication::translate("SyncthingDir", "Up to Date");
     case SyncthingDirStatus::WaitingToScan:
-        return QCoreApplication::translate("SyncthingDirStatus", "waiting to scan");
+        return QCoreApplication::translate("SyncthingDir", "Waiting to Scan");
+    case SyncthingDirStatus::Scanning:
+        return QCoreApplication::translate("SyncthingDir", "Scanning");
     case SyncthingDirStatus::WaitingToSync:
-        return QCoreApplication::translate("SyncthingDirStatus", "waiting to sync");
+        return QCoreApplication::translate("SyncthingDir", "Waiting to Sync");
     case SyncthingDirStatus::PreparingToSync:
-        return QCoreApplication::translate("SyncthingDirStatus", "preparing to sync");
+        return QCoreApplication::translate("SyncthingDir", "Preparing to Sync");
     case SyncthingDirStatus::Synchronizing:
-        return QCoreApplication::translate("SyncthingDirStatus", "synchronizing");
+        return QCoreApplication::translate("SyncthingDir", "Syncing");
     case SyncthingDirStatus::Cleaning:
-        return QCoreApplication::translate("SyncthingDirStatus", "cleaning");
+        return QCoreApplication::translate("SyncthingDir", "Cleaning Versions");
     case SyncthingDirStatus::WaitingToClean:
-        return QCoreApplication::translate("SyncthingDirStatus", "waiting to clean");
+        return QCoreApplication::translate("SyncthingDir", "Waiting to Clean");
     case SyncthingDirStatus::OutOfSync:
-        return QCoreApplication::translate("SyncthingDirStatus", "out of sync");
+        return QCoreApplication::translate("SyncthingDir", "Out of Sync");
     }
     return QString();
 }
@@ -184,7 +184,10 @@ QString SyncthingDir::statusString() const
     }
     switch (status) {
     case SyncthingDirStatus::Unknown:
-        return rawStatus.isEmpty() ? QCoreApplication::translate("SyncthingDir", "Unknown") : rawStatus;
+        if (!rawStatus.isEmpty()) {
+            return rawStatus;
+        }
+        break;
     case SyncthingDirStatus::Idle:
         if (receiveOnlyStats.total > 0) {
             switch (dirType) {
@@ -195,9 +198,7 @@ QString SyncthingDir::statusString() const
             default:;
             }
         }
-        return QCoreApplication::translate("SyncthingDir", "Up to Date");
-    case SyncthingDirStatus::WaitingToScan:
-        return QCoreApplication::translate("SyncthingDir", "Waiting to Scan");
+        break;
     case SyncthingDirStatus::Scanning:
         if (scanningPercentage > 0) {
             if (scanningRate != 0.0) {
@@ -207,22 +208,15 @@ QString SyncthingDir::statusString() const
             }
             return QCoreApplication::translate("SyncthingDir", "Scanning (%1 %)").arg(scanningPercentage);
         }
-        return QCoreApplication::translate("SyncthingDir", "Scanning");
-    case SyncthingDirStatus::WaitingToSync:
-        return QCoreApplication::translate("SyncthingDir", "Waiting to Sync");
-    case SyncthingDirStatus::PreparingToSync:
-        return QCoreApplication::translate("SyncthingDir", "Preparing to Sync");
+        break;
     case SyncthingDirStatus::Synchronizing:
-        return completionPercentage > 0 ? QCoreApplication::translate("SyncthingDir", "Syncing (%1 %)").arg(completionPercentage)
-                                        : QCoreApplication::translate("SyncthingDir", "Syncing");
-    case SyncthingDirStatus::Cleaning:
-        return QCoreApplication::translate("SyncthingDir", "Cleaning Versions");
-    case SyncthingDirStatus::WaitingToClean:
-        return QCoreApplication::translate("SyncthingDir", "Waiting to Clean");
-    case SyncthingDirStatus::OutOfSync:
-        return QCoreApplication::translate("SyncthingDir", "Out of Sync");
+        if (completionPercentage > 0) {
+            return QCoreApplication::translate("SyncthingDir", "Syncing (%1 %)").arg(completionPercentage);
+        }
+        break;
+    default:;
     }
-    return QString();
+    return Data::statusString(status);
 }
 
 QtUtilities::StringView SyncthingDir::pathWithoutTrailingSlash() const
