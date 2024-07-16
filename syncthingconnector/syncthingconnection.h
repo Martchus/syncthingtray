@@ -20,8 +20,8 @@
 
 #include <cstdint>
 #include <functional>
-#include <optional>
 #include <limits>
+#include <optional>
 #include <vector>
 
 QT_FORWARD_DECLARE_CLASS(QNetworkAccessManager)

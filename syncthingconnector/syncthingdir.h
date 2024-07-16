@@ -117,7 +117,8 @@ constexpr bool SyncthingStatistics::isNull() const
 
 constexpr bool SyncthingStatistics::operator==(const SyncthingStatistics &other) const
 {
-    return bytes == other.bytes && deletes == other.deletes && dirs == other.dirs && files == other.files && symlinks == other.symlinks && total == other.total;
+    return bytes == other.bytes && deletes == other.deletes && dirs == other.dirs && files == other.files && symlinks == other.symlinks
+        && total == other.total;
 }
 
 constexpr bool SyncthingStatistics::operator!=(const SyncthingStatistics &other) const

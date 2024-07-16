@@ -37,8 +37,8 @@ QString SyncthingDev::statusString() const
     }
     if (status == SyncthingDevStatus::Synchronizing && overallCompletion.needed.bytes) {
         return QCoreApplication::translate("SyncthingDev", "Syncing (%1 %, %2)")
-                                                        .arg(static_cast<int>(overallCompletion.percentage))
-                                                        .arg(QString::fromStdString(dataSizeToString(overallCompletion.needed.bytes)));
+            .arg(static_cast<int>(overallCompletion.percentage))
+            .arg(QString::fromStdString(dataSizeToString(overallCompletion.needed.bytes)));
     }
     return Data::statusString(status);
 }

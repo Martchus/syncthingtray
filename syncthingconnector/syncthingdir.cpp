@@ -121,15 +121,15 @@ bool SyncthingDir::assignStatus(const QString &statusStr, SyncthingEventId event
     }
 
     static const auto statusMapping = QHash<QString, SyncthingDirStatus>{
-        {QStringLiteral("idle"), SyncthingDirStatus::Idle},
-        {QStringLiteral("scanning"), SyncthingDirStatus::Scanning},
-        {QStringLiteral("scan-waiting"), SyncthingDirStatus::WaitingToScan},
-        {QStringLiteral("sync-waiting"), SyncthingDirStatus::WaitingToSync},
-        {QStringLiteral("sync-preparing"), SyncthingDirStatus::PreparingToSync},
-        {QStringLiteral("syncing"), SyncthingDirStatus::Synchronizing},
-        {QStringLiteral("cleaning"), SyncthingDirStatus::Cleaning},
-        {QStringLiteral("clean-waiting"), SyncthingDirStatus::WaitingToClean},
-        {QStringLiteral("error"), SyncthingDirStatus::OutOfSync},
+        { QStringLiteral("idle"), SyncthingDirStatus::Idle },
+        { QStringLiteral("scanning"), SyncthingDirStatus::Scanning },
+        { QStringLiteral("scan-waiting"), SyncthingDirStatus::WaitingToScan },
+        { QStringLiteral("sync-waiting"), SyncthingDirStatus::WaitingToSync },
+        { QStringLiteral("sync-preparing"), SyncthingDirStatus::PreparingToSync },
+        { QStringLiteral("syncing"), SyncthingDirStatus::Synchronizing },
+        { QStringLiteral("cleaning"), SyncthingDirStatus::Cleaning },
+        { QStringLiteral("clean-waiting"), SyncthingDirStatus::WaitingToClean },
+        { QStringLiteral("error"), SyncthingDirStatus::OutOfSync },
     };
 
     const auto i = statusMapping.find(statusStr);
@@ -146,8 +146,7 @@ bool SyncthingDir::assignStatus(const QString &statusStr, SyncthingEventId event
             status = SyncthingDirStatus::Unknown;
         }
         break;
-    default:
-        ;
+    default:;
     }
 
     rawStatus = statusStr;
@@ -157,12 +156,12 @@ bool SyncthingDir::assignStatus(const QString &statusStr, SyncthingEventId event
 bool SyncthingDir::assignDirType(const QString &dirTypeStr)
 {
     static const auto typeMapping = QHash<QString, SyncthingDirType>{
-        {QStringLiteral("sendreceive"), SyncthingDirType::SendReceive},
-        {QStringLiteral("readwrite"), SyncthingDirType::SendReceive},
-        {QStringLiteral("sendonly"), SyncthingDirType::SendOnly},
-        {QStringLiteral("readonly"), SyncthingDirType::SendOnly},
-        {QStringLiteral("receiveonly"), SyncthingDirType::ReceiveOnly},
-        {QStringLiteral("receiveencrypted"), SyncthingDirType::ReceiveEncrypted},
+        { QStringLiteral("sendreceive"), SyncthingDirType::SendReceive },
+        { QStringLiteral("readwrite"), SyncthingDirType::SendReceive },
+        { QStringLiteral("sendonly"), SyncthingDirType::SendOnly },
+        { QStringLiteral("readonly"), SyncthingDirType::SendOnly },
+        { QStringLiteral("receiveonly"), SyncthingDirType::ReceiveOnly },
+        { QStringLiteral("receiveencrypted"), SyncthingDirType::ReceiveEncrypted },
     };
     const auto i = typeMapping.find(dirTypeStr);
     dirType = i != typeMapping.cend() ? *i : SyncthingDirType::Unknown;
@@ -193,8 +192,7 @@ QString SyncthingDir::statusString() const
                 return QCoreApplication::translate("SyncthingDir", "Local Additions");
             case SyncthingDirType::ReceiveEncrypted:
                 return QCoreApplication::translate("SyncthingDir", "Unexpected Items");
-            default:
-                ;
+            default:;
             }
         }
         return QCoreApplication::translate("SyncthingDir", "Up to Date");
@@ -203,7 +201,9 @@ QString SyncthingDir::statusString() const
     case SyncthingDirStatus::Scanning:
         if (scanningPercentage > 0) {
             if (scanningRate != 0.0) {
-                return QCoreApplication::translate("SyncthingDir", "Scanning (%1 %, %2)").arg(scanningPercentage).arg(bitrateToString(scanningRate * 0.008, true).data());
+                return QCoreApplication::translate("SyncthingDir", "Scanning (%1 %, %2)")
+                    .arg(scanningPercentage)
+                    .arg(bitrateToString(scanningRate * 0.008, true).data());
             }
             return QCoreApplication::translate("SyncthingDir", "Scanning (%1 %)").arg(scanningPercentage);
         }
@@ -213,7 +213,8 @@ QString SyncthingDir::statusString() const
     case SyncthingDirStatus::PreparingToSync:
         return QCoreApplication::translate("SyncthingDir", "Preparing to Sync");
     case SyncthingDirStatus::Synchronizing:
-        return completionPercentage > 0 ? QCoreApplication::translate("SyncthingDir", "Syncing (%1 %)").arg(completionPercentage) : QCoreApplication::translate("SyncthingDir", "Syncing");
+        return completionPercentage > 0 ? QCoreApplication::translate("SyncthingDir", "Syncing (%1 %)").arg(completionPercentage)
+                                        : QCoreApplication::translate("SyncthingDir", "Syncing");
     case SyncthingDirStatus::Cleaning:
         return QCoreApplication::translate("SyncthingDir", "Cleaning Versions");
     case SyncthingDirStatus::WaitingToClean:
@@ -292,7 +293,6 @@ SyncthingOverallDirStatistics::SyncthingOverallDirStatistics(const std::vector<S
         local += dir.localStats;
         global += dir.globalStats;
         needed += dir.neededStats;
-
     }
 }
 
