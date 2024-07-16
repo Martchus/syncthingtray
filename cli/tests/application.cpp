@@ -162,7 +162,7 @@ void ApplicationTests::test()
             }
         }
         if (!patternFound) {
-            CPPUNIT_FAIL(argsToString("Line ", expectedStatusLines[currentPattern], " could not be found in output."));
+            CPPUNIT_FAIL(argsToString("Line \"", expectedStatusLines[currentPattern], "\" could not be found in output."));
         }
         ++currentPattern;
     }
