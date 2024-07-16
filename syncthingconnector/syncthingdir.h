@@ -27,7 +27,7 @@ namespace Data {
 ///   and SyncthingDirectoryModel::data(), SyncthingDirectoryModel::dirStatusString() and SyncthingDirectoryModel::dirStatusColor().
 enum class SyncthingDirStatus {
     Unknown, /**< directory status is unknown */
-    Idle, /**< directory is idling ("idle") */
+    Idle, /**< directory is up-to-date ("idle") */
     Scanning, /**< directory is scanning ("scanning") */
     WaitingToScan, /**< directory is waiting to scan ("scan-waiting") */
     WaitingToSync, /**< directory is waiting to sync ("sync-waiting") */

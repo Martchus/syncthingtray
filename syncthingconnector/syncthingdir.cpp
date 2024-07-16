@@ -3,6 +3,7 @@
 #include <c++utilities/conversion/stringconversion.h>
 
 #include <QCoreApplication>
+#include <QHash>
 #include <QJsonObject>
 #include <QStringBuilder>
 
@@ -107,6 +108,9 @@ bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus, SyncthingE
 /*!
  * \brief Assigns the status from the specified status string.
  * \returns Returns whether the status has actually changed.
+ * \remarks
+ * The status mapping is defined by `lib/model/folderstate.go`. Additional statuses are made up on UI-level
+ * in `gui/default/syncthing/core/syncthingController.js` but those are not handled by this function.
  */
 bool SyncthingDir::assignStatus(const QString &statusStr, SyncthingEventId eventId, CppUtilities::DateTime time)
 {
@@ -114,42 +118,37 @@ bool SyncthingDir::assignStatus(const QString &statusStr, SyncthingEventId event
         return false;
     }
 
-    // identify statusStr
-    SyncthingDirStatus newStatus;
-    if (statusStr == QLatin1String("idle")) {
+    static const auto statusMapping = QHash<QString, SyncthingDirStatus>{
+        {QStringLiteral("idle"), SyncthingDirStatus::Idle},
+        {QStringLiteral("scanning"), SyncthingDirStatus::Scanning},
+        {QStringLiteral("scan-waiting"), SyncthingDirStatus::WaitingToScan},
+        {QStringLiteral("sync-waiting"), SyncthingDirStatus::WaitingToSync},
+        {QStringLiteral("sync-preparing"), SyncthingDirStatus::PreparingToSync},
+        {QStringLiteral("syncing"), SyncthingDirStatus::Synchronizing},
+        {QStringLiteral("cleaning"), SyncthingDirStatus::Cleaning},
+        {QStringLiteral("clean-waiting"), SyncthingDirStatus::WaitingToClean},
+        {QStringLiteral("error"), SyncthingDirStatus::OutOfSync},
+    };
+
+    const auto i = statusMapping.find(statusStr);
+    const auto newStatus = i != statusMapping.cend() ? *i : SyncthingDirStatus::Unknown;
+    switch (newStatus) {
+    case SyncthingDirStatus::Idle:
+    case SyncthingDirStatus::OutOfSync:
         completionPercentage = 0;
-        newStatus = SyncthingDirStatus::Idle;
-    } else if (statusStr == QLatin1String("scanning")) {
-        newStatus = SyncthingDirStatus::Scanning;
-    } else if (statusStr == QLatin1String("scan-waiting")) {
-        newStatus = SyncthingDirStatus::WaitingToScan;
-    } else if (statusStr == QLatin1String("sync-waiting")) {
-        newStatus = SyncthingDirStatus::WaitingToSync;
-    } else if (statusStr == QLatin1String("sync-preparing")) {
+        break;
+    case Data::SyncthingDirStatus::WaitingToSync:
+    case Data::SyncthingDirStatus::PreparingToSync:
         // ensure status changed signal is emitted
         if (!itemErrors.empty()) {
             status = SyncthingDirStatus::Unknown;
         }
-        newStatus = SyncthingDirStatus::PreparingToSync;
-    } else if (statusStr == QLatin1String("syncing")) {
-        // ensure status changed signal is emitted
-        if (!itemErrors.empty()) {
-            status = SyncthingDirStatus::Unknown;
-        }
-        newStatus = SyncthingDirStatus::Synchronizing;
-    } else if (statusStr == QLatin1String("cleaning")) {
-        newStatus = SyncthingDirStatus::Cleaning;
-    } else if (statusStr == QLatin1String("clean-waiting")) {
-        newStatus = SyncthingDirStatus::WaitingToClean;
-    } else if (statusStr == QLatin1String("error")) {
-        completionPercentage = 0;
-        newStatus = SyncthingDirStatus::OutOfSync;
-    } else {
-        newStatus = SyncthingDirStatus::Idle;
+        break;
+    default:
+        ;
     }
 
     rawStatus = statusStr;
-
     return finalizeStatusUpdate(newStatus, eventId, time);
 }
 
