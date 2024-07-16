@@ -453,6 +453,12 @@ void SyncthingDirectoryModel::handleForkAwesomeIconsChanged()
     invalidateNestedIndicies(QVector<int>({ Qt::DecorationRole, DirectoryDetailIcon }));
 }
 
+/*!
+ * \brief Returns a status string for \a dir.
+ * \remarks
+ * This function does not only take the SyncthingDirStatus into account but also other properties of \a dir. This function is therefore
+ * similar to the function `$scope.folderStatus` of Syncthing's official UI (see `gui/default/syncthing/core/syncthingController.js`).
+ */
 QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
 {
     if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
@@ -465,6 +471,16 @@ QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
     case SyncthingDirStatus::Unknown:
         return dir.rawStatus.isEmpty() ? tr("Unknown") : QString(dir.rawStatus);
     case SyncthingDirStatus::Idle:
+        if (dir.receiveOnlyStats.total > 0) {
+            switch (dir.dirType) {
+            case SyncthingDirType::ReceiveOnly:
+                return tr("Local Additions");
+            case SyncthingDirType::ReceiveEncrypted:
+                return tr("Unexpected Items");
+            default:
+                ;
+            }
+        }
         return tr("Up to Date");
     case SyncthingDirStatus::WaitingToScan:
         return tr("Waiting to scan");

@@ -20,7 +20,7 @@ Folders
 
  - test1
    Path                          /tmp/some/path/1/
-   Status                        (idle|scanning)
+   Status                        (up to date|scanning)
       Global                        0 file\(s\), 0 dir\(s\), 0 bytes
       Local                         0 file\(s\), 0 dir\(s\), 0 bytes
    Last scan time                \d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.*

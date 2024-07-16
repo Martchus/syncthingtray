@@ -17,7 +17,7 @@ QString statusString(SyncthingDirStatus status)
     case SyncthingDirStatus::Unknown:
         return QCoreApplication::translate("SyncthingDirStatus", "unknown");
     case SyncthingDirStatus::Idle:
-        return QCoreApplication::translate("SyncthingDirStatus", "idle");
+        return QCoreApplication::translate("SyncthingDirStatus", "up to date");
     case SyncthingDirStatus::Scanning:
         return QCoreApplication::translate("SyncthingDirStatus", "scanning");
     case SyncthingDirStatus::WaitingToScan:
@@ -42,13 +42,15 @@ QString dirTypeString(SyncthingDirType dirType)
 {
     switch (dirType) {
     case SyncthingDirType::Unknown:
-        return QCoreApplication::translate("SyncthingDirType", "unknown");
+        return QCoreApplication::translate("SyncthingDirType", "Unknown");
     case SyncthingDirType::SendReceive:
         return QCoreApplication::translate("SyncthingDirType", "Send & Receive");
     case SyncthingDirType::SendOnly:
-        return QCoreApplication::translate("SyncthingDirType", "Send only");
+        return QCoreApplication::translate("SyncthingDirType", "Send Only");
     case SyncthingDirType::ReceiveOnly:
-        return QCoreApplication::translate("SyncthingDirType", "Receive only");
+        return QCoreApplication::translate("SyncthingDirType", "Receive Only");
+    case SyncthingDirType::ReceiveEncrypted:
+        return QCoreApplication::translate("SyncthingDirType", "Receive Encrypted");
     }
     return QString();
 }
@@ -160,6 +162,7 @@ bool SyncthingDir::assignDirType(const QString &dirTypeStr)
         {QStringLiteral("sendonly"), SyncthingDirType::SendOnly},
         {QStringLiteral("readonly"), SyncthingDirType::SendOnly},
         {QStringLiteral("receiveonly"), SyncthingDirType::ReceiveOnly},
+        {QStringLiteral("receiveencrypted"), SyncthingDirType::ReceiveEncrypted},
     };
     const auto i = typeMapping.find(dirTypeStr);
     dirType = i != typeMapping.cend() ? *i : SyncthingDirType::Unknown;
@@ -234,6 +237,7 @@ SyncthingStatistics &SyncthingStatistics::operator+=(const SyncthingStatistics &
     dirs += other.dirs;
     files += other.files;
     symlinks += other.symlinks;
+    total += other.total;
     return *this;
 }
 
@@ -246,6 +250,7 @@ SyncthingOverallDirStatistics::SyncthingOverallDirStatistics(const std::vector<S
         local += dir.localStats;
         global += dir.globalStats;
         needed += dir.neededStats;
+
     }
 }
 

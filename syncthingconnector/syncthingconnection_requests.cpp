@@ -1864,6 +1864,7 @@ void SyncthingConnection::readPostConfig()
 
 /*!
  * \brief Reads data from requestDirStatus() and FolderSummary-event and stores them to \a dir.
+ * \remarks The fields of the summary are defined in `lib/model/folder_summary.go`.
  */
 void SyncthingConnection::readDirSummary(SyncthingEventId eventId, DateTime eventTime, const QJsonObject &summary, SyncthingDir &dir, int index)
 {
@@ -1872,12 +1873,13 @@ void SyncthingConnection::readDirSummary(SyncthingEventId eventId, DateTime even
     }
 
     // backup previous statistics -> if there's no difference after all, don't emit completed event
-    auto &globalStats(dir.globalStats);
-    auto &localStats(dir.localStats);
-    auto &neededStats(dir.neededStats);
-    const auto previouslyUpdated(!dir.lastStatisticsUpdateTime.isNull());
-    const auto previouslyGlobal(globalStats);
-    const auto previouslyNeeded(neededStats);
+    auto &globalStats = dir.globalStats;
+    auto &localStats = dir.localStats;
+    auto &neededStats = dir.neededStats;
+    auto &receiveOnlyStats = dir.receiveOnlyStats;
+    const auto previouslyUpdated = !dir.lastStatisticsUpdateTime.isNull();
+    const auto previouslyGlobal = globalStats;
+    const auto previouslyNeeded = neededStats;
 
     // update statistics
     globalStats.bytes = jsonValueToInt(summary.value(QLatin1String("globalBytes")));
@@ -1885,16 +1887,25 @@ void SyncthingConnection::readDirSummary(SyncthingEventId eventId, DateTime even
     globalStats.files = jsonValueToInt(summary.value(QLatin1String("globalFiles")));
     globalStats.dirs = jsonValueToInt(summary.value(QLatin1String("globalDirectories")));
     globalStats.symlinks = jsonValueToInt(summary.value(QLatin1String("globalSymlinks")));
+    globalStats.total = jsonValueToInt(summary.value(QLatin1String("globalTotalItems")));
     localStats.bytes = jsonValueToInt(summary.value(QLatin1String("localBytes")));
     localStats.deletes = jsonValueToInt(summary.value(QLatin1String("localDeleted")));
     localStats.files = jsonValueToInt(summary.value(QLatin1String("localFiles")));
     localStats.dirs = jsonValueToInt(summary.value(QLatin1String("localDirectories")));
     localStats.symlinks = jsonValueToInt(summary.value(QLatin1String("localSymlinks")));
+    localStats.total = jsonValueToInt(summary.value(QLatin1String("localTotalItems")));
     neededStats.bytes = jsonValueToInt(summary.value(QLatin1String("needBytes")));
     neededStats.deletes = jsonValueToInt(summary.value(QLatin1String("needDeletes")));
     neededStats.files = jsonValueToInt(summary.value(QLatin1String("needFiles")));
     neededStats.dirs = jsonValueToInt(summary.value(QLatin1String("needDirectories")));
     neededStats.symlinks = jsonValueToInt(summary.value(QLatin1String("needSymlinks")));
+    neededStats.total = jsonValueToInt(summary.value(QLatin1String("needTotalItems")));
+    receiveOnlyStats.bytes = jsonValueToInt(summary.value(QLatin1String("receiveOnlyChangedBytes")));
+    receiveOnlyStats.deletes = jsonValueToInt(summary.value(QLatin1String("receiveOnlyChangedDeletes")));
+    receiveOnlyStats.files = jsonValueToInt(summary.value(QLatin1String("receiveOnlyChangedFiles")));
+    receiveOnlyStats.dirs = jsonValueToInt(summary.value(QLatin1String("receiveOnlyChangedDirectories")));
+    receiveOnlyStats.symlinks = jsonValueToInt(summary.value(QLatin1String("receiveOnlyChangedSymlinks")));
+    receiveOnlyStats.total = jsonValueToInt(summary.value(QLatin1String("receiveOnlyTotalItems")));
     dir.pullErrorCount = jsonValueToInt(summary.value(QLatin1String("pullErrors")));
     m_dirStatsAltered = true;
 

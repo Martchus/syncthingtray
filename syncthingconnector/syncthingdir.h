@@ -40,7 +40,7 @@ enum class SyncthingDirStatus {
 
 LIB_SYNCTHING_CONNECTOR_EXPORT QString statusString(SyncthingDirStatus status);
 
-enum class SyncthingDirType { Unknown, SendReceive, SendOnly, ReceiveOnly };
+enum class SyncthingDirType { Unknown, SendReceive, SendOnly, ReceiveOnly, ReceiveEncrypted };
 
 LIB_SYNCTHING_CONNECTOR_EXPORT QString dirTypeString(SyncthingDirType dirType);
 
@@ -102,6 +102,7 @@ public:
     quint64 dirs = 0;
     quint64 files = 0;
     quint64 symlinks = 0;
+    quint64 total = 0;
 
     constexpr bool isNull() const;
     constexpr bool operator==(const SyncthingStatistics &other) const;
@@ -111,12 +112,12 @@ public:
 
 constexpr bool SyncthingStatistics::isNull() const
 {
-    return bytes == 0 && deletes == 0 && dirs == 0 && files == 0 && symlinks == 0;
+    return bytes == 0 && deletes == 0 && dirs == 0 && files == 0 && symlinks == 0 && total == 0;
 }
 
 constexpr bool SyncthingStatistics::operator==(const SyncthingStatistics &other) const
 {
-    return bytes == other.bytes && deletes == other.deletes && dirs == other.dirs && files == other.files && symlinks == other.symlinks;
+    return bytes == other.bytes && deletes == other.deletes && dirs == other.dirs && files == other.files && symlinks == other.symlinks && total == other.total;
 }
 
 constexpr bool SyncthingStatistics::operator!=(const SyncthingStatistics &other) const
@@ -160,7 +161,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     quint64 pullErrorCount = 0;
     std::vector<SyncthingItemError> itemErrors;
     std::vector<SyncthingFileChange> recentChanges;
-    SyncthingStatistics globalStats, localStats, neededStats;
+    SyncthingStatistics globalStats, localStats, neededStats, receiveOnlyStats;
     SyncthingEventId lastStatisticsUpdateEvent = 0;
     CppUtilities::DateTime lastStatisticsUpdateTime;
     CppUtilities::DateTime lastScanTime;

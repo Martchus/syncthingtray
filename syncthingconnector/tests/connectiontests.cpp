@@ -481,7 +481,7 @@ void ConnectionTests::checkDirectories() const
     CPPUNIT_ASSERT_EQUAL(QStringLiteral(""), dir1.label);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("test1"), dir1.displayName());
     CPPUNIT_ASSERT_EQUAL(tempDir + QStringLiteral("some/path/1/"), dir1.path);
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("idle"), dir1.statusString());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("up to date"), dir1.statusString());
     CPPUNIT_ASSERT_EQUAL(SyncthingDirType::SendReceive, dir1.dirType);
     CPPUNIT_ASSERT(!dir1.paused);
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
