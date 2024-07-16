@@ -24,7 +24,7 @@ namespace Data {
 ///   SyncthingDirStatus::Unknown will be used.
 /// - There's no real documentation here because these enum items really correspond to the folder state as provided by Syncthing.
 /// - When changing this enum, also change SyncthingDir::assignStatus(), SyncthingConnection::setStatus(), SyncthingDirActions::updateStatus()
-///   and SyncthingDirectoryModel::data(), SyncthingDirectoryModel::dirStatusString() and SyncthingDirectoryModel::dirStatusColor().
+///   and SyncthingDirectoryModel::data(), SyncthingDir::statusString() and SyncthingDirectoryModel::dirStatusColor().
 enum class SyncthingDirStatus {
     Unknown, /**< directory status is unknown */
     Idle, /**< directory is up-to-date ("idle") */

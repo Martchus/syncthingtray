@@ -46,7 +46,6 @@ private Q_SLOTS:
     void handleForkAwesomeIconsChanged() override;
 
 private:
-    static QString devStatusString(const SyncthingDev &dev);
     QVariant devStatusColor(const SyncthingDev &dev) const;
 
     const std::vector<SyncthingDev> &m_devs;

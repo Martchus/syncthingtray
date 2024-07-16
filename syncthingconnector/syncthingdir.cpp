@@ -169,17 +169,59 @@ bool SyncthingDir::assignDirType(const QString &dirTypeStr)
     return dirType != SyncthingDirType::Unknown;
 }
 
+/*!
+ * \brief Returns a status string for the directory.
+ * \remarks
+ * This function does not only take the SyncthingDirStatus into account but also other properties of \a dir. This function is therefore
+ * similar to the function `$scope.folderStatus` of Syncthing's official UI (see `gui/default/syncthing/core/syncthingController.js`).
+ */
 QString SyncthingDir::statusString() const
 {
-    if (paused) {
-        return QCoreApplication::translate("SyncthingDir", "paused");
-    } else if (isUnshared()) {
-        return QCoreApplication::translate("SyncthingDir", "unshared");
-    } else if (status == SyncthingDirStatus::Unknown && !rawStatus.isEmpty()) {
-        return QString(rawStatus);
-    } else {
-        return ::Data::statusString(status);
+    if (paused && status != SyncthingDirStatus::OutOfSync) {
+        return QCoreApplication::translate("SyncthingDir", "Paused");
     }
+    if (isUnshared()) {
+        return QCoreApplication::translate("SyncthingDir", "Unshared");
+    }
+    switch (status) {
+    case SyncthingDirStatus::Unknown:
+        return rawStatus.isEmpty() ? QCoreApplication::translate("SyncthingDir", "Unknown") : rawStatus;
+    case SyncthingDirStatus::Idle:
+        if (receiveOnlyStats.total > 0) {
+            switch (dirType) {
+            case SyncthingDirType::ReceiveOnly:
+                return QCoreApplication::translate("SyncthingDir", "Local Additions");
+            case SyncthingDirType::ReceiveEncrypted:
+                return QCoreApplication::translate("SyncthingDir", "Unexpected Items");
+            default:
+                ;
+            }
+        }
+        return QCoreApplication::translate("SyncthingDir", "Up to Date");
+    case SyncthingDirStatus::WaitingToScan:
+        return QCoreApplication::translate("SyncthingDir", "Waiting to Scan");
+    case SyncthingDirStatus::Scanning:
+        if (scanningPercentage > 0) {
+            if (scanningRate != 0.0) {
+                return QCoreApplication::translate("SyncthingDir", "Scanning (%1 %, %2)").arg(scanningPercentage).arg(bitrateToString(scanningRate * 0.008, true).data());
+            }
+            return QCoreApplication::translate("SyncthingDir", "Scanning (%1 %)").arg(scanningPercentage);
+        }
+        return QCoreApplication::translate("SyncthingDir", "Scanning");
+    case SyncthingDirStatus::WaitingToSync:
+        return QCoreApplication::translate("SyncthingDir", "Waiting to Sync");
+    case SyncthingDirStatus::PreparingToSync:
+        return QCoreApplication::translate("SyncthingDir", "Preparing to Sync");
+    case SyncthingDirStatus::Synchronizing:
+        return completionPercentage > 0 ? QCoreApplication::translate("SyncthingDir", "Syncing (%1 %)").arg(completionPercentage) : QCoreApplication::translate("SyncthingDir", "Syncing");
+    case SyncthingDirStatus::Cleaning:
+        return QCoreApplication::translate("SyncthingDir", "Cleaning Versions");
+    case SyncthingDirStatus::WaitingToClean:
+        return QCoreApplication::translate("SyncthingDir", "Waiting to Clean");
+    case SyncthingDirStatus::OutOfSync:
+        return QCoreApplication::translate("SyncthingDir", "Out of Sync");
+    }
+    return QString();
 }
 
 QtUtilities::StringView SyncthingDir::pathWithoutTrailingSlash() const

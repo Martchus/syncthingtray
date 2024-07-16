@@ -532,7 +532,7 @@ void Application::printDir(const RelevantDir &relevantDir) const
     printProperty("Shared with", dir->deviceNames.isEmpty() ? dir->deviceIds : dir->deviceNames);
     printProperty("Download progress", dir->downloadLabel);
     if (!dir->completionByDevice.empty()) {
-        printProperty("Remote progress", dir->areRemotesUpToDate() ? "all up-to-date" : "some need bytes");
+        printProperty("Remote progress", dir->areRemotesUpToDate() ? "all up to date" : "some need bytes");
         for (const auto &completionForDev : dir->completionByDevice) {
             printProperty(m_connection.deviceNameOrId(completionForDev.first).toLocal8Bit().data(),
                 argsToString(dataSizeToString(completionForDev.second.globalBytes - completionForDev.second.needed.bytes), ' ', '/', ' ',
@@ -590,23 +590,23 @@ void Application::printStatus(const ArgumentOccurrence &)
     if (m_args.stats.isPresent() || (!m_args.dir.isPresent() && !m_args.dev.isPresent())) {
         cout << TextAttribute::Bold << "Overall statistics\n" << TextAttribute::Reset;
         const auto &overallStats(m_connection.computeOverallDirStatistics());
-        const auto *statusString = "idle";
+        const auto *statusString = "Up to Date";
         const auto *statusColor = "32";
         if (m_connection.hasOutOfSyncDirs()) {
-            statusString = "out-of-sync";
+            statusString = "Out of Sync";
             statusColor = "31";
         } else {
             switch (m_connection.status()) {
             case SyncthingStatus::Synchronizing:
-                statusString = "synchronizing";
+                statusString = "Syncing";
                 statusColor = "34";
                 break;
             case SyncthingStatus::RemoteNotInSync:
-                statusString = "remote synchronizing";
+                statusString = "Remote Syncing";
                 statusColor = "34";
                 break;
             case SyncthingStatus::Scanning:
-                statusString = "scanning";
+                statusString = "Scanning";
                 statusColor = "34";
                 break;
             default:;

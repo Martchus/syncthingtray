@@ -112,7 +112,7 @@ void ApplicationTests::test()
         auto regex = std::vector<std::regex>();
         regex.reserve(expectedStatusLines.size());
         for (const auto &line : expectedStatusLines) {
-            regex.emplace_back(line);
+            regex.emplace_back(line, std::regex_constants::icase);
         }
         CPPUNIT_ASSERT(!regex.empty());
         return regex;
@@ -200,7 +200,7 @@ void ApplicationTests::test()
     cout << stdout;
     CPPUNIT_ASSERT(stdout.find(" - test1") == string::npos);
     CPPUNIT_ASSERT(stdout.find(" - Test dir 2") != string::npos);
-    CPPUNIT_ASSERT(stdout.find("paused") != string::npos);
+    CPPUNIT_ASSERT(stdout.find("Paused") != string::npos);
 
     // test cat
     const char *const catArgs[] = { "syncthingctl", "cat", nullptr };

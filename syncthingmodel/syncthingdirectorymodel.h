@@ -49,7 +49,6 @@ private Q_SLOTS:
     void handleForkAwesomeIconsChanged() override;
 
 private:
-    static QString dirStatusString(const SyncthingDir &dir);
     QVariant dirStatusColor(const SyncthingDir &dir) const;
     void updateRowCount();
 

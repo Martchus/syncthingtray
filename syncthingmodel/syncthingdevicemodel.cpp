@@ -257,7 +257,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
         case 0:
             return dev.name.isEmpty() ? dev.id : dev.name;
         case 1:
-            return devStatusString(dev);
+            return dev.statusString();
         }
         break;
     case Qt::DecorationRole:
@@ -307,7 +307,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
     case DevicePaused:
         return dev.paused;
     case DeviceStatusString:
-        return devStatusString(dev);
+        return dev.statusString();
     case DeviceStatusColor:
         return devStatusColor(dev);
     case DeviceId:
@@ -372,33 +372,6 @@ void SyncthingDeviceModel::handleStatusIconsChanged()
 void SyncthingDeviceModel::handleForkAwesomeIconsChanged()
 {
     invalidateNestedIndicies(QVector<int>({ Qt::DecorationRole, DeviceDetailIcon }));
-}
-
-QString SyncthingDeviceModel::devStatusString(const SyncthingDev &dev)
-{
-    if (dev.paused) {
-        return tr("Paused");
-    }
-    switch (dev.status) {
-    case SyncthingDevStatus::Unknown:
-        return tr("Unknown");
-    case SyncthingDevStatus::ThisDevice:
-        return tr("This Device");
-    case SyncthingDevStatus::Idle:
-        return tr("Up to Date");
-    case SyncthingDevStatus::Disconnected:
-        return tr("Disconnected");
-    case SyncthingDevStatus::Synchronizing:
-        return dev.overallCompletion.needed.bytes > 0 ? tr("Syncing (%1 %, %2)")
-                                                            .arg(static_cast<int>(dev.overallCompletion.percentage))
-                                                            .arg(QString::fromStdString(dataSizeToString(dev.overallCompletion.needed.bytes)))
-                                                      : tr("Syncing");
-    case SyncthingDevStatus::OutOfSync:
-        return tr("Out of Sync");
-    case SyncthingDevStatus::Rejected:
-        return tr("Rejected");
-    }
-    return QString();
 }
 
 QVariant SyncthingDeviceModel::devStatusColor(const SyncthingDev &dev) const

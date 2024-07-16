@@ -434,7 +434,7 @@ void ConnectionTests::checkDevices()
     for (const SyncthingDev &dev : devInfo) {
         if (dev.id != QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7")
             && dev.id != QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4")) {
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("this device", QStringLiteral("this device"), dev.statusString());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("this device", QStringLiteral("This Device"), dev.statusString());
             m_ownDevId = dev.id;
             m_ownDevName = dev.name;
         }
@@ -444,7 +444,7 @@ void ConnectionTests::checkDevices()
     for (const SyncthingDev &dev : devInfo) {
         CPPUNIT_ASSERT(!dev.isConnected());
         if (dev.id == QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7")) {
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("paused device", QStringLiteral("paused"), dev.statusString());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("paused device", QStringLiteral("Paused"), dev.statusString());
             CPPUNIT_ASSERT_EQUAL_MESSAGE("name", QStringLiteral("Test dev 2"), dev.name);
             CPPUNIT_ASSERT_MESSAGE("no introducer", !dev.introducer);
             CPPUNIT_ASSERT_EQUAL(static_cast<decltype(dev.addresses.size())>(1), dev.addresses.size());
@@ -452,7 +452,7 @@ void ConnectionTests::checkDevices()
             dev2 = &dev;
             dev2Index = index;
         } else if (dev.id == QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4")) {
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("disconnected device", QStringLiteral("disconnected"), dev.statusString());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("disconnected device", QStringLiteral("Disconnected"), dev.statusString());
             CPPUNIT_ASSERT_EQUAL_MESSAGE("name", QStringLiteral("Test dev 1"), dev.name);
             CPPUNIT_ASSERT_MESSAGE("introducer", dev.introducer);
             CPPUNIT_ASSERT_EQUAL(static_cast<decltype(dev.addresses.size())>(1), dev.addresses.size());
@@ -478,10 +478,10 @@ void ConnectionTests::checkDirectories() const
     const SyncthingDir &dir1 = dirInfo.front();
     const auto tempDir = QtUtilities::fromNativeFileName(tempDirectory());
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("test1"), dir1.id);
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral(""), dir1.label);
+    CPPUNIT_ASSERT_EQUAL(QString(), dir1.label);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("test1"), dir1.displayName());
     CPPUNIT_ASSERT_EQUAL(tempDir + QStringLiteral("some/path/1/"), dir1.path);
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("up to date"), dir1.statusString());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Up to Date"), dir1.statusString());
     CPPUNIT_ASSERT_EQUAL(SyncthingDirType::SendReceive, dir1.dirType);
     CPPUNIT_ASSERT(!dir1.paused);
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
@@ -501,7 +501,7 @@ void ConnectionTests::checkDirectories() const
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("Test dir 2"), dir2.displayName());
     CPPUNIT_ASSERT_EQUAL(tempDir + QStringLiteral("some/path/2/"), dir2.path);
     CPPUNIT_ASSERT_EQUAL(tempDir + QStringLiteral("some/path/2"), dir2.pathWithoutTrailingSlash().toString());
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("paused"), dir2.statusString());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Paused"), dir2.statusString());
     CPPUNIT_ASSERT_EQUAL(SyncthingDirType::SendReceive, dir2.dirType);
     CPPUNIT_ASSERT(dir2.paused);
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)

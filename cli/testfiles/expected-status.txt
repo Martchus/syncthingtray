@@ -1,5 +1,5 @@
 Overall statistics
-   Status                        idle
+   Status                        Up to Date
       Global                        0 file\(s\), 0 dir\(s\), 0 bytes
       Local                         0 file\(s\), 0 dir\(s\), 0 bytes
    Incoming traffic              0 bytes
@@ -11,7 +11,7 @@ Folders
  - Test dir 2
    ID                            test2
    Path                          /tmp/some/path/2/
-   Status                        paused
+   Status                        Paused
    Shared with                   Test dev 2
    Type                          Send & Receive
    Ignore permissions            no
@@ -20,7 +20,7 @@ Folders
 
  - test1
    Path                          /tmp/some/path/1/
-   Status                        (up to date|scanning)
+   Status                        (Up to Date|Scanning)
       Global                        0 file\(s\), 0 dir\(s\), 0 bytes
       Local                         0 file\(s\), 0 dir\(s\), 0 bytes
    Last scan time                \d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.*
@@ -34,18 +34,18 @@ Folders
 Devices
  - .*
    ID                            \w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w-\w\w\w\w\w\w\w
-   Status                        this device
+   Status                        This Device
    Addresses                     dynamic
    Compression                   metadata
 
  - Test dev 1
    ID                            6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4
-   Status                        disconnected
+   Status                        Disconnected
    Addresses                     dynamic
    Compression                   metadata
 
  - Test dev 2
    ID                            MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7
-   Status                        paused
+   Status                        Paused
    Addresses                     tcp://.*22001
    Compression                   metadata

@@ -296,7 +296,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
         case 0:
             return dir.label.isEmpty() ? dir.id : dir.label;
         case 1:
-            return dirStatusString(dir);
+            return dir.statusString();
         }
         break;
     case Qt::DecorationRole:
@@ -349,7 +349,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
     case DirectoryPaused:
         return dir.paused;
     case DirectoryStatusString:
-        return dirStatusString(dir);
+        return dir.statusString();
     case DirectoryStatusColor:
         return dirStatusColor(dir);
     case DirectoryId:
@@ -451,61 +451,6 @@ void SyncthingDirectoryModel::handleStatusIconsChanged()
 void SyncthingDirectoryModel::handleForkAwesomeIconsChanged()
 {
     invalidateNestedIndicies(QVector<int>({ Qt::DecorationRole, DirectoryDetailIcon }));
-}
-
-/*!
- * \brief Returns a status string for \a dir.
- * \remarks
- * This function does not only take the SyncthingDirStatus into account but also other properties of \a dir. This function is therefore
- * similar to the function `$scope.folderStatus` of Syncthing's official UI (see `gui/default/syncthing/core/syncthingController.js`).
- */
-QString SyncthingDirectoryModel::dirStatusString(const SyncthingDir &dir)
-{
-    if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
-        return tr("Paused");
-    }
-    if (dir.isUnshared()) {
-        return tr("Unshared");
-    }
-    switch (dir.status) {
-    case SyncthingDirStatus::Unknown:
-        return dir.rawStatus.isEmpty() ? tr("Unknown") : QString(dir.rawStatus);
-    case SyncthingDirStatus::Idle:
-        if (dir.receiveOnlyStats.total > 0) {
-            switch (dir.dirType) {
-            case SyncthingDirType::ReceiveOnly:
-                return tr("Local Additions");
-            case SyncthingDirType::ReceiveEncrypted:
-                return tr("Unexpected Items");
-            default:
-                ;
-            }
-        }
-        return tr("Up to Date");
-    case SyncthingDirStatus::WaitingToScan:
-        return tr("Waiting to scan");
-    case SyncthingDirStatus::Scanning:
-        if (dir.scanningPercentage > 0) {
-            if (dir.scanningRate != 0.0) {
-                return tr("Scanning (%1 %, %2)").arg(dir.scanningPercentage).arg(bitrateToString(dir.scanningRate * 0.008, true).data());
-            }
-            return tr("Scanning (%1 %)").arg(dir.scanningPercentage);
-        }
-        return tr("Scanning");
-    case SyncthingDirStatus::WaitingToSync:
-        return tr("Waiting to Sync");
-    case SyncthingDirStatus::PreparingToSync:
-        return tr("Preparing to Sync");
-    case SyncthingDirStatus::Synchronizing:
-        return dir.completionPercentage > 0 ? tr("Syncing (%1 %)").arg(dir.completionPercentage) : tr("Syncing");
-    case SyncthingDirStatus::Cleaning:
-        return tr("Cleaning Versions");
-    case SyncthingDirStatus::WaitingToClean:
-        return tr("Waiting to Clean");
-    case SyncthingDirStatus::OutOfSync:
-        return tr("Out of Sync");
-    }
-    return QString();
 }
 
 QVariant SyncthingDirectoryModel::dirStatusColor(const SyncthingDir &dir) const
