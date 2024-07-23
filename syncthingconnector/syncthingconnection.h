@@ -370,6 +370,7 @@ private Q_SLOTS:
     void readStatus();
     void concludeReadingConfigAndStatus();
     void concludeConnection(bool careAboutOutOfSyncDirs = false);
+    void concludeConnectionWithoutRecomputingStatus();
     void readConnections();
     void readDirStatistics();
     void readDeviceStatistics();
@@ -481,6 +482,7 @@ private:
     SyncthingConnectionLoggingFlags m_loggingFlagsHandler;
 
     bool m_keepPolling;
+    bool m_recomputeStatusLater;
     bool m_abortingAllRequests;
     bool m_connectionAborted;
     bool m_abortingToConnect;

@@ -937,6 +937,7 @@ void SyncthingConnection::readConnections()
         // read connection status
         const QJsonObject connectionsObj(replyObj.value(QLatin1String("connections")).toObject());
         int index = 0;
+        auto statusChanged = false;
         for (SyncthingDev &dev : m_devs) {
             const QJsonObject connectionObj(connectionsObj.value(dev.id).toObject());
             if (connectionObj.isEmpty()) {
@@ -944,6 +945,8 @@ void SyncthingConnection::readConnections()
                 continue;
             }
 
+            const auto previousStatus = dev.status;
+            const auto previouslyPaused = dev.paused;
             switch (dev.status) {
             case SyncthingDevStatus::ThisDevice:
                 break;
@@ -968,6 +971,9 @@ void SyncthingConnection::readConnections()
             dev.connectionLocal = connectionObj.value(QLatin1String("isLocal")).toBool();
             dev.clientVersion = connectionObj.value(QLatin1String("clientVersion")).toString();
             emit devStatusChanged(dev, index);
+            if (previousStatus != dev.status || previouslyPaused != dev.paused) {
+                statusChanged = true;
+            }
             ++index;
         }
 
@@ -976,7 +982,7 @@ void SyncthingConnection::readConnections()
 
         // since there seems no event for this data, keep polling
         if (m_keepPolling) {
-            concludeConnection();
+            statusChanged ? concludeConnection() : concludeConnectionWithoutRecomputingStatus();
             if (m_trafficPollTimer.interval()) {
                 m_trafficPollTimer.start();
             }
@@ -1042,8 +1048,10 @@ void SyncthingConnection::readErrors()
         }
 
         // since there seems no event for this data, keep polling
+        // note: The return value of hasUnreadNotifications() might have changed. This is however not (yet) used to compute the overall status so
+        //       we can always just call concludeConnectionWithoutRecomputingStatus() here.
         if (m_keepPolling) {
-            concludeConnection();
+            concludeConnectionWithoutRecomputingStatus();
             if (m_errorsPollTimer.interval()) {
                 m_errorsPollTimer.start();
             }
@@ -1390,7 +1398,7 @@ void SyncthingConnection::readDeviceStatistics()
         }
         // since there seems no event for this data, keep polling
         if (m_keepPolling) {
-            concludeConnection();
+            concludeConnectionWithoutRecomputingStatus();
             if (m_devStatsPollTimer.interval()) {
                 m_devStatsPollTimer.start();
             }
@@ -1435,7 +1443,7 @@ void SyncthingConnection::readVersion()
         const auto replyObj = replyDoc.object();
         m_syncthingVersion = replyObj.value(QLatin1String("longVersion")).toString();
         if (m_keepPolling) {
-            concludeConnection();
+            concludeConnectionWithoutRecomputingStatus();
         }
         break;
     }

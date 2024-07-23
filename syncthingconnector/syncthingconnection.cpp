@@ -83,6 +83,7 @@ SyncthingConnection::SyncthingConnection(
     , m_loggingFlags(SyncthingConnectionLoggingFlags::None)
     , m_loggingFlagsHandler(SyncthingConnectionLoggingFlags::None)
     , m_keepPolling(false)
+    , m_recomputeStatusLater(false)
     , m_abortingAllRequests(false)
     , m_connectionAborted(false)
     , m_abortingToConnect(false)
@@ -399,7 +400,7 @@ void SyncthingConnection::connectLater(int milliSeconds)
  */
 void SyncthingConnection::disconnect()
 {
-    m_abortingToConnect = m_abortingToReconnect = m_keepPolling = false;
+    m_abortingToConnect = m_abortingToReconnect = m_keepPolling = m_recomputeStatusLater = false;
     m_trafficPollTimer.stop();
     m_devStatsPollTimer.stop();
     m_errorsPollTimer.stop();
@@ -509,6 +510,7 @@ void SyncthingConnection::continueReconnecting()
 
     // cleanup information from previous connection
     m_keepPolling = true;
+    m_recomputeStatusLater = false;
     m_connectionAborted = false;
     m_abortingToConnect = m_abortingToReconnect = false;
     m_lastEventId = 0;
@@ -582,19 +584,39 @@ void SyncthingConnection::concludeReadingConfigAndStatus()
 }
 
 /*!
- * \brief Sets the state from (re)connecting to Syncthing's actual state if polling but there are no more pending requests.
+ * \brief Sets the status from (re)connecting to Syncthing's actual state if polling but there are no more pending requests.
  * \remarks Called by read...() handlers for requests started in continueConnecting().
  * \sa hasPendingRequests()
  */
 void SyncthingConnection::concludeConnection(bool careAboutOutOfSyncDirs)
 {
-    if (!m_keepPolling || hasPendingRequests()) {
+    if (!m_keepPolling) {
         return;
     }
+    if (hasPendingRequests()) {
+        m_recomputeStatusLater = true;
+        return;
+    }
+    m_recomputeStatusLater = false;
     if (!setStatus(SyncthingStatus::Idle) && careAboutOutOfSyncDirs && !m_hasOutOfSyncDirs.has_value()) {
         emit hasOutOfSyncDirsChanged();
     }
     emitDirStatisticsChanged();
+}
+
+/*!
+ * \brief Sets the status from (re)connecting to Syncthing's actual state if polling but there are no more pending requests.
+ * \remarks
+ * - Recomputes the status only if not connected yet or if it is supposed to be recomputed later (in contrast to concludeConnection()).
+ * - Called by read...() handlers for requests started in continueConnecting() if no data was read that influenced the overall status.
+ * \sa hasPendingRequests()
+ */
+void SyncthingConnection::concludeConnectionWithoutRecomputingStatus()
+{
+    if (m_keepPolling && (m_recomputeStatusLater || !isConnected()) && !hasPendingRequests()) {
+        m_recomputeStatusLater = false;
+        setStatus(SyncthingStatus::Idle);
+    }
 }
 
 /*!
