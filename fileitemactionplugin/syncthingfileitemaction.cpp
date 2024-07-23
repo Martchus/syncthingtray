@@ -123,7 +123,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     QList<SyncthingItem> detectedItems;
     const Data::SyncthingDir *lastDir = nullptr;
     for (const Data::SyncthingDir &dir : dirs) {
-        auto dirPath = Data::substituteTilde(QDir::cleanPath(dir.path), connection.tilde(), connection.pathSeparator());
+        auto dirPath = QDir::cleanPath(Data::substituteTilde(dir.path, connection.tilde(), connection.pathSeparator()));
         auto dirPathWithSlash = dirPath + QChar('/');
         for (const QString &path : std::as_const(paths)) {
             if (path == dirPath) {
