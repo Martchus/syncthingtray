@@ -56,15 +56,11 @@ SyncthingFileItemAction::SyncthingFileItemAction(QObject *parent, const QVariant
 
 QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties &fileItemInfo, QWidget *parentWidget)
 {
-    Q_UNUSED(parentWidget)
-
-    // create actions
-    const QList<QAction *> subActions = createActions(fileItemInfo, this);
-    QList<QAction *> topLevelActions;
+    const auto subActions = createActions(fileItemInfo, this);
 
     // don't show anything if no relevant actions could be determined but successfully connected
     if (s_data.connection().isConnected() && !s_data.hasError() && subActions.isEmpty()) {
-        return topLevelActions;
+        return QList<QAction *>();
     }
 
     if ((m_parentWidget = parentWidget)) {
@@ -72,8 +68,7 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
         parentWidget->installEventFilter(this);
     }
 
-    topLevelActions << new SyncthingMenuAction(fileItemInfo, subActions, parentWidget);
-    return topLevelActions;
+    return QList<QAction *>{new SyncthingMenuAction(fileItemInfo, subActions, parentWidget)};
 }
 
 struct DirStats {
