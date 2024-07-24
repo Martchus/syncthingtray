@@ -7,6 +7,7 @@
 #include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #include <syncthingwidgets/misc/textviewdialog.h>
+#include <syncthingwidgets/misc/utils.h>
 #include <syncthingwidgets/settings/settingsdialog.h>
 #include <syncthingwidgets/settings/wizard.h>
 #include <syncthingwidgets/webview/webviewdialog.h>
@@ -108,6 +109,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     }
 
     // configure connection
+    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::Events);
     m_connection.setInsecure(Settings::values().connection.insecure);
 
     // setup models and views
@@ -211,6 +213,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     connect(m_ui->downloadsTreeView, &DownloadView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->downloadsTreeView, &DownloadView::openItemDir, this, &TrayWidget::openItemDir);
     connect(m_ui->recentChangesTreeView, &QTreeView::customContextMenuRequested, this, &TrayWidget::showRecentChangesContextMenu);
+    connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &TrayWidget::handleCurrentTabChanged);
     connect(scanAllButton, &QPushButton::clicked, &m_connection, &SyncthingConnection::rescanAllDirs);
     connect(viewIdButton, &QPushButton::clicked, this, &TrayWidget::showOwnDeviceId);
     connect(showLogButton, &QPushButton::clicked, this, &TrayWidget::showLog);
@@ -752,6 +755,11 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
                 tr("Copy folder ID")),
         &QAction::triggered, this, copyRole(SyncthingRecentChangesModel::DirectoryId));
     showViewMenu(position, *m_ui->recentChangesTreeView, menu);
+}
+
+void TrayWidget::handleCurrentTabChanged(int index)
+{
+    QtGui::handleCurrentTabChanged(index, m_connection);
 }
 
 void TrayWidget::changeStatus()

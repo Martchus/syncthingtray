@@ -2019,7 +2019,7 @@ void SyncthingConnection::readChangeEvent(DateTime eventTime, const QString &eve
  */
 void SyncthingConnection::requestEvents()
 {
-    if (m_eventsReply) {
+    if (m_eventsReply || !(m_pollingFlags & PollingFlags::Events)) {
         return;
     }
     auto query = QUrlQuery();
@@ -2643,7 +2643,7 @@ void SyncthingConnection::readRemoteIndexUpdated(SyncthingEventId eventId, const
  */
 void SyncthingConnection::requestDiskEvents(int limit)
 {
-    if (m_diskEventsReply) {
+    if (m_diskEventsReply || !(m_pollingFlags & PollingFlags::DiskEvents)) {
         return;
     }
     auto query = QUrlQuery();

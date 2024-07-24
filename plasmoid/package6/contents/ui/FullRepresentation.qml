@@ -30,6 +30,7 @@ PlasmaExtras.Representation {
             position: PlasmaComponents3.TabBar.Footer
             Layout.fillWidth: true
             Layout.fillHeight: true
+            onCurrentIndexChanged: plasmoid.handleCurrentTabChanged(tabBar.currentIndex)
             TabButton {
                 id: dirsTabButton
                 text: qsTr("Folders")

@@ -152,6 +152,9 @@ public Q_SLOTS:
     void showIgnorePatterns(const QString &dirId);
     void copyToClipboard(const QString &text);
     void updateStatusIconAndTooltip();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    void handleCurrentTabChanged(int index);
+#endif
     void saveSettings();
 
 Q_SIGNALS:

@@ -23,7 +23,8 @@ set(WIDGETS_HEADER_FILES
     misc/internalerror.h
     misc/otherdialogs.h
     misc/syncthinglauncher.h
-    misc/syncthingkiller.h)
+    misc/syncthingkiller.h
+    misc/utils.h)
 set(WIDGETS_SRC_FILES
     settings/settings.cpp
     settings/settingsdialog.cpp
@@ -42,7 +43,8 @@ set(WIDGETS_SRC_FILES
     misc/internalerror.cpp
     misc/otherdialogs.cpp
     misc/syncthinglauncher.cpp
-    misc/syncthingkiller.cpp)
+    misc/syncthingkiller.cpp
+    misc/utils.cpp)
 set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 set(WIDGETS_UI_FILES
     settings/connectionoptionpage.ui

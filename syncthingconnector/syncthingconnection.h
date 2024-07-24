@@ -175,7 +175,9 @@ public:
         QMetaObject::Connection connection;
     };
 
-    // getter/setter for
+    enum class PollingFlags { None, Events = (1 << 0), DiskEvents = (1 << 1), All = Events | DiskEvents };
+
+    // getter/setter for various properties
     const QString &syncthingUrl() const;
     void setSyncthingUrl(const QString &url);
     bool isLocal() const;
@@ -186,6 +188,8 @@ public:
     void setCredentials(const QString &user, const QString &password);
     bool isUsingDeprecatedRoutes() const;
     void setUseDeprecatedRoutes(bool useLegacyRoutes);
+    PollingFlags pollingFlags() const;
+    void setPollingFlags(PollingFlags flags);
 
     // getter for the status of the connection to Syncthing and of Syncthing itself
     SyncthingStatus status() const;
@@ -492,6 +496,7 @@ private:
     bool m_abortingToConnect;
     bool m_abortingToReconnect;
     bool m_requestCompletion;
+    PollingFlags m_pollingFlags;
     StatusRecomputation m_statusRecomputationFlags;
     SyncthingEventId m_lastEventId;
     SyncthingEventId m_lastDiskEventId;
@@ -632,6 +637,14 @@ inline bool SyncthingConnection::isUsingDeprecatedRoutes() const
 inline void SyncthingConnection::setUseDeprecatedRoutes(bool useDeprecatedRoutes)
 {
     m_useDeprecatedRoutes = useDeprecatedRoutes;
+}
+
+/*!
+ * \brief Returns what kind of events are polled for.
+ */
+inline SyncthingConnection::PollingFlags SyncthingConnection::pollingFlags() const
+{
+    return m_pollingFlags;
 }
 
 /*!
@@ -1125,5 +1138,6 @@ inline const SyncthingDev *SyncthingConnection::findDevInfo(const QString &devId
 Q_DECLARE_METATYPE(Data::SyncthingLogEntry)
 
 CPP_UTILITIES_MARK_FLAG_ENUM_CLASS(Data, Data::SyncthingConnection::StatusRecomputation)
+CPP_UTILITIES_MARK_FLAG_ENUM_CLASS(Data, Data::SyncthingConnection::PollingFlags)
 
 #endif // SYNCTHINGCONNECTION_H

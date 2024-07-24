@@ -88,6 +88,7 @@ SyncthingConnection::SyncthingConnection(
     , m_abortingToConnect(false)
     , m_abortingToReconnect(false)
     , m_requestCompletion(true)
+    , m_pollingFlags(PollingFlags::All)
     , m_statusRecomputationFlags(StatusRecomputation::None)
     , m_lastEventId(0)
     , m_lastDiskEventId(0)
@@ -234,6 +235,22 @@ void SyncthingConnection::setLoggingFlags(SyncthingConnectionLoggingFlags flags)
             }
         });
         m_loggingFlagsHandler |= SyncthingConnectionLoggingFlags::DirsOrDevsResetted;
+    }
+}
+
+/*!
+ * \brief Sets what kind of events are polled for.
+ * \remarks Does not abort any pending requests but ensures new requests are enqueued as necessary.
+ */
+void SyncthingConnection::setPollingFlags(PollingFlags flags)
+{
+    if (flags == m_pollingFlags) {
+        return;
+    }
+    m_pollingFlags = flags;
+    if (m_keepPolling) {
+        requestEvents();
+        requestDiskEvents();
     }
 }
 

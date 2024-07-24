@@ -10,6 +10,7 @@
 #include <syncthingwidgets/misc/internalerrorsdialog.h>
 #include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/misc/textviewdialog.h>
+#include <syncthingwidgets/misc/utils.h>
 #include <syncthingwidgets/settings/settings.h>
 #include <syncthingwidgets/settings/settingsdialog.h>
 #include <syncthingwidgets/settings/wizard.h>
@@ -96,9 +97,16 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_showTabTexts(false)
     , m_applyingSettingsForWizard(false)
 {
+    // configure connection
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::Events);
+#endif
+    m_connection.setInsecure(Settings::values().connection.insecure);
+
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     m_notifier.setService(&m_service);
 #endif
+
     m_sortFilterDirModel.sort(0, Qt::AscendingOrder);
     m_sortFilterDevModel.sort(0, Qt::AscendingOrder);
     qmlRegisterUncreatableMetaObject(Data::staticMetaObject, "martchus.syncthingplasmoid", 0, 6, "Data", QStringLiteral("only enums"));
@@ -339,6 +347,13 @@ void SyncthingApplet::updateStatusIconAndTooltip()
     m_statusInfo.updateConnectedDevices(m_connection);
     emit connectionStatusChanged();
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void SyncthingApplet::handleCurrentTabChanged(int index)
+{
+    QtGui::handleCurrentTabChanged(index, m_connection);
+}
+#endif
 
 void SyncthingApplet::saveSettings()
 {
