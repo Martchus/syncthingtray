@@ -2025,9 +2025,12 @@ void SyncthingConnection::requestEvents()
         return;
     }
     if (m_eventMask.isEmpty()) {
-        m_eventMask = QStringLiteral("Starting,StateChanged,DownloadProgress,FolderCompletion,FolderRejected,FolderErrors,FolderSummary,"
+        m_eventMask = QStringLiteral("Starting,StateChanged,FolderCompletion,FolderRejected,FolderErrors,FolderSummary,"
                                      "FolderCompletion,FolderScanProgress,FolderPaused,FolderResumed,DeviceRejected,DeviceConnected,"
                                      "DeviceDisconnected,DevicePaused,DeviceResumed,ItemFinished,RemoteIndexUpdated,ConfigSaved");
+        if (m_pollingFlags & PollingFlags::DownloadProgress) {
+            m_eventMask += QStringLiteral(",DownloadProgress");
+        }
     }
     auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("events"), m_eventMask);
@@ -2051,6 +2054,7 @@ void SyncthingConnection::requestEvents()
  */
 void SyncthingConnection::readEvents()
 {
+    auto const expectedReply = m_eventsReply;
     auto const [reply, response] = prepareReply(m_eventsReply);
     if (!reply) {
         return;
@@ -2088,7 +2092,9 @@ void SyncthingConnection::readEvents()
         // no new events available, keep polling
         break;
     case QNetworkReply::OperationCanceledError:
-        handleAdditionalRequestCanceled();
+        if (reply == expectedReply) {
+            handleAdditionalRequestCanceled();
+        }
         return;
     default:
         emitError(tr("Unable to request Syncthing events: "), SyncthingErrorCategory::OverallConnection, reply);
@@ -2664,6 +2670,7 @@ void SyncthingConnection::requestDiskEvents(int limit)
  */
 void SyncthingConnection::readDiskEvents()
 {
+    auto const expectedReply = m_diskEventsReply;
     auto const [reply, response] = prepareReply(m_diskEventsReply);
     if (!reply) {
         return;
@@ -2694,7 +2701,9 @@ void SyncthingConnection::readDiskEvents()
         // no new events available, keep polling
         break;
     case QNetworkReply::OperationCanceledError:
-        handleAdditionalRequestCanceled();
+        if (reply == expectedReply) {
+            handleAdditionalRequestCanceled();
+        }
         return;
     default:
         emitError(tr("Unable to request disk events: "), SyncthingErrorCategory::OverallConnection, reply);

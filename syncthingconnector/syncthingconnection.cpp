@@ -239,8 +239,19 @@ void SyncthingConnection::setLoggingFlags(SyncthingConnectionLoggingFlags flags)
 }
 
 /*!
+ * \brief Cancels \a reply without considering the connection aborted.
+ * \remarks Setting \a reply back to nullptr before aborting it avoids the usual cancellation handler to be invoked.
+ */
+static void cancelReplyWithoutAbortingConnection(QNetworkReply *&reply)
+{
+    if (reply) {
+        std::exchange(reply, nullptr)->abort();
+    }
+}
+
+/*!
  * \brief Sets what kind of events are polled for.
- * \remarks Does not abort any pending requests but ensures new requests are enqueued as necessary.
+ * \remarks Restarts pending requests as necessary.
  */
 void SyncthingConnection::setPollingFlags(PollingFlags flags)
 {
@@ -250,7 +261,9 @@ void SyncthingConnection::setPollingFlags(PollingFlags flags)
     m_pollingFlags = flags;
     m_eventMask.clear();
     if (m_keepPolling) {
+        cancelReplyWithoutAbortingConnection(m_eventsReply);
         requestEvents();
+        cancelReplyWithoutAbortingConnection(m_diskEventsReply);
         requestDiskEvents();
     }
 }

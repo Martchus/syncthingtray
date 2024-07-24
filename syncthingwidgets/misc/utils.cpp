@@ -7,6 +7,7 @@ namespace QtGui {
 void handleCurrentTabChanged(int tabIndex, Data::SyncthingConnection &connection)
 {
     auto flags = connection.pollingFlags();
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DownloadProgress, tabIndex == 2);
     CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents, tabIndex == 3);
     connection.setPollingFlags(flags);
 }
