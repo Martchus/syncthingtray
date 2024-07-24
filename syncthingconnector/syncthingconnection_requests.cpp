@@ -937,7 +937,7 @@ void SyncthingConnection::readConnections()
         // read connection status
         const QJsonObject connectionsObj(replyObj.value(QLatin1String("connections")).toObject());
         int index = 0;
-        auto statusChanged = false;
+        auto statusRecomputationFlags = StatusRecomputation::None;
         for (SyncthingDev &dev : m_devs) {
             const QJsonObject connectionObj(connectionsObj.value(dev.id).toObject());
             if (connectionObj.isEmpty()) {
@@ -972,7 +972,7 @@ void SyncthingConnection::readConnections()
             dev.clientVersion = connectionObj.value(QLatin1String("clientVersion")).toString();
             emit devStatusChanged(dev, index);
             if (previousStatus != dev.status || previouslyPaused != dev.paused) {
-                statusChanged = true;
+                statusRecomputationFlags += StatusRecomputation::Status;
             }
             ++index;
         }
@@ -982,7 +982,7 @@ void SyncthingConnection::readConnections()
 
         // since there seems no event for this data, keep polling
         if (m_keepPolling) {
-            statusChanged ? concludeConnection() : concludeConnectionWithoutRecomputingStatus();
+            concludeConnection(statusRecomputationFlags);
             if (m_trafficPollTimer.interval()) {
                 m_trafficPollTimer.start();
             }
@@ -1051,7 +1051,7 @@ void SyncthingConnection::readErrors()
         // note: The return value of hasUnreadNotifications() might have changed. This is however not (yet) used to compute the overall status so
         //       we can always just call concludeConnectionWithoutRecomputingStatus() here.
         if (m_keepPolling) {
-            concludeConnectionWithoutRecomputingStatus();
+            concludeConnection(StatusRecomputation::None);
             if (m_errorsPollTimer.interval()) {
                 m_errorsPollTimer.start();
             }
@@ -1137,7 +1137,7 @@ void SyncthingConnection::readDirStatistics()
         }
 
         if (m_keepPolling) {
-            concludeConnection();
+            concludeConnection(StatusRecomputation::Status);
         }
         break;
     }
@@ -1199,7 +1199,7 @@ void SyncthingConnection::readDirStatus()
             m_hasOutOfSyncDirs.reset();
         }
         if (m_keepPolling) {
-            concludeConnection(careAboutOutOfSyncDirs);
+            concludeConnection(careAboutOutOfSyncDirs ? StatusRecomputation::StatusAndOutOfSyncDirs : StatusRecomputation::Status);
         }
         break;
     }
@@ -1331,7 +1331,7 @@ void SyncthingConnection::readCompletion()
         if (jsonError.error == QJsonParseError::NoError) {
             // update the relevant completion info
             readRemoteFolderCompletion(DateTime::now(), replyDoc.object(), devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
-            concludeConnection();
+            concludeConnection(StatusRecomputation::Status);
             return;
         }
 
@@ -1344,7 +1344,7 @@ void SyncthingConnection::readCompletion()
         //       before it is aware that the dir/dev is paused it might still run into this error, e.g. when pausing a directory and completion
         //       is requested concurrently. Before Syncthing v1.15.0 we've got an empty completion instead of 404 anyway.
         readRemoteFolderCompletion(SyncthingCompletion(), devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
-        concludeConnection();
+        concludeConnection(StatusRecomputation::Status);
         return;
     case QNetworkReply::OperationCanceledError:
         handleAdditionalRequestCanceled();
@@ -1398,7 +1398,7 @@ void SyncthingConnection::readDeviceStatistics()
         }
         // since there seems no event for this data, keep polling
         if (m_keepPolling) {
-            concludeConnectionWithoutRecomputingStatus();
+            concludeConnection(StatusRecomputation::None);
             if (m_devStatsPollTimer.interval()) {
                 m_devStatsPollTimer.start();
             }
@@ -1443,7 +1443,7 @@ void SyncthingConnection::readVersion()
         const auto replyObj = replyDoc.object();
         m_syncthingVersion = replyObj.value(QLatin1String("longVersion")).toString();
         if (m_keepPolling) {
-            concludeConnectionWithoutRecomputingStatus();
+            concludeConnection(StatusRecomputation::None);
         }
         break;
     }
@@ -1915,7 +1915,7 @@ void SyncthingConnection::readDirSummary(SyncthingEventId eventId, DateTime even
     receiveOnlyStats.symlinks = jsonValueToInt(summary.value(QLatin1String("receiveOnlyChangedSymlinks")));
     receiveOnlyStats.total = jsonValueToInt(summary.value(QLatin1String("receiveOnlyTotalItems")));
     dir.pullErrorCount = jsonValueToInt(summary.value(QLatin1String("pullErrors")));
-    m_dirStatsAltered = true;
+    m_statusRecomputationFlags += StatusRecomputation::DirStats;
 
     dir.ignorePatterns = summary.value(QLatin1String("ignorePatterns")).toBool();
     dir.lastStatisticsUpdateEvent = eventId;
@@ -2048,7 +2048,9 @@ void SyncthingConnection::readEvents()
         return;
     }
 
-    const auto careAboutOutOfSyncDirs = m_hasOutOfSyncDirs.has_value();
+    if (m_hasOutOfSyncDirs.has_value()) {
+        m_statusRecomputationFlags += StatusRecomputation::OutOfSyncDirs;
+    }
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         auto jsonError = QJsonParseError();
@@ -2088,7 +2090,7 @@ void SyncthingConnection::readEvents()
 
     if (m_keepPolling) {
         requestEvents();
-        concludeConnection(careAboutOutOfSyncDirs);
+        concludeConnection(StatusRecomputation::None);
     } else {
         setStatus(SyncthingStatus::Disconnected);
     }
@@ -2145,7 +2147,6 @@ bool SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, quin
             readChangeEvent(eventTime, eventType, eventData);
         }
     }
-    emitDirStatisticsChanged();
     return true;
 }
 
@@ -2198,6 +2199,7 @@ void SyncthingConnection::readStatusChangedEvent(SyncthingEventId eventId, DateT
     if (dirAlreadyPresent) {
         // emit status changed when dir already present
         if (statusChanged) {
+            m_statusRecomputationFlags += StatusRecomputation::Status;
             emit dirStatusChanged(*dirInfo, index);
         }
     } else {
@@ -2279,7 +2281,8 @@ void SyncthingConnection::readDirEvent(SyncthingEventId eventId, DateTime eventT
         return;
     }
 
-    // distinguish specific events
+    // distinguish specific events, keep track of status changes
+    const auto previousStatus = dirInfo->status;
     const auto wasOutOfSync = dirInfo->isOutOfSync();
     if (eventType == QLatin1String("FolderErrors")) {
         readFolderErrors(eventId, eventTime, eventData, *dirInfo, index);
@@ -2307,6 +2310,9 @@ void SyncthingConnection::readDirEvent(SyncthingEventId eventId, DateTime eventT
             dirInfo->paused = false;
             emit dirStatusChanged(*dirInfo, index);
         }
+    }
+    if (previousStatus != dirInfo->status) {
+        m_statusRecomputationFlags += StatusRecomputation::Status;
     }
     if (wasOutOfSync != dirInfo->isOutOfSync()) {
         m_hasOutOfSyncDirs.reset();
@@ -2358,8 +2364,6 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
         disconnectReason = eventData.value(QLatin1String("error")).toString();
     } else if (eventType == QLatin1String("DevicePaused")) {
         paused = true;
-    } else if (eventType == QLatin1String("DeviceRejected")) {
-        status = SyncthingDevStatus::Rejected;
     } else if (eventType == QLatin1String("DeviceResumed")) {
         paused = false;
     } else {
@@ -2374,6 +2378,7 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
             devInfo->paused = paused;
             devInfo->disconnectReason = disconnectReason;
         }
+        m_statusRecomputationFlags += StatusRecomputation::Status;
         emit devStatusChanged(*devInfo, index);
     }
 }
@@ -2701,7 +2706,7 @@ void SyncthingConnection::readDiskEvents()
 
     if (m_keepPolling) {
         requestDiskEvents();
-        concludeConnection();
+        concludeConnection(StatusRecomputation::None);
     }
 }
 

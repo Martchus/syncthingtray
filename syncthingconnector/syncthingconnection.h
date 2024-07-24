@@ -369,8 +369,6 @@ private Q_SLOTS:
     void readDevs(const QJsonArray &devs);
     void readStatus();
     void concludeReadingConfigAndStatus();
-    void concludeConnection(bool careAboutOutOfSyncDirs = false);
-    void concludeConnectionWithoutRecomputingStatus();
     void readConnections();
     void readDirStatistics();
     void readDeviceStatistics();
@@ -431,7 +429,6 @@ private Q_SLOTS:
     void emitError(const QString &message, QNetworkReply *reply);
     void emitMyIdChanged(const QString &newId);
     void emitTildeChanged(const QString &newTilde, const QString &newPathSeparator);
-    void emitDirStatisticsChanged();
     void handleFatalConnectionError();
     void handleAdditionalRequestCanceled();
 #ifndef QT_NO_SSL
@@ -449,6 +446,14 @@ private:
     void readSetIgnores(const QString &dirId, std::function<void(QString &&)> &&callback);
 
     // internal helper methods
+    enum class StatusRecomputation {
+        None,
+        Status = (1 << 0),
+        OutOfSyncDirs = (1 << 1),
+        DirStats = (1 << 2),
+        StatusAndOutOfSyncDirs = Status | OutOfSyncDirs
+    };
+    void concludeConnection(StatusRecomputation flags);
     struct Reply {
         QNetworkReply *reply;
         QByteArray response;
@@ -482,12 +487,12 @@ private:
     SyncthingConnectionLoggingFlags m_loggingFlagsHandler;
 
     bool m_keepPolling;
-    bool m_recomputeStatusLater;
     bool m_abortingAllRequests;
     bool m_connectionAborted;
     bool m_abortingToConnect;
     bool m_abortingToReconnect;
     bool m_requestCompletion;
+    StatusRecomputation m_statusRecomputationFlags;
     SyncthingEventId m_lastEventId;
     SyncthingEventId m_lastDiskEventId;
     QTimer m_trafficPollTimer;
@@ -542,7 +547,6 @@ private:
     QSslCertificate m_certFromLastSslError;
 #endif
     QJsonObject m_rawConfig;
-    bool m_dirStatsAltered;
     bool m_recordFileChanges;
     bool m_useDeprecatedRoutes;
     bool m_pausingOnMeteredConnection;
@@ -1119,5 +1123,7 @@ inline const SyncthingDev *SyncthingConnection::findDevInfo(const QString &devId
 } // namespace Data
 
 Q_DECLARE_METATYPE(Data::SyncthingLogEntry)
+
+CPP_UTILITIES_MARK_FLAG_ENUM_CLASS(Data, Data::SyncthingConnection::StatusRecomputation)
 
 #endif // SYNCTHINGCONNECTION_H

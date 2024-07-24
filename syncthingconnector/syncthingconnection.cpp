@@ -83,12 +83,12 @@ SyncthingConnection::SyncthingConnection(
     , m_loggingFlags(SyncthingConnectionLoggingFlags::None)
     , m_loggingFlagsHandler(SyncthingConnectionLoggingFlags::None)
     , m_keepPolling(false)
-    , m_recomputeStatusLater(false)
     , m_abortingAllRequests(false)
     , m_connectionAborted(false)
     , m_abortingToConnect(false)
     , m_abortingToReconnect(false)
     , m_requestCompletion(true)
+    , m_statusRecomputationFlags(StatusRecomputation::None)
     , m_lastEventId(0)
     , m_lastDiskEventId(0)
     , m_autoReconnectTries(0)
@@ -114,7 +114,6 @@ SyncthingConnection::SyncthingConnection(
     , m_hasEvents(false)
     , m_hasDiskEvents(false)
     , m_lastFileDeleted(false)
-    , m_dirStatsAltered(false)
     , m_recordFileChanges(false)
     , m_useDeprecatedRoutes(true)
     , m_pausingOnMeteredConnection(false)
@@ -400,7 +399,8 @@ void SyncthingConnection::connectLater(int milliSeconds)
  */
 void SyncthingConnection::disconnect()
 {
-    m_abortingToConnect = m_abortingToReconnect = m_keepPolling = m_recomputeStatusLater = false;
+    m_abortingToConnect = m_abortingToReconnect = m_keepPolling = false;
+    m_statusRecomputationFlags = StatusRecomputation::None;
     m_trafficPollTimer.stop();
     m_devStatsPollTimer.stop();
     m_errorsPollTimer.stop();
@@ -510,7 +510,7 @@ void SyncthingConnection::continueReconnecting()
 
     // cleanup information from previous connection
     m_keepPolling = true;
-    m_recomputeStatusLater = false;
+    m_statusRecomputationFlags = StatusRecomputation::None;
     m_connectionAborted = false;
     m_abortingToConnect = m_abortingToReconnect = false;
     m_lastEventId = 0;
@@ -542,7 +542,6 @@ void SyncthingConnection::continueReconnecting()
     m_lastFileName.clear();
     m_lastFileDeleted = false;
     m_syncthingVersion.clear();
-    m_dirStatsAltered = false;
     emit dirStatisticsChanged();
 
     // notify that the configuration has been invalidated
@@ -585,38 +584,32 @@ void SyncthingConnection::concludeReadingConfigAndStatus()
 
 /*!
  * \brief Sets the status from (re)connecting to Syncthing's actual state if polling but there are no more pending requests.
- * \remarks Called by read...() handlers for requests started in continueConnecting().
+ * \remarks
+ * - Called by read...() handlers for requests started in continueConnecting().
+ * - The flags are used to decide whether the status should be recomputed (as not all read...() handlers require a recomputation).
  * \sa hasPendingRequests()
  */
-void SyncthingConnection::concludeConnection(bool careAboutOutOfSyncDirs)
+void SyncthingConnection::concludeConnection(StatusRecomputation flags)
 {
     if (!m_keepPolling) {
         return;
     }
-    if (hasPendingRequests()) {
-        m_recomputeStatusLater = true;
+
+    // take always record of the specified flags but return early if there are still pending requests or the status does not need to be recomputed
+    m_statusRecomputationFlags += flags;
+    if (hasPendingRequests() || (m_statusRecomputationFlags == StatusRecomputation::None && isConnected())) {
         return;
     }
-    m_recomputeStatusLater = false;
-    if (!setStatus(SyncthingStatus::Idle) && careAboutOutOfSyncDirs && !m_hasOutOfSyncDirs.has_value()) {
+
+    // recompute status and emit events according to flags
+    if (!setStatus(SyncthingStatus::Idle) && (m_statusRecomputationFlags & StatusRecomputation::OutOfSyncDirs) && !m_hasOutOfSyncDirs.has_value()) {
         emit hasOutOfSyncDirsChanged();
     }
-    emitDirStatisticsChanged();
-}
-
-/*!
- * \brief Sets the status from (re)connecting to Syncthing's actual state if polling but there are no more pending requests.
- * \remarks
- * - Recomputes the status only if not connected yet or if it is supposed to be recomputed later (in contrast to concludeConnection()).
- * - Called by read...() handlers for requests started in continueConnecting() if no data was read that influenced the overall status.
- * \sa hasPendingRequests()
- */
-void SyncthingConnection::concludeConnectionWithoutRecomputingStatus()
-{
-    if (m_keepPolling && (m_recomputeStatusLater || !isConnected()) && !hasPendingRequests()) {
-        m_recomputeStatusLater = false;
-        setStatus(SyncthingStatus::Idle);
+    if (m_statusRecomputationFlags & StatusRecomputation::DirStats) {
+        emit dirStatisticsChanged();
     }
+
+    m_statusRecomputationFlags = StatusRecomputation::None;
 }
 
 /*!
@@ -1191,17 +1184,6 @@ void SyncthingConnection::emitTildeChanged(const QString &newTilde, const QStrin
     m_tilde = newTilde;
     m_pathSeparator = newPathSeparator;
     emit tildeChanged(m_tilde);
-}
-
-/*!
- * \brief Internally called to emit dirStatisticsChanged() event.
- */
-void SyncthingConnection::emitDirStatisticsChanged()
-{
-    if (m_dirStatsAltered) {
-        m_dirStatsAltered = false;
-        emit dirStatisticsChanged();
-    }
 }
 
 /*!
