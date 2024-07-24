@@ -129,55 +129,55 @@
     <name>FullRepresentation</name>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="245"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="247"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="251"/>
         <source>Global</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="252"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="254"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="258"/>
         <source>Global incoming traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="270"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="272"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="276"/>
         <source>Local</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="277"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="279"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="283"/>
         <source>Global outgoing traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="33"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="35"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="39"/>
         <source>Folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="39"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="41"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="45"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="45"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="47"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="51"/>
         <source>Downloads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="51"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="53"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="57"/>
         <source>History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="103"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="105"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="109"/>
         <source>Toggle filter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -282,22 +282,22 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="472"/>
+        <location filename="../lib/syncthingapplet.cpp" line="487"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="484"/>
+        <location filename="../lib/syncthingapplet.cpp" line="499"/>
         <source>New notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="574"/>
+        <location filename="../lib/syncthingapplet.cpp" line="589"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="642"/>
+        <location filename="../lib/syncthingapplet.cpp" line="657"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
@@ -429,49 +429,49 @@
     <name>main</name>
     <message>
         <location filename="../package5/contents/ui/main.qml" line="59"/>
-        <location filename="../package6/contents/ui/main.qml" line="27"/>
+        <location filename="../package6/contents/ui/main.qml" line="39"/>
         <source>Open Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/main.qml" line="60"/>
-        <location filename="../package6/contents/ui/main.qml" line="66"/>
+        <location filename="../package6/contents/ui/main.qml" line="78"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/main.qml" line="61"/>
-        <location filename="../package6/contents/ui/main.qml" line="32"/>
+        <location filename="../package6/contents/ui/main.qml" line="44"/>
         <source>Rescan all folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/main.qml" line="63"/>
-        <location filename="../package6/contents/ui/main.qml" line="37"/>
+        <location filename="../package6/contents/ui/main.qml" line="49"/>
         <source>Show own device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/main.qml" line="65"/>
-        <location filename="../package6/contents/ui/main.qml" line="42"/>
+        <location filename="../package6/contents/ui/main.qml" line="54"/>
         <source>Restart Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/main.qml" line="67"/>
-        <location filename="../package6/contents/ui/main.qml" line="47"/>
+        <location filename="../package6/contents/ui/main.qml" line="59"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/main.qml" line="68"/>
-        <location filename="../package6/contents/ui/main.qml" line="52"/>
+        <location filename="../package6/contents/ui/main.qml" line="64"/>
         <source>Internal errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/main.qml" line="70"/>
-        <location filename="../package6/contents/ui/main.qml" line="58"/>
+        <location filename="../package6/contents/ui/main.qml" line="70"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
