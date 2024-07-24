@@ -2136,8 +2136,6 @@ bool SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, quin
             readDirEvent(eventId, eventTime, eventType, eventData);
         } else if (eventType.startsWith(QLatin1String("Device"))) {
             readDeviceEvent(eventId, eventTime, eventType, eventData);
-        } else if (eventType == QLatin1String("ItemStarted")) {
-            readItemStarted(eventId, eventTime, eventData);
         } else if (eventType == QLatin1String("ItemFinished")) {
             readItemFinished(eventId, eventTime, eventData);
         } else if (eventType == QLatin1String("RemoteIndexUpdated")) {
@@ -2381,17 +2379,6 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
         m_statusRecomputationFlags += StatusRecomputation::Status;
         emit devStatusChanged(*devInfo, index);
     }
-}
-
-/*!
- * \brief Reads results of requestEvents().
- * \todo Implement this.
- */
-void SyncthingConnection::readItemStarted(SyncthingEventId eventId, DateTime eventTime, const QJsonObject &eventData)
-{
-    CPP_UTILITIES_UNUSED(eventId)
-    CPP_UTILITIES_UNUSED(eventTime)
-    CPP_UTILITIES_UNUSED(eventData)
 }
 
 /*!

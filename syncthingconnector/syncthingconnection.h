@@ -385,7 +385,6 @@ private Q_SLOTS:
     void readDownloadProgressEvent(const QJsonObject &eventData);
     void readDirEvent(SyncthingEventId eventId, CppUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
     void readDeviceEvent(SyncthingEventId eventId, CppUtilities::DateTime eventTime, const QString &eventType, const QJsonObject &eventData);
-    void readItemStarted(SyncthingEventId eventId, CppUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readItemFinished(SyncthingEventId eventId, CppUtilities::DateTime eventTime, const QJsonObject &eventData);
     void readFolderErrors(
         SyncthingEventId eventId, CppUtilities::DateTime eventTime, const QJsonObject &eventData, Data::SyncthingDir &dirInfo, int index);
