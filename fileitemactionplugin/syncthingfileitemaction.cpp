@@ -68,7 +68,7 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
         parentWidget->installEventFilter(this);
     }
 
-    return QList<QAction *>{new SyncthingMenuAction(fileItemInfo, subActions, parentWidget)};
+    return QList<QAction *>{ new SyncthingMenuAction(fileItemInfo, subActions, parentWidget) };
 }
 
 struct DirStats {
