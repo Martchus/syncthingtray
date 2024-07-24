@@ -2400,11 +2400,11 @@ void SyncthingConnection::readItemFinished(SyncthingEventId eventId, DateTime ev
     }
 
     // handle unsuccessful operation
-    const auto error(eventData.value(QLatin1String("error")).toString()), item(eventData.value(QLatin1String("item")).toString());
+    const auto error = eventData.value(QLatin1String("error")).toString();
+    const auto item = eventData.value(QLatin1String("item")).toString();
     if (!error.isEmpty()) {
         // add error item if not already present
         if (dirInfo->status != SyncthingDirStatus::OutOfSync) {
-            // FIXME: find better way to check whether the event is still relevant
             return;
         }
         for (const auto &itemError : dirInfo->itemErrors) {
