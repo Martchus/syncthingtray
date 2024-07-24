@@ -109,7 +109,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     }
 
     // configure connection
-    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::Events);
+    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents);
     m_connection.setInsecure(Settings::values().connection.insecure);
 
     // setup models and views

@@ -175,7 +175,7 @@ public:
         QMetaObject::Connection connection;
     };
 
-    enum class PollingFlags { None, Events = (1 << 0), DiskEvents = (1 << 1), All = Events | DiskEvents };
+    enum class PollingFlags { None, MainEvents = (1 << 0), DiskEvents = (1 << 1), All = MainEvents | DiskEvents };
 
     // getter/setter for various properties
     const QString &syncthingUrl() const;
@@ -495,6 +495,7 @@ private:
     bool m_abortingToConnect;
     bool m_abortingToReconnect;
     bool m_requestCompletion;
+    QString m_eventMask;
     PollingFlags m_pollingFlags;
     StatusRecomputation m_statusRecomputationFlags;
     SyncthingEventId m_lastEventId;

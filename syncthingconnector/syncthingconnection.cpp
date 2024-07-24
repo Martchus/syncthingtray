@@ -248,6 +248,7 @@ void SyncthingConnection::setPollingFlags(PollingFlags flags)
         return;
     }
     m_pollingFlags = flags;
+    m_eventMask.clear();
     if (m_keepPolling) {
         requestEvents();
         requestDiskEvents();

@@ -2015,15 +2015,22 @@ void SyncthingConnection::readChangeEvent(DateTime eventTime, const QString &eve
 
 /*!
  * \brief Requests the Syncthing events (since the last successful call) asynchronously.
- *
- * The signal newEvents() is emitted on success; otherwise error() is emitted.
+ * \remarks
+ * - The signal newEvents() is emitted on success; otherwise error() is emitted.
+ * - The disk events are queried separately via requestDiskEvents() so they can be limited individually.
  */
 void SyncthingConnection::requestEvents()
 {
-    if (m_eventsReply || !(m_pollingFlags & PollingFlags::Events)) {
+    if (m_eventsReply || !(m_pollingFlags & PollingFlags::MainEvents)) {
         return;
     }
+    if (m_eventMask.isEmpty()) {
+        m_eventMask = QStringLiteral("Starting,StateChanged,DownloadProgress,FolderCompletion,FolderRejected,FolderErrors,FolderSummary,"
+                                     "FolderCompletion,FolderScanProgress,FolderPaused,FolderResumed,DeviceRejected,DeviceConnected,"
+                                     "DeviceDisconnected,DevicePaused,DeviceResumed,ItemFinished,RemoteIndexUpdated,ConfigSaved");
+    }
     auto query = QUrlQuery();
+    query.addQueryItem(QStringLiteral("events"), m_eventMask);
     if (m_lastEventId && m_hasEvents) {
         query.addQueryItem(QStringLiteral("since"), QString::number(m_lastEventId));
     } else {
@@ -2626,7 +2633,10 @@ void SyncthingConnection::readRemoteIndexUpdated(SyncthingEventId eventId, const
 }
 
 /*!
- * \brief Reads results of requestEvents().
+ * \brief Requests the Syncthing disk events (since the last successful call) asynchronously.
+ * \remarks
+ * This is handled separately from the main events so \a limit can be applied to disk events
+ * specifically.
  */
 void SyncthingConnection::requestDiskEvents(int limit)
 {
@@ -2635,6 +2645,7 @@ void SyncthingConnection::requestDiskEvents(int limit)
     }
     auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("limit"), QString::number(limit));
+    query.addQueryItem(QStringLiteral("events"), QStringLiteral("LocalChangeDetected,RemoteChangeDetected"));
     if (m_lastDiskEventId && m_hasDiskEvents) {
         query.addQueryItem(QStringLiteral("since"), QString::number(m_lastDiskEventId));
     }
