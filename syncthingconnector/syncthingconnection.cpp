@@ -1051,7 +1051,7 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
  * - Whether notifications are available is *not* handled by this function. One needs to query this via
  *   SyncthingConnection::hasUnreadNotifications().
  * \returns Returns whether the status has been changed; the the status remained the same as before false
- *          is returned. Returns always true if the connection is being destoyed.
+ *          is returned. Returns always true if the connection is being destroyed.
  */
 bool SyncthingConnection::setStatus(SyncthingStatus status)
 {

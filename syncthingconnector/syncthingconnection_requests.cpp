@@ -2016,6 +2016,7 @@ void SyncthingConnection::readChangeEvent(DateTime eventTime, const QString &eve
 /*!
  * \brief Requests the Syncthing events (since the last successful call) asynchronously.
  * \remarks
+ * - This is a long-polling API call. Hence the request is repeated until the connection is aborted.
  * - The signal newEvents() is emitted on success; otherwise error() is emitted.
  * - The disk events are queried separately via requestDiskEvents() so they can be limited individually.
  */
@@ -2641,8 +2642,11 @@ void SyncthingConnection::readRemoteIndexUpdated(SyncthingEventId eventId, const
 /*!
  * \brief Requests the Syncthing disk events (since the last successful call) asynchronously.
  * \remarks
- * This is handled separately from the main events so \a limit can be applied to disk events
- * specifically.
+ * - This is a long-polling API just like requestEvents(). Note that the official UI actually calls this API (as well as
+ *   requestDirStatistics()) regularly on `LocalIndexUpdated` events and does not always keep a request open (which would
+ *   be an alternative to consider here as well).
+ * - This is handled separately from the main events so \a limit can be applied to disk events specifically.
+ * - The default limit of 25 is in accordance with the official UI.
  */
 void SyncthingConnection::requestDiskEvents(int limit)
 {

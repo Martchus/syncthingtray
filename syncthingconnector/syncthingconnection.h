@@ -170,17 +170,19 @@ public:
         SyncthingConnectionLoggingFlags loggingFlags = SyncthingConnectionLoggingFlags::FromEnvironment, QObject *parent = nullptr);
     ~SyncthingConnection() override;
 
+    /// \brief The QueryResult struct is used to return the reply and associated signal/slot-connection of certain requests.
     struct QueryResult {
         QNetworkReply *reply = nullptr;
         QMetaObject::Connection connection;
     };
 
+    /// \brief The PollingFlags enum class specifies what information the connection is supposed to request/process.
     enum class PollingFlags {
-        None,
-        MainEvents = (1 << 0),
-        DiskEvents = (1 << 1),
-        DownloadProgress = (1 << 2),
-        All = MainEvents | DiskEvents | DownloadProgress
+        None, /**< only initial state is queried, no events are consumed to keep it up to date */
+        MainEvents = (1 << 0), /**< most important events are requested/processed to keep folder and device information up to date */
+        DiskEvents = (1 << 1), /**< events to emit the fileChanged() signal are requested/processed (used to show recent changed in the UI) */
+        DownloadProgress = (1 << 2), /**< events to emit the downloadProgressChanged() signal are requested/processed (used to show downloads in the UI) */
+        All = MainEvents | DiskEvents | DownloadProgress /**< all events the SyncthingConnection class can make use of are requested/processed */
     };
 
     // getter/setter for various properties
