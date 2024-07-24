@@ -2026,11 +2026,17 @@ void SyncthingConnection::requestEvents()
         return;
     }
     if (m_eventMask.isEmpty()) {
-        m_eventMask = QStringLiteral("Starting,StateChanged,FolderCompletion,FolderRejected,FolderErrors,FolderSummary,"
-                                     "FolderCompletion,FolderScanProgress,FolderPaused,FolderResumed,DeviceRejected,DeviceConnected,"
-                                     "DeviceDisconnected,DevicePaused,DeviceResumed,ItemFinished,RemoteIndexUpdated,ConfigSaved");
+        m_eventMask = QStringLiteral("Starting,StateChanged,FolderRejected,FolderErrors,FolderSummary,FolderCompletion,"
+                                     "FolderScanProgress,FolderPaused,FolderResumed,DeviceRejected,DeviceConnected,"
+                                     "DeviceDisconnected,DevicePaused,DeviceResumed,ConfigSaved,LocalIndexUpdated");
         if (m_pollingFlags & PollingFlags::DownloadProgress) {
             m_eventMask += QStringLiteral(",DownloadProgress");
+        }
+        if (m_pollingFlags & PollingFlags::RemoteIndexUpdated) {
+            m_eventMask += QStringLiteral(",RemoteIndexUpdated");
+        }
+        if (m_pollingFlags & PollingFlags::ItemFinished) {
+            m_eventMask += QStringLiteral(",ItemFinished");
         }
     }
     auto query = QUrlQuery();
@@ -2150,14 +2156,16 @@ bool SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, quin
             readDirEvent(eventId, eventTime, eventType, eventData);
         } else if (eventType.startsWith(QLatin1String("Device"))) {
             readDeviceEvent(eventId, eventTime, eventType, eventData);
-        } else if (eventType == QLatin1String("ItemFinished")) {
-            readItemFinished(eventId, eventTime, eventData);
-        } else if (eventType == QLatin1String("RemoteIndexUpdated")) {
-            readRemoteIndexUpdated(eventId, eventData);
         } else if (eventType == QLatin1String("ConfigSaved")) {
-            requestConfig(); // just consider current config as invalidated
+            requestConfig();
         } else if (eventType.endsWith(QLatin1String("ChangeDetected"))) {
             readChangeEvent(eventTime, eventType, eventData);
+        } else if (eventType == QLatin1String("LocalIndexUpdated")) {
+            requestDirStatistics();
+        } else if (eventType == QLatin1String("RemoteIndexUpdated")) {
+            readRemoteIndexUpdated(eventId, eventData);
+        } else if (eventType == QLatin1String("ItemFinished")) {
+            readItemFinished(eventId, eventTime, eventData);
         }
     }
     return true;
@@ -2196,28 +2204,37 @@ void SyncthingConnection::readStatusChangedEvent(SyncthingEventId eventId, DateT
     }
 
     // assign new status
+    const auto previousStatus = dirInfo->status;
     const auto wasOutOfSync = dirInfo->isOutOfSync();
     auto statusChanged = dirInfo->assignStatus(eventData.value(QLatin1String("to")).toString(), eventId, eventTime);
-    if (dirInfo->status == SyncthingDirStatus::OutOfSync) {
-        const QString errorMessage(eventData.value(QLatin1String("error")).toString());
-        if (!errorMessage.isEmpty()) {
+    switch (dirInfo->status) {
+    case SyncthingDirStatus::Idle:
+        if (previousStatus == SyncthingDirStatus::Scanning) {
+            requestDirStatistics();
+        }
+        break;
+    case SyncthingDirStatus::OutOfSync:
+        if (const auto errorMessage = eventData.value(QLatin1String("error")).toString(); !errorMessage.isEmpty()) {
             dirInfo->globalError = errorMessage;
             statusChanged = true;
         }
+        break;
+    default:;
     }
     if (wasOutOfSync != dirInfo->isOutOfSync()) {
         m_hasOutOfSyncDirs.reset();
     }
 
-    if (dirAlreadyPresent) {
-        // emit status changed when dir already present
-        if (statusChanged) {
-            m_statusRecomputationFlags += StatusRecomputation::Status;
-            emit dirStatusChanged(*dirInfo, index);
-        }
-    } else {
-        // request config for complete meta data of new directory
+    // request config for complete meta data of new directory
+    if (!dirAlreadyPresent) {
         requestConfig();
+        return;
+    }
+
+    // emit status changed when dir already present
+    if (statusChanged) {
+        m_statusRecomputationFlags += StatusRecomputation::Status;
+        emit dirStatusChanged(*dirInfo, index);
     }
 }
 
@@ -2300,12 +2317,12 @@ void SyncthingConnection::readDirEvent(SyncthingEventId eventId, DateTime eventT
         readFolderErrors(eventId, eventTime, eventData, *dirInfo, index);
     } else if (eventType == QLatin1String("FolderSummary")) {
         readDirSummary(eventId, eventTime, eventData.value(QLatin1String("summary")).toObject(), *dirInfo, index);
-    } else if (eventType == QLatin1String("FolderCompletion") && dirInfo->lastStatisticsUpdateEvent <= eventId) {
+    } else if (eventType == QLatin1String("FolderCompletion")) {
         readFolderCompletion(eventId, eventTime, eventData, dirId, dirInfo, index);
     } else if (eventType == QLatin1String("FolderScanProgress")) {
-        const double current = eventData.value(QLatin1String("current")).toDouble(0);
-        const double total = eventData.value(QLatin1String("total")).toDouble(0);
-        const double rate = eventData.value(QLatin1String("rate")).toDouble(0);
+        const auto current = eventData.value(QLatin1String("current")).toDouble(0);
+        const auto total = eventData.value(QLatin1String("total")).toDouble(0);
+        const auto rate = eventData.value(QLatin1String("rate")).toDouble(0);
         if (current > 0 && total > 0) {
             dirInfo->scanningPercentage = static_cast<int>(current * 100 / total);
             dirInfo->scanningRate = rate;
@@ -2571,7 +2588,7 @@ void SyncthingConnection::readRemoteFolderCompletion(const SyncthingCompletion &
         previousCompletion = completion;
         emit dirStatusChanged(*dirInfo, dirIndex);
         if (devInfo && completion.needed.isNull() && previouslyUpdated && (previouslyNeeded || previousGlobalBytes != completion.globalBytes)) {
-            emit dirCompleted(DateTime::now(), *dirInfo, dirIndex, devInfo);
+            emit dirCompleted(completion.lastUpdate, *dirInfo, dirIndex, devInfo);
         }
     }
     // update dev info

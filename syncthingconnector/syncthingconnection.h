@@ -181,8 +181,14 @@ public:
         None, /**< only initial state is queried, no events are consumed to keep it up to date */
         MainEvents = (1 << 0), /**< most important events are requested/processed to keep folder and device information up to date */
         DiskEvents = (1 << 1), /**< events to emit the fileChanged() signal are requested/processed (used to show recent changed in the UI) */
-        DownloadProgress = (1 << 2), /**< events to emit the downloadProgressChanged() signal are requested/processed (used to show downloads in the UI) */
-        All = MainEvents | DiskEvents | DownloadProgress /**< all events the SyncthingConnection class can make use of are requested/processed */
+        DownloadProgress
+        = (1 << 2), /**< events to emit the downloadProgressChanged() signal are requested/processed (used to show downloads in the UI) */
+        RemoteIndexUpdated = (1
+            << 3), /**< requests the completion for the relevant folder/device again on `RemoteIndexUpdated` events (normally not requires as `FolderCompletion` events contain this information as well) */
+        ItemFinished = (1
+            << 4), /**< processes `ItemFinished` events to update errors and list file information of folders (normally not required as calls to requestDirStatistics() on `StateChanged` events cover this) */
+        All = MainEvents | DiskEvents
+            | DownloadProgress /**< all events the SyncthingConnection class can make use of are requested/processed, this excludes redundant events */
     };
 
     // getter/setter for various properties
