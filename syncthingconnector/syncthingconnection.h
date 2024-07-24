@@ -175,7 +175,13 @@ public:
         QMetaObject::Connection connection;
     };
 
-    enum class PollingFlags { None, MainEvents = (1 << 0), DiskEvents = (1 << 1), DownloadProgress = (1 << 2), All = MainEvents | DiskEvents | DownloadProgress };
+    enum class PollingFlags {
+        None,
+        MainEvents = (1 << 0),
+        DiskEvents = (1 << 1),
+        DownloadProgress = (1 << 2),
+        All = MainEvents | DiskEvents | DownloadProgress
+    };
 
     // getter/setter for various properties
     const QString &syncthingUrl() const;
