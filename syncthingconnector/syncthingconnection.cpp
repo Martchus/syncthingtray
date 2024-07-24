@@ -885,7 +885,6 @@ void SyncthingConnection::continueConnecting()
     }
 
     // read additional information (beside config and status)
-    // FIXME: make those requests configurable (eg. flag enum)
     requestConnections();
     requestDirStatistics();
     requestDeviceStatistics();
@@ -901,7 +900,7 @@ void SyncthingConnection::continueConnecting()
         }
     }
 
-    // poll for events
+    // poll for events according to polling flags
     requestEvents();
     requestDiskEvents();
 }
