@@ -244,7 +244,7 @@ StatusIconSettings::StatusIconSettings(const QString &str)
     : StatusIconSettings()
 {
     const auto parts = QtUtilities::splitRef(str, QChar(';'));
-    int index = 0;
+    auto index = int();
     for (auto *field :
         { &defaultColor, &errorColor, &warningColor, &idleColor, &scanningColor, &synchronizingColor, &pausedColor, &disconnectedColor }) {
         if (index >= parts.size()) {

@@ -71,7 +71,7 @@ void DirectoryErrorsDialog::handleDirStatusChanged(const SyncthingDir &dir)
 
 void DirectoryErrorsDialog::handleNewDirs()
 {
-    int index;
+    auto index = int();
     if (const auto *const dir = m_connection.findDirInfo(m_dirId, index)) {
         updateErrors(*dir);
     }
@@ -104,7 +104,7 @@ QString printDirectories(const QString &message, const QStringList &dirs)
 
 void DirectoryErrorsDialog::removeNonEmptyDirs()
 {
-    int index;
+    auto index = int();
     const auto *const dir = m_connection.findDirInfo(m_dirId, index);
     if (!dir) {
         return;

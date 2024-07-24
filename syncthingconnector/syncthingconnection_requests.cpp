@@ -361,14 +361,14 @@ bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paus
         return false;
     }
 
-    QJsonObject config = m_rawConfig;
+    auto config = m_rawConfig;
     if (!setDevicesPaused(config, devIds, paused)) {
         return false;
     }
 
-    QJsonDocument doc;
+    auto doc = QJsonDocument();
     doc.setObject(config);
-    QNetworkReply *const reply = sendData(changeConfigVerb(), configPath(), QUrlQuery(), doc.toJson(QJsonDocument::Compact));
+    auto *const reply = sendData(changeConfigVerb(), configPath(), QUrlQuery(), doc.toJson(QJsonDocument::Compact));
     reply->setProperty("devIds", devIds);
     reply->setProperty("resume", !paused);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDevPauseResume);
@@ -476,11 +476,11 @@ bool SyncthingConnection::pauseResumeDirectory(const QStringList &dirIds, bool p
         return false;
     }
 
-    QJsonObject config = m_rawConfig;
+    auto config = m_rawConfig;
     if (setDirectoriesPaused(config, dirIds, paused)) {
-        QJsonDocument doc;
+        auto doc = QJsonDocument();
         doc.setObject(config);
-        QNetworkReply *const reply = sendData(changeConfigVerb(), configPath(), QUrlQuery(), doc.toJson(QJsonDocument::Compact));
+        auto *const reply = sendData(changeConfigVerb(), configPath(), QUrlQuery(), doc.toJson(QJsonDocument::Compact));
         reply->setProperty("dirIds", dirIds);
         reply->setProperty("resume", !paused);
         QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDirPauseResume);
@@ -525,7 +525,7 @@ void SyncthingConnection::readDirPauseResume()
  */
 void SyncthingConnection::rescanAllDirs()
 {
-    for (const SyncthingDir &dir : m_dirs) {
+    for (const auto &dir : m_dirs) {
         if (!dir.paused) {
             rescan(dir.id);
         }
@@ -550,7 +550,7 @@ void SyncthingConnection::rescan(const QString &dirId, const QString &relpath)
     if (!relpath.isEmpty()) {
         query.addQueryItem(QStringLiteral("sub"), formatQueryItem(relpath));
     }
-    QNetworkReply *reply = postData(QStringLiteral("db/scan"), query);
+    auto *const reply = postData(QStringLiteral("db/scan"), query);
     reply->setProperty("dirId", dirId);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readRescan);
 }
@@ -730,13 +730,13 @@ void SyncthingConnection::readConfig()
 void SyncthingConnection::readDirs(const QJsonArray &dirs)
 {
     // store the new dirs in a temporary list which is assigned to m_dirs later
-    std::vector<SyncthingDir> newDirs;
+    auto newDirs = std::vector<SyncthingDir>();
     newDirs.reserve(static_cast<std::size_t>(dirs.size()));
 
-    int dummy;
-    for (const QJsonValue &dirVal : dirs) {
-        const QJsonObject dirObj(dirVal.toObject());
-        SyncthingDir *const dirItem = addDirInfo(newDirs, dirObj.value(QLatin1String("id")).toString());
+    auto index = int();
+    for (const auto &dirVal : dirs) {
+        const auto dirObj = dirVal.toObject();
+        auto *const dirItem = addDirInfo(newDirs, dirObj.value(QLatin1String("id")).toString());
         if (!dirItem) {
             continue;
         }
@@ -745,13 +745,14 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
         dirItem->path = dirObj.value(QLatin1String("path")).toString();
         dirItem->deviceIds.clear();
         dirItem->deviceNames.clear();
-        for (const QJsonValueRef devObj : dirObj.value(QLatin1String("devices")).toArray()) {
-            const QString devId = devObj.toObject().value(QLatin1String("deviceID")).toString();
+        const auto devices = dirObj.value(QLatin1String("devices")).toArray();
+        for (const auto devObj : devices) {
+            const auto devId = devObj.toObject().value(QLatin1String("deviceID")).toString();
             if (devId.isEmpty() || devId == m_myId) {
                 continue;
             }
             dirItem->deviceIds << devId;
-            if (const SyncthingDev *const dev = findDevInfo(devId, dummy)) {
+            if (const SyncthingDev *const dev = findDevInfo(devId, index)) {
                 dirItem->deviceNames << dev->name;
             }
         }
@@ -935,11 +936,11 @@ void SyncthingConnection::readConnections()
         emit trafficChanged(m_totalIncomingTraffic = totalIncomingTraffic, m_totalOutgoingTraffic = totalOutgoingTraffic);
 
         // read connection status
-        const QJsonObject connectionsObj(replyObj.value(QLatin1String("connections")).toObject());
-        int index = 0;
+        const auto connectionsObj = replyObj.value(QLatin1String("connections")).toObject();
+        auto index = 0;
         auto statusRecomputationFlags = StatusRecomputation::None;
-        for (SyncthingDev &dev : m_devs) {
-            const QJsonObject connectionObj(connectionsObj.value(dev.id).toObject());
+        for (auto &dev : m_devs) {
+            const auto connectionObj = connectionsObj.value(dev.id).toObject();
             if (connectionObj.isEmpty()) {
                 ++index;
                 continue;
@@ -1099,7 +1100,7 @@ void SyncthingConnection::readDirStatistics()
         }
 
         const auto replyObj = replyDoc.object();
-        int index = 0;
+        auto index = int();
         for (SyncthingDir &dirInfo : m_dirs) {
             const QJsonObject dirObj(replyObj.value(dirInfo.id).toObject());
             if (dirObj.isEmpty()) {
@@ -1176,7 +1177,7 @@ void SyncthingConnection::readDirStatus()
     switch (reply->error()) {
     case QNetworkReply::NoError: {
         // determine relevant dir
-        int index;
+        auto index = int();
         const auto dirId = reply->property("dirId").toString();
         SyncthingDir *const dir = findDirInfo(dirId, index);
         if (!dir) {
@@ -1241,7 +1242,7 @@ void SyncthingConnection::readDirPullErrors()
     }
 
     // determine relevant dir
-    int index;
+    auto index = int();
     const auto dirId = reply->property("dirId").toString();
     SyncthingDir *const dir = findDirInfo(dirId, index);
     if (!dir) {
@@ -1387,8 +1388,8 @@ void SyncthingConnection::readDeviceStatistics()
         }
 
         const auto replyObj = replyDoc.object();
-        int index = 0;
-        for (SyncthingDev &devInfo : m_devs) {
+        auto index = int();
+        for (auto &devInfo : m_devs) {
             const QJsonObject devObj(replyObj.value(devInfo.id).toObject());
             if (!devObj.isEmpty()) {
                 devInfo.lastSeen = parseTimeStamp(devObj.value(QLatin1String("lastSeen")), QStringLiteral("last seen"), DateTime(), true);
@@ -1950,7 +1951,7 @@ void SyncthingConnection::readDirSummary(SyncthingEventId eventId, DateTime even
 void SyncthingConnection::readDirRejected(DateTime eventTime, const QString &dirId, const QJsonObject &eventData)
 {
     // ignore if dir has already been added
-    int row;
+    auto row = int();
     const auto *const dir = findDirInfo(dirId, row);
     if (dir) {
         return;
@@ -1972,7 +1973,7 @@ void SyncthingConnection::readDirRejected(DateTime eventTime, const QString &dir
 void SyncthingConnection::readDevRejected(DateTime eventTime, const QString &devId, const QJsonObject &eventData)
 {
     // ignore if dev has already been added
-    int row;
+    auto row = int();
     const auto *const dev = findDevInfo(devId, row);
     if (dev) {
         return;
@@ -1988,13 +1989,13 @@ void SyncthingConnection::readDevRejected(DateTime eventTime, const QString &dev
 void SyncthingConnection::readChangeEvent(DateTime eventTime, const QString &eventType, const QJsonObject &eventData)
 {
     // read ID via "folder" with fallback to "folderID" (which is deprecated since version v1.1.2)
-    int index;
+    auto index = int();
     auto *dirInfo = findDirInfo(QLatin1String("folder"), eventData, &index);
     if (!dirInfo && !(dirInfo = findDirInfo(QLatin1String("folderID"), eventData, &index))) {
         return;
     }
 
-    SyncthingFileChange change;
+    auto change = SyncthingFileChange();
     change.local = eventType.startsWith("Local");
     change.eventTime = eventTime;
     change.action = eventData.value(QLatin1String("action")).toString();
@@ -2155,7 +2156,7 @@ bool SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, quin
  */
 void SyncthingConnection::readStartingEvent(const QJsonObject &eventData)
 {
-    const QString configDir(eventData.value(QLatin1String("home")).toString());
+    const auto configDir = eventData.value(QLatin1String("home")).toString();
     if (configDir != m_configDir) {
         emit configDirChanged(m_configDir = configDir);
     }
@@ -2167,19 +2168,19 @@ void SyncthingConnection::readStartingEvent(const QJsonObject &eventData)
  */
 void SyncthingConnection::readStatusChangedEvent(SyncthingEventId eventId, DateTime eventTime, const QJsonObject &eventData)
 {
-    const QString dir(eventData.value(QLatin1String("folder")).toString());
-    if (dir.isEmpty()) {
+    const auto dirId = eventData.value(QLatin1String("folder")).toString();
+    if (dirId.isEmpty()) {
         return;
     }
 
     // find the directory
-    int index;
-    SyncthingDir *dirInfo = findDirInfo(dir, index);
+    auto index = int();
+    auto *dirInfo = findDirInfo(dirId, index);
 
     // add a new directory if the dir is not present yet
     const auto dirAlreadyPresent = dirInfo != nullptr;
     if (!dirAlreadyPresent) {
-        dirInfo = &m_dirs.emplace_back(dir);
+        dirInfo = &m_dirs.emplace_back(dirId);
     }
 
     // assign new status
@@ -2213,18 +2214,17 @@ void SyncthingConnection::readStatusChangedEvent(SyncthingEventId eventId, DateT
  */
 void SyncthingConnection::readDownloadProgressEvent(const QJsonObject &eventData)
 {
-    for (SyncthingDir &dirInfo : m_dirs) {
+    for (auto &dirInfo : m_dirs) {
         // disappearing implies that the download has been finished so just wipe old entries
         dirInfo.downloadingItems.clear();
         dirInfo.blocksAlreadyDownloaded = dirInfo.blocksToBeDownloaded = 0;
 
         // read progress of currently downloading items
-        const QJsonObject dirObj(eventData.value(dirInfo.id).toObject());
+        const auto dirObj = eventData.value(dirInfo.id).toObject();
         if (!dirObj.isEmpty()) {
             dirInfo.downloadingItems.reserve(static_cast<size_t>(dirObj.size()));
             for (auto filePair = dirObj.constBegin(), end = dirObj.constEnd(); filePair != end; ++filePair) {
-                const SyncthingItemDownloadProgress &itemProgress
-                    = dirInfo.downloadingItems.emplace_back(dirInfo.path, filePair.key(), filePair.value().toObject());
+                const auto &itemProgress = dirInfo.downloadingItems.emplace_back(dirInfo.path, filePair.key(), filePair.value().toObject());
                 dirInfo.blocksAlreadyDownloaded += itemProgress.blocksAlreadyDownloaded;
                 dirInfo.blocksToBeDownloaded += itemProgress.totalNumberOfBlocks;
             }
@@ -2275,7 +2275,7 @@ void SyncthingConnection::readDirEvent(SyncthingEventId eventId, DateTime eventT
     }
 
     // find related dir info for other events (which are about well-known dirs)
-    int index;
+    auto index = int();
     auto *const dirInfo = findDirInfo(dirId, index);
     if (!dirInfo) {
         return;
@@ -2346,7 +2346,7 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
     }
 
     // find relevant device info
-    int index;
+    auto index = int();
     auto *const devInfo = findDevInfo(devId, index);
     if (!devInfo) {
         return;
@@ -2399,7 +2399,7 @@ void SyncthingConnection::readItemStarted(SyncthingEventId eventId, DateTime eve
  */
 void SyncthingConnection::readItemFinished(SyncthingEventId eventId, DateTime eventTime, const QJsonObject &eventData)
 {
-    int index;
+    auto index = int();
     auto *const dirInfo = findDirInfo(QLatin1String("folder"), eventData, &index);
     if (!dirInfo) {
         return;
@@ -2462,8 +2462,8 @@ void SyncthingConnection::readFolderErrors(
 
     // add errors
     const auto errors = eventData.value(QLatin1String("errors")).toArray();
-    for (const QJsonValue &errorVal : errors) {
-        const QJsonObject error(errorVal.toObject());
+    for (const auto &errorVal : errors) {
+        const auto error = errorVal.toObject();
         if (error.isEmpty()) {
             continue;
         }
@@ -2490,7 +2490,7 @@ void SyncthingConnection::readFolderCompletion(
     SyncthingEventId eventId, DateTime eventTime, const QJsonObject &eventData, const QString &dirId, SyncthingDir *dirInfo, int dirIndex)
 {
     const auto devId = eventData.value(QLatin1String("device")).toString();
-    int devIndex;
+    auto devIndex = int();
     auto *const devInfo = findDevInfo(devId, devIndex);
     readFolderCompletion(eventId, eventTime, eventData, devId, devInfo, devIndex, dirId, dirInfo, dirIndex);
 }
@@ -2598,8 +2598,8 @@ void SyncthingConnection::readRemoteIndexUpdated(SyncthingEventId eventId, const
     }
 
     // find dev/dir
-    const auto devId(eventData.value(QLatin1String("device")).toString());
-    const auto dirId(eventData.value(QLatin1String("folder")).toString());
+    const auto devId = eventData.value(QLatin1String("device")).toString();
+    const auto dirId = eventData.value(QLatin1String("folder")).toString();
     if (devId.isEmpty() || dirId.isEmpty()) {
         return;
     }

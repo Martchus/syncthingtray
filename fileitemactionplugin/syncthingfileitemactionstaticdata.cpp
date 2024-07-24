@@ -90,7 +90,7 @@ void SyncthingFileItemActionStaticData::logConnectionError(const QString &errorM
 
 void SyncthingFileItemActionStaticData::rescanDir(const QString &dirId, const QString &relpath)
 {
-    int row;
+    auto row = int();
     const auto *const dirInfo = m_connection.findDirInfo(dirId, row);
     if (dirInfo && !dirInfo->paused) {
         m_connection.rescan(dirId, relpath);

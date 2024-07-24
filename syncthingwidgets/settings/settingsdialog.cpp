@@ -588,7 +588,7 @@ void AppearanceOptionPage::reset()
     ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
     ui()->showTabTextsCheckBox->setChecked(settings.showTabTexts);
     ui()->preferIconsFromThemeCheckBox->setChecked(v.icons.preferIconsFromTheme);
-    int index;
+    auto index = int();
     switch (settings.frameStyle & QFrame::Shape_Mask) {
     case QFrame::NoFrame:
         index = 0;
@@ -662,7 +662,7 @@ QWidget *IconsOptionPage::setupWidget()
     // populate form for status icon colors
     auto *const gridLayout = ui()->gridLayout;
     auto *const statusIconsGroupBox = ui()->statusIconsGroupBox;
-    int index = 0;
+    auto index = int();
     for (auto &colorMapping : m_settings.colorMapping()) {
         // populate widgets array
         auto &widgetsForColor = m_widgets[index++] = {
