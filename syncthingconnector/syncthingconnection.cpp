@@ -251,7 +251,10 @@ static void cancelReplyWithoutAbortingConnection(QNetworkReply *&reply)
 
 /*!
  * \brief Sets what kind of events are polled for.
- * \remarks Restarts pending requests as necessary.
+ * \remarks
+ * - Call this function to reduce CPU usage in case not all events are needed right now, e.g. remove PollingFlags::DiskEvents
+ *   if the fileChanged() signal is not used anyway.
+ * - Restarts pending requests as necessary.
  */
 void SyncthingConnection::setPollingFlags(PollingFlags flags)
 {
