@@ -86,6 +86,8 @@ public Q_SLOTS:
 
 protected:
     bool event(QEvent *event) override;
+    void showEvent(QShowEvent *event) override;
+    void hideEvent(QHideEvent *event) override;
 
 private Q_SLOTS:
     void handleStatusChanged(Data::SyncthingStatus status);

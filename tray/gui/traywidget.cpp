@@ -662,6 +662,18 @@ bool TrayWidget::event(QEvent *event)
     return res;
 }
 
+void TrayWidget::showEvent(QShowEvent *event)
+{
+    Q_UNUSED(event)
+    QtGui::handleRelevantControlsChanged(true, m_ui->tabWidget->currentIndex(), m_connection);
+}
+
+void TrayWidget::hideEvent(QHideEvent *event)
+{
+    Q_UNUSED(event)
+    QtGui::handleRelevantControlsChanged(false, m_ui->tabWidget->currentIndex(), m_connection);
+}
+
 void TrayWidget::applySettingsOnAllInstances()
 {
     auto &qtSettings = Settings::values().qt;
@@ -759,7 +771,7 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
 
 void TrayWidget::handleCurrentTabChanged(int index)
 {
-    QtGui::handleCurrentTabChanged(index, m_connection);
+    QtGui::handleRelevantControlsChanged(!isHidden(), index, m_connection);
 }
 
 void TrayWidget::changeStatus()

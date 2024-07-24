@@ -153,7 +153,7 @@ public Q_SLOTS:
     void copyToClipboard(const QString &text);
     void updateStatusIconAndTooltip();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    void handleCurrentTabChanged(int index);
+    void handleRelevantControlsChanged(bool visible, int index);
 #endif
     void saveSettings();
 

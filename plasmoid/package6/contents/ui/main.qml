@@ -6,16 +6,28 @@ import org.kde.kquickcontrolsaddons 2.0
 import org.kde.kirigami 2.20 as Kirigami
 
 PlasmoidItem {
-    id: syncthingApplet
+    property int currentTabIndex: 0
 
+    id: syncthingApplet
     Plasmoid.title: "Syncthing"
     Plasmoid.icon: "syncthing"
     switchWidth: Kirigami.Units.gridUnit * Plasmoid.size.width
     switchHeight: Kirigami.Units.gridUnit * Plasmoid.size.height
-    compactRepresentation: CompactRepresentation {}
+    compactRepresentation: CompactRepresentation {
+    }
     fullRepresentation: FullRepresentation {
+        id: fullRepresentation
         Layout.minimumWidth: syncthingApplet.switchWidth
         Layout.minimumHeight: syncthingApplet.switchHeight
+        onCurrentTabChanged: (index) => {
+            currentTabIndex = index
+            handleRelevantControlsChanged()
+        }
+    }
+    onExpandedChanged: handleRelevantControlsChanged()
+
+    function handleRelevantControlsChanged() {
+        plasmoid.handleRelevantControlsChanged(expanded, currentTabIndex)
     }
 
     toolTipMainText: Plasmoid.statusText

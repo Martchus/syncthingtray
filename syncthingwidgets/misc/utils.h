@@ -9,7 +9,7 @@ class SyncthingConnection;
 
 namespace QtGui {
 
-SYNCTHINGWIDGETS_EXPORT void handleCurrentTabChanged(int tabIndex, Data::SyncthingConnection &connection);
+SYNCTHINGWIDGETS_EXPORT void handleRelevantControlsChanged(bool visible, int tabIndex, Data::SyncthingConnection &connection);
 
 } // namespace QtGui
 

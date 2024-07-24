@@ -8,9 +8,12 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kirigami 2.20 as Kirigami
 
 PlasmaExtras.Representation {
+    signal currentTabChanged(index: int)
+
     // disable margins as they don't look good together with the scroll view
     // note: Would be collapsed automatically if the scroll view was the immediate content item.
     collapseMarginsHint: true
+
 
     // header ("toolbar" with buttons and combo box) and footer ("tabbar")
     header: PlasmaExtras.PlasmoidHeading {
@@ -30,7 +33,7 @@ PlasmaExtras.Representation {
             position: PlasmaComponents3.TabBar.Footer
             Layout.fillWidth: true
             Layout.fillHeight: true
-            onCurrentIndexChanged: plasmoid.handleCurrentTabChanged(tabBar.currentIndex)
+            onCurrentIndexChanged: currentTabChanged(tabBar.currentIndex)
             TabButton {
                 id: dirsTabButton
                 text: qsTr("Folders")

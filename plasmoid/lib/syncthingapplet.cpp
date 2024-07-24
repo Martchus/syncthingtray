@@ -349,9 +349,9 @@ void SyncthingApplet::updateStatusIconAndTooltip()
 }
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-void SyncthingApplet::handleCurrentTabChanged(int index)
+void SyncthingApplet::handleRelevantControlsChanged(bool visible, int tabIndex)
 {
-    QtGui::handleCurrentTabChanged(index, m_connection);
+    QtGui::handleRelevantControlsChanged(visible, tabIndex, m_connection);
 }
 #endif
 

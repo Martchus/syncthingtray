@@ -4,11 +4,11 @@
 
 namespace QtGui {
 
-void handleCurrentTabChanged(int tabIndex, Data::SyncthingConnection &connection)
+void handleRelevantControlsChanged(bool visible, int tabIndex, Data::SyncthingConnection &connection)
 {
     auto flags = connection.pollingFlags();
-    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DownloadProgress, tabIndex == 2);
-    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents, tabIndex == 3);
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DownloadProgress, visible && tabIndex == 2);
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents, visible && tabIndex == 3);
     connection.setPollingFlags(flags);
 }
 
