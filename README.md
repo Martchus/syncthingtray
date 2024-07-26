@@ -28,7 +28,7 @@ before.
 Official binaries are provided for Windows and GNU/Linux for the x86_64 architecture and can be download from
 the release section on GitHub. This is only a fraction of the available downloads, though. I also provide
 further repositories for some GNU/Linux distributions. There are also binaries/repositories provided by other
-distributors. For a list with links, checkout the *[Download](#Download)* section of this document.
+distributors. For a list with links, checkout the "[Download](#Download)" section of this document.
 
 Syncthing Tray is known to work under:
 
@@ -49,8 +49,9 @@ For Plasma 5 and 6, there is in addition to the Qt Widgets based version also a 
 Plasmoid. Note that the latest version of Syncthing Tray generally also requires the
 latest version of Plasma 5 or 6 as no testing on earlier versions is done. Use the Qt
 Widgets based version on other Plasma versions. A restart of Plasma might be required for
-the Plasmoid to become selectable after installation. Checkout the "[Troubleshooting KDE
-integration](#troubleshooting-kde-integration)" section below for further help if it still won't show up.
+the Plasmoid to become selectable after installation. Checkout the
+"[Troubleshooting KDE integration](#troubleshooting-kde-integration)" section below for further help if it
+still won't show up.
 
 On GTK-centered desktops have a look at the
 [Arch Wiki](https://wiki.archlinux.org/title/Uniform_look_for_Qt_and_GTK_applications)
@@ -77,7 +78,8 @@ certain caveats.
     * The events to show notifications for can be configured
     * Uses Qt's notification support or a D-Bus notification daemon directly
 * Provides a wizard for a quick setup
-* Allows monitoring the status of the Syncthing systemd unit and to start and stop it (see section "Configuring systemd integration")
+* Allows monitoring the status of the Syncthing systemd unit and to start and stop it (see section
+  "[Configuring systemd integration](#configuring-systemd-integration)")
 * Provides an option to conveniently add the tray to the applications launched when the desktop environment starts
 * Can launch Syncthing automatically when started and display stdout/stderr (useful under Windows)
 * Provides quick access to the official web-based UI
@@ -97,7 +99,7 @@ certain caveats.
     * Rescan selected items
     * Rescan entire Syncthing folder
     * Pause/resume Syncthing folder
-    * See also screenshots section
+    * See also the [screenshots below](#syncthing-actions-for-dolphin)
 * Allows building Syncthing as a library to run it in the same process as the tray/GUI
 * English and German localization
 
@@ -110,12 +112,12 @@ Syncthing installation. You might consider different configurations:
   enabling the systemd integration in the settings (see section "[Configuring systemd integration](#configuring-systemd-integration)").
 * If you would like Syncthing Tray to take care of starting Syncthing for you, you can use the Syncthing launcher
   available in the settings. Note that this is *not* supported when using the Plasmoid.
-    * The Linux and Windows builds provided in the release section on GitHub come with a built-in version of
-      Syncthing which you can consider to use. Keep in mind that automatic updates of Syncthing are not possible this
-      way.
+    * The Linux and Windows builds provided in the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
+      come with a built-in version of Syncthing which you can consider to use. Keep in mind that automatic updates of Syncthing are
+      not possible this way.
     * In any case you can simply point the launcher to the binary of Syncthing (which you have to download/install
       separately).
-    * Checkout the *[Configuring the built-in launcher](#configuring-the-built-in-launcher)* section for further details.
+    * Checkout the "[Configuring the built-in launcher](#configuring-the-built-in-launcher)" section for further details.
 * It is also possible to let Syncthing Tray connect to a Syncthing instance running on a different machine.
 
 ## Installation and deinstallation
@@ -129,7 +131,8 @@ read the notes on the website before filing any issues. Note that automatic upda
 To uninstall, just delete the executable again.
 
 For further cleanup you may ensure that autostart is disabled (to avoid a dangling autostart entry). You may also
-delete the configuration files (see "Location of the configuration file" section below).
+delete the configuration files (see "[Location of the configuration file](#location-of-the-configuration-file)"
+section below).
 
 ## Screenshots
 The screenshots are not up-to-date.
@@ -314,7 +317,7 @@ Checkout the [download section on the website](https://martchus.github.io/syncth
 Keep reading here for a more detailed list.
 
 ### Source
-See the release section on GitHub.
+See the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases).
 
 ### Packages and binaries
 * Arch Linux
@@ -408,10 +411,11 @@ can be passed to CMake to influence the build.
 The following Qt modules are required (only the latest Qt 5 and Qt 6 version tested): `core`, `concurrent`,
 `network`, `dbus`, `gui`, `widgets`, `svg`, `webenginewidgets`/`webkitwidgets`
 
-It is recommended to use at least Qt 5.14 to avoid limitations in previous versions (see *Known bugs* section).
+It is recommended to use at least Qt 5.14 to avoid limitations in previous versions (see
+"[Known bugs](#known-bugs-and-workarounds)" section).
 
 The built-in web view and therefore the modules webenginewidgets/webkitwidgets are optional (see
-section "Select Qt module for web view and JavaScript").
+section "[Select Qt module for web view and JavaScript](#select-qt-module-for-web-view-and-javascript)").
 
 To build the plugin for Dolphin integration KIO is also required. To skip building the plugin,
 add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
@@ -479,7 +483,7 @@ a test instance of Syncthing that does not affect a possibly existing Syncthing 
     "$SOURCES/subdirs/syncthingtray"
    ```
     * Replace `/install/prefix` with the directory where you want to install.
-    * Checkout the [Providing the font file](https://github.com/Martchus/qtforkawesome/#providing-the-font-file)
+    * Checkout the "[Providing the font file](https://github.com/Martchus/qtforkawesome/#providing-the-font-file)"
       section of qtforkawesome's README for details regarding the
       ForkAwesome-related parameters.
 3. Build and install everything in one step:
@@ -748,8 +752,8 @@ variable `PLASMA_USE_QT_SCALING=1` might help.
     * Plasma < 5.26.0:
         * The Plasmoid contents are possibly clipped when shown within the system notifications plasmoid.
 * Systemd integration
-    * This feature relies especially on the system being correctly configured. Checkout the *Required system configuration* section
-      for details.
+    * This feature relies especially on the system being correctly configured. Checkout the
+      "[Required system configuration](#required-system-configuration)" section for details.
 
 ## Copyright notice and license
 Copyright © 2016-2024 Marius Kittler
