@@ -124,18 +124,18 @@ SyncthingConnection::SyncthingConnection(
     , m_insecure(false)
 {
     m_trafficPollTimer.setInterval(SyncthingConnectionSettings::defaultTrafficPollInterval);
-    m_trafficPollTimer.setTimerType(Qt::VeryCoarseTimer);
+    m_trafficPollTimer.setTimerType(Qt::CoarseTimer);
     m_trafficPollTimer.setSingleShot(true);
     QObject::connect(&m_trafficPollTimer, &QTimer::timeout, this, &SyncthingConnection::requestConnections);
     m_devStatsPollTimer.setInterval(SyncthingConnectionSettings::defaultDevStatusPollInterval);
-    m_devStatsPollTimer.setTimerType(Qt::VeryCoarseTimer);
+    m_devStatsPollTimer.setTimerType(Qt::CoarseTimer);
     m_devStatsPollTimer.setSingleShot(true);
     QObject::connect(&m_devStatsPollTimer, &QTimer::timeout, this, &SyncthingConnection::requestDeviceStatistics);
     m_errorsPollTimer.setInterval(SyncthingConnectionSettings::defaultErrorsPollInterval);
-    m_errorsPollTimer.setTimerType(Qt::VeryCoarseTimer);
+    m_errorsPollTimer.setTimerType(Qt::CoarseTimer);
     m_errorsPollTimer.setSingleShot(true);
     QObject::connect(&m_errorsPollTimer, &QTimer::timeout, this, &SyncthingConnection::requestErrors);
-    m_autoReconnectTimer.setTimerType(Qt::VeryCoarseTimer);
+    m_autoReconnectTimer.setTimerType(Qt::CoarseTimer);
     m_autoReconnectTimer.setInterval(SyncthingConnectionSettings::defaultReconnectInterval);
     QObject::connect(&m_autoReconnectTimer, &QTimer::timeout, this, &SyncthingConnection::autoReconnect);
 
