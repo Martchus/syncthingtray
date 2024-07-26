@@ -919,7 +919,7 @@ void SyncthingConnection::readConnections()
         const auto replyObj = replyDoc.object();
         const QJsonObject totalObj(replyObj.value(QLatin1String("total")).toObject());
 
-        // read traffic, the conversion to double is neccassary because toInt() doesn't work for high values
+        // read traffic, the conversion to double is necessary because toInt() doesn't work for high values
         const QJsonValue totalIncomingTrafficValue(totalObj.value(QLatin1String("inBytesTotal")));
         const QJsonValue totalOutgoingTrafficValue(totalObj.value(QLatin1String("outBytesTotal")));
         const std::uint64_t totalIncomingTraffic = totalIncomingTrafficValue.isDouble() ? jsonValueToInt(totalIncomingTrafficValue) : unknownTraffic;
