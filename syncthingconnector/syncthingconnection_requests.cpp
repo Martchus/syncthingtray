@@ -984,7 +984,7 @@ void SyncthingConnection::readConnections()
         // since there seems no event for this data, keep polling
         if (m_keepPolling) {
             concludeConnection(statusRecomputationFlags);
-            if (m_trafficPollTimer.interval()) {
+            if ((m_pollingFlags & PollingFlags::TrafficStatistics) && m_trafficPollTimer.interval()) {
                 m_trafficPollTimer.start();
             }
         }
@@ -1053,7 +1053,7 @@ void SyncthingConnection::readErrors()
         //       we can always just call concludeConnectionWithoutRecomputingStatus() here.
         if (m_keepPolling) {
             concludeConnection(StatusRecomputation::None);
-            if (m_errorsPollTimer.interval()) {
+            if ((m_pollingFlags & PollingFlags::Errors) && m_errorsPollTimer.interval()) {
                 m_errorsPollTimer.start();
             }
         }
@@ -1400,7 +1400,7 @@ void SyncthingConnection::readDeviceStatistics()
         // since there seems no event for this data, keep polling
         if (m_keepPolling) {
             concludeConnection(StatusRecomputation::None);
-            if (m_devStatsPollTimer.interval()) {
+            if ((m_pollingFlags & PollingFlags::DeviceStatistics) && m_devStatsPollTimer.interval()) {
                 m_devStatsPollTimer.start();
             }
         }

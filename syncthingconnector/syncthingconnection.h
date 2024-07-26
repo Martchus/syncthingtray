@@ -187,8 +187,13 @@ public:
             << 3), /**< requests the completion for the relevant folder/device again on `RemoteIndexUpdated` events (normally not requires as `FolderCompletion` events contain this information as well) */
         ItemFinished = (1
             << 4), /**< processes `ItemFinished` events to update errors and list file information of folders (normally not required as calls to requestDirStatistics() on `StateChanged` events cover this) */
-        All = MainEvents | DiskEvents
-            | DownloadProgress /**< all events the SyncthingConnection class can make use of are requested/processed, this excludes redundant events */
+        TrafficStatistics = (1 << 5), /**< polls for traffic statistics according to trafficPollInterval() */
+        DeviceStatistics = (1 << 6), /**< polls for device statistics according to devStatsPollInterval() */
+        Errors = (1 << 7), /**< polls for errors according to errorsPollInterval() */
+        All = MainEvents | DiskEvents | DownloadProgress | TrafficStatistics | DeviceStatistics
+            | Errors, /**< all events the SyncthingConnection class can make use of are requested/processed, this excludes redundant events */
+        NormalEvents
+        = MainEvents | DownloadProgress | RemoteIndexUpdated | ItemFinished, /**< events requested via the long-poling API by requestEvents() */
     };
 
     // getter/setter for various properties

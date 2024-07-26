@@ -242,11 +242,40 @@ void SyncthingConnection::setLoggingFlags(SyncthingConnectionLoggingFlags flags)
  * \brief Cancels \a reply without considering the connection aborted.
  * \remarks Setting \a reply back to nullptr before aborting it avoids the usual cancellation handler to be invoked.
  */
-static void cancelReplyWithoutAbortingConnection(QNetworkReply *&reply)
+static inline void cancelReplyWithoutAbortingConnection(QNetworkReply *&reply)
 {
     if (reply) {
         std::exchange(reply, nullptr)->abort();
     }
+}
+
+/*!
+ * \brief Ensure the request with the specified \a timer, \a pendingReply and \a requestFunction is enabled or disabled depending on \a enable.
+ * \remarks This function is only supposed to be called if \a enabled has actually changed.
+ */
+static inline void manageTimerBasedRequest(
+    QTimer &timer, QNetworkReply *pendingReply, SyncthingConnection &connection, void (SyncthingConnection::*requestFunction)(void), bool enable)
+{
+    // stop any possibly active timer if the polling-flag has been disabled (stopping a pending request would be possible but not gain us anything)
+    if (!enable) {
+        timer.stop();
+        return;
+    }
+
+    // make a request immediately (unless there's already a pending reply) if the polling-flag has been enabled and a non-zero polling interval is configured
+    if (timer.interval() && !pendingReply) {
+        timer.stop();
+        std::invoke(requestFunction, connection);
+    }
+}
+
+/*!
+ * \brief Returns whether flags matching the specified \a mask have been changed between \a flags1 and \a flags2.
+ */
+static inline bool haveFlagsChanged(
+    SyncthingConnection::PollingFlags flags1, SyncthingConnection::PollingFlags flags2, SyncthingConnection::PollingFlags mask)
+{
+    return (flags1 & mask) != (flags2 & mask);
 }
 
 /*!
@@ -261,13 +290,40 @@ void SyncthingConnection::setPollingFlags(PollingFlags flags)
     if (flags == m_pollingFlags) {
         return;
     }
+
+    // track what flags have changed and set new flags
+    const auto normalEventsChanged = haveFlagsChanged(flags, m_pollingFlags, PollingFlags::NormalEvents);
+    const auto diskEventsChanged = haveFlagsChanged(flags, m_pollingFlags, PollingFlags::DiskEvents);
+    const auto trafficStatsChanged = haveFlagsChanged(flags, m_pollingFlags, PollingFlags::TrafficStatistics);
+    const auto devStatsChanged = haveFlagsChanged(flags, m_pollingFlags, PollingFlags::DeviceStatistics);
+    const auto errorsChanged = haveFlagsChanged(flags, m_pollingFlags, PollingFlags::Errors);
     m_pollingFlags = flags;
-    m_eventMask.clear();
-    if (m_keepPolling) {
+
+    // restart events/disk-events request as necessary
+    if (normalEventsChanged) {
+        m_eventMask.clear();
         cancelReplyWithoutAbortingConnection(m_eventsReply);
-        requestEvents();
+    }
+    if (diskEventsChanged) {
         cancelReplyWithoutAbortingConnection(m_diskEventsReply);
+    }
+    if (m_keepPolling) {
+        requestEvents();
         requestDiskEvents();
+    }
+
+    // manage timers/requests for timer-based requests
+    if (trafficStatsChanged) {
+        manageTimerBasedRequest(m_trafficPollTimer, m_connectionsReply, *this, &SyncthingConnection::requestConnections,
+            m_keepPolling && (m_pollingFlags & PollingFlags::TrafficStatistics));
+    }
+    if (devStatsChanged) {
+        manageTimerBasedRequest(m_devStatsPollTimer, m_devStatsReply, *this, &SyncthingConnection::requestDeviceStatistics,
+            m_keepPolling && (m_pollingFlags & PollingFlags::DeviceStatistics));
+    }
+    if (errorsChanged) {
+        manageTimerBasedRequest(
+            m_errorsPollTimer, m_errorsReply, *this, &SyncthingConnection::requestErrors, m_keepPolling && (m_pollingFlags & PollingFlags::Errors));
     }
 }
 
