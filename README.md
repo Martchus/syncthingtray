@@ -26,9 +26,10 @@ before.
 
 ## Supported platforms
 Official binaries are provided for Windows and GNU/Linux for the x86_64 architecture and can be download from
-the release section on GitHub. This is only a fraction of the available downloads, though. I also provide
-further repositories for some GNU/Linux distributions. There are also binaries/repositories provided by other
-distributors. For a list with links, checkout the "[Download](#Download)" section of this document.
+the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases). This is only a fraction of
+the available downloads, though. I also provide further repositories for some GNU/Linux distributions. There are
+also binaries/repositories provided by other distributors. For a list with links, checkout the "[Download](#Download)"
+section of this document.
 
 Syncthing Tray is known to work under:
 
