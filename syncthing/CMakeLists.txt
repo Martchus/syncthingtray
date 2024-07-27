@@ -222,6 +222,17 @@ add_custom_command(
     WORKING_DIRECTORY "${SYNCTHING_PATH}"
     COMMENT "Building Syncthing itself (as library)")
 
+# allow running Syncthing's tests via CTest
+add_test(
+    NAME "${META_PROJECT_NAME}_run_go_tests"
+    COMMAND
+        "${CMAKE_COMMAND}" -E env ${GO_COMPILER_ARGS} "GOOS=${GO_TARGET_OS}" "CGO_CFLAGS=${CGO_CFLAGS}"
+        "CGO_CXXFLAGS=${CGO_CXXFLAGS}" "CGO_LDFLAGS=${CGO_LDFLAGS}" "GOARCH=${GO_TARGET_ARCH}" "CGO_ENABLED=1"
+        "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" test
+        -skip "TestResolveWindows83|TestCheckGoFmt" -ldflags "${GO_LINKER_FLAGS}"
+        ./lib/... ./cmd/syncthing/... ./c-bindings/...
+         WORKING_DIRECTORY "${SYNCTHING_PATH}")
+
 # find c++utilities to use CMake modules and headers from it privately
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
