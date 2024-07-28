@@ -67,12 +67,12 @@
         <translation>Im Dateibrowser öffnen</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="110"/>
+        <location filename="../gui/dirview.cpp" line="109"/>
         <source>Browse remote files</source>
         <translation>Globale Dateistruktur durchsuchen</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="112"/>
+        <location filename="../gui/dirview.cpp" line="111"/>
         <source>Show/edit ignore patterns</source>
         <translation>Ignoriermuster anzeigen/editieren</translation>
     </message>

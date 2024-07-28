@@ -1564,6 +1564,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../misc/otherdialogs.cpp" line="148"/>
+        <source>Manage ignore patterns (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../misc/otherdialogs.cpp" line="224"/>
         <source>Ignore patterns of folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
@@ -1576,11 +1581,6 @@
     <message>
         <location filename="../misc/otherdialogs.cpp" line="254"/>
         <source>Ignore patterns have been changed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/otherdialogs.cpp" line="148"/>
-        <source>Manage ignore patterns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

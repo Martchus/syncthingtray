@@ -1760,6 +1760,11 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Globale Dateistruktur von &quot;%1&quot;</translation>
     </message>
     <message>
+        <location filename="../misc/otherdialogs.cpp" line="148"/>
+        <source>Manage ignore patterns (experimental)</source>
+        <translation>Ignoriermuster verwalten (experimentell)</translation>
+    </message>
+    <message>
         <location filename="../misc/otherdialogs.cpp" line="224"/>
         <source>Ignore patterns of folder &quot;%1&quot;</source>
         <translation>Ignoriermuster des Ordners &quot;%1&quot;</translation>
@@ -1775,9 +1780,8 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Die Ignoriermuster wurden gespeichert.</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="148"/>
         <source>Manage ignore patterns</source>
-        <translation>Ignoriermuster verwalten</translation>
+        <translation type="vanished">Ignoriermuster verwalten</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="176"/>

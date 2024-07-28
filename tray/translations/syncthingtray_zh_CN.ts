@@ -67,12 +67,12 @@
         <translation>在文件浏览器中打开</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="110"/>
+        <location filename="../gui/dirview.cpp" line="109"/>
         <source>Browse remote files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="112"/>
+        <location filename="../gui/dirview.cpp" line="111"/>
         <source>Show/edit ignore patterns</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1598,6 +1598,11 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../misc/otherdialogs.cpp" line="148"/>
+        <source>Manage ignore patterns (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../misc/otherdialogs.cpp" line="224"/>
         <source>Ignore patterns of folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
@@ -1610,11 +1615,6 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="254"/>
         <source>Ignore patterns have been changed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/otherdialogs.cpp" line="148"/>
-        <source>Manage ignore patterns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
