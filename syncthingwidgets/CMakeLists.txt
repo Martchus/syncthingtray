@@ -69,12 +69,14 @@ set(REQUIRED_ICONS
     dialog-cancel
     document-open
     document-edit
+    folder
     preferences-other
     process-stop
     list-add
     preferences-desktop
     internet-web-browser
     system-run
+    edit-copy
     edit-paste
     edit-select
     edit-undo
@@ -89,7 +91,8 @@ set(REQUIRED_ICONS
     go-down
     go-up
     quickwizard
-    help-contents)
+    help-contents
+    question)
 
 set(QT_TESTS wizard)
 

@@ -60,6 +60,7 @@ set(REQUIRED_ICONS
     edit-delete
     edit-paste
     edit-redo
+    edit-select
     edit-undo
     emblem-checked
     emblem-error
@@ -89,6 +90,7 @@ set(REQUIRED_ICONS
     preferences-system-services
     preferences-other
     process-stop
+    question
     qtcreator
     system-run
     system-search
