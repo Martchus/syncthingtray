@@ -187,7 +187,6 @@ ColumnLayout {
                     icon: "document-open-remote"
                     onClicked: directoryView.triggerNativeActionWithCurrentItemData(
                                    "browseRemoteFiles", "dirId_")
-                    visible: plasmoid.wipFeaturesEnabled
                 }
                 PlasmaExtras.MenuItem {
                     id: showIgnorePatternsItem
@@ -195,7 +194,6 @@ ColumnLayout {
                     icon: "document-edit"
                     onClicked: directoryView.triggerNativeActionWithCurrentItemData(
                                    "showIgnorePatterns", "dirId_")
-                    visible: plasmoid.wipFeaturesEnabled
                 }
             }
         }

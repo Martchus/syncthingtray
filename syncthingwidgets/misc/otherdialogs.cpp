@@ -145,7 +145,7 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
         }
         if (const auto selectionActions = model->selectionActions(); !selectionActions.isEmpty()) {
             menu.addSeparator();
-            auto *const selectionMenu = menu.addMenu(QCoreApplication::translate("QtGui::OtherDialogs", "Manage ignore patterns"));
+            auto *const selectionMenu = menu.addMenu(QCoreApplication::translate("QtGui::OtherDialogs", "Manage ignore patterns (experimental)"));
             selectionMenu->setIcon(QIcon::fromTheme(QStringLiteral("document-edit")));
             selectionMenu->addActions(selectionActions);
             for (auto *const selectionAction : selectionActions) {
