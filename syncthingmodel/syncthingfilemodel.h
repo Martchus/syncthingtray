@@ -25,6 +25,7 @@ class LIB_SYNCTHING_MODEL_EXPORT SyncthingFileModel : public SyncthingModel {
     Q_OBJECT
     Q_PROPERTY(bool hasIgnorePatterns READ hasIgnorePatterns)
     Q_PROPERTY(bool selectionModeEnabled READ isSelectionModeEnabled WRITE setSelectionModeEnabled)
+    Q_PROPERTY(bool recursiveSelectionEnabled READ isRecursiveSelectionEnabled WRITE setRecursiveSelectionEnabled)
 
 public:
     friend class ::ModelTests;
@@ -64,6 +65,8 @@ public:
     const std::vector<SyncthingIgnorePattern> &presentIgnorePatterns() const;
     SyncthingIgnores computeNewIgnorePatterns() const;
     void editIgnorePatternsManually(const QString &ignorePatterns);
+    bool isRecursiveSelectionEnabled() const;
+    void setRecursiveSelectionEnabled(bool recursiveSelectionEnabled);
 
 Q_SIGNALS:
     void fetchQueueEmpty();
@@ -78,7 +81,7 @@ private Q_SLOTS:
     void handleLocalLookupFinished();
 
 private:
-    void setCheckState(const QModelIndex &index, Qt::CheckState checkState, bool recursively = true);
+    void setCheckState(const QModelIndex &index, Qt::CheckState checkState, bool recursively = false);
     void processFetchQueue(const QString &lastItemPath = QString());
     void queryIgnores();
     void matchItemAgainstIgnorePatterns(SyncthingItem &item) const;
@@ -128,6 +131,7 @@ private:
     bool m_selectionMode;
     bool m_hasIgnorePatterns;
     bool m_isIgnoringAllByDefault;
+    bool m_recursiveSelectionEnabled;
 };
 
 inline bool SyncthingFileModel::isSelectionModeEnabled() const
@@ -143,6 +147,16 @@ inline bool SyncthingFileModel::hasIgnorePatterns() const
 inline const std::vector<SyncthingIgnorePattern> &SyncthingFileModel::presentIgnorePatterns() const
 {
     return m_presentIgnorePatterns;
+}
+
+inline bool SyncthingFileModel::isRecursiveSelectionEnabled() const
+{
+    return m_recursiveSelectionEnabled;
+}
+
+inline void SyncthingFileModel::setRecursiveSelectionEnabled(bool recursiveSelectionEnabled)
+{
+    m_recursiveSelectionEnabled = recursiveSelectionEnabled;
 }
 
 } // namespace Data

@@ -74,6 +74,7 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     , m_selectionMode(false)
     , m_hasIgnorePatterns(false)
     , m_isIgnoringAllByDefault(false)
+    , m_recursiveSelectionEnabled(false)
 {
     if (m_connection.isLocal()) {
         m_root->existsLocally = true;
@@ -420,7 +421,10 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         if (item->type == SyncthingItemType::Directory) {
             res << QStringLiteral("refresh");
         }
-        res << QStringLiteral("toggle-selection-recursively") << QStringLiteral("toggle-selection-single");
+        if (m_recursiveSelectionEnabled) {
+            res << QStringLiteral("toggle-selection-recursively");
+        }
+        res << QStringLiteral("toggle-selection-single");
         if (!m_localPath.isEmpty() && item->isFilesystemItem()) {
             res << QStringLiteral("open") << QStringLiteral("copy-path");
         }
@@ -432,7 +436,9 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         if (item->type == SyncthingItemType::Directory) {
             res << tr("Refresh");
         }
-        res << (item->checked == Qt::Checked ? tr("Deselect recursively") : tr("Select recursively"));
+        if (m_recursiveSelectionEnabled) {
+            res << (item->checked == Qt::Checked ? tr("Deselect recursively") : tr("Select recursively"));
+        }
         res << (item->checked == Qt::Checked ? tr("Deselect single item") : tr("Select single item"));
         if (!m_localPath.isEmpty() && item->isFilesystemItem()) {
             res << (item->type == SyncthingItemType::Directory ? tr("Browse locally") : tr("Open local version")) << tr("Copy local path");
@@ -446,7 +452,9 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
             res << QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg")));
         }
         res << QIcon::fromTheme(QStringLiteral("edit-select"));
-        res << res.back();
+        if (m_recursiveSelectionEnabled) {
+            res << res.back();
+        }
         if (!m_localPath.isEmpty() && item->isFilesystemItem()) {
             res << QIcon::fromTheme(QStringLiteral("folder"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg")));
             res << QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/edit-copy.svg")));
@@ -464,7 +472,7 @@ bool SyncthingFileModel::setData(const QModelIndex &index, const QVariant &value
     }
     switch (role) {
     case Qt::CheckStateRole:
-        setCheckState(index, static_cast<Qt::CheckState>(value.toInt()));
+        setCheckState(index, static_cast<Qt::CheckState>(value.toInt()), m_recursiveSelectionEnabled);
         return true;
     }
     return false;
@@ -880,7 +888,9 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
                       refreshedItem->children = std::move(items);
                       switch (refreshedItem->checked) {
                       case Qt::Checked:
-                          setChildrenChecked(refreshedItem, Qt::Checked);
+                          if (m_recursiveSelectionEnabled) {
+                              setChildrenChecked(refreshedItem, Qt::Checked);
+                          }
                           break;
                       case Qt::PartiallyChecked:
                           setCheckState(refreshedIndex, Qt::Unchecked, false);
@@ -1023,7 +1033,9 @@ void SyncthingFileModel::insertLocalItems(const QModelIndex &refreshedIndex, Syn
         item->index = localItem.index = index++;
         switch (refreshedItem->checked) {
         case Qt::Checked:
-            setChildrenChecked(item.get(), item->checked = Qt::Checked);
+            if (m_recursiveSelectionEnabled) {
+                setChildrenChecked(item.get(), item->checked = Qt::Checked);
+            }
             break;
         case Qt::PartiallyChecked:
             setCheckState(refreshedIndex, Qt::Unchecked, false);
