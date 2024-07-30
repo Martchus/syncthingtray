@@ -386,6 +386,7 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
         * the Qt 5 based version should still work on older versions down to Windows 7 although this is not regularly checked
             * on Windows 7 the bundled Go/Syncthing will nevertheless be too new; use a version of Go/Syncthing that is *older*
               than 1.21/1.27.0 instead
+        * The Universal CRT needs to be [installed](https://learn.microsoft.com/en-us/cpp/windows/universal-crt-deployment#central-deployment).
         * Binaries are signed with the GPG key
           [`B9E36A7275FC61B464B67907E06FE8F53CDC6A4C`](https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index).
     * or, using Winget, type `winget install Martchus.syncthingtray` in a Command Prompt window.
