@@ -613,7 +613,7 @@ template <typename Callback> static void forEachItem(SyncthingItem *root, Callba
 
 void SyncthingFileModel::ignoreSelectedItems(bool ignore)
 {
-    forEachItem(m_root.get(), [this, ignore](SyncthingItem *item) {
+    forEachItem(m_root.get(), [this, ignore](const SyncthingItem *item) {
         if (item->checked != Qt::Checked || !item->isFilesystemItem()) {
             return true;
         }
