@@ -1042,7 +1042,7 @@ void SyncthingFileModel::insertLocalItems(const QModelIndex &refreshedIndex, Syn
             break;
         default:;
         }
-        populatePath(item->path = refreshedItem->path % m_pathSeparator % item->name, m_pathSeparator, item->children);
+        populatePath(item->path = refreshedItem->path.isEmpty() ? item->name : QString(refreshedItem->path % m_pathSeparator % item->name), m_pathSeparator, item->children);
         endInsertRows();
         ++row;
     }
