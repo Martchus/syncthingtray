@@ -345,7 +345,7 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
         * `syncthingplasmoid`/`syncthingplasmoid-qt6`: applet/plasmoid for Plasma desktop
         * `syncthingfileitemaction`/`syncthingfileitemaction-qt6`: Dolphin/KIO integration
         * `syncthingctl`/`syncthingctl-qt6`: command-line interface
-* Debian 12 "bookworm" and its derivatives (Ubuntu, Pop!_OS, Neon, etc.)
+* Debian ≥12 "bookworm" and its derivatives (Ubuntu, Pop!_OS, etc, but not Neon)
     * `sudo apt install syncthingtray-kde-plasma` if using KDE Plasma; otherwise, `sudo apt install syncthingtray`.
     * Installation from a Software Centre such as [GNOME Software](https://apps.gnome.org/en-GB/app/org.gnome.Software) or
       [Discover](https://apps.kde.org/en-gb/discover/) may be possible as well.
