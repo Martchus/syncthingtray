@@ -348,8 +348,7 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
 * Debian ≥12 "bookworm" and its derivatives (Ubuntu, Pop!_OS, etc, but not Neon)
     * `sudo apt install syncthingtray-kde-plasma` if using KDE Plasma; otherwise, `sudo apt install syncthingtray`.
     * Installation from a Software Centre such as [GNOME Software](https://apps.gnome.org/en-GB/app/org.gnome.Software) or
-      [Discover](https://apps.kde.org/en-gb/discover/) may be possible as well.
-    * [backport](https://backports.debian.org/) to Debian 11 "bullseye" available on request.
+      [Discover](https://apps.kde.org/en-gb/discover/) should be possible as well.
 * Exherbo
     * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
       by [the platypus repository](https://git.exherbo.org/summer/packages/media-sound/tageditor)
