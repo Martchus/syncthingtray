@@ -178,23 +178,27 @@ QString SyncthingFileModel::computeIgnorePatternDiff() const
 {
     auto diff = QString();
     auto index = std::size_t();
-    const auto appendNewLines = [&diff](const auto &change) {
-        for (const auto &line : change->newLines) {
+    const auto appendNewLines = [&diff](const auto &lines) {
+        for (const auto &line : lines) {
             diff.append(QChar('+'));
             diff.append(line);
             diff.append(QChar('\n'));
         }
     };
     if (const auto change = m_stagedChanges.find(beforeFirstLine); change != m_stagedChanges.end()) {
-        appendNewLines(change);
+        appendNewLines(change->prepend);
+        appendNewLines(change->append);
     }
     for (const auto &pattern : m_presentIgnorePatterns) {
         auto change = m_stagedChanges.find(index++);
-        diff.append(change == m_stagedChanges.end() || change->append ? QChar(' ') : QChar('-'));
+        if (change != m_stagedChanges.end()) {
+            appendNewLines(change->prepend);
+        }
+        diff.append(change == m_stagedChanges.end() || !change->replace ? QChar(' ') : QChar('-'));
         diff.append(pattern.pattern);
         diff.append(QChar('\n'));
         if (change != m_stagedChanges.end()) {
-            appendNewLines(change);
+            appendNewLines(change->append);
         }
     }
     return diff;
@@ -212,20 +216,19 @@ SyncthingIgnores SyncthingFileModel::computeNewIgnorePatterns() const
     }
     auto index = std::size_t();
     if (const auto change = m_stagedChanges.find(beforeFirstLine); change != m_stagedChanges.end()) {
-        for (const auto &line : change->newLines) {
-            newIgnorePatterns.ignore.append(line);
-        }
+        newIgnorePatterns.ignore.append(change->prepend);
+        newIgnorePatterns.ignore.append(change->append);
     }
     for (const auto &pattern : m_presentIgnorePatterns) {
         auto change = m_stagedChanges.find(index++);
-        if (change == m_stagedChanges.end() || change->append) {
+        if (change != m_stagedChanges.end()) {
+            newIgnorePatterns.ignore.append(change->prepend);
+        }
+        if (change == m_stagedChanges.end() || !change->replace) {
             newIgnorePatterns.ignore.append(pattern.pattern);
         }
-        if (change == m_stagedChanges.end()) {
-            continue;
-        }
-        for (const auto &line : change->newLines) {
-            newIgnorePatterns.ignore.append(line);
+        if (change != m_stagedChanges.end()) {
+            newIgnorePatterns.ignore.append(change->append);
         }
     }
     return newIgnorePatterns;
@@ -624,14 +627,55 @@ void SyncthingFileModel::ignoreSelectedItems(bool ignore)
         auto line = std::size_t();
         for (auto &pattern : m_presentIgnorePatterns) {
             if (pattern.pattern == reversePattern || pattern.pattern == wantedPattern) {
-                m_stagedChanges[line].newLines.removeAll(wantedPattern);
+                m_stagedChanges[line].replace = true;
             }
             ++line;
         }
-        auto &firstLine = m_stagedChanges[beforeFirstLine];
-        firstLine.newLines.removeAll(reversePattern);
-        if (!firstLine.newLines.contains(wantedPattern)) {
-            firstLine.newLines.prepend(wantedPattern);
+        for (auto &change : m_stagedChanges) {
+            change.prepend.removeAll(reversePattern);
+            change.prepend.removeAll(wantedPattern);
+            change.append.removeAll(reversePattern);
+            change.append.removeAll(wantedPattern);
+        }
+
+        // avoid any additional change if whether we want to ignore the item matches the default
+        if (m_isIgnoringAllByDefault == ignore) {
+            return false;
+        }
+
+        // add line to explicitly ignore/include the item
+        static constexpr auto insertPattern = [](auto &list, auto &pattern, auto &relatedPath) {
+            auto i = list.begin();
+            for (; i != list.end(); ++i) {
+                auto existingPattern = QStringView(*i);
+                if (existingPattern.startsWith(QChar('!'))) {
+                    existingPattern = existingPattern.mid(1);
+                }
+                if (relatedPath.startsWith(existingPattern) || relatedPath < existingPattern || existingPattern.contains(QChar('*'))) {
+                    list.insert(i, pattern);
+                    return;
+                }
+            }
+            list.append(pattern);
+        };
+        line = std::size_t();
+        for (auto &pattern : m_presentIgnorePatterns) {
+            // reinstate a previously removed pattern
+            if (pattern.pattern == wantedPattern) {
+                if (auto change = m_stagedChanges.find(line); change != m_stagedChanges.end() && change->replace) {
+                    change->replace = false;
+                    break;
+                }
+            }
+            // append pattern but keep alphabetical order and don't insert pattern after another one that would match
+            if (path > pattern.glob || pattern.matches(item->path, m_pathSeparator)) {
+                insertPattern(m_stagedChanges[line].prepend, wantedPattern, path);
+                break;
+            }
+            ++line;
+        }
+        if (line == m_presentIgnorePatterns.size()) {
+            insertPattern(m_stagedChanges[m_presentIgnorePatterns.size() - 1].append, wantedPattern, path);
         }
 
         // prepent the new pattern making sure it is effective and not shadowed by an existing pattern
@@ -690,20 +734,20 @@ QList<QAction *> SyncthingFileModel::selectionActions()
         if (isIgnoringAllByDefault) {
             // remove all occurrences of "/**"
             auto line = std::size_t();
+            lastLine.append.removeAll(m_ignoreAllByDefaultPattern);
             for (auto &pattern : m_presentIgnorePatterns) {
                 if (pattern.pattern == m_ignoreAllByDefaultPattern) {
-                    m_stagedChanges[line].newLines.removeAll(m_ignoreAllByDefaultPattern);
+                    m_stagedChanges[line].replace = true;
                 }
                 ++line;
             }
-            lastLine.newLines.removeAll(m_ignoreAllByDefaultPattern);
         } else {
             // append "/**"
-            lastLine.append = m_presentIgnorePatterns.empty() || m_presentIgnorePatterns.back().pattern != m_ignoreAllByDefaultPattern;
-            if (lastLine.append) {
-                lastLine.newLines.append(m_ignoreAllByDefaultPattern);
+            if (m_presentIgnorePatterns.empty() || m_presentIgnorePatterns.back().pattern != m_ignoreAllByDefaultPattern) {
+                lastLine.append.append(m_ignoreAllByDefaultPattern);
             } else {
-                m_stagedChanges.remove(m_presentIgnorePatterns.size() - 1);
+                lastLine.replace = false;
+                lastLine.append.removeAll(m_ignoreAllByDefaultPattern);
             }
         }
         m_isIgnoringAllByDefault = !isIgnoringAllByDefault;
@@ -735,9 +779,6 @@ QList<QAction *> SyncthingFileModel::selectionActions()
         auto *const applyStagedChangesAction = new QAction(tr("Review and apply staged changes"), this);
         applyStagedChangesAction->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")));
         connect(applyStagedChangesAction, &QAction::triggered, this, [this, action = applyStagedChangesAction, askedConfirmation = false]() mutable {
-            // ensure newly added lines at the beginning are sorted
-            m_stagedChanges[beforeFirstLine].newLines.sort(Qt::CaseInsensitive);
-
             // allow user to review changes before applying them
             if (!askedConfirmation) {
                 askedConfirmation = true;
@@ -1042,7 +1083,8 @@ void SyncthingFileModel::insertLocalItems(const QModelIndex &refreshedIndex, Syn
             break;
         default:;
         }
-        populatePath(item->path = refreshedItem->path.isEmpty() ? item->name : QString(refreshedItem->path % m_pathSeparator % item->name), m_pathSeparator, item->children);
+        populatePath(item->path = refreshedItem->path.isEmpty() ? item->name : QString(refreshedItem->path % m_pathSeparator % item->name),
+            m_pathSeparator, item->children);
         endInsertRows();
         ++row;
     }

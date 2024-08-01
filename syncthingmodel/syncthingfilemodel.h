@@ -108,8 +108,9 @@ private:
         QueryResult &operator=(SyncthingConnection::QueryResult &&);
     };
     struct Change {
-        QStringList newLines;
-        bool append = false;
+        QStringList prepend;
+        QStringList append;
+        bool replace = false;
     };
 
     SyncthingConnection &m_connection;

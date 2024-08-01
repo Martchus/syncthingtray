@@ -259,11 +259,10 @@ void ModelTests::testFileModel()
     }
     QCOMPARE(model.computeIgnorePatternDiff(), QStringLiteral(" foo\n bar\n baz\n"));
     QCOMPARE(model.computeNewIgnorePatterns().ignore, testPatterns);
-    model.m_stagedChanges[std::numeric_limits<std::size_t>::max()].newLines.append(changedTestPatterns.front());
-    model.m_stagedChanges[1]; // removal
+    model.m_stagedChanges[std::numeric_limits<std::size_t>::max()].prepend.append(changedTestPatterns.front());
+    model.m_stagedChanges[1].replace = true; // removal
     auto &append = model.m_stagedChanges[2];
-    append.newLines << changedTestPatterns.at(3) << changedTestPatterns.at(4);
-    append.append = true;
+    append.append << changedTestPatterns.at(3) << changedTestPatterns.at(4);
     QCOMPARE(model.computeIgnorePatternDiff(), QStringLiteral("+// new comment at beginning\n foo\n-bar\n baz\n+biz\n+buz\n"));
     QCOMPARE(model.computeNewIgnorePatterns().ignore, changedTestPatterns);
 }
