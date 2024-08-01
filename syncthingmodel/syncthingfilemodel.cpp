@@ -663,7 +663,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
         discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo")));
         connect(discardAction, &QAction::triggered, this, [this] {
             if (const auto rootIndex = index(0, 0); rootIndex.isValid()) {
-                setCheckState(index(0, 0), Qt::Unchecked);
+                setCheckState(index(0, 0), Qt::Unchecked, true);
             }
             setSelectionModeEnabled(false);
             m_stagedChanges.clear();

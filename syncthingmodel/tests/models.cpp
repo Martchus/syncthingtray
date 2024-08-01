@@ -112,6 +112,7 @@ void ModelTests::testFileModel()
 
     // test behavior of empty/unpopulated model
     auto model = Data::SyncthingFileModel(m_connection, *dirInfo);
+    model.setRecursiveSelectionEnabled(true);
     QCOMPARE(model.rowCount(QModelIndex()), 1);
     const auto rootIdx = QPersistentModelIndex(model.index(0, 0));
     QVERIFY(rootIdx.isValid());
