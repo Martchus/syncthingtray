@@ -638,11 +638,6 @@ void SyncthingFileModel::ignoreSelectedItems(bool ignore)
             change.append.removeAll(wantedPattern);
         }
 
-        // avoid any additional change if whether we want to ignore the item matches the default
-        if (m_isIgnoringAllByDefault == ignore) {
-            return false;
-        }
-
         // add line to explicitly ignore/include the item
         static constexpr auto insertPattern = [](auto &list, auto &pattern, auto &relatedPath) {
             auto i = list.begin();
