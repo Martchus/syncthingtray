@@ -363,14 +363,39 @@ void ModelTests::testFileModel()
         model.m_presentIgnorePatterns.emplace_back(QString(pattern));
     }
     model.m_presentIgnorePatterns.emplace_back(QString(model.m_ignoreAllByDefaultPattern));
+    model.m_hasIgnorePatterns = true;
     model.m_isIgnoringAllByDefault = true;
     qDeleteAll(actions);
     actions = model.selectionActions();
-    QVERIFY(actions.size() > 3);
+    QVERIFY(actions.size() > 4);
     QCOMPARE(actions.at(3)->text(), QStringLiteral("Include all items by default"));
     actions.at(3)->trigger();
     expectedDiff = QStringLiteral(" !/100ANDRO\n /Camera/IMG_20201213_122451.jpg\n /Camera/IMG_20201213_122505.jpg\n !/Camera\n-")
         % model.m_ignoreAllByDefaultPattern % QChar('\n');
+    QCOMPARE(model.computeIgnorePatternDiff(), expectedDiff);
+    QCOMPARE(model.computeNewIgnorePatterns().ignore, expectedPatterns);
+
+    // test removing matching ignore patterns
+    model.resetMatchingIgnorePatterns();
+    model.setCheckState(rootIdx, Qt::Unchecked, true);
+    model.setCheckState(model.index(1, 0, cameraIdx2), Qt::Checked);
+    QCOMPARE(actions.at(4)->text(), QStringLiteral("Remove ignore patterns matching against selected items (may affect other items as well)"));
+    actions.at(4)->trigger();
+    const auto indexInDiff = expectedDiff.indexOf(QStringLiteral(" /Camera/IMG_20201213_122451.jpg"));
+    expectedDiff[indexInDiff] = QChar('-');
+    expectedPatterns.removeAt(1);
+    QCOMPARE(model.computeIgnorePatternDiff(), expectedDiff);
+    QCOMPARE(model.computeNewIgnorePatterns().ignore, expectedPatterns);
+    // add the pattern back by ignoring the relevant item explicitly
+    actions.at(1)->trigger();
+    expectedDiff[indexInDiff] = QChar(' ');
+    expectedPatterns.insert(1, QStringLiteral("/Camera/IMG_20201213_122451.jpg"));
+    QCOMPARE(model.computeIgnorePatternDiff(), expectedDiff);
+    QCOMPARE(model.computeNewIgnorePatterns().ignore, expectedPatterns);
+    // remove the added-back pattern
+    actions.at(4)->trigger();
+    expectedDiff[indexInDiff] = QChar('-');
+    expectedPatterns.removeAt(1);
     QCOMPARE(model.computeIgnorePatternDiff(), expectedDiff);
     QCOMPARE(model.computeNewIgnorePatterns().ignore, expectedPatterns);
 }

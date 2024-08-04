@@ -84,9 +84,10 @@ private:
     void setCheckState(const QModelIndex &index, Qt::CheckState checkState, bool recursively = false);
     void processFetchQueue(const QString &lastItemPath = QString());
     void queryIgnores();
+    void resetMatchingIgnorePatterns();
     void matchItemAgainstIgnorePatterns(SyncthingItem &item) const;
     void ignoreSelectedItems(bool ignore = true);
-    QString computeIgnorePatternDiff() const;
+    QString computeIgnorePatternDiff();
 
 private:
     using SyncthingItems = std::vector<std::unique_ptr<SyncthingItem>>;

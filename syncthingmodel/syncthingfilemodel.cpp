@@ -174,7 +174,7 @@ QString SyncthingFileModel::path(const QModelIndex &index) const
 /*!
  * \brief Computes a diff between the present ignore patterns and staged changes.
  */
-QString SyncthingFileModel::computeIgnorePatternDiff() const
+QString SyncthingFileModel::computeIgnorePatternDiff()
 {
     auto diff = QString();
     auto index = std::size_t();
@@ -192,6 +192,10 @@ QString SyncthingFileModel::computeIgnorePatternDiff() const
     for (const auto &pattern : m_presentIgnorePatterns) {
         auto change = m_stagedChanges.find(index++);
         if (change != m_stagedChanges.end()) {
+            if (change->replace && !change->prepend.isEmpty() && change->prepend.back() == pattern.pattern) {
+                change->prepend.removeLast();
+                change->replace = false;
+            }
             appendNewLines(change->prepend);
         }
         diff.append(change == m_stagedChanges.end() || !change->replace ? QChar(' ') : QChar('-'));
@@ -663,7 +667,7 @@ void SyncthingFileModel::ignoreSelectedItems(bool ignore)
                 }
             }
             // append pattern but keep alphabetical order and don't insert pattern after another one that would match
-            if (path > pattern.glob || pattern.matches(item->path, m_pathSeparator)) {
+            if (pattern.glob > path || pattern.matches(item->path, m_pathSeparator)) {
                 insertPattern(m_stagedChanges[line].prepend, wantedPattern, path);
                 break;
             }
@@ -762,7 +766,14 @@ QList<QAction *> SyncthingFileModel::selectionActions()
                     matchItemAgainstIgnorePatterns(*item);
                 }
                 if (item->ignorePattern != SyncthingItem::ignorePatternNoMatch) {
-                    m_stagedChanges[item->ignorePattern];
+                    m_stagedChanges[item->ignorePattern].replace = true;
+                }
+                if (item->ignorePattern < m_presentIgnorePatterns.size()) {
+                    const auto &pattern = m_presentIgnorePatterns[item->ignorePattern].pattern;
+                    for (auto &change : m_stagedChanges) {
+                        change.prepend.removeAll(pattern);
+                        change.append.removeAll(pattern);
+                    }
                 }
                 return true;
             });
@@ -978,16 +989,22 @@ void SyncthingFileModel::queryIgnores()
         m_hasIgnorePatterns = errorMessage.isEmpty();
         m_isIgnoringAllByDefault = false;
         m_presentIgnorePatterns.clear();
-        if (!m_hasIgnorePatterns) {
-            return;
-        }
         m_presentIgnorePatterns.reserve(static_cast<std::size_t>(ignores.ignore.size()));
         for (auto &ignorePattern : ignores.ignore) {
             m_isIgnoringAllByDefault = m_isIgnoringAllByDefault || ignorePattern == m_ignoreAllByDefaultPattern;
             m_presentIgnorePatterns.emplace_back(std::move(ignorePattern));
         }
-        invalidateAllIndicies(QVector<int>{ Qt::DisplayRole }, 3, QModelIndex());
+        resetMatchingIgnorePatterns();
     });
+}
+
+void SyncthingFileModel::resetMatchingIgnorePatterns()
+{
+    forEachItem(m_root.get(), [](SyncthingItem *item) {
+        item->ignorePattern = SyncthingItem::ignorePatternNotInitialized;
+        return true;
+    });
+    invalidateAllIndicies(QVector<int>{ Qt::DisplayRole }, 3, QModelIndex());
 }
 
 void SyncthingFileModel::matchItemAgainstIgnorePatterns(SyncthingItem &item) const
