@@ -61,6 +61,7 @@ void SyncthingFileItemActionStaticData::initialize()
 
     // prevent unnecessary API calls (for the purpose of the context menu)
     m_connection.disablePolling();
+    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents);
 
     // connect Signals & Slots for logging
     connect(&m_connection, &SyncthingConnection::error, this, &SyncthingFileItemActionStaticData::logConnectionError);
