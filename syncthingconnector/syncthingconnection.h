@@ -184,7 +184,7 @@ public:
         DownloadProgress
         = (1 << 2), /**< events to emit the downloadProgressChanged() signal are requested/processed (used to show downloads in the UI) */
         RemoteIndexUpdated = (1
-            << 3), /**< requests the completion for the relevant folder/device again on `RemoteIndexUpdated` events (normally not requires as `FolderCompletion` events contain this information as well) */
+            << 3), /**< requests the completion for the relevant folder/device again on `RemoteIndexUpdated` events (normally not required as `FolderCompletion` events contain this information as well) */
         ItemFinished = (1
             << 4), /**< processes `ItemFinished` events to update errors and list file information of folders (normally not required as calls to requestDirStatistics() on `StateChanged` events cover this) */
         TrafficStatistics = (1 << 5), /**< polls for traffic statistics according to trafficPollInterval() */
