@@ -101,7 +101,7 @@
         <translation>Globale Dateistruktur durchsuchen</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="194"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="193"/>
         <source>Show/edit ignore patterns</source>
         <translation>Ignoriermuster anzeigen/editieren</translation>
     </message>
