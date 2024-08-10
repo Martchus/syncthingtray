@@ -93,7 +93,7 @@ function determineDisplayNameForAsset(name)
 function renderAsset(asset)
 {
     const name = asset.name;
-    if (name.endsWith(".sig")) {
+    if (name.endsWith(".sig") || name.includes('initial-build')) {
         return;
     }
     const platform = determinePlatformFromAssetName(name);
