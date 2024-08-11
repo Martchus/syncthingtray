@@ -499,7 +499,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
         <number>0</number>
        </property>
        <item>
-        <widget class="QTreeView" name="recentChangesTreeView">
+        <widget class="QtGui::BasicTreeView" name="recentChangesTreeView">
          <property name="rootIsDecorated">
           <bool>false</bool>
          </property>
@@ -545,6 +545,11 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
    <class>QtGui::DownloadView</class>
    <extends>QTreeView</extends>
    <header>./gui/downloadview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QtGui::BasicTreeView</class>
+   <extends>QTreeView</extends>
+   <header>./gui/helper.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

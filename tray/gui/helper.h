@@ -27,6 +27,15 @@ public:
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
 };
 
+class BasicTreeView : public QTreeView {
+    Q_OBJECT
+public:
+    explicit BasicTreeView(QWidget *parent);
+
+protected:
+    void mouseReleaseEvent(QMouseEvent *event) override;
+};
+
 void showViewMenu(const QPoint &position, const QTreeView &view, QMenu &menu);
 void drawBasicItemViewItem(QPainter &painter, const QStyleOptionViewItem &option);
 void setupPainterToDrawViewItemText(QPainter *painter, QStyleOptionViewItem &opt);

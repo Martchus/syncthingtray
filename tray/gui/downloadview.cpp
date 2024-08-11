@@ -21,18 +21,23 @@ DownloadView::DownloadView(QWidget *parent)
     header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     header()->hide();
     setItemDelegateForColumn(0, new DownloadItemDelegate(this));
-    setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, &DownloadView::customContextMenuRequested, this, &DownloadView::showContextMenu);
+    setContextMenuPolicy(Qt::NoContextMenu);
 }
 
 void DownloadView::mouseReleaseEvent(QMouseEvent *event)
 {
     QTreeView::mouseReleaseEvent(event);
+
+    const auto pos = event->pos();
+    if (event->button() == Qt::RightButton) {
+        showContextMenu(pos);
+        return;
+    }
+
     const auto *const dlModel = qobject_cast<const SyncthingDownloadModel *>(model());
     if (!dlModel) {
         return;
     }
-    const QPoint pos(event->pos());
     const QModelIndex clickedIndex(indexAt(event->pos()));
     if (!clickedIndex.isValid() || clickedIndex.column() != 0) {
         return;

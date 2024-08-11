@@ -25,8 +25,7 @@ DirView::DirView(QWidget *parent)
     header()->hide();
     setItemDelegate(new UnifiedItemDelegate(this));
     setItemDelegateForColumn(1, new DirButtonsItemDelegate(this));
-    setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, &DirView::customContextMenuRequested, this, &DirView::showContextMenu);
+    setContextMenuPolicy(Qt::NoContextMenu);
 }
 
 void DirView::mouseReleaseEvent(QMouseEvent *event)
@@ -34,6 +33,11 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
     QTreeView::mouseReleaseEvent(event);
 
     const auto pos = event->pos();
+    if (event->button() == Qt::RightButton) {
+        showContextMenu(pos);
+        return;
+    }
+
     const auto clickedRow = ClickedRow(this, pos);
     if (!clickedRow) {
         return;

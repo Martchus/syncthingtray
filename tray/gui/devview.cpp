@@ -23,8 +23,7 @@ DevView::DevView(QWidget *parent)
     header()->hide();
     setItemDelegate(new UnifiedItemDelegate(this));
     setItemDelegateForColumn(1, new DevButtonsItemDelegate(this));
-    setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, &DevView::customContextMenuRequested, this, &DevView::showContextMenu);
+    setContextMenuPolicy(Qt::NoContextMenu);
 }
 
 void DevView::mouseReleaseEvent(QMouseEvent *event)
@@ -32,6 +31,11 @@ void DevView::mouseReleaseEvent(QMouseEvent *event)
     QTreeView::mouseReleaseEvent(event);
 
     const auto pos = event->pos();
+    if (event->button() == Qt::RightButton) {
+        showContextMenu(pos);
+        return;
+    }
+
     const auto clickedRow = ClickedRow(this, pos);
     if (!clickedRow) {
         return;

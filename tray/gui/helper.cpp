@@ -6,6 +6,7 @@
 
 #include <QApplication>
 #include <QMenu>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QPoint>
 #include <QStyleOptionViewItem>
@@ -39,25 +40,33 @@ void UnifiedItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
     QStyledItemDelegate::paint(painter, opt, index);
 }
 
+BasicTreeView::BasicTreeView(QWidget *parent)
+    : QTreeView(parent)
+{
+    // emit customContextMenuRequested() manually because as of Qt 6.8 it otherwise does not work when the widget is
+    // a child of a popup
+    setContextMenuPolicy(Qt::NoContextMenu);
+}
+
+void BasicTreeView::mouseReleaseEvent(QMouseEvent *event)
+{
+    QTreeView::mouseReleaseEvent(event);
+    if (event->button() == Qt::RightButton) {
+        emit customContextMenuRequested(event->pos());
+    }
+}
+
+/*!
+ * \brief Shows \a menu at the specified \a position for the specified \a view.
+ * \remarks
+ * - Maps \a position to the viewport of \a view for correct positioning for mouse events.
+ * - The hack to map coordinates to top-level widget (to workaround behavior fixed by Qt commit
+ *   d0b5adb3b28bf5b9d94ef46cecf402994e7c5b38) is no longer necassary as the code no uses mouse
+ *   events directly (instead of the context menu event).
+ */
 void showViewMenu(const QPoint &position, const QTreeView &view, QMenu &menu)
 {
-    // map the coordinates to top-level widget if it is a QMenu
-    // note: This necessity is actually considered a bug which is fixed by d0b5adb3b28bf5b9d94ef46cecf402994e7c5b38 which is
-    //       part of Qt 6.2.3 and later.
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    constexpr auto needsHack = true;
-#elif QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
-    constexpr auto needsHack = false;
-#else
-    static const auto needsHack = QLibraryInfo::version() < QVersionNumber(6, 2, 3);
-#endif
-    const QMenu *topLevelWidget;
-    if (needsHack && (topLevelWidget = qobject_cast<const QMenu *>(view.topLevelWidget()))
-        && (topLevelWidget->windowFlags() & Qt::Popup) == Qt::Popup) {
-        menu.exec(topLevelWidget->mapToGlobal(position));
-    } else {
-        menu.exec(view.viewport()->mapToGlobal(position));
-    }
+    menu.exec(view.viewport()->mapToGlobal(position));
 }
 
 void drawBasicItemViewItem(QPainter &painter, const QStyleOptionViewItem &option)
