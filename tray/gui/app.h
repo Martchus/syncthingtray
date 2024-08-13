@@ -30,6 +30,7 @@ Q_SIGNALS:
 protected:
 
 private Q_SLOTS:
+    void reload();
 
 private:
     QQmlApplicationEngine m_engine;
