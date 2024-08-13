@@ -25,38 +25,8 @@ ApplicationWindow {
     readonly property int spacing: 7
     readonly property string faUrlBase: "image://fa/"
 
-    Dialog {
+    AboutDialog {
         id: aboutDialog
-        modal: true
-        focus: true
-        parent: null
-        anchors.centerIn: parent
-        standardButtons: Dialog.Ok
-        width: 300
-        title: qsTr("About")
-        contentItem: ColumnLayout {
-            Image {
-                readonly property double size: 128
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: size
-                Layout.preferredHeight: size
-                source: "qrc:/icons/hicolor/scalable/app/syncthingtray.svg"
-                sourceSize.width: size
-                sourceSize.height: size
-            }
-            Label {
-                text: Qt.application.name
-                Layout.alignment: Qt.AlignHCenter
-            }
-            Label {
-                text: "Version " + Qt.application.version
-                Layout.alignment: Qt.AlignHCenter
-            }
-            Label {
-                text: "Developed by " + Qt.application.organization
-                Layout.alignment: Qt.AlignHCenter
-            }
-        }
     }
 
     Drawer {
@@ -128,78 +98,15 @@ ApplicationWindow {
 
             readonly property Page currentPage: children[currentIndex]
 
-            Page {
-                id: dirsPage
-                title: qsTr("Folder overview")
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                ListView {
-                    anchors.fill: parent
-                    model: DelegateModel {
-                        model: dirModel
-                        delegate: ItemDelegate {
-                            width: parent.width
-                            text: name
-                        }
-                    }
-                    ScrollIndicator.vertical: ScrollIndicator { }
-                }
+            DirsPage {
             }
-
-            Page {
-                id: devsPage
-                title: qsTr("Device overview")
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                ListView {
-                    anchors.fill: parent
-                    model: DelegateModel {
-                        model: devModel
-                        delegate: ItemDelegate {
-                            width: parent.width
-                            text: name
-                        }
-                    }
-                    ScrollIndicator.vertical: ScrollIndicator { }
-                }
+            DevsPage {
             }
-
-            Page {
-                id: changesPage
-                title: qsTr("Recent changes")
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                ListView {
-                    anchors.fill: parent
-                    model: DelegateModel {
-                        model: changesModel
-                        delegate: ItemDelegate {
-                            width: parent.width
-                            text: path
-                        }
-                    }
-                    ScrollIndicator.vertical: ScrollIndicator { }
-                }
+            ChangesPage {
             }
-
-            Page {
-                id: syncthingPage
-                title: qsTr("Syncthing")
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Label {
-                    text: "TODO: webview"
-                }
+            WebViewPage {
             }
-
-            Page {
-                id: settingsPage
-                title: qsTr("App settings")
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Label {
-                    text: "TODO: settings UI"
-                }
+            SettingsPage {
             }
         }
     }

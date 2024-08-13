@@ -7,6 +7,10 @@
 #include "../gui/trayicon.h"
 #include "../gui/traywidget.h"
 
+#ifdef GUI_QTQUICK
+#include "../gui/app.h"
+#endif
+
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #include <syncthingwidgets/settings/settings.h>
 
@@ -40,21 +44,6 @@
 #include <QNetworkAccessManager>
 #include <QSettings>
 #include <QStringBuilder>
-
-#ifdef GUI_QTQUICK
-#include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include <QQuickStyle>
-
-#include <qtforkawesome/renderer.h>
-#include <qtquickforkawesome/imageprovider.h>
-
-#include <syncthingmodel/syncthingdirectorymodel.h>
-#include <syncthingmodel/syncthingdevicemodel.h>
-#include <syncthingmodel/syncthingrecentchangesmodel.h>
-
-#include <syncthingconnector/syncthingconnection.h>
-#endif
 
 #include <iostream>
 
@@ -251,7 +240,6 @@ static int runApplication(int argc, const char *const *argv)
 
 #ifdef GUI_QTQUICK
     if (qtConfigArgs.qtQuickGuiArg().isPresent()) {
-        qputenv("QML_COMPAT_RESOLVE_URLS_ON_ASSIGNMENT", "1");
         SET_QT_APPLICATION_INFO;
         auto app = QApplication(argc, const_cast<char **>(argv));
         auto &settings = Settings::values();
@@ -260,32 +248,10 @@ static int runApplication(int argc, const char *const *argv)
         settings.qt.apply();
         qtConfigArgs.applySettings(true);
         qtConfigArgs.applySettingsForQuickGui();
-
-        auto engine = QQmlApplicationEngine();
-        auto renderer = QtForkAwesome::Renderer();
-        auto context = engine.rootContext();
-        auto connection = Data::SyncthingConnection();
-        auto dirModel = Data::SyncthingDirectoryModel(connection);
-        auto devModel = Data::SyncthingDeviceModel(connection);
-        auto changesModel = Data::SyncthingRecentChangesModel(connection);
         networkAccessManager().setParent(&app);
-        connection.connect(settings.connection.primary);
-        context->setContextProperty(QStringLiteral("connection"), &connection);
-        context->setContextProperty(QStringLiteral("dirModel"), &dirModel);
-        context->setContextProperty(QStringLiteral("devModel"), &devModel);
-        context->setContextProperty(QStringLiteral("changesModel"), &changesModel);
-        QObject::connect(
-            &engine, &QQmlApplicationEngine::objectCreated, &app,
-            [](QObject *obj, const QUrl &objUrl) {
-                if (!obj) {
-                    std::cerr << "Unable to load " << objUrl.toString().toStdString() << '\n';
-                    QCoreApplication::exit(EXIT_FAILURE);
-                }
-            },
-            Qt::QueuedConnection);
-        QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
-        engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(renderer));
-        engine.loadFromModule("Main", "Main");
+
+        auto quickApp = App();
+        quickApp.connection()->connect(settings.connection.primary);
         return app.exec();
     }
 #endif

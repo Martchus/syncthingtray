@@ -37,6 +37,8 @@ set(WIDGETS_SRC_FILES
     gui/helper.cpp)
 set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 set(WIDGETS_UI_FILES gui/traywidget.ui)
+set(QML_HEADER_FILES gui/app.h)
+set(QML_SRC_FILES gui/app.cpp)
 
 set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
              translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
@@ -201,7 +203,14 @@ if (QUICK_GUI)
         URI "Main"
         VERSION 1.0
         NO_PLUGIN
-        QML_FILES gui/qml/Main.qml
+        QML_FILES
+            gui/qml/Main.qml
+            gui/qml/AboutDialog.qml
+            gui/qml/DirsPage.qml
+            gui/qml/DevsPage.qml
+            gui/qml/ChangesPage.qml
+            gui/qml/WebViewPage.qml
+            gui/qml/SettingsPage.qml
         RESOURCE_PREFIX "/qt/qml/"
     )
 endif ()
