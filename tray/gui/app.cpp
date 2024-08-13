@@ -1,5 +1,7 @@
 #include "./app.h"
 
+#include <syncthingmodel/syncthingicons.h>
+
 #include <qtforkawesome/renderer.h>
 
 #include <qtquickforkawesome/imageprovider.h>
@@ -19,6 +21,7 @@ App::App(QObject *parent)
     , m_dirModel(m_connection)
     , m_devModel(m_connection)
     , m_changesModel(m_connection)
+    , m_faUrlBase(QStringLiteral("image://fa/"))
 {
     auto *const app = QGuiApplication::instance();
     auto *const context = m_engine.rootContext();

@@ -23,7 +23,6 @@ ApplicationWindow {
 
     readonly property bool inPortrait: window.width < window.height
     readonly property int spacing: 7
-    readonly property string faUrlBase: "image://fa/"
 
     AboutDialog {
         id: aboutDialog
@@ -47,7 +46,7 @@ ApplicationWindow {
             footer: ItemDelegate {
                 width: parent.width
                 text: Qt.application.version
-                icon.source: window.faUrlBase + "info-circle"
+                icon.source: app.faUrlBase + "info-circle"
                 onClicked: aboutDialog.visible = true
             }
             footerPositioning: ListView.OverlayFooter
@@ -75,7 +74,7 @@ ApplicationWindow {
             }
             delegate: ItemDelegate {
                 text: name
-                icon.source: window.faUrlBase + iconName
+                icon.source: app.faUrlBase + iconName
                 width: parent.width
                 onClicked: {
                     drawerListView.currentIndex = index

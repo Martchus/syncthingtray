@@ -7,6 +7,6 @@ Page {
     Layout.fillWidth: true
     Layout.fillHeight: true
     Label {
-        text: "TODO: settings UI"
+        text: "TODO: implement settings UI"
     }
 }

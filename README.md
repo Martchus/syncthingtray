@@ -760,13 +760,14 @@ variable `PLASMA_USE_QT_SCALING=1` might help.
 ## Copyright notice and license
 Copyright © 2016-2024 Marius Kittler
 
-All code is licensed under [GPL-2-or-later](LICENSE). This does *not* apply to
-code contained in Git repositories included as Git submodule (which contain
-their own README and licensing information).
+All code - unless stated otherwise in a comment on top of the file - is licensed under [GPL-2-or-later](LICENSE). This does *not* apply
+to code contained in Git repositories included as Git submodule (which contain their own README and licensing information).
 
 ## Attribution for 3rd party content
 * Some icons are taken from [Fork Awesome](https://forkaweso.me/Fork-Awesome) (see [their license](https://forkaweso.me/Fork-Awesome/license)). These are provided via [qtforkawesome](https://github.com/Martchus/qtforkawesome).
 * The Syncthing icons are taken from the [Syncthing](https://github.com/syncthing/syncthing) project.
 * All other icons found in this repository are taken from the [KDE/Breeze](https://invent.kde.org/frameworks/breeze-icons) project.
+* Code under `tray/gui/quick` originates from [Kirigami](https://invent.kde.org/frameworks/kirigami). The comments at the beginning of those
+  files state the original authors/contributors.
 
 None of these icons have been (intentionally) modified so no copyright for modifications is asserted.

@@ -45,6 +45,10 @@
 #include <QSettings>
 #include <QStringBuilder>
 
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGTRAY_HAS_WEBVIEW)
+#include <QtWebView/QtWebView>
+#endif
+
 #include <iostream>
 
 #ifdef Q_OS_ANDROID
@@ -240,6 +244,9 @@ static int runApplication(int argc, const char *const *argv)
 
 #ifdef GUI_QTQUICK
     if (qtConfigArgs.qtQuickGuiArg().isPresent()) {
+#ifdef SYNCTHINGTRAY_HAS_WEBVIEW
+        QtWebView::initialize();
+#endif
         SET_QT_APPLICATION_INFO;
         auto app = QApplication(argc, const_cast<char **>(argv));
         auto &settings = Settings::values();
@@ -249,6 +256,7 @@ static int runApplication(int argc, const char *const *argv)
         qtConfigArgs.applySettings(true);
         qtConfigArgs.applySettingsForQuickGui();
         networkAccessManager().setParent(&app);
+        Data::IconManager::instance().applySettings();
 
         auto quickApp = App();
         quickApp.connection()->connect(settings.connection.primary);

@@ -121,7 +121,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     friend MiscTests;
 
     Q_OBJECT
-    Q_PROPERTY(QString syncthingUrl READ syncthingUrl WRITE setSyncthingUrl)
+    Q_PROPERTY(QString syncthingUrl READ syncthingUrl WRITE setSyncthingUrl NOTIFY syncthingUrlChanged)
     Q_PROPERTY(QByteArray apiKey READ apiKey WRITE setApiKey)
     Q_PROPERTY(bool isLocal READ isLocal)
     Q_PROPERTY(QString user READ user)
@@ -349,6 +349,7 @@ public:
     QueryResult setIgnores(const QString &dirId, const SyncthingIgnores &ignores, std::function<void(QString &&)> &&callback);
 
 Q_SIGNALS:
+    void syncthingUrlChanged(const QString &newUrl);
     void newConfig(const QJsonObject &rawConfig);
     void newDirs(const std::vector<Data::SyncthingDir> &dirs);
     void newDevices(const std::vector<Data::SyncthingDev> &devs);
@@ -594,7 +595,9 @@ inline const QString &SyncthingConnection::syncthingUrl() const
  */
 inline void SyncthingConnection::setSyncthingUrl(const QString &url)
 {
-    m_syncthingUrl = url;
+    if (m_syncthingUrl != url) {
+        emit syncthingUrlChanged(m_syncthingUrl = url);
+    }
 }
 
 /*!

@@ -6,15 +6,12 @@ Page {
     title: qsTr("Folder overview")
     Layout.fillWidth: true
     Layout.fillHeight: true
-    ListView {
-        anchors.fill: parent
-        model: DelegateModel {
-            model: app.dirModel
-            delegate: ItemDelegate {
-                width: parent.width
-                text: name
-            }
-        }
-        ScrollIndicator.vertical: ScrollIndicator { }
+
+    function dataForSource(source,  role) {
+        return app.dirModel.data(app.dirModel.index(source.row, source.col), role)
+    }
+
+    DirListView {
+        mainModel: app.dirModel
     }
 }

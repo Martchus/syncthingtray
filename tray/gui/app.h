@@ -17,6 +17,7 @@ class App : public QObject {
     Q_PROPERTY(Data::SyncthingDirectoryModel* dirModel READ dirModel CONSTANT)
     Q_PROPERTY(Data::SyncthingDeviceModel* devModel READ devModel CONSTANT)
     Q_PROPERTY(Data::SyncthingRecentChangesModel* changesModel READ changesModel CONSTANT)
+    Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
 
 public:
     explicit App(QObject *parent = nullptr);
@@ -24,6 +25,7 @@ public:
     Data::SyncthingDirectoryModel *dirModel() { return &m_dirModel; }
     Data::SyncthingDeviceModel *devModel() { return &m_devModel; }
     Data::SyncthingRecentChangesModel *changesModel() { return &m_changesModel; }
+    const QString &faUrlBase() { return m_faUrlBase; }
 
 Q_SIGNALS:
 
@@ -37,6 +39,7 @@ private:
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingRecentChangesModel m_changesModel;
+    QString m_faUrlBase;
 };
 } // namespace QtGui
 

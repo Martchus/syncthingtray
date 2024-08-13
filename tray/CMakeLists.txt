@@ -38,8 +38,8 @@ set(WIDGETS_SRC_FILES
     gui/helper.cpp)
 set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 set(WIDGETS_UI_FILES gui/traywidget.ui)
-set(QML_HEADER_FILES gui/app.h)
-set(QML_SRC_FILES gui/app.cpp)
+set(QML_HEADER_FILES gui/app.h gui/quick/scenegraph/managedtexturenode.h)
+set(QML_SRC_FILES gui/app.cpp gui/quick/scenegraph/managedtexturenode.cpp)
 
 set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
              translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
@@ -188,6 +188,20 @@ include(QtGuiConfig)
 if (QUICK_GUI)
     list(APPEND ADDITIONAL_QT_MODULES Svg)
     list(APPEND ADDITIONAL_QT_REPOS svg)
+    list(APPEND PRIVATE_INCLUDE_DIRS gui/quick)
+
+    # check whether Qt WebView is present
+    include(QtLinkage)
+    find_package("${QT_PACKAGE_PREFIX}WebView" "${META_QT_VERSION}")
+    find_package("${QT_PACKAGE_PREFIX}WebViewQuick" "${META_QT_VERSION}")
+    if ("${${QT_PACKAGE_PREFIX}WebView_FOUND}" AND "${${QT_PACKAGE_PREFIX}WebViewQuick_FOUND}")
+        list(APPEND ADDITIONAL_QT_MODULES WebView WebViewQuick)
+        list(APPEND ADDITIONAL_QT_REPOS webview)
+        set_property(
+            SOURCE application/main.cpp
+            APPEND
+            PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW)
+    endif ()
 endif ()
 
 # include further modules to apply configuration
@@ -224,6 +238,15 @@ if (QUICK_GUI)
             gui/qml/ChangesPage.qml
             gui/qml/WebViewPage.qml
             gui/qml/SettingsPage.qml
+            gui/qml/ExpandableDelegate.qml
+            gui/qml/ExpandableItemDelegate.qml
+            gui/qml/ExpandableListView.qml
+            gui/qml/DetailsListView.qml
+            gui/qml/DirListView.qml
+            gui/qml/DirDelegate.qml
+        SOURCES
+            gui/quick/quickicon.h
+            gui/quick/quickicon.cpp
         RESOURCE_PREFIX "/qt/qml/"
     )
 endif ()
