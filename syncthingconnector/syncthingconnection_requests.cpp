@@ -47,10 +47,8 @@ inline QString formatQueryItem(const QString &value)
  */
 QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const QUrlQuery &query, bool rest, bool longPolling)
 {
-    QUrl url(m_syncthingUrl);
+    auto url = makeUrlWithCredentials();
     url.setPath(rest ? (url.path() % QStringLiteral("/rest/") % path) : (url.path() + path));
-    url.setUserName(user());
-    url.setPassword(password());
     url.setQuery(query);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));

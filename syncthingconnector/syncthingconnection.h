@@ -205,6 +205,7 @@ public:
     const QString &user() const;
     const QString &password() const;
     void setCredentials(const QString &user, const QString &password);
+    Q_INVOKABLE QUrl makeUrlWithCredentials() const;
     bool isUsingDeprecatedRoutes() const;
     void setUseDeprecatedRoutes(bool useLegacyRoutes);
     PollingFlags pollingFlags() const;

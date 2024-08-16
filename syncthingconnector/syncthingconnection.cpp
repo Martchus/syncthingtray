@@ -1337,6 +1337,17 @@ void SyncthingConnection::invalidateHasOutOfSyncDirs()
 }
 
 /*!
+ * \brief Returns syncthingUrl() with userName() and password().
+ */
+QUrl SyncthingConnection::makeUrlWithCredentials() const
+{
+    auto url = QUrl(m_syncthingUrl);
+    url.setUserName(m_user);
+    url.setPassword(m_password);
+    return url;
+}
+
+/*!
  * \fn SyncthingConnection::newConfig()
  * \brief Indicates new configuration (dirs, devs, ...) is available.
  * \remarks
