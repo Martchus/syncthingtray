@@ -198,6 +198,18 @@ include(ShellCompletion)
 include(Doxygen)
 include(ConfigHeader)
 
+# deduce major Qt version from package prefix
+if (NOT QT_PACKAGE_PREFIX)
+    set(MAJOR_QT_VERSION "5")
+elseif (QT_PACKAGE_PREFIX MATCHES ".*Qt([0-9]+).*")
+    set(MAJOR_QT_VERSION "${CMAKE_MATCH_1}")
+endif ()
+
+# require Qt 6 for the Qt Quick GUI
+if (QUICK_GUI AND (MAJOR_QT_VERSION VERSION_LESS 6 OR MAJOR_QT_VERSION VERSION_GREATER_EQUAL 7))
+    message(FATAL_ERROR "The Qt Quick GUI is only compatible with Qt 6 (but Qt ${MAJOR_QT_VERSION} was found).")
+endif ()
+
 # add Qml module
 if (QUICK_GUI)
     qt_add_qml_module(${META_TARGET_NAME}
