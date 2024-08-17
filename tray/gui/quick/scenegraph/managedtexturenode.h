@@ -16,8 +16,7 @@
 
 namespace QtGui {
 
-class ManagedTextureNode : public QSGSimpleTextureNode
-{
+class ManagedTextureNode : public QSGSimpleTextureNode {
     Q_DISABLE_COPY(ManagedTextureNode)
 public:
     ManagedTextureNode();
@@ -34,8 +33,7 @@ struct ImageTexturesCachePrivate {
     TexturesCache cache;
 };
 
-class ImageTexturesCache
-{
+class ImageTexturesCache {
 public:
     ImageTexturesCache();
     ~ImageTexturesCache();
@@ -54,4 +52,4 @@ private:
     std::unique_ptr<ImageTexturesCachePrivate> d;
 };
 
-}
+} // namespace QtGui

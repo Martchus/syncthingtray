@@ -63,4 +63,4 @@ std::shared_ptr<QSGTexture> ImageTexturesCache::loadTexture(QQuickWindow *window
     return loadTexture(window, image, {});
 }
 
-}
+} // namespace QtGui

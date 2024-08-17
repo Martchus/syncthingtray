@@ -6,8 +6,8 @@
 
 #include <qtquickforkawesome/imageprovider.h>
 
-#include <QQmlContext>
 #include <QGuiApplication>
+#include <QQmlContext>
 
 #include <cstdlib>
 #include <iostream>

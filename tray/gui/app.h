@@ -3,8 +3,8 @@
 
 #include <QQmlApplicationEngine>
 
-#include <syncthingmodel/syncthingdirectorymodel.h>
 #include <syncthingmodel/syncthingdevicemodel.h>
+#include <syncthingmodel/syncthingdirectorymodel.h>
 #include <syncthingmodel/syncthingrecentchangesmodel.h>
 
 #include <syncthingconnector/syncthingconnection.h>
@@ -13,24 +13,38 @@ namespace QtGui {
 
 class App : public QObject {
     Q_OBJECT
-    Q_PROPERTY(Data::SyncthingConnection* connection READ connection CONSTANT)
-    Q_PROPERTY(Data::SyncthingDirectoryModel* dirModel READ dirModel CONSTANT)
-    Q_PROPERTY(Data::SyncthingDeviceModel* devModel READ devModel CONSTANT)
-    Q_PROPERTY(Data::SyncthingRecentChangesModel* changesModel READ changesModel CONSTANT)
+    Q_PROPERTY(Data::SyncthingConnection *connection READ connection CONSTANT)
+    Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel CONSTANT)
+    Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel CONSTANT)
+    Q_PROPERTY(Data::SyncthingRecentChangesModel *changesModel READ changesModel CONSTANT)
     Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
 
 public:
     explicit App(QObject *parent = nullptr);
-    Data::SyncthingConnection *connection() { return &m_connection; }
-    Data::SyncthingDirectoryModel *dirModel() { return &m_dirModel; }
-    Data::SyncthingDeviceModel *devModel() { return &m_devModel; }
-    Data::SyncthingRecentChangesModel *changesModel() { return &m_changesModel; }
-    const QString &faUrlBase() { return m_faUrlBase; }
+    Data::SyncthingConnection *connection()
+    {
+        return &m_connection;
+    }
+    Data::SyncthingDirectoryModel *dirModel()
+    {
+        return &m_dirModel;
+    }
+    Data::SyncthingDeviceModel *devModel()
+    {
+        return &m_devModel;
+    }
+    Data::SyncthingRecentChangesModel *changesModel()
+    {
+        return &m_changesModel;
+    }
+    const QString &faUrlBase()
+    {
+        return m_faUrlBase;
+    }
 
 Q_SIGNALS:
 
 protected:
-
 private Q_SLOTS:
 
 private:

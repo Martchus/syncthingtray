@@ -226,29 +226,32 @@ endif ()
 
 # add Qml module
 if (QUICK_GUI)
-    qt_add_qml_module(${META_TARGET_NAME}
-        URI "Main"
-        VERSION 1.0
+    qt_add_qml_module(
+        ${META_TARGET_NAME}
+        URI
+        "Main"
+        VERSION
+        1.0
         NO_PLUGIN
         QML_FILES
-            gui/qml/Main.qml
-            gui/qml/AboutDialog.qml
-            gui/qml/DirsPage.qml
-            gui/qml/DevsPage.qml
-            gui/qml/ChangesPage.qml
-            gui/qml/WebViewPage.qml
-            gui/qml/SettingsPage.qml
-            gui/qml/ExpandableDelegate.qml
-            gui/qml/ExpandableItemDelegate.qml
-            gui/qml/ExpandableListView.qml
-            gui/qml/DetailsListView.qml
-            gui/qml/DirListView.qml
-            gui/qml/DirDelegate.qml
+        gui/qml/Main.qml
+        gui/qml/AboutDialog.qml
+        gui/qml/DirsPage.qml
+        gui/qml/DevsPage.qml
+        gui/qml/ChangesPage.qml
+        gui/qml/WebViewPage.qml
+        gui/qml/SettingsPage.qml
+        gui/qml/ExpandableDelegate.qml
+        gui/qml/ExpandableItemDelegate.qml
+        gui/qml/ExpandableListView.qml
+        gui/qml/DetailsListView.qml
+        gui/qml/DirListView.qml
+        gui/qml/DirDelegate.qml
         SOURCES
-            gui/quick/quickicon.h
-            gui/quick/quickicon.cpp
-        RESOURCE_PREFIX "/qt/qml/"
-    )
+        gui/quick/quickicon.h
+        gui/quick/quickicon.cpp
+        RESOURCE_PREFIX
+        "/qt/qml/")
 endif ()
 
 # create desktop file using previously defined meta data
