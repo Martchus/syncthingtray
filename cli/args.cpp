@@ -13,7 +13,10 @@ Args::Args()
     , rescanAll("rescan-all", '\0', "rescans all folders")
     , pause("pause", '\0', "pauses the specified folders and devices")
     , resume("resume", '\0', "resumes the specified folders and devices")
-    , waitForIdle("wait-for-idle", 'w', "waits until the specified dirs/devs are idling")
+    , waitForIdle("wait-for-idle", 'w',
+          "waits until the specified dirs/devs are idling\nnote: Directories are considered idling if they are locally up-to-date and NOT "
+          "otherwise busy with e.g. scanning. Devices are considered idling if they are disconnected or all directories shared with the device are "
+          "remotely up-to-date.")
     , pwd("pwd", 'p', "operates in the current working directory")
     , cat("cat", '\0', "prints the current Syncthing configuration")
     , edit("edit", '\0', "allows editing the Syncthing configuration using an external editor")
@@ -32,7 +35,8 @@ Args::Args()
     , atLeast("at-least", 'a', "specifies for how many milliseconds Syncthing must idle (prevents exiting too early in case of flaky status)",
           { "number" })
     , timeout("timeout", 't', "specifies how many milliseconds to wait at most", { "number" })
-    , requireDevsConnected("require-devs-connected", '\0', "require the specified devices to be connected")
+    , requireDevsConnected(
+          "require-devs-connected", '\0', "requires all specified devices to be connected (by default disconnected devices are considered idling)")
     , editor("editor", '\0', "specifies the editor to be opened", { "editor name", "editor option" })
     , configFile("config-file", 'f', "specifies the Syncthing config file to read API key and URL from, when not explicitly specified", { "path" })
     , apiKey("api-key", 'k', "specifies the API key", { "key" })
@@ -49,7 +53,7 @@ Args::Args()
     status.setSubArguments({ &stats, &dir, &dev, &allDirs, &allDevs });
     status.setExample(PROJECT_NAME " status # shows all dirs and devs\n" PROJECT_NAME " status --dir dir1 --dir dir2 --dev dev1 --dev dev2");
     waitForIdle.setSubArguments({ &dir, &dev, &allDirs, &allDevs, &atLeast, &timeout, &requireDevsConnected });
-    waitForIdle.setExample(PROJECT_NAME " wait-for-idle --timeout 1800000 --at-least 5000 && systemctl poweroff\n" PROJECT_NAME
+    waitForIdle.setExample(PROJECT_NAME " wait-for-idle --timeout 1800000 --at-least 5000 --all-devs --all-dirs && systemctl poweroff\n" PROJECT_NAME
                                         " wait-for-idle --dir dir1 --dir dir2 --dev dev1 --dev dev2 --at-least 5000");
     pwd.setSubArguments({ &statusPwd, &rescanPwd, &pausePwd, &resumePwd });
 
