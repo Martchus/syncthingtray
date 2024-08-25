@@ -548,19 +548,19 @@ These examples were for KDE 5. It looks a bit different for KDE 6. Checkout my A
 openSUSE packaging for further examples.
 
 The directory where the `*.so` file needs to be installed to, seems to differ from distribution to
-distribution. The right directory for your distribution can be queried from qmake using
-`qmake-qt5 -query QT_INSTALL_PLUGINS`. In doubt, just look where other Qt plugins are stored.
+distribution. The right directory for your distribution can be queried using qmake using, e.g.
+`qmake-qt5 -query QT_INSTALL_PLUGINS` or `qmake6 -query QT_INSTALL_PLUGINS` depending on the Qt
+version. In doubt, just look where other Qt plugins are stored.
 
-Actually, the build system should be able to do that query automatically. It is also possible to
-specify the directory manually, e.g. for Tumbleweed one would add
-`-DQT_PLUGIN_DIR=/usr/lib64/qt5/plugins` to the CMake arguments.
+The build system is able to do that query automatically. In case this does not work, it is also
+possible to specify the directory manually, e.g. for Tumbleweed one would add
+`-DQT_PLUGIN_DIR=/usr/lib64/qt6/plugins` to the CMake arguments.
 
 ---
 
-Also be sure that the version of the plasma framework the plasmoid was built against is *not* newer
-than the version actually installed on the system. That can for instance easily happen when using
-`tumbleweed-cli` for sticking to a previous snapshot but having the latest version of the plasmoid
-from my home repository installed.
+Also be sure that the version of the Plasma framework the Plasmoid was built against is *not* newer
+than the version actually installed on the system. This can happen if repositories are misconfigured,
+e.g. when using Fedora 39 but adding the Fedora 40 repo.
 
 ---
 
