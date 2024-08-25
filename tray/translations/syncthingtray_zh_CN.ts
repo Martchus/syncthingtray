@@ -4,27 +4,27 @@
 <context>
     <name>QtGui::DevView</name>
     <message>
-        <location filename="../gui/devview.cpp" line="60"/>
+        <location filename="../gui/devview.cpp" line="64"/>
         <source>Copy value</source>
         <translation>复制值</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="66"/>
+        <location filename="../gui/devview.cpp" line="70"/>
         <source>Copy name</source>
         <translation>复制名字</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="69"/>
+        <location filename="../gui/devview.cpp" line="73"/>
         <source>Copy ID</source>
         <translation>复制 ID</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="75"/>
+        <location filename="../gui/devview.cpp" line="79"/>
         <source>Resume</source>
         <translation>恢复</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="80"/>
+        <location filename="../gui/devview.cpp" line="84"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
@@ -32,47 +32,47 @@
 <context>
     <name>QtGui::DirView</name>
     <message>
-        <location filename="../gui/dirview.cpp" line="77"/>
+        <location filename="../gui/dirview.cpp" line="81"/>
         <source>Copy value</source>
         <translation>复制值</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="83"/>
+        <location filename="../gui/dirview.cpp" line="87"/>
         <source>Copy label/ID</source>
         <translation>复制 标签/ID</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="86"/>
+        <location filename="../gui/dirview.cpp" line="90"/>
         <source>Copy path</source>
         <translation>复制路径</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="91"/>
+        <location filename="../gui/dirview.cpp" line="95"/>
         <source>Rescan</source>
         <translation>重新扫描</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="96"/>
+        <location filename="../gui/dirview.cpp" line="100"/>
         <source>Resume</source>
         <translation>恢复</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="101"/>
+        <location filename="../gui/dirview.cpp" line="105"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="105"/>
+        <location filename="../gui/dirview.cpp" line="109"/>
         <source>Open in file browser</source>
         <translation>在文件浏览器中打开</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="109"/>
+        <location filename="../gui/dirview.cpp" line="113"/>
         <source>Browse remote files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="111"/>
+        <location filename="../gui/dirview.cpp" line="115"/>
         <source>Show/edit ignore patterns</source>
         <translation type="unfinished"></translation>
     </message>
@@ -80,17 +80,17 @@
 <context>
     <name>QtGui::DownloadView</name>
     <message>
-        <location filename="../gui/downloadview.cpp" line="65"/>
+        <location filename="../gui/downloadview.cpp" line="70"/>
         <source>Copy value</source>
         <translation>复制值</translation>
     </message>
     <message>
-        <location filename="../gui/downloadview.cpp" line="70"/>
+        <location filename="../gui/downloadview.cpp" line="75"/>
         <source>Copy label/ID</source>
         <translation>复制 标签/ID</translation>
     </message>
     <message>
-        <location filename="../gui/downloadview.cpp" line="74"/>
+        <location filename="../gui/downloadview.cpp" line="79"/>
         <source>Open in file browser</source>
         <translation>在文件浏览器中打开</translation>
     </message>
@@ -421,12 +421,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="66"/>
+        <location filename="../application/main.cpp" line="78"/>
         <source>Unable to </source>
         <translation>无法 </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="101"/>
+        <location filename="../application/main.cpp" line="113"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>系统托盘当前不可用。不过，您可以使用 --windowed 将托盘菜单作为常规窗口打开。也可以使用 --wait 启动 Syncthing Tray 以等待系统托盘可用，而不是显示此消息。</translation>
     </message>
@@ -439,7 +439,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="vanished">请注意，设置对话框允许从本地 Syncthing 配置导入 URL、凭据和 API 密钥。</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="128"/>
+        <location filename="../application/main.cpp" line="140"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Qt 库没有使用托盘图标支持构建。不过，您可以使用 -w 将托盘菜单作为常规窗口打开。</translation>
     </message>
