@@ -442,18 +442,40 @@ void Wizard::handleConfigurationApplied(const QString &configError, Data::Syncth
 WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     : QWizardPage(parent)
 {
+    auto readmeUrl = QString();
+    if constexpr (std::string_view(APP_VERSION).find('-') == std::string_view::npos) {
+        readmeUrl = QStringLiteral("https://github.com/" APP_AUTHOR "/" PROJECT_NAME "/blob/v" APP_VERSION "/README.md");
+    } else {
+        readmeUrl = QStringLiteral("https://github.com/" APP_AUTHOR "/" PROJECT_NAME "/blob/master/README.md");
+    }
+
     auto *const infoLabel = new QLabel(this);
-    infoLabel->setWordWrap(true);
+    auto infoText = QString();
     const auto &settings = Settings::values();
+#if !defined(Q_OS_WINDOWS) && !defined(Q_OS_DARWIN) && !defined(Q_OS_ANDROID)
+    if (!settings.isPlasmoid && qEnvironmentVariable("XDG_CURRENT_DESKTOP").split(QChar(':')).contains(QStringLiteral("KDE"))) {
+        infoText += tr("<p><strong>You have started the standalone version of Syncthing Tray. It looks like you are on KDE Plasma, though. "
+                       "On KDE the preferred version of Syncthing Tray is the Plasmoid which is supposed to be used <em>instead</em> of "
+                       "the standalone version.</strong> Checkout the documentation about <a href=\"%1\">configuring the Plasmoid</a> for the "
+                       "best way to use Syncthing Tray on KDE. After adding Syncthing Tray as Plasmoid, you can reopen this wizard from the "
+                       "Plasmoid via its settings dialog.</p>")
+                        .arg(readmeUrl + QStringLiteral("#configuring-plasmoid"));
+    }
+#endif
     if (settings.firstLaunch || settings.fakeFirstLaunch) {
         setTitle(tr("Welcome to Syncthing Tray"));
         setSubTitle(tr("It looks like you're launching Syncthing Tray for the first time."));
-        infoLabel->setText(tr("You must configure how to connect to Syncthing and how to launch Syncthing (if that's wanted) when using Syncthing "
-                              "Tray the first time."));
+        infoText += tr("<p>You must configure how to connect to Syncthing and how to launch Syncthing (if that's wanted) when using Syncthing "
+                       "Tray the first time.</p>"
+                       "<p>You can always reopen this wizard from the settings dialog.</p>");
     } else {
         setTitle(tr("Wizard's start page"));
         setSubTitle(tr("This wizard will help you configuring Syncthing Tray."));
     }
+    infoLabel->setWordWrap(true);
+    infoLabel->setTextFormat(Qt::RichText);
+    infoLabel->setOpenExternalLinks(true);
+    infoLabel->setText(infoText);
 
     auto *const startWizardCommand = new QCommandLinkButton(this);
     startWizardCommand->setObjectName(QStringLiteral("startWizardCommand"));
@@ -498,13 +520,7 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     showReadmeCommand->setText(tr("Show Syncthing Tray's README"));
     showReadmeCommand->setDescription(tr("It contains documentation about this GUI integration specifically."));
     showReadmeCommand->setIcon(showDocsCommand->icon());
-    connect(showReadmeCommand, &QCommandLinkButton::clicked, this, [] {
-        if constexpr (std::string_view(APP_VERSION).find('-') == std::string_view::npos) {
-            QDesktopServices::openUrl(QStringLiteral(APP_URL "/blob/v" APP_VERSION "/README.md"));
-        } else {
-            QDesktopServices::openUrl(QStringLiteral(APP_URL "/blob/master/README.md"));
-        }
-    });
+    connect(showReadmeCommand, &QCommandLinkButton::clicked, this, [readmeUrl] { QDesktopServices::openUrl(readmeUrl); });
 
     auto *const layout = new QVBoxLayout(this);
     layout->addWidget(infoLabel);
