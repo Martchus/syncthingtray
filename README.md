@@ -48,12 +48,10 @@ This does *not* mean Syncthing Tray is actively tested on all those platforms or
 desktop environments.
 
 For Plasma 5 and 6, there is in addition to the Qt Widgets based version also a "native"
-Plasmoid. Note that the latest version of Syncthing Tray generally also requires the
+Plasmoid. Note that the latest version of the Plasmoid generally also requires the
 latest version of Plasma 5 or 6 as no testing on earlier versions is done. Use the Qt
-Widgets based version on other Plasma versions. A restart of Plasma might be required for
-the Plasmoid to become selectable after installation. Checkout the
-"[Troubleshooting KDE integration](#troubleshooting-kde-integration)" section below for further help if it
-still won't show up.
+Widgets based version on other Plasma versions. Checkout the
+"[Configuring Plasmoid](#configuring-plasmoid)" section for further details.
 
 On GTK-centered desktops have a look at the
 [Arch Wiki](https://wiki.archlinux.org/title/Uniform_look_for_Qt_and_GTK_applications)
@@ -192,6 +190,14 @@ The Plasmoid is using the same configuration file but in addition also Plasma's 
 management for settings specific to a concrete instance of the Plasmoid.
 
 ## Configuring Plasmoid
+The Plasmoid requires installing Syncthing Tray via distribution-specific packaging. It is
+*not* available via the generic GNU/Linux download or the Flatpak. Checkout the relevant notes
+on the [downloads page](https://martchus.github.io/syncthingtray/#downloads-section) for
+available options and details on package names. For further information about supported versions
+of Plasma, checkout the "[Supported platforms](#supported-platforms)" section.
+
+Once installed, Plasma might need to be restarted for the Plasmoid to be selectable.
+
 The Plasmoid can be added/shown in two different ways:
 
 1. It can be shown as part of the system tray Plasmoid.
@@ -215,6 +221,10 @@ The Plasmoid cannot be closed via its context menu like the stand-alone applicat
 Instead, you have to disable it in the settings of the system tray Plasmoid as explained
 before. If you have added the Plasmoid to a panel or the desktop you can delete it like
 any other Plasmoid.
+
+In case the Plasmoid won't show up, checkout the
+"[Troubleshooting KDE integration](#troubleshooting-kde-integration)" section below for
+further help.
 
 ## Configuring Dolphin integration
 The Dolphin integration can be enabled/disabled in Dolphin's context menu settings. It will
