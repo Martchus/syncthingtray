@@ -21,12 +21,12 @@ ListView {
 
     model: DelegateModel {
         model: mainView.mainModel
-        rootIndex: mainView.mainModel.index(modelData.index, 0)
+        rootIndex: mainView.mainModel?.index(modelData.index, 0)
         delegate: Item {
             id: detailItem
 
-            property string detailName: name ? name : ""
-            property string detailValue: detail ? detail : ""
+            property string detailName: name ?? ""
+            property string detailValue: detail ?? ""
 
             width: detailRow.implicitWidth
             height: detailRow.implicitHeight
@@ -53,6 +53,11 @@ ListView {
                     text: detailValue
                     elide: Text.ElideRight
                     horizontalAlignment: Qt.AlignRight
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onPressAndHold: app.copy(detailValue)
+                    }
                 }
             }
         }

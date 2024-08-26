@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 
 DelegateModel {
     id: mainDelegateModel
@@ -8,4 +9,5 @@ DelegateModel {
     }
 
     required property ListView mainView
+    property StackView stackView
 }

@@ -112,6 +112,10 @@ QHash<int, QByteArray> SyncthingFileModel::roleNames() const
         { Actions, "actions" },
         { ActionNames, "actionNames" },
         { ActionIcons, "actionIcons" },
+        { Qt::DisplayRole, "textData" },
+        { Qt::DecorationRole, "decorationData" },
+        { Qt::ToolTipRole, "toolTipData" },
+        { Qt::CheckStateRole, "checkStateData" },
     };
     return roles;
 }

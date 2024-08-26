@@ -377,6 +377,14 @@ void SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredCon
 }
 
 /*!
+ * \brief Substitutes the tilde as first element in \a path using current values of tilde() and pathSeparator().
+ */
+QString SyncthingConnection::substituteTilde(const QString &path) const
+{
+    return Data::substituteTilde(path, m_tilde, m_pathSeparator);
+}
+
+/*!
  * \brief Ensures that devices are paused/resumed depending on whether the network connection is metered.
  */
 void SyncthingConnection::handleMeteredConnection()

@@ -11,12 +11,23 @@ ApplicationWindow {
         RowLayout {
             anchors.fill: parent
             anchors.leftMargin: drawer.effectiveWidth
+            ToolButton {
+                visible: pageStack.currentDepth > 1
+                text: "‹"
+                onClicked: pageStack.pop()
+                ToolTip.text: qsTr("Back")
+                ToolTip.visible: hovered || pressed
+                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+            }
             Label {
                 text: pageStack.currentPage.title
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
+            }
+            ToolButton {
+                icon.source: app.faUrlBase + "bars"
             }
         }
     }
@@ -94,9 +105,6 @@ ApplicationWindow {
             id: pageStack
             anchors.fill: parent
             currentIndex: drawerListView.currentIndex
-
-            readonly property Page currentPage: children[currentIndex]
-
             DirsPage {
             }
             DevsPage {
@@ -107,6 +115,13 @@ ApplicationWindow {
             }
             SettingsPage {
             }
+
+            readonly property var currentPage: {
+                const currentChild = children[currentIndex];
+                return currentChild.currentItem ?? currentChild;
+            }
+            readonly property var currentDepth: children[currentIndex]?.depth ?? 1
+            function pop() { children[currentIndex].pop?.() }
         }
     }
 }

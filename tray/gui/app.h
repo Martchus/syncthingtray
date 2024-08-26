@@ -9,6 +9,10 @@
 
 #include <syncthingconnector/syncthingconnection.h>
 
+namespace Data {
+class SyncthingFileModel;
+}
+
 namespace QtGui {
 
 class App : public QObject {
@@ -41,6 +45,9 @@ public:
     {
         return m_faUrlBase;
     }
+    Q_INVOKABLE bool openDir(const QString &path);
+    Q_INVOKABLE bool copy(const QString &text);
+    Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId);
 
 Q_SIGNALS:
 

@@ -41,6 +41,33 @@ ItemDelegate {
                     onClicked: modelData.trigger(source)
                 }
             }
+            RoundButton {
+                visible: mainDelegate.extraActions.length > 0
+                hoverEnabled: true
+                Layout.preferredWidth: 24
+                Layout.preferredHeight: 24
+                ToolTip.visible: hovered || pressed
+                ToolTip.text: qsTr("More actions")
+                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                icon.source: app.faUrlBase + "bars"
+                icon.width: 12
+                icon.height: 12
+                onClicked: menu.popup()
+            }
+            Menu {
+                id: menu
+                Instantiator {
+                    id: menuInstantiator
+                    model: mainDelegate.extraActions
+                    delegate: MenuItem {
+                        required property Action modelData
+                        text: modelData.text
+                        onTriggered: modelData.trigger(source)
+                    }
+                    onObjectAdded: (index, object) => menu.insertItem(index, object)
+                    onObjectRemoved: (index, object) => menu.removeItem(object)
+                }
+            }
         }
         DetailsListView {
             id: detailsView
@@ -51,4 +78,5 @@ ItemDelegate {
     required property var modelData
     required property ListView mainView
     property list<Action> actions
+    property list<Action> extraActions
 }

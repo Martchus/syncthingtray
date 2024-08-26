@@ -37,7 +37,7 @@ public:
         PathRole,
         Actions,
         ActionNames,
-        ActionIcons
+        ActionIcons,
     };
 
     explicit SyncthingFileModel(SyncthingConnection &connection, const SyncthingDir &dir, QObject *parent = nullptr);

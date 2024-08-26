@@ -256,6 +256,7 @@ public:
     const QString &myId() const;
     const QString &tilde() const;
     const QString &pathSeparator() const;
+    Q_INVOKABLE QString substituteTilde(const QString &path) const;
     std::uint64_t totalIncomingTraffic() const;
     std::uint64_t totalOutgoingTraffic() const;
     double totalIncomingRate() const;

@@ -11,7 +11,6 @@ Page {
         model: DelegateModel {
             model: app.changesModel
             delegate: ItemDelegate {
-                width: parent.width
                 text: path
             }
         }

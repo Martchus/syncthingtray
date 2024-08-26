@@ -10,4 +10,5 @@ ListView {
     ScrollIndicator.vertical: ScrollIndicator { }
 
     required property QtObject mainModel
+    property StackView stackView
 }
