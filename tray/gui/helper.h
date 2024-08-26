@@ -33,7 +33,13 @@ public:
     explicit BasicTreeView(QWidget *parent);
 
 protected:
+    void handleContextMenu(QMouseEvent *event);
+
     void mouseReleaseEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+
+private:
+    QEvent::Type m_contextMenuEventType;
 };
 
 void showViewMenu(const QPoint &position, const QTreeView &view, QMenu &menu);

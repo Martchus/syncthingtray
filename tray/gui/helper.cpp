@@ -9,10 +9,34 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPoint>
+#include <QStyleHints>
 #include <QStyleOptionViewItem>
 #include <QTreeView>
 
 namespace QtGui {
+
+/*!
+ * \brief Returns on what mouse event the context menu should be shown.
+ */
+static inline QEvent::Type contextMenuEventType()
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    if (const auto *const hints = QGuiApplication::styleHints()) {
+        switch (hints->contextMenuTrigger()) {
+        case Qt::ContextMenuTrigger::Press:
+            return QEvent::MouseButtonPress;
+        case Qt::ContextMenuTrigger::Release:
+            return QEvent::MouseButtonRelease;
+        default:;
+        };
+    }
+#endif
+#ifdef Q_OS_WINDOWS
+    return QEvent::MouseButtonRelease;
+#else
+    return QEvent::MouseButtonPress;
+#endif
+}
 
 /*!
  * \class UnifiedItemDelegate
@@ -42,18 +66,33 @@ void UnifiedItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
 BasicTreeView::BasicTreeView(QWidget *parent)
     : QTreeView(parent)
+    , m_contextMenuEventType(contextMenuEventType())
 {
     // emit customContextMenuRequested() manually because as of Qt 6.8 it otherwise does not work when the widget is
     // a child of a popup
     setContextMenuPolicy(Qt::NoContextMenu);
 }
 
+/*!
+ * \brief Emits customContextMenuRequested() if context menus are supposed to be shown on \a event.
+ */
+void BasicTreeView::handleContextMenu(QMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton && event->type() == m_contextMenuEventType) {
+        emit customContextMenuRequested(event->pos());
+    }
+}
+
 void BasicTreeView::mouseReleaseEvent(QMouseEvent *event)
 {
     QTreeView::mouseReleaseEvent(event);
-    if (event->button() == Qt::RightButton) {
-        emit customContextMenuRequested(event->pos());
-    }
+    handleContextMenu(event);
+}
+
+void BasicTreeView::mousePressEvent(QMouseEvent *event)
+{
+    QTreeView::mousePressEvent(event);
+    handleContextMenu(event);
 }
 
 /*!

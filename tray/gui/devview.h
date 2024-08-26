@@ -1,7 +1,7 @@
 #ifndef DEVVIEW_H
 #define DEVVIEW_H
 
-#include <QTreeView>
+#include "./helper.h"
 
 namespace Data {
 struct SyncthingDev;
@@ -11,7 +11,7 @@ class SyncthingSortFilterModel;
 
 namespace QtGui {
 
-class DevView : public QTreeView {
+class DevView : public BasicTreeView {
     Q_OBJECT
 public:
     using ModelType = Data::SyncthingDeviceModel;

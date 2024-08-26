@@ -1,6 +1,5 @@
 #include "./dirview.h"
 #include "./dirbuttonsitemdelegate.h"
-#include "./helper.h"
 
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingmodel/syncthingdirectorymodel.h>
@@ -19,25 +18,23 @@ using namespace Data;
 namespace QtGui {
 
 DirView::DirView(QWidget *parent)
-    : QTreeView(parent)
+    : BasicTreeView(parent)
 {
     header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     header()->hide();
     setItemDelegate(new UnifiedItemDelegate(this));
     setItemDelegateForColumn(1, new DirButtonsItemDelegate(this));
-    setContextMenuPolicy(Qt::NoContextMenu);
+    connect(this, &BasicTreeView::customContextMenuRequested, this, &DirView::showContextMenu);
 }
 
 void DirView::mouseReleaseEvent(QMouseEvent *event)
 {
-    QTreeView::mouseReleaseEvent(event);
-
-    const auto pos = event->pos();
-    if (event->button() == Qt::RightButton) {
-        showContextMenu(pos);
+    BasicTreeView::mouseReleaseEvent(event);
+    if (event->button() != Qt::LeftButton) {
         return;
     }
 
+    const auto pos = event->pos();
     const auto clickedRow = ClickedRow(this, pos);
     if (!clickedRow) {
         return;

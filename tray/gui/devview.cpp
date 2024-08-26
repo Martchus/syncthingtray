@@ -1,6 +1,5 @@
 #include "./devview.h"
 #include "./devbuttonsitemdelegate.h"
-#include "./helper.h"
 
 #include <syncthingconnector/syncthingdev.h>
 #include <syncthingmodel/syncthingdevicemodel.h>
@@ -17,18 +16,21 @@ using namespace Data;
 namespace QtGui {
 
 DevView::DevView(QWidget *parent)
-    : QTreeView(parent)
+    : BasicTreeView(parent)
 {
     header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     header()->hide();
     setItemDelegate(new UnifiedItemDelegate(this));
     setItemDelegateForColumn(1, new DevButtonsItemDelegate(this));
-    setContextMenuPolicy(Qt::NoContextMenu);
+    connect(this, &BasicTreeView::customContextMenuRequested, this, &DevView::showContextMenu);
 }
 
 void DevView::mouseReleaseEvent(QMouseEvent *event)
 {
-    QTreeView::mouseReleaseEvent(event);
+    BasicTreeView::mouseReleaseEvent(event);
+    if (event->button() != Qt::LeftButton) {
+        return;
+    }
 
     const auto pos = event->pos();
     if (event->button() == Qt::RightButton) {

@@ -1,7 +1,7 @@
 #ifndef DIRVIEW_H
 #define DIRVIEW_H
 
-#include <QTreeView>
+#include "./helper.h"
 
 namespace Data {
 struct SyncthingDir;
@@ -11,7 +11,7 @@ class SyncthingSortFilterModel;
 
 namespace QtGui {
 
-class DirView : public QTreeView {
+class DirView : public BasicTreeView {
     Q_OBJECT
 public:
     using ModelType = Data::SyncthingDirectoryModel;

@@ -1,6 +1,5 @@
 #include "./downloadview.h"
 #include "./downloaditemdelegate.h"
-#include "./helper.h"
 
 #include <syncthingconnector/syncthingdir.h>
 #include <syncthingmodel/syncthingdownloadmodel.h>
@@ -16,21 +15,18 @@ using namespace Data;
 namespace QtGui {
 
 DownloadView::DownloadView(QWidget *parent)
-    : QTreeView(parent)
+    : BasicTreeView(parent)
 {
     header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     header()->hide();
     setItemDelegateForColumn(0, new DownloadItemDelegate(this));
-    setContextMenuPolicy(Qt::NoContextMenu);
+    connect(this, &BasicTreeView::customContextMenuRequested, this, &DownloadView::showContextMenu);
 }
 
 void DownloadView::mouseReleaseEvent(QMouseEvent *event)
 {
-    QTreeView::mouseReleaseEvent(event);
-
-    const auto pos = event->pos();
-    if (event->button() == Qt::RightButton) {
-        showContextMenu(pos);
+    BasicTreeView::mouseReleaseEvent(event);
+    if (event->button() != Qt::LeftButton) {
         return;
     }
 
@@ -38,7 +34,8 @@ void DownloadView::mouseReleaseEvent(QMouseEvent *event)
     if (!dlModel) {
         return;
     }
-    const QModelIndex clickedIndex(indexAt(event->pos()));
+    const auto pos = event->pos();
+    const auto clickedIndex(indexAt(pos));
     if (!clickedIndex.isValid() || clickedIndex.column() != 0) {
         return;
     }

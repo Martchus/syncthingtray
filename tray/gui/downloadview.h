@@ -1,7 +1,7 @@
 #ifndef DOWNLOADVIEW_H
 #define DOWNLOADVIEW_H
 
-#include <QTreeView>
+#include "./helper.h"
 
 namespace Data {
 struct SyncthingItemDownloadProgress;
@@ -11,7 +11,7 @@ class SyncthingDownloadModel;
 
 namespace QtGui {
 
-class DownloadView : public QTreeView {
+class DownloadView : public BasicTreeView {
     Q_OBJECT
 public:
     using ModelType = Data::SyncthingDownloadModel;
