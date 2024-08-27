@@ -10,6 +10,7 @@ ExpandableDelegate {
         actions: [
             Action {
                 text: qsTr("Rescan")
+                enabled: !modelData.paused
                 icon.source: app.faUrlBase + "refresh"
                 onTriggered: (source) => app.connection.rescan(modelData.dirId)
             },
@@ -21,15 +22,48 @@ ExpandableDelegate {
             Action {
                 text: qsTr("Open in file browser")
                 icon.source: app.faUrlBase + "folder"
-                onTriggered: (source) => app.openDir(modelData.path)
+                onTriggered: (source) => app.openPath(modelData.path)
             }
         ]
         extraActions: [
             Action {
+                text: qsTr("Edit ignore patterns")
+                onTriggered: (source) => mainView.stackView.push(ignorePatternView, {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
+            },
+            Action {
                 text: qsTr("Browse remote files")
+                enabled: !modelData.paused
                 onTriggered: (source) => mainView.stackView.push(fileView, {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             }
         ]
+
+        Component {
+            id: ignorePatternView
+            Page {
+                title: qsTr("Ignore patterns of \"%1\"").arg(dirName)
+                Component.onCompleted: app.loadIgnorePatterns(dirId, textArea)
+                actions: [
+                    Action {
+                        text: qsTr("Save")
+                        icon.source: app.faUrlBase + "floppy-o"
+                        onTriggered: (source) => app.saveIgnorePatterns(dirId, textArea)
+                    }
+                ]
+                TextArea {
+                    id: textArea
+                    anchors.fill: parent
+                    enabled: false
+                }
+                BusyIndicator {
+                    anchors.centerIn: parent
+                    running: !textArea.enabled
+                }
+
+                required property string dirName
+                required property string dirId
+                property list<Action> actions
+            }
+        }
 
         Component {
             id: fileView
@@ -55,7 +89,7 @@ ExpandableDelegate {
                                 Layout.fillWidth: true
                                 text: textData ?? ''
                                 ToolTip.text: toolTipData ?? ''
-                                ToolTip.visible: toolTipData.length > 0 && (hovered || pressed)
+                                ToolTip.visible: toolTipData !== undefined && (hovered || pressed)
                                 ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                             }
                         }

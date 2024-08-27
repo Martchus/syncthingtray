@@ -24,39 +24,33 @@ ListView {
         rootIndex: mainView.mainModel?.index(modelData.index, 0)
         delegate: Item {
             id: detailItem
+            width: detailsView.width
+            height: detailRow.implicitHeight
 
             property string detailName: name ?? ""
             property string detailValue: detail ?? ""
 
-            width: detailRow.implicitWidth
-            height: detailRow.implicitHeight
-
             RowLayout {
                 id: detailRow
                 width: parent.width
-
                 Icon {
                     Layout.preferredWidth: 16
                     Layout.preferredHeight: 16
                     source: detailIcon
                     width: 16
                     height: 16
-                    opacity: 0.8
                 }
                 Label {
-                    Layout.preferredWidth: 100
                     text: detailName
-                    font.weight: Font.DemiBold
                 }
                 Label {
                     Layout.fillWidth: true
                     text: detailValue
                     elide: Text.ElideRight
                     horizontalAlignment: Qt.AlignRight
-
                     MouseArea {
                         anchors.fill: parent
-                        onPressAndHold: app.copy(detailValue)
+                        onPressAndHold: app.copyPath(detailValue)
                     }
                 }
             }

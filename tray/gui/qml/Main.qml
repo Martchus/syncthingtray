@@ -26,7 +26,20 @@ ApplicationWindow {
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
             }
+            Repeater {
+                model: pageStack.currentActions
+                ToolButton {
+                    required property Action modelData
+                    enabled: modelData.enabled
+                    ToolTip.visible: hovered || pressed
+                    ToolTip.text: modelData.text
+                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                    icon.source: modelData.icon.source
+                    onClicked: modelData.trigger()
+                }
+            }
             ToolButton {
+                visible: pageStack.currentExtraActions.length > 0
                 icon.source: app.faUrlBase + "bars"
             }
         }
@@ -121,6 +134,8 @@ ApplicationWindow {
                 return currentChild.currentItem ?? currentChild;
             }
             readonly property var currentDepth: children[currentIndex]?.depth ?? 1
+            readonly property var currentActions: currentPage.actions ?? []
+            readonly property var currentExtraActions: currentPage.extraActions ?? []
             function pop() { children[currentIndex].pop?.() }
         }
     }

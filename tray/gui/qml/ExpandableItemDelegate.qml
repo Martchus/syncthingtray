@@ -11,14 +11,20 @@ ItemDelegate {
 
     contentItem: ColumnLayout {
         RowLayout {
+            spacing: 10
             Icon {
                 source: modelData.statusIcon
-                width: 32
-                height: 32
+                width: 24
+                height: 24
             }
             Label {
                 Layout.fillWidth: true
                 text: modelData.name
+                elide: Text.ElideRight
+            }
+            Label {
+                text: modelData.statusString ?? '?'
+                color: modelData.statusColor ?? palette.text
             }
             QtObject {
                 id: source
@@ -29,6 +35,7 @@ ItemDelegate {
                 model: mainDelegate.actions
                 RoundButton {
                     required property Action modelData
+                    enabled: modelData.enabled
                     hoverEnabled: true
                     Layout.preferredWidth: 24
                     Layout.preferredHeight: 24
@@ -62,6 +69,7 @@ ItemDelegate {
                     delegate: MenuItem {
                         required property Action modelData
                         text: modelData.text
+                        enabled: modelData.enabled
                         onTriggered: modelData.trigger(source)
                     }
                     onObjectAdded: (index, object) => menu.insertItem(index, object)

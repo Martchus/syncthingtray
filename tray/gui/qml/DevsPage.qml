@@ -6,7 +6,7 @@ Page {
     title: qsTr("Device overview")
     Layout.fillWidth: true
     Layout.fillHeight: true
-    ExpandableListView {
+    DevListView {
         mainModel: app.devModel
     }
 }

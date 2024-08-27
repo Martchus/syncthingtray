@@ -9,9 +9,11 @@
 #include <qtquickforkawesome/imageprovider.h>
 
 #include <QClipboard>
-#include <QDir>
+#include <QFile>
 #include <QGuiApplication>
+#include <QNetworkReply>
 #include <QQmlContext>
+#include <QStringBuilder>
 
 #include <cstdlib>
 #include <iostream>
@@ -47,22 +49,64 @@ App::App(QObject *parent)
     m_engine.loadFromModule("Main", "Main");
 }
 
-bool App::openDir(const QString &path)
+bool App::openPath(const QString &path)
 {
-    if (QDir(path).exists()) {
+    if (QFile::exists(path)) {
         QtUtilities::openLocalFileOrDir(path);
         return true;
     }
     return false;
 }
 
-bool App::copy(const QString &text)
+bool App::openPath(const QString &dirId, const QString &relativePath)
+{
+    auto row = int();
+    auto dirInfo = m_connection.findDirInfo(dirId, row);
+    return dirInfo ? openPath(dirInfo->path % QChar('/') % relativePath) : false;
+}
+
+bool App::copyText(const QString &text)
 {
     if (auto *const clipboard = QGuiApplication::clipboard()) {
         clipboard->setText(text);
         return true;
     }
     return false;
+}
+
+bool App::copyPath(const QString &dirId, const QString &relativePath)
+{
+    auto row = int();
+    auto dirInfo = m_connection.findDirInfo(dirId, row);
+    return dirInfo ? copyText(dirInfo->path % QChar('/') % relativePath) : false;
+}
+
+bool App::loadIgnorePatterns(const QString &dirId, QObject *textArea)
+{
+    auto res = m_connection.ignores(dirId, [textArea](SyncthingIgnores &&ignores, QString &&error) {
+        Q_UNUSED(error) // FIXME: error handling
+        textArea->setProperty("text", ignores.ignore.join(QChar('\n')));
+        textArea->setProperty("enabled", true);
+    });
+    connect(textArea, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
+    return true;
+}
+
+bool App::saveIgnorePatterns(const QString &dirId, QObject *textArea)
+{
+    textArea->setProperty("enabled", false);
+    const auto text = textArea->property("text");
+    if (text.userType() != QMetaType::QString) {
+        textArea->setProperty("enabled", true);
+        return false;
+    }
+    auto res = m_connection.setIgnores(
+        dirId, SyncthingIgnores{ .ignore = text.toString().split(QChar('\n')), .expanded = QStringList() }, [textArea](QString &&error) {
+            Q_UNUSED(error) // FIXME: error handling
+            textArea->setProperty("enabled", true);
+        });
+    connect(textArea, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
+    return true;
 }
 
 SyncthingFileModel *App::createFileModel(const QString &dirId)

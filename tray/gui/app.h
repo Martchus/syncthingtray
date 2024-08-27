@@ -25,6 +25,8 @@ class App : public QObject {
 
 public:
     explicit App(QObject *parent = nullptr);
+
+    // properties
     Data::SyncthingConnection *connection()
     {
         return &m_connection;
@@ -45,14 +47,15 @@ public:
     {
         return m_faUrlBase;
     }
-    Q_INVOKABLE bool openDir(const QString &path);
-    Q_INVOKABLE bool copy(const QString &text);
+
+    // helper functions invoked from QML
+    Q_INVOKABLE bool openPath(const QString &path);
+    Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
+    Q_INVOKABLE bool copyText(const QString &text);
+    Q_INVOKABLE bool copyPath(const QString &dirId, const QString &relativePath);
+    Q_INVOKABLE bool loadIgnorePatterns(const QString &dirId, QObject *textArea);
+    Q_INVOKABLE bool saveIgnorePatterns(const QString &dirId, QObject *textArea);
     Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId);
-
-Q_SIGNALS:
-
-protected:
-private Q_SLOTS:
 
 private:
     QQmlApplicationEngine m_engine;

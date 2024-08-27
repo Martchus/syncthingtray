@@ -247,6 +247,8 @@ if (QUICK_GUI)
         gui/qml/DetailsListView.qml
         gui/qml/DirListView.qml
         gui/qml/DirDelegate.qml
+        gui/qml/DevListView.qml
+        gui/qml/DevDelegate.qml
         SOURCES
         gui/quick/quickicon.h
         gui/quick/quickicon.cpp
