@@ -122,7 +122,7 @@ void ModelTests::testFileModel()
     QCOMPARE(model.rowCount(rootIdx), 1);
     QCOMPARE(model.index(0, 0, rootIdx).data(), QStringLiteral("Loading…"));
     QCOMPARE(model.index(1, 0, rootIdx).data(), QVariant());
-    QVERIFY(model.canFetchMore(rootIdx));
+    QVERIFY2(!model.canFetchMore(rootIdx), "cannot fetch more when already loading");
 
     // wait until the root has been updated
     connect(&model, &Data::SyncthingFileModel::fetchQueueEmpty, this, [this]() {
@@ -170,6 +170,7 @@ void ModelTests::testFileModel()
     QCOMPARE(model.index(testPath), testPathIdx);
 
     // re-load the data again and wait for the update
+    QVERIFY2(!model.canFetchMore(rootIdx), "cannot fetch more when children already populated");
     model.fetchMore(rootIdx);
     m_timeout.start();
     m_loop.exec();
