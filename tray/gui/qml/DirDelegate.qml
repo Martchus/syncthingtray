@@ -70,9 +70,15 @@ ExpandableDelegate {
             Page {
                 title: qsTr("Remote/global tree of \"%1\"").arg(dirName)
                 TreeView {
+                    id: treeView
                     anchors.fill: parent
                     model: app.createFileModel(dirId)
                     selectionModel: ItemSelectionModel {}
+                    onExpanded: (row, depth) => {
+                        const index = treeView.index(row, 0)
+                        const model = treeView.model
+                        model.canFetchMore(index) && model.fetchMore(index)
+                    }
                     delegate: TreeViewDelegate {
                         indentation: 16
                         indicator: Item {
@@ -91,6 +97,17 @@ ExpandableDelegate {
                                 ToolTip.text: toolTipData ?? ''
                                 ToolTip.visible: toolTipData !== undefined && (hovered || pressed)
                                 ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                            }
+                        }
+                        TapHandler {
+                            acceptedButtons: Qt.RightButton
+                            onTapped: contextMenu.open()
+                        }
+                        Menu {
+                            id: contextMenu
+                            MenuItem {
+                                text: qsTr("Refresh")
+                                onClicked: treeView.model.fetchMore(treeView.index(row, 0))
                             }
                         }
                     }

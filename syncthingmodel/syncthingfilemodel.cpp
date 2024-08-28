@@ -583,6 +583,10 @@ bool SyncthingFileModel::canFetchMore(const QModelIndex &parent) const
 
 void SyncthingFileModel::fetchMore(const QModelIndex &parent)
 {
+    auto *const parentItem = reinterpret_cast<SyncthingItem *>(parent.internalPointer());
+    if (parentItem->type != SyncthingItemType::Directory) {
+        return;
+    }
     const auto parentPath = path(parent);
     if (parentPath.isNull() || m_fetchQueue.contains(parentPath)) {
         return;
