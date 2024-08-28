@@ -235,6 +235,7 @@ void SyncthingRecentChangesModel::handleForkAwesomeIconsChanged()
 void SyncthingRecentChangesModel::setMaxRows(int maxRows)
 {
     m_maxRows = maxRows < 0 ? std::numeric_limits<int>::max() : maxRows;
+    ensureWithinLimit();
 }
 
 void SyncthingRecentChangesModel::ensureWithinLimit()
