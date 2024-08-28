@@ -53,15 +53,18 @@ static void addErrorItem(std::vector<std::unique_ptr<SyncthingItem>> &items, QSt
     errorItem->childrenPopulated = true;
 }
 
-static void addLoadingItem(std::vector<std::unique_ptr<SyncthingItem>> &items)
+static void setLoadingItem(SyncthingItem *loadingItem)
 {
-    if (!items.empty()) {
-        return;
-    }
-    auto &loadingItem = items.emplace_back(std::make_unique<SyncthingItem>());
     loadingItem->name = QStringLiteral("Loading…");
     loadingItem->type = SyncthingItemType::Loading;
     loadingItem->childrenPopulated = true;
+}
+
+static void addLoadingItem(std::vector<std::unique_ptr<SyncthingItem>> &items)
+{
+    if (items.empty()) {
+        setLoadingItem(items.emplace_back(std::make_unique<SyncthingItem>()).get());
+    }
 }
 /// \endcond
 
@@ -552,8 +555,14 @@ int SyncthingFileModel::rowCount(const QModelIndex &parent) const
     if (!parent.isValid()) {
         return 1;
     }
-    const auto *const parentItem = reinterpret_cast<SyncthingItem *>(parent.internalPointer());
-    const auto res = parentItem->childrenPopulated || parentItem->type != SyncthingItemType::Directory ? parentItem->children.size() : 1;
+    auto *const parentItem = reinterpret_cast<SyncthingItem *>(parent.internalPointer());
+    if (!parentItem->childrenPopulated && parentItem->type == SyncthingItemType::Directory && parentItem->children.empty()) {
+        auto &dummyItem = parentItem->children.emplace_back(std::make_unique<SyncthingItem>());
+        dummyItem->name = QStringLiteral("Item not loaded yet.");
+        dummyItem->type = SyncthingItemType::Unknown;
+        dummyItem->childrenPopulated = true;
+    }
+    const auto res = parentItem->children.size();
     return res < std::numeric_limits<int>::max() ? static_cast<int>(res) : std::numeric_limits<int>::max();
 }
 
@@ -899,12 +908,21 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
         return;
     }
 
-    // add loading item if there are items yet at all
+    // add/update loading item
     auto *rootItem = reinterpret_cast<SyncthingItem *>(rootIndex.internalPointer());
-    if (rootItem->children.empty()) {
-        beginInsertRows(rootIndex, 0, 0);
-        addLoadingItem(rootItem->children);
-        endInsertRows();
+    if (!rootItem->childrenPopulated) {
+        switch (rootItem->children.size()) {
+        case 0:
+            beginInsertRows(rootIndex, 0, 0);
+            addLoadingItem(rootItem->children);
+            endInsertRows();
+            break;
+        case 1:
+            setLoadingItem(rootItem->children.front().get());
+            const auto affectedIndex = index(0, 0, rootIndex);
+            emit dataChanged(affectedIndex, affectedIndex, QVector<int>{ Qt::DisplayRole, Qt::DecorationRole });
+            break;
+        }
     }
 
     // query directory entries from Syncthing database
@@ -920,6 +938,7 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
                       return;
                   }
                   auto *const refreshedItem = reinterpret_cast<SyncthingItem *>(refreshedIndex.internalPointer());
+                  const auto previouslyPopulated = refreshedItem->childrenPopulated;
                   const auto previousChildCount = refreshedItem->children.size();
                   if (previousChildCount) {
                       beginRemoveRows(refreshedIndex, 0, static_cast<int>(refreshedItem->children.size() - 1));
@@ -949,7 +968,7 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
                       endInsertRows();
                   }
                   refreshedItem->childrenPopulated = true;
-                  if (refreshedItem->children.size() != previousChildCount) {
+                  if (!previouslyPopulated || refreshedItem->children.size() != previousChildCount) {
                       const auto sizeIndex = refreshedIndex.siblingAtColumn(1);
                       emit dataChanged(sizeIndex, sizeIndex, QVector<int>{ Qt::DisplayRole });
                   }
