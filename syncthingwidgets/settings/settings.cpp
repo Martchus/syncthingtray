@@ -310,6 +310,7 @@ bool restore()
             connectionSettings->requestTimeout = settings.value(QStringLiteral("requestTimeout"), connectionSettings->requestTimeout).toInt();
             connectionSettings->longPollingTimeout
                 = settings.value(QStringLiteral("longPollingTimeout"), connectionSettings->longPollingTimeout).toInt();
+            connectionSettings->diskEventLimit = settings.value(QStringLiteral("diskEventLimit"), connectionSettings->diskEventLimit).toInt();
             connectionSettings->autoConnect = settings.value(QStringLiteral("autoConnect"), connectionSettings->autoConnect).toBool();
             connectionSettings->pauseOnMeteredConnection
                 = settings.value(QStringLiteral("pauseOnMetered"), connectionSettings->pauseOnMeteredConnection).toBool();
@@ -470,6 +471,7 @@ bool save()
         settings.setValue(QStringLiteral("devStatsPollInterval"), connectionSettings->devStatsPollInterval);
         settings.setValue(QStringLiteral("errorsPollInterval"), connectionSettings->errorsPollInterval);
         settings.setValue(QStringLiteral("reconnectInterval"), connectionSettings->reconnectInterval);
+        settings.setValue(QStringLiteral("diskEventLimit"), connectionSettings->diskEventLimit);
         settings.setValue(QStringLiteral("requestTimeout"), connectionSettings->requestTimeout);
         settings.setValue(QStringLiteral("longPollingTimeout"), connectionSettings->longPollingTimeout);
         settings.setValue(QStringLiteral("autoConnect"), connectionSettings->autoConnect);

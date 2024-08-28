@@ -232,20 +232,27 @@ void SyncthingRecentChangesModel::handleForkAwesomeIconsChanged()
     invalidateTopLevelIndicies(QVector<int>({ Qt::DecorationRole, ActionIcon }));
 }
 
+/*!
+ * \brief Sets the maximum number of rows.
+ * \remark
+ * Specify a negative value for using SyncthingRecentChangesModel::defaultRowLimit or the disk event limit
+ * of the connection if it is higher than SyncthingRecentChangesModel::defaultRowLimit.
+ */
 void SyncthingRecentChangesModel::setMaxRows(int maxRows)
 {
-    m_maxRows = maxRows < 0 ? std::numeric_limits<int>::max() : maxRows;
+    m_maxRows = maxRows;
     ensureWithinLimit();
 }
 
 void SyncthingRecentChangesModel::ensureWithinLimit()
 {
-    const auto rowsToDelete = static_cast<int>(m_changes.size()) - m_maxRows;
+    const auto maxRows = m_maxRows >= 0 ? m_maxRows : std::max(m_connection.diskEventLimit(), defaultRowLimit);
+    const auto rowsToDelete = static_cast<int>(m_changes.size()) - maxRows;
     if (rowsToDelete <= 0) {
         return;
     }
-    beginRemoveRows(QModelIndex(), m_maxRows, static_cast<int>(m_changes.size()) - 1);
-    m_changes.erase(m_changes.begin() + m_maxRows, m_changes.end());
+    beginRemoveRows(QModelIndex(), maxRows, static_cast<int>(m_changes.size()) - 1);
+    m_changes.erase(m_changes.begin() + maxRows, m_changes.end());
     endRemoveRows();
 }
 

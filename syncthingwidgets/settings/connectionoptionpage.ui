@@ -305,7 +305,7 @@
      </property>
     </widget>
    </item>
-   <item row="19" column="0">
+   <item row="20" column="0">
     <widget class="QLabel" name="pollLabel">
      <property name="text">
       <string>Poll interval</string>
@@ -315,7 +315,7 @@
      </property>
     </widget>
    </item>
-   <item row="19" column="1">
+   <item row="20" column="1">
     <layout class="QGridLayout" name="gridLayout">
      <property name="horizontalSpacing">
       <number>10</number>
@@ -455,7 +455,7 @@
      </item>
     </layout>
    </item>
-   <item row="20" column="1">
+   <item row="21" column="1">
     <widget class="QCheckBox" name="autoConnectCheckBox">
      <property name="toolTip">
       <string>Whether to connect automatically on startup. This setting might be overruled by systemd and launcher settings.</string>
@@ -465,7 +465,7 @@
      </property>
     </widget>
    </item>
-   <item row="22" column="0">
+   <item row="23" column="0">
     <widget class="QLabel" name="overallStatusLabel">
      <property name="text">
       <string>Overall status</string>
@@ -475,21 +475,21 @@
      </property>
     </widget>
    </item>
-   <item row="24" column="0">
+   <item row="25" column="0">
     <widget class="QLabel" name="statusTextLabel">
      <property name="text">
       <string>Current status</string>
      </property>
     </widget>
    </item>
-   <item row="24" column="1">
+   <item row="25" column="1">
     <widget class="QLabel" name="statusLabel">
      <property name="text">
       <string>disconnected</string>
      </property>
     </widget>
    </item>
-   <item row="27" column="1">
+   <item row="28" column="1">
     <widget class="QPushButton" name="connectPushButton">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -598,21 +598,21 @@
      </property>
     </widget>
    </item>
-   <item row="21" column="1">
+   <item row="22" column="1">
     <widget class="QCheckBox" name="pauseOnMeteredConnectionCheckBox">
      <property name="text">
       <string>Pause all devices while the local network connection is metered</string>
      </property>
     </widget>
    </item>
-   <item row="20" column="0">
+   <item row="21" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Options</string>
      </property>
     </widget>
    </item>
-   <item row="22" column="1">
+   <item row="23" column="1">
     <layout class="QVBoxLayout" name="statusComputionFlagsVerticalLayout">
      <property name="spacing">
       <number>2</number>
@@ -656,6 +656,29 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="19" column="0">
+    <widget class="QLabel" name="diskEventLimitLabel">
+     <property name="toolTip">
+      <string>The limit for querying change events.</string>
+     </property>
+     <property name="text">
+      <string>Recent changes</string>
+     </property>
+    </widget>
+   </item>
+   <item row="19" column="1">
+    <widget class="QSpinBox" name="diskEventLimitSpinBox">
+     <property name="prefix">
+      <string>limit to </string>
+     </property>
+     <property name="maximum">
+      <number>10000</number>
+     </property>
+     <property name="value">
+      <number>25</number>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

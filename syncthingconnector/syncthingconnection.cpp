@@ -95,6 +95,7 @@ SyncthingConnection::SyncthingConnection(
     , m_autoReconnectTries(0)
     , m_requestTimeout(SyncthingConnectionSettings::defaultRequestTimeout)
     , m_longPollingTimeout(SyncthingConnectionSettings::defaultLongPollingTimeout)
+    , m_diskEventLimit(SyncthingConnectionSettings::defaultDiskEventLimit)
     , m_totalIncomingTraffic(unknownTraffic)
     , m_totalOutgoingTraffic(unknownTraffic)
     , m_totalIncomingRate(0.0)
@@ -309,7 +310,7 @@ void SyncthingConnection::setPollingFlags(PollingFlags flags)
     }
     if (m_keepPolling) {
         requestEvents();
-        requestDiskEvents();
+        requestDiskEvents(m_diskEventLimit);
     }
 
     // manage timers/requests for timer-based requests
@@ -969,7 +970,7 @@ void SyncthingConnection::continueConnecting()
 
     // poll for events according to polling flags
     requestEvents();
-    requestDiskEvents();
+    requestDiskEvents(m_diskEventLimit);
 }
 
 #ifndef QT_NO_SSL
@@ -1092,6 +1093,7 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
     setAutoReconnectInterval(connectionSettings.reconnectInterval);
     setRequestTimeout(connectionSettings.requestTimeout);
     setLongPollingTimeout(connectionSettings.longPollingTimeout);
+    setDiskEventLimit(connectionSettings.diskEventLimit);
     setStatusComputionFlags(connectionSettings.statusComputionFlags);
     setPausingOnMeteredConnection(connectionSettings.pauseOnMeteredConnection);
 

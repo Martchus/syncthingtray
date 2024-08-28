@@ -48,6 +48,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     int reconnectInterval = defaultReconnectInterval;
     int requestTimeout = defaultRequestTimeout;
     int longPollingTimeout = defaultLongPollingTimeout;
+    int diskEventLimit = defaultDiskEventLimit;
 #ifndef QT_NO_SSL
     QString httpsCertPath;
     QDateTime httpCertLastModified;
@@ -67,6 +68,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     static constexpr int defaultReconnectInterval = 30000;
     static constexpr int defaultRequestTimeout = 0;
     static constexpr int defaultLongPollingTimeout = 0;
+    static constexpr int defaultDiskEventLimit = 25;
 };
 } // namespace Data
 

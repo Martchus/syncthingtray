@@ -239,6 +239,7 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
 #endif
     ui()->timeoutSpinBox->setValue(connectionSettings.requestTimeout);
     ui()->longPollingSpinBox->setValue(connectionSettings.longPollingTimeout);
+    ui()->diskEventLimitSpinBox->setValue(connectionSettings.diskEventLimit);
     ui()->pollTrafficSpinBox->setValue(connectionSettings.trafficPollInterval);
     ui()->pollDevStatsSpinBox->setValue(connectionSettings.devStatsPollInterval);
     ui()->pollErrorsSpinBox->setValue(connectionSettings.errorsPollInterval);
@@ -269,6 +270,7 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
 #endif
     connectionSettings.requestTimeout = ui()->timeoutSpinBox->value();
     connectionSettings.longPollingTimeout = ui()->longPollingSpinBox->value();
+    connectionSettings.diskEventLimit = ui()->diskEventLimitSpinBox->value();
     connectionSettings.trafficPollInterval = ui()->pollTrafficSpinBox->value();
     connectionSettings.devStatsPollInterval = ui()->pollDevStatsSpinBox->value();
     connectionSettings.errorsPollInterval = ui()->pollErrorsSpinBox->value();
@@ -397,15 +399,15 @@ void ConnectionOptionPage::toggleAdvancedSettings(bool show)
     }
 #if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
     for (auto *const widget : std::initializer_list<QWidget *>{ ui()->authLabel, ui()->userNameLabel, ui()->passwordLabel, ui()->timeoutLabel,
-             ui()->longPollingLabel, ui()->pollLabel, ui()->pauseOnMeteredConnectionCheckBox }) {
+             ui()->longPollingLabel, ui()->diskEventLimitLabel, ui()->pollLabel, ui()->pauseOnMeteredConnectionCheckBox }) {
         ui()->formLayout->setRowVisible(widget, show);
     }
 #else
-    for (auto *const widget :
-        std::initializer_list<QWidget *>{ ui()->authLabel, ui()->authCheckBox, ui()->userNameLabel, ui()->userNameLineEdit, ui()->passwordLabel,
-            ui()->passwordLineEdit, ui()->timeoutLabel, ui()->timeoutSpinBox, ui()->longPollingLabel, ui()->longPollingSpinBox, ui()->pollLabel,
-            ui()->pollDevStatsLabel, ui()->pollDevStatsSpinBox, ui()->pollErrorsLabel, ui()->pollErrorsSpinBox, ui()->pollTrafficLabel,
-            ui()->pollTrafficSpinBox, ui()->reconnectLabel, ui()->reconnectSpinBox, ui()->pauseOnMeteredConnectionCheckBox }) {
+    for (auto *const widget : std::initializer_list<QWidget *>{ ui()->authLabel, ui()->authCheckBox, ui()->userNameLabel, ui()->userNameLineEdit,
+             ui()->passwordLabel, ui()->passwordLineEdit, ui()->timeoutLabel, ui()->timeoutSpinBox, ui()->longPollingLabel, ui()->longPollingSpinBox,
+             ui()->diskEventLimitLabel, ui()->diskEventLimitSpinBox, ui()->pollLabel, ui()->pollDevStatsLabel, ui()->pollDevStatsSpinBox,
+             ui()->pollErrorsLabel, ui()->pollErrorsSpinBox, ui()->pollTrafficLabel, ui()->pollTrafficSpinBox, ui()->reconnectLabel,
+             ui()->reconnectSpinBox, ui()->pauseOnMeteredConnectionCheckBox }) {
         widget->setVisible(show);
     }
 #endif

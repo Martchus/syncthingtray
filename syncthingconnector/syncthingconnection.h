@@ -143,6 +143,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(bool recordFileChanges READ recordFileChanges WRITE setRecordFileChanges)
     Q_PROPERTY(int requestTimeout READ requestTimeout WRITE setRequestTimeout)
     Q_PROPERTY(int longPollingTimeout READ longPollingTimeout WRITE setLongPollingTimeout)
+    Q_PROPERTY(int diskEventLimit READ diskEventLimit WRITE setDiskEventLimit)
     Q_PROPERTY(QString myId READ myId NOTIFY myIdChanged)
     Q_PROPERTY(QString tilde READ tilde NOTIFY tildeChanged)
     Q_PROPERTY(QString pathSeparator READ pathSeparator NOTIFY tildeChanged)
@@ -246,6 +247,8 @@ public:
     void setRequestTimeout(int requestTimeout);
     int longPollingTimeout() const;
     void setLongPollingTimeout(int longPollingTimeout);
+    int diskEventLimit() const;
+    void setDiskEventLimit(int diskEventLimit);
     bool isPausingOnMeteredConnection() const;
     void setPausingOnMeteredConnection(bool pausingOnMeteredConnection);
     bool isInsecure() const;
@@ -529,6 +532,7 @@ private:
     unsigned int m_autoReconnectTries;
     int m_requestTimeout;
     int m_longPollingTimeout;
+    int m_diskEventLimit;
     QString m_configDir;
     QString m_myId;
     QString m_tilde;
@@ -931,6 +935,28 @@ inline int SyncthingConnection::longPollingTimeout() const
 inline void SyncthingConnection::setLongPollingTimeout(int longPollingTimeout)
 {
     m_longPollingTimeout = longPollingTimeout;
+}
+
+/*!
+ * \brief Returns the limit for requestDiskEvents().
+ * \remarks
+ * The limit is used when requestDiskEvents() is invoked to establish a connection. When invoking
+ * requestDiskEvents() manually the limit is passed as first argument.
+ */
+inline int SyncthingConnection::diskEventLimit() const
+{
+    return m_diskEventLimit;
+}
+
+/*!
+ * \brief Sets the limit for requestDiskEvents().
+ * \remarks
+ * The limit is used when requestDiskEvents() is invoked to establish a connection. When invoking
+ * requestDiskEvents() manually the limit is passed as first argument.
+ */
+inline void SyncthingConnection::setDiskEventLimit(int diskEventLimit)
+{
+    m_diskEventLimit = diskEventLimit;
 }
 
 /*!
