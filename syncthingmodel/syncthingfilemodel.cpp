@@ -549,13 +549,11 @@ void SyncthingFileModel::setCheckState(const QModelIndex &index, Qt::CheckState 
 
 int SyncthingFileModel::rowCount(const QModelIndex &parent) const
 {
-    auto res = std::size_t();
     if (!parent.isValid()) {
-        res = 1;
-    } else {
-        auto *const parentItem = reinterpret_cast<SyncthingItem *>(parent.internalPointer());
-        res = parentItem->childrenPopulated || parentItem->type != SyncthingItemType::Directory ? parentItem->children.size() : 1;
+        return 1;
     }
+    const auto *const parentItem = reinterpret_cast<SyncthingItem *>(parent.internalPointer());
+    const auto res = parentItem->childrenPopulated || parentItem->type != SyncthingItemType::Directory ? parentItem->children.size() : 1;
     return res < std::numeric_limits<int>::max() ? static_cast<int>(res) : std::numeric_limits<int>::max();
 }
 
