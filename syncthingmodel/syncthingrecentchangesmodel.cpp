@@ -9,8 +9,6 @@
 
 #include <QStringBuilder>
 
-#include <limits>
-
 using namespace std;
 using namespace CppUtilities;
 
@@ -234,9 +232,7 @@ void SyncthingRecentChangesModel::handleForkAwesomeIconsChanged()
 
 /*!
  * \brief Sets the maximum number of rows.
- * \remark
- * Specify a negative value for using SyncthingRecentChangesModel::defaultRowLimit or the disk event limit
- * of the connection if it is higher than SyncthingRecentChangesModel::defaultRowLimit.
+ * \remark Specify a negative value for using the disk event limit of the connection.
  */
 void SyncthingRecentChangesModel::setMaxRows(int maxRows)
 {
@@ -246,7 +242,7 @@ void SyncthingRecentChangesModel::setMaxRows(int maxRows)
 
 void SyncthingRecentChangesModel::ensureWithinLimit()
 {
-    const auto maxRows = m_maxRows >= 0 ? m_maxRows : std::max(m_connection.diskEventLimit(), defaultRowLimit);
+    const auto maxRows = m_maxRows >= 0 ? m_maxRows : m_connection.diskEventLimit();
     const auto rowsToDelete = static_cast<int>(m_changes.size()) - maxRows;
     if (rowsToDelete <= 0) {
         return;

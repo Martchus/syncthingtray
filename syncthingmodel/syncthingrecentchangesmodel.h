@@ -34,8 +34,6 @@ public:
         ItemType,
     };
 
-    static constexpr auto defaultRowLimit = 200;
-
     explicit SyncthingRecentChangesModel(SyncthingConnection &connection, int maxRows = -1, QObject *parent = nullptr);
 
     QHash<int, QByteArray> roleNames() const override;

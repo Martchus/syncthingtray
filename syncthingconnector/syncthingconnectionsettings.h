@@ -68,7 +68,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     static constexpr int defaultReconnectInterval = 30000;
     static constexpr int defaultRequestTimeout = 0;
     static constexpr int defaultLongPollingTimeout = 0;
-    static constexpr int defaultDiskEventLimit = 25;
+    static constexpr int defaultDiskEventLimit = 200;
 };
 } // namespace Data
 
