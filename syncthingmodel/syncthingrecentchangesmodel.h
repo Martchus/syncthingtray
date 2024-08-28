@@ -35,7 +35,6 @@ public:
     };
     explicit SyncthingRecentChangesModel(SyncthingConnection &connection, int maxRows = 200, QObject *parent = nullptr);
 
-public Q_SLOTS:
     QHash<int, QByteArray> roleNames() const override;
     const QVector<int> &colorRoles() const override;
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
