@@ -1079,6 +1079,7 @@ void SyncthingFileModel::insertLocalItems(const QModelIndex &refreshedIndex, Syn
     // get refreshed index/item
     auto *const refreshedItem = reinterpret_cast<SyncthingItem *>(refreshedIndex.internalPointer());
     auto &items = refreshedItem->children;
+    const auto previouslyPopulated = refreshedItem->childrenPopulated;
     const auto previousChildCount = items.size();
     if (!refreshedItem->existsInDb) {
         refreshedItem->childrenPopulated = true;
@@ -1090,11 +1091,6 @@ void SyncthingFileModel::insertLocalItems(const QModelIndex &refreshedIndex, Syn
         beginRemoveRows(refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
         items.clear();
         endRemoveRows();
-    }
-
-    // skip if there are no local items to insert
-    if (localItems.empty()) {
-        return;
     }
 
     // insert items from local lookup that are not already present via the database query (probably ignored files)
@@ -1125,7 +1121,7 @@ void SyncthingFileModel::insertLocalItems(const QModelIndex &refreshedIndex, Syn
         endInsertRows();
         ++row;
     }
-    if (refreshedItem->children.size() != previousChildCount) {
+    if (!previouslyPopulated || items.size() != previousChildCount) {
         const auto sizeIndex = refreshedIndex.sibling(refreshedIndex.row(), 1);
         emit dataChanged(sizeIndex, sizeIndex, QVector<int>{ Qt::DisplayRole });
     }
@@ -1141,7 +1137,7 @@ void SyncthingFileModel::insertLocalItems(const QModelIndex &refreshedIndex, Syn
         }
     }
 
-    // update global/local icons of items that were already present (at they exist in the database)
+    // update global/local icons of items that were already present (as they exist in the database)
     if (firstRow > 0) {
         emit dataChanged(
             this->index(0, 4, refreshedIndex), this->index(firstRow - 1, 4, refreshedIndex), QVector<int>{ Qt::DecorationRole, Qt::ToolTipRole });
