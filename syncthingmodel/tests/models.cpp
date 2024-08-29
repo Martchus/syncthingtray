@@ -7,6 +7,7 @@
 #include <QtTest/QtTest>
 
 #include <QAction>
+#include <QDebug>
 #include <QEventLoop>
 #include <QLocale>
 #include <QStringBuilder>
@@ -48,7 +49,14 @@ void ModelTests::initTestCase()
     });
 
     // request config and status and wait until available
-    connect(&m_connection, &Data::SyncthingConnection::newConfigApplied, &m_loop, &QEventLoop::quit);
+    const auto applyConfig = [this] {
+        if (!m_connection.rawConfig().isEmpty() && !m_connection.myId().isEmpty()) {
+            m_connection.applyRawConfig();
+            m_loop.quit();
+        }
+    };
+    connect(&m_connection, &Data::SyncthingConnection::newConfig, this, applyConfig);
+    connect(&m_connection, &Data::SyncthingConnection::myIdChanged, this, applyConfig);
     m_connection.requestConfigAndStatus();
     m_loop.exec();
     m_timeout.stop();

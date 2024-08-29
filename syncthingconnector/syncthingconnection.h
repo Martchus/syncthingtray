@@ -297,6 +297,7 @@ public Q_SLOTS:
     void clearSelfSignedCertificate();
 #endif
     bool applySettings(Data::SyncthingConnectionSettings &connectionSettings);
+    void applyRawConfig();
 
     // methods to initiate/close connection
     void connect();
@@ -446,7 +447,6 @@ private Q_SLOTS:
     void readRevert();
 
     // internal helper methods
-    void applyRawConfig();
     void continueConnecting();
     void continueReconnecting();
     void autoReconnect();

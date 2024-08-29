@@ -704,8 +704,6 @@ void SyncthingConnection::readConfig()
 
         if (m_keepPolling) {
             concludeReadingConfigAndStatus();
-        } else {
-            applyRawConfig();
         }
         break;
     }
