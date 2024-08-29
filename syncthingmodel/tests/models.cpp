@@ -89,7 +89,7 @@ void ModelTests::testDirectoryModel()
     QCOMPARE(model.index(0, 0, folder1Idx).data(), QStringLiteral("ID"));
     QCOMPARE(model.index(0, 1, folder1Idx).data(), QStringLiteral("GXWxf-3zgnU"));
     QCOMPARE(model.index(1, 0, folder1Idx).data(), QStringLiteral("Path"));
-    QCOMPARE(model.index(1, 1, folder1Idx).data(), QStringLiteral("..."));
+    QCOMPARE(model.index(1, 1, folder1Idx).data(), QStringLiteral("this/path/is/not/supposed/to/exist"));
     const auto folder2Idx = model.index(1, 0);
     QCOMPARE(model.rowCount(folder2Idx), 10);
     QCOMPARE(model.index(0, 1, folder2Idx).data(), QStringLiteral("zX8xfl3ygn-"));
