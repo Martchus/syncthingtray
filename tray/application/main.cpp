@@ -256,7 +256,6 @@ static int runApplication(int argc, const char *const *argv)
         qtConfigArgs.applySettings(true);
         qtConfigArgs.applySettingsForQuickGui();
         networkAccessManager().setParent(&app);
-        Data::IconManager::instance().applySettings();
 
         auto quickApp = App();
         quickApp.connection()->connect(settings.connection.primary);

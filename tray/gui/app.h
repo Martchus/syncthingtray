@@ -55,9 +55,14 @@ public:
     Q_INVOKABLE bool copyPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE bool loadIgnorePatterns(const QString &dirId, QObject *textArea);
     Q_INVOKABLE bool saveIgnorePatterns(const QString &dirId, QObject *textArea);
-    Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId);
+    Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId, QObject *parent);
+
+protected:
+    bool event(QEvent *event) override;
 
 private:
+    void setBrightColorsOfModelsAccordingToPalette();
+
     QQmlApplicationEngine m_engine;
     Data::SyncthingConnection m_connection;
     Data::SyncthingDirectoryModel m_dirModel;

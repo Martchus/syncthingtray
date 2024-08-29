@@ -72,12 +72,12 @@ ExpandableDelegate {
                 TreeView {
                     id: treeView
                     anchors.fill: parent
-                    model: app.createFileModel(dirId)
+                    model: app.createFileModel(dirId, treeView)
                     selectionModel: ItemSelectionModel {}
                     onExpanded: (row, depth) => {
-                        const index = treeView.index(row, 0)
-                        const model = treeView.model
-                        model.canFetchMore(index) && model.fetchMore(index)
+                        const index = treeView.index(row, 0);
+                        const model = treeView.model;
+                        return model.canFetchMore(index) && model.fetchMore(index);
                     }
                     delegate: TreeViewDelegate {
                         indentation: 16

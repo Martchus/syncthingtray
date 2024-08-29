@@ -1,5 +1,7 @@
 #include "./app.h"
 
+#include <syncthingwidgets/settings/settings.h>
+
 #include <syncthingmodel/syncthingfilemodel.h>
 #include <syncthingmodel/syncthingicons.h>
 
@@ -31,6 +33,9 @@ App::App(QObject *parent)
 {
     qmlRegisterUncreatableType<Data::SyncthingFileModel>(
         "Main.Private", 1, 0, "SyncthingFileModel", QStringLiteral("Data::SyncthingFileModel is created from C++."));
+
+    setBrightColorsOfModelsAccordingToPalette();
+    Data::IconManager::instance().applySettings(nullptr, nullptr, true, true);
 
     auto *const app = QGuiApplication::instance();
     auto *const context = m_engine.rootContext();
@@ -109,11 +114,33 @@ bool App::saveIgnorePatterns(const QString &dirId, QObject *textArea)
     return true;
 }
 
-SyncthingFileModel *App::createFileModel(const QString &dirId)
+SyncthingFileModel *App::createFileModel(const QString &dirId, QObject *parent)
 {
     auto row = int();
     auto dirInfo = m_connection.findDirInfo(dirId, row);
-    return dirInfo ? new Data::SyncthingFileModel(m_connection, *dirInfo, this) : nullptr;
+    return dirInfo ? new Data::SyncthingFileModel(m_connection, *dirInfo, parent) : nullptr;
+}
+
+bool App::event(QEvent *event)
+{
+    const auto res = QObject::event(event);
+    switch (event->type()) {
+    case QEvent::ApplicationPaletteChange:
+        setBrightColorsOfModelsAccordingToPalette();
+        break;
+    default:;
+    }
+    return res;
+}
+
+void App::setBrightColorsOfModelsAccordingToPalette()
+{
+    auto &qtSettings = Settings::values().qt;
+    qtSettings.reevaluatePaletteAndDefaultIconTheme();
+    const auto brightColors = qtSettings.isPaletteDark();
+    m_dirModel.setBrightColors(brightColors);
+    m_devModel.setBrightColors(brightColors);
+    m_changesModel.setBrightColors(brightColors);
 }
 
 } // namespace QtGui
