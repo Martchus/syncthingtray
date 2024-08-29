@@ -1065,7 +1065,7 @@ void SyncthingFileModel::markItemsFromDatabaseAsLocallyExisting(
             continue;
         }
         child->existsLocally = true;
-        localItemIter->second.existsInDb = true;
+        localItemIter->second.existsInDb = child->existsInDb;
         localItemIter->second.index = child->index;
         markItemsFromDatabaseAsLocallyExisting(child->children, localItemIter->second.localChildren);
     }
