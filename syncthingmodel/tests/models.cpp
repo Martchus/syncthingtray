@@ -48,6 +48,17 @@ void ModelTests::initTestCase()
         QFAIL("Timeout exceeded");
     });
 
+    // setup error handling
+    connect(&m_connection, &Data::SyncthingConnection::error, this,
+        [this](const QString &errorMessage, Data::SyncthingErrorCategory, int, const QNetworkRequest &, const QByteArray &) {
+            qDebug() << "connection error: " << errorMessage;
+            if (errorMessage.contains(QStringLiteral("ignore pattern"))) {
+                return; // ignore expected errors
+            }
+            m_loop.quit();
+            QFAIL("Unexpected connection error occurred");
+        });
+
     // request config and status and wait until available
     const auto applyConfig = [this] {
         if (!m_connection.rawConfig().isEmpty() && !m_connection.myId().isEmpty()) {
