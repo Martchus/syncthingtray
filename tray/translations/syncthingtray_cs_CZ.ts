@@ -4,27 +4,27 @@
 <context>
     <name>QtGui::DevView</name>
     <message>
-        <location filename="../gui/devview.cpp" line="64"/>
+        <location filename="../gui/devview.cpp" line="66"/>
         <source>Copy value</source>
         <translation>Zkopírovat hodnotu</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="70"/>
+        <location filename="../gui/devview.cpp" line="72"/>
         <source>Copy name</source>
         <translation>Zkopírovat název</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="73"/>
+        <location filename="../gui/devview.cpp" line="75"/>
         <source>Copy ID</source>
         <translation>Zkopírovat identifikátor</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="79"/>
+        <location filename="../gui/devview.cpp" line="81"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="84"/>
+        <location filename="../gui/devview.cpp" line="86"/>
         <source>Pause</source>
         <translation type="unfinished">Pozastavit</translation>
     </message>
@@ -32,47 +32,47 @@
 <context>
     <name>QtGui::DirView</name>
     <message>
-        <location filename="../gui/dirview.cpp" line="81"/>
+        <location filename="../gui/dirview.cpp" line="78"/>
         <source>Copy value</source>
         <translation>Zkopírovat hodnotu</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="87"/>
+        <location filename="../gui/dirview.cpp" line="84"/>
         <source>Copy label/ID</source>
         <translation>Zkopírovat jmenovku/identifikátor</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="90"/>
+        <location filename="../gui/dirview.cpp" line="87"/>
         <source>Copy path</source>
         <translation>Zkopírovat popis umístění</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="95"/>
+        <location filename="../gui/dirview.cpp" line="92"/>
         <source>Rescan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="100"/>
+        <location filename="../gui/dirview.cpp" line="97"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="105"/>
+        <location filename="../gui/dirview.cpp" line="102"/>
         <source>Pause</source>
         <translation type="unfinished">Pozastavit</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="109"/>
+        <location filename="../gui/dirview.cpp" line="106"/>
         <source>Open in file browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="113"/>
+        <location filename="../gui/dirview.cpp" line="110"/>
         <source>Browse remote files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="115"/>
+        <location filename="../gui/dirview.cpp" line="112"/>
         <source>Show/edit ignore patterns</source>
         <translation type="unfinished"></translation>
     </message>
@@ -80,17 +80,17 @@
 <context>
     <name>QtGui::DownloadView</name>
     <message>
-        <location filename="../gui/downloadview.cpp" line="70"/>
+        <location filename="../gui/downloadview.cpp" line="67"/>
         <source>Copy value</source>
         <translation>Zkopírovat hodnotu</translation>
     </message>
     <message>
-        <location filename="../gui/downloadview.cpp" line="75"/>
+        <location filename="../gui/downloadview.cpp" line="72"/>
         <source>Copy label/ID</source>
         <translation>Zkopírovat jmenovku/identifikátor</translation>
     </message>
     <message>
-        <location filename="../gui/downloadview.cpp" line="79"/>
+        <location filename="../gui/downloadview.cpp" line="76"/>
         <source>Open in file browser</source>
         <translation type="unfinished"></translation>
     </message>
