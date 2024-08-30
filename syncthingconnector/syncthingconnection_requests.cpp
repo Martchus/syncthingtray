@@ -1884,7 +1884,7 @@ void SyncthingConnection::readDirSummary(SyncthingEventId eventId, DateTime even
     auto &receiveOnlyStats = dir.receiveOnlyStats;
     const auto previouslyUpdated = !dir.lastStatisticsUpdateTime.isNull();
     const auto previouslyGlobal = globalStats;
-    const auto previouslyNeeded = neededStats;
+    const auto previouslyNeeded = !neededStats.isNull();
 
     // update statistics
     globalStats.bytes = jsonValueToInt(summary.value(QLatin1String("globalBytes")));
@@ -1933,7 +1933,7 @@ void SyncthingConnection::readDirSummary(SyncthingEventId eventId, DateTime even
     dir.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
 
     emit dirStatusChanged(dir, index);
-    if (neededStats.isNull() && previouslyUpdated && (neededStats != previouslyNeeded || globalStats != previouslyGlobal)) {
+    if (neededStats.isNull() && previouslyUpdated && (previouslyNeeded || globalStats != previouslyGlobal)) {
         emit dirCompleted(eventTime, dir, index);
     }
 }
@@ -2532,7 +2532,7 @@ void SyncthingConnection::readLocalFolderCompletion(
     auto &globalStats(dirInfo.globalStats);
     // backup previous statistics -> if there's no difference after all, don't emit completed event
     const auto previouslyUpdated = !dirInfo.lastStatisticsUpdateTime.isNull();
-    const auto previouslyNeeded = neededStats;
+    const auto previouslyNeeded = !neededStats.isNull();
     const auto previouslyGlobal = globalStats;
     // read values from event data
     globalStats.bytes = jsonValueToInt(eventData.value(QLatin1String("globalBytes")), static_cast<double>(globalStats.bytes));
@@ -2543,7 +2543,7 @@ void SyncthingConnection::readLocalFolderCompletion(
     dirInfo.lastStatisticsUpdateTime = eventTime;
     dirInfo.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
     emit dirStatusChanged(dirInfo, index);
-    if (neededStats.isNull() && previouslyUpdated && (neededStats != previouslyNeeded || globalStats != previouslyGlobal)
+    if (neededStats.isNull() && previouslyUpdated && (previouslyNeeded || globalStats != previouslyGlobal)
         && dirInfo.status != SyncthingDirStatus::WaitingToScan && dirInfo.status != SyncthingDirStatus::Scanning) {
         emit dirCompleted(eventTime, dirInfo, index);
     }
