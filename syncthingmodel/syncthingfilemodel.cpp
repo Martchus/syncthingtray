@@ -845,7 +845,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
 void SyncthingFileModel::setSelectionModeEnabled(bool selectionModeEnabled)
 {
     if (m_selectionMode != selectionModeEnabled) {
-        m_selectionMode = selectionModeEnabled;
+        emit selectionModeEnabledChanged(m_selectionMode = selectionModeEnabled);
         invalidateAllIndicies(QVector<int>{ Qt::CheckStateRole });
     }
 }

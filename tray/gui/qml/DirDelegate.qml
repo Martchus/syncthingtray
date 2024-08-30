@@ -49,10 +49,13 @@ ExpandableDelegate {
                         onTriggered: (source) => app.saveIgnorePatterns(dirId, textArea)
                     }
                 ]
-                TextArea {
-                    id: textArea
+                ScrollView {
                     anchors.fill: parent
-                    enabled: false
+                    TextArea {
+                        id: textArea
+                        anchors.fill: parent
+                        enabled: false
+                    }
                 }
                 BusyIndicator {
                     anchors.centerIn: parent
@@ -86,6 +89,11 @@ ExpandableDelegate {
                         }
                         contentItem: RowLayout {
                             width: parent.width
+                            CheckBox {
+                                visible: treeView.model.selectionModeEnabled && column === 0
+                                checkState: checkStateData ?? Qt.Unchecked
+                                onClicked: treeView.model.triggerAction("toggle-selection-single", treeView.index(row, 0))
+                            }
                             Icon {
                                 source: decorationData
                                 width: 32
@@ -95,19 +103,27 @@ ExpandableDelegate {
                                 Layout.fillWidth: true
                                 text: textData ?? ''
                                 ToolTip.text: toolTipData ?? ''
-                                ToolTip.visible: toolTipData !== undefined && (hovered || pressed)
+                                ToolTip.visible: (toolTipData !== undefined && toolTipData.length > 0) && (hovered || pressed)
                                 ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                                ToolTip.toolTip.onAboutToShow: ToolTip.text = toolTipData ?? ''
                             }
                         }
                         TapHandler {
                             acceptedButtons: Qt.RightButton
                             onTapped: contextMenu.open()
                         }
+                        TapHandler {
+                            onLongPressed: treeView.model.triggerAction("toggle-selection-single", treeView.index(row, 0))
+                        }
                         Menu {
                             id: contextMenu
                             MenuItem {
                                 text: qsTr("Refresh")
                                 onClicked: treeView.model.fetchMore(treeView.index(row, 0))
+                            }
+                            MenuItem {
+                                text: checkStateData !== Qt.Checked ? qsTr("Select") : qsTr("Deselect")
+                                onClicked: treeView.model.triggerAction("toggle-selection-single", treeView.index(row, 0))
                             }
                         }
                     }

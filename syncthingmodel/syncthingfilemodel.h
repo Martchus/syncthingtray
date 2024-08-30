@@ -24,7 +24,7 @@ namespace Data {
 class LIB_SYNCTHING_MODEL_EXPORT SyncthingFileModel : public SyncthingModel {
     Q_OBJECT
     Q_PROPERTY(bool hasIgnorePatterns READ hasIgnorePatterns)
-    Q_PROPERTY(bool selectionModeEnabled READ isSelectionModeEnabled WRITE setSelectionModeEnabled)
+    Q_PROPERTY(bool selectionModeEnabled READ isSelectionModeEnabled WRITE setSelectionModeEnabled NOTIFY selectionModeEnabledChanged)
     Q_PROPERTY(bool recursiveSelectionEnabled READ isRecursiveSelectionEnabled WRITE setRecursiveSelectionEnabled)
 
 public:
@@ -72,6 +72,7 @@ Q_SIGNALS:
     void fetchQueueEmpty();
     void notification(const QString &type, const QString &message, const QString &details = QString());
     void actionNeedsConfirmation(QAction *action, const QString &message, const QString &diff = QString());
+    void selectionModeEnabledChanged(bool selectionModeEnabled);
 
 private Q_SLOTS:
     void handleConfigInvalidated() override;
