@@ -197,11 +197,30 @@ if (QUICK_GUI)
     if ("${${QT_PACKAGE_PREFIX}WebView_FOUND}" AND "${${QT_PACKAGE_PREFIX}WebViewQuick_FOUND}")
         list(APPEND ADDITIONAL_QT_MODULES WebView WebViewQuick)
         list(APPEND ADDITIONAL_QT_REPOS webview)
+        list(APPEND WEBVIEWITEM_QML_FILES gui/qml/webview-webview/WebViewItem.qml)
         set_property(
             SOURCE application/main.cpp
             APPEND
             PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW)
+    else ()
+        list(APPEND WEBVIEWITEM_QML_FILES gui/qml/webview-none/WebViewItem.qml)
     endif ()
+
+    # add additional module for the web view
+    set(CMAKE_AUTOMOC ON)
+    qt_add_qml_module(
+        ${META_TARGET_NAME}-webviewitem
+        URI
+        "WebViewItem"
+        VERSION
+        1.0
+        STATIC
+        QML_FILES
+        ${WEBVIEWITEM_QML_FILES}
+        RESOURCE_PREFIX
+        "/qt/qml/"
+        NO_PLUGIN_OPTIONAL)
+    list(APPEND PRIVATE_LIBRARIES ${META_TARGET_NAME}-webviewitemplugin)
 endif ()
 
 # include further modules to apply configuration

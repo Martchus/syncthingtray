@@ -45,8 +45,13 @@
 #include <QSettings>
 #include <QStringBuilder>
 
-#if defined(GUI_QTQUICK) && defined(SYNCTHINGTRAY_HAS_WEBVIEW)
+#ifdef GUI_QTQUICK
+#ifdef SYNCTHINGTRAY_HAS_WEBVIEW
 #include <QtWebView/QtWebView>
+#endif
+
+#include <QQmlEngineExtensionPlugin>
+Q_IMPORT_QML_PLUGIN(WebViewItemPlugin)
 #endif
 
 #include <iostream>

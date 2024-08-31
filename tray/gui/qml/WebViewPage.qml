@@ -1,26 +1,15 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-//import QtWebView
+import WebViewItem
 
 Page {
     title: qsTr("Syncthing")
     Layout.fillWidth: true
     Layout.fillHeight: true
-    ColumnLayout {
-        Label {
-            text: "TODO: implement web view"
-        }
-        /*
-        Button {
-            text: "Refresh"
-            onClicked: webView.url = app.connection.makeUrlWithCredentials()
-        }
-        WebView {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            id: webView
-        }
-        */
+    WebViewItem {
+        id: webViewItem
+        anchors.fill: parent
     }
+    property alias actions: webViewItem.actions
 }
