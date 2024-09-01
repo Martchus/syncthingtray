@@ -42,11 +42,13 @@ ListView {
                 }
                 Label {
                     text: detailName
+                    font.weight: Font.Light
                 }
                 Label {
                     Layout.fillWidth: true
                     text: detailValue
                     elide: Text.ElideRight
+                    font.weight: Font.Light
                     horizontalAlignment: Qt.AlignRight
                     MouseArea {
                         anchors.fill: parent

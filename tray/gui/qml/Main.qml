@@ -14,7 +14,7 @@ ApplicationWindow {
             anchors.leftMargin: drawer.effectiveWidth
             ToolButton {
                 visible: pageStack.currentDepth > 1
-                text: "‹"
+                icon.source: app.faUrlBase + "chevron-left"
                 onClicked: pageStack.pop()
                 ToolTip.text: qsTr("Back")
                 ToolTip.visible: hovered || pressed

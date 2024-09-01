@@ -33,6 +33,7 @@ Page {
                             Layout.fillWidth: true
                             text: [modelData.directoryName || modelData.directoryId, modelData.path].join(": ")
                             elide: Text.ElideRight
+                            font.weight: Font.Light
                         }
                     }
                     RowLayout {
@@ -46,6 +47,7 @@ Page {
                         Label {
                             text: modelData.eventTime
                             elide: Text.ElideRight
+                            font.weight: Font.Light
                         }
                         Icon {
                             Layout.preferredWidth: 16
@@ -57,6 +59,7 @@ Page {
                         Label {
                             text: modelData.modifiedBy
                             elide: Text.ElideRight
+                            font.weight: Font.Light
                         }
                     }
 

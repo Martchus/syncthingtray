@@ -21,6 +21,7 @@ ItemDelegate {
                 Layout.fillWidth: true
                 text: modelData.name
                 elide: Text.ElideRight
+                font.weight: Font.Medium
             }
             Label {
                 text: modelData.statusString ?? '?'
