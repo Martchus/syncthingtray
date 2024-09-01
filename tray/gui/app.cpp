@@ -5,6 +5,8 @@
 #include <syncthingmodel/syncthingfilemodel.h>
 #include <syncthingmodel/syncthingicons.h>
 
+#include <syncthingconnector/syncthingconnectionsettings.h>
+
 #include <qtutilities/misc/desktoputils.h>
 
 #include <qtforkawesome/renderer.h>
@@ -24,11 +26,30 @@ using namespace Data;
 
 namespace QtGui {
 
+AppSettings::AppSettings(Data::SyncthingConnectionSettings &connectionSettings, QObject *parent)
+    : QObject(parent)
+    , syncthingUrl(connectionSettings.syncthingUrl)
+    , apiKey(connectionSettings.apiKey)
+{
+
+}
+
+QString AppSettings::apiKeyAsString() const
+{
+    return QString::fromUtf8(apiKey);
+}
+
+void AppSettings::setApiKeyFromString(const QString &apiKeyAsString)
+{
+    apiKey = apiKeyAsString.toUtf8();
+}
+
 App::App(QObject *parent)
     : QObject(parent)
     , m_dirModel(m_connection)
     , m_devModel(m_connection)
     , m_changesModel(m_connection)
+    , m_settings(Settings::values().connection.primary)
     , m_faUrlBase(QStringLiteral("image://fa/"))
 {
     qmlRegisterUncreatableType<Data::SyncthingFileModel>(
@@ -37,10 +58,12 @@ App::App(QObject *parent)
     setBrightColorsOfModelsAccordingToPalette();
     Data::IconManager::instance().applySettings(nullptr, nullptr, true, true);
 
+    connect(&m_settings, &AppSettings::settingsChanged, this, &App::applySettings);
+
     auto *const app = QGuiApplication::instance();
     auto *const context = m_engine.rootContext();
     context->setContextProperty(QStringLiteral("app"), this);
-    QObject::connect(
+    connect(
         &m_engine, &QQmlApplicationEngine::objectCreated, app,
         [](QObject *obj, const QUrl &objUrl) {
             if (!obj) {
@@ -49,7 +72,7 @@ App::App(QObject *parent)
             }
         },
         Qt::QueuedConnection);
-    QObject::connect(&m_engine, &QQmlApplicationEngine::quit, app, &QGuiApplication::quit);
+    connect(&m_engine, &QQmlApplicationEngine::quit, app, &QGuiApplication::quit);
     m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global()));
     m_engine.loadFromModule("Main", "Main");
 }
@@ -131,6 +154,12 @@ bool App::event(QEvent *event)
     default:;
     }
     return res;
+}
+
+bool App::applySettings()
+{
+    m_connection.connect(Settings::values().connection.primary);
+    return true;
 }
 
 void App::setBrightColorsOfModelsAccordingToPalette()

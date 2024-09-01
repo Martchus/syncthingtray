@@ -7,6 +7,7 @@ ApplicationWindow {
     visible: true
     width: 700
     height: 500
+    title: qsTr("Syncthing App")
     header: ToolBar {
         RowLayout {
             anchors.fill: parent

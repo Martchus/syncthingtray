@@ -15,12 +15,32 @@ class SyncthingFileModel;
 
 namespace QtGui {
 
+class AppSettings : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(QString syncthingUrl MEMBER syncthingUrl NOTIFY settingsChanged)
+    Q_PROPERTY(QString apiKey READ apiKeyAsString WRITE setApiKeyFromString NOTIFY settingsChanged)
+
+public:
+    explicit AppSettings(Data::SyncthingConnectionSettings &connectionSettings, QObject *parent = nullptr);
+
+    QString apiKeyAsString() const;
+    void setApiKeyFromString(const QString &apiKeyAsString);
+
+Q_SIGNALS:
+    void settingsChanged();
+
+public:
+    QString &syncthingUrl;
+    QByteArray &apiKey;
+};
+
 class App : public QObject {
     Q_OBJECT
     Q_PROPERTY(Data::SyncthingConnection *connection READ connection CONSTANT)
     Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel CONSTANT)
     Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel CONSTANT)
     Q_PROPERTY(Data::SyncthingRecentChangesModel *changesModel READ changesModel CONSTANT)
+    Q_PROPERTY(AppSettings *settings READ settings CONSTANT)
     Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
 
 public:
@@ -47,8 +67,13 @@ public:
     {
         return m_faUrlBase;
     }
+    AppSettings *settings()
+    {
+        return &m_settings;
+    }
 
     // helper functions invoked from QML
+    Q_INVOKABLE bool applySettings();
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE bool copyText(const QString &text);
@@ -68,6 +93,7 @@ private:
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingRecentChangesModel m_changesModel;
+    AppSettings m_settings;
     QString m_faUrlBase;
 };
 } // namespace QtGui

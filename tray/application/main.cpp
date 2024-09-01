@@ -263,7 +263,8 @@ static int runApplication(int argc, const char *const *argv)
         networkAccessManager().setParent(&app);
 
         auto quickApp = App();
-        quickApp.connection()->connect(settings.connection.primary);
+        quickApp.applySettings();
+        QObject::connect(&app, &QCoreApplication::aboutToQuit, &shutdownSyncthingTray);
         return app.exec();
     }
 #endif
