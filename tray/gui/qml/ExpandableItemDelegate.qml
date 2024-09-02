@@ -38,28 +38,28 @@ ItemDelegate {
                     required property Action modelData
                     enabled: modelData.enabled
                     hoverEnabled: true
-                    Layout.preferredWidth: 24
-                    Layout.preferredHeight: 24
+                    Layout.preferredWidth: 36
+                    Layout.preferredHeight: 36
                     ToolTip.visible: hovered || pressed
                     ToolTip.text: modelData.text
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                     icon.source: modelData.icon.source
-                    icon.width: 12
-                    icon.height: 12
+                    icon.width: 20
+                    icon.height: 20
                     onClicked: modelData.trigger(source)
                 }
             }
             RoundButton {
                 visible: mainDelegate.extraActions.length > 0
                 hoverEnabled: true
-                Layout.preferredWidth: 24
-                Layout.preferredHeight: 24
+                Layout.preferredWidth: 36
+                Layout.preferredHeight: 36
                 ToolTip.visible: hovered || pressed
                 ToolTip.text: qsTr("More actions")
                 ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                 icon.source: app.faUrlBase + "bars"
-                icon.width: 12
-                icon.height: 12
+                icon.width: 20
+                icon.height: 20
                 onClicked: menu.popup()
             }
             Menu {

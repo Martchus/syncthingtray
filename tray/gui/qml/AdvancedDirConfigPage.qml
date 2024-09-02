@@ -16,20 +16,14 @@ Page {
     ListView {
         id: advancedConfigListView
         anchors.fill: parent
-        model: {
+        property var folderConfig: {
             const folders = app.connection.rawConfig?.folders;
-            if (Array.isArray(folders)) {
-                const folder = folders.find((folder) => folder.id === dirId)
-                if (folder) {
-                    const folderSettings = Object.entries(folder).sort().map((folderArray) => {
-                                                                                 return {key: folderArray[0], value: folderArray[1],
-                                                                                     type: typeof folderArray[1], label: uncamel(folderArray[0])};
-                                                                             });
-                    return folderSettings;
-                }
-            }
-            return [];
+            return Array.isArray(folders) ? folders.find((folder) => folder.id === dirId) : {};
         }
+        model:  Object.entries(folderConfig).sort().map((folderArray) => {
+                                                            return {key: folderArray[0], value: folderArray[1],
+                                                                type: typeof folderArray[1], label: uncamel(folderArray[0])};
+                                                        })
         delegate: DelegateChooser {
             role: "type"
             DelegateChoice {
@@ -45,23 +39,34 @@ Page {
                                 font.weight: Font.Medium
                             }
                             Label {
+                                id: stringValue
                                 Layout.fillWidth: true
                                 text: modelData.value
                                 font.weight: Font.Light
                             }
                         }
-                        RoundButton {
-                            hoverEnabled: true
-                            Layout.preferredWidth: 24
-                            Layout.preferredHeight: 24
-                            ToolTip.visible: hovered || pressed
-                            ToolTip.text: qsTr("Open help")
-                            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-                            icon.source: app.faUrlBase + "question"
-                            icon.width: 12
-                            icon.height: 12
-                            onClicked: Qt.openUrlExternally("https://docs.syncthing.net/users/config#config-option-folder." + modelData.key.toLowerCase())
+                        HelpButton {
+                            id: helpButton
+                            key: modelData.key
                         }
+                    }
+                    onClicked: stringDlg.visible = true
+                    Dialog {
+                        id: stringDlg
+                        title: modelData.label
+                        standardButtons: Dialog.Ok | Dialog.Cancel | Dialog.Help
+                        modal: true
+                        width: parent.width - 20
+                        contentItem: TextField {
+                            id: editedStringValue
+                            text: modelData.value
+                        }
+                        onAccepted: {
+                            advancedConfigListView.folderConfig[modelData.key] = editedStringValue.text
+                            stringValue.text = editedStringValue.text
+                        }
+                        onRejected: editedStringValue.text = modelData.value
+                        onHelpRequested: helpButton.clicked()
                     }
                     required property var modelData
                 }
@@ -79,22 +84,14 @@ Page {
                                 font.weight: Font.Medium
                             }
                             Label {
+                                id: numberValue
                                 Layout.fillWidth: true
                                 text: modelData.value
                                 font.weight: Font.Light
                             }
                         }
-                        RoundButton {
-                            hoverEnabled: true
-                            Layout.preferredWidth: 24
-                            Layout.preferredHeight: 24
-                            ToolTip.visible: hovered || pressed
-                            ToolTip.text: qsTr("Open help")
-                            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-                            icon.source: app.faUrlBase + "question"
-                            icon.width: 12
-                            icon.height: 12
-                            onClicked: Qt.openUrlExternally("https://docs.syncthing.net/users/config#config-option-folder." + modelData.key.toLowerCase())
+                        HelpButton {
+                            key: modelData.key
                         }
                     }
                     required property var modelData
@@ -113,17 +110,8 @@ Page {
                                 font.weight: Font.Medium
                             }
                         }
-                        RoundButton {
-                            hoverEnabled: true
-                            Layout.preferredWidth: 24
-                            Layout.preferredHeight: 24
-                            ToolTip.visible: hovered || pressed
-                            ToolTip.text: qsTr("Open help")
-                            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-                            icon.source: app.faUrlBase + "question"
-                            icon.width: 12
-                            icon.height: 12
-                            onClicked: Qt.openUrlExternally("https://docs.syncthing.net/users/config#config-option-folder." + modelData.key.toLowerCase())
+                        HelpButton {
+                            key: modelData.key
                         }
                     }
                     required property var modelData
@@ -143,21 +131,12 @@ Page {
                                 font.weight: Font.Medium
                             }
                         }
-                        RoundButton {
-                            hoverEnabled: true
-                            Layout.preferredWidth: 24
-                            Layout.preferredHeight: 24
-                            ToolTip.visible: hovered || pressed
-                            ToolTip.text: qsTr("Open help")
-                            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-                            icon.source: app.faUrlBase + "question"
-                            icon.width: 12
-                            icon.height: 12
-                            onClicked: Qt.openUrlExternally("https://docs.syncthing.net/users/config#config-option-folder." + modelData.key.toLowerCase())
-                        }
                         Switch {
                             id: booleanSwitch
                             checked: modelData.value
+                        }
+                        HelpButton {
+                            key: modelData.key
                         }
                     }
                     required property var modelData

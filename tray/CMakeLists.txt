@@ -192,21 +192,27 @@ if (QUICK_GUI)
 
     # check whether Qt WebView is present
     include(QtLinkage)
-    find_package("${QT_PACKAGE_PREFIX}WebView" "${META_QT_VERSION}")
-    find_package("${QT_PACKAGE_PREFIX}WebViewQuick" "${META_QT_VERSION}")
-    if ("${${QT_PACKAGE_PREFIX}WebView_FOUND}" AND "${${QT_PACKAGE_PREFIX}WebViewQuick_FOUND}")
-        list(APPEND ADDITIONAL_QT_MODULES WebView WebViewQuick)
-        list(APPEND ADDITIONAL_QT_REPOS webview)
-        list(APPEND WEBVIEWITEM_QML_FILES gui/qml/webview-webview/WebViewItem.qml)
-        set_property(
-            SOURCE application/main.cpp
-            APPEND
-            PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW)
-    else ()
+    unset(WEBVIEWITEM_QML_FILES)
+    option(QUICK_GUI_NO_WEBVIEW  "disables web view support in the Qt Quick GUI" OFF)
+    if (NOT QUICK_GUI_NO_WEBVIEW)
+        find_package("${QT_PACKAGE_PREFIX}WebView" "${META_QT_VERSION}")
+        find_package("${QT_PACKAGE_PREFIX}WebViewQuick" "${META_QT_VERSION}")
+        if ("${${QT_PACKAGE_PREFIX}WebView_FOUND}" AND "${${QT_PACKAGE_PREFIX}WebViewQuick_FOUND}")
+            list(APPEND ADDITIONAL_QT_MODULES WebView WebViewQuick)
+            list(APPEND ADDITIONAL_QT_REPOS webview)
+            list(APPEND WEBVIEWITEM_QML_FILES gui/qml/webview-webview/WebViewItem.qml)
+            set_property(
+                SOURCE application/main.cpp
+                APPEND
+                PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW)
+        endif ()
+    endif ()
+    if (NOT WEBVIEWITEM_QML_FILES)
         list(APPEND WEBVIEWITEM_QML_FILES gui/qml/webview-none/WebViewItem.qml)
     endif ()
 
     # add additional module for the web view
+    find_package("${QT_PACKAGE_PREFIX}Qml" "${META_QT_VERSION}")
     set(CMAKE_AUTOMOC ON)
     qt_add_qml_module(
         ${META_TARGET_NAME}-webviewitem
@@ -271,6 +277,7 @@ if (QUICK_GUI)
         gui/qml/FilesPage.qml
         gui/qml/AdvancedDirConfigPage.qml
         gui/qml/IgnorePatternPage.qml
+        gui/qml/HelpButton.qml
         SOURCES
         gui/quick/quickicon.h
         gui/quick/quickicon.cpp

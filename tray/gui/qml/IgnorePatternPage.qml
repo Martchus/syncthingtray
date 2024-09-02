@@ -16,7 +16,7 @@ Page {
         anchors.fill: parent
         TextArea {
             id: textArea
-            anchors.fill: parent
+            width: parent.width
             enabled: false
         }
     }
