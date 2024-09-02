@@ -268,6 +268,9 @@ if (QUICK_GUI)
         gui/qml/DirDelegate.qml
         gui/qml/DevListView.qml
         gui/qml/DevDelegate.qml
+        gui/qml/FilesPage.qml
+        gui/qml/AdvancedDirConfigPage.qml
+        gui/qml/IgnorePatternPage.qml
         SOURCES
         gui/quick/quickicon.h
         gui/quick/quickicon.cpp
