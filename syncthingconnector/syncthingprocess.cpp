@@ -37,7 +37,11 @@
 #endif
 
 #ifdef PLATFORM_WINDOWS
+#if BOOST_VERSION >= 108600
+#include <boost/process/v1/windows.hpp>
+#else
 #include <boost/process/windows.hpp>
+#endif
 #endif
 
 #include <atomic>
