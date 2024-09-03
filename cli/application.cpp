@@ -254,8 +254,7 @@ bool Application::waitForConfig(int timeout)
 {
     m_connection.applySettings(m_settings);
     return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfig, ref(m_connection)), timeout,
-        signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig),
-        signalInfo(&m_connection, &SyncthingConnection::newDirs), signalInfo(&m_connection, &SyncthingConnection::newDevices));
+        signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig));
 }
 
 bool Application::waitForConfigAndStatus(int timeout)
@@ -1094,7 +1093,7 @@ void Application::initDirCompletion(Argument &arg, const ArgumentOccurrence &)
         return;
     }
     m_settings.requestTimeout = 5000; // avoid blocking shell for too long
-    waitForConfig();
+    waitForConfigAndStatus();
     // set directory IDs as completion values
     m_dirCompletion = m_connection.directoryIds().join(QChar(' ')).toUtf8();
     arg.setPreDefinedCompletionValues(m_dirCompletion.data());
@@ -1111,7 +1110,7 @@ void Application::initDevCompletion(Argument &arg, const ArgumentOccurrence &)
         return;
     }
     m_settings.requestTimeout = 5000; // avoid blocking shell for too long
-    waitForConfig();
+    waitForConfigAndStatus();
     // set device IDs and names as completion values
     QStringList completionValues;
     const size_t valueCount = m_connection.devInfo().size() << 2;
