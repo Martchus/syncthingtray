@@ -38,7 +38,7 @@ class Application : public QObject {
     Q_OBJECT
 
 public:
-    Application();
+    explicit Application();
     ~Application() override;
 
     int exec(int argc, const char *const *argv);
@@ -53,9 +53,9 @@ private Q_SLOTS:
 
 private:
     int loadConfig();
-    bool waitForConnected(int timeout = 2000);
-    bool waitForConfig(int timeout = 2000);
-    bool waitForConfigAndStatus(int timeout = 2000);
+    bool waitForConnected();
+    bool waitForConfig();
+    bool waitForConfigAndStatus();
     void requestLog(const ArgumentOccurrence &);
     void requestShutdown(const ArgumentOccurrence &);
     void requestRestart(const ArgumentOccurrence &);
@@ -93,6 +93,7 @@ private:
     RelevantDir m_pwd;
     QByteArray m_dirCompletion;
     QByteArray m_devCompletion;
+    int m_generalTimeout;
     int m_idleDuration;
     int m_idleTimeout;
     bool m_argsRead;

@@ -66,6 +66,7 @@ Application::Application()
     , m_preventDisconnect(false)
     , m_callbacksInvoked(false)
     , m_requiresMainEventLoop(true)
+    , m_generalTimeout(10000)
     , m_idleDuration(0)
     , m_idleTimeout(0)
     , m_argsRead(false)
@@ -219,16 +220,17 @@ int Application::loadConfig()
         }
     }
 
-    // read idle duration and timeout
+    // read timeouts
     if (const int res = assignIntegerFromArg(m_args.atLeast, m_idleDuration)) {
         return res;
     }
     if (const int res = assignIntegerFromArg(m_args.timeout, m_idleTimeout)) {
         return res;
     }
-
-    // read request timeout
     if (const int res = assignIntegerFromArg(m_args.requestTimeout, m_settings.requestTimeout)) {
+        return res;
+    }
+    if (const int res = assignIntegerFromArg(m_args.requestTimeout, m_generalTimeout)) {
         return res;
     }
 
@@ -240,27 +242,27 @@ int Application::loadConfig()
     return 0;
 }
 
-bool Application::waitForConnected(int timeout)
+bool Application::waitForConnected()
 {
     bool isConnected = m_connection.isConnected();
     const function<void(SyncthingStatus)> checkStatus([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
     return waitForSignalsOrFail(bind(static_cast<void (SyncthingConnection::*)(SyncthingConnectionSettings &)>(&SyncthingConnection::reconnect),
                                     ref(m_connection), ref(m_settings)),
-        timeout, signalInfo(&m_connection, &SyncthingConnection::error),
+        m_generalTimeout, signalInfo(&m_connection, &SyncthingConnection::error),
         signalInfo(&m_connection, &SyncthingConnection::statusChanged, checkStatus, &isConnected));
 }
 
-bool Application::waitForConfig(int timeout)
+bool Application::waitForConfig()
 {
     m_connection.applySettings(m_settings);
-    return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfig, ref(m_connection)), timeout,
+    return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfig, ref(m_connection)), m_generalTimeout,
         signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig));
 }
 
-bool Application::waitForConfigAndStatus(int timeout)
+bool Application::waitForConfigAndStatus()
 {
     m_connection.applySettings(m_settings);
-    return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfigAndStatus, ref(m_connection)), timeout,
+    return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfigAndStatus, ref(m_connection)), m_generalTimeout,
         signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig),
         signalInfo(&m_connection, &SyncthingConnection::newDirs), signalInfo(&m_connection, &SyncthingConnection::newDevices),
         signalInfo(&m_connection, &SyncthingConnection::myIdChanged));

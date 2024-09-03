@@ -44,6 +44,7 @@ Args::Args()
     , credentials("credentials", 'c', "specifies user name and password", { "user name", "password" })
     , certificate("cert", '\0', "specifies the certificate used by the Syncthing instance", { "path" })
     , requestTimeout("request-timeout", '\0', "specifies the transfer timeout for network requests in milliseconds", { "timeout" })
+    , generalTimeout("general-timeout", '\0', "specifies how long to wait for Syncthing in general", { "timeout" })
 {
     dir.setConstraints(0, Argument::varValueCount);
     dir.setValueCompletionBehavior(
@@ -80,7 +81,7 @@ Args::Args()
     credentials.setExample(PROJECT_NAME " status --dir dir1 --credentials name supersecret");
 
     parser.setMainArguments({ &status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &resume, &waitForIdle, &pwd, &cat, &edit, &configFile,
-        &apiKey, &url, &credentials, &certificate, &requestTimeout, &parser.noColorArg(), &parser.helpArg() });
+        &apiKey, &url, &credentials, &certificate, &requestTimeout, &generalTimeout, &parser.noColorArg(), &parser.helpArg() });
 
     // allow setting default values via environment
     configFile.setEnvironmentVariable("SYNCTHING_CTL_CONFIG_FILE");
