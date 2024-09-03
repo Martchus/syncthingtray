@@ -262,10 +262,13 @@ bool Application::waitForConfig()
 bool Application::waitForConfigAndStatus()
 {
     m_connection.applySettings(m_settings);
-    return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfigAndStatus, ref(m_connection)), m_generalTimeout,
-        signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig),
-        signalInfo(&m_connection, &SyncthingConnection::newDirs), signalInfo(&m_connection, &SyncthingConnection::newDevices),
-        signalInfo(&m_connection, &SyncthingConnection::myIdChanged));
+    if (!waitForSignalsOrFail(bind(&SyncthingConnection::requestConfigAndStatus, ref(m_connection)), m_generalTimeout,
+            signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig),
+            signalInfo(&m_connection, &SyncthingConnection::myIdChanged))) {
+        return false;
+    }
+    m_connection.applyRawConfig();
+    return true;
 }
 
 void Application::handleStatusChanged(SyncthingStatus newStatus)
