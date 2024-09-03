@@ -31,7 +31,6 @@ AppSettings::AppSettings(Data::SyncthingConnectionSettings &connectionSettings, 
     , syncthingUrl(connectionSettings.syncthingUrl)
     , apiKey(connectionSettings.apiKey)
 {
-
 }
 
 QString AppSettings::apiKeyAsString() const

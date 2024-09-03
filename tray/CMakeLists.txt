@@ -193,7 +193,7 @@ if (QUICK_GUI)
     # check whether Qt WebView is present
     include(QtLinkage)
     unset(WEBVIEWITEM_QML_FILES)
-    option(QUICK_GUI_NO_WEBVIEW  "disables web view support in the Qt Quick GUI" OFF)
+    option(QUICK_GUI_NO_WEBVIEW "disables web view support in the Qt Quick GUI" OFF)
     if (NOT QUICK_GUI_NO_WEBVIEW)
         find_package("${QT_PACKAGE_PREFIX}WebView" "${META_QT_VERSION}")
         find_package("${QT_PACKAGE_PREFIX}WebViewQuick" "${META_QT_VERSION}")
