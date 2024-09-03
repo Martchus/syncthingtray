@@ -11,9 +11,21 @@
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
 #include <c++utilities/io/ansiescapecodes.h>
 
+#include <boost/version.hpp>
+
 #include <boost/asio/executor_work_guard.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/filesystem/path.hpp>
+#if BOOST_VERSION >= 108600
+#include <boost/process/v1/async.hpp>
+#include <boost/process/v1/async_pipe.hpp>
+#include <boost/process/v1/child.hpp>
+#include <boost/process/v1/extend.hpp>
+#include <boost/process/v1/group.hpp>
+#include <boost/process/v1/io.hpp>
+#include <boost/process/v1/locale.hpp>
+#include <boost/process/v1/search_path.hpp>
+#else
 #include <boost/process/async.hpp>
 #include <boost/process/async_pipe.hpp>
 #include <boost/process/child.hpp>
@@ -22,6 +34,8 @@
 #include <boost/process/io.hpp>
 #include <boost/process/locale.hpp>
 #include <boost/process/search_path.hpp>
+#endif
+
 #ifdef PLATFORM_WINDOWS
 #include <boost/process/windows.hpp>
 #endif
