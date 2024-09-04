@@ -204,6 +204,10 @@ static int runApplication(int argc, const char *const *argv)
     auto &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
     widgetsGuiArg.addSubArguments({ &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstanceArg,
         &newInstanceArg, &replaceArg, &showWizardArg, &assumeFirstLaunchArg, &wipArg, &insecureArg });
+    auto &quickGuiArg = qtConfigArgs.qtQuickGuiArg();
+#ifdef GUI_QTQUICK
+    quickGuiArg.addSubArgument(&insecureArg);
+#endif
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
     auto cliArg = OperationArgument("cli", 'c', "runs Syncthing's CLI");
     auto cliHelp = ConfigValueArgument("help", 'h', "shows help for Syncthing's CLI");
@@ -227,9 +231,9 @@ static int runApplication(int argc, const char *const *argv)
     syncthingArg.setSubArguments({ &syncthingHelp });
 #endif
 
-    parser.setMainArguments({ &qtConfigArgs.qtWidgetsGuiArg(),
+    parser.setMainArguments({ &widgetsGuiArg,
 #ifdef GUI_QTQUICK
-        &qtConfigArgs.qtQuickGuiArg(),
+        &quickGuiArg,
 #endif
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
         &cliArg, &syncthingArg,
@@ -255,7 +259,7 @@ static int runApplication(int argc, const char *const *argv)
     }
 
 #ifdef GUI_QTQUICK
-    if (qtConfigArgs.qtQuickGuiArg().isPresent()) {
+    if (quickGuiArg.isPresent()) {
 #ifdef SYNCTHINGTRAY_HAS_WEBVIEW
         QtWebView::initialize();
 #endif
@@ -274,6 +278,9 @@ static int runApplication(int argc, const char *const *argv)
         qtConfigArgs.applySettings(true);
         qtConfigArgs.applySettingsForQuickGui();
         networkAccessManager().setParent(&app);
+        if (insecureArg.isPresent()) {
+            settings.connection.insecure = true;
+        }
 
         auto quickApp = App();
         quickApp.applySettings();
@@ -283,7 +290,7 @@ static int runApplication(int argc, const char *const *argv)
 #endif
 
     // quit unless Qt Widgets GUI should be shown
-    if (!qtConfigArgs.qtWidgetsGuiArg().isPresent()) {
+    if (!widgetsGuiArg.isPresent()) {
         return EXIT_SUCCESS;
     }
 
