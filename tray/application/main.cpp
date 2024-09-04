@@ -237,6 +237,13 @@ static int runApplication(int argc, const char *const *argv)
         &parser.noColorArg(), &parser.helpArg(), &quitArg });
 
     // parse arguments
+#if defined(Q_OS_ANDROID)
+    qDebug() << "Parsing CLI arguments";
+    parser.setExitFunction([] (int status) {
+        qWarning() << "Unable to parse CLI arguments, exiting early";
+        std::exit(status);
+    });
+#endif
     parser.parseArgs(argc, argv);
 
     // quit already running application if quit is present
@@ -254,6 +261,12 @@ static int runApplication(int argc, const char *const *argv)
 #endif
         SET_QT_APPLICATION_INFO;
         auto app = QApplication(argc, const_cast<char **>(argv));
+#if defined(Q_OS_ANDROID)
+        qDebug() << "Running Qt Quick GUI";
+#if !defined(QT_NO_SSL)
+        qDebug() << "TLS support available: " << QSslSocket::supportsSsl();
+#endif
+#endif
         auto &settings = Settings::values();
         Settings::restore();
         settings.qt.disableNotices();
@@ -285,6 +298,12 @@ static int runApplication(int argc, const char *const *argv)
         SET_QT_APPLICATION_INFO;
         auto application = QApplication(argc, const_cast<char **>(argv));
         QGuiApplication::setQuitOnLastWindowClosed(false);
+#if defined(Q_OS_ANDROID)
+        qDebug() << "Running Qt Widgets GUI";
+#if !defined(QT_NO_SSL)
+        qDebug() << "TLS support available: " << QSslSocket::supportsSsl();
+#endif
+#endif
         // stop possibly running instance if --replace is present
         if (replaceArg.isPresent()) {
             const char *const replaceArgs[] = { parser.executable(), quitArg.name() };
@@ -307,9 +326,6 @@ static int runApplication(int argc, const char *const *argv)
         if (insecureArg.isPresent()) {
             settings.connection.insecure = true;
         }
-#if defined(Q_OS_ANDROID) && !defined(QT_NO_SSL)
-        qDebug() << "TLS support available: " << QSslSocket::supportsSsl();
-#endif
         LOAD_QT_TRANSLATIONS;
         if (!settings.error.isEmpty()) {
             QMessageBox::critical(nullptr, QCoreApplication::applicationName(), settings.error);
@@ -339,6 +355,10 @@ static int runApplication(int argc, const char *const *argv)
         trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent());
         return application.exec();
     }
+
+#if defined(Q_OS_ANDROID)
+    qDebug() << "Sending arguments to already running instance";
+#endif
 
     // trigger actions if --webui or --trigger is present but don't create a new tray icon
     const auto firstInstance = TrayWidget::instances().empty();

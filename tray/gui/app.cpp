@@ -58,6 +58,7 @@ App::App(QObject *parent)
     Data::IconManager::instance().applySettings(nullptr, nullptr, true, true);
 
     connect(&m_settings, &AppSettings::settingsChanged, this, &App::applySettings);
+    connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
 
     auto *const app = QGuiApplication::instance();
     auto *const context = m_engine.rootContext();
@@ -153,6 +154,15 @@ bool App::event(QEvent *event)
     default:;
     }
     return res;
+}
+
+void App::handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
+{
+    Q_UNUSED(category)
+    Q_UNUSED(networkError)
+    Q_UNUSED(request)
+    Q_UNUSED(response)
+    qWarning() << "connection error: " << errorMessage;
 }
 
 bool App::applySettings()
