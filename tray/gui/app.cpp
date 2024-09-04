@@ -167,7 +167,9 @@ void App::handleConnectionError(const QString &errorMessage, Data::SyncthingErro
 
 bool App::applySettings()
 {
-    m_connection.connect(Settings::values().connection.primary);
+    auto &connectionSettings = Settings::values().connection;
+    m_connection.setInsecure(connectionSettings.insecure);
+    m_connection.connect(connectionSettings.primary);
     return true;
 }
 
