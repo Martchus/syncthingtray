@@ -225,6 +225,8 @@ if (QUICK_GUI)
         ${WEBVIEWITEM_QML_FILES}
         RESOURCE_PREFIX
         "/qt/qml/"
+        OUTPUT_DIRECTORY
+        "${CMAKE_CURRENT_BINARY_DIR}/webviewitem"
         NO_PLUGIN_OPTIONAL)
     list(APPEND PRIVATE_LIBRARIES ${META_TARGET_NAME}-webviewitemplugin)
 endif ()
