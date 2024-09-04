@@ -4,15 +4,6 @@ import QtQuick.Controls
 import QtWebView
 
 ColumnLayout {
-    RowLayout {
-        Layout.margins: 10
-        Label {
-            id: addressBar
-            Layout.fillWidth: true
-            text: app.connection.syncthingUrl
-            elide: Label.ElideRight
-        }
-    }
     WebView {
         id: webView
         Layout.fillWidth: true
@@ -35,9 +26,14 @@ ColumnLayout {
     }
     property list<Action> actions: [
         Action {
-            text: "Refresh"
+            text: qsTr("Refresh")
             icon.source: app.faUrlBase + "refresh"
             onTriggered: webView.reload()
+        },
+        Action {
+            text: qsTr("Open in web browser")
+            icon.source: app.faUrlBase + "external-link"
+            onTriggered: Qt.openUrlExternally(app.connection.syncthingUrlWithCredentials)
         }
     ]
 }

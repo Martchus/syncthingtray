@@ -7,5 +7,11 @@ Label {
     horizontalAlignment: Text.AlignHCenter
     verticalAlignment: Text.AlignVCenter
     wrapMode: Text.WordWrap
-    property list<Action> actions
+    property list<Action> actions: [
+        Action {
+            text: qsTr("Open in web browser")
+            icon.source: app.faUrlBase + "external-link"
+            onTriggered: Qt.openUrlExternally(app.connection.syncthingUrlWithCredentials)
+        }
+    ]
 }
