@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Controls.Material
 
 ApplicationWindow {
     id: window
@@ -8,6 +9,8 @@ ApplicationWindow {
     width: 700
     height: 500
     title: qsTr("Syncthing App")
+    Material.theme: Qt.styleHints.colorScheme === Qt.Dark ? Material.Dark : Material.Light
+    Material.accent: Material.LightBlue
     header: ToolBar {
         RowLayout {
             anchors.fill: parent
