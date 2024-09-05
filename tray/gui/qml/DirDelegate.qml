@@ -29,15 +29,18 @@ ExpandableDelegate {
         extraActions: [
             Action {
                 text: qsTr("Edit ignore patterns")
+                icon.source: app.faUrlBase + "filter"
                 onTriggered: (source) => mainView.stackView.push("IgnorePatternPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             },
             Action {
                 text: qsTr("Browse remote files")
+                icon.source: app.faUrlBase + "folder-open-o"
                 enabled: !modelData.paused
                 onTriggered: (source) => mainView.stackView.push("FilesPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             },
             Action {
                 text: qsTr("Advanced config")
+                icon.source: app.faUrlBase + "cogs"
                 onTriggered: (source) => mainView.stackView.push("AdvancedDirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             }
         ]

@@ -60,12 +60,13 @@ Page {
                         contentItem: TextField {
                             id: editedStringValue
                             text: modelData.value
+                            onAccepted: stringDlg.accpet()
                         }
                         onAccepted: {
                             advancedConfigListView.folderConfig[modelData.key] = editedStringValue.text
                             stringValue.text = editedStringValue.text
                         }
-                        onRejected: editedStringValue.text = modelData.value
+                        onRejected: editedStringValue.text = advancedConfigListView.folderConfig[modelData.key]
                         onHelpRequested: helpButton.clicked()
                     }
                     required property var modelData
@@ -94,6 +95,30 @@ Page {
                             key: modelData.key
                         }
                     }
+                    onClicked: numberDlg.visible = true
+                    Dialog {
+                        id: numberDlg
+                        title: modelData.label
+                        standardButtons: Dialog.Ok | Dialog.Cancel | Dialog.Help
+                        modal: true
+                        width: parent.width - 20
+                        contentItem: TextField {
+                            id: editedNumberValue
+                            text: modelData.value
+                            validator: DoubleValidator {
+                                id: numberValidator
+                                locale: "en"
+                            }
+                            onAccepted: numberDlg.accpet()
+                        }
+                        onAccepted: {
+                            const number = Number.fromLocaleString(Qt.locale(numberValidator.locale), editedNumberValue.text)
+                            advancedConfigListView.folderConfig[modelData.key] = number
+                            numberValue.text = number
+                        }
+                        onRejected: editedNumberValue.text = advancedConfigListView.folderConfig[modelData.key]
+                        onHelpRequested: helpButton.clicked()
+                    }
                     required property var modelData
                 }
             }
@@ -108,6 +133,11 @@ Page {
                                 Layout.fillWidth: true
                                 text: modelData.label
                                 font.weight: Font.Medium
+                            }
+                            Label {
+                                Layout.fillWidth: true
+                                text: "Unable to show/edit object at this point"
+                                font.weight: Font.Light
                             }
                         }
                         HelpButton {
@@ -134,6 +164,7 @@ Page {
                         Switch {
                             id: booleanSwitch
                             checked: modelData.value
+                            onCheckedChanged: advancedConfigListView.folderConfig[modelData.key] = booleanSwitch.checked
                         }
                         HelpButton {
                             key: modelData.key

@@ -10,7 +10,6 @@ ColumnLayout {
         Layout.fillHeight: true
         url: app.connection.syncthingUrlWithCredentials
         onLoadingChanged: (request) => {
-            addressBar.text = request.url;
             errorLabel.visible = request.errorString.length > 0;
             errorLabel.text = request.errorString;
         }

@@ -13,6 +13,7 @@
 #include <qtquickforkawesome/imageprovider.h>
 
 #include <QClipboard>
+#include <QDebug>
 #include <QFile>
 #include <QGuiApplication>
 #include <QNetworkReply>
@@ -20,6 +21,7 @@
 #include <QStringBuilder>
 
 #include <cstdlib>
+#include <functional>
 #include <iostream>
 
 using namespace Data;
@@ -50,11 +52,16 @@ App::App(QObject *parent)
     , m_changesModel(m_connection)
     , m_settings(Settings::values().connection.primary)
     , m_faUrlBase(QStringLiteral("image://fa/"))
+    , m_darkmodeEnabled(false)
+    , m_darkColorScheme(false)
+    , m_darkPalette(QtUtilities::isPaletteDark())
 {
     qmlRegisterUncreatableType<Data::SyncthingFileModel>(
         "Main.Private", 1, 0, "SyncthingFileModel", QStringLiteral("Data::SyncthingFileModel is created from C++."));
 
-    setBrightColorsOfModelsAccordingToPalette();
+    QtUtilities::onDarkModeChanged([this] (bool darkColorScheme) {
+        applyDarkmodeChange(darkColorScheme, m_darkPalette);
+    }, this);
     Data::IconManager::instance().applySettings(nullptr, nullptr, true, true);
 
     connect(&m_settings, &AppSettings::settingsChanged, this, &App::applySettings);
@@ -149,7 +156,8 @@ bool App::event(QEvent *event)
     const auto res = QObject::event(event);
     switch (event->type()) {
     case QEvent::ApplicationPaletteChange:
-        setBrightColorsOfModelsAccordingToPalette();
+        qDebug() << "application pallette has changed";
+        applyDarkmodeChange(m_darkColorScheme, QtUtilities::isPaletteDark());
         break;
     default:;
     }
@@ -173,14 +181,22 @@ bool App::applySettings()
     return true;
 }
 
-void App::setBrightColorsOfModelsAccordingToPalette()
+void App::applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled)
 {
     auto &qtSettings = Settings::values().qt;
-    qtSettings.reevaluatePaletteAndDefaultIconTheme();
-    const auto brightColors = qtSettings.isPaletteDark();
-    m_dirModel.setBrightColors(brightColors);
-    m_devModel.setBrightColors(brightColors);
-    m_changesModel.setBrightColors(brightColors);
+    m_darkColorScheme = isDarkColorSchemeEnabled;
+    m_darkPalette = isDarkPaletteEnabled;
+    const auto isDarkmodeEnabled = m_darkColorScheme || m_darkPalette;
+    qtSettings.reapplyDefaultIconTheme(isDarkmodeEnabled);
+    if (isDarkmodeEnabled == m_darkmodeEnabled) {
+        return;
+    }
+    qDebug() << "darkmode has changed: " << isDarkmodeEnabled;
+    m_darkmodeEnabled = isDarkmodeEnabled;
+    m_dirModel.setBrightColors(isDarkmodeEnabled);
+    m_devModel.setBrightColors(isDarkmodeEnabled);
+    m_changesModel.setBrightColors(isDarkmodeEnabled);
+    emit darkmodeEnabledChanged(isDarkmodeEnabled);
 }
 
 } // namespace QtGui

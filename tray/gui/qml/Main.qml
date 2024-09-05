@@ -9,13 +9,22 @@ ApplicationWindow {
     width: 700
     height: 500
     title: qsTr("Syncthing App")
-    Material.theme: Qt.styleHints.colorScheme === Qt.Dark ? Material.Dark : Material.Light
+    Material.theme: app.darkmodeEnabled ? Material.Dark : Material.Light
     Material.accent: Material.LightBlue
     header: ToolBar {
         RowLayout {
             anchors.fill: parent
-            anchors.leftMargin: drawer.effectiveWidth
+            anchors.leftMargin: flickable.anchors.leftMargin
             ToolButton {
+                visible: !backButton.visible
+                icon.source: app.faUrlBase + "bars"
+                onClicked: drawer.visible ? drawer.close() : drawer.open()
+                ToolTip.text: qsTr("Toggle menu")
+                ToolTip.visible: hovered || pressed
+                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+            }
+            ToolButton {
+                id: backButton
                 visible: pageStack.currentDepth > 1
                 icon.source: app.faUrlBase + "chevron-left"
                 onClicked: pageStack.pop()
@@ -26,7 +35,7 @@ ApplicationWindow {
             Label {
                 text: pageStack.currentPage.title
                 elide: Label.ElideRight
-                horizontalAlignment: Qt.AlignHCenter
+                horizontalAlignment: Qt.AlignLeft
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
             }
@@ -77,7 +86,6 @@ ApplicationWindow {
                 icon.source: app.faUrlBase + "info-circle"
                 onClicked: aboutDialog.visible = true
             }
-            footerPositioning: ListView.OverlayFooter
             model: ListModel {
                 ListElement {
                     name: qsTr("Folders")
@@ -116,7 +124,7 @@ ApplicationWindow {
     Flickable {
         id: flickable
         anchors.fill: parent
-        anchors.leftMargin: drawer.effectiveWidth
+        anchors.leftMargin: drawer.visible ? drawer.effectiveWidth : 0
 
         StackLayout {
             id: pageStack

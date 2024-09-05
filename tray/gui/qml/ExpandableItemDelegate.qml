@@ -17,15 +17,23 @@ ItemDelegate {
                 width: 24
                 height: 24
             }
-            Label {
+            GridLayout {
                 Layout.fillWidth: true
-                text: modelData.name
-                elide: Text.ElideRight
-                font.weight: Font.Medium
-            }
-            Label {
-                text: modelData.statusString ?? '?'
-                color: modelData.statusColor ?? palette.text
+                columns: mainDelegate.breakpoint ? 2 : 1
+                columnSpacing: 10
+                rowSpacing: 0
+                Label {
+                    Layout.fillWidth: true
+                    text: modelData.name
+                    elide: Text.ElideRight
+                    font.weight: Font.Medium
+                }
+                Label {
+                    text: modelData.statusString ?? '?'
+                    color: modelData.statusColor ?? palette.text
+                    elide: Text.ElideRight
+                    font.weight: Font.Light
+                }
             }
             QtObject {
                 id: source
@@ -33,9 +41,12 @@ ItemDelegate {
                 property int col: 0
             }
             Repeater {
+                id: buttonRepeater
+                visible: mainDelegate.breakpoint || (buttonRepeater.count + mainDelegate.extraActions.length) === 1
                 model: mainDelegate.actions
                 RoundButton {
                     required property Action modelData
+                    visible: buttonRepeater.visible
                     enabled: modelData.enabled
                     hoverEnabled: true
                     Layout.preferredWidth: 36
@@ -50,7 +61,7 @@ ItemDelegate {
                 }
             }
             RoundButton {
-                visible: mainDelegate.extraActions.length > 0
+                visible: !buttonRepeater.visible || mainDelegate.extraActions.length > 0
                 hoverEnabled: true
                 Layout.preferredWidth: 36
                 Layout.preferredHeight: 36
@@ -65,12 +76,24 @@ ItemDelegate {
             Menu {
                 id: menu
                 Instantiator {
-                    id: menuInstantiator
+                    model: mainDelegate.actions
+                    delegate: MenuItem {
+                        required property Action modelData
+                        text: modelData.text
+                        enabled: modelData.enabled
+                        icon.source: modelData.icon.source
+                        onTriggered: modelData.trigger(source)
+                    }
+                    onObjectAdded: (index, object) => menu.insertItem(index, object)
+                    onObjectRemoved: (index, object) => menu.removeItem(object)
+                }
+                Instantiator {
                     model: mainDelegate.extraActions
                     delegate: MenuItem {
                         required property Action modelData
                         text: modelData.text
                         enabled: modelData.enabled
+                        icon.source: modelData.icon.source
                         onTriggered: modelData.trigger(source)
                     }
                     onObjectAdded: (index, object) => menu.insertItem(index, object)
@@ -86,6 +109,7 @@ ItemDelegate {
 
     required property var modelData
     required property ListView mainView
+    readonly property bool breakpoint: mainView.width > 500
     property list<Action> actions
     property list<Action> extraActions
 }

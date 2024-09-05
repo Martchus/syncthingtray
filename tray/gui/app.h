@@ -42,6 +42,7 @@ class App : public QObject {
     Q_PROPERTY(Data::SyncthingRecentChangesModel *changesModel READ changesModel CONSTANT)
     Q_PROPERTY(AppSettings *settings READ settings CONSTANT)
     Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
+    Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
 
 public:
     explicit App(QObject *parent = nullptr);
@@ -71,6 +72,16 @@ public:
     {
         return &m_settings;
     }
+    /*!
+     * \brief Returns whether darkmode is enabled.
+     * \remarks
+     * The QML code could just use "Qt.styleHints.colorScheme === Qt.Dark" but this would not be consistent with the approach in
+     * QtSettings that also takes the palette into account for platforms without darkmode flag.
+     */
+    bool isDarkmodeEnabled() const
+    {
+        return m_darkmodeEnabled;
+    }
 
     // helper functions invoked from QML
     Q_INVOKABLE bool applySettings();
@@ -82,6 +93,9 @@ public:
     Q_INVOKABLE bool saveIgnorePatterns(const QString &dirId, QObject *textArea);
     Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId, QObject *parent);
 
+Q_SIGNALS:
+    void darkmodeEnabledChanged(bool darkmodeEnabled);
+
 protected:
     bool event(QEvent *event) override;
 
@@ -89,7 +103,7 @@ private Q_SLOTS:
     void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);
 
 private:
-    void setBrightColorsOfModelsAccordingToPalette();
+    void applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled);
 
     QQmlApplicationEngine m_engine;
     Data::SyncthingConnection m_connection;
@@ -98,6 +112,9 @@ private:
     Data::SyncthingRecentChangesModel m_changesModel;
     AppSettings m_settings;
     QString m_faUrlBase;
+    bool m_darkmodeEnabled;
+    bool m_darkColorScheme;
+    bool m_darkPalette;
 };
 } // namespace QtGui
 
