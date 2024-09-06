@@ -43,11 +43,23 @@ Page {
                 }
             }
             TapHandler {
+                acceptedButtons: Qt.LeftButton
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
+                onTapped: treeView.toggleExpanded(row)
+            }
+            TapHandler {
                 acceptedButtons: Qt.RightButton
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
                 onTapped: contextMenu.open()
             }
             TapHandler {
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
                 onLongPressed: treeView.model.triggerAction("toggle-selection-single", treeView.index(row, 0))
+            }
+            TapHandler {
+                acceptedDevices: PointerDevice.TouchScreen
+                onTapped: treeView.toggleExpanded(row)
+                onLongPressed: contextMenu.open()
             }
             Menu {
                 id: contextMenu

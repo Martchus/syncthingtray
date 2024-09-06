@@ -41,7 +41,7 @@ ExpandableDelegate {
             Action {
                 text: qsTr("Advanced config")
                 icon.source: app.faUrlBase + "cogs"
-                onTriggered: (source) => mainView.stackView.push("AdvancedDirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
+                onTriggered: (source) => mainView.stackView.push("AdvancedDirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId, stackView: mainView.stackView}, StackView.PushTransition)
             }
         ]
     }

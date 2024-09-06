@@ -280,6 +280,7 @@ if (QUICK_GUI)
         gui/qml/AdvancedDirConfigPage.qml
         gui/qml/IgnorePatternPage.qml
         gui/qml/HelpButton.qml
+        gui/qml/ObjectConfigPage.qml
         SOURCES
         gui/quick/quickicon.h
         gui/quick/quickicon.cpp
