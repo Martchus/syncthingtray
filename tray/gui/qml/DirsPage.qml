@@ -7,7 +7,7 @@ StackView {
     Layout.fillWidth: true
     Layout.fillHeight: true
     initialItem: Page {
-        title: qsTr("Folder overview")
+        title: qsTr("Folders")
         Layout.fillWidth: true
         Layout.fillHeight: true
         DirListView {

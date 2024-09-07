@@ -104,6 +104,10 @@ ApplicationWindow {
                     iconName: "syncthing"
                 }
                 ListElement {
+                    name: qsTr("Advanced")
+                    iconName: "cogs"
+                }
+                ListElement {
                     name: qsTr("App settings")
                     iconName: "cog"
                 }
@@ -138,6 +142,8 @@ ApplicationWindow {
             }
             WebViewPage {
             }
+            AdvancedPage {
+            }
             SettingsPage {
             }
 
@@ -150,5 +156,27 @@ ApplicationWindow {
             readonly property var currentExtraActions: currentPage.extraActions ?? []
             function pop() { children[currentIndex].pop?.() }
         }
+    }
+
+    ToolTip {
+        anchors.centerIn: Overlay.overlay
+        id: errorToolTip
+        timeout: 5000
+    }
+    Connections {
+        target: app.connection
+        function onError(message) {
+            showError(message);
+         }
+    }
+    Connections {
+        target: app.notifier
+        function onDisconnected() {
+            showError(qsTr("UI disconnected from Syncthing backend"));
+         }
+    }
+    function showError(message) {
+        errorToolTip.text = message;
+        errorToolTip.open()
     }
 }

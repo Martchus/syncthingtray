@@ -2,11 +2,17 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-Page {
-    title: qsTr("Device overview")
+StackView {
+    id: stackView
     Layout.fillWidth: true
     Layout.fillHeight: true
-    DevListView {
-        mainModel: app.devModel
+    initialItem: Page {
+        title: qsTr("Devices")
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        DevListView {
+            mainModel: app.devModel
+            stackView: stackView
+        }
     }
 }

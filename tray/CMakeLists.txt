@@ -261,26 +261,29 @@ if (QUICK_GUI)
         1.0
         NO_PLUGIN
         QML_FILES
-        gui/qml/Main.qml
         gui/qml/AboutDialog.qml
-        gui/qml/DirsPage.qml
-        gui/qml/DevsPage.qml
+        gui/qml/AdvancedConfigPage.qml
+        gui/qml/AdvancedDevConfigPage.qml
+        gui/qml/AdvancedDirConfigPage.qml
+        gui/qml/AdvancedPage.qml
         gui/qml/ChangesPage.qml
-        gui/qml/WebViewPage.qml
-        gui/qml/SettingsPage.qml
+        gui/qml/DetailsListView.qml
+        gui/qml/DevDelegate.qml
+        gui/qml/DevListView.qml
+        gui/qml/DevsPage.qml
+        gui/qml/DirDelegate.qml
+        gui/qml/DirListView.qml
+        gui/qml/DirsPage.qml
         gui/qml/ExpandableDelegate.qml
         gui/qml/ExpandableItemDelegate.qml
         gui/qml/ExpandableListView.qml
-        gui/qml/DetailsListView.qml
-        gui/qml/DirListView.qml
-        gui/qml/DirDelegate.qml
-        gui/qml/DevListView.qml
-        gui/qml/DevDelegate.qml
         gui/qml/FilesPage.qml
-        gui/qml/AdvancedDirConfigPage.qml
-        gui/qml/IgnorePatternPage.qml
         gui/qml/HelpButton.qml
+        gui/qml/IgnorePatternPage.qml
+        gui/qml/Main.qml
         gui/qml/ObjectConfigPage.qml
+        gui/qml/SettingsPage.qml
+        gui/qml/WebViewPage.qml
         SOURCES
         gui/quick/quickicon.h
         gui/quick/quickicon.cpp

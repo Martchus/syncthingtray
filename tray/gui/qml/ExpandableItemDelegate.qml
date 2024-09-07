@@ -7,8 +7,7 @@ import Main
 ItemDelegate {
     id: mainDelegate
     width: mainView.width
-    onClicked: detailsView.visible = !detailsView.visible
-
+    //onClicked: detailsView.visible = !detailsView.visible
     contentItem: ColumnLayout {
         RowLayout {
             spacing: 10
@@ -105,6 +104,16 @@ ItemDelegate {
             id: detailsView
             mainView: mainDelegate.mainView
         }
+    }
+
+    TapHandler {
+        acceptedButtons: Qt.LeftButton
+        onTapped: detailsView.visible = !detailsView.visible
+        onLongPressed: menu.popup()
+    }
+    TapHandler {
+        acceptedButtons: Qt.RightButton
+        onTapped: menu.popup()
     }
 
     required property var modelData

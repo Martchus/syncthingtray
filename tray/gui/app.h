@@ -8,6 +8,7 @@
 #include <syncthingmodel/syncthingrecentchangesmodel.h>
 
 #include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingnotifier.h>
 
 namespace Data {
 class SyncthingFileModel;
@@ -37,6 +38,7 @@ public:
 class App : public QObject {
     Q_OBJECT
     Q_PROPERTY(Data::SyncthingConnection *connection READ connection CONSTANT)
+    Q_PROPERTY(Data::SyncthingNotifier *notifier READ notifier CONSTANT)
     Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel CONSTANT)
     Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel CONSTANT)
     Q_PROPERTY(Data::SyncthingRecentChangesModel *changesModel READ changesModel CONSTANT)
@@ -51,6 +53,10 @@ public:
     Data::SyncthingConnection *connection()
     {
         return &m_connection;
+    }
+    Data::SyncthingNotifier *notifier()
+    {
+        return &m_notifier;
     }
     Data::SyncthingDirectoryModel *dirModel()
     {
@@ -107,6 +113,7 @@ private:
 
     QQmlApplicationEngine m_engine;
     Data::SyncthingConnection m_connection;
+    Data::SyncthingNotifier m_notifier;
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingRecentChangesModel m_changesModel;

@@ -47,6 +47,7 @@ void AppSettings::setApiKeyFromString(const QString &apiKeyAsString)
 
 App::App(QObject *parent)
     : QObject(parent)
+    , m_notifier(m_connection)
     , m_dirModel(m_connection)
     , m_devModel(m_connection)
     , m_changesModel(m_connection)

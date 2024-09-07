@@ -15,5 +15,12 @@ ExpandableDelegate {
                 onTriggered: (source) => app.connection[modelData.paused ? "resumeDevice" : "pauseDevice"]([modelData.devId])
             }
         ]
+        extraActions: [
+            Action {
+                text: qsTr("Advanced config")
+                icon.source: app.faUrlBase + "cogs"
+                onTriggered: (source) => mainView.stackView.push("AdvancedDevConfigPage.qml", {devName: modelData.name, devId: modelData.devId, stackView: mainView.stackView}, StackView.PushTransition)
+            }
+        ]
     }
 }

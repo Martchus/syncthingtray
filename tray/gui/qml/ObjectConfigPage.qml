@@ -39,6 +39,7 @@ Page {
                     onClicked: stringDlg.visible = true
                     Dialog {
                         id: stringDlg
+                        anchors.centerIn: Overlay.overlay
                         title: modelData.label
                         standardButtons: Dialog.Ok | Dialog.Cancel | Dialog.Help
                         modal: true
@@ -76,12 +77,14 @@ Page {
                         }
                         HelpButton {
                             id: numberHelpButton
+                            configCategory: objectConfigPage.configCategory
                             key: modelData.key
                         }
                     }
                     onClicked: numberDlg.visible = true
                     Dialog {
                         id: numberDlg
+                        anchors.centerIn: Overlay.overlay
                         title: modelData.label
                         standardButtons: Dialog.Ok | Dialog.Cancel | Dialog.Help
                         modal: true

@@ -10,6 +10,7 @@ ListView {
     Layout.rightMargin: 6
     Layout.bottomMargin: 6
     visible: false
+    interactive: false
 
     required property ListView mainView
 
