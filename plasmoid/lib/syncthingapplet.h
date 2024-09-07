@@ -53,16 +53,16 @@ class SettingsDialog;
 
 class SyncthingApplet : public Plasma::Applet {
     Q_OBJECT
-    Q_PROPERTY(Data::SyncthingConnection *connection READ connection NOTIFY connectionChanged)
-    Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel NOTIFY dirModelChanged)
-    Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDirModel READ sortFilterDirModel NOTIFY dirModelChanged)
-    Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel NOTIFY devModelChanged)
-    Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDevModel READ sortFilterDevModel NOTIFY devModelChanged)
-    Q_PROPERTY(Data::SyncthingDownloadModel *downloadModel READ downloadModel NOTIFY downloadModelChanged)
-    Q_PROPERTY(Data::SyncthingRecentChangesModel *recentChangesModel READ recentChangesModel NOTIFY recentChangesModelChanged)
-    Q_PROPERTY(Data::SyncthingStatusSelectionModel *passiveSelectionModel READ passiveSelectionModel NOTIFY passiveSelectionModelChanged)
+    Q_PROPERTY(Data::SyncthingConnection *connection READ connection CONSTANT)
+    Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel CONSTANT)
+    Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDirModel READ sortFilterDirModel CONSTANT)
+    Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel CONSTANT)
+    Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDevModel READ sortFilterDevModel CONSTANT)
+    Q_PROPERTY(Data::SyncthingDownloadModel *downloadModel READ downloadModel CONSTANT)
+    Q_PROPERTY(Data::SyncthingRecentChangesModel *recentChangesModel READ recentChangesModel CONSTANT)
+    Q_PROPERTY(Data::SyncthingStatusSelectionModel *passiveSelectionModel READ passiveSelectionModel CONSTANT)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    Q_PROPERTY(Data::SyncthingService *service READ service NOTIFY serviceChanged)
+    Q_PROPERTY(Data::SyncthingService *service READ service CONSTANT)
 #endif
     Q_PROPERTY(bool local READ isLocal NOTIFY localChanged)
     Q_PROPERTY(QString statusText READ statusText NOTIFY connectionStatusChanged)
@@ -86,7 +86,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(bool passive READ isPassive NOTIFY passiveChanged)
     Q_PROPERTY(QList<QtUtilities::ChecklistItem> passiveStates READ passiveStates WRITE setPassiveStates)
     Q_PROPERTY(QString faUrl READ faUrl NOTIFY faUrlChanged)
-    Q_PROPERTY(bool wipFeaturesEnabled READ areWipFeaturesEnabled NOTIFY wipFeaturesEnabledChanged)
+    Q_PROPERTY(bool wipFeaturesEnabled READ areWipFeaturesEnabled CONSTANT)
 
 public:
     SyncthingApplet(QObject *parent, const QVariantList &data);
@@ -158,20 +158,6 @@ public Q_SLOTS:
     void saveSettings();
 
 Q_SIGNALS:
-    /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
-    void connectionChanged();
-    /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
-    void dirModelChanged();
-    /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
-    void devModelChanged();
-    /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
-    void downloadModelChanged();
-    /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
-    void recentChangesModelChanged();
-    /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
-    void passiveSelectionModelChanged();
-    /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
-    void serviceChanged();
     void localChanged();
     void connectionStatusChanged();
     void trafficChanged();
@@ -184,8 +170,6 @@ Q_SIGNALS:
     void notificationsAvailableChanged(bool notificationsAvailable);
     void passiveChanged(bool passive);
     void faUrlChanged(const QString &faUrl);
-    /// \remarks Never emitted, just to silence "... depends on non-NOTIFYable ..."
-    void wipFeaturesEnabledChanged();
 
 private Q_SLOTS:
     void handleSettingsChanged();
