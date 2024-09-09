@@ -231,6 +231,30 @@ if (QUICK_GUI)
         "${CMAKE_CURRENT_BINARY_DIR}/WebViewItem"
         NO_PLUGIN_OPTIONAL)
     list(APPEND PRIVATE_LIBRARIES ${META_TARGET_NAME}-webviewitemplugin)
+
+    # add a dedicated module for app window to have different ones for different platforms
+    if (ANDROID)
+        set(QUICK_GUI_APP_WINDOW_DEFAULT "android")
+    else ()
+        set(QUICK_GUI_APP_WINDOW_DEFAULT "basic")
+    endif ()
+    set(QUICK_GUI_APP_WINDOW "${QUICK_GUI_APP_WINDOW_DEFAULT}" CACHE STRING "specifies what application window to use for the Qt Quick GUI")
+    qt_add_qml_module(
+        ${META_TARGET_NAME}-appwindow
+        URI
+        "AppWindow"
+        VERSION
+        1.0
+        STATIC
+        QML_FILES
+        "gui/qml/appwindow-${QUICK_GUI_APP_WINDOW}/AppWindow.qml"
+        RESOURCE_PREFIX
+        "/qt/qml/"
+        OUTPUT_DIRECTORY
+        "${CMAKE_CURRENT_BINARY_DIR}/AppWindow"
+        NO_PLUGIN_OPTIONAL)
+    list(APPEND PRIVATE_LIBRARIES ${META_TARGET_NAME}-appwindowplugin)
+
 endif ()
 
 # include further modules to apply configuration

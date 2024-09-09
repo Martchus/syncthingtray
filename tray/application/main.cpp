@@ -51,6 +51,7 @@
 #endif
 
 #include <QQmlEngineExtensionPlugin>
+Q_IMPORT_QML_PLUGIN(AppWindowPlugin)
 Q_IMPORT_QML_PLUGIN(WebViewItemPlugin)
 #endif
 

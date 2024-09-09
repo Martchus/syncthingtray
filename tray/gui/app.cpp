@@ -82,7 +82,7 @@ App::App(QObject *parent)
         Qt::QueuedConnection);
     connect(&m_engine, &QQmlApplicationEngine::quit, app, &QGuiApplication::quit);
     m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global()));
-    m_engine.loadFromModule("Main", "Main");
+    m_engine.loadFromModule("AppWindow", "AppWindow");
 }
 
 bool App::openPath(const QString &path)
