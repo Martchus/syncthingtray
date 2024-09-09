@@ -211,9 +211,11 @@ if (QUICK_GUI)
         list(APPEND WEBVIEWITEM_QML_FILES gui/qml/webview-none/WebViewItem.qml)
     endif ()
 
-    # add additional module for the web view
+    # find Qt Qml and enable automoc which is required for the subsequent qt_add_qml_module calls
     find_package("${QT_PACKAGE_PREFIX}Qml" "${META_QT_VERSION}")
     set(CMAKE_AUTOMOC ON)
+
+    # add additional module for the web view
     qt_add_qml_module(
         ${META_TARGET_NAME}-webviewitem
         URI
@@ -226,7 +228,7 @@ if (QUICK_GUI)
         RESOURCE_PREFIX
         "/qt/qml/"
         OUTPUT_DIRECTORY
-        "${CMAKE_CURRENT_BINARY_DIR}/webviewitem"
+        "${CMAKE_CURRENT_BINARY_DIR}/WebViewItem"
         NO_PLUGIN_OPTIONAL)
     list(APPEND PRIVATE_LIBRARIES ${META_TARGET_NAME}-webviewitemplugin)
 endif ()
