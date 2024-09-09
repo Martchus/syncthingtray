@@ -11,17 +11,21 @@ ApplicationWindow {
     title: qsTr("Syncthing App")
     Material.theme: app.darkmodeEnabled ? Material.Dark : Material.Light
     Material.accent: Material.LightBlue
+    Material.primary: Material.LightBlue
     header: ToolBar {
+        Material.theme: Material.Dark
         RowLayout {
             anchors.fill: parent
             anchors.leftMargin: flickable.anchors.leftMargin
             ToolButton {
                 visible: !backButton.visible
                 icon.source: app.faUrlBase + "bars"
-                icon.width: iconSize
-                icon.height: iconSize
+                icon.width: app.iconSize
+                icon.height: app.iconSize
+                text: qsTr("Toggle menu")
+                display: AbstractButton.IconOnly
                 onClicked: drawer.visible ? drawer.close() : drawer.open()
-                ToolTip.text: qsTr("Toggle menu")
+                ToolTip.text: text
                 ToolTip.visible: hovered || pressed
                 ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
             }
@@ -29,10 +33,12 @@ ApplicationWindow {
                 id: backButton
                 visible: pageStack.currentDepth > 1
                 icon.source: app.faUrlBase + "chevron-left"
-                icon.width: iconSize
-                icon.height: iconSize
+                icon.width: app.iconSize
+                icon.height: app.iconSize
+                text: qsTr("Back")
+                display: AbstractButton.IconOnly
                 onClicked: pageStack.pop()
-                ToolTip.text: qsTr("Back")
+                ToolTip.text: text
                 ToolTip.visible: hovered || pressed
                 ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
             }
@@ -48,27 +54,28 @@ ApplicationWindow {
                 ToolButton {
                     required property Action modelData
                     enabled: modelData.enabled
+                    text: modelData.text
+                    display: AbstractButton.IconOnly
                     ToolTip.visible: hovered || pressed
                     ToolTip.text: modelData.text
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                     icon.source: modelData.icon.source
-                    icon.width: iconSize
-                    icon.height: iconSize
+                    icon.width: app.iconSize
+                    icon.height: app.iconSize
                     onClicked: modelData.trigger()
                 }
             }
             ToolButton {
                 visible: pageStack.currentExtraActions.length > 0
                 icon.source: app.faUrlBase + "bars"
-                icon.width: iconSize
-                icon.height: iconSize
+                icon.width: app.iconSize
+                icon.height: app.iconSize
             }
         }
     }
 
     readonly property bool inPortrait: window.width < window.height
     readonly property int spacing: 7
-    readonly property int iconSize: 16
 
     AboutDialog {
         id: aboutDialog
@@ -93,8 +100,8 @@ ApplicationWindow {
                 width: parent.width
                 text: Qt.application.version
                 icon.source: app.faUrlBase + "info-circle"
-                icon.width: iconSize
-                icon.height: iconSize
+                icon.width: app.iconSize
+                icon.height: app.iconSize
                 onClicked: aboutDialog.visible = true
             }
             model: ListModel {
@@ -126,8 +133,8 @@ ApplicationWindow {
             delegate: ItemDelegate {
                 text: name
                 icon.source: app.faUrlBase + iconName
-                icon.width: iconSize
-                icon.height: iconSize
+                icon.width: app.iconSize
+                icon.height: app.iconSize
                 width: parent.width
                 onClicked: {
                     drawerListView.currentIndex = index

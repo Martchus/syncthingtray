@@ -45,6 +45,7 @@ class App : public QObject {
     Q_PROPERTY(AppSettings *settings READ settings CONSTANT)
     Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
+    Q_PROPERTY(int iconSize READ iconSize CONSTANT)
 
 public:
     explicit App(QObject *parent = nullptr);
@@ -88,6 +89,10 @@ public:
     {
         return m_darkmodeEnabled;
     }
+    int iconSize() const
+    {
+        return m_iconSize;
+    }
 
     // helper functions invoked from QML
     Q_INVOKABLE bool applySettings();
@@ -119,6 +124,7 @@ private:
     Data::SyncthingRecentChangesModel m_changesModel;
     AppSettings m_settings;
     QString m_faUrlBase;
+    int m_iconSize;
     bool m_darkmodeEnabled;
     bool m_darkColorScheme;
     bool m_darkPalette;

@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.17.0 FATAL_ERROR)
 # metadata
 set(META_PROJECT_TYPE application)
 set(META_APP_NAME "Syncthing Tray")
+set(META_APP_NAME_QUICK_GUI "Syncthing App")
 set(META_HAS_QUICK_GUI ON)
 set(META_QUICK_GUI_OPTIONAL ON)
 set(META_USE_QQC2 ON)

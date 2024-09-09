@@ -81,6 +81,8 @@ ItemDelegate {
                         text: modelData.text
                         enabled: modelData.enabled
                         icon.source: modelData.icon.source
+                        icon.width: app.iconSize
+                        icon.height: app.iconSize
                         onTriggered: modelData.trigger(source)
                     }
                     onObjectAdded: (index, object) => menu.insertItem(index, object)
@@ -93,6 +95,8 @@ ItemDelegate {
                         text: modelData.text
                         enabled: modelData.enabled
                         icon.source: modelData.icon.source
+                        icon.width: app.iconSize
+                        icon.height: app.iconSize
                         onTriggered: modelData.trigger(source)
                     }
                     onObjectAdded: (index, object) => menu.insertItem(index, object)
@@ -112,6 +116,7 @@ ItemDelegate {
         onLongPressed: menu.popup()
     }
     TapHandler {
+        acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
         acceptedButtons: Qt.RightButton
         onTapped: menu.popup()
     }

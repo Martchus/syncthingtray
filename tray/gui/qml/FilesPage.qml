@@ -65,10 +65,14 @@ Page {
                 id: contextMenu
                 MenuItem {
                     text: qsTr("Refresh")
+                    icon.width: app.iconSize
+                    icon.height: app.iconSize
                     onClicked: treeView.model.fetchMore(treeView.index(row, 0))
                 }
                 MenuItem {
                     text: checkStateData !== Qt.Checked ? qsTr("Select") : qsTr("Deselect")
+                    icon.width: app.iconSize
+                    icon.height: app.iconSize
                     onClicked: treeView.model.triggerAction("toggle-selection-single", treeView.index(row, 0))
                 }
             }

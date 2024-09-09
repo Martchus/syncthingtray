@@ -21,12 +21,14 @@ Page {
                             Label {
                                 Layout.fillWidth: true
                                 text: modelData.label
+                                elide: Text.ElideRight
                                 font.weight: Font.Medium
                             }
                             Label {
                                 id: stringValue
                                 Layout.fillWidth: true
                                 text: modelData.value
+                                elide: Text.ElideRight
                                 font.weight: Font.Light
                             }
                         }
@@ -66,12 +68,14 @@ Page {
                             Label {
                                 Layout.fillWidth: true
                                 text: modelData.label
+                                elide: Text.ElideRight
                                 font.weight: Font.Medium
                             }
                             Label {
                                 id: numberValue
                                 Layout.fillWidth: true
                                 text: modelData.value
+                                elide: Text.ElideRight
                                 font.weight: Font.Light
                             }
                         }
@@ -126,6 +130,7 @@ Page {
                             id: objNameLabel
                             Layout.fillWidth: true
                             text: modelData.label
+                            elide: Text.ElideRight
                             font.weight: Font.Medium
                             readonly property string key: modelData.key
                             readonly property string labelKey: modelData.labelKey
@@ -148,6 +153,7 @@ Page {
                         Label {
                             Layout.fillWidth: true
                             text: modelData.label
+                            elide: Text.ElideRight
                             font.weight: Font.Medium
                         }
                         Switch {

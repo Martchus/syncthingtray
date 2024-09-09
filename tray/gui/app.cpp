@@ -53,6 +53,11 @@ App::App(QObject *parent)
     , m_changesModel(m_connection)
     , m_settings(Settings::values().connection.primary)
     , m_faUrlBase(QStringLiteral("image://fa/"))
+#ifdef Q_OS_ANDROID
+    , m_iconSize(8)
+#else
+    , m_iconSize(16)
+#endif
     , m_darkmodeEnabled(false)
     , m_darkColorScheme(false)
     , m_darkPalette(QtUtilities::isPaletteDark())

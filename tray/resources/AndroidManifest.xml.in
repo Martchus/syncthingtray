@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="@META_PROJECT_RDNS@"
-    android:label="-- %%INSERT_APP_NAME%% --"
+    android:label="@META_APP_NAME_QUICK_GUI@"
     android:installLocation="auto"
     android:versionName="-- %%INSERT_VERSION_NAME%% --"
     android:versionCode="-- %%INSERT_VERSION_CODE%% --">
@@ -16,8 +16,9 @@
         android:smallScreens="true" />
     <application
         android:name="org.qtproject.qt.android.bindings.QtApplication"
+        android:icon="@mipmap/ic_launcher"
         android:hardwareAccelerated="true"
-        android:label="-- %%INSERT_APP_NAME%% --"
+        android:label="@META_APP_NAME_QUICK_GUI@"
         android:requestLegacyExternalStorage="true"
         android:allowNativeHeapPointerTagging="false"
         android:allowBackup="true"
@@ -25,10 +26,11 @@
         <activity
             android:name="org.qtproject.qt.android.bindings.QtActivity"
             android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
-            android:label="-- %%INSERT_APP_NAME%% --"
+            android:label="@META_APP_NAME_QUICK_GUI@"
             android:launchMode="singleTop"
             android:screenOrientation="unspecified"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -42,6 +44,9 @@
             <meta-data
                 android:name="android.app.extract_android_style"
                 android:value="minimal" />
+            <meta-data
+                android:name="android.app.splash_screen_drawable"
+                android:resource="@drawable/splash" />
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
