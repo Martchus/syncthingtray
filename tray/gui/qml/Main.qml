@@ -18,6 +18,8 @@ ApplicationWindow {
             ToolButton {
                 visible: !backButton.visible
                 icon.source: app.faUrlBase + "bars"
+                icon.width: iconSize
+                icon.height: iconSize
                 onClicked: drawer.visible ? drawer.close() : drawer.open()
                 ToolTip.text: qsTr("Toggle menu")
                 ToolTip.visible: hovered || pressed
@@ -27,6 +29,8 @@ ApplicationWindow {
                 id: backButton
                 visible: pageStack.currentDepth > 1
                 icon.source: app.faUrlBase + "chevron-left"
+                icon.width: iconSize
+                icon.height: iconSize
                 onClicked: pageStack.pop()
                 ToolTip.text: qsTr("Back")
                 ToolTip.visible: hovered || pressed
@@ -48,18 +52,23 @@ ApplicationWindow {
                     ToolTip.text: modelData.text
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                     icon.source: modelData.icon.source
+                    icon.width: iconSize
+                    icon.height: iconSize
                     onClicked: modelData.trigger()
                 }
             }
             ToolButton {
                 visible: pageStack.currentExtraActions.length > 0
                 icon.source: app.faUrlBase + "bars"
+                icon.width: iconSize
+                icon.height: iconSize
             }
         }
     }
 
     readonly property bool inPortrait: window.width < window.height
     readonly property int spacing: 7
+    readonly property int iconSize: 16
 
     AboutDialog {
         id: aboutDialog
@@ -84,6 +93,8 @@ ApplicationWindow {
                 width: parent.width
                 text: Qt.application.version
                 icon.source: app.faUrlBase + "info-circle"
+                icon.width: iconSize
+                icon.height: iconSize
                 onClicked: aboutDialog.visible = true
             }
             model: ListModel {
@@ -115,6 +126,8 @@ ApplicationWindow {
             delegate: ItemDelegate {
                 text: name
                 icon.source: app.faUrlBase + iconName
+                icon.width: iconSize
+                icon.height: iconSize
                 width: parent.width
                 onClicked: {
                     drawerListView.currentIndex = index
