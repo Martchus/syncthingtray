@@ -243,7 +243,7 @@ static int runApplication(int argc, const char *const *argv)
     // parse arguments
 #if defined(Q_OS_ANDROID)
     qDebug() << "Parsing CLI arguments";
-    parser.setExitFunction([] (int status) {
+    parser.setExitFunction([](int status) {
         qWarning() << "Unable to parse CLI arguments, exiting early";
         std::exit(status);
     });

@@ -111,7 +111,8 @@ protected:
     bool event(QEvent *event) override;
 
 private Q_SLOTS:
-    void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);
+    void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,
+        const QByteArray &response);
 
 private:
     void applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled);

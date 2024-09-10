@@ -65,9 +65,7 @@ App::App(QObject *parent)
     qmlRegisterUncreatableType<Data::SyncthingFileModel>(
         "Main.Private", 1, 0, "SyncthingFileModel", QStringLiteral("Data::SyncthingFileModel is created from C++."));
 
-    QtUtilities::onDarkModeChanged([this] (bool darkColorScheme) {
-        applyDarkmodeChange(darkColorScheme, m_darkPalette);
-    }, this);
+    QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
     Data::IconManager::instance().applySettings(nullptr, nullptr, true, true);
 
     connect(&m_settings, &AppSettings::settingsChanged, this, &App::applySettings);
@@ -170,7 +168,8 @@ bool App::event(QEvent *event)
     return res;
 }
 
-void App::handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
+void App::handleConnectionError(
+    const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
     Q_UNUSED(category)
     Q_UNUSED(networkError)
