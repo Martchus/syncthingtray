@@ -330,6 +330,13 @@ if (ANDROID)
         message(WARNING "Unable to find OpenSSL libraries. HTTPS will not be supported.")
     endif ()
 
+    if (USE_LIBSYNCTHING)
+        set_property(
+            TARGET ${META_TARGET_NAME}
+            APPEND
+            PROPERTY QT_ANDROID_EXTRA_LIBS "${SYNCTHINGINTERNAL_LIBRARY_PATH}")
+    endif ()
+
     set(QT_ANDROID_SIGN_APK ON)
     qt_android_generate_deployment_settings(${META_TARGET_NAME})
     qt_android_add_apk_target(${META_TARGET_NAME})
