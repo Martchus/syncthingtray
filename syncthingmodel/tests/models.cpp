@@ -364,9 +364,16 @@ void ModelTests::testFileModel()
     connect(
         &model, &Data::SyncthingFileModel::notification, this,
         [this](const QString &type, const QString &message, const QString &details = QString()) {
+            // log but otherwise ignore non-errors
+            if (type != QLatin1String("error")) {
+                qDebug() << "file model notification of type " << type << ": " << message;
+                if (!details.isEmpty()) {
+                    qDebug() << "details: " << details;
+                }
+                return;
+            }
             m_timeout.stop();
             m_loop.quit();
-            QCOMPARE(type, QStringLiteral("error"));
             QCOMPARE(details, QString());
             qDebug() << "error message: " << message;
             QVERIFY(message.startsWith(QStringLiteral("Unable to change ignore patterns:")));
