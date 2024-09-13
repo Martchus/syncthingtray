@@ -14,11 +14,14 @@
 
 #include <QClipboard>
 #include <QDebug>
-#include <QFile>
+#include <QDir>
+#include <QJsonDocument>
+#include <QJsonValue>
 #include <QGuiApplication>
 #include <QNetworkReply>
 #include <QQmlContext>
 #include <QStringBuilder>
+#include <QStandardPaths>
 
 #include <cstdlib>
 #include <functional>
@@ -28,36 +31,19 @@ using namespace Data;
 
 namespace QtGui {
 
-AppSettings::AppSettings(Data::SyncthingConnectionSettings &connectionSettings, QObject *parent)
-    : QObject(parent)
-    , syncthingUrl(connectionSettings.syncthingUrl)
-    , apiKey(connectionSettings.apiKey)
-{
-}
-
-QString AppSettings::apiKeyAsString() const
-{
-    return QString::fromUtf8(apiKey);
-}
-
-void AppSettings::setApiKeyFromString(const QString &apiKeyAsString)
-{
-    apiKey = apiKeyAsString.toUtf8();
-}
-
-App::App(QObject *parent)
+App::App(bool insecure, QObject *parent)
     : QObject(parent)
     , m_notifier(m_connection)
     , m_dirModel(m_connection)
     , m_devModel(m_connection)
     , m_changesModel(m_connection)
-    , m_settings(Settings::values().connection.primary)
     , m_faUrlBase(QStringLiteral("image://fa/"))
 #ifdef Q_OS_ANDROID
     , m_iconSize(8)
 #else
     , m_iconSize(16)
 #endif
+    , m_insecure(insecure)
     , m_darkmodeEnabled(false)
     , m_darkColorScheme(false)
     , m_darkPalette(QtUtilities::isPaletteDark())
@@ -65,10 +51,11 @@ App::App(QObject *parent)
     qmlRegisterUncreatableType<Data::SyncthingFileModel>(
         "Main.Private", 1, 0, "SyncthingFileModel", QStringLiteral("Data::SyncthingFileModel is created from C++."));
 
+    loadSettings();
+    applySettings();
     QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
     Data::IconManager::instance().applySettings(nullptr, nullptr, true, true);
 
-    connect(&m_settings, &AppSettings::settingsChanged, this, &App::applySettings);
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
 
     auto *const app = QGuiApplication::instance();
@@ -178,21 +165,86 @@ void App::handleConnectionError(
     qWarning() << "connection error: " << errorMessage;
 }
 
+bool App::openSettings()
+{
+    const auto dir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    if (!dir.exists()) {
+        dir.mkpath(QStringLiteral("."));
+    }
+    m_settingsFile.close();
+    m_settingsFile.unsetError();
+    m_settingsFile.setFileName(dir.path() + QStringLiteral("/appconfig.json"));
+    if (!m_settingsFile.open(QFile::ReadWrite)) {
+        emit error(tr("Unable to open settings under \"%1\": ").arg(m_settingsFile.fileName()) + m_settingsFile.errorString());
+        return false;
+    }
+    return true;
+}
+
+bool App::loadSettings()
+{
+    if (!m_settingsFile.isOpen() && !openSettings()) {
+        return false;
+    }
+    auto parsError = QJsonParseError();
+    auto doc = QJsonDocument::fromJson(m_settingsFile.readAll(), &parsError);
+    m_settings = doc.object();
+    if (m_settingsFile.error() != QFile::NoError) {
+        emit error(tr("Unable to read settings: ") + m_settingsFile.errorString());
+        return false;
+    }
+    if (parsError.error != QJsonParseError::NoError || !doc.isObject()) {
+        emit error(tr("Unable to restore settings: ") + (parsError.error != QJsonParseError::NoError ? parsError.errorString() : tr("JSON document contains no object")));
+        return false;
+    }
+    return true;
+}
+
+bool App::storeSettings()
+{
+    if (!m_settingsFile.isOpen() && !openSettings()) {
+        return false;
+    }
+    if (!m_settingsFile.seek(0)) {
+        return false;
+    }
+    const auto bytesWritten =  m_settingsFile.write(QJsonDocument(m_settings).toJson(QJsonDocument::Compact));
+    if (bytesWritten < m_settingsFile.size() && !m_settingsFile.resize(bytesWritten)) {
+        return false;
+    }
+    if (m_settingsFile.error() != QFile::NoError) {
+        emit error(tr("Unable to save settings: ") + m_settingsFile.errorString());
+        return false;
+    }
+    return true;
+}
+
 bool App::applySettings()
 {
-    auto &connectionSettings = Settings::values().connection;
-    m_connection.setInsecure(connectionSettings.insecure);
-    m_connection.connect(connectionSettings.primary);
+    auto connectionSettings = m_settings.value(QLatin1String("connection"));
+    auto connectionSettingsObj = QJsonObject();
+    if (!connectionSettings.isObject()) {
+        m_connectionSettings.storeToJson(connectionSettingsObj);
+        connectionSettings = *m_settings.insert(QLatin1String("connection"), connectionSettingsObj);
+    } else {
+        connectionSettingsObj = connectionSettings.toObject();
+    }
+    if (!m_connectionSettings.loadFromJson(connectionSettings.toObject())) {
+        emit error(tr("Unable to load HTTPs certificate"));
+    }
+    m_connectionSettings.storeToJson(connectionSettingsObj);
+    m_settings.insert(QLatin1String("connection"), connectionSettingsObj);
+    m_connection.setInsecure(m_insecure);
+    m_connection.connect(m_connectionSettings);
     return true;
 }
 
 void App::applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled)
 {
-    auto &qtSettings = Settings::values().qt;
     m_darkColorScheme = isDarkColorSchemeEnabled;
     m_darkPalette = isDarkPaletteEnabled;
     const auto isDarkmodeEnabled = m_darkColorScheme || m_darkPalette;
-    qtSettings.reapplyDefaultIconTheme(isDarkmodeEnabled);
+    m_qtSettings.reapplyDefaultIconTheme(isDarkmodeEnabled);
     if (isDarkmodeEnabled == m_darkmodeEnabled) {
         return;
     }

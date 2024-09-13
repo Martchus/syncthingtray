@@ -11,6 +11,7 @@
 #include <QSslError>
 #include <QString>
 
+QT_FORWARD_DECLARE_CLASS(QJsonObject)
 QT_FORWARD_DECLARE_CLASS(QSslCertificate)
 
 namespace Data {
@@ -61,6 +62,8 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     static QList<QSslError> compileSslErrors(const QSslCertificate &trustedCert);
     bool loadHttpsCert();
 #endif
+    void storeToJson(QJsonObject &object);
+    bool loadFromJson(const QJsonObject &object);
 
     static constexpr int defaultTrafficPollInterval = 5000;
     static constexpr int defaultDevStatusPollInterval = 60000;

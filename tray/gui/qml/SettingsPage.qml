@@ -2,47 +2,50 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-Page {
-    title: qsTr("App settings")
+StackView {
+    id: stackView
     Layout.fillWidth: true
     Layout.fillHeight: true
-    ScrollView {
-        id: scrollView
-        anchors.fill: parent
-        anchors.margins: 10
-        GridLayout {
-            width: scrollView.width
-            columns: 2
-            columnSpacing: 5
-            rowSpacing: 5
-            Label {
-                text: qsTr("Syncthing URL")
-            }
-            TextField {
-                id: syncthingUrlTextField
-                Layout.fillWidth: true
-                text: app.settings.syncthingUrl
-            }
-            Label {
-                text: qsTr("API key")
-            }
-            TextField {
-                id: apiKeyTextField
-                Layout.fillWidth: true
-                text: app.settings.apiKey
-            }
-        }
-    }
-    property list<Action> actions: [
-        Action {
-            text: qsTr("Apply")
-            icon.source: app.faUrlBase + "check"
-            onTriggered: (source) => {
-                app.settings.syncthingUrl = syncthingUrlTextField.text
-                app.settings.apiKey = apiKeyTextField.text
-                app.applySettings()
-            }
-        }
-    ]
+    initialItem: Page {
+        id: appSettingsPage
+        title: qsTr("App settings")
+        Layout.fillWidth: true
+        Layout.fillHeight: true
 
+        ListView {
+            id: listView
+            anchors.fill: parent
+            model: ListModel {
+                id: model
+                ListElement {
+                    key: "connection"
+                    label: qsTr("Connection to Syncthing backend")
+                    title: qsTr("Configure connection with Syncthing backend")
+                }
+            }
+            delegate: ItemDelegate {
+                width: listView.width
+                text: label
+                onClicked: stackView.push("ObjectConfigPage.qml", {title: title, configObject: appSettingsPage.config[key], stackView: stackView}, StackView.PushTransition)
+            }
+            ScrollIndicator.vertical: ScrollIndicator { }
+        }
+
+        property var config: app.settings
+        property list<Action> actions: [
+            Action {
+                text: qsTr("Apply")
+                icon.source: app.faUrlBase + "check"
+                onTriggered: (source) => {
+                    const cfg = app.settings;
+                    for (let i = 0, count = model.count; i !== count; ++i) {
+                        const entryKey = model.get(i).key;
+                        cfg[entryKey] = appSettingsPage.config[entryKey]
+                    }
+                    app.settings = cfg
+                    return true;
+                }
+            }
+        ]
+    }
 }

@@ -43,7 +43,7 @@ Page {
                         id: stringDlg
                         anchors.centerIn: Overlay.overlay
                         title: modelData.label
-                        standardButtons: Dialog.Ok | Dialog.Cancel | Dialog.Help
+                        standardButtons: objectConfigPage.standardButtons
                         modal: true
                         width: parent.width - 20
                         contentItem: TextField {
@@ -90,7 +90,7 @@ Page {
                         id: numberDlg
                         anchors.centerIn: Overlay.overlay
                         title: modelData.label
-                        standardButtons: Dialog.Ok | Dialog.Cancel | Dialog.Help
+                        standardButtons: objectConfigPage.standardButtons
                         modal: true
                         width: parent.width - 20
                         contentItem: TextField {
@@ -174,6 +174,7 @@ Page {
     property alias model: objectListView.model
     required property var configObject
     property string configCategory
+    readonly property int standardButtons: (configCategory.length > 0) ? (Dialog.Ok | Dialog.Cancel | Dialog.Help) : (Dialog.Ok | Dialog.Cancel)
     required property StackView stackView
     property Page parentPage
     property Label objectNameLabel

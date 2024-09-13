@@ -8,32 +8,19 @@
 #include <syncthingmodel/syncthingrecentchangesmodel.h>
 
 #include <syncthingconnector/syncthingconnection.h>
+#include <syncthingconnector/syncthingconnectionsettings.h>
 #include <syncthingconnector/syncthingnotifier.h>
+
+#include <qtutilities/settingsdialog/qtsettings.h>
+
+#include <QJsonObject>
+#include <QFile>
 
 namespace Data {
 class SyncthingFileModel;
 }
 
 namespace QtGui {
-
-class AppSettings : public QObject {
-    Q_OBJECT
-    Q_PROPERTY(QString syncthingUrl MEMBER syncthingUrl NOTIFY settingsChanged)
-    Q_PROPERTY(QString apiKey READ apiKeyAsString WRITE setApiKeyFromString NOTIFY settingsChanged)
-
-public:
-    explicit AppSettings(Data::SyncthingConnectionSettings &connectionSettings, QObject *parent = nullptr);
-
-    QString apiKeyAsString() const;
-    void setApiKeyFromString(const QString &apiKeyAsString);
-
-Q_SIGNALS:
-    void settingsChanged();
-
-public:
-    QString &syncthingUrl;
-    QByteArray &apiKey;
-};
 
 class App : public QObject {
     Q_OBJECT
@@ -42,13 +29,13 @@ class App : public QObject {
     Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel CONSTANT)
     Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel CONSTANT)
     Q_PROPERTY(Data::SyncthingRecentChangesModel *changesModel READ changesModel CONSTANT)
-    Q_PROPERTY(AppSettings *settings READ settings CONSTANT)
+    Q_PROPERTY(QJsonObject settings READ settings WRITE setSettings NOTIFY settingsChanged)
     Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
     Q_PROPERTY(int iconSize READ iconSize CONSTANT)
 
 public:
-    explicit App(QObject *parent = nullptr);
+    explicit App(bool insecure = false, QObject *parent = nullptr);
 
     // properties
     Data::SyncthingConnection *connection()
@@ -75,9 +62,16 @@ public:
     {
         return m_faUrlBase;
     }
-    AppSettings *settings()
+    QJsonObject settings() const
     {
-        return &m_settings;
+        return m_settings;
+    }
+    void setSettings(const QJsonObject &settings)
+    {
+        m_settings = settings;
+        applySettings();
+        storeSettings();
+        emit settingsChanged(m_settings);
     }
     /*!
      * \brief Returns whether darkmode is enabled.
@@ -95,6 +89,8 @@ public:
     }
 
     // helper functions invoked from QML
+    Q_INVOKABLE bool loadSettings();
+    Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applySettings();
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
@@ -106,6 +102,8 @@ public:
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
+    void settingsChanged(const QJsonObject &settingsChanged);
+    void error(const QString &errorMessage);
 
 protected:
     bool event(QEvent *event) override;
@@ -116,6 +114,7 @@ private Q_SLOTS:
 
 private:
     void applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled);
+    bool openSettings();
 
     QQmlApplicationEngine m_engine;
     Data::SyncthingConnection m_connection;
@@ -123,9 +122,13 @@ private:
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingRecentChangesModel m_changesModel;
-    AppSettings m_settings;
+    Data::SyncthingConnectionSettings m_connectionSettings;
+    QtUtilities::QtSettings m_qtSettings;
+    QFile m_settingsFile;
+    QJsonObject m_settings;
     QString m_faUrlBase;
     int m_iconSize;
+    bool m_insecure;
     bool m_darkmodeEnabled;
     bool m_darkColorScheme;
     bool m_darkPalette;

@@ -184,6 +184,12 @@ ApplicationWindow {
         timeout: 5000
     }
     Connections {
+        target: app
+        function onError(message) {
+            showError(message);
+         }
+    }
+    Connections {
         target: app.connection
         function onError(message) {
             showError(message);

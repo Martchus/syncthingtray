@@ -271,18 +271,11 @@ static int runApplication(int argc, const char *const *argv)
         qDebug() << "TLS support available: " << QSslSocket::supportsSsl();
 #endif
 #endif
-        auto &settings = Settings::values();
-        Settings::restore();
-        settings.qt.disableNotices();
-        settings.qt.apply();
         qtConfigArgs.applySettings(true);
         qtConfigArgs.applySettingsForQuickGui();
         networkAccessManager().setParent(&app);
-        if (insecureArg.isPresent()) {
-            settings.connection.insecure = true;
-        }
 
-        auto quickApp = App();
+        auto quickApp = App(insecureArg.isPresent());
         quickApp.applySettings();
         QObject::connect(&app, &QCoreApplication::aboutToQuit, &shutdownSyncthingTray);
         return app.exec();
