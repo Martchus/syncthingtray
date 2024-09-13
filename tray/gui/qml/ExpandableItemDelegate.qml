@@ -79,7 +79,7 @@ ItemDelegate {
                     delegate: MenuItem {
                         required property Action modelData
                         text: modelData.text
-                        enabled: modelData.enabled
+                        visible: modelData.enabled
                         icon.source: modelData.icon.source
                         icon.width: app.iconSize
                         icon.height: app.iconSize
@@ -93,7 +93,7 @@ ItemDelegate {
                     delegate: MenuItem {
                         required property Action modelData
                         text: modelData.text
-                        enabled: modelData.enabled
+                        visible: modelData.enabled
                         icon.source: modelData.icon.source
                         icon.width: app.iconSize
                         icon.height: app.iconSize

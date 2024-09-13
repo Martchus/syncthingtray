@@ -276,6 +276,7 @@ if (QUICK_GUI)
         gui/qml/DevsPage.qml
         gui/qml/DirDelegate.qml
         gui/qml/DirListView.qml
+        gui/qml/DirErrorsPage.qml
         gui/qml/DirsPage.qml
         gui/qml/ExpandableDelegate.qml
         gui/qml/ExpandableItemDelegate.qml

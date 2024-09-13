@@ -42,6 +42,12 @@ ExpandableDelegate {
                 text: qsTr("Advanced config")
                 icon.source: app.faUrlBase + "cogs"
                 onTriggered: (source) => mainView.stackView.push("AdvancedDirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId, stackView: mainView.stackView}, StackView.PushTransition)
+            },
+            Action {
+                text: qsTr("Show errors")
+                enabled: modelData.pullErrorCount > 0
+                icon.source: app.faUrlBase + "exclamation-triangle"
+                onTriggered: (source) => mainView.stackView.push("DirErrorsPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             }
         ]
     }

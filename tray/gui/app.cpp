@@ -135,6 +135,28 @@ bool App::saveIgnorePatterns(const QString &dirId, QObject *textArea)
     return true;
 }
 
+bool App::loadDirErrors(const QString &dirId, QObject *view)
+{
+    auto connection = connect(&m_connection, &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view] (const Data::SyncthingDir &dir) {
+        if (dir.id != dirId) {
+            return;
+        }
+        auto array = m_engine.newArray(static_cast<quint32>(dir.itemErrors.size()));
+        auto index = quint32();
+        for (const auto &itemError : dir.itemErrors) {
+            auto error = m_engine.newObject();
+            error.setProperty(QStringLiteral("path"), itemError.path);
+            error.setProperty(QStringLiteral("message"), itemError.message);
+            array.setProperty(index++, error);
+        }
+        view->setProperty("model", array.toVariant());
+        view->setProperty("enabled", true);
+    });
+    connect(this, &QObject::destroyed, [connection] { disconnect(connection); });
+    m_connection.requestDirPullErrors(dirId);
+    return true;
+}
+
 SyncthingFileModel *App::createFileModel(const QString &dirId, QObject *parent)
 {
     auto row = int();
