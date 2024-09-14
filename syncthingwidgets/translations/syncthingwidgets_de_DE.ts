@@ -1633,7 +1633,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="92"/>
         <source>Click next to configure Syncthing Tray according to the selected options. You can also reconduct the checks the available options are based on by heading back. If you cancel the wizard, no configuration changes will be made.</source>
-        <translation>Fahre fort, um Syncthing Tray gemäß der gewählten option zu konfigurieren. Du kannst auch zurück gehen, um die Einrichtungserkennung, auf der die verfügbaren Optionen basieren, zu wiederholen. Wenn du den Assistenten abbrichst, werden keine Änderungen vorgenommen.</translation>
+        <translation type="unfinished">Fahre fort, um Syncthing Tray gemäß der gewählten Option zu konfigurieren. Du kannst auch zurück gehen, um die Einrichtungserkennung, auf der die verfügbaren Optionen basieren, zu wiederholen. Wenn du den Assistenten abbrichst, werden keine Änderungen vorgenommen.</translation>
     </message>
     <message>
         <source>no</source>
