@@ -144,6 +144,42 @@ ApplicationWindow {
             ScrollIndicator.vertical: ScrollIndicator { }
         }
     }
+    footer: TabBar {
+        visible: drawer.interactive
+        currentIndex: Math.min(pageStack.currentIndex, 3)
+        TabButton {
+            text: qsTr("Folders")
+            display: AbstractButton.IconOnly
+            icon.source: app.faUrlBase + "folder"
+            icon.width: app.iconSize
+            icon.height: app.iconSize
+            onClicked: drawerListView.currentIndex = 0
+        }
+        TabButton {
+            text: qsTr("Devices")
+            display: AbstractButton.IconOnly
+            icon.source: app.faUrlBase + "sitemap"
+            icon.width: app.iconSize
+            icon.height: app.iconSize
+            onClicked: drawerListView.currentIndex = 1
+        }
+        TabButton {
+            text: qsTr("Recent changes")
+            display: AbstractButton.IconOnly
+            icon.source: app.faUrlBase + "history"
+            icon.width: app.iconSize
+            icon.height: app.iconSize
+            onClicked: drawerListView.currentIndex = 2
+        }
+        TabButton {
+            text: qsTr("More")
+            display: AbstractButton.IconOnly
+            icon.source: app.faUrlBase + "cog"
+            icon.width: app.iconSize
+            icon.height: app.iconSize
+            onClicked: drawerListView.currentIndex = 5
+        }
+    }
 
     Flickable {
         id: flickable
@@ -180,29 +216,35 @@ ApplicationWindow {
 
     ToolTip {
         anchors.centerIn: Overlay.overlay
-        id: errorToolTip
+        id: notifictionToolTip
         timeout: 5000
     }
     Connections {
         target: app
         function onError(message) {
-            showError(message);
-         }
+            showNotifiction(message);
+        }
+        function onInfo(message) {
+            showNotifiction(message);
+        }
     }
     Connections {
         target: app.connection
         function onError(message) {
-            showError(message);
-         }
+            showNotifiction(message);
+        }
+        function onNewConfigTriggered() {
+            showNotifiction(qsTr("Configuration changed"));
+        }
     }
     Connections {
         target: app.notifier
         function onDisconnected() {
-            showError(qsTr("UI disconnected from Syncthing backend"));
-         }
+            showNotifiction(qsTr("UI disconnected from Syncthing backend"));
+        }
     }
-    function showError(message) {
-        errorToolTip.text = message;
-        errorToolTip.open()
+    function showNotifiction(message) {
+        notifictionToolTip.text = message;
+        notifictionToolTip.open()
     }
 }

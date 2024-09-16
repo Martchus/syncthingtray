@@ -67,7 +67,7 @@ ItemDelegate {
                 ToolTip.visible: hovered || pressed
                 ToolTip.text: qsTr("More actions")
                 ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-                icon.source: app.faUrlBase + "bars"
+                icon.source: app.faUrlBase + "ellipsis-v"
                 icon.width: 20
                 icon.height: 20
                 onClicked: menu.popup()

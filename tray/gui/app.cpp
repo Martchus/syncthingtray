@@ -54,7 +54,10 @@ App::App(bool insecure, QObject *parent)
     loadSettings();
     applySettings();
     QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
-    Data::IconManager::instance().applySettings(nullptr, nullptr, true, true);
+
+    auto statusIconSettings = StatusIconSettings();
+    statusIconSettings.strokeWidth = StatusIconStrokeWidth::Thick;
+    Data::IconManager::instance().applySettings(&statusIconSettings, &statusIconSettings, true, true);
 
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
 
@@ -77,10 +80,10 @@ App::App(bool insecure, QObject *parent)
 
 bool App::openPath(const QString &path)
 {
-    if (QFile::exists(path)) {
-        QtUtilities::openLocalFileOrDir(path);
+    if (QFile::exists(path) && QtUtilities::openLocalFileOrDir(path)) {
         return true;
     }
+    emit error(tr("Unable to open \"%1\"").arg(path));
     return false;
 }
 
@@ -88,15 +91,22 @@ bool App::openPath(const QString &dirId, const QString &relativePath)
 {
     auto row = int();
     auto dirInfo = m_connection.findDirInfo(dirId, row);
-    return dirInfo ? openPath(dirInfo->path % QChar('/') % relativePath) : false;
+    if (!dirInfo) {
+        emit error(tr("Unable to open \"%1\"").arg(relativePath));
+    } else if (openPath(dirInfo->path % QChar('/') % relativePath)) {
+        return true;
+    }
+    return false;
 }
 
 bool App::copyText(const QString &text)
 {
     if (auto *const clipboard = QGuiApplication::clipboard()) {
         clipboard->setText(text);
+        emit info(tr("Copied value"));
         return true;
     }
+    emit info(tr("Unable to copy value"));
     return false;
 }
 
@@ -104,17 +114,26 @@ bool App::copyPath(const QString &dirId, const QString &relativePath)
 {
     auto row = int();
     auto dirInfo = m_connection.findDirInfo(dirId, row);
-    return dirInfo ? copyText(dirInfo->path % QChar('/') % relativePath) : false;
+    if (!dirInfo) {
+        emit error(tr("Unable to copy \"%1\"").arg(relativePath));
+    } else if (copyText(dirInfo->path % QChar('/') % relativePath)) {
+        emit info(tr("Copied path"));
+        return true;
+    }
+    return false;
 }
 
 bool App::loadIgnorePatterns(const QString &dirId, QObject *textArea)
 {
-    auto res = m_connection.ignores(dirId, [textArea](SyncthingIgnores &&ignores, QString &&error) {
-        Q_UNUSED(error) // FIXME: error handling
+    auto res = m_connection.ignores(dirId, [this, textArea](SyncthingIgnores &&ignores, QString &&error) {
+        if (!error.isEmpty()) {
+            emit this->error(tr("Unable to load ignore patterns: ") + error);
+        }
         textArea->setProperty("text", ignores.ignore.join(QChar('\n')));
         textArea->setProperty("enabled", true);
     });
     connect(textArea, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
+    connect(this, &QObject::destroyed, [connection = res.connection] { disconnect(connection); });
     return true;
 }
 
@@ -127,11 +146,14 @@ bool App::saveIgnorePatterns(const QString &dirId, QObject *textArea)
         return false;
     }
     auto res = m_connection.setIgnores(
-        dirId, SyncthingIgnores{ .ignore = text.toString().split(QChar('\n')), .expanded = QStringList() }, [textArea](QString &&error) {
-            Q_UNUSED(error) // FIXME: error handling
+        dirId, SyncthingIgnores{ .ignore = text.toString().split(QChar('\n')), .expanded = QStringList() }, [this, textArea](QString &&error) {
+            if (!error.isEmpty()) {
+                emit this->error(tr("Unable to save ignore patterns: ") + error);
+            }
             textArea->setProperty("enabled", true);
         });
     connect(textArea, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
+    connect(this, &QObject::destroyed, [connection = res.connection] { disconnect(connection); });
     return true;
 }
 

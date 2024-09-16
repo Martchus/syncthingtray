@@ -8,6 +8,7 @@ Page {
     ListView {
         id: objectListView
         anchors.fill: parent
+        ScrollIndicator.vertical: ScrollIndicator { }
         model: Object.entries(objectConfigPage.configObject).sort().map(objectConfigPage.makeConfigRow)
         delegate: DelegateChooser {
             role: "type"

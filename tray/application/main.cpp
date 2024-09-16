@@ -39,11 +39,18 @@
 #include <qtutilities/resources/resources.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 
-#include <QApplication>
 #include <QMessageBox>
 #include <QNetworkAccessManager>
 #include <QSettings>
 #include <QStringBuilder>
+
+#ifdef GUI_QTWIDGETS
+#include <QApplication>
+using QtApp = QApplication;
+#else
+#include <QGuiApplication>
+using QtApp = QGuiApplication;
+#endif
 
 #ifdef GUI_QTQUICK
 #ifdef SYNCTHINGTRAY_HAS_WEBVIEW
@@ -264,7 +271,8 @@ static int runApplication(int argc, const char *const *argv)
         QtWebView::initialize();
 #endif
         SET_QT_APPLICATION_INFO;
-        auto app = QApplication(argc, const_cast<char **>(argv));
+        auto app = QtApp(argc, const_cast<char **>(argv));
+        LOAD_QT_TRANSLATIONS;
 #if defined(Q_OS_ANDROID)
         qDebug() << "Running Qt Quick GUI";
 #if !defined(QT_NO_SSL)

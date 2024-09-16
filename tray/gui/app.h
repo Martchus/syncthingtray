@@ -105,6 +105,7 @@ Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
     void settingsChanged(const QJsonObject &settingsChanged);
     void error(const QString &errorMessage);
+    void info(const QString &infoMessage);
 
 protected:
     bool event(QEvent *event) override;
