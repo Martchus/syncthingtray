@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <iostream>
 #include <limits>
+#include <utility>
 
 using namespace std;
 using namespace CppUtilities;
@@ -117,12 +118,12 @@ void DirectoryErrorsDialog::removeNonEmptyDirs()
         return;
     }
     QStringList removedDirs, failedDirs;
-    for (const QString &dirPath : m_nonEmptyDirs) {
+    for (const auto &dirPath : std::as_const(m_nonEmptyDirs)) {
         auto ok = false;
         auto dirObj = QDir(dirPath);
         if (!dirObj.exists() || !dirObj.removeRecursively()) {
             // check whether dir has already been removed by removing its parent
-            for (const QString &removedDir : removedDirs) {
+            for (const auto &removedDir : std::as_const(removedDirs)) {
                 if (dirPath.startsWith(removedDir)) {
                     ok = true;
                     break;
