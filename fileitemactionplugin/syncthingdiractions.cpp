@@ -42,7 +42,7 @@ bool SyncthingDirActions::updateStatus(const SyncthingDir &dir)
     }
     m_infoAction.setText(tr("Folder info for %1").arg(dir.displayName()));
     m_statusAction.setText(tr("Status: ") + dir.statusString());
-    if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
+    if (dir.paused) {
         m_statusAction.setIcon(statusIcons().pause);
     } else if (dir.isUnshared()) {
         m_statusAction.setIcon(statusIcons().disconnected);

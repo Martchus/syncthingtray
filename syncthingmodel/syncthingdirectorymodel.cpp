@@ -302,7 +302,7 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         switch (index.column()) {
         case 0:
-            if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
+            if (dir.paused) {
                 return statusIcons().pause;
             } else if (dir.deviceIds.empty()) {
                 return statusIcons().disconnected; // "unshared" status
@@ -455,7 +455,7 @@ void SyncthingDirectoryModel::handleForkAwesomeIconsChanged()
 
 QVariant SyncthingDirectoryModel::dirStatusColor(const SyncthingDir &dir) const
 {
-    if (dir.paused && dir.status != SyncthingDirStatus::OutOfSync) {
+    if (dir.paused) {
         return QVariant();
     }
     if (dir.isUnshared()) {

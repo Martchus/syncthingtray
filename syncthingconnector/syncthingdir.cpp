@@ -176,7 +176,7 @@ bool SyncthingDir::assignDirType(const QString &dirTypeStr)
  */
 QString SyncthingDir::statusString() const
 {
-    if (paused && status != SyncthingDirStatus::OutOfSync) {
+    if (paused) {
         return QCoreApplication::translate("SyncthingDir", "Paused");
     }
     if (isUnshared()) {

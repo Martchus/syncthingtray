@@ -337,7 +337,7 @@ bool SyncthingConnection::hasOutOfSyncDirs() const
         return m_hasOutOfSyncDirs.value();
     }
     for (const SyncthingDir &dir : m_dirs) {
-        if (dir.status == SyncthingDirStatus::OutOfSync) {
+        if (!dir.paused && dir.status == SyncthingDirStatus::OutOfSync) {
             return m_hasOutOfSyncDirs.emplace(true);
         }
     }
