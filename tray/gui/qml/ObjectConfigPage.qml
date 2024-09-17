@@ -116,32 +116,56 @@ Page {
             }
             DelegateChoice {
                 roleValue: "object"
-                ItemDelegate {
+                MouseArea {
+                    id: dragArea
                     width: objectListView.width
-                    contentItem: RowLayout {
-                        Image {
-                            Layout.preferredWidth: 16
-                            Layout.preferredHeight: 16
-                            visible: modelData.isArray
-                            source: modelData.isArray ? (app.faUrlBase + "hashtag") : ("")
-                            width: 16
-                            height: 16
+                    height: content.height
+                    drag.target: held ? content : undefined
+                    drag.axis: Drag.YAxis
+                    onPressAndHold: held = true
+                    onReleased: held = false
+                    property bool held: false
+
+                    ItemDelegate {
+                        id: content
+                        Drag.active: dragArea.held
+                        Drag.source: dragArea
+                        Drag.hotSpot.x: width / 2
+                        Drag.hotSpot.y: height / 2
+                        contentItem: RowLayout {
+                            Image {
+                                Layout.preferredWidth: 16
+                                Layout.preferredHeight: 16
+                                visible: modelData.isArray
+                                source: modelData.isArray ? (app.faUrlBase + "hashtag") : ("")
+                                width: 16
+                                height: 16
+                            }
+                            Label {
+                                id: objNameLabel
+                                Layout.fillWidth: true
+                                text: modelData.label
+                                elide: Text.ElideRight
+                                font.weight: Font.Medium
+                                readonly property string key: modelData.key
+                                readonly property string labelKey: modelData.labelKey
+                            }
+                            HelpButton {
+                                configCategory: objectConfigPage.configCategory
+                                key: modelData.key
+                            }
                         }
-                        Label {
-                            id: objNameLabel
-                            Layout.fillWidth: true
-                            text: modelData.label
-                            elide: Text.ElideRight
-                            font.weight: Font.Medium
-                            readonly property string key: modelData.key
-                            readonly property string labelKey: modelData.labelKey
-                        }
-                        HelpButton {
-                            configCategory: objectConfigPage.configCategory
-                            key: modelData.key
+                        onClicked: objectConfigPage.stackView.push("ObjectConfigPage.qml", {title: modelData.label, configObject: objectConfigPage.configObject[modelData.key], stackView: objectConfigPage.stackView, parentPage: objectConfigPage, objectNameLabel: objNameLabel}, StackView.PushTransition)
+                    }
+                    DropArea {
+                        anchors.fill: parent
+                        anchors.margins: 2
+                        onEntered: (drag) => {
+                            objectListView.model.items.move(
+                                    drag.source.DelegateModel.itemsIndex,
+                                    dragArea.DelegateModel.itemsIndex)
                         }
                     }
-                    onClicked: objectConfigPage.stackView.push("ObjectConfigPage.qml", {title: modelData.label, configObject: objectConfigPage.configObject[modelData.key], stackView: objectConfigPage.stackView, parentPage: objectConfigPage, objectNameLabel: objNameLabel}, StackView.PushTransition)
                     required property var modelData
                 }
             }
