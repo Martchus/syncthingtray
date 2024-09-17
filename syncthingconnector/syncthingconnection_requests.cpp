@@ -91,6 +91,7 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
  */
 QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuery &query, const QByteArray &data)
 {
+#ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     auto *const reply = networkAccessManager().post(prepareRequest(path, query), data);
 #ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
@@ -99,6 +100,10 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
         cerr << Phrases::Info << "Querying API: POST " << reply->url().toString().toStdString() << Phrases::EndFlush;
     }
     return reply;
+#else
+    Q_UNUSED(data)
+    return MockedReply::forRequest(QStringLiteral("POST"), path, query, true);
+#endif
 }
 
 /*!
@@ -106,6 +111,7 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
  */
 QNetworkReply *SyncthingConnection::sendData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data)
 {
+#ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
     auto *const reply = networkAccessManager().sendCustomRequest(prepareRequest(path, query), verb, data);
 #ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
@@ -114,6 +120,10 @@ QNetworkReply *SyncthingConnection::sendData(const QByteArray &verb, const QStri
         cerr << Phrases::Info << "Querying API: " << verb.data() << ' ' << reply->url().toString().toStdString() << Phrases::EndFlush;
     }
     return reply;
+#else
+    Q_UNUSED(data)
+    return MockedReply::forRequest(verb, path, query, true);
+#endif
 }
 
 /*!
