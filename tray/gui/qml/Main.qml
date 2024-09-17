@@ -197,6 +197,7 @@ ApplicationWindow {
             ChangesPage {
             }
             WebViewPage {
+                active: pageStack.currentIndex === 3
             }
             AdvancedPage {
             }

@@ -4,11 +4,11 @@ import QtQuick.Controls
 import QtWebView
 
 ColumnLayout {
+    id: webViewItem
     WebView {
         id: webView
         Layout.fillWidth: true
         Layout.fillHeight: true
-        url: app.connection.syncthingUrlWithCredentials
         onLoadingChanged: (request) => {
             errorLabel.visible = request.errorString.length > 0;
             errorLabel.text = request.errorString;
@@ -23,6 +23,7 @@ ColumnLayout {
             visible: false
         }
     }
+    property alias url: webView.url
     property list<Action> actions: [
         Action {
             text: qsTr("Refresh")
@@ -32,7 +33,7 @@ ColumnLayout {
         Action {
             text: qsTr("Open in web browser")
             icon.source: app.faUrlBase + "external-link"
-            onTriggered: Qt.openUrlExternally(app.connection.syncthingUrlWithCredentials)
+            onTriggered: Qt.openUrlExternally(webViewItem.url)
         }
     ]
 }
