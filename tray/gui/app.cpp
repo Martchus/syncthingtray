@@ -179,6 +179,12 @@ bool App::loadDirErrors(const QString &dirId, QObject *view)
     return true;
 }
 
+bool App::showError(const QString &errorMessage)
+{
+    emit error(errorMessage);
+    return true;
+}
+
 SyncthingFileModel *App::createFileModel(const QString &dirId, QObject *parent)
 {
     auto row = int();

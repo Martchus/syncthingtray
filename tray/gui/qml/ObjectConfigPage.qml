@@ -9,7 +9,11 @@ Page {
         id: objectListView
         anchors.fill: parent
         ScrollIndicator.vertical: ScrollIndicator { }
-        model: Object.entries(objectConfigPage.configObject).sort().map(objectConfigPage.makeConfigRow)
+        model: ListModel {
+            id: listModel
+            dynamicRoles: true
+            Component.onCompleted: Object.entries(objectConfigPage.configObject).forEach((configEntry, index) => { listModel.append(objectConfigPage.makeConfigRow(configEntry, index)) })
+        }
         delegate: DelegateChooser {
             role: "type"
             DelegateChoice {
@@ -32,6 +36,10 @@ Page {
                                 elide: Text.ElideRight
                                 font.weight: Font.Light
                             }
+                        }
+                        ArrayElementButtons {
+                            page: objectConfigPage
+                            rowData: modelData
                         }
                         HelpButton {
                             id: helpButton
@@ -80,6 +88,10 @@ Page {
                                 font.weight: Font.Light
                             }
                         }
+                        ArrayElementButtons {
+                            page: objectConfigPage
+                            rowData: modelData
+                        }
                         HelpButton {
                             id: numberHelpButton
                             configCategory: objectConfigPage.configCategory
@@ -119,14 +131,6 @@ Page {
                 ItemDelegate {
                     width: objectListView.width
                     contentItem: RowLayout {
-                        Image {
-                            Layout.preferredWidth: 16
-                            Layout.preferredHeight: 16
-                            visible: modelData.isArray
-                            source: modelData.isArray ? (app.faUrlBase + "hashtag") : ("")
-                            width: 16
-                            height: 16
-                        }
                         Label {
                             id: objNameLabel
                             Layout.fillWidth: true
@@ -136,12 +140,16 @@ Page {
                             readonly property string key: modelData.key
                             readonly property string labelKey: modelData.labelKey
                         }
+                        ArrayElementButtons {
+                            page: objectConfigPage
+                            rowData: modelData
+                        }
                         HelpButton {
                             configCategory: objectConfigPage.configCategory
                             key: modelData.key
                         }
                     }
-                    onClicked: objectConfigPage.stackView.push("ObjectConfigPage.qml", {title: modelData.label, configObject: objectConfigPage.configObject[modelData.key], stackView: objectConfigPage.stackView, parentPage: objectConfigPage, objectNameLabel: objNameLabel}, StackView.PushTransition)
+                    onClicked: objectConfigPage.stackView.push("ObjectConfigPage.qml", {title: objNameLabel.text, configObject: objectConfigPage.configObject[modelData.key], stackView: objectConfigPage.stackView, parentPage: objectConfigPage, objectNameLabel: objNameLabel}, StackView.PushTransition)
                     required property var modelData
                 }
             }
@@ -162,6 +170,10 @@ Page {
                             checked: modelData.value
                             onCheckedChanged: objectConfigPage.configObject[modelData.key] = booleanSwitch.checked
                         }
+                        ArrayElementButtons {
+                            page: objectConfigPage
+                            rowData: modelData
+                        }
                         HelpButton {
                             configCategory: objectConfigPage.configCategory
                             key: modelData.key
@@ -172,6 +184,36 @@ Page {
             }
         }
     }
+    Dialog {
+        id: newValueDialog
+        anchors.centerIn: Overlay.overlay
+        title: qsTr("Add new value")
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        modal: true
+        width: parent.width - 20
+        contentItem: GridLayout {
+            columns: 2
+            Label {
+                text: Array.isArray(objectConfigPage.configObject) ? qsTr("Index") : qsTr("Key")
+            }
+            TextEdit {
+                id: keyTextEdit
+                Layout.fillWidth: true
+            }
+            Label {
+                text: qsTr("Type")
+            }
+            ComboBox {
+                id: typeComboBox
+                model: ["String", "Number", "Boolean", "Object", "Array"]
+            }
+        }
+        onAccepted: objectConfigPage.addObject(newValueDialog.typedKey, newValueDialog.typedValue)
+        property alias key: keyTextEdit.text
+        readonly property var typedKey: Array.isArray(objectConfigPage.configObject) ? Number.parseInt(newValueDialog.key) : newValueDialog.key
+        readonly property var typedValue: ["", 0, false, {}, []][typeComboBox.currentIndex]
+    }
+
     property alias model: objectListView.model
     required property var configObject
     property string configCategory
@@ -179,7 +221,13 @@ Page {
     required property StackView stackView
     property Page parentPage
     property Label objectNameLabel
-    property list<Action> actions
+    property list<Action> actions: [
+        Action {
+            text: qsTr("Add")
+            icon.source: app.faUrlBase + "plus"
+            onTriggered: objectConfigPage.showNewValueDialog()
+        }
+    ]
 
     function makeConfigRow(configEntry, index) {
         const key = configEntry[0];
@@ -194,7 +242,7 @@ Page {
             const nestedValue = value[nestedKey];
             const nestedType = typeof nestedValue;
             const hasNestedValue = nestedType === "string" || nestedType === "number";
-            row.label = hasNestedValue ? `${key}: ${nestedValue}` : key;
+            row.label = hasNestedValue ? nestedValue : uncamel(typeof value);
             row.labelKey = hasNestedValue ? nestedKey : "";
         }
         return row;
@@ -203,10 +251,69 @@ Page {
     function updateValue(key, value) {
         objectConfigPage.configObject[key] = value
         if (Array.isArray(objectConfigPage.parentPage?.configObject) && objectConfigPage.objectNameLabel?.labelKey === key) {
-            const label = `${objectConfigPage.objectNameLabel.key}: ${value}`
-            objectConfigPage.title = label
-            objectConfigPage.objectNameLabel.text = label
+            objectConfigPage.title = value
+            objectConfigPage.objectNameLabel.text = value
         }
+    }
+
+    function swapObjects(modelData, moveDelta) {
+        if (!modelData.isArray) {
+            return;
+        }
+        const index = modelData.index;
+        const swapIndex = index + moveDelta;
+        const length = objectConfigPage.configObject.length;
+        if (index >= 0 && index < length && swapIndex >= 0 && swapIndex < length) {
+            const obj = objectConfigPage.configObject[index];
+            const swapObj = objectConfigPage.configObject[swapIndex];
+            objectConfigPage.configObject[swapIndex] = obj;
+            objectConfigPage.configObject[index] = swapObj;
+            listModel.move(index, swapIndex, 1);
+            listModel.set(index, {index: index, key: index});
+            listModel.set(swapIndex, {index: swapIndex, key: swapIndex});
+        }
+    }
+
+    function removeObjects(modelData, count) {
+        if (!modelData.isArray) {
+            return;
+        }
+        const index = modelData.index;
+        const length = objectConfigPage.configObject.length;
+        if (index >= 0 && index < length) {
+            objectConfigPage.configObject.splice(index, count);
+            listModel.remove(index, count);
+        }
+        for (let i = index, end = listModel.count; i !== end; ++i) {
+            listModel.set(i, {index: i, key: i});
+        }
+    }
+
+    function addObject(key, object) {
+        if (Array.isArray(objectConfigPage.configObject)) {
+            const length = objectConfigPage.configObject.length;
+            if (typeof key === "number" && key >= 0 && key <= length) {
+                objectConfigPage.configObject.splice(key, 0, object);
+                listModel.insert(key, objectConfigPage.makeConfigRow([key.toString(), object], key));
+                for (let i = key + 1, end = listModel.count; i !== end; ++i) {
+                    listModel.set(i, {index: i, key: i});
+                }
+            } else {
+                app.showError(qsTr("Unable to add %1 because specified index is invalid.").arg(typeof object));
+            }
+        } else {
+            if (typeof key === "string" && key !== "" && objectConfigPage.configObject[key] === undefined) {
+                objectConfigPage.configObject[key] = object;
+                listModel.append(objectConfigPage.makeConfigRow([key, object], listModel.count))
+            } else {
+                app.showError(qsTr("Unable to add %1 because specified key is invalid.").arg(typeof object));
+            }
+        }
+    }
+
+    function showNewValueDialog(key) {
+        newValueDialog.key = key ?? (Array.isArray(objectConfigPage.configObject) ? objectConfigPage.configObject.length : "");
+        newValueDialog.visible = true;
     }
 
     function uncamel(input) {

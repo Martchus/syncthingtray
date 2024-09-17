@@ -269,6 +269,7 @@ if (QUICK_GUI)
         gui/qml/AdvancedDevConfigPage.qml
         gui/qml/AdvancedDirConfigPage.qml
         gui/qml/AdvancedPage.qml
+        gui/qml/ArrayElementButtons.qml
         gui/qml/ChangesPage.qml
         gui/qml/DetailsListView.qml
         gui/qml/DevDelegate.qml
