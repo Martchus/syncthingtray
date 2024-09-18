@@ -14,6 +14,8 @@ PlasmaExtras.Representation {
     // note: Would be collapsed automatically if the scroll view was the immediate content item.
     collapseMarginsHint: true
 
+    // fix binding loop by overriding implicitWidth from PlasmaComponents3.Page
+    implicitWidth: contentWidth + leftPadding + rightPadding
 
     // header ("toolbar" with buttons and combo box) and footer ("tabbar")
     header: PlasmaExtras.PlasmoidHeading {
