@@ -188,9 +188,9 @@ void SyncthingApplet::init()
     setBrightColors(isPaletteDark(palette));
     IconManager::instance().setPalette(palette);
     handleSettingsChanged();
-    if (c.readEntry<>("preferIconsFromTheme", false)) {
+    //if (c.readEntry<>("preferIconsFromTheme", false)) {
         Data::setForkAwesomeThemeOverrides();
-    }
+    //}
 
     // show wizard on first launch
     if (settings.firstLaunch || settings.fakeFirstLaunch) {
