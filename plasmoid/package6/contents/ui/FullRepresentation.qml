@@ -21,8 +21,6 @@ PlasmaExtras.Representation {
     header: PlasmaExtras.PlasmoidHeading {
         focus: true
         contentItem: ToolBar {
-            id: toolbar
-            width: parent.width
         }
     }
     footer: PlasmaExtras.PlasmoidHeading {
