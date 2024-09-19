@@ -7,25 +7,40 @@ RowLayout {
     RoundButton {
         Layout.preferredWidth: 36
         Layout.preferredHeight: 36
+        display: AbstractButton.IconOnly
+        text: qsTr("Move down")
+        ToolTip.text: text
+        ToolTip.visible: hovered || pressed
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        icon.source: app.faUrlBase + "angle-down"
         icon.width: 20
         icon.height: 20
-        icon.source: app.faUrlBase + "angle-down"
         onClicked: page.swapObjects(rowData, 1)
     }
     RoundButton {
         Layout.preferredWidth: 36
         Layout.preferredHeight: 36
+        display: AbstractButton.IconOnly
+        text: qsTr("Move up")
+        ToolTip.text: text
+        ToolTip.visible: hovered || pressed
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        icon.source: app.faUrlBase + "angle-up"
         icon.width: 20
         icon.height: 20
-        icon.source: app.faUrlBase + "angle-up"
         onClicked: page.swapObjects(rowData, -1)
     }
     RoundButton {
         Layout.preferredWidth: 36
         Layout.preferredHeight: 36
+        display: AbstractButton.IconOnly
+        text: qsTr("More options")
+        ToolTip.text: text
+        ToolTip.visible: hovered || pressed
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        icon.source: app.faUrlBase + "ellipsis-v"
         icon.width: 20
         icon.height: 20
-        icon.source: app.faUrlBase + "ellipsis-v"
         onClicked: menu.popup()
     }
     Menu {

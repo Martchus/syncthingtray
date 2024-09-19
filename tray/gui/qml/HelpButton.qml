@@ -4,11 +4,13 @@ import QtQuick.Layouts
 
 RoundButton {
     visible: configCategory.length > 0
+    display: AbstractButton.IconOnly
+    text: qsTr("Open help")
     hoverEnabled: true
     Layout.preferredWidth: 36
     Layout.preferredHeight: 36
     ToolTip.visible: hovered || pressed
-    ToolTip.text: qsTr("Open help")
+    ToolTip.text: text
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
     icon.source: app.faUrlBase + "question"
     icon.width: 20
