@@ -7,14 +7,12 @@ import Main
 ItemDelegate {
     id: mainDelegate
     width: mainView.width
-    //onClicked: detailsView.visible = !detailsView.visible
     contentItem: ColumnLayout {
         RowLayout {
             spacing: 10
             Icon {
+                id: statusIcon
                 source: modelData.statusIcon
-                width: 24
-                height: 24
             }
             GridLayout {
                 Layout.fillWidth: true
@@ -110,7 +108,7 @@ ItemDelegate {
         }
         DetailsListView {
             id: detailsView
-            mainView: mainDelegate.mainView
+            mainDelegate: mainDelegate
         }
     }
 
@@ -128,6 +126,7 @@ ItemDelegate {
     required property var modelData
     required property ListView mainView
     readonly property bool breakpoint: mainView.width > 500
+    property alias statusIconWidth: statusIcon.width
     property list<Action> actions
     property list<Action> extraActions
 }

@@ -6,13 +6,11 @@ import Main
 ListView {
     id: detailsView
     Layout.fillWidth: true
-    Layout.leftMargin: 24
-    Layout.rightMargin: 6
-    Layout.bottomMargin: 6
     visible: false
     interactive: false
 
-    required property ListView mainView
+    required property ItemDelegate mainDelegate
+    property ListView mainView: mainDelegate.mainView
 
     onCountChanged: {
         var d = delegate.createObject(detailsView, {detailName: "", detailValue: ""});
@@ -34,12 +32,16 @@ ListView {
             RowLayout {
                 id: detailRow
                 width: parent.width
-                Icon {
-                    Layout.preferredWidth: 16
-                    Layout.preferredHeight: 16
-                    source: detailIcon
-                    width: 16
-                    height: 16
+                spacing: 10
+                Item {
+                    Layout.preferredWidth: mainDelegate.statusIconWidth
+                    Layout.preferredHeight: 18
+                    Icon {
+                        anchors.centerIn: parent
+                        source: detailIcon
+                        width: 16
+                        height: 16
+                    }
                 }
                 Label {
                     text: detailName
