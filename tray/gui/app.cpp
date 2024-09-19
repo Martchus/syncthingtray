@@ -20,6 +20,7 @@
 #include <QGuiApplication>
 #include <QNetworkReply>
 #include <QQmlContext>
+#include <QQuickWindow>
 #include <QStringBuilder>
 #include <QStandardPaths>
 
@@ -76,6 +77,13 @@ App::App(bool insecure, QObject *parent)
     connect(&m_engine, &QQmlApplicationEngine::quit, app, &QGuiApplication::quit);
     m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global()));
     m_engine.loadFromModule("Main", "Main");
+
+    // set window icon
+    if (const auto rootObjects = m_engine.rootObjects(); !rootObjects.isEmpty()) {
+        if (auto *const rootWindow = qobject_cast<QQuickWindow *>(rootObjects.front())) {
+            rootWindow->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+        }
+    }
 }
 
 bool App::openPath(const QString &path)
