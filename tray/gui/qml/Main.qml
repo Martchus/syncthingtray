@@ -211,7 +211,11 @@ ApplicationWindow {
             readonly property var currentDepth: children[currentIndex]?.depth ?? 1
             readonly property var currentActions: currentPage.actions ?? []
             readonly property var currentExtraActions: currentPage.extraActions ?? []
-            function pop() { children[currentIndex].pop?.() }
+            function pop() {
+                const currentChild = children[currentIndex];
+                const currentPage = currentChild.currentItem ?? currentChild;
+                return currentPage.back?.() || currentChild.pop?.();
+            }
         }
     }
 
