@@ -4,27 +4,41 @@ import QtQuick.Controls
 import Main
 
 Page {
-    title: qsTr("Remote/global tree of \"%1\"").arg(dirName)
+    id: page
+    title: {
+        const mainTitle = qsTr("Remote/global tree of \"%1\"").arg(dirName);
+        return path.length > 0 ? `${mainTitle}\n${path}` : mainTitle;
+    }
 
     DelegateModel {
         id: delegateModel
-        model: app.createFileModel(dirId, listView)
+        model: page.model
         delegate: ItemDelegate {
+            id: itemDelegate
             width: listView.width
-            contentItem: ColumnLayout {
-                RowLayout {
-                    Icon {
-                        source: decorationData
+            contentItem: RowLayout {
+                Icon {
+                    source: decorationData
+                }
+                ColumnLayout {
+                    spacing: 0
+                    Label {
+                        Layout.fillWidth: true
+                        text: textData
+                        elide: Text.ElideRight
+                        font.weight: Font.Medium
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: name
+                        text: details
+                        elide: Text.ElideRight
+                        font.weight: Font.Light
                     }
-                    CheckBox {
-                        visible: delegateModel.model.selectionModeEnabled
-                        checkState: checkStateData
-                        onClicked: toggleCurrentIndex()
-                    }
+                }
+                CheckBox {
+                    visible: page.model.selectionModeEnabled
+                    checkState: checkStateData ?? Qt.Unchecked
+                    onClicked: itemDelegate.toggle()
                 }
             }
             TapHandler {
@@ -34,14 +48,14 @@ Page {
                     if (delegateModel.model.hasChildren(modelIndex)) {
                         delegateModel.rootIndex = modelIndex;
                     } else {
-                        toggleCurrentIndex();
+                        itemDelegate.toggle();
                     }
                 }
             }
             TapHandler {
                 acceptedButtons: Qt.LeftButton
                 acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
-                onLongPressed: toggleCurrentIndex()
+                onLongPressed: itemDelegate.toggle()
             }
             TapHandler {
                 acceptedDevices: PointerDevice.TouchScreen
@@ -54,21 +68,21 @@ Page {
             }
             Menu {
                 id: contextMenu
-                MenuItem {
-                    text: qsTr("Refresh")
-                    icon.width: app.iconSize
-                    icon.height: app.iconSize
-                    onClicked: delegateModel.model.fetchMore(delegateModel.modelIndex(index))
-                }
-                MenuItem {
-                    text: checkStateData !== Qt.Checked ? qsTr("Select") : qsTr("Deselect")
-                    icon.width: app.iconSize
-                    icon.height: app.iconSize
-                    onClicked: toggleCurrentIndex()
+                Instantiator {
+                    model: actions
+                    delegate: MenuItem {
+                        text: actionNames[index]
+                        onTriggered: itemDelegate.triggerAction(modelData)
+                    }
+                    onObjectAdded: (index, object) => contextMenu.insertItem(index, object)
+                    onObjectRemoved: (index, object) => contextMenu.removeItem(object)
                 }
             }
-            function toggleCurrentIndex() {
-                delegateModel.model.triggerAction("toggle-selection-single", delegateModel.modelIndex(index))
+            function triggerAction(action) {
+                delegateModel.model.triggerAction(action, delegateModel.modelIndex(index));
+            }
+            function toggle() {
+                itemDelegate.triggerAction("toggle-selection-single");
             }
         }
     }
@@ -78,16 +92,64 @@ Page {
         ScrollIndicator.vertical: ScrollIndicator { }
         model: delegateModel
     }
+    Instantiator {
+        model: page.model.selectionActions
+        delegate: MenuItem {
+            text: modelData.text
+            onTriggered: modelData.trigger()
+        }
+        onObjectAdded: (index, object) => page.extraActions.splice(index, 0, object)
+        onObjectRemoved: (index, object) => page.extraActions.splice(index, 1)
+    }
+    Dialog {
+        id: confirmActionDialog
+        anchors.centerIn: Overlay.overlay
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        width: parent.width - 20
+        height: parent.height - 20
+        contentItem: ColumnLayout {
+            Label {
+                id: messageLabel
+                Layout.fillWidth: true
+            }
+            ScrollView {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                TextArea {
+                    id: diffTextArea
+                    readOnly: true
+                }
+            }
+        }
+        onAccepted: action?.trigger()
+        onRejected: action?.dismiss()
+        property var action
+        property var diffHighlighter: app.createDiffHighlighter(diffTextArea.textDocument.textDocument)
+        property alias message: messageLabel.text
+        property alias diff: diffTextArea.text
+    }
+    Connections {
+        target: page.model
+        function onActionNeedsConfirmation(action, message, diff) {
+            confirmActionDialog.title = action.text;
+            confirmActionDialog.action = action;
+            confirmActionDialog.message = message;
+            confirmActionDialog.diff = diff;
+            confirmActionDialog.open();
+        }
+    }
 
     required property string dirName
     required property string dirId
+    property var model: app.createFileModel(dirId, listView)
+    property string path: model.path(delegateModel.rootIndex)
+    property list<Action> extraActions: []
 
     function back() {
-        if (delegateModel.rootIndex.valid) {
+        const isValid = delegateModel.rootIndex.valid;
+        if (isValid) {
             delegateModel.rootIndex = delegateModel.parentModelIndex();
-            return true;
-        } else {
-            return false;
         }
+        return isValid;
     }
 }

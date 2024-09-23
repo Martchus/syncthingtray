@@ -16,11 +16,14 @@
 #include <QFile>
 #include <QJsonObject>
 
+QT_FORWARD_DECLARE_CLASS(QTextDocument)
+
 namespace Data {
 class SyncthingFileModel;
 }
 
 namespace QtGui {
+class DiffHighlighter;
 
 class App : public QObject {
     Q_OBJECT
@@ -101,12 +104,13 @@ public:
     Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
     Q_INVOKABLE bool showError(const QString &errorMessage);
     Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId, QObject *parent);
+    Q_INVOKABLE QtGui::DiffHighlighter *createDiffHighlighter(QTextDocument *parent);
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
     void settingsChanged(const QJsonObject &settingsChanged);
-    void error(const QString &errorMessage);
-    void info(const QString &infoMessage);
+    void error(const QString &errorMessage, const QString &details = QString());
+    void info(const QString &infoMessage, const QString &details = QString());
 
 protected:
     bool event(QEvent *event) override;

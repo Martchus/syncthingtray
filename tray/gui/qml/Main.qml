@@ -67,9 +67,14 @@ ApplicationWindow {
             }
             ToolButton {
                 visible: pageStack.currentExtraActions.length > 0
-                icon.source: app.faUrlBase + "bars"
+                icon.source: app.faUrlBase + "ellipsis-v"
                 icon.width: app.iconSize
                 icon.height: app.iconSize
+                onClicked: extraActionsMenu.popup()
+            }
+            Menu {
+                id: extraActionsMenu
+                contentData: pageStack.currentExtraActions
             }
         }
     }

@@ -1,5 +1,6 @@
 #include "./app.h"
 
+#include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/settings/settings.h>
 
 #include <syncthingmodel/syncthingfilemodel.h>
@@ -51,6 +52,8 @@ App::App(bool insecure, QObject *parent)
 {
     qmlRegisterUncreatableType<Data::SyncthingFileModel>(
         "Main.Private", 1, 0, "SyncthingFileModel", QStringLiteral("Data::SyncthingFileModel is created from C++."));
+    qmlRegisterUncreatableType<QtGui::DiffHighlighter>(
+        "Main.Private", 1, 0, "DiffHighlighter", QStringLiteral("QtGui::DiffHighlighter is created from C++."));
 
     loadSettings();
     applySettings();
@@ -197,7 +200,20 @@ SyncthingFileModel *App::createFileModel(const QString &dirId, QObject *parent)
 {
     auto row = int();
     auto dirInfo = m_connection.findDirInfo(dirId, row);
-    return dirInfo ? new Data::SyncthingFileModel(m_connection, *dirInfo, parent) : nullptr;
+    if (!dirInfo) {
+        return nullptr;
+    }
+    auto model = new Data::SyncthingFileModel(m_connection, *dirInfo, parent);
+    connect(model, &Data::SyncthingFileModel::notification, this,
+        [this](const QString &type, const QString &message, const QString &details = QString()) {
+            type == QStringLiteral("error") ? emit error(message, details) : emit info(message, details);
+        });
+    return model;
+}
+
+DiffHighlighter *App::createDiffHighlighter(QTextDocument *parent)
+{
+    return new DiffHighlighter(parent);
 }
 
 bool App::event(QEvent *event)

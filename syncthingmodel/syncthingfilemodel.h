@@ -21,11 +21,30 @@ class ModelTests;
 
 namespace Data {
 
+class LIB_SYNCTHING_MODEL_EXPORT RejectableAction : public QAction {
+    Q_OBJECT
+    Q_PROPERTY(bool needsConfirmation MEMBER needsConfirmation)
+
+public:
+    explicit RejectableAction(const QString &text, QObject *parent = nullptr)
+        : QAction(text, parent)
+    {
+    }
+
+    Q_INVOKABLE void dismiss()
+    {
+        needsConfirmation = true;
+    }
+    bool needsConfirmation = true;
+};
+
 class LIB_SYNCTHING_MODEL_EXPORT SyncthingFileModel : public SyncthingModel {
     Q_OBJECT
     Q_PROPERTY(bool hasIgnorePatterns READ hasIgnorePatterns)
     Q_PROPERTY(bool selectionModeEnabled READ isSelectionModeEnabled WRITE setSelectionModeEnabled NOTIFY selectionModeEnabledChanged)
     Q_PROPERTY(bool recursiveSelectionEnabled READ isRecursiveSelectionEnabled WRITE setRecursiveSelectionEnabled)
+    Q_PROPERTY(QList<QAction *> selectionActions READ selectionActions NOTIFY selectionActionsChanged)
+    Q_PROPERTY(bool hasStagedChanges READ hasStagedChanges NOTIFY hasStagedChangesChanged)
 
 public:
     friend class ::ModelTests;
@@ -38,6 +57,7 @@ public:
         Actions,
         ActionNames,
         ActionIcons,
+        DetailsRole,
     };
 
     explicit SyncthingFileModel(SyncthingConnection &connection, const SyncthingDir &dir, QObject *parent = nullptr);
@@ -62,6 +82,7 @@ public:
     void setSelectionModeEnabled(bool selectionModeEnabled);
     Q_INVOKABLE QString path(const QModelIndex &path) const;
     bool hasIgnorePatterns() const;
+    bool hasStagedChanges() const;
     const std::vector<SyncthingIgnorePattern> &presentIgnorePatterns() const;
     SyncthingIgnores computeNewIgnorePatterns() const;
     void editIgnorePatternsManually(const QString &ignorePatterns);
@@ -73,6 +94,8 @@ Q_SIGNALS:
     void notification(const QString &type, const QString &message, const QString &details = QString());
     void actionNeedsConfirmation(QAction *action, const QString &message, const QString &diff = QString());
     void selectionModeEnabledChanged(bool selectionModeEnabled);
+    void selectionActionsChanged();
+    void hasStagedChangesChanged(bool hasStagedChanged);
 
 private Q_SLOTS:
     void handleConfigInvalidated() override;
@@ -89,6 +112,7 @@ private:
     void matchItemAgainstIgnorePatterns(SyncthingItem &item) const;
     void ignoreSelectedItems(bool ignore = true);
     QString computeIgnorePatternDiff();
+    QString availabilityNote(const SyncthingItem *item) const;
 
 private:
     using SyncthingItems = std::vector<std::unique_ptr<SyncthingItem>>;
@@ -145,6 +169,11 @@ inline bool SyncthingFileModel::isSelectionModeEnabled() const
 inline bool SyncthingFileModel::hasIgnorePatterns() const
 {
     return m_hasIgnorePatterns;
+}
+
+inline bool SyncthingFileModel::hasStagedChanges() const
+{
+    return !m_stagedChanges.isEmpty();
 }
 
 inline const std::vector<SyncthingIgnorePattern> &SyncthingFileModel::presentIgnorePatterns() const

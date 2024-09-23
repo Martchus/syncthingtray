@@ -80,6 +80,8 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     , m_isIgnoringAllByDefault(false)
     , m_recursiveSelectionEnabled(false)
 {
+    connect(this, &SyncthingFileModel::selectionModeEnabledChanged, this, &SyncthingFileModel::selectionActionsChanged);
+    connect(this, &SyncthingFileModel::hasStagedChangesChanged, this, &SyncthingFileModel::selectionActionsChanged);
     if (m_connection.isLocal()) {
         m_root->existsLocally = true;
         m_localPath = dir.pathWithoutTrailingSlash().toString();
@@ -120,6 +122,7 @@ QHash<int, QByteArray> SyncthingFileModel::roleNames() const
         { Qt::DecorationRole, "decorationData" },
         { Qt::ToolTipRole, "toolTipData" },
         { Qt::CheckStateRole, "checkStateData" },
+        { DetailsRole, "details" },
     };
     return roles;
 }
@@ -214,6 +217,19 @@ QString SyncthingFileModel::computeIgnorePatternDiff()
         }
     }
     return diff;
+}
+
+QString SyncthingFileModel::availabilityNote(const SyncthingItem *item) const
+{
+    if (item->existsInDb && item->existsLocally) {
+        return tr("Exists locally and globally");
+    } else if (item->existsInDb) {
+        return tr("Exists only globally");
+    } else if (item->existsLocally) {
+        return tr("Exists only locally");
+    } else {
+        return tr("Does not exist");
+    }
 }
 
 /*!
@@ -406,14 +422,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         case 2:
             return agoString(item->modificationTime);
         case 4:
-            if (item->existsInDb && item->existsLocally) {
-                return tr("Exists locally and globally");
-            } else if (item->existsInDb) {
-                return tr("Exists only globally");
-            } else if (item->existsLocally) {
-                return tr("Exists only locally");
-            }
-            break;
+            return availabilityNote(item);
         }
         break;
     case Qt::SizeHintRole:
@@ -476,6 +485,25 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         }
         return res;
     }
+    case DetailsRole: {
+        switch (item->type) {
+        case SyncthingItemType::File:
+        case SyncthingItemType::Directory:
+        case SyncthingItemType::Symlink:
+            break;
+        default:
+            return QString();
+        }
+        auto res
+            = QString(availabilityNote(item) % QStringLiteral("\nLast modified on: ") % QString::fromStdString(item->modificationTime.toString()));
+        if (item->ignorePattern == SyncthingItem::ignorePatternNotInitialized) {
+            matchItemAgainstIgnorePatterns(*item);
+        }
+        if (item->ignorePattern < m_presentIgnorePatterns.size()) {
+            res += QStringLiteral("\nMatches: ") + m_presentIgnorePatterns[item->ignorePattern].pattern;
+        }
+        return res;
+    }
     }
     return QVariant();
 }
@@ -504,7 +532,7 @@ static void setChildrenChecked(SyncthingItem *item, Qt::CheckState checkState)
 /// \brief Sets the check state of the specified \a index updating child and parent indexes accordingly.
 void SyncthingFileModel::setCheckState(const QModelIndex &index, Qt::CheckState checkState, bool recursively)
 {
-    static const auto roles = QVector<int>{ Qt::CheckStateRole };
+    static const auto roles = QVector<int>{ Qt::CheckStateRole, ActionNames };
     auto *const item = reinterpret_cast<SyncthingItem *>(index.internalPointer());
     auto affectedParentIndex = index;
     item->checked = checkState;
@@ -693,9 +721,10 @@ void SyncthingFileModel::ignoreSelectedItems(bool ignore)
             insertPattern(m_stagedChanges[m_presentIgnorePatterns.size() - 1].append, wantedPattern, path);
         }
 
-        // prepent the new pattern making sure it is effective and not shadowed by an existing pattern
+        // prepend the new pattern making sure it is effective and not shadowed by an existing pattern
         return false; // no need to add ignore patterns for children as they are applied recursively anyway
     });
+    emit hasStagedChangesChanged(hasStagedChanges());
 }
 
 QList<QAction *> SyncthingFileModel::selectionActions()
@@ -714,6 +743,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
             connect(discardAction, &QAction::triggered, this, [this] {
                 m_stagedChanges.clear();
                 m_stagedLocalFileDeletions.clear();
+                emit hasStagedChangesChanged(hasStagedChanges());
             });
             res << discardAction;
         }
@@ -727,6 +757,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
             setSelectionModeEnabled(false);
             m_stagedChanges.clear();
             m_stagedLocalFileDeletions.clear();
+            emit hasStagedChangesChanged(hasStagedChanges());
         });
         res << discardAction;
 
@@ -766,6 +797,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
             }
         }
         m_isIgnoringAllByDefault = !isIgnoringAllByDefault;
+        emit hasStagedChangesChanged(hasStagedChanges());
     });
     res << ignoreByDefaultAction;
 
@@ -793,21 +825,23 @@ QList<QAction *> SyncthingFileModel::selectionActions()
                 }
                 return true;
             });
+            emit hasStagedChangesChanged(hasStagedChanges());
         });
         res << removeIgnorePatternsAction;
     }
 
     if (!m_stagedChanges.isEmpty() || !m_stagedLocalFileDeletions.isEmpty()) {
-        auto *const applyStagedChangesAction = new QAction(tr("Review and apply staged changes"), this);
+        auto *const applyStagedChangesAction = new RejectableAction(tr("Review and apply staged changes"), this);
         applyStagedChangesAction->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")));
-        connect(applyStagedChangesAction, &QAction::triggered, this, [this, action = applyStagedChangesAction, askedConfirmation = false]() mutable {
+        connect(applyStagedChangesAction, &QAction::triggered, this, [this, action = applyStagedChangesAction]() mutable {
             // allow user to review changes before applying them
-            if (!askedConfirmation) {
-                askedConfirmation = true;
+            if (action->needsConfirmation) {
+                action->needsConfirmation = false;
                 m_manuallyEditedIgnorePatterns.clear();
                 emit actionNeedsConfirmation(action, tr("Do you want to apply the following changes?"), computeIgnorePatternDiff());
                 return;
             }
+            action->needsConfirmation = true;
 
             // abort if there's a pending API request for ignore patterns
             if (m_ignorePatternsRequest.reply) {
@@ -835,6 +869,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
                 queryIgnores();
 
                 emit notification(QStringLiteral("info"), tr("Ignore patterns have been changed."));
+                emit hasStagedChangesChanged(hasStagedChanges());
             });
         });
         res << applyStagedChangesAction;
@@ -976,6 +1011,7 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
                 if (!populated || refreshedItem->children.size() != previousChildCount) {
                     const auto sizeIndex = refreshedIndex.siblingAtColumn(1);
                     emit dataChanged(sizeIndex, sizeIndex, QVector<int>{ Qt::DisplayRole });
+                    emit dataChanged(refreshedIndex, refreshedIndex, QVector<int>{ SizeRole });
                 }
                 if (!m_pendingRequest.localLookup.isCanceled()) {
                     m_pendingRequest.refreshedIndex = refreshedIndex;
@@ -1031,6 +1067,7 @@ void SyncthingFileModel::resetMatchingIgnorePatterns()
         return true;
     });
     invalidateAllIndicies(QVector<int>{ Qt::DisplayRole }, 3, QModelIndex());
+    invalidateAllIndicies(QVector<int>{ DetailsRole }, 0, QModelIndex());
 }
 
 void SyncthingFileModel::matchItemAgainstIgnorePatterns(SyncthingItem &item) const
@@ -1125,6 +1162,7 @@ void SyncthingFileModel::insertLocalItems(const QModelIndex &refreshedIndex, Syn
     if (!previouslyPopulated || items.size() != previousChildCount) {
         const auto sizeIndex = refreshedIndex.sibling(refreshedIndex.row(), 1);
         emit dataChanged(sizeIndex, sizeIndex, QVector<int>{ Qt::DisplayRole });
+        emit dataChanged(refreshedIndex, refreshedIndex, QVector<int>{ SizeRole });
     }
 
     // insert local child items recursively
@@ -1138,10 +1176,11 @@ void SyncthingFileModel::insertLocalItems(const QModelIndex &refreshedIndex, Syn
         }
     }
 
-    // update global/local icons of items that were already present (as they exist in the database)
+    // update global/local icons and details of items that were already present (as they exist in the database)
     if (firstRow > 0) {
         emit dataChanged(
             this->index(0, 4, refreshedIndex), this->index(firstRow - 1, 4, refreshedIndex), QVector<int>{ Qt::DecorationRole, Qt::ToolTipRole });
+        emit dataChanged(this->index(0, 0, refreshedIndex), this->index(firstRow - 1, 0, refreshedIndex), QVector<int>{ DetailsRole });
     }
 }
 
