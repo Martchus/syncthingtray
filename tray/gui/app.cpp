@@ -15,14 +15,14 @@
 #include <QClipboard>
 #include <QDebug>
 #include <QDir>
+#include <QGuiApplication>
 #include <QJsonDocument>
 #include <QJsonValue>
-#include <QGuiApplication>
 #include <QNetworkReply>
 #include <QQmlContext>
 #include <QQuickWindow>
-#include <QStringBuilder>
 #include <QStandardPaths>
+#include <QStringBuilder>
 
 #include <cstdlib>
 #include <functional>
@@ -167,7 +167,7 @@ bool App::saveIgnorePatterns(const QString &dirId, QObject *textArea)
 
 bool App::loadDirErrors(const QString &dirId, QObject *view)
 {
-    auto connection = connect(&m_connection, &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view] (const Data::SyncthingDir &dir) {
+    auto connection = connect(&m_connection, &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view](const Data::SyncthingDir &dir) {
         if (dir.id != dirId) {
             return;
         }
@@ -252,7 +252,8 @@ bool App::loadSettings()
         return false;
     }
     if (parsError.error != QJsonParseError::NoError || !doc.isObject()) {
-        emit error(tr("Unable to restore settings: ") + (parsError.error != QJsonParseError::NoError ? parsError.errorString() : tr("JSON document contains no object")));
+        emit error(tr("Unable to restore settings: ")
+            + (parsError.error != QJsonParseError::NoError ? parsError.errorString() : tr("JSON document contains no object")));
         return false;
     }
     return true;
@@ -266,7 +267,7 @@ bool App::storeSettings()
     if (!m_settingsFile.seek(0)) {
         return false;
     }
-    const auto bytesWritten =  m_settingsFile.write(QJsonDocument(m_settings).toJson(QJsonDocument::Compact));
+    const auto bytesWritten = m_settingsFile.write(QJsonDocument(m_settings).toJson(QJsonDocument::Compact));
     if (bytesWritten < m_settingsFile.size() && !m_settingsFile.resize(bytesWritten)) {
         return false;
     }

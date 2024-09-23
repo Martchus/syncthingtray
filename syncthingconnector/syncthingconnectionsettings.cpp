@@ -1,8 +1,8 @@
 #include "./syncthingconnectionsettings.h"
 
+#include <QFileInfo>
 #include <QJsonObject>
 #include <QJsonValue>
-#include <QFileInfo>
 
 namespace Data {
 
@@ -79,11 +79,11 @@ bool SyncthingConnectionSettings::loadFromJson(const QJsonObject &object)
     longPollingTimeout = advanced.value(QLatin1String("longPollingTimeout")).toInt(defaultLongPollingTimeout);
     diskEventLimit = advanced.value(QLatin1String("diskEventLimit")).toInt(defaultDiskEventLimit);
     statusComputionFlags = SyncthingStatusComputionFlags::Default;
-    autoConnect  = advanced.value(QLatin1String("autoConnect")).toBool(true);
+    autoConnect = advanced.value(QLatin1String("autoConnect")).toBool(true);
     pauseOnMeteredConnection = advanced.value(QLatin1String("pauseOnMeteredConnection")).toBool();
 
 #ifndef QT_NO_SSL
-    httpsCertPath  = object.value(QLatin1String("httpsCertPath")).toString();
+    httpsCertPath = object.value(QLatin1String("httpsCertPath")).toString();
     httpCertLastModified = QDateTime();
     return loadHttpsCert();
 #endif

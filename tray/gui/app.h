@@ -13,8 +13,8 @@
 
 #include <qtutilities/settingsdialog/qtsettings.h>
 
-#include <QJsonObject>
 #include <QFile>
+#include <QJsonObject>
 
 namespace Data {
 class SyncthingFileModel;
