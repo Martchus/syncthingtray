@@ -20,6 +20,7 @@
 
 #include <cassert>
 #include <limits>
+#include <utility>
 
 using namespace std;
 using namespace CppUtilities;
@@ -149,7 +150,7 @@ QModelIndex SyncthingFileModel::index(const QString &path) const
     auto parts = path.split(m_pathSeparator, Qt::SkipEmptyParts);
     auto *parent = m_root.get();
     auto res = createIndex(0, 0, parent);
-    for (const auto &part : parts) {
+    for (const auto &part : std::as_const(parts)) {
         auto index = 0;
         for (const auto &child : parent->children) {
             if (child->name == part) {
