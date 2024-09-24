@@ -228,6 +228,7 @@ Page {
             onTriggered: objectConfigPage.showNewValueDialog()
         }
     ]
+    property list<Action> extraActions: []
 
     function makeConfigRow(configEntry, index) {
         const key = configEntry[0];

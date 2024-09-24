@@ -4,6 +4,8 @@ import QtQuick.Controls
 ListView {
     id: mainView
     anchors.fill: parent
+    activeFocusOnTab: true
+    keyNavigationEnabled: true
     model: ExpandableDelegate {
         mainView: mainView
     }

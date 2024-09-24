@@ -7,6 +7,9 @@ import Main
 ItemDelegate {
     id: mainDelegate
     width: mainView.width
+    activeFocusOnTab: true
+    Keys.onReturnPressed: (event) => detailsView.visible = !detailsView.visible
+    Keys.onMenuPressed: (event) => menu.popup()
     contentItem: ColumnLayout {
         RowLayout {
             spacing: 10
@@ -81,13 +84,13 @@ ItemDelegate {
                     delegate: MenuItem {
                         required property Action modelData
                         text: modelData.text
-                        visible: modelData.enabled
+                        enabled: modelData.enabled
                         icon.source: modelData.icon.source
                         icon.width: app.iconSize
                         icon.height: app.iconSize
                         onTriggered: modelData.trigger(source)
                     }
-                    onObjectAdded: (index, object) => menu.insertItem(index, object)
+                    onObjectAdded: (index, object) => object.enabled && menu.insertItem(index, object)
                     onObjectRemoved: (index, object) => menu.removeItem(object)
                 }
                 Instantiator {
@@ -95,13 +98,13 @@ ItemDelegate {
                     delegate: MenuItem {
                         required property Action modelData
                         text: modelData.text
-                        visible: modelData.enabled
+                        enabled: modelData.enabled
                         icon.source: modelData.icon.source
                         icon.width: app.iconSize
                         icon.height: app.iconSize
                         onTriggered: modelData.trigger(source)
                     }
-                    onObjectAdded: (index, object) => menu.insertItem(index, object)
+                    onObjectAdded: (index, object) => object.enabled && menu.insertItem(index, object)
                     onObjectRemoved: (index, object) => menu.removeItem(object)
                 }
             }
@@ -114,7 +117,10 @@ ItemDelegate {
 
     TapHandler {
         acceptedButtons: Qt.LeftButton
-        onTapped: detailsView.visible = !detailsView.visible
+        onTapped: {
+            detailsView.visible = !detailsView.visible;
+            mainDelegate.forceActiveFocus(Qt.MouseFocusReason);
+        }
         onLongPressed: menu.popup()
     }
     TapHandler {

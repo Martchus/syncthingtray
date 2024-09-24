@@ -92,6 +92,8 @@ public:
     }
 
     // helper functions invoked from QML
+    Q_INVOKABLE bool loadMain();
+    Q_INVOKABLE bool reload();
     Q_INVOKABLE bool loadSettings();
     Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applySettings();

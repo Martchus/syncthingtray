@@ -62,5 +62,17 @@ StackView {
                 }
             }
         ]
+        property list<Action> extraActions: [
+            Action {
+                text: qsTr("Restart Syncthing")
+                icon.source: app.faUrlBase + "refresh"
+                onTriggered: (source) => app.connection.restart()
+            },
+            Action {
+                text: qsTr("Shutdown Syncthing")
+                icon.source: app.faUrlBase + "power-off"
+                onTriggered: (source) => app.connection.shutdown()
+            }
+        ]
     }
 }

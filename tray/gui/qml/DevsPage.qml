@@ -14,5 +14,23 @@ StackView {
             mainModel: app.devModel
             stackView: stackView
         }
+        property list<Action> actions: [
+            Action {
+                text: qsTr("Add device")
+                icon.source: app.faUrlBase + "plus"
+            }
+        ]
+        property list<Action> extraActions: [
+            Action {
+                text: qsTr("Pause all devices")
+                icon.source: app.faUrlBase + "pause"
+                onTriggered: (source) => app.connection.pauseAllDevs()
+            },
+            Action {
+                text: qsTr("Resume all devices")
+                icon.source: app.faUrlBase + "play"
+                onTriggered: (source) => app.connection.resumeAllDevs()
+            }
+        ]
     }
 }

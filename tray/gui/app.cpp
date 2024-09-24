@@ -1,5 +1,7 @@
 #include "./app.h"
 
+#include "resources/config.h"
+
 #include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/settings/settings.h>
 
@@ -79,14 +81,36 @@ App::App(bool insecure, QObject *parent)
         Qt::QueuedConnection);
     connect(&m_engine, &QQmlApplicationEngine::quit, app, &QGuiApplication::quit);
     m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global()));
-    m_engine.loadFromModule("Main", "Main");
+    loadMain();
+}
+
+bool App::loadMain()
+{
+    // allow overriding Qml entry point for hot-reloading; otherwise load proper Qml module from resources
+    if (const auto path = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QML_MAIN_PATH"); !path.isEmpty()) {
+        qDebug() << "Path Qml entry point for Qt Quick GUI was overriden to: " << path;
+        m_engine.load(path);
+    } else {
+        m_engine.loadFromModule("Main", "Main");
+    }
 
     // set window icon
-    if (const auto rootObjects = m_engine.rootObjects(); !rootObjects.isEmpty()) {
-        if (auto *const rootWindow = qobject_cast<QQuickWindow *>(rootObjects.front())) {
+    for (auto *const rootObject : m_engine.rootObjects()) {
+        if (auto *const rootWindow = qobject_cast<QQuickWindow *>(rootObject)) {
             rootWindow->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
         }
     }
+    return true;
+}
+
+bool App::reload()
+{
+    qDebug() << "Reloading Qt Quick GUI";
+    for (auto *const rootObject : m_engine.rootObjects()) {
+        rootObject->deleteLater();
+    }
+    m_engine.clearComponentCache();
+    return loadMain();
 }
 
 bool App::openPath(const QString &path)

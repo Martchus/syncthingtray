@@ -74,7 +74,6 @@ ApplicationWindow {
             }
             Menu {
                 id: extraActionsMenu
-                contentData: pageStack.currentExtraActions
             }
         }
     }
@@ -101,6 +100,7 @@ ApplicationWindow {
         ListView {
             id: drawerListView
             anchors.fill: parent
+            keyNavigationEnabled: true
             footer: ItemDelegate {
                 width: parent.width
                 text: Qt.application.version
@@ -123,7 +123,7 @@ ApplicationWindow {
                     iconName: "history"
                 }
                 ListElement {
-                    name: qsTr("Syncthing")
+                    name: qsTr("Syncthing web UI")
                     iconName: "syncthing"
                 }
                 ListElement {
@@ -136,17 +136,33 @@ ApplicationWindow {
                 }
             }
             delegate: ItemDelegate {
+                id: drawerDelegate
                 text: name
+                activeFocusOnTab: true
                 icon.source: app.faUrlBase + iconName
                 icon.width: app.iconSize
                 icon.height: app.iconSize
                 width: parent.width
                 onClicked: {
-                    drawerListView.currentIndex = index
-                    drawer.position = drawer.initialPosition
+                    drawerListView.to(index);
+                    drawer.position = drawer.initialPosition;
                 }
             }
             ScrollIndicator.vertical: ScrollIndicator { }
+
+            readonly property var indexHistory: []
+            function to(index) {
+                drawerListView.indexHistory.push(drawerListView.currentIndex);
+                drawerListView.currentIndex = index;
+            }
+            function back() {
+                const previousIndex = indexHistory.pop();
+                if (previousIndex !== undefined) {
+                    currentIndex = previousIndex;
+                    return true;
+                }
+                return false;
+            }
         }
     }
     footer: TabBar {
@@ -158,7 +174,7 @@ ApplicationWindow {
             icon.source: app.faUrlBase + "folder"
             icon.width: app.iconSize
             icon.height: app.iconSize
-            onClicked: drawerListView.currentIndex = 0
+            onClicked: drawerListView.to(0)
         }
         TabButton {
             text: qsTr("Devices")
@@ -166,7 +182,7 @@ ApplicationWindow {
             icon.source: app.faUrlBase + "sitemap"
             icon.width: app.iconSize
             icon.height: app.iconSize
-            onClicked: drawerListView.currentIndex = 1
+            onClicked: drawerListView.to(1)
         }
         TabButton {
             text: qsTr("Recent changes")
@@ -174,7 +190,7 @@ ApplicationWindow {
             icon.source: app.faUrlBase + "history"
             icon.width: app.iconSize
             icon.height: app.iconSize
-            onClicked: drawerListView.currentIndex = 2
+            onClicked: drawerListView.to(2)
         }
         TabButton {
             text: qsTr("More")
@@ -182,7 +198,7 @@ ApplicationWindow {
             icon.source: app.faUrlBase + "cog"
             icon.width: app.iconSize
             icon.height: app.iconSize
-            onClicked: drawerListView.currentIndex = 5
+            onClicked: drawerListView.to(5)
         }
     }
 
@@ -195,6 +211,13 @@ ApplicationWindow {
             id: pageStack
             anchors.fill: parent
             currentIndex: drawerListView.currentIndex
+            onCurrentExtraActionsChanged: {
+                for (let i = extraActionsMenu.count - 1; i >= 0; --i) {
+                    extraActionsMenu.takeItem(i)
+                }
+                extraActionsMenu.contentData = pageStack.currentExtraActions;
+            }
+
             DirsPage {
             }
             DevsPage {
@@ -219,8 +242,26 @@ ApplicationWindow {
             function pop() {
                 const currentChild = children[currentIndex];
                 const currentPage = currentChild.currentItem ?? currentChild;
-                return currentPage.back?.() || currentChild.pop?.();
+                return currentPage.back?.() || currentChild.pop?.() || drawerListView.back();
             }
+        }
+    }
+
+    Component.onCompleted: {
+        window.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
+        window.contentItem.Keys.released.connect((event) => {
+            console.log("main key event: 0x" + event.key.toString(16))
+            if (event.key === Qt.Key_Back || (event.key === Qt.Key_Backspace && typeof activeFocusItem.getText !== "function")) {
+                event.accepted = pageStack.pop();
+            } else if (event.key === Qt.Key_F5) {
+                event.accepted = app.reload();
+            }
+        });
+    }
+    onActiveFocusItemChanged: {
+        console.log("focus item: " + activeFocusItem?.toString())
+        if (activeFocusItem?.toString().startsWith("QQuickPopupItem")) {
+            window.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
         }
     }
 
