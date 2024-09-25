@@ -5,7 +5,7 @@ import WebViewItem
 
 Page {
     id: webViewPage
-    title: qsTr("Syncthing")
+    title: qsTr("Web-based UI")
     Layout.fillWidth: true
     Layout.fillHeight: true
     WebViewItem {

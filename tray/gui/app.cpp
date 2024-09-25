@@ -28,8 +28,15 @@
 #include <QStringBuilder>
 
 #include <cstdlib>
+#include <filesystem>
 #include <functional>
 #include <iostream>
+
+#ifdef Q_OS_WINDOWS
+#define SYNCTHING_APP_STRING_CONVERSION(s) s.toStdWString()
+#else
+#define SYNCTHING_APP_STRING_CONVERSION(s) s.toLocal8Bit().toStdString()
+#endif
 
 using namespace Data;
 
@@ -65,7 +72,10 @@ App::App(bool insecure, QObject *parent)
     statusIconSettings.strokeWidth = StatusIconStrokeWidth::Thick;
     Data::IconManager::instance().applySettings(&statusIconSettings, &statusIconSettings, true, true);
 
+    m_notifier.setEnabledNotifications(Data::SyncthingHighLevelNotification::ConnectedDisconnected);
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
+    connect(&m_notifier, &SyncthingNotifier::connected, this, &App::invalidateStatus);
+    connect(&m_notifier, &SyncthingNotifier::disconnected, this, &App::invalidateStatus);
 
     auto *const app = QGuiApplication::instance();
     auto *const context = m_engine.rootContext();
@@ -82,6 +92,21 @@ App::App(bool insecure, QObject *parent)
     connect(&m_engine, &QQmlApplicationEngine::quit, app, &QGuiApplication::quit);
     m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global()));
     loadMain();
+}
+
+QString App::status()
+{
+    if (m_status.has_value()) {
+        return *m_status;
+    }
+    switch (m_connection.status()) {
+    case Data::SyncthingStatus::Disconnected:
+        return m_status.emplace(tr("Not connected to backend. Check app settings for problems."));
+    case Data::SyncthingStatus::Reconnecting:
+        return m_status.emplace(tr("Waiting for backend …"));
+    default:
+        return m_status.emplace();
+    }
 }
 
 bool App::loadMain()
@@ -263,16 +288,27 @@ void App::handleConnectionError(
     qWarning() << "connection error: " << errorMessage;
 }
 
+void App::invalidateStatus()
+{
+    m_status.reset();
+    emit statusChanged();
+}
+
 bool App::openSettings()
 {
-    const auto dir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    if (!dir.exists()) {
-        dir.mkpath(QStringLiteral("."));
+    if (!m_settingsDir.has_value()) {
+        m_settingsDir.emplace(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    }
+    if (!m_settingsDir->exists() && !m_settingsDir->mkpath(QStringLiteral("."))) {
+        emit error(tr("Unable to create settings directory under \"%1\".").arg(m_settingsDir->path()));
+        m_settingsDir.reset();
+        return false;
     }
     m_settingsFile.close();
     m_settingsFile.unsetError();
-    m_settingsFile.setFileName(dir.path() + QStringLiteral("/appconfig.json"));
+    m_settingsFile.setFileName(m_settingsDir->path() + QStringLiteral("/appconfig.json"));
     if (!m_settingsFile.open(QFile::ReadWrite)) {
+        m_settingsDir.reset();
         emit error(tr("Unable to open settings under \"%1\": ").arg(m_settingsFile.fileName()) + m_settingsFile.errorString());
         return false;
     }
@@ -296,6 +332,7 @@ bool App::loadSettings()
             + (parsError.error != QJsonParseError::NoError ? parsError.errorString() : tr("JSON document contains no object")));
         return false;
     }
+    emit settingsChanged(m_settings);
     return true;
 }
 
@@ -335,6 +372,50 @@ bool App::applySettings()
     m_settings.insert(QLatin1String("connection"), connectionSettingsObj);
     m_connection.setInsecure(m_insecure);
     m_connection.connect(m_connectionSettings);
+    return true;
+}
+
+bool App::importSettings()
+{
+    const auto dir = QStandardPaths::locate(QStandardPaths::DocumentsLocation, QStringLiteral("syncthing-app-config"), QStandardPaths::LocateDirectory);
+    if (dir.isEmpty()) {
+        emit error(tr("No directory \"syncthing-app-config\" exists under \"%1\".").arg(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).join(QStringLiteral(", "))));
+        return false;
+    }
+    if (!m_settingsDir.has_value()) {
+        emit error(tr("Unable to import settings: settings directory was not located."));
+        return false;
+    }
+    auto ec = std::error_code();
+    std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(dir), SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()), std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive, ec);
+    if (ec) {
+        emit error(tr("Unable to import settings: %1").arg(QString::fromStdString(ec.message())));
+        return false;
+    }
+    emit info(tr("Settings have been imported from \"%1\".").arg(dir));
+    m_settingsFile.close();
+    return loadSettings();
+}
+
+bool App::exportSettings()
+{
+    const auto path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QStringLiteral("/syncthing-app-config");
+    const auto dir = QDir(path);
+    if (!dir.exists() && !dir.mkpath(QStringLiteral("."))) {
+        emit error(tr("Unable to create export directory under \"%1\".").arg(path));
+        return false;
+    }
+    if (!m_settingsDir.has_value()) {
+        emit error(tr("Unable to export settings: settings directory was not located."));
+        return false;
+    }
+    auto ec = std::error_code();
+    std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()), SYNCTHING_APP_STRING_CONVERSION(path), std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive, ec);
+    if (ec) {
+        emit error(tr("Unable to export settings: %1").arg(QString::fromStdString(ec.message())));
+        return false;
+    }
+    emit info(tr("Settings have been exported to \"%1\".").arg(path));
     return true;
 }
 

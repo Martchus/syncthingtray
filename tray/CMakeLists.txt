@@ -184,9 +184,11 @@ Name=Restart Syncthing (local instance)\n\
 Exec=${SYNCTHINGCTL_TARGET_NAME} restart")
 set(DESKTOP_FILE_ADDITIONAL_ENTRIES "${DESKTOP_FILE_ADDITIONAL_ENTRIES}${ACTIONS}\n")
 
-# configure Qt GUI GUI
+# configure Qt Quick GUI
 include(QtGuiConfig)
 if (QUICK_GUI)
+    use_standard_filesystem()
+
     list(APPEND ADDITIONAL_QT_MODULES Svg)
     list(APPEND ADDITIONAL_QT_REPOS svg)
     list(APPEND PRIVATE_INCLUDE_DIRS gui/quick)

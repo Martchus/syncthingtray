@@ -55,7 +55,7 @@ RowLayout {
             onClicked: page.removeObjects(rowData, 1)
         }
         MenuItem {
-            text: qsTr("Insert after")
+            text: qsTr("Insert before")
             Layout.preferredWidth: 36
             Layout.preferredHeight: 36
             icon.width: app.iconSize

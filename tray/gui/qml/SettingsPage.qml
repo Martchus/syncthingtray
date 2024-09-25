@@ -21,12 +21,24 @@ StackView {
                     key: "connection"
                     label: qsTr("Connection to Syncthing backend")
                     title: qsTr("Configure connection with Syncthing backend")
+                    iconName: "link"
+                }
+                ListElement {
+                    functionName: "importSettings"
+                    label: qsTr("Import settings/data of app and backend, including secrets")
+                    iconName: "download"
+                }
+                ListElement {
+                    functionName: "exportSettings"
+                    label: qsTr("Export settings/data of app and backend, including secrets")
+                    iconName: "floppy-o"
                 }
             }
             delegate: ItemDelegate {
                 width: listView.width
                 text: label
-                onClicked: stackView.push("ObjectConfigPage.qml", {title: title, configObject: appSettingsPage.config[key], stackView: stackView}, StackView.PushTransition)
+                //icon.source: app.faUrlBase + iconName // leads to crash when closing UI
+                onClicked: key.length === 0 ? app[functionName]() : stackView.push("ObjectConfigPage.qml", {title: title, configObject: appSettingsPage.config[key], stackView: stackView}, StackView.PushTransition)
             }
             ScrollIndicator.vertical: ScrollIndicator { }
         }

@@ -149,7 +149,7 @@ Page {
                             key: modelData.key
                         }
                     }
-                    onClicked: objectConfigPage.stackView.push("ObjectConfigPage.qml", {title: objNameLabel.text, configObject: objectConfigPage.configObject[modelData.key], stackView: objectConfigPage.stackView, parentPage: objectConfigPage, objectNameLabel: objNameLabel}, StackView.PushTransition)
+                    onClicked: objectConfigPage.stackView.push("ObjectConfigPage.qml", {title: objNameLabel.text, configObject: objectConfigPage.configObject[modelData.key], stackView: objectConfigPage.stackView, parentPage: objectConfigPage, objectNameLabel: objNameLabel, path: `${objectConfigPage.path}.${modelData.key}`, configTemplates: objectConfigPage.configTemplates}, StackView.PushTransition)
                     required property var modelData
                 }
             }
@@ -216,7 +216,11 @@ Page {
 
     property alias model: objectListView.model
     required property var configObject
+    property var childObjectTemplate: configTemplates[path]
+    property bool canAdd: Array.isArray(configObject) && childObjectTemplate !== undefined
+    property string path: ""
     property string configCategory
+    property var configTemplates: ({})
     readonly property int standardButtons: (configCategory.length > 0) ? (Dialog.Ok | Dialog.Cancel | Dialog.Help) : (Dialog.Ok | Dialog.Cancel)
     required property StackView stackView
     property Page parentPage
@@ -224,13 +228,14 @@ Page {
     property list<Action> actions: [
         Action {
             text: qsTr("Add")
+            enabled: objectConfigPage.canAdd
             icon.source: app.faUrlBase + "plus"
             onTriggered: objectConfigPage.showNewValueDialog()
         }
     ]
     property list<Action> extraActions: []
 
-    function makeConfigRow(configEntry, index) {
+    function makeConfigRow(configEntry, index, canAdd, childObjectTemplate) {
         const key = configEntry[0];
         const value = configEntry[1];
         const isArray = Array.isArray(objectConfigPage.configObject);
@@ -313,8 +318,14 @@ Page {
     }
 
     function showNewValueDialog(key) {
-        newValueDialog.key = key ?? (Array.isArray(objectConfigPage.configObject) ? objectConfigPage.configObject.length : "");
-        newValueDialog.visible = true;
+        const template = objectConfigPage.childObjectTemplate;
+        if (template !== undefined) {
+            const newValue = template === "object" ? Object.assign({}, template) : template;
+            objectConfigPage.addObject(key ?? objectConfigPage.configObject.length, newValue);
+        } else {
+            newValueDialog.key = key ?? (Array.isArray(objectConfigPage.configObject) ? objectConfigPage.configObject.length : "");
+            newValueDialog.visible = true;
+        }
     }
 
     function uncamel(input) {

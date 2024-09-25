@@ -17,52 +17,49 @@ Page {
                 onClicked: app.openPath(modelData.directoryId, modelData.path)
                 onPressAndHold: app.copyPath(modelData.directoryId, modelData.path)
                 contentItem: GridLayout  {
-                    columns: width < 500 ? 1 : 2
+                    id: gridLayout
+                    columns: width < 500 ? 2 : 8
                     columnSpacing: 10
-                    RowLayout {
+                    Image {
+                        Layout.preferredWidth: 16
+                        Layout.preferredHeight: 16
+                        source: app.faUrlBase + ((modelData.action === "deleted") ? ("trash-o") : (modelData.itemType === "file" ? "file-o" : "folder-o"))
+                        width: 16
+                        height: 16
+                    }
+                    Label {
                         Layout.fillWidth: true
-                        spacing: 10
-                        Image {
-                            Layout.preferredWidth: 16
-                            Layout.preferredHeight: 16
-                            source: app.faUrlBase + ((modelData.action === "deleted") ? ("trash-o") : (modelData.itemType === "file" ? "file-o" : "folder-o"))
-                            width: 16
-                            height: 16
-                        }
-                        Label {
-                            Layout.fillWidth: true
-                            text: [modelData.directoryName || modelData.directoryId, modelData.path].join(": ")
-                            elide: Text.ElideRight
-                            font.weight: Font.Light
-                        }
+                        Layout.columnSpan: width < 500 ? 1 : 3
+                        text: [modelData.directoryName || modelData.directoryId, modelData.path].join(": ")
+                        elide: Text.ElideRight
+                        font.weight: Font.Light
                     }
-                    RowLayout {
-                        Image {
-                            Layout.preferredWidth: 16
-                            Layout.preferredHeight: 16
-                            source: app.faUrlBase + "calendar"
-                            width: 16
-                            height: 16
-                        }
-                        Label {
-                            text: modelData.eventTime
-                            elide: Text.ElideRight
-                            font.weight: Font.Light
-                        }
-                        Icon {
-                            Layout.preferredWidth: 16
-                            Layout.preferredHeight: 16
-                            source: modelData.actionIcon
-                            width: 16
-                            height: 16
-                        }
-                        Label {
-                            text: modelData.modifiedBy
-                            elide: Text.ElideRight
-                            font.weight: Font.Light
-                        }
+                    Image {
+                        Layout.preferredWidth: 16
+                        Layout.preferredHeight: 16
+                        source: app.faUrlBase + "calendar"
+                        width: 16
+                        height: 16
                     }
-
+                    Label {
+                        Layout.preferredWidth: Math.max(implicitWidth, parent.width / 5)
+                        text: modelData.eventTime
+                        elide: Text.ElideRight
+                        font.weight: Font.Light
+                    }
+                    Icon {
+                        Layout.preferredWidth: 16
+                        Layout.preferredHeight: 16
+                        source: modelData.actionIcon
+                        width: 16
+                        height: 16
+                    }
+                    Label {
+                        Layout.preferredWidth: Math.max(implicitWidth, parent.width / 5)
+                        text: modelData.modifiedBy
+                        elide: Text.ElideRight
+                        font.weight: Font.Light
+                    }
                 }
                 required property var modelData
             }

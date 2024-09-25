@@ -13,8 +13,11 @@
 
 #include <qtutilities/settingsdialog/qtsettings.h>
 
+#include <QDir>
 #include <QFile>
 #include <QJsonObject>
+
+#include <optional>
 
 QT_FORWARD_DECLARE_CLASS(QTextDocument)
 
@@ -36,6 +39,7 @@ class App : public QObject {
     Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
     Q_PROPERTY(int iconSize READ iconSize CONSTANT)
+    Q_PROPERTY(QString status READ status NOTIFY statusChanged)
 
 public:
     explicit App(bool insecure = false, QObject *parent = nullptr);
@@ -76,6 +80,7 @@ public:
         storeSettings();
         emit settingsChanged(m_settings);
     }
+
     /*!
      * \brief Returns whether darkmode is enabled.
      * \remarks
@@ -90,6 +95,7 @@ public:
     {
         return m_iconSize;
     }
+    QString status();
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();
@@ -97,6 +103,8 @@ public:
     Q_INVOKABLE bool loadSettings();
     Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applySettings();
+    Q_INVOKABLE bool importSettings();
+    Q_INVOKABLE bool exportSettings();
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE bool copyText(const QString &text);
@@ -113,6 +121,7 @@ Q_SIGNALS:
     void settingsChanged(const QJsonObject &settingsChanged);
     void error(const QString &errorMessage, const QString &details = QString());
     void info(const QString &infoMessage, const QString &details = QString());
+    void statusChanged();
 
 protected:
     bool event(QEvent *event) override;
@@ -120,10 +129,12 @@ protected:
 private Q_SLOTS:
     void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,
         const QByteArray &response);
+    void invalidateStatus();
 
 private:
     void applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled);
     bool openSettings();
+    QString locateSettingsExportDir();
 
     QQmlApplicationEngine m_engine;
     Data::SyncthingConnection m_connection;
@@ -134,8 +145,10 @@ private:
     Data::SyncthingConnectionSettings m_connectionSettings;
     QtUtilities::QtSettings m_qtSettings;
     QFile m_settingsFile;
+    std::optional<QDir> m_settingsDir;
     QJsonObject m_settings;
     QString m_faUrlBase;
+    std::optional<QString> m_status;
     int m_iconSize;
     bool m_insecure;
     bool m_darkmodeEnabled;

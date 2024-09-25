@@ -9,6 +9,9 @@ ObjectConfigPage {
         const entry = Array.isArray(entries) ? entries.find(advancedConfigPage.isEntry) : undefined;
         return entry !== undefined ? entry : {};
     }
+    configTemplates: {
+        ".devices": {deviceID: "", introducedBy: "", encryptionPassword: ""}
+    }
     actions: [
         Action {
             text: qsTr("Apply")

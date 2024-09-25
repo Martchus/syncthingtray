@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Material
+import QtQuick.Dialogs
+import Qt.labs.qmlmodels
 
 ApplicationWindow {
     id: window
@@ -14,66 +16,116 @@ ApplicationWindow {
     Material.primary: Material.LightBlue
     header: ToolBar {
         Material.theme: Material.Dark
-        RowLayout {
+        ColumnLayout {
             anchors.fill: parent
             anchors.leftMargin: flickable.anchors.leftMargin
-            ToolButton {
-                visible: !backButton.visible
-                icon.source: app.faUrlBase + "bars"
-                icon.width: app.iconSize
-                icon.height: app.iconSize
-                text: qsTr("Toggle menu")
-                display: AbstractButton.IconOnly
-                onClicked: drawer.visible ? drawer.close() : drawer.open()
-                ToolTip.text: text
-                ToolTip.visible: hovered || pressed
-                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            }
-            ToolButton {
-                id: backButton
-                visible: pageStack.currentDepth > 1
-                icon.source: app.faUrlBase + "chevron-left"
-                icon.width: app.iconSize
-                icon.height: app.iconSize
-                text: qsTr("Back")
-                display: AbstractButton.IconOnly
-                onClicked: pageStack.pop()
-                ToolTip.text: text
-                ToolTip.visible: hovered || pressed
-                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            }
-            Label {
-                text: pageStack.currentPage.title
-                elide: Label.ElideRight
-                horizontalAlignment: Qt.AlignLeft
-                verticalAlignment: Qt.AlignVCenter
-                Layout.fillWidth: true
-            }
-            Repeater {
-                model: pageStack.currentActions
+            RowLayout {
+                visible: app.status.length !== 0
                 ToolButton {
-                    required property Action modelData
-                    enabled: modelData.enabled
-                    text: modelData.text
-                    display: AbstractButton.IconOnly
-                    ToolTip.visible: hovered || pressed
-                    ToolTip.text: modelData.text
-                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-                    icon.source: modelData.icon.source
+                    id: statusButton
+                    visible: !busyIndicator.running
+                    icon.source: app.faUrlBase + "exclamation-triangle"
                     icon.width: app.iconSize
                     icon.height: app.iconSize
-                    onClicked: modelData.trigger()
+                    text: qsTr("Syncthing backend status is problematic")
+                    display: AbstractButton.IconOnly
+                    ToolTip.text: text
+                    ToolTip.visible: hovered || pressed
+                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                }
+                BusyIndicator {
+                    id: busyIndicator
+                    running: app.connection.connecting
+                    visible: running
+                    Layout.preferredWidth: statusButton.width - 5
+                    Layout.preferredHeight: statusButton.height - 5
+                }
+                Label {
+                    text: app.status
+                    elide: Label.ElideRight
+                    horizontalAlignment: Qt.AlignLeft
+                    verticalAlignment: Qt.AlignVCenter
+                    wrapMode: Text.WordWrap
+                    Layout.fillWidth: true
+                }
+                ToolButton {
+                    visible: !app.connection.connected
+                    icon.source: app.faUrlBase + "refresh"
+                    icon.width: app.iconSize
+                    icon.height: app.iconSize
+                    text: qsTr("Try to re-connect")
+                    display: AbstractButton.IconOnly
+                    onClicked: app.connection.connect()
+                    ToolTip.text: text
+                    ToolTip.visible: hovered || pressed
+                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                 }
             }
-            ToolButton {
-                visible: pageStack.currentExtraActions.length > 0
-                icon.source: app.faUrlBase + "ellipsis-v"
-                icon.width: app.iconSize
-                icon.height: app.iconSize
-                onClicked: extraActionsMenu.popup()
-            }
-            Menu {
-                id: extraActionsMenu
+            RowLayout {
+                ToolButton {
+                    visible: !backButton.visible
+                    icon.source: app.faUrlBase + "bars"
+                    icon.width: app.iconSize
+                    icon.height: app.iconSize
+                    text: qsTr("Toggle menu")
+                    display: AbstractButton.IconOnly
+                    onClicked: drawer.visible ? drawer.close() : drawer.open()
+                    ToolTip.text: text
+                    ToolTip.visible: hovered || pressed
+                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                }
+                ToolButton {
+                    id: backButton
+                    visible: pageStack.currentDepth > 1
+                    icon.source: app.faUrlBase + "chevron-left"
+                    icon.width: app.iconSize
+                    icon.height: app.iconSize
+                    text: qsTr("Back")
+                    display: AbstractButton.IconOnly
+                    onClicked: pageStack.pop()
+                    ToolTip.text: text
+                    ToolTip.visible: hovered || pressed
+                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                }
+                Label {
+                    text: pageStack.currentPage.title
+                    elide: Label.ElideRight
+                    horizontalAlignment: Qt.AlignLeft
+                    verticalAlignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+                }
+                Repeater {
+                    model: pageStack.currentActions
+                    DelegateChooser {
+                        role: "enabled"
+                        DelegateChoice {
+                            roleValue: true
+                            ToolButton {
+                                required property Action modelData
+                                enabled: modelData.enabled
+                                text: modelData.text
+                                display: AbstractButton.IconOnly
+                                ToolTip.visible: hovered || pressed
+                                ToolTip.text: modelData.text
+                                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                                icon.source: modelData.icon.source
+                                icon.width: app.iconSize
+                                icon.height: app.iconSize
+                                onClicked: modelData.trigger()
+                            }
+                        }
+                    }
+                }
+                ToolButton {
+                    visible: pageStack.currentExtraActions.length > 0
+                    icon.source: app.faUrlBase + "ellipsis-v"
+                    icon.width: app.iconSize
+                    icon.height: app.iconSize
+                    onClicked: extraActionsMenu.popup()
+                }
+                Menu {
+                    id: extraActionsMenu
+                }
             }
         }
     }
@@ -123,7 +175,7 @@ ApplicationWindow {
                     iconName: "history"
                 }
                 ListElement {
-                    name: qsTr("Syncthing web UI")
+                    name: qsTr("Web-based UI")
                     iconName: "syncthing"
                 }
                 ListElement {
@@ -207,7 +259,7 @@ ApplicationWindow {
         anchors.fill: parent
         anchors.leftMargin: drawer.visible ? drawer.effectiveWidth : 0
 
-        StackLayout {
+        SwipeView {
             id: pageStack
             anchors.fill: parent
             currentIndex: drawerListView.currentIndex
@@ -219,19 +271,26 @@ ApplicationWindow {
             }
 
             DirsPage {
+                id: dirsPage
             }
             DevsPage {
+                id: devsPage
             }
             ChangesPage {
+                id: changesPage
             }
             WebViewPage {
+                id: webViewPage
                 active: pageStack.currentIndex === 3
             }
             AdvancedPage {
+                id: advancedPage
             }
             SettingsPage {
+                id: settingsPage
             }
 
+            readonly property list<Item> children: [dirsPage, devsPage, changesPage, webViewPage, advancedPage, settingsPage]
             readonly property var currentPage: {
                 const currentChild = children[currentIndex];
                 return currentChild.currentItem ?? currentChild;
@@ -247,6 +306,7 @@ ApplicationWindow {
         }
     }
 
+    // handle keyboard events
     Component.onCompleted: {
         window.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
         window.contentItem.Keys.released.connect((event) => {
@@ -265,6 +325,26 @@ ApplicationWindow {
         }
     }
 
+    // avoid closing app (TODO: allow to keep Syncthing running in the background)
+    MessageDialog {
+        id: closeDialog
+        buttons: MessageDialog.Yes | MessageDialog.No
+        title: window.title
+        text: qsTr("Do you really want to close Syncthing?")
+        onAccepted: {
+            window.forceClose = true;
+            window.close();
+        }
+    }
+    onClosing: (event) => {
+        if (!window.forceClose) {
+            event.accepted = false;
+            closeDialog.open();
+        }
+    }
+    property bool forceClose: false
+
+    // show notifications
     ToolTip {
         anchors.centerIn: Overlay.overlay
         id: notifictionToolTip
