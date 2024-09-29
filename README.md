@@ -59,12 +59,10 @@ for how to achieve a more native look and feel. Under GNOME one needs to install
 [an extension](https://github.com/ubuntu/gnome-shell-extension-appindicator) for tray icon support (unless
 one's distribution already provides such an extension by default).
 
-Limitations of your system tray might affect Syncthing Tray. For instance you may not be able to show
-the UI shown in the screenshots below by left-clicking the tray icon and instead will just see a menu
-to access basic functionality (that normally only shows when right-clicking the tray icon). This particular
-limitation seems to apply to recent versions of GNOME and Ubuntu and might apply to other distributions and
-desktop environments as well. If your system tray is limited like this you can still use Syncthing Tray for
-the tray icon and basic functionality accessible via the menu.
+Limitations of your system tray might affect Syncthing Tray. For instance when using the mentioned GNOME
+extension the Syncthing Tray UI shown in the screenshots below is only shown by *double*-clicking the icon.
+If your system tray is unable to show the Syncthing Tray UI at all you can still use Syncthing Tray for the
+tray icon and basic functionality accessible via the menu.
 
 Note that under Wayland-based desktops there will be positioning issues. The Plasmoid is not affected
 by this, though.
