@@ -123,6 +123,7 @@ QHash<int, QByteArray> SyncthingFileModel::roleNames() const
         { Qt::ToolTipRole, "toolTipData" },
         { Qt::CheckStateRole, "checkStateData" },
         { DetailsRole, "details" },
+        { CheckableRole, "checkable" },
     };
     return roles;
 }
@@ -503,6 +504,16 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
             res += QStringLiteral("\nMatches: ") + m_presentIgnorePatterns[item->ignorePattern].pattern;
         }
         return res;
+    }
+    case CheckableRole: {
+        switch (item->type) {
+        case SyncthingItemType::File:
+        case SyncthingItemType::Directory:
+        case SyncthingItemType::Symlink:
+            return true;
+        default:
+            return false;
+        }
     }
     }
     return QVariant();

@@ -72,10 +72,10 @@ App::App(bool insecure, QObject *parent)
     statusIconSettings.strokeWidth = StatusIconStrokeWidth::Thick;
     Data::IconManager::instance().applySettings(&statusIconSettings, &statusIconSettings, true, true);
 
+    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
     m_notifier.setEnabledNotifications(Data::SyncthingHighLevelNotification::ConnectedDisconnected);
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
-    connect(&m_notifier, &SyncthingNotifier::connected, this, &App::invalidateStatus);
-    connect(&m_notifier, &SyncthingNotifier::disconnected, this, &App::invalidateStatus);
+    connect(&m_connection, &SyncthingConnection::statusChanged, this, &App::invalidateStatus);
 
     auto *const app = QGuiApplication::instance();
     auto *const context = m_engine.rootContext();
@@ -286,6 +286,15 @@ void App::handleConnectionError(
     Q_UNUSED(request)
     Q_UNUSED(response)
     qWarning() << "connection error: " << errorMessage;
+}
+
+void App::setCurrentControls(bool visible, int tabIndex)
+{
+    auto flags = m_connection.pollingFlags();
+    //CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::TrafficStatistics, visible && tabIndex == 0);
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DeviceStatistics, visible && tabIndex == 1);
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents, visible && tabIndex == 2);
+    m_connection.setPollingFlags(flags);
 }
 
 void App::invalidateStatus()

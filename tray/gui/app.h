@@ -113,6 +113,7 @@ public:
     Q_INVOKABLE bool saveIgnorePatterns(const QString &dirId, QObject *textArea);
     Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
     Q_INVOKABLE bool showError(const QString &errorMessage);
+    Q_INVOKABLE void setCurrentControls(bool visible, int tabIndex);
     Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId, QObject *parent);
     Q_INVOKABLE QtGui::DiffHighlighter *createDiffHighlighter(QTextDocument *parent);
 

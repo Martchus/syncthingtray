@@ -58,6 +58,7 @@ public:
         ActionNames,
         ActionIcons,
         DetailsRole,
+        CheckableRole,
     };
 
     explicit SyncthingFileModel(SyncthingConnection &connection, const SyncthingDir &dir, QObject *parent = nullptr);

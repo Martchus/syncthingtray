@@ -11,6 +11,7 @@ ApplicationWindow {
     width: 700
     height: 500
     title: qsTr("Syncthing App")
+    onVisibleChanged: app.setCurrentControls(window.visible, pageStack.currentIndex)
     Material.theme: app.darkmodeEnabled ? Material.Dark : Material.Light
     Material.accent: Material.LightBlue
     Material.primary: Material.LightBlue
@@ -125,6 +126,20 @@ ApplicationWindow {
                 }
                 Menu {
                     id: extraActionsMenu
+                    Instantiator {
+                        model: pageStack.currentExtraActions
+                        delegate: MenuItem {
+                            required property Action modelData
+                            text: modelData.text
+                            enabled: modelData.enabled
+                            icon.source: modelData.icon.source
+                            icon.width: app.iconSize
+                            icon.height: app.iconSize
+                            onTriggered: modelData?.trigger()
+                        }
+                        onObjectAdded: (index, object) => object.enabled && extraActionsMenu.insertItem(index, object)
+                        onObjectRemoved: (index, object) => extraActionsMenu.removeItem(object)
+                    }
                 }
             }
         }
@@ -196,25 +211,11 @@ ApplicationWindow {
                 icon.height: app.iconSize
                 width: parent.width
                 onClicked: {
-                    drawerListView.to(index);
+                    pageStack.setCurrentIndex(index);
                     drawer.position = drawer.initialPosition;
                 }
             }
             ScrollIndicator.vertical: ScrollIndicator { }
-
-            readonly property var indexHistory: []
-            function to(index) {
-                drawerListView.indexHistory.push(drawerListView.currentIndex);
-                drawerListView.currentIndex = index;
-            }
-            function back() {
-                const previousIndex = indexHistory.pop();
-                if (previousIndex !== undefined) {
-                    currentIndex = previousIndex;
-                    return true;
-                }
-                return false;
-            }
         }
     }
     footer: TabBar {
@@ -226,7 +227,7 @@ ApplicationWindow {
             icon.source: app.faUrlBase + "folder"
             icon.width: app.iconSize
             icon.height: app.iconSize
-            onClicked: drawerListView.to(0)
+            onClicked: pageStack.setCurrentIndex(0)
         }
         TabButton {
             text: qsTr("Devices")
@@ -234,7 +235,7 @@ ApplicationWindow {
             icon.source: app.faUrlBase + "sitemap"
             icon.width: app.iconSize
             icon.height: app.iconSize
-            onClicked: drawerListView.to(1)
+            onClicked: pageStack.setCurrentIndex(1)
         }
         TabButton {
             text: qsTr("Recent changes")
@@ -242,7 +243,7 @@ ApplicationWindow {
             icon.source: app.faUrlBase + "history"
             icon.width: app.iconSize
             icon.height: app.iconSize
-            onClicked: drawerListView.to(2)
+            onClicked: pageStack.setCurrentIndex(2)
         }
         TabButton {
             text: qsTr("More")
@@ -250,7 +251,7 @@ ApplicationWindow {
             icon.source: app.faUrlBase + "cog"
             icon.width: app.iconSize
             icon.height: app.iconSize
-            onClicked: drawerListView.to(5)
+            onClicked: pageStack.setCurrentIndex(5)
         }
     }
 
@@ -262,12 +263,10 @@ ApplicationWindow {
         SwipeView {
             id: pageStack
             anchors.fill: parent
-            currentIndex: drawerListView.currentIndex
-            onCurrentExtraActionsChanged: {
-                for (let i = extraActionsMenu.count - 1; i >= 0; --i) {
-                    extraActionsMenu.takeItem(i)
-                }
-                extraActionsMenu.contentData = pageStack.currentExtraActions;
+            currentIndex: 0
+            onCurrentIndexChanged: {
+                indexHistory.push(pageStack.currentIndex)
+                app.setCurrentControls(window.visible, pageStack.currentIndex)
             }
 
             DirsPage {
@@ -301,7 +300,17 @@ ApplicationWindow {
             function pop() {
                 const currentChild = children[currentIndex];
                 const currentPage = currentChild.currentItem ?? currentChild;
-                return currentPage.back?.() || currentChild.pop?.() || drawerListView.back();
+                return currentPage.back?.() || currentChild.pop?.() || pageStack.back();
+            }
+            readonly property var indexHistory: []
+            function back() {
+                if (indexHistory.length < 1) {
+                    return false;
+                }
+                const currentIndex = indexHistory.pop();
+                const previousIndex = indexHistory.pop();
+                pageStack.setCurrentIndex(previousIndex);
+                return true;
             }
         }
     }

@@ -9,6 +9,7 @@ Page {
         const mainTitle = qsTr("Remote/global tree of \"%1\"").arg(dirName);
         return path.length > 0 ? `${mainTitle}\n${path}` : mainTitle;
     }
+    Component.onCompleted: connections.onSelectionActionsChanged()
 
     DelegateModel {
         id: delegateModel
@@ -36,7 +37,7 @@ Page {
                     }
                 }
                 CheckBox {
-                    visible: page.model.selectionModeEnabled
+                    visible: checkable && page.model.selectionModeEnabled
                     checkState: checkStateData ?? Qt.Unchecked
                     onClicked: itemDelegate.toggle()
                 }
@@ -93,13 +94,12 @@ Page {
         model: delegateModel
     }
     Instantiator {
-        model: page.model.selectionActions
-        delegate: MenuItem {
-            text: modelData.text
+        id: modelActionsInstantiator
+        delegate: Action {
+            text: modelData.text ?? "?"
             onTriggered: modelData.trigger()
         }
-        onObjectAdded: (index, object) => page.extraActions.splice(index, 0, object)
-        onObjectRemoved: (index, object) => page.extraActions.splice(index, 1)
+        onObjectAdded: (index, object) => page.modelActions.splice(index, 0, object)
     }
     Dialog {
         id: confirmActionDialog
@@ -129,7 +129,13 @@ Page {
         property alias diff: diffTextArea.text
     }
     Connections {
+        id: connections
         target: page.model
+        function onSelectionActionsChanged() {
+            page.modelActions = [];
+            modelActionsInstantiator.model = page.model.selectionActions;
+            page.extraActions = page.modelActions;
+        }
         function onActionNeedsConfirmation(action, message, diff) {
             confirmActionDialog.title = action.text;
             confirmActionDialog.action = action;
@@ -143,7 +149,8 @@ Page {
     required property string dirId
     property var model: app.createFileModel(dirId, listView)
     property string path: model.path(delegateModel.rootIndex)
-    property list<Action> extraActions: []
+    property var modelActions: []
+    property var extraActions: []
 
     function back() {
         const isValid = delegateModel.rootIndex.valid;
