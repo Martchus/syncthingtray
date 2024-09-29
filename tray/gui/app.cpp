@@ -38,6 +38,10 @@
 #define SYNCTHING_APP_STRING_CONVERSION(s) s.toLocal8Bit().toStdString()
 #endif
 
+#ifdef Q_OS_ANDROID
+#include <QJniObject>
+#endif
+
 using namespace Data;
 
 namespace QtGui {
@@ -295,6 +299,25 @@ void App::setCurrentControls(bool visible, int tabIndex)
     CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DeviceStatistics, visible && tabIndex == 1);
     CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents, visible && tabIndex == 2);
     m_connection.setPollingFlags(flags);
+}
+
+bool App::performHapticFeedback()
+{
+#ifdef Q_OS_ANDROID
+    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("performHapticFeedback");
+#else
+    return false;
+#endif
+}
+
+bool App::showToast(const QString &message)
+{
+#ifdef Q_OS_ANDROID
+    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("showToast", "(Ljava/lang/String;)Z", QJniObject::fromString(message));
+#else
+    Q_UNUSED(message)
+    return false;
+#endif
 }
 
 void App::invalidateStatus()

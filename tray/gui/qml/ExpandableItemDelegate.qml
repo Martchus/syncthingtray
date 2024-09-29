@@ -121,7 +121,10 @@ ItemDelegate {
             detailsView.visible = !detailsView.visible;
             mainDelegate.forceActiveFocus(Qt.MouseFocusReason);
         }
-        onLongPressed: menu.popup()
+        onLongPressed: {
+            app.performHapticFeedback();
+            menu.popup();
+        }
     }
     TapHandler {
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus

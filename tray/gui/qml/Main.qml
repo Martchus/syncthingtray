@@ -30,6 +30,7 @@ ApplicationWindow {
                     icon.height: app.iconSize
                     text: qsTr("Syncthing backend status is problematic")
                     display: AbstractButton.IconOnly
+                    onPressAndHold: app.performHapticFeedback()
                     ToolTip.text: text
                     ToolTip.visible: hovered || pressed
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -57,6 +58,7 @@ ApplicationWindow {
                     text: qsTr("Try to re-connect")
                     display: AbstractButton.IconOnly
                     onClicked: app.connection.connect()
+                    onPressAndHold: app.performHapticFeedback()
                     ToolTip.text: text
                     ToolTip.visible: hovered || pressed
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -71,6 +73,7 @@ ApplicationWindow {
                     text: qsTr("Toggle menu")
                     display: AbstractButton.IconOnly
                     onClicked: drawer.visible ? drawer.close() : drawer.open()
+                    onPressAndHold: app.performHapticFeedback()
                     ToolTip.text: text
                     ToolTip.visible: hovered || pressed
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -84,6 +87,7 @@ ApplicationWindow {
                     text: qsTr("Back")
                     display: AbstractButton.IconOnly
                     onClicked: pageStack.pop()
+                    onPressAndHold: app.performHapticFeedback()
                     ToolTip.text: text
                     ToolTip.visible: hovered || pressed
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -113,6 +117,7 @@ ApplicationWindow {
                                 icon.width: app.iconSize
                                 icon.height: app.iconSize
                                 onClicked: modelData.trigger()
+                                onPressAndHold: app.performHapticFeedback()
                             }
                         }
                     }
@@ -123,6 +128,7 @@ ApplicationWindow {
                     icon.width: app.iconSize
                     icon.height: app.iconSize
                     onClicked: extraActionsMenu.popup()
+                    onPressAndHold: app.performHapticFeedback()
                 }
                 Menu {
                     id: extraActionsMenu
@@ -228,6 +234,10 @@ ApplicationWindow {
             icon.width: app.iconSize
             icon.height: app.iconSize
             onClicked: pageStack.setCurrentIndex(0)
+            onPressAndHold: app.performHapticFeedback()
+            ToolTip.visible: hovered || pressed
+            ToolTip.text: text
+            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         }
         TabButton {
             text: qsTr("Devices")
@@ -236,6 +246,10 @@ ApplicationWindow {
             icon.width: app.iconSize
             icon.height: app.iconSize
             onClicked: pageStack.setCurrentIndex(1)
+            onPressAndHold: app.performHapticFeedback()
+            ToolTip.visible: hovered || pressed
+            ToolTip.text: text
+            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         }
         TabButton {
             text: qsTr("Recent changes")
@@ -244,6 +258,10 @@ ApplicationWindow {
             icon.width: app.iconSize
             icon.height: app.iconSize
             onClicked: pageStack.setCurrentIndex(2)
+            onPressAndHold: app.performHapticFeedback()
+            ToolTip.visible: hovered || pressed
+            ToolTip.text: text
+            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         }
         TabButton {
             text: qsTr("More")
@@ -252,6 +270,10 @@ ApplicationWindow {
             icon.width: app.iconSize
             icon.height: app.iconSize
             onClicked: pageStack.setCurrentIndex(5)
+            onPressAndHold: app.performHapticFeedback()
+            ToolTip.visible: hovered || pressed
+            ToolTip.text: text
+            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         }
     }
 
@@ -384,7 +406,10 @@ ApplicationWindow {
         }
     }
     function showNotifiction(message) {
+        if (app.showToast(message)) {
+            return;
+        }
         notifictionToolTip.text = message;
-        notifictionToolTip.open()
+        notifictionToolTip.open();
     }
 }

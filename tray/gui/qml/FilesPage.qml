@@ -56,11 +56,17 @@ Page {
             TapHandler {
                 acceptedButtons: Qt.LeftButton
                 acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
-                onLongPressed: itemDelegate.toggle()
+                onLongPressed: {
+                    itemDelegate.toggle();
+                    app.performHapticFeedback();
+                }
             }
             TapHandler {
                 acceptedDevices: PointerDevice.TouchScreen
-                onLongPressed: contextMenu.open()
+                onLongPressed: {
+                    contextMenu.open();
+                    app.performHapticFeedback();
+                }
             }
             TapHandler {
                 acceptedButtons: Qt.RightButton
