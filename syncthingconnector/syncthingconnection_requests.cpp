@@ -1029,7 +1029,8 @@ void SyncthingConnection::readErrors()
         return;
     }
 
-    // ignore any errors occurred before connecting
+    // do not emit notifications for any errors occurred before connecting; we might have already emitted a notification for it when we were previously
+    // connected
     if (m_lastErrorTime.isNull()) {
         m_lastErrorTime = DateTime::now();
     }
@@ -1044,15 +1045,21 @@ void SyncthingConnection::readErrors()
         }
 
         const auto errors = replyDoc.object().value(QLatin1String("errors")).toArray();
+        m_errors.clear();
+        m_errors.reserve(static_cast<std::size_t>(errors.size()));
         for (const QJsonValue &errorVal : errors) {
             const QJsonObject errorObj = errorVal.toObject();
             if (errorObj.isEmpty()) {
                 continue;
             }
-            if (const auto when = parseTimeStamp(errorObj.value(QLatin1String("when")), QStringLiteral("error message")); m_lastErrorTime < when) {
-                emitNotification(m_lastErrorTime = when, errorObj.value(QLatin1String("message")).toString());
+            auto &error = m_errors.emplace_back();
+            error.when = parseTimeStamp(errorObj.value(QLatin1String("when")), QStringLiteral("error message"));
+            error.message = errorObj.value(QLatin1String("message")).toString();
+            if (m_lastErrorTime < error.when) {
+                emitNotification(m_lastErrorTime = error.when, error.message);
             }
         }
+        emit newErrors(m_errors);
 
         // since there is no event for this data, keep polling
         // note: The return value of hasUnreadNotifications() might have changed. This is however not (yet) used to compute the overall status so

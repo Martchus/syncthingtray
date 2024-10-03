@@ -116,6 +116,11 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingIgnores {
     QStringList expanded;
 };
 
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingError {
+    CppUtilities::DateTime when;
+    QString message;
+};
+
 class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     friend ConnectionTests;
     friend MiscTests;
@@ -268,6 +273,7 @@ public:
     static constexpr std::uint64_t unknownTraffic = std::numeric_limits<std::uint64_t>::max();
     const std::vector<SyncthingDir> &dirInfo() const;
     const std::vector<SyncthingDev> &devInfo() const;
+    const std::vector<SyncthingError> &errors() const;
     SyncthingOverallDirStatistics computeOverallDirStatistics() const;
     const QString &lastSyncedFile() const;
     CppUtilities::DateTime lastSyncTime() const;
@@ -359,6 +365,7 @@ Q_SIGNALS:
     void newConfig(const QJsonObject &rawConfig);
     void newDirs(const std::vector<Data::SyncthingDir> &dirs);
     void newDevices(const std::vector<Data::SyncthingDev> &devs);
+    void newErrors(const std::vector<Data::SyncthingError> &errors);
     void newConfigApplied();
     void newEvents(const QJsonArray &events);
     void allEventsProcessed();
@@ -561,6 +568,7 @@ private:
     bool m_hasDiskEvents;
     std::vector<SyncthingDir> m_dirs;
     std::vector<SyncthingDev> m_devs;
+    std::vector<SyncthingError> m_errors;
     QStringList m_devsPausedDueToMeteredConnection;
     SyncthingEventId m_lastConnectionsUpdateEvent;
     CppUtilities::DateTime m_lastConnectionsUpdateTime;
@@ -1094,6 +1102,14 @@ inline const std::vector<SyncthingDir> &SyncthingConnection::dirInfo() const
 inline const std::vector<SyncthingDev> &SyncthingConnection::devInfo() const
 {
     return m_devs;
+}
+
+/*!
+ * \brief Returns all currently present errors.
+ */
+inline const std::vector<SyncthingError> &Data::SyncthingConnection::errors() const
+{
+    return m_errors;
 }
 
 /*!
