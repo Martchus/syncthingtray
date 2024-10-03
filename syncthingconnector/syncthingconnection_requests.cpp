@@ -1054,9 +1054,9 @@ void SyncthingConnection::readErrors()
             }
         }
 
-        // since there seems no event for this data, keep polling
+        // since there is no event for this data, keep polling
         // note: The return value of hasUnreadNotifications() might have changed. This is however not (yet) used to compute the overall status so
-        //       we can always just call concludeConnectionWithoutRecomputingStatus() here.
+        //       we can avoid a status recomputation here.
         if (m_keepPolling) {
             concludeConnection(StatusRecomputation::None);
             if ((m_pollingFlags & PollingFlags::Errors) && m_errorsPollTimer.interval()) {
