@@ -313,7 +313,8 @@ bool App::performHapticFeedback()
 bool App::showToast(const QString &message)
 {
 #ifdef Q_OS_ANDROID
-    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("showToast", "(Ljava/lang/String;)Z", QJniObject::fromString(message));
+    return QJniObject(QNativeInterface::QAndroidApplication::context())
+        .callMethod<jboolean>("showToast", "(Ljava/lang/String;)Z", QJniObject::fromString(message));
 #else
     Q_UNUSED(message)
     return false;
@@ -409,9 +410,11 @@ bool App::applySettings()
 
 bool App::importSettings()
 {
-    const auto dir = QStandardPaths::locate(QStandardPaths::DocumentsLocation, QStringLiteral("syncthing-app-config"), QStandardPaths::LocateDirectory);
+    const auto dir
+        = QStandardPaths::locate(QStandardPaths::DocumentsLocation, QStringLiteral("syncthing-app-config"), QStandardPaths::LocateDirectory);
     if (dir.isEmpty()) {
-        emit error(tr("No directory \"syncthing-app-config\" exists under \"%1\".").arg(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).join(QStringLiteral(", "))));
+        emit error(tr("No directory \"syncthing-app-config\" exists under \"%1\".")
+                       .arg(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).join(QStringLiteral(", "))));
         return false;
     }
     if (!m_settingsDir.has_value()) {
@@ -419,7 +422,8 @@ bool App::importSettings()
         return false;
     }
     auto ec = std::error_code();
-    std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(dir), SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()), std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive, ec);
+    std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(dir), SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()),
+        std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive, ec);
     if (ec) {
         emit error(tr("Unable to import settings: %1").arg(QString::fromStdString(ec.message())));
         return false;
@@ -442,7 +446,8 @@ bool App::exportSettings()
         return false;
     }
     auto ec = std::error_code();
-    std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()), SYNCTHING_APP_STRING_CONVERSION(path), std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive, ec);
+    std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()), SYNCTHING_APP_STRING_CONVERSION(path),
+        std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive, ec);
     if (ec) {
         emit error(tr("Unable to export settings: %1").arg(QString::fromStdString(ec.message())));
         return false;
