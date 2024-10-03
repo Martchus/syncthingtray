@@ -5,6 +5,7 @@
 #include <syncthingconnector/syncthingdir.h>
 
 #include <syncthingmodel/colors.h>
+#include <syncthingmodel/syncthingerrormodel.h>
 #include <syncthingmodel/syncthingfilemodel.h>
 
 // use meta-data of syncthingtray application here
@@ -118,8 +119,8 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 
     // setup model/view
-    auto model = new Data::SyncthingFileModel(connection, dir, &connection);
     auto view = new QTreeView(dlg);
+    auto model = new Data::SyncthingFileModel(connection, dir, view);
     view->setModel(model);
 
     // setup context menu
@@ -280,6 +281,66 @@ TextViewDialog *ignorePatternsDialog(Data::SyncthingConnection &connection, cons
         }
         return question != QMessageBox::No;
     });
+    return dlg;
+}
+
+QDialog *errorNotificationsDialog(Data::SyncthingConnection &connection, QWidget *parent)
+{
+    auto dlg = new QDialog(parent);
+    dlg->setWindowTitle(QCoreApplication::translate("QtGui::OtherDialogs", "Notifications/errors") + QStringLiteral(" - " APP_NAME));
+    dlg->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+
+    // setup model/view
+    auto view = new QTreeView(dlg);
+    auto model = new Data::SyncthingErrorModel(connection, view);
+    view->setWordWrap(true);
+    view->setModel(model);
+    QObject::connect(model, &SyncthingErrorModel::requestResizeColumns, view, [view] { view->resizeColumnToContents(0); });
+
+    // setup context menu
+    view->setContextMenuPolicy(Qt::CustomContextMenu);
+    QObject::connect(view, &QTreeView::customContextMenuRequested, view, [view](const QPoint &pos) {
+        const auto index = view->indexAt(pos);
+        if (!index.isValid()) {
+            return;
+        }
+        auto text = index.data().toString();
+        if (text.isEmpty()) {
+            return;
+        }
+        auto menu = QMenu(view);
+        QObject::connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy")), QCoreApplication::translate("QtGui::OtherDialogs", "Copy")),
+            &QAction::triggered, &menu, [text = std::move(text)] {
+                if (auto *const clipboard = QGuiApplication::clipboard()) {
+                    clipboard->setText(text);
+                }
+            });
+        menu.exec(view->viewport()->mapToGlobal(pos));
+    });
+
+    // add a button for clearing errors
+    auto *const buttonLayout = new QHBoxLayout;
+    auto *const clearButton = new QPushButton(dlg);
+    clearButton->setText(QCoreApplication::translate("QtGui::OtherDialogs", "Clear"));
+    clearButton->setIcon(QIcon::fromTheme(QStringLiteral("edit-clear")));
+    clearButton->setVisible(connection.hasErrors());
+    buttonLayout->setContentsMargins(0, 0, 0, 0);
+    buttonLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    buttonLayout->addWidget(clearButton);
+    QObject::connect(
+        &connection, &SyncthingConnection::newErrors, clearButton, [clearButton, &connection] { clearButton->setVisible(connection.hasErrors()); });
+    QObject::connect(clearButton, &QPushButton::clicked, &connection, &SyncthingConnection::requestClearingErrors);
+
+    // setup layout
+    auto layout = new QVBoxLayout;
+    layout->setAlignment(Qt::AlignCenter);
+    layout->setSpacing(0);
+    layout->setContentsMargins(QMargins());
+    layout->addWidget(view);
+    layout->addLayout(buttonLayout);
+    dlg->setLayout(layout);
+
     return dlg;
 }
 

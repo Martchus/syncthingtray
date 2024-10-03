@@ -110,7 +110,6 @@ SyncthingConnection::SyncthingConnection(
     , m_versionReply(nullptr)
     , m_diskEventsReply(nullptr)
     , m_logReply(nullptr)
-    , m_unreadNotifications(false)
     , m_hasConfig(false)
     , m_hasStatus(false)
     , m_hasEvents(false)
@@ -623,7 +622,6 @@ void SyncthingConnection::continueReconnecting()
     m_totalIncomingRate = 0.0;
     m_totalOutgoingRate = 0.0;
     emit trafficChanged(unknownTraffic, unknownTraffic);
-    m_unreadNotifications = false;
     m_hasOutOfSyncDirs.reset();
     m_hasConfig = false;
     m_hasStatus = false;
@@ -631,6 +629,7 @@ void SyncthingConnection::continueReconnecting()
     m_hasDiskEvents = false;
     m_dirs.clear();
     m_devs.clear();
+    m_errors.clear();
     m_devsPausedDueToMeteredConnection.clear();
     m_lastConnectionsUpdateEvent = 0;
     m_lastConnectionsUpdateTime = DateTime();

@@ -100,7 +100,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, &connection,
         static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
-    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, &widget, &TrayWidget::dismissNotifications);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, &connection, &SyncthingConnection::requestClearingErrors);
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, &widget, &TrayWidget::showNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &TrayIcon::showInternalErrorsDialog);
     connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, &widget, &TrayWidget::showWebUI);
@@ -152,7 +152,7 @@ void TrayIcon::handleMessageClicked()
     case TrayIconMessageClickedAction::None:
         return;
     case TrayIconMessageClickedAction::DismissNotification:
-        trayMenu().widget().dismissNotifications();
+        trayMenu().widget().connection().requestClearingErrors();
         break;
     case TrayIconMessageClickedAction::ShowInternalErrors:
         showInternalErrorsDialog();

@@ -162,7 +162,7 @@ RowLayout {
     PlasmaComponents3.ToolButton {
         id: showNewNotifications
         icon.name: "emblem-warning"
-        visible: plasmoid.nativeInterface.notificationsAvailable
+        visible: plasmoid.nativeInterface.connection.hasErrors
         onClicked: {
             plasmoid.nativeInterface.showNotificationsDialog()
             plasmoid.expanded = false

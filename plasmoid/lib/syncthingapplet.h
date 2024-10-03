@@ -82,7 +82,6 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(bool showTabTexts READ isShowingTabTexts WRITE setShowingTabTexts NOTIFY showTabTextsChanged)
-    Q_PROPERTY(bool notificationsAvailable READ areNotificationsAvailable NOTIFY notificationsAvailableChanged)
     Q_PROPERTY(bool passive READ isPassive NOTIFY passiveChanged)
     Q_PROPERTY(QList<QtUtilities::ChecklistItem> passiveStates READ passiveStates WRITE setPassiveStates)
     Q_PROPERTY(QString faUrl READ faUrl NOTIFY faUrlChanged)
@@ -125,7 +124,6 @@ public:
     void setSize(const QSize &size);
     bool isShowingTabTexts() const;
     void setShowingTabTexts(bool showTabTexts);
-    bool areNotificationsAvailable() const;
     bool isPassive() const;
     const QList<QtUtilities::ChecklistItem> &passiveStates() const;
     void setPassiveStates(const QList<QtUtilities::ChecklistItem> &passiveStates);
@@ -145,7 +143,6 @@ public Q_SLOTS:
     void showOwnDeviceId();
     void showAboutDialog();
     void showNotificationsDialog();
-    void dismissNotifications();
     void showInternalErrorsDialog();
     void showDirectoryErrors(const QString &dirId);
     void browseRemoteFiles(const QString &dirId);
@@ -167,7 +164,6 @@ Q_SIGNALS:
     void hasInternalErrorsChanged(bool hasInternalErrors);
     void sizeChanged(const QSize &size);
     void showTabTextsChanged(bool isShowingTabTexts);
-    void notificationsAvailableChanged(bool notificationsAvailable);
     void passiveChanged(bool passive);
     void faUrlChanged(const QString &faUrl);
 
@@ -219,7 +215,6 @@ private:
     SettingsDialog *m_settingsDlg;
     QtGui::Wizard *m_wizard;
     QtGui::DBusStatusNotifier m_dbusNotifier;
-    std::vector<Data::SyncthingLogEntry> m_notifications;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
     QtGui::WebViewDialog *m_webViewDlg;
     int m_currentConnectionConfig;

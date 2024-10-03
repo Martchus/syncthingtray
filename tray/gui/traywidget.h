@@ -77,7 +77,6 @@ public Q_SLOTS:
         const QByteArray &response);
     void showInternalErrorsButton();
     void showInternalErrorsDialog();
-    void dismissNotifications();
     void restartSyncthing();
     void quitTray();
     void applySettings(const QString &connectionConfig = QString());
@@ -116,8 +115,8 @@ private Q_SLOTS:
     Settings::Systemd::ServiceStatus applySystemdSettings(bool reconnectRequired = false);
 #endif
     void handleWebViewDeleted();
-    void handleNewNotification(CppUtilities::DateTime when, const QString &msg);
     void handleConnectionSelected(QAction *connectionAction);
+    void handleNewErrors();
     void concludeWizard(const QString &errorMessage = QString());
     void showDialog(QWidget *dlg, bool maximized = false);
     void showCenteredDialog(QWidget *dlg, const QSize &size);
@@ -146,7 +145,6 @@ private:
     QActionGroup *m_connectionsActionGroup;
     Data::SyncthingConnectionSettings *m_selectedConnection;
     QMenu *m_notificationsMenu;
-    std::vector<Data::SyncthingLogEntry> m_notifications;
     enum class StartStopButtonTarget { None, Service, Launcher } m_startStopButtonTarget;
     QStringList m_tabTexts;
     struct {

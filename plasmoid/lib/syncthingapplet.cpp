@@ -154,11 +154,12 @@ void SyncthingApplet::init()
     connect(&m_connection, &SyncthingConnection::trafficChanged, this, &SyncthingApplet::trafficChanged);
     connect(&m_connection, &SyncthingConnection::dirStatisticsChanged, this, &SyncthingApplet::handleDirStatisticsChanged);
     connect(&m_connection, &SyncthingConnection::newNotification, this, &SyncthingApplet::handleNewNotification);
+    connect(&m_connection, &SyncthingConnection::newErrors, this, &SyncthingApplet::updateStatusIconAndTooltip);
     connect(&m_notifier, &SyncthingNotifier::newDevice, &m_dbusNotifier, &DBusStatusNotifier::showNewDev);
     connect(&m_notifier, &SyncthingNotifier::newDir, &m_dbusNotifier, &DBusStatusNotifier::showNewDir);
     connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, &m_connection,
         static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
-    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, this, &SyncthingApplet::dismissNotifications);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, &m_connection, &SyncthingConnection::requestClearingErrors);
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, this, &SyncthingApplet::showNotificationsDialog);
     connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &SyncthingApplet::showInternalErrorsDialog);
     connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, this, &SyncthingApplet::showWebUI);
@@ -329,11 +330,6 @@ bool SyncthingApplet::hasInternalErrors() const
     return m_hasInternalErrors;
 }
 
-bool SyncthingApplet::areNotificationsAvailable() const
-{
-    return !m_notifications.empty();
-}
-
 void SyncthingApplet::setPassiveStates(const QList<QtUtilities::ChecklistItem> &passiveStates)
 {
     m_passiveSelectionModel.setItems(passiveStates);
@@ -496,24 +492,9 @@ void SyncthingApplet::showAboutDialog()
 
 void SyncthingApplet::showNotificationsDialog()
 {
-    auto *const dlg = TextViewDialog::forLogEntries(m_notifications, tr("New notifications"));
+    auto *const dlg = errorNotificationsDialog(m_connection);
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
-    centerWidget(dlg);
     dlg->show();
-    dismissNotifications();
-}
-
-void SyncthingApplet::dismissNotifications()
-{
-    m_connection.considerAllNotificationsRead();
-    if (m_notifications.empty()) {
-        return;
-    }
-    m_notifications.clear();
-    emit notificationsAvailableChanged(false);
-
-    // update status as well because having or not having notifications is relevant for status text/icon
-    updateStatusIconAndTooltip();
 }
 
 void SyncthingApplet::showInternalErrorsDialog()
@@ -641,14 +622,8 @@ void SyncthingApplet::handleWebViewDeleted()
 
 void SyncthingApplet::handleNewNotification(DateTime when, const QString &msg)
 {
-    m_notifications.emplace_back(QString::fromLocal8Bit(when.toString(DateTimeOutputFormat::DateAndTime, true).data()), msg);
     if (Settings::values().notifyOn.syncthingErrors) {
         m_dbusNotifier.showSyncthingNotification(when, msg);
-    }
-    if (m_notifications.size() == 1) {
-        emit notificationsAvailableChanged(true);
-        // update status as well because having or not having notifications is relevant for status text/icon
-        updateStatusIconAndTooltip();
     }
 }
 

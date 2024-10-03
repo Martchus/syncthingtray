@@ -203,7 +203,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &TrayWidget::handleStatusChanged);
     connect(&m_connection, &SyncthingConnection::trafficChanged, this, &TrayWidget::updateTraffic);
     connect(&m_connection, &SyncthingConnection::dirStatisticsChanged, this, &TrayWidget::updateOverallStatistics);
-    connect(&m_connection, &SyncthingConnection::newNotification, this, &TrayWidget::handleNewNotification);
+    connect(&m_connection, &SyncthingConnection::newErrors, this, &TrayWidget::handleNewErrors);
     connect(m_ui->dirsTreeView, &DirView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->dirsTreeView, &DirView::scanDir, this, &TrayWidget::scanDir);
     connect(m_ui->dirsTreeView, &DirView::pauseResumeDir, this, &TrayWidget::pauseResumeDir);
@@ -221,7 +221,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     connect(restartButton, &QPushButton::clicked, this, &TrayWidget::restartSyncthing);
     connect(m_connectionsActionGroup, &QActionGroup::triggered, this, &TrayWidget::handleConnectionSelected);
     connect(m_ui->actionShowNotifications, &QAction::triggered, this, &TrayWidget::showNotifications);
-    connect(m_ui->actionDismissNotifications, &QAction::triggered, this, &TrayWidget::dismissNotifications);
+    connect(m_ui->actionDismissNotifications, &QAction::triggered, &m_connection, &Data::SyncthingConnection::requestClearingErrors);
     connect(m_ui->startStopPushButton, &QPushButton::clicked, this, &TrayWidget::toggleRunning);
     if (const auto *const launcher = SyncthingLauncher::mainInstance()) {
         connect(launcher, &SyncthingLauncher::runningChanged, this, &TrayWidget::handleLauncherStatusChanged);
@@ -387,11 +387,9 @@ void TrayWidget::showLog()
 
 void TrayWidget::showNotifications()
 {
-    auto *const dlg = TextViewDialog::forLogEntries(m_notifications, tr("New notifications"));
+    auto *const dlg = errorNotificationsDialog(m_connection);
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
     showDialog(dlg, centerWidgetAvoidingOverflow(dlg));
-    m_notifications.clear();
-    dismissNotifications();
 }
 
 void TrayWidget::showUsingPositioningSettings()
@@ -430,15 +428,6 @@ void TrayWidget::showInternalErrorsDialog()
         connect(errorViewDlg, &InternalErrorsDialog::errorsCleared, m_internalErrorsButton, &QWidget::hide);
     }
     showDialog(errorViewDlg, centerWidgetAvoidingOverflow(errorViewDlg));
-}
-
-void TrayWidget::dismissNotifications()
-{
-    m_connection.considerAllNotificationsRead();
-    m_ui->notificationsPushButton->setHidden(true);
-    if (m_menu && m_menu->icon()) {
-        m_menu->icon()->updateStatusIconAndText();
-    }
 }
 
 void TrayWidget::restartSyncthing()
@@ -953,12 +942,6 @@ void TrayWidget::handleWebViewDeleted()
     m_webViewDlg = nullptr;
 }
 
-void TrayWidget::handleNewNotification(DateTime when, const QString &msg)
-{
-    m_notifications.emplace_back(QString::fromLocal8Bit(when.toString(DateTimeOutputFormat::DateAndTime, true).data()), msg);
-    m_ui->notificationsPushButton->setHidden(false);
-}
-
 void TrayWidget::handleConnectionSelected(QAction *connectionAction)
 {
     auto index = m_connectionsMenu->actions().indexOf(connectionAction);
@@ -975,6 +958,14 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
             m_webViewDlg->applySettings(*m_selectedConnection, false);
         }
 #endif
+    }
+}
+
+void TrayWidget::handleNewErrors()
+{
+    m_ui->notificationsPushButton->setVisible(m_connection.hasErrors());
+    if (m_menu && m_menu->icon()) {
+        m_menu->icon()->updateStatusIconAndText();
     }
 }
 

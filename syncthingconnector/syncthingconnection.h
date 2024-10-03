@@ -139,7 +139,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(bool connected READ isConnected NOTIFY statusChanged)
     Q_PROPERTY(bool connecting READ isConnecting NOTIFY statusChanged)
     Q_PROPERTY(bool aborted READ isAborted NOTIFY statusChanged)
-    Q_PROPERTY(bool hasUnreadNotifications READ hasUnreadNotifications)
+    Q_PROPERTY(bool hasErrors READ hasErrors NOTIFY newErrors)
     Q_PROPERTY(bool hasOutOfSyncDirs READ hasOutOfSyncDirs NOTIFY hasOutOfSyncDirsChanged)
     Q_PROPERTY(bool requestingCompletionEnabled READ isRequestingCompletionEnabled WRITE setRequestingCompletionEnabled)
     Q_PROPERTY(int autoReconnectInterval READ autoReconnectInterval WRITE setAutoReconnectInterval)
@@ -231,7 +231,7 @@ public:
     bool isConnecting() const;
     bool hasPendingRequests() const;
     bool hasPendingRequestsIncludingEvents() const;
-    bool hasUnreadNotifications() const;
+    bool hasErrors() const;
     bool hasOutOfSyncDirs() const;
 
     // getter/setter to configure connection behavior
@@ -329,7 +329,6 @@ public Q_SLOTS:
     void rescanAllDirs();
     void restart();
     void shutdown();
-    void considerAllNotificationsRead();
 
     // methods to GET or POST information from/to Syncthing
     void requestConfig();
@@ -366,6 +365,7 @@ Q_SIGNALS:
     void newDirs(const std::vector<Data::SyncthingDir> &dirs);
     void newDevices(const std::vector<Data::SyncthingDev> &devs);
     void newErrors(const std::vector<Data::SyncthingError> &errors);
+    void beforeNewErrors(const std::vector<Data::SyncthingError> &oldErrors, const std::vector<Data::SyncthingError> &newErrors);
     void newConfigApplied();
     void newEvents(const QJsonArray &events);
     void allEventsProcessed();
@@ -459,7 +459,6 @@ private Q_SLOTS:
     void continueReconnecting();
     void autoReconnect();
     bool setStatus(Data::SyncthingStatus status);
-    void emitNotification(CppUtilities::DateTime when, const QString &message);
     void emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response = QByteArray());
     void emitError(const QString &message, Data::SyncthingErrorCategory category, QNetworkReply *reply);
     void emitError(const QString &message, QNetworkReply *reply);
@@ -560,7 +559,6 @@ private:
     QNetworkReply *m_diskEventsReply;
     QNetworkReply *m_logReply;
     QList<QNetworkReply *> m_otherReplies;
-    bool m_unreadNotifications;
     mutable std::optional<bool> m_hasOutOfSyncDirs;
     bool m_hasConfig;
     bool m_hasStatus;
@@ -750,12 +748,12 @@ inline bool SyncthingConnection::hasPendingRequests() const
 }
 
 /*!
- * \brief Returns whether there are unread notifications available.
- * \remarks This flag is set to true when new notifications become available. It can be unset again by calling considerAllNotificationsRead().
+ * \brief Returns whether there are errors (notifications) available.
+ * \remarks This flag is set to true when new notifications become available.
  */
-inline bool SyncthingConnection::hasUnreadNotifications() const
+inline bool SyncthingConnection::hasErrors() const
 {
-    return m_unreadNotifications;
+    return !m_errors.empty();
 }
 
 /*!
@@ -774,25 +772,6 @@ inline bool SyncthingConnection::isRequestingCompletionEnabled() const
 inline void SyncthingConnection::setRequestingCompletionEnabled(bool requestingCompletionEnabled)
 {
     m_requestCompletion = requestingCompletionEnabled;
-}
-
-/*!
- * \brief Internally called to emit the notification with the specified \a message.
- * \remarks Ensures the unread notifications flag is set.
- */
-inline void SyncthingConnection::emitNotification(CppUtilities::DateTime when, const QString &message)
-{
-    m_unreadNotifications = true;
-    emit newNotification(when, message);
-}
-
-/*!
- * \brief Considers all notifications as read; hence might trigger a status update.
- */
-inline void SyncthingConnection::considerAllNotificationsRead()
-{
-    m_unreadNotifications = false;
-    requestClearingErrors();
 }
 
 /*!

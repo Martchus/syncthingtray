@@ -667,6 +667,10 @@ void SyncthingConnection::readClearingErrors()
 
     switch (reply->error()) {
     case QNetworkReply::NoError:
+        requestErrors();
+        if (m_errorsPollTimer.isActive()) {
+            m_errorsPollTimer.start(); // this stops and restarts the active timer to reset the remaining time
+        }
         break;
     default:
         emitError(tr("Unable to request clearing errors: "), SyncthingErrorCategory::SpecificRequest, reply);
@@ -1045,21 +1049,25 @@ void SyncthingConnection::readErrors()
         }
 
         const auto errors = replyDoc.object().value(QLatin1String("errors")).toArray();
-        m_errors.clear();
-        m_errors.reserve(static_cast<std::size_t>(errors.size()));
+        auto newErrors = std::vector<SyncthingError>();
+        newErrors.reserve(static_cast<std::size_t>(errors.size()));
         for (const QJsonValue &errorVal : errors) {
             const QJsonObject errorObj = errorVal.toObject();
             if (errorObj.isEmpty()) {
                 continue;
             }
-            auto &error = m_errors.emplace_back();
+            auto &error = newErrors.emplace_back();
             error.when = parseTimeStamp(errorObj.value(QLatin1String("when")), QStringLiteral("error message"));
             error.message = errorObj.value(QLatin1String("message")).toString();
             if (m_lastErrorTime < error.when) {
-                emitNotification(m_lastErrorTime = error.when, error.message);
+                emit newNotification(m_lastErrorTime = error.when, error.message);
             }
         }
-        emit newErrors(m_errors);
+        if (!m_errors.empty() || !errors.empty()) {
+            emit this->beforeNewErrors(m_errors, newErrors);
+            m_errors.swap(newErrors);
+            emit this->newErrors(m_errors);
+        }
 
         // since there is no event for this data, keep polling
         // note: The return value of hasUnreadNotifications() might have changed. This is however not (yet) used to compute the overall status so
@@ -2456,7 +2464,7 @@ void SyncthingConnection::readItemFinished(SyncthingEventId eventId, DateTime ev
 
         // emitNotification will trigger status update, so no need to call setStatus(status())
         emit dirStatusChanged(*dirInfo, index);
-        emitNotification(eventTime, error);
+        emit newNotification(eventTime, error);
         return;
     }
 

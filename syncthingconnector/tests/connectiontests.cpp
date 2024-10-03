@@ -423,7 +423,7 @@ void ConnectionTests::testSendingError()
     const auto newNotificationHandler = [&](DateTime receivedTime, const QString &receivedMessage) {
         newNotificationEmitted |= receivedTime == sentTime && receivedMessage == sentMessage;
     };
-    waitForSignals([this, sentTime, &sentMessage] { m_connection.emitNotification(sentTime, sentMessage); }, 500,
+    waitForSignals([this, sentTime, &sentMessage] { emit m_connection.newNotification(sentTime, sentMessage); }, 500,
         connectionSignal(&SyncthingConnection::newNotification, newNotificationHandler, &newNotificationEmitted));
 }
 
