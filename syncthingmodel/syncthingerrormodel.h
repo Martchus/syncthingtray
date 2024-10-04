@@ -46,6 +46,4 @@ private:
 
 } // namespace Data
 
-Q_DECLARE_METATYPE(Data::SyncthingErrorModel)
-
 #endif // DATA_SYNCTHINGERRORMODEL_H
