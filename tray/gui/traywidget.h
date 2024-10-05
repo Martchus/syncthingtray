@@ -115,6 +115,7 @@ private Q_SLOTS:
     Settings::Systemd::ServiceStatus applySystemdSettings(bool reconnectRequired = false);
 #endif
     void handleWebViewDeleted();
+    void handleNotificationsDialogDeleted();
     void handleConnectionSelected(QAction *connectionAction);
     void handleNewErrors();
     void concludeWizard(const QString &errorMessage = QString());
@@ -131,6 +132,7 @@ private:
     static Wizard *s_wizard;
     static QtUtilities::AboutDialog *s_aboutDlg;
     WebViewDialog *m_webViewDlg;
+    QDialog *m_notificationsDlg;
     QFrame *m_cornerFrame;
     QPushButton *m_internalErrorsButton;
     Data::SyncthingConnection m_connection;

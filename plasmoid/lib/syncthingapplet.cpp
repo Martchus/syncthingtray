@@ -91,6 +91,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_wizard(nullptr)
     , m_imageProvider(nullptr)
     , m_webViewDlg(nullptr)
+    , m_notificationsDlg(nullptr)
     , m_currentConnectionConfig(-1)
     , m_hasInternalErrors(false)
     , m_initialized(false)
@@ -493,9 +494,13 @@ void SyncthingApplet::showAboutDialog()
 
 void SyncthingApplet::showNotificationsDialog()
 {
-    auto *const dlg = errorNotificationsDialog(m_connection);
-    dlg->setAttribute(Qt::WA_DeleteOnClose, true);
-    dlg->show();
+    if (!m_notificationsDlg) {
+        m_notificationsDlg = errorNotificationsDialog(m_connection);
+        m_notificationsDlg->setAttribute(Qt::WA_DeleteOnClose, true);
+        connect(m_webViewDlg, &WebViewDialog::destroyed, this, &SyncthingApplet::handleWebViewDeleted);
+    }
+    m_notificationsDlg->show();
+    m_notificationsDlg->activateWindow();
 }
 
 void SyncthingApplet::showInternalErrorsDialog()
@@ -619,6 +624,11 @@ void SyncthingApplet::handleAboutDialogDeleted()
 void SyncthingApplet::handleWebViewDeleted()
 {
     m_webViewDlg = nullptr;
+}
+
+void SyncthingApplet::handleNotificationsDialogDeleted()
+{
+    m_notificationsDlg = nullptr;
 }
 
 void SyncthingApplet::handleNewNotification(DateTime when, const QString &msg)

@@ -75,6 +75,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     , m_menu(parent)
     , m_ui(new Ui::TrayWidget)
     , m_webViewDlg(nullptr)
+    , m_notificationsDlg(nullptr)
     , m_internalErrorsButton(nullptr)
     , m_notifier(m_connection)
     , m_dirModel(m_connection)
@@ -387,9 +388,12 @@ void TrayWidget::showLog()
 
 void TrayWidget::showNotifications()
 {
-    auto *const dlg = errorNotificationsDialog(m_connection);
-    dlg->setAttribute(Qt::WA_DeleteOnClose, true);
-    showDialog(dlg, centerWidgetAvoidingOverflow(dlg));
+    if (!m_notificationsDlg) {
+        m_notificationsDlg = errorNotificationsDialog(m_connection);
+        m_notificationsDlg->setAttribute(Qt::WA_DeleteOnClose, true);
+        connect(m_webViewDlg, &WebViewDialog::destroyed, this, &TrayWidget::handleWebViewDeleted);
+    }
+    showDialog(m_notificationsDlg, centerWidgetAvoidingOverflow(m_notificationsDlg));
 }
 
 void TrayWidget::showUsingPositioningSettings()
@@ -940,6 +944,11 @@ Settings::Systemd::ServiceStatus TrayWidget::applySystemdSettings(bool reconnect
 void TrayWidget::handleWebViewDeleted()
 {
     m_webViewDlg = nullptr;
+}
+
+void TrayWidget::handleNotificationsDialogDeleted()
+{
+    m_notificationsDlg = nullptr;
 }
 
 void TrayWidget::handleConnectionSelected(QAction *connectionAction)

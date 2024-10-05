@@ -177,6 +177,7 @@ private Q_SLOTS:
     void handleErrorsCleared();
     void handleAboutDialogDeleted();
     void handleWebViewDeleted();
+    void handleNotificationsDialogDeleted();
     void handleNewNotification(CppUtilities::DateTime when, const QString &msg);
     void handleSystemdServiceError(const QString &context, const QString &name, const QString &message);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -217,6 +218,7 @@ private:
     QtGui::DBusStatusNotifier m_dbusNotifier;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
     QtGui::WebViewDialog *m_webViewDlg;
+    QDialog *m_notificationsDlg;
     int m_currentConnectionConfig;
     bool m_hasInternalErrors;
     bool m_initialized;
