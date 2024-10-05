@@ -17,14 +17,17 @@
 #include <QFontDatabase>
 #include <QGuiApplication>
 #include <QIcon>
+#include <QItemSelectionModel>
 #include <QLabel>
 #include <QMenu>
 #include <QMessageBox>
 #include <QNetworkReply>
 #include <QPixmap>
 #include <QPushButton>
+#include <QSplitter>
 #include <QTextBrowser>
 #include <QTextDocument>
+#include <QTextEdit>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -292,11 +295,16 @@ QDialog *errorNotificationsDialog(Data::SyncthingConnection &connection, QWidget
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 
     // setup model/view
+    auto *const splitter = new QSplitter(dlg);
     auto view = new QTreeView(dlg);
     auto model = new Data::SyncthingErrorModel(connection, view);
-    view->setWordWrap(true);
+    splitter->setOrientation(Qt::Horizontal);
+    splitter->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    splitter->addWidget(view);
+    view->setFrameShape(QFrame::StyledPanel);
+    view->setItemsExpandable(false);
+    view->setRootIsDecorated(false);
     view->setModel(model);
-    QObject::connect(model, &SyncthingErrorModel::requestResizeColumns, view, [view] { view->resizeColumnToContents(0); });
 
     // setup context menu
     view->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -319,15 +327,39 @@ QDialog *errorNotificationsDialog(Data::SyncthingConnection &connection, QWidget
         menu.exec(view->viewport()->mapToGlobal(pos));
     });
 
+    // add text edit showing current message
+    auto *const rightWidget = new QWidget(dlg);
+    auto *const rightLayout = new QVBoxLayout;
+    auto *const rightLabel = new QLabel(QCoreApplication::translate("QtGui::OtherDialogs", "Selected notification:"), dlg);
+    auto *const textEdit = new QTextEdit(dlg);
+    auto font = rightLabel->font();
+    font.setBold(true);
+    rightLabel->setFont(font);
+    textEdit->setReadOnly(true);
+    textEdit->setContentsMargins(QMargins());
+    rightLayout->setSpacing(7);
+    rightLayout->setContentsMargins(7, 7, 0, 0);
+    rightLayout->addWidget(rightLabel);
+    rightLayout->addWidget(textEdit);
+    rightWidget->setLayout(rightLayout);
+    splitter->addWidget(rightWidget);
+    const auto updateTextEdit = [textEdit](const QModelIndex &selected = QModelIndex()) {
+        const auto valid = selected.isValid();
+        textEdit->setEnabled(valid);
+        textEdit->setPlainText(valid ? selected.data(SyncthingErrorModel::Message).toString() : QString());
+    };
+    QObject::connect(view->selectionModel(), &QItemSelectionModel::currentRowChanged, textEdit, updateTextEdit);
+    QObject::connect(model, &QAbstractItemModel::modelReset, textEdit, updateTextEdit);
+
     // add a button for clearing errors
-    auto *const buttonLayout = new QHBoxLayout;
+    auto *const bottomLayout = new QHBoxLayout;
     auto *const clearButton = new QPushButton(dlg);
-    clearButton->setText(QCoreApplication::translate("QtGui::OtherDialogs", "Clear"));
+    clearButton->setText(QCoreApplication::translate("QtGui::OtherDialogs", "Clear all notifications"));
     clearButton->setIcon(QIcon::fromTheme(QStringLiteral("edit-clear")));
     clearButton->setVisible(connection.hasErrors());
-    buttonLayout->setContentsMargins(0, 0, 0, 0);
-    buttonLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
-    buttonLayout->addWidget(clearButton);
+    bottomLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    bottomLayout->setContentsMargins(0, 7, 0, 0);
+    bottomLayout->addWidget(clearButton);
     QObject::connect(
         &connection, &SyncthingConnection::newErrors, clearButton, [clearButton, &connection] { clearButton->setVisible(connection.hasErrors()); });
     QObject::connect(clearButton, &QPushButton::clicked, &connection, &SyncthingConnection::requestClearingErrors);
@@ -336,9 +368,9 @@ QDialog *errorNotificationsDialog(Data::SyncthingConnection &connection, QWidget
     auto layout = new QVBoxLayout;
     layout->setAlignment(Qt::AlignCenter);
     layout->setSpacing(0);
-    layout->setContentsMargins(QMargins());
-    layout->addWidget(view);
-    layout->addLayout(buttonLayout);
+    layout->setContentsMargins(7, 7, 7, 7);
+    layout->addWidget(splitter);
+    layout->addLayout(bottomLayout);
     dlg->setLayout(layout);
 
     return dlg;
