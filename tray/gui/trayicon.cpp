@@ -93,6 +93,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     connect(&notifier, &SyncthingNotifier::newDevice, this, &TrayIcon::showNewDev);
     connect(&notifier, &SyncthingNotifier::newDir, this, &TrayIcon::showNewDir);
     connect(&connection, &SyncthingConnection::statusChanged, this, &TrayIcon::updateStatusIconAndText);
+    connect(&connection, &SyncthingConnection::autoReconnectIntervalChanged, this, &TrayIcon::updateStatusIconAndText);
     connect(&connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &TrayIcon::updateStatusIconAndText);
     connect(&connection, &SyncthingConnection::newDevices, this, &TrayIcon::updateStatusIconAndText);
     connect(&connection, &SyncthingConnection::devStatusChanged, this, &TrayIcon::updateStatusIconAndText);

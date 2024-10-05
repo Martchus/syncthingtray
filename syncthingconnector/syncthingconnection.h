@@ -142,7 +142,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(bool hasErrors READ hasErrors NOTIFY newErrors)
     Q_PROPERTY(bool hasOutOfSyncDirs READ hasOutOfSyncDirs NOTIFY hasOutOfSyncDirsChanged)
     Q_PROPERTY(bool requestingCompletionEnabled READ isRequestingCompletionEnabled WRITE setRequestingCompletionEnabled)
-    Q_PROPERTY(int autoReconnectInterval READ autoReconnectInterval WRITE setAutoReconnectInterval)
+    Q_PROPERTY(int autoReconnectInterval READ autoReconnectInterval WRITE setAutoReconnectInterval NOTIFY autoReconnectIntervalChanged)
     Q_PROPERTY(unsigned int autoReconnectTries READ autoReconnectTries)
     Q_PROPERTY(int trafficPollInterval READ trafficPollInterval WRITE setTrafficPollInterval)
     Q_PROPERTY(int devStatsPollInterval READ devStatsPollInterval WRITE setDevStatsPollInterval)
@@ -361,6 +361,7 @@ public:
 
 Q_SIGNALS:
     void syncthingUrlChanged(const QString &newUrl);
+    void autoReconnectIntervalChanged(int autoReconnectInterval);
     void newConfig(const QJsonObject &rawConfig);
     void newDirs(const std::vector<Data::SyncthingDir> &dirs);
     void newDevices(const std::vector<Data::SyncthingDev> &devs);
@@ -864,9 +865,7 @@ inline void SyncthingConnection::setAutoReconnectInterval(int interval)
         m_autoReconnectTimer.stop();
     }
     m_autoReconnectTimer.setInterval(interval);
-    if (m_status == SyncthingStatus::Disconnected) {
-        emit statusChanged(m_status);
-    }
+    emit autoReconnectIntervalChanged(interval);
 }
 
 /*!
