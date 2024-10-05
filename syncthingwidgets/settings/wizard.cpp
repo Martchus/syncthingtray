@@ -83,6 +83,7 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     setWindowIcon(icon);
 
     setMinimumSize(770, 550);
+    resize(1024, 720);
 
     auto *const welcomePage = new WelcomeWizardPage(this);
     auto *const detectionPage = new DetectionWizardPage(this);
