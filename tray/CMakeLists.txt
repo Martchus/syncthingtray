@@ -71,6 +71,7 @@ set(REQUIRED_ICONS
     emblem-checked
     emblem-error
     emblem-remove
+    emblem-warning
     folder
     folder-download
     folder-open

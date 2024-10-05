@@ -70,6 +70,13 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
         tr("Show internal errors"));
     m_errorsAction->setVisible(false);
     connect(m_errorsAction, &QAction::triggered, this, &TrayIcon::showInternalErrorsDialog);
+    auto *const notificationsAction = m_contextMenu.addAction(
+        QIcon::fromTheme(QStringLiteral("emblem-warning"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-warning.svg"))),
+        tr("Show notifications/errors"));
+    notificationsAction->setVisible(widget.connection().hasErrors());
+    connect(&widget.connection(), &SyncthingConnection::newErrors, notificationsAction,
+        [notificationsAction](const std::vector<SyncthingError> &errors) { notificationsAction->setVisible(!errors.empty()); });
+    connect(notificationsAction, &QAction::triggered, &widget, &TrayWidget::showNotifications);
     m_contextMenu.addMenu(trayMenu().widget().connectionsMenu());
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("help-about"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/help-about.svg"))), tr("About")),
