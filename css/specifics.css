@@ -157,7 +157,7 @@ section, .into-text {
     animation-duration: 0.5s;
     transform: scale(1.5) translate(-2px, 7px) rotate(0.25turn);
 }
-.downloads-platform p {
+.downloads-platform p, #downloads-release-notes {
     font-size: 90%;
     padding: 5px !important;
     border-radius: 5px;
@@ -167,6 +167,11 @@ section, .into-text {
 .download-remark {
     color: #555;
     font-style: italic;
+}
+#downloads-release-notes span:first-child {
+    font-size: 80%;
+    line-height: 220%;
+    font-variant-caps: small-caps;
 }
 
 /* elements of the documentation section */

@@ -172,6 +172,7 @@ function renderRelease(releaseInfo, otherReleases)
 {
     const releaseName = releaseInfo.name ?? "unknown";
     const releaseDate = releaseInfo.published_at ?? "unknown";
+    const releaseNotes = releaseInfo.body ?? '';
     document.getElementById("downloads-latest-release").innerText = `${releaseName} from ${releaseDate}`;
 
     const assets = Array.isArray(releaseInfo.assets) ? releaseInfo.assets : [];
@@ -208,6 +209,16 @@ function renderRelease(releaseInfo, otherReleases)
 
     document.getElementById('downloads-loading').style.display = 'none';
     document.getElementById('downloads-release-info').style.display = 'block';
+
+    if (releaseNotes.length > 10) {
+        const releaseNotesElement = document.getElementById("downloads-release-notes");
+        let formatted = releaseNotes;
+        formatted = formatted.replaceAll(/\*\*([^\*]*)\*\*/gi, '<strong>$1</strong>');
+        formatted = formatted.replaceAll(/\*([^\*]*)\*/gi, '<em>$1</em>');
+        formatted = formatted.replaceAll(/\~\~([^\~]*)\~\~/gi, '<del>$1</del>');
+        releaseNotesElement.insertAdjacentHTML("beforeend", formatted);
+        releaseNotesElement.style.display = 'block';
+    }
 }
 
 main();
