@@ -93,6 +93,10 @@ Item {
                     }
                 }
 
+                readonly property string fileAction: action
+                function openPath() {
+                    plasmoid.openLocalFileOrDir(directoryId, path)
+                }
                 function copyPath() {
                     plasmoid.copyToClipboard(path)
                 }
@@ -106,6 +110,17 @@ Item {
 
             PlasmaExtras.Menu {
                 id: contextMenu
+
+                function init(item) {
+                    openItem.enabled = item.fileAction !== "deleted";
+                }
+
+                PlasmaExtras.MenuItem {
+                    id: openItem
+                    text: qsTr("Open item")
+                    icon: "document-open"
+                    onClicked: recentChangesView.currentItem.openPath()
+                }
                 PlasmaExtras.MenuItem {
                     text: qsTr("Copy path")
                     icon: "edit-copy"

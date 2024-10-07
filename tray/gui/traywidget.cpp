@@ -737,18 +737,30 @@ void TrayWidget::showIgnorePatterns(const Data::SyncthingDir &dir)
 void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
 {
     const auto *const selectionModel = m_ui->recentChangesTreeView->selectionModel();
-    if (!selectionModel || selectionModel->selectedRows().size() != 1) {
+    const auto indexes = selectionModel ? selectionModel->selectedRows() : QModelIndexList();
+    if (indexes.size() != 1) {
         return;
     }
     const auto copyRole = [this](SyncthingRecentChangesModel::SyncthingRecentChangesModelRole role) {
         return [this, role] {
             const auto *const selectionModelToCopy = m_ui->recentChangesTreeView->selectionModel();
-            if (selectionModelToCopy && selectionModelToCopy->selectedRows().size() == 1) {
-                QGuiApplication::clipboard()->setText(m_recentChangesModel.data(selectionModelToCopy->selectedRows().at(0), role).toString());
+            const auto indexesToCopy = selectionModelToCopy ? selectionModelToCopy->selectedRows() : QModelIndexList();
+            if (indexesToCopy.size() == 1) {
+                QGuiApplication::clipboard()->setText(indexesToCopy.front().data(role).toString());
             }
         };
     };
-    QMenu menu(this);
+    auto menu = QMenu(this);
+    if (auto index = indexes.front(); index.data(SyncthingRecentChangesModel::Action).toString() != QLatin1String("deleted")) {
+        if (auto dirIndex = 0;
+            const auto *const dir = m_connection.findDirInfo(index.data(SyncthingRecentChangesModel::DirectoryId).toString(), dirIndex)) {
+            const auto fullPath = QString(dir->path % QChar('/') % index.data(SyncthingRecentChangesModel::Path).toString());
+            connect(menu.addAction(QIcon::fromTheme(
+                                       QStringLiteral("document-open"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/document-open.svg"))),
+                        tr("Open item")),
+                &QAction::triggered, this, std::bind(&openLocalFileOrDir, fullPath));
+        }
+    }
     connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                 tr("Copy path")),
         &QAction::triggered, this, copyRole(SyncthingRecentChangesModel::Path));

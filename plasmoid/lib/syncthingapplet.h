@@ -148,6 +148,7 @@ public Q_SLOTS:
     void browseRemoteFiles(const QString &dirId);
     void showIgnorePatterns(const QString &dirId);
     void copyToClipboard(const QString &text);
+    void openLocalFileOrDir(const QString &dirId, const QString &relativePath);
     void updateStatusIconAndTooltip();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     void handleRelevantControlsChanged(bool visible, int index);

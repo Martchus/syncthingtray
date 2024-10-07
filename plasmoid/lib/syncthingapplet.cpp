@@ -551,6 +551,15 @@ void SyncthingApplet::copyToClipboard(const QString &text)
     QGuiApplication::clipboard()->setText(text);
 }
 
+void SyncthingApplet::openLocalFileOrDir(const QString &dirId, const QString &relativePath)
+{
+    if (auto dirIndex = 0; const auto *const dir = m_connection.findDirInfo(dirId, dirIndex)) {
+        QtUtilities::openLocalFileOrDir(QString(dir->path % QChar('/') % relativePath));
+    } else {
+        QMessageBox::warning(nullptr, QStringLiteral(APP_NAME), tr("Associated directory does not exist."));
+    }
+}
+
 /*!
  * \brief Ensures settings take effect when applied via the settings dialog.
  * \remarks Does not save the settings to disk. This is done in Settings::save() and Applet::configChanged().
