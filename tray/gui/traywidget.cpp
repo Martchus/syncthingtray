@@ -391,7 +391,7 @@ void TrayWidget::showNotifications()
     if (!m_notificationsDlg) {
         m_notificationsDlg = errorNotificationsDialog(m_connection);
         m_notificationsDlg->setAttribute(Qt::WA_DeleteOnClose, true);
-        connect(m_webViewDlg, &WebViewDialog::destroyed, this, &TrayWidget::handleWebViewDeleted);
+        connect(m_notificationsDlg, &QDialog::destroyed, this, &TrayWidget::handleNotificationsDialogDeleted);
     }
     showDialog(m_notificationsDlg, centerWidgetAvoidingOverflow(m_notificationsDlg));
 }

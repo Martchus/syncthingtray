@@ -497,7 +497,7 @@ void SyncthingApplet::showNotificationsDialog()
     if (!m_notificationsDlg) {
         m_notificationsDlg = errorNotificationsDialog(m_connection);
         m_notificationsDlg->setAttribute(Qt::WA_DeleteOnClose, true);
-        connect(m_webViewDlg, &WebViewDialog::destroyed, this, &SyncthingApplet::handleWebViewDeleted);
+        connect(m_notificationsDlg, &QDialog::destroyed, this, &SyncthingApplet::handleNotificationsDialogDeleted);
     }
     m_notificationsDlg->show();
     m_notificationsDlg->activateWindow();
