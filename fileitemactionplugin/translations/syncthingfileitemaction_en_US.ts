@@ -122,52 +122,52 @@
 <context>
     <name>SyncthingFileItemActionStaticData</name>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="84"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="85"/>
         <source>Syncthing connection error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="104"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="105"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="112"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="113"/>
         <source>Select Syncthing config file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="138"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="139"/>
         <source>Syncthing config file can not be automatically located</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="145"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="146"/>
         <source>Unable to load Syncthing config from &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="154"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="155"/>
         <source>Syncthing config from &quot;%1&quot; does not contain GUI address.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="166"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="167"/>
         <source>Enter API key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="166"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="167"/>
         <source>The selected config file does not contain an API key. Please enter the API key manually:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="168"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="169"/>
         <source>No API key supplied for &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="127"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="128"/>
         <source>(still using config from &quot;%1&quot;)</source>
         <translation type="unfinished"></translation>
     </message>

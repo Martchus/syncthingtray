@@ -126,52 +126,52 @@
 <context>
     <name>SyncthingFileItemActionStaticData</name>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="84"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="85"/>
         <source>Syncthing connection error</source>
         <translation>Fehler beim Verbinden mit Syncthing</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="104"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="105"/>
         <source>About</source>
         <translation>Über</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="112"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="113"/>
         <source>Select Syncthing config file</source>
         <translation>Syncthing-Konfigurationsdatei auswählen</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="138"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="139"/>
         <source>Syncthing config file can not be automatically located</source>
         <translation>Syncthing-Konfigurationsdatei kann nicht automatisch gefunden werden</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="145"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="146"/>
         <source>Unable to load Syncthing config from &quot;%1&quot;</source>
         <translation>Fehler beim Laden der Syncthing-Konfiguration von &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="154"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="155"/>
         <source>Syncthing config from &quot;%1&quot; does not contain GUI address.</source>
         <translation>Die Syncthing-Konfiguration &quot;%1&quot; beinhaltet keine GUI-Adresse.</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="166"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="167"/>
         <source>Enter API key</source>
         <translation>API-Schlüssel eingeben</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="166"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="167"/>
         <source>The selected config file does not contain an API key. Please enter the API key manually:</source>
         <translation>Die gewählte Konfiguration enthält keinen API-Schlüssel. Gib den API-Schlüssel manuell ein:</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="168"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="169"/>
         <source>No API key supplied for &quot;%1&quot;.</source>
         <translation>Kein API-Schlüssel für die Konfiguration &quot;%1&quot; angegeben.</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="127"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="128"/>
         <source>(still using config from &quot;%1&quot;)</source>
         <translation>(verwende weiterhin &quot;%1&quot;)</translation>
     </message>

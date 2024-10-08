@@ -348,22 +348,26 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="487"/>
+        <location filename="../lib/syncthingapplet.cpp" line="485"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="499"/>
         <source>New notifications</source>
-        <translation>Neue Benachrichtigungen</translation>
+        <translation type="vanished">Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="589"/>
+        <location filename="../lib/syncthingapplet.cpp" line="559"/>
+        <source>Associated directory does not exist.</source>
+        <translation>Zugehöriges Verzeichnis existiert nicht.</translation>
+    </message>
+    <message>
+        <location filename="../lib/syncthingapplet.cpp" line="585"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Verbindung zu Syncthing kann nicht hergestellt werden.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="657"/>
+        <location filename="../lib/syncthingapplet.cpp" line="652"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
     </message>
@@ -372,21 +376,26 @@
     <name>RecentChangesPage</name>
     <message>
         <location filename="../package5/contents/ui/RecentChangesPage.qml" line="109"/>
-        <location filename="../package6/contents/ui/RecentChangesPage.qml" line="110"/>
+        <location filename="../package6/contents/ui/RecentChangesPage.qml" line="125"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/RecentChangesPage.qml" line="114"/>
-        <location filename="../package6/contents/ui/RecentChangesPage.qml" line="115"/>
+        <location filename="../package6/contents/ui/RecentChangesPage.qml" line="130"/>
         <source>Copy device ID</source>
         <translation>Geräte-ID kopieren</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/RecentChangesPage.qml" line="119"/>
-        <location filename="../package6/contents/ui/RecentChangesPage.qml" line="120"/>
+        <location filename="../package6/contents/ui/RecentChangesPage.qml" line="135"/>
         <source>Copy folder ID</source>
         <translation>Ordner-ID kopieren</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/RecentChangesPage.qml" line="120"/>
+        <source>Open item</source>
+        <translation>Öffne Datei/Ordner</translation>
     </message>
 </context>
 <context>

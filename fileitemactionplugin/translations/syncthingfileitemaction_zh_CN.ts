@@ -125,52 +125,52 @@
 <context>
     <name>SyncthingFileItemActionStaticData</name>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="84"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="85"/>
         <source>Syncthing connection error</source>
         <translation>Syncthing 连接错误</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="104"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="105"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="112"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="113"/>
         <source>Select Syncthing config file</source>
         <translation>选择 Syncthing 配置文件</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="127"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="128"/>
         <source>(still using config from &quot;%1&quot;)</source>
         <translation>（仍然使用来自 &quot;%1&quot; 的配置）</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="138"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="139"/>
         <source>Syncthing config file can not be automatically located</source>
         <translation>Syncthing 配置文件不能自动定位</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="145"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="146"/>
         <source>Unable to load Syncthing config from &quot;%1&quot;</source>
         <translation>无法从 &quot;%1&quot; 加载 Syncthing 配置</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="154"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="155"/>
         <source>Syncthing config from &quot;%1&quot; does not contain GUI address.</source>
         <translation>&quot;%1&quot; 的 Syncthing 配置不包含 GUI 地址。</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="166"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="167"/>
         <source>Enter API key</source>
         <translation>输入 API 密钥</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="166"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="167"/>
         <source>The selected config file does not contain an API key. Please enter the API key manually:</source>
         <translation>所选的配置文件不包含 API 密钥。请手动输入 API 密钥：</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="168"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="169"/>
         <source>No API key supplied for &quot;%1&quot;.</source>
         <translation>没有为 &quot;%1 &quot; 提供 API 密钥。</translation>
     </message>
