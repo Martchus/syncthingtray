@@ -144,7 +144,12 @@ bool App::reload()
 
 bool App::openPath(const QString &path)
 {
-    if (QFile::exists(path) && QtUtilities::openLocalFileOrDir(path)) {
+#ifdef Q_OS_ANDROID
+    if (QJniObject(QNativeInterface::QAndroidApplication::context())
+            .callMethod<jboolean>("openPath", "(Ljava/lang/String;)Z", QJniObject::fromString(path))) {
+#else
+    if (QtUtilities::openLocalFileOrDir(path)) {
+#endif
         return true;
     }
     emit error(tr("Unable to open \"%1\"").arg(path));

@@ -320,7 +320,7 @@ if (ANDROID)
     endif ()
 
     set(ANDROID_MANIFEST_PATH "${ANDROID_PACKAGE_SOURCE_DIR}/AndroidManifest.xml")
-    configure_file("resources/AndroidManifest.xml.in" "${ANDROID_MANIFEST_PATH}")
+    configure_file("resources/AndroidManifest.xml.in" "${ANDROID_MANIFEST_PATH}" @ONLY)
 
     find_package(OpenSSL)
     if (OPENSSL_FOUND)

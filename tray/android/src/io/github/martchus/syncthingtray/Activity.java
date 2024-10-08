@@ -1,8 +1,17 @@
 package io.github.martchus.syncthingtray;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.provider.DocumentsContract;
+import android.net.Uri;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.core.content.FileProvider;
+
+import java.io.File;
+
 import org.qtproject.qt.android.bindings.QtActivity;
 
 public class Activity extends QtActivity {
@@ -27,4 +36,23 @@ public class Activity extends QtActivity {
         return true;
     }
 
+    public boolean openPath(String path) {
+        File file = new File(path);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri fileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".qtprovider", file);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (file.isDirectory()) {
+            //intent.setDataAndType(fileUri, DocumentsContract.Document.MIME_TYPE_DIR);
+            intent.setDataAndType(fileUri, "resource/folder");
+            intent.putExtra("org.openintents.extra.ABSOLUTE_PATH", fileUri);
+        } else {
+            intent.setDataAndType(fileUri, "application/*");
+        }
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e1) {
+            return false;
+        }
+        return true;
+    }
 }
