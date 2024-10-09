@@ -63,6 +63,10 @@ App::App(bool insecure, QObject *parent)
     , m_darkColorScheme(false)
     , m_darkPalette(QtUtilities::isPaletteDark())
 {
+    if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_CONF")) {
+        qputenv("QT_QUICK_CONTROLS_CONF", ":/qt/qml/Main/resources/qtquickcontrols2.conf");
+    }
+
     qmlRegisterUncreatableType<Data::SyncthingFileModel>(
         "Main.Private", 1, 0, "SyncthingFileModel", QStringLiteral("Data::SyncthingFileModel is created from C++."));
     qmlRegisterUncreatableType<QtGui::DiffHighlighter>(
@@ -120,7 +124,7 @@ bool App::loadMain()
         qDebug() << "Path Qml entry point for Qt Quick GUI was overriden to: " << path;
         m_engine.load(path);
     } else {
-        m_engine.loadFromModule("Main", "Main");
+        m_engine.loadFromModule("Main", "ApplicationWindow");
     }
 
     // set window icon

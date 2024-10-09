@@ -288,13 +288,16 @@ if (QUICK_GUI)
         gui/qml/FilesPage.qml
         gui/qml/HelpButton.qml
         gui/qml/IgnorePatternPage.qml
-        gui/qml/Main.qml
+        gui/qml/+Material/ApplicationWindow.qml
+        gui/qml/ApplicationWindow.qml
         gui/qml/ObjectConfigPage.qml
         gui/qml/SettingsPage.qml
         gui/qml/WebViewPage.qml
         SOURCES
         gui/quick/quickicon.h
         gui/quick/quickicon.cpp
+        RESOURCES
+        resources/qtquickcontrols2.conf
         RESOURCE_PREFIX
         "/qt/qml/")
 endif ()

@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import QtQuick.Controls.Material
+//import QtQuick.Controls.Material
 import QtQuick.Dialogs
 import Qt.labs.qmlmodels
 
@@ -12,11 +12,9 @@ ApplicationWindow {
     height: 500
     title: qsTr("Syncthing App")
     onVisibleChanged: app.setCurrentControls(window.visible, pageStack.currentIndex)
-    Material.theme: app.darkmodeEnabled ? Material.Dark : Material.Light
-    Material.accent: Material.LightBlue
-    Material.primary: Material.LightBlue
+    //Material.theme: app.darkmodeEnabled ? Material.Dark : Material.Light
     header: ToolBar {
-        Material.theme: Material.Dark
+        //Material.theme: Material.Dark
         ColumnLayout {
             anchors.fill: parent
             anchors.leftMargin: flickable.anchors.leftMargin
