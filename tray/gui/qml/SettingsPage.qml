@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Dialogs
 
 StackView {
     id: stackView
@@ -38,9 +39,20 @@ StackView {
                 width: listView.width
                 text: label
                 //icon.source: app.faUrlBase + iconName // leads to crash when closing UI
-                onClicked: key.length === 0 ? app[functionName]() : stackView.push("ObjectConfigPage.qml", {title: title, configObject: appSettingsPage.config[key], stackView: stackView}, StackView.PushTransition)
+                onClicked: key.length === 0 ? appSettingsPage.initiateBackup(functionName) : stackView.push("ObjectConfigPage.qml", {title: title, configObject: appSettingsPage.config[key], stackView: stackView}, StackView.PushTransition)
             }
             ScrollIndicator.vertical: ScrollIndicator { }
+        }
+
+        FolderDialog {
+            id: backupFolderDialog
+            onAccepted: app[appSettingsPage.currentBackupFunction](backupFolderDialog.selectedFolder)
+        }
+
+        property string currentBackupFunction
+        function initiateBackup(functionName) {
+            appSettingsPage.currentBackupFunction = functionName;
+            backupFolderDialog.open();
         }
 
         property var config: app.settings

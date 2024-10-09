@@ -413,34 +413,28 @@ bool App::applySettings()
     return true;
 }
 
-bool App::importSettings()
+bool App::importSettings(const QUrl &url)
 {
-    const auto dir
-        = QStandardPaths::locate(QStandardPaths::DocumentsLocation, QStringLiteral("syncthing-app-config"), QStandardPaths::LocateDirectory);
-    if (dir.isEmpty()) {
-        emit error(tr("No directory \"syncthing-app-config\" exists under \"%1\".")
-                       .arg(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).join(QStringLiteral(", "))));
-        return false;
-    }
     if (!m_settingsDir.has_value()) {
         emit error(tr("Unable to import settings: settings directory was not located."));
         return false;
     }
+    const auto path = url.path();
     auto ec = std::error_code();
-    std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(dir), SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()),
+    std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(path), SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()),
         std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive, ec);
     if (ec) {
         emit error(tr("Unable to import settings: %1").arg(QString::fromStdString(ec.message())));
         return false;
     }
-    emit info(tr("Settings have been imported from \"%1\".").arg(dir));
+    emit info(tr("Settings have been imported from \"%1\".").arg(path));
     m_settingsFile.close();
     return loadSettings();
 }
 
-bool App::exportSettings()
+bool App::exportSettings(const QUrl &url)
 {
-    const auto path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QStringLiteral("/syncthing-app-config");
+    const auto path = url.path();
     const auto dir = QDir(path);
     if (!dir.exists() && !dir.mkpath(QStringLiteral("."))) {
         emit error(tr("Unable to create export directory under \"%1\".").arg(path));

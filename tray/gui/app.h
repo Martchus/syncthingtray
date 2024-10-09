@@ -16,6 +16,7 @@
 #include <QDir>
 #include <QFile>
 #include <QJsonObject>
+#include <QUrl>
 
 #include <optional>
 
@@ -103,8 +104,8 @@ public:
     Q_INVOKABLE bool loadSettings();
     Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applySettings();
-    Q_INVOKABLE bool importSettings();
-    Q_INVOKABLE bool exportSettings();
+    Q_INVOKABLE bool importSettings(const QUrl &url);
+    Q_INVOKABLE bool exportSettings(const QUrl &url);
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE bool copyText(const QString &text);
