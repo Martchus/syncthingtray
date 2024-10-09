@@ -39,7 +39,7 @@ StackView {
                 width: listView.width
                 text: label
                 //icon.source: app.faUrlBase + iconName // leads to crash when closing UI
-                onClicked: key.length === 0 ? appSettingsPage.initiateBackup(functionName) : stackView.push("ObjectConfigPage.qml", {title: title, configObject: appSettingsPage.config[key], stackView: stackView}, StackView.PushTransition)
+                onClicked: key.length === 0 ? appSettingsPage.initiateBackup(functionName) : stackView.push("ObjectConfigPage.qml", {title: title, configObject: appSettingsPage.config[key], specialEntries: appSettingsPage.specialEntries[key] ?? [], stackView: stackView}, StackView.PushTransition)
             }
             ScrollIndicator.vertical: ScrollIndicator { }
         }
@@ -56,6 +56,14 @@ StackView {
         }
 
         property var config: app.settings
+        readonly property var specialEntries: ({
+            connection: [
+                {key: "syncthingUrl", label: qsTr("Syncthing URL")},
+                {key: "apiKey", label: qsTr("API key")},
+                {key: "httpsCertPath", label: qsTr("HTTPs certificate path"), type: "filepath"},
+                {key: "httpAuth", label: qsTr("HTTP authentication")},
+            ]
+        })
         property list<Action> actions: [
             Action {
                 text: qsTr("Apply")

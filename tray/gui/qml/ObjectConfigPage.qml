@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Dialogs
 import Qt.labs.qmlmodels
 
 Page {
@@ -12,7 +13,21 @@ Page {
         model: ListModel {
             id: listModel
             dynamicRoles: true
-            Component.onCompleted: Object.entries(objectConfigPage.configObject).forEach((configEntry, index) => { listModel.append(objectConfigPage.makeConfigRow(configEntry, index)) })
+            Component.onCompleted: {
+                let index = 0;
+                let handledKeys = new Set();
+                let configObject = objectConfigPage.configObject;
+                objectConfigPage.specialEntries.forEach((specialEntry) => {
+                    const key = specialEntry.key;
+                    listModel.append(objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, configObject[key], index++));
+                    handledKeys.add(key);
+                });
+                Object.entries(configObject).forEach((configEntry) => {
+                    if (!handledKeys.has(configEntry[0])) {
+                        listModel.append(objectConfigPage.makeConfigRow(configEntry, index++));
+                    }
+                });
+            }
         }
         delegate: DelegateChooser {
             role: "type"
@@ -182,6 +197,112 @@ Page {
                     required property var modelData
                 }
             }
+            DelegateChoice {
+                roleValue: "filepath"
+                ItemDelegate {
+                    width: objectListView.width
+                    contentItem: RowLayout {
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            Label {
+                                Layout.fillWidth: true
+                                text: modelData.label
+                                elide: Text.ElideRight
+                                font.weight: Font.Medium
+                            }
+                            Label {
+                                id: filepathValue
+                                Layout.fillWidth: true
+                                text: modelData.value
+                                elide: Text.ElideRight
+                                font.weight: Font.Light
+                            }
+                        }
+                        ArrayElementButtons {
+                            page: objectConfigPage
+                            rowData: modelData
+                        }
+                        RoundButton {
+                            Layout.preferredWidth: 36
+                            Layout.preferredHeight: 36
+                            display: AbstractButton.IconOnly
+                            text: qsTr("Clear")
+                            ToolTip.text: text
+                            ToolTip.visible: hovered || pressed
+                            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                            icon.source: app.faUrlBase + "undo"
+                            icon.width: 20
+                            icon.height: 20
+                            onClicked: objectConfigPage.updateValue(modelData.key, filepathValue.text = "")
+                        }
+                        HelpButton {
+                            id: helpButton
+                            configCategory: objectConfigPage.configCategory
+                            key: modelData.key
+                        }
+                    }
+                    onClicked: fileDlg.open()
+                    FileDialog {
+                        id: fileDlg
+                        title: modelData.label
+                        onAccepted: objectConfigPage.updateValue(modelData.key, filepathValue.text = app.resolveUrl(fileDlg.selectedFile))
+                    }
+                    required property var modelData
+                }
+            }
+            DelegateChoice {
+                roleValue: "folderpath"
+                ItemDelegate {
+                    width: objectListView.width
+                    contentItem: RowLayout {
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            Label {
+                                Layout.fillWidth: true
+                                text: modelData.label
+                                elide: Text.ElideRight
+                                font.weight: Font.Medium
+                            }
+                            Label {
+                                id: folderpathValue
+                                Layout.fillWidth: true
+                                text: modelData.value
+                                elide: Text.ElideRight
+                                font.weight: Font.Light
+                            }
+                        }
+                        ArrayElementButtons {
+                            page: objectConfigPage
+                            rowData: modelData
+                        }
+                        RoundButton {
+                            Layout.preferredWidth: 36
+                            Layout.preferredHeight: 36
+                            display: AbstractButton.IconOnly
+                            text: qsTr("Clear")
+                            ToolTip.text: text
+                            ToolTip.visible: hovered || pressed
+                            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                            icon.source: app.faUrlBase + "undo"
+                            icon.width: 20
+                            icon.height: 20
+                            onClicked: objectConfigPage.updateValue(modelData.key, folderpathValue.text = "")
+                        }
+                        HelpButton {
+                            id: helpButton
+                            configCategory: objectConfigPage.configCategory
+                            key: modelData.key
+                        }
+                    }
+                    onClicked: folderDlg.open()
+                    FolderDialog {
+                        id: folderDlg
+                        title: modelData.label
+                        onAccepted: objectConfigPage.updateValue(modelData.key, folderpathValue.text = app.resolveUrl(folderDlg.selectedFolder))
+                    }
+                    required property var modelData
+                }
+            }
         }
     }
     Dialog {
@@ -215,6 +336,7 @@ Page {
     }
 
     property alias model: objectListView.model
+    property var specialEntries: []
     required property var configObject
     property var childObjectTemplate: configTemplates[path]
     property bool canAdd: Array.isArray(configObject) && childObjectTemplate !== undefined
@@ -252,6 +374,15 @@ Page {
             row.labelKey = hasNestedValue ? nestedKey : "";
         }
         return row;
+    }
+
+    function makeConfigRowForSpecialEntry(specialEntry, value, index) {
+        specialEntry.index = index;
+        specialEntry.isArray = Array.isArray(objectConfigPage.configObject);
+        specialEntry.value = value;
+        specialEntry.type = specialEntry.type ?? typeof value;
+        specialEntry.label = specialEntry.label ?? uncamel(specialEntry.isArray ? specialEntry.key : typeof value);
+        return specialEntry;
     }
 
     function updateValue(key, value) {

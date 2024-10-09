@@ -326,6 +326,11 @@ bool App::showToast(const QString &message)
 #endif
 }
 
+QString App::resolveUrl(const QUrl &url)
+{
+    return url.path();
+}
+
 void App::invalidateStatus()
 {
     m_status.reset();
@@ -419,7 +424,7 @@ bool App::importSettings(const QUrl &url)
         emit error(tr("Unable to import settings: settings directory was not located."));
         return false;
     }
-    const auto path = url.path();
+    const auto path = resolveUrl(url);
     auto ec = std::error_code();
     std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(path), SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()),
         std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive, ec);
@@ -434,7 +439,7 @@ bool App::importSettings(const QUrl &url)
 
 bool App::exportSettings(const QUrl &url)
 {
-    const auto path = url.path();
+    const auto path = resolveUrl(url);
     const auto dir = QDir(path);
     if (!dir.exists() && !dir.mkpath(QStringLiteral("."))) {
         emit error(tr("Unable to create export directory under \"%1\".").arg(path));

@@ -117,6 +117,7 @@ public:
     Q_INVOKABLE void setCurrentControls(bool visible, int tabIndex);
     Q_INVOKABLE bool performHapticFeedback();
     Q_INVOKABLE bool showToast(const QString &message);
+    Q_INVOKABLE QString resolveUrl(const QUrl &url);
     Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId, QObject *parent);
     Q_INVOKABLE QtGui::DiffHighlighter *createDiffHighlighter(QTextDocument *parent);
 
