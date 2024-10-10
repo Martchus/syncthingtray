@@ -3,6 +3,8 @@
 
 #include <syncthingconnector/syncthingconnection.h>
 
+QT_FORWARD_DECLARE_CLASS(QPalette)
+
 /*!
  * \brief The SyncthingFileItemActionStaticData class holds objects required during the whole application's live time.
  *
@@ -28,13 +30,12 @@ public:
 public Q_SLOTS:
     void initialize();
     bool applySyncthingConfiguration(const QString &syncthingConfigFilePath, const QString &syncthingApiKey, bool skipSavingConfig);
-    void applyBrightCustomColorsSetting(bool useBrightCustomColors);
+    void applyBrightCustomColorsSetting(const QPalette &palette);
     void logConnectionStatus();
     void logConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory errorCategory);
     void rescanDir(const QString &dirId, const QString &relpath = QString());
     static void showAboutDialog();
     void selectSyncthingConfig();
-    void handlePaletteChanged(const QPalette &palette);
     void setCurrentError(const QString &currentError);
     void clearCurrentError();
 

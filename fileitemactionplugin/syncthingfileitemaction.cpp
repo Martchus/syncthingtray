@@ -5,8 +5,6 @@
 
 #include <syncthingmodel/syncthingicons.h>
 
-#include <qtutilities/misc/desktoputils.h>
-
 #include <KFileItem>
 #include <KPluginFactory>
 
@@ -64,7 +62,7 @@ QList<QAction *> SyncthingFileItemAction::actions(const KFileItemListProperties 
     }
 
     if ((m_parentWidget = parentWidget)) {
-        s_data.applyBrightCustomColorsSetting(QtUtilities::isPaletteDark(parentWidget->palette()));
+        s_data.applyBrightCustomColorsSetting(parentWidget->palette());
         parentWidget->installEventFilter(this);
     }
 
@@ -289,7 +287,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
 bool SyncthingFileItemAction::eventFilter(QObject *object, QEvent *event)
 {
     if (object == m_parentWidget && event->type() == QEvent::PaletteChange) {
-        s_data.handlePaletteChanged(m_parentWidget->palette());
+        s_data.applyBrightCustomColorsSetting(m_parentWidget->palette());
     }
     return false;
 }

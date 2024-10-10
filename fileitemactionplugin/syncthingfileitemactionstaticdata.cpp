@@ -10,7 +10,6 @@
 #include <c++utilities/io/ansiescapecodes.h>
 
 #include <qtutilities/aboutdialog/aboutdialog.h>
-#include <qtutilities/misc/desktoputils.h>
 #include <qtutilities/resources/resources.h>
 
 #include <QAction>
@@ -116,11 +115,6 @@ void SyncthingFileItemActionStaticData::selectSyncthingConfig()
     }
 }
 
-void SyncthingFileItemActionStaticData::handlePaletteChanged(const QPalette &palette)
-{
-    applyBrightCustomColorsSetting(isPaletteDark(palette));
-}
-
 void SyncthingFileItemActionStaticData::appendNoteToError(QString &errorMessage, const QString &newSyncthingConfigFilePath) const
 {
     if (!m_configFilePath.isEmpty() && m_configFilePath != newSyncthingConfigFilePath) {
@@ -197,15 +191,16 @@ bool SyncthingFileItemActionStaticData::applySyncthingConfiguration(
     return true;
 }
 
-void SyncthingFileItemActionStaticData::applyBrightCustomColorsSetting(bool useBrightCustomColors)
+void SyncthingFileItemActionStaticData::applyBrightCustomColorsSetting(const QPalette &palette)
 {
-    if (useBrightCustomColors) {
-        static const auto settings = StatusIconSettings(StatusIconSettings::DarkTheme());
-        IconManager::instance().applySettings(&settings);
-    } else {
-        static const auto settings = StatusIconSettings(StatusIconSettings::BrightTheme());
-        IconManager::instance().applySettings(&settings);
-    }
+    static const auto settings = [] {
+        auto defaultSettings = StatusIconSettings();
+        defaultSettings.strokeWidth = StatusIconStrokeWidth::Thick;
+        return defaultSettings;
+    }();
+    auto &iconManager = IconManager::instance();
+    iconManager.setPalette(palette);
+    iconManager.applySettings(&settings, &settings, true, true);
 }
 
 void SyncthingFileItemActionStaticData::setCurrentError(const QString &currentError)
