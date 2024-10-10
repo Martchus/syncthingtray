@@ -137,37 +137,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="139"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="134"/>
         <source>Syncthing config file can not be automatically located</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="146"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="141"/>
         <source>Unable to load Syncthing config from &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="155"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="150"/>
         <source>Syncthing config from &quot;%1&quot; does not contain GUI address.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="167"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="162"/>
         <source>Enter API key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="167"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="162"/>
         <source>The selected config file does not contain an API key. Please enter the API key manually:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="169"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="164"/>
         <source>No API key supplied for &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="128"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="123"/>
         <source>(still using config from &quot;%1&quot;)</source>
         <translation type="unfinished"></translation>
     </message>

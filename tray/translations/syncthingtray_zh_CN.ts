@@ -50,77 +50,72 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="341"/>
+        <location filename="../gui/app.cpp" line="346"/>
         <source>Unable to create settings directory under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="350"/>
+        <location filename="../gui/app.cpp" line="355"/>
         <source>Unable to open settings under &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="365"/>
+        <location filename="../gui/app.cpp" line="370"/>
         <source>Unable to read settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="369"/>
+        <location filename="../gui/app.cpp" line="374"/>
         <source>Unable to restore settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="370"/>
+        <location filename="../gui/app.cpp" line="375"/>
         <source>JSON document contains no object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="390"/>
+        <location filename="../gui/app.cpp" line="395"/>
         <source>Unable to save settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="407"/>
+        <location filename="../gui/app.cpp" line="412"/>
         <source>Unable to load HTTPs certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="421"/>
-        <source>No directory &quot;syncthing-app-config&quot; exists under &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/app.cpp" line="426"/>
+        <location filename="../gui/app.cpp" line="424"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="433"/>
+        <location filename="../gui/app.cpp" line="432"/>
         <source>Unable to import settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="436"/>
+        <location filename="../gui/app.cpp" line="435"/>
         <source>Settings have been imported from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="446"/>
+        <location filename="../gui/app.cpp" line="445"/>
         <source>Unable to create export directory under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="450"/>
+        <location filename="../gui/app.cpp" line="449"/>
         <source>Unable to export settings: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="457"/>
+        <location filename="../gui/app.cpp" line="456"/>
         <source>Unable to export settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="460"/>
+        <location filename="../gui/app.cpp" line="459"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
