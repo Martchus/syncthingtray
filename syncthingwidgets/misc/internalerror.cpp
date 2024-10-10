@@ -47,9 +47,9 @@ static bool ignoreInavailabilityAfterStart(const Settings::Settings &settings, c
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         && ((service && service->isSystemdAvailable()
                 && !service->isActiveWithoutSleepFor(launcher->activeSince(), settings.ignoreInavailabilityAfterStart))
-            || !launcher->isActiveFor(settings.ignoreInavailabilityAfterStart))
+            || !launcher->isActiveWithoutSleepFor(settings.ignoreInavailabilityAfterStart))
 #else
-        && !launcher->isActiveFor(settings.ignoreInavailabilityAfterStart)
+        && !launcher->isActiveWithoutSleepFor(settings.ignoreInavailabilityAfterStart)
 #endif
     ) {
         return true;

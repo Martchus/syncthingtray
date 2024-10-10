@@ -1,7 +1,7 @@
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD) && !defined(DATA_SYNCTHINGSERVICE_H)
 #define DATA_SYNCTHINGSERVICE_H
 
-#include "./global.h"
+#include "./syncthingprocess.h"
 
 #include <c++utilities/chrono/datetime.h>
 
@@ -310,7 +310,7 @@ inline CppUtilities::DateTime SyncthingService::activeSince() const
  */
 inline bool SyncthingService::isActiveFor(unsigned int atLeastSeconds) const
 {
-    return !m_activeSince.isNull() && (CppUtilities::DateTime::gmtNow() - m_activeSince).totalSeconds() > atLeastSeconds;
+    return SyncthingProcess::isActiveFor(m_activeSince, atLeastSeconds);
 }
 
 /*!
@@ -321,6 +321,14 @@ inline bool SyncthingService::isActiveFor(unsigned int atLeastSeconds) const
 inline bool SyncthingService::isActiveWithoutSleepFor(unsigned int atLeastSeconds) const
 {
     return isActiveWithoutSleepFor(m_activeSince, atLeastSeconds);
+}
+
+/*!
+ * \brief Returns whether \a activeSince or the last standby-wake-up is longer ago than \a atLeastSeconds.
+ */
+inline bool SyncthingService::isActiveWithoutSleepFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds)
+{
+    return SyncthingProcess::isActiveWithoutSleepFor(s_lastWakeUp, s_fallingAsleep, activeSince, atLeastSeconds);
 }
 
 /*!

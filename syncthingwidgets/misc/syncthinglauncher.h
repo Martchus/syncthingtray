@@ -43,6 +43,7 @@ public:
     bool isRunning() const;
     CppUtilities::DateTime activeSince() const;
     bool isActiveFor(unsigned int atLeastSeconds) const;
+    bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
     bool isManuallyStopped() const;
     bool isEmittingOutput() const;
     void setEmittingOutput(bool emittingOutput);
@@ -144,8 +145,14 @@ inline CppUtilities::DateTime SyncthingLauncher::activeSince() const
 /// \brief Checks whether Syncthing is already running for the specified number of seconds.
 inline bool SyncthingLauncher::isActiveFor(unsigned int atLeastSeconds) const
 {
-    const auto activeSince(this->activeSince());
-    return !activeSince.isNull() && (CppUtilities::DateTime::gmtNow() - activeSince).totalSeconds() > atLeastSeconds;
+    return SyncthingProcess::isActiveFor(activeSince(), atLeastSeconds);
+}
+
+/// \brief Checks whether Syncthing is already running for the specified number of seconds.
+/// \remarks Considers only the time since the last wakeup if known; otherwise it is identical to isActiveFor().
+inline bool SyncthingLauncher::isActiveWithoutSleepFor(unsigned int atLeastSeconds) const
+{
+    return m_process.isActiveWithoutSleepFor(activeSince(), atLeastSeconds);
 }
 
 /// \brief Returns whether the Syncthing instance has been manually stopped using SyncthingLauncher::terminate()

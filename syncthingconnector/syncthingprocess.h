@@ -54,6 +54,10 @@ public:
     bool isRunning() const;
     CppUtilities::DateTime activeSince() const;
     bool isActiveFor(unsigned int atLeastSeconds) const;
+    static bool isActiveFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds);
+    bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
+    bool isActiveWithoutSleepFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds) const;
+    static bool isActiveWithoutSleepFor(CppUtilities::DateTime lastWakeUp, bool isFallingAsleep, CppUtilities::DateTime activeSince, unsigned int atLeastSeconds);
     bool isManuallyStopped() const;
     static SyncthingProcess *mainInstance();
     static void setMainInstance(SyncthingProcess *mainInstance);
@@ -114,6 +118,7 @@ private:
     QString m_program;
     QStringList m_arguments;
     CppUtilities::DateTime m_activeSince;
+    CppUtilities::DateTime m_lastWakeUp;
     QTimer m_killTimer;
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     std::shared_ptr<SyncthingProcessInternalData> m_process;
@@ -123,6 +128,7 @@ private:
     QProcess::ProcessChannelMode m_mode;
 #endif
     bool m_manuallyStopped;
+    bool m_fallingAsleep;
     static SyncthingProcess *s_mainInstance;
 };
 
@@ -141,7 +147,41 @@ inline CppUtilities::DateTime SyncthingProcess::activeSince() const
 /// \brief Checks whether the process already runs for the specified number of seconds.
 inline bool SyncthingProcess::isActiveFor(unsigned int atLeastSeconds) const
 {
-    return !m_activeSince.isNull() && (CppUtilities::DateTime::gmtNow() - m_activeSince).totalSeconds() > atLeastSeconds;
+    return isActiveFor(m_activeSince, atLeastSeconds);
+}
+
+/// \brief Checks whether a process already runs for the specified number of seconds.
+inline bool SyncthingProcess::isActiveFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds)
+{
+    return !activeSince.isNull() && (CppUtilities::DateTime::gmtNow() - activeSince).totalSeconds() > atLeastSeconds;
+}
+
+/// \brief Checks whether the process already runs for the specified number of seconds.
+/// \remarks Considers only the time since the last wakeup if known; otherwise it is identical to isActiveFor().
+inline bool SyncthingProcess::isActiveWithoutSleepFor(unsigned int atLeastSeconds) const
+{
+    return isActiveWithoutSleepFor(m_activeSince, atLeastSeconds);
+}
+
+/// \brief Checks whether a process already runs for the specified number of seconds.
+/// \remarks Considers only the time since the last wakeup if known; otherwise it is identical to isActiveFor().
+inline bool SyncthingProcess::isActiveWithoutSleepFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds) const
+{
+    return isActiveWithoutSleepFor(m_lastWakeUp, m_fallingAsleep, activeSince, atLeastSeconds);
+}
+
+/// \brief Checks whether a process already runs for the specified number of seconds.
+/// \remarks Considers only the time since the last wakeup if known; otherwise it is identical to isActiveFor().
+inline bool SyncthingProcess::isActiveWithoutSleepFor(CppUtilities::DateTime lastWakeUp, bool isFallingAsleep, CppUtilities::DateTime activeSince, unsigned int atLeastSeconds)
+{
+    if (!atLeastSeconds) {
+        return true;
+    }
+    if (activeSince.isNull() || isFallingAsleep) {
+        return false;
+    }
+    const auto now = CppUtilities::DateTime::gmtNow();
+    return ((now - activeSince).totalSeconds() > atLeastSeconds) && (lastWakeUp.isNull() || ((now - lastWakeUp).totalSeconds() > atLeastSeconds));
 }
 
 /// \brief Returns whether the process has been manually stopped via SyncthingProcess::stopSyncthing(), SyncthingProcess::killSyncthing()

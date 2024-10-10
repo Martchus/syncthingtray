@@ -167,18 +167,6 @@ void Launcher::terminate()
     killer.waitForFinished();
 }
 
-static bool isActiveFor(const SyncthingLauncher &launcher, unsigned int atLeastSeconds)
-{
-    return launcher.isActiveFor(atLeastSeconds);
-}
-
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-static bool isActiveFor(const SyncthingService &launcher, unsigned int atLeastSeconds)
-{
-    return launcher.isActiveWithoutSleepFor(atLeastSeconds);
-}
-#endif
-
 /*!
  * \brief Configures the reconnect interval and establishes a connection according to the specified settings/status.
  */
@@ -205,14 +193,14 @@ static inline void connectAccordingToSettings(Data::SyncthingConnection &connect
     // connect instantly if service is running
     if (consideredForReconnect) {
         if (reconnectRequired) {
-            if (isActiveFor(monitor, minActiveTimeInSeconds)) {
+            if (monitor.isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
                 connection.reconnect();
             } else if (isRunning) {
                 // give the service (which has just started) a few seconds to initialize
                 connection.reconnectLater(minActiveTimeInSeconds * 1000);
             }
         } else if (isRunning && !connection.isConnected()) {
-            if (isActiveFor(monitor, minActiveTimeInSeconds)) {
+            if (monitor.isActiveWithoutSleepFor(minActiveTimeInSeconds)) {
                 connection.connect();
             } else {
                 // give the service (which has just started) a few seconds to initialize

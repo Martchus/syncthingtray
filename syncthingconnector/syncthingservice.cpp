@@ -349,22 +349,6 @@ bool SyncthingService::isUnitAvailable() const
 }
 
 /*!
- * \brief Returns whether \a activeSince or the last standby-wake-up is longer ago than \a atLeastSeconds.
- */
-bool SyncthingService::isActiveWithoutSleepFor(DateTime activeSince, unsigned int atLeastSeconds)
-{
-    if (!atLeastSeconds) {
-        return true;
-    }
-    if (activeSince.isNull() || s_fallingAsleep) {
-        return false;
-    }
-
-    const DateTime now(DateTime::gmtNow());
-    return ((now - activeSince).totalSeconds() > atLeastSeconds) && (s_lastWakeUp.isNull() || ((now - s_lastWakeUp).totalSeconds() > atLeastSeconds));
-}
-
-/*!
  * \brief Sets the scope the current instance is tuned to.
  */
 void SyncthingService::setScope(SystemdScope scope)
