@@ -28,6 +28,11 @@ ExpandableDelegate {
         ]
         extraActions: [
             Action {
+                text: qsTr("Edit")
+                icon.source: app.faUrlBase + "pencil"
+                onTriggered: (source) => mainView.stackView.push("DirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId, stackView: mainView.stackView}, StackView.PushTransition)
+            },
+            Action {
                 text: qsTr("Show errors")
                 enabled: modelData.pullErrorCount > 0
                 icon.source: app.faUrlBase + "exclamation-triangle"

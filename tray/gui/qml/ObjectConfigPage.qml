@@ -22,6 +22,9 @@ Page {
                     listModel.append(objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, configObject[key], index++));
                     handledKeys.add(key);
                 });
+                if (objectConfigPage.specialEntriesOnly) {
+                    return;
+                }
                 Object.entries(configObject).forEach((configEntry) => {
                     if (!handledKeys.has(configEntry[0])) {
                         listModel.append(objectConfigPage.makeConfigRow(configEntry, index++));
@@ -298,6 +301,7 @@ Page {
                     FolderDialog {
                         id: folderDlg
                         title: modelData.label
+                        currentFolder: encodeURIComponent(folderpathValue.text)
                         onAccepted: objectConfigPage.updateValue(modelData.key, folderpathValue.text = app.resolveUrl(folderDlg.selectedFolder))
                     }
                     required property var modelData
@@ -336,6 +340,7 @@ Page {
     }
 
     property alias model: objectListView.model
+    property bool specialEntriesOnly: false
     property var specialEntries: []
     required property var configObject
     property var childObjectTemplate: configTemplates[path]

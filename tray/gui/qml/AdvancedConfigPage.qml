@@ -3,12 +3,7 @@ import QtQuick.Controls
 
 ObjectConfigPage {
     id: advancedConfigPage
-    configObject: {
-        const cfg = app.connection.rawConfig;
-        const entries = cfg !== undefined ? cfg[entriesKey] : undefined;
-        const entry = Array.isArray(entries) ? entries.find(advancedConfigPage.isEntry) : undefined;
-        return entry !== undefined ? entry : {};
-    }
+    configObject: findConfigObject()
     configTemplates: {
         ".devices": {deviceID: "", introducedBy: "", encryptionPassword: ""}
     }
@@ -33,4 +28,11 @@ ObjectConfigPage {
     ]
     required property string entriesKey
     required property var isEntry
+
+    function findConfigObject() {
+        const cfg = app.connection.rawConfig;
+        const entries = cfg !== undefined ? cfg[entriesKey] : undefined;
+        const entry = Array.isArray(entries) ? entries.find(advancedConfigPage.isEntry) : undefined;
+        return entry !== undefined ? entry : {};
+    }
 }

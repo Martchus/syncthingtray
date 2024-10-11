@@ -18,6 +18,7 @@ StackView {
             Action {
                 text: qsTr("Add device")
                 icon.source: app.faUrlBase + "plus"
+                onTriggered: (source) => stackView.push("DevConfigPage.qml", {devName: qsTr("New device"), devId: "", stackView: stackView}, StackView.PushTransition)
             }
         ]
         property list<Action> extraActions: [

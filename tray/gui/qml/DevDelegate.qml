@@ -17,6 +17,11 @@ ExpandableDelegate {
         ]
         extraActions: [
             Action {
+                text: qsTr("Edit")
+                icon.source: app.faUrlBase + "pencil"
+                onTriggered: (source) => mainView.stackView.push("DevConfigPage.qml", {devName: modelData.name, devId: modelData.devId, stackView: mainView.stackView}, StackView.PushTransition)
+            },
+            Action {
                 text: qsTr("Advanced config")
                 icon.source: app.faUrlBase + "cogs"
                 onTriggered: (source) => mainView.stackView.push("AdvancedDevConfigPage.qml", {devName: modelData.name, devId: modelData.devId, stackView: mainView.stackView}, StackView.PushTransition)

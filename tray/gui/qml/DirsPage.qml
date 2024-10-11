@@ -18,6 +18,7 @@ StackView {
             Action {
                 text: qsTr("Add folder")
                 icon.source: app.faUrlBase + "plus"
+                onTriggered: (source) => stackView.push("DirConfigPage.qml", {dirName: qsTr("New folder"), dirId: "", stackView: stackView}, StackView.PushTransition)
             }
         ]
         property list<Action> extraActions: [

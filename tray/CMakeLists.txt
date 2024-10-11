@@ -275,9 +275,11 @@ if (QUICK_GUI)
         gui/qml/ArrayElementButtons.qml
         gui/qml/ChangesPage.qml
         gui/qml/DetailsListView.qml
+        gui/qml/DevConfigPage.qml
         gui/qml/DevDelegate.qml
         gui/qml/DevListView.qml
         gui/qml/DevsPage.qml
+        gui/qml/DirConfigPage.qml
         gui/qml/DirDelegate.qml
         gui/qml/DirListView.qml
         gui/qml/DirErrorsPage.qml
