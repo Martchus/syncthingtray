@@ -211,8 +211,8 @@ static int runApplication(int argc, const char *const *argv)
     auto &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
     widgetsGuiArg.addSubArguments({ &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstanceArg,
         &newInstanceArg, &replaceArg, &showWizardArg, &assumeFirstLaunchArg, &wipArg, &insecureArg });
-    auto &quickGuiArg = qtConfigArgs.qtQuickGuiArg();
 #ifdef GUI_QTQUICK
+    auto &quickGuiArg = qtConfigArgs.qtQuickGuiArg();
     quickGuiArg.addSubArgument(&insecureArg);
 #endif
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
