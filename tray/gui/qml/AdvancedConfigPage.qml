@@ -19,8 +19,11 @@ ObjectConfigPage {
                 }
                 const index = entries.findIndex(advancedConfigPage.isEntry);
                 if (index >= 0) {
-                     entries[index] = configObject;
+                    entries[index] = configObject;
+                } else {
+                    entries.push(configObject);
                 }
+
                 app.connection.postConfigFromJsonObject(cfg);
                 return true;
             }
