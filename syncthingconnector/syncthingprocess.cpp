@@ -5,6 +5,10 @@
 #include <QStringBuilder>
 #include <QTimer>
 
+#ifdef Q_OS_WINDOWS
+#include <QCoreApplication>
+#endif
+
 // uncomment to enforce stopSyncthing() via REST-API (for testing)
 //#define LIB_SYNCTHING_CONNECTOR_ENFORCE_STOP_VIA_API
 
@@ -131,6 +135,11 @@ SyncthingProcess::SyncthingProcess(QObject *parent)
     , m_manuallyStopped(false)
     , m_fallingAsleep(false)
 {
+#ifdef Q_OS_WINDOWS
+    if (auto *const app = QCoreApplication::instance()) {
+        app->installNativeEventFilter(this);
+    }
+#endif
     m_killTimer.setInterval(3000);
     m_killTimer.setSingleShot(true);
     setProcessChannelMode(QProcess::MergedChannels);
@@ -713,6 +722,37 @@ void SyncthingProcess::handleLeftoverProcesses()
                   << ec.message() << EscapeCodes::Phrases::End;
     }
 #endif
+}
+
+bool SyncthingProcess::nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result)
+{
+    Q_UNUSED(result)
+#ifdef Q_OS_WINDOWS
+    if (eventType == "windows_generic_MSG") {
+        const auto *const msg = static_cast<MSG *>(message);
+        switch (msg->message) {
+        case WM_POWERBROADCAST:
+            switch (msg->wParam) {
+            case PBT_APMSUSPEND:
+                m_fallingAsleep = true;
+                break;
+            case PBT_APMRESUMEAUTOMATIC:
+                m_fallingAsleep = false;
+                m_lastWakeUp = DateTime::gmtNow();
+                break;
+            default:
+                ;
+            }
+            break;
+        default:
+            ;
+        }
+    }
+#else
+    Q_UNUSED(eventType)
+    Q_UNUSED(message)
+#endif
+    return false;
 }
 
 qint64 SyncthingProcess::bytesAvailable() const

@@ -5,6 +5,7 @@
 
 #include <c++utilities/chrono/datetime.h>
 
+#include <QAbstractNativeEventFilter>
 #include <QProcess>
 #include <QStringList>
 #include <QTimer>
@@ -42,7 +43,7 @@ using SyncthingProcessBase = QIODevice;
 using SyncthingProcessBase = QProcess;
 #endif
 
-class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingProcess : public SyncthingProcessBase {
+class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingProcess : public SyncthingProcessBase, private QAbstractNativeEventFilter {
     Q_OBJECT
     Q_PROPERTY(bool running READ isRunning)
     Q_PROPERTY(CppUtilities::DateTime activeSince READ activeSince)
@@ -115,6 +116,8 @@ private Q_SLOTS:
 #endif
 
 private:
+    bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result) override;
+
     QString m_program;
     QStringList m_arguments;
     CppUtilities::DateTime m_activeSince;
