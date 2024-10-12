@@ -41,17 +41,22 @@ section, .into-text {
     line-height: 140%;
 }
 .banner {
-    margin: -23px;
-    margin-bottom: 10px;
-
     background-image: url(../img/screenshots/plasma.jpg);
     background-position-y: -758px;
     background-position-x: right;
     background-repeat: no-repeat;
     background-color: #416da0;
     height: 655px;
-    width: calc(100% + 41px);
+    width: 100%;
+    min-width: 660px;
     box-sizing: border-box;
+}
+.banner-container {
+    margin-top: -10px;
+    margin-left: -18px;
+    margin-right: -18px;
+    margin-bottom: 0px;
+    overflow-y: auto;
     border-bottom: 5px #08c solid!important;
 }
 .banner-info {
