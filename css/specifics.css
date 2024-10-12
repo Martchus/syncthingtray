@@ -55,7 +55,7 @@ section, .into-text {
     border-bottom: 5px #08c solid!important;
 }
 .banner-info {
-    text-align: left;
+    text-align: justify;
     margin: 0px auto;
 }
 @media (max-width: 1050px) {
@@ -66,6 +66,7 @@ section, .into-text {
 @media (min-width: 1010px) {
     .banner-info {
         height: 0px;
+        text-align: left;
     }
     .banner-info p {
         position: relative;
