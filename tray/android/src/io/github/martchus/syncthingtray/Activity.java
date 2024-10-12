@@ -14,6 +14,8 @@ import java.io.File;
 
 import org.qtproject.qt.android.bindings.QtActivity;
 
+import io.github.martchus.syncthingtray.Util;
+
 public class Activity extends QtActivity {
 
     public boolean performHapticFeedback() {
@@ -54,5 +56,9 @@ public class Activity extends QtActivity {
             return false;
         }
         return true;
+    }
+
+    public String resolveUri(String uri) {
+        return Util.getAbsolutePathFromStorageAccessFrameworkUri(this, Uri.parse(uri));
     }
 }

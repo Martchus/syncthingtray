@@ -788,5 +788,7 @@ to code contained in Git repositories included as Git submodule (which contain t
 * All other icons found in this repository are taken from the [KDE/Breeze](https://invent.kde.org/frameworks/breeze-icons) project.
 * Code under `tray/gui/quick` originates from [Kirigami](https://invent.kde.org/frameworks/kirigami). The comments at the beginning of those
   files state the original authors/contributors.
+* Parts of `tray/android/src/io/github/martchus/syncthingtray/Util.java` are based on
+  [com.nutomic.syncthingandroid.util](https://github.com/Catfriend1/syncthing-android/blob/main/app/src/main/java/com/nutomic/syncthingandroid/util/FileUtils.java).
 
 None of these icons have been (intentionally) modified so no copyright for modifications is asserted.

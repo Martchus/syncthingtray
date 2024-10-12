@@ -328,7 +328,16 @@ bool App::showToast(const QString &message)
 
 QString App::resolveUrl(const QUrl &url)
 {
+#ifdef Q_OS_ANDROID
+    const auto urlString = url.toString(QUrl::FullyEncoded);
+    const auto path = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("resolveUri", urlString).toString();
+    if (path.isEmpty()) {
+        showToast(tr("Unable to resolve URL \"%1\".").arg(urlString));
+    }
+    return path.isEmpty() ? urlString : path;
+#else
     return url.path();
+#endif
 }
 
 void App::invalidateStatus()
