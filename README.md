@@ -783,12 +783,22 @@ All code - unless stated otherwise in a comment on top of the file - is licensed
 to code contained in Git repositories included as Git submodule (which contain their own README and licensing information).
 
 ## Attribution for 3rd party content
-* Some icons are taken from [Fork Awesome](https://forkaweso.me/Fork-Awesome) (see [their license](https://forkaweso.me/Fork-Awesome/license)). These are provided via [qtforkawesome](https://github.com/Martchus/qtforkawesome).
+Syncthing Tray contains icons from various sources:
+
+* Some icons are taken from [Fork Awesome](https://forkaweso.me/Fork-Awesome) (see [their license](https://forkaweso.me/Fork-Awesome/license)).
+  These are provided via [qtforkawesome](https://github.com/Martchus/qtforkawesome).
 * The Syncthing icons are taken from the [Syncthing](https://github.com/syncthing/syncthing) project.
+* The icons on [the website](https://martchus.github.io/syncthingtray) are from
+  [Material Design Icons](https://materialdesignicons.com).
 * All other icons found in this repository are taken from the [KDE/Breeze](https://invent.kde.org/frameworks/breeze-icons) project.
-* Code under `tray/gui/quick` originates from [Kirigami](https://invent.kde.org/frameworks/kirigami). The comments at the beginning of those
-  files state the original authors/contributors.
+
+None of these icons have been (intentionally) modified so no copyright for modifications is asserted.
+
+Some of the code is based on code from other open source projects:
+
+* Code under `tray/gui/quick` originates from [Kirigami](https://invent.kde.org/frameworks/kirigami).
+  The comments at the beginning of those files state the original authors/contributors.
 * Parts of `tray/android/src/io/github/martchus/syncthingtray/Util.java` are based on
   [com.nutomic.syncthingandroid.util](https://github.com/Catfriend1/syncthing-android/blob/main/app/src/main/java/com/nutomic/syncthingandroid/util/FileUtils.java).
 
-None of these icons have been (intentionally) modified so no copyright for modifications is asserted.
+The original code has been modified. Copyright as mentioned in the previous section applies to modifications.
