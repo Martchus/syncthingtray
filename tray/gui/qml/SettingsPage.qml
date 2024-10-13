@@ -39,7 +39,15 @@ StackView {
                 width: listView.width
                 text: label
                 //icon.source: app.faUrlBase + iconName // leads to crash when closing UI
-                onClicked: key.length === 0 ? appSettingsPage.initiateBackup(functionName) : stackView.push("ObjectConfigPage.qml", {title: title, configObject: appSettingsPage.config[key], specialEntries: appSettingsPage.specialEntries[key] ?? [], specialEntriesByKey: appSettingsPage.specialEntries, stackView: stackView}, StackView.PushTransition)
+                onClicked: key.length === 0
+                           ? appSettingsPage.initiateBackup(functionName)
+                           : stackView.push("ObjectConfigPage.qml", {
+                                                title: title,
+                                                configObject: appSettingsPage.config[key],
+                                                specialEntries: appSettingsPage.specialEntries[key] ?? [],
+                                                specialEntriesByKey: appSettingsPage.specialEntries,
+                                                stackView: stackView},
+                                            StackView.PushTransition)
             }
             ScrollIndicator.vertical: ScrollIndicator { }
         }
