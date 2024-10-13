@@ -39,7 +39,7 @@ StackView {
                 width: listView.width
                 text: label
                 //icon.source: app.faUrlBase + iconName // leads to crash when closing UI
-                onClicked: key.length === 0 ? appSettingsPage.initiateBackup(functionName) : stackView.push("ObjectConfigPage.qml", {title: title, configObject: appSettingsPage.config[key], specialEntries: appSettingsPage.specialEntries[key] ?? [], stackView: stackView}, StackView.PushTransition)
+                onClicked: key.length === 0 ? appSettingsPage.initiateBackup(functionName) : stackView.push("ObjectConfigPage.qml", {title: title, configObject: appSettingsPage.config[key], specialEntries: appSettingsPage.specialEntries[key] ?? [], specialEntriesByKey: appSettingsPage.specialEntries, stackView: stackView}, StackView.PushTransition)
             }
             ScrollIndicator.vertical: ScrollIndicator { }
         }
@@ -62,6 +62,11 @@ StackView {
                 {key: "apiKey", label: qsTr("API key")},
                 {key: "httpsCertPath", label: qsTr("HTTPs certificate path"), type: "filepath"},
                 {key: "httpAuth", label: qsTr("HTTP authentication")},
+            ],
+            httpAuth: [
+                {key: "enabled", label: qsTr("Enabled")},
+                {key: "userName", label: qsTr("Username")},
+                {key: "password", label: qsTr("Password")},
             ]
         })
         property list<Action> actions: [

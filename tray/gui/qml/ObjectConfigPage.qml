@@ -167,7 +167,7 @@ Page {
                             key: modelData.key
                         }
                     }
-                    onClicked: objectConfigPage.stackView.push("ObjectConfigPage.qml", {title: objNameLabel.text, configObject: objectConfigPage.configObject[modelData.key], stackView: objectConfigPage.stackView, parentPage: objectConfigPage, objectNameLabel: objNameLabel, path: `${objectConfigPage.path}.${modelData.key}`, configTemplates: objectConfigPage.configTemplates}, StackView.PushTransition)
+                    onClicked: objectConfigPage.stackView.push("ObjectConfigPage.qml", {title: objNameLabel.text, configObject: objectConfigPage.configObject[modelData.key], stackView: objectConfigPage.stackView, parentPage: objectConfigPage, objectNameLabel: objNameLabel, path: `${objectConfigPage.path}.${modelData.key}`, configTemplates: objectConfigPage.configTemplates, specialEntries: objectConfigPage.specialEntriesByKey[modelData.key] ?? []}, StackView.PushTransition)
                     required property var modelData
                 }
             }
@@ -403,6 +403,7 @@ Page {
 
     property alias model: objectListView.model
     property bool specialEntriesOnly: false
+    property var specialEntriesByKey: ({})
     property var specialEntries: []
     required property var configObject
     property var childObjectTemplate: configTemplates[path]
