@@ -156,7 +156,7 @@ Page {
                             elide: Text.ElideRight
                             font.weight: Font.Medium
                             readonly property string key: modelData.key
-                            readonly property string labelKey: modelData.labelKey
+                            readonly property string labelKey: modelData.labelKey ?? ""
                         }
                         ArrayElementButtons {
                             page: objectConfigPage

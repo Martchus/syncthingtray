@@ -2,6 +2,10 @@
 
 #include "resources/config.h"
 
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+#include <syncthing/interface.h>
+#endif
+
 #include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/settings/settings.h>
 
@@ -410,21 +414,53 @@ bool App::storeSettings()
 bool App::applySettings()
 {
     auto connectionSettings = m_settings.value(QLatin1String("connection"));
-    auto connectionSettingsObj = QJsonObject();
-    if (!connectionSettings.isObject()) {
-        m_connectionSettings.storeToJson(connectionSettingsObj);
-        connectionSettings = *m_settings.insert(QLatin1String("connection"), connectionSettingsObj);
+    auto connectionSettingsObj = connectionSettings.toObject();
+    auto couldLoadCertificate = false;
+    if (connectionSettings.isObject()) {
+        couldLoadCertificate = m_connectionSettings.loadFromJson(connectionSettingsObj);
     } else {
-        connectionSettingsObj = connectionSettings.toObject();
+        m_connectionSettings.storeToJson(connectionSettingsObj);
+        m_settings.insert(QLatin1String("connection"), connectionSettingsObj);
+        couldLoadCertificate = m_connectionSettings.loadHttpsCert();
     }
-    if (!m_connectionSettings.loadFromJson(connectionSettings.toObject())) {
+    if (!couldLoadCertificate) {
         emit error(tr("Unable to load HTTPs certificate"));
     }
-    m_connectionSettings.storeToJson(connectionSettingsObj);
-    m_settings.insert(QLatin1String("connection"), connectionSettingsObj);
     m_connection.setInsecure(m_insecure);
     m_connection.connect(m_connectionSettings);
+    applyLauncherSettings();
     return true;
+}
+
+bool App::applyLauncherSettings()
+{
+    auto launcherSettings = m_settings.value(QLatin1String("launcher"));
+    auto launcherSettingsObj = launcherSettings.toObject();
+    if (!launcherSettings.isObject()) {
+        launcherSettingsObj.insert(QLatin1String("run"), false);
+        launcherSettingsObj.insert(QLatin1String("stopOnMetered"), false);
+        m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
+    }
+
+    m_launcher.setStoppingOnMeteredConnection(launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
+
+    const auto shouldLaunch = m_launcher.shouldLaunchAccordingToSettings() && launcherSettingsObj.value(QLatin1String("run")).toBool();
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    if (shouldLaunch) {
+        auto options = LibSyncthing::RuntimeOptions();
+        options.configDir = (m_settingsDir->path() + QStringLiteral("/syncthing/config")).toStdString();
+        options.dataDir = (m_settingsDir->path() + QStringLiteral("/syncthing/data")).toStdString();
+        m_launcher.launch(options);
+    } else {
+        m_launcher.stopLibSyncthing();
+    }
+    return true;
+#else
+    if (shouldLaunch) {
+        emit error(tr("This build of the app cannot launch Syncthing."));
+    }
+    return false;
+#endif
 }
 
 bool App::importSettings(const QUrl &url)

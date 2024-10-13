@@ -25,20 +25,28 @@ StackView {
                     iconName: "link"
                 }
                 ListElement {
+                    key: "launcher"
+                    label: qsTr("Run conditions of Syncthing backend")
+                    title: qsTr("Configure when to run Syncthing backend")
+                    iconName: "terminal"
+                }
+                ListElement {
                     functionName: "importSettings"
-                    label: qsTr("Import settings/data of app and backend, including secrets")
+                    label: qsTr("Import settings/secrets/data of app and backend")
                     iconName: "download"
                 }
                 ListElement {
                     functionName: "exportSettings"
-                    label: qsTr("Export settings/data of app and backend, including secrets")
+                    label: qsTr("Export ettings/secrets/data of app and backend")
                     iconName: "floppy-o"
                 }
             }
             delegate: ItemDelegate {
                 width: listView.width
                 text: label
-                //icon.source: app.faUrlBase + iconName // leads to crash when closing UI
+                icon.source: app.faUrlBase + iconName // leads to crash when closing UI with Qt < 6.8
+                icon.width: app.iconSize
+                icon.height: app.iconSize
                 onClicked: key.length === 0
                            ? appSettingsPage.initiateBackup(functionName)
                            : stackView.push("ObjectConfigPage.qml", {

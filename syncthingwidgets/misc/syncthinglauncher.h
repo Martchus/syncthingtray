@@ -51,6 +51,7 @@ public:
     void setNetworkConnectionMetered(std::optional<bool> metered);
     bool isStoppingOnMeteredConnection() const;
     void setStoppingOnMeteredConnection(bool stopOnMeteredConnection);
+    bool shouldLaunchAccordingToSettings() const;
     QString errorString() const;
     QUrl guiUrl() const;
     SyncthingProcess *process();
@@ -180,6 +181,15 @@ inline std::optional<bool> SyncthingLauncher::isNetworkConnectionMetered() const
 inline bool SyncthingLauncher::isStoppingOnMeteredConnection() const
 {
     return m_stopOnMeteredConnection;
+}
+
+/// \brief Returns whether Syncthing is supposed to be launched according to settings.
+/// \remarks
+/// - The only relevant setting so far is isStoppingOnMeteredConnection().
+/// - One can still launch Syncthing via the launch() functions despite shouldLaunchAccordingToSettings() returning true.
+inline bool SyncthingLauncher::shouldLaunchAccordingToSettings() const
+{
+    return !isStoppingOnMeteredConnection() || !isNetworkConnectionMetered().value_or(false);
 }
 
 /// \brief Returns the last error message.

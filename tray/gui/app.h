@@ -3,6 +3,8 @@
 
 #include <QQmlApplicationEngine>
 
+#include <syncthingwidgets/misc/syncthinglauncher.h>
+
 #include <syncthingmodel/syncthingdevicemodel.h>
 #include <syncthingmodel/syncthingdirectorymodel.h>
 #include <syncthingmodel/syncthingrecentchangesmodel.h>
@@ -36,6 +38,7 @@ class App : public QObject {
     Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel CONSTANT)
     Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel CONSTANT)
     Q_PROPERTY(Data::SyncthingRecentChangesModel *changesModel READ changesModel CONSTANT)
+    Q_PROPERTY(Data::SyncthingLauncher *launcher READ launcher CONSTANT)
     Q_PROPERTY(QJsonObject settings READ settings WRITE setSettings NOTIFY settingsChanged)
     Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
@@ -65,6 +68,10 @@ public:
     Data::SyncthingRecentChangesModel *changesModel()
     {
         return &m_changesModel;
+    }
+    Data::SyncthingLauncher *launcher()
+    {
+        return &m_launcher;
     }
     const QString &faUrlBase()
     {
@@ -104,6 +111,7 @@ public:
     Q_INVOKABLE bool loadSettings();
     Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applySettings();
+    Q_INVOKABLE bool applyLauncherSettings();
     Q_INVOKABLE bool importSettings(const QUrl &url);
     Q_INVOKABLE bool exportSettings(const QUrl &url);
     Q_INVOKABLE bool openPath(const QString &path);
@@ -148,6 +156,7 @@ private:
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingRecentChangesModel m_changesModel;
     Data::SyncthingConnectionSettings m_connectionSettings;
+    Data::SyncthingLauncher m_launcher;
     QtUtilities::QtSettings m_qtSettings;
     QFile m_settingsFile;
     std::optional<QDir> m_settingsDir;
