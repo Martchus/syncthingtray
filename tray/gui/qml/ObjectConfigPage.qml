@@ -238,8 +238,24 @@ Page {
                             icon.height: 20
                             onClicked: objectConfigPage.updateValue(modelData.key, filepathValue.text = "")
                         }
+                        RoundButton {
+                            Layout.preferredWidth: 36
+                            Layout.preferredHeight: 36
+                            display: AbstractButton.IconOnly
+                            text: qsTr("Edit manually")
+                            ToolTip.text: text
+                            ToolTip.visible: hovered || pressed
+                            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                            icon.source: app.faUrlBase + "pencil"
+                            icon.width: 20
+                            icon.height: 20
+                            onClicked: {
+                                editedFileValue.text = objectConfigPage.configObject[modelData.key];
+                                manualFileDlg.open();
+                            }
+                        }
                         HelpButton {
-                            id: helpButton
+                            id: fileHelpButton
                             configCategory: objectConfigPage.configCategory
                             key: modelData.key
                         }
@@ -249,6 +265,21 @@ Page {
                         id: fileDlg
                         title: modelData.label
                         onAccepted: objectConfigPage.updateValue(modelData.key, filepathValue.text = app.resolveUrl(fileDlg.selectedFile))
+                    }
+                    Dialog {
+                        id: manualFileDlg
+                        anchors.centerIn: Overlay.overlay
+                        title: modelData.label
+                        standardButtons: objectConfigPage.standardButtons
+                        modal: true
+                        width: parent.width - 20
+                        contentItem: TextField {
+                            id: editedFileValue
+                            text: modelData.value
+                            onAccepted: manualFileDlg.accpet()
+                        }
+                        onAccepted: objectConfigPage.updateValue(modelData.key, filepathValue.text = editedFileValue.text)
+                        onHelpRequested: fileHelpButton.clicked()
                     }
                     required property var modelData
                 }
@@ -291,8 +322,24 @@ Page {
                             icon.height: 20
                             onClicked: objectConfigPage.updateValue(modelData.key, folderpathValue.text = "")
                         }
+                        RoundButton {
+                            Layout.preferredWidth: 36
+                            Layout.preferredHeight: 36
+                            display: AbstractButton.IconOnly
+                            text: qsTr("Edit manually")
+                            ToolTip.text: text
+                            ToolTip.visible: hovered || pressed
+                            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                            icon.source: app.faUrlBase + "pencil"
+                            icon.width: 20
+                            icon.height: 20
+                            onClicked: {
+                                editedFolderValue.text = objectConfigPage.configObject[modelData.key];
+                                manualFolderDlg.open();
+                            }
+                        }
                         HelpButton {
-                            id: helpButton
+                            id: folderHelpButton
                             configCategory: objectConfigPage.configCategory
                             key: modelData.key
                         }
@@ -303,6 +350,21 @@ Page {
                         title: modelData.label
                         currentFolder: encodeURIComponent(folderpathValue.text)
                         onAccepted: objectConfigPage.updateValue(modelData.key, folderpathValue.text = app.resolveUrl(folderDlg.selectedFolder))
+                    }
+                    Dialog {
+                        id: manualFolderDlg
+                        anchors.centerIn: Overlay.overlay
+                        title: modelData.label
+                        standardButtons: objectConfigPage.standardButtons
+                        modal: true
+                        width: parent.width - 20
+                        contentItem: TextField {
+                            id: editedFolderValue
+                            text: modelData.value
+                            onAccepted: manualFolderDlg.accpet()
+                        }
+                        onAccepted: objectConfigPage.updateValue(modelData.key, folderpathValue.text = editedFolderValue.text)
+                        onHelpRequested: folderHelpButton.clicked()
                     }
                     required property var modelData
                 }
