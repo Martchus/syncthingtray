@@ -85,6 +85,9 @@ App::App(bool insecure, QObject *parent)
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &App::invalidateStatus);
 
+    m_launcher.setEmittingOutput(true);
+    connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &App::gatherLogs);
+
     auto *const app = QGuiApplication::instance();
     auto *const context = m_engine.rootContext();
     context->setContextProperty(QStringLiteral("app"), this);
@@ -230,6 +233,15 @@ bool App::saveIgnorePatterns(const QString &dirId, QObject *textArea)
     return true;
 }
 
+bool App::showLog(QObject *textArea)
+{
+    textArea->setProperty("text", m_log);
+    connect(this, &App::logsAvailable, textArea, [textArea] (const QString &newLogs) {
+        QMetaObject::invokeMethod(textArea, "insert", Q_ARG(int, textArea->property("length").toInt()), Q_ARG(QString, newLogs));
+    });
+    return true;
+}
+
 bool App::loadDirErrors(const QString &dirId, QObject *view)
 {
     auto connection = connect(&m_connection, &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view](const Data::SyncthingDir &dir) {
@@ -350,6 +362,13 @@ void App::invalidateStatus()
     emit statusChanged();
 }
 
+void App::gatherLogs(const QByteArray &newOutput)
+{
+    const auto asText = QString::fromUtf8(newOutput);
+    emit logsAvailable(asText);
+    m_log.append(asText);
+}
+
 bool App::openSettings()
 {
     if (!m_settingsDir.has_value()) {
@@ -432,7 +451,7 @@ bool App::applySettings()
     return true;
 }
 
-bool App::applyLauncherSettings()
+void App::applyLauncherSettings()
 {
     auto launcherSettings = m_settings.value(QLatin1String("launcher"));
     auto launcherSettingsObj = launcherSettings.toObject();
@@ -444,22 +463,16 @@ bool App::applyLauncherSettings()
 
     m_launcher.setStoppingOnMeteredConnection(launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
 
-    const auto shouldLaunch = m_launcher.shouldLaunchAccordingToSettings() && launcherSettingsObj.value(QLatin1String("run")).toBool();
+    auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    if (shouldLaunch) {
-        auto options = LibSyncthing::RuntimeOptions();
-        options.configDir = (m_settingsDir->path() + QStringLiteral("/syncthing/config")).toStdString();
-        options.dataDir = (m_settingsDir->path() + QStringLiteral("/syncthing/data")).toStdString();
-        m_launcher.launch(options);
-    } else {
-        m_launcher.stopLibSyncthing();
-    }
-    return true;
+    auto options = LibSyncthing::RuntimeOptions();
+    options.configDir = (m_settingsDir->path() + QStringLiteral("/syncthing/config")).toStdString();
+    options.dataDir = (m_settingsDir->path() + QStringLiteral("/syncthing/data")).toStdString();
+    m_launcher.setRunning(shouldRun, std::move(options));
 #else
-    if (shouldLaunch) {
+    if (shouldRun) {
         emit error(tr("This build of the app cannot launch Syncthing."));
     }
-    return false;
 #endif
 }
 

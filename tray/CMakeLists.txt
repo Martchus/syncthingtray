@@ -290,6 +290,7 @@ if (QUICK_GUI)
         gui/qml/FilesPage.qml
         gui/qml/HelpButton.qml
         gui/qml/IgnorePatternPage.qml
+        gui/qml/LogPage.qml
         gui/qml/Main.qml
         gui/qml/ObjectConfigPage.qml
         gui/qml/SettingsPage.qml

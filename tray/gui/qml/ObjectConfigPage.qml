@@ -186,11 +186,21 @@ Page {
                     width: objectListView.width
                     onClicked: booleanSwitch.toggle()
                     contentItem: RowLayout {
-                        Label {
+                        ColumnLayout {
                             Layout.fillWidth: true
-                            text: modelData.label
-                            elide: Text.ElideRight
-                            font.weight: Font.Medium
+                                Label {
+                                    Layout.fillWidth: true
+                                    text: modelData.label
+                                    elide: Text.ElideRight
+                                    font.weight: Font.Medium
+                                }
+                                Label {
+                                    Layout.fillWidth: true
+                                    visible: text.length > 0
+                                    elide: Text.ElideRight
+                                    font.weight: Font.Light
+                                    Component.onCompleted: text = modelData.statusText ?? ""
+                                }
                         }
                         Switch {
                             id: booleanSwitch
@@ -204,6 +214,29 @@ Page {
                         HelpButton {
                             configCategory: objectConfigPage.configCategory
                             key: modelData.key
+                        }
+                    }
+                    required property var modelData
+                }
+            }
+            DelegateChoice {
+                roleValue: "function"
+                ItemDelegate {
+                    width: objectListView.width
+                    onClicked: modelData.value()
+                    contentItem: ColumnLayout {
+                        Label {
+                            Layout.fillWidth: true
+                            text: modelData.label
+                            elide: Text.ElideRight
+                            font.weight: Font.Medium
+                        }
+                        Label {
+                            Layout.fillWidth: true
+                            visible: text.length > 0
+                            elide: Text.ElideRight
+                            font.weight: Font.Light
+                            Component.onCompleted: text = modelData.statusText ?? ""
                         }
                     }
                     required property var modelData
@@ -456,9 +489,9 @@ Page {
     function makeConfigRowForSpecialEntry(specialEntry, value, index) {
         specialEntry.index = index;
         specialEntry.isArray = Array.isArray(objectConfigPage.configObject);
-        specialEntry.value = value;
-        specialEntry.type = specialEntry.type ?? typeof value;
-        specialEntry.label = specialEntry.label ?? uncamel(specialEntry.isArray ? specialEntry.key : typeof value);
+        specialEntry.value = specialEntry.value ?? value;
+        specialEntry.type = specialEntry.type ?? typeof specialEntry.value;
+        specialEntry.label = specialEntry.label ?? uncamel(specialEntry.isArray ? specialEntry.key : specialEntry.type);
         return specialEntry;
     }
 

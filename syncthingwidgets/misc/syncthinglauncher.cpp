@@ -70,6 +70,49 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
 #endif
 }
 
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+/*!
+ * \brief Sets whether Syncthing is supposed to run or not.
+ * \remarks
+ * - This function will takes runtime conditions such as isStoppingOnMeteredConnection() into account.
+ * - This function so far only supports launching via the built-in Syncthing library.
+ */
+void SyncthingLauncher::setRunning(bool running, LibSyncthing::RuntimeOptions &&runtimeOptions)
+{
+    // check runtime conditions
+    auto shouldBeRunning = running;
+    if (isStoppingOnMeteredConnection() && isNetworkConnectionMetered().value_or(false)) {
+        m_stoppedMetered = running;
+        shouldBeRunning = false;
+    }
+    // start/stop Syncthing depending on \a running
+    if (shouldBeRunning) {
+        launch(runtimeOptions);
+    } else {
+        tearDownLibSyncthing();
+    }
+    // save runtime options so Syncthing can resume in case runtime conditions allow it
+    m_lastLauncherSettings = nullptr;
+    m_lastRuntimeOptions = std::move(runtimeOptions);
+    // emit signal in any case (even if there's no change) so runningStatus() is re-evaluated
+    emit runningChanged(shouldBeRunning);
+}
+#endif
+
+/*!
+ * \brief Returns a short message about whether Syncthing is running.
+ */
+QString SyncthingLauncher::runningStatus() const
+{
+    if (isRunning()) {
+        return tr("Syncthing is running");
+    } else if (m_stoppedMetered) {
+        return tr("Syncthing is temporarily stopped due to metered connection");
+    } else {
+        return tr("Syncthing is not running");
+    }
+}
+
 /*!
  * \brief Sets whether the output/log should be emitted via outputAvailable() signal.
  */
@@ -81,6 +124,18 @@ void SyncthingLauncher::setEmittingOutput(bool emittingOutput)
     QByteArray data;
     m_outputBuffer.swap(data);
     emit outputAvailable(std::move(data));
+}
+
+/*!
+ * \brief Returns a short status message about whether the network connection is metered.
+ */
+QString SyncthingLauncher::meteredStatus() const
+{
+    if (m_metered.has_value()) {
+        return m_metered.value() ? tr("Network connection is metered") : tr("Network connection is not metered");
+    } else {
+        return tr("State of network connection cannot be determined");
+    }
 }
 
 /*!
@@ -97,8 +152,14 @@ void SyncthingLauncher::setNetworkConnectionMetered(std::optional<bool> metered)
         if (m_stopOnMeteredConnection) {
             if (metered.value_or(false)) {
                 terminateDueToMeteredConnection();
-            } else if (!metered.value_or(true) && m_stoppedMetered && m_lastLauncherSettings) {
-                launch(*m_lastLauncherSettings);
+            } else if (!metered.value_or(true) && m_stoppedMetered) {
+                if (m_lastLauncherSettings) {
+                    launch(*m_lastLauncherSettings);
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+                } else if (m_lastRuntimeOptions) {
+                    launch(*m_lastRuntimeOptions);
+#endif
+                }
             }
         }
         emit networkConnectionMeteredChanged(metered);
@@ -200,12 +261,17 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
     }
     m_stopOnMeteredConnection = launcherSettings.stopOnMeteredConnection;
     m_lastLauncherSettings = &launcherSettings;
+    m_lastRuntimeOptions.reset();
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 /*!
  * \brief Launches a Syncthing instance using the internal library with the specified \a runtimeOptions.
- * \remarks Does nothing if already running an instance.
+ * \remarks
+ * - Does nothing if already running an instance.
+ * - In contrast to other overloads and setRunning() this function does *not* keep track of the last launcher
+ *   settings or runtime options. Hence Syncthing will not be able to automatically resume in case runtime options
+ *   allow it.
  */
 void SyncthingLauncher::launch(const LibSyncthing::RuntimeOptions &runtimeOptions)
 {

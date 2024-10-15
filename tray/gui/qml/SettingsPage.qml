@@ -51,10 +51,11 @@ StackView {
                            ? appSettingsPage.initiateBackup(functionName)
                            : stackView.push("ObjectConfigPage.qml", {
                                                 title: title,
-                                                configObject: appSettingsPage.config[key],
+                                                configObject: Qt.binding(() => appSettingsPage.config[key]),
                                                 specialEntries: appSettingsPage.specialEntries[key] ?? [],
                                                 specialEntriesByKey: appSettingsPage.specialEntries,
-                                                stackView: stackView},
+                                                stackView: stackView,
+                                                actions: appSettingsPage.actions},
                                             StackView.PushTransition)
             }
             ScrollIndicator.vertical: ScrollIndicator { }
@@ -83,7 +84,12 @@ StackView {
                 {key: "enabled", label: qsTr("Enabled")},
                 {key: "userName", label: qsTr("Username")},
                 {key: "password", label: qsTr("Password")},
-            ]
+            ],
+            launcher: [
+                {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => app.launcher.runningStatus)},
+                {key: "stopOnMetered", label: qsTr("Stop on metered network connection"), statusText: Qt.binding(() => app.launcher.meteredStatus)},
+                {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Shows Syncthing logs since app startup"), value: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
+            ],
         })
         property list<Action> actions: [
             Action {
@@ -93,9 +99,11 @@ StackView {
                     const cfg = app.settings;
                     for (let i = 0, count = model.count; i !== count; ++i) {
                         const entryKey = model.get(i).key;
-                        cfg[entryKey] = appSettingsPage.config[entryKey]
+                        if (entryKey.length > 0) {
+                            cfg[entryKey] = appSettingsPage.config[entryKey];
+                        }
                     }
-                    app.settings = cfg
+                    app.settings = cfg;
                     return true;
                 }
             }

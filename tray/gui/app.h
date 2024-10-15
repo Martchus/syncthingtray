@@ -111,7 +111,7 @@ public:
     Q_INVOKABLE bool loadSettings();
     Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applySettings();
-    Q_INVOKABLE bool applyLauncherSettings();
+    Q_INVOKABLE void applyLauncherSettings();
     Q_INVOKABLE bool importSettings(const QUrl &url);
     Q_INVOKABLE bool exportSettings(const QUrl &url);
     Q_INVOKABLE bool openPath(const QString &path);
@@ -120,6 +120,8 @@ public:
     Q_INVOKABLE bool copyPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE bool loadIgnorePatterns(const QString &dirId, QObject *textArea);
     Q_INVOKABLE bool saveIgnorePatterns(const QString &dirId, QObject *textArea);
+    Q_INVOKABLE bool showLog(QObject *textArea);
+    Q_INVOKABLE void clearLog();
     Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
     Q_INVOKABLE bool showError(const QString &errorMessage);
     Q_INVOKABLE void setCurrentControls(bool visible, int tabIndex);
@@ -135,6 +137,7 @@ Q_SIGNALS:
     void error(const QString &errorMessage, const QString &details = QString());
     void info(const QString &infoMessage, const QString &details = QString());
     void statusChanged();
+    void logsAvailable(const QString &newLogMessages);
 
 protected:
     bool event(QEvent *event) override;
@@ -143,6 +146,7 @@ private Q_SLOTS:
     void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,
         const QByteArray &response);
     void invalidateStatus();
+    void gatherLogs(const QByteArray &newOutput);
 
 private:
     void applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled);
@@ -163,12 +167,19 @@ private:
     QJsonObject m_settings;
     QString m_faUrlBase;
     std::optional<QString> m_status;
+    QString m_log;
     int m_iconSize;
     bool m_insecure;
     bool m_darkmodeEnabled;
     bool m_darkColorScheme;
     bool m_darkPalette;
 };
+
+inline void App::clearLog()
+{
+    m_log.clear();
+}
+
 } // namespace QtGui
 
 #endif // SYNCTHING_TRAY_APP_H

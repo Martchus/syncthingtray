@@ -33,6 +33,8 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
     Q_PROPERTY(bool emittingOutput READ isEmittingOutput WRITE setEmittingOutput)
     Q_PROPERTY(std::optional<bool> networkConnectionMetered READ isNetworkConnectionMetered WRITE setNetworkConnectionMetered NOTIFY
             networkConnectionMeteredChanged)
+    Q_PROPERTY(QString meteredStatus READ meteredStatus NOTIFY networkConnectionMeteredChanged)
+    Q_PROPERTY(QString runningStatus READ runningStatus NOTIFY runningChanged)
     Q_PROPERTY(bool stoppingOnMeteredConnection READ isStoppingOnMeteredConnection WRITE setStoppingOnMeteredConnection)
     Q_PROPERTY(QUrl guiUrl READ guiUrl NOTIFY guiUrlChanged)
     Q_PROPERTY(SyncthingProcess *process READ process)
@@ -41,6 +43,10 @@ public:
     explicit SyncthingLauncher(QObject *parent = nullptr);
 
     bool isRunning() const;
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    void setRunning(bool running, LibSyncthing::RuntimeOptions &&runtimeOptions);
+#endif
+    QString runningStatus() const;
     CppUtilities::DateTime activeSince() const;
     bool isActiveFor(unsigned int atLeastSeconds) const;
     bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
@@ -48,6 +54,7 @@ public:
     bool isEmittingOutput() const;
     void setEmittingOutput(bool emittingOutput);
     std::optional<bool> isNetworkConnectionMetered() const;
+    QString meteredStatus() const;
     void setNetworkConnectionMetered(std::optional<bool> metered);
     bool isStoppingOnMeteredConnection() const;
     void setStoppingOnMeteredConnection(bool stopOnMeteredConnection);
@@ -107,6 +114,9 @@ private:
     SyncthingProcess m_process;
     QUrl m_guiListeningUrl;
     const Settings::Launcher *m_lastLauncherSettings;
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    std::optional<LibSyncthing::RuntimeOptions> m_lastRuntimeOptions;
+#endif
     SyncthingConnection *m_relevantConnection;
     QFuture<void> m_startFuture;
     QFuture<void> m_stopFuture;
