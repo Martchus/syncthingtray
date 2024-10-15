@@ -201,13 +201,35 @@
                 list of packages and their versions.
               </p>
               <div class="downloads-platform">
+                <input type="checkbox" id="downloads-community-checkbox-ubuntu"/><label for="downloads-community-checkbox-ubuntu">Ubuntu</label>
+                <ul>
+                  <li>Generic tray application: <code>sudo apt install syncthingtray</code></li>
+                  <li>KDE integrations: <code>sudo apt install syncthingtray-kde-plasma</code></li>
+                </ul>
+                <p>
+                  You can see an overview of available package versions on <a href="https://launchpad.net/ubuntu/+source/syncthingtray" target="blank">Launchpad</a>.
+                  Note that newer versions than what is stated under "Package information" might be available under "Other versions of 'syncthingtray' in untrusted archives.".
+                </p>
+                <p>
+                  For KDE integrations, the major Qt version Syncthing Tray packages are built against must match the major KDE version. As maintainers might need some
+                  time to update the Syncthing Tray packaging this might not always be the case.
+                </p>
+                <p>
+                  Those packages <em>may</em> be available on Ubuntu derivats as well (e.g. Pop!_OS). KDE neon is known to <em>not</em> support the packages.
+                </p>
+              </div>
+              <div class="downloads-platform">
                 <input type="checkbox" id="downloads-community-checkbox-debian"/><label for="downloads-community-checkbox-debian">Debian</label>
                 <ul>
                   <li>Generic tray application: <code>sudo apt install syncthingtray</code></li>
                   <li>KDE integrations: <code>sudo apt install syncthingtray-kde-plasma</code></li>
                 </ul>
                 <p>
-                  Those packages <em>may</em> be available on Debian derivats as well (e.g. Ubuntu, Pop!_OS, … but not Neon).
+                  For KDE integrations, the major Qt version Syncthing Tray packages are built against must match the major KDE version. As maintainers might need some
+                  time to update the Syncthing Tray packaging this might not always be the case.
+                </p>
+                <p>
+                  Those packages <em>may</em> be available on Debian derivats as well (e.g. Ubuntu, Pop!_OS, …). KDE neon is known to <em>not</em> support the packages.
                 </p>
               </div>
               <div class="downloads-platform">
