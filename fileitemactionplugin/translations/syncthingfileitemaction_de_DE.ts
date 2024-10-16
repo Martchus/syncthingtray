@@ -50,61 +50,61 @@
 <context>
     <name>SyncthingFileItemAction</name>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="153"/>
+        <location filename="../syncthingfileitemaction.cpp" line="151"/>
         <source>Rescan selected items</source>
         <translation>Auswahl neu scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="172"/>
+        <location filename="../syncthingfileitemaction.cpp" line="170"/>
         <source>Rescan selected folders</source>
         <translation>Ausgewählte Ordner neu scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="185"/>
+        <location filename="../syncthingfileitemaction.cpp" line="183"/>
         <source>Resume selected folders</source>
         <translation>Ausgewählte Ordner fortsetzen</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="155"/>
-        <location filename="../syncthingfileitemaction.cpp" line="172"/>
-        <location filename="../syncthingfileitemaction.cpp" line="203"/>
+        <location filename="../syncthingfileitemaction.cpp" line="153"/>
+        <location filename="../syncthingfileitemaction.cpp" line="170"/>
+        <location filename="../syncthingfileitemaction.cpp" line="201"/>
         <source>Rescan &quot;%1&quot;</source>
         <translation>&quot;%1&quot; neu scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="188"/>
+        <location filename="../syncthingfileitemaction.cpp" line="186"/>
         <source>Pause selected folders</source>
         <translation>Ausgewählte Ordner pausieren</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="203"/>
+        <location filename="../syncthingfileitemaction.cpp" line="201"/>
         <source>Rescan containing folders</source>
         <translation>Beinhaltenden Ordner neu scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="215"/>
+        <location filename="../syncthingfileitemaction.cpp" line="213"/>
         <source>Resume containing folders</source>
         <translation>Beinhaltende Ordner fortsetzen</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="243"/>
+        <location filename="../syncthingfileitemaction.cpp" line="241"/>
         <source>Not a shared directory</source>
         <translation>Kein geteilter Ordner</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="185"/>
-        <location filename="../syncthingfileitemaction.cpp" line="215"/>
+        <location filename="../syncthingfileitemaction.cpp" line="183"/>
+        <location filename="../syncthingfileitemaction.cpp" line="213"/>
         <source>Resume &quot;%1&quot;</source>
         <translation>&quot;%1&quot; fortsetzen (in &quot;%1&quot;)</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="219"/>
+        <location filename="../syncthingfileitemaction.cpp" line="217"/>
         <source>Pause containing folders</source>
         <translation>Beinhaltenden Ordner pausieren</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="188"/>
-        <location filename="../syncthingfileitemaction.cpp" line="219"/>
+        <location filename="../syncthingfileitemaction.cpp" line="186"/>
+        <location filename="../syncthingfileitemaction.cpp" line="217"/>
         <source>Pause &quot;%1&quot;</source>
         <translation>&quot;%1&quot; pausieren (in &quot;%1&quot;)</translation>
     </message>
@@ -113,12 +113,12 @@
         <translation type="vanished">Helle Farben verwenden</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="277"/>
+        <location filename="../syncthingfileitemaction.cpp" line="275"/>
         <source>Select Syncthing config ...</source>
         <translation>Syncthing-Konfiguration wählen ...</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="282"/>
+        <location filename="../syncthingfileitemaction.cpp" line="280"/>
         <source>About</source>
         <translation>Über</translation>
     </message>
@@ -126,52 +126,52 @@
 <context>
     <name>SyncthingFileItemActionStaticData</name>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="85"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="84"/>
         <source>Syncthing connection error</source>
         <translation>Fehler beim Verbinden mit Syncthing</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="105"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="104"/>
         <source>About</source>
         <translation>Über</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="113"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="112"/>
         <source>Select Syncthing config file</source>
         <translation>Syncthing-Konfigurationsdatei auswählen</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="134"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="133"/>
         <source>Syncthing config file can not be automatically located</source>
         <translation>Syncthing-Konfigurationsdatei kann nicht automatisch gefunden werden</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="141"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="140"/>
         <source>Unable to load Syncthing config from &quot;%1&quot;</source>
         <translation>Fehler beim Laden der Syncthing-Konfiguration von &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="150"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="149"/>
         <source>Syncthing config from &quot;%1&quot; does not contain GUI address.</source>
         <translation>Die Syncthing-Konfiguration &quot;%1&quot; beinhaltet keine GUI-Adresse.</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="162"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="161"/>
         <source>Enter API key</source>
         <translation>API-Schlüssel eingeben</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="162"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="161"/>
         <source>The selected config file does not contain an API key. Please enter the API key manually:</source>
         <translation>Die gewählte Konfiguration enthält keinen API-Schlüssel. Gib den API-Schlüssel manuell ein:</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="164"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="163"/>
         <source>No API key supplied for &quot;%1&quot;.</source>
         <translation>Kein API-Schlüssel für die Konfiguration &quot;%1&quot; angegeben.</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemactionstaticdata.cpp" line="123"/>
+        <location filename="../syncthingfileitemactionstaticdata.cpp" line="122"/>
         <source>(still using config from &quot;%1&quot;)</source>
         <translation>(verwende weiterhin &quot;%1&quot;)</translation>
     </message>

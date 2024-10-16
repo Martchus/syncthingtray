@@ -4,7 +4,37 @@
 <context>
     <name>Data::SyncthingLauncher</name>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="138"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="108"/>
+        <source>Syncthing is running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthinglauncher.cpp" line="110"/>
+        <source>Syncthing is temporarily stopped due to metered connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthinglauncher.cpp" line="112"/>
+        <source>Syncthing is not running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthinglauncher.cpp" line="135"/>
+        <source>Network connection is metered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthinglauncher.cpp" line="135"/>
+        <source>Network connection is not metered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthinglauncher.cpp" line="137"/>
+        <source>State of network connection cannot be determined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthinglauncher.cpp" line="199"/>
         <source>Not built with libsyncthing support.</source>
         <translation>Unterstützung für libsyncthing nicht aktiviert.</translation>
     </message>
@@ -2492,7 +2522,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="681"/>
+        <location filename="../settings/settings.cpp" line="669"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation>Sicherung von %1 (vom Einrichtungsassistenten erstellt)</translation>
     </message>
@@ -2500,7 +2530,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="331"/>
+        <location filename="../settings/settings.cpp" line="319"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Fehler beim laden des Zertifikats &quot;%1&quot; beim wiederherstellen der Einstellungen.</translation>
     </message>

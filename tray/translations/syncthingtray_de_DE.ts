@@ -4,118 +4,128 @@
 <context>
     <name>QtGui::App</name>
     <message>
-        <location filename="../gui/app.cpp" line="108"/>
+        <location filename="../gui/app.cpp" line="115"/>
         <source>Not connected to backend. Check app settings for problems.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="110"/>
+        <location filename="../gui/app.cpp" line="117"/>
         <source>Waiting for backend …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="155"/>
-        <location filename="../gui/app.cpp" line="164"/>
+        <location filename="../gui/app.cpp" line="162"/>
+        <location filename="../gui/app.cpp" line="171"/>
         <source>Unable to open &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="175"/>
+        <location filename="../gui/app.cpp" line="182"/>
         <source>Copied value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="178"/>
+        <location filename="../gui/app.cpp" line="185"/>
         <source>Unable to copy value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="187"/>
+        <location filename="../gui/app.cpp" line="194"/>
         <source>Unable to copy &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="189"/>
+        <location filename="../gui/app.cpp" line="196"/>
         <source>Copied path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="199"/>
+        <location filename="../gui/app.cpp" line="206"/>
         <source>Unable to load ignore patterns: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="220"/>
+        <location filename="../gui/app.cpp" line="227"/>
         <source>Unable to save ignore patterns: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="346"/>
+        <location filename="../gui/app.cpp" line="351"/>
+        <source>Unable to resolve URL &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/app.cpp" line="378"/>
         <source>Unable to create settings directory under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="355"/>
+        <location filename="../gui/app.cpp" line="387"/>
         <source>Unable to open settings under &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="370"/>
+        <location filename="../gui/app.cpp" line="402"/>
         <source>Unable to read settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="374"/>
+        <location filename="../gui/app.cpp" line="406"/>
         <source>Unable to restore settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="375"/>
+        <location filename="../gui/app.cpp" line="407"/>
         <source>JSON document contains no object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="395"/>
+        <location filename="../gui/app.cpp" line="427"/>
         <source>Unable to save settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="412"/>
+        <location filename="../gui/app.cpp" line="446"/>
         <source>Unable to load HTTPs certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="424"/>
+        <location filename="../gui/app.cpp" line="474"/>
+        <source>This build of the app cannot launch Syncthing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/app.cpp" line="482"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="432"/>
+        <location filename="../gui/app.cpp" line="490"/>
         <source>Unable to import settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="435"/>
+        <location filename="../gui/app.cpp" line="493"/>
         <source>Settings have been imported from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="445"/>
+        <location filename="../gui/app.cpp" line="503"/>
         <source>Unable to create export directory under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="449"/>
+        <location filename="../gui/app.cpp" line="507"/>
         <source>Unable to export settings: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="456"/>
+        <location filename="../gui/app.cpp" line="514"/>
         <source>Unable to export settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="459"/>
+        <location filename="../gui/app.cpp" line="517"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>

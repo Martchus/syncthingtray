@@ -342,27 +342,27 @@
 <context>
     <name>Data::SyncthingService</name>
     <message>
-        <location filename="../syncthingservice.cpp" line="394"/>
+        <location filename="../syncthingservice.cpp" line="378"/>
         <source>start unit</source>
         <translation>启动单位</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="396"/>
+        <location filename="../syncthingservice.cpp" line="380"/>
         <source>stop unit</source>
         <translation>停止单位</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="411"/>
+        <location filename="../syncthingservice.cpp" line="395"/>
         <source>enable unit</source>
         <translation>启用单位</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="413"/>
+        <location filename="../syncthingservice.cpp" line="397"/>
         <source>disable unit</source>
         <translation>禁用单位</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="423"/>
+        <location filename="../syncthingservice.cpp" line="407"/>
         <source>reload all unit files</source>
         <translation type="unfinished"></translation>
     </message>
