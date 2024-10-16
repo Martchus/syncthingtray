@@ -261,7 +261,9 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
     }
     m_stopOnMeteredConnection = launcherSettings.stopOnMeteredConnection;
     m_lastLauncherSettings = &launcherSettings;
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     m_lastRuntimeOptions.reset();
+#endif
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
