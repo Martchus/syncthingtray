@@ -724,7 +724,11 @@ void SyncthingProcess::handleLeftoverProcesses()
 #endif
 }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 bool SyncthingProcess::nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result)
+#else
+bool SyncthingProcess::nativeEventFilter(const QByteArray &eventType, void *message, long *result)
+#endif
 {
     Q_UNUSED(result)
 #ifdef Q_OS_WINDOWS
