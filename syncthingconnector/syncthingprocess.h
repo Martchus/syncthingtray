@@ -58,7 +58,8 @@ public:
     static bool isActiveFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds);
     bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
     bool isActiveWithoutSleepFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds) const;
-    static bool isActiveWithoutSleepFor(CppUtilities::DateTime lastWakeUp, bool isFallingAsleep, CppUtilities::DateTime activeSince, unsigned int atLeastSeconds);
+    static bool isActiveWithoutSleepFor(
+        CppUtilities::DateTime lastWakeUp, bool isFallingAsleep, CppUtilities::DateTime activeSince, unsigned int atLeastSeconds);
     bool isManuallyStopped() const;
     static SyncthingProcess *mainInstance();
     static void setMainInstance(SyncthingProcess *mainInstance);
@@ -179,7 +180,8 @@ inline bool SyncthingProcess::isActiveWithoutSleepFor(CppUtilities::DateTime act
 
 /// \brief Checks whether a process already runs for the specified number of seconds.
 /// \remarks Considers only the time since the last wakeup if known; otherwise it is identical to isActiveFor().
-inline bool SyncthingProcess::isActiveWithoutSleepFor(CppUtilities::DateTime lastWakeUp, bool isFallingAsleep, CppUtilities::DateTime activeSince, unsigned int atLeastSeconds)
+inline bool SyncthingProcess::isActiveWithoutSleepFor(
+    CppUtilities::DateTime lastWakeUp, bool isFallingAsleep, CppUtilities::DateTime activeSince, unsigned int atLeastSeconds)
 {
     if (!atLeastSeconds) {
         return true;

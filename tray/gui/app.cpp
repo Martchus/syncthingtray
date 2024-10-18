@@ -236,7 +236,7 @@ bool App::saveIgnorePatterns(const QString &dirId, QObject *textArea)
 bool App::showLog(QObject *textArea)
 {
     textArea->setProperty("text", m_log);
-    connect(this, &App::logsAvailable, textArea, [textArea] (const QString &newLogs) {
+    connect(this, &App::logsAvailable, textArea, [textArea](const QString &newLogs) {
         QMetaObject::invokeMethod(textArea, "insert", Q_ARG(int, textArea->property("length").toInt()), Q_ARG(QString, newLogs));
     });
     return true;

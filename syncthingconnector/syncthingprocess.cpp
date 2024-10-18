@@ -744,12 +744,10 @@ bool SyncthingProcess::nativeEventFilter(const QByteArray &eventType, void *mess
                 m_fallingAsleep = false;
                 m_lastWakeUp = DateTime::gmtNow();
                 break;
-            default:
-                ;
+            default:;
             }
             break;
-        default:
-            ;
+        default:;
         }
     }
 #else

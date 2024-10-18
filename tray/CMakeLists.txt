@@ -304,7 +304,9 @@ if (QUICK_GUI)
     # workaround build errors due to implicit conversions in generated code
     if (TREAT_WARNINGS_AS_ERRORS)
         foreach (QML_FILE AdvancedDevConfigPage AdvancedDirConfigPage)
-            set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/.rcc/qmlcache/${META_TARGET_NAME}_gui/qml/${QML_FILE}_qml.cpp" PROPERTIES COMPILE_FLAGS "-Wno-error=conversion")
+            set_source_files_properties(
+                "${CMAKE_CURRENT_BINARY_DIR}/.rcc/qmlcache/${META_TARGET_NAME}_gui/qml/${QML_FILE}_qml.cpp"
+                PROPERTIES COMPILE_FLAGS "-Wno-error=conversion")
         endforeach ()
     endif ()
 endif ()
