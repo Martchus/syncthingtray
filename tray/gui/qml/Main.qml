@@ -10,7 +10,7 @@ ApplicationWindow {
     visible: true
     width: 700
     height: 500
-    title: qsTr("Syncthing App")
+    title: qsTr("Syncthing")
     onVisibleChanged: app.setCurrentControls(window.visible, pageStack.currentIndex)
     Material.theme: app.darkmodeEnabled ? Material.Dark : Material.Light
     Material.accent: Material.LightBlue
