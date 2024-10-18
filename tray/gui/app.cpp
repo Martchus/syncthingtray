@@ -149,6 +149,11 @@ bool App::reload()
     return loadMain();
 }
 
+void App::shutdown()
+{
+    m_launcher.stopLibSyncthing();
+}
+
 bool App::openPath(const QString &path)
 {
 #ifdef Q_OS_ANDROID
