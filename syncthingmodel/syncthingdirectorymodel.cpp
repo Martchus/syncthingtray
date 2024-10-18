@@ -376,8 +376,8 @@ int SyncthingDirectoryModel::rowCount(const QModelIndex &parent) const
 {
     if (!parent.isValid()) {
         return static_cast<int>(m_dirs.size());
-    } else if (!parent.parent().isValid() && static_cast<size_t>(parent.row()) < m_rowCount.size()) {
-        return m_rowCount[static_cast<size_t>(parent.row())];
+    } else if (!parent.parent().isValid() && static_cast<std::size_t>(parent.row()) < m_rowCount.size()) {
+        return m_rowCount[static_cast<std::size_t>(parent.row())];
     } else {
         return 0;
     }
@@ -396,11 +396,11 @@ int SyncthingDirectoryModel::columnCount(const QModelIndex &parent) const
 
 void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &dir, int index)
 {
-    if (index < 0 || static_cast<size_t>(index) >= m_rowCount.size()) {
+    if (index < 0 || static_cast<std::size_t>(index) >= m_rowCount.size()) {
         return;
     }
 
-    // update top-level indizes
+    // update top-level indices
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
     static const QVector<int> modelRoles1({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, DirectoryPaused, DirectoryStatus,
         DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath, DirectoryPullErrorCount });
@@ -410,18 +410,18 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &dir, int inde
     emit dataChanged(modelIndex2, modelIndex2, modelRoles2);
 
     // remove/insert detail rows
-    const auto oldRowCount = m_rowCount[static_cast<size_t>(index)];
+    const auto oldRowCount = m_rowCount[static_cast<std::size_t>(index)];
     const auto newRowCount = computeDirectoryRowCount(dir);
     const auto newLastRow = newRowCount - 1;
     if (oldRowCount > newRowCount) {
         // begin removing rows for statistics
         beginRemoveRows(modelIndex1, 2, 3);
-        m_rowCount[static_cast<size_t>(index)] = newRowCount;
+        m_rowCount[static_cast<std::size_t>(index)] = newRowCount;
         endRemoveRows();
     } else if (newRowCount > oldRowCount) {
         // begin inserting rows for statistics
         beginInsertRows(modelIndex1, 2, 3);
-        m_rowCount[static_cast<size_t>(index)] = newRowCount;
+        m_rowCount[static_cast<std::size_t>(index)] = newRowCount;
         endInsertRows();
     }
 

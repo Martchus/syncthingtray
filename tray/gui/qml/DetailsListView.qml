@@ -6,6 +6,7 @@ import Main
 ListView {
     id: detailsView
     Layout.fillWidth: true
+    Layout.preferredHeight: height
     visible: false
     interactive: false
 
@@ -13,9 +14,12 @@ ListView {
     property ListView mainView: mainDelegate.mainView
 
     onCountChanged: {
-        var d = delegate.createObject(detailsView, {detailName: "", detailValue: ""});
-        height = count * d.height
-        d.destroy()
+        if (mainView.mainModel.toString().includes("DeviceModel")) {
+            console.log("model: " + detailsView.count.toString());
+        }
+        const d = detailsView.delegate.createObject(detailsView, {detailName: "", detailValue: ""});
+        detailsView.height = detailsView.count * d.height;
+        d.destroy();
     }
 
     model: DelegateModel {

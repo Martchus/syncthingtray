@@ -42,13 +42,17 @@ public:
 
 private Q_SLOTS:
     void devStatusChanged(const Data::SyncthingDev &, int index);
+    void handleConfigInvalidated() override;
+    void handleNewConfigAvailable() override;
     void handleStatusIconsChanged() override;
     void handleForkAwesomeIconsChanged() override;
 
 private:
     QVariant devStatusColor(const SyncthingDev &dev) const;
+    void updateRowCount();
 
     const std::vector<SyncthingDev> &m_devs;
+    std::vector<int> m_rowCount;
 };
 
 inline const SyncthingDev *SyncthingDeviceModel::info(const QModelIndex &index) const
