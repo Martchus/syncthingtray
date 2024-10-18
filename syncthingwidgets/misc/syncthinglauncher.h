@@ -25,6 +25,15 @@ namespace Data {
 
 class SyncthingConnection;
 
+struct SYNCTHINGWIDGETS_EXPORT SyncthingExitStatus {
+    explicit SyncthingExitStatus(int code, QProcess::ExitStatus status)
+        : code(code)
+        , status(status)
+    {};
+    int code = 0;
+    QProcess::ExitStatus status = QProcess::NormalExit;
+};
+
 class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool running READ isRunning NOTIFY runningChanged)
@@ -133,6 +142,7 @@ private:
     bool m_useLibSyncthing;
     bool m_stopOnMeteredConnection;
     std::optional<bool> m_metered;
+    std::optional<SyncthingExitStatus> m_lastExitStatus;
     static SyncthingLauncher *s_mainInstance;
 };
 

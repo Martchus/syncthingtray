@@ -108,6 +108,8 @@ QString SyncthingLauncher::runningStatus() const
         return tr("Syncthing is running");
     } else if (m_stoppedMetered) {
         return tr("Syncthing is temporarily stopped due to metered connection");
+    } else if (m_lastExitStatus.has_value()) {
+        return tr("Syncthing exited with status %1").arg(m_lastExitStatus.value().code);
     } else {
         return tr("Syncthing is not running");
     }
@@ -354,9 +356,10 @@ void SyncthingLauncher::handleProcessStateChanged(QProcess::ProcessState newStat
     }
 }
 
-void SyncthingLauncher::handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus)
+void SyncthingLauncher::handleProcessFinished(int code, QProcess::ExitStatus status)
 {
-    emit exited(exitCode, exitStatus);
+    const auto &exitStatus = m_lastExitStatus.emplace(code, status);
+    emit exited(exitStatus.code, exitStatus.status);
 }
 
 void SyncthingLauncher::resetState()
@@ -367,6 +370,7 @@ void SyncthingLauncher::resetState()
     m_relevantConnection = nullptr;
     m_guiListeningUrlSearch.reset();
     m_exitSearch.reset();
+    m_lastExitStatus.reset();
     if (!m_guiListeningUrl.isEmpty()) {
         m_guiListeningUrl.clear();
         emit guiUrlChanged(m_guiListeningUrl);
@@ -444,16 +448,18 @@ void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runt
     LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
     emit runningChanged(true);
     const auto exitCode = LibSyncthing::runSyncthing(runtimeOptions);
+    const auto &exitStatus = m_lastExitStatus.emplace(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
     m_guiListeningUrl.clear();
     emit guiUrlChanged(m_guiListeningUrl);
-    emit exited(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
+    emit exited(exitStatus.code, exitStatus.status);
     emit runningChanged(false);
 }
 #else
 void SyncthingLauncher::showLibSyncthingNotSupported()
 {
     handleOutputAvailable(QByteArrayLiteral("libsyncthing support not enabled"));
-    emit exited(-1, QProcess::CrashExit);
+    const auto &exitStatus = m_lastExitStatus.emplace(-1, QProcess::CrashExit);
+    emit exited(exitStatus.code, exitStatus.status);
 }
 #endif
 
