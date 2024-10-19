@@ -76,7 +76,7 @@ Page {
                         contentItem: TextField {
                             id: editedStringValue
                             text: modelData.value
-                            onAccepted: stringDlg.accpet()
+                            onAccepted: stringDlg.accept()
                         }
                         onAccepted: objectConfigPage.updateValue(modelData.key, stringValue.text = editedStringValue.text)
                         onRejected: editedStringValue.text = objectConfigPage.configObject[modelData.key]
@@ -131,7 +131,7 @@ Page {
                                 id: numberValidator
                                 locale: "en"
                             }
-                            onAccepted: numberDlg.accpet()
+                            onAccepted: numberDlg.accept()
                         }
                         onAccepted: {
                             const number = Number.fromLocaleString(Qt.locale(numberValidator.locale), editedNumberValue.text)
@@ -318,7 +318,7 @@ Page {
                         contentItem: TextField {
                             id: editedFileValue
                             text: modelData.value
-                            onAccepted: manualFileDlg.accpet()
+                            onAccepted: manualFileDlg.accept()
                         }
                         onAccepted: objectConfigPage.updateValue(modelData.key, filepathValue.text = editedFileValue.text)
                         onHelpRequested: fileHelpButton.clicked()
@@ -403,7 +403,7 @@ Page {
                         contentItem: TextField {
                             id: editedFolderValue
                             text: modelData.value
-                            onAccepted: manualFolderDlg.accpet()
+                            onAccepted: manualFolderDlg.accept()
                         }
                         onAccepted: objectConfigPage.updateValue(modelData.key, folderpathValue.text = editedFolderValue.text)
                         onHelpRequested: folderHelpButton.clicked()
