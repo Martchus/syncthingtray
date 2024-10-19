@@ -341,7 +341,6 @@ ApplicationWindow {
     Component.onCompleted: {
         window.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
         window.contentItem.Keys.released.connect((event) => {
-            console.log("main key event: 0x" + event.key.toString(16))
             if (event.key === Qt.Key_Back || (event.key === Qt.Key_Backspace && typeof activeFocusItem.getText !== "function")) {
                 event.accepted = pageStack.pop();
             } else if (event.key === Qt.Key_F5) {
@@ -350,7 +349,6 @@ ApplicationWindow {
         });
     }
     onActiveFocusItemChanged: {
-        console.log("focus item: " + activeFocusItem?.toString())
         if (activeFocusItem?.toString().startsWith("QQuickPopupItem")) {
             window.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
         }

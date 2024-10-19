@@ -14,9 +14,6 @@ ListView {
     property ListView mainView: mainDelegate.mainView
 
     onCountChanged: {
-        if (mainView.mainModel.toString().includes("DeviceModel")) {
-            console.log("model: " + detailsView.count.toString());
-        }
         const d = detailsView.delegate.createObject(detailsView, {detailName: "", detailValue: ""});
         detailsView.height = detailsView.count * d.height;
         d.destroy();
