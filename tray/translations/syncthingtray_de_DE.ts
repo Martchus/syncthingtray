@@ -14,118 +14,118 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="162"/>
-        <location filename="../gui/app.cpp" line="171"/>
+        <location filename="../gui/app.cpp" line="167"/>
+        <location filename="../gui/app.cpp" line="176"/>
         <source>Unable to open &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="182"/>
+        <location filename="../gui/app.cpp" line="187"/>
         <source>Copied value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="185"/>
+        <location filename="../gui/app.cpp" line="190"/>
         <source>Unable to copy value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="194"/>
+        <location filename="../gui/app.cpp" line="199"/>
         <source>Unable to copy &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="196"/>
+        <location filename="../gui/app.cpp" line="201"/>
         <source>Copied path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="206"/>
+        <location filename="../gui/app.cpp" line="211"/>
         <source>Unable to load ignore patterns: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="227"/>
+        <location filename="../gui/app.cpp" line="232"/>
         <source>Unable to save ignore patterns: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="351"/>
+        <location filename="../gui/app.cpp" line="356"/>
         <source>Unable to resolve URL &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="378"/>
+        <location filename="../gui/app.cpp" line="383"/>
         <source>Unable to create settings directory under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="387"/>
+        <location filename="../gui/app.cpp" line="392"/>
         <source>Unable to open settings under &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="402"/>
+        <location filename="../gui/app.cpp" line="407"/>
         <source>Unable to read settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="406"/>
+        <location filename="../gui/app.cpp" line="411"/>
         <source>Unable to restore settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="407"/>
+        <location filename="../gui/app.cpp" line="412"/>
         <source>JSON document contains no object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="427"/>
+        <location filename="../gui/app.cpp" line="432"/>
         <source>Unable to save settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="446"/>
+        <location filename="../gui/app.cpp" line="451"/>
         <source>Unable to load HTTPs certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="474"/>
+        <location filename="../gui/app.cpp" line="479"/>
         <source>This build of the app cannot launch Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="482"/>
+        <location filename="../gui/app.cpp" line="487"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="490"/>
+        <location filename="../gui/app.cpp" line="495"/>
         <source>Unable to import settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="493"/>
+        <location filename="../gui/app.cpp" line="498"/>
         <source>Settings have been imported from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="503"/>
+        <location filename="../gui/app.cpp" line="508"/>
         <source>Unable to create export directory under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="507"/>
+        <location filename="../gui/app.cpp" line="512"/>
         <source>Unable to export settings: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="514"/>
+        <location filename="../gui/app.cpp" line="519"/>
         <source>Unable to export settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/app.cpp" line="517"/>
+        <location filename="../gui/app.cpp" line="522"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -133,27 +133,27 @@
 <context>
     <name>QtGui::DevView</name>
     <message>
-        <location filename="../gui/devview.cpp" line="66"/>
+        <location filename="../gui/devview.cpp" line="65"/>
         <source>Copy value</source>
         <translation>Wert kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="72"/>
+        <location filename="../gui/devview.cpp" line="71"/>
         <source>Copy name</source>
         <translation>Namen kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="75"/>
+        <location filename="../gui/devview.cpp" line="74"/>
         <source>Copy ID</source>
         <translation>ID kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="81"/>
+        <location filename="../gui/devview.cpp" line="80"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../gui/devview.cpp" line="86"/>
+        <location filename="../gui/devview.cpp" line="85"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
@@ -161,47 +161,47 @@
 <context>
     <name>QtGui::DirView</name>
     <message>
-        <location filename="../gui/dirview.cpp" line="78"/>
+        <location filename="../gui/dirview.cpp" line="77"/>
         <source>Copy value</source>
         <translation>Wert kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="84"/>
+        <location filename="../gui/dirview.cpp" line="83"/>
         <source>Copy label/ID</source>
         <translation>Namen/ID kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="87"/>
+        <location filename="../gui/dirview.cpp" line="86"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="92"/>
+        <location filename="../gui/dirview.cpp" line="91"/>
         <source>Rescan</source>
         <translation>Scannen</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="97"/>
+        <location filename="../gui/dirview.cpp" line="96"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="102"/>
+        <location filename="../gui/dirview.cpp" line="101"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="106"/>
+        <location filename="../gui/dirview.cpp" line="105"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="110"/>
+        <location filename="../gui/dirview.cpp" line="109"/>
         <source>Browse remote files</source>
         <translation>Globale Dateistruktur durchsuchen</translation>
     </message>
     <message>
-        <location filename="../gui/dirview.cpp" line="112"/>
+        <location filename="../gui/dirview.cpp" line="111"/>
         <source>Show/edit ignore patterns</source>
         <translation>Ignoriermuster anzeigen/editieren</translation>
     </message>
