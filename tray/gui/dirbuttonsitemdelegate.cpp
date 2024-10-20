@@ -8,14 +8,10 @@
 #include <qtforkawesome/icon.h>
 #include <qtforkawesome/renderer.h>
 
-#include <QApplication>
-#include <QBrush>
 #include <QPainter>
 #include <QPalette>
-#include <QPixmap>
 #include <QStyle>
 #include <QStyleOptionViewItem>
-#include <QTextOption>
 
 using namespace Data;
 

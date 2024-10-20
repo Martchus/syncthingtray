@@ -8,9 +8,11 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPalette>
 #include <QPoint>
 #include <QStyleHints>
 #include <QStyleOptionViewItem>
+#include <QTextOption>
 #include <QTreeView>
 
 namespace QtGui {
