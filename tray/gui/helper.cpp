@@ -5,6 +5,7 @@
 #endif
 
 #include <QApplication>
+#include <QFontMetrics>
 #include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
@@ -12,7 +13,6 @@
 #include <QPoint>
 #include <QStyleHints>
 #include <QStyleOptionViewItem>
-#include <QFontMetrics>
 #include <QTextOption>
 #include <QTreeView>
 
@@ -130,7 +130,8 @@ void drawField(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOpt
     const auto fieldValue = delegate->displayText(index.data(detailRole), opt.locale);
 
     // draw icon
-    auto iconRect = QRect(opt.rect.x() + listItemPadding, opt.rect.y() + centerObj(opt.rect.height(), listItemIconSize), listItemIconSize, listItemIconSize);
+    auto iconRect
+        = QRect(opt.rect.x() + listItemPadding, opt.rect.y() + centerObj(opt.rect.height(), listItemIconSize), listItemIconSize, listItemIconSize);
     painter->drawPixmap(iconRect, index.data(Qt::DecorationRole).value<QIcon>().pixmap(listItemIconSize, listItemIconSize));
 
     // compute rectangle for field name and value
@@ -152,7 +153,8 @@ void drawField(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOpt
     painter->drawText(textRect, painter->fontMetrics().elidedText(fieldValue, Qt::ElideRight, static_cast<int>(textRect.width())), textOption);
 }
 
-void drawIdAndStatus(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOptionViewItem &opt, const QModelIndex &index, int statusStringRole, int statusColorRole, int buttonWidth)
+void drawIdAndStatus(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOptionViewItem &opt, const QModelIndex &index,
+    int statusStringRole, int statusColorRole, int buttonWidth)
 {
     const auto id = delegate->displayText(index.data(Qt::DisplayRole), opt.locale);
     const auto statusText = delegate->displayText(index.data(statusStringRole), opt.locale);
@@ -163,7 +165,8 @@ void drawIdAndStatus(const QStyledItemDelegate *delegate, QPainter *painter, QSt
     drawBasicItemViewItem(*painter, opt);
 
     // draw icon
-    auto iconRect = QRect(opt.rect.x() + listItemPadding, opt.rect.y() + centerObj(opt.rect.height(), listItemIconSize), listItemIconSize, listItemIconSize);
+    auto iconRect
+        = QRect(opt.rect.x() + listItemPadding, opt.rect.y() + centerObj(opt.rect.height(), listItemIconSize), listItemIconSize, listItemIconSize);
     painter->drawPixmap(iconRect, index.data(Qt::DecorationRole).value<QIcon>().pixmap(listItemIconSize, listItemIconSize));
 
     // compute rectangle for label/ID and rectangle for status text

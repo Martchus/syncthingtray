@@ -351,8 +351,8 @@ void SyncthingDeviceModel::devStatusChanged(const SyncthingDev &dev, int index)
 
     // update top-level indices
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
-    static const QVector<int> modelRoles1({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, Qt::ForegroundRole, DevicePaused, DeviceStatus, DeviceStatusString,
-        DeviceStatusColor, DeviceId, IsThisDevice, IsPinned });
+    static const QVector<int> modelRoles1({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, Qt::ForegroundRole, DevicePaused, DeviceStatus,
+        DeviceStatusString, DeviceStatusColor, DeviceId, IsThisDevice, IsPinned });
     emit dataChanged(modelIndex1, modelIndex1, modelRoles1);
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::EditRole, Qt::ForegroundRole });

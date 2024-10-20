@@ -28,8 +28,7 @@ class SyncthingConnection;
 struct SYNCTHINGWIDGETS_EXPORT SyncthingExitStatus {
     explicit SyncthingExitStatus(int code, QProcess::ExitStatus status)
         : code(code)
-        , status(status)
-    {};
+        , status(status) {};
     int code = 0;
     QProcess::ExitStatus status = QProcess::NormalExit;
 };

@@ -38,7 +38,8 @@ constexpr auto listItemPadding = 4;
 constexpr auto listItemSpacing = listItemPadding;
 constexpr auto listItemIconSize = 16;
 constexpr auto listItemIconSpacing = listItemSpacing / 2;
-constexpr auto listItemIconsSize(int iconIndex) {
+constexpr auto listItemIconsSize(int iconIndex)
+{
     return (iconIndex + 1) * listItemIconSize + iconIndex * listItemIconSpacing + listItemPadding;
 }
 
@@ -46,7 +47,8 @@ void showViewMenu(const QPoint &position, const QTreeView &view, QMenu &menu);
 void drawBasicItemViewItem(QPainter &painter, const QStyleOptionViewItem &option);
 void setupPainterToDrawViewItemText(QPainter *painter, QStyleOptionViewItem &opt);
 void drawField(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOptionViewItem &opt, const QModelIndex &index, int detailRole);
-void drawIdAndStatus(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOptionViewItem &opt, const QModelIndex &index, int statusStringRole, int statusColorRole, int buttonWidth);
+void drawIdAndStatus(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOptionViewItem &opt, const QModelIndex &index,
+    int statusStringRole, int statusColorRole, int buttonWidth);
 
 inline auto copyToClipboard(const QString &text)
 {
