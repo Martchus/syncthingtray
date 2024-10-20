@@ -17,6 +17,7 @@ class LIB_SYNCTHING_MODEL_EXPORT SyncthingModel : public QAbstractItemModel {
     Q_OBJECT
     Q_PROPERTY(SyncthingConnection *connection READ connection)
     Q_PROPERTY(bool brightColors READ brightColors WRITE setBrightColors)
+    Q_PROPERTY(bool singleColumnMode READ singleColumnMode WRITE setSingleColumnMode)
 
 public:
     enum SyncthingModelRole {
@@ -29,6 +30,9 @@ public:
     const Data::SyncthingConnection *connection() const;
     bool brightColors() const;
     void setBrightColors(bool brightColors);
+    bool singleColumnMode() const;
+    void setSingleColumnMode(bool singleColumnModeEnabled);
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
 protected:
     virtual const QVector<int> &colorRoles() const;
@@ -47,6 +51,7 @@ private Q_SLOTS:
 protected:
     Data::SyncthingConnection &m_connection;
     bool m_brightColors;
+    bool m_singleColumnMode;
 };
 
 inline SyncthingConnection *SyncthingModel::connection()
@@ -62,6 +67,11 @@ inline const SyncthingConnection *SyncthingModel::connection() const
 inline bool SyncthingModel::brightColors() const
 {
     return m_brightColors;
+}
+
+inline bool SyncthingModel::singleColumnMode() const
+{
+    return m_singleColumnMode;
 }
 
 } // namespace Data

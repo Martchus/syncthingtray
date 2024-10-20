@@ -9,6 +9,7 @@ SyncthingModel::SyncthingModel(SyncthingConnection &connection, QObject *parent)
     : QAbstractItemModel(parent)
     , m_connection(connection)
     , m_brightColors(false)
+    , m_singleColumnMode(true)
 {
     connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingModel::handleConfigInvalidated);
     connect(&m_connection, &SyncthingConnection::newConfigApplied, this, &SyncthingModel::handleNewConfigAvailable);
@@ -105,6 +106,43 @@ void SyncthingModel::handleBrightColorsChanged()
 {
     if (const QVector<int> &affectedRoles = colorRoles(); !affectedRoles.isEmpty()) {
         invalidateTopLevelIndicies(affectedRoles);
+    }
+}
+
+/*!
+ * \brief Sets whether the model should only have a single column.
+ * \remarks
+ * - This is the default but ignored by some derived models.
+ * - This is used so all the data can be rendered as a single column avoiding the inflexible behavior of QTreeView
+ *   when it comes to sizing columns.
+ */
+void SyncthingModel::setSingleColumnMode(bool singleColumnModeEnabled)
+{
+    if (m_singleColumnMode != singleColumnModeEnabled) {
+        if (m_singleColumnMode) {
+            beginInsertColumns(QModelIndex(), 1, 1);
+            m_singleColumnMode = true;
+            endInsertColumns();
+        } else {
+            beginRemoveColumns(QModelIndex(), 1, 1);
+            m_singleColumnMode = false;
+            endRemoveColumns();
+        }
+    }
+}
+
+/*!
+ * \brief Implements columnCount() in a way that makes sense for most derived classes taking singleColumnMode() into
+ *        account.
+ */
+int SyncthingModel::columnCount(const QModelIndex &parent) const
+{
+    if (!parent.isValid()) {
+        return singleColumnMode() ? 1 : 2; // label/name/ID, status/buttons
+    } else if (!parent.parent().isValid()) {
+        return singleColumnMode() ? 1 : 2; // field name and value (or file and progress)
+    } else {
+        return 0;
     }
 }
 

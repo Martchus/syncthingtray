@@ -30,34 +30,24 @@ void DirButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 {
     auto opt = option;
     initStyleOption(&opt, index);
-    opt.viewItemPosition = QStyleOptionViewItem::OnlyOne;
-    if (index.parent().isValid()) {
-        QStyledItemDelegate::paint(painter, opt, index);
-    } else {
-        // init style options to use drawControl(), except for the text
-        opt.text.clear();
-        opt.features = QStyleOptionViewItem::None;
-        drawBasicItemViewItem(*painter, opt);
+    opt.viewItemPosition = QStyleOptionViewItem::OnlyOne; // avoid visual separation between columns
 
-        // draw text
-        auto textRect = QRectF(option.rect);
-        textRect.setWidth(textRect.width() - 58);
-        QTextOption textOption;
-        textOption.setAlignment(opt.displayAlignment);
-        setupPainterToDrawViewItemText(painter, opt);
-        painter->drawText(textRect, displayText(index.data(Qt::DisplayRole), option.locale), textOption);
+    if (index.parent().isValid()) {
+        drawField(this, painter, opt, index, SyncthingDirectoryModel::DirectoryDetail);
+    } else {
+        drawIdAndStatus(this, painter, opt, index, SyncthingDirectoryModel::DirectoryStatusString, SyncthingDirectoryModel::DirectoryStatusColor, 58);
 
         // draw buttons
-        const int buttonY = option.rect.y() + centerObj(option.rect.height(), 16);
+        const int buttonY = option.rect.y() + centerObj(option.rect.height(), iconSize);
         const bool dirPaused = index.data(SyncthingDirectoryModel::DirectoryPaused).toBool();
         const auto iconColor = QGuiApplication::palette().color(QPalette::Text);
         auto &forkAwesomeRenderer = QtForkAwesome::Renderer::global();
         if (!dirPaused) {
-            forkAwesomeRenderer.render(QtForkAwesome::Icon::Refresh, painter, QRect(option.rect.right() - 52, buttonY, 16, 16), iconColor);
+            forkAwesomeRenderer.render(QtForkAwesome::Icon::Refresh, painter, QRect(option.rect.right() - 52, buttonY, iconSize, iconSize), iconColor);
         }
         forkAwesomeRenderer.render(
-            dirPaused ? QtForkAwesome::Icon::Play : QtForkAwesome::Icon::Pause, painter, QRect(option.rect.right() - 34, buttonY, 16, 16), iconColor);
-        forkAwesomeRenderer.render(QtForkAwesome::Icon::Folder, painter, QRect(option.rect.right() - 16, buttonY, 16, 16), iconColor);
+            dirPaused ? QtForkAwesome::Icon::Play : QtForkAwesome::Icon::Pause, painter, QRect(option.rect.right() - 34, buttonY, iconSize, iconSize), iconColor);
+        forkAwesomeRenderer.render(QtForkAwesome::Icon::Folder, painter, QRect(option.rect.right() - iconSize, buttonY, iconSize, iconSize), iconColor);
     }
 }
 } // namespace QtGui

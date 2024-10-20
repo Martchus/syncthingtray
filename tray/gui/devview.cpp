@@ -20,8 +20,7 @@ DevView::DevView(QWidget *parent)
 {
     header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     header()->hide();
-    setItemDelegate(new UnifiedItemDelegate(this));
-    setItemDelegateForColumn(1, new DevButtonsItemDelegate(this));
+    setItemDelegate(new DevButtonsItemDelegate(this));
     connect(this, &BasicTreeView::customContextMenuRequested, this, &DevView::showContextMenu);
 }
 

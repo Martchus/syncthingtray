@@ -19,14 +19,6 @@ QT_FORWARD_DECLARE_CLASS(QStyleOptionViewItem)
 
 namespace QtGui {
 
-class UnifiedItemDelegate : public QStyledItemDelegate {
-    Q_OBJECT
-public:
-    explicit UnifiedItemDelegate(QObject *parent);
-
-    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
-};
-
 class BasicTreeView : public QTreeView {
     Q_OBJECT
 public:
@@ -42,9 +34,13 @@ private:
     QEvent::Type m_contextMenuEventType;
 };
 
+constexpr auto iconSize = 16;
+
 void showViewMenu(const QPoint &position, const QTreeView &view, QMenu &menu);
 void drawBasicItemViewItem(QPainter &painter, const QStyleOptionViewItem &option);
 void setupPainterToDrawViewItemText(QPainter *painter, QStyleOptionViewItem &opt);
+void drawField(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOptionViewItem &opt, const QModelIndex &index, int detailRole);
+void drawIdAndStatus(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOptionViewItem &opt, const QModelIndex &index, int statusStringRole, int statusColorRole, int buttonWidth);
 
 inline auto copyToClipboard(const QString &text)
 {

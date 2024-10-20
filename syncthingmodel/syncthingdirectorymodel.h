@@ -37,7 +37,6 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
     int rowCount(const QModelIndex &parent) const override;
-    int columnCount(const QModelIndex &parent) const override;
     Q_INVOKABLE const SyncthingDir *dirInfo(const QModelIndex &index) const;
     Q_INVOKABLE const SyncthingDir *info(const QModelIndex &index) const;
 

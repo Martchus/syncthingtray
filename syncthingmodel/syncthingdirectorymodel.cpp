@@ -383,17 +383,6 @@ int SyncthingDirectoryModel::rowCount(const QModelIndex &parent) const
     }
 }
 
-int SyncthingDirectoryModel::columnCount(const QModelIndex &parent) const
-{
-    if (!parent.isValid()) {
-        return 2; // label/ID, status/buttons
-    } else if (!parent.parent().isValid()) {
-        return 2; // field name and value
-    } else {
-        return 0;
-    }
-}
-
 void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &dir, int index)
 {
     if (index < 0 || static_cast<std::size_t>(index) >= m_rowCount.size()) {

@@ -22,8 +22,7 @@ DirView::DirView(QWidget *parent)
 {
     header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     header()->hide();
-    setItemDelegate(new UnifiedItemDelegate(this));
-    setItemDelegateForColumn(1, new DirButtonsItemDelegate(this));
+    setItemDelegate(new DirButtonsItemDelegate(this));
     connect(this, &BasicTreeView::customContextMenuRequested, this, &DirView::showContextMenu);
 }
 

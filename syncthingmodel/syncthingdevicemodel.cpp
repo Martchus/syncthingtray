@@ -343,17 +343,6 @@ int SyncthingDeviceModel::rowCount(const QModelIndex &parent) const
     }
 }
 
-int SyncthingDeviceModel::columnCount(const QModelIndex &parent) const
-{
-    if (!parent.isValid()) {
-        return 2; // name/id, status
-    } else if (!parent.parent().isValid()) {
-        return 2; // field name and value
-    } else {
-        return 0;
-    }
-}
-
 void SyncthingDeviceModel::devStatusChanged(const SyncthingDev &dev, int index)
 {
     if (index < 0 || static_cast<std::size_t>(index) >= m_rowCount.size()) {

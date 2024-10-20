@@ -38,32 +38,6 @@ static inline QEvent::Type contextMenuEventType()
 #endif
 }
 
-/*!
- * \class UnifiedItemDelegate
- * \brief The UnifiedItemDelegate class draws view items without visual separation.
- *
- * This style sets the view item position to "OnlyOne" to prevent styles from drawing separations
- * too noisily between items. It is used to achieve a cleaner look of the directory/devices tree
- * view.
- *
- * \remarks
- * The main motivation for this is the Windows 11 style which otherwise draws vertical lines between
- * the columns which does not look nice at all in these tree views.
- */
-
-UnifiedItemDelegate::UnifiedItemDelegate(QObject *parent)
-    : QStyledItemDelegate(parent)
-{
-}
-
-void UnifiedItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-    auto opt = option;
-    initStyleOption(&opt, index);
-    opt.viewItemPosition = QStyleOptionViewItem::OnlyOne;
-    QStyledItemDelegate::paint(painter, opt, index);
-}
-
 BasicTreeView::BasicTreeView(QWidget *parent)
     : QTreeView(parent)
     , m_contextMenuEventType(contextMenuEventType())
@@ -140,6 +114,76 @@ void setupPainterToDrawViewItemText(QPainter *painter, QStyleOptionViewItem &opt
 #endif
 
     painter->setPen(opt.palette.color(QPalette::HighlightedText));
+}
+
+void drawField(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOptionViewItem &opt, const QModelIndex &index, int detailRole)
+{
+    // init style options to use drawControl(), except for the text
+    opt.text.clear();
+    opt.features = QStyleOptionViewItem::None;
+    drawBasicItemViewItem(*painter, opt);
+
+    const auto fieldName = delegate->displayText(index.data(Qt::DisplayRole), opt.locale);
+    const auto fieldValue = delegate->displayText(index.data(detailRole), opt.locale);
+
+    // draw icon
+    static constexpr auto iconSize = 16;
+    auto iconRect = QRect(opt.rect.x(), opt.rect.y() + centerObj(opt.rect.height(), iconSize), iconSize, iconSize);
+    painter->drawPixmap(iconRect, index.data(Qt::DecorationRole).value<QIcon>().pixmap(iconSize, iconSize));
+
+    // compute rectangle for field name and value
+    auto textRect = QRectF(opt.rect);
+    textRect.setX(opt.rect.x() + iconSize + 5);
+    auto textOption = QTextOption();
+    textOption.setWrapMode(QTextOption::NoWrap);
+    textOption.setAlignment(opt.displayAlignment);
+    auto fieldNameRect = painter->boundingRect(textRect, fieldName, textOption);
+
+    // draw field name
+    setupPainterToDrawViewItemText(painter, opt);
+    painter->drawText(textRect, fieldName, textOption);
+
+    // draw status text
+    textOption.setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    textRect.setX(textRect.x() + fieldNameRect.width() + 5);
+    painter->drawText(textRect, fieldValue, textOption);
+}
+
+void drawIdAndStatus(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOptionViewItem &opt, const QModelIndex &index, int statusStringRole, int statusColorRole, int buttonWidth)
+{
+    const auto id = delegate->displayText(index.data(Qt::DisplayRole), opt.locale);
+    const auto statusText = delegate->displayText(index.data(statusStringRole), opt.locale);
+
+    // init style options to use drawControl(), except for the text
+    opt.text.clear();
+    opt.features = QStyleOptionViewItem::None;
+    drawBasicItemViewItem(*painter, opt);
+
+    // draw icon
+    static constexpr auto iconSize = 16;
+    auto iconRect = QRect(opt.rect.x(), opt.rect.y() + centerObj(opt.rect.height(), iconSize), iconSize, iconSize);
+    painter->drawPixmap(iconRect, index.data(Qt::DecorationRole).value<QIcon>().pixmap(iconSize, iconSize));
+
+    // compute rectangle for label/ID and rectangle for status text
+    auto textRect = QRectF(opt.rect);
+    textRect.setX(opt.rect.x() + iconSize + 5);
+    textRect.setWidth(textRect.width() - buttonWidth);
+    auto textOption = QTextOption();
+    textOption.setWrapMode(QTextOption::NoWrap);
+    textOption.setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    auto statusTextRect = painter->boundingRect(textRect, statusText, textOption);
+    textRect.setWidth(textRect.width() - statusTextRect.width());
+
+    // draw label/ID
+    textOption.setAlignment(opt.displayAlignment);
+    setupPainterToDrawViewItemText(painter, opt);
+    painter->drawText(textRect, id, textOption);
+
+    // draw status text
+    opt.palette.setColor(QPalette::Text, index.data(statusColorRole).value<QColor>());
+    textOption.setAlignment(Qt::AlignRight);
+    setupPainterToDrawViewItemText(painter, opt);
+    painter->drawText(statusTextRect, statusText, textOption);
 }
 
 } // namespace QtGui

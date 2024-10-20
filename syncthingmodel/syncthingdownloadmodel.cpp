@@ -27,7 +27,6 @@ SyncthingDownloadModel::SyncthingDownloadModel(SyncthingConnection &connection, 
     , m_unknownIcon(
           QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))))
     , m_pendingDownloads(0)
-    , m_singleColumnMode(true)
 {
     connect(&m_connection, &SyncthingConnection::downloadProgressChanged, this, &SyncthingDownloadModel::downloadProgressChanged);
 }
@@ -206,17 +205,6 @@ int SyncthingDownloadModel::rowCount(const QModelIndex &parent) const
     }
 }
 
-int SyncthingDownloadModel::columnCount(const QModelIndex &parent) const
-{
-    if (!parent.isValid()) {
-        return singleColumnMode() ? 1 : 2; // label/ID, status/progress
-    } else if (!parent.parent().isValid()) {
-        return singleColumnMode() ? 1 : 2; // file, progress
-    } else {
-        return 0;
-    }
-}
-
 void SyncthingDownloadModel::handleConfigInvalidated()
 {
     beginResetModel();
@@ -285,21 +273,6 @@ void SyncthingDownloadModel::downloadProgressChanged()
                 endInsertRows();
             }
             ++row;
-        }
-    }
-}
-
-void SyncthingDownloadModel::setSingleColumnMode(bool singleColumnModeEnabled)
-{
-    if (m_singleColumnMode != singleColumnModeEnabled) {
-        if (m_singleColumnMode) {
-            beginInsertColumns(QModelIndex(), 1, 1);
-            m_singleColumnMode = true;
-            endInsertColumns();
-        } else {
-            beginRemoveColumns(QModelIndex(), 1, 1);
-            m_singleColumnMode = false;
-            endRemoveColumns();
         }
     }
 }
