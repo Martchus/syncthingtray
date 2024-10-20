@@ -129,13 +129,13 @@ void drawField(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOpt
     const auto fieldValue = delegate->displayText(index.data(detailRole), opt.locale);
 
     // draw icon
-    static constexpr auto iconSize = 16;
-    auto iconRect = QRect(opt.rect.x(), opt.rect.y() + centerObj(opt.rect.height(), iconSize), iconSize, iconSize);
-    painter->drawPixmap(iconRect, index.data(Qt::DecorationRole).value<QIcon>().pixmap(iconSize, iconSize));
+    auto iconRect = QRect(opt.rect.x() + listItemPadding, opt.rect.y() + centerObj(opt.rect.height(), listItemIconSize), listItemIconSize, listItemIconSize);
+    painter->drawPixmap(iconRect, index.data(Qt::DecorationRole).value<QIcon>().pixmap(listItemIconSize, listItemIconSize));
 
     // compute rectangle for field name and value
     auto textRect = QRectF(opt.rect);
-    textRect.setX(opt.rect.x() + iconSize + 5);
+    textRect.setX(iconRect.right() + listItemSpacing);
+    textRect.setWidth(textRect.width() - listItemPadding);
     auto textOption = QTextOption();
     textOption.setWrapMode(QTextOption::NoWrap);
     textOption.setAlignment(opt.displayAlignment);
@@ -147,7 +147,7 @@ void drawField(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOpt
 
     // draw status text
     textOption.setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    textRect.setX(textRect.x() + fieldNameRect.width() + 5);
+    textRect.setX(textRect.x() + fieldNameRect.width() + listItemSpacing);
     painter->drawText(textRect, fieldValue, textOption);
 }
 
@@ -162,13 +162,12 @@ void drawIdAndStatus(const QStyledItemDelegate *delegate, QPainter *painter, QSt
     drawBasicItemViewItem(*painter, opt);
 
     // draw icon
-    static constexpr auto iconSize = 16;
-    auto iconRect = QRect(opt.rect.x(), opt.rect.y() + centerObj(opt.rect.height(), iconSize), iconSize, iconSize);
-    painter->drawPixmap(iconRect, index.data(Qt::DecorationRole).value<QIcon>().pixmap(iconSize, iconSize));
+    auto iconRect = QRect(opt.rect.x() + listItemPadding, opt.rect.y() + centerObj(opt.rect.height(), listItemIconSize), listItemIconSize, listItemIconSize);
+    painter->drawPixmap(iconRect, index.data(Qt::DecorationRole).value<QIcon>().pixmap(listItemIconSize, listItemIconSize));
 
     // compute rectangle for label/ID and rectangle for status text
     auto textRect = QRectF(opt.rect);
-    textRect.setX(opt.rect.x() + iconSize + 5);
+    textRect.setX(iconRect.right() + listItemSpacing);
     textRect.setWidth(textRect.width() - buttonWidth);
     auto textOption = QTextOption();
     textOption.setWrapMode(QTextOption::NoWrap);

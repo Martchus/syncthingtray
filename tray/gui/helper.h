@@ -34,7 +34,13 @@ private:
     QEvent::Type m_contextMenuEventType;
 };
 
-constexpr auto iconSize = 16;
+constexpr auto listItemPadding = 4;
+constexpr auto listItemSpacing = listItemPadding;
+constexpr auto listItemIconSize = 16;
+constexpr auto listItemIconSpacing = listItemSpacing / 2;
+constexpr auto listItemIconsSize(int iconIndex) {
+    return (iconIndex + 1) * listItemIconSize + iconIndex * listItemIconSpacing + listItemPadding;
+}
 
 void showViewMenu(const QPoint &position, const QTreeView &view, QMenu &menu);
 void drawBasicItemViewItem(QPainter &painter, const QStyleOptionViewItem &option);

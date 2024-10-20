@@ -32,16 +32,16 @@ void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
     if (index.parent().isValid()) {
         drawField(this, painter, opt, index, SyncthingDeviceModel::DeviceDetail);
     } else {
-        drawIdAndStatus(this, painter, opt, index, SyncthingDeviceModel::DeviceStatusString, SyncthingDeviceModel::DeviceStatusColor, 20);
+        drawIdAndStatus(this, painter, opt, index, SyncthingDeviceModel::DeviceStatusString, SyncthingDeviceModel::DeviceStatusColor, listItemIconsSize(0) + listItemSpacing);
 
         // draw button
         if (index.data(SyncthingDeviceModel::IsThisDevice).toBool()) {
             return;
         }
-        const int buttonY = option.rect.y() + centerObj(option.rect.height(), iconSize);
+        const int buttonY = option.rect.y() + centerObj(option.rect.height(), listItemIconSize);
         QtForkAwesome::Renderer::global().render(
             index.data(SyncthingDeviceModel::DevicePaused).toBool() ? QtForkAwesome::Icon::Play : QtForkAwesome::Icon::Pause, painter,
-            QRect(option.rect.right() - iconSize, buttonY, iconSize, iconSize), QGuiApplication::palette().color(QPalette::Text));
+            QRect(option.rect.right() - listItemIconsSize(0), buttonY, listItemIconSize, listItemIconSize), QGuiApplication::palette().color(QPalette::Text));
     }
 }
 } // namespace QtGui

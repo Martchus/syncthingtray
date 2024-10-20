@@ -31,19 +31,19 @@ void DirButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
     if (index.parent().isValid()) {
         drawField(this, painter, opt, index, SyncthingDirectoryModel::DirectoryDetail);
     } else {
-        drawIdAndStatus(this, painter, opt, index, SyncthingDirectoryModel::DirectoryStatusString, SyncthingDirectoryModel::DirectoryStatusColor, 58);
+        drawIdAndStatus(this, painter, opt, index, SyncthingDirectoryModel::DirectoryStatusString, SyncthingDirectoryModel::DirectoryStatusColor, listItemIconsSize(2) + listItemSpacing);
 
         // draw buttons
-        const int buttonY = option.rect.y() + centerObj(option.rect.height(), iconSize);
+        const int buttonY = option.rect.y() + centerObj(option.rect.height(), listItemIconSize);
         const bool dirPaused = index.data(SyncthingDirectoryModel::DirectoryPaused).toBool();
         const auto iconColor = QGuiApplication::palette().color(QPalette::Text);
         auto &forkAwesomeRenderer = QtForkAwesome::Renderer::global();
         if (!dirPaused) {
-            forkAwesomeRenderer.render(QtForkAwesome::Icon::Refresh, painter, QRect(option.rect.right() - 52, buttonY, iconSize, iconSize), iconColor);
+            forkAwesomeRenderer.render(QtForkAwesome::Icon::Refresh, painter, QRect(option.rect.right() - listItemIconsSize(2), buttonY, listItemIconSize, listItemIconSize), iconColor);
         }
         forkAwesomeRenderer.render(
-            dirPaused ? QtForkAwesome::Icon::Play : QtForkAwesome::Icon::Pause, painter, QRect(option.rect.right() - 34, buttonY, iconSize, iconSize), iconColor);
-        forkAwesomeRenderer.render(QtForkAwesome::Icon::Folder, painter, QRect(option.rect.right() - iconSize, buttonY, iconSize, iconSize), iconColor);
+            dirPaused ? QtForkAwesome::Icon::Play : QtForkAwesome::Icon::Pause, painter, QRect(option.rect.right() - listItemIconsSize(1), buttonY, listItemIconSize, listItemIconSize), iconColor);
+        forkAwesomeRenderer.render(QtForkAwesome::Icon::Folder, painter, QRect(option.rect.right() - listItemIconsSize(0), buttonY, listItemIconSize, listItemIconSize), iconColor);
     }
 }
 } // namespace QtGui
