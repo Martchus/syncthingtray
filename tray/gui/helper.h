@@ -118,7 +118,7 @@ template <typename ViewType> ClickedRow<ViewType>::ClickedRow(ViewType *view, co
     this->model = qobject_cast<typename ViewType::ModelType *>(proxyModel ? proxyModel->sourceModel() : view->model());
     proxyIndex = view->indexAt(clickPoint);
     this->index = proxyModel ? proxyModel->mapToSource(proxyIndex) : proxyIndex;
-    if (this->model && this->index.isValid() && this->index.column() == 1) {
+    if (this->model && this->index.isValid()) {
         this->data = this->model->info(this->index);
     }
 }

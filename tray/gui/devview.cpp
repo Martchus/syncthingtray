@@ -47,7 +47,7 @@ void DevView::mouseReleaseEvent(QMouseEvent *event)
 
     const auto itemRect = visualRect(clickedRow.proxyIndex);
     const auto &device = *clickedRow.data;
-    if (device.status != SyncthingDevStatus::ThisDevice && pos.x() > itemRect.right() - 17) {
+    if (device.status != SyncthingDevStatus::ThisDevice && pos.x() > itemRect.right() - (listItemIconsSize(0) + listItemIconSpacing / 2)) {
         emit pauseResumeDev(device);
     }
 }
