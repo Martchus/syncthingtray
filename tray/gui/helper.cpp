@@ -12,6 +12,7 @@
 #include <QPoint>
 #include <QStyleHints>
 #include <QStyleOptionViewItem>
+#include <QFontMetrics>
 #include <QTextOption>
 #include <QTreeView>
 
@@ -148,7 +149,7 @@ void drawField(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOpt
     // draw status text
     textOption.setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     textRect.setX(textRect.x() + fieldNameRect.width() + listItemSpacing);
-    painter->drawText(textRect, fieldValue, textOption);
+    painter->drawText(textRect, painter->fontMetrics().elidedText(fieldValue, Qt::ElideRight, static_cast<int>(textRect.width())), textOption);
 }
 
 void drawIdAndStatus(const QStyledItemDelegate *delegate, QPainter *painter, QStyleOptionViewItem &opt, const QModelIndex &index, int statusStringRole, int statusColorRole, int buttonWidth)
@@ -178,7 +179,7 @@ void drawIdAndStatus(const QStyledItemDelegate *delegate, QPainter *painter, QSt
     // draw label/ID
     textOption.setAlignment(opt.displayAlignment);
     setupPainterToDrawViewItemText(painter, opt);
-    painter->drawText(textRect, id, textOption);
+    painter->drawText(textRect, painter->fontMetrics().elidedText(id, Qt::ElideRight, static_cast<int>(textRect.width())), textOption);
 
     // draw status text
     opt.palette.setColor(QPalette::Text, index.data(statusColorRole).value<QColor>());
