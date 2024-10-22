@@ -204,6 +204,14 @@ bool App::copyPath(const QString &dirId, const QString &relativePath)
     return false;
 }
 
+QString App::getClipboardText() const
+{
+    if (auto *const clipboard = QGuiApplication::clipboard()) {
+        return clipboard->text();
+    }
+    return QString();
+}
+
 bool App::loadIgnorePatterns(const QString &dirId, QObject *textArea)
 {
     auto res = m_connection.ignores(dirId, [this, textArea](SyncthingIgnores &&ignores, QString &&error) {

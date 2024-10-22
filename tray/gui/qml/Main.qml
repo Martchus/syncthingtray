@@ -287,8 +287,18 @@ ApplicationWindow {
             anchors.fill: parent
             currentIndex: 0
             onCurrentIndexChanged: {
-                indexHistory.push(pageStack.currentIndex)
-                app.setCurrentControls(window.visible, pageStack.currentIndex)
+                const newIndex = pageStack.currentIndex;
+                const indexHistoryLength = indexHistory.length;
+                if (indexHistoryLength > 1 && indexHistory[indexHistoryLength - 2] === newIndex) {
+                    indexHistory.pop();
+                } else {
+                    indexHistory.push(newIndex);
+                }
+                if (!goingBackAndForth) {
+                    indexForward.splice(0, indexForward.length);
+                }
+                goingBackAndForth = false;
+                app.setCurrentControls(window.visible, newIndex);
             }
 
             DirsPage {
@@ -324,26 +334,41 @@ ApplicationWindow {
                 const currentPage = currentChild.currentItem ?? currentChild;
                 return currentPage.back?.() || currentChild.pop?.() || pageStack.back();
             }
-            readonly property var indexHistory: []
+            readonly property var indexHistory: [0]
+            readonly property var indexForward: []
+            property bool goingBackAndForth: false
             function back() {
                 if (indexHistory.length < 1) {
                     return false;
                 }
                 const currentIndex = indexHistory.pop();
                 const previousIndex = indexHistory.pop();
+                indexForward.push(currentIndex);
+                goingBackAndForth = true;
                 pageStack.setCurrentIndex(previousIndex);
+                return true;
+            }
+            function forward() {
+                if (indexForward.length < 1) {
+                    return false;
+                }
+                goingBackAndForth = true;
+                pageStack.setCurrentIndex(indexForward.pop());
                 return true;
             }
         }
     }
 
-    // handle keyboard events
+    // handle global keyboard and mouse events
     Component.onCompleted: {
         window.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
         window.contentItem.Keys.released.connect((event) => {
-            if (event.key === Qt.Key_Back || (event.key === Qt.Key_Backspace && typeof activeFocusItem.getText !== "function")) {
+            const key = event.key;
+            if (key === Qt.Key_Back || (key === Qt.Key_Backspace && typeof activeFocusItem.getText !== "function")) {
                 event.accepted = pageStack.pop();
-            } else if (event.key === Qt.Key_F5) {
+            } else if (key === Qt.Key_Forward) {
+                event.accepted = pageStack.forward();
+            } else if (key === Qt.Key_F5) {
                 event.accepted = app.reload();
             }
         });
@@ -351,6 +376,19 @@ ApplicationWindow {
     onActiveFocusItemChanged: {
         if (activeFocusItem?.toString().startsWith("QQuickPopupItem")) {
             window.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
+        }
+    }
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.ForwardButton | Qt.BackButton
+        propagateComposedEvents: true
+        onClicked: (event) => {
+            const button = event.button;
+            if (button === Qt.BackButton) {
+                pageStack.pop();
+            } else if (button === Qt.ForwardButton) {
+                pageStack.forward();
+            }
         }
     }
 

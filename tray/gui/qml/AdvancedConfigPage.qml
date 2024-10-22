@@ -4,9 +4,9 @@ import QtQuick.Dialogs
 
 ObjectConfigPage {
     id: advancedConfigPage
-    configObject: findConfigObject()
     configTemplates: {
-        ".devices": {deviceID: "", introducedBy: "", encryptionPassword: ""}
+        "devices": {deviceID: "", introducedBy: "", encryptionPassword: ""},
+        "addresses": "dynamic",
     }
     actions: [
         Action {
@@ -17,7 +17,7 @@ ObjectConfigPage {
         Action {
             text: qsTr("Remove")
             icon.source: app.faUrlBase + "trash-o"
-            enabled: advancedConfigPage.configObjectCache !== undefined
+            enabled: advancedConfigPage.configObjectExists
             onTriggered: (source) => removeDialog.open()
         }
     ]
@@ -33,17 +33,13 @@ ObjectConfigPage {
     required property string entryName
     required property string entriesKey
     required property var isEntry
-    property var configObjectCache: undefined
+    property bool configObjectExists: false
 
     function findConfigObject() {
-        if (configObjectCache !== undefined) {
-            // keep using the same config object, even if dirId or devId changes (unfortunately causes a binding loop)
-            return configObjectCache;
-        }
         const cfg = app.connection.rawConfig;
         const entries = cfg !== undefined ? cfg[entriesKey] : undefined;
         const entry = Array.isArray(entries) ? entries.find(advancedConfigPage.isEntry) : undefined;
-        return configObjectCache = (entry !== undefined ? entry : {});
+        return (advancedConfigPage.configObjectExists = (entry !== undefined)) ? entry : {};
     }
 
     function applyChanges() {
@@ -52,14 +48,20 @@ ObjectConfigPage {
         if (!Array.isArray(entries)) {
             return false;
         }
+        advancedConfigPage.updateIdentification();
         const cfgObj = configObject;
         const index = entries.findIndex(advancedConfigPage.isEntry);
-        advancedConfigPage.updateIdentification();
-        if (index >= 0) {
+        const supposedToExist = advancedConfigPage.configObjectExists;
+        if (supposedToExist && index >= 0) {
             entries[index] = cfgObj;
-        } else {
+        } else if (!supposedToExist && index < 0) {
             entries.push(cfgObj);
+        } else {
+            app.showError("Can't apply, key is already used.");
+            return false;
         }
+        advancedConfigPage.configObjectExists = true;
+        advancedConfigPage.disableFirst();
         app.connection.postConfigFromJsonObject(cfg);
         return true;
     }
@@ -71,11 +73,11 @@ ObjectConfigPage {
             return false;
         }
         const index = entries.findIndex(advancedConfigPage.isEntry);
-        advancedConfigPage.updateIdentification();
         if (index < 0) {
             return false;
         }
         entries.splice(index, 1);
+        advancedConfigPage.configObjectExists = false;
         app.connection.postConfigFromJsonObject(cfg);
         return true;
     }

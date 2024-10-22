@@ -14,12 +14,20 @@ Page {
             id: listModel
             dynamicRoles: true
             Component.onCompleted: {
+                listModel.clear();
+
                 let index = 0;
                 let handledKeys = new Set();
                 let configObject = objectConfigPage.configObject;
+                if (configObject === undefined) {
+                    return;
+                }
                 objectConfigPage.specialEntries.forEach((specialEntry) => {
                     const key = specialEntry.key;
-                    listModel.append(objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, configObject[key], index++));
+                    const cond = specialEntry.cond;
+                    if ((typeof cond !== "function") || cond(objectConfigPage)) {
+                        listModel.append(objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, configObject[key], index++));
+                    }
                     handledKeys.add(key);
                 });
                 if (objectConfigPage.specialEntriesOnly) {
@@ -48,7 +56,6 @@ Page {
                                 font.weight: Font.Medium
                             }
                             Label {
-                                id: stringValue
                                 Layout.fillWidth: true
                                 text: modelData.value
                                 elide: Text.ElideRight
@@ -62,7 +69,6 @@ Page {
                         HelpButton {
                             id: helpButton
                             configCategory: objectConfigPage.configCategory
-                            key: modelData.key
                         }
                     }
                     onClicked: stringDlg.visible = true
@@ -73,16 +79,254 @@ Page {
                         standardButtons: objectConfigPage.standardButtons
                         modal: true
                         width: parent.width - 20
-                        contentItem: TextField {
-                            id: editedStringValue
-                            text: modelData.value
-                            onAccepted: stringDlg.accept()
+                        contentItem: RowLayout {
+                            TextField {
+                                id: editedStringValue
+                                Layout.fillWidth: true
+                                text: modelData.value
+                                enabled: modelData?.enabled ?? true
+                                onAccepted: stringDlg.accept()
+                            }
+                            CopyPasteButtons {
+                                edit: editedStringValue
+                            }
                         }
-                        onAccepted: objectConfigPage.updateValue(modelData.key, stringValue.text = editedStringValue.text)
+                        onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, editedStringValue.text)
                         onRejected: editedStringValue.text = objectConfigPage.configObject[modelData.key]
                         onHelpRequested: helpButton.clicked()
                     }
                     required property var modelData
+                }
+            }
+            DelegateChoice {
+                roleValue: "options"
+                ItemDelegate {
+                    width: objectListView.width
+                    contentItem: RowLayout {
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            Label {
+                                Layout.fillWidth: true
+                                text: modelData.label
+                                elide: Text.ElideRight
+                                font.weight: Font.Medium
+                            }
+                            Label {
+                                Layout.fillWidth: true
+                                text: optionsValue.editText // `${optionsValue.editText} (${modelData.value})`
+                                elide: Text.ElideRight
+                                font.weight: Font.Light
+                            }
+                        }
+                        ArrayElementButtons {
+                            page: objectConfigPage
+                            rowData: modelData
+                        }
+                        HelpButton {
+                            id: optionsHelpButton
+                            configCategory: objectConfigPage.configCategory
+                        }
+                    }
+                    onClicked: optionsDlg.visible = true
+                    Dialog {
+                        id: optionsDlg
+                        anchors.centerIn: Overlay.overlay
+                        title: modelData.label
+                        standardButtons: objectConfigPage.standardButtons
+                        modal: true
+                        width: parent.width - 20
+                        contentItem: ColumnLayout {
+                            id: optionsDlgLayout
+                            Layout.fillWidth: true
+                            ComboBox {
+                                id: optionsValue
+                                Layout.fillWidth: true
+                                model: modelData.options
+                                editable: true
+                                valueRole: "value"
+                                textRole: "label"
+                                enabled: modelData?.enabled ?? true
+                                onAccepted: optionsDlg.accept()
+                                Component.onCompleted: editText = textForValue(modelData.value)
+                                readonly property var currentOption: modelData.options.get(optionsValue.currentIndex)
+                                readonly property string currentValueOrEditText: {
+                                    const currentOption = optionsValue.currentOption;
+                                    return (currentOption?.label === optionsValue.editText) ? currentOption?.value : optionsValue.editText;
+                                }
+                                function textForValue(value) {
+                                    const displayText = optionsValue.textAt(optionsValue.indexOfValue(value));
+                                    return displayText.length === 0 ? value : displayText;
+                                }
+                            }
+                            ScrollView {
+                                id: optionsHelpFlickable
+                                Layout.fillWidth: true
+                                // FIXME: scrolling does not work
+                                //ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+                                contentWidth: optionsHelpLabel.contentWidth
+                                contentHeight: optionsHelpLabel.contentHeight
+                                Label {
+                                    id: optionsHelpLabel
+                                    wrapMode: Text.WordWrap
+                                    visible: text.length > 0
+                                    width: optionsHelpFlickable.width
+                                    clip: false
+                                    text: {
+                                        const currentOption = optionsValue.currentOption;
+                                        return (currentOption?.label === optionsValue.editText) ? (currentOption?.desc ?? "") : qsTr("A custom value has been entered.");
+                                    }
+                                }
+                            }
+
+                        }
+                        onAccepted: {
+                            const changeHandler = modelData.onChanged;
+                            objectConfigPage.updateValue(modelData.index, modelData.key, optionsValue.currentValueOrEditText);
+                            if (typeof changeHandler === "function") {
+                                changeHandler(objectConfigPage.configObject);
+                            }
+                        }
+                        onRejected: optionsValue.editText = optionsValue.textForValue(objectConfigPage.configObject[modelData.key])
+                        onHelpRequested: optionsHelpButton.clicked()
+                    }
+                    required property var modelData
+                }
+            }
+            DelegateChoice {
+                roleValue: "devices"
+                ItemDelegate {
+                    id: devicesDelegate
+                    width: parent?.width
+                    contentItem: ColumnLayout {
+                        width: objectListView.width
+                        RowLayout {
+                            Layout.fillWidth: true
+                            Label {
+                                Layout.fillWidth: true
+                                text: modelData.label
+                                elide: Text.ElideRight
+                                font.weight: Font.Medium
+                            }
+                            ArrayElementButtons {
+                                page: objectConfigPage
+                                rowData: modelData
+                            }
+                            HelpButton {
+                                id: devicesHelpButton
+                                configCategory: objectConfigPage.configCategory
+                            }
+                        }
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            Repeater {
+                                model: devicesDelegate.devicesModel
+                                ItemDelegate {
+                                    id: deviceEntry
+                                    Layout.fillWidth: true
+                                    contentItem: RowLayout {
+                                        Layout.fillWidth: true
+                                        Label {
+                                            id: deviceNameOrIdLabel
+                                            Layout.fillWidth: true
+                                            text: app.connection.deviceNameOrId(modelData.deviceID)
+                                            elide: Text.ElideRight
+                                            font.weight: Font.Light
+                                        }
+                                        Switch {
+                                            id: deviceSwitch
+                                            checked: devicesDelegate.isDeviceEnabled(modelData.deviceID)
+                                            onCheckedChanged: devicesDelegate.setDeviceEnabled(modelData.deviceID, deviceSwitch.checked)
+                                        }
+                                        RoundButton {
+                                            id: encryptionButton
+                                            display: AbstractButton.IconOnly
+                                            text: deviceEntry.isEncryptionEnabled ? qsTr("Change encryption password") : qsTr("Set encryption password")
+                                            enabled: deviceSwitch.checked
+                                            hoverEnabled: true
+                                            Layout.preferredWidth: 36
+                                            Layout.preferredHeight: 36
+                                            ToolTip.visible: hovered || pressed
+                                            ToolTip.text: text
+                                            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                                            icon.source: app.faUrlBase + (deviceEntry.isEncryptionEnabled ? "lock" : "unlock")
+                                            icon.width: 20
+                                            icon.height: 20
+                                            onClicked: encryptionPasswordDlg.open()
+                                        }
+                                        Dialog {
+                                            id: encryptionPasswordDlg
+                                            anchors.centerIn: Overlay.overlay
+                                            parent: Overlay.overlay
+                                            title: qsTr("Set encryption password for sharing with \"%1\"").arg(deviceNameOrIdLabel.text)
+                                            standardButtons: objectConfigPage.standardButtons
+                                            modal: true
+                                            width: parent.width - 20
+                                            contentItem: RowLayout {
+                                                TextField {
+                                                    id: encryptionKeyValue
+                                                    Layout.fillWidth: true
+                                                    text: modelData.encryptionPassword
+                                                    placeholderText: qsTr("If untrusted, enter encryption password")
+                                                    onAccepted: encryptionKeyDlg.accept()
+                                                }
+                                                CopyPasteButtons {
+                                                    edit: encryptionKeyValue
+                                                }
+                                            }
+                                            onAccepted: {
+                                                deviceEntry.isEncryptionEnabled = encryptionKeyValue.text.length > 0;
+                                                devicesDelegate.setDeviceProperty(modelData.deviceID, "encryptionPassword", encryptionKeyValue.text);
+                                            }
+                                            onRejected: encryptionKeyValue.text = Qt.binding(() => modelData.encryptionPassword)
+                                            onHelpRequested: Qt.openUrlExternally("https://docs.syncthing.net/users/untrusted.html")
+                                        }
+                                    }
+                                    onClicked: deviceSwitch.toggle()
+                                    required property var modelData
+                                    property bool isEncryptionEnabled: modelData.encryptionPassword?.length > 0
+                                }
+                            }
+                        }
+                    }
+                    required property var modelData
+                    property var devicesModel: {
+                        const devices = [];
+                        const sharedDevices = objectConfigPage.configObject[modelData.key];
+                        const myId = app.connection.myId;
+                        for (const sharedDev of sharedDevices) {
+                            if (sharedDev.deviceID !== myId) {
+                                devices.push(sharedDev);
+                            }
+                        }
+                        const otherDevices = app.connection.deviceIds;
+                        for (const otherDevID of otherDevices) {
+                            if (otherDevID !== myId && devices.find((existingDev) => existingDev.deviceID === otherDevID) === undefined) {
+                                devices.push({deviceID: otherDevID, encryptionPassword: "", introducedBy: ""});
+                            }
+                        }
+                        return devices;
+                    }
+                    function findDevice(deviceID) {
+                        return objectConfigPage.configObject[modelData.key].find((device) => device.deviceID === deviceID);
+                    }
+                    function isDeviceEnabled(deviceID) {
+                        return findDevice(deviceID) !== undefined;
+                    }
+                    function setDeviceEnabled(deviceID, enabled) {
+                        const devices = objectConfigPage.configObject[modelData.key];
+                        const index = devices.findIndex((device) => device.deviceID === deviceID);
+                        if (enabled && index < 0) {
+                            devices.push({deviceID: deviceID, encryptionPassword: "", introducedBy: ""});
+                        } else if (!enabled && index > 0) {
+                            devices.splice(index, 1);
+                        }
+                    }
+                    function setDeviceProperty(deviceID, key, value) {
+                        const device = findDevice(deviceID);
+                        if (device !== undefined) {
+                            device[key] = value;
+                        }
+                    }
                 }
             }
             DelegateChoice {
@@ -99,7 +343,6 @@ Page {
                                 font.weight: Font.Medium
                             }
                             Label {
-                                id: numberValue
                                 Layout.fillWidth: true
                                 text: modelData.value
                                 elide: Text.ElideRight
@@ -113,7 +356,6 @@ Page {
                         HelpButton {
                             id: numberHelpButton
                             configCategory: objectConfigPage.configCategory
-                            key: modelData.key
                         }
                     }
                     onClicked: numberDlg.visible = true
@@ -133,11 +375,7 @@ Page {
                             }
                             onAccepted: numberDlg.accept()
                         }
-                        onAccepted: {
-                            const number = Number.fromLocaleString(Qt.locale(numberValidator.locale), editedNumberValue.text)
-                            objectConfigPage.updateValue(modelData.key, number)
-                            numberValue.text = number
-                        }
+                        onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, Number.fromLocaleString(Qt.locale(numberValidator.locale), editedNumberValue.text))
                         onRejected: editedNumberValue.text = objectConfigPage.configObject[modelData.key]
                         onHelpRequested: numberHelpButton.clicked()
                     }
@@ -164,19 +402,26 @@ Page {
                         }
                         HelpButton {
                             configCategory: objectConfigPage.configCategory
-                            key: modelData.key
                         }
                     }
-                    onClicked: objectConfigPage.stackView.push("ObjectConfigPage.qml", {
+                    onClicked: {
+                        const currentPath = objectConfigPage.path;
+                        const neestedPath = currentPath.length > 0 ? `${currentPath}.${modelData.key}` : modelData.key;
+                        objectConfigPage.stackView.push("ObjectConfigPage.qml", {
                                                                    title: objNameLabel.text,
                                                                    configObject: objectConfigPage.configObject[modelData.key],
+                                                                   parentObject: objectConfigPage.configObject,
                                                                    stackView: objectConfigPage.stackView,
                                                                    parentPage: objectConfigPage,
                                                                    objectNameLabel: objNameLabel,
-                                                                   path: `${objectConfigPage.path}.${modelData.key}`,
+                                                                   path: neestedPath,
+                                                                   helpUrl: modelData.helpUrl ?? "",
+                                                                   itemLabel: modelData.itemLabel ?? "",
                                                                    configTemplates: objectConfigPage.configTemplates,
-                                                                   specialEntries: objectConfigPage.specialEntriesByKey[modelData.key] ?? []},
+                                                                   specialEntries: objectConfigPage.specialEntriesByKey[neestedPath] ?? [],
+                                                                   specialEntriesByKey: objectConfigPage.specialEntriesByKey ?? {}},
                                                                StackView.PushTransition)
+                    }
                     required property var modelData
                 }
             }
@@ -213,7 +458,6 @@ Page {
                         }
                         HelpButton {
                             configCategory: objectConfigPage.configCategory
-                            key: modelData.key
                         }
                     }
                     required property var modelData
@@ -256,7 +500,6 @@ Page {
                                 font.weight: Font.Medium
                             }
                             Label {
-                                id: filepathValue
                                 Layout.fillWidth: true
                                 text: modelData.value
                                 elide: Text.ElideRight
@@ -278,7 +521,7 @@ Page {
                             icon.source: app.faUrlBase + "undo"
                             icon.width: 20
                             icon.height: 20
-                            onClicked: objectConfigPage.updateValue(modelData.key, filepathValue.text = "")
+                            onClicked: objectConfigPage.updateValue(modelData.index, modelData.key, "")
                         }
                         RoundButton {
                             Layout.preferredWidth: 36
@@ -291,22 +534,18 @@ Page {
                             icon.source: app.faUrlBase + "pencil"
                             icon.width: 20
                             icon.height: 20
-                            onClicked: {
-                                editedFileValue.text = objectConfigPage.configObject[modelData.key];
-                                manualFileDlg.open();
-                            }
+                            onClicked: manualFileDlg.open()
                         }
                         HelpButton {
                             id: fileHelpButton
                             configCategory: objectConfigPage.configCategory
-                            key: modelData.key
                         }
                     }
                     onClicked: fileDlg.open()
                     FileDialog {
                         id: fileDlg
                         title: modelData.label
-                        onAccepted: objectConfigPage.updateValue(modelData.key, filepathValue.text = app.resolveUrl(fileDlg.selectedFile))
+                        onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, app.resolveUrl(fileDlg.selectedFile))
                     }
                     Dialog {
                         id: manualFileDlg
@@ -320,7 +559,7 @@ Page {
                             text: modelData.value
                             onAccepted: manualFileDlg.accept()
                         }
-                        onAccepted: objectConfigPage.updateValue(modelData.key, filepathValue.text = editedFileValue.text)
+                        onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, editedFileValue.text)
                         onHelpRequested: fileHelpButton.clicked()
                     }
                     required property var modelData
@@ -362,7 +601,7 @@ Page {
                             icon.source: app.faUrlBase + "undo"
                             icon.width: 20
                             icon.height: 20
-                            onClicked: objectConfigPage.updateValue(modelData.key, folderpathValue.text = "")
+                            onClicked: objectConfigPage.updateValue(modelData.index, modelData.key, "")
                         }
                         RoundButton {
                             Layout.preferredWidth: 36
@@ -375,15 +614,11 @@ Page {
                             icon.source: app.faUrlBase + "pencil"
                             icon.width: 20
                             icon.height: 20
-                            onClicked: {
-                                editedFolderValue.text = objectConfigPage.configObject[modelData.key];
-                                manualFolderDlg.open();
-                            }
+                            onClicked: manualFolderDlg.open()
                         }
                         HelpButton {
                             id: folderHelpButton
                             configCategory: objectConfigPage.configCategory
-                            key: modelData.key
                         }
                     }
                     onClicked: folderDlg.open()
@@ -391,7 +626,7 @@ Page {
                         id: folderDlg
                         title: modelData.label
                         currentFolder: encodeURIComponent(folderpathValue.text)
-                        onAccepted: objectConfigPage.updateValue(modelData.key, folderpathValue.text = app.resolveUrl(folderDlg.selectedFolder))
+                        onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, app.resolveUrl(folderDlg.selectedFolder))
                     }
                     Dialog {
                         id: manualFolderDlg
@@ -405,7 +640,7 @@ Page {
                             text: modelData.value
                             onAccepted: manualFolderDlg.accept()
                         }
-                        onAccepted: objectConfigPage.updateValue(modelData.key, folderpathValue.text = editedFolderValue.text)
+                        onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, editedFolderValue.text)
                         onHelpRequested: folderHelpButton.clicked()
                     }
                     required property var modelData
@@ -447,17 +682,26 @@ Page {
     property bool specialEntriesOnly: false
     property var specialEntriesByKey: ({})
     property var specialEntries: []
-    required property var configObject
+    property var configObject: undefined
+    property var parentObject: undefined
     property var childObjectTemplate: configTemplates[path]
     property bool canAdd: Array.isArray(configObject) && childObjectTemplate !== undefined
+    property string itemLabel
     property string path: ""
     property string configCategory
+    property string helpUrl
     property var configTemplates: ({})
     readonly property int standardButtons: (configCategory.length > 0) ? (Dialog.Ok | Dialog.Cancel | Dialog.Help) : (Dialog.Ok | Dialog.Cancel)
     required property StackView stackView
     property Page parentPage
     property Label objectNameLabel
     property list<Action> actions: [
+        Action {
+            text: qsTr("Help")
+            enabled: objectConfigPage.helpUrl.length > 0
+            icon.source: app.faUrlBase + "question"
+            onTriggered: Qt.openUrlExternally(objectConfigPage.helpUrl)
+        },
         Action {
             text: qsTr("Add")
             enabled: objectConfigPage.canAdd
@@ -471,7 +715,7 @@ Page {
         const key = configEntry[0];
         const value = configEntry[1];
         const isArray = Array.isArray(objectConfigPage.configObject);
-        const row = {key: key, value: value, type: typeof value, index: index, isArray: isArray};
+        const row = {key: key, value: value, type: typeof value, index: index, isArray: isArray, desc: ""};
         if (!isArray) {
             row.label = uncamel(key);
             row.labelKey = "";
@@ -480,7 +724,7 @@ Page {
             const nestedValue = value[nestedKey];
             const nestedType = typeof nestedValue;
             const hasNestedValue = nestedType === "string" || nestedType === "number";
-            row.label = hasNestedValue ? nestedValue : uncamel(typeof value);
+            row.label = hasNestedValue ? nestedValue : (itemLabel.length ? itemLabel : uncamel(typeof value));
             row.labelKey = hasNestedValue ? nestedKey : "";
         }
         return row;
@@ -489,17 +733,19 @@ Page {
     function makeConfigRowForSpecialEntry(specialEntry, value, index) {
         specialEntry.index = index;
         specialEntry.isArray = Array.isArray(objectConfigPage.configObject);
-        specialEntry.value = specialEntry.value ?? value;
+        specialEntry.value = value ?? specialEntry.defaultValue;
         specialEntry.type = specialEntry.type ?? typeof specialEntry.value;
         specialEntry.label = specialEntry.label ?? uncamel(specialEntry.isArray ? specialEntry.key : specialEntry.type);
+        specialEntry.desc = specialEntry.desc ?? "";
         return specialEntry;
     }
 
-    function updateValue(key, value) {
-        objectConfigPage.configObject[key] = value
+    function updateValue(index, key, value) {
+        objectConfigPage.configObject[key] = value;
+        listModel.setProperty(index, "value", value);
         if (Array.isArray(objectConfigPage.parentPage?.configObject) && objectConfigPage.objectNameLabel?.labelKey === key) {
-            objectConfigPage.title = value
-            objectConfigPage.objectNameLabel.text = value
+            objectConfigPage.title = value;
+            objectConfigPage.objectNameLabel.text = value;
         }
     }
 
@@ -555,6 +801,13 @@ Page {
             } else {
                 app.showError(qsTr("Unable to add %1 because specified key is invalid.").arg(typeof object));
             }
+        }
+    }
+
+    function disableFirst() {
+        // note: Mean to prevent editing folder/device ID initially saving new folder/device.
+        if (listModel.get(0).enabled === true) {
+            listModel.setProperty(0, "enabled", false);
         }
     }
 

@@ -5,8 +5,8 @@ AdvancedConfigPage {
     entryName: "device"
     entriesKey: "devices"
     isEntry: (device) => device.deviceID === devId
-    configObject: devId.length > 0 ? findConfigObject() : makeNewConfig()
     configCategory: "config-option-device"
+    Component.onCompleted: configObject = devId.length > 0 ? findConfigObject() : makeNewConfig();
     required property string devName
     required property string devId
     function makeNewConfig() {
@@ -16,7 +16,7 @@ AdvancedConfigPage {
         const id = configObject.deviceID ?? "";
         const name = configObject.name ?? "";
         devName = name.length > 0 ? name : id;
-        if (devId.length === 0) {
+        if (!configObjectExists) {
             devId = id;
         }
     }

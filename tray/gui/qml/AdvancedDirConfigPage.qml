@@ -5,8 +5,8 @@ AdvancedConfigPage {
     entryName: "folder"
     entriesKey: "folders"
     isEntry: (folder) => folder.id === dirId
-    configObject: dirId.length > 0 ? findConfigObject() : makeNewConfig()
     configCategory: "config-option-folder"
+    Component.onCompleted: configObject = dirId.length > 0 ? findConfigObject() : makeNewConfig();
     required property string dirName
     required property string dirId
     function makeNewConfig() {
@@ -19,7 +19,7 @@ AdvancedConfigPage {
         const id = configObject.id ?? "";
         const label = configObject.label ?? "";
         dirName = label.length > 0 ? label : id;
-        if (dirId.length === 0) {
+        if (!configObjectExists) {
             dirId = id;
         }
     }
