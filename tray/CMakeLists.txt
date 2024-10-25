@@ -290,9 +290,11 @@ if (QUICK_GUI)
         gui/qml/ExpandableListView.qml
         gui/qml/FilesPage.qml
         gui/qml/HelpButton.qml
+        gui/qml/IconOnlyButton.qml
         gui/qml/IgnorePatternPage.qml
         gui/qml/LogPage.qml
         gui/qml/Main.qml
+        gui/qml/ObjectConfigDelegate.qml
         gui/qml/ObjectConfigPage.qml
         gui/qml/SettingsPage.qml
         gui/qml/WebViewPage.qml

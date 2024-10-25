@@ -44,37 +44,19 @@ ItemDelegate {
                 id: buttonRepeater
                 visible: mainDelegate.breakpoint || (buttonRepeater.count + mainDelegate.extraActions.length) === 1
                 model: mainDelegate.actions
-                RoundButton {
-                    Layout.preferredWidth: 36
-                    Layout.preferredHeight: 36
-                    display: AbstractButton.IconOnly
+                IconOnlyButton {
                     text: modelData.text
                     visible: buttonRepeater.visible
                     enabled: modelData.enabled
-                    hoverEnabled: true
-                    ToolTip.visible: hovered || pressed
-                    ToolTip.text: text
-                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                     icon.source: modelData.icon.source
-                    icon.width: 20
-                    icon.height: 20
                     onClicked: modelData.trigger(source)
                     required property Action modelData
                 }
             }
-            RoundButton {
-                Layout.preferredWidth: 36
-                Layout.preferredHeight: 36
+            IconOnlyButton {
                 visible: !buttonRepeater.visible || mainDelegate.extraActions.length > 0
-                display: AbstractButton.IconOnly
                 text: qsTr("More actions")
-                hoverEnabled: true
-                ToolTip.visible: hovered || pressed
-                ToolTip.text: text
-                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                 icon.source: app.faUrlBase + "ellipsis-v"
-                icon.width: 20
-                icon.height: 20
                 onClicked: menu.popup()
             }
             Menu {
