@@ -98,6 +98,7 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
 #endif
     if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: POST " << reply->url().toString().toStdString() << Phrases::EndFlush;
+        cerr.write(data.data(), static_cast<std::streamsize>(data.size()));
     }
     return reply;
 #else
@@ -118,6 +119,7 @@ QNetworkReply *SyncthingConnection::sendData(const QByteArray &verb, const QStri
 #endif
     if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: " << verb.data() << ' ' << reply->url().toString().toStdString() << Phrases::EndFlush;
+        cerr.write(data.data(), static_cast<std::streamsize>(data.size()));
     }
     return reply;
 #else
