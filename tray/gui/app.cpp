@@ -112,6 +112,11 @@ App::App(bool insecure, QObject *parent)
     loadMain();
 }
 
+QString App::website() const
+{
+    return QStringLiteral(APP_URL);
+}
+
 QString App::status()
 {
     if (m_status.has_value()) {

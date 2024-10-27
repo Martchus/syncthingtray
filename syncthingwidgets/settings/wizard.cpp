@@ -5,6 +5,7 @@
 #include "../misc/otherdialogs.h"
 #include "../misc/statusinfo.h"
 #include "../misc/syncthinglauncher.h"
+#include "../misc/utils.h"
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
@@ -35,7 +36,6 @@
 #include <QVBoxLayout>
 
 #include <initializer_list>
-#include <string_view>
 
 #if !defined(SYNCTHINGWIDGETS_AUTOSTART_DISABLED)                                                                                                    \
     && ((defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)) || defined(PLATFORM_WINDOWS) || defined(PLATFORM_MAC))
@@ -443,13 +443,7 @@ void Wizard::handleConfigurationApplied(const QString &configError, Data::Syncth
 WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     : QWizardPage(parent)
 {
-    auto readmeUrl = QString();
-    if constexpr (std::string_view(APP_VERSION).find('-') == std::string_view::npos) {
-        readmeUrl = QStringLiteral("https://github.com/" APP_AUTHOR "/" PROJECT_NAME "/blob/v" APP_VERSION "/README.md");
-    } else {
-        readmeUrl = QStringLiteral("https://github.com/" APP_AUTHOR "/" PROJECT_NAME "/blob/master/README.md");
-    }
-
+    const auto readmeUrl = QtGui::readmeUrl();
     auto *const infoLabel = new QLabel(this);
     auto infoText = QString();
     const auto &settings = Settings::values();

@@ -4,6 +4,7 @@
 #include <QQmlApplicationEngine>
 
 #include <syncthingwidgets/misc/syncthinglauncher.h>
+#include <syncthingwidgets/misc/utils.h>
 
 #include <syncthingmodel/syncthingdevicemodel.h>
 #include <syncthingmodel/syncthingdirectorymodel.h>
@@ -45,6 +46,9 @@ class App : public QObject {
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
     Q_PROPERTY(int iconSize READ iconSize CONSTANT)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
+    Q_PROPERTY(QString syncthingVersion READ syncthingVersion CONSTANT)
+    Q_PROPERTY(QString readmeUrl READ readmeUrl CONSTANT)
+    Q_PROPERTY(QString website READ website CONSTANT)
 
 public:
     explicit App(bool insecure = false, QObject *parent = nullptr);
@@ -89,6 +93,19 @@ public:
         storeSettings();
         emit settingsChanged(m_settings);
     }
+    QString syncthingVersion() const
+    {
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+        return Data::SyncthingLauncher::libSyncthingVersionInfo().remove(0, 11);
+#else
+        return tr("not available");
+#endif
+    }
+    QString readmeUrl() const
+    {
+        return QtGui::readmeUrl();
+    }
+    QString website() const;
 
     /*!
      * \brief Returns whether darkmode is enabled.
