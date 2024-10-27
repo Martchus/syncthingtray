@@ -18,26 +18,26 @@ RowLayout {
         text: qsTr("More options")
         icon.source: app.faUrlBase + "ellipsis-v"
         onClicked: menu.popup()
-    }
-    Menu {
-        id: menu
-        MenuItem {
-            text: qsTr("Remove")
-            Layout.preferredWidth: 36
-            Layout.preferredHeight: 36
-            icon.width: app.iconSize
-            icon.height: app.iconSize
-            icon.source: app.faUrlBase + "minus"
-            onClicked: page.removeObjects(rowData, 1)
-        }
-        MenuItem {
-            text: qsTr("Insert before")
-            Layout.preferredWidth: 36
-            Layout.preferredHeight: 36
-            icon.width: app.iconSize
-            icon.height: app.iconSize
-            icon.source: app.faUrlBase + "plus"
-            onClicked: page.showNewValueDialog(rowData.index)
+        Menu {
+            id: menu
+            MenuItem {
+                text: qsTr("Remove")
+                Layout.preferredWidth: 36
+                Layout.preferredHeight: 36
+                icon.width: app.iconSize
+                icon.height: app.iconSize
+                icon.source: app.faUrlBase + "minus"
+                onClicked: page.removeObjects(rowData, 1)
+            }
+            MenuItem {
+                text: qsTr("Insert before")
+                Layout.preferredWidth: 36
+                Layout.preferredHeight: 36
+                icon.width: app.iconSize
+                icon.height: app.iconSize
+                icon.source: app.faUrlBase + "plus"
+                onClicked: page.showNewValueDialog(rowData.index)
+            }
         }
     }
     required property var page

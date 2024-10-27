@@ -64,14 +64,14 @@ Page {
             TapHandler {
                 acceptedDevices: PointerDevice.TouchScreen
                 onLongPressed: {
-                    contextMenu.open();
+                    contextMenu.popup();
                     app.performHapticFeedback();
                 }
             }
             TapHandler {
                 acceptedButtons: Qt.RightButton
                 acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
-                onTapped: contextMenu.open()
+                onTapped: contextMenu.popup()
             }
             Menu {
                 id: contextMenu

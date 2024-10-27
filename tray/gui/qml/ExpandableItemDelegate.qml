@@ -58,36 +58,36 @@ ItemDelegate {
                 text: qsTr("More actions")
                 icon.source: app.faUrlBase + "ellipsis-v"
                 onClicked: menu.popup()
-            }
-            Menu {
-                id: menu
-                Instantiator {
-                    model: mainDelegate.actions
-                    delegate: MenuItem {
-                        required property Action modelData
-                        text: modelData.text
-                        enabled: modelData.enabled
-                        icon.source: modelData.icon.source
-                        icon.width: app.iconSize
-                        icon.height: app.iconSize
-                        onTriggered: modelData.trigger(source)
+                Menu {
+                    id: menu
+                    Instantiator {
+                        model: mainDelegate.actions
+                        delegate: MenuItem {
+                            required property Action modelData
+                            text: modelData.text
+                            enabled: modelData.enabled
+                            icon.source: modelData.icon.source
+                            icon.width: app.iconSize
+                            icon.height: app.iconSize
+                            onTriggered: modelData.trigger(source)
+                        }
+                        onObjectAdded: (index, object) => object.enabled && menu.insertItem(index, object)
+                        onObjectRemoved: (index, object) => menu.removeItem(object)
                     }
-                    onObjectAdded: (index, object) => object.enabled && menu.insertItem(index, object)
-                    onObjectRemoved: (index, object) => menu.removeItem(object)
-                }
-                Instantiator {
-                    model: mainDelegate.extraActions
-                    delegate: MenuItem {
-                        required property Action modelData
-                        text: modelData.text
-                        enabled: modelData.enabled
-                        icon.source: modelData.icon.source
-                        icon.width: app.iconSize
-                        icon.height: app.iconSize
-                        onTriggered: modelData.trigger(source)
+                    Instantiator {
+                        model: mainDelegate.extraActions
+                        delegate: MenuItem {
+                            required property Action modelData
+                            text: modelData.text
+                            enabled: modelData.enabled
+                            icon.source: modelData.icon.source
+                            icon.width: app.iconSize
+                            icon.height: app.iconSize
+                            onTriggered: modelData.trigger(source)
+                        }
+                        onObjectAdded: (index, object) => object.enabled && menu.insertItem(index, object)
+                        onObjectRemoved: (index, object) => menu.removeItem(object)
                     }
-                    onObjectAdded: (index, object) => object.enabled && menu.insertItem(index, object)
-                    onObjectRemoved: (index, object) => menu.removeItem(object)
                 }
             }
         }

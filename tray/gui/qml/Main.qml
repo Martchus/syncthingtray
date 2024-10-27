@@ -129,22 +129,22 @@ ApplicationWindow {
                     icon.height: app.iconSize
                     onClicked: extraActionsMenu.popup()
                     onPressAndHold: app.performHapticFeedback()
-                }
-                Menu {
-                    id: extraActionsMenu
-                    Instantiator {
-                        model: pageStack.currentExtraActions
-                        delegate: MenuItem {
-                            required property Action modelData
-                            text: modelData.text
-                            enabled: modelData.enabled
-                            icon.source: modelData.icon.source
-                            icon.width: app.iconSize
-                            icon.height: app.iconSize
-                            onTriggered: modelData?.trigger()
+                    Menu {
+                        id: extraActionsMenu
+                        Instantiator {
+                            model: pageStack.currentExtraActions
+                            delegate: MenuItem {
+                                required property Action modelData
+                                text: modelData.text
+                                enabled: modelData.enabled
+                                icon.source: modelData.icon.source
+                                icon.width: app.iconSize
+                                icon.height: app.iconSize
+                                onTriggered: modelData?.trigger()
+                            }
+                            onObjectAdded: (index, object) => object.enabled && extraActionsMenu.insertItem(index, object)
+                            onObjectRemoved: (index, object) => extraActionsMenu.removeItem(object)
                         }
-                        onObjectAdded: (index, object) => object.enabled && extraActionsMenu.insertItem(index, object)
-                        onObjectRemoved: (index, object) => extraActionsMenu.removeItem(object)
                     }
                 }
             }
