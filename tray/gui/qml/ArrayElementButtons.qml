@@ -20,6 +20,7 @@ RowLayout {
         onClicked: menu.popup()
         Menu {
             id: menu
+            popupType: app.nativePopups ? Popup.Native : Popup.Item
             MenuItem {
                 text: qsTr("Remove")
                 Layout.preferredWidth: 36

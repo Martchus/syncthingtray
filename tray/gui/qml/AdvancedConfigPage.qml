@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Dialogs
 
@@ -22,11 +23,25 @@ ObjectConfigPage {
         }
     ]
 
-    MessageDialog {
+    Dialog {
         id: removeDialog
-        text: qsTr("Do you really want to remove the %1?").arg(advancedConfigPage.entryName)
-        informativeText: qsTr("This will only remove the %1 from Syncthing. No files will be deleted on disk.").arg(advancedConfigPage.entryName)
-        buttons: MessageDialog.Ok | MessageDialog.Cancel
+        popupType: app.nativePopups ? Popup.Native : Popup.Item
+        anchors.centerIn: Overlay.overlay
+        parent: Overlay.overlay
+        modal: true
+        standardButtons: Dialog.Yes | Dialog.No
+        contentItem: ColumnLayout {
+            Label {
+                Layout.fillWidth: true
+                text: qsTr("Do you really want to remove the %1?").arg(advancedConfigPage.entryName)
+                wrapMode: Text.WordWrap
+            }
+            Label {
+                Layout.fillWidth: true
+                text: qsTr("This will only remove the %1 from Syncthing. No files will be deleted on disk.").arg(advancedConfigPage.entryName)
+                wrapMode: Text.WordWrap
+            }
+        }
         onAccepted: advancedConfigPage.removeConfigObject()
     }
 

@@ -38,6 +38,7 @@ DelegateChooser {
             onClicked: stringDlg.visible = true
             Dialog {
                 id: stringDlg
+                popupType: app.nativePopups ? Popup.Native : Popup.Item
                 anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
@@ -94,6 +95,7 @@ DelegateChooser {
             onClicked: optionsDlg.visible = true
             Dialog {
                 id: optionsDlg
+                popupType: app.nativePopups ? Popup.Native : Popup.Item
                 anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
@@ -111,7 +113,10 @@ DelegateChooser {
                         textRole: "label"
                         enabled: modelData?.enabled ?? true
                         onAccepted: optionsDlg.accept()
-                        Component.onCompleted: editText = textForValue(modelData.value)
+                        Component.onCompleted: {
+                            //popup.popupType = Popup.Native;
+                            editText = textForValue(modelData.value);
+                        }
                         readonly property var currentOption: modelData.options.get(optionsValue.currentIndex)
                         readonly property string currentValueOrEditText: {
                             const currentOption = optionsValue.currentOption;
@@ -210,6 +215,7 @@ DelegateChooser {
                                 }
                                 Dialog {
                                     id: encryptionPasswordDlg
+                                    popupType: app.nativePopups ? Popup.Native : Popup.Item
                                     anchors.centerIn: Overlay.overlay
                                     parent: Overlay.overlay
                                     title: qsTr("Set encryption password for sharing with \"%1\"").arg(deviceNameOrIdLabel.text)
@@ -316,6 +322,7 @@ DelegateChooser {
             onClicked: numberDlg.visible = true
             Dialog {
                 id: numberDlg
+                popupType: app.nativePopups ? Popup.Native : Popup.Item
                 anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
@@ -554,6 +561,7 @@ DelegateChooser {
             }
             Dialog {
                 id: manualFolderDlg
+                popupType: app.nativePopups ? Popup.Native : Popup.Item
                 anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons

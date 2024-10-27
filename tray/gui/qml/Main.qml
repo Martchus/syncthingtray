@@ -131,6 +131,7 @@ ApplicationWindow {
                     onPressAndHold: app.performHapticFeedback()
                     Menu {
                         id: extraActionsMenu
+                        popupType: app.nativePopups ? Popup.Native : Popup.Item
                         Instantiator {
                             model: pageStack.currentExtraActions
                             delegate: MenuItem {
@@ -393,11 +394,19 @@ ApplicationWindow {
     }
 
     // avoid closing app (TODO: allow to keep Syncthing running in the background)
-    MessageDialog {
+    Dialog {
         id: closeDialog
-        buttons: MessageDialog.Yes | MessageDialog.No
+        popupType: app.nativePopups ? Popup.Native : Popup.Item
+        anchors.centerIn: Overlay.overlay
+        parent: Overlay.overlay
+        modal: true
+        standardButtons: Dialog.Yes | Dialog.No
         title: window.title
-        text: qsTr("Do you really want to close Syncthing?")
+        contentItem: Label {
+            Layout.fillWidth: true
+            text: qsTr("Do you really want to close Syncthing?")
+            wrapMode: Text.WordWrap
+        }
         onAccepted: {
             window.forceClose = true;
             window.close();

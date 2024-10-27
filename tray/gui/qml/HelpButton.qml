@@ -11,6 +11,7 @@ IconOnlyButton {
 
     Dialog {
         id: helpDlg
+        popupType: app.nativePopups ? Popup.Native : Popup.Item
         parent: Overlay.overlay
         anchors.centerIn: Overlay.overlay
         title: modelData.label ?? helpButton.key

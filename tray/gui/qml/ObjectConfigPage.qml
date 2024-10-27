@@ -44,6 +44,7 @@ Page {
     }
     Dialog {
         id: newValueDialog
+        popupType: app.nativePopups ? Popup.Native : Popup.Item
         anchors.centerIn: Overlay.overlay
         title: qsTr("Add new value")
         standardButtons: Dialog.Ok | Dialog.Cancel

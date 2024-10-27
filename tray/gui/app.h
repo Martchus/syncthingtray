@@ -45,6 +45,7 @@ class App : public QObject {
     Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
     Q_PROPERTY(int iconSize READ iconSize CONSTANT)
+    Q_PROPERTY(bool nativePopups READ nativePopups CONSTANT)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion CONSTANT)
     Q_PROPERTY(QString readmeUrl READ readmeUrl CONSTANT)
@@ -92,6 +93,14 @@ public:
         applySettings();
         storeSettings();
         emit settingsChanged(m_settings);
+    }
+    bool nativePopups() const
+    {
+#ifdef Q_OS_ANDROID
+        return false;
+#else
+        return true;
+#endif
     }
     QString syncthingVersion() const
     {

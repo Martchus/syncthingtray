@@ -4,6 +4,7 @@ import QtQuick.Controls
 
 Dialog {
     id: aboutDialog
+    popupType: app.nativePopups ? Popup.Native : Popup.Item
     anchors.centerIn: Overlay.overlay
     parent: Overlay.overlay
     modal: true

@@ -60,6 +60,7 @@ ItemDelegate {
                 onClicked: menu.popup()
                 Menu {
                     id: menu
+                    popupType: app.nativePopups ? Popup.Native : Popup.Item
                     Instantiator {
                         model: mainDelegate.actions
                         delegate: MenuItem {

@@ -75,6 +75,7 @@ Page {
             }
             Menu {
                 id: contextMenu
+                popupType: app.nativePopups ? Popup.Native : Popup.Item
                 Instantiator {
                     model: actions
                     delegate: MenuItem {
@@ -109,6 +110,7 @@ Page {
     }
     Dialog {
         id: confirmActionDialog
+        popupType: app.nativePopups ? Popup.Native : Popup.Item
         anchors.centerIn: Overlay.overlay
         standardButtons: Dialog.Ok | Dialog.Cancel
         width: parent.width - 20
