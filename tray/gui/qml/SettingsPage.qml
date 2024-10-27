@@ -89,7 +89,7 @@ StackView {
             launcher: [
                 {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => app.launcher.runningStatus)},
                 {key: "stopOnMetered", label: qsTr("Stop on metered network connection"), statusText: Qt.binding(() => app.launcher.meteredStatus)},
-                {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Shows Syncthing logs since app startup"), value: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
+                {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Shows Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
             ],
         })
         property list<Action> actions: [
