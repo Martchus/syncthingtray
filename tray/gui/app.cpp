@@ -203,7 +203,12 @@ bool App::copyText(const QString &text)
 {
     if (auto *const clipboard = QGuiApplication::clipboard()) {
         clipboard->setText(text);
+#ifdef Q_OS_ANDROID
+        // do not emit info as Android will show a message about it automatically
+        performHapticFeedback();
+#else
         emit info(tr("Copied value"));
+#endif
         return true;
     }
     emit info(tr("Unable to copy value"));
@@ -217,7 +222,6 @@ bool App::copyPath(const QString &dirId, const QString &relativePath)
     if (!dirInfo) {
         emit error(tr("Unable to copy \"%1\"").arg(relativePath));
     } else if (copyText(dirInfo->path % QChar('/') % relativePath)) {
-        emit info(tr("Copied path"));
         return true;
     }
     return false;
