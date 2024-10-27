@@ -113,7 +113,12 @@ find_package(syncthingtesthelper ${META_APP_VERSION} REQUIRED)
 list(APPEND PRIVATE_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../testhelper/include")
 
 # configure libsyncthing
-option(USE_LIBSYNCTHING "whether libsyncthing should be included for the launcher" OFF)
+if (NO_LIBSYNCTHING)
+    set(USE_LIBSYNCTHING_DEFAULT OFF)
+else ()
+    set(USE_LIBSYNCTHING_DEFAULT ON)
+endif ()
+option(USE_LIBSYNCTHING "whether libsyncthing should be included for the launcher" ${USE_LIBSYNCTHING_DEFAULT})
 if (USE_LIBSYNCTHING)
     find_package(syncthing ${META_APP_VERSION} REQUIRED)
     use_syncthing(VISIBILITY PUBLIC)

@@ -21,11 +21,13 @@ set(NETWORK_INFORMATION_SUPPORT ON)
 project(${META_PROJECT_NAME})
 enable_testing()
 
-# disable experimental Qt Quick GUI by default except on mobile platforms
+# disable experimental Qt Quick GUI by default except on mobile platforms, enable libsyncthing by default
 if (ANDROID OR IOS)
     set(QUICK_GUI_ENABLED_BY_DEFAULT ON)
+    set(LIBSYNCTHING_DISABLED_BY_DEFAULT OFF)
 else ()
     set(QUICK_GUI_ENABLED_BY_DEFAULT OFF)
+    set(LIBSYNCTHING_DISABLED_BY_DEFAULT ON)
 endif ()
 
 # disable KDE integration under Android, Windows and MacOS by default
@@ -54,7 +56,7 @@ if (KF_PACKAGE_PREFIX MATCHES ".*KF([0-9]+).*")
 endif ()
 
 # add options for partial build
-option(NO_LIBSYNCTHING "whether building Syncthing itself as a library should be skipped" ON)
+option(NO_LIBSYNCTHING "whether building Syncthing itself as a library should be skipped" "${LIBSYNCTHING_DISABLED_BY_DEFAULT}")
 option(NO_CLI "whether building CLI should be skipped" OFF)
 option(NO_TRAY "whether building the tray should be skipped" OFF)
 option(NO_FILE_ITEM_ACTION_PLUGIN "whether building the file item action plugin should be skipped" "${FILE_ITEM_ACTION_PLUGIN_DISABLED_BY_DEFAULT}")
