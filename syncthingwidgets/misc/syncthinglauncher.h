@@ -36,6 +36,7 @@ struct SYNCTHINGWIDGETS_EXPORT SyncthingExitStatus {
 class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool running READ isRunning NOTIFY runningChanged)
+    Q_PROPERTY(bool starting READ isStarting NOTIFY startingChanged)
     Q_PROPERTY(CppUtilities::DateTime activeSince READ activeSince)
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
     Q_PROPERTY(bool emittingOutput READ isEmittingOutput WRITE setEmittingOutput)
@@ -51,6 +52,7 @@ public:
     explicit SyncthingLauncher(QObject *parent = nullptr);
 
     bool isRunning() const;
+    bool isStarting() const;
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void setRunning(bool running, LibSyncthing::RuntimeOptions &&runtimeOptions);
 #endif
@@ -86,6 +88,7 @@ public:
 Q_SIGNALS:
     void confirmKill();
     void runningChanged(bool isRunning);
+    void startingChanged();
     void outputAvailable(const QByteArray &data);
     void exitLogged(const std::string &exitMessage);
     void exited(int exitCode, QProcess::ExitStatus exitStatus);
@@ -149,6 +152,12 @@ private:
 inline bool SyncthingLauncher::isRunning() const
 {
     return m_process.isRunning() || m_startFuture.isRunning();
+}
+
+/// \brief Returns whether Syncthing is starting (it is running but the GUI/API is not available yet).
+inline bool SyncthingLauncher::isStarting() const
+{
+    return isRunning() && m_guiListeningUrl.isEmpty();
 }
 
 /// \brief Returns when the Syncthing instance has been started.

@@ -399,6 +399,7 @@ DelegateChooser {
                         visible: text.length > 0
                         elide: Text.ElideRight
                         font.weight: Font.Light
+                        wrapMode: Text.WordWrap
                         Component.onCompleted: text = modelData.statusText ?? ""
                     }
                 }

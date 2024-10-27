@@ -37,7 +37,7 @@ ApplicationWindow {
                 }
                 BusyIndicator {
                     id: busyIndicator
-                    running: app.connection.connecting
+                    running: app.connection.connecting || app.launcher.starting
                     visible: running
                     Layout.preferredWidth: statusButton.width - 5
                     Layout.preferredHeight: statusButton.height - 5

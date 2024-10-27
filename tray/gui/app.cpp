@@ -63,6 +63,11 @@ App::App(bool insecure, QObject *parent)
     , m_iconSize(16)
 #endif
     , m_insecure(insecure)
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    , m_connectToLaunched(true)
+#else
+    , m_connectToLaunched(false)
+#endif
     , m_darkmodeEnabled(false)
     , m_darkColorScheme(false)
     , m_darkPalette(QtUtilities::isPaletteDark())
@@ -87,6 +92,8 @@ App::App(bool insecure, QObject *parent)
 
     m_launcher.setEmittingOutput(true);
     connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &App::gatherLogs);
+    connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &App::handleRunningChanged);
+    connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &App::handleGuiAddressChanged);
 
     auto *const app = QGuiApplication::instance();
     auto *const context = m_engine.rootContext();
@@ -109,6 +116,13 @@ QString App::status()
 {
     if (m_status.has_value()) {
         return *m_status;
+    }
+    if (m_connectToLaunched) {
+        if (!m_launcher.isRunning()) {
+            return m_status.emplace(m_launcher.runningStatus());
+        } else if (m_launcher.isStarting()) {
+            return m_status.emplace(tr("Backend is starting …"));
+        }
     }
     switch (m_connection.status()) {
     case Data::SyncthingStatus::Disconnected:
@@ -382,6 +396,38 @@ void App::gatherLogs(const QByteArray &newOutput)
     m_log.append(asText);
 }
 
+void App::handleRunningChanged(bool isRunning)
+{
+    if (m_connectToLaunched) {
+        invalidateStatus();
+    }
+    if (!m_importingSettingsFrom.isEmpty() && !isRunning) {
+        importSettings(m_importingSettingsFrom);
+    }
+}
+
+void App::handleGuiAddressChanged(const QUrl &newUrl)
+{
+    m_connectionSettingsFromLauncher.syncthingUrl = newUrl.toString();
+    if (!m_syncthingConfig.restore(m_syncthingConfigDir + QStringLiteral("/config.xml"))) {
+        if (!newUrl.isEmpty()) {
+            emit error("Unable to read Syncthing config for automatic connection to backend.");
+        }
+        return;
+    }
+    m_connectionSettingsFromLauncher.apiKey = m_syncthingConfig.guiApiKey.toUtf8();
+    m_connectionSettingsFromLauncher.authEnabled = false;
+
+    if (m_connectToLaunched) {
+        invalidateStatus();
+        if (newUrl.isEmpty()) {
+            m_connection.disconnect();
+        } else if (m_connection.applySettings(m_connectionSettingsFromLauncher) || !m_connection.isConnected()) {
+            m_connection.reconnect();
+        }
+    }
+}
+
 bool App::openSettings()
 {
     if (!m_settingsDir.has_value()) {
@@ -448,19 +494,33 @@ bool App::applySettings()
     auto connectionSettings = m_settings.value(QLatin1String("connection"));
     auto connectionSettingsObj = connectionSettings.toObject();
     auto couldLoadCertificate = false;
-    if (connectionSettings.isObject()) {
-        couldLoadCertificate = m_connectionSettings.loadFromJson(connectionSettingsObj);
+    auto modified = !connectionSettings.isObject();
+    if (!modified) {
+        couldLoadCertificate = m_connectionSettingsFromConfig.loadFromJson(connectionSettingsObj);
     } else {
-        m_connectionSettings.storeToJson(connectionSettingsObj);
+        m_connectionSettingsFromConfig.storeToJson(connectionSettingsObj);
+        couldLoadCertificate = m_connectionSettingsFromConfig.loadHttpsCert();
+    }
+    auto useLauncherVal = connectionSettingsObj.value(QStringLiteral("useLauncher"));
+    m_connectToLaunched = useLauncherVal.toBool(m_connectToLaunched);
+    if (!useLauncherVal.isBool()) {
+        connectionSettingsObj.insert(QStringLiteral("useLauncher"), m_connectToLaunched);
+        modified = true;
+    }
+    if (modified) {
         m_settings.insert(QLatin1String("connection"), connectionSettingsObj);
-        couldLoadCertificate = m_connectionSettings.loadHttpsCert();
     }
     if (!couldLoadCertificate) {
         emit error(tr("Unable to load HTTPs certificate"));
     }
     m_connection.setInsecure(m_insecure);
-    m_connection.connect(m_connectionSettings);
+    if (m_connectToLaunched) {
+        handleGuiAddressChanged(m_launcher.guiUrl());
+    } else if (m_connection.applySettings(m_connectionSettingsFromConfig) || !m_connection.isConnected()) {
+        m_connection.reconnect();
+    }
     applyLauncherSettings();
+    invalidateStatus();
     return true;
 }
 
@@ -479,8 +539,10 @@ void App::applyLauncherSettings()
     auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     auto options = LibSyncthing::RuntimeOptions();
-    options.configDir = (m_settingsDir->path() + QStringLiteral("/syncthing/config")).toStdString();
-    options.dataDir = (m_settingsDir->path() + QStringLiteral("/syncthing/data")).toStdString();
+    m_syncthingConfigDir = m_settingsDir->path() + QStringLiteral("/syncthing/config");
+    m_syncthingDataDir = m_settingsDir->path() + QStringLiteral("/syncthing/data");
+    options.configDir = m_syncthingConfigDir.toStdString();
+    options.dataDir = m_syncthingDataDir.toStdString();
     m_launcher.setRunning(shouldRun, std::move(options));
 #else
     if (shouldRun) {
@@ -495,6 +557,13 @@ bool App::importSettings(const QUrl &url)
         emit error(tr("Unable to import settings: settings directory was not located."));
         return false;
     }
+    if (m_launcher.isRunning()) {
+        emit info(tr("Waiting for backend to terminate before importing settings …"));
+        m_importingSettingsFrom = url;
+        m_launcher.terminate();
+        return false;
+    }
+    m_importingSettingsFrom.clear();
     const auto path = resolveUrl(url);
     auto ec = std::error_code();
     std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(path), SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()),
@@ -505,7 +574,8 @@ bool App::importSettings(const QUrl &url)
     }
     emit info(tr("Settings have been imported from \"%1\".").arg(path));
     m_settingsFile.close();
-    return loadSettings();
+    loadSettings();
+    return applySettings();
 }
 
 bool App::exportSettings(const QUrl &url)

@@ -348,9 +348,11 @@ void SyncthingLauncher::handleProcessStateChanged(QProcess::ProcessState newStat
     switch (newState) {
     case QProcess::NotRunning:
         emit runningChanged(false);
+        emit startingChanged();
         break;
     case QProcess::Starting:
         emit runningChanged(true);
+        emit startingChanged();
         break;
     default:;
     }
@@ -416,6 +418,7 @@ void SyncthingLauncher::handleOutputAvailable(QByteArray &&data)
         std::cerr << EscapeCodes::Phrases::Info << "Syncthing GUI available: " << m_guiListeningUrlSearch.result() << EscapeCodes::Phrases::End;
         m_guiListeningUrlSearch.reset();
         emit guiUrlChanged(m_guiListeningUrl);
+        emit startingChanged();
     } else if (exitOffset) {
         m_guiListeningUrl.clear();
         emit guiUrlChanged(m_guiListeningUrl);
@@ -447,13 +450,16 @@ void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runt
 {
     LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
     emit runningChanged(true);
+    emit startingChanged();
     const auto exitCode = LibSyncthing::runSyncthing(runtimeOptions);
     const auto &exitStatus = m_lastExitStatus.emplace(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
     m_guiListeningUrl.clear();
     emit guiUrlChanged(m_guiListeningUrl);
     emit exited(exitStatus.code, exitStatus.status);
     emit runningChanged(false);
+    emit startingChanged();
 }
+
 #else
 void SyncthingLauncher::showLibSyncthingNotSupported()
 {

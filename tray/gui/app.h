@@ -11,6 +11,7 @@
 
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingconnectionsettings.h>
+#include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingnotifier.h>
 
 #include <qtutilities/settingsdialog/qtsettings.h>
@@ -149,6 +150,8 @@ private Q_SLOTS:
         const QByteArray &response);
     void invalidateStatus();
     void gatherLogs(const QByteArray &newOutput);
+    void handleRunningChanged(bool isRunning);
+    void handleGuiAddressChanged(const QUrl &newUrl);
 
 private:
     void applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled);
@@ -161,7 +164,12 @@ private:
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingRecentChangesModel m_changesModel;
-    Data::SyncthingConnectionSettings m_connectionSettings;
+    Data::SyncthingConnectionSettings m_connectionSettingsFromLauncher;
+    Data::SyncthingConnectionSettings m_connectionSettingsFromConfig;
+    Data::SyncthingConfig m_syncthingConfig;
+    QString m_syncthingConfigDir;
+    QString m_syncthingDataDir;
+    QUrl m_importingSettingsFrom;
     Data::SyncthingLauncher m_launcher;
     QtUtilities::QtSettings m_qtSettings;
     QFile m_settingsFile;
@@ -172,6 +180,7 @@ private:
     QString m_log;
     int m_iconSize;
     bool m_insecure;
+    bool m_connectToLaunched;
     bool m_darkmodeEnabled;
     bool m_darkColorScheme;
     bool m_darkPalette;

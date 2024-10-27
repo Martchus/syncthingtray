@@ -75,6 +75,7 @@ StackView {
         property var config: app.settings
         readonly property var specialEntries: ({
             connection: [
+                {key: "useLauncher", type: "boolean", label: qsTr("Automatic"), statusText: qsTr("Connect to the Syncthing backend launched via this app and disregard the settings below.")},
                 {key: "syncthingUrl", label: qsTr("Syncthing URL")},
                 {key: "apiKey", label: qsTr("API key")},
                 {key: "httpsCertPath", label: qsTr("HTTPs certificate path"), type: "filepath"},
