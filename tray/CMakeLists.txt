@@ -162,6 +162,12 @@ if (UNIFY_TRAY_MENUS)
     message(STATUS "left- and right-click context menus will be unified")
 endif ()
 
+# link against library to use Android's Bitmap API (see https://developer.android.com/ndk/reference/group/bitmap)
+if (ANDROID)
+    find_library(JNI_GRAPHICS_LIB jnigraphics REQUIRED)
+    list(APPEND PRIVATE_LIBRARIES ${JNI_GRAPHICS_LIB})
+endif ()
+
 # add shortcuts/actions to desktop file
 set(ACTIONS
     "Actions=ShowTrayMenu;ShowSyncthing;RescanAll;PauseAllDevs;ResumeAllDevs;Restart\n\n\

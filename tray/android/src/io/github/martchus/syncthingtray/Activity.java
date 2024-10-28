@@ -2,6 +2,7 @@ package io.github.martchus.syncthingtray;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.os.Build;
 import android.provider.DocumentsContract;
 import android.net.Uri;
 import android.view.HapticFeedbackConstants;
@@ -14,6 +15,7 @@ import java.io.File;
 
 import org.qtproject.qt.android.bindings.QtActivity;
 
+import io.github.martchus.syncthingtray.SyncthingService;
 import io.github.martchus.syncthingtray.Util;
 
 public class Activity extends QtActivity {
@@ -60,5 +62,18 @@ public class Activity extends QtActivity {
 
     public String resolveUri(String uri) {
         return Util.getAbsolutePathFromStorageAccessFrameworkUri(this, Uri.parse(uri));
+    }
+
+    public void startSyncthingService() {
+        Intent intent = new Intent(this, SyncthingService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        } else {
+            startService(intent);
+        }
+    }
+
+    public void stopSyncthingService() {
+        stopService(new Intent(this, SyncthingService.class));
     }
 }

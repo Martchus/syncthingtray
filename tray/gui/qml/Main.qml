@@ -175,13 +175,24 @@ ApplicationWindow {
             id: drawerListView
             anchors.fill: parent
             keyNavigationEnabled: true
-            footer: ItemDelegate {
+            footer: ColumnLayout {
                 width: parent.width
-                text: Qt.application.version
-                icon.source: app.faUrlBase + "info-circle"
-                icon.width: app.iconSize
-                icon.height: app.iconSize
-                onClicked: aboutDialog.visible = true
+                ItemDelegate {
+                    Layout.fillWidth: true
+                    text: Qt.application.version
+                    icon.source: app.faUrlBase + "info-circle"
+                    icon.width: app.iconSize
+                    icon.height: app.iconSize
+                    onClicked: aboutDialog.visible = true
+                }
+                ItemDelegate {
+                    Layout.fillWidth: true
+                    text: qsTr("Quit")
+                    icon.source: app.faUrlBase + "power-off"
+                    icon.width: app.iconSize
+                    icon.height: app.iconSize
+                    onClicked: closeDialog.visible = true
+                }
             }
             model: ListModel {
                 ListElement {

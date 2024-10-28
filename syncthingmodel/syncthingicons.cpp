@@ -17,6 +17,13 @@
 #include <QStringBuilder>
 #include <QSvgRenderer>
 
+#ifdef Q_OS_ANDROID
+#include <QJniEnvironment>
+#include <QJniObject>
+
+#include <android/bitmap.h>
+#endif
+
 #ifndef LIB_SYNCTHING_MODEL_STATIC
 ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
 #endif
@@ -410,6 +417,49 @@ void IconManager::renderForkAwesomeIcon(QtForkAwesome::Icon icon, QPainter *pain
 {
     m_forkAwesomeRenderer.render(icon, painter, rect, m_palette.color(QPalette::Normal, QPalette::Text));
 }
+
+#ifdef Q_OS_ANDROID
+static QJniObject createBitmap(const QSize &size)
+{
+    const auto config = QJniObject::getStaticObjectField("android/graphics/Bitmap$Config", "ARGB_8888", "Landroid/graphics/Bitmap$Config;");
+    return QJniObject::callStaticObjectMethod("android/graphics/Bitmap", "createBitmap",
+        "(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;", size.width(), size.height(), config.object());
+}
+
+QJniObject IconManager::makeAndroidBitmap(const QImage &img)
+{
+    auto size = img.size();
+    if (size.width() < 1 || size.height() < 1) {
+        return QJniObject();
+    }
+    auto image = img.format() == QImage::Format_RGBA8888 ? img : img.convertToFormat(QImage::Format_RGBA8888);
+    auto bitmap = createBitmap(size);
+    auto env = QJniEnvironment();
+    auto jniEnv = env.jniEnv();
+    auto info = AndroidBitmapInfo();
+    if (AndroidBitmap_getInfo(jniEnv, bitmap.object(), &info) != ANDROID_BITMAP_RESULT_SUCCESS || info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) {
+        return QJniObject();
+    }
+    void *pixels;
+    if (AndroidBitmap_lockPixels(jniEnv, bitmap.object(), &pixels) != ANDROID_BITMAP_RESULT_SUCCESS) {
+        return QJniObject();
+    }
+    if (info.stride == static_cast<std::uint32_t>(image.bytesPerLine())) {
+        std::memcpy(pixels, image.constBits(), info.stride * info.height);
+    } else {
+        auto *bmpPtr = static_cast<uchar *>(pixels);
+        const auto width = std::min(info.width, static_cast<uint>(image.width()));
+        const auto height = std::min(info.height, static_cast<uint>(image.height()));
+        for (unsigned y = 0; y < height; y++, bmpPtr += info.stride) {
+            std::memcpy(bmpPtr, image.constScanLine(y), width);
+        }
+    }
+    if (AndroidBitmap_unlockPixels(jniEnv, bitmap.object()) != ANDROID_BITMAP_RESULT_SUCCESS) {
+        return QJniObject();
+    }
+    return bitmap;
+}
+#endif
 
 QString aboutDialogAttribution()
 {

@@ -13,6 +13,7 @@
 #include <optional>
 #include <vector>
 
+QT_FORWARD_DECLARE_CLASS(QJniObject)
 QT_FORWARD_DECLARE_CLASS(QColor)
 QT_FORWARD_DECLARE_CLASS(QPalette)
 QT_FORWARD_DECLARE_CLASS(QImage)
@@ -157,6 +158,9 @@ class LIB_SYNCTHING_MODEL_EXPORT IconManager : public QObject {
     Q_OBJECT
 public:
     static IconManager &instance(const QPalette *palette = nullptr);
+#ifdef Q_OS_ANDROID
+    static QJniObject makeAndroidBitmap(const QImage &pixmap);
+#endif
 
     void applySettings(const StatusIconSettings *statusIconSettings = nullptr, const StatusIconSettings *trayIconSettings = nullptr,
         bool usePaletteForStatus = false, bool usePaletteForTray = false);

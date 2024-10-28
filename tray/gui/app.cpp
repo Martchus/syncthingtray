@@ -42,10 +42,6 @@
 #define SYNCTHING_APP_STRING_CONVERSION(s) s.toLocal8Bit().toStdString()
 #endif
 
-#ifdef Q_OS_ANDROID
-#include <QJniObject>
-#endif
-
 using namespace Data;
 
 namespace QtGui {
@@ -72,6 +68,20 @@ App::App(bool insecure, QObject *parent)
     , m_darkColorScheme(false)
     , m_darkPalette(QtUtilities::isPaletteDark())
 {
+#ifdef Q_OS_ANDROID
+    // delete OpenGL pipeline cache under Android as it seems to break loading the app in certain cases
+    const auto cachePaths = QStandardPaths::standardLocations(QStandardPaths::CacheLocation);
+    for (const auto &cachePath : cachePaths) {
+        const auto cacheDir = QDir(cachePath);
+        const auto subdirs = cacheDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+        for (const auto &subdir : subdirs) {
+            if (subdir.startsWith(QLatin1String("qtpipelinecache"))) {
+                QFile::remove(cachePath % QChar('/') % subdir % QStringLiteral("/qqpc_opengl"));
+            }
+        }
+    }
+#endif
+
     qmlRegisterUncreatableType<Data::SyncthingFileModel>(
         "Main.Private", 1, 0, "SyncthingFileModel", QStringLiteral("Data::SyncthingFileModel is created from C++."));
     qmlRegisterUncreatableType<QtGui::DiffHighlighter>(
@@ -81,14 +91,19 @@ App::App(bool insecure, QObject *parent)
     applySettings();
     QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
 
+    auto &iconManager = Data::IconManager::instance();
     auto statusIconSettings = StatusIconSettings();
     statusIconSettings.strokeWidth = StatusIconStrokeWidth::Thick;
-    Data::IconManager::instance().applySettings(&statusIconSettings, &statusIconSettings, true, true);
+    iconManager.applySettings(&statusIconSettings, &statusIconSettings, true, true);
+#ifdef Q_OS_ANDROID
+    connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::invalidateAndroidIconCache);
+#endif
 
     m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
     m_notifier.setEnabledNotifications(Data::SyncthingHighLevelNotification::ConnectedDisconnected);
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &App::invalidateStatus);
+    connect(&m_connection, &SyncthingConnection::newDevices, this, &App::handleNewDevices);
 
     m_launcher.setEmittingOutput(true);
     connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &App::gatherLogs);
@@ -110,6 +125,7 @@ App::App(bool insecure, QObject *parent)
     connect(&m_engine, &QQmlApplicationEngine::quit, app, &QGuiApplication::quit);
     m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global()));
     loadMain();
+    qDebug() << "App initialized";
 }
 
 QString App::website() const
@@ -117,7 +133,7 @@ QString App::website() const
     return QStringLiteral(APP_URL);
 }
 
-QString App::status()
+const QString &App::status()
 {
     if (m_status.has_value()) {
         return *m_status;
@@ -155,6 +171,11 @@ bool App::loadMain()
             rootWindow->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
         }
     }
+
+#ifdef Q_OS_ANDROID
+    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
+#endif
+
     return true;
 }
 
@@ -171,6 +192,9 @@ bool App::reload()
 void App::shutdown()
 {
     m_launcher.stopLibSyncthing();
+#ifdef Q_OS_ANDROID
+    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("stopSyncthingService");
+#endif
 }
 
 bool App::openPath(const QString &path)
@@ -395,6 +419,12 @@ QString App::resolveUrl(const QUrl &url)
 void App::invalidateStatus()
 {
     m_status.reset();
+#ifdef Q_OS_ANDROID
+    if (m_connection.isConnected()) {
+        m_statusInfo.updateConnectionStatus(m_connection);
+    }
+    updateAndroidNotification();
+#endif
     emit statusChanged();
 }
 
@@ -436,6 +466,38 @@ void App::handleGuiAddressChanged(const QUrl &newUrl)
         }
     }
 }
+
+void App::handleNewDevices(const std::vector<Data::SyncthingDev> &newDevices)
+{
+    Q_UNUSED(newDevices)
+#ifdef Q_OS_ANDROID
+    if (m_connection.isConnected()) {
+        m_statusInfo.updateConnectedDevices(m_connection);
+        updateAndroidNotification();
+    }
+#endif
+}
+
+#ifdef Q_OS_ANDROID
+void App::invalidateAndroidIconCache()
+{
+    m_statusInfo.updateConnectionStatus(m_connection);
+    m_androidIconCache.clear();
+    updateAndroidNotification();
+}
+
+void App::updateAndroidNotification()
+{
+    auto text = QJniObject::fromString(m_connection.isConnected() ? m_statusInfo.statusText() : status());
+    auto subText = QJniObject::fromString(m_statusInfo.additionalStatusText());
+    auto &icon = m_androidIconCache[&m_statusInfo.statusIcon()];
+    if (!icon.isValid()) {
+        icon = IconManager::makeAndroidBitmap(m_statusInfo.statusIcon().pixmap(QSize(32, 32)).toImage());
+    }
+    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateNotification",
+        "(Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;)V", text.object(), subText.object(), icon.object());
+}
+#endif
 
 bool App::openSettings()
 {

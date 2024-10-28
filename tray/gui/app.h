@@ -1,8 +1,7 @@
 #ifndef SYNCTHING_TRAY_APP_H
 #define SYNCTHING_TRAY_APP_H
 
-#include <QQmlApplicationEngine>
-
+#include <syncthingwidgets/misc/statusinfo.h>
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #include <syncthingwidgets/misc/utils.h>
 
@@ -10,9 +9,9 @@
 #include <syncthingmodel/syncthingdirectorymodel.h>
 #include <syncthingmodel/syncthingrecentchangesmodel.h>
 
+#include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingconnectionsettings.h>
-#include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingnotifier.h>
 
 #include <qtutilities/settingsdialog/qtsettings.h>
@@ -20,7 +19,13 @@
 #include <QDir>
 #include <QFile>
 #include <QJsonObject>
+#include <QQmlApplicationEngine>
 #include <QUrl>
+
+#ifdef Q_OS_ANDROID
+#include <QHash>
+#include <QJniObject>
+#endif
 
 #include <optional>
 
@@ -130,7 +135,7 @@ public:
     {
         return m_iconSize;
     }
-    QString status();
+    const QString &status();
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();
@@ -178,6 +183,11 @@ private Q_SLOTS:
     void gatherLogs(const QByteArray &newOutput);
     void handleRunningChanged(bool isRunning);
     void handleGuiAddressChanged(const QUrl &newUrl);
+    void handleNewDevices(const std::vector<Data::SyncthingDev> &newDevices);
+#ifdef Q_OS_ANDROID
+    void invalidateAndroidIconCache();
+    void updateAndroidNotification();
+#endif
 
 private:
     void applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled);
@@ -192,6 +202,10 @@ private:
     Data::SyncthingRecentChangesModel m_changesModel;
     Data::SyncthingConnectionSettings m_connectionSettingsFromLauncher;
     Data::SyncthingConnectionSettings m_connectionSettingsFromConfig;
+#ifdef Q_OS_ANDROID
+    StatusInfo m_statusInfo;
+    QHash<const QIcon *, QJniObject> m_androidIconCache;
+#endif
     Data::SyncthingConfig m_syncthingConfig;
     QString m_syncthingConfigDir;
     QString m_syncthingDataDir;
