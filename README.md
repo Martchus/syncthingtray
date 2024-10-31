@@ -70,6 +70,8 @@ by this, though.
 The section "[Known bugs and workarounds](#known-bugs-and-workarounds)" below contains further information
 and workarounds for certain caveats like the positioning issues under Wayland.
 
+There is also an *experimental* UI for mobile devices with Android integration.
+
 ## Features
 * Provides quick access to most frequently used features but does not intend to replace the official web-based UI
     * Check state of folders and devices
@@ -128,6 +130,10 @@ Syncthing installation. You might consider different configurations:
       separately).
     * Checkout the "[Configuring the built-in launcher](#configuring-the-built-in-launcher)" section for further details.
 * It is also possible to let Syncthing Tray connect to a Syncthing instance running on a different machine.
+
+Note that the experimental UI tailored for mobile devices is more limited. So far it can only start a built-in
+version of Syncthing or connect to an externally started Syncthing instance. It will set a custom config/data
+directory for Syncthing so any Syncthing instance launched via the mobile UI will not interfere with existing setups.
 
 ## Installation and deinstallation
 Checkout [the website](https://martchus.github.io/syncthingtray/#downloads-section) for obtaining the executable.
