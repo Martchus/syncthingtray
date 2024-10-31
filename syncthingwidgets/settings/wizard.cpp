@@ -277,7 +277,7 @@ void Wizard::showDetailsFromSetupDetection()
     if (detection.connection.isConnected()) {
         auto statusInfo = StatusInfo();
         statusInfo.updateConnectionStatus(detection.connection);
-        statusInfo.updateConnectionStatus(detection.connection);
+        statusInfo.updateConnectedDevices(detection.connection);
         infoItems << tr("Could connect to Syncthing under: ") + detection.connection.syncthingUrl();
         infoItems << tr("Syncthing version: ") + detection.connection.syncthingVersion();
         infoItems << tr("Syncthing device ID: ") + detection.connection.myId();
