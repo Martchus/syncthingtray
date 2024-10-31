@@ -60,3 +60,7 @@ scripts/
 /tray/.clang-format
 /plasmoid/lib/.clang-format
 /syncthingwidgets/.clang-format
+
+# clangd
+compile_commands.json
+/.cache
