@@ -1,6 +1,7 @@
 package io.github.martchus.syncthingtray;
 
 import android.app.Service;
+import android.app.PendingIntent;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.NotificationChannel;
@@ -12,6 +13,7 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.util.Log;
 
+import io.github.martchus.syncthingtray.Activity;
 import io.github.martchus.syncthingtray.SyncthingServiceBinder;
 
 public class SyncthingService extends Service
@@ -20,6 +22,8 @@ public class SyncthingService extends Service
     private static final String TAG = "SyncthingService";
     private static SyncthingService s_instance = null;
     private static final int s_notificationID = 1;
+    private static final int s_activityIntentRequestCode = 1;
+    private Intent m_notificationContentIntent;
     private NotificationManager m_notificationManager;
     private NotificationChannel m_notificationChannel;
     private Notification.Builder m_notificationBuilder;
@@ -48,6 +52,9 @@ public class SyncthingService extends Service
             m_notificationBuilder = new Notification.Builder(this);
         }
 
+        m_notificationContentIntent = new Intent(this, Activity.class);
+        m_notificationContentIntent.putExtra("notification", true);
+
         m_notificationBuilder
             .setContentTitle(s_notificationTitle)
             .setContentText(s_notificationText)
@@ -56,6 +63,7 @@ public class SyncthingService extends Service
             .setColor(0xff169ad1)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
+            .setContentIntent(PendingIntent.getActivity(this, s_activityIntentRequestCode, m_notificationContentIntent, PendingIntent.FLAG_IMMUTABLE))
             .setPriority(Notification.PRIORITY_MIN)
             .setDefaults(Notification.DEFAULT_SOUND)
             .setCategory(Notification.CATEGORY_SERVICE)
