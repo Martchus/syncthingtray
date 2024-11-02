@@ -381,7 +381,7 @@ ApplicationWindow {
             } else if (key === Qt.Key_Forward) {
                 event.accepted = pageStack.forward();
             } else if (key === Qt.Key_F5) {
-                event.accepted = app.reload();
+                event.accepted = app.reloadMain();
             }
         });
     }

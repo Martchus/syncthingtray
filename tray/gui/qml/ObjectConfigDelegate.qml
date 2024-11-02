@@ -101,52 +101,46 @@ DelegateChooser {
                 standardButtons: objectConfigPage.standardButtons
                 modal: true
                 width: parent.width - 20
-                contentItem: ColumnLayout {
-                    id: optionsDlgLayout
-                    Layout.fillWidth: true
-                    ComboBox {
-                        id: optionsValue
-                        Layout.fillWidth: true
-                        model: modelData.options
-                        editable: true
-                        valueRole: "value"
-                        textRole: "label"
-                        enabled: modelData?.enabled ?? true
-                        onAccepted: optionsDlg.accept()
-                        Component.onCompleted: {
-                            //popup.popupType = Popup.Native;
-                            editText = textForValue(modelData.value);
+                contentItem: ScrollView {
+                    id: optionsScrollView
+                    contentWidth: availableWidth
+                    ColumnLayout {
+                        id: optionsDlgLayout
+                        width: optionsScrollView.width - optionsScrollView.effectiveScrollBarWidth
+                        ComboBox {
+                            id: optionsValue
+                            Layout.fillWidth: true
+                            model: modelData.options
+                            editable: true
+                            valueRole: "value"
+                            textRole: "label"
+                            enabled: modelData?.enabled ?? true
+                            onAccepted: optionsDlg.accept()
+                            Component.onCompleted: {
+                                //popup.popupType = Popup.Native;
+                                editText = textForValue(modelData.value);
+                            }
+                            readonly property var currentOption: modelData.options.get(optionsValue.currentIndex)
+                            readonly property string currentValueOrEditText: {
+                                const currentOption = optionsValue.currentOption;
+                                return (currentOption?.label === optionsValue.editText) ? currentOption?.value : optionsValue.editText;
+                            }
+                            function textForValue(value) {
+                                const displayText = optionsValue.textAt(optionsValue.indexOfValue(value));
+                                return displayText.length === 0 ? value : displayText;
+                            }
                         }
-                        readonly property var currentOption: modelData.options.get(optionsValue.currentIndex)
-                        readonly property string currentValueOrEditText: {
-                            const currentOption = optionsValue.currentOption;
-                            return (currentOption?.label === optionsValue.editText) ? currentOption?.value : optionsValue.editText;
-                        }
-                        function textForValue(value) {
-                            const displayText = optionsValue.textAt(optionsValue.indexOfValue(value));
-                            return displayText.length === 0 ? value : displayText;
-                        }
-                    }
-                    ScrollView {
-                        id: optionsHelpFlickable
-                        Layout.fillWidth: true
-                        // FIXME: scrolling does not work
-                        //ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-                        contentWidth: optionsHelpLabel.contentWidth
-                        contentHeight: optionsHelpLabel.contentHeight
                         Label {
                             id: optionsHelpLabel
+                            Layout.fillWidth: true
                             wrapMode: Text.WordWrap
                             visible: text.length > 0
-                            width: optionsHelpFlickable.width
-                            clip: false
                             text: {
                                 const currentOption = optionsValue.currentOption;
                                 return (currentOption?.label === optionsValue.editText) ? (currentOption?.desc ?? "") : qsTr("A custom value has been entered.");
                             }
                         }
                     }
-
                 }
                 onAccepted: {
                     const changeHandler = modelData.onChanged;

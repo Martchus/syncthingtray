@@ -12,53 +12,57 @@ Dialog {
     focus: true
     standardButtons: Dialog.Ok
     title: qsTr("About %1").arg(Qt.application.name)
-    contentItem: ColumnLayout {
-        Image {
-            readonly property double size: 128
-            Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: size
-            Layout.preferredHeight: size
-            source: "qrc:/icons/hicolor/scalable/app/syncthingtray.svg"
-            sourceSize.width: size
-            sourceSize.height: size
-        }
-        Label {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
-            text: qsTr("Developed by %1").arg(Qt.application.organization)
-            font.weight: Font.Light
-            horizontalAlignment: Qt.AlignHCenter
-            elide: Qt.ElideRight
-        }
-        Label {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
-            text: qsTr("App version")
-            horizontalAlignment: Qt.AlignHCenter
-            elide: Qt.ElideRight
-        }
-        Label {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
-            text: Qt.application.version
-            font.weight: Font.Light
-            horizontalAlignment: Qt.AlignHCenter
-            elide: Qt.ElideRight
-        }
-        Label {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
-            text: qsTr("Syncthing version")
-            horizontalAlignment: Qt.AlignHCenter
-            elide: Qt.ElideRight
-        }
-        Label {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
-            text: app.syncthingVersion
-            font.weight: Font.Light
-            horizontalAlignment: Qt.AlignHCenter
-            elide: Qt.ElideRight
+    contentItem: ScrollView {
+        contentWidth: availableWidth
+        ColumnLayout {
+            width: availableWidth
+            Image {
+                readonly property double size: 128
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: size
+                Layout.preferredHeight: size
+                source: "qrc:/icons/hicolor/scalable/app/syncthingtray.svg"
+                sourceSize.width: size
+                sourceSize.height: size
+            }
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                text: qsTr("Developed by %1").arg(Qt.application.organization)
+                font.weight: Font.Light
+                horizontalAlignment: Qt.AlignHCenter
+                elide: Qt.ElideRight
+            }
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                text: qsTr("App version")
+                horizontalAlignment: Qt.AlignHCenter
+                elide: Qt.ElideRight
+            }
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                text: Qt.application.version
+                font.weight: Font.Light
+                horizontalAlignment: Qt.AlignHCenter
+                elide: Qt.ElideRight
+            }
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                text: qsTr("Syncthing version")
+                horizontalAlignment: Qt.AlignHCenter
+                elide: Qt.ElideRight
+            }
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                text: app.syncthingVersion
+                font.weight: Font.Light
+                horizontalAlignment: Qt.AlignHCenter
+                elide: Qt.ElideRight
+            }
         }
     }
     footer: DialogButtonBox {

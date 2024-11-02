@@ -101,7 +101,7 @@ public:
     }
     bool nativePopups() const
     {
-#ifdef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS)  // it leads to crashes on those platforms
         return false;
 #else
         return true;
@@ -139,7 +139,8 @@ public:
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();
-    Q_INVOKABLE bool reload();
+    Q_INVOKABLE bool reloadMain();
+    Q_INVOKABLE bool unloadMain();
     Q_INVOKABLE void shutdown();
     Q_INVOKABLE bool loadSettings();
     Q_INVOKABLE bool storeSettings();
@@ -174,7 +175,7 @@ Q_SIGNALS:
     void logsAvailable(const QString &newLogMessages);
 
 protected:
-    bool event(QEvent *event) override;
+    bool eventFilter(QObject *object, QEvent *event) override;
 
 private Q_SLOTS:
     void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,

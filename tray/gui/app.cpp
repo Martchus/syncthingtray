@@ -53,7 +53,7 @@ App::App(bool insecure, QObject *parent)
     , m_devModel(m_connection)
     , m_changesModel(m_connection)
     , m_faUrlBase(QStringLiteral("image://fa/"))
-#ifdef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS)
     , m_iconSize(8)
 #else
     , m_iconSize(16)
@@ -68,6 +68,10 @@ App::App(bool insecure, QObject *parent)
     , m_darkColorScheme(false)
     , m_darkPalette(QtUtilities::isPaletteDark())
 {
+    auto *const app = static_cast<QGuiApplication *>(QCoreApplication::instance());
+    app->installEventFilter(this);
+    app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+
 #ifdef Q_OS_ANDROID
     // delete OpenGL pipeline cache under Android as it seems to break loading the app in certain cases
     const auto cachePaths = QStandardPaths::standardLocations(QStandardPaths::CacheLocation);
@@ -110,7 +114,6 @@ App::App(bool insecure, QObject *parent)
     connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &App::handleRunningChanged);
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &App::handleGuiAddressChanged);
 
-    auto *const app = QGuiApplication::instance();
     auto *const context = m_engine.rootContext();
     context->setContextProperty(QStringLiteral("app"), this);
     connect(
@@ -124,7 +127,14 @@ App::App(bool insecure, QObject *parent)
         Qt::QueuedConnection);
     connect(&m_engine, &QQmlApplicationEngine::quit, app, &QGuiApplication::quit);
     m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global()));
+
+    // start service under Android
+#ifdef Q_OS_ANDROID
+    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
+#endif
+
     loadMain();
+
     qDebug() << "App initialized";
 }
 
@@ -158,35 +168,32 @@ const QString &App::status()
 bool App::loadMain()
 {
     // allow overriding Qml entry point for hot-reloading; otherwise load proper Qml module from resources
+    qDebug() << "Loading Qt Quick GUI";
     if (const auto path = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QML_MAIN_PATH"); !path.isEmpty()) {
         qDebug() << "Path Qml entry point for Qt Quick GUI was overriden to: " << path;
         m_engine.load(path);
     } else {
         m_engine.loadFromModule("Main", "Main");
     }
-
-    // set window icon
-    for (auto *const rootObject : m_engine.rootObjects()) {
-        if (auto *const rootWindow = qobject_cast<QQuickWindow *>(rootObject)) {
-            rootWindow->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
-        }
-    }
-
-#ifdef Q_OS_ANDROID
-    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
-#endif
-
     return true;
 }
 
-bool App::reload()
+bool App::reloadMain()
 {
     qDebug() << "Reloading Qt Quick GUI";
-    for (auto *const rootObject : m_engine.rootObjects()) {
-        rootObject->deleteLater();
-    }
+    unloadMain();
     m_engine.clearComponentCache();
     return loadMain();
+}
+
+bool App::unloadMain()
+{
+    qDebug() << "Unloading Qt Quick GUI";
+    const auto rootObjects = m_engine.rootObjects();
+    for (auto *const rootObject : rootObjects) {
+        rootObject->deleteLater();
+    }
+    return true;
 }
 
 void App::shutdown()
@@ -350,17 +357,17 @@ DiffHighlighter *App::createDiffHighlighter(QTextDocument *parent)
     return new DiffHighlighter(parent);
 }
 
-bool App::event(QEvent *event)
+bool App::eventFilter(QObject *object, QEvent *event)
 {
-    const auto res = QObject::event(event);
+    Q_UNUSED(object)
     switch (event->type()) {
     case QEvent::ApplicationPaletteChange:
-        qDebug() << "application pallette has changed";
+        qDebug() << "Application palette has changed";
         applyDarkmodeChange(m_darkColorScheme, QtUtilities::isPaletteDark());
         break;
     default:;
     }
-    return res;
+    return false;
 }
 
 void App::handleConnectionError(
@@ -681,7 +688,7 @@ void App::applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteE
     if (isDarkmodeEnabled == m_darkmodeEnabled) {
         return;
     }
-    qDebug() << "darkmode has changed: " << isDarkmodeEnabled;
+    qDebug() << "Darkmode has changed: " << isDarkmodeEnabled;
     m_darkmodeEnabled = isDarkmodeEnabled;
     m_dirModel.setBrightColors(isDarkmodeEnabled);
     m_devModel.setBrightColors(isDarkmodeEnabled);
