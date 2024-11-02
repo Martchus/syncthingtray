@@ -42,6 +42,10 @@
 #define SYNCTHING_APP_STRING_CONVERSION(s) s.toLocal8Bit().toStdString()
 #endif
 
+#if !defined(Q_OS_ANDROID)
+#define SYNCTHING_TRAY_APP_COLOR_PALETTE_AWARE
+#endif
+
 using namespace Data;
 
 namespace QtGui {
@@ -53,7 +57,7 @@ App::App(bool insecure, QObject *parent)
     , m_devModel(m_connection)
     , m_changesModel(m_connection)
     , m_faUrlBase(QStringLiteral("image://fa/"))
-#ifdef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS)
     , m_iconSize(8)
 #else
     , m_iconSize(16)
@@ -66,7 +70,11 @@ App::App(bool insecure, QObject *parent)
 #endif
     , m_darkmodeEnabled(false)
     , m_darkColorScheme(false)
+#ifdef SYNCTHING_TRAY_APP_COLOR_PALETTE_AWARE
     , m_darkPalette(QtUtilities::isPaletteDark())
+#else
+    , m_darkPalette(false)
+#endif
 {
 #ifdef Q_OS_ANDROID
     // delete OpenGL pipeline cache under Android as it seems to break loading the app in certain cases
@@ -675,7 +683,11 @@ bool App::exportSettings(const QUrl &url)
 void App::applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled)
 {
     m_darkColorScheme = isDarkColorSchemeEnabled;
+#ifdef SYNCTHING_TRAY_APP_COLOR_PALETTE_AWARE
     m_darkPalette = isDarkPaletteEnabled;
+#else
+    Q_UNUSED(isDarkPaletteEnabled)
+#endif
     const auto isDarkmodeEnabled = m_darkColorScheme || m_darkPalette;
     m_qtSettings.reapplyDefaultIconTheme(isDarkmodeEnabled);
     if (isDarkmodeEnabled == m_darkmodeEnabled) {
