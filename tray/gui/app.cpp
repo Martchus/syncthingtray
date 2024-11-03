@@ -479,6 +479,9 @@ void App::handleGuiAddressChanged(const QUrl &newUrl)
     }
     m_connectionSettingsFromLauncher.apiKey = m_syncthingConfig.guiApiKey.toUtf8();
     m_connectionSettingsFromLauncher.authEnabled = false;
+#ifndef QT_NO_SSL
+    m_connectionSettingsFromLauncher.httpsCertPath = m_syncthingConfigDir + QStringLiteral("/https-cert.pem");
+#endif
 
     if (m_connectToLaunched) {
         invalidateStatus();
