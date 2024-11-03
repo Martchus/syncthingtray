@@ -75,6 +75,7 @@ App::App(bool insecure, QObject *parent)
 #else
     , m_iconSize(16)
 #endif
+    , m_tabIndex(-1)
     , m_insecure(insecure)
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_connectToLaunched(true)
@@ -393,6 +394,11 @@ void App::handleConnectionError(
 void App::setCurrentControls(bool visible, int tabIndex)
 {
     auto flags = m_connection.pollingFlags();
+    if (tabIndex < 0) {
+        tabIndex = m_tabIndex;
+    } else {
+        m_tabIndex = tabIndex;
+    }
     //CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::TrafficStatistics, visible && tabIndex == 0);
     CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DeviceStatistics, visible && tabIndex == 1);
     CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents, visible && tabIndex == 2);
@@ -497,13 +503,19 @@ void App::handleNewDevices(const std::vector<Data::SyncthingDev> &newDevices)
 
 void App::handleStateChanged(Qt::ApplicationState state)
 {
-    if (m_isGuiLoaded && m_unloadGuiWhenHidden && ((state == Qt::ApplicationSuspended) || (state & Qt::ApplicationHidden))) {
-        qDebug() << "App considered suspended/hidden, stopping UI";
-        unloadMain();
-    } else if (!m_isGuiLoaded && (state & Qt::ApplicationActive)) {
-        qDebug() << "App considered active, loading UI";
-        deletePipelineCache();
-        loadMain();
+    if (m_isGuiLoaded && ((state == Qt::ApplicationSuspended) || (state & Qt::ApplicationHidden))) {
+        qDebug() << "App considered suspended/hidden, reduce polling, stopping UI if requested";
+        setCurrentControls(false);
+        if (m_unloadGuiWhenHidden) {
+            unloadMain();
+        }
+    } else if (state & Qt::ApplicationActive) {
+        qDebug() << "App considered active, ensuring UI is loaded";
+        setCurrentControls(true);
+        if (!m_isGuiLoaded) {
+            deletePipelineCache();
+            loadMain();
+        }
     }
 }
 

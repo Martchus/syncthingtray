@@ -159,7 +159,7 @@ public:
     Q_INVOKABLE void clearLog();
     Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
     Q_INVOKABLE bool showError(const QString &errorMessage);
-    Q_INVOKABLE void setCurrentControls(bool visible, int tabIndex);
+    Q_INVOKABLE void setCurrentControls(bool visible, int tabIndex = -1);
     Q_INVOKABLE bool performHapticFeedback();
     Q_INVOKABLE bool showToast(const QString &message);
     Q_INVOKABLE QString resolveUrl(const QUrl &url);
@@ -221,6 +221,7 @@ private:
     std::optional<QString> m_status;
     QString m_log;
     int m_iconSize;
+    int m_tabIndex;
     bool m_insecure;
     bool m_connectToLaunched;
     bool m_darkmodeEnabled;
