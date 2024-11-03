@@ -46,6 +46,23 @@ using namespace Data;
 
 namespace QtGui {
 
+static void deletePipelineCache()
+{
+#ifdef Q_OS_ANDROID
+    // delete OpenGL pipeline cache under Android as it seems to break loading the app in certain cases
+    const auto cachePaths = QStandardPaths::standardLocations(QStandardPaths::CacheLocation);
+    for (const auto &cachePath : cachePaths) {
+        const auto cacheDir = QDir(cachePath);
+        const auto subdirs = cacheDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+        for (const auto &subdir : subdirs) {
+            if (subdir.startsWith(QLatin1String("qtpipelinecache"))) {
+                QFile::remove(cachePath % QChar('/') % subdir % QStringLiteral("/qqpc_opengl"));
+            }
+        }
+    }
+#endif
+}
+
 App::App(bool insecure, QObject *parent)
     : QObject(parent)
     , m_notifier(m_connection)
@@ -67,24 +84,15 @@ App::App(bool insecure, QObject *parent)
     , m_darkmodeEnabled(false)
     , m_darkColorScheme(false)
     , m_darkPalette(QtUtilities::isPaletteDark())
+    , m_isGuiLoaded(false)
+    , m_unloadGuiWhenHidden(false)
 {
     auto *const app = static_cast<QGuiApplication *>(QCoreApplication::instance());
     app->installEventFilter(this);
     app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+    connect(app, &QGuiApplication::applicationStateChanged, this, &App::handleStateChanged);
 
-#ifdef Q_OS_ANDROID
-    // delete OpenGL pipeline cache under Android as it seems to break loading the app in certain cases
-    const auto cachePaths = QStandardPaths::standardLocations(QStandardPaths::CacheLocation);
-    for (const auto &cachePath : cachePaths) {
-        const auto cacheDir = QDir(cachePath);
-        const auto subdirs = cacheDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-        for (const auto &subdir : subdirs) {
-            if (subdir.startsWith(QLatin1String("qtpipelinecache"))) {
-                QFile::remove(cachePath % QChar('/') % subdir % QStringLiteral("/qqpc_opengl"));
-            }
-        }
-    }
-#endif
+    deletePipelineCache();
 
     qmlRegisterUncreatableType<Data::SyncthingFileModel>(
         "Main.Private", 1, 0, "SyncthingFileModel", QStringLiteral("Data::SyncthingFileModel is created from C++."));
@@ -175,6 +183,7 @@ bool App::loadMain()
     } else {
         m_engine.loadFromModule("Main", "Main");
     }
+    m_isGuiLoaded = true;
     return true;
 }
 
@@ -193,6 +202,7 @@ bool App::unloadMain()
     for (auto *const rootObject : rootObjects) {
         rootObject->deleteLater();
     }
+    m_isGuiLoaded = false;
     return true;
 }
 
@@ -485,6 +495,18 @@ void App::handleNewDevices(const std::vector<Data::SyncthingDev> &newDevices)
 #endif
 }
 
+void App::handleStateChanged(Qt::ApplicationState state)
+{
+    if (m_isGuiLoaded && m_unloadGuiWhenHidden && ((state == Qt::ApplicationSuspended) || (state & Qt::ApplicationHidden))) {
+        qDebug() << "App considered suspended/hidden, stopping UI";
+        unloadMain();
+    } else if (!m_isGuiLoaded && (state & Qt::ApplicationActive)) {
+        qDebug() << "App considered active, loading UI";
+        deletePipelineCache();
+        loadMain();
+    }
+}
+
 #ifdef Q_OS_ANDROID
 void App::invalidateAndroidIconCache()
 {
@@ -597,6 +619,8 @@ bool App::applySettings()
     } else if (m_connection.applySettings(m_connectionSettingsFromConfig) || !m_connection.isConnected()) {
         m_connection.reconnect();
     }
+    auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
+    m_unloadGuiWhenHidden = tweaksSettings.value(QLatin1String("unloadGuiWhenHidden")).toBool(false);
     applyLauncherSettings();
     invalidateStatus();
     return true;

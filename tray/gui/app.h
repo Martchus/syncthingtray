@@ -185,6 +185,7 @@ private Q_SLOTS:
     void handleRunningChanged(bool isRunning);
     void handleGuiAddressChanged(const QUrl &newUrl);
     void handleNewDevices(const std::vector<Data::SyncthingDev> &newDevices);
+    void handleStateChanged(Qt::ApplicationState state);
 #ifdef Q_OS_ANDROID
     void invalidateAndroidIconCache();
     void updateAndroidNotification();
@@ -225,6 +226,8 @@ private:
     bool m_darkmodeEnabled;
     bool m_darkColorScheme;
     bool m_darkPalette;
+    bool m_isGuiLoaded;
+    bool m_unloadGuiWhenHidden;
 };
 
 inline void App::clearLog()

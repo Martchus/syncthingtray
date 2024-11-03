@@ -31,6 +31,12 @@ StackView {
                     iconName: "terminal"
                 }
                 ListElement {
+                    key: "tweaks"
+                    label: qsTr("Tweaks")
+                    title: qsTr("Configure details of the app's behavior")
+                    iconName: "cogs"
+                }
+                ListElement {
                     functionName: "importSettings"
                     label: qsTr("Import settings/secrets/data of app and backend")
                     iconName: "download"
@@ -49,14 +55,7 @@ StackView {
                 icon.height: app.iconSize
                 onClicked: key.length === 0
                            ? appSettingsPage.initiateBackup(functionName)
-                           : stackView.push("ObjectConfigPage.qml", {
-                                                title: title,
-                                                configObject: Qt.binding(() => appSettingsPage.config[key]),
-                                                specialEntries: appSettingsPage.specialEntries[key] ?? [],
-                                                specialEntriesByKey: appSettingsPage.specialEntries,
-                                                stackView: stackView,
-                                                actions: appSettingsPage.actions},
-                                            StackView.PushTransition)
+                           : appSettingsPage.openNestedSettings(title, key)
             }
             ScrollIndicator.vertical: ScrollIndicator { }
         }
@@ -70,6 +69,19 @@ StackView {
         function initiateBackup(functionName) {
             appSettingsPage.currentBackupFunction = functionName;
             backupFolderDialog.open();
+        }
+        function openNestedSettings(title, key) {
+            if (appSettingsPage.config[key] === undefined) {
+                appSettingsPage.config[key] = {};
+            }
+            stackView.push("ObjectConfigPage.qml", {
+                               title: title,
+                               configObject: Qt.binding(() => appSettingsPage.config[key]),
+                               specialEntries: appSettingsPage.specialEntries[key] ?? [],
+                               specialEntriesByKey: appSettingsPage.specialEntries,
+                               stackView: stackView,
+                               actions: appSettingsPage.actions},
+                           StackView.PushTransition)
         }
 
         property var config: app.settings
@@ -90,6 +102,9 @@ StackView {
                 {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => app.launcher.runningStatus)},
                 {key: "stopOnMetered", label: qsTr("Stop on metered network connection"), statusText: Qt.binding(() => app.launcher.meteredStatus)},
                 {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Shows Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
+            ],
+            tweaks: [
+                {key: "unloadGuiWhenHidden", type: "boolean", defaultValue: false, label: qsTr("Stop UI when hidden"), statusText: qsTr("Might help save battery live but resets UI state.")},
             ],
         })
         property list<Action> actions: [
