@@ -76,4 +76,13 @@ public class Activity extends QtActivity {
     public void stopSyncthingService() {
         stopService(new Intent(this, SyncthingService.class));
     }
+
+    protected void onNewIntent(Intent intent) {
+        boolean fromNotification = intent.getBooleanExtra("notification", false);
+        if (fromNotification) {
+            onAndroidIntent(intent.getStringExtra("page"), fromNotification);
+        }
+    }
+
+    private static native void onAndroidIntent(String page, boolean fromNotification);
 }

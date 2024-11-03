@@ -750,7 +750,6 @@ inline bool SyncthingConnection::hasPendingRequests() const
 
 /*!
  * \brief Returns whether there are errors (notifications) available.
- * \remarks This flag is set to true when new notifications become available.
  */
 inline bool SyncthingConnection::hasErrors() const
 {

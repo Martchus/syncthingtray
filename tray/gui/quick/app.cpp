@@ -33,6 +33,10 @@
 #include <QStandardPaths>
 #include <QStringBuilder>
 
+#ifdef Q_OS_ANDROID
+#include <QJniEnvironment>
+#endif
+
 #include <cstdlib>
 #include <filesystem>
 #include <functional>
@@ -64,6 +68,16 @@ static void deletePipelineCache()
     }
 #endif
 }
+
+#ifdef Q_OS_ANDROID
+// define functions called from Java
+static App *appObjectForJava = nullptr;
+
+static void onAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNotification)
+{
+    QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection, Q_ARG(QString, QJniObject::fromLocalRef(page).toString()), Q_ARG(bool, fromNotification));
+}
+#endif
 
 App::App(bool insecure, QObject *parent)
     : QObject(parent)
@@ -114,6 +128,9 @@ App::App(bool insecure, QObject *parent)
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &App::invalidateStatus);
     connect(&m_connection, &SyncthingConnection::newDevices, this, &App::handleNewDevices);
     connect(&m_connection, &SyncthingConnection::newErrors, this, &App::handleNewErrors);
+#ifdef Q_OS_ANDROID
+    connect(&m_connection, &SyncthingConnection::newNotification, this, &App::updateSyncthingErrorsNotification);
+#endif
 
     m_launcher.setEmittingOutput(true);
     connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &App::gatherLogs);
@@ -133,8 +150,18 @@ App::App(bool insecure, QObject *parent)
     m_engine.setProperty("app", QVariant::fromValue(this));
     m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global()));
 
-    // start service under Android
 #ifdef Q_OS_ANDROID
+    // register native methods of Android activity
+    if (!appObjectForJava) {
+        appObjectForJava = this;
+        auto env = QJniEnvironment();
+        static const JNINativeMethod methods[] = {
+            { "onAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(onAndroidIntent) },
+        };
+        env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", methods, 2);
+    }
+
+    // start Android service
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
 #endif
 
@@ -169,7 +196,7 @@ const QString &App::status()
     }
     switch (m_connection.status()) {
     case Data::SyncthingStatus::Disconnected:
-        return m_status.emplace(tr("Not connected to backend. Check app settings for problems."));
+        return m_status.emplace(tr("Not connected to backend."));
     case Data::SyncthingStatus::Reconnecting:
         return m_status.emplace(tr("Waiting for backend …"));
     default:
@@ -402,7 +429,14 @@ void App::handleConnectionError(
     qWarning() << "Connection error: " << errorMessage;
     auto error = InternalError(errorMessage, request.url(), response);
     emit internalError(error);
+#ifdef Q_OS_ANDROID
+    showInternalError(error);
+#endif
+    const auto emitHasInternalErrorsChanged = m_internalErrors.isEmpty();
     m_internalErrors.emplace_back(QVariant::fromValue(std::move(error)));
+    if (emitHasInternalErrorsChanged) {
+        emit hasInternalErrorsChanged();
+    }
 }
 
 void App::setCurrentControls(bool visible, int tabIndex)
@@ -552,16 +586,90 @@ void App::invalidateAndroidIconCache()
 
 void App::updateAndroidNotification()
 {
-    auto text = QJniObject::fromString(m_connection.isConnected() ? m_statusInfo.statusText() : status());
-    auto subText = QJniObject::fromString(m_statusInfo.additionalStatusText());
+    const auto title = QJniObject::fromString(m_connection.isConnected() ? m_statusInfo.statusText() : status());
+    const auto text = QJniObject::fromString(m_statusInfo.additionalStatusText());
+    static const auto subText = QJniObject::fromString(QString());
     auto &icon = m_androidIconCache[&m_statusInfo.statusIcon()];
     if (!icon.isValid()) {
         icon = IconManager::makeAndroidBitmap(m_statusInfo.statusIcon().pixmap(QSize(32, 32)).toImage());
     }
     QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateNotification",
-        "(Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;)V", text.object(), subText.object(), icon.object());
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;)V", title.object(), text.object(), subText.object(),
+        icon.object());
+}
+
+void App::updateSyncthingErrorsNotification(CppUtilities::DateTime when, const QString &message)
+{
+    auto whenString = when.toString();
+    m_syncthingErrors.reserve(m_syncthingErrors.size() + 1 + whenString.size() + 2 + message.size());
+    if (!m_syncthingErrors.isEmpty()) {
+        m_syncthingErrors += QChar('\n');
+    }
+    m_syncthingErrors += std::move(whenString);
+    m_syncthingErrors += QChar(':');
+    m_syncthingErrors += QChar(' ');
+    m_syncthingErrors += message;
+
+    const auto title = QJniObject::fromString(tr("Syncthing errors/notifications"));
+    static const auto text = QJniObject::fromString(QString());
+    const auto subText = QJniObject::fromString(m_syncthingErrors);
+    static const auto page = QJniObject::fromString(QStringLiteral("connectionErrors"));
+    const auto &icons = trayIcons();
+    auto &icon = m_androidIconCache[&icons.notify];
+    if (!icon.isValid()) {
+        icon = IconManager::makeAndroidBitmap(icons.notify.pixmap(QSize(32, 32)).toImage());
+    }
+    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(), subText.object(),
+        page.object(), icon.object(), 2);
+}
+
+void App::clearSyncthingErrorsNotification()
+{
+    m_syncthingErrors.clear();
+    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "cancelExtraNotification", "(II)V", 2, -1);
+}
+
+void App::showInternalError(const InternalError &error)
+{
+    const auto title = QJniObject::fromString(tr("Syncthing API error"));
+    const auto text = QJniObject::fromString(error.message);
+    const auto subText = QJniObject::fromString(error.url.isEmpty() ? QString() : QStringLiteral("URL: ") + error.url.toString());
+    const auto &icons = trayIcons();
+    static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
+    auto &icon = m_androidIconCache[&icons.errorSync];
+    if (!icon.isValid()) {
+        icon = IconManager::makeAndroidBitmap(icons.errorSync.pixmap(QSize(32, 32)).toImage());
+    }
+    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(), subText.object(),
+        page.object(), icon.object(), 3 + static_cast<int>(m_internalErrors.size()));
+}
+
+void App::handleAndroidIntent(const QString &page, bool fromNotification)
+{
+    qDebug() << "Handling Android intent: " << page;
+    Q_UNUSED(fromNotification)
+    if (page == QLatin1String("internalErrors")) {
+        emit internalErrorsRequested();
+    } else if (page == QLatin1String("connectionErrors")) {
+        emit connectionErrorsRequested();
+    }
 }
 #endif
+
+void App::clearInternalErrors()
+{
+    if (m_internalErrors.isEmpty()) {
+        return;
+    }
+#ifdef Q_OS_ANDROID
+    QJniObject::callStaticMethod<void>(
+        "io/github/martchus/syncthingtray/SyncthingService", "cancelExtraNotification", "(II)V", 3, 3 + m_internalErrors.size());
+#endif
+    m_internalErrors.clear();
+    emit hasInternalErrorsChanged();
+}
 
 bool App::openSettings()
 {

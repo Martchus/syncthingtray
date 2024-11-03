@@ -30,17 +30,46 @@ ApplicationWindow {
                     icon.source: App.faUrlBase + "exclamation-triangle"
                     icon.width: App.iconSize
                     icon.height: App.iconSize
-                    text: App.connection.hasErrors ? qsTr("Show notifications/errors") : qsTr("Syncthing backend status is problematic")
+                    text: App.hasInternalErrors || App.connection.hasErrors ? qsTr("Show notifications/errors") : qsTr("Syncthing backend status is problematic")
                     display: AbstractButton.IconOnly
                     ToolTip.text: text
                     ToolTip.visible: hovered || pressed
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                     onPressAndHold: App.performHapticFeedback()
                     onClicked: {
-                        if (App.connection.hasErrors) {
-                            pageStack.setCurrentIndex(5);
-                            settingsPage.push("ErrorsPage.qml", {}, StackView.PushTransition);
+                        const hasInternalErrors = App.hasInternalErrors;
+                        const hasConnectionErrors = App.connection.hasErrors;
+                        if (hasInternalErrors && hasConnectionErrors) {
+                            statusButtonMenu.popup();
+                        } else if (hasInternalErrors) {
+                            statusButton.showInternalErrors();
+                        } else if (hasConnectionErrors) {
+                            statusButton.showConnectionErrors();
+                        } else {
+                            App.performHapticFeedback();
                         }
+                    }
+                    Menu {
+                        id: statusButtonMenu
+                        popupType: App.nativePopups ? Popup.Native : Popup.Item
+                        MenuItem {
+                            text: qsTr("Show API errors")
+                            onTriggered: statusButton.showInternalErrors()
+                        }
+                        MenuItem {
+                            text: qsTr("Show Syncthing errors/notifications")
+                            onTriggered: statusButton.showConnectionErrors()
+                        }
+                    }
+                    function showErrors(page) {
+                        pageStack.setCurrentIndex(5);
+                        settingsPage.push(page, {}, StackView.PushTransition);
+                    }
+                    function showInternalErrors() {
+                        statusButton.showErrors("InternalErrorsPage.qml");
+                    }
+                    function showConnectionErrors() {
+                        statusButton.showErrors("ErrorsPage.qml");
                     }
                 }
                 BusyIndicator {
@@ -455,6 +484,12 @@ ApplicationWindow {
         }
         function onInternalError(error) {
             showNotifiction(error.message);
+        }
+        function onInternalErrorsRequested() {
+            statusButton.showInternalErrors();
+        }
+        function onConnectionErrorsRequested() {
+            statusButton.showConnectionErrors();
         }
     }
     Connections {

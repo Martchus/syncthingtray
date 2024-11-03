@@ -53,6 +53,7 @@ class App : public QObject {
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion CONSTANT)
     Q_PROPERTY(QString readmeUrl READ readmeUrl CONSTANT)
     Q_PROPERTY(QString website READ website CONSTANT)
+    Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     QML_ELEMENT
     QML_SINGLETON
 
@@ -137,6 +138,10 @@ public:
         return m_iconSize;
     }
     const QString &status();
+    bool hasInternalErrors() const
+    {
+        return !m_internalErrors.isEmpty();
+    }
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();
@@ -178,6 +183,9 @@ Q_SIGNALS:
     void info(const QString &infoMessage, const QString &details = QString());
     void statusChanged();
     void logsAvailable(const QString &newLogMessages);
+    void hasInternalErrorsChanged();
+    void internalErrorsRequested();
+    void connectionErrorsRequested();
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
@@ -195,6 +203,10 @@ private Q_SLOTS:
 #ifdef Q_OS_ANDROID
     void invalidateAndroidIconCache();
     void updateAndroidNotification();
+    void updateSyncthingErrorsNotification(CppUtilities::DateTime when, const QString &message);
+    void clearSyncthingErrorsNotification();
+    void showInternalError(const InternalError &error);
+    void handleAndroidIntent(const QString &page, bool fromNotification);
 #endif
 
 private:
@@ -213,6 +225,7 @@ private:
     QVariantList m_internalErrors;
 #ifdef Q_OS_ANDROID
     StatusInfo m_statusInfo;
+    QString m_syncthingErrors;
     QHash<const QIcon *, QJniObject> m_androidIconCache;
 #endif
     Data::SyncthingConfig m_syncthingConfig;
@@ -246,11 +259,6 @@ inline void App::clearLog()
 inline QVariantList App::internalErrors() const
 {
     return m_internalErrors;
-}
-
-inline void App::clearInternalErrors()
-{
-    m_internalErrors.clear();
 }
 
 } // namespace QtGui

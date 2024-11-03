@@ -26,7 +26,9 @@ public class SyncthingService extends Service
     private Intent m_notificationContentIntent;
     private NotificationManager m_notificationManager;
     private NotificationChannel m_notificationChannel;
+    private NotificationChannel m_extraNotificationChannel;
     private Notification.Builder m_notificationBuilder;
+    private Notification.Builder m_extraNotificationBuilder;
     private Notification m_notification;
     private static String s_notificationTitle = "Syncthing";
     private static String s_notificationText = "Initializing …";
@@ -40,6 +42,7 @@ public class SyncthingService extends Service
 
         m_notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // add notification channel for persistent notification tied to service
             m_notificationChannel = new NotificationChannel(SyncthingService.class.getCanonicalName(), "Syncthing", NotificationManager.IMPORTANCE_DEFAULT);
             m_notificationChannel.enableLights(false);
             m_notificationChannel.enableVibration(false);
@@ -48,8 +51,17 @@ public class SyncthingService extends Service
             m_notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
             m_notificationManager.createNotificationChannel(m_notificationChannel);
             m_notificationBuilder = new Notification.Builder(this, m_notificationChannel.getId());
+            // add notification channel for extra notifications
+            m_extraNotificationChannel = new NotificationChannel(SyncthingService.class.getCanonicalName(), "Syncthing notifications", NotificationManager.IMPORTANCE_MIN);
+            m_extraNotificationChannel.enableLights(false);
+            m_extraNotificationChannel.enableVibration(true);
+            m_extraNotificationChannel.setShowBadge(false);
+            m_extraNotificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            m_notificationManager.createNotificationChannel(m_extraNotificationChannel);
+            m_extraNotificationBuilder = new Notification.Builder(this, m_extraNotificationChannel.getId());
         } else {
             m_notificationBuilder = new Notification.Builder(this);
+            m_extraNotificationBuilder = new Notification.Builder(this);
         }
 
         m_notificationContentIntent = new Intent(this, Activity.class);
@@ -64,18 +76,29 @@ public class SyncthingService extends Service
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setContentIntent(PendingIntent.getActivity(this, s_activityIntentRequestCode, m_notificationContentIntent, PendingIntent.FLAG_IMMUTABLE))
-            .setPriority(Notification.PRIORITY_MIN)
+            .setPriority(Notification.PRIORITY_DEFAULT)
             .setDefaults(Notification.DEFAULT_SOUND)
             .setCategory(Notification.CATEGORY_SERVICE)
             .setGroup(TAG)
             .setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
             .setAutoCancel(false);
+        m_extraNotificationBuilder
+            .setSmallIcon(R.drawable.ic_stat_notify)
+            .setColor(0xff169ad1)
+            .setPriority(Notification.PRIORITY_MIN)
+            .setDefaults(Notification.DEFAULT_SOUND)
+            .setCategory(Notification.CATEGORY_SERVICE)
+            .setGroup(TAG);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             m_notificationBuilder.setFlag(Notification.FLAG_NO_CLEAR | Notification.FLAG_FOREGROUND_SERVICE, true);
         }
     }
 
-    public static void updateNotification(String text, String subText, Bitmap bitmapIcon) {
+    public static void updateNotification(String title, String text, String subText, Bitmap bitmapIcon) {
+        if (title != null) {
+            s_notificationTitle = title;
+        }
         if (text != null) {
             s_notificationText = text;
         }
@@ -89,13 +112,40 @@ public class SyncthingService extends Service
             return;
         }
         Log.i(TAG, "Updating notification: " + s_notificationText);
-        s_instance.m_notificationBuilder.setContentText(s_notificationText).setSubText(s_notificationSubText);
+        s_instance.m_notificationBuilder.setContentTitle(s_notificationTitle).setContentText(s_notificationText).setSubText(s_notificationSubText);
         if (s_notificationIcon != null) {
             Icon icon = Icon.createWithBitmap(s_notificationIcon);
             s_instance.m_notificationBuilder.setSmallIcon(icon).setLargeIcon(icon);
         }
         s_instance.m_notification = s_instance.m_notificationBuilder.build();
         s_instance.showForegroundNotification();
+    }
+
+    public static void updateExtraNotification(String title, String text, String subText, String page, Bitmap bitmapIcon, int id) {
+        if (s_instance == null) {
+            return;
+        }
+        Log.i(TAG, "Showing extra notification: " + text);
+        Intent intent = new Intent(s_instance, Activity.class);
+        intent.putExtra("notification", true);
+        intent.putExtra("page", page);
+        s_instance.m_extraNotificationBuilder.setContentTitle(title).setContentText(text).setSubText(subText);
+        s_instance.m_extraNotificationBuilder.setSmallIcon(Icon.createWithBitmap(bitmapIcon));
+        s_instance.m_extraNotificationBuilder.setContentIntent(PendingIntent.getActivity(s_instance, s_activityIntentRequestCode + id, intent, PendingIntent.FLAG_IMMUTABLE));
+        s_instance.m_notificationManager.notify(id, s_instance.m_extraNotificationBuilder.build());
+    }
+
+    public static void cancelExtraNotification(int firstID, int lastID) {
+        if (s_instance == null) {
+            return;
+        }
+        if (firstID > lastID) {
+            s_instance.m_notificationManager.cancel(firstID);
+            return;
+        }
+        for (; firstID != lastID; ++firstID) {
+            s_instance.m_notificationManager.cancel(firstID);
+        }
     }
 
     @Override
