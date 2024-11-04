@@ -155,6 +155,7 @@ public:
     Q_INVOKABLE QString getClipboardText() const;
     Q_INVOKABLE bool loadIgnorePatterns(const QString &dirId, QObject *textArea);
     Q_INVOKABLE bool saveIgnorePatterns(const QString &dirId, QObject *textArea);
+    Q_INVOKABLE bool loadErrors(QObject *listView);
     Q_INVOKABLE bool showLog(QObject *textArea);
     Q_INVOKABLE void clearLog();
     Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
@@ -185,6 +186,7 @@ private Q_SLOTS:
     void handleRunningChanged(bool isRunning);
     void handleGuiAddressChanged(const QUrl &newUrl);
     void handleNewDevices(const std::vector<Data::SyncthingDev> &newDevices);
+    void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
     void handleStateChanged(Qt::ApplicationState state);
 #ifdef Q_OS_ANDROID
     void invalidateAndroidIconCache();

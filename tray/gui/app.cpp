@@ -9,6 +9,7 @@
 #include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/settings/settings.h>
 
+#include <syncthingmodel/syncthingerrormodel.h>
 #include <syncthingmodel/syncthingfilemodel.h>
 #include <syncthingmodel/syncthingicons.h>
 
@@ -117,6 +118,7 @@ App::App(bool insecure, QObject *parent)
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &App::invalidateStatus);
     connect(&m_connection, &SyncthingConnection::newDevices, this, &App::handleNewDevices);
+    connect(&m_connection, &SyncthingConnection::newErrors, this, &App::handleNewErrors);
 
     m_launcher.setEmittingOutput(true);
     connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &App::gatherLogs);
@@ -170,6 +172,9 @@ const QString &App::status()
     case Data::SyncthingStatus::Reconnecting:
         return m_status.emplace(tr("Waiting for backend …"));
     default:
+        if (const auto errorCount = m_connection.errors().size()) {
+            return m_status.emplace(tr("There are %n notification(s)/error(s).", nullptr, static_cast<int>(errorCount)));
+        }
         return m_status.emplace();
     }
 }
@@ -308,6 +313,12 @@ bool App::saveIgnorePatterns(const QString &dirId, QObject *textArea)
         });
     connect(textArea, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
     connect(this, &QObject::destroyed, [connection = res.connection] { disconnect(connection); });
+    return true;
+}
+
+bool App::loadErrors(QObject *listView)
+{
+    listView->setProperty("model", QVariant::fromValue(new Data::SyncthingErrorModel(m_connection, listView)));
     return true;
 }
 
@@ -502,6 +513,12 @@ void App::handleNewDevices(const std::vector<Data::SyncthingDev> &newDevices)
         updateAndroidNotification();
     }
 #endif
+}
+
+void App::handleNewErrors(const std::vector<Data::SyncthingError> &errors)
+{
+    Q_UNUSED(errors)
+    invalidateStatus();
 }
 
 void App::handleStateChanged(Qt::ApplicationState state)

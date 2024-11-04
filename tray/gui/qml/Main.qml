@@ -28,12 +28,18 @@ ApplicationWindow {
                     icon.source: app.faUrlBase + "exclamation-triangle"
                     icon.width: app.iconSize
                     icon.height: app.iconSize
-                    text: qsTr("Syncthing backend status is problematic")
+                    text: app.connection.hasErrors ? qsTr("Show notifications/errors") : qsTr("Syncthing backend status is problematic")
                     display: AbstractButton.IconOnly
-                    onPressAndHold: app.performHapticFeedback()
                     ToolTip.text: text
                     ToolTip.visible: hovered || pressed
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                    onPressAndHold: app.performHapticFeedback()
+                    onClicked: {
+                        if (app.connection.hasErrors) {
+                            pageStack.setCurrentIndex(5);
+                            settingsPage.push("ErrorsPage.qml", {}, StackView.PushTransition);
+                        }
+                    }
                 }
                 BusyIndicator {
                     id: busyIndicator
