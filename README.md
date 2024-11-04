@@ -649,11 +649,24 @@ It is possible to turn on logging of the underlying library by setting environme
 ### Useful environment variables for development
 * `QT_QPA_PLATFORM`: set to `offscreen` to disable graphical output, e.g. to run tests in headless
   environment
+* `QT_QPA_PLATFORMTHEME`: the platform theme to use (e.g. `gtk3`) which influences file dialogs and
+  other parts of the UI where Qt can make use of native APIs
+* `QSG_RHI_BACKEND`: set the underlying graphics API used by the Qt Quick GUI, checkout the
+  [Qt documentation](https://doc.qt.io/qt-6/qtquick-visualcanvas-scenegraph-renderer.html#rendering-via-the-qt-rendering-hardware-interface)
+  for details
+* `QT_QUICK_CONTROLS_STYLE`: the style to use in the Qt Quick GUI, checkout the
+  [Qt documentation](https://doc.qt.io/qt-6/qtquickcontrols-styles.html) for available options
+* `QT_QUICK_CONTROLS_MATERIAL_THEME`/`QT_QUICK_CONTROLS_UNIVERSAL_THEME`: the theme to use in the Qt
+  Quick GUI, the variable and options depend on the style being used
 * `LIB_SYNCTHING_CONNECTOR_SYNCTHING_CONFIG_DIR`: override the path where Syncthing Tray's backend expects
   Syncthing's `config.xml` file to be in
 * `SYNCTHINGTRAY_FAKE_FIRST_LAUNCH`: assume Syncthing Tray (or the Plasmoid) has been launched for the
   first time
 * `SYNCTHINGTRAY_ENABLE_WIP_FEATURES`: enable work-in-progress/experimental features
+* `SYNCTHINGTRAY_QML_MAIN_PATH`: specifies the Qt Quick GUI entry point to use externally provided QML
+  code, e.g. set to something like `G:\projects\main\syncthingtray\tray\gui\qml\Main.qml`; useful to
+  hot-reload the Qt Quick GUI with QML code changes with F5 without recompiling and relaunching the
+  application
 * `SYNCTHING_PATH`: override the path of Syncthing's executable when running tests
 * `SYNCTHING_PORT`: override the port of the Syncthing test instance spawned when running tests
 * `SYNCTHINGTRAY_SYSTEMD_USER_UNIT`: override the name of the systemd user-unit checked by the wizard's
