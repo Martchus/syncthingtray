@@ -16,7 +16,7 @@ Page {
                 width: mainView.width
                 onClicked: app.openPath(modelData.directoryId, modelData.path)
                 onPressAndHold: app.copyPath(modelData.directoryId, modelData.path)
-                contentItem: GridLayout  {
+                contentItem: GridLayout {
                     id: gridLayout
                     columns: width < 500 ? 2 : 8
                     columnSpacing: 10
