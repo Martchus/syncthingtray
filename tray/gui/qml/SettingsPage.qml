@@ -37,6 +37,11 @@ StackView {
                     iconName: "cogs"
                 }
                 ListElement {
+                    callback: () => stackView.push("InternalErrorsPage.qml", {}, StackView.PushTransition)
+                    label: qsTr("Show error log")
+                    iconName: "exclamation-triangle"
+                }
+                ListElement {
                     functionName: "importSettings"
                     label: qsTr("Import settings/secrets/data of app and backend")
                     iconName: "download"
@@ -53,9 +58,16 @@ StackView {
                 icon.source: app.faUrlBase + iconName // leads to crash when closing UI with Qt < 6.8
                 icon.width: app.iconSize
                 icon.height: app.iconSize
-                onClicked: key.length === 0
-                           ? appSettingsPage.initiateBackup(functionName)
-                           : appSettingsPage.openNestedSettings(title, key)
+                onClicked: {
+                    if (callback !== undefined) {
+                        callback();
+                    } else if (key.length > 0) {
+                        appSettingsPage.openNestedSettings(title, key);
+                    } else {
+                        appSettingsPage.initiateBackup(functionName);
+                    }
+                }
+
             }
             ScrollIndicator.vertical: ScrollIndicator { }
         }

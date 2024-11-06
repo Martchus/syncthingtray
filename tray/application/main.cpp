@@ -286,6 +286,7 @@ static int runApplication(int argc, const char *const *argv)
         auto quickApp = App(insecureArg.isPresent());
         quickApp.applySettings();
         QObject::connect(&app, &QCoreApplication::aboutToQuit, &quickApp, &App::shutdown);
+        SyncthingLauncher::setMainInstance(quickApp.launcher());
         return app.exec();
     }
 #endif

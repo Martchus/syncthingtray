@@ -6,6 +6,7 @@
 #include <c++utilities/chrono/datetime.h>
 
 #include <QByteArray>
+#include <QObject>
 #include <QString>
 #include <QUrl>
 
@@ -17,10 +18,18 @@ enum class SyncthingErrorCategory;
 namespace QtGui {
 
 struct SYNCTHINGWIDGETS_EXPORT InternalError {
+    Q_GADGET
+    Q_PROPERTY(QString message MEMBER message CONSTANT)
+    Q_PROPERTY(QUrl url MEMBER url CONSTANT)
+    Q_PROPERTY(QByteArray response MEMBER response CONSTANT)
+    Q_PROPERTY(QString when READ whenToString CONSTANT)
+
+public:
     explicit InternalError(const QString &message = QString(), const QUrl &url = QUrl(), const QByteArray &response = QByteArray());
 
     static bool isRelevant(
         const Data::SyncthingConnection &connection, Data::SyncthingErrorCategory category, const QString &message, int networkError);
+    QString whenToString() const;
 
     QString message;
     QUrl url;
@@ -40,6 +49,11 @@ inline InternalError::InternalError(const QString &message, const QUrl &url, con
     if (!this->url.password().isEmpty()) {
         this->url.setPassword(QStringLiteral("redacted"));
     }
+}
+
+inline QString InternalError::whenToString() const
+{
+    return QString::fromStdString(when.toString());
 }
 
 } // namespace QtGui

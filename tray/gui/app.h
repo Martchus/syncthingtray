@@ -1,6 +1,7 @@
 #ifndef SYNCTHING_TRAY_APP_H
 #define SYNCTHING_TRAY_APP_H
 
+#include <syncthingwidgets/misc/internalerror.h>
 #include <syncthingwidgets/misc/statusinfo.h>
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #include <syncthingwidgets/misc/utils.h>
@@ -166,11 +167,14 @@ public:
     Q_INVOKABLE QString resolveUrl(const QUrl &url);
     Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId, QObject *parent);
     Q_INVOKABLE QtGui::DiffHighlighter *createDiffHighlighter(QTextDocument *parent);
+    Q_INVOKABLE QVariantList internalErrors() const;
+    Q_INVOKABLE void clearInternalErrors();
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
     void settingsChanged(const QJsonObject &settingsChanged);
     void error(const QString &errorMessage, const QString &details = QString());
+    void internalError(const InternalError &error);
     void info(const QString &infoMessage, const QString &details = QString());
     void statusChanged();
     void logsAvailable(const QString &newLogMessages);
@@ -206,6 +210,7 @@ private:
     Data::SyncthingRecentChangesModel m_changesModel;
     Data::SyncthingConnectionSettings m_connectionSettingsFromLauncher;
     Data::SyncthingConnectionSettings m_connectionSettingsFromConfig;
+    QVariantList m_internalErrors;
 #ifdef Q_OS_ANDROID
     StatusInfo m_statusInfo;
     QHash<const QIcon *, QJniObject> m_androidIconCache;
@@ -236,6 +241,16 @@ private:
 inline void App::clearLog()
 {
     m_log.clear();
+}
+
+inline QVariantList App::internalErrors() const
+{
+    return m_internalErrors;
+}
+
+inline void App::clearInternalErrors()
+{
+    m_internalErrors.clear();
 }
 
 } // namespace QtGui

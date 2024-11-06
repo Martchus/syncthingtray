@@ -451,12 +451,12 @@ ApplicationWindow {
         function onInfo(message) {
             showNotifiction(message);
         }
+        function onInternalError(error) {
+            showNotifiction(error.message);
+        }
     }
     Connections {
         target: app.connection
-        function onError(message) {
-            showNotifiction(message);
-        }
         function onNewConfigTriggered() {
             showNotifiction(qsTr("Configuration changed"));
         }

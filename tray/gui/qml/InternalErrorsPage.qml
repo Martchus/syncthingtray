@@ -3,13 +3,17 @@ import QtQuick.Layouts
 import QtQuick.Controls
 
 Page {
-    title: qsTr("Notifications/errors")
-    Component.onCompleted: app.loadErrors(listView)
+    title: qsTr("Log of Syncthing API errors")
+    Layout.fillWidth: true
+    Layout.fillHeight: true
     actions: [
         Action {
             text: qsTr("Clear")
             icon.source: app.faUrlBase + "trash"
-            onTriggered: (source) => app.connection.requestClearingErrors()
+            onTriggered: (source) => {
+                app.clearInternalErrors();
+                listView.model = app.internalErrors();
+            }
         }
     ]
     ListView {
@@ -17,9 +21,10 @@ Page {
         anchors.fill: parent
         activeFocusOnTab: true
         keyNavigationEnabled: true
+        model: app.internalErrors()
         delegate: ItemDelegate {
             width: listView.width
-            onPressAndHold: app.copyText(modelData.message)
+            onPressAndHold: app.copyText(`${modelData.when}\n${modelData.url}: ${modelData.message}`)
             contentItem: GridLayout {
                 columns: 2
                 columnSpacing: 10
@@ -54,6 +59,11 @@ Page {
         }
         ScrollIndicator.vertical: ScrollIndicator { }
     }
-
-    required property list<Action> actions
+    Connections {
+        target: app
+        function onInternalError(error) {
+            listView.model.push(error)
+        }
+    }
+    property list<Action> actions
 }

@@ -6,6 +6,7 @@
 #include <syncthing/interface.h>
 #endif
 
+#include <syncthingwidgets/misc/internalerror.h>
 #include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/settings/settings.h>
 
@@ -379,6 +380,8 @@ DiffHighlighter *App::createDiffHighlighter(QTextDocument *parent)
     return new DiffHighlighter(parent);
 }
 
+
+
 bool App::eventFilter(QObject *object, QEvent *event)
 {
     Q_UNUSED(object)
@@ -395,11 +398,13 @@ bool App::eventFilter(QObject *object, QEvent *event)
 void App::handleConnectionError(
     const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    Q_UNUSED(category)
-    Q_UNUSED(networkError)
-    Q_UNUSED(request)
-    Q_UNUSED(response)
-    qWarning() << "connection error: " << errorMessage;
+    if (!InternalError::isRelevant(m_connection, category, errorMessage, networkError)) {
+        return;
+    }
+    qWarning() << "Connection error: " << errorMessage;
+    auto error = InternalError(errorMessage, request.url(), response);
+    emit internalError(error);
+    m_internalErrors.emplace_back(QVariant::fromValue(std::move(error)));
 }
 
 void App::setCurrentControls(bool visible, int tabIndex)

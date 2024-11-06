@@ -299,6 +299,7 @@ if (QUICK_GUI)
         gui/qml/HelpButton.qml
         gui/qml/IconOnlyButton.qml
         gui/qml/IgnorePatternPage.qml
+        gui/qml/InternalErrorsPage.qml
         gui/qml/LogPage.qml
         gui/qml/Main.qml
         gui/qml/ObjectConfigDelegate.qml
