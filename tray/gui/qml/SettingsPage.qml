@@ -37,9 +37,14 @@ StackView {
                     iconName: "cogs"
                 }
                 ListElement {
-                    callback: () => stackView.push("InternalErrorsPage.qml", {}, StackView.PushTransition)
-                    label: qsTr("Show error log")
+                    callback: () => stackView.push("ErrorsPage.qml", {}, StackView.PushTransition)
+                    label: qsTr("Show Syncthing notifications/errors")
                     iconName: "exclamation-triangle"
+                }
+                ListElement {
+                    callback: () => stackView.push("InternalErrorsPage.qml", {}, StackView.PushTransition)
+                    label: qsTr("Show log of Syncthing API errors")
+                    iconName: "exclamation-circle"
                 }
                 ListElement {
                     functionName: "importSettings"
