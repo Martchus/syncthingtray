@@ -120,8 +120,6 @@ App::App(bool insecure, QObject *parent)
     connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &App::handleRunningChanged);
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &App::handleGuiAddressChanged);
 
-    auto *const context = m_engine.rootContext();
-    context->setContextProperty(QStringLiteral("app"), this);
     connect(
         &m_engine, &QQmlApplicationEngine::objectCreated, app,
         [](QObject *obj, const QUrl &objUrl) {
@@ -132,6 +130,7 @@ App::App(bool insecure, QObject *parent)
         },
         Qt::QueuedConnection);
     connect(&m_engine, &QQmlApplicationEngine::quit, app, &QGuiApplication::quit);
+    m_engine.setProperty("app", QVariant::fromValue(this));
     m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global()));
 
     // start service under Android
@@ -142,6 +141,13 @@ App::App(bool insecure, QObject *parent)
     loadMain();
 
     qDebug() << "App initialized";
+}
+
+App *App::create(QQmlEngine *, QJSEngine *engine)
+{
+    auto *const app = engine->property("app").value<App *>();
+    QJSEngine::setObjectOwnership(app, QJSEngine::CppOwnership);
+    return app;
 }
 
 QString App::website() const

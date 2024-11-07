@@ -5,14 +5,16 @@ import QtQuick.Controls.Material
 import QtQuick.Dialogs
 import Qt.labs.qmlmodels
 
+import Main
+
 ApplicationWindow {
     id: window
     visible: true
     width: 700
     height: 500
     title: qsTr("Syncthing")
-    onVisibleChanged: app.setCurrentControls(window.visible, pageStack.currentIndex)
-    Material.theme: app.darkmodeEnabled ? Material.Dark : Material.Light
+    onVisibleChanged: App.setCurrentControls(window.visible, pageStack.currentIndex)
+    Material.theme: App.darkmodeEnabled ? Material.Dark : Material.Light
     Material.accent: Material.LightBlue
     Material.primary: Material.LightBlue
     header: ToolBar {
@@ -21,21 +23,21 @@ ApplicationWindow {
             anchors.fill: parent
             anchors.leftMargin: flickable.anchors.leftMargin
             RowLayout {
-                visible: app.status.length !== 0
+                visible: App.status.length !== 0
                 ToolButton {
                     id: statusButton
                     visible: !busyIndicator.running
-                    icon.source: app.faUrlBase + "exclamation-triangle"
-                    icon.width: app.iconSize
-                    icon.height: app.iconSize
-                    text: app.connection.hasErrors ? qsTr("Show notifications/errors") : qsTr("Syncthing backend status is problematic")
+                    icon.source: App.faUrlBase + "exclamation-triangle"
+                    icon.width: App.iconSize
+                    icon.height: App.iconSize
+                    text: App.connection.hasErrors ? qsTr("Show notifications/errors") : qsTr("Syncthing backend status is problematic")
                     display: AbstractButton.IconOnly
                     ToolTip.text: text
                     ToolTip.visible: hovered || pressed
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-                    onPressAndHold: app.performHapticFeedback()
+                    onPressAndHold: App.performHapticFeedback()
                     onClicked: {
-                        if (app.connection.hasErrors) {
+                        if (App.connection.hasErrors) {
                             pageStack.setCurrentIndex(5);
                             settingsPage.push("ErrorsPage.qml", {}, StackView.PushTransition);
                         }
@@ -43,13 +45,13 @@ ApplicationWindow {
                 }
                 BusyIndicator {
                     id: busyIndicator
-                    running: app.connection.connecting || app.launcher.starting
+                    running: App.connection.connecting || App.launcher.starting
                     visible: running
                     Layout.preferredWidth: statusButton.width - 5
                     Layout.preferredHeight: statusButton.height - 5
                 }
                 Label {
-                    text: app.status
+                    text: App.status
                     elide: Label.ElideRight
                     horizontalAlignment: Qt.AlignLeft
                     verticalAlignment: Qt.AlignVCenter
@@ -57,14 +59,14 @@ ApplicationWindow {
                     Layout.fillWidth: true
                 }
                 ToolButton {
-                    visible: !app.connection.connected
-                    icon.source: app.faUrlBase + "refresh"
-                    icon.width: app.iconSize
-                    icon.height: app.iconSize
+                    visible: !App.connection.connected
+                    icon.source: App.faUrlBase + "refresh"
+                    icon.width: App.iconSize
+                    icon.height: App.iconSize
                     text: qsTr("Try to re-connect")
                     display: AbstractButton.IconOnly
-                    onClicked: app.connection.connect()
-                    onPressAndHold: app.performHapticFeedback()
+                    onClicked: App.connection.connect()
+                    onPressAndHold: App.performHapticFeedback()
                     ToolTip.text: text
                     ToolTip.visible: hovered || pressed
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -73,13 +75,13 @@ ApplicationWindow {
             RowLayout {
                 ToolButton {
                     visible: !backButton.visible
-                    icon.source: app.faUrlBase + "bars"
-                    icon.width: app.iconSize
-                    icon.height: app.iconSize
+                    icon.source: App.faUrlBase + "bars"
+                    icon.width: App.iconSize
+                    icon.height: App.iconSize
                     text: qsTr("Toggle menu")
                     display: AbstractButton.IconOnly
                     onClicked: drawer.visible ? drawer.close() : drawer.open()
-                    onPressAndHold: app.performHapticFeedback()
+                    onPressAndHold: App.performHapticFeedback()
                     ToolTip.text: text
                     ToolTip.visible: hovered || pressed
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -87,13 +89,13 @@ ApplicationWindow {
                 ToolButton {
                     id: backButton
                     visible: pageStack.currentDepth > 1
-                    icon.source: app.faUrlBase + "chevron-left"
-                    icon.width: app.iconSize
-                    icon.height: app.iconSize
+                    icon.source: App.faUrlBase + "chevron-left"
+                    icon.width: App.iconSize
+                    icon.height: App.iconSize
                     text: qsTr("Back")
                     display: AbstractButton.IconOnly
                     onClicked: pageStack.pop()
-                    onPressAndHold: app.performHapticFeedback()
+                    onPressAndHold: App.performHapticFeedback()
                     ToolTip.text: text
                     ToolTip.visible: hovered || pressed
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -120,24 +122,24 @@ ApplicationWindow {
                                 ToolTip.text: modelData.text
                                 ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                                 icon.source: modelData.icon.source
-                                icon.width: app.iconSize
-                                icon.height: app.iconSize
+                                icon.width: App.iconSize
+                                icon.height: App.iconSize
                                 onClicked: modelData.trigger()
-                                onPressAndHold: app.performHapticFeedback()
+                                onPressAndHold: App.performHapticFeedback()
                             }
                         }
                     }
                 }
                 ToolButton {
                     visible: pageStack.currentExtraActions.length > 0
-                    icon.source: app.faUrlBase + "ellipsis-v"
-                    icon.width: app.iconSize
-                    icon.height: app.iconSize
+                    icon.source: App.faUrlBase + "ellipsis-v"
+                    icon.width: App.iconSize
+                    icon.height: App.iconSize
                     onClicked: extraActionsMenu.popup()
-                    onPressAndHold: app.performHapticFeedback()
+                    onPressAndHold: App.performHapticFeedback()
                     Menu {
                         id: extraActionsMenu
-                        popupType: app.nativePopups ? Popup.Native : Popup.Item
+                        popupType: App.nativePopups ? Popup.Native : Popup.Item
                         Instantiator {
                             model: pageStack.currentExtraActions
                             delegate: MenuItem {
@@ -145,8 +147,8 @@ ApplicationWindow {
                                 text: modelData.text
                                 enabled: modelData.enabled
                                 icon.source: modelData.icon.source
-                                icon.width: app.iconSize
-                                icon.height: app.iconSize
+                                icon.width: App.iconSize
+                                icon.height: App.iconSize
                                 onTriggered: modelData?.trigger()
                             }
                             onObjectAdded: (index, object) => object.enabled && extraActionsMenu.insertItem(index, object)
@@ -186,17 +188,17 @@ ApplicationWindow {
                 ItemDelegate {
                     Layout.fillWidth: true
                     text: Qt.application.version
-                    icon.source: app.faUrlBase + "info-circle"
-                    icon.width: app.iconSize
-                    icon.height: app.iconSize
+                    icon.source: App.faUrlBase + "info-circle"
+                    icon.width: App.iconSize
+                    icon.height: App.iconSize
                     onClicked: aboutDialog.visible = true
                 }
                 ItemDelegate {
                     Layout.fillWidth: true
                     text: qsTr("Quit")
-                    icon.source: app.faUrlBase + "power-off"
-                    icon.width: app.iconSize
-                    icon.height: app.iconSize
+                    icon.source: App.faUrlBase + "power-off"
+                    icon.width: App.iconSize
+                    icon.height: App.iconSize
                     onClicked: closeDialog.visible = true
                 }
             }
@@ -230,9 +232,9 @@ ApplicationWindow {
                 id: drawerDelegate
                 text: name
                 activeFocusOnTab: true
-                icon.source: app.faUrlBase + iconName
-                icon.width: app.iconSize
-                icon.height: app.iconSize
+                icon.source: App.faUrlBase + iconName
+                icon.width: App.iconSize
+                icon.height: App.iconSize
                 width: parent.width
                 onClicked: {
                     pageStack.setCurrentIndex(index);
@@ -248,11 +250,11 @@ ApplicationWindow {
         TabButton {
             text: qsTr("Folders")
             display: AbstractButton.IconOnly
-            icon.source: app.faUrlBase + "folder"
-            icon.width: app.iconSize
-            icon.height: app.iconSize
+            icon.source: App.faUrlBase + "folder"
+            icon.width: App.iconSize
+            icon.height: App.iconSize
             onClicked: pageStack.setCurrentIndex(0)
-            onPressAndHold: app.performHapticFeedback()
+            onPressAndHold: App.performHapticFeedback()
             ToolTip.visible: hovered || pressed
             ToolTip.text: text
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -260,11 +262,11 @@ ApplicationWindow {
         TabButton {
             text: qsTr("Devices")
             display: AbstractButton.IconOnly
-            icon.source: app.faUrlBase + "sitemap"
-            icon.width: app.iconSize
-            icon.height: app.iconSize
+            icon.source: App.faUrlBase + "sitemap"
+            icon.width: App.iconSize
+            icon.height: App.iconSize
             onClicked: pageStack.setCurrentIndex(1)
-            onPressAndHold: app.performHapticFeedback()
+            onPressAndHold: App.performHapticFeedback()
             ToolTip.visible: hovered || pressed
             ToolTip.text: text
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -272,11 +274,11 @@ ApplicationWindow {
         TabButton {
             text: qsTr("Recent changes")
             display: AbstractButton.IconOnly
-            icon.source: app.faUrlBase + "history"
-            icon.width: app.iconSize
-            icon.height: app.iconSize
+            icon.source: App.faUrlBase + "history"
+            icon.width: App.iconSize
+            icon.height: App.iconSize
             onClicked: pageStack.setCurrentIndex(2)
-            onPressAndHold: app.performHapticFeedback()
+            onPressAndHold: App.performHapticFeedback()
             ToolTip.visible: hovered || pressed
             ToolTip.text: text
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -284,11 +286,11 @@ ApplicationWindow {
         TabButton {
             text: qsTr("More")
             display: AbstractButton.IconOnly
-            icon.source: app.faUrlBase + "cog"
-            icon.width: app.iconSize
-            icon.height: app.iconSize
+            icon.source: App.faUrlBase + "cog"
+            icon.width: App.iconSize
+            icon.height: App.iconSize
             onClicked: pageStack.setCurrentIndex(5)
-            onPressAndHold: app.performHapticFeedback()
+            onPressAndHold: App.performHapticFeedback()
             ToolTip.visible: hovered || pressed
             ToolTip.text: text
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -316,7 +318,7 @@ ApplicationWindow {
                     indexForward.splice(0, indexForward.length);
                 }
                 goingBackAndForth = false;
-                app.setCurrentControls(window.visible, newIndex);
+                App.setCurrentControls(window.visible, newIndex);
             }
 
             DirsPage {
@@ -387,7 +389,7 @@ ApplicationWindow {
             } else if (key === Qt.Key_Forward) {
                 event.accepted = pageStack.forward();
             } else if (key === Qt.Key_F5) {
-                event.accepted = app.reloadMain();
+                event.accepted = App.reloadMain();
             }
         });
     }
@@ -413,7 +415,7 @@ ApplicationWindow {
     // avoid closing app (TODO: allow to keep Syncthing running in the background)
     Dialog {
         id: closeDialog
-        popupType: app.nativePopups ? Popup.Native : Popup.Item
+        popupType: App.nativePopups ? Popup.Native : Popup.Item
         anchors.centerIn: Overlay.overlay
         parent: Overlay.overlay
         modal: true
@@ -444,7 +446,7 @@ ApplicationWindow {
         timeout: 5000
     }
     Connections {
-        target: app
+        target: App
         function onError(message) {
             showNotifiction(message);
         }
@@ -456,19 +458,19 @@ ApplicationWindow {
         }
     }
     Connections {
-        target: app.connection
+        target: App.connection
         function onNewConfigTriggered() {
             showNotifiction(qsTr("Configuration changed"));
         }
     }
     Connections {
-        target: app.notifier
+        target: App.notifier
         function onDisconnected() {
             showNotifiction(qsTr("UI disconnected from Syncthing backend"));
         }
     }
     function showNotifiction(message) {
-        if (app.showToast(message)) {
+        if (App.showToast(message)) {
             return;
         }
         notifictionToolTip.text = message;

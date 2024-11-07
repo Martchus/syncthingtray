@@ -1,5 +1,7 @@
 import QtQuick
 
+import Main
+
 AdvancedConfigPage {
     title: qsTr("Advanced config of device \"%1\"").arg(devName)
     entryName: "device"
@@ -10,7 +12,7 @@ AdvancedConfigPage {
     required property string devName
     required property string devId
     function makeNewConfig() {
-        return app.connection.rawConfig?.defaults?.device ?? {};
+        return App.connection.rawConfig?.defaults?.device ?? {};
     }
     function updateIdentification() {
         const id = configObject.deviceID ?? "";

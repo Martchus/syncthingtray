@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+
 import Main
 
 ListView {
@@ -56,7 +57,7 @@ ListView {
                     horizontalAlignment: Qt.AlignRight
                     MouseArea {
                         anchors.fill: parent
-                        onPressAndHold: app.copyText(detailValue)
+                        onPressAndHold: App.copyText(detailValue)
                     }
                 }
             }

@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
+import Main
+
 StackView {
     id: stackView
     Layout.fillWidth: true
@@ -46,18 +48,18 @@ StackView {
             ScrollIndicator.vertical: ScrollIndicator { }
         }
 
-        property var config: app.connection.rawConfig
+        property var config: App.connection.rawConfig
         property list<Action> actions: [
             Action {
                 text: qsTr("Apply")
-                icon.source: app.faUrlBase + "check"
+                icon.source: App.faUrlBase + "check"
                 onTriggered: (source) => {
-                    const cfg = app.connection.rawConfig;
+                    const cfg = App.connection.rawConfig;
                     for (let i = 0, count = model.count; i !== count; ++i) {
                         const entryKey = model.get(i).key;
                         cfg[entryKey] = advancedPage.config[entryKey]
                     }
-                    app.connection.postConfigFromJsonObject(cfg);
+                    App.connection.postConfigFromJsonObject(cfg);
                     return true;
                 }
             }
@@ -65,13 +67,13 @@ StackView {
         property list<Action> extraActions: [
             Action {
                 text: qsTr("Restart Syncthing")
-                icon.source: app.faUrlBase + "refresh"
-                onTriggered: (source) => app.connection.restart()
+                icon.source: App.faUrlBase + "refresh"
+                onTriggered: (source) => App.connection.restart()
             },
             Action {
                 text: qsTr("Shutdown Syncthing")
-                icon.source: app.faUrlBase + "power-off"
-                onTriggered: (source) => app.connection.shutdown()
+                icon.source: App.faUrlBase + "power-off"
+                onTriggered: (source) => App.connection.shutdown()
             }
         ]
     }

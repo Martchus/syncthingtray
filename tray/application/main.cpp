@@ -8,7 +8,7 @@
 #include "../gui/traywidget.h"
 
 #ifdef GUI_QTQUICK
-#include "../gui/app.h"
+#include "../gui/quick/app.h"
 #endif
 
 #include <syncthingwidgets/misc/syncthinglauncher.h>

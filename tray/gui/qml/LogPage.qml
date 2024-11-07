@@ -2,9 +2,11 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
+import Main
+
 Page {
     title: qsTr("Syncthing log")
-    Component.onCompleted: app.showLog(textArea)
+    Component.onCompleted: App.showLog(textArea)
     ScrollView {
         anchors.fill: parent
         TextArea {
@@ -16,9 +18,9 @@ Page {
     property list<Action> actions: [
         Action {
             text: qsTr("Clear")
-            icon.source: app.faUrlBase + "undo"
+            icon.source: App.faUrlBase + "undo"
             onTriggered: (source) => {
-                app.clearLog();
+                App.clearLog();
                 textArea.clear();
             }
         }

@@ -2,6 +2,7 @@ import QtQml
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+
 import Main
 
 ItemDelegate {
@@ -56,11 +57,11 @@ ItemDelegate {
             IconOnlyButton {
                 visible: !buttonRepeater.visible || mainDelegate.extraActions.length > 0
                 text: qsTr("More actions")
-                icon.source: app.faUrlBase + "ellipsis-v"
+                icon.source: App.faUrlBase + "ellipsis-v"
                 onClicked: menu.popup()
                 Menu {
                     id: menu
-                    popupType: app.nativePopups ? Popup.Native : Popup.Item
+                    popupType: App.nativePopups ? Popup.Native : Popup.Item
                     Instantiator {
                         model: mainDelegate.actions
                         delegate: MenuItem {
@@ -68,8 +69,8 @@ ItemDelegate {
                             text: modelData.text
                             enabled: modelData.enabled
                             icon.source: modelData.icon.source
-                            icon.width: app.iconSize
-                            icon.height: app.iconSize
+                            icon.width: App.iconSize
+                            icon.height: App.iconSize
                             onTriggered: modelData.trigger(source)
                         }
                         onObjectAdded: (index, object) => object.enabled && menu.insertItem(index, object)
@@ -82,8 +83,8 @@ ItemDelegate {
                             text: modelData.text
                             enabled: modelData.enabled
                             icon.source: modelData.icon.source
-                            icon.width: app.iconSize
-                            icon.height: app.iconSize
+                            icon.width: App.iconSize
+                            icon.height: App.iconSize
                             onTriggered: modelData.trigger(source)
                         }
                         onObjectAdded: (index, object) => object.enabled && menu.insertItem(index, object)
@@ -105,7 +106,7 @@ ItemDelegate {
             mainDelegate.forceActiveFocus(Qt.MouseFocusReason);
         }
         onLongPressed: {
-            app.performHapticFeedback();
+            App.performHapticFeedback();
             menu.popup();
         }
     }

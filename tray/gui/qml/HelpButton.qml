@@ -2,16 +2,18 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import Main
+
 IconOnlyButton {
     id: helpButton
     visible: modelData.helpUrl?.length > 0 || configCategory.length > 0
     text: qsTr("Open help")
-    icon.source: app.faUrlBase + "question"
+    icon.source: App.faUrlBase + "question"
     onClicked: helpButton.desc.length > 0 ? helpDlg.open() : helpButton.openSyncthingDocs()
 
     Dialog {
         id: helpDlg
-        popupType: app.nativePopups ? Popup.Native : Popup.Item
+        popupType: App.nativePopups ? Popup.Native : Popup.Item
         parent: Overlay.overlay
         anchors.centerIn: Overlay.overlay
         title: modelData.label ?? helpButton.key

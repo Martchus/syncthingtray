@@ -2,14 +2,16 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
+import Main
+
 Page {
     title: qsTr("Notifications/errors")
-    Component.onCompleted: app.loadErrors(listView)
+    Component.onCompleted: App.loadErrors(listView)
     actions: [
         Action {
             text: qsTr("Clear")
-            icon.source: app.faUrlBase + "trash"
-            onTriggered: (source) => app.connection.requestClearingErrors()
+            icon.source: App.faUrlBase + "trash"
+            onTriggered: (source) => App.connection.requestClearingErrors()
         }
     ]
     ListView {

@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtWebView
 
+import Main
+
 ColumnLayout {
     id: webViewItem
     WebView {
@@ -27,12 +29,12 @@ ColumnLayout {
     property list<Action> actions: [
         Action {
             text: qsTr("Refresh")
-            icon.source: app.faUrlBase + "refresh"
+            icon.source: App.faUrlBase + "refresh"
             onTriggered: webView.reload()
         },
         Action {
             text: qsTr("Open in web browser")
-            icon.source: app.faUrlBase + "external-link"
+            icon.source: App.faUrlBase + "external-link"
             onTriggered: Qt.openUrlExternally(webViewItem.url)
         }
     ]

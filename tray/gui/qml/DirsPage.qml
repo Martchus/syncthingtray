@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
+import Main
+
 StackView {
     id: stackView
     Layout.fillWidth: true
@@ -11,31 +13,31 @@ StackView {
         Layout.fillWidth: true
         Layout.fillHeight: true
         DirListView {
-            mainModel: app.dirModel
+            mainModel: App.dirModel
             stackView: stackView
         }
         property list<Action> actions: [
             Action {
                 text: qsTr("Add folder")
-                icon.source: app.faUrlBase + "plus"
+                icon.source: App.faUrlBase + "plus"
                 onTriggered: (source) => stackView.push("DirConfigPage.qml", {dirName: qsTr("New folder"), dirId: "", stackView: stackView}, StackView.PushTransition)
             }
         ]
         property list<Action> extraActions: [
             Action {
                 text: qsTr("Pause all folders")
-                icon.source: app.faUrlBase + "pause"
-                onTriggered: (source) => app.connection.pauseAllDirs()
+                icon.source: App.faUrlBase + "pause"
+                onTriggered: (source) => App.connection.pauseAllDirs()
             },
             Action {
                 text: qsTr("Resume all folders")
-                icon.source: app.faUrlBase + "play"
-                onTriggered: (source) => app.connection.resumeAllDirs()
+                icon.source: App.faUrlBase + "play"
+                onTriggered: (source) => App.connection.resumeAllDirs()
             },
             Action {
                 text: qsTr("Rescan all folders")
-                icon.source: app.faUrlBase + "refresh"
-                onTriggered: (source) => app.connection.rescanAllDirs()
+                icon.source: App.faUrlBase + "refresh"
+                onTriggered: (source) => App.connection.rescanAllDirs()
             }
         ]
     }

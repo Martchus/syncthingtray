@@ -53,9 +53,12 @@ class App : public QObject {
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion CONSTANT)
     Q_PROPERTY(QString readmeUrl READ readmeUrl CONSTANT)
     Q_PROPERTY(QString website READ website CONSTANT)
+    QML_ELEMENT
+    QML_SINGLETON
 
 public:
-    explicit App(bool insecure = false, QObject *parent = nullptr);
+    explicit App(bool insecure, QObject *parent = nullptr);
+    static App *create(QQmlEngine *, QJSEngine *engine);
 
     // properties
     Data::SyncthingConnection *connection()

@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+
 import Main
 
 Page {
@@ -58,14 +59,14 @@ Page {
                 acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
                 onLongPressed: {
                     itemDelegate.toggle();
-                    app.performHapticFeedback();
+                    App.performHapticFeedback();
                 }
             }
             TapHandler {
                 acceptedDevices: PointerDevice.TouchScreen
                 onLongPressed: {
                     contextMenu.popup();
-                    app.performHapticFeedback();
+                    App.performHapticFeedback();
                 }
             }
             TapHandler {
@@ -75,7 +76,7 @@ Page {
             }
             Menu {
                 id: contextMenu
-                popupType: app.nativePopups ? Popup.Native : Popup.Item
+                popupType: App.nativePopups ? Popup.Native : Popup.Item
                 Instantiator {
                     model: actions
                     delegate: MenuItem {
@@ -110,7 +111,7 @@ Page {
     }
     Dialog {
         id: confirmActionDialog
-        popupType: app.nativePopups ? Popup.Native : Popup.Item
+        popupType: App.nativePopups ? Popup.Native : Popup.Item
         anchors.centerIn: Overlay.overlay
         standardButtons: Dialog.Ok | Dialog.Cancel
         width: parent.width - 20
@@ -132,7 +133,7 @@ Page {
         onAccepted: action?.trigger()
         onRejected: action?.dismiss()
         property var action
-        property var diffHighlighter: app.createDiffHighlighter(diffTextArea.textDocument.textDocument)
+        property var diffHighlighter: App.createDiffHighlighter(diffTextArea.textDocument.textDocument)
         property alias message: messageLabel.text
         property alias diff: diffTextArea.text
     }
@@ -155,7 +156,7 @@ Page {
 
     required property string dirName
     required property string dirId
-    property var model: app.createFileModel(dirId, listView)
+    property var model: App.createFileModel(dirId, listView)
     property string path: model.path(delegateModel.rootIndex)
     property var modelActions: []
     property var extraActions: []

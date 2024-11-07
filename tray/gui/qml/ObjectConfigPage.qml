@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Dialogs
 
+import Main
+
 Page {
     id: objectConfigPage
     ListView {
@@ -44,7 +46,7 @@ Page {
     }
     Dialog {
         id: newValueDialog
-        popupType: app.nativePopups ? Popup.Native : Popup.Item
+        popupType: App.nativePopups ? Popup.Native : Popup.Item
         anchors.centerIn: Overlay.overlay
         title: qsTr("Add new value")
         standardButtons: Dialog.Ok | Dialog.Cancel
@@ -94,13 +96,13 @@ Page {
         Action {
             text: qsTr("Help")
             enabled: objectConfigPage.helpUrl.length > 0
-            icon.source: app.faUrlBase + "question"
+            icon.source: App.faUrlBase + "question"
             onTriggered: Qt.openUrlExternally(objectConfigPage.helpUrl)
         },
         Action {
             text: qsTr("Add")
             enabled: objectConfigPage.canAdd
-            icon.source: app.faUrlBase + "plus"
+            icon.source: App.faUrlBase + "plus"
             onTriggered: objectConfigPage.showNewValueDialog()
         }
     ]
@@ -187,14 +189,14 @@ Page {
                     listModel.set(i, {index: i, key: i});
                 }
             } else {
-                app.showError(qsTr("Unable to add %1 because specified index is invalid.").arg(typeof object));
+                App.showError(qsTr("Unable to add %1 because specified index is invalid.").arg(typeof object));
             }
         } else {
             if (typeof key === "string" && key !== "" && objectConfigPage.configObject[key] === undefined) {
                 objectConfigPage.configObject[key] = object;
                 listModel.append(objectConfigPage.makeConfigRow([key, object], listModel.count))
             } else {
-                app.showError(qsTr("Unable to add %1 because specified key is invalid.").arg(typeof object));
+                App.showError(qsTr("Unable to add %1 because specified key is invalid.").arg(typeof object));
             }
         }
     }

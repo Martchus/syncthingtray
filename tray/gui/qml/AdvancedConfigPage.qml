@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Dialogs
 
+import Main
+
 ObjectConfigPage {
     id: advancedConfigPage
     configTemplates: {
@@ -12,12 +14,12 @@ ObjectConfigPage {
     actions: [
         Action {
             text: qsTr("Apply")
-            icon.source: app.faUrlBase + "check"
+            icon.source: App.faUrlBase + "check"
             onTriggered: (source) => advancedConfigPage.applyChanges()
         },
         Action {
             text: qsTr("Remove")
-            icon.source: app.faUrlBase + "trash-o"
+            icon.source: App.faUrlBase + "trash-o"
             enabled: advancedConfigPage.configObjectExists
             onTriggered: (source) => removeDialog.open()
         }
@@ -25,7 +27,7 @@ ObjectConfigPage {
 
     Dialog {
         id: removeDialog
-        popupType: app.nativePopups ? Popup.Native : Popup.Item
+        popupType: App.nativePopups ? Popup.Native : Popup.Item
         anchors.centerIn: Overlay.overlay
         parent: Overlay.overlay
         modal: true
@@ -51,14 +53,14 @@ ObjectConfigPage {
     property bool configObjectExists: false
 
     function findConfigObject() {
-        const cfg = app.connection.rawConfig;
+        const cfg = App.connection.rawConfig;
         const entries = cfg !== undefined ? cfg[entriesKey] : undefined;
         const entry = Array.isArray(entries) ? entries.find(advancedConfigPage.isEntry) : undefined;
         return (advancedConfigPage.configObjectExists = (entry !== undefined)) ? entry : {};
     }
 
     function applyChanges() {
-        const cfg = app.connection.rawConfig;
+        const cfg = App.connection.rawConfig;
         const entries = cfg !== undefined ? cfg[entriesKey] : undefined;
         if (!Array.isArray(entries)) {
             return false;
@@ -72,17 +74,17 @@ ObjectConfigPage {
         } else if (!supposedToExist && index < 0) {
             entries.push(cfgObj);
         } else {
-            app.showError("Can't apply, key is already used.");
+            App.showError("Can't apply, key is already used.");
             return false;
         }
         advancedConfigPage.configObjectExists = true;
         advancedConfigPage.disableFirst();
-        app.connection.postConfigFromJsonObject(cfg);
+        App.connection.postConfigFromJsonObject(cfg);
         return true;
     }
 
     function removeConfigObject() {
-        const cfg = app.connection.rawConfig;
+        const cfg = App.connection.rawConfig;
         const entries = cfg !== undefined ? cfg[entriesKey] : undefined;
         if (!Array.isArray(entries)) {
             return false;
@@ -93,7 +95,7 @@ ObjectConfigPage {
         }
         entries.splice(index, 1);
         advancedConfigPage.configObjectExists = false;
-        app.connection.postConfigFromJsonObject(cfg);
+        App.connection.postConfigFromJsonObject(cfg);
         return true;
     }
 }

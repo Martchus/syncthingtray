@@ -4,6 +4,8 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import Qt.labs.qmlmodels
 
+import Main
+
 DelegateChooser {
     role: "type"
     DelegateChoice {
@@ -38,7 +40,7 @@ DelegateChooser {
             onClicked: stringDlg.visible = true
             Dialog {
                 id: stringDlg
-                popupType: app.nativePopups ? Popup.Native : Popup.Item
+                popupType: App.nativePopups ? Popup.Native : Popup.Item
                 anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
@@ -95,7 +97,7 @@ DelegateChooser {
             onClicked: optionsDlg.visible = true
             Dialog {
                 id: optionsDlg
-                popupType: app.nativePopups ? Popup.Native : Popup.Item
+                popupType: App.nativePopups ? Popup.Native : Popup.Item
                 anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
@@ -191,7 +193,7 @@ DelegateChooser {
                                 Label {
                                     id: deviceNameOrIdLabel
                                     Layout.fillWidth: true
-                                    text: app.connection.deviceNameOrId(modelData.deviceID)
+                                    text: App.connection.deviceNameOrId(modelData.deviceID)
                                     elide: Text.ElideRight
                                     font.weight: Font.Light
                                 }
@@ -204,12 +206,12 @@ DelegateChooser {
                                     id: encryptionButton
                                     text: deviceEntry.isEncryptionEnabled ? qsTr("Change encryption password") : qsTr("Set encryption password")
                                     enabled: deviceSwitch.checked
-                                    icon.source: app.faUrlBase + (deviceEntry.isEncryptionEnabled ? "lock" : "unlock")
+                                    icon.source: App.faUrlBase + (deviceEntry.isEncryptionEnabled ? "lock" : "unlock")
                                     onClicked: encryptionPasswordDlg.open()
                                 }
                                 Dialog {
                                     id: encryptionPasswordDlg
-                                    popupType: app.nativePopups ? Popup.Native : Popup.Item
+                                    popupType: App.nativePopups ? Popup.Native : Popup.Item
                                     anchors.centerIn: Overlay.overlay
                                     parent: Overlay.overlay
                                     title: qsTr("Set encryption password for sharing with \"%1\"").arg(deviceNameOrIdLabel.text)
@@ -247,13 +249,13 @@ DelegateChooser {
             property var devicesModel: {
                 const devices = [];
                 const sharedDevices = objectConfigPage.configObject[modelData.key];
-                const myId = app.connection.myId;
+                const myId = App.connection.myId;
                 for (const sharedDev of sharedDevices) {
                     if (sharedDev.deviceID !== myId) {
                         devices.push(sharedDev);
                     }
                 }
-                const otherDevices = app.connection.deviceIds;
+                const otherDevices = App.connection.deviceIds;
                 for (const otherDevID of otherDevices) {
                     if (otherDevID !== myId && devices.find((existingDev) => existingDev.deviceID === otherDevID) === undefined) {
                         devices.push({deviceID: otherDevID, encryptionPassword: "", introducedBy: ""});
@@ -316,7 +318,7 @@ DelegateChooser {
             onClicked: numberDlg.visible = true
             Dialog {
                 id: numberDlg
-                popupType: app.nativePopups ? Popup.Native : Popup.Item
+                popupType: App.nativePopups ? Popup.Native : Popup.Item
                 anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
@@ -469,12 +471,12 @@ DelegateChooser {
                 }
                 IconOnlyButton {
                     text: qsTr("Clear")
-                    icon.source: app.faUrlBase + "undo"
+                    icon.source: App.faUrlBase + "undo"
                     onClicked: objectConfigPage.updateValue(modelData.index, modelData.key, "")
                 }
                 IconOnlyButton {
                     text: qsTr("Edit manually")
-                    icon.source: app.faUrlBase + "pencil"
+                    icon.source: App.faUrlBase + "pencil"
                     onClicked: manualFileDlg.open()
                 }
                 HelpButton {
@@ -486,7 +488,7 @@ DelegateChooser {
             FileDialog {
                 id: fileDlg
                 title: modelData.label
-                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, app.resolveUrl(fileDlg.selectedFile))
+                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, App.resolveUrl(fileDlg.selectedFile))
             }
             Dialog {
                 id: manualFileDlg
@@ -533,12 +535,12 @@ DelegateChooser {
                 }
                 IconOnlyButton {
                     text: qsTr("Clear")
-                    icon.source: app.faUrlBase + "undo"
+                    icon.source: App.faUrlBase + "undo"
                     onClicked: objectConfigPage.updateValue(modelData.index, modelData.key, "")
                 }
                 IconOnlyButton {
                     text: qsTr("Edit manually")
-                    icon.source: app.faUrlBase + "pencil"
+                    icon.source: App.faUrlBase + "pencil"
                     onClicked: manualFolderDlg.open()
                 }
                 HelpButton {
@@ -551,11 +553,11 @@ DelegateChooser {
                 id: folderDlg
                 title: modelData.label
                 currentFolder: encodeURIComponent(folderpathValue.text)
-                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, app.resolveUrl(folderDlg.selectedFolder))
+                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, App.resolveUrl(folderDlg.selectedFolder))
             }
             Dialog {
                 id: manualFolderDlg
-                popupType: app.nativePopups ? Popup.Native : Popup.Item
+                popupType: App.nativePopups ? Popup.Native : Popup.Item
                 anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons

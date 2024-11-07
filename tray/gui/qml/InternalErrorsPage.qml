@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
+import Main
+
 Page {
     title: qsTr("Log of Syncthing API errors")
     Layout.fillWidth: true
@@ -9,10 +11,10 @@ Page {
     actions: [
         Action {
             text: qsTr("Clear")
-            icon.source: app.faUrlBase + "trash"
+            icon.source: App.faUrlBase + "trash"
             onTriggered: (source) => {
-                app.clearInternalErrors();
-                listView.model = app.internalErrors();
+                App.clearInternalErrors();
+                listView.model = App.internalErrors();
             }
         }
     ]
@@ -21,12 +23,12 @@ Page {
         anchors.fill: parent
         activeFocusOnTab: true
         keyNavigationEnabled: true
-        model: app.internalErrors()
+        model: App.internalErrors()
         delegate: ErrorsDelegate {}
         ScrollIndicator.vertical: ScrollIndicator { }
     }
     Connections {
-        target: app
+        target: App
         function onInternalError(error) {
             listView.model.push(error)
         }

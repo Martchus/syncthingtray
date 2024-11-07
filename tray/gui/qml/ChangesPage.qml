@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+
 import Main
 
 Page {
@@ -11,11 +12,11 @@ Page {
         id: mainView
         anchors.fill: parent
         model: DelegateModel {
-            model: app.changesModel
+            model: App.changesModel
             delegate: ItemDelegate {
                 width: mainView.width
-                onClicked: app.openPath(modelData.directoryId, modelData.path)
-                onPressAndHold: app.copyPath(modelData.directoryId, modelData.path)
+                onClicked: App.openPath(modelData.directoryId, modelData.path)
+                onPressAndHold: App.copyPath(modelData.directoryId, modelData.path)
                 contentItem: GridLayout {
                     id: gridLayout
                     columns: width < 500 ? 2 : 8
@@ -23,7 +24,7 @@ Page {
                     Image {
                         Layout.preferredWidth: 16
                         Layout.preferredHeight: 16
-                        source: app.faUrlBase + ((modelData.action === "deleted") ? ("trash-o") : (modelData.itemType === "file" ? "file-o" : "folder-o"))
+                        source: App.faUrlBase + ((modelData.action === "deleted") ? ("trash-o") : (modelData.itemType === "file" ? "file-o" : "folder-o"))
                         width: 16
                         height: 16
                     }
@@ -37,7 +38,7 @@ Page {
                     Image {
                         Layout.preferredWidth: 16
                         Layout.preferredHeight: 16
-                        source: app.faUrlBase + "calendar"
+                        source: App.faUrlBase + "calendar"
                         width: 16
                         height: 16
                     }

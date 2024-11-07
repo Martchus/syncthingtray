@@ -2,9 +2,11 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
+import Main
+
 Dialog {
     id: aboutDialog
-    popupType: app.nativePopups ? Popup.Native : Popup.Item
+    popupType: App.nativePopups ? Popup.Native : Popup.Item
     anchors.centerIn: Overlay.overlay
     parent: Overlay.overlay
     modal: true
@@ -58,7 +60,7 @@ Dialog {
             Label {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
-                text: app.syncthingVersion
+                text: App.syncthingVersion
                 font.weight: Font.Light
                 horizontalAlignment: Qt.AlignHCenter
                 elide: Qt.ElideRight
@@ -69,19 +71,19 @@ Dialog {
         Button {
             text: qsTr("License")
             flat: true
-            onClicked: Qt.openUrlExternally(app.readmeUrl + "#copyright-notice-and-license")
+            onClicked: Qt.openUrlExternally(App.readmeUrl + "#copyright-notice-and-license")
             DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
         }
         Button {
             text: qsTr("Attribution")
             flat: true
-            onClicked: Qt.openUrlExternally(app.readmeUrl + "#attribution-for-3rd-party-content")
+            onClicked: Qt.openUrlExternally(App.readmeUrl + "#attribution-for-3rd-party-content")
             DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
         }
         Button {
             text: qsTr("Website")
             flat: true
-            onClicked: Qt.openUrlExternally(app.website)
+            onClicked: Qt.openUrlExternally(App.website)
             DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
         }
     }

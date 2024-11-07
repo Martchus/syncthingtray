@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import Qt.labs.qmlmodels
+
 import Main
 
 ExpandableDelegate {
@@ -12,46 +13,46 @@ ExpandableDelegate {
             Action {
                 text: qsTr("Rescan")
                 enabled: !modelData.paused
-                icon.source: app.faUrlBase + "refresh"
-                onTriggered: (source) => app.connection.rescan(modelData.dirId)
+                icon.source: App.faUrlBase + "refresh"
+                onTriggered: (source) => App.connection.rescan(modelData.dirId)
             },
             Action {
                 text: modelData.paused ? qsTr("Resume") : qsTr("Pause")
-                icon.source: app.faUrlBase + (modelData.paused ? "play" : "pause")
-                onTriggered: (source) => app.connection[modelData.paused ? "resumeDirectories" : "pauseDirectories"]([modelData.dirId])
+                icon.source: App.faUrlBase + (modelData.paused ? "play" : "pause")
+                onTriggered: (source) => App.connection[modelData.paused ? "resumeDirectories" : "pauseDirectories"]([modelData.dirId])
             },
             Action {
                 text: qsTr("Open in file browser")
-                icon.source: app.faUrlBase + "folder"
-                onTriggered: (source) => app.openPath(modelData.path)
+                icon.source: App.faUrlBase + "folder"
+                onTriggered: (source) => App.openPath(modelData.path)
             }
         ]
         extraActions: [
             Action {
                 text: qsTr("Edit")
-                icon.source: app.faUrlBase + "pencil"
+                icon.source: App.faUrlBase + "pencil"
                 onTriggered: (source) => mainView.stackView.push("DirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId, stackView: mainView.stackView}, StackView.PushTransition)
             },
             Action {
                 text: qsTr("Show errors")
                 enabled: modelData.pullErrorCount > 0
-                icon.source: app.faUrlBase + "exclamation-triangle"
+                icon.source: App.faUrlBase + "exclamation-triangle"
                 onTriggered: (source) => mainView.stackView.push("DirErrorsPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             },
             Action {
                 text: qsTr("Edit ignore patterns")
-                icon.source: app.faUrlBase + "filter"
+                icon.source: App.faUrlBase + "filter"
                 onTriggered: (source) => mainView.stackView.push("IgnorePatternPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             },
             Action {
                 text: qsTr("Browse remote files")
-                icon.source: app.faUrlBase + "folder-open-o"
+                icon.source: App.faUrlBase + "folder-open-o"
                 enabled: !modelData.paused
                 onTriggered: (source) => mainView.stackView.push("FilesPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             },
             Action {
                 text: qsTr("Advanced config")
-                icon.source: app.faUrlBase + "cogs"
+                icon.source: App.faUrlBase + "cogs"
                 onTriggered: (source) => mainView.stackView.push("AdvancedDirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId, stackView: mainView.stackView}, StackView.PushTransition)
             }
         ]

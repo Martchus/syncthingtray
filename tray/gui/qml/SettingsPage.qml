@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Dialogs
 
+import Main
+
 StackView {
     id: stackView
     Layout.fillWidth: true
@@ -60,9 +62,9 @@ StackView {
             delegate: ItemDelegate {
                 width: listView.width
                 text: label
-                icon.source: app.faUrlBase + iconName // leads to crash when closing UI with Qt < 6.8
-                icon.width: app.iconSize
-                icon.height: app.iconSize
+                icon.source: App.faUrlBase + iconName // leads to crash when closing UI with Qt < 6.8
+                icon.width: App.iconSize
+                icon.height: App.iconSize
                 onClicked: {
                     if (callback !== undefined) {
                         callback();
@@ -101,7 +103,7 @@ StackView {
                            StackView.PushTransition)
         }
 
-        property var config: app.settings
+        property var config: App.settings
         readonly property var specialEntries: ({
             connection: [
                 {key: "useLauncher", type: "boolean", label: qsTr("Automatic"), statusText: qsTr("Connect to the Syncthing backend launched via this app and disregard the settings below.")},
@@ -116,8 +118,8 @@ StackView {
                 {key: "password", label: qsTr("Password")},
             ],
             launcher: [
-                {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => app.launcher.runningStatus)},
-                {key: "stopOnMetered", label: qsTr("Stop on metered network connection"), statusText: Qt.binding(() => app.launcher.meteredStatus)},
+                {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => App.launcher.runningStatus)},
+                {key: "stopOnMetered", label: qsTr("Stop on metered network connection"), statusText: Qt.binding(() => App.launcher.meteredStatus)},
                 {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Shows Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
             ],
             tweaks: [
@@ -127,16 +129,16 @@ StackView {
         property list<Action> actions: [
             Action {
                 text: qsTr("Apply")
-                icon.source: app.faUrlBase + "check"
+                icon.source: App.faUrlBase + "check"
                 onTriggered: (source) => {
-                    const cfg = app.settings;
+                    const cfg = App.settings;
                     for (let i = 0, count = model.count; i !== count; ++i) {
                         const entryKey = model.get(i).key;
                         if (entryKey.length > 0) {
                             cfg[entryKey] = appSettingsPage.config[entryKey];
                         }
                     }
-                    app.settings = cfg;
+                    App.settings = cfg;
                     return true;
                 }
             }

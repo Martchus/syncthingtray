@@ -1,5 +1,7 @@
 import QtQuick
 
+import Main
+
 AdvancedConfigPage {
     title: qsTr("Advanced config of folder \"%1\"").arg(dirName)
     entryName: "folder"
@@ -10,7 +12,7 @@ AdvancedConfigPage {
     required property string dirName
     required property string dirId
     function makeNewConfig() {
-        const config = app.connection.rawConfig?.defaults?.folder ?? {};
+        const config = App.connection.rawConfig?.defaults?.folder ?? {};
         // for now, give user simply always the chance to edit ignore patterns before syncing
         config.paused = true;
         return config;

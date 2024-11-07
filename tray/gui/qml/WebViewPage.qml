@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+
+import Main
 import WebViewItem
 
 Page {
@@ -11,7 +13,7 @@ Page {
     WebViewItem {
         id: webViewItem
         anchors.fill: parent
-        url: webViewPage.active ? app.connection.syncthingUrlWithCredentials : "about:blank"
+        url: webViewPage.active ? App.connection.syncthingUrlWithCredentials : "about:blank"
     }
     property alias actions: webViewItem.actions
     property bool active: false

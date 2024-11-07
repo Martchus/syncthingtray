@@ -2,9 +2,11 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
+import Main
+
 Page {
     title: qsTr("Errors of folder \"%1\"").arg(dirName)
-    Component.onCompleted: app.loadDirErrors(dirId, listView)
+    Component.onCompleted: App.loadDirErrors(dirId, listView)
     ScrollView {
         anchors.fill: parent
         ListView {
