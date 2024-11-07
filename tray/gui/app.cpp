@@ -96,12 +96,6 @@ App::App(bool insecure, QObject *parent)
     connect(app, &QGuiApplication::applicationStateChanged, this, &App::handleStateChanged);
 
     deletePipelineCache();
-
-    qmlRegisterUncreatableType<Data::SyncthingFileModel>(
-        "Main.Private", 1, 0, "SyncthingFileModel", QStringLiteral("Data::SyncthingFileModel is created from C++."));
-    qmlRegisterUncreatableType<QtGui::DiffHighlighter>(
-        "Main.Private", 1, 0, "DiffHighlighter", QStringLiteral("QtGui::DiffHighlighter is created from C++."));
-
     loadSettings();
     applySettings();
     QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
@@ -360,7 +354,7 @@ bool App::showError(const QString &errorMessage)
     return true;
 }
 
-SyncthingFileModel *App::createFileModel(const QString &dirId, QObject *parent)
+Data::SyncthingFileModel *App::createFileModel(const QString &dirId, QObject *parent)
 {
     auto row = int();
     auto dirInfo = m_connection.findDirInfo(dirId, row);

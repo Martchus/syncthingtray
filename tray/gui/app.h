@@ -4,10 +4,12 @@
 #include <syncthingwidgets/misc/internalerror.h>
 #include <syncthingwidgets/misc/statusinfo.h>
 #include <syncthingwidgets/misc/syncthinglauncher.h>
+#include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/misc/utils.h>
 
 #include <syncthingmodel/syncthingdevicemodel.h>
 #include <syncthingmodel/syncthingdirectorymodel.h>
+#include <syncthingmodel/syncthingfilemodel.h>
 #include <syncthingmodel/syncthingrecentchangesmodel.h>
 
 #include <syncthingconnector/syncthingconfig.h>
@@ -32,12 +34,7 @@
 
 QT_FORWARD_DECLARE_CLASS(QTextDocument)
 
-namespace Data {
-class SyncthingFileModel;
-}
-
 namespace QtGui {
-class DiffHighlighter;
 
 class App : public QObject {
     Q_OBJECT
