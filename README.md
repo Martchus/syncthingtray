@@ -339,6 +339,43 @@ environment. Make it invoke
 
 The Plasmoid can be shown via a hot-key as well by configuring one in the Plasmoid settings.
 
+## Using the Android app
+The Android app requires Android 9 or later. So far it has only been tested on Android 14 and 15,
+though. Depending on the Android version and vendor-specific limitations you might run into
+permission errors and problems with the app being stopped by the OS. For me it works well enough
+on a three year old average Samsung device. It probably works on most recent phones except very
+low-end devices.
+
+If you're starting from scratch you can simply install and start the app. At this point you will
+have to manually configure that you want to run Syncthing itself. Then you can add devices and
+folders as usual. If you have already another Syncthing app installed, read the next sections
+for testing/migrating.
+
+The Android app is still experimental. Use it with care and create backups of your configuration
+and data before trying it. No builds are provided at this point so you have to
+[build it from sources](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android).
+
+### Testing the app without migrating
+To only test the app without migrating your setup you can:
+
+0. Start the Syncthing app you are currently using (e.g. the Syncthing-Fork app) and ensure that
+   Syncthing itself is running as well.
+1. Do an export of your Syncthing config so you know the web UI listening address and API key.
+2. Install and start the Syncthing app from Syncthing Tray.
+3. Ensure that running Syncthing is disabled under the runtime condition settings.
+4. Configure the information from step 1 in the connection settings.
+5. After applying all settings, the app UI can be used to control your existing Syncthing setup.
+   Note that changes will affect your syncthing setup. You are *not* working in a read-only mode
+   or on a copy.
+
+### Migrating data from your existing app setup
+0. Start the Syncthing app you are currently using (e.g. the Syncthing-Fork app).
+1. Do an export of your Syncthing config and data
+2. Stop the Syncthing app you are currently using.
+3. Start the Syncthing app from Syncthing Tray.
+4. Import the config and data from step 1 and select what parts of the config/data you want to
+   import. (The import with selection is still WIP.)
+
 ## Download
 Checkout the [download section on the website](https://martchus.github.io/syncthingtray/#downloads-section) for an overview.
 Keep reading here for a more detailed list.
@@ -658,6 +695,8 @@ It is possible to turn on logging of the underlying library by setting environme
   [Qt documentation](https://doc.qt.io/qt-6/qtquickcontrols-styles.html) for available options
 * `QT_QUICK_CONTROLS_MATERIAL_THEME`/`QT_QUICK_CONTROLS_UNIVERSAL_THEME`: the theme to use in the Qt
   Quick GUI, the variable and options depend on the style being used
+* `QT_QUICK_CONTROLS_MOBILE=1`: let the Qt Quick GUI behave as on a mobile platform; useful for
+  testing the behavior in mobile mode without deployment on a real/emulated device
 * `LIB_SYNCTHING_CONNECTOR_SYNCTHING_CONFIG_DIR`: override the path where Syncthing Tray's backend expects
   Syncthing's `config.xml` file to be in
 * `SYNCTHINGTRAY_FAKE_FIRST_LAUNCH`: assume Syncthing Tray (or the Plasmoid) has been launched for the
