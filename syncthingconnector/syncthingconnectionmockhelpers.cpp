@@ -78,6 +78,7 @@ void setupTestData()
     for (auto *const testDataVariable : { &config, &status, &folderStats, &deviceStats, &errors, &folderStatus, &folderStatus2, &folderStatus3,
              &pullErrors, &connections, &version, &empty, &browse }) {
         *testDataVariable = readMockFile(testApp.testFilePath(argsToString("mocks/", *fileName, ".json")));
+        qDebug() << "Adding mock file: " << *fileName;
         ++fileName;
     }
 
@@ -231,7 +232,7 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
 void MockedReply::emitFinished()
 {
     if (m_buffer.empty()) {
-        setError(QNetworkReply::InternalServerError, QStringLiteral("No mockup reply available for this request."));
+        setError(QNetworkReply::InternalServerError, QStringLiteral("No mockup reply available for request: ") + request().url().toString());
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 404);
         setAttribute(QNetworkRequest::HttpReasonPhraseAttribute, QLatin1String("Not found"));
     } else {
