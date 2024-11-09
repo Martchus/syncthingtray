@@ -14,7 +14,11 @@
 #include <memory>
 #endif
 
-#if !QT_CONFIG(process) && !defined(LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS)
+#if defined(LIB_SYNCTHING_CONNECTOR_NO_PROCESS9) || (!QT_CONFIG(process) && !defined(LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS))
+#ifndef LIB_SYNCTHING_CONNECTOR_NO_PROCESS9
+#define LIB_SYNCTHING_CONNECTOR_NO_PROCESS9
+#endif
+#if !QT_CONFIG(process)
 namespace QProcess {
 enum ProcessError { FailedToStart, Crashed, Timedout, ReadError, WriteError, UnknownError };
 enum ProcessState { NotRunning, Starting, Running };
@@ -23,6 +27,7 @@ enum ProcessChannelMode { SeparateChannels, MergedChannels, ForwardedChannels, F
 enum InputChannelMode { ManagedInputChannel, ForwardedInputChannel };
 enum ExitStatus { NormalExit, CrashExit };
 } // namespace QProcess
+#endif
 #endif
 
 namespace Data {
