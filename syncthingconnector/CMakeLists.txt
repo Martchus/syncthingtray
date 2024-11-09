@@ -181,7 +181,7 @@ target_compile_definitions(
     ${META_TARGET_NAME}_mocked
     PUBLIC ${META_PUBLIC_COMPILE_DEFINITIONS} ${META_PROJECT_VARNAME_UPPER}_MOCKED
            ${META_PROJECT_VARNAME_UPPER}_CONNECTION_MOCKED SyncthingConnection=SyncthingConnectionMocked
-    PRIVATE "${META_PRIVATE_COMPILE_DEFINITIONS}")
+    PRIVATE ${META_PRIVATE_COMPILE_DEFINITIONS} MockedReply=MockedReplyTestLib)
 target_compile_options(
     ${META_TARGET_NAME}_mocked
     PUBLIC "${META_PUBLIC_COMPILE_OPTIONS}"

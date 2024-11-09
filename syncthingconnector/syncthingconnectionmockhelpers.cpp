@@ -1,10 +1,13 @@
 #include "./syncthingconnectionmockhelpers.h"
 
+#include "./global.h"
+
 #include <c++utilities/conversion/stringbuilder.h>
 #include <c++utilities/io/ansiescapecodes.h>
 #include <c++utilities/io/misc.h>
 #include <c++utilities/tests/testutils.h>
 
+#include <QDebug>
 #include <QTimer>
 #include <QUrlQuery>
 
@@ -23,10 +26,18 @@ namespace Data {
  * \brief Contains test data for mocked SyncthingConnection.
  */
 namespace TestData {
-static bool initialized = false;
-static std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse;
-static std::string events[7];
+#if !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) || !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
+bool initialized = false;
+std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse;
+std::string events[7];
+#else
+LIB_SYNCTHING_CONNECTOR_IMPORT extern bool initialized;
+LIB_SYNCTHING_CONNECTOR_IMPORT extern std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse;
+LIB_SYNCTHING_CONNECTOR_IMPORT extern std::string events[7];
+#endif
 } // namespace TestData
+
+#if !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) || !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
 
 /*!
  * \brief Returns the contents of the specified file and exits with an error message if an error occurs.
@@ -80,6 +91,8 @@ void setupTestData()
 
     initialized = true;
 }
+
+#endif
 
 MockedReply::MockedReply(const std::string &buffer, int delay, QObject *parent)
     : QNetworkReply(parent)
