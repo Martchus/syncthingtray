@@ -142,7 +142,7 @@ endif ()
 # configure whether the SyncthingProcess class is supported
 option(PROCESS_SUPPORT "enables support for process handling via the SyncthingProcess class" ON)
 if (NOT PROCESS_SUPPORT)
-    list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_NO_PROCESS9)
+    list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_NO_PROCESS)
 endif ()
 
 # include modules to apply configuration
