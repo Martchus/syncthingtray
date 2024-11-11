@@ -14,7 +14,7 @@ using UnderlyingFlagType = std::underlying_type_t<FlagType>;
 inline static ChecklistItem itemFor(SyncthingStatusComputionFlags oneFlag)
 {
     return ChecklistItem(
-        static_cast<UnderlyingFlagType>(oneFlag), QString(), SyncthingStatusComputionFlags::Default & oneFlag ? Qt::Checked : Qt::Unchecked);
+        static_cast<UnderlyingFlagType>(oneFlag), QString(), SyncthingStatusComputionFlags::Default && oneFlag ? Qt::Checked : Qt::Unchecked);
 }
 
 SyncthingStatusComputionModel::SyncthingStatusComputionModel(QObject *parent)
@@ -66,7 +66,7 @@ void SyncthingStatusComputionModel::setStatusComputionFlags(SyncthingStatusCompu
 {
     for (auto row = 0, rows = rowCount(); row != rows; ++row) {
         const auto i = index(row);
-        setData(i, flags & static_cast<FlagType>(i.data(idRole()).value<UnderlyingFlagType>()) ? Qt::Checked : Qt::Unchecked, Qt::CheckStateRole);
+        setData(i, flags && static_cast<FlagType>(i.data(idRole()).value<UnderlyingFlagType>()) ? Qt::Checked : Qt::Unchecked, Qt::CheckStateRole);
     }
 }
 

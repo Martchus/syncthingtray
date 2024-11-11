@@ -189,7 +189,7 @@ bool Wizard::changeSettings()
             = (mainConfig() == MainConfiguration::LauncherExternal || mainConfig() == MainConfiguration::LauncherBuiltIn);
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    settings.systemd.considerForReconnect = settings.systemd.showButton = extraConfig() & ExtraConfiguration::SystemdIntegration;
+    settings.systemd.considerForReconnect = settings.systemd.showButton = extraConfig() && ExtraConfiguration::SystemdIntegration;
 #endif
 
     // enable/disable auto start
@@ -999,7 +999,7 @@ void ApplyWizardPage::initializePage()
     }
     addListItem(mainConfig);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    logFeature(tr("systemd integration"), wizard->extraConfig() & ExtraConfiguration::SystemdIntegration,
+    logFeature(tr("systemd integration"), wizard->extraConfig() && ExtraConfiguration::SystemdIntegration,
         currentSettings.systemd.showButton && currentSettings.systemd.considerForReconnect);
 #endif
 #ifdef SETTINGS_WIZARD_AUTOSTART

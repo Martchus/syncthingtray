@@ -75,7 +75,7 @@ void SyncthingNotifier::handleNewDevEvent(DateTime when, const QString &devId, c
     CPP_UTILITIES_UNUSED(when)
 
     // ignore if not enabled
-    if (!(m_enabledNotifications & SyncthingHighLevelNotification::NewDevice)) {
+    if (!(m_enabledNotifications && SyncthingHighLevelNotification::NewDevice)) {
         return;
     }
 
@@ -87,7 +87,7 @@ void SyncthingNotifier::handleNewDirEvent(DateTime when, const QString &devId, c
     CPP_UTILITIES_UNUSED(when)
 
     // ignore if not enabled
-    if (!(m_enabledNotifications & SyncthingHighLevelNotification::NewDir)) {
+    if (!(m_enabledNotifications && SyncthingHighLevelNotification::NewDir)) {
         return;
     }
 
@@ -105,7 +105,7 @@ void SyncthingNotifier::handleNewDirEvent(DateTime when, const QString &devId, c
 
 void SyncthingNotifier::handleSyncthingProcessError(QProcess::ProcessError processError)
 {
-    if (!(m_enabledNotifications & SyncthingHighLevelNotification::SyncthingProcessError)) {
+    if (!(m_enabledNotifications && SyncthingHighLevelNotification::SyncthingProcessError)) {
         return;
     }
 
@@ -139,20 +139,20 @@ bool SyncthingNotifier::isDisconnectRelevant() const
     }
 
     // consider process/launcher or systemd unit status
-    if ((m_consideredIntegrations & SyncthingStartupIntegration::Process) && m_process && m_process->isManuallyStopped()) {
+    if ((m_consideredIntegrations && SyncthingStartupIntegration::Process) && m_process && m_process->isManuallyStopped()) {
         return false;
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    if ((m_consideredIntegrations & SyncthingStartupIntegration::Service) && m_service && m_service->isManuallyStopped()) {
+    if ((m_consideredIntegrations && SyncthingStartupIntegration::Service) && m_service && m_service->isManuallyStopped()) {
         return false;
     }
 #endif
 
     // ignore inavailability after start or standby-wakeup
     if (m_ignoreInavailabilityAfterStart) {
-        if (((m_consideredIntegrations & SyncthingStartupIntegration::Process) && m_process && m_process->isRunning())
+        if (((m_consideredIntegrations && SyncthingStartupIntegration::Process) && m_process && m_process->isRunning())
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-            && (((m_consideredIntegrations & SyncthingStartupIntegration::Service) && m_service && m_service->isSystemdAvailable()
+            && (((m_consideredIntegrations && SyncthingStartupIntegration::Service) && m_service && m_service->isSystemdAvailable()
                     && !m_service->isActiveWithoutSleepFor(m_process->activeSince(), m_ignoreInavailabilityAfterStart))
                 || !m_process->isActiveWithoutSleepFor(m_ignoreInavailabilityAfterStart))
 #else
@@ -162,7 +162,7 @@ bool SyncthingNotifier::isDisconnectRelevant() const
             return false;
         }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        if ((m_consideredIntegrations & SyncthingStartupIntegration::Service) && m_service && m_service->isRunning()
+        if ((m_consideredIntegrations && SyncthingStartupIntegration::Service) && m_service && m_service->isRunning()
             && !m_service->isActiveWithoutSleepFor(m_ignoreInavailabilityAfterStart)) {
             return false;
         }
@@ -178,7 +178,7 @@ bool SyncthingNotifier::isDisconnectRelevant() const
 void SyncthingNotifier::emitConnectedAndDisconnected(SyncthingStatus newStatus)
 {
     // discard event if not enabled
-    if (!(m_enabledNotifications & SyncthingHighLevelNotification::ConnectedDisconnected)) {
+    if (!(m_enabledNotifications && SyncthingHighLevelNotification::ConnectedDisconnected)) {
         return;
     }
 
@@ -213,8 +213,8 @@ void SyncthingNotifier::emitSyncComplete(CppUtilities::DateTime when, const Sync
     }
 
     // discard event if not enabled
-    if (!m_initialized || (!remoteDev && (m_enabledNotifications & SyncthingHighLevelNotification::LocalSyncComplete) == 0)
-        || (remoteDev && (m_enabledNotifications & SyncthingHighLevelNotification::RemoteSyncComplete) == 0)) {
+    if (!m_initialized || (!remoteDev && !(m_enabledNotifications && SyncthingHighLevelNotification::LocalSyncComplete))
+        || (remoteDev && !(m_enabledNotifications && SyncthingHighLevelNotification::RemoteSyncComplete))) {
         return;
     }
 

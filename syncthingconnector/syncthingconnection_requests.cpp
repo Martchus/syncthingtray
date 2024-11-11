@@ -76,7 +76,7 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
 #endif
     QObject::connect(reply, &QNetworkReply::redirected, this, &SyncthingConnection::handleRedirection);
-    if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
+    if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: GET " << reply->url().toString().toStdString() << Phrases::EndFlush;
     }
     return reply;
@@ -96,7 +96,7 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
 #ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
 #endif
-    if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
+    if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: POST " << reply->url().toString().toStdString() << Phrases::EndFlush;
         cerr.write(data.data(), static_cast<std::streamsize>(data.size()));
     }
@@ -117,7 +117,7 @@ QNetworkReply *SyncthingConnection::sendData(const QByteArray &verb, const QStri
 #ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
 #endif
-    if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
+    if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiCalls) {
         cerr << Phrases::Info << "Querying API: " << verb.data() << ' ' << reply->url().toString().toStdString() << Phrases::EndFlush;
         cerr.write(data.data(), static_cast<std::streamsize>(data.size()));
     }
@@ -248,7 +248,7 @@ void SyncthingConnection::handleSslErrors(const QList<QSslError> &errors)
  */
 void SyncthingConnection::handleRedirection(const QUrl &url)
 {
-    if (m_loggingFlags & SyncthingConnectionLoggingFlags::ApiReplies) {
+    if (m_loggingFlags && SyncthingConnectionLoggingFlags::ApiReplies) {
         const auto urlStr = url.toString().toUtf8();
         cerr << Phrases::Info << "Got redirected to: " << std::string_view(urlStr.data(), static_cast<std::string_view::size_type>(urlStr.size()))
              << Phrases::EndFlush;
@@ -265,7 +265,7 @@ void SyncthingConnection::handleRedirection(const QUrl &url)
  */
 SyncthingConnection::Reply SyncthingConnection::handleReply(QNetworkReply *reply, bool readData, bool handleAborting)
 {
-    const auto log = m_loggingFlags & SyncthingConnectionLoggingFlags::ApiReplies;
+    const auto log = m_loggingFlags && SyncthingConnectionLoggingFlags::ApiReplies;
     const auto data = Reply{
         .reply = (handleAborting && m_abortingAllRequests) ? nullptr : reply, // skip further processing if aborting to reconnect
         .response = ((readData || log) && reply->isOpen()) ? reply->readAll() : QByteArray(),
@@ -996,7 +996,7 @@ void SyncthingConnection::readConnections()
         // since there seems no event for this data, keep polling
         if (m_keepPolling) {
             concludeConnection(statusRecomputationFlags);
-            if ((m_pollingFlags & PollingFlags::TrafficStatistics) && m_trafficPollTimer.interval()) {
+            if ((m_pollingFlags && PollingFlags::TrafficStatistics) && m_trafficPollTimer.interval()) {
                 m_trafficPollTimer.start();
             }
         }
@@ -1076,7 +1076,7 @@ void SyncthingConnection::readErrors()
         //       we can avoid a status recomputation here.
         if (m_keepPolling) {
             concludeConnection(StatusRecomputation::None);
-            if ((m_pollingFlags & PollingFlags::Errors) && m_errorsPollTimer.interval()) {
+            if ((m_pollingFlags && PollingFlags::Errors) && m_errorsPollTimer.interval()) {
                 m_errorsPollTimer.start();
             }
         }
@@ -1423,7 +1423,7 @@ void SyncthingConnection::readDeviceStatistics()
         // since there seems no event for this data, keep polling
         if (m_keepPolling) {
             concludeConnection(StatusRecomputation::None);
-            if ((m_pollingFlags & PollingFlags::DeviceStatistics) && m_devStatsPollTimer.interval()) {
+            if ((m_pollingFlags && PollingFlags::DeviceStatistics) && m_devStatsPollTimer.interval()) {
                 m_devStatsPollTimer.start();
             }
         }
@@ -2045,20 +2045,20 @@ void SyncthingConnection::readChangeEvent(DateTime eventTime, const QString &eve
  */
 void SyncthingConnection::requestEvents()
 {
-    if (m_eventsReply || !(m_pollingFlags & PollingFlags::MainEvents)) {
+    if (m_eventsReply || !(m_pollingFlags && PollingFlags::MainEvents)) {
         return;
     }
     if (m_eventMask.isEmpty()) {
         m_eventMask = QStringLiteral("Starting,StateChanged,FolderRejected,FolderErrors,FolderSummary,FolderCompletion,"
                                      "FolderScanProgress,FolderPaused,FolderResumed,DeviceRejected,DeviceConnected,"
                                      "DeviceDisconnected,DevicePaused,DeviceResumed,ConfigSaved,LocalIndexUpdated");
-        if (m_pollingFlags & PollingFlags::DownloadProgress) {
+        if (m_pollingFlags && PollingFlags::DownloadProgress) {
             m_eventMask += QStringLiteral(",DownloadProgress");
         }
-        if (m_pollingFlags & PollingFlags::RemoteIndexUpdated) {
+        if (m_pollingFlags && PollingFlags::RemoteIndexUpdated) {
             m_eventMask += QStringLiteral(",RemoteIndexUpdated");
         }
-        if (m_pollingFlags & PollingFlags::ItemFinished) {
+        if (m_pollingFlags && PollingFlags::ItemFinished) {
             m_eventMask += QStringLiteral(",ItemFinished");
         }
     }
@@ -2112,7 +2112,7 @@ void SyncthingConnection::readEvents()
             return;
         }
 
-        if (!replyArray.isEmpty() && (loggingFlags() & SyncthingConnectionLoggingFlags::Events)) {
+        if (!replyArray.isEmpty() && (loggingFlags() && SyncthingConnectionLoggingFlags::Events)) {
             const auto log = replyDoc.toJson(QJsonDocument::Indented);
             cerr << Phrases::Info << "Received " << replyArray.size() << " Syncthing events:" << Phrases::End << log.data() << endl;
         }
@@ -2158,7 +2158,7 @@ bool SyncthingConnection::readEventsFromJsonArray(const QJsonArray &events, quin
                 // re-connect if the event ID decreases as this indicates Syncthing has been restarted
                 // note: The Syncthing docs say "A unique ID for this event on the events API. It always increases by 1: the
                 // first event generated has id 1, the next has id 2 etc.".
-                if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiCalls) {
+                if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiCalls) {
                     std::cerr << Phrases::Info << "Re-connecting as event ID is decreasing (" << eventId << " < " << lastId
                               << "), Syncthing has likely been restarted" << Phrases::End;
                 }
@@ -2690,7 +2690,7 @@ void SyncthingConnection::readRemoteIndexUpdated(SyncthingEventId eventId, const
  */
 void SyncthingConnection::requestDiskEvents(int limit)
 {
-    if (m_diskEventsReply || !(m_pollingFlags & PollingFlags::DiskEvents)) {
+    if (m_diskEventsReply || !(m_pollingFlags && PollingFlags::DiskEvents)) {
         return;
     }
     auto query = QUrlQuery();
@@ -2735,7 +2735,7 @@ void SyncthingConnection::readDiskEvents()
             return;
         }
 
-        if (!replyArray.isEmpty() && (loggingFlags() & SyncthingConnectionLoggingFlags::Events)) {
+        if (!replyArray.isEmpty() && (loggingFlags() && SyncthingConnectionLoggingFlags::Events)) {
             const auto log = replyDoc.toJson(QJsonDocument::Indented);
             cerr << Phrases::Info << "Received " << replyArray.size() << " Syncthing disk events:" << Phrases::End << log.data() << endl;
         }

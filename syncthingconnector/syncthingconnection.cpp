@@ -201,35 +201,35 @@ QString SyncthingConnection::statusText(SyncthingStatus status)
 void SyncthingConnection::setLoggingFlags(SyncthingConnectionLoggingFlags flags)
 {
     m_loggingFlags = flags;
-    if (flags & SyncthingConnectionLoggingFlags::FromEnvironment) {
-        if (!(flags & SyncthingConnectionLoggingFlags::All) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_ALL")) {
+    if (flags && SyncthingConnectionLoggingFlags::FromEnvironment) {
+        if (!(flags && SyncthingConnectionLoggingFlags::All) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_ALL")) {
             m_loggingFlags |= SyncthingConnectionLoggingFlags::All;
         } else {
-            if (!(flags & SyncthingConnectionLoggingFlags::ApiCalls) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_API_CALLS")) {
+            if (!(flags && SyncthingConnectionLoggingFlags::ApiCalls) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_API_CALLS")) {
                 m_loggingFlags |= SyncthingConnectionLoggingFlags::ApiCalls;
             }
-            if (!(flags & SyncthingConnectionLoggingFlags::ApiCalls) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_API_REPLIES")) {
+            if (!(flags && SyncthingConnectionLoggingFlags::ApiCalls) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_API_REPLIES")) {
                 m_loggingFlags |= SyncthingConnectionLoggingFlags::ApiCalls;
             }
-            if (!(flags & SyncthingConnectionLoggingFlags::Events) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_EVENTS")) {
+            if (!(flags && SyncthingConnectionLoggingFlags::Events) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_EVENTS")) {
                 m_loggingFlags |= SyncthingConnectionLoggingFlags::Events;
             }
-            if (!(flags & SyncthingConnectionLoggingFlags::DirsOrDevsResetted)
+            if (!(flags && SyncthingConnectionLoggingFlags::DirsOrDevsResetted)
                 && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_DIRS_OR_DEVS_RESETTED")) {
                 m_loggingFlags |= SyncthingConnectionLoggingFlags::Events;
             }
         }
     }
-    if ((m_loggingFlags & SyncthingConnectionLoggingFlags::DirsOrDevsResetted)
-        && !(m_loggingFlagsHandler & SyncthingConnectionLoggingFlags::DirsOrDevsResetted)) {
+    if ((m_loggingFlags && SyncthingConnectionLoggingFlags::DirsOrDevsResetted)
+        && !(m_loggingFlagsHandler && SyncthingConnectionLoggingFlags::DirsOrDevsResetted)) {
         QObject::connect(this, &SyncthingConnection::newDirs, [this](const auto &dirs) {
-            if (m_loggingFlags & SyncthingConnectionLoggingFlags::DirsOrDevsResetted) {
+            if (m_loggingFlags && SyncthingConnectionLoggingFlags::DirsOrDevsResetted) {
                 std::cerr << Phrases::Info << "Folder list renewed:" << Phrases::End;
                 std::cerr << displayNames(dirs).join(QStringLiteral(", ")).toStdString() << endl;
             }
         });
         QObject::connect(this, &SyncthingConnection::newDevices, [this](const auto &devs) {
-            if (m_loggingFlags & SyncthingConnectionLoggingFlags::DirsOrDevsResetted) {
+            if (m_loggingFlags && SyncthingConnectionLoggingFlags::DirsOrDevsResetted) {
                 std::cerr << Phrases::Info << "Device list renewed:" << Phrases::End;
                 std::cerr << displayNames(devs).join(QStringLiteral(", ")).toStdString() << endl;
             }
@@ -315,15 +315,15 @@ void SyncthingConnection::setPollingFlags(PollingFlags flags)
     // manage timers/requests for timer-based requests
     if (trafficStatsChanged) {
         manageTimerBasedRequest(m_trafficPollTimer, m_connectionsReply, *this, &SyncthingConnection::requestConnections,
-            m_keepPolling && (m_pollingFlags & PollingFlags::TrafficStatistics));
+            m_keepPolling && (m_pollingFlags && PollingFlags::TrafficStatistics));
     }
     if (devStatsChanged) {
         manageTimerBasedRequest(m_devStatsPollTimer, m_devStatsReply, *this, &SyncthingConnection::requestDeviceStatistics,
-            m_keepPolling && (m_pollingFlags & PollingFlags::DeviceStatistics));
+            m_keepPolling && (m_pollingFlags && PollingFlags::DeviceStatistics));
     }
     if (errorsChanged) {
         manageTimerBasedRequest(
-            m_errorsPollTimer, m_errorsReply, *this, &SyncthingConnection::requestErrors, m_keepPolling && (m_pollingFlags & PollingFlags::Errors));
+            m_errorsPollTimer, m_errorsReply, *this, &SyncthingConnection::requestErrors, m_keepPolling && (m_pollingFlags && PollingFlags::Errors));
     }
 }
 
@@ -700,10 +700,10 @@ void SyncthingConnection::concludeConnection(StatusRecomputation flags)
     }
 
     // recompute status and emit events according to flags
-    if (!setStatus(SyncthingStatus::Idle) && (m_statusRecomputationFlags & StatusRecomputation::OutOfSyncDirs) && !m_hasOutOfSyncDirs.has_value()) {
+    if (!setStatus(SyncthingStatus::Idle) && (m_statusRecomputationFlags && StatusRecomputation::OutOfSyncDirs) && !m_hasOutOfSyncDirs.has_value()) {
         emit hasOutOfSyncDirsChanged();
     }
-    if (m_statusRecomputationFlags & StatusRecomputation::DirStats) {
+    if (m_statusRecomputationFlags && StatusRecomputation::DirStats) {
         emit dirStatisticsChanged();
     }
 
@@ -1150,18 +1150,18 @@ bool SyncthingConnection::setStatus(SyncthingStatus status)
         // note: We don't distinguish between "preparing to sync" and "synchronizing" for computing the overall
         //       status at the moment.
         auto scanning = false, synchronizing = false, remoteSynchronizing = false;
-        if (m_statusComputionFlags & SyncthingStatusComputionFlags::Synchronizing
-            || m_statusComputionFlags & SyncthingStatusComputionFlags::Scanning) {
+        if ((m_statusComputionFlags && SyncthingStatusComputionFlags::Synchronizing)
+            || (m_statusComputionFlags && SyncthingStatusComputionFlags::Scanning)) {
             for (const SyncthingDir &dir : m_dirs) {
                 switch (dir.status) {
                 case SyncthingDirStatus::WaitingToSync:
                 case SyncthingDirStatus::PreparingToSync:
                 case SyncthingDirStatus::Synchronizing:
-                    synchronizing = m_statusComputionFlags & SyncthingStatusComputionFlags::Synchronizing;
+                    synchronizing = m_statusComputionFlags && SyncthingStatusComputionFlags::Synchronizing;
                     break;
                 case SyncthingDirStatus::WaitingToScan:
                 case SyncthingDirStatus::Scanning:
-                    scanning = m_statusComputionFlags & SyncthingStatusComputionFlags::Scanning;
+                    scanning = m_statusComputionFlags && SyncthingStatusComputionFlags::Scanning;
                     break;
                 default:;
                 }
@@ -1172,7 +1172,7 @@ bool SyncthingConnection::setStatus(SyncthingStatus status)
         }
 
         // set the status to "remote synchronizing" if at least one remote device is still in progress
-        if (!synchronizing && (m_statusComputionFlags & SyncthingStatusComputionFlags::RemoteSynchronizing)) {
+        if (!synchronizing && (m_statusComputionFlags && SyncthingStatusComputionFlags::RemoteSynchronizing)) {
             for (const SyncthingDev &dev : m_devs) {
                 if (dev.status == SyncthingDevStatus::Synchronizing) {
                     remoteSynchronizing = true;
@@ -1187,7 +1187,7 @@ bool SyncthingConnection::setStatus(SyncthingStatus status)
             status = SyncthingStatus::RemoteNotInSync;
         } else if (scanning) {
             status = SyncthingStatus::Scanning;
-        } else if (m_statusComputionFlags & SyncthingStatusComputionFlags::DevicePaused) {
+        } else if (m_statusComputionFlags && SyncthingStatusComputionFlags::DevicePaused) {
             // check whether at least one device is paused
             for (const SyncthingDev &dev : m_devs) {
                 if (dev.paused) {
@@ -1211,7 +1211,7 @@ bool SyncthingConnection::setStatus(SyncthingStatus status)
  */
 void SyncthingConnection::emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response)
 {
-    if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiReplies) {
+    if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiReplies) {
         std::cerr << Phrases::Error << "JSON parsing error: " << message.toLocal8Bit().data() << jsonError.errorString().toLocal8Bit().data()
                   << " (at offset " << jsonError.offset << ')' << Phrases::End;
     }
@@ -1224,7 +1224,7 @@ void SyncthingConnection::emitError(const QString &message, const QJsonParseErro
  */
 void SyncthingConnection::emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply)
 {
-    if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiReplies) {
+    if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiReplies) {
         cerr << Phrases::Error << "Syncthing connection error: " << message.toLocal8Bit().data() << reply->errorString().toLocal8Bit().data() << endl;
     }
     emit error(message + reply->errorString(), category, reply->error(), reply->request(), reply->bytesAvailable() ? reply->readAll() : QByteArray());
@@ -1236,7 +1236,7 @@ void SyncthingConnection::emitError(const QString &message, SyncthingErrorCatego
  */
 void SyncthingConnection::emitError(const QString &message, QNetworkReply *reply)
 {
-    if (loggingFlags() & SyncthingConnectionLoggingFlags::ApiReplies) {
+    if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiReplies) {
         cerr << Phrases::Error << "Syncthing API error: " << message.toLocal8Bit().data() << reply->errorString().toLocal8Bit().data() << endl;
     }
     emit error(message, SyncthingErrorCategory::SpecificRequest, reply->error(), reply->request(),
