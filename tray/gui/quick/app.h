@@ -2,9 +2,9 @@
 #define SYNCTHING_TRAY_APP_H
 
 #include <syncthingwidgets/misc/internalerror.h>
+#include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/misc/statusinfo.h>
 #include <syncthingwidgets/misc/syncthinglauncher.h>
-#include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/misc/utils.h>
 
 #include <syncthingmodel/syncthingdevicemodel.h>
@@ -102,7 +102,7 @@ public:
     }
     bool nativePopups() const
     {
-#if defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS)  // it leads to crashes on those platforms
+#if defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS) // it leads to crashes on those platforms
         return false;
 #else
         return true;

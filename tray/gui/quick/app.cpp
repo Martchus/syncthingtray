@@ -380,8 +380,6 @@ DiffHighlighter *App::createDiffHighlighter(QTextDocument *parent)
     return new DiffHighlighter(parent);
 }
 
-
-
 bool App::eventFilter(QObject *object, QEvent *event)
 {
     Q_UNUSED(object)
