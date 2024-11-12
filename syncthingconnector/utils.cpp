@@ -19,6 +19,9 @@
 
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
 #include <QNetworkInformation>
+#ifdef Q_OS_ANDROID
+#include <QDebug>
+#endif
 #endif
 
 #include <iostream>
@@ -268,12 +271,23 @@ QString substituteTilde(const QString &path, const QString &tilde, const QString
 const QNetworkInformation *loadNetworkInformationBackendForMetered()
 {
     static const auto *const backend = []() -> const QNetworkInformation * {
-        QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Metered);
+#ifdef Q_OS_ANDROID
+        // load the network information plugin under Android by its name because it doesn't advertise supporting detection of metered
+        // connections even though it supports it (at least as of Qt 6.8.0)
+        constexpr auto expectedFeatures = QNetworkInformation::Feature::TransportMedium;
+        QNetworkInformation::loadBackendByName(QStringLiteral("android"));
+#else
+        constexpr auto expectedFeatures = QNetworkInformation::Feature::Metered;
+        QNetworkInformation::loadBackendByFeatures(expectedFeatures);
+#endif
         if (const auto *const networkInformation = QNetworkInformation::instance();
-            networkInformation && networkInformation->supports(QNetworkInformation::Feature::Metered)) {
+            networkInformation && networkInformation->supports(expectedFeatures)) {
             return networkInformation;
         }
 
+#ifdef Q_OS_ANDROID
+        qDebug() << "Unable to load network information backend, available backends: " << QNetworkInformation::availableBackends();
+#else
         std::cerr << EscapeCodes::Phrases::Error
                   << "Unable to load network information backend to monitor metered connections, available backends:" << EscapeCodes::Phrases::End;
         const auto availableBackends = QNetworkInformation::availableBackends();
@@ -284,6 +298,7 @@ const QNetworkInformation *loadNetworkInformationBackendForMetered()
                 std::cerr << " - " << backendName.toStdString() << '\n';
             }
         }
+#endif
         return nullptr;
     }();
     return backend;
