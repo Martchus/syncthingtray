@@ -7,6 +7,8 @@
  * \remarks Only include from syncthingconnection.cpp!
  */
 
+#include "./global.h"
+
 #include <c++utilities/conversion/stringbuilder.h>
 #include <c++utilities/io/misc.h>
 #include <c++utilities/tests/testutils.h>
@@ -20,7 +22,7 @@
 
 namespace Data {
 
-void setupTestData();
+LIB_SYNCTHING_CONNECTOR_EXPORT void setupTestData();
 
 /*!
  * \brief The MockedReply class provides a fake QNetworkReply which will just return data from a specified buffer.

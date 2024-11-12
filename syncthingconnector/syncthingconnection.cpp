@@ -3,7 +3,7 @@
 #include "./syncthingconnectionsettings.h"
 #include "./utils.h"
 
-#ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
+#if defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) || defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
 #include "./syncthingconnectionmockhelpers.h"
 #endif
 
@@ -139,7 +139,7 @@ SyncthingConnection::SyncthingConnection(
     m_autoReconnectTimer.setInterval(SyncthingConnectionSettings::defaultReconnectInterval);
     QObject::connect(&m_autoReconnectTimer, &QTimer::timeout, this, &SyncthingConnection::autoReconnect);
 
-#ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
+#if defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) || defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
     setupTestData();
 #endif
 

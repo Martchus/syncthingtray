@@ -1,7 +1,5 @@
 #include "./syncthingconnectionmockhelpers.h"
 
-#include "./global.h"
-
 #include <c++utilities/conversion/stringbuilder.h>
 #include <c++utilities/io/ansiescapecodes.h>
 #include <c++utilities/io/misc.h>
@@ -26,18 +24,19 @@ namespace Data {
  * \brief Contains test data for mocked SyncthingConnection.
  */
 namespace TestData {
-#if !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) || !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
+LIB_SYNCTHING_CONNECTOR_EXPORT extern bool initialized;
+LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse;
+LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string events[7];
+
+#if defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) || (!defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && defined(LIB_SYNCTHING_CONNECTOR_MOCKED))
+#define LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED_IMPLEMENTATION
 bool initialized = false;
 std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse;
 std::string events[7];
-#else
-LIB_SYNCTHING_CONNECTOR_IMPORT extern bool initialized;
-LIB_SYNCTHING_CONNECTOR_IMPORT extern std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse;
-LIB_SYNCTHING_CONNECTOR_IMPORT extern std::string events[7];
 #endif
 } // namespace TestData
 
-#if !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) || !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
+#ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED_IMPLEMENTATION
 
 /*!
  * \brief Returns the contents of the specified file and exits with an error message if an error occurs.

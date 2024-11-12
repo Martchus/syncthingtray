@@ -1,7 +1,7 @@
 #include "./syncthingconnection.h"
 #include "./utils.h"
 
-#ifdef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
+#if defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) || defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
 #include "./syncthingconnectionmockhelpers.h"
 #endif
 
@@ -70,7 +70,7 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
  */
 QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQuery &query, bool rest, bool longPolling)
 {
-#ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
+#if !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
     auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest, longPolling));
 #ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
@@ -91,7 +91,7 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
  */
 QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuery &query, const QByteArray &data)
 {
-#ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
+#if !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
     auto *const reply = networkAccessManager().post(prepareRequest(path, query), data);
 #ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
@@ -112,7 +112,7 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
  */
 QNetworkReply *SyncthingConnection::sendData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data)
 {
-#ifndef LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED
+#if !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
     auto *const reply = networkAccessManager().sendCustomRequest(prepareRequest(path, query), verb, data);
 #ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
