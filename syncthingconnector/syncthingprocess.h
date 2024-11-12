@@ -37,7 +37,7 @@ class SyncthingConnection;
 #define LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
 struct SyncthingProcessInternalData;
 struct SyncthingProcessIOHandler;
-#elif !QT_CONFIG(process)
+#elif defined(LIB_SYNCTHING_CONNECTOR_NO_PROCESS)
 #define LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
 #define LIB_SYNCTHING_CONNECTOR_NOOP_PROCESS
 #endif
