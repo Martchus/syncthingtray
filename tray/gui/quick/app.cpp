@@ -75,7 +75,8 @@ static App *appObjectForJava = nullptr;
 
 static void onAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNotification)
 {
-    QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection, Q_ARG(QString, QJniObject::fromLocalRef(page).toString()), Q_ARG(bool, fromNotification));
+    QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection,
+        Q_ARG(QString, QJniObject::fromLocalRef(page).toString()), Q_ARG(bool, fromNotification));
 }
 #endif
 
@@ -620,8 +621,8 @@ void App::updateSyncthingErrorsNotification(CppUtilities::DateTime when, const Q
         icon = IconManager::makeAndroidBitmap(icons.notify.pixmap(QSize(32, 32)).toImage());
     }
     QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(), subText.object(),
-        page.object(), icon.object(), 2);
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(),
+        subText.object(), page.object(), icon.object(), 2);
 }
 
 void App::clearSyncthingErrorsNotification()
@@ -642,8 +643,8 @@ void App::showInternalError(const InternalError &error)
         icon = IconManager::makeAndroidBitmap(icons.errorSync.pixmap(QSize(32, 32)).toImage());
     }
     QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(), subText.object(),
-        page.object(), icon.object(), 3 + static_cast<int>(m_internalErrors.size()));
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(),
+        subText.object(), page.object(), icon.object(), 3 + static_cast<int>(m_internalErrors.size()));
 }
 
 void App::handleAndroidIntent(const QString &page, bool fromNotification)
