@@ -58,32 +58,32 @@
         <translation>Nastavení spojení není dostačující.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="551"/>
+        <location filename="../syncthingconnection_requests.cpp" line="553"/>
         <source>Unable to rescan: No folder ID specified.</source>
         <translation>Nedaří se znovu prohledat: nezadán žádný identifikátor adresáře.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="368"/>
+        <location filename="../syncthingconnection_requests.cpp" line="370"/>
         <source>Unable to pause/resume a devices when not connected</source>
         <translation>Nedaří se pozastavit/pokračovat zařízení, když není spojeno</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="483"/>
+        <location filename="../syncthingconnection_requests.cpp" line="485"/>
         <source>Unable to pause/resume a folders when not connected</source>
         <translation>Nedaří se pozastavit/pokračovat složky, když není spojeno</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1511"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1513"/>
         <source>Unable to request QR-Code: </source>
         <translation>Nedaří se vyžádat QR kód: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1544"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1546"/>
         <source>Unable to parse Syncthing log: </source>
         <translation>Nedaří se zpracovat záznam událostí v Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1561"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1563"/>
         <source>Unable to request Syncthing log: </source>
         <translation>Nedaří se vyžádat si záznamy událostí v Syncthing: </translation>
     </message>
@@ -98,184 +98,184 @@
         <translation>Nedaří se načíst certifikát, používaný Syncthing.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="710"/>
+        <location filename="../syncthingconnection_requests.cpp" line="712"/>
         <source>Unable to parse Syncthing config: </source>
         <translation>Nedaří se zpracovat nastavení pro Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="727"/>
+        <location filename="../syncthingconnection_requests.cpp" line="729"/>
         <source>Unable to request Syncthing config: </source>
         <translation>Nedaří se vyžádat si nastavení Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="858"/>
+        <location filename="../syncthingconnection_requests.cpp" line="860"/>
         <source>Unable to parse Syncthing status: </source>
         <translation>Nedaří se zpracovat stav Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="877"/>
+        <location filename="../syncthingconnection_requests.cpp" line="879"/>
         <source>Unable to request Syncthing status: </source>
         <translation>Nedaří se vyžádat si stav Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="925"/>
+        <location filename="../syncthingconnection_requests.cpp" line="927"/>
         <source>Unable to parse connections: </source>
         <translation>Chyba při zpracování spojení: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1008"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1010"/>
         <source>Unable to request connections: </source>
         <translation>Nedaří se vyžádat si spojení: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1119"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1121"/>
         <source>Unable to parse folder statistics: </source>
         <translation>Nedaří se zpracovat statistiky adresáře: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1170"/>
-        <location filename="../syncthingconnection_requests.cpp" line="1232"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1172"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1234"/>
         <source>Unable to request folder statistics: </source>
         <translation>Nedaří se vyžádat si statistiky adresáře: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1407"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1409"/>
         <source>Unable to parse device statistics: </source>
         <translation>Nedaří se zpracovat statistiky zařízení: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1434"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1436"/>
         <source>Unable to request device statistics: </source>
         <translation>Nedaří se vyžádat si statitiky zařízení: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1047"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1049"/>
         <source>Unable to parse errors: </source>
         <translation>Nedaří se zpracovat chyby: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1087"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1089"/>
         <source>Unable to request errors: </source>
         <translation>Nedaří se vyžádat si chyby: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="676"/>
+        <location filename="../syncthingconnection_requests.cpp" line="678"/>
         <source>Unable to request clearing errors: </source>
         <translation>Nedaří se vyžádat si vyčištění chyb: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2099"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2101"/>
         <source>Unable to parse Syncthing events: </source>
         <translation>Nedaří se zpracovat události v Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2128"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2130"/>
         <source>Unable to request Syncthing events: </source>
         <translation>Nedaří se vyžádat si události v Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1891"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1893"/>
         <source>Unable to post config: </source>
         <translation>Nedaří se odeslat nové nastavení: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="581"/>
+        <location filename="../syncthingconnection_requests.cpp" line="583"/>
         <source>Unable to request rescan: </source>
         <translation>Nedaří se vyžádat si opětovné prohledání: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="416"/>
+        <location filename="../syncthingconnection_requests.cpp" line="418"/>
         <source>Unable to request device pause/resume: </source>
         <translation>Nedaří se vyžádat si pozastavení/pokračování zařízení: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="520"/>
+        <location filename="../syncthingconnection_requests.cpp" line="522"/>
         <source>Unable to request folder pause/resume: </source>
         <translation>Nedaří se vyžádat si pozastavení/pokračování adresáře: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="612"/>
+        <location filename="../syncthingconnection_requests.cpp" line="614"/>
         <source>Unable to request restart: </source>
         <translation>Nedaří se vyžádat si restart: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="641"/>
+        <location filename="../syncthingconnection_requests.cpp" line="643"/>
         <source>Unable to request shutdown: </source>
         <translation>Nedaří se vyžádat si vypnutí: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1213"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1215"/>
         <source>Unable to parse status for folder %1: </source>
         <translation>Nedaří se zpracovat stav adresáře %1: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1280"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1282"/>
         <source>Unable to parse pull errors for folder %1: </source>
         <translation>Nedaří se zpracovat chyby příjmu pro adresář %1: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1294"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1296"/>
         <source>Unable to request pull errors for folder %1: </source>
         <translation>Nedaří se vyžádat si chyby pro adresář %1: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1360"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1362"/>
         <source>Unable to parse completion for device/folder %1/%2: </source>
         <translation>Nedaří se zpracovat stupeň dokončení pro zařízení/adresář %1/%2: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1375"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1377"/>
         <source>Unable to request completion for device/folder %1/%2: </source>
         <translation>Nedaří se vyžádat si stupeň dokončení pro zařízení/složku %1/%2: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1462"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1464"/>
         <source>Unable to parse version: </source>
         <translation>Nedaří se zpracovat verzi: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1476"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1478"/>
         <source>Unable to request version: </source>
         <translation>Nedaří se vyžádat si verzi: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1594"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1596"/>
         <source>Unable to request directory override: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1627"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1629"/>
         <source>Unable to request directory revert: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1759"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1761"/>
         <source>Unable to parse response for browsing &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1773"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1775"/>
         <source>Unable to browse &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1797"/>
-        <location filename="../syncthingconnection_requests.cpp" line="1821"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1799"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1823"/>
         <source>Unable to query ignore patterns of &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1847"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1849"/>
         <source>Unable to change ignore patterns of &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2726"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2728"/>
         <source>Unable to parse disk events: </source>
         <translation>Nedaří se zpracovat události úložiště: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2751"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2753"/>
         <source>Unable to request disk events: </source>
         <translation>Nedaří se vyžádat si události úložiště: </translation>
     </message>
@@ -378,22 +378,22 @@
 <context>
     <name>Data::Utils</name>
     <message>
-        <location filename="../utils.cpp" line="37"/>
+        <location filename="../utils.cpp" line="40"/>
         <source>%1 ago</source>
         <translation>před %1</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="40"/>
+        <location filename="../utils.cpp" line="43"/>
         <source>right now</source>
         <translation>právě teď</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="51"/>
+        <location filename="../utils.cpp" line="54"/>
         <source>unknown</source>
         <translation>neznámé</translation>
     </message>
     <message numerus="yes">
-        <location filename="../utils.cpp" line="67"/>
+        <location filename="../utils.cpp" line="70"/>
         <source>%1 file(s)</source>
         <translation>
             <numerusform>%1 soubor</numerusform>
@@ -402,7 +402,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../utils.cpp" line="68"/>
+        <location filename="../utils.cpp" line="71"/>
         <source>%1 dir(s)</source>
         <translation>
             <numerusform>%1 adr.</numerusform>
@@ -411,44 +411,44 @@
         </translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="83"/>
+        <location filename="../utils.cpp" line="86"/>
         <source>Synchronization of local folder %1 complete</source>
         <translation>Synchronizace místního adresáře %1 dokončena</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="91"/>
+        <location filename="../utils.cpp" line="94"/>
         <source>Synchronization of the following local folders complete:
 </source>
         <translation>Synchronizace následujících místních adresářů dokončena:
 </translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="105"/>
+        <location filename="../utils.cpp" line="108"/>
         <source>file system watcher and periodic rescan disabled</source>
         <translation>sledování souborového systému a periodické skenování vypnuto</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="107"/>
+        <location filename="../utils.cpp" line="110"/>
         <source>file system watcher active, periodic rescan disabled</source>
         <translation>sledování souborového systému zapnuto, periodické skenování vypnuto</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="110"/>
+        <location filename="../utils.cpp" line="113"/>
         <source>, file system watcher enabled</source>
         <translation>, sledování souborového systému zapnuto</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="111"/>
+        <location filename="../utils.cpp" line="114"/>
         <source>, file system watcher disabled</source>
         <translation>, sledování souborového systému vypnuto</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="86"/>
+        <location filename="../utils.cpp" line="89"/>
         <source>Synchronization of %1 on %2 complete</source>
         <translation>Synchronizace %1 na %2 dokončena</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="94"/>
+        <location filename="../utils.cpp" line="97"/>
         <source>Synchronization of the following folders on %1 complete:
 </source>
         <translation>Synchronizace následujících adresářů na %1 dokončena:
