@@ -72,11 +72,18 @@ static void deletePipelineCache()
 #ifdef Q_OS_ANDROID
 // define functions called from Java
 static App *appObjectForJava = nullptr;
+static const char networkInformationClass[] = "org/qtproject/qt/android/networkinformation/QtAndroidNetworkInformation";
 
 static void onAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNotification)
 {
     QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection,
         Q_ARG(QString, QJniObject::fromLocalRef(page).toString()), Q_ARG(bool, fromNotification));
+}
+
+static void rebindNetworkInformationToService(JNIEnv *, jobject, jobject service)
+{
+    QJniObject::callStaticMethod<void>(networkInformationClass, "unregisterReceiver", QNativeInterface::QAndroidApplication::context());
+    QJniObject::callStaticMethod<void>(networkInformationClass, "registerReceiver", "(Landroid/content/Context;)V", QJniObject::fromLocalRef(service));
 }
 #endif
 
@@ -161,10 +168,19 @@ App::App(bool insecure, QObject *parent)
             { "onAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(onAndroidIntent) },
         };
         registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 1) && registeredMethods;
+        static const JNINativeMethod serviceMethods[] = {
+            { "rebindNetworkInformationToService", "(Lio/github/martchus/syncthingtray/SyncthingService;)V", reinterpret_cast<void *>(rebindNetworkInformationToService) },
+        };
+        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", serviceMethods, 1) && registeredMethods;
         if (!registeredMethods) {
             qWarning() << "Unable to register all native methods in JNI environment.";
         }
     }
+
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+    // ensure the network information backend is loaded before the service is started
+    loadNetworkInformationBackendForMetered();
+#endif
 
     // start Android service
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");

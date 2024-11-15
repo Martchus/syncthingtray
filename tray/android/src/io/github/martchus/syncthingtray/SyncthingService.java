@@ -152,6 +152,7 @@ public class SyncthingService extends Service
     public void onCreate() {
         super.onCreate();
         initializeNotificationManagement();
+        rebindNetworkInformationToService(this);
         s_instance = this;
         Log.i(TAG, "Created service and notification");
     }
@@ -193,4 +194,6 @@ public class SyncthingService extends Service
             startForeground(s_notificationID, m_notification);
         }
     }
+
+    private static native void rebindNetworkInformationToService(SyncthingService service);
 }
