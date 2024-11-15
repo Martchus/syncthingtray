@@ -156,10 +156,14 @@ App::App(bool insecure, QObject *parent)
     if (!appObjectForJava) {
         appObjectForJava = this;
         auto env = QJniEnvironment();
-        static const JNINativeMethod methods[] = {
+        auto registeredMethods = true;
+        static const JNINativeMethod activityMethods[] = {
             { "onAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(onAndroidIntent) },
         };
-        env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", methods, 2);
+        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 1) && registeredMethods;
+        if (!registeredMethods) {
+            qWarning() << "Unable to register all native methods in JNI environment.";
+        }
     }
 
     // start Android service
