@@ -9,7 +9,7 @@
   @META_APP_APPDATA_BODY@
   <url type="homepage">@META_APP_URL@</url>
   <url type="bugtracker">@META_APP_BUGTRACKER_URL@</url>
-  <developer><name>@META_APP_AUTHOR@</name></developer>
+  <developer id="@META_DEVELOPER_ID@"><name>@META_APP_AUTHOR@</name></developer>
   <releases>
     <release version="@META_APP_VERSION@" date="@META_RELEASE_DATE@"/>
   </releases>
