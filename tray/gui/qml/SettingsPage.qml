@@ -40,13 +40,23 @@ StackView {
                 }
                 ListElement {
                     callback: () => stackView.push("ErrorsPage.qml", {}, StackView.PushTransition)
-                    label: qsTr("Show Syncthing notifications/errors")
+                    label: qsTr("Syncthing notifications/errors")
                     iconName: "exclamation-triangle"
                 }
                 ListElement {
                     callback: () => stackView.push("InternalErrorsPage.qml", {}, StackView.PushTransition)
-                    label: qsTr("Show log of Syncthing API errors")
+                    label: qsTr("Log of Syncthing API errors")
                     iconName: "exclamation-circle"
+                }
+                ListElement {
+                    callback: () => stackView.push("ObjectConfigPage.qml", {
+                                                       title: qsTr("Statistics"),
+                                                       stackView: stackView,
+                                                       configObject: App.statistics,
+                                                       specialEntries: appSettingsPage.specialEntries["statistics"]
+                                                   }, StackView.PushTransition)
+                    label: qsTr("Statistics")
+                    iconName: "area-chart"
                 }
                 ListElement {
                     functionName: "importSettings"
@@ -125,6 +135,11 @@ StackView {
             tweaks: [
                 {key: "unloadGuiWhenHidden", type: "boolean", defaultValue: false, label: qsTr("Stop UI when hidden"), statusText: qsTr("Might help save battery live but resets UI state.")},
             ],
+            statistics: [
+                {key: "stConfigDir", type: "readonly", label: qsTr("Syncthing config directory")},
+                {key: "stDataDir", type: "readonly", label: qsTr("Syncthing data directory")},
+                {key: "stDbSize", type: "readonly", label: qsTr("Syncthing database size")},
+            ]
         })
         property list<Action> actions: [
             Action {

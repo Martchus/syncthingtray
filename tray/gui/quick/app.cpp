@@ -21,6 +21,8 @@
 #include <qtforkawesome/renderer.h>
 #include <qtquickforkawesome/imageprovider.h>
 
+#include <c++utilities/conversion/stringconversion.h>
+
 #include <QClipboard>
 #include <QDebug>
 #include <QDir>
@@ -41,6 +43,7 @@
 #include <filesystem>
 #include <functional>
 #include <iostream>
+#include <numeric>
 
 #ifdef Q_OS_WINDOWS
 #define SYNCTHING_APP_STRING_CONVERSION(s) s.toStdWString()
@@ -210,6 +213,18 @@ const QString &App::status()
         }
         return m_status.emplace();
     }
+}
+
+QVariantMap QtGui::App::statistics() const
+{
+    auto stats = QVariantMap();
+    auto dbDir = QDir(m_syncthingDataDir + QStringLiteral("/index-v0.14.0.db"));
+    auto dbFiles = dbDir.entryInfoList({QStringLiteral("*.ldb")}, QDir::Files);
+    auto dbSize = std::accumulate(dbFiles.begin(), dbFiles.end(), qint64(), [] (auto size, const auto &dbFile) { return size + dbFile.size(); });
+    stats[QStringLiteral("stConfigDir")] = m_syncthingConfigDir;
+    stats[QStringLiteral("stDataDir")] = m_syncthingDataDir;
+    stats[QStringLiteral("stDbSize")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(dbSize)));
+    return stats;
 }
 
 bool App::loadMain()

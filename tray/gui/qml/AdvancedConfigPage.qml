@@ -7,6 +7,7 @@ import Main
 
 ObjectConfigPage {
     id: advancedConfigPage
+    isDangerous: true
     configTemplates: {
         "devices": {deviceID: "", introducedBy: "", encryptionPassword: ""},
         "addresses": "dynamic",
@@ -78,7 +79,7 @@ ObjectConfigPage {
             return false;
         }
         advancedConfigPage.configObjectExists = true;
-        advancedConfigPage.disableFirst();
+        advancedConfigPage.disableInitialProperties();
         App.connection.postConfigFromJsonObject(cfg);
         return true;
     }

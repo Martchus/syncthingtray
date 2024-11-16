@@ -83,6 +83,7 @@ Page {
     property var parentObject: undefined
     property var childObjectTemplate: configTemplates[path]
     property bool canAdd: Array.isArray(configObject) && childObjectTemplate !== undefined
+    property bool isDangerous: false
     property string itemLabel
     property string path: ""
     property string configCategory
@@ -201,11 +202,9 @@ Page {
         }
     }
 
-    function disableFirst() {
-        // note: Mean to prevent editing folder/device ID initially saving new folder/device.
-        if (listModel.get(0).enabled === true) {
-            listModel.setProperty(0, "enabled", false);
-        }
+    function disableInitialProperties() {
+        // prevent changing settings that should only be set initially, e.g. folder/device ID
+        [0, 3].forEach((i) => listModel.get(i).enabled === true && listModel.setProperty(i, "enabled", false));
     }
 
     function showNewValueDialog(key) {

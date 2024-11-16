@@ -43,7 +43,7 @@ StackView {
             delegate: ItemDelegate {
                 width: listView.width
                 text: label
-                onClicked: stackView.push("ObjectConfigPage.qml", {title: title, configObject: advancedPage.config[key], configCategory: `config-option-${key}`, stackView: stackView}, StackView.PushTransition)
+                onClicked: stackView.push("ObjectConfigPage.qml", {title: title, isDangerous: true, configObject: advancedPage.config[key], configCategory: `config-option-${key}`, stackView: stackView}, StackView.PushTransition)
             }
             ScrollIndicator.vertical: ScrollIndicator { }
         }

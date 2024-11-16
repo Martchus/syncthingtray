@@ -9,12 +9,51 @@ import Main
 DelegateChooser {
     role: "type"
     DelegateChoice {
+        roleValue: "readonly"
+        ItemDelegate {
+            width: objectListView.width
+            contentItem: RowLayout {
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    enabled: modelData.enabled ?? true
+                    Label {
+                        Layout.fillWidth: true
+                        text: modelData.label
+                        elide: Text.ElideRight
+                        font.weight: Font.Medium
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: modelData.value
+                        elide: Text.ElideRight
+                        font.weight: Font.Light
+                    }
+                }
+                ArrayElementButtons {
+                    page: objectConfigPage
+                    rowData: modelData
+                }
+                IconOnlyButton {
+                    text: qsTr("Copy")
+                    icon.source: App.faUrlBase + "files-o"
+                    onClicked: App.copyText(modelData.value)
+                }
+                HelpButton {
+                    id: helpButton
+                    configCategory: objectConfigPage.configCategory
+                }
+            }
+            required property var modelData
+        }
+    }
+    DelegateChoice {
         roleValue: "string"
         ItemDelegate {
             width: objectListView.width
             contentItem: RowLayout {
                 ColumnLayout {
                     Layout.fillWidth: true
+                    enabled: modelData.enabled ?? true
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
@@ -369,6 +408,7 @@ DelegateChooser {
                                                     title: objNameLabel.text,
                                                     configObject: objectConfigPage.configObject[modelData.key],
                                                     parentObject: objectConfigPage.configObject,
+                                                    isDangerous: objectConfigPage.isDangerous,
                                                     stackView: objectConfigPage.stackView,
                                                     parentPage: objectConfigPage,
                                                     objectNameLabel: objNameLabel,
@@ -452,6 +492,7 @@ DelegateChooser {
             contentItem: RowLayout {
                 ColumnLayout {
                     Layout.fillWidth: true
+                    enabled: modelData.enabled ?? true
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
@@ -471,11 +512,13 @@ DelegateChooser {
                 }
                 IconOnlyButton {
                     text: qsTr("Clear")
+                    enabled: modelData.enabled ?? true
                     icon.source: App.faUrlBase + "undo"
                     onClicked: objectConfigPage.updateValue(modelData.index, modelData.key, "")
                 }
                 IconOnlyButton {
                     text: qsTr("Edit manually")
+                    enabled: modelData.enabled ?? true
                     icon.source: App.faUrlBase + "pencil"
                     onClicked: manualFileDlg.open()
                 }
@@ -484,7 +527,7 @@ DelegateChooser {
                     configCategory: objectConfigPage.configCategory
                 }
             }
-            onClicked: fileDlg.open()
+            onClicked: modelData.enabled && fileDlg.open()
             FileDialog {
                 id: fileDlg
                 title: modelData.label
@@ -515,6 +558,7 @@ DelegateChooser {
             contentItem: RowLayout {
                 ColumnLayout {
                     Layout.fillWidth: true
+                    enabled: modelData.enabled ?? true
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
@@ -535,11 +579,13 @@ DelegateChooser {
                 }
                 IconOnlyButton {
                     text: qsTr("Clear")
+                    enabled: modelData.enabled ?? true
                     icon.source: App.faUrlBase + "undo"
                     onClicked: objectConfigPage.updateValue(modelData.index, modelData.key, "")
                 }
                 IconOnlyButton {
                     text: qsTr("Edit manually")
+                    enabled: modelData.enabled ?? true
                     icon.source: App.faUrlBase + "pencil"
                     onClicked: manualFolderDlg.open()
                 }
@@ -548,7 +594,7 @@ DelegateChooser {
                     configCategory: objectConfigPage.configCategory
                 }
             }
-            onClicked: folderDlg.open()
+            onClicked: modelData.enabled && folderDlg.open()
             FolderDialog {
                 id: folderDlg
                 title: modelData.label

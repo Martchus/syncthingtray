@@ -5,12 +5,13 @@ import Main
 AdvancedDirConfigPage {
     id: dirConfigPage
     title: qsTr("Config of folder \"%1\"").arg(dirName)
+    isDangerous: false
     specialEntriesOnly: true
     specialEntries: [
         {key: "id", label: qsTr("ID"), enabled: !dirConfigPage.configObjectExists, desc: qsTr("Required identifier for the folder. Must be the same on all cluster devices.")},
         {key: "label", label: qsTr("Label"), desc: qsTr("Optional descriptive label for the folder. Can be different on each device.")},
         {key: "paused", label: qsTr("Paused"), desc: qsTr("Whether this folder is (temporarily) suspended.")},
-        {key: "path", label: qsTr("Path"), type: "folderpath", desc: qsTr("Path to the folder on the local computer. Will be created if it does not exist. The tilde character (~) can be used as a shortcut for \"%1\".").arg(App.connection.tilde)},
+        {key: "path", label: qsTr("Path"), enabled: !dirConfigPage.configObjectExists, type: "folderpath", desc: qsTr("Path to the folder on the local computer. Will be created if it does not exist. The tilde character (~) can be used as a shortcut for \"%1\".").arg(App.connection.tilde)},
         {key: "type", label: qsTr("Type"), type: "options", desc: qsTr("Controls how the folder is handled by Syncthing. Open the selection and go though the different options for details about them."), helpUrl: "https://docs.syncthing.net/users/foldertypes", options: [
                 {value: "sendreceive", label: "Send and Receive", desc: qsTr("Files are synchronized from the cluster and changes made on this device will be sent to the rest of the cluster.")},
                 {value: "sendonly", label: "Send Only", desc: qsTr("Files are protected from changes made on other devices, but changes made on this device will be sent to the rest of the cluster.")},

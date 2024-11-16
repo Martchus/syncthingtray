@@ -3,6 +3,7 @@ import QtQuick
 AdvancedDevConfigPage {
     id: devConfigPage
     title: qsTr("Config of device \"%1\"").arg(devName)
+    isDangerous: false
     specialEntriesOnly: true
     specialEntries: [
         {key: "deviceID", label: qsTr("Device ID"), enabled: Qt.binding(() => devConfigPage.devId.length === 0), helpUrl: "https://docs.syncthing.net/dev/device-ids.html#device-ids"},

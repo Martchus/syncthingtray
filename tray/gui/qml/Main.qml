@@ -15,8 +15,8 @@ ApplicationWindow {
     title: qsTr("Syncthing")
     onVisibleChanged: App.setCurrentControls(window.visible, pageStack.currentIndex)
     Material.theme: App.darkmodeEnabled ? Material.Dark : Material.Light
-    Material.accent: Material.LightBlue
-    Material.primary: Material.LightBlue
+    Material.primary: pageStack.currentPage.isDangerous ? Material.Red : Material.LightBlue
+    Material.accent: Material.primary
     header: ToolBar {
         Material.theme: Material.Dark
         ColumnLayout {
@@ -194,6 +194,8 @@ ApplicationWindow {
 
     AboutDialog {
         id: aboutDialog
+        Material.primary: Material.LightBlue
+        Material.accent: Material.LightBlue
     }
 
     Drawer {
@@ -444,6 +446,8 @@ ApplicationWindow {
     // avoid closing app (TODO: allow to keep Syncthing running in the background)
     Dialog {
         id: closeDialog
+        Material.primary: Material.LightBlue
+        Material.accent: Material.LightBlue
         popupType: App.nativePopups ? Popup.Native : Popup.Item
         anchors.centerIn: Overlay.overlay
         parent: Overlay.overlay

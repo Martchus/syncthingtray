@@ -54,6 +54,7 @@ class App : public QObject {
     Q_PROPERTY(QString readmeUrl READ readmeUrl CONSTANT)
     Q_PROPERTY(QString website READ website CONSTANT)
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
+    Q_PROPERTY(QVariantMap statistics READ statistics)
     QML_ELEMENT
     QML_SINGLETON
 
@@ -142,6 +143,7 @@ public:
     {
         return !m_internalErrors.isEmpty();
     }
+    QVariantMap statistics() const;
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();
