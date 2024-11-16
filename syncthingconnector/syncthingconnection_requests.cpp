@@ -1861,10 +1861,10 @@ void SyncthingConnection::readSetIgnores(const QString &dirId, std::function<voi
  * \remarks The signal newConfigTriggered() is emitted when the config has been posted successfully. In the error case, error() is emitted.
  *          Besides, the newConfig() signal should be emitted as well, indicating Syncthing has actually applied the new configuration.
  */
-void SyncthingConnection::postConfigFromJsonObject(const QJsonObject &rawConfig)
+SyncthingConnection::QueryResult SyncthingConnection::postConfigFromJsonObject(
+    const QJsonObject &rawConfig, std::function<void(QString &&)> &&callback)
 {
-    QObject::connect(sendData(changeConfigVerb(), configPath(), QUrlQuery(), QJsonDocument(rawConfig).toJson(QJsonDocument::Compact)),
-        &QNetworkReply::finished, this, &SyncthingConnection::readPostConfig);
+    return postConfigFromByteArray(QJsonDocument(rawConfig).toJson(QJsonDocument::Compact), std::move(callback));
 }
 
 /*!
@@ -1873,24 +1873,34 @@ void SyncthingConnection::postConfigFromJsonObject(const QJsonObject &rawConfig)
  * \remarks The signal newConfigTriggered() is emitted when the config has been posted successfully. In the error case, error() is emitted.
  *          Besides, the newConfig() signal should be emitted as well, indicating Syncthing has actually applied the new configuration.
  */
-void SyncthingConnection::postConfigFromByteArray(const QByteArray &rawConfig)
+SyncthingConnection::QueryResult SyncthingConnection::postConfigFromByteArray(const QByteArray &rawConfig, std::function<void(QString &&)> &&callback)
 {
-    QObject::connect(
-        sendData(changeConfigVerb(), configPath(), QUrlQuery(), rawConfig), &QNetworkReply::finished, this, &SyncthingConnection::readPostConfig);
+    auto *const reply = sendData(changeConfigVerb(), configPath(), QUrlQuery(), rawConfig);
+    return { reply,
+        QObject::connect(
+            reply, &QNetworkReply::finished, this, [this, cb = std::move(callback)]() mutable { readPostConfig(std::move(cb)); },
+            Qt::QueuedConnection) };
 }
 
 /*!
  * \brief Reads data from postConfigFromJsonObject() and postConfigFromByteArray().
  */
-void SyncthingConnection::readPostConfig()
+void SyncthingConnection::readPostConfig(std::function<void(QString &&)> &&callback)
 {
     auto const [reply, response] = prepareReply(false, false);
     switch (reply->error()) {
     case QNetworkReply::NoError:
         emit newConfigTriggered();
+        if (callback) {
+            callback(QString());
+        }
         break;
     default:
-        emitError(tr("Unable to post config: "), SyncthingErrorCategory::SpecificRequest, reply);
+        auto errorMessage = tr("Unable to post config: ") + reply->errorString();
+        emitError(errorMessage, SyncthingErrorCategory::SpecificRequest, reply);
+        if (callback) {
+            callback(std::move(errorMessage));
+        }
     }
 }
 

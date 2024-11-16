@@ -711,7 +711,7 @@ void ConnectionTests::testDealingWithArbitraryConfig()
 
     // post new config
     waitForConnected();
-    waitForSignalsOrFail(bind(&SyncthingConnection::postConfigFromJsonObject, &m_connection, ref(rawConfig)), 10000,
+    waitForSignalsOrFail([this, &rawConfig] { m_connection.postConfigFromJsonObject(rawConfig); }, 10000,
         connectionSignal(&SyncthingConnection::error), connectionSignal(&SyncthingConnection::newConfigTriggered),
         connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig));
 }

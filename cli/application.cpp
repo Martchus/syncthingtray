@@ -719,7 +719,7 @@ void Application::editConfig(const ArgumentOccurrence &)
 
     // post new config
     cerr << Phrases::Info << "Posting new configuration ..." << TextAttribute::Reset << flush;
-    if (!waitForSignalsOrFail(bind(&SyncthingConnection::postConfigFromByteArray, ref(m_connection), ref(newConfig)), 0,
+    if (!waitForSignalsOrFail([this, &newConfig] { m_connection.postConfigFromByteArray(newConfig); }, 0,
             signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfigTriggered))) {
         return;
     }

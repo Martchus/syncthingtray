@@ -59,7 +59,7 @@ StackView {
                         const entryKey = model.get(i).key;
                         cfg[entryKey] = advancedPage.config[entryKey]
                     }
-                    App.connection.postConfigFromJsonObject(cfg);
+                    App.postSyncthingConfig(cfg);
                     return true;
                 }
             }

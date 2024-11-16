@@ -80,7 +80,7 @@ ObjectConfigPage {
         }
         advancedConfigPage.configObjectExists = true;
         advancedConfigPage.disableInitialProperties();
-        App.connection.postConfigFromJsonObject(cfg);
+        App.postSyncthingConfig(cfg);
         return true;
     }
 
@@ -96,7 +96,7 @@ ObjectConfigPage {
         }
         entries.splice(index, 1);
         advancedConfigPage.configObjectExists = false;
-        App.connection.postConfigFromJsonObject(cfg);
+        App.postSyncthingConfig(cfg);
         return true;
     }
 }

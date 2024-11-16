@@ -208,7 +208,9 @@ const QString &App::status()
     case Data::SyncthingStatus::Reconnecting:
         return m_status.emplace(tr("Waiting for backend …"));
     default:
-        if (const auto errorCount = m_connection.errors().size()) {
+        if (m_pendingConfigChange.reply) {
+            return m_status.emplace(tr("Saving configuration …"));
+        } else if (const auto errorCount = m_connection.errors().size()) {
             return m_status.emplace(tr("There are %n notification(s)/error(s).", nullptr, static_cast<int>(errorCount)));
         }
         return m_status.emplace();
@@ -689,6 +691,27 @@ void App::clearInternalErrors()
 #endif
     m_internalErrors.clear();
     emit hasInternalErrorsChanged();
+}
+
+bool App::postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &callback)
+{
+    if (m_pendingConfigChange.reply) {
+        emit error(tr("Another config change is still pending."));
+        return false;
+    }
+    m_pendingConfigChange = m_connection.postConfigFromJsonObject(rawConfig, [this, callback](QString &&error) {
+        m_pendingConfigChange.reply = nullptr;
+        emit savingConfigChanged(false);
+        invalidateStatus();
+        if (callback.isCallable()) {
+            callback.call(QJSValueList{ error });
+        }
+    });
+    connect(this, &QObject::destroyed, m_pendingConfigChange.reply, &QNetworkReply::deleteLater);
+    connect(this, &QObject::destroyed, [c = m_pendingConfigChange.connection] { disconnect(c); });
+    emit savingConfigChanged(true);
+    invalidateStatus();
+    return true;
 }
 
 bool App::openSettings()

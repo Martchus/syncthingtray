@@ -55,6 +55,7 @@ class App : public QObject {
     Q_PROPERTY(QString website READ website CONSTANT)
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QVariantMap statistics READ statistics)
+    Q_PROPERTY(bool savingConfig READ isSavingConfig NOTIFY savingConfigChanged)
     QML_ELEMENT
     QML_SINGLETON
 
@@ -144,6 +145,10 @@ public:
         return !m_internalErrors.isEmpty();
     }
     QVariantMap statistics() const;
+    bool isSavingConfig() const
+    {
+        return m_pendingConfigChange.reply != nullptr;
+    }
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();
@@ -176,18 +181,20 @@ public:
     Q_INVOKABLE QtGui::DiffHighlighter *createDiffHighlighter(QTextDocument *parent);
     Q_INVOKABLE QVariantList internalErrors() const;
     Q_INVOKABLE void clearInternalErrors();
+    Q_INVOKABLE bool postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &callback = QJSValue());
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
     void settingsChanged(const QJsonObject &settingsChanged);
     void error(const QString &errorMessage, const QString &details = QString());
-    void internalError(const InternalError &error);
+    void internalError(const QtGui::InternalError &error);
     void info(const QString &infoMessage, const QString &details = QString());
     void statusChanged();
     void logsAvailable(const QString &newLogMessages);
     void hasInternalErrorsChanged();
     void internalErrorsRequested();
     void connectionErrorsRequested();
+    void savingConfigChanged(bool isSavingConfig);
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
@@ -224,6 +231,7 @@ private:
     Data::SyncthingRecentChangesModel m_changesModel;
     Data::SyncthingConnectionSettings m_connectionSettingsFromLauncher;
     Data::SyncthingConnectionSettings m_connectionSettingsFromConfig;
+    Data::SyncthingConnection::QueryResult m_pendingConfigChange;
     QVariantList m_internalErrors;
 #ifdef Q_OS_ANDROID
     StatusInfo m_statusInfo;

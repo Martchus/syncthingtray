@@ -349,8 +349,6 @@ public Q_SLOTS:
     void requestLog();
     void requestOverride(const QString &dirId);
     void requestRevert(const QString &dirId);
-    void postConfigFromJsonObject(const QJsonObject &rawConfig);
-    void postConfigFromByteArray(const QByteArray &rawConfig);
 
 public:
     // methods to GET or POST information from/to Syncthing (non-slots)
@@ -358,6 +356,9 @@ public:
         std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback);
     QueryResult ignores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback);
     QueryResult setIgnores(const QString &dirId, const SyncthingIgnores &ignores, std::function<void(QString &&)> &&callback);
+    QueryResult postConfigFromJsonObject(
+        const QJsonObject &rawConfig, std::function<void(QString &&)> &&callback = std::function<void(QString &&)>());
+    QueryResult postConfigFromByteArray(const QByteArray &rawConfig, std::function<void(QString &&)> &&callback = std::function<void(QString &&)>());
 
 Q_SIGNALS:
     void syncthingUrlChanged(const QString &newUrl);
@@ -434,7 +435,6 @@ private Q_SLOTS:
     void readRemoteFolderCompletion(const Data::SyncthingCompletion &completion, const QString &devId, Data::SyncthingDev *devInfo, int devIndex,
         const QString &dirId, Data::SyncthingDir *dirInfo, int dirIndex);
     void readRemoteIndexUpdated(SyncthingEventId eventId, const QJsonObject &eventData);
-    void readPostConfig();
     void readRescan();
     void readDevPauseResume();
     void readDirPauseResume();
@@ -480,6 +480,7 @@ private:
     void readBrowse(const QString &dirId, int levels, std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback);
     void readIgnores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback);
     void readSetIgnores(const QString &dirId, std::function<void(QString &&)> &&callback);
+    void readPostConfig(std::function<void(QString &&)> &&callback);
 
     // internal helper methods
     enum class StatusRecomputation {
