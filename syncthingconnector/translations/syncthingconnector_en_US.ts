@@ -160,12 +160,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2130"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2140"/>
         <source>Unable to request Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1893"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1899"/>
         <source>Unable to post config: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -261,17 +261,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2101"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2111"/>
         <source>Unable to parse Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2728"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2738"/>
         <source>Unable to parse disk events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2753"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2763"/>
         <source>Unable to request disk events: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -281,12 +281,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="691"/>
+        <location filename="../syncthingconnection.h" line="692"/>
         <source>connecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="693"/>
+        <location filename="../syncthingconnection.h" line="694"/>
         <source>, re-connect attempt every %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
