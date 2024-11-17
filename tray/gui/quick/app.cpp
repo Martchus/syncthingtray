@@ -221,8 +221,8 @@ QVariantMap QtGui::App::statistics() const
 {
     auto stats = QVariantMap();
     auto dbDir = QDir(m_syncthingDataDir + QStringLiteral("/index-v0.14.0.db"));
-    auto dbFiles = dbDir.entryInfoList({QStringLiteral("*.ldb")}, QDir::Files);
-    auto dbSize = std::accumulate(dbFiles.begin(), dbFiles.end(), qint64(), [] (auto size, const auto &dbFile) { return size + dbFile.size(); });
+    auto dbFiles = dbDir.entryInfoList({ QStringLiteral("*.ldb") }, QDir::Files);
+    auto dbSize = std::accumulate(dbFiles.begin(), dbFiles.end(), qint64(), [](auto size, const auto &dbFile) { return size + dbFile.size(); });
     stats[QStringLiteral("stConfigDir")] = m_syncthingConfigDir;
     stats[QStringLiteral("stDataDir")] = m_syncthingDataDir;
     stats[QStringLiteral("stDbSize")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(dbSize)));
