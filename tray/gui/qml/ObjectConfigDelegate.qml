@@ -39,7 +39,6 @@ DelegateChooser {
                     onClicked: App.copyText(modelData.value)
                 }
                 HelpButton {
-                    id: helpButton
                     configCategory: objectConfigPage.configCategory
                 }
             }
