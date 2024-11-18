@@ -492,7 +492,7 @@ ApplicationWindow {
         }
     }
     onClosing: (event) => {
-        if (!window.forceClose) {
+        if (!window.forceClose && App.launcher.running) {
             event.accepted = false;
             closeDialog.open();
         }
