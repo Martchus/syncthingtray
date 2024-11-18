@@ -532,7 +532,7 @@ DelegateChooser {
                     configCategory: objectConfigPage.configCategory
                 }
             }
-            onClicked: modelData.enabled && fileDlg.open()
+            onClicked: (modelData.enabled ?? true) && fileDlg.open()
             FileDialog {
                 id: fileDlg
                 title: modelData.label
@@ -599,7 +599,7 @@ DelegateChooser {
                     configCategory: objectConfigPage.configCategory
                 }
             }
-            onClicked: modelData.enabled && folderDlg.open()
+            onClicked: (modelData.enabled ?? true) && folderDlg.open()
             FolderDialog {
                 id: folderDlg
                 title: modelData.label
