@@ -384,7 +384,7 @@ ApplicationWindow {
                     currentPage.hasUnsavedChanges = false;
                 } else {
                     discardChangesDialog.open();
-                    return false;
+                    return true;
                 }
             }
             return currentPage.back?.() || currentChild.pop?.() || pageStack.back();
