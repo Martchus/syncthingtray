@@ -91,6 +91,7 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     m_pathSeparator = m_connection.pathSeparator().size() == 1 ? m_connection.pathSeparator().front() : QDir::separator();
     m_ignoreAllByDefaultPattern = m_pathSeparator + QStringLiteral("**");
     m_root->name = dir.displayName();
+    m_root->existsInDb = true;
     m_root->modificationTime = dir.lastFileTime;
     m_root->size = dir.globalStats.bytes;
     m_root->type = SyncthingItemType::Directory;
@@ -222,13 +223,17 @@ QString SyncthingFileModel::computeIgnorePatternDiff()
 
 QString SyncthingFileModel::availabilityNote(const SyncthingItem *item) const
 {
-    if (item->existsInDb && item->existsLocally) {
+    if (item->existsInDb.value_or(false) && item->existsLocally.value_or(false)) {
         return tr("Exists locally and globally");
-    } else if (item->existsInDb) {
+    } else if (item->existsInDb.value_or(false) && item->existsLocally.has_value()) {
         return tr("Exists only globally");
-    } else if (item->existsLocally) {
+    } else if (item->existsLocally.value_or(false) && item->existsInDb.has_value()) {
         return tr("Exists only locally");
-    } else {
+    } else if (item->existsInDb.value_or(false)) {
+        return tr("Exists globally and perhaps locally");
+    } else if (item->existsLocally.value_or(false)) {
+        return tr("Exists locally and perhaps globally");
+    }  else {
         return tr("Does not exist");
     }
 }
@@ -390,7 +395,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
             }
             break;
         case 4: {
-            auto &icon = m_statusIcons[(item->existsInDb ? 0x01 : 0x00) | (item->existsLocally ? 0x02 : 0x00)];
+            auto &icon = m_statusIcons[(item->existsInDb.value_or(false) ? 0x01 : 0x00) | (item->existsLocally.value_or(false) ? 0x02 : 0x00)];
             if (icon.isNull()) {
                 static constexpr auto size = 16;
                 icon = QPixmap(size * 2, size);
@@ -398,11 +403,11 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
                 auto &manager = IconManager::instance();
                 auto painter = QPainter(&icon);
                 auto left = 0;
-                if (item->existsInDb) {
+                if (item->existsInDb.value_or(false)) {
                     manager.renderForkAwesomeIcon(QtForkAwesome::Icon::Globe, &painter, QRect(left, 0, size, size));
                 }
                 left += size;
-                if (item->existsLocally) {
+                if (item->existsLocally.value_or(false)) {
                     manager.renderForkAwesomeIcon(QtForkAwesome::Icon::Home, &painter, QRect(left, 0, size, size));
                 }
             }
@@ -412,7 +417,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         break;
     }
     case Qt::ForegroundRole:
-        if (!item->existsInDb) {
+        if (!item->existsInDb.value_or(false)) {
             return Colors::gray(m_brightColors);
         }
         break;
@@ -437,7 +442,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
     case SizeRole:
         return static_cast<qsizetype>(item->size);
     case ModificationTimeRole:
-        return QString::fromStdString(item->modificationTime.toString());
+        return item->modificationTime.isNull() ? QString() : QString::fromStdString(item->modificationTime.toString());
     case PathRole:
         return item->isFilesystemItem() ? item->path : QString();
     case Actions: {
@@ -496,7 +501,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
             return QString();
         }
         auto res
-            = QString(availabilityNote(item) % QStringLiteral("\nLast modified on: ") % QString::fromStdString(item->modificationTime.toString()));
+            = QString(availabilityNote(item) % (item->modificationTime.isNull() ? QString() : QStringLiteral("\nLast modified on: ") % QString::fromStdString(item->modificationTime.toString())));
         if (item->ignorePattern == SyncthingItem::ignorePatternNotInitialized) {
             matchItemAgainstIgnorePatterns(*item);
         }
@@ -925,7 +930,6 @@ void SyncthingFileModel::lookupDirLocally(const QDir &dir, SyncthingFileModel::L
         const auto entryName = entry.fileName();
         auto &item = items[entryName];
         item.name = entryName;
-        item.existsInDb = false;
         item.existsLocally = true;
         item.size = static_cast<std::size_t>(entry.size());
         item.modificationTime = DateTime::unixEpochStart() + TimeSpan(TimeSpan::ticksPerMillisecond * entry.lastModified().toMSecsSinceEpoch());
@@ -979,7 +983,7 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
     }
 
     // query directory entries from Syncthing database
-    if (rootItem->existsInDb) {
+    if (rootItem->existsInDb.value_or(false)) {
         m_pendingRequest = m_connection.browse(
             m_dirId, path, 1, [this, populated](std::vector<std::unique_ptr<SyncthingItem>> &&items, QString &&errorMessage) mutable {
                 m_pendingRequest.reply = nullptr;
@@ -1000,6 +1004,7 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
                 if (!items.empty()) {
                     const auto last = items.size() - 1;
                     for (auto &item : items) {
+                        item->existsInDb = true;
                         item->parent = refreshedItem;
                     }
                     populatePath(refreshedItem->path, m_pathSeparator, items);
@@ -1045,7 +1050,7 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
         lookupDirLocally(dir, *items);
         return items;
     });
-    if (!rootItem->existsInDb) {
+    if (!rootItem->existsInDb.value_or(false)) {
         m_pendingRequest.refreshedIndex = rootIndex;
         m_localItemLookup.setFuture(m_pendingRequest.localLookup);
     }
@@ -1128,14 +1133,15 @@ void SyncthingFileModel::insertLocalItems(const QModelIndex &refreshedIndex, Syn
     // get refreshed index/item
     auto *const refreshedItem = reinterpret_cast<SyncthingItem *>(refreshedIndex.internalPointer());
     auto &items = refreshedItem->children;
+    const auto hasDbItems = !items.empty() && items.front()->type != SyncthingItemType::Error;
     const auto previouslyPopulated = refreshedItem->childrenPopulated;
     const auto previousChildCount = items.size();
-    if (!refreshedItem->existsInDb) {
+    if (!refreshedItem->existsInDb.value_or(false)) {
         refreshedItem->childrenPopulated = true;
     }
 
     // clear loading item
-    if (!refreshedItem->existsInDb && !items.empty()) {
+    if (!refreshedItem->existsInDb.value_or(false) && !items.empty()) {
         const auto last = items.size() - 1;
         beginRemoveRows(refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
         items.clear();
@@ -1147,13 +1153,16 @@ void SyncthingFileModel::insertLocalItems(const QModelIndex &refreshedIndex, Syn
     auto row = index < std::numeric_limits<int>::max() ? static_cast<int>(index) : std::numeric_limits<int>::max();
     auto firstRow = row;
     for (auto &[localItemName, localItem] : localItems) {
-        if (localItem.existsInDb) {
+        if (localItem.existsInDb.value_or(false)) {
             continue;
         }
         beginInsertRows(refreshedIndex, row, row);
         auto &item = items.emplace_back(std::make_unique<SyncthingItem>(std::move(localItem)));
         item->parent = refreshedItem;
         item->index = localItem.index = index++;
+        if (hasDbItems) {
+            item->existsInDb = false;
+        }
         switch (refreshedItem->checked) {
         case Qt::Checked:
             if (m_recursiveSelectionEnabled) {

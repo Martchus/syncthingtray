@@ -91,9 +91,9 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItem {
     /// \brief Whether the item is "checked"; not set by default but might be set to flag an item for some mass-action.
     Qt::CheckState checked = Qt::Unchecked;
     /// \brief Whether the item is present in the Syncthing database.
-    bool existsInDb = true;
+    std::optional<bool> existsInDb;
     /// \brief Whether the item is present in the local file system.
-    bool existsLocally = false;
+    std::optional<bool> existsLocally;
 
     bool isFilesystemItem() const;
 };
