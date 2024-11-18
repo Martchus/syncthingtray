@@ -14,6 +14,7 @@ IconOnlyButton {
     CustomDialog {
         id: helpDlg
         title: modelData.label ?? helpButton.key
+        standardButtons: Dialog.NoButton
         contentItem: Label {
             text: helpButton.desc
             wrapMode: Text.WordWrap
