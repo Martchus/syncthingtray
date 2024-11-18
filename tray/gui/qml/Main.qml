@@ -419,6 +419,7 @@ ApplicationWindow {
         popupType: App.nativePopups ? Popup.Native : Popup.Item
         anchors.centerIn: Overlay.overlay
         parent: Overlay.overlay
+        width: parent.width - 20
         modal: true
         standardButtons: Dialog.Yes | Dialog.No
         title: window.title
@@ -471,6 +472,7 @@ ApplicationWindow {
         popupType: App.nativePopups ? Popup.Native : Popup.Item
         anchors.centerIn: Overlay.overlay
         parent: Overlay.overlay
+        width: parent.width - 20
         modal: true
         standardButtons: Dialog.Yes | Dialog.No
         title: window.title
@@ -485,6 +487,7 @@ ApplicationWindow {
         }
     }
     onClosing: (event) => {
+
         if (!window.forceClose && App.launcher.running) {
             event.accepted = false;
             closeDialog.open();
