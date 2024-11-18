@@ -212,6 +212,8 @@ const QString &App::status()
             return m_status.emplace(tr("Saving configuration …"));
         } else if (const auto errorCount = m_connection.errors().size()) {
             return m_status.emplace(tr("There are %n notification(s)/error(s).", nullptr, static_cast<int>(errorCount)));
+        } else if (const auto internalErrorCount = m_internalErrors.size()) {
+            return m_status.emplace(tr("There are %n Syncthing API error(s).", nullptr, static_cast<int>(internalErrorCount)));
         }
         return m_status.emplace();
     }
@@ -457,6 +459,7 @@ void App::handleConnectionError(
     const auto emitHasInternalErrorsChanged = m_internalErrors.isEmpty();
     m_internalErrors.emplace_back(QVariant::fromValue(std::move(error)));
     if (emitHasInternalErrorsChanged) {
+        invalidateStatus();
         emit hasInternalErrorsChanged();
     }
 }
@@ -690,6 +693,7 @@ void App::clearInternalErrors()
         "io/github/martchus/syncthingtray/SyncthingService", "cancelExtraNotification", "(II)V", 3, 3 + m_internalErrors.size());
 #endif
     m_internalErrors.clear();
+    invalidateStatus();
     emit hasInternalErrorsChanged();
 }
 
