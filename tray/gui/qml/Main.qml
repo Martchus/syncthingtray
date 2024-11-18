@@ -21,7 +21,7 @@ ApplicationWindow {
         Material.theme: Material.Dark
         ColumnLayout {
             anchors.fill: parent
-            anchors.leftMargin: flickable.anchors.leftMargin
+            anchors.leftMargin: pageStack.anchors.leftMargin
             RowLayout {
                 visible: App.status.length !== 0
                 ToolButton {
@@ -210,10 +210,9 @@ ApplicationWindow {
         readonly property double initialPosition: interactive ? 0 : 1
         readonly property int effectiveWidth: !interactive ? width : 0
 
-        ListView {
+        CustomListView {
             id: drawerListView
             anchors.fill: parent
-            keyNavigationEnabled: true
             footer: ColumnLayout {
                 width: parent.width
                 ItemDelegate {
@@ -272,7 +271,6 @@ ApplicationWindow {
                     drawer.position = drawer.initialPosition;
                 }
             }
-            ScrollIndicator.vertical: ScrollIndicator { }
         }
     }
     footer: TabBar {
@@ -328,95 +326,90 @@ ApplicationWindow {
         }
     }
 
-    Flickable {
-        id: flickable
+    SwipeView {
+        id: pageStack
         anchors.fill: parent
         anchors.leftMargin: drawer.visible ? drawer.effectiveWidth : 0
+        currentIndex: 0
+        onCurrentIndexChanged: {
+            const newIndex = pageStack.currentIndex;
+            const indexHistoryLength = indexHistory.length;
+            if (indexHistoryLength > 1 && indexHistory[indexHistoryLength - 2] === newIndex) {
+                indexHistory.pop();
+            } else {
+                indexHistory.push(newIndex);
+            }
+            if (!goingBackAndForth) {
+                indexForward.splice(0, indexForward.length);
+            }
+            goingBackAndForth = false;
+            App.setCurrentControls(window.visible, newIndex);
+        }
 
-        SwipeView {
-            id: pageStack
-            anchors.fill: parent
-            currentIndex: 0
-            onCurrentIndexChanged: {
-                const newIndex = pageStack.currentIndex;
-                const indexHistoryLength = indexHistory.length;
-                if (indexHistoryLength > 1 && indexHistory[indexHistoryLength - 2] === newIndex) {
-                    indexHistory.pop();
+        DirsPage {
+            id: dirsPage
+        }
+        DevsPage {
+            id: devsPage
+        }
+        ChangesPage {
+            id: changesPage
+        }
+        WebViewPage {
+            id: webViewPage
+            active: pageStack.currentIndex === 3
+        }
+        AdvancedPage {
+            id: advancedPage
+        }
+        SettingsPage {
+            id: settingsPage
+        }
+
+        readonly property list<Item> children: [dirsPage, devsPage, changesPage, webViewPage, advancedPage, settingsPage]
+        readonly property var currentPage: {
+            const currentChild = children[currentIndex];
+            return currentChild.currentItem ?? currentChild;
+        }
+        readonly property var currentDepth: children[currentIndex]?.depth ?? 1
+        readonly property var currentActions: currentPage.actions ?? []
+        readonly property var currentExtraActions: currentPage.extraActions ?? []
+        function pop(force) {
+            const currentChild = children[currentIndex];
+            const currentPage = currentChild.currentItem ?? currentChild;
+            if (!force && currentPage.hasUnsavedChanges) {
+                const parentPage = currentPage.parentPage;
+                if (parentPage?.hasUnsavedChanges !== undefined) {
+                    parentPage.hasUnsavedChanges = true;
+                    currentPage.hasUnsavedChanges = false;
                 } else {
-                    indexHistory.push(newIndex);
-                }
-                if (!goingBackAndForth) {
-                    indexForward.splice(0, indexForward.length);
-                }
-                goingBackAndForth = false;
-                App.setCurrentControls(window.visible, newIndex);
-            }
-
-            DirsPage {
-                id: dirsPage
-            }
-            DevsPage {
-                id: devsPage
-            }
-            ChangesPage {
-                id: changesPage
-            }
-            WebViewPage {
-                id: webViewPage
-                active: pageStack.currentIndex === 3
-            }
-            AdvancedPage {
-                id: advancedPage
-            }
-            SettingsPage {
-                id: settingsPage
-            }
-
-            readonly property list<Item> children: [dirsPage, devsPage, changesPage, webViewPage, advancedPage, settingsPage]
-            readonly property var currentPage: {
-                const currentChild = children[currentIndex];
-                return currentChild.currentItem ?? currentChild;
-            }
-            readonly property var currentDepth: children[currentIndex]?.depth ?? 1
-            readonly property var currentActions: currentPage.actions ?? []
-            readonly property var currentExtraActions: currentPage.extraActions ?? []
-            function pop(force) {
-                const currentChild = children[currentIndex];
-                const currentPage = currentChild.currentItem ?? currentChild;
-                if (!force && currentPage.hasUnsavedChanges) {
-                    const parentPage = currentPage.parentPage;
-                    if (parentPage?.hasUnsavedChanges !== undefined) {
-                        parentPage.hasUnsavedChanges = true;
-                        currentPage.hasUnsavedChanges = false;
-                    } else {
-                        discardChangesDialog.open();
-                        return false;
-                    }
-                }
-                return currentPage.back?.() || currentChild.pop?.() || pageStack.back();
-            }
-            readonly property var indexHistory: [0]
-            readonly property var indexForward: []
-            property bool goingBackAndForth: false
-            function back() {
-                if (indexHistory.length < 1) {
+                    discardChangesDialog.open();
                     return false;
                 }
-                const currentIndex = indexHistory.pop();
-                const previousIndex = indexHistory.pop();
-                indexForward.push(currentIndex);
-                goingBackAndForth = true;
-                pageStack.setCurrentIndex(previousIndex);
-                return true;
             }
-            function forward() {
-                if (indexForward.length < 1) {
-                    return false;
-                }
-                goingBackAndForth = true;
-                pageStack.setCurrentIndex(indexForward.pop());
-                return true;
+            return currentPage.back?.() || currentChild.pop?.() || pageStack.back();
+        }
+        readonly property var indexHistory: [0]
+        readonly property var indexForward: []
+        property bool goingBackAndForth: false
+        function back() {
+            if (indexHistory.length < 1) {
+                return false;
             }
+            const currentIndex = indexHistory.pop();
+            const previousIndex = indexHistory.pop();
+            indexForward.push(currentIndex);
+            goingBackAndForth = true;
+            pageStack.setCurrentIndex(previousIndex);
+            return true;
+        }
+        function forward() {
+            if (indexForward.length < 1) {
+                return false;
+            }
+            goingBackAndForth = true;
+            pageStack.setCurrentIndex(indexForward.pop());
+            return true;
         }
     }
     Dialog {

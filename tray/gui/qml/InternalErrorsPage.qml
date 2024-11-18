@@ -18,14 +18,11 @@ Page {
             }
         }
     ]
-    ListView {
+    CustomListView {
         id: listView
         anchors.fill: parent
-        activeFocusOnTab: true
-        keyNavigationEnabled: true
         model: App.internalErrors()
         delegate: ErrorsDelegate {}
-        ScrollIndicator.vertical: ScrollIndicator { }
     }
     Connections {
         target: App

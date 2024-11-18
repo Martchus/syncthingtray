@@ -95,10 +95,9 @@ Page {
             }
         }
     }
-    ListView {
+    CustomListView {
         id: listView
         anchors.fill: parent
-        ScrollIndicator.vertical: ScrollIndicator { }
         model: delegateModel
     }
     Instantiator {

@@ -14,7 +14,7 @@ StackView {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        ListView {
+        CustomListView {
             id: listView
             anchors.fill: parent
             model: ListModel {
@@ -45,7 +45,6 @@ StackView {
                 text: label
                 onClicked: stackView.push("ObjectConfigPage.qml", {title: title, isDangerous: true, configObject: advancedPage.config[key], configCategory: `config-option-${key}`, stackView: stackView}, StackView.PushTransition)
             }
-            ScrollIndicator.vertical: ScrollIndicator { }
         }
 
         property var config: App.connection.rawConfig

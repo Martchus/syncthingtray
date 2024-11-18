@@ -15,7 +15,7 @@ StackView {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        ListView {
+        CustomListView {
             id: listView
             anchors.fill: parent
             model: ListModel {
@@ -86,7 +86,6 @@ StackView {
                 }
 
             }
-            ScrollIndicator.vertical: ScrollIndicator { }
         }
 
         FolderDialog {

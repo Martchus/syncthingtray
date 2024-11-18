@@ -8,7 +8,7 @@ Page {
     title: qsTr("Recent changes")
     Layout.fillWidth: true
     Layout.fillHeight: true
-    ListView {
+    CustomListView {
         id: mainView
         anchors.fill: parent
         model: DelegateModel {
@@ -65,6 +65,5 @@ Page {
                 required property var modelData
             }
         }
-        ScrollIndicator.vertical: ScrollIndicator { }
     }
 }

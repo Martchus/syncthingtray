@@ -14,13 +14,10 @@ Page {
             onTriggered: (source) => App.connection.requestClearingErrors()
         }
     ]
-    ListView {
+    CustomListView {
         id: listView
         anchors.fill: parent
-        activeFocusOnTab: true
-        keyNavigationEnabled: true
         delegate: ErrorsDelegate {}
-        ScrollIndicator.vertical: ScrollIndicator { }
     }
 
     required property list<Action> actions

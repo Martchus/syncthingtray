@@ -7,10 +7,9 @@ import Main
 
 Page {
     id: objectConfigPage
-    ListView {
+    CustomListView {
         id: objectListView
         anchors.fill: parent
-        ScrollIndicator.vertical: ScrollIndicator { }
         model: ListModel {
             id: listModel
             dynamicRoles: true

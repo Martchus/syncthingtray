@@ -281,6 +281,7 @@ if (QUICK_GUI)
         gui/qml/ArrayElementButtons.qml
         gui/qml/ChangesPage.qml
         gui/qml/CopyPasteButtons.qml
+        gui/qml/CustomListView.qml
         gui/qml/DetailsListView.qml
         gui/qml/DevConfigPage.qml
         gui/qml/DevDelegate.qml

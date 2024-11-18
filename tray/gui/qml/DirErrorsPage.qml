@@ -9,7 +9,7 @@ Page {
     Component.onCompleted: App.loadDirErrors(dirId, listView)
     ScrollView {
         anchors.fill: parent
-        ListView {
+        CustomListView {
             id: listView
             width: parent.width
             enabled: false
