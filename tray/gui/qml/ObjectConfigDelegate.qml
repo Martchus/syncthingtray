@@ -152,14 +152,15 @@ DelegateChooser {
                             onAccepted: optionsDlg.accept()
                             Component.onCompleted: {
                                 //popup.popupType = Popup.Native;
-                                editText = textForValue(modelData.value);
+                                editText = textOfValue(modelData.value);
+                                currentIndex = indexOfValue(modelData.value);
                             }
                             readonly property var currentOption: modelData.options.get(optionsValue.currentIndex)
                             readonly property string currentValueOrEditText: {
                                 const currentOption = optionsValue.currentOption;
                                 return (currentOption?.label === optionsValue.editText) ? currentOption?.value : optionsValue.editText;
                             }
-                            function textForValue(value) {
+                            function textOfValue(value) {
                                 const displayText = optionsValue.textAt(optionsValue.indexOfValue(value));
                                 return displayText.length === 0 ? value : displayText;
                             }
@@ -183,7 +184,7 @@ DelegateChooser {
                         changeHandler(objectConfigPage.configObject);
                     }
                 }
-                onRejected: optionsValue.editText = optionsValue.textForValue(objectConfigPage.configObject[modelData.key])
+                onRejected: optionsValue.editText = optionsValue.textOfValue(objectConfigPage.configObject[modelData.key])
                 onHelpRequested: optionsHelpButton.clicked()
             }
             required property var modelData
