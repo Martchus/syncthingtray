@@ -524,74 +524,74 @@
         <translation>Im lokalen Dateibrowser öffnen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="751"/>
+        <location filename="../syncthingfilemodel.cpp" line="752"/>
         <source>Select items to sync/ignore</source>
         <translation>Elemente zum Synchronisieren/Ignorieren auswählen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="757"/>
+        <location filename="../syncthingfilemodel.cpp" line="758"/>
         <source>Discard staged changes</source>
         <translation>Vorgemerkte Änderungen verwerfen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="767"/>
+        <location filename="../syncthingfilemodel.cpp" line="768"/>
         <source>Discard selection and staged changes</source>
         <translation>Vorgemerkte Änderungen und Auswahl verwerfen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="780"/>
+        <location filename="../syncthingfilemodel.cpp" line="781"/>
         <source>Ignore selected items (and their children)</source>
         <translation>Ausgewählte Elemente ignorieren (und untergeordnete Elemente)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="785"/>
+        <location filename="../syncthingfilemodel.cpp" line="786"/>
         <source>Include selected items (and their children)</source>
         <translation>Ausgewählte Elemente synchronisieren (und untergeordnete Elemente)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="792"/>
+        <location filename="../syncthingfilemodel.cpp" line="793"/>
         <source>Include all items by default</source>
         <translation>Alle Elemente standardmäßig synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="792"/>
+        <location filename="../syncthingfilemodel.cpp" line="793"/>
         <source>Ignore all items by default</source>
         <translation>Alle Elemente standardmäßig ignorieren</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="822"/>
+        <location filename="../syncthingfilemodel.cpp" line="823"/>
         <source>Remove ignore patterns matching against selected items (may affect other items as well)</source>
         <translation>Lösche Ignoriermuster die mit ausgewählten Elementen übereinstimmen (kann auch andere Elemente betreffen)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="850"/>
+        <location filename="../syncthingfilemodel.cpp" line="851"/>
         <source>Review and apply staged changes</source>
         <translation>Vorgemerkte Änderungen überprüfen und anwenden</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="857"/>
+        <location filename="../syncthingfilemodel.cpp" line="858"/>
         <source>Do you want to apply the following changes?</source>
         <translation>Sollen die folgenden Änderungen angewandt werden?</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="865"/>
+        <location filename="../syncthingfilemodel.cpp" line="866"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Ignoriermuster können nicht gespeichert werden, da noch eine vorherige Abfrage in Gange ist.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="873"/>
+        <location filename="../syncthingfilemodel.cpp" line="874"/>
         <source>Unable to change ignore patterns:
 %1</source>
         <translation>Kann Ignoriermuster nicht speichern:
 %1</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="887"/>
+        <location filename="../syncthingfilemodel.cpp" line="888"/>
         <source>Ignore patterns have been changed.</source>
         <translation>Ignoriermuster wurden gespeichert.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1062"/>
+        <location filename="../syncthingfilemodel.cpp" line="1063"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Ignoriermuster können nicht abgefragt werden, da noch eine vorherige Abfrage in Gange ist.</translation>
     </message>

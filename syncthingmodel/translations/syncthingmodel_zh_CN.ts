@@ -462,73 +462,73 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="751"/>
+        <location filename="../syncthingfilemodel.cpp" line="752"/>
         <source>Select items to sync/ignore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="757"/>
+        <location filename="../syncthingfilemodel.cpp" line="758"/>
         <source>Discard staged changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="767"/>
+        <location filename="../syncthingfilemodel.cpp" line="768"/>
         <source>Discard selection and staged changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="780"/>
+        <location filename="../syncthingfilemodel.cpp" line="781"/>
         <source>Ignore selected items (and their children)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="785"/>
+        <location filename="../syncthingfilemodel.cpp" line="786"/>
         <source>Include selected items (and their children)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="792"/>
+        <location filename="../syncthingfilemodel.cpp" line="793"/>
         <source>Include all items by default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="792"/>
+        <location filename="../syncthingfilemodel.cpp" line="793"/>
         <source>Ignore all items by default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="822"/>
+        <location filename="../syncthingfilemodel.cpp" line="823"/>
         <source>Remove ignore patterns matching against selected items (may affect other items as well)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="850"/>
+        <location filename="../syncthingfilemodel.cpp" line="851"/>
         <source>Review and apply staged changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="857"/>
+        <location filename="../syncthingfilemodel.cpp" line="858"/>
         <source>Do you want to apply the following changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="865"/>
+        <location filename="../syncthingfilemodel.cpp" line="866"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="873"/>
+        <location filename="../syncthingfilemodel.cpp" line="874"/>
         <source>Unable to change ignore patterns:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="887"/>
+        <location filename="../syncthingfilemodel.cpp" line="888"/>
         <source>Ignore patterns have been changed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1062"/>
+        <location filename="../syncthingfilemodel.cpp" line="1063"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation type="unfinished"></translation>
     </message>
