@@ -233,7 +233,7 @@ QString SyncthingFileModel::availabilityNote(const SyncthingItem *item) const
         return tr("Exists globally and perhaps locally");
     } else if (item->existsLocally.value_or(false)) {
         return tr("Exists locally and perhaps globally");
-    }  else {
+    } else {
         return tr("Does not exist");
     }
 }
@@ -500,8 +500,9 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         default:
             return QString();
         }
-        auto res
-            = QString(availabilityNote(item) % (item->modificationTime.isNull() ? QString() : QStringLiteral("\nLast modified on: ") % QString::fromStdString(item->modificationTime.toString())));
+        auto res = QString(availabilityNote(item)
+            % (item->modificationTime.isNull() ? QString()
+                                               : QStringLiteral("\nLast modified on: ") % QString::fromStdString(item->modificationTime.toString())));
         if (item->ignorePattern == SyncthingItem::ignorePatternNotInitialized) {
             matchItemAgainstIgnorePatterns(*item);
         }
