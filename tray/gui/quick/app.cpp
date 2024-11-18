@@ -609,15 +609,21 @@ void App::invalidateAndroidIconCache()
     updateAndroidNotification();
 }
 
+QJniObject &App::makeAndroidIcon(const QIcon &icon)
+{
+    auto &cachedIcon = m_androidIconCache[&icon];
+    if (!cachedIcon.isValid()) {
+        cachedIcon = IconManager::makeAndroidBitmap(icon.pixmap(QSize(32, 32)).toImage());
+    }
+    return cachedIcon;
+}
+
 void App::updateAndroidNotification()
 {
     const auto title = QJniObject::fromString(m_connection.isConnected() ? m_statusInfo.statusText() : status());
     const auto text = QJniObject::fromString(m_statusInfo.additionalStatusText());
     static const auto subText = QJniObject::fromString(QString());
-    auto &icon = m_androidIconCache[&m_statusInfo.statusIcon()];
-    if (!icon.isValid()) {
-        icon = IconManager::makeAndroidBitmap(m_statusInfo.statusIcon().pixmap(QSize(32, 32)).toImage());
-    }
+    const auto &icon = makeAndroidIcon(m_statusInfo.statusIcon());
     QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateNotification",
         "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;)V", title.object(), text.object(), subText.object(),
         icon.object());
@@ -639,11 +645,7 @@ void App::updateSyncthingErrorsNotification(CppUtilities::DateTime when, const Q
     static const auto text = QJniObject::fromString(QString());
     const auto subText = QJniObject::fromString(m_syncthingErrors);
     static const auto page = QJniObject::fromString(QStringLiteral("connectionErrors"));
-    const auto &icons = trayIcons();
-    auto &icon = m_androidIconCache[&icons.notify];
-    if (!icon.isValid()) {
-        icon = IconManager::makeAndroidBitmap(icons.notify.pixmap(QSize(32, 32)).toImage());
-    }
+    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
     QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
         "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(),
         subText.object(), page.object(), icon.object(), 2);
@@ -662,10 +664,7 @@ void App::showInternalError(const InternalError &error)
     const auto subText = QJniObject::fromString(error.url.isEmpty() ? QString() : QStringLiteral("URL: ") + error.url.toString());
     const auto &icons = trayIcons();
     static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
-    auto &icon = m_androidIconCache[&icons.errorSync];
-    if (!icon.isValid()) {
-        icon = IconManager::makeAndroidBitmap(icons.errorSync.pixmap(QSize(32, 32)).toImage());
-    }
+    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
     QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
         "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(),
         subText.object(), page.object(), icon.object(), 3 + static_cast<int>(m_internalErrors.size()));

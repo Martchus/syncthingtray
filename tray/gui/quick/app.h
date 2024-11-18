@@ -210,6 +210,7 @@ private Q_SLOTS:
     void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
     void handleStateChanged(Qt::ApplicationState state);
 #ifdef Q_OS_ANDROID
+    QJniObject &makeAndroidIcon(const QIcon &icon);
     void invalidateAndroidIconCache();
     void updateAndroidNotification();
     void updateSyncthingErrorsNotification(CppUtilities::DateTime when, const QString &message);

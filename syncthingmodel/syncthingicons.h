@@ -139,6 +139,7 @@ struct LIB_SYNCTHING_MODEL_EXPORT ForkAwesomeIcons {
     QIcon refresh;
     QIcon clock;
     QIcon exchangeAlt;
+    QIcon exclamation;
     QIcon exclamationTriangle;
     QIcon cogs;
     QIcon link;

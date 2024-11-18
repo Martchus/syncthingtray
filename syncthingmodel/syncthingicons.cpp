@@ -320,6 +320,7 @@ ForkAwesomeIcons::ForkAwesomeIcons(QtForkAwesome::Renderer &renderer, const QCol
     , refresh(renderer.pixmap(QtForkAwesome::Icon::Refresh, size, color))
     , clock(renderer.pixmap(QtForkAwesome::Icon::ClockO, size, color))
     , exchangeAlt(renderer.pixmap(QtForkAwesome::Icon::Exchange, size, color))
+    , exclamation(renderer.pixmap(QtForkAwesome::Icon::Exclamation, size, color))
     , exclamationTriangle(renderer.pixmap(QtForkAwesome::Icon::ExclamationTriangle, size, color))
     , cogs(renderer.pixmap(QtForkAwesome::Icon::Cogs, size, color))
     , link(renderer.pixmap(QtForkAwesome::Icon::Link, size, color))
