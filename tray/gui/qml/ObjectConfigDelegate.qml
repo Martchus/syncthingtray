@@ -76,13 +76,10 @@ DelegateChooser {
                 }
             }
             onClicked: stringDlg.visible = true
-            Dialog {
+            CustomDialog {
                 id: stringDlg
-                popupType: App.nativePopups ? Popup.Native : Popup.Item
-                anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
-                modal: true
                 width: parent.width - 20
                 contentItem: RowLayout {
                     TextField {
@@ -133,13 +130,10 @@ DelegateChooser {
                 }
             }
             onClicked: optionsDlg.visible = true
-            Dialog {
+            CustomDialog {
                 id: optionsDlg
-                popupType: App.nativePopups ? Popup.Native : Popup.Item
-                anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
-                modal: true
                 width: parent.width - 20
                 contentItem: ScrollView {
                     id: optionsScrollView
@@ -247,15 +241,10 @@ DelegateChooser {
                                     icon.source: App.faUrlBase + (deviceEntry.isEncryptionEnabled ? "lock" : "unlock")
                                     onClicked: encryptionPasswordDlg.open()
                                 }
-                                Dialog {
+                                CustomDialog {
                                     id: encryptionPasswordDlg
-                                    popupType: App.nativePopups ? Popup.Native : Popup.Item
-                                    anchors.centerIn: Overlay.overlay
-                                    parent: Overlay.overlay
                                     title: qsTr("Set encryption password for sharing with \"%1\"").arg(deviceNameOrIdLabel.text)
                                     standardButtons: objectConfigPage.standardButtons
-                                    modal: true
-                                    width: parent.width - 20
                                     contentItem: RowLayout {
                                         TextField {
                                             id: encryptionKeyValue
@@ -357,13 +346,10 @@ DelegateChooser {
                 }
             }
             onClicked: numberDlg.visible = true
-            Dialog {
+            CustomDialog {
                 id: numberDlg
-                popupType: App.nativePopups ? Popup.Native : Popup.Item
-                anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
-                modal: true
                 width: parent.width - 20
                 contentItem: TextField {
                     id: editedNumberValue
@@ -538,12 +524,10 @@ DelegateChooser {
                 title: modelData.label
                 onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, App.resolveUrl(fileDlg.selectedFile))
             }
-            Dialog {
+            CustomDialog {
                 id: manualFileDlg
-                anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
-                modal: true
                 width: parent.width - 20
                 contentItem: TextField {
                     id: editedFileValue
@@ -606,13 +590,10 @@ DelegateChooser {
                 currentFolder: encodeURIComponent(folderpathValue.text)
                 onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, App.resolveUrl(folderDlg.selectedFolder))
             }
-            Dialog {
+            CustomDialog {
                 id: manualFolderDlg
-                popupType: App.nativePopups ? Popup.Native : Popup.Item
-                anchors.centerIn: Overlay.overlay
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
-                modal: true
                 width: parent.width - 20
                 contentItem: TextField {
                     id: editedFolderValue

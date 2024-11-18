@@ -26,13 +26,8 @@ ObjectConfigPage {
         }
     ]
 
-    Dialog {
+    CustomDialog {
         id: removeDialog
-        popupType: App.nativePopups ? Popup.Native : Popup.Item
-        anchors.centerIn: Overlay.overlay
-        parent: Overlay.overlay
-        modal: true
-        standardButtons: Dialog.Yes | Dialog.No
         contentItem: ColumnLayout {
             Label {
                 Layout.fillWidth: true

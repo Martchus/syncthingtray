@@ -412,16 +412,8 @@ ApplicationWindow {
             return true;
         }
     }
-    Dialog {
+    CustomDialog {
         id: discardChangesDialog
-        Material.primary: Material.LightBlue
-        Material.accent: Material.LightBlue
-        popupType: App.nativePopups ? Popup.Native : Popup.Item
-        anchors.centerIn: Overlay.overlay
-        parent: Overlay.overlay
-        width: parent.width - 20
-        modal: true
-        standardButtons: Dialog.Yes | Dialog.No
         title: window.title
         contentItem: Label {
             Layout.fillWidth: true
@@ -465,16 +457,8 @@ ApplicationWindow {
     }
 
     // avoid closing app (TODO: allow to keep Syncthing running in the background)
-    Dialog {
+    CustomDialog {
         id: closeDialog
-        Material.primary: Material.LightBlue
-        Material.accent: Material.LightBlue
-        popupType: App.nativePopups ? Popup.Native : Popup.Item
-        anchors.centerIn: Overlay.overlay
-        parent: Overlay.overlay
-        width: parent.width - 20
-        modal: true
-        standardButtons: Dialog.Yes | Dialog.No
         title: window.title
         contentItem: Label {
             Layout.fillWidth: true

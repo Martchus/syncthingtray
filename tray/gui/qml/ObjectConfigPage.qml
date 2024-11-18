@@ -44,14 +44,10 @@ Page {
             objectConfigPage: objectConfigPage
         }
     }
-    Dialog {
+    CustomDialog {
         id: newValueDialog
-        popupType: App.nativePopups ? Popup.Native : Popup.Item
-        anchors.centerIn: Overlay.overlay
         title: qsTr("Add new value")
         standardButtons: Dialog.Ok | Dialog.Cancel
-        modal: true
-        width: parent.width - 20
         contentItem: GridLayout {
             columns: 2
             Label {

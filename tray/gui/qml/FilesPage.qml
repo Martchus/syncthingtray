@@ -108,13 +108,8 @@ Page {
         }
         onObjectAdded: (index, object) => page.modelActions.splice(index, 0, object)
     }
-    Dialog {
+    CustomDialog {
         id: confirmActionDialog
-        popupType: App.nativePopups ? Popup.Native : Popup.Item
-        anchors.centerIn: Overlay.overlay
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        width: parent.width - 20
-        height: parent.height - 20
         contentItem: ColumnLayout {
             Label {
                 id: messageLabel

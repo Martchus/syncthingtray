@@ -4,12 +4,8 @@ import QtQuick.Controls
 
 import Main
 
-Dialog {
+CustomDialog {
     id: aboutDialog
-    popupType: App.nativePopups ? Popup.Native : Popup.Item
-    anchors.centerIn: Overlay.overlay
-    parent: Overlay.overlay
-    modal: true
     width: Math.min(parent.width - 20, 400)
     focus: true
     standardButtons: Dialog.Ok

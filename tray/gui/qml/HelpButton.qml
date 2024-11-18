@@ -11,14 +11,9 @@ IconOnlyButton {
     icon.source: App.faUrlBase + "question"
     onClicked: helpButton.desc.length > 0 ? helpDlg.open() : helpButton.openSyncthingDocs()
 
-    Dialog {
+    CustomDialog {
         id: helpDlg
-        popupType: App.nativePopups ? Popup.Native : Popup.Item
-        parent: Overlay.overlay
-        anchors.centerIn: Overlay.overlay
         title: modelData.label ?? helpButton.key
-        modal: true
-        width: parent.width - 20
         contentItem: Label {
             text: helpButton.desc
             wrapMode: Text.WordWrap
