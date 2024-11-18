@@ -42,6 +42,7 @@ Page {
             }
         }
         delegate: ObjectConfigDelegate {
+            objectConfigPage: objectConfigPage
         }
     }
     Dialog {
@@ -84,6 +85,7 @@ Page {
     property var childObjectTemplate: configTemplates[path]
     property bool canAdd: Array.isArray(configObject) && childObjectTemplate !== undefined
     property bool isDangerous: false
+    property bool hasUnsavedChanges: false
     property string itemLabel
     property string path: ""
     property string configCategory
@@ -140,6 +142,7 @@ Page {
 
     function updateValue(index, key, value) {
         objectConfigPage.configObject[key] = value;
+        objectConfigPage.hasUnsavedChanges = true;
         listModel.setProperty(index, "value", value);
         if (Array.isArray(objectConfigPage.parentPage?.configObject) && objectConfigPage.objectNameLabel?.labelKey === key) {
             objectConfigPage.title = value;
@@ -159,6 +162,7 @@ Page {
             const swapObj = objectConfigPage.configObject[swapIndex];
             objectConfigPage.configObject[swapIndex] = obj;
             objectConfigPage.configObject[index] = swapObj;
+            objectConfigPage.hasUnsavedChanges = true;
             listModel.move(index, swapIndex, 1);
             listModel.set(index, {index: index, key: index});
             listModel.set(swapIndex, {index: swapIndex, key: swapIndex});
@@ -178,6 +182,7 @@ Page {
         for (let i = index, end = listModel.count; i !== end; ++i) {
             listModel.set(i, {index: i, key: i});
         }
+        objectConfigPage.hasUnsavedChanges = true;
     }
 
     function addObject(key, object) {
@@ -191,6 +196,7 @@ Page {
                 }
             } else {
                 App.showError(qsTr("Unable to add %1 because specified index is invalid.").arg(typeof object));
+                return;
             }
         } else {
             if (typeof key === "string" && key !== "" && objectConfigPage.configObject[key] === undefined) {
@@ -198,8 +204,10 @@ Page {
                 listModel.append(objectConfigPage.makeConfigRow([key, object], listModel.count))
             } else {
                 App.showError(qsTr("Unable to add %1 because specified key is invalid.").arg(typeof object));
+                return;
             }
         }
+        objectConfigPage.hasUnsavedChanges = true;
     }
 
     function disableInitialProperties() {

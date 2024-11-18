@@ -313,14 +313,17 @@ DelegateChooser {
                 const index = devices.findIndex((device) => device.deviceID === deviceID);
                 if (enabled && index < 0) {
                     devices.push({deviceID: deviceID, encryptionPassword: "", introducedBy: ""});
+                    objectConfigPage.hasUnsavedChanges = true;
                 } else if (!enabled && index > 0) {
                     devices.splice(index, 1);
+                    objectConfigPage.hasUnsavedChanges = true;
                 }
             }
             function setDeviceProperty(deviceID, key, value) {
                 const device = findDevice(deviceID);
                 if (device !== undefined) {
                     device[key] = value;
+                    objectConfigPage.hasUnsavedChanges = true;
                 }
             }
         }
@@ -449,7 +452,10 @@ DelegateChooser {
                 Switch {
                     id: booleanSwitch
                     checked: modelData.value
-                    onCheckedChanged: objectConfigPage.configObject[modelData.key] = booleanSwitch.checked
+                    onCheckedChanged: {
+                        objectConfigPage.configObject[modelData.key] = booleanSwitch.checked;
+                        objectConfigPage.hasUnsavedChanges = true;
+                    }
                 }
                 ArrayElementButtons {
                     page: objectConfigPage
@@ -620,4 +626,5 @@ DelegateChooser {
             required property var modelData
         }
     }
+    required property var objectConfigPage
 }

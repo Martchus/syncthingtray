@@ -380,9 +380,19 @@ ApplicationWindow {
             readonly property var currentDepth: children[currentIndex]?.depth ?? 1
             readonly property var currentActions: currentPage.actions ?? []
             readonly property var currentExtraActions: currentPage.extraActions ?? []
-            function pop() {
+            function pop(force) {
                 const currentChild = children[currentIndex];
                 const currentPage = currentChild.currentItem ?? currentChild;
+                if (!force && currentPage.hasUnsavedChanges) {
+                    const parentPage = currentPage.parentPage;
+                    if (parentPage?.hasUnsavedChanges !== undefined) {
+                        parentPage.hasUnsavedChanges = true;
+                        currentPage.hasUnsavedChanges = false;
+                    } else {
+                        discardChangesDialog.open();
+                        return false;
+                    }
+                }
                 return currentPage.back?.() || currentChild.pop?.() || pageStack.back();
             }
             readonly property var indexHistory: [0]
@@ -408,6 +418,23 @@ ApplicationWindow {
                 return true;
             }
         }
+    }
+    Dialog {
+        id: discardChangesDialog
+        Material.primary: Material.LightBlue
+        Material.accent: Material.LightBlue
+        popupType: App.nativePopups ? Popup.Native : Popup.Item
+        anchors.centerIn: Overlay.overlay
+        parent: Overlay.overlay
+        modal: true
+        standardButtons: Dialog.Yes | Dialog.No
+        title: window.title
+        contentItem: Label {
+            Layout.fillWidth: true
+            text: qsTr("Do you really want to go back without applying changes?")
+            wrapMode: Text.WordWrap
+        }
+        onAccepted: pageStack.pop(true)
     }
 
     // handle global keyboard and mouse events

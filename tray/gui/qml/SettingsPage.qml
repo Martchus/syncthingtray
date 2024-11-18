@@ -105,6 +105,7 @@ StackView {
             }
             stackView.push("ObjectConfigPage.qml", {
                                title: title,
+                               parentPage: appSettingsPage,
                                configObject: Qt.binding(() => appSettingsPage.config[key]),
                                specialEntries: appSettingsPage.specialEntries[key] ?? [],
                                specialEntriesByKey: appSettingsPage.specialEntries,
@@ -141,6 +142,7 @@ StackView {
                 {key: "stDbSize", type: "readonly", label: qsTr("Syncthing database size")},
             ]
         })
+        property bool hasUnsavedChanges: false
         property list<Action> actions: [
             Action {
                 text: qsTr("Apply")

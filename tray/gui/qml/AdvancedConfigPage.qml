@@ -80,7 +80,7 @@ ObjectConfigPage {
         }
         advancedConfigPage.configObjectExists = true;
         advancedConfigPage.disableInitialProperties();
-        App.postSyncthingConfig(cfg);
+        App.postSyncthingConfig(cfg, (error) => (error.length === 0) && (advancedConfigPage.hasUnsavedChanges = false));
         return true;
     }
 
