@@ -213,9 +213,14 @@ private Q_SLOTS:
     QJniObject &makeAndroidIcon(const QIcon &icon);
     void invalidateAndroidIconCache();
     void updateAndroidNotification();
+    void updateExtraAndroidNotification(
+        const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id = 0);
+    void clearAndroidExtraNotifications(int firstId, int lastId = -1);
     void updateSyncthingErrorsNotification(CppUtilities::DateTime when, const QString &message);
     void clearSyncthingErrorsNotification();
     void showInternalError(const InternalError &error);
+    void showNewDevice(const QString &devId, const QString &message);
+    void showNewDir(const QString &devId, const QString &dirId, const QString &message);
     void handleAndroidIntent(const QString &page, bool fromNotification);
 #endif
 
@@ -238,6 +243,7 @@ private:
     StatusInfo m_statusInfo;
     QString m_syncthingErrors;
     QHash<const QIcon *, QJniObject> m_androidIconCache;
+    int m_androidNotificationId = 100000000;
 #endif
     Data::SyncthingConfig m_syncthingConfig;
     QString m_syncthingConfigDir;

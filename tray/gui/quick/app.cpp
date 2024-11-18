@@ -629,6 +629,19 @@ void App::updateAndroidNotification()
         icon.object());
 }
 
+void App::updateExtraAndroidNotification(
+    const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id)
+{
+    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(),
+        subText.object(), page.object(), icon.object(), id ? id : ++m_androidNotificationId);
+}
+
+void App::clearAndroidExtraNotifications(int firstId, int lastId)
+{
+    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "cancelExtraNotification", "(II)V", firstId, lastId);
+}
+
 void App::updateSyncthingErrorsNotification(CppUtilities::DateTime when, const QString &message)
 {
     auto whenString = when.toString();
@@ -646,15 +659,13 @@ void App::updateSyncthingErrorsNotification(CppUtilities::DateTime when, const Q
     const auto subText = QJniObject::fromString(m_syncthingErrors);
     static const auto page = QJniObject::fromString(QStringLiteral("connectionErrors"));
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
-    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(),
-        subText.object(), page.object(), icon.object(), 2);
+    updateExtraAndroidNotification(title, text, subText, page, icon, 2);
 }
 
 void App::clearSyncthingErrorsNotification()
 {
     m_syncthingErrors.clear();
-    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "cancelExtraNotification", "(II)V", 2, -1);
+    clearAndroidExtraNotifications(2, -1);
 }
 
 void App::showInternalError(const InternalError &error)
@@ -662,12 +673,29 @@ void App::showInternalError(const InternalError &error)
     const auto title = QJniObject::fromString(tr("Syncthing API error"));
     const auto text = QJniObject::fromString(error.message);
     const auto subText = QJniObject::fromString(error.url.isEmpty() ? QString() : QStringLiteral("URL: ") + error.url.toString());
-    const auto &icons = trayIcons();
     static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
-    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(),
-        subText.object(), page.object(), icon.object(), 3 + static_cast<int>(m_internalErrors.size()));
+    updateExtraAndroidNotification(title, text, subText, page, icon, 3 + m_internalErrors.size());
+}
+
+void App::showNewDevice(const QString &devId, const QString &message)
+{
+    const auto title = QJniObject::fromString(tr("Syncthing device wants to connect"));
+    const auto text = QJniObject::fromString(message);
+    static const auto subText = QJniObject::fromString(QString());
+    const auto page = QJniObject::fromString(QStringLiteral("newDev:") + devId);
+    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().networkWired);
+    updateExtraAndroidNotification(title, text, subText, page, icon);
+}
+
+void App::showNewDir(const QString &devId, const QString &dirId, const QString &message)
+{
+    const auto title = QJniObject::fromString(tr("Syncthing device wants to share folder"));
+    const auto text = QJniObject::fromString(message);
+    static const auto subText = QJniObject::fromString(QString());
+    const auto page = QJniObject::fromString(QStringLiteral("newFolder:") % devId % QChar(',') % dirId);
+    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().shareAlt);
+    updateExtraAndroidNotification(title, text, subText, page, icon);
 }
 
 void App::handleAndroidIntent(const QString &page, bool fromNotification)
@@ -688,8 +716,7 @@ void App::clearInternalErrors()
         return;
     }
 #ifdef Q_OS_ANDROID
-    QJniObject::callStaticMethod<void>(
-        "io/github/martchus/syncthingtray/SyncthingService", "cancelExtraNotification", "(II)V", 3, 3 + m_internalErrors.size());
+    clearAndroidExtraNotifications(3, 3 + m_internalErrors.size());
 #endif
     m_internalErrors.clear();
     invalidateStatus();
