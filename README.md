@@ -43,6 +43,7 @@ Syncthing Tray is known to work under:
 * macOS
 * Deepin Desktop Environment
 * Sway/Swaybar/Waybar (with caveats, see remarks below)
+* Android (still experimental and in initial development)
 
 This does *not* mean Syncthing Tray is actively tested on all those platforms or
 desktop environments.
@@ -69,8 +70,6 @@ by this, though.
 
 The section "[Known bugs and workarounds](#known-bugs-and-workarounds)" below contains further information
 and workarounds for certain caveats like the positioning issues under Wayland.
-
-There is also an *experimental* UI for mobile devices with Android integration.
 
 ## Features
 * Provides quick access to most frequently used features but does not intend to replace the official web-based UI
@@ -136,8 +135,8 @@ version of Syncthing or connect to an externally started Syncthing instance. It 
 directory for Syncthing so any Syncthing instance launched via the mobile UI will not interfere with existing setups.
 
 ## Installation and deinstallation
-Checkout [the website](https://martchus.github.io/syncthingtray/#downloads-section) for obtaining the executable.
-This README also lists more options and instructions for building from sources.
+Checkout [the website](https://martchus.github.io/syncthingtray/#downloads-section) for obtaining the executable
+or package. This README also lists more options and instructions for building from sources.
 
 If you are using one of the package manager options you should follow the usual workflow of that package manager.
 
@@ -203,6 +202,12 @@ Note that this only counts for Syncthing Tray. For Syncthing itself, checkout
 
 The Plasmoid is using the same configuration file but in addition also Plasma's configuration
 management for settings specific to a concrete instance of the Plasmoid.
+
+The experimental UI tailored for mobile devices is using a distinct configuration which is
+located under `~/.config/Martchus/Syncthing Tray` on GNU/Linux and
+`/storage/emulated/0/Android/data/io.github.martchus.syncthingtray` on Android and
+`%appdata%\Martchus\Syncthing Tray` on Windows. The configuration and database of Syncthing
+itself are also located within this directory when Syncthing is launched via the mobile UI.
 
 ## Configuring Plasmoid
 The Plasmoid requires installing Syncthing Tray via distribution-specific packaging. It is
@@ -328,6 +333,8 @@ Syncthing Tray provides two command-line interfaces:
       the release-section on GitHub) then Syncthing's own command-line interface is exposed via
       `syncthingtray` as well.
     * On Windows, you'll have to use the `syncthingtray-cli` executable to see output in the terminal.
+    * The experimental mobile UI can be launched on the desktop with the `qt-quick-gui` sub-command
+      when Syncthing Tray was built with support for it.
 
 ## Configuring hotkeys
 Use the same approach as for launching an arbitrary application via a hotkey in your graphical
@@ -464,7 +471,8 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities),
 [qtutilities](https://github.com/Martchus/qtutilities) and
 [qtforkawesome](https://github.com/Martchus/qtforkawesome) and is built the same way as these libraries.
-For basic instructions checkout the README file of [c++utilities](https://github.com/Martchus/cpp-utilities).
+For basic instructions and platform-specific details checkout the README file of
+[c++utilities](https://github.com/Martchus/cpp-utilities).
 
 To avoid building c++utilities/qtutilities/qtforkawesome separately, follow the instructions under
 "[Building this straight](#Building-this-straight)". There's also documentation about
@@ -472,14 +480,17 @@ To avoid building c++utilities/qtutilities/qtforkawesome separately, follow the 
 can be passed to CMake to influence the build.
 
 ### Further dependencies
-The following Qt modules are required (only the latest Qt 5 and Qt 6 version tested): `core`, `concurrent`,
-`network`, `dbus`, `gui`, `widgets`, `svg`, `webenginewidgets`/`webkitwidgets`
+The following Qt modules are required (only the latest Qt 5 and Qt 6 version tested): Qt Core, Qt Concurrent,
+Qt Network, Qt D-Bus, Qt Gui, Qt Widgets, Qt Svg, Qt WebEngineWidgets/WebKitWidgets
 
 It is recommended to use at least Qt 5.14 to avoid limitations in previous versions (see
 "[Known bugs](#known-bugs-and-workarounds)" section).
 
-The built-in web view and therefore the modules webenginewidgets/webkitwidgets are optional (see
+The built-in web view and therefore the modules WebEngineWidgets/WebKitWidgets are optional (see
 section "[Select Qt module for web view and JavaScript](#select-qt-module-for-web-view-and-javascript)").
+
+The Qt Quick UI needs at least Qt 6.7 and also needs additional Qt modules found in the Qt Declarative
+repository. Its built-in web view uses the Qt WebView module which is optional.
 
 To build the plugin for Dolphin integration KIO is also required. To skip building the plugin,
 add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
@@ -563,6 +574,7 @@ a test instance of Syncthing that does not affect a possibly existing Syncthing 
 * Add `-DWEBVIEW_PROVIDER:STRING=webkit/webengine/none` to the CMake arguments to use either Qt WebKit (works with
   'revived' version as well), Qt WebEngine or no web view at all. If no web view is used, the Syncthing web UI is
   opened in the default web browser. Otherwise the user can choose between the built-in web view and the web browser.
+  Note that this is only about the Qt Widgets based UI. The Qt Quick based UI uses Qt WebView if available.
 * Add `-DJS_PROVIDER:STRING=script/qml/none` to the CMake arguments to use either Qt Script, Qt QML or no JavaScript
   engine at all. If no JavaScript engine is used, the CLI does not support scripting configuration changes.
 
