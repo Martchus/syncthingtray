@@ -700,8 +700,6 @@ It is possible to turn on logging of the underlying library by setting environme
   [Qt documentation](https://doc.qt.io/qt-6/qtquickcontrols-styles.html) for available options
 * `QT_QUICK_CONTROLS_MATERIAL_THEME`/`QT_QUICK_CONTROLS_UNIVERSAL_THEME`: the theme to use in the Qt
   Quick GUI, the variable and options depend on the style being used
-* `QT_QUICK_CONTROLS_MOBILE=1`: let the Qt Quick GUI behave as on a mobile platform; useful for
-  testing the behavior in mobile mode without deployment on a real/emulated device
 * `LIB_SYNCTHING_CONNECTOR_SYNCTHING_CONFIG_DIR`: override the path where Syncthing Tray's backend expects
   Syncthing's `config.xml` file to be in
 * `SYNCTHINGTRAY_FAKE_FIRST_LAUNCH`: assume Syncthing Tray (or the Plasmoid) has been launched for the
