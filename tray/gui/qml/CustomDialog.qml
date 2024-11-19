@@ -4,8 +4,6 @@ import QtQuick.Controls
 import Main
 
 Dialog {
-    Material.primary: Material.LightBlue
-    Material.accent: Material.LightBlue
     parent: Overlay.overlay
     anchors.centerIn: Overlay.overlay
     popupType: App.nativePopups ? Popup.Native : Popup.Item
