@@ -578,13 +578,6 @@ a test instance of Syncthing that does not affect a possibly existing Syncthing 
 * Add `-DJS_PROVIDER:STRING=script/qml/none` to the CMake arguments to use either Qt Script, Qt QML or no JavaScript
   engine at all. If no JavaScript engine is used, the CLI does not support scripting configuration changes.
 
-#### Limitations of Qt WebEngine compared to Qt WebKit
-* When using a version of Qt older than 5.14 there is no way to allow only a particular self-signed certificate in Qt
-  WebEngine. That means any self-signed certificate is accepted! See: https://bugreports.qt.io/browse/QTBUG-51176
-* Qt WebEngine can not be built with GCC/mingw-w64 for Windows.
-* Security issues are not a concern because no other website than the Syncthing web UI is shown. Any external links
-  will be opened in the regular web browser anyways.
-
 ### Troubleshooting KDE integration
 All KDE integrations are provided for KDE 5 and 6. The Qt version you have built Syncthing Tray against
 must match the KDE version you want to build the integrations for.
