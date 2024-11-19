@@ -724,39 +724,6 @@ void SyncthingProcess::handleLeftoverProcesses()
 #endif
 }
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-bool SyncthingProcess::nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result)
-#else
-bool SyncthingProcess::nativeEventFilter(const QByteArray &eventType, void *message, long *result)
-#endif
-{
-    Q_UNUSED(result)
-#ifdef Q_OS_WINDOWS
-    if (eventType == "windows_generic_MSG") {
-        const auto *const msg = static_cast<MSG *>(message);
-        switch (msg->message) {
-        case WM_POWERBROADCAST:
-            switch (msg->wParam) {
-            case PBT_APMSUSPEND:
-                m_fallingAsleep = true;
-                break;
-            case PBT_APMRESUMEAUTOMATIC:
-                m_fallingAsleep = false;
-                m_lastWakeUp = DateTime::gmtNow();
-                break;
-            default:;
-            }
-            break;
-        default:;
-        }
-    }
-#else
-    Q_UNUSED(eventType)
-    Q_UNUSED(message)
-#endif
-    return false;
-}
-
 qint64 SyncthingProcess::bytesAvailable() const
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
@@ -922,5 +889,38 @@ qint64 SyncthingProcess::writeData(const char *data, qint64 len)
     return -1;
 }
 #endif
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+bool SyncthingProcess::nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result)
+#else
+bool SyncthingProcess::nativeEventFilter(const QByteArray &eventType, void *message, long *result)
+#endif
+{
+    Q_UNUSED(result)
+#ifdef Q_OS_WINDOWS
+    if (eventType == "windows_generic_MSG") {
+        const auto *const msg = static_cast<MSG *>(message);
+        switch (msg->message) {
+        case WM_POWERBROADCAST:
+            switch (msg->wParam) {
+            case PBT_APMSUSPEND:
+                m_fallingAsleep = true;
+                break;
+            case PBT_APMRESUMEAUTOMATIC:
+                m_fallingAsleep = false;
+                m_lastWakeUp = DateTime::gmtNow();
+                break;
+            default:;
+            }
+            break;
+        default:;
+        }
+    }
+#else
+    Q_UNUSED(eventType)
+    Q_UNUSED(message)
+#endif
+    return false;
+}
 
 } // namespace Data
