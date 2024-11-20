@@ -13,7 +13,7 @@ StackView {
         Layout.fillWidth: true
         Layout.fillHeight: true
         DevListView {
-            mainModel: App.devModel
+            mainModel: App.sortFilterDevModel
             stackView: stackView
         }
         property list<Action> actions: [

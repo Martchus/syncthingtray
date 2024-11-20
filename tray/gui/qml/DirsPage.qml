@@ -13,7 +13,7 @@ StackView {
         Layout.fillWidth: true
         Layout.fillHeight: true
         DirListView {
-            mainModel: App.dirModel
+            mainModel: App.sortFilterDirModel
             stackView: stackView
         }
         property list<Action> actions: [

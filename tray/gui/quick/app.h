@@ -9,6 +9,7 @@
 
 #include <syncthingmodel/syncthingdevicemodel.h>
 #include <syncthingmodel/syncthingdirectorymodel.h>
+#include <syncthingmodel/syncthingsortfiltermodel.h>
 #include <syncthingmodel/syncthingfilemodel.h>
 #include <syncthingmodel/syncthingrecentchangesmodel.h>
 
@@ -41,7 +42,9 @@ class App : public QObject {
     Q_PROPERTY(Data::SyncthingConnection *connection READ connection CONSTANT)
     Q_PROPERTY(Data::SyncthingNotifier *notifier READ notifier CONSTANT)
     Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel CONSTANT)
+    Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDirModel READ sortFilterDirModel CONSTANT)
     Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel CONSTANT)
+    Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDevModel READ sortFilterDevModel CONSTANT)
     Q_PROPERTY(Data::SyncthingRecentChangesModel *changesModel READ changesModel CONSTANT)
     Q_PROPERTY(Data::SyncthingLauncher *launcher READ launcher CONSTANT)
     Q_PROPERTY(QJsonObject settings READ settings WRITE setSettings NOTIFY settingsChanged)
@@ -76,9 +79,17 @@ public:
     {
         return &m_dirModel;
     }
+    Data::SyncthingSortFilterModel *sortFilterDirModel()
+    {
+        return &m_sortFilterDirModel;
+    }
     Data::SyncthingDeviceModel *devModel()
     {
         return &m_devModel;
+    }
+    Data::SyncthingSortFilterModel *sortFilterDevModel()
+    {
+        return &m_sortFilterDevModel;
     }
     Data::SyncthingRecentChangesModel *changesModel()
     {
@@ -233,7 +244,9 @@ private:
     Data::SyncthingConnection m_connection;
     Data::SyncthingNotifier m_notifier;
     Data::SyncthingDirectoryModel m_dirModel;
+    Data::SyncthingSortFilterModel m_sortFilterDirModel;
     Data::SyncthingDeviceModel m_devModel;
+    Data::SyncthingSortFilterModel m_sortFilterDevModel;
     Data::SyncthingRecentChangesModel m_changesModel;
     Data::SyncthingConnectionSettings m_connectionSettingsFromLauncher;
     Data::SyncthingConnectionSettings m_connectionSettingsFromConfig;
