@@ -92,11 +92,7 @@ App::App(bool insecure, QObject *parent)
     , m_sortFilterDevModel(&m_devModel)
     , m_changesModel(m_connection)
     , m_faUrlBase(QStringLiteral("image://fa/"))
-#if defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS)
-    , m_iconSize(8)
-#else
     , m_iconSize(16)
-#endif
     , m_tabIndex(-1)
     , m_insecure(insecure)
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
