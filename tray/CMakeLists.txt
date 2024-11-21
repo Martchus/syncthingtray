@@ -283,6 +283,7 @@ if (QUICK_GUI)
         gui/qml/CopyPasteButtons.qml
         gui/qml/CustomDialog.qml
         gui/qml/CustomListView.qml
+        gui/qml/CustomToolButton.qml
         gui/qml/DetailsListView.qml
         gui/qml/DevConfigPage.qml
         gui/qml/DevDelegate.qml

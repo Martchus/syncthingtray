@@ -24,18 +24,11 @@ ApplicationWindow {
             anchors.leftMargin: pageStack.anchors.leftMargin
             RowLayout {
                 visible: App.status.length !== 0
-                ToolButton {
+                CustomToolButton {
                     id: statusButton
                     visible: !busyIndicator.running
                     icon.source: App.faUrlBase + "exclamation-triangle"
-                    icon.width: App.iconSize
-                    icon.height: App.iconSize
                     text: App.hasInternalErrors || App.connection.hasErrors ? qsTr("Show notifications/errors") : qsTr("Syncthing backend status is problematic")
-                    display: AbstractButton.IconOnly
-                    ToolTip.text: text
-                    ToolTip.visible: hovered || pressed
-                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-                    onPressAndHold: App.performHapticFeedback()
                     onClicked: {
                         const hasInternalErrors = App.hasInternalErrors;
                         const hasConnectionErrors = App.connection.hasErrors;
@@ -87,50 +80,29 @@ ApplicationWindow {
                     wrapMode: Text.WordWrap
                     Layout.fillWidth: true
                 }
-                ToolButton {
+                CustomToolButton {
                     visible: !App.connection.connected
                     icon.source: App.faUrlBase + "refresh"
-                    icon.width: App.iconSize
-                    icon.height: App.iconSize
                     text: qsTr("Try to re-connect")
-                    display: AbstractButton.IconOnly
                     onClicked: App.connection.connect()
-                    onPressAndHold: App.performHapticFeedback()
-                    ToolTip.text: text
-                    ToolTip.visible: hovered || pressed
-                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                 }
             }
             StackLayout {
                 id: toolBarStack
                 currentIndex: searchTextArea.text.length > 0 || searchTextArea.activeFocus ? 1 : 0
                 RowLayout {
-                    ToolButton {
+                    CustomToolButton {
                         visible: !backButton.visible
                         icon.source: App.faUrlBase + "bars"
-                        icon.width: App.iconSize
-                        icon.height: App.iconSize
                         text: qsTr("Toggle menu")
-                        display: AbstractButton.IconOnly
                         onClicked: drawer.visible ? drawer.close() : drawer.open()
-                        onPressAndHold: App.performHapticFeedback()
-                        ToolTip.text: text
-                        ToolTip.visible: hovered || pressed
-                        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                     }
-                    ToolButton {
+                    CustomToolButton {
                         id: backButton
                         visible: pageStack.currentDepth > 1
                         icon.source: App.faUrlBase + "chevron-left"
-                        icon.width: App.iconSize
-                        icon.height: App.iconSize
                         text: qsTr("Back")
-                        display: AbstractButton.IconOnly
                         onClicked: pageStack.pop()
-                        onPressAndHold: App.performHapticFeedback()
-                        ToolTip.text: text
-                        ToolTip.visible: hovered || pressed
-                        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                     }
                     Label {
                         text: pageStack.currentPage.title
@@ -139,18 +111,11 @@ ApplicationWindow {
                         verticalAlignment: Qt.AlignVCenter
                         Layout.fillWidth: true
                     }
-                    ToolButton {
+                    CustomToolButton {
                         visible: pageStack?.currentPage?.model?.filterRegularExpressionPattern !== undefined
                         icon.source: App.faUrlBase + "search"
-                        icon.width: App.iconSize
-                        icon.height: App.iconSize
                         text: qsTr("Search")
-                        display: AbstractButton.IconOnly
                         onClicked: searchTextArea.focus = true
-                        onPressAndHold: App.performHapticFeedback()
-                        ToolTip.text: text
-                        ToolTip.visible: hovered || pressed
-                        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                     }
                     Repeater {
                         model: pageStack.currentActions
@@ -158,30 +123,20 @@ ApplicationWindow {
                             role: "enabled"
                             DelegateChoice {
                                 roleValue: true
-                                ToolButton {
+                                CustomToolButton {
                                     required property Action modelData
                                     enabled: modelData.enabled
                                     text: modelData.text
-                                    display: AbstractButton.IconOnly
-                                    ToolTip.visible: hovered || pressed
-                                    ToolTip.text: modelData.text
-                                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                                     icon.source: modelData.icon.source
-                                    icon.width: App.iconSize
-                                    icon.height: App.iconSize
                                     onClicked: modelData.trigger()
-                                    onPressAndHold: App.performHapticFeedback()
                                 }
                             }
                         }
                     }
-                    ToolButton {
+                    CustomToolButton {
                         visible: pageStack.currentExtraActions.length > 0
                         icon.source: App.faUrlBase + "ellipsis-v"
-                        icon.width: App.iconSize
-                        icon.height: App.iconSize
                         onClicked: extraActionsMenu.popup()
-                        onPressAndHold: App.performHapticFeedback()
                         Menu {
                             id: extraActionsMenu
                             popupType: App.nativePopups ? Popup.Native : Popup.Item
@@ -217,15 +172,10 @@ ApplicationWindow {
                             }
                         }
                     }
-                    ToolButton {
+                    CustomToolButton {
                         visible: pageStack?.currentPage?.model?.filterRegularExpressionPattern !== undefined
                         icon.source: App.faUrlBase + "times-circle-o"
-                        icon.width: App.iconSize
-                        icon.height: App.iconSize
-                        onClicked: {
-                            searchTextArea.text = "";
-                        }
-                        onPressAndHold: App.performHapticFeedback()
+                        onClicked: searchTextArea.clear()
                     }
                 }
             }
