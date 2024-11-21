@@ -89,7 +89,7 @@ ApplicationWindow {
             }
             StackLayout {
                 id: toolBarStack
-                currentIndex: searchTextArea.text.length > 0 || searchTextArea.activeFocus ? 1 : 0
+                currentIndex: toolBarStack.searchAvailable && (searchTextArea.text.length > 0 || searchTextArea.activeFocus) ? 1 : 0
                 RowLayout {
                     CustomToolButton {
                         visible: !backButton.visible
@@ -112,7 +112,7 @@ ApplicationWindow {
                         Layout.fillWidth: true
                     }
                     CustomToolButton {
-                        visible: pageStack?.currentPage?.model?.filterRegularExpressionPattern !== undefined
+                        visible: toolBarStack.searchAvailable
                         icon.source: App.faUrlBase + "search"
                         text: qsTr("Search")
                         onClicked: searchTextArea.focus = true
@@ -161,7 +161,13 @@ ApplicationWindow {
                     TextArea {
                         id: searchTextArea
                         Layout.fillWidth: true
-                        placeholderText: qsTr("Search %1").arg(pageStack.currentPage.title)
+                        Layout.preferredHeight: clearSearchButton.height
+                        leftInset: 2
+                        topInset: 7
+                        bottomInset: 2
+                        topPadding: 14
+                        bottomPadding: 7
+                        placeholderText: qsTr("Searching %1").arg(pageStack.currentPage.title)
                         onTextChanged: {
                             if (pageStack.changingIndex) {
                                 return;
@@ -173,11 +179,13 @@ ApplicationWindow {
                         }
                     }
                     CustomToolButton {
-                        visible: pageStack?.currentPage?.model?.filterRegularExpressionPattern !== undefined
+                        id: clearSearchButton
                         icon.source: App.faUrlBase + "times-circle-o"
+                        text: qsTr("Clear search")
                         onClicked: searchTextArea.clear()
                     }
                 }
+                readonly property bool searchAvailable: pageStack?.currentPage?.model?.filterRegularExpressionPattern !== undefined
             }
         }
     }
