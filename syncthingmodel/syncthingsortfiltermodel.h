@@ -20,6 +20,9 @@ public:
     SyncthingSortBehavior behavior() const;
     void setBehavior(SyncthingSortBehavior behavior);
 
+    Q_INVOKABLE QString filterRegularExpressionPattern() const { return filterRegularExpression().pattern(); }
+    Q_INVOKABLE void setFilterRegularExpressionPattern(const QString &pattern) { setFilterRegularExpression(pattern); }
+
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;

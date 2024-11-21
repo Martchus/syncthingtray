@@ -128,6 +128,9 @@ App::App(bool insecure, QObject *parent)
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::invalidateAndroidIconCache);
 #endif
 
+    m_sortFilterDirModel.sort(0, Qt::AscendingOrder);
+    m_sortFilterDevModel.sort(0, Qt::AscendingOrder);
+
     m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
     m_notifier.setEnabledNotifications(Data::SyncthingHighLevelNotification::ConnectedDisconnected);
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);

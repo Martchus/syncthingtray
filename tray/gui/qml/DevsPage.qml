@@ -13,6 +13,7 @@ StackView {
         Layout.fillWidth: true
         Layout.fillHeight: true
         DevListView {
+            id: devsListView
             mainModel: App.sortFilterDevModel
             stackView: stackView
         }
@@ -35,5 +36,6 @@ StackView {
                 onTriggered: (source) => App.connection.resumeAllDevs()
             }
         ]
+        property alias model: devsListView.mainModel
     }
 }

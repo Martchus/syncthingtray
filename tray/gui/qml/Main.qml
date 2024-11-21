@@ -101,88 +101,131 @@ ApplicationWindow {
                     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                 }
             }
-            RowLayout {
-                ToolButton {
-                    visible: !backButton.visible
-                    icon.source: App.faUrlBase + "bars"
-                    icon.width: App.iconSize
-                    icon.height: App.iconSize
-                    text: qsTr("Toggle menu")
-                    display: AbstractButton.IconOnly
-                    onClicked: drawer.visible ? drawer.close() : drawer.open()
-                    onPressAndHold: App.performHapticFeedback()
-                    ToolTip.text: text
-                    ToolTip.visible: hovered || pressed
-                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-                }
-                ToolButton {
-                    id: backButton
-                    visible: pageStack.currentDepth > 1
-                    icon.source: App.faUrlBase + "chevron-left"
-                    icon.width: App.iconSize
-                    icon.height: App.iconSize
-                    text: qsTr("Back")
-                    display: AbstractButton.IconOnly
-                    onClicked: pageStack.pop()
-                    onPressAndHold: App.performHapticFeedback()
-                    ToolTip.text: text
-                    ToolTip.visible: hovered || pressed
-                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-                }
-                Label {
-                    text: pageStack.currentPage.title
-                    elide: Label.ElideRight
-                    horizontalAlignment: Qt.AlignLeft
-                    verticalAlignment: Qt.AlignVCenter
-                    Layout.fillWidth: true
-                }
-                Repeater {
-                    model: pageStack.currentActions
-                    DelegateChooser {
-                        role: "enabled"
-                        DelegateChoice {
-                            roleValue: true
-                            ToolButton {
-                                required property Action modelData
-                                enabled: modelData.enabled
-                                text: modelData.text
-                                display: AbstractButton.IconOnly
-                                ToolTip.visible: hovered || pressed
-                                ToolTip.text: modelData.text
-                                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-                                icon.source: modelData.icon.source
-                                icon.width: App.iconSize
-                                icon.height: App.iconSize
-                                onClicked: modelData.trigger()
-                                onPressAndHold: App.performHapticFeedback()
+            StackLayout {
+                id: toolBarStack
+                currentIndex: searchTextArea.text.length > 0 || searchTextArea.activeFocus ? 1 : 0
+                RowLayout {
+                    ToolButton {
+                        visible: !backButton.visible
+                        icon.source: App.faUrlBase + "bars"
+                        icon.width: App.iconSize
+                        icon.height: App.iconSize
+                        text: qsTr("Toggle menu")
+                        display: AbstractButton.IconOnly
+                        onClicked: drawer.visible ? drawer.close() : drawer.open()
+                        onPressAndHold: App.performHapticFeedback()
+                        ToolTip.text: text
+                        ToolTip.visible: hovered || pressed
+                        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                    }
+                    ToolButton {
+                        id: backButton
+                        visible: pageStack.currentDepth > 1
+                        icon.source: App.faUrlBase + "chevron-left"
+                        icon.width: App.iconSize
+                        icon.height: App.iconSize
+                        text: qsTr("Back")
+                        display: AbstractButton.IconOnly
+                        onClicked: pageStack.pop()
+                        onPressAndHold: App.performHapticFeedback()
+                        ToolTip.text: text
+                        ToolTip.visible: hovered || pressed
+                        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                    }
+                    Label {
+                        text: pageStack.currentPage.title
+                        elide: Label.ElideRight
+                        horizontalAlignment: Qt.AlignLeft
+                        verticalAlignment: Qt.AlignVCenter
+                        Layout.fillWidth: true
+                    }
+                    ToolButton {
+                        visible: pageStack?.currentPage?.model?.filterRegularExpressionPattern !== undefined
+                        icon.source: App.faUrlBase + "search"
+                        icon.width: App.iconSize
+                        icon.height: App.iconSize
+                        text: qsTr("Search")
+                        display: AbstractButton.IconOnly
+                        onClicked: searchTextArea.focus = true
+                        onPressAndHold: App.performHapticFeedback()
+                        ToolTip.text: text
+                        ToolTip.visible: hovered || pressed
+                        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                    }
+                    Repeater {
+                        model: pageStack.currentActions
+                        DelegateChooser {
+                            role: "enabled"
+                            DelegateChoice {
+                                roleValue: true
+                                ToolButton {
+                                    required property Action modelData
+                                    enabled: modelData.enabled
+                                    text: modelData.text
+                                    display: AbstractButton.IconOnly
+                                    ToolTip.visible: hovered || pressed
+                                    ToolTip.text: modelData.text
+                                    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                                    icon.source: modelData.icon.source
+                                    icon.width: App.iconSize
+                                    icon.height: App.iconSize
+                                    onClicked: modelData.trigger()
+                                    onPressAndHold: App.performHapticFeedback()
+                                }
+                            }
+                        }
+                    }
+                    ToolButton {
+                        visible: pageStack.currentExtraActions.length > 0
+                        icon.source: App.faUrlBase + "ellipsis-v"
+                        icon.width: App.iconSize
+                        icon.height: App.iconSize
+                        onClicked: extraActionsMenu.popup()
+                        onPressAndHold: App.performHapticFeedback()
+                        Menu {
+                            id: extraActionsMenu
+                            popupType: App.nativePopups ? Popup.Native : Popup.Item
+                            Instantiator {
+                                model: pageStack.currentExtraActions
+                                delegate: MenuItem {
+                                    required property Action modelData
+                                    text: modelData.text
+                                    enabled: modelData.enabled
+                                    icon.source: modelData.icon.source
+                                    icon.width: App.iconSize
+                                    icon.height: App.iconSize
+                                    onTriggered: modelData?.trigger()
+                                }
+                                onObjectAdded: (index, object) => object.enabled && extraActionsMenu.insertItem(index, object)
+                                onObjectRemoved: (index, object) => extraActionsMenu.removeItem(object)
                             }
                         }
                     }
                 }
-                ToolButton {
-                    visible: pageStack.currentExtraActions.length > 0
-                    icon.source: App.faUrlBase + "ellipsis-v"
-                    icon.width: App.iconSize
-                    icon.height: App.iconSize
-                    onClicked: extraActionsMenu.popup()
-                    onPressAndHold: App.performHapticFeedback()
-                    Menu {
-                        id: extraActionsMenu
-                        popupType: App.nativePopups ? Popup.Native : Popup.Item
-                        Instantiator {
-                            model: pageStack.currentExtraActions
-                            delegate: MenuItem {
-                                required property Action modelData
-                                text: modelData.text
-                                enabled: modelData.enabled
-                                icon.source: modelData.icon.source
-                                icon.width: App.iconSize
-                                icon.height: App.iconSize
-                                onTriggered: modelData?.trigger()
+                RowLayout {
+                    TextArea {
+                        id: searchTextArea
+                        Layout.fillWidth: true
+                        placeholderText: qsTr("Search %1").arg(pageStack.currentPage.title)
+                        onTextChanged: {
+                            if (pageStack.changingIndex) {
+                                return;
                             }
-                            onObjectAdded: (index, object) => object.enabled && extraActionsMenu.insertItem(index, object)
-                            onObjectRemoved: (index, object) => extraActionsMenu.removeItem(object)
+                            const model = pageStack?.currentPage?.model;
+                            if (model?.filterRegularExpression !== undefined) {
+                                model.setFilterRegularExpressionPattern(searchTextArea.text);
+                            }
                         }
+                    }
+                    ToolButton {
+                        visible: pageStack?.currentPage?.model?.filterRegularExpressionPattern !== undefined
+                        icon.source: App.faUrlBase + "times-circle-o"
+                        icon.width: App.iconSize
+                        icon.height: App.iconSize
+                        onClicked: {
+                            searchTextArea.text = "";
+                        }
+                        onPressAndHold: App.performHapticFeedback()
                     }
                 }
             }
@@ -344,6 +387,11 @@ ApplicationWindow {
             }
             goingBackAndForth = false;
             App.setCurrentControls(window.visible, newIndex);
+
+            // update search text
+            pageStack.changingIndex = true;
+            searchTextArea.text = pageStack.children[currentIndex]?.currentItem?.model?.filterRegularExpressionPattern();
+            pageStack.changingIndex = false;
         }
 
         DirsPage {
@@ -374,6 +422,7 @@ ApplicationWindow {
         readonly property var currentDepth: children[currentIndex]?.depth ?? 1
         readonly property var currentActions: currentPage.actions ?? []
         readonly property var currentExtraActions: currentPage.extraActions ?? []
+        property bool changingIndex: false
         function pop(force) {
             const currentChild = children[currentIndex];
             const currentPage = currentChild.currentItem ?? currentChild;

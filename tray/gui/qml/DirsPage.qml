@@ -13,6 +13,7 @@ StackView {
         Layout.fillWidth: true
         Layout.fillHeight: true
         DirListView {
+            id: dirsListView
             mainModel: App.sortFilterDirModel
             stackView: stackView
         }
@@ -40,5 +41,6 @@ StackView {
                 onTriggered: (source) => App.connection.rescanAllDirs()
             }
         ]
+        property alias model: dirsListView.mainModel
     }
 }
