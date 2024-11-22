@@ -32,6 +32,7 @@ filing the issue:
 * [ ] Dolphin integration
 * [ ] Command line tool (`syncthingctl`)
 * [ ] Integrated Syncthing instance (`libsyncthing`)
+* [ ] Android app or mobile UI in general
 * [ ] Backend libraries
 
 **Is your feature request specific to a certain platform/environment? Please specify.**
