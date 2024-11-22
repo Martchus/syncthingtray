@@ -59,6 +59,11 @@
 #include <thread>
 #endif
 
+#ifdef PLATFORM_WINDOWS
+// include Windows header directly for SyncthingProcess::nativeEventFilter()
+#include <windows.h>
+#endif
+
 using namespace CppUtilities;
 
 namespace Data {
