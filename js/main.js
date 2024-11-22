@@ -41,6 +41,7 @@ function queryReleases()
 {
     AjaxHelper.queryRoute("GET", "https://api.github.com/repos/Martchus/syncthingtray/releases", (xhr, ok) => {
         if (!ok) {
+            document.getElementById('downloads-loading').innertText = 'Unable to load releases via GitHub API: ' + (xhr.responseText ?? 'unknown error');
             return;
         }
         const releases = JSON.parse(xhr.responseText);
