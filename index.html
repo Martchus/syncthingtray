@@ -170,6 +170,12 @@
                 Version 1.5.3 is the last version providing 32-bit builds for Windows 10. The "Windows 7 and newer" section will continue to contain 32-bit builds for the time being.
                 Note that all 32-bit releases work on Pentium Pro or newer Intel/AMD-CPUs.
               </p>
+              <p>
+                Builds for Windows on ARM have have not been tested much at this point but I encourage you to try them. One caveat I know of at this point is that the launcher might not be able to terminate an externally
+                started Syncthing instance forcefully (because <a href="https://github.com/boostorg/process" target="blank">Boost Process</a> cannot be built for Windows on ARM yet and thus the launcher will not make use of
+                <a href="https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects" target="blank">Job Objects</a> to terminate Syncthing forcefully). Problems with the build for Windows on ARM are currently
+                discussed on the <a href="https://github.com/Martchus/syncthingtray/issues/218" target="blank">related GitHub issue</a>.
+              </p>
             </div>
             <div class="downloads-platform">
               <input type="checkbox" id="downloads-checkbox-windows"/><label for="downloads-checkbox-windows">Windows 7 and newer</label>
