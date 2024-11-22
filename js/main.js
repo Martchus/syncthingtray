@@ -59,6 +59,8 @@ function determinePlatformFromAssetName(name)
         return name.includes("-qt5") && !name.includes("-qt6") ? "windows" : "windows10";
     } else if (name.includes("pc-linux-gnu")) {
         return "pc-linux-gnu";
+    } else if (name.includes("android")) {
+        return "android";
     }
 }
 
@@ -78,6 +80,8 @@ function determineDisplayNameForAsset(name)
         arch = "32-bit (Intel/AMD)";
     } else if (name.includes("x86_64-")) {
         arch = "64-bit (Intel/AMD)";
+    } else if (name.includes("aarch64-")) {
+        arch = "64-bit (ARM)";
     }
     let component;
     if (name.startsWith("syncthingctl-")) {
