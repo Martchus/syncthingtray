@@ -235,6 +235,10 @@ ApplicationWindow {
             }
             model: ListModel {
                 ListElement {
+                    name: qsTr("Start")
+                    iconName: "home"
+                }
+                ListElement {
                     name: qsTr("Folders")
                     iconName: "folder"
                 }
@@ -276,11 +280,12 @@ ApplicationWindow {
     }
     footer: TabBar {
         visible: drawer.interactive
-        currentIndex: Math.min(pageStack.currentIndex, 3)
+        currentIndex: Math.min(pageStack.currentIndex, 4)
         TabButton {
-            text: qsTr("Folders")
-            display: AbstractButton.IconOnly
-            icon.source: App.faUrlBase + "folder"
+            text: qsTr("Start")
+            display: AbstractButton.TextUnderIcon
+            font.pointSize: 7
+            icon.source: App.faUrlBase + "home"
             icon.width: App.iconSize
             icon.height: App.iconSize
             onClicked: pageStack.setCurrentIndex(0)
@@ -290,9 +295,10 @@ ApplicationWindow {
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         }
         TabButton {
-            text: qsTr("Devices")
-            display: AbstractButton.IconOnly
-            icon.source: App.faUrlBase + "sitemap"
+            text: qsTr("Folders")
+            display: AbstractButton.TextUnderIcon
+            font.pointSize: 7
+            icon.source: App.faUrlBase + "folder"
             icon.width: App.iconSize
             icon.height: App.iconSize
             onClicked: pageStack.setCurrentIndex(1)
@@ -302,9 +308,10 @@ ApplicationWindow {
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         }
         TabButton {
-            text: qsTr("Recent changes")
-            display: AbstractButton.IconOnly
-            icon.source: App.faUrlBase + "history"
+            text: qsTr("Devices")
+            display: AbstractButton.TextUnderIcon
+            font.pointSize: 7
+            icon.source: App.faUrlBase + "sitemap"
             icon.width: App.iconSize
             icon.height: App.iconSize
             onClicked: pageStack.setCurrentIndex(2)
@@ -314,12 +321,26 @@ ApplicationWindow {
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         }
         TabButton {
+            text: qsTr("Recent changes")
+            display: AbstractButton.TextUnderIcon
+            font.pointSize: 7
+            icon.source: App.faUrlBase + "history"
+            icon.width: App.iconSize
+            icon.height: App.iconSize
+            onClicked: pageStack.setCurrentIndex(3)
+            onPressAndHold: App.performHapticFeedback()
+            ToolTip.visible: hovered || pressed
+            ToolTip.text: text
+            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        }
+        TabButton {
             text: qsTr("More")
-            display: AbstractButton.IconOnly
+            display: AbstractButton.TextUnderIcon
+            font.pointSize: 7
             icon.source: App.faUrlBase + "cog"
             icon.width: App.iconSize
             icon.height: App.iconSize
-            onClicked: pageStack.setCurrentIndex(5)
+            onClicked: pageStack.setCurrentIndex(6)
             onPressAndHold: App.performHapticFeedback()
             ToolTip.visible: hovered || pressed
             ToolTip.text: text
@@ -352,6 +373,9 @@ ApplicationWindow {
             pageStack.changingIndex = false;
         }
 
+        StartPage {
+            id: startPage
+        }
         DirsPage {
             id: dirsPage
         }
@@ -363,7 +387,7 @@ ApplicationWindow {
         }
         WebViewPage {
             id: webViewPage
-            active: pageStack.currentIndex === 3
+            active: pageStack.currentIndex === 4
         }
         AdvancedPage {
             id: advancedPage
@@ -372,7 +396,7 @@ ApplicationWindow {
             id: settingsPage
         }
 
-        readonly property list<Item> children: [dirsPage, devsPage, changesPage, webViewPage, advancedPage, settingsPage]
+        readonly property list<Item> children: [startPage, dirsPage, devsPage, changesPage, webViewPage, advancedPage, settingsPage]
         readonly property var currentPage: {
             const currentChild = children[currentIndex];
             return currentChild.currentItem ?? currentChild;

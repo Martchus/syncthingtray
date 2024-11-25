@@ -91,10 +91,12 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingItemDownloadProgress {
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingStatistics {
     Q_GADGET
     Q_PROPERTY(quint64 bytes MEMBER bytes)
+    Q_PROPERTY(QString bytesAsString READ bytesAsString)
     Q_PROPERTY(quint64 deletes MEMBER deletes)
     Q_PROPERTY(quint64 dirs MEMBER dirs)
     Q_PROPERTY(quint64 files MEMBER files)
     Q_PROPERTY(quint64 symlinks MEMBER symlinks)
+    Q_PROPERTY(quint64 total MEMBER total)
 
 public:
     quint64 bytes = 0;
@@ -108,6 +110,7 @@ public:
     constexpr bool operator==(const SyncthingStatistics &other) const;
     constexpr bool operator!=(const SyncthingStatistics &other) const;
     SyncthingStatistics &operator+=(const SyncthingStatistics &other);
+    QString bytesAsString() const;
 };
 
 constexpr bool SyncthingStatistics::isNull() const

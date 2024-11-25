@@ -278,6 +278,11 @@ SyncthingStatistics &SyncthingStatistics::operator+=(const SyncthingStatistics &
     return *this;
 }
 
+QString Data::SyncthingStatistics::bytesAsString() const
+{
+    return QString::fromStdString(CppUtilities::dataSizeToString(bytes));
+}
+
 /*!
  * \brief Computes overall statistics for the specified \a directories.
  */

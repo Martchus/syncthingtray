@@ -158,6 +158,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(quint64 totalOutgoingTraffic READ totalOutgoingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(double totalIncomingRate READ totalIncomingRate NOTIFY trafficChanged)
     Q_PROPERTY(double totalOutgoingRate READ totalOutgoingRate NOTIFY trafficChanged)
+    Q_PROPERTY(Data::SyncthingOverallDirStatistics overallDirStatistics READ computeOverallDirStatistics NOTIFY dirStatisticsChanged)
     Q_PROPERTY(QString lastSyncedFile READ lastSyncedFile)
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion)
     Q_PROPERTY(CppUtilities::DateTime lastSyncTime READ lastSyncTime)

@@ -308,6 +308,7 @@ if (QUICK_GUI)
         gui/qml/Main.qml
         gui/qml/ObjectConfigDelegate.qml
         gui/qml/ObjectConfigPage.qml
+        gui/qml/StartPage.qml
         gui/qml/SettingsPage.qml
         gui/qml/WebViewPage.qml
         SOURCES
