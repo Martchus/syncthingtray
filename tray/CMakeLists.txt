@@ -7,6 +7,9 @@ set(META_APP_NAME_QUICK_GUI "Syncthing App")
 set(META_HAS_QUICK_GUI ON)
 set(META_QUICK_GUI_OPTIONAL ON)
 set(META_USE_QQC2 ON)
+if (QUICK_GUI)
+    set(META_QT_VERSION 6.8.0)
+endif ()
 
 # use testfiles directory from syncthingconnector
 set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
