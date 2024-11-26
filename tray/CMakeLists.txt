@@ -285,6 +285,7 @@ if (QUICK_GUI)
         gui/qml/ChangesPage.qml
         gui/qml/CopyPasteButtons.qml
         gui/qml/CustomDialog.qml
+        gui/qml/CustomFlickable.qml
         gui/qml/CustomListView.qml
         gui/qml/CustomToolButton.qml
         gui/qml/DetailsListView.qml
@@ -303,6 +304,7 @@ if (QUICK_GUI)
         gui/qml/ExpandableItemDelegate.qml
         gui/qml/ExpandableListView.qml
         gui/qml/FilesPage.qml
+        gui/qml/ForkAwesomeIcon.qml
         gui/qml/HelpButton.qml
         gui/qml/IconOnlyButton.qml
         gui/qml/IgnorePatternPage.qml
@@ -312,6 +314,7 @@ if (QUICK_GUI)
         gui/qml/ObjectConfigDelegate.qml
         gui/qml/ObjectConfigPage.qml
         gui/qml/StartPage.qml
+        gui/qml/Statistics.qml
         gui/qml/SettingsPage.qml
         gui/qml/WebViewPage.qml
         SOURCES

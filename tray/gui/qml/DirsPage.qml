@@ -9,6 +9,7 @@ StackView {
     Layout.fillWidth: true
     Layout.fillHeight: true
     initialItem: Page {
+        id: page
         title: qsTr("Folders")
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -21,7 +22,7 @@ StackView {
             Action {
                 text: qsTr("Add folder")
                 icon.source: App.faUrlBase + "plus"
-                onTriggered: (source) => stackView.push("DirConfigPage.qml", {dirName: qsTr("New folder"), dirId: "", stackView: stackView}, StackView.PushTransition)
+                onTriggered: (source) => page.add()
             }
         ]
         property list<Action> extraActions: [
@@ -42,5 +43,8 @@ StackView {
             }
         ]
         property alias model: dirsListView.mainModel
+        function add() {
+            stackView.push("DirConfigPage.qml", {dirName: qsTr("New folder"), dirId: "", stackView: stackView}, StackView.PushTransition);
+        }
     }
 }

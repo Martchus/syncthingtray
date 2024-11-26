@@ -21,12 +21,8 @@ Page {
                     id: gridLayout
                     columns: width < 500 ? 2 : 8
                     columnSpacing: 10
-                    Image {
-                        Layout.preferredWidth: 16
-                        Layout.preferredHeight: 16
-                        source: App.faUrlBase + ((modelData.action === "deleted") ? ("trash-o") : (modelData.itemType === "file" ? "file-o" : "folder-o"))
-                        width: 16
-                        height: 16
+                    ForkAwesomeIcon {
+                        iconName: (modelData.action === "deleted") ? ("trash-o") : (modelData.itemType === "file" ? "file-o" : "folder-o")
                     }
                     Label {
                         Layout.fillWidth: true
@@ -35,12 +31,8 @@ Page {
                         elide: Text.ElideRight
                         font.weight: Font.Light
                     }
-                    Image {
-                        Layout.preferredWidth: 16
-                        Layout.preferredHeight: 16
-                        source: App.faUrlBase + "calendar"
-                        width: 16
-                        height: 16
+                    ForkAwesomeIcon {
+                        iconName: "calendar"
                     }
                     Label {
                         Layout.preferredWidth: Math.max(implicitWidth, parent.width / 5)

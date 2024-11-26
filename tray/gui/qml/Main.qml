@@ -369,12 +369,13 @@ ApplicationWindow {
 
             // update search text
             pageStack.changingIndex = true;
-            searchTextArea.text = pageStack.children[currentIndex]?.currentItem?.model?.filterRegularExpressionPattern();
+            searchTextArea.text = pageStack.children[currentIndex]?.currentItem?.model?.filterRegularExpressionPattern() ?? "";
             pageStack.changingIndex = false;
         }
 
         StartPage {
             id: startPage
+            pages: pageStack
         }
         DirsPage {
             id: dirsPage

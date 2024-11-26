@@ -9,6 +9,7 @@ StackView {
     Layout.fillWidth: true
     Layout.fillHeight: true
     initialItem: Page {
+        id: page
         title: qsTr("Devices")
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -21,7 +22,7 @@ StackView {
             Action {
                 text: qsTr("Add device")
                 icon.source: App.faUrlBase + "plus"
-                onTriggered: (source) => stackView.push("DevConfigPage.qml", {devName: qsTr("New device"), devId: "", stackView: stackView}, StackView.PushTransition)
+                onTriggered: (source) => page.add()
             }
         ]
         property list<Action> extraActions: [
@@ -37,5 +38,8 @@ StackView {
             }
         ]
         property alias model: devsListView.mainModel
+        function add() {
+            stackView.push("DevConfigPage.qml", {devName: qsTr("New device"), devId: "", stackView: stackView}, StackView.PushTransition);
+        }
     }
 }

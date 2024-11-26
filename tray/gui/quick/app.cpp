@@ -220,7 +220,7 @@ const QString &App::status()
     }
 }
 
-QVariantMap QtGui::App::statistics() const
+QVariantMap App::statistics() const
 {
     auto stats = QVariantMap();
     auto dbDir = QDir(m_syncthingDataDir + QStringLiteral("/index-v0.14.0.db"));
@@ -231,6 +231,17 @@ QVariantMap QtGui::App::statistics() const
     stats[QStringLiteral("stDbSize")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(dbSize)));
     return stats;
 }
+
+#if !(defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS))
+bool App::nativePopups() const
+{
+    static const auto enableNativePopups = [] {
+        auto ok = false;
+        return qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_NATIVE_POPUPS", &ok) > 0 || !ok;
+    }();
+    return enableNativePopups;
+}
+#endif
 
 bool App::loadMain()
 {
@@ -384,6 +395,21 @@ bool App::showLog(QObject *textArea)
     return true;
 }
 
+bool App::showQrCode(Icon *icon)
+{
+    if (m_connection.myId().isEmpty()) {
+        return false;
+    }
+    connect(&m_connection, &Data::SyncthingConnection::qrCodeAvailable, icon, [icon, requestedId = m_connection.myId(), this] (const QString &id, const QByteArray &data) {
+        if (id == requestedId) {
+            disconnect(&m_connection, nullptr, icon, nullptr);
+            icon->setSource(QImage::fromData(data));
+        }
+    });
+    m_connection.requestQrCode(m_connection.myId());
+    return true;
+}
+
 bool App::loadDirErrors(const QString &dirId, QObject *view)
 {
     auto connection = connect(&m_connection, &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view](const Data::SyncthingDir &dir) {
@@ -473,9 +499,9 @@ void App::setCurrentControls(bool visible, int tabIndex)
     } else {
         m_tabIndex = tabIndex;
     }
-    //CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::TrafficStatistics, visible && tabIndex == 0);
-    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DeviceStatistics, visible && tabIndex == 1);
-    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents, visible && tabIndex == 2);
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::TrafficStatistics, visible && tabIndex == 0);
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DeviceStatistics, visible && tabIndex == 2);
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents, visible && tabIndex == 3);
     m_connection.setPollingFlags(flags);
 }
 
@@ -516,10 +542,10 @@ QString App::resolveUrl(const QUrl &url)
 void App::invalidateStatus()
 {
     m_status.reset();
+    m_statusInfo.updateConnectionStatus(m_connection);
+    m_statusInfo.updateConnectedDevices(m_connection);
+    emit statusInfoChanged();
 #ifdef Q_OS_ANDROID
-    if (m_connection.isConnected()) {
-        m_statusInfo.updateConnectionStatus(m_connection);
-    }
     updateAndroidNotification();
 #endif
     emit statusChanged();
@@ -570,11 +596,10 @@ void App::handleGuiAddressChanged(const QUrl &newUrl)
 void App::handleNewDevices(const std::vector<Data::SyncthingDev> &newDevices)
 {
     Q_UNUSED(newDevices)
+    m_statusInfo.updateConnectedDevices(m_connection);
+    emit statusInfoChanged();
 #ifdef Q_OS_ANDROID
-    if (m_connection.isConnected()) {
-        m_statusInfo.updateConnectedDevices(m_connection);
-        updateAndroidNotification();
-    }
+    updateAndroidNotification();
 #endif
 }
 
@@ -743,6 +768,11 @@ bool App::postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &call
     emit savingConfigChanged(true);
     invalidateStatus();
     return true;
+}
+
+QString App::formatTraffic(quint64 total, double rate) const
+{
+    return QString::fromStdString(CppUtilities::bitrateToString(rate, true)) % QChar(',') % QChar(' ') % QChar('(') % QString::fromStdString(CppUtilities::dataSizeToString(total)) % QChar(')');
 }
 
 bool App::openSettings()

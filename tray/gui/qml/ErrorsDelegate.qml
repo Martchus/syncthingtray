@@ -10,12 +10,8 @@ ItemDelegate {
     contentItem: GridLayout {
         columns: 2
         columnSpacing: 10
-        Image {
-            Layout.preferredWidth: 16
-            Layout.preferredHeight: 16
-            source: App.faUrlBase + "calendar"
-            width: 16
-            height: 16
+        ForkAwesomeIcon {
+            iconName: "calendar"
         }
         Label {
             Layout.fillWidth: true
@@ -23,12 +19,8 @@ ItemDelegate {
             elide: Text.ElideRight
             font.weight: Font.Light
         }
-        Image {
-            Layout.preferredWidth: 16
-            Layout.preferredHeight: 16
-            source: App.faUrlBase + "exclamation-triangle"
-            width: 16
-            height: 16
+        ForkAwesomeIcon {
+            iconName: "exclamation-triangle"
         }
         Label {
             Layout.fillWidth: true

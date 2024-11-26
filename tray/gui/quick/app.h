@@ -1,6 +1,8 @@
 #ifndef SYNCTHING_TRAY_APP_H
 #define SYNCTHING_TRAY_APP_H
 
+#include "./quickicon.h"
+
 #include <syncthingwidgets/misc/internalerror.h>
 #include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/misc/statusinfo.h>
@@ -59,6 +61,9 @@ class App : public QObject {
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QVariantMap statistics READ statistics)
     Q_PROPERTY(bool savingConfig READ isSavingConfig NOTIFY savingConfigChanged)
+    Q_PROPERTY(QString statusText READ statusText NOTIFY statusInfoChanged)
+    Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY statusInfoChanged)
+    Q_PROPERTY(QString additionalStatusText READ additionalStatusText NOTIFY statusInfoChanged)
     QML_ELEMENT
     QML_SINGLETON
 
@@ -114,14 +119,14 @@ public:
         storeSettings();
         emit settingsChanged(m_settings);
     }
+#if defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS) // it leads to crashes on those platforms
     bool nativePopups() const
     {
-#if defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS) // it leads to crashes on those platforms
         return false;
-#else
-        return true;
-#endif
     }
+#else
+    bool nativePopups() const;
+#endif
     QString syncthingVersion() const
     {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
@@ -160,6 +165,18 @@ public:
     {
         return m_pendingConfigChange.reply != nullptr;
     }
+    const QString &statusText() const
+    {
+        return m_statusInfo.statusText();
+    }
+    const QIcon &statusIcon() const
+    {
+        return m_statusInfo.statusIcon();
+    }
+    const QString &additionalStatusText() const
+    {
+        return m_statusInfo.additionalStatusText();
+    }
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();
@@ -182,6 +199,7 @@ public:
     Q_INVOKABLE bool loadErrors(QObject *listView);
     Q_INVOKABLE bool showLog(QObject *textArea);
     Q_INVOKABLE void clearLog();
+    Q_INVOKABLE bool showQrCode(Icon *icon);
     Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
     Q_INVOKABLE bool showError(const QString &errorMessage);
     Q_INVOKABLE void setCurrentControls(bool visible, int tabIndex = -1);
@@ -193,6 +211,7 @@ public:
     Q_INVOKABLE QVariantList internalErrors() const;
     Q_INVOKABLE void clearInternalErrors();
     Q_INVOKABLE bool postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE QString formatTraffic(quint64 total, double rate) const;
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
@@ -206,6 +225,7 @@ Q_SIGNALS:
     void internalErrorsRequested();
     void connectionErrorsRequested();
     void savingConfigChanged(bool isSavingConfig);
+    void statusInfoChanged();
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
@@ -252,8 +272,8 @@ private:
     Data::SyncthingConnectionSettings m_connectionSettingsFromConfig;
     Data::SyncthingConnection::QueryResult m_pendingConfigChange;
     QVariantList m_internalErrors;
-#ifdef Q_OS_ANDROID
     StatusInfo m_statusInfo;
+#ifdef Q_OS_ANDROID
     QString m_syncthingErrors;
     QHash<const QIcon *, QJniObject> m_androidIconCache;
     int m_androidNotificationId = 100000000;
