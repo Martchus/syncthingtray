@@ -888,10 +888,10 @@ void App::applyLauncherSettings()
     auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     auto options = LibSyncthing::RuntimeOptions();
-    m_syncthingConfigDir = m_settingsDir->path() + QStringLiteral("/syncthing/config");
-    m_syncthingDataDir = m_settingsDir->path() + QStringLiteral("/syncthing/data");
+    m_syncthingConfigDir = m_settingsDir->path() + QStringLiteral("/syncthing");
+    m_syncthingDataDir = m_syncthingConfigDir;
     options.configDir = m_syncthingConfigDir.toStdString();
-    options.dataDir = m_syncthingDataDir.toStdString();
+    options.dataDir = options.configDir;
     m_launcher.setRunning(shouldRun, std::move(options));
 #else
     if (shouldRun) {
