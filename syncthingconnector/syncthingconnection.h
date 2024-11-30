@@ -353,6 +353,7 @@ public Q_SLOTS:
 
 public:
     // methods to GET or POST information from/to Syncthing (non-slots)
+    QueryResult requestJsonData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data, std::function<void(QJsonDocument &&, QString &&)> &&callback = std::function<void(QJsonDocument &&, QString &&)>(), bool rest = true, bool longPolling = false);
     QueryResult browse(const QString &dirId, const QString &prefix, int level,
         std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback);
     QueryResult ignores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback);
@@ -478,6 +479,7 @@ private Q_SLOTS:
 
 private:
     // handler to evaluate results from request...() methods
+    void readJsonData(std::function<void(QJsonDocument &&, QString &&)> &&callback);
     void readBrowse(const QString &dirId, int levels, std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback);
     void readIgnores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback);
     void readSetIgnores(const QString &dirId, std::function<void(QString &&)> &&callback);

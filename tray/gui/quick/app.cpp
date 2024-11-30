@@ -26,6 +26,7 @@
 #include <QClipboard>
 #include <QDebug>
 #include <QDir>
+#include <QUrlQuery>
 #include <QGuiApplication>
 #include <QJsonDocument>
 #include <QJsonValue>
@@ -770,9 +771,27 @@ bool App::postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &call
     return true;
 }
 
+bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, const QJSValue &callback)
+{
+    auto query = m_connection.requestJsonData(verb.toUtf8(), path, QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
+        if (callback.isCallable()) {
+            callback.call(QJSValueList({m_engine.toScriptValue(doc.object()), QJSValue(std::move(error))}));
+        }
+    });
+    connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
+    connect(this, &QObject::destroyed, [c = query.connection] { disconnect(c); });
+    return true;
+}
+
 QString App::formatTraffic(quint64 total, double rate) const
 {
     return QString::fromStdString(CppUtilities::bitrateToString(rate, true)) % QChar(',') % QChar(' ') % QChar('(') % QString::fromStdString(CppUtilities::dataSizeToString(total)) % QChar(')');
+}
+
+bool QtGui::App::hasDevice(const QString &devId)
+{
+    int row = 0;
+    return m_connection.findDevInfo(devId, row) != nullptr;
 }
 
 bool App::openSettings()

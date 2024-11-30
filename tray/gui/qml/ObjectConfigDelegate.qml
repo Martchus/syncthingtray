@@ -101,6 +101,95 @@ DelegateChooser {
         }
     }
     DelegateChoice {
+        roleValue: "deviceid"
+        ItemDelegate {
+            width: objectListView.width
+            contentItem: RowLayout {
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    enabled: modelData.enabled ?? true
+                    Label {
+                        Layout.fillWidth: true
+                        text: modelData.label
+                        elide: Text.ElideRight
+                        font.weight: Font.Medium
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: modelData.value
+                        elide: Text.ElideRight
+                        font.weight: Font.Light
+                    }
+                }
+                ArrayElementButtons {
+                    page: objectConfigPage
+                    rowData: modelData
+                }
+                HelpButton {
+                    id: deviceIdHelpButton
+                    configCategory: objectConfigPage.configCategory
+                }
+            }
+            onClicked: deviceIdDlg.visible = true
+            CustomDialog {
+                id: deviceIdDlg
+                title: modelData.label
+                standardButtons: objectConfigPage.standardButtons
+                width: parent.width - 20
+                contentItem: ColumnLayout {
+                    RowLayout {
+                        ComboBox {
+                            id: editedDeviceIdValue
+                            Layout.fillWidth: true
+                            editText: modelData.value
+                            enabled: modelData?.enabled ?? true
+                            editable: true
+                            onAccepted: deviceIdDlg.accept()
+                        }
+                        IconOnlyButton {
+                            text: qsTr("Clear")
+                            enabled: modelData.enabled ?? true
+                            icon.source: App.faUrlBase + "undo"
+                            onClicked: {
+                                editedDeviceIdValue.currentIndex = -1;
+                                editedDeviceIdValue.editText = "";
+                            }
+                        }
+                        IconOnlyButton {
+                            text: qsTr("Refresh list of devices")
+                            icon.source: App.faUrlBase + "refresh"
+                            onClicked: deviceIdDlg.refreshDeviceList()
+                        }
+                        CopyPasteButtons {
+                            edit: editedDeviceIdValue
+                        }
+                    }
+                    RowLayout {
+                        id: devideIdInfo
+                        ForkAwesomeIcon {
+                            iconName: devideIdInfo.isIdOk ? "check" : "exclamation-triangle"
+                        }
+                        Label {
+                            text: devideIdInfo.isIdValid ? (devideIdInfo.isIdExisting ? qsTr("This device has already been added!") : qsTr("The device ID looks valid.")) : qsTr("The entered device ID looks invalid!")
+                        }
+                        property bool isIdValid: editedDeviceIdValue.editText.length === 0 || editedDeviceIdValue.editText.match(validIdRegex)
+                        property bool isIdExisting: (modelData?.enabled ?? true) && App.hasDevice(editedDeviceIdValue.editText)
+                        property bool isIdOk: isIdValid && !isIdExisting
+                        property var validIdRegex: /^[0-9A-z]{7}(-[0-9A-z]{7}){7}$/
+                    }
+                }
+                onAboutToShow: deviceIdDlg.refreshDeviceList()
+                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, editedDeviceIdValue.editText)
+                onRejected: editedDeviceIdValue.text = objectConfigPage.configObject[modelData.key]
+                onHelpRequested: deviceIdHelpButton.clicked()
+                function refreshDeviceList() {
+                    App.requestFromSyncthing("GET", "system/discovery", (res, error) => { editedDeviceIdValue.model = Object.keys(res) });
+                }
+            }
+            required property var modelData
+        }
+    }
+    DelegateChoice {
         roleValue: "options"
         ItemDelegate {
             width: objectListView.width
