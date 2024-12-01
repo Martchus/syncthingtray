@@ -38,6 +38,7 @@ Syncthing Tray is known to work under:
 * KDE Plasma
 * Openbox using lxqt/LXDE or using Tint2
 * GTK-centered desktops such as Cinnamon, GNOME and Xfce (with caveats, see remarks below)
+* COSMIC (only simple tray menu works, see remarks below)
 * Awesome
 * i3
 * macOS
@@ -62,8 +63,8 @@ one's distribution already provides such an extension by default).
 
 Limitations of your system tray might affect Syncthing Tray. For instance when using the mentioned GNOME
 extension the Syncthing Tray UI shown in the screenshots below is only shown by *double*-clicking the icon.
-If your system tray is unable to show the Syncthing Tray UI at all you can still use Syncthing Tray for the
-tray icon and basic functionality accessible via the menu.
+If your system tray is unable to show the Syncthing Tray UI at all like on COSMIC you can still use Syncthing
+Tray for the tray icon and basic functionality accessible via the menu.
 
 Note that under Wayland-based desktops there will be positioning issues. The Plasmoid is not affected
 by this, though.
