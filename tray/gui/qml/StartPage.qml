@@ -233,6 +233,22 @@ Page {
                     }
                 }
             }
+            ItemDelegate {
+                Layout.fillWidth: true
+                onClicked: Qt.openUrlExternally(App.connection.syncthingUrlWithCredentials)
+                contentItem: RowLayout {
+                    spacing: 15
+                    ForkAwesomeIcon {
+                        iconName: "external-link"
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr("Open Syncthing in web browser")
+                        elide: Text.ElideRight
+                        font.weight: Font.Medium
+                    }
+                }
+            }
         }
     }
     required property var pages

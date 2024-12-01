@@ -57,8 +57,10 @@ using QtApp = QGuiApplication;
 #include <QtWebView/QtWebView>
 #endif
 
+#ifdef SYNCTHINGTRAY_HAS_WEBVIEW_PAGE
 #include <QQmlEngineExtensionPlugin>
 Q_IMPORT_QML_PLUGIN(WebViewItemPlugin)
+#endif
 #endif
 
 #include <iostream>

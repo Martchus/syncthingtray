@@ -251,10 +251,6 @@ ApplicationWindow {
                     iconName: "history"
                 }
                 ListElement {
-                    name: qsTr("Web-based UI")
-                    iconName: "syncthing"
-                }
-                ListElement {
                     name: qsTr("Advanced")
                     iconName: "cogs"
                 }
@@ -340,7 +336,7 @@ ApplicationWindow {
             icon.source: App.faUrlBase + "cog"
             icon.width: App.iconSize
             icon.height: App.iconSize
-            onClicked: pageStack.setCurrentIndex(6)
+            onClicked: pageStack.setCurrentIndex(5)
             onPressAndHold: App.performHapticFeedback()
             ToolTip.visible: hovered || pressed
             ToolTip.text: text
@@ -386,10 +382,6 @@ ApplicationWindow {
         ChangesPage {
             id: changesPage
         }
-        WebViewPage {
-            id: webViewPage
-            active: pageStack.currentIndex === 4
-        }
         AdvancedPage {
             id: advancedPage
         }
@@ -397,7 +389,7 @@ ApplicationWindow {
             id: settingsPage
         }
 
-        readonly property list<Item> children: [startPage, dirsPage, devsPage, changesPage, webViewPage, advancedPage, settingsPage]
+        readonly property list<Item> children: [startPage, dirsPage, devsPage, changesPage, advancedPage, settingsPage]
         readonly property var currentPage: {
             const currentChild = children[currentIndex];
             return currentChild.currentItem ?? currentChild;

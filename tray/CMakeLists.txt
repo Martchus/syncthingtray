@@ -199,51 +199,61 @@ include(QtGuiConfig)
 if (QUICK_GUI)
     use_standard_filesystem()
 
+    unset(ADDITIONAL_QML_FILES)
     list(APPEND ADDITIONAL_QT_MODULES Svg)
     list(APPEND ADDITIONAL_QT_REPOS svg)
     list(APPEND PRIVATE_INCLUDE_DIRS gui/quick)
 
-    # check whether Qt WebView is present
-    include(QtLinkage)
-    unset(WEBVIEWITEM_QML_FILES)
-    option(QUICK_GUI_NO_WEBVIEW "disables web view support in the Qt Quick GUI" OFF)
-    if (NOT QUICK_GUI_NO_WEBVIEW)
-        find_package("${QT_PACKAGE_PREFIX}WebView" "${META_QT_VERSION}")
-        find_package("${QT_PACKAGE_PREFIX}WebViewQuick" "${META_QT_VERSION}")
-        if ("${${QT_PACKAGE_PREFIX}WebView_FOUND}" AND "${${QT_PACKAGE_PREFIX}WebViewQuick_FOUND}")
-            list(APPEND ADDITIONAL_QT_MODULES WebView WebViewQuick)
-            list(APPEND ADDITIONAL_QT_REPOS webview)
-            list(APPEND WEBVIEWITEM_QML_FILES gui/qml/webview-webview/WebViewItem.qml)
-            set_property(
-                SOURCE application/main.cpp
-                APPEND
-                PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW)
+    # allow showing the web interface as page in the app (not used right now; hence disabled by default)
+    option(QUICK_GUI_WEBVIEW_PAGE "disables web view support in the Qt Quick GUI" OFF)
+    if (QUICK_GUI_WEBVIEW_PAGE)
+        list(APPEND ADDITIONAL_QML_FILES gui/qml/WebViewPage.qml)
+        include(QtLinkage)
+        unset(WEBVIEWITEM_QML_FILES)
+        # check whether Qt WebView is present
+        option(QUICK_GUI_NO_WEBVIEW "disables web view support in the Qt Quick GUI" ON)
+        if (NOT QUICK_GUI_NO_WEBVIEW)
+            find_package("${QT_PACKAGE_PREFIX}WebView" "${META_QT_VERSION}")
+            find_package("${QT_PACKAGE_PREFIX}WebViewQuick" "${META_QT_VERSION}")
+            if ("${${QT_PACKAGE_PREFIX}WebView_FOUND}" AND "${${QT_PACKAGE_PREFIX}WebViewQuick_FOUND}")
+                list(APPEND ADDITIONAL_QT_MODULES WebView WebViewQuick)
+                list(APPEND ADDITIONAL_QT_REPOS webview)
+                list(APPEND WEBVIEWITEM_QML_FILES gui/qml/webview-webview/WebViewItem.qml)
+                set_property(
+                    SOURCE application/main.cpp
+                    APPEND
+                    PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW)
+            endif ()
         endif ()
-    endif ()
-    if (NOT WEBVIEWITEM_QML_FILES)
-        list(APPEND WEBVIEWITEM_QML_FILES gui/qml/webview-none/WebViewItem.qml)
-    endif ()
+        if (NOT WEBVIEWITEM_QML_FILES)
+            list(APPEND WEBVIEWITEM_QML_FILES gui/qml/webview-none/WebViewItem.qml)
+        endif ()
+        set_property(
+            SOURCE application/main.cpp
+            APPEND
+            PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW_PAGE)
 
-    # find Qt Qml and enable automoc which is required for the subsequent qt_add_qml_module calls
-    find_package("${QT_PACKAGE_PREFIX}Qml" "${META_QT_VERSION}")
-    set(CMAKE_AUTOMOC ON)
+        # find Qt Qml and enable automoc which is required for the subsequent qt_add_qml_module calls
+        find_package("${QT_PACKAGE_PREFIX}Qml" "${META_QT_VERSION}")
+        set(CMAKE_AUTOMOC ON)
 
-    # add additional module for the web view
-    qt_add_qml_module(
-        ${META_TARGET_NAME}-webviewitem
-        URI
-        "WebViewItem"
-        VERSION
-        1.0
-        STATIC
-        QML_FILES
-        ${WEBVIEWITEM_QML_FILES}
-        RESOURCE_PREFIX
-        "/qt/qml/"
-        OUTPUT_DIRECTORY
-        "${CMAKE_CURRENT_BINARY_DIR}/WebViewItem"
-        NO_PLUGIN_OPTIONAL)
-    list(APPEND PRIVATE_LIBRARIES ${META_TARGET_NAME}-webviewitemplugin)
+        # add additional module for the web view
+        qt_add_qml_module(
+            ${META_TARGET_NAME}-webviewitem
+            URI
+            "WebViewItem"
+            VERSION
+            1.0
+            STATIC
+            QML_FILES
+            ${WEBVIEWITEM_QML_FILES}
+            RESOURCE_PREFIX
+            "/qt/qml/"
+            OUTPUT_DIRECTORY
+            "${CMAKE_CURRENT_BINARY_DIR}/WebViewItem"
+            NO_PLUGIN_OPTIONAL)
+        list(APPEND PRIVATE_LIBRARIES ${META_TARGET_NAME}-webviewitemplugin)
+    endif ()
 endif ()
 
 # include further modules to apply configuration
@@ -316,7 +326,7 @@ if (QUICK_GUI)
         gui/qml/StartPage.qml
         gui/qml/Statistics.qml
         gui/qml/SettingsPage.qml
-        gui/qml/WebViewPage.qml
+        ${ADDITIONAL_QML_FILES}
         SOURCES
         gui/quick/quickicon.h
         gui/quick/quickicon.cpp
