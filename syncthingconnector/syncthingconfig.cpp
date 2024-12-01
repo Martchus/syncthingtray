@@ -6,9 +6,12 @@
 #include <qtutilities/misc/compat.h>
 
 #include <QFile>
+#include <QHash>
 #include <QStandardPaths>
 #include <QStringBuilder>
 #include <QXmlStreamReader>
+
+#include <QJsonObject>
 
 namespace Data {
 
@@ -79,15 +82,105 @@ QString SyncthingConfig::locateHttpsCertificate()
     return locateConfigFile(QStringLiteral("https-cert.pem"));
 }
 
-bool SyncthingConfig::restore(const QString &configFilePath)
+/*!
+ * \brief Converts a single text value to a JSON value guessing the type.
+ */
+static QJsonValue xmlValueToJsonValue(QStringView value)
 {
-    QFile configFile(configFilePath);
+    if (value == QLatin1StringView("true")) {
+        return QJsonValue(true);
+    } else if (value == QLatin1StringView("false")) {
+        return QJsonValue(false);
+    }
+    auto isNumber = false;
+    auto number = value.toDouble(&isNumber);
+    return isNumber ? QJsonValue(number) : QJsonValue(value.toString());
+}
+
+/*!
+ * \brief Adds current attributes form \a xmlReader to \a jsonObject.
+ */
+static void xmlAttributesToJsonObject(QXmlStreamReader &xmlReader, QJsonObject &jsonObject)
+{
+    for (const auto &attribute : xmlReader.attributes()) {
+        jsonObject.insert(attribute.name(), xmlValueToJsonValue(attribute.value()));
+    }
+}
+
+/*!
+ * \brief Adds the current element of \a xmlReader to \a object.
+ * \remarks The tokenType() of \a xmlReader is supposed to be QXmlStreamReader::StartElement.
+ */
+static void xmlElementToJsonValue(QXmlStreamReader &xmlReader, QJsonObject &object)
+{
+    static const auto arrayElements = QHash<QString, QString>{ { QStringLiteral("device"), QStringLiteral("devices") } };
+    auto name = xmlReader.name().toString();
+    auto arrayName = arrayElements.find(name);
+    auto text = QString();
+    auto nestedObject = QJsonObject();
+    auto valid = true;
+    xmlAttributesToJsonObject(xmlReader, nestedObject);
+    while (valid) {
+        switch (xmlReader.readNext()) {
+        case QXmlStreamReader::StartElement:
+            xmlAttributesToJsonObject(xmlReader, nestedObject);
+            xmlElementToJsonValue(xmlReader, nestedObject);
+            break;
+        case QXmlStreamReader::Characters:
+            text.append(xmlReader.text());
+            break;
+        case QXmlStreamReader::Invalid:
+        case QXmlStreamReader::EndDocument:
+        case QXmlStreamReader::EndElement:
+            valid = false;
+            break;
+        default:;
+        }
+    }
+    if (arrayName == arrayElements.cend()) {
+        object.insert(std::move(name), nestedObject.isEmpty() ? xmlValueToJsonValue(text) : std::move(nestedObject));
+    } else {
+        if (*arrayName == QLatin1String("devices")) {
+            nestedObject.insert(QStringLiteral("deviceID"), nestedObject.take(QLatin1String("id")));
+        }
+        auto valueRef = object[*arrayName];
+        auto array = valueRef.isArray() ? valueRef.toArray() : QJsonArray();
+        array.append(nestedObject.isEmpty() ? xmlValueToJsonValue(text) : std::move(nestedObject));
+        valueRef = array;
+    }
+}
+
+/*!
+ * \brief Converts the current sub-tree of \a xmlReader to a QJsonObject.
+ * \remarks The tokenType() of \a xmlReader is supposed to be QXmlStreamReader::StartElement.
+ */
+static QJsonObject xmlToJson(QXmlStreamReader &xmlReader, bool convertDeviceId)
+{
+    auto json = QJsonObject();
+    xmlAttributesToJsonObject(xmlReader, json);
+    while (xmlReader.readNextStartElement()) {
+        xmlElementToJsonValue(xmlReader, json);
+    }
+    if (convertDeviceId) {
+        json.insert(QStringLiteral("deviceID"), json.take(QLatin1String("id")));
+    }
+    return json;
+}
+
+/*!
+ * \brief Reads the configuration at the specified \a configFilePath.
+ * \param details Whether details should be populates as well.
+ */
+bool SyncthingConfig::restore(const QString &configFilePath, bool detailed)
+{
+    auto configFile = QFile(configFilePath);
     if (!configFile.open(QFile::ReadOnly)) {
         return false;
     }
 
-    QXmlStreamReader xmlReader(&configFile);
-    bool ok = false;
+    auto xmlReader = QXmlStreamReader(&configFile);
+    auto ok = false;
+    auto *const details = detailed ? &this->details.emplace() : nullptr;
 #include <qtutilities/misc/xmlparsermacros.h>
     children
     {
@@ -121,6 +214,20 @@ bool SyncthingConfig::restore(const QString &configFilePath)
                     }
                     else_skip
                 }
+            }
+            eliftag("folder")
+            {
+                if (details) {
+                    details->folders.append(xmlToJson(xmlReader, false));
+                }
+                else_skip
+            }
+            eliftag("device")
+            {
+                if (details) {
+                    details->devices.append(xmlToJson(xmlReader, true));
+                }
+                else_skip
             }
             else_skip
         }

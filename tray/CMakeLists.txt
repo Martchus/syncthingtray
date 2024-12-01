@@ -318,6 +318,7 @@ if (QUICK_GUI)
         gui/qml/HelpButton.qml
         gui/qml/IconOnlyButton.qml
         gui/qml/IgnorePatternPage.qml
+        gui/qml/ImportPage.qml
         gui/qml/InternalErrorsPage.qml
         gui/qml/LogPage.qml
         gui/qml/Main.qml
@@ -325,6 +326,7 @@ if (QUICK_GUI)
         gui/qml/ObjectConfigPage.qml
         gui/qml/StartPage.qml
         gui/qml/Statistics.qml
+        gui/qml/SelectiveImportDelegate.qml
         gui/qml/SettingsPage.qml
         ${ADDITIONAL_QML_FILES}
         SOURCES

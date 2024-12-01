@@ -368,21 +368,32 @@ To only test the app without migrating your setup you can:
 
 0. Start the Syncthing app you are currently using (e.g. the Syncthing-Fork app) and ensure that
    Syncthing itself is running as well.
-1. Do an export of your Syncthing config so you know the web UI listening address and API key.
+1. Lookup the listening address and API key in the options of the app you are currently using.
+   Alternatively, do an export/backup in the app you are currently using. The backup directory
+   will contain the file `config.xml` which also contains the listening address and API key.
+   The export will also contain the HTTPs certificate which you need if HTTPs is used.
 2. Install and start the Syncthing app from Syncthing Tray.
 3. Ensure that running Syncthing is disabled under the runtime condition settings.
 4. Configure the information from step 1 in the connection settings.
 5. After applying all settings, the app UI can be used to control your existing Syncthing setup.
-   Note that changes will affect your syncthing setup. You are *not* working in a read-only mode
-   or on a copy.
+   Note that changes will affect your existing Syncthing setup. You are *not* working in
+   read-only mode or on a copy.
 
 ### Migrating data from your existing app setup
-0. Start the Syncthing app you are currently using (e.g. the Syncthing-Fork app).
-1. Do an export of your Syncthing config and data
+0. Start the Syncthing app you are currently using (e.g. the Syncthing-Fork app) and wait until
+   everything is in-sync.
+1. Do an export of your Syncthing config and data. This will populate a directory on the internal
+   or external storage.
 2. Stop the Syncthing app you are currently using.
 3. Start the Syncthing app from Syncthing Tray.
-4. Import the config and data from step 1 and select what parts of the config/data you want to
-   import. (The import with selection is still WIP.)
+4. Import the config and data from step 1 and select what parts you want to import.
+    * When selecting a full import the device ID from your existing app will be reused. In fact,
+      the entire Syncthing configuration and database will be reused. So the setup will be
+      identical to how it was before - except that now a different app is used. That also means
+      that no changes are required on other devices.
+    * When selecting only specific folders and devices the new app will keep its (different) own
+      device ID. You will have to add it on other devices as a new device and share relevant
+      folders.
 
 ## Download
 Checkout the [download section on the website](https://martchus.github.io/syncthingtray/#downloads-section) for an overview.

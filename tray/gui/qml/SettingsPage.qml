@@ -59,13 +59,14 @@ StackView {
                     iconName: "area-chart"
                 }
                 ListElement {
-                    functionName: "importSettings"
-                    label: qsTr("Import settings/secrets/data of app and backend")
+                    functionName: "checkSettings"
+                    callback: (availableSettings) => stackView.push("ImportPage.qml", {availableSettings: availableSettings}, StackView.PushTransition)
+                    label: qsTr("Import selected settings/secrets/data of app and backend")
                     iconName: "download"
                 }
                 ListElement {
                     functionName: "exportSettings"
-                    label: qsTr("Export ettings/secrets/data of app and backend")
+                    label: qsTr("Export all settings/secrets/data of app and backend")
                     iconName: "floppy-o"
                 }
             }
@@ -76,12 +77,12 @@ StackView {
                 icon.width: App.iconSize
                 icon.height: App.iconSize
                 onClicked: {
-                    if (callback !== undefined) {
-                        callback();
-                    } else if (key.length > 0) {
+                    if (key.length > 0) {
                         appSettingsPage.openNestedSettings(title, key);
-                    } else {
-                        appSettingsPage.initiateBackup(functionName);
+                    } else if (functionName.length > 0) {
+                        appSettingsPage.initiateBackup(functionName, callback);
+                    } else if (callback !== undefined) {
+                        callback();
                     }
                 }
 
@@ -90,12 +91,14 @@ StackView {
 
         FolderDialog {
             id: backupFolderDialog
-            onAccepted: app[appSettingsPage.currentBackupFunction](backupFolderDialog.selectedFolder)
+            onAccepted: App[appSettingsPage.currentBackupFunction](backupFolderDialog.selectedFolder, appSettingsPage.currentBackupCallback)
         }
 
         property string currentBackupFunction
-        function initiateBackup(functionName) {
+        property var currentBackupCallback
+        function initiateBackup(functionName, callback) {
             appSettingsPage.currentBackupFunction = functionName;
+            appSettingsPage.currentBackupCallback = callback;
             backupFolderDialog.open();
         }
         function openNestedSettings(title, key) {

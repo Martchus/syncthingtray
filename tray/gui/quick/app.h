@@ -187,8 +187,9 @@ public:
     Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applySettings();
     Q_INVOKABLE void applyLauncherSettings();
-    Q_INVOKABLE bool importSettings(const QUrl &url);
-    Q_INVOKABLE bool exportSettings(const QUrl &url);
+    Q_INVOKABLE QVariantMap checkSettings(const QUrl &url, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool importSettings(const QVariantMap &availableSettings, const QVariantMap &selectedSettings, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool exportSettings(const QUrl &url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE bool copyText(const QString &text);
@@ -283,7 +284,7 @@ private:
     Data::SyncthingConfig m_syncthingConfig;
     QString m_syncthingConfigDir;
     QString m_syncthingDataDir;
-    QUrl m_importingSettingsFrom;
+    std::pair<QVariantMap, QVariantMap> m_settingsImport;
     Data::SyncthingLauncher m_launcher;
     QtUtilities::QtSettings m_qtSettings;
     QFile m_settingsFile;

@@ -32,6 +32,7 @@ using namespace CPPUNIT_NS;
 class MiscTests : public TestFixture {
     CPPUNIT_TEST_SUITE(MiscTests);
     CPPUNIT_TEST(testParsingConfig);
+    CPPUNIT_TEST(testParsingConfigWithDetails);
     CPPUNIT_TEST(testSplittingArguments);
     CPPUNIT_TEST(testUtils);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -45,6 +46,7 @@ public:
     MiscTests();
 
     void testParsingConfig();
+    void testParsingConfigWithDetails();
     void testSplittingArguments();
     void testUtils();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -88,7 +90,7 @@ void MiscTests::tearDown()
  */
 void MiscTests::testParsingConfig()
 {
-    SyncthingConfig config;
+    auto config = SyncthingConfig();
     CPPUNIT_ASSERT(!config.restore(QStringLiteral("non-existant-file")));
     CPPUNIT_ASSERT(config.restore(QString::fromLocal8Bit(testFilePath("testconfig/config.xml").data())));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("address", QStringLiteral("127.0.0.1:4001"), config.guiAddress);
@@ -103,6 +105,59 @@ void MiscTests::testParsingConfig()
     CPPUNIT_ASSERT(configFile.isEmpty() || QFile::exists(configFile));
     const QString httpsCert(SyncthingConfig::locateHttpsCertificate());
     CPPUNIT_ASSERT(httpsCert.isEmpty() || QFile::exists(httpsCert));
+}
+
+/*!
+ * \brief Tests basic behaviour of the SyncthingConnection class including parsing of folders and devices.
+ */
+void MiscTests::testParsingConfigWithDetails()
+{
+    auto config = SyncthingConfig();
+    CPPUNIT_ASSERT(config.restore(QString::fromLocal8Bit(testFilePath("testconfig/config.xml").data()), true));
+    CPPUNIT_ASSERT(config.details.has_value());
+
+    const auto folders = config.details.value().folders;
+    CPPUNIT_ASSERT_EQUAL(static_cast<QJsonArray::size_type>(2), folders.size());
+
+    const auto folder1 = folders.at(0).toObject();
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("test1"), folder1.value(QLatin1String("id")).toString());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("/tmp/some/path/1/"), folder1.value(QLatin1String("path")).toString());
+    CPPUNIT_ASSERT_EQUAL(7200.0, folder1.value(QLatin1String("rescanIntervalS")).toDouble());
+    CPPUNIT_ASSERT_EQUAL(QJsonValue::Bool, folder1.value(QLatin1String("fsWatcherEnabled")).type());
+    CPPUNIT_ASSERT_EQUAL(false, folder1.value(QLatin1String("fsWatcherEnabled")).toBool());
+    CPPUNIT_ASSERT_EQUAL(QJsonValue::Bool, folder1.value(QLatin1String("autoNormalize")).type());
+    CPPUNIT_ASSERT_EQUAL(true, folder1.value(QLatin1String("autoNormalize")).toBool());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("basic"), folder1.value(QLatin1String("filesystemType")).toString());
+
+    const auto folder1Devs = folder1.value(QStringLiteral("devices")).toArray();
+    CPPUNIT_ASSERT_EQUAL(static_cast<QJsonArray::size_type>(2), folder1Devs.size());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"),
+        folder1Devs.at(0).toObject().value(QLatin1String("deviceID")).toString());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4"),
+        folder1Devs.at(1).toObject().value(QLatin1String("deviceID")).toString());
+
+    const auto folder2 = folders.at(1).toObject();
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("test2"), folder2.value(QLatin1String("id")).toString());
+
+    const auto folder2Devs = folder2.value(QStringLiteral("devices")).toArray();
+    CPPUNIT_ASSERT_EQUAL(static_cast<QJsonArray::size_type>(1), folder2Devs.size());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"),
+        folder2Devs.at(0).toObject().value(QLatin1String("deviceID")).toString());
+
+    const auto devices = config.details.value().devices;
+    CPPUNIT_ASSERT_EQUAL(static_cast<QJsonArray::size_type>(2), devices.size());
+
+    const auto device1 = devices.at(0).toObject();
+    CPPUNIT_ASSERT_EQUAL(
+        QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"), device1.value(QLatin1String("deviceID")).toString());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("tcp://192.168.2.2:22001"), device1.value(QLatin1String("address")).toString());
+    CPPUNIT_ASSERT_EQUAL(true, device1.value(QLatin1String("paused")).toBool());
+
+    const auto device2 = devices.at(1).toObject();
+    CPPUNIT_ASSERT_EQUAL(
+        QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4"), device2.value(QLatin1String("deviceID")).toString());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("dynamic"), device2.value(QLatin1String("address")).toString());
+    CPPUNIT_ASSERT_EQUAL(false, device2.value(QLatin1String("paused")).toBool());
 }
 
 /*!
