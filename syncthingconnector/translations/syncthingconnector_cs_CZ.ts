@@ -164,17 +164,17 @@
         <translation>Nedaří se vyžádat si vyčištění chyb: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2111"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2174"/>
         <source>Unable to parse Syncthing events: </source>
         <translation>Nedaří se zpracovat události v Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2140"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2203"/>
         <source>Unable to request Syncthing events: </source>
         <translation>Nedaří se vyžádat si události v Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1899"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1962"/>
         <source>Unable to post config: </source>
         <translation>Nedaří se odeslat nové nastavení: </translation>
     </message>
@@ -249,33 +249,43 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1761"/>
-        <source>Unable to parse response for browsing &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1775"/>
-        <source>Unable to browse &quot;%1&quot;: </source>
+        <location filename="../syncthingconnection_requests.cpp" line="1786"/>
+        <source>Unable to parse JSON response: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1799"/>
-        <location filename="../syncthingconnection_requests.cpp" line="1823"/>
+        <source>Unable to request: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingconnection_requests.cpp" line="1824"/>
+        <source>Unable to parse response for browsing &quot;%1&quot;: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingconnection_requests.cpp" line="1838"/>
+        <source>Unable to browse &quot;%1&quot;: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingconnection_requests.cpp" line="1862"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1886"/>
         <source>Unable to query ignore patterns of &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1849"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1912"/>
         <source>Unable to change ignore patterns of &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2738"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2801"/>
         <source>Unable to parse disk events: </source>
         <translation>Nedaří se zpracovat události úložiště: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2763"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2826"/>
         <source>Unable to request disk events: </source>
         <translation>Nedaří se vyžádat si události úložiště: </translation>
     </message>
@@ -285,12 +295,12 @@
         <translation>na posunu %1</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="692"/>
+        <location filename="../syncthingconnection.h" line="697"/>
         <source>connecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="694"/>
+        <location filename="../syncthingconnection.h" line="699"/>
         <source>, re-connect attempt every %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
@@ -594,6 +604,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../syncthingdir.cpp" line="214"/>
+        <source>Syncing (%1 %, %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../syncthingdir.cpp" line="24"/>
         <source>Scanning</source>
         <translation type="unfinished"></translation>
@@ -606,11 +621,6 @@
     <message>
         <location filename="../syncthingdir.cpp" line="28"/>
         <source>Preparing to Sync</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdir.cpp" line="214"/>
-        <source>Syncing (%1 %)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
