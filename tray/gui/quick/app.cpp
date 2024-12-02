@@ -26,7 +26,6 @@
 #include <QClipboard>
 #include <QDebug>
 #include <QDir>
-#include <QUrlQuery>
 #include <QGuiApplication>
 #include <QJsonDocument>
 #include <QJsonValue>
@@ -35,6 +34,7 @@
 #include <QQuickWindow>
 #include <QStandardPaths>
 #include <QStringBuilder>
+#include <QUrlQuery>
 
 #ifdef Q_OS_ANDROID
 #include <QJniEnvironment>
@@ -403,12 +403,13 @@ bool App::showQrCode(Icon *icon)
     if (m_connection.myId().isEmpty()) {
         return false;
     }
-    connect(&m_connection, &Data::SyncthingConnection::qrCodeAvailable, icon, [icon, requestedId = m_connection.myId(), this] (const QString &id, const QByteArray &data) {
-        if (id == requestedId) {
-            disconnect(&m_connection, nullptr, icon, nullptr);
-            icon->setSource(QImage::fromData(data));
-        }
-    });
+    connect(&m_connection, &Data::SyncthingConnection::qrCodeAvailable, icon,
+        [icon, requestedId = m_connection.myId(), this](const QString &id, const QByteArray &data) {
+            if (id == requestedId) {
+                disconnect(&m_connection, nullptr, icon, nullptr);
+                icon->setSource(QImage::fromData(data));
+            }
+        });
     m_connection.requestQrCode(m_connection.myId());
     return true;
 }
@@ -777,7 +778,7 @@ bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, 
 {
     auto query = m_connection.requestJsonData(verb.toUtf8(), path, QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
         if (callback.isCallable()) {
-            callback.call(QJSValueList({m_engine.toScriptValue(doc.object()), QJSValue(std::move(error))}));
+            callback.call(QJSValueList({ m_engine.toScriptValue(doc.object()), QJSValue(std::move(error)) }));
         }
     });
     connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
@@ -787,7 +788,8 @@ bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, 
 
 QString App::formatTraffic(quint64 total, double rate) const
 {
-    return QString::fromStdString(CppUtilities::bitrateToString(rate, true)) % QChar(',') % QChar(' ') % QChar('(') % QString::fromStdString(CppUtilities::dataSizeToString(total)) % QChar(')');
+    return QString::fromStdString(CppUtilities::bitrateToString(rate, true)) % QChar(',') % QChar(' ') % QChar('(')
+        % QString::fromStdString(CppUtilities::dataSizeToString(total)) % QChar(')');
 }
 
 bool QtGui::App::hasDevice(const QString &devId)
@@ -967,7 +969,7 @@ QVariantMap App::checkSettings(const QUrl &url, const QJSValue &callback)
         availableSettings.insert(QStringLiteral("error"), errors.join(QChar('\n')));
     }
     if (callback.isCallable()) {
-        callback.call(QJSValueList{m_engine.toScriptValue(availableSettings)});
+        callback.call(QJSValueList{ m_engine.toScriptValue(availableSettings) });
     }
     return availableSettings;
 }

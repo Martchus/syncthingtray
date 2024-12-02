@@ -353,7 +353,9 @@ public Q_SLOTS:
 
 public:
     // methods to GET or POST information from/to Syncthing (non-slots)
-    QueryResult requestJsonData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data, std::function<void(QJsonDocument &&, QString &&)> &&callback = std::function<void(QJsonDocument &&, QString &&)>(), bool rest = true, bool longPolling = false);
+    QueryResult requestJsonData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data,
+        std::function<void(QJsonDocument &&, QString &&)> &&callback = std::function<void(QJsonDocument &&, QString &&)>(), bool rest = true,
+        bool longPolling = false);
     QueryResult browse(const QString &dirId, const QString &prefix, int level,
         std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback);
     QueryResult ignores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback);

@@ -11,9 +11,9 @@
 
 #include <syncthingmodel/syncthingdevicemodel.h>
 #include <syncthingmodel/syncthingdirectorymodel.h>
-#include <syncthingmodel/syncthingsortfiltermodel.h>
 #include <syncthingmodel/syncthingfilemodel.h>
 #include <syncthingmodel/syncthingrecentchangesmodel.h>
+#include <syncthingmodel/syncthingsortfiltermodel.h>
 
 #include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingconnection.h>

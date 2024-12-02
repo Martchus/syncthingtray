@@ -1633,7 +1633,8 @@ void SyncthingConnection::readRevert()
 /*!
  * \brief Performs a generic HTTP request to the Syncthing REST-API.
  */
-SyncthingConnection::QueryResult SyncthingConnection::requestJsonData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data, std::function<void(QJsonDocument &&, QString &&)> &&callback, bool rest, bool longPolling)
+SyncthingConnection::QueryResult SyncthingConnection::requestJsonData(const QByteArray &verb, const QString &path, const QUrlQuery &query,
+    const QByteArray &data, std::function<void(QJsonDocument &&, QString &&)> &&callback, bool rest, bool longPolling)
 {
 #if !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
     auto *const reply = networkAccessManager().sendCustomRequest(prepareRequest(path, query, rest, longPolling), verb, data);
@@ -1650,7 +1651,10 @@ SyncthingConnection::QueryResult SyncthingConnection::requestJsonData(const QByt
     Q_UNUSED(longPolling)
     auto *const reply = MockedReply::forRequest(verb, path, query, true);
 #endif
-    return { reply, QObject::connect(reply, &QNetworkReply::finished, this, [this, cb = std::move(callback)]() mutable { readJsonData(std::move(cb)); }, Qt::QueuedConnection) };
+    return { reply,
+        QObject::connect(
+            reply, &QNetworkReply::finished, this, [this, cb = std::move(callback)]() mutable { readJsonData(std::move(cb)); },
+            Qt::QueuedConnection) };
 }
 
 /*!
@@ -1768,7 +1772,7 @@ static void readSyncthingItems(const QJsonArray &array, std::vector<std::unique_
  * \brief Reads the response of requestJsonData() and reports results via the specified \a callback. Emits error() in case of an error.
  * \remarks The \a callback is also emitted in the error case (with the error message as second parameter and an empty list of items).
  */
-void SyncthingConnection::readJsonData(std::function<void (QJsonDocument &&, QString &&)> &&callback)
+void SyncthingConnection::readJsonData(std::function<void(QJsonDocument &&, QString &&)> &&callback)
 {
     auto const [reply, response] = prepareReply();
     if (!reply) {
