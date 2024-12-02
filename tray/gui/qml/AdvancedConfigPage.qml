@@ -28,6 +28,7 @@ ObjectConfigPage {
 
     CustomDialog {
         id: removeDialog
+        title: qsTr("Remove %1").arg(advancedConfigPage.entryName)
         contentItem: ColumnLayout {
             Label {
                 Layout.fillWidth: true

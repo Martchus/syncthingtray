@@ -527,10 +527,7 @@ DelegateChooser {
                 Switch {
                     id: booleanSwitch
                     checked: modelData.value
-                    onCheckedChanged: {
-                        objectConfigPage.configObject[modelData.key] = booleanSwitch.checked;
-                        objectConfigPage.hasUnsavedChanges = true;
-                    }
+                    onCheckedChanged: objectConfigPage.updateValue(modelData.index, modelData.key, booleanSwitch.checked)
                 }
                 ArrayElementButtons {
                     page: objectConfigPage
