@@ -211,7 +211,9 @@ QString SyncthingDir::statusString() const
         break;
     case SyncthingDirStatus::Synchronizing:
         if (completionPercentage > 0) {
-            return QCoreApplication::translate("SyncthingDir", "Syncing (%1 %)").arg(completionPercentage);
+            return QCoreApplication::translate("SyncthingDir", "Syncing (%1 %, %2)")
+                .arg(completionPercentage)
+                .arg(dataSizeToString(neededStats.bytes).data());
         }
         break;
     default:;
