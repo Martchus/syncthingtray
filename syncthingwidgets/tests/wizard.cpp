@@ -466,6 +466,7 @@ void WizardTests::testConfiguringCurrentlyRunningSyncthing()
 
     // apply changes and wait for results on final wizard page
     auto &settings = Settings::values();
+    settings.connection.primary.syncthingUrl = QStringLiteral("foobar"); // ensure this value will change so we always get a backup
     auto waitForCfg = std::function<void(void)>();
     FinalWizardPage *finalPage = nullptr;
     QProgressBar *progressBar = nullptr;
