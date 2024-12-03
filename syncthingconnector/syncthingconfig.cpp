@@ -87,9 +87,9 @@ QString SyncthingConfig::locateHttpsCertificate()
  */
 static QJsonValue xmlValueToJsonValue(QStringView value)
 {
-    if (value == QLatin1StringView("true")) {
+    if (value == QLatin1String("true")) {
         return QJsonValue(true);
-    } else if (value == QLatin1StringView("false")) {
+    } else if (value == QLatin1String("false")) {
         return QJsonValue(false);
     }
     auto isNumber = false;
