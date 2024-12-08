@@ -35,6 +35,7 @@
 #include <QStandardPaths>
 #include <QStringBuilder>
 #include <QUrlQuery>
+#include <QtConcurrent/QtConcurrentRun>
 
 #ifdef Q_OS_ANDROID
 #include <QJniEnvironment>
@@ -97,6 +98,7 @@ App::App(bool insecure, QObject *parent)
     , m_faUrlBase(QStringLiteral("image://fa/"))
     , m_iconSize(16)
     , m_tabIndex(-1)
+    , m_importExportStatus(ImportExportStatus::None)
     , m_insecure(insecure)
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_connectToLaunched(true)
@@ -198,6 +200,16 @@ const QString &App::status()
 {
     if (m_status.has_value()) {
         return *m_status;
+    }
+    switch (m_importExportStatus) {
+    case ImportExportStatus::None:
+        break;
+    case ImportExportStatus::Checking:
+        return m_status.emplace(tr("Checking for data to import …"));
+    case ImportExportStatus::Importing:
+        return m_status.emplace(tr("Importing configuration …"));
+    case ImportExportStatus::Exporting:
+        return m_status.emplace(tr("Exporting configuration …"));
     }
     if (m_connectToLaunched) {
         if (!m_launcher.isRunning()) {
@@ -923,55 +935,82 @@ void App::applyLauncherSettings()
 #endif
 }
 
+bool App::checkOngoingImportExport()
+{
+    if (m_importExportStatus != ImportExportStatus::None) {
+        emit info(tr("Another import/export still pending"));
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void App::setImportExportStatus(ImportExportStatus importExportStatus)
+{
+    if (m_importExportStatus != importExportStatus) {
+        m_importExportStatus = importExportStatus;
+        emit importExportOngoingChanged(importExportStatus != ImportExportStatus::None);
+        invalidateStatus();
+    }
+}
+
 /*!
  * \brief Checks the location specified via \a url for settings to import.
  */
-QVariantMap App::checkSettings(const QUrl &url, const QJSValue &callback)
+bool App::checkSettings(const QUrl &url, const QJSValue &callback)
 {
-    // FIXME: use a separate thread
-    auto availableSettings = QVariantMap();
-    auto pathStr = resolveUrl(url);
-    auto path = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(pathStr));
-    auto errors = QStringList();
-    availableSettings.insert(QStringLiteral("path"), pathStr);
-    try {
-        auto appConfigPath = path / "appconfig.json";
-        if (std::filesystem::exists(appConfigPath)) {
-            availableSettings.insert(QStringLiteral("appConfigPath"), SYNCTHING_APP_PATH_CONVERSION(appConfigPath));
-        }
-        auto syncthingHomePath = path;
-        auto syncthingHomePathNested = path / "syncthing";
-        if (std::filesystem::is_directory(syncthingHomePathNested)) {
-            syncthingHomePath = std::move(syncthingHomePathNested);
-        }
-        if (!std::filesystem::is_empty(syncthingHomePath)) {
-            availableSettings.insert(QStringLiteral("syncthingHomePath"), SYNCTHING_APP_PATH_CONVERSION(syncthingHomePath));
-        } else {
-            errors.append(tr("The Syncthing home directory under \"%1\" is empty.").arg(SYNCTHING_APP_PATH_CONVERSION(syncthingHomePath)));
-        }
-        auto syncthingConfigPath = syncthingHomePath / "config.xml";
-        if (std::filesystem::exists(syncthingConfigPath)) {
-            auto syncthingConfigPathStr = SYNCTHING_APP_PATH_CONVERSION(syncthingConfigPath);
-            auto syncthingConfig = Data::SyncthingConfig();
-            syncthingConfig.restore(syncthingConfigPathStr, true);
-            availableSettings.insert(QStringLiteral("syncthingConfigPath"), syncthingConfigPathStr);
-            if (syncthingConfig.details.has_value()) {
-                availableSettings.insert(QStringLiteral("folders"), syncthingConfig.details->folders);
-                availableSettings.insert(QStringLiteral("devices"), syncthingConfig.details->devices);
+    if (checkOngoingImportExport()) {
+        return false;
+    }
+    setImportExportStatus(ImportExportStatus::Checking);
+    QtConcurrent::run([this, url] {
+        auto availableSettings = QVariantMap();
+        auto pathStr = resolveUrl(url);
+        auto path = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(pathStr));
+        auto errors = QStringList();
+        availableSettings.insert(QStringLiteral("path"), pathStr);
+        try {
+            auto appConfigPath = path / "appconfig.json";
+            if (std::filesystem::exists(appConfigPath)) {
+                availableSettings.insert(QStringLiteral("appConfigPath"), SYNCTHING_APP_PATH_CONVERSION(appConfigPath));
             }
-        } else {
-            errors.append(tr("No Syncthing configuration file found under \"%1\".").arg(SYNCTHING_APP_PATH_CONVERSION(syncthingConfigPath)));
+            auto syncthingHomePath = path;
+            auto syncthingHomePathNested = path / "syncthing";
+            if (std::filesystem::is_directory(syncthingHomePathNested)) {
+                syncthingHomePath = std::move(syncthingHomePathNested);
+            }
+            if (!std::filesystem::is_empty(syncthingHomePath)) {
+                availableSettings.insert(QStringLiteral("syncthingHomePath"), SYNCTHING_APP_PATH_CONVERSION(syncthingHomePath));
+            } else {
+                errors.append(tr("The Syncthing home directory under \"%1\" is empty.").arg(SYNCTHING_APP_PATH_CONVERSION(syncthingHomePath)));
+            }
+            auto syncthingConfigPath = syncthingHomePath / "config.xml";
+            if (std::filesystem::exists(syncthingConfigPath)) {
+                auto syncthingConfigPathStr = SYNCTHING_APP_PATH_CONVERSION(syncthingConfigPath);
+                auto syncthingConfig = Data::SyncthingConfig();
+                syncthingConfig.restore(syncthingConfigPathStr, true);
+                availableSettings.insert(QStringLiteral("syncthingConfigPath"), syncthingConfigPathStr);
+                if (syncthingConfig.details.has_value()) {
+                    availableSettings.insert(QStringLiteral("folders"), syncthingConfig.details->folders);
+                    availableSettings.insert(QStringLiteral("devices"), syncthingConfig.details->devices);
+                }
+            } else {
+                errors.append(tr("No Syncthing configuration file found under \"%1\".").arg(SYNCTHING_APP_PATH_CONVERSION(syncthingConfigPath)));
+            }
+        } catch (const std::filesystem::filesystem_error &e) {
+            errors.append(QString::fromUtf8(e.what()));
         }
-    } catch (const std::filesystem::filesystem_error &e) {
-        errors.append(QString::fromUtf8(e.what()));
-    }
-    if (!errors.isEmpty()) {
-        availableSettings.insert(QStringLiteral("error"), errors.join(QChar('\n')));
-    }
-    if (callback.isCallable()) {
-        callback.call(QJSValueList{ m_engine.toScriptValue(availableSettings) });
-    }
-    return availableSettings;
+        if (!errors.isEmpty()) {
+            availableSettings.insert(QStringLiteral("error"), errors.join(QChar('\n')));
+        }
+        return availableSettings;
+    }).then(this, [this, callback](const QVariantMap &availableSettings) {
+        setImportExportStatus(ImportExportStatus::None);
+        if (callback.isCallable()) {
+            callback.call(QJSValueList{ m_engine.toScriptValue(availableSettings) });
+        }
+    });
+    return true;
 }
 
 /// \cond
@@ -1010,7 +1049,9 @@ static QStringList::size_type importObjects(
  */
 bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap &selectedSettings, const QJSValue &callback)
 {
-    Q_UNUSED(callback) // FIXME: use a separate thread, invoke callback
+    if (checkOngoingImportExport()) {
+        return false;
+    }
     if (!m_settingsDir.has_value()) {
         emit error(tr("Unable to import settings: settings directory was not located."));
         return false;
@@ -1020,79 +1061,94 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
     const auto importSyncthingHome = selectedSettings.value(QStringLiteral("syncthingHome")).toBool();
     if (importSyncthingHome && m_launcher.isRunning()) {
         emit info(tr("Waiting for backend to terminate before importing settings …"));
-        m_settingsImport.first = selectedSettings;
+        m_settingsImport.first = availableSettings;
         m_settingsImport.second = selectedSettings;
         m_launcher.terminate();
         return false;
     }
-    m_settingsImport.first.clear();
-    m_settingsImport.second.clear();
 
-    // copy selected files from import directory to settings directory
-    auto summary = QStringList();
-    try {
-        // copy app config file
-        const auto settingsPath = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()));
-        const auto importAppConfig = selectedSettings.value(QStringLiteral("appConfig")).toBool();
-        if (importAppConfig) {
-            const auto appConfigSrcPathStr = availableSettings.value(QStringLiteral("appConfigPath")).toString();
-            const auto appConfigSrcPath = SYNCTHING_APP_STRING_CONVERSION(appConfigSrcPathStr);
-            const auto appConfigDstPath = settingsPath / "appconfig.json";
-            std::filesystem::copy_file(appConfigSrcPath, appConfigDstPath, std::filesystem::copy_options::overwrite_existing);
-            summary.append(tr("Imported app config from \"%1\".").arg(appConfigSrcPathStr));
-        }
+    setImportExportStatus(ImportExportStatus::Importing);
 
-        // copy Syncthing home directory
-        if (importSyncthingHome) {
-            const auto homeSrcPathStr = availableSettings.value(QStringLiteral("syncthingHomePath")).toString();
-            const auto homeSrcPath = SYNCTHING_APP_STRING_CONVERSION(homeSrcPathStr);
-            const auto homeDstPath = settingsPath / "syncthing";
-            std::filesystem::remove_all(homeDstPath);
-            std::filesystem::create_directory(homeDstPath);
-            std::filesystem::copy(
-                homeSrcPath, homeDstPath, std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive);
-            summary.append(tr("Imported Syncthing config and database from \"%1\".").arg(homeSrcPathStr));
-        }
-    } catch (const std::filesystem::filesystem_error &e) {
-        emit error(tr("Unable to import settings: %1").arg(e.what()));
-        return false;
-    }
-
-    // merge selected folders/devices into existing config
-    if (!importSyncthingHome) {
-        const auto availableFolders = availableSettings.value(QStringLiteral("folders")).toJsonArray();
-        const auto availableDevices = availableSettings.value(QStringLiteral("devices")).toJsonArray();
-        const auto selectedFolders = selectedSettings.value(QStringLiteral("selectedFolders")).value<QVariantList>();
-        const auto selectedDevices = selectedSettings.value(QStringLiteral("selectedDevices")).value<QVariantList>();
-        const auto defaults = m_connection.rawConfig().value(QStringLiteral("defaults")).toObject();
-        const auto folderTemplate = defaults.value(QStringLiteral("folder")).toObject();
-        const auto deviceTemplate = defaults.value(QStringLiteral("device")).toObject();
-        auto folders = m_connection.rawConfig().value(QStringLiteral("folders")).toArray();
-        auto devices = m_connection.rawConfig().value(QStringLiteral("devices")).toArray();
-        const auto importedFolders = importObjects(folderTemplate, availableFolders, selectedFolders, folders);
-        const auto importedDevices = importObjects(deviceTemplate, availableDevices, selectedDevices, devices);
-        if (importedFolders || importedDevices) {
-            auto newConfig = m_connection.rawConfig();
-            if (importedFolders) {
-                newConfig.insert(QStringLiteral("folders"), folders);
+    QtConcurrent::run([this, importSyncthingHome, availableSettings, selectedSettings] {
+        // copy selected files from import directory to settings directory
+        auto summary = QStringList();
+        try {
+            // copy app config file
+            const auto settingsPath = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()));
+            const auto importAppConfig = selectedSettings.value(QStringLiteral("appConfig")).toBool();
+            if (importAppConfig) {
+                const auto appConfigSrcPathStr = availableSettings.value(QStringLiteral("appConfigPath")).toString();
+                const auto appConfigSrcPath = SYNCTHING_APP_STRING_CONVERSION(appConfigSrcPathStr);
+                const auto appConfigDstPath = settingsPath / "appconfig.json";
+                std::filesystem::copy_file(appConfigSrcPath, appConfigDstPath, std::filesystem::copy_options::overwrite_existing);
+                summary.append(tr("Imported app config from \"%1\".").arg(appConfigSrcPathStr));
             }
-            if (importedDevices) {
-                newConfig.insert(QStringLiteral("devices"), devices);
+
+            // copy Syncthing home directory
+            if (importSyncthingHome) {
+                const auto homeSrcPathStr = availableSettings.value(QStringLiteral("syncthingHomePath")).toString();
+                const auto homeSrcPath = SYNCTHING_APP_STRING_CONVERSION(homeSrcPathStr);
+                const auto homeDstPath = settingsPath / "syncthing";
+                std::filesystem::remove_all(homeDstPath);
+                std::filesystem::create_directory(homeDstPath);
+                std::filesystem::copy(
+                    homeSrcPath, homeDstPath, std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive);
+                summary.append(tr("Imported Syncthing config and database from \"%1\".").arg(homeSrcPathStr));
             }
-            m_connection.postConfigFromJsonObject(newConfig);
-            summary.append(tr("Imported %1 folders and %2 devices.").arg(importedFolders).arg(importedDevices));
+        } catch (const std::filesystem::filesystem_error &e) {
+            return std::make_pair(QString::fromUtf8(e.what()), true);
         }
-    }
 
-    if (summary.isEmpty()) {
-        summary.append(tr("Nothing has been imported."));
-    }
-    emit info(summary.join(QChar('\n')));
+        // merge selected folders/devices into existing config
+        if (!importSyncthingHome) {
+            const auto availableFolders = availableSettings.value(QStringLiteral("folders")).toJsonArray();
+            const auto availableDevices = availableSettings.value(QStringLiteral("devices")).toJsonArray();
+            const auto selectedFolders = selectedSettings.value(QStringLiteral("selectedFolders")).value<QVariantList>();
+            const auto selectedDevices = selectedSettings.value(QStringLiteral("selectedDevices")).value<QVariantList>();
+            const auto defaults = m_connection.rawConfig().value(QStringLiteral("defaults")).toObject();
+            const auto folderTemplate = defaults.value(QStringLiteral("folder")).toObject();
+            const auto deviceTemplate = defaults.value(QStringLiteral("device")).toObject();
+            auto folders = m_connection.rawConfig().value(QStringLiteral("folders")).toArray();
+            auto devices = m_connection.rawConfig().value(QStringLiteral("devices")).toArray();
+            const auto importedFolders = importObjects(folderTemplate, availableFolders, selectedFolders, folders);
+            const auto importedDevices = importObjects(deviceTemplate, availableDevices, selectedDevices, devices);
+            if (importedFolders || importedDevices) {
+                auto newConfig = m_connection.rawConfig();
+                if (importedFolders) {
+                    newConfig.insert(QStringLiteral("folders"), folders);
+                }
+                if (importedDevices) {
+                    newConfig.insert(QStringLiteral("devices"), devices);
+                }
+                m_connection.postConfigFromJsonObject(newConfig);
+                summary.append(tr("Imported %1 folders and %2 devices.").arg(importedFolders).arg(importedDevices));
+            }
+        }
 
-    // reload settings
-    m_settingsFile.close();
-    loadSettings();
-    return applySettings();
+        if (summary.isEmpty()) {
+            summary.append(tr("Nothing has been imported."));
+        }
+        return std::make_pair(summary.join(QChar('\n')), false);
+    }).then(this, [this, callback](const std::pair<QString, bool> &res) {
+        setImportExportStatus(ImportExportStatus::None);
+        m_settingsImport.first.clear();
+        m_settingsImport.second.clear();
+
+        if (callback.isCallable()) {
+            callback.call(QJSValueList{ QJSValue(res.first), QJSValue(res.second) });
+        }
+        if (res.second) {
+            emit error(tr("Unable to import settings: %1").arg(res.first));
+        } else {
+            emit info(res.first);
+        }
+
+        // reload settings
+        m_settingsFile.close();
+        loadSettings();
+        applySettings();
+    });
+    return true;
 }
 
 /*!
@@ -1100,25 +1156,39 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
  */
 bool App::exportSettings(const QUrl &url, const QJSValue &callback)
 {
-    Q_UNUSED(callback) // FIXME: use a separate thread, invoke callback
-    const auto path = resolveUrl(url);
-    const auto dir = QDir(path);
-    if (!dir.exists() && !dir.mkpath(QStringLiteral("."))) {
-        emit error(tr("Unable to create export directory under \"%1\".").arg(path));
+    if (checkOngoingImportExport()) {
         return false;
     }
-    if (!m_settingsDir.has_value()) {
-        emit error(tr("Unable to export settings: settings directory was not located."));
-        return false;
-    }
-    auto ec = std::error_code();
-    std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()), SYNCTHING_APP_STRING_CONVERSION(path),
-        std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive, ec);
-    if (ec) {
-        emit error(tr("Unable to export settings: %1").arg(QString::fromStdString(ec.message())));
-        return false;
-    }
-    emit info(tr("Settings have been exported to \"%1\".").arg(path));
+    setImportExportStatus(ImportExportStatus::Exporting);
+
+    QtConcurrent::run([this, url] {
+        const auto path = resolveUrl(url);
+        const auto dir = QDir(path);
+        if (!dir.exists() && !dir.mkpath(QStringLiteral("."))) {
+            return std::make_pair(tr("unable to create export directory under \"%1\"").arg(path), true);
+        }
+        if (!m_settingsDir.has_value()) {
+            return std::make_pair(tr("settings directory was not located."), true);
+        }
+        auto ec = std::error_code();
+        std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()), SYNCTHING_APP_STRING_CONVERSION(path),
+            std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive, ec);
+        if (ec) {
+            emit error(tr("Unable to export settings: %1").arg(QString::fromStdString(ec.message())));
+            return std::make_pair(QString::fromStdString(ec.message()), true);
+        }
+        return std::make_pair(tr("Settings have been exported to \"%1\".").arg(path), false);
+    }).then(this, [this, callback](const std::pair<QString, bool> &res) {
+        setImportExportStatus(ImportExportStatus::None);
+        if (callback.isCallable()) {
+            callback.call(QJSValueList{ QJSValue(res.first), QJSValue(res.second) });
+        }
+        if (res.second) {
+            emit error(tr("Unable to export settings: %1").arg(res.first));
+        } else {
+            emit info(res.first);
+        }
+    });
     return true;
 }
 

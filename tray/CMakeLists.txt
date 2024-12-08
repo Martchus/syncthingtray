@@ -200,7 +200,7 @@ if (QUICK_GUI)
     use_standard_filesystem()
 
     unset(ADDITIONAL_QML_FILES)
-    list(APPEND ADDITIONAL_QT_MODULES Svg)
+    list(APPEND ADDITIONAL_QT_MODULES Concurrent Svg)
     list(APPEND ADDITIONAL_QT_REPOS svg)
     list(APPEND PRIVATE_INCLUDE_DIRS gui/quick)
 

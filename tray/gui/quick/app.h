@@ -24,6 +24,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QFuture>
 #include <QJsonObject>
 #include <QQmlApplicationEngine>
 #include <QUrl>
@@ -61,11 +62,14 @@ class App : public QObject {
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QVariantMap statistics READ statistics)
     Q_PROPERTY(bool savingConfig READ isSavingConfig NOTIFY savingConfigChanged)
+    Q_PROPERTY(bool importExportOngoing READ isImportExportOngoing NOTIFY importExportOngoingChanged)
     Q_PROPERTY(QString statusText READ statusText NOTIFY statusInfoChanged)
     Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY statusInfoChanged)
     Q_PROPERTY(QString additionalStatusText READ additionalStatusText NOTIFY statusInfoChanged)
     QML_ELEMENT
     QML_SINGLETON
+
+    enum class ImportExportStatus { None, Checking, Importing, Exporting };
 
 public:
     explicit App(bool insecure, QObject *parent = nullptr);
@@ -165,6 +169,10 @@ public:
     {
         return m_pendingConfigChange.reply != nullptr;
     }
+    bool isImportExportOngoing() const
+    {
+        return m_importExportStatus != ImportExportStatus::None;
+    }
     const QString &statusText() const
     {
         return m_statusInfo.statusText();
@@ -187,7 +195,8 @@ public:
     Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applySettings();
     Q_INVOKABLE void applyLauncherSettings();
-    Q_INVOKABLE QVariantMap checkSettings(const QUrl &url, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool checkOngoingImportExport();
+    Q_INVOKABLE bool checkSettings(const QUrl &url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool importSettings(const QVariantMap &availableSettings, const QVariantMap &selectedSettings, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool exportSettings(const QUrl &url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool openPath(const QString &path);
@@ -228,6 +237,7 @@ Q_SIGNALS:
     void internalErrorsRequested();
     void connectionErrorsRequested();
     void savingConfigChanged(bool isSavingConfig);
+    void importExportOngoingChanged(bool importExportOngoing);
     void statusInfoChanged();
 
 protected:
@@ -259,6 +269,7 @@ private Q_SLOTS:
 #endif
 
 private:
+    void setImportExportStatus(ImportExportStatus importExportStatus);
     void applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled);
     bool openSettings();
     QString locateSettingsExportDir();
@@ -295,6 +306,7 @@ private:
     QString m_log;
     int m_iconSize;
     int m_tabIndex;
+    ImportExportStatus m_importExportStatus;
     bool m_insecure;
     bool m_connectToLaunched;
     bool m_darkmodeEnabled;
