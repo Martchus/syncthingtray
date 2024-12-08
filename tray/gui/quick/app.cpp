@@ -786,9 +786,13 @@ bool App::postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &call
     return true;
 }
 
-bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, const QJSValue &callback)
+bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, const QVariantMap &parameters, const QJSValue &callback)
 {
-    auto query = m_connection.requestJsonData(verb.toUtf8(), path, QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
+    auto params = QUrlQuery();
+    for (const auto &parameter : parameters.asKeyValueRange()) {
+        params.addQueryItem(parameter.first, parameter.second.toString());
+    }
+    auto query = m_connection.requestJsonData(verb.toUtf8(), path, params, QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
         if (callback.isCallable()) {
             callback.call(QJSValueList({ m_engine.toScriptValue(doc.object()), QJSValue(std::move(error)) }));
         }
