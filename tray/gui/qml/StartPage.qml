@@ -52,6 +52,17 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
+                onClicked: {
+                    if (App.connection.hasErrors) {
+                        const pages = startPage.pages;
+                        const settingsPageIndex = 5;
+                        const settingsPage = pages.children[settingsPageIndex];
+                        pages.setCurrentIndex(settingsPageIndex);
+                        settingsPage.push("ErrorsPage.qml", {}, StackView.PushTransition);
+                    } else {
+                        App.performHapticFeedback();
+                    }
+                }
                 contentItem: RowLayout {
                     spacing: 15
                     Icon {
