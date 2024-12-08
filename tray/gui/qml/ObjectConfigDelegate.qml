@@ -186,7 +186,7 @@ DelegateChooser {
                 onRejected: editedDeviceIdValue.editText = objectConfigPage.configObject[modelData.key]
                 onHelpRequested: deviceIdHelpButton.clicked()
                 function refreshDeviceList() {
-                    App.requestFromSyncthing("GET", "system/discovery", (res, error) => {
+                    App.requestFromSyncthing("GET", "system/discovery", {}, (res, error) => {
                                                  const currentIndex = editedDeviceIdValue.currentIndex;
                                                  const currentText = editedDeviceIdValue.editText;
                                                  editedDeviceIdValue.model = Object.keys(res);

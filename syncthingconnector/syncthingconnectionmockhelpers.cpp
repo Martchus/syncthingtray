@@ -25,13 +25,13 @@ namespace Data {
  */
 namespace TestData {
 LIB_SYNCTHING_CONNECTOR_EXPORT extern bool initialized;
-LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse;
+LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse, needed;
 LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string events[7];
 
 #if (defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)) || (!defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && defined(LIB_SYNCTHING_CONNECTOR_MOCKED))
 #define LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED_IMPLEMENTATION
 bool initialized = false;
-std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse;
+std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse, needed;
 std::string events[7];
 #endif
 } // namespace TestData
@@ -72,10 +72,10 @@ void setupTestData()
 
     // read mock files for REST-API
     const char *const fileNames[] = { "config", "status", "folderstats", "devicestats", "errors", "folderstatus-01", "folderstatus-02",
-        "folderstatus-03", "pullerrors-01", "connections", "version", "empty", "browse" };
+        "folderstatus-03", "pullerrors-01", "connections", "version", "empty", "browse", "needed" };
     const char *const *fileName = fileNames;
     for (auto *const testDataVariable : { &config, &status, &folderStats, &deviceStats, &errors, &folderStatus, &folderStatus2, &folderStatus3,
-             &pullErrors, &connections, &version, &empty, &browse }) {
+             &pullErrors, &connections, &version, &empty, &browse, &needed }) {
         *testDataVariable = readMockFile(testApp.testFilePath(argsToString("mocks/", *fileName, ".json")));
         qDebug() << "Adding mock file: " << *fileName;
         ++fileName;
@@ -193,6 +193,11 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
                 const QString folder(query.queryItemValue(QStringLiteral("folder")));
                 if (folder == QLatin1String("GXWxf-3zgnU") && s_eventIndex >= 6) {
                     buffer = &pullErrors;
+                }
+            } else if (path == QLatin1String("db/need")) {
+                const auto folder = query.queryItemValue(QStringLiteral("folder"));
+                if (folder == QLatin1String("GXWxf-3zgnU")) {
+                    buffer = &needed;
                 }
             } else if (path == QLatin1String("system/connections")) {
                 buffer = &connections;

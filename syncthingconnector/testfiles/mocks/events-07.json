@@ -39,7 +39,7 @@
         }
     },
     {
-        "id": 11,
+        "id": 10,
         "type": "FolderSummary",
         "time": "2018-12-13T00:34:12.9876937Z",
         "data": {
@@ -53,8 +53,10 @@
             "localFiles": 82081,
             "inSyncBytes": 23173473780,
             "inSyncFiles": 82081,
-            "needBytes": 2048,
-            "needFiles": 25,
+            "needBytes": 200,
+            "needFiles": 101,
+            "needDirectories": 2,
+            "needTotalItems": 103,
             "ignorePatterns": true,
             "invalid": "",
             "state": "error",

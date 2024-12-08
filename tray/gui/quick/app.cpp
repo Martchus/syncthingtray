@@ -787,9 +787,13 @@ bool App::postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &call
     return true;
 }
 
-bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, const QJSValue &callback)
+bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, const QVariantMap &parameters, const QJSValue &callback)
 {
-    auto query = m_connection.requestJsonData(verb.toUtf8(), path, QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
+    auto params = QUrlQuery();
+    for (const auto &parameter : parameters.asKeyValueRange()) {
+        params.addQueryItem(parameter.first, parameter.second.toString());
+    }
+    auto query = m_connection.requestJsonData(verb.toUtf8(), path, params, QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
         if (callback.isCallable()) {
             callback.call(QJSValueList({ m_engine.toScriptValue(doc.object()), QJSValue(std::move(error)) }));
         }
@@ -797,6 +801,11 @@ bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, 
     connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
     connect(this, &QObject::destroyed, [c = query.connection] { disconnect(c); });
     return true;
+}
+
+QString App::formatDataSize(quint64 size) const
+{
+    return QString::fromStdString(CppUtilities::dataSizeToString(size));
 }
 
 QString App::formatTraffic(quint64 total, double rate) const

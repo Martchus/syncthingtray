@@ -222,7 +222,9 @@ public:
     Q_INVOKABLE QVariantList internalErrors() const;
     Q_INVOKABLE void clearInternalErrors();
     Q_INVOKABLE bool postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &callback = QJSValue());
-    Q_INVOKABLE bool requestFromSyncthing(const QString &verb, const QString &path, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool requestFromSyncthing(
+        const QString &verb, const QString &path, const QVariantMap &parameters, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE QString formatDataSize(quint64 size) const;
     Q_INVOKABLE QString formatTraffic(quint64 total, double rate) const;
     Q_INVOKABLE bool hasDevice(const QString &devId);
 

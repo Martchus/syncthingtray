@@ -51,6 +51,12 @@ ExpandableDelegate {
                 onTriggered: (source) => mainView.stackView.push("FilesPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             },
             Action {
+                text: qsTr("Out of sync items")
+                icon.source: App.faUrlBase + "exchange"
+                enabled: !modelData.paused && (modelData.neededItemsCount > 0)
+                onTriggered: (source) => mainView.stackView.push("NeededPage.qml", {dirLabel: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
+            },
+            Action {
                 text: qsTr("Advanced config")
                 icon.source: App.faUrlBase + "cogs"
                 onTriggered: (source) => mainView.stackView.push("AdvancedDirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId, stackView: mainView.stackView}, StackView.PushTransition)

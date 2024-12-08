@@ -2642,7 +2642,7 @@ void SyncthingConnection::readLocalFolderCompletion(
     globalStats.bytes = jsonValueToInt(eventData.value(QLatin1String("globalBytes")), static_cast<double>(globalStats.bytes));
     neededStats.bytes = jsonValueToInt(eventData.value(QLatin1String("needBytes")), static_cast<double>(neededStats.bytes));
     neededStats.deletes = jsonValueToInt(eventData.value(QLatin1String("needDeletes")), static_cast<double>(neededStats.deletes));
-    neededStats.deletes = jsonValueToInt(eventData.value(QLatin1String("needItems")), static_cast<double>(neededStats.files));
+    neededStats.total = jsonValueToInt(eventData.value(QLatin1String("needItems")), static_cast<double>(neededStats.files));
     dirInfo.lastStatisticsUpdateEvent = eventId;
     dirInfo.lastStatisticsUpdateTime = eventTime;
     dirInfo.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
