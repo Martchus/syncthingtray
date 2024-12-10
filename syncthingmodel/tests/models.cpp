@@ -153,6 +153,7 @@ void ModelTests::testFileModel()
 
     QVERIFY(rootIdx.isValid());
     QCOMPARE(model.rowCount(rootIdx), 2);
+    QCOMPARE(rootIdx.sibling(rootIdx.row(), 4).data(Qt::ToolTipRole), QStringLiteral("Exists locally and globally"));
 
     // test access to nested folders
     const auto androidIdx = QPersistentModelIndex(model.index(0, 0, rootIdx));
@@ -170,16 +171,24 @@ void ModelTests::testFileModel()
     QCOMPARE(androidIdx.data(), QStringLiteral("100ANDRO"));
     QCOMPARE(cameraIdx.data(), QStringLiteral("Camera"));
     QCOMPARE(model.index(0, 0, cameraIdx).data(), QStringLiteral("IMG_20201114_124821.jpg"));
+    QVERIFY(model.index(0, 0, cameraIdx).data(Qt::DecorationRole).canConvert<QIcon>());
     QCOMPARE(model.index(0, 1, cameraIdx).data(), QStringLiteral("10.19 MiB"));
     QCOMPARE(model.index(0, 2, cameraIdx).data(), QStringLiteral("2020-12-16 22:31:34.500"));
+    QCOMPARE(model.index(0, 3, cameraIdx).data(), QVariant());
+    QVERIFY(model.index(0, 4, cameraIdx).data(Qt::DecorationRole).canConvert<QPixmap>());
+    QCOMPARE(model.index(0, 4, cameraIdx).data(Qt::ToolTipRole), QStringLiteral("Exists globally and perhaps locally"));
     QCOMPARE(model.index(1, 0, cameraIdx).data(), QStringLiteral("IMG_20201213_122451.jpg"));
     QCOMPARE(model.index(2, 0, cameraIdx).data(), QStringLiteral("IMG_20201213_122504.jpg"));
     QCOMPARE(model.index(3, 0, cameraIdx).data(), QStringLiteral("IMG_20201213_122505.jpg"));
     QCOMPARE(model.index(4, 0, cameraIdx).data(), QStringLiteral("IMG_20201213_125329.jpg"));
     QCOMPARE(model.index(5, 0, cameraIdx).data(), QVariant());
+    QCOMPARE(model.index(5, 0, cameraIdx).data(Qt::DecorationRole), QVariant());
     QCOMPARE(model.index(5, 1, cameraIdx).data(), QVariant());
     QCOMPARE(model.index(5, 2, cameraIdx).data(), QVariant());
     QCOMPARE(model.index(5, 3, cameraIdx).data(), QVariant());
+    QCOMPARE(model.index(5, 3, cameraIdx).data(), QVariant());
+    QCOMPARE(model.index(5, 4, cameraIdx).data(Qt::DecorationRole), QVariant());
+    QCOMPARE(model.index(5, 4, cameraIdx).data(Qt::ToolTipRole), QVariant());
 
     // test conversion of indexes to/from paths
     const auto testPath = QStringLiteral("Camera/IMG_20201213_122504.jpg");
