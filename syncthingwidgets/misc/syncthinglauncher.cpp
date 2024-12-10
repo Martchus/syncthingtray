@@ -3,7 +3,9 @@
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/utils.h>
 
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
 #include "../settings/settings.h"
+#endif
 
 #include <c++utilities/io/ansiescapecodes.h>
 
@@ -41,7 +43,9 @@ SyncthingLauncher *SyncthingLauncher::s_mainInstance = nullptr;
  */
 SyncthingLauncher::SyncthingLauncher(QObject *parent)
     : QObject(parent)
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
     , m_lastLauncherSettings(nullptr)
+#endif
     , m_relevantConnection(nullptr)
     , m_guiListeningUrlSearch("Access the GUI via the following URL: ", "\n\r", std::string_view(), BufferSearch::CallbackType())
     , m_exitSearch("Syncthing exited: ", "\n\r", std::string_view(), BufferSearch::CallbackType())
@@ -92,7 +96,9 @@ void SyncthingLauncher::setRunning(bool running, LibSyncthing::RuntimeOptions &&
         tearDownLibSyncthing();
     }
     // save runtime options so Syncthing can resume in case runtime conditions allow it
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
     m_lastLauncherSettings = nullptr;
+#endif
     m_lastRuntimeOptions = std::move(runtimeOptions);
     // emit signal in any case (even if there's no change) so runningStatus() is re-evaluated
     emit runningChanged(shouldBeRunning);
@@ -155,13 +161,19 @@ void SyncthingLauncher::setNetworkConnectionMetered(std::optional<bool> metered)
             if (metered.value_or(false)) {
                 terminateDueToMeteredConnection();
             } else if (!metered.value_or(true) && m_stoppedMetered) {
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
                 if (m_lastLauncherSettings) {
                     launch(*m_lastLauncherSettings);
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-                } else if (m_lastRuntimeOptions) {
-                    launch(*m_lastRuntimeOptions);
-#endif
                 }
+#endif
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS) && defined(SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
+                else
+#endif
+#if defined(SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
+                if (m_lastRuntimeOptions) {
+                    launch(*m_lastRuntimeOptions);
+                }
+#endif
             }
         }
         emit networkConnectionMeteredChanged(metered);
@@ -231,6 +243,7 @@ void SyncthingLauncher::launch(const QString &program, const QStringList &argume
 #endif
 }
 
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
 /*!
  * \brief Launches a Syncthing instance according to the specified \a launcherSettings.
  * \remarks Does nothing if already running an instance.
@@ -267,6 +280,7 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
     m_lastRuntimeOptions.reset();
 #endif
 }
+#endif
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 /*!
@@ -438,9 +452,11 @@ void SyncthingLauncher::terminateDueToMeteredConnection()
         // running before)
         return;
     }
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
     if (m_lastLauncherSettings && !m_relevantConnection) {
         m_relevantConnection = m_lastLauncherSettings->connectionForLauncher(this);
     }
+#endif
     terminate(m_relevantConnection);
     m_stoppedMetered = true;
 }

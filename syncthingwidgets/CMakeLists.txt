@@ -3,11 +3,14 @@ cmake_minimum_required(VERSION 3.17.0 FATAL_ERROR)
 # metadata
 set(META_PROJECT_NAME syncthingwidgets)
 set(META_PROJECT_TYPE library)
-set(META_APP_NAME "Widgets of Syncthing Tray")
+set(META_APP_NAME "UI elements of Syncthing Tray")
 set(META_PUBLIC_QT_MODULES Gui Widgets)
 set(META_WEBVIEW_SRC_DIR webview)
+set(META_GUI_OPTIONAL ON)
 
 # add project files
+set(HEADER_FILES misc/diffhighlighter.h misc/internalerror.h misc/statusinfo.h misc/syncthinglauncher.h misc/utils.h)
+set(SRC_FILES misc/diffhighlighter.cpp misc/internalerror.cpp misc/statusinfo.cpp misc/syncthinglauncher.cpp misc/utils.cpp)
 set(WIDGETS_HEADER_FILES
     settings/settings.h
     settings/settingsdialog.h
@@ -18,13 +21,9 @@ set(WIDGETS_HEADER_FILES
     misc/textviewdialog.h
     misc/internalerrorsdialog.h
     misc/direrrorsdialog.h
-    misc/statusinfo.h
     misc/dbusstatusnotifier.h
-    misc/internalerror.h
     misc/otherdialogs.h
-    misc/syncthinglauncher.h
-    misc/syncthingkiller.h
-    misc/utils.h)
+    misc/syncthingkiller.h)
 set(WIDGETS_SRC_FILES
     settings/settings.cpp
     settings/settingsdialog.cpp
@@ -38,13 +37,9 @@ set(WIDGETS_SRC_FILES
     misc/textviewdialog.cpp
     misc/internalerrorsdialog.cpp
     misc/direrrorsdialog.cpp
-    misc/statusinfo.cpp
     misc/dbusstatusnotifier.cpp
-    misc/internalerror.cpp
     misc/otherdialogs.cpp
-    misc/syncthinglauncher.cpp
-    misc/syncthingkiller.cpp
-    misc/utils.cpp)
+    misc/syncthingkiller.cpp)
 set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 set(WIDGETS_UI_FILES
     settings/connectionoptionpage.ui

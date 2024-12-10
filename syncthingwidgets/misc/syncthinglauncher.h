@@ -98,7 +98,9 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void launch(const QString &program, const QStringList &arguments);
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
     void launch(const Settings::Launcher &launcherSettings);
+#endif
     void terminate(Data::SyncthingConnection *relevantConnection = nullptr);
     void kill();
     void tearDownLibSyncthing();
@@ -124,7 +126,9 @@ private:
 
     SyncthingProcess m_process;
     QUrl m_guiListeningUrl;
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
     const Settings::Launcher *m_lastLauncherSettings;
+#endif
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     std::optional<LibSyncthing::RuntimeOptions> m_lastRuntimeOptions;
 #endif

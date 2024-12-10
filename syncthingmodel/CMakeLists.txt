@@ -8,13 +8,13 @@ set(META_APP_DESCRIPTION "Data models of Syncthing Tray")
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING_MODEL)
 set(META_PUBLIC_QT_MODULES Gui Widgets)
 set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
+set(META_GUI_OPTIONAL ON)
 
 # add project files
 set(HEADER_FILES
     syncthingmodel.h
     syncthingdirectorymodel.h
     syncthingdevicemodel.h
-    syncthingdownloadmodel.h
     syncthingerrormodel.h
     syncthingfilemodel.h
     syncthingrecentchangesmodel.h
@@ -27,7 +27,6 @@ set(SRC_FILES
     syncthingmodel.cpp
     syncthingdirectorymodel.cpp
     syncthingdevicemodel.cpp
-    syncthingdownloadmodel.cpp
     syncthingerrormodel.cpp
     syncthingfilemodel.cpp
     syncthingrecentchangesmodel.cpp
@@ -35,6 +34,8 @@ set(SRC_FILES
     syncthingstatuscomputionmodel.cpp
     syncthingstatusselectionmodel.cpp
     syncthingicons.cpp)
+set(WIDGETS_HEADER_FILES syncthingdownloadmodel.h)
+set(WIDGETS_SRC_FILES syncthingdownloadmodel.cpp)
 set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 
 set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
@@ -61,14 +62,7 @@ find_package(${PACKAGE_NAMESPACE_PREFIX}qtforkawesome${CONFIGURATION_PACKAGE_SUF
 use_qt_fork_awesome(VISIBILITY PUBLIC)
 
 # link also explicitly against the following Qt modules
-list(
-    APPEND
-    ADDITIONAL_QT_MODULES
-    Concurrent
-    Network
-    Gui
-    Widgets
-    Svg)
+list(APPEND ADDITIONAL_QT_MODULES Concurrent Network Gui Svg)
 
 # include modules to apply configuration
 include(BasicConfig)

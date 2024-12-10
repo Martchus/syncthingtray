@@ -2,17 +2,21 @@
 #define QT_UTILITIES_GUI_QTQUICK
 #endif
 
+#ifdef GUI_QTWIDGETS
 #include "./singleinstance.h"
 
 #include "../gui/trayicon.h"
 #include "../gui/traywidget.h"
+#endif
 
 #ifdef GUI_QTQUICK
 #include "../gui/quick/app.h"
 #endif
 
 #include <syncthingwidgets/misc/syncthinglauncher.h>
+#ifdef GUI_QTWIDGETS
 #include <syncthingwidgets/settings/settings.h>
+#endif
 
 #include <syncthingmodel/syncthingicons.h>
 
@@ -39,13 +43,13 @@
 #include <qtutilities/resources/resources.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 
-#include <QMessageBox>
 #include <QNetworkAccessManager>
 #include <QSettings>
 #include <QStringBuilder>
 
 #ifdef GUI_QTWIDGETS
 #include <QApplication>
+#include <QMessageBox>
 using QtApp = QApplication;
 #else
 #include <QGuiApplication>
@@ -82,6 +86,8 @@ Q_IMPORT_PLUGIN(ForkAwesomeIconEnginePlugin)
 #endif
 
 ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
+
+#ifdef GUI_QTWIDGETS
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 static void handleSystemdServiceError(const QString &context, const QString &name, const QString &message)
@@ -184,11 +190,16 @@ static void shutdownSyncthingTray()
     Settings::Launcher::terminate();
 }
 
+#endif
+
 static int runApplication(int argc, const char *const *argv)
 {
     // setup argument parser
     auto parser = ArgumentParser();
     auto qtConfigArgs = QT_CONFIG_ARGUMENTS();
+    auto insecureArg = ConfigValueArgument("insecure", '\0', "allow any self-signed certificate");
+    insecureArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is only for development
+#ifdef GUI_QTWIDGETS
     auto windowedArg = ConfigValueArgument("windowed", 'w', "opens the tray menu as a regular window");
     auto showWebUiArg = ConfigValueArgument("webui", '\0', "instantly shows the web UI - meant for creating shortcut to web UI");
     auto triggerArg = ConfigValueArgument("trigger", '\0', "instantly shows the left-click tray menu - meant for creating a shortcut");
@@ -197,8 +208,6 @@ static int runApplication(int argc, const char *const *argv)
     assumeFirstLaunchArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is debug-only
     auto wipArg = ConfigValueArgument("wip", '\0', "enables WIP features");
     wipArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is debug-only
-    auto insecureArg = ConfigValueArgument("insecure", '\0', "allow any self-signed certificate");
-    insecureArg.setFlags(Argument::Flags::Deprecated, true); // hide as it is only for development
     auto waitForTrayArg = ConfigValueArgument("wait", '\0',
         "wait until the system tray becomes available instead of showing an error message if the system tray is not available on start-up");
     auto connectionArg = ConfigValueArgument("connection", '\0', "specifies one or more connection configurations to be used", { "config name" });
@@ -213,6 +222,7 @@ static int runApplication(int argc, const char *const *argv)
     auto &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
     widgetsGuiArg.addSubArguments({ &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstanceArg,
         &newInstanceArg, &replaceArg, &showWizardArg, &assumeFirstLaunchArg, &wipArg, &insecureArg });
+#endif
 #ifdef GUI_QTQUICK
     auto &quickGuiArg = qtConfigArgs.qtQuickGuiArg();
     quickGuiArg.addSubArgument(&insecureArg);
@@ -240,14 +250,21 @@ static int runApplication(int argc, const char *const *argv)
     syncthingArg.setSubArguments({ &syncthingHelp });
 #endif
 
-    parser.setMainArguments({ &widgetsGuiArg,
+    parser.setMainArguments({
+#ifdef GUI_QTWIDGETS
+        &widgetsGuiArg,
+#endif
 #ifdef GUI_QTQUICK
         &quickGuiArg,
 #endif
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
         &cliArg, &syncthingArg,
 #endif
-        &parser.noColorArg(), &parser.helpArg(), &quitArg });
+        &parser.noColorArg(), &parser.helpArg(),
+#ifdef GUI_QTWIDGETS
+        &quitArg
+#endif
+    });
 
     // parse arguments
 #if defined(Q_OS_ANDROID)
@@ -259,6 +276,7 @@ static int runApplication(int argc, const char *const *argv)
 #endif
     parser.parseArgs(argc, argv);
 
+#ifdef GUI_QTWIDGETS
     // quit already running application if quit is present
     static auto firstRun = true;
     if (quitArg.isPresent() && !firstRun) {
@@ -266,6 +284,7 @@ static int runApplication(int argc, const char *const *argv)
         QCoreApplication::quit();
         return EXIT_SUCCESS;
     }
+#endif
 
 #ifdef GUI_QTQUICK
     if (quickGuiArg.isPresent()) {
@@ -293,6 +312,7 @@ static int runApplication(int argc, const char *const *argv)
     }
 #endif
 
+#ifdef GUI_QTWIDGETS
     // quit unless Qt Widgets GUI should be shown
     if (!widgetsGuiArg.isPresent()) {
         return EXIT_SUCCESS;
@@ -389,6 +409,9 @@ static int runApplication(int argc, const char *const *argv)
         trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent());
     }
     return res;
+#else
+    return EXIT_SUCCESS;
+#endif
 }
 
 int main(int argc, char *argv[])

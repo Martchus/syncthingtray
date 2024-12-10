@@ -23,9 +23,11 @@ enable_testing()
 
 # disable experimental Qt Quick GUI by default except on mobile platforms, enable libsyncthing by default
 if (ANDROID OR IOS)
+    set(WIDGET_GUI_ENABLED_BY_DEFAULT OFF)
     set(QUICK_GUI_ENABLED_BY_DEFAULT ON)
     set(LIBSYNCTHING_DISABLED_BY_DEFAULT OFF)
 else ()
+    set(WIDGET_GUI_ENABLED_BY_DEFAULT ON)
     set(QUICK_GUI_ENABLED_BY_DEFAULT OFF)
     set(LIBSYNCTHING_DISABLED_BY_DEFAULT ON)
 endif ()
@@ -63,6 +65,7 @@ option(NO_FILE_ITEM_ACTION_PLUGIN "whether building the file item action plugin 
 option(NO_MODEL "whether building models should be skipped, implies NO_TRAY" OFF)
 option(NO_WIDGETS "whether building widgets should be skipped, implies NO_TRAY" OFF)
 option(NO_PLASMOID "whether building the Plasmoid for the Plasma desktop should be skipped" "${PLASMOID_DISABLED_BY_DEFAULT}")
+option(WIDGETS_GUI "enables/disables building the Qt Widgets GUI (disabled by default)" ${WIDGET_GUI_ENABLED_BY_DEFAULT})
 option(QUICK_GUI "enables/disables building the experimental Qt Quick GUI (disabled by default)" ${QUICK_GUI_ENABLED_BY_DEFAULT})
 
 # allow using non-default configuration

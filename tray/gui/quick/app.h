@@ -3,6 +3,7 @@
 
 #include "./quickicon.h"
 
+#include <syncthingwidgets/misc/diffhighlighter.h>
 #include <syncthingwidgets/misc/internalerror.h>
 #include <syncthingwidgets/misc/otherdialogs.h>
 #include <syncthingwidgets/misc/statusinfo.h>

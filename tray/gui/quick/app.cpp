@@ -8,7 +8,6 @@
 
 #include <syncthingwidgets/misc/internalerror.h>
 #include <syncthingwidgets/misc/otherdialogs.h>
-#include <syncthingwidgets/settings/settings.h>
 
 #include <syncthingmodel/syncthingerrormodel.h>
 #include <syncthingmodel/syncthingfilemodel.h>

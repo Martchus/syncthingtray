@@ -1,7 +1,9 @@
 #include "./internalerror.h"
 #include "./syncthinglauncher.h"
 
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
 #include "../settings/settings.h"
+#endif
 
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingservice.h>
@@ -12,6 +14,7 @@ using namespace Data;
 
 namespace QtGui {
 
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
 /*!
  * \brief Returns whether to ignore inavailability after start or standby-wakeup.
  */
@@ -61,6 +64,7 @@ static bool ignoreInavailabilityAfterStart(const Settings::Settings &settings, c
 #endif
     return false;
 }
+#endif
 
 /*!
  * \brief Returns whether the error is relevant. Only in this case a notification for the error should be shown.
@@ -78,6 +82,7 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
         return true;
     }
 
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
     // ignore configuration errors on first launch (to avoid greeting people with an error message)
     const auto &settings = Settings::values();
     if ((settings.firstLaunch || settings.fakeFirstLaunch)
@@ -105,5 +110,8 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
         service,
 #endif
         message, networkError);
+#else
+    return true;
+#endif
 }
 } // namespace QtGui
