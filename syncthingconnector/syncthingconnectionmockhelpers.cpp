@@ -28,7 +28,7 @@ LIB_SYNCTHING_CONNECTOR_EXPORT extern bool initialized;
 LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse;
 LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string events[7];
 
-#if defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) || (!defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && defined(LIB_SYNCTHING_CONNECTOR_MOCKED))
+#if (defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)) || (!defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && defined(LIB_SYNCTHING_CONNECTOR_MOCKED))
 #define LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED_IMPLEMENTATION
 bool initialized = false;
 std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse;
