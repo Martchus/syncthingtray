@@ -1005,13 +1005,13 @@ void SyncthingFileModel::processFetchQueue(const QString &lastItemPath)
                 if (!items.empty()) {
                     const auto last = items.size() - 1;
                     for (auto &item : items) {
-                        item->existsInDb = true;
                         item->parent = refreshedItem;
                     }
                     populatePath(refreshedItem->path, m_pathSeparator, items);
                     beginInsertRows(
                         refreshedIndex, 0, last < std::numeric_limits<int>::max() ? static_cast<int>(last) : std::numeric_limits<int>::max());
                     refreshedItem->children = std::move(items);
+                    forEachItem(refreshedItem, [](SyncthingItem *item) { return item->existsInDb.emplace(true); });
                     switch (refreshedItem->checked) {
                     case Qt::Checked:
                         if (m_recursiveSelectionEnabled) {
