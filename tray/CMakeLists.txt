@@ -278,6 +278,7 @@ endif ()
 
 # add Qml module
 if (QUICK_GUI)
+    qt_policy(SET QTP0004 NEW)
     qt_add_qml_module(
         ${META_TARGET_NAME}
         URI
