@@ -66,6 +66,7 @@ list(APPEND ADDITIONAL_QT_MODULES Concurrent Network Gui Svg)
 
 # include modules to apply configuration
 include(BasicConfig)
+include(QtGuiConfig)
 include(QtConfig)
 include(WindowsResources)
 include(LibraryTarget)
