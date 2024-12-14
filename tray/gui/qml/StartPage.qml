@@ -208,10 +208,7 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
-                onClicked: {
-                    pages.setCurrentIndex(2);
-                    pages.currentPage.add();
-                }
+                onClicked: pages.addDevice()
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
@@ -227,10 +224,7 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
-                onClicked: {
-                    pages.setCurrentIndex(1);
-                    pages.currentPage.add();
-                }
+                onClicked: pages.addDir()
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {

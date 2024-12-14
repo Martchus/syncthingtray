@@ -116,7 +116,7 @@ DelegateChooser {
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: modelData.value
+                        text: modelData.value ?? ""
                         elide: Text.ElideRight
                         font.weight: Font.Light
                     }
@@ -130,7 +130,7 @@ DelegateChooser {
                     configCategory: objectConfigPage.configCategory
                 }
             }
-            onClicked: deviceIdDlg.visible = true
+            onClicked: (modelData.enabled ?? true) ? deviceIdDlg.visible = true : App.performHapticFeedback()
             CustomDialog {
                 id: deviceIdDlg
                 title: modelData.label
@@ -141,7 +141,6 @@ DelegateChooser {
                         ComboBox {
                             id: editedDeviceIdValue
                             Layout.fillWidth: true
-                            editText: modelData.value
                             enabled: modelData?.enabled ?? true
                             editable: true
                             onAccepted: deviceIdDlg.accept()
@@ -178,12 +177,22 @@ DelegateChooser {
                         property var validIdRegex: /^[0-9A-z]{7}(-[0-9A-z]{7}){7}$/
                     }
                 }
-                onAboutToShow: deviceIdDlg.refreshDeviceList()
+                onAboutToShow: {
+                    deviceIdDlg.refreshDeviceList();
+                    editedDeviceIdValue.currentIndex = -1;
+                    editedDeviceIdValue.editText = modelData.value ?? "";
+                }
                 onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, editedDeviceIdValue.editText)
-                onRejected: editedDeviceIdValue.text = objectConfigPage.configObject[modelData.key]
+                onRejected: editedDeviceIdValue.editText = objectConfigPage.configObject[modelData.key]
                 onHelpRequested: deviceIdHelpButton.clicked()
                 function refreshDeviceList() {
-                    App.requestFromSyncthing("GET", "system/discovery", (res, error) => { editedDeviceIdValue.model = Object.keys(res) });
+                    App.requestFromSyncthing("GET", "system/discovery", (res, error) => {
+                                                 const currentIndex = editedDeviceIdValue.currentIndex;
+                                                 const currentText = editedDeviceIdValue.editText;
+                                                 editedDeviceIdValue.model = Object.keys(res);
+                                                 editedDeviceIdValue.currentIndex = currentIndex;
+                                                 editedDeviceIdValue.editText = currentText;
+                                             });
                 }
             }
             required property var modelData

@@ -435,6 +435,14 @@ ApplicationWindow {
             pageStack.setCurrentIndex(indexForward.pop());
             return true;
         }
+        function addDir() {
+            pageStack.setCurrentIndex(1);
+            pageStack.currentPage.add();
+        }
+        function addDevice(deviceId) {
+            pageStack.setCurrentIndex(2);
+            pageStack.currentPage.add(deviceId);
+        }
     }
     CustomDialog {
         id: discardChangesDialog
@@ -525,6 +533,13 @@ ApplicationWindow {
         }
         function onConnectionErrorsRequested() {
             statusButton.showConnectionErrors();
+        }
+        function onTextShared(text) {
+            if (text.match(/^[0-9A-z]{7}(-[0-9A-z]{7}){7}$/)) {
+                pageStack.addDevice(text);
+            } else {
+                showNotifiction(qsTr("Not a valid device ID."));
+            }
         }
     }
     Connections {

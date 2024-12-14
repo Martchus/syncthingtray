@@ -3,6 +3,7 @@ package io.github.martchus.syncthingtray;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.net.Uri;
 import android.view.HapticFeedbackConstants;
@@ -83,6 +84,23 @@ public class Activity extends QtActivity {
 
     public void stopSyncthingService() {
         stopService(new Intent(this, SyncthingService.class));
+    }
+
+    void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            onAndroidIntent("sharedtext:" + sharedText, false);
+        }
+    }
+
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        if (Intent.ACTION_SEND.equals(action) && "text/plain".equals(type)) {
+            handleSendText(intent);
+        }
     }
 
     protected void onNewIntent(Intent intent) {

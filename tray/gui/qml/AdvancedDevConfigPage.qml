@@ -8,11 +8,15 @@ AdvancedConfigPage {
     entriesKey: "devices"
     isEntry: (device) => device.deviceID === devId
     configCategory: "config-option-device"
-    Component.onCompleted: configObject = devId.length > 0 ? findConfigObject() : makeNewConfig();
     required property string devName
     required property string devId
     function makeNewConfig() {
-        return App.connection.rawConfig?.defaults?.device ?? {};
+        const config = App.connection.rawConfig?.defaults?.device ?? {};
+        if (devId.length > 0) {
+            config.deviceID = devId;
+        }
+        isNew = true;
+        return config;
     }
     function updateIdentification() {
         const id = configObject.deviceID ?? "";

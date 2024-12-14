@@ -240,6 +240,7 @@ Q_SIGNALS:
     void savingConfigChanged(bool isSavingConfig);
     void importExportOngoingChanged(bool importExportOngoing);
     void statusInfoChanged();
+    void textShared(const QString &text);
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;

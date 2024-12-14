@@ -38,8 +38,8 @@ StackView {
             }
         ]
         property alias model: devsListView.mainModel
-        function add() {
-            stackView.push("DevConfigPage.qml", {devName: qsTr("New device"), devId: "", stackView: stackView}, StackView.PushTransition);
+        function add(deviceId = "") {
+            stackView.push("DevConfigPage.qml", {devName: qsTr("New device"), devId: deviceId, stackView: stackView}, StackView.PushTransition);
         }
     }
 }

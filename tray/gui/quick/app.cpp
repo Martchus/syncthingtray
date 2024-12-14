@@ -739,14 +739,16 @@ void App::showNewDir(const QString &devId, const QString &dirId, const QString &
     updateExtraAndroidNotification(title, text, subText, page, icon);
 }
 
-void App::handleAndroidIntent(const QString &page, bool fromNotification)
+void App::handleAndroidIntent(const QString &data, bool fromNotification)
 {
-    qDebug() << "Handling Android intent: " << page;
+    qDebug() << "Handling Android intent: " << data;
     Q_UNUSED(fromNotification)
-    if (page == QLatin1String("internalErrors")) {
+    if (data == QLatin1String("internalErrors")) {
         emit internalErrorsRequested();
-    } else if (page == QLatin1String("connectionErrors")) {
+    } else if (data == QLatin1String("connectionErrors")) {
         emit connectionErrorsRequested();
+    } else if (data.startsWith(QLatin1String("sharedtext:"))) {
+        emit textShared(data.mid(11));
     }
 }
 #endif

@@ -8,6 +8,7 @@ import Main
 ObjectConfigPage {
     id: advancedConfigPage
     isDangerous: true
+    Component.onCompleted: configObject = findConfigObject()
     configTemplates: {
         "devices": {deviceID: "", introducedBy: "", encryptionPassword: ""},
         "addresses": "dynamic",
@@ -48,12 +49,13 @@ ObjectConfigPage {
     required property string entriesKey
     required property var isEntry
     property bool configObjectExists: false
+    property bool isNew: false
 
     function findConfigObject() {
         const cfg = App.connection.rawConfig;
         const entries = cfg !== undefined ? cfg[entriesKey] : undefined;
         const entry = Array.isArray(entries) ? entries.find(advancedConfigPage.isEntry) : undefined;
-        return (advancedConfigPage.configObjectExists = (entry !== undefined)) ? entry : {};
+        return (advancedConfigPage.configObjectExists = (entry !== undefined)) ? entry : advancedConfigPage.makeNewConfig();
     }
 
     function applyChanges() {
