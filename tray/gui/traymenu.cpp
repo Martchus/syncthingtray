@@ -14,6 +14,9 @@
 
 #ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
 #include <QStyle>
+#if (QT_VERSION < QT_VERSION_CHECK(6, 9, 0))
+#include <QLibraryInfo>
+#endif
 #endif
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
@@ -257,7 +260,14 @@ void TrayMenu::updateContentMargins()
     // set higher margins to account for the shadow effects of the Windows 11 style
     // note: Not sure whether there's a way to determine the required margins dynamically.
     if (m_windowType == TrayMenu::WindowType::Popup && m_isWindows11Style) {
-        m_layout->setContentsMargins(2, 2, 10, 2);
+        static constexpr auto normalMargin = 2;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 9, 0))
+        static constexpr auto extraMargin = normalMargin;
+#else
+        static const auto needsExtraMargin = QLibraryInfo::version() < QVersionNumber(6, 8, 1);
+        static const auto extraMargin = needsExtraMargin ? 10 : normalMargin;
+#endif
+        m_layout->setContentsMargins(normalMargin, normalMargin, extraMargin, normalMargin);
         return;
     }
 #endif
