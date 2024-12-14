@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
-import java.io.File;
+import java.io.*;
 
 import org.qtproject.qt.android.bindings.QtActivity;
 
@@ -41,14 +41,22 @@ public class Activity extends QtActivity {
     }
 
     public boolean openPath(String path) {
+        // use FileProvider to compute an URI, using Uri.fromFile would lead to FileUriExposedException
         File file = new File(path);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri fileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".qtprovider", file);
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
         if (file.isDirectory()) {
+            String absolutePath = "";
+            try {
+                absolutePath = file.getCanonicalPath();
+            } catch (IOException e) {
+                absolutePath = file.getAbsolutePath();
+            }
+            showToast(absolutePath);
             //intent.setDataAndType(fileUri, DocumentsContract.Document.MIME_TYPE_DIR);
             intent.setDataAndType(fileUri, "resource/folder");
-            intent.putExtra("org.openintents.extra.ABSOLUTE_PATH", fileUri);
+            intent.putExtra("org.openintents.extra.ABSOLUTE_PATH", absolutePath);
         } else {
             intent.setDataAndType(fileUri, "application/*");
         }
