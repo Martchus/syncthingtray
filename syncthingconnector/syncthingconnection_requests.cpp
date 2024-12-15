@@ -48,7 +48,11 @@ inline QString formatQueryItem(const QString &value)
 QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const QUrlQuery &query, bool rest, bool longPolling)
 {
     auto url = makeUrlWithCredentials();
-    url.setPath(rest ? (url.path() % QStringLiteral("/rest/") % path) : (url.path() + path));
+    auto basePath = url.path();
+    if (!basePath.endsWith(QChar('/'))) {
+        basePath.append(QChar('/'));
+    }
+    url.setPath(rest ? (basePath % QStringLiteral("rest/") % path) : (basePath + path));
     url.setQuery(query);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
