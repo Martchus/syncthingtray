@@ -23,6 +23,7 @@ public:
         DeviceId,
         DeviceDetail,
         DeviceDetailIcon,
+        DeviceNeededItemsCount,
     };
 
     explicit SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent = nullptr);

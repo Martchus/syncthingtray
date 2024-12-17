@@ -24,6 +24,7 @@ public:
         DirectoryPullErrorCount,
         DirectoryDetail,
         DirectoryDetailIcon,
+        DirectoryNeededItemsCount,
     };
 
     explicit SyncthingDirectoryModel(SyncthingConnection &connection, QObject *parent = nullptr);

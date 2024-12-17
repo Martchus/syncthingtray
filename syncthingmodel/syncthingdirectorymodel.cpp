@@ -41,6 +41,7 @@ QHash<int, QByteArray> SyncthingDirectoryModel::roleNames() const
         { DirectoryPullErrorCount, "pullErrorCount" },
         { DirectoryDetail, "detail" },
         { DirectoryDetailIcon, "detailIcon" },
+        { DirectoryNeededItemsCount, "neededItemsCount" },
     };
     return roles;
 }
@@ -358,6 +359,8 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
         return dir.path;
     case DirectoryPullErrorCount:
         return dir.pullErrorCount;
+    case DirectoryNeededItemsCount:
+        return dir.neededStats.total;
     default:;
     }
 
@@ -392,7 +395,7 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &dir, int inde
     // update top-level indices
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
     static const QVector<int> modelRoles1({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, DirectoryPaused, DirectoryStatus,
-        DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath, DirectoryPullErrorCount });
+        DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath, DirectoryPullErrorCount, DirectoryNeededItemsCount });
     emit dataChanged(modelIndex1, modelIndex1, modelRoles1);
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::EditRole, Qt::ForegroundRole });
