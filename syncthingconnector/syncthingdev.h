@@ -37,7 +37,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
     bool isConnected() const;
     SyncthingDevStatus computeConnectedStateAccordingToCompletion() const;
     SyncthingDevStatus setConnectedStateAccordingToCompletion();
-    const QString displayName() const;
+    const QString &displayName() const;
 
     QString id;
     QString name;
@@ -88,7 +88,7 @@ inline SyncthingDevStatus SyncthingDev::setConnectedStateAccordingToCompletion()
     return status = computeConnectedStateAccordingToCompletion();
 }
 
-inline const QString SyncthingDev::displayName() const
+inline const QString &SyncthingDev::displayName() const
 {
     return name.isEmpty() ? id : name;
 }
