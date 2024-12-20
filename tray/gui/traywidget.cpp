@@ -603,6 +603,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
             }
         }
     }
+    m_ui->tabWidget->setTabVisible(3, settings.appearance.showDownloads);
     if (m_menu) {
         m_menu->setWindowType(settings.appearance.windowType);
     }

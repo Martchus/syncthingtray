@@ -29,7 +29,8 @@ PlasmaExtras.Representation {
         height: Kirigami.Units.iconSizes.medium
         contentItem: PlasmaComponents3.TabBar {
             id: tabBar
-            readonly property double buttonWidth: parent.width / count
+            readonly property int buttonCount: plasmoid.showDownloads ? 4 : 3
+            readonly property double buttonWidth: parent.width / buttonCount
             position: PlasmaComponents3.TabBar.Footer
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -47,16 +48,17 @@ PlasmaExtras.Representation {
                 width: tabBar.buttonWidth
             }
             TabButton {
-                id: downloadsTabButton
-                text: qsTr("Downloads")
-                icon.source: plasmoid.faUrl + "download"
-                width: tabBar.buttonWidth
-            }
-            TabButton {
                 id: recentChangesTabButton
                 text: qsTr("History")
                 icon.source: plasmoid.faUrl + "history"
                 width: tabBar.buttonWidth
+            }
+            TabButton {
+                id: downloadsTabButton
+                text: qsTr("Downloads")
+                icon.source: plasmoid.faUrl + "download"
+                visible: plasmoid.showDownloads
+                width: visible ? tabBar.buttonWidth : 0
             }
         }
     }
@@ -66,8 +68,8 @@ PlasmaExtras.Representation {
         switch (tabBar.currentIndex) {
         case 0: return directoriesPage
         case 1: return devicesPage
-        case 2: return downloadsPage
-        case 3: return recentChangesPage
+        case 2: return recentChangesPage
+        case 3: return downloadsPage
         default: return directoriesPage
         }
     }
@@ -296,11 +298,11 @@ PlasmaExtras.Representation {
                 DevicesPage {
                     id: devicesPage
                 }
-                DownloadsPage {
-                    id: downloadsPage
-                }
                 RecentChangesPage {
                     id: recentChangesPage
+                }
+                DownloadsPage {
+                    id: downloadsPage
                 }
             }
         }

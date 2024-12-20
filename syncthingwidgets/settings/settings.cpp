@@ -342,6 +342,7 @@ bool restore()
     v.ignoreInavailabilityAfterStart = settings.value(QStringLiteral("ignoreInavailabilityAfterStart"), v.ignoreInavailabilityAfterStart).toUInt();
     auto &appearance = v.appearance;
     appearance.showTraffic = settings.value(QStringLiteral("showTraffic"), appearance.showTraffic).toBool();
+    appearance.showDownloads = settings.value(QStringLiteral("showDownloads"), appearance.showDownloads).toBool();
     appearance.showTabTexts = settings.value(QStringLiteral("showTabTexts"), appearance.showTabTexts).toBool();
     if (auto windowType = settings.value(QStringLiteral("windowType")); windowType.isValid()) {
         appearance.windowType = windowType.toInt();
@@ -487,6 +488,7 @@ bool save()
     settings.setValue(QStringLiteral("ignoreInavailabilityAfterStart"), v.ignoreInavailabilityAfterStart);
     const auto &appearance = v.appearance;
     settings.setValue(QStringLiteral("showTraffic"), appearance.showTraffic);
+    settings.setValue(QStringLiteral("showDownloads"), appearance.showDownloads);
     settings.setValue(QStringLiteral("showTabTexts"), appearance.showTabTexts);
     settings.setValue(QStringLiteral("windowType"), appearance.windowType);
     settings.setValue(QStringLiteral("trayMenuSize"), appearance.trayMenuSize);

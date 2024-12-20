@@ -336,6 +336,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="showDownloadsCheckBox">
+       <property name="text">
+        <string>Downloads</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QCheckBox" name="showTabTextsCheckBox">
        <property name="text">
         <string>Show tab texts</string>
@@ -412,6 +419,7 @@
   <tabstop>widthSpinBox</tabstop>
   <tabstop>heightSpinBox</tabstop>
   <tabstop>showTrafficCheckBox</tabstop>
+  <tabstop>showDownloadsCheckBox</tabstop>
   <tabstop>showTabTextsCheckBox</tabstop>
   <tabstop>preferIconsFromThemeCheckBox</tabstop>
   <tabstop>useCursorPosCheckBox</tabstop>

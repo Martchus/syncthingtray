@@ -536,6 +536,7 @@ bool AppearanceOptionPage::apply()
     settings.trayMenuSize.setWidth(ui()->widthSpinBox->value());
     settings.trayMenuSize.setHeight(ui()->heightSpinBox->value());
     settings.showTraffic = ui()->showTrafficCheckBox->isChecked();
+    settings.showDownloads = ui()->showDownloadsCheckBox->isChecked();
     settings.showTabTexts = ui()->showTabTextsCheckBox->isChecked();
     v.icons.preferIconsFromTheme = ui()->preferIconsFromThemeCheckBox->isChecked();
     int style;
@@ -588,6 +589,7 @@ void AppearanceOptionPage::reset()
     resetPositioningSettings();
     ui()->windowTypeComboBox->setCurrentIndex(settings.windowType);
     ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
+    ui()->showDownloadsCheckBox->setChecked(settings.showDownloads);
     ui()->showTabTextsCheckBox->setChecked(settings.showTabTexts);
     ui()->preferIconsFromThemeCheckBox->setChecked(v.icons.preferIconsFromTheme);
     auto index = int();

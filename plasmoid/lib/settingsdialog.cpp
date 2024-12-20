@@ -92,6 +92,7 @@ bool AppearanceOptionPage::apply()
     KConfigGroup config = m_applet->config();
     config.writeEntry<QSize>("size", QSize(ui()->widthSpinBox->value(), ui()->heightSpinBox->value()));
     config.writeEntry<bool>("showTabTexts", ui()->showTabTextsCheckBox->isChecked());
+    config.writeEntry<bool>("showDownloads", ui()->showDownloadsCheckBox->isChecked());
     config.writeEntry<bool>("preferIconsFromTheme", ui()->preferIconsFromThemeCheckBox->isChecked());
     config.writeEntry("passiveStates", m_passiveStatusSelection.toVariantList());
 
@@ -105,6 +106,7 @@ void AppearanceOptionPage::reset()
     ui()->widthSpinBox->setValue(size.width());
     ui()->heightSpinBox->setValue(size.height());
     ui()->showTabTextsCheckBox->setChecked(config.readEntry<>("showTabTexts", false));
+    ui()->showDownloadsCheckBox->setChecked(config.readEntry<>("showDownloads", false));
     ui()->preferIconsFromThemeCheckBox->setChecked(config.readEntry<>("preferIconsFromTheme", false));
     m_passiveStatusSelection.applyVariantList(config.readEntry("passiveStates", QVariantList()));
 }

@@ -82,6 +82,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(bool showTabTexts READ isShowingTabTexts WRITE setShowingTabTexts NOTIFY showTabTextsChanged)
+    Q_PROPERTY(bool showDownloads READ isShowingDownloads WRITE setShowingDownloads NOTIFY showDownloadsChanged)
     Q_PROPERTY(bool passive READ isPassive NOTIFY passiveChanged)
     Q_PROPERTY(QList<QtUtilities::ChecklistItem> passiveStates READ passiveStates WRITE setPassiveStates)
     Q_PROPERTY(QString faUrl READ faUrl NOTIFY faUrlChanged)
@@ -124,6 +125,8 @@ public:
     void setSize(const QSize &size);
     bool isShowingTabTexts() const;
     void setShowingTabTexts(bool showTabTexts);
+    bool isShowingDownloads() const;
+    void setShowingDownloads(bool showDownloads);
     bool isPassive() const;
     const QList<QtUtilities::ChecklistItem> &passiveStates() const;
     void setPassiveStates(const QList<QtUtilities::ChecklistItem> &passiveStates);
@@ -165,6 +168,7 @@ Q_SIGNALS:
     void hasInternalErrorsChanged(bool hasInternalErrors);
     void sizeChanged(const QSize &size);
     void showTabTextsChanged(bool isShowingTabTexts);
+    void showDownloadsChanged(bool isShowingDownloads);
     void passiveChanged(bool passive);
     void faUrlChanged(const QString &faUrl);
 
@@ -224,6 +228,7 @@ private:
     bool m_hasInternalErrors;
     bool m_initialized;
     bool m_showTabTexts;
+    bool m_showDownloads;
     bool m_applyingSettingsForWizard;
     QSize m_size;
 };
@@ -323,6 +328,18 @@ inline void SyncthingApplet::setShowingTabTexts(bool showTabTexts)
 {
     if (showTabTexts != m_showTabTexts) {
         emit showTabTextsChanged(m_showTabTexts = showTabTexts);
+    }
+}
+
+inline bool SyncthingApplet::isShowingDownloads() const
+{
+    return m_showDownloads;
+}
+
+inline void SyncthingApplet::setShowingDownloads(bool showDownloads)
+{
+    if (showDownloads != m_showDownloads) {
+        emit showDownloadsChanged(m_showDownloads = showDownloads);
     }
 }
 

@@ -64,6 +64,7 @@ struct SYNCTHINGWIDGETS_EXPORT NotifyOn {
 
 struct SYNCTHINGWIDGETS_EXPORT Appearance {
     bool showTraffic = true;
+    bool showDownloads = false;
     bool showTabTexts = true;
     int windowType = 0; // corresponds to TrayMenu::WindowType
     QSize trayMenuSize = QSize(575, 475);

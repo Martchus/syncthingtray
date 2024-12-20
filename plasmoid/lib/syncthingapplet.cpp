@@ -96,6 +96,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_hasInternalErrors(false)
     , m_initialized(false)
     , m_showTabTexts(false)
+    , m_showDownloads(false)
     , m_applyingSettingsForWizard(false)
 {
     // configure connection
@@ -694,6 +695,7 @@ void SyncthingApplet::applySettings(int changeConnectionIndex)
     // apply appearance settings
     setSize(config.readEntry<QSize>("size", QSize(25, 25)));
     setShowingTabTexts(config.readEntry<bool>("showTabTexts", false));
+    setShowingDownloads(config.readEntry<bool>("showDownloads", false));
     IconManager::instance().applySettings(&settings.icons.status, nullptr, settings.icons.usePaletteForStatus, false);
 
     // restore selected states

@@ -114,26 +114,6 @@
         </item>
        </layout>
       </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="passiveLabel">
-        <property name="text">
-         <string>States to enable passive mode</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QListView" name="passiveListView">
-        <property name="selectionMode">
-         <enum>QAbstractItemView::NoSelection</enum>
-        </property>
-        <property name="layoutMode">
-         <enum>QListView::Batched</enum>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="optionalGuiElementsLabel">
         <property name="text">
@@ -142,9 +122,30 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QCheckBox" name="showTabTextsCheckBox">
+       <layout class="QVBoxLayout" name="optionalGuiElementsVerticalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QCheckBox" name="showDownloadsCheckBox">
+          <property name="text">
+           <string>Downloads</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="showTabTextsCheckBox">
+          <property name="text">
+           <string>Show tab texts</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="iconsLabel">
         <property name="text">
-         <string>Show tab texts</string>
+         <string>Icons</string>
         </property>
        </widget>
       </item>
@@ -162,10 +163,23 @@
         </item>
        </layout>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="iconsLabel">
+      <item row="5" column="0">
+       <widget class="QLabel" name="passiveLabel">
         <property name="text">
-         <string>Icons</string>
+         <string>States to enable passive mode</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QListView" name="passiveListView">
+        <property name="selectionMode">
+         <enum>QAbstractItemView::NoSelection</enum>
+        </property>
+        <property name="layoutMode">
+         <enum>QListView::Batched</enum>
         </property>
        </widget>
       </item>
@@ -190,6 +204,7 @@
  <tabstops>
   <tabstop>widthSpinBox</tabstop>
   <tabstop>heightSpinBox</tabstop>
+  <tabstop>showDownloadsCheckBox</tabstop>
   <tabstop>showTabTextsCheckBox</tabstop>
   <tabstop>preferIconsFromThemeCheckBox</tabstop>
   <tabstop>passiveListView</tabstop>

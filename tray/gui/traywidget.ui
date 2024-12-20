@@ -2,6 +2,11 @@
 <ui version="4.0">
  <class>QtGui::TrayWidget</class>
  <widget class="QWidget" name="QtGui::TrayWidget">
+  <property name="font">
+   <font>
+    <family>Noto Sans</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Syncthing Tray</string>
   </property>
@@ -357,8 +362,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
          <string>New notifications</string>
         </property>
         <property name="icon">
-         <iconset theme="dialog-warning">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset theme="dialog-warning"/>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -445,35 +449,6 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="downloadsTab">
-      <attribute name="icon">
-       <iconset>
-        <normaloff>download.fa</normaloff>download.fa</iconset>
-      </attribute>
-      <attribute name="title">
-       <string>Downloads</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QtGui::DownloadView" name="downloadsTreeView"/>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="recentChangesTab">
       <attribute name="icon">
        <iconset>
@@ -504,6 +479,35 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</string>
           <bool>false</bool>
          </property>
         </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="downloadsTab">
+      <attribute name="icon">
+       <iconset>
+        <normaloff>download.fa</normaloff>download.fa</iconset>
+      </attribute>
+      <attribute name="title">
+       <string>Downloads</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QtGui::DownloadView" name="downloadsTreeView"/>
        </item>
       </layout>
      </widget>
