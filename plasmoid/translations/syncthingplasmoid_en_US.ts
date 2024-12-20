@@ -128,56 +128,56 @@
 <context>
     <name>FullRepresentation</name>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="245"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="251"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="247"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="253"/>
         <source>Global</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="252"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="258"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="254"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="260"/>
         <source>Global incoming traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="270"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="276"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="272"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="278"/>
         <source>Local</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="277"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="283"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="279"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="285"/>
         <source>Global outgoing traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="33"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="39"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="34"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="40"/>
         <source>Folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="39"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="45"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="40"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="46"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="45"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="51"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="52"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="58"/>
         <source>Downloads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="51"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="57"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="46"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="52"/>
         <source>History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="103"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="109"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="105"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="111"/>
         <source>Toggle filter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -210,27 +210,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="120"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="132"/>
+        <source>Downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="169"/>
         <source>States to enable passive mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="140"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="120"/>
         <source>Optional GUI elements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="147"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="139"/>
         <source>Show tab texts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="159"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="160"/>
         <source>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="168"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="148"/>
         <source>Icons</source>
         <translation type="unfinished"></translation>
     </message>
@@ -246,22 +251,22 @@
 <context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="128"/>
+        <location filename="../lib/settingsdialog.cpp" line="130"/>
         <source>Plasmoid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="138"/>
+        <location filename="../lib/settingsdialog.cpp" line="140"/>
         <source>General web view settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="139"/>
+        <location filename="../lib/settingsdialog.cpp" line="141"/>
         <source>Built-in web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="148"/>
+        <location filename="../lib/settingsdialog.cpp" line="150"/>
         <source>Extras</source>
         <translation type="unfinished"></translation>
     </message>
@@ -282,22 +287,22 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="485"/>
+        <location filename="../lib/syncthingapplet.cpp" line="486"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="559"/>
+        <location filename="../lib/syncthingapplet.cpp" line="560"/>
         <source>Associated directory does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="585"/>
+        <location filename="../lib/syncthingapplet.cpp" line="586"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="652"/>
+        <location filename="../lib/syncthingapplet.cpp" line="653"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
