@@ -267,70 +267,30 @@ ApplicationWindow {
     footer: TabBar {
         visible: drawer.interactive
         currentIndex: Math.min(pageStack.currentIndex, 4)
-        TabButton {
+        MainTabButton {
             text: qsTr("Start")
-            display: AbstractButton.TextUnderIcon
-            font.pointSize: 7
-            icon.source: App.faUrlBase + "home"
-            icon.width: App.iconSize
-            icon.height: App.iconSize
-            onClicked: pageStack.setCurrentIndex(0)
-            onPressAndHold: App.performHapticFeedback()
-            ToolTip.visible: hovered || pressed
-            ToolTip.text: text
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+            iconName: "home"
+            tabIndex: 0
         }
-        TabButton {
+        MainTabButton {
             text: qsTr("Folders")
-            display: AbstractButton.TextUnderIcon
-            font.pointSize: 7
-            icon.source: App.faUrlBase + "folder"
-            icon.width: App.iconSize
-            icon.height: App.iconSize
-            onClicked: pageStack.setCurrentIndex(1)
-            onPressAndHold: App.performHapticFeedback()
-            ToolTip.visible: hovered || pressed
-            ToolTip.text: text
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+            iconName: "folder"
+            tabIndex: 1
         }
-        TabButton {
+        MainTabButton {
             text: qsTr("Devices")
-            display: AbstractButton.TextUnderIcon
-            font.pointSize: 7
-            icon.source: App.faUrlBase + "sitemap"
-            icon.width: App.iconSize
-            icon.height: App.iconSize
-            onClicked: pageStack.setCurrentIndex(2)
-            onPressAndHold: App.performHapticFeedback()
-            ToolTip.visible: hovered || pressed
-            ToolTip.text: text
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+            iconName: "sitemap"
+            tabIndex: 2
         }
-        TabButton {
+        MainTabButton {
             text: qsTr("Recent changes")
-            display: AbstractButton.TextUnderIcon
-            font.pointSize: 7
-            icon.source: App.faUrlBase + "history"
-            icon.width: App.iconSize
-            icon.height: App.iconSize
-            onClicked: pageStack.setCurrentIndex(3)
-            onPressAndHold: App.performHapticFeedback()
-            ToolTip.visible: hovered || pressed
-            ToolTip.text: text
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+            iconName: "history"
+            tabIndex: 3
         }
-        TabButton {
+        MainTabButton {
             text: qsTr("More")
-            display: AbstractButton.TextUnderIcon
-            font.pointSize: 7
-            icon.source: App.faUrlBase + "cog"
-            icon.width: App.iconSize
-            icon.height: App.iconSize
-            onClicked: pageStack.setCurrentIndex(5)
-            onPressAndHold: App.performHapticFeedback()
-            ToolTip.visible: hovered || pressed
-            ToolTip.text: text
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+            iconName: "cog"
+            tabIndex: 5
         }
     }
 

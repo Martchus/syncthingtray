@@ -323,6 +323,7 @@ if (QUICK_GUI)
         gui/qml/InternalErrorsPage.qml
         gui/qml/LogPage.qml
         gui/qml/Main.qml
+        gui/qml/MainTabButton.qml
         gui/qml/MenuItemInstantiator.qml
         gui/qml/NeededPage.qml
         gui/qml/ObjectConfigDelegate.qml
