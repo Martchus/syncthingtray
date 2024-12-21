@@ -138,8 +138,8 @@ struct LIB_SYNCTHING_MODEL_EXPORT ForkAwesomeIcons {
     QIcon shareAlt;
     QIcon refresh;
     QIcon clock;
-    QIcon exchangeAlt;
     QIcon exclamation;
+    QIcon exclamationCircle;
     QIcon exclamationTriangle;
     QIcon cogs;
     QIcon link;
@@ -149,10 +149,11 @@ struct LIB_SYNCTHING_MODEL_EXPORT ForkAwesomeIcons {
     QIcon folder;
     QIcon certificate;
     QIcon networkWired;
-    QIcon cloudDownloadAlt;
-    QIcon cloudUploadAlt;
+    QIcon cloudDownload;
+    QIcon cloudUpload;
     QIcon tag;
     QIcon exchange;
+    QIcon signal;
 };
 
 class LIB_SYNCTHING_MODEL_EXPORT IconManager : public QObject {

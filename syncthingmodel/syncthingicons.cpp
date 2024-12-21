@@ -319,8 +319,8 @@ ForkAwesomeIcons::ForkAwesomeIcons(QtForkAwesome::Renderer &renderer, const QCol
     , shareAlt(renderer.pixmap(QtForkAwesome::Icon::ShareAlt, size, color))
     , refresh(renderer.pixmap(QtForkAwesome::Icon::Refresh, size, color))
     , clock(renderer.pixmap(QtForkAwesome::Icon::ClockO, size, color))
-    , exchangeAlt(renderer.pixmap(QtForkAwesome::Icon::Exchange, size, color))
     , exclamation(renderer.pixmap(QtForkAwesome::Icon::Exclamation, size, color))
+    , exclamationCircle(renderer.pixmap(QtForkAwesome::Icon::ExclamationCircle, size, color))
     , exclamationTriangle(renderer.pixmap(QtForkAwesome::Icon::ExclamationTriangle, size, color))
     , cogs(renderer.pixmap(QtForkAwesome::Icon::Cogs, size, color))
     , link(renderer.pixmap(QtForkAwesome::Icon::Link, size, color))
@@ -330,10 +330,11 @@ ForkAwesomeIcons::ForkAwesomeIcons(QtForkAwesome::Renderer &renderer, const QCol
     , folder(renderer.pixmap(QtForkAwesome::Icon::Folder, size, color))
     , certificate(renderer.pixmap(QtForkAwesome::Icon::Certificate, size, color))
     , networkWired(renderer.pixmap(QtForkAwesome::Icon::Sitemap, size, color))
-    , cloudDownloadAlt(renderer.pixmap(QtForkAwesome::Icon::CloudDownload, size, color))
-    , cloudUploadAlt(renderer.pixmap(QtForkAwesome::Icon::CloudUpload, size, color))
+    , cloudDownload(renderer.pixmap(QtForkAwesome::Icon::CloudDownload, size, color))
+    , cloudUpload(renderer.pixmap(QtForkAwesome::Icon::CloudUpload, size, color))
     , tag(renderer.pixmap(QtForkAwesome::Icon::Tag, size, color))
     , exchange(renderer.pixmap(QtForkAwesome::Icon::Exchange, size, color))
+    , signal(renderer.pixmap(QtForkAwesome::Icon::Signal, size, color))
 {
 }
 

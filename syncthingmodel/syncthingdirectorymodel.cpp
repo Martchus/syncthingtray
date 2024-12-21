@@ -16,7 +16,7 @@ namespace Data {
 
 static int computeDirectoryRowCount(const SyncthingDir &dir)
 {
-    return dir.paused ? 8 : 10;
+    return dir.paused ? 8 : 11;
 }
 
 SyncthingDirectoryModel::SyncthingDirectoryModel(SyncthingConnection &connection, QObject *parent)
@@ -140,7 +140,9 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case 8:
                     return tr("Last file");
                 case 9:
-                    return tr("Errors");
+                    return tr("Out of Sync items");
+                case 10:
+                    return tr("Failed items");
                 }
                 break;
             }
@@ -175,6 +177,11 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case 8:
                     return dir.lastFileName.isEmpty() ? tr("unknown") : dir.lastFileName;
                 case 9:
+                    if (dir.neededStats.isNull()) {
+                        return tr("none");
+                    }
+                    return tr("%1 item(s), ~ %2", nullptr, trQuandity(dir.neededStats.total)).arg(dir.neededStats.total).arg(dataSizeToString(dir.neededStats.bytes).data());
+                case 10:
                     if (dir.globalError.isEmpty() && !dir.pullErrorCount) {
                         return tr("none");
                     }
@@ -182,9 +189,9 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         return dir.globalError;
                     }
                     if (dir.globalError.isEmpty()) {
-                        return tr("%1 item(s) out of sync", nullptr, trQuandity(dir.pullErrorCount)).arg(dir.pullErrorCount);
+                        return tr("%1 item(s)", nullptr, trQuandity(dir.pullErrorCount)).arg(dir.pullErrorCount);
                     }
-                    return tr("%1 and %2 item(s) out of sync", nullptr, trQuandity(dir.pullErrorCount)).arg(dir.globalError).arg(dir.pullErrorCount);
+                    return tr("%1 and %2 item(s)", nullptr, trQuandity(dir.pullErrorCount)).arg(dir.globalError).arg(dir.pullErrorCount);
                 }
             }
             break;
@@ -211,9 +218,11 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                 case 7:
                     return icons.clock;
                 case 8:
-                    return icons.exchangeAlt;
+                    return icons.exchange;
                 case 9:
-                    return icons.exclamationTriangle;
+                    return icons.cloudDownload;
+                case 10:
+                    return icons.exclamationCircle;
                 }
             }
             break;
@@ -235,6 +244,8 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     return dir.lastFileName.isEmpty() ? Colors::gray(m_brightColors)
                                                       : (dir.lastFileDeleted ? Colors::red(m_brightColors) : QVariant());
                 case 9:
+                    return dir.neededStats.total == 0 ? Colors::gray(m_brightColors) : Colors::red(m_brightColors);
+                case 10:
                     return dir.globalError.isEmpty() && !dir.pullErrorCount ? Colors::gray(m_brightColors) : Colors::red(m_brightColors);
                 }
             }
@@ -266,9 +277,9 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                         }
                     }
                     break;
-                case 9:
+                case 10:
                     if (!dir.itemErrors.empty()) {
-                        QStringList errors;
+                        auto errors = QStringList();
                         errors.reserve(static_cast<int>(dir.itemErrors.size()));
                         for (const auto &error : dir.itemErrors) {
                             errors << error.path;

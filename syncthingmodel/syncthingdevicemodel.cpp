@@ -17,7 +17,7 @@ namespace Data {
 static int computeDeviceRowCount(const SyncthingDev &dev)
 {
     // hide connection type, last seen and everything after introducer (eg. traffic) unless connected
-    return dev.isConnected() ? 10 : 5;
+    return dev.isConnected() ? 11 : 6;
 }
 
 SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent)
@@ -115,7 +115,11 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
         const auto &dev = m_devs[static_cast<size_t>(index.parent().row())];
-        const auto row = !dev.isConnected() && index.row() >= 2 ? index.row() + 2 : index.row();
+        const auto skipRows = !dev.isConnected();
+        auto row = skipRows && index.row() >= 2 ? index.row() + 2 : index.row();
+        if (skipRows && row >= 5) {
+            row += 2;
+        }
         switch (role) {
         case Qt::DisplayRole:
         case Qt::EditRole:
@@ -125,22 +129,24 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 case 0:
                     return tr("ID");
                 case 1:
-                    return tr("Address");
+                    return tr("Out of Sync items");
                 case 2:
-                    return tr("Connection type");
-                case 3:
-                    return tr("Last seen");
-                case 4:
-                    return tr("Compression");
-                case 5:
-                    return tr("Certificate");
-                case 6:
-                    return tr("Introducer");
-                case 7:
                     return tr("Incoming traffic");
-                case 8:
+                case 3:
                     return tr("Outgoing traffic");
+                case 4:
+                    return tr("Address");
+                case 5:
+                    return tr("Connection type");
+                case 6:
+                    return tr("Last seen");
+                case 7:
+                    return tr("Compression");
+                case 8:
+                    return tr("Certificate");
                 case 9:
+                    return tr("Introducer");
+                case 10:
                     return tr("Version");
                 }
                 break;
@@ -153,33 +159,38 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 case 0:
                     return dev.id;
                 case 1:
+                    if (dev.overallCompletion.needed.isNull()) {
+                        return tr("none");
+                    }
+                    return tr("%1 item(s), ~ %2", nullptr, trQuandity(dev.overallCompletion.needed.items)).arg(dev.overallCompletion.needed.items).arg(dataSizeToString(dev.overallCompletion.needed.bytes).data());
+                case 2:
+                    return QString::fromStdString(dataSizeToString(dev.totalIncomingTraffic));
+                case 3:
+                    return QString::fromStdString(dataSizeToString(dev.totalOutgoingTraffic));
+                case 4:
                     if (dev.connectionAddress.isEmpty()) {
                         return dev.addresses.join(QStringLiteral(", "));
                     } else {
                         return QVariant(
                             dev.connectionAddress % QStringLiteral(" (") % dev.addresses.join(QStringLiteral(", ")) % QStringLiteral(")"));
                     }
-                case 2:
+                case 5:
                     if (!dev.connectionType.isEmpty()) {
                         return QVariant(
                             dev.connectionType % QStringLiteral(" (") % (dev.connectionLocal ? tr("local") : tr("remote")) % QStringLiteral(")"));
                     } else {
                         return QVariant();
                     }
-                case 3:
+                case 6:
                     return dev.lastSeen.isNull() ? tr("unknown or this device")
                                                  : QString::fromLatin1(dev.lastSeen.toString(DateTimeOutputFormat::DateAndTime, true).data());
-                case 4:
-                    return dev.compression;
-                case 5:
-                    return dev.certName.isEmpty() ? tr("none") : dev.certName;
-                case 6:
-                    return dev.introducer ? tr("yes") : tr("no");
                 case 7:
-                    return QString::fromStdString(dataSizeToString(dev.totalIncomingTraffic));
+                    return dev.compression;
                 case 8:
-                    return QString::fromStdString(dataSizeToString(dev.totalOutgoingTraffic));
+                    return dev.certName.isEmpty() ? tr("none") : dev.certName;
                 case 9:
+                    return dev.introducer ? tr("yes") : tr("no");
+                case 10:
                     return dev.clientVersion;
                 }
             }
@@ -193,22 +204,24 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 case 0:
                     return icons.hashtag;
                 case 1:
-                    return icons.link;
-                case 2:
                     return icons.exchange;
+                case 2:
+                    return icons.cloudDownload;
                 case 3:
-                    return icons.eye;
+                    return icons.cloudUpload;
                 case 4:
-                    return icons.fileArchive;
+                    return icons.link;
                 case 5:
-                    return icons.certificate;
+                    return icons.signal;
                 case 6:
-                    return icons.networkWired;
+                    return icons.eye;
                 case 7:
-                    return icons.cloudDownloadAlt;
+                    return icons.fileArchive;
                 case 8:
-                    return icons.cloudUploadAlt;
+                    return icons.certificate;
                 case 9:
+                    return icons.networkWired;
+                case 10:
                     return icons.tag;
                 }
             }
@@ -217,12 +230,17 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             switch (index.column()) {
             case 1:
                 switch (row) {
-                case 3:
+                case 1:
+                    if (dev.overallCompletion.needed.isNull()) {
+                        return Colors::gray(m_brightColors);
+                    }
+                    break;
+                case 6:
                     if (dev.lastSeen.isNull()) {
                         return Colors::gray(m_brightColors);
                     }
                     break;
-                case 5:
+                case 8:
                     if (dev.certName.isEmpty()) {
                         return Colors::gray(m_brightColors);
                     }
@@ -234,12 +252,12 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             switch (index.column()) {
             case 1:
                 switch (row) {
-                case 1:
+                case 4:
                     if (!dev.connectionType.isEmpty()) {
                         return dev.connectionType;
                     }
                     break;
-                case 3:
+                case 6:
                     if (!dev.lastSeen.isNull()) {
                         return agoString(dev.lastSeen);
                     }
