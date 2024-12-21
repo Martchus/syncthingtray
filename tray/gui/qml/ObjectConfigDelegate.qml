@@ -137,7 +137,8 @@ DelegateChooser {
                 standardButtons: objectConfigPage.standardButtons
                 width: parent.width - 20
                 contentItem: ColumnLayout {
-                    RowLayout {
+                    GridLayout {
+                        columns: deviceIdDlg.width > 550 ? 2 : 1
                         ComboBox {
                             id: editedDeviceIdValue
                             Layout.fillWidth: true
@@ -145,22 +146,25 @@ DelegateChooser {
                             editable: true
                             onAccepted: deviceIdDlg.accept()
                         }
-                        IconOnlyButton {
-                            text: qsTr("Clear")
-                            enabled: modelData.enabled ?? true
-                            icon.source: App.faUrlBase + "undo"
-                            onClicked: {
-                                editedDeviceIdValue.currentIndex = -1;
-                                editedDeviceIdValue.editText = "";
+                        RowLayout {
+                            IconOnlyButton {
+                                text: qsTr("Clear")
+                                enabled: modelData.enabled ?? true
+                                icon.source: App.faUrlBase + "undo"
+                                onClicked: {
+                                    editedDeviceIdValue.currentIndex = -1;
+                                    editedDeviceIdValue.editText = "";
+                                }
                             }
-                        }
-                        IconOnlyButton {
-                            text: qsTr("Refresh list of devices")
-                            icon.source: App.faUrlBase + "refresh"
-                            onClicked: deviceIdDlg.refreshDeviceList()
-                        }
-                        CopyPasteButtons {
-                            edit: editedDeviceIdValue
+                            IconOnlyButton {
+                                text: qsTr("Refresh list of devices")
+                                icon.source: App.faUrlBase + "refresh"
+                                onClicked: deviceIdDlg.refreshDeviceList()
+                            }
+                            CopyPasteButtons {
+                                edit: editedDeviceIdValue
+                                textProperty: "editText"
+                            }
                         }
                     }
                     RowLayout {
@@ -171,7 +175,7 @@ DelegateChooser {
                         Label {
                             text: devideIdInfo.isIdValid ? (devideIdInfo.isIdExisting ? qsTr("This device has already been added!") : qsTr("The device ID looks valid.")) : qsTr("The entered device ID looks invalid!")
                         }
-                        property bool isIdValid: editedDeviceIdValue.editText.length === 0 || editedDeviceIdValue.editText.match(validIdRegex)
+                        property bool isIdValid: editedDeviceIdValue.editText.match(validIdRegex)
                         property bool isIdExisting: (modelData?.enabled ?? true) && App.hasDevice(editedDeviceIdValue.editText)
                         property bool isIdOk: isIdValid && !isIdExisting
                         property var validIdRegex: /^[0-9A-z]{7}(-[0-9A-z]{7}){7}$/
