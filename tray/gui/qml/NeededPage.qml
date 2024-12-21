@@ -7,8 +7,8 @@ import Main
 Page {
     id: neededPage
     title: devLabel.length > 0
-           ? qsTr("Out of sync - %1 on %2").arg(dirLabel).arg(devLabel)
-           : qsTr("Out of sync - %1").arg(dirLabel)
+           ? qsTr("Out of Sync - %1 on %2").arg(dirLabel).arg(devLabel)
+           : qsTr("Out of Sync - %1").arg(dirLabel)
     Component.onCompleted: neededPage.loadItems()
     actions: [
         Action {
@@ -32,11 +32,13 @@ Page {
                     columns: listView.width < 250 ? 1 : 2
                     Label {
                         Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignTop
                         text: modelData.name ?? "?"
-                        wrapMode: Text.WordWrap
+                        wrapMode: Text.WrapAnywhere
                         font.weight: Font.Light
                     }
                     Label {
+                        Layout.alignment: Qt.AlignTop
                         text: App.formatDataSize(modelData.size ?? 0)
                         elide: Text.ElideRight
                         font.weight: Font.Light

@@ -227,6 +227,7 @@ public:
     Q_INVOKABLE QString formatDataSize(quint64 size) const;
     Q_INVOKABLE QString formatTraffic(quint64 total, double rate) const;
     Q_INVOKABLE bool hasDevice(const QString &devId);
+    Q_INVOKABLE QVariantList computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const;
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);

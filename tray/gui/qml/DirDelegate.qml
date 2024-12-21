@@ -34,6 +34,12 @@ ExpandableDelegate {
                 onTriggered: (source) => mainView.stackView.push("DirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId, stackView: mainView.stackView}, StackView.PushTransition)
             },
             Action {
+                text: qsTr("Out of Sync items")
+                icon.source: App.faUrlBase + "exchange"
+                enabled: !modelData.paused && (modelData.neededItemsCount > 0)
+                onTriggered: (source) => mainView.stackView.push("NeededPage.qml", {dirLabel: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
+            },
+            Action {
                 text: qsTr("Show errors")
                 enabled: modelData.pullErrorCount > 0
                 icon.source: App.faUrlBase + "exclamation-triangle"
@@ -49,12 +55,6 @@ ExpandableDelegate {
                 icon.source: App.faUrlBase + "folder-open-o"
                 enabled: !modelData.paused
                 onTriggered: (source) => mainView.stackView.push("FilesPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
-            },
-            Action {
-                text: qsTr("Out of sync items")
-                icon.source: App.faUrlBase + "exchange"
-                enabled: !modelData.paused && (modelData.neededItemsCount > 0)
-                onTriggered: (source) => mainView.stackView.push("NeededPage.qml", {dirLabel: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             },
             Action {
                 text: qsTr("Advanced config")

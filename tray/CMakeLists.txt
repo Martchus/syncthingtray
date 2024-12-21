@@ -328,6 +328,7 @@ if (QUICK_GUI)
         gui/qml/NeededPage.qml
         gui/qml/ObjectConfigDelegate.qml
         gui/qml/ObjectConfigPage.qml
+        gui/qml/OutOfSyncDirs.qml
         gui/qml/StartPage.qml
         gui/qml/Statistics.qml
         gui/qml/SelectiveImportDelegate.qml

@@ -42,7 +42,7 @@ QHash<int, QByteArray> SyncthingDeviceModel::roleNames() const
         { DeviceId, "devId" },
         { DeviceDetail, "detail" },
         { DeviceDetailIcon, "detailIcon" },
-        { DeviceNeededItemsCount, "neededItems" },
+        { DeviceNeededItemsCount, "neededItemsCount" },
     };
     return roles;
 }

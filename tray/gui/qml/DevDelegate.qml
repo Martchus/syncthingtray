@@ -7,6 +7,7 @@ import Main
 ExpandableDelegate {
     id: mainDelegateModel
     delegate: ExpandableItemDelegate {
+        id: devDelegate
         mainView: mainDelegateModel.mainView
         actions: [
             Action {
@@ -21,6 +22,12 @@ ExpandableDelegate {
                 text: qsTr("Edit")
                 icon.source: App.faUrlBase + "pencil"
                 onTriggered: (source) => mainView.stackView.push("DevConfigPage.qml", {devName: modelData.name, devId: modelData.devId, stackView: mainView.stackView}, StackView.PushTransition)
+            },
+            Action {
+                text: qsTr("Out of Sync items")
+                icon.source: App.faUrlBase + "exchange"
+                enabled: !modelData.paused && (modelData.neededItemsCount > 0)
+                onTriggered: (source) => mainView.stackView.push("OutOfSyncDirs.qml", {devLabel: modelData.name, devId: modelData.devId, dirIndex: modelData.index, devFilterModel: mainDelegateModel.model, stackView: mainView.stackView}, StackView.PushTransition)
             },
             Action {
                 text: qsTr("Advanced config")

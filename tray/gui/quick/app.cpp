@@ -820,6 +820,30 @@ bool QtGui::App::hasDevice(const QString &devId)
     return m_connection.findDevInfo(devId, row) != nullptr;
 }
 
+QVariantList App::computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const
+{
+    const auto *const devInfo = m_devModel.devInfo(m_sortFilterDevModel.mapToSource(devProxyModelIndex));
+    auto dirs = QVariantList();
+    if (!devInfo) {
+        return dirs;
+    }
+    dirs.reserve(static_cast<QStringList::size_type>(devInfo->completionByDir.size()));
+    for (const auto &[dirId, completion] : devInfo->completionByDir) {
+        if (completion.needed.items < 1) {
+            continue;
+        }
+        auto row = 0;
+        auto dirNeedInfo = QVariantMap();
+        auto *const dirInfo = m_connection.findDirInfo(dirId, row);
+        dirNeedInfo.insert(QStringLiteral("dirId"), dirId);
+        dirNeedInfo.insert(QStringLiteral("dirName"), dirInfo ? dirInfo->displayName() : dirId);
+        dirNeedInfo.insert(QStringLiteral("items"), completion.needed.items);
+        dirNeedInfo.insert(QStringLiteral("bytes"), completion.needed.bytes);
+        dirs.emplace_back(std::move(dirNeedInfo));
+    }
+    return dirs;
+}
+
 bool App::openSettings()
 {
     if (!m_settingsDir.has_value()) {
