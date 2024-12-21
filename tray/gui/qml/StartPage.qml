@@ -11,6 +11,7 @@ Page {
     Layout.fillWidth: true
     Layout.fillHeight: true
     property var stats: App.connection.overallDirStatistics
+    property var remoteCompletion: App.connection.overallRemoteCompletion
     CustomFlickable {
         id: mainView
         anchors.fill: parent
@@ -28,9 +29,11 @@ Page {
                         iconName: "download"
                     }
                     ColumnLayout {
+                        Layout.fillWidth: true
                         Label {
+                            Layout.fillWidth: true
                             text: qsTr("Local sync progress")
-                            elide: Text.ElideRight
+                            wrapMode: Text.Wrap
                             font.weight: Font.Medium
                         }
                         RowLayout {
@@ -44,6 +47,39 @@ Page {
                             }
                             Label {
                                 text: progressBar.position >= 1 ? qsTr("Up to Date") : qsTr("%1 %, %2 remaining").arg(Math.round(progressBar.position) * 100).arg(stats.needed.bytesAsString)
+                                font.weight: Font.Light
+                            }
+                        }
+                    }
+                }
+            }
+            ItemDelegate {
+                Layout.fillWidth: true
+                contentItem: RowLayout {
+                    spacing: 15
+                    ForkAwesomeIcon {
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                        iconName: "upload"
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label {
+                            Layout.fillWidth: true
+                            text: qsTr("Remote sync progress (of connected devices)")
+                            wrapMode: Text.Wrap
+                            font.weight: Font.Medium
+                        }
+                        RowLayout {
+                            Layout.fillWidth: true
+                            ProgressBar {
+                                Layout.fillWidth: true
+                                id: remoteProgressBar
+                                from: 0
+                                to: 100
+                                value: remoteCompletion.percentage
+                            }
+                            Label {
+                                text: remoteProgressBar.position >= 1 ? qsTr("Up to Date") : qsTr("%1 %").arg(Math.round(remoteCompletion.percentage))
                                 font.weight: Font.Light
                             }
                         }

@@ -159,6 +159,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(double totalIncomingRate READ totalIncomingRate NOTIFY trafficChanged)
     Q_PROPERTY(double totalOutgoingRate READ totalOutgoingRate NOTIFY trafficChanged)
     Q_PROPERTY(Data::SyncthingOverallDirStatistics overallDirStatistics READ computeOverallDirStatistics NOTIFY dirStatisticsChanged)
+    Q_PROPERTY(Data::SyncthingCompletion overallRemoteCompletion READ computeOverallRemoteCompletion NOTIFY devCompletionChanged)
     Q_PROPERTY(QString lastSyncedFile READ lastSyncedFile)
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion)
     Q_PROPERTY(CppUtilities::DateTime lastSyncTime READ lastSyncTime)
@@ -276,6 +277,7 @@ public:
     const std::vector<SyncthingDev> &devInfo() const;
     const std::vector<SyncthingError> &errors() const;
     SyncthingOverallDirStatistics computeOverallDirStatistics() const;
+    SyncthingCompletion computeOverallRemoteCompletion() const;
     const QString &lastSyncedFile() const;
     CppUtilities::DateTime lastSyncTime() const;
     CppUtilities::DateTime startTime() const;
@@ -380,6 +382,7 @@ Q_SIGNALS:
     void fileChanged(const Data::SyncthingDir &dir, int index, const Data::SyncthingFileChange &fileChange);
     void downloadProgressChanged();
     void dirStatisticsChanged();
+    void devCompletionChanged();
     void dirCompleted(CppUtilities::DateTime when, const Data::SyncthingDir &dir, int index, const Data::SyncthingDev *remoteDev = nullptr);
     void newNotification(CppUtilities::DateTime when, const QString &message);
     void newDevAvailable(CppUtilities::DateTime when, const QString &devId, const QString &address);
@@ -493,6 +496,7 @@ private:
         Status = (1 << 0),
         OutOfSyncDirs = (1 << 1),
         DirStats = (1 << 2),
+        RemoteCompletion = (1 << 3),
         StatusAndOutOfSyncDirs = Status | OutOfSyncDirs
     };
     void concludeConnection(StatusRecomputation flags);

@@ -989,7 +989,7 @@ void SyncthingConnection::readConnections()
             dev.clientVersion = connectionObj.value(QLatin1String("clientVersion")).toString();
             emit devStatusChanged(dev, index);
             if (previousStatus != dev.status || previouslyPaused != dev.paused) {
-                statusRecomputationFlags += StatusRecomputation::Status;
+                statusRecomputationFlags += StatusRecomputation::Status | StatusRecomputation::RemoteCompletion;
             }
             ++index;
         }
@@ -2507,7 +2507,7 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
             devInfo->paused = paused;
             devInfo->disconnectReason = disconnectReason;
         }
-        m_statusRecomputationFlags += StatusRecomputation::Status;
+        m_statusRecomputationFlags += StatusRecomputation::Status | StatusRecomputation::RemoteCompletion;
         emit devStatusChanged(*devInfo, index);
     }
 }
@@ -2702,6 +2702,7 @@ void SyncthingConnection::readRemoteFolderCompletion(const SyncthingCompletion &
             devInfo->setConnectedStateAccordingToCompletion();
         }
         emit devStatusChanged(*devInfo, devIndex);
+        m_statusRecomputationFlags += StatusRecomputation::RemoteCompletion;
     }
 }
 

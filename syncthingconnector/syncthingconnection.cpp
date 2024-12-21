@@ -706,6 +706,9 @@ void SyncthingConnection::concludeConnection(StatusRecomputation flags)
     if (m_statusRecomputationFlags && StatusRecomputation::DirStats) {
         emit dirStatisticsChanged();
     }
+    if (m_statusRecomputationFlags && StatusRecomputation::RemoteCompletion) {
+        emit devCompletionChanged();
+    }
 
     m_statusRecomputationFlags = StatusRecomputation::None;
 }
@@ -1354,6 +1357,21 @@ QUrl SyncthingConnection::makeUrlWithCredentials() const
     url.setUserName(m_user);
     url.setPassword(m_password);
     return url;
+}
+
+/*!
+ * \brief Computes the overall completion of all connected devices.
+ */
+SyncthingCompletion SyncthingConnection::computeOverallRemoteCompletion() const
+{
+    auto completion = SyncthingCompletion();
+    for (const auto &dev : m_devs) {
+        if (dev.isConnected()) {
+            completion += dev.overallCompletion;
+        }
+    }
+    completion.recomputePercentage();
+    return completion;
 }
 
 /*!

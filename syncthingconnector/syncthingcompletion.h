@@ -5,13 +5,18 @@
 
 #include <c++utilities/chrono/datetime.h>
 
-#include <QtGlobal>
+#include <QMetaObject>
 
 namespace Data {
 
 using SyncthingEventId = quint64;
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingCompletion {
+    Q_GADGET
+    Q_PROPERTY(double percentage MEMBER percentage)
+    Q_PROPERTY(quint64 globalBytes MEMBER globalBytes)
+
+public:
     CppUtilities::DateTime lastUpdate;
     double percentage = 0;
     quint64 globalBytes = 0;
@@ -28,7 +33,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingCompletion {
     SyncthingEventId requestedForEventId = 0;
     constexpr SyncthingCompletion &operator+=(const SyncthingCompletion &other);
     constexpr SyncthingCompletion &operator-=(const SyncthingCompletion &other);
-    void recomputePercentage();
+    Q_INVOKABLE void recomputePercentage();
 };
 
 constexpr bool SyncthingCompletion::Needed::isNull() const
