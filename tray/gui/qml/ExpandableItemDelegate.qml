@@ -62,33 +62,13 @@ ItemDelegate {
                 Menu {
                     id: menu
                     popupType: App.nativePopups ? Popup.Native : Popup.Item
-                    Instantiator {
+                    MenuItemInstantiator {
+                        menu: menu
                         model: mainDelegate.actions
-                        delegate: MenuItem {
-                            required property Action modelData
-                            text: modelData.text
-                            enabled: modelData.enabled
-                            icon.source: modelData.icon.source
-                            icon.width: App.iconSize
-                            icon.height: App.iconSize
-                            onTriggered: modelData.trigger(source)
-                        }
-                        onObjectAdded: (index, object) => object.enabled && menu.insertItem(index, object)
-                        onObjectRemoved: (index, object) => menu.removeItem(object)
                     }
-                    Instantiator {
+                    MenuItemInstantiator {
+                        menu: menu
                         model: mainDelegate.extraActions
-                        delegate: MenuItem {
-                            required property Action modelData
-                            text: modelData.text
-                            enabled: modelData.enabled
-                            icon.source: modelData.icon.source
-                            icon.width: App.iconSize
-                            icon.height: App.iconSize
-                            onTriggered: modelData.trigger(source)
-                        }
-                        onObjectAdded: (index, object) => object.enabled && menu.insertItem(index, object)
-                        onObjectRemoved: (index, object) => menu.removeItem(object)
                     }
                 }
             }
