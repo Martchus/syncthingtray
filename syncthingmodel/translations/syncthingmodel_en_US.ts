@@ -47,88 +47,102 @@
 <context>
     <name>Data::SyncthingDeviceModel</name>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="93"/>
-        <location filename="../syncthingdevicemodel.cpp" line="125"/>
+        <location filename="../syncthingdevicemodel.cpp" line="94"/>
+        <location filename="../syncthingdevicemodel.cpp" line="130"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="95"/>
+        <location filename="../syncthingdevicemodel.cpp" line="96"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="127"/>
+        <location filename="../syncthingdevicemodel.cpp" line="132"/>
+        <source>Out of Sync items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdevicemodel.cpp" line="138"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="129"/>
+        <location filename="../syncthingdevicemodel.cpp" line="140"/>
         <source>Connection type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="131"/>
+        <location filename="../syncthingdevicemodel.cpp" line="142"/>
         <source>Last seen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="133"/>
+        <location filename="../syncthingdevicemodel.cpp" line="144"/>
         <source>Compression</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="135"/>
+        <location filename="../syncthingdevicemodel.cpp" line="146"/>
         <source>Certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="137"/>
+        <location filename="../syncthingdevicemodel.cpp" line="148"/>
         <source>Introducer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="139"/>
+        <location filename="../syncthingdevicemodel.cpp" line="134"/>
         <source>Incoming traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="141"/>
+        <location filename="../syncthingdevicemodel.cpp" line="136"/>
         <source>Outgoing traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="143"/>
+        <location filename="../syncthingdevicemodel.cpp" line="150"/>
         <source>Version</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <location filename="../syncthingdevicemodel.cpp" line="165"/>
+        <source>%1 item(s), ~ %2</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="164"/>
+        <location filename="../syncthingdevicemodel.cpp" line="180"/>
         <source>local</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="164"/>
+        <location filename="../syncthingdevicemodel.cpp" line="180"/>
         <source>remote</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="169"/>
+        <location filename="../syncthingdevicemodel.cpp" line="185"/>
         <source>unknown or this device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="174"/>
+        <location filename="../syncthingdevicemodel.cpp" line="163"/>
+        <location filename="../syncthingdevicemodel.cpp" line="190"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="176"/>
+        <location filename="../syncthingdevicemodel.cpp" line="192"/>
         <source>yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="176"/>
+        <location filename="../syncthingdevicemodel.cpp" line="192"/>
         <source>no</source>
         <translation type="unfinished"></translation>
     </message>
@@ -136,110 +150,134 @@
 <context>
     <name>Data::SyncthingDirectoryModel</name>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="92"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="124"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="93"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="125"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="94"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="95"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="126"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="127"/>
         <source>Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="136"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="137"/>
         <source>Rescan interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="138"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="139"/>
         <source>Last scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="140"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="141"/>
         <source>Last file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="142"/>
-        <source>Errors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="172"/>
         <location filename="../syncthingdirectorymodel.cpp" line="175"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="178"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="178"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="181"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="186"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="184"/>
         <source>%1 item(s) out of sync</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>%1 item out of sync</numerusform>
             <numerusform>%1 items out of sync</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="128"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="129"/>
         <source>Global status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="130"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="131"/>
         <source>Local status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="132"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="133"/>
         <source>Shared with</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="134"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="135"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="165"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="143"/>
+        <source>Out of Sync items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="168"/>
         <source>not shared</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="186"/>
         <source>%1 and %2 item(s) out of sync</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>%1 and %2 item out of sync</numerusform>
             <numerusform>%1 and %2 items out of sync</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="260"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="272"/>
         <source>Deleted at %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="263"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="275"/>
         <source>Updated at %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="275"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="145"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="287"/>
         <source>Failed items</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <location filename="../syncthingdirectorymodel.cpp" line="183"/>
+        <source>%1 item(s), ~ %2</source>
+        <translation>
+            <numerusform>%1 item, ~ %2</numerusform>
+            <numerusform>%1 items, ~ %2</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../syncthingdirectorymodel.cpp" line="192"/>
+        <source>%1 item(s)</source>
+        <translation>
+            <numerusform>%1 item</numerusform>
+            <numerusform>%1 items</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../syncthingdirectorymodel.cpp" line="194"/>
+        <source>%1 and %2 item(s)</source>
+        <translation>
+            <numerusform>%1 and %2 item</numerusform>
+            <numerusform>%1 and %2 items</numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="276"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="288"/>
         <source>Click for details</source>
         <translation type="unfinished"></translation>
     </message>

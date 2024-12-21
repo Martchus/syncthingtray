@@ -4,63 +4,63 @@
 <context>
     <name>QtGui::App</name>
     <message>
-        <location filename="../gui/quick/app.cpp" line="225"/>
+        <location filename="../gui/quick/app.cpp" line="224"/>
         <source>Waiting for backend …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="312"/>
-        <location filename="../gui/quick/app.cpp" line="321"/>
+        <location filename="../gui/quick/app.cpp" line="311"/>
+        <location filename="../gui/quick/app.cpp" line="320"/>
         <source>Unable to open &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="336"/>
+        <location filename="../gui/quick/app.cpp" line="335"/>
         <source>Copied value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="340"/>
+        <location filename="../gui/quick/app.cpp" line="339"/>
         <source>Unable to copy value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="349"/>
+        <location filename="../gui/quick/app.cpp" line="348"/>
         <source>Unable to copy &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="218"/>
+        <location filename="../gui/quick/app.cpp" line="217"/>
         <source>Backend is starting …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="208"/>
+        <location filename="../gui/quick/app.cpp" line="207"/>
         <source>Checking for data to import …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="210"/>
+        <location filename="../gui/quick/app.cpp" line="209"/>
         <source>Importing configuration …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="212"/>
+        <location filename="../gui/quick/app.cpp" line="211"/>
         <source>Exporting configuration …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="223"/>
+        <location filename="../gui/quick/app.cpp" line="222"/>
         <source>Not connected to backend.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="228"/>
+        <location filename="../gui/quick/app.cpp" line="227"/>
         <source>Saving configuration …</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/quick/app.cpp" line="230"/>
+        <location filename="../gui/quick/app.cpp" line="229"/>
         <source>There are %n notification(s)/error(s).</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -68,7 +68,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/quick/app.cpp" line="232"/>
+        <location filename="../gui/quick/app.cpp" line="231"/>
         <source>There are %n Syncthing API error(s).</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -76,158 +76,158 @@
         </translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="368"/>
+        <location filename="../gui/quick/app.cpp" line="367"/>
         <source>Unable to load ignore patterns: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="389"/>
+        <location filename="../gui/quick/app.cpp" line="388"/>
         <source>Unable to save ignore patterns: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="550"/>
+        <location filename="../gui/quick/app.cpp" line="549"/>
         <source>Unable to resolve URL &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="699"/>
+        <location filename="../gui/quick/app.cpp" line="698"/>
         <source>Syncthing errors/notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="715"/>
+        <location filename="../gui/quick/app.cpp" line="714"/>
         <source>Syncthing API error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="725"/>
+        <location filename="../gui/quick/app.cpp" line="724"/>
         <source>Syncthing device wants to connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="735"/>
+        <location filename="../gui/quick/app.cpp" line="734"/>
         <source>Syncthing device wants to share folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="771"/>
+        <location filename="../gui/quick/app.cpp" line="772"/>
         <source>Another config change is still pending.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="819"/>
+        <location filename="../gui/quick/app.cpp" line="829"/>
         <source>Unable to create settings directory under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="828"/>
+        <location filename="../gui/quick/app.cpp" line="838"/>
         <source>Unable to open settings under &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="843"/>
+        <location filename="../gui/quick/app.cpp" line="853"/>
         <source>Unable to read settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="847"/>
+        <location filename="../gui/quick/app.cpp" line="857"/>
         <source>Unable to restore settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="848"/>
+        <location filename="../gui/quick/app.cpp" line="858"/>
         <source>JSON document contains no object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="868"/>
+        <location filename="../gui/quick/app.cpp" line="878"/>
         <source>Unable to save settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="896"/>
+        <location filename="../gui/quick/app.cpp" line="906"/>
         <source>Unable to load HTTPs certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="933"/>
+        <location filename="../gui/quick/app.cpp" line="943"/>
         <source>This build of the app cannot launch Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="941"/>
+        <location filename="../gui/quick/app.cpp" line="951"/>
         <source>Another import/export still pending</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="985"/>
+        <location filename="../gui/quick/app.cpp" line="995"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="998"/>
+        <location filename="../gui/quick/app.cpp" line="1008"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1056"/>
+        <location filename="../gui/quick/app.cpp" line="1066"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1063"/>
+        <location filename="../gui/quick/app.cpp" line="1073"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1084"/>
+        <location filename="../gui/quick/app.cpp" line="1094"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1096"/>
+        <location filename="../gui/quick/app.cpp" line="1106"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1141"/>
+        <location filename="../gui/quick/app.cpp" line="1151"/>
         <source>Unable to import settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1168"/>
+        <location filename="../gui/quick/app.cpp" line="1178"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1171"/>
+        <location filename="../gui/quick/app.cpp" line="1181"/>
         <source>settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1124"/>
+        <location filename="../gui/quick/app.cpp" line="1134"/>
         <source>Imported %1 folders and %2 devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1129"/>
+        <location filename="../gui/quick/app.cpp" line="1139"/>
         <source>Nothing has been imported.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1177"/>
         <location filename="../gui/quick/app.cpp" line="1187"/>
+        <location filename="../gui/quick/app.cpp" line="1197"/>
         <source>Unable to export settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1180"/>
+        <location filename="../gui/quick/app.cpp" line="1190"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.h" line="139"/>
+        <location filename="../gui/quick/app.h" line="140"/>
         <source>not available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -402,54 +402,54 @@
 <context>
     <name>QtGui::TrayWidget</name>
     <message>
-        <location filename="../gui/traywidget.ui" line="6"/>
+        <location filename="../gui/traywidget.ui" line="11"/>
         <source>Syncthing Tray</source>
         <translation>Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="99"/>
+        <location filename="../gui/traywidget.ui" line="104"/>
         <location filename="../gui/traywidget.cpp" line="351"/>
         <source>About</source>
         <translation>Über Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="58"/>
+        <location filename="../gui/traywidget.ui" line="63"/>
         <location filename="../gui/traywidget.cpp" line="472"/>
         <source>Connect</source>
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="72"/>
-        <location filename="../gui/traywidget.cpp" line="904"/>
-        <location filename="../gui/traywidget.cpp" line="946"/>
+        <location filename="../gui/traywidget.ui" line="77"/>
+        <location filename="../gui/traywidget.cpp" line="905"/>
+        <location filename="../gui/traywidget.cpp" line="947"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="113"/>
+        <location filename="../gui/traywidget.ui" line="118"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="127"/>
+        <location filename="../gui/traywidget.ui" line="132"/>
         <source>Open Syncthing</source>
         <translation>Syncthing öffnen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="289"/>
+        <location filename="../gui/traywidget.ui" line="294"/>
         <source>In</source>
         <translation>eing.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="296"/>
+        <location filename="../gui/traywidget.ui" line="301"/>
         <source>Incoming traffic</source>
         <translation>Eingehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="228"/>
-        <location filename="../gui/traywidget.ui" line="248"/>
-        <location filename="../gui/traywidget.ui" line="299"/>
-        <location filename="../gui/traywidget.ui" line="319"/>
+        <location filename="../gui/traywidget.ui" line="233"/>
+        <location filename="../gui/traywidget.ui" line="253"/>
+        <location filename="../gui/traywidget.ui" line="304"/>
+        <location filename="../gui/traywidget.ui" line="324"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -458,76 +458,76 @@
         <translation type="vanished">Offen halten</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="218"/>
+        <location filename="../gui/traywidget.ui" line="223"/>
         <source>Global</source>
         <translation>Global</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="225"/>
+        <location filename="../gui/traywidget.ui" line="230"/>
         <source>Global overall statistics</source>
         <translation>Globale Gesamtstatistiken</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="235"/>
+        <location filename="../gui/traywidget.ui" line="240"/>
         <source>Local</source>
         <translation>Lokal</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="245"/>
+        <location filename="../gui/traywidget.ui" line="250"/>
         <source>Local overall statistics</source>
         <translation>Lokale Gesamtstatistiken</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="306"/>
+        <location filename="../gui/traywidget.ui" line="311"/>
         <source>Out</source>
         <translation>ausg.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="316"/>
+        <location filename="../gui/traywidget.ui" line="321"/>
         <source>Outgoing traffic</source>
         <translation>Ausgehender Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="350"/>
+        <location filename="../gui/traywidget.ui" line="355"/>
         <source>Click to show &lt;i&gt;new&lt;/i&gt; notifications&lt;br&gt;
 For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Klicke um &lt;i&gt;neue&lt;/i&gt; Benachrichtigungen zu zeigen&lt;br&gt;
 (für &lt;i&gt;alle&lt;/i&gt; Benachrichtigungen, in den Log schauen)</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="357"/>
+        <location filename="../gui/traywidget.ui" line="362"/>
         <location filename="../gui/traywidget.cpp" line="161"/>
         <source>New notifications</source>
         <translation>Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="388"/>
+        <location filename="../gui/traywidget.ui" line="392"/>
         <source>Folders</source>
         <translation>Ordner</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="421"/>
+        <location filename="../gui/traywidget.ui" line="425"/>
         <source>Devices</source>
         <translation>Geräte</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="454"/>
+        <location filename="../gui/traywidget.ui" line="491"/>
         <source>Downloads</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="483"/>
+        <location filename="../gui/traywidget.ui" line="458"/>
         <source>Recent changes</source>
         <translatorcomment>&quot;Letzte Änderungen&quot; is too long</translatorcomment>
         <translation>Änderungen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="519"/>
+        <location filename="../gui/traywidget.ui" line="523"/>
         <source>Show</source>
         <translation>Zeigen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.ui" line="529"/>
+        <location filename="../gui/traywidget.ui" line="533"/>
         <source>Dismiss</source>
         <translation>Ignorieren</translation>
     </message>
@@ -612,53 +612,53 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Mind. ein Gerät ist pausiert, klicke um fortzusetzen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="618"/>
+        <location filename="../gui/traywidget.cpp" line="619"/>
         <source>The specified connection configuration &lt;em&gt;%1&lt;/em&gt; is not defined and hence ignored.</source>
         <translation>Die angegebene Verbindungskonfiguration &lt;em&gt;%1&lt;/em&gt; ist nicht definiert und wird daher ignoriert.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="689"/>
+        <location filename="../gui/traywidget.cpp" line="690"/>
         <source>The folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Der Ordner &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="700"/>
+        <location filename="../gui/traywidget.cpp" line="701"/>
         <source>The containing folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Der beinhaltende Ordner &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="760"/>
+        <location filename="../gui/traywidget.cpp" line="761"/>
         <source>Open item</source>
         <translation>Öffne Datei/Ordner</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="765"/>
+        <location filename="../gui/traywidget.cpp" line="766"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="769"/>
+        <location filename="../gui/traywidget.cpp" line="770"/>
         <source>Copy device ID</source>
         <translation>Geräte-ID kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="772"/>
+        <location filename="../gui/traywidget.cpp" line="773"/>
         <source>Copy folder ID</source>
         <translation>Ordner-ID kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="900"/>
-        <location filename="../gui/traywidget.cpp" line="940"/>
+        <location filename="../gui/traywidget.cpp" line="901"/>
+        <location filename="../gui/traywidget.cpp" line="941"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="901"/>
+        <location filename="../gui/traywidget.cpp" line="902"/>
         <source>Stop Syncthing instance launched via tray icon</source>
         <translation>Stoppe Syncthing-Instanz, die mit dem internen Starter gestartet wurde</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="905"/>
+        <location filename="../gui/traywidget.cpp" line="906"/>
         <source>Start Syncthing with the built-in launcher configured in the settings</source>
         <translation>Starte Syncthing mit dem eingebauten Starter, der in den Einstellungen konfiguriert wird</translation>
     </message>
@@ -666,12 +666,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="92"/>
+        <location filename="../application/main.cpp" line="98"/>
         <source>Unable to </source>
         <translation>Fehler beim </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="127"/>
+        <location filename="../application/main.cpp" line="133"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>Das System-Tray bzw. der Infobereich ist aktuell nicht verfügbar. Mit der Option &quot;--windowed&quot; ist es möglich, Syncthing Tray als normales Fenster zu starten. Außerdem ist es möglich mit der Option &quot;--wait&quot; zu warten bis das System-Tray verfügbar ist anstelle diesen Dialog zu zeigen.</translation>
     </message>
@@ -684,7 +684,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="vanished">Der Einstellungsdialog ermöglicht es die URL, Zugangsdaten und den API-Key automatisch aus der lokalen Syncthing-Konfiguration auszulesen.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="154"/>
+        <location filename="../application/main.cpp" line="160"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Die verwendete Qt-Bibliothek wurde nicht mit Unterstützung für System-Tray konfiguriert. Es wäre möglich, Syncthing Tray als normales Fenster zu starten (mit Option -w).</translation>
     </message>
