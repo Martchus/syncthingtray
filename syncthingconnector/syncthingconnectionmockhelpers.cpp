@@ -6,6 +6,10 @@
 #include <c++utilities/tests/testutils.h>
 
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
 #include <QTimer>
 #include <QUrlQuery>
 
@@ -94,11 +98,26 @@ void setupTestData()
 
 #endif
 
-MockedReply::MockedReply(const std::string &buffer, int delay, QObject *parent)
+MockedReply::MockedReply(QByteArray &&buffer, int delay, QObject *parent)
     : QNetworkReply(parent)
-    , m_buffer(buffer)
-    , m_pos(buffer.data())
-    , m_bytesLeft(static_cast<qint64>(m_buffer.size()))
+    , m_buffer(std::move(buffer))
+    , m_view(std::string_view(m_buffer.data(), static_cast<std::size_t>(m_buffer.size())))
+    , m_pos(m_view.data())
+    , m_bytesLeft(static_cast<qint64>(m_view.size()))
+{
+    init(delay);
+}
+
+MockedReply::MockedReply(std::string_view view, int delay, QObject *parent)
+    : QNetworkReply(parent)
+    , m_view(view)
+    , m_pos(view.data())
+    , m_bytesLeft(static_cast<qint64>(view.size()))
+{
+    init(delay);
+}
+
+void Data::MockedReply::init(int delay)
 {
     setOpenMode(QIODevice::ReadOnly);
     QTimer::singleShot(delay, this, &MockedReply::emitFinished);
@@ -129,7 +148,7 @@ bool MockedReply::isSequential() const
 
 qint64 MockedReply::size() const
 {
-    return static_cast<qint64>(m_buffer.size());
+    return static_cast<qint64>(m_view.size());
 }
 
 qint64 MockedReply::readData(char *data, qint64 maxlen)
@@ -158,53 +177,81 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
     QUrl url((rest ? QStringLiteral("mock://rest/") : QStringLiteral("mock://")) + path);
     url.setQuery(query);
 
-    // find the correct buffer for the request
-    static const auto emptyBuffer = std::string();
-    const auto *buffer = &emptyBuffer;
+    // find the correct response for the request
+    auto buffer = QByteArray();
+    auto response = std::string_view();
     int delay = 5;
     {
         using namespace TestData;
         if (method == QLatin1String("GET")) {
             if (path == QLatin1String("system/config")) {
-                buffer = &config;
+                response = config;
             } else if (path == QLatin1String("system/status")) {
-                buffer = &status;
+                response = status;
             } else if (path == QLatin1String("stats/folder")) {
-                buffer = &folderStats;
+                response = folderStats;
             } else if (path == QLatin1String("stats/device")) {
-                buffer = &deviceStats;
+                response = deviceStats;
             } else if (path == QLatin1String("system/error")) {
-                buffer = &errors;
+                response = errors;
             } else if (path == QLatin1String("db/status")) {
                 const QString folder(query.queryItemValue(QStringLiteral("folder")));
                 if (folder == QLatin1String("GXWxf-3zgnU")) {
-                    buffer = &folderStatus;
+                    response = folderStatus;
                 } else if (folder == QLatin1String("zX8xfl3ygn-")) {
-                    buffer = &folderStatus2;
+                    response = folderStatus2;
                 } else if (folder == QLatin1String("forever-alone")) {
-                    buffer = &folderStatus3;
+                    response = folderStatus3;
                 }
             } else if (path == QLatin1String("db/browse") && !query.hasQueryItem(QStringLiteral("prefix"))) {
                 const auto folder = query.queryItemValue(QStringLiteral("folder"));
                 if (folder == QLatin1String("GXWxf-3zgnU")) {
-                    buffer = &browse;
+                    response = browse;
                 }
             } else if (path == QLatin1String("folder/pullerrors")) {
                 const QString folder(query.queryItemValue(QStringLiteral("folder")));
                 if (folder == QLatin1String("GXWxf-3zgnU") && s_eventIndex >= 6) {
-                    buffer = &pullErrors;
+                    response = pullErrors;
                 }
             } else if (path == QLatin1String("db/need")) {
                 const auto folder = query.queryItemValue(QStringLiteral("folder"));
                 if (folder == QLatin1String("GXWxf-3zgnU")) {
-                    buffer = &needed;
+                    const auto page = query.queryItemValue(QStringLiteral("page")).toInt();
+                    const auto perPage = query.queryItemValue(QStringLiteral("perpage")).toInt();
+                    if (page > 0 || perPage > 0) {
+                        const auto minIndex = (page - 1) * perPage;
+                        const auto maxIndex = minIndex + perPage - 1;
+                        auto currentIndex = 0;
+                        auto obj = QJsonDocument::fromJson(QByteArray(needed)).object();
+                        auto keys = obj.keys();
+                        auto filteredObj = QJsonObject();
+                        for (const auto &key : keys) {
+                            auto value = obj.value(key);
+                            if (key == QStringLiteral("page") || key == QStringLiteral("perpage")) {
+                                filteredObj.insert(key, value);
+                                continue;
+                            }
+                            auto array = value.toArray();
+                            auto newArray = QJsonArray();
+                            for (const auto &item : array) {
+                                if (currentIndex >= minIndex && currentIndex <= maxIndex) {
+                                    newArray.append(item);
+                                }
+                                ++currentIndex;
+                            }
+                            filteredObj.insert(key, newArray);
+                        }
+                        buffer = QJsonDocument(filteredObj).toJson();
+                    } else {
+                        response = needed;
+                    }
                 }
             } else if (path == QLatin1String("system/connections")) {
-                buffer = &connections;
+                response = connections;
             } else if (path == QLatin1String("system/version")) {
-                buffer = &version;
+                response = version;
             } else if (path == QLatin1String("events")) {
-                buffer = &events[s_eventIndex];
+                response = events[s_eventIndex];
                 std::cerr << "mocking: at event index " << s_eventIndex << std::endl;
                 // "emit" the first event almost immediately and further events each 2.5 seconds
                 switch (s_eventIndex) {
@@ -221,21 +268,21 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
                     ++s_eventIndex;
                 }
             } else if (path == QLatin1String("events/disk")) {
-                buffer = &empty;
+                response = empty;
                 delay = 5000;
             }
         }
     }
 
     // construct reply
-    auto *const reply = new MockedReply(*buffer, delay);
+    auto *const reply = buffer.isEmpty() ? new MockedReply(response, delay) : new MockedReply(std::move(buffer), delay);
     reply->setRequest(QNetworkRequest(url));
     return reply;
 }
 
 void MockedReply::emitFinished()
 {
-    if (m_buffer.empty()) {
+    if (m_view.empty()) {
         setError(QNetworkReply::InternalServerError, QStringLiteral("No mockup reply available for request: ") + request().url().toString());
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 404);
         setAttribute(QNetworkRequest::HttpReasonPhraseAttribute, QLatin1String("Not found"));
@@ -247,4 +294,5 @@ void MockedReply::emitFinished()
     setFinished(true);
     emit finished();
 }
+
 } // namespace Data

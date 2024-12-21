@@ -48,13 +48,17 @@ public:
     static MockedReply *forRequest(const QString &method, const QString &path, const QUrlQuery &query, bool rest);
 
 protected:
-    MockedReply(const std::string &buffer, int delay, QObject *parent = nullptr);
+    explicit MockedReply(QByteArray &&buffer, int delay, QObject *parent = nullptr);
+    explicit MockedReply(std::string_view view, int delay, QObject *parent = nullptr);
 
 private Q_SLOTS:
     void emitFinished();
 
 private:
-    const std::string &m_buffer;
+    void init(int delay);
+
+    QByteArray m_buffer;
+    std::string_view m_view;
     const char *m_pos;
     qint64 m_bytesLeft;
     static int s_eventIndex;

@@ -14,7 +14,7 @@ Page {
         Action {
             text: qsTr("Refresh")
             icon.source: App.faUrlBase + "refresh"
-            onTriggered: (source) => neededPage.loadItems()
+            onTriggered: (source) => neededPage.refresh()
         }
     ]
     CustomListView {
@@ -64,12 +64,33 @@ Page {
             }
             required property string section
         }
+        onAtYEndChanged: atYEnd && neededPage.loadItems()
+        footer: Pane {
+            visible: neededPage.isRequestOngoing
+            width: listView.width
+            height: visible ? implicitHeight : 0
+            contentItem: RowLayout {
+                BusyIndicator {
+                    Layout.preferredWidth: App.iconSize * 2
+                    Layout.preferredHeight: Layout.preferredWidth
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: qsTr("Loading …")
+                    elide: Text.ElideRight
+                    font.weight: Font.Light
+                }
+            }
+        }
     }
     property string dirId
     property string dirLabel: dirId
     property string devId
     property string devLabel: devId
     property string route: devId.length > 0 ? "db/remoteneed" : "db/need"
+    property bool isRequestOngoing: false
+    property int page: 1
+    property int perPage: 25
     property var params: devId.length > 0 ? ({folder: dirId, device: devId}) : ({folder: dirId})
     readonly property var stateLabels: ({
         progress: qsTr("In progress"),
@@ -79,13 +100,28 @@ Page {
     })
     required property list<Action> actions
     function loadItems() {
-        App.requestFromSyncthing("GET", route, params, (res, error) => {
-            listModel.clear();
+        if (isRequestOngoing) {
+            return;
+        }
+        const paramsWithPaging = params;
+        paramsWithPaging.page = page;
+        paramsWithPaging.perpage = perPage;
+        isRequestOngoing = true;
+        App.requestFromSyncthing("GET", route, paramsWithPaging, (res, error) => {
+            isRequestOngoing = false;
+            if (page === 1) {
+                listModel.clear();
+            }
+            page += 1;
             addItems(res, "progress");
             addItems(res, "queued");
             addItems(res, "rest");
             addItems(res, "files");
         });
+    }
+    function refresh() {
+        page = 1;
+        loadItems();
     }
     function addItems(data, state) {
         const stateData = data[state];
