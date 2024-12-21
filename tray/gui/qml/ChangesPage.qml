@@ -26,7 +26,6 @@ Page {
                     }
                     Label {
                         Layout.fillWidth: true
-                        Layout.columnSpan: width < 500 ? 1 : 3
                         text: [modelData.directoryName || modelData.directoryId, modelData.path].join(": ")
                         elide: Text.ElideRight
                         font.weight: Font.Light
@@ -41,8 +40,8 @@ Page {
                         font.weight: Font.Light
                     }
                     Icon {
-                        Layout.preferredWidth: 16
-                        Layout.preferredHeight: 16
+                        Layout.preferredWidth: App.iconSize
+                        Layout.preferredHeight: App.iconSize
                         source: modelData.actionIcon
                         width: 16
                         height: 16
