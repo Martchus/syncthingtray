@@ -171,10 +171,10 @@
                 Note that all 32-bit releases work on Pentium Pro or newer Intel/AMD-CPUs.
               </p>
               <p>
-                Builds for Windows on ARM have have not been tested much at this point but I encourage you to try them. One caveat I know of at this point is that the launcher might not be able to terminate an externally
-                started Syncthing instance forcefully (because <a href="https://github.com/boostorg/process" target="blank">Boost Process</a> cannot be built for Windows on ARM yet and thus the launcher will not make use of
-                <a href="https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects" target="blank">Job Objects</a> to terminate Syncthing forcefully). It also seems to crash in certain cases. These problems are currently
-                discussed on the <a href="https://github.com/Martchus/syncthingtray/issues/304" target="blank">related GitHub issue</a>.
+                Builds for Windows on ARM have have not been tested much at this point but I encourage you to try them.
+                It seems to crash in certain cases which still needs to be investigated and fixed. Since it might be related to the Go
+                runtime the built-in Syncthing library has been disabled for ARM builds. The problems are currently discussed on the
+                <a href="https://github.com/Martchus/syncthingtray/issues/304" target="blank">related GitHub issue</a>.
               </p>
             </div>
             <div class="downloads-platform">
