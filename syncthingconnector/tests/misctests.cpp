@@ -148,15 +148,22 @@ void MiscTests::testParsingConfigWithDetails()
     CPPUNIT_ASSERT_EQUAL(static_cast<QJsonArray::size_type>(2), devices.size());
 
     const auto device1 = devices.at(0).toObject();
+    const auto device1Addresses = device1.value(QLatin1String("addresses")).toArray();
     CPPUNIT_ASSERT_EQUAL(
         QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7"), device1.value(QLatin1String("deviceID")).toString());
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("tcp://192.168.2.2:22001"), device1.value(QLatin1String("address")).toString());
+    CPPUNIT_ASSERT_EQUAL(static_cast<QJsonArray::size_type>(2), device1Addresses.size());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("tcp://192.168.2.2:22001"), device1Addresses.first().toString());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("tcp://192.168.2.2:22002"), device1Addresses.last().toString());
+    CPPUNIT_ASSERT_EQUAL(false, device1.contains(QStringLiteral("address")));
     CPPUNIT_ASSERT_EQUAL(true, device1.value(QLatin1String("paused")).toBool());
 
     const auto device2 = devices.at(1).toObject();
+    const auto device2Addresses = device2.value(QLatin1String("addresses")).toArray();
     CPPUNIT_ASSERT_EQUAL(
         QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4"), device2.value(QLatin1String("deviceID")).toString());
-    CPPUNIT_ASSERT_EQUAL(QStringLiteral("dynamic"), device2.value(QLatin1String("address")).toString());
+    CPPUNIT_ASSERT_EQUAL(static_cast<QJsonArray::size_type>(1), device2Addresses.size());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("dynamic"), device2Addresses.first().toString());
+    CPPUNIT_ASSERT_EQUAL(false, device2.contains(QStringLiteral("address")));
     CPPUNIT_ASSERT_EQUAL(false, device2.value(QLatin1String("paused")).toBool());
 }
 

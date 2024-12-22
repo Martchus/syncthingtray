@@ -76,9 +76,13 @@ ObjectConfigPage {
             App.showError("Can't apply, key is already used.");
             return false;
         }
-        advancedConfigPage.configObjectExists = true;
-        advancedConfigPage.disableInitialProperties();
-        App.postSyncthingConfig(cfg, (error) => (error.length === 0) && (advancedConfigPage.hasUnsavedChanges = false));
+        App.postSyncthingConfig(cfg, (error) => {
+            if (error.length === 0) {
+                advancedConfigPage.configObjectExists = true;
+                advancedConfigPage.hasUnsavedChanges = false;
+                advancedConfigPage.disableInitialProperties();
+            }
+        });
         return true;
     }
 
@@ -93,8 +97,10 @@ ObjectConfigPage {
             return false;
         }
         entries.splice(index, 1);
-        advancedConfigPage.configObjectExists = false;
-        App.postSyncthingConfig(cfg);
+        App.postSyncthingConfig(cfg, (error) => {
+            advancedConfigPage.configObjectExists = false;
+            advancedConfigPage.hasUnsavedChanges = false;
+        });
         return true;
     }
 }

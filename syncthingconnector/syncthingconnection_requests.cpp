@@ -1936,6 +1936,17 @@ SyncthingConnection::QueryResult SyncthingConnection::postConfigFromJsonObject(
 
 /*!
  * \brief Posts the specified \a rawConfig.
+ * \remarks
+ * This function is a slot (in contrast to postConfigFromJsonObject()) and thus may be invoked via QMetaObject::invokeMethod() from
+ * another thread.
+ */
+void Data::SyncthingConnection::postRawConfig(const QByteArray &rawConfig)
+{
+    postConfigFromByteArray(rawConfig, std::function<void(QString &&)>());
+}
+
+/*!
+ * \brief Posts the specified \a rawConfig.
  * \param rawConfig A valid JSON document containing the configuration. It is directly passed to Syncthing.
  * \remarks The signal newConfigTriggered() is emitted when the config has been posted successfully. In the error case, error() is emitted.
  *          Besides, the newConfig() signal should be emitted as well, indicating Syncthing has actually applied the new configuration.

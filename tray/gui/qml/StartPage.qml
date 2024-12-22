@@ -79,7 +79,7 @@ Page {
                                 value: remoteCompletion.percentage
                             }
                             Label {
-                                text: remoteProgressBar.position >= 1 ? qsTr("Up to Date") : (Number.isNan(remoteCompletion.percentage) ? qsTr("Not available") : qsTr("%1 %").arg(Math.round(remoteCompletion.percentage)))
+                                text: remoteProgressBar.position >= 1 ? qsTr("Up to Date") : (Number.isNaN(remoteCompletion.percentage) ? qsTr("Not available") : qsTr("%1 %").arg(Math.round(remoteCompletion.percentage)))
                                 font.weight: Font.Light
                             }
                         }

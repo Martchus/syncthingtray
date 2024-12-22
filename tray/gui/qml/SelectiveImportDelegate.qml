@@ -25,6 +25,7 @@ ItemDelegate {
                 Layout.fillWidth: true
                 elide: Text.ElideRight
                 font.weight: Font.Medium
+                wrapMode: Text.WordWrap
             }
             Label {
                 id: descriptionLabel
@@ -46,10 +47,42 @@ ItemDelegate {
         contentItem: CustomListView {
             id: selectionView
             height: availableHeight
-            delegate: CheckBox {
+            delegate: ItemDelegate {
                 width: selectionView.width
-                text: modelData.displayName
-                onToggled: selectionView.model.setProperty(modelData.index, "checked", checked)
+                onClicked: {
+                    selectionCheckBox.toggle();
+                    selectionCheckBox.toggled();
+                }
+                contentItem: RowLayout {
+                    CheckBox {
+                        id: selectionCheckBox
+                        onToggled: selectionView.model.setProperty(modelData.index, "checked", checked)
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label {
+                            Layout.fillWidth: true
+                            text: modelData.displayName
+                            font.weight: Font.Medium
+                        }
+                        ItemDelegate {
+                            Layout.fillWidth: true
+                            visible: modelData.path !== undefined
+                            height: visible ? implicitHeight : 0
+                            text: modelData.path ?? ""
+                            icon.source: App.faUrlBase + "folder-open-o"
+                            icon.width: App.iconSize
+                            icon.height: App.iconSize
+                            onClicked: folderDlg.open()
+                        }
+                    }
+                }
+                FolderDialog {
+                    id: folderDlg
+                    title: qsTr("Set folder path of %1").arg(modelData.displayName)
+                    currentFolder: "file://" + encodeURIComponent(modelData.path ?? "")
+                    onAccepted: selectionView.model.setProperty(modelData.index, "path", App.resolveUrl(folderDlg.selectedFolder))
+                }
                 required property var modelData
             }
         }

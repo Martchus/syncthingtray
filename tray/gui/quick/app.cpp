@@ -1103,7 +1103,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
 
     setImportExportStatus(ImportExportStatus::Importing);
 
-    QtConcurrent::run([this, importSyncthingHome, availableSettings, selectedSettings] {
+    QtConcurrent::run([this, importSyncthingHome, availableSettings, selectedSettings, rawConfig = m_connection.rawConfig()] () mutable {
         // copy selected files from import directory to settings directory
         auto summary = QStringList();
         try {
@@ -1139,23 +1139,31 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
             const auto availableDevices = availableSettings.value(QStringLiteral("devices")).toJsonArray();
             const auto selectedFolders = selectedSettings.value(QStringLiteral("selectedFolders")).value<QVariantList>();
             const auto selectedDevices = selectedSettings.value(QStringLiteral("selectedDevices")).value<QVariantList>();
-            const auto defaults = m_connection.rawConfig().value(QStringLiteral("defaults")).toObject();
+            const auto defaults = rawConfig.value(QStringLiteral("defaults")).toObject();
             const auto folderTemplate = defaults.value(QStringLiteral("folder")).toObject();
             const auto deviceTemplate = defaults.value(QStringLiteral("device")).toObject();
-            auto folders = m_connection.rawConfig().value(QStringLiteral("folders")).toArray();
-            auto devices = m_connection.rawConfig().value(QStringLiteral("devices")).toArray();
+            const auto foldersVal = rawConfig.value(QStringLiteral("folders"));
+            const auto devicesVal = rawConfig.value(QStringLiteral("devices"));
+            if (!foldersVal.isArray() || !devicesVal.isArray()) {
+                return std::make_pair(tr("Unable to find folders/devices in current Syncthing config."), true);
+            }
+            auto folders = foldersVal.toArray();
+            auto devices = devicesVal.toArray();
             const auto importedFolders = importObjects(folderTemplate, availableFolders, selectedFolders, folders);
             const auto importedDevices = importObjects(deviceTemplate, availableDevices, selectedDevices, devices);
             if (importedFolders || importedDevices) {
-                auto newConfig = m_connection.rawConfig();
                 if (importedFolders) {
-                    newConfig.insert(QStringLiteral("folders"), folders);
+                    rawConfig.insert(QStringLiteral("folders"), folders);
                 }
                 if (importedDevices) {
-                    newConfig.insert(QStringLiteral("devices"), devices);
+                    rawConfig.insert(QStringLiteral("devices"), devices);
                 }
-                m_connection.postConfigFromJsonObject(newConfig);
-                summary.append(tr("Imported %1 folders and %2 devices.").arg(importedFolders).arg(importedDevices));
+                auto newConfigJson = QJsonDocument(rawConfig).toJson(QJsonDocument::Compact);
+                if (QMetaObject::invokeMethod(&m_connection, &SyncthingConnection::postRawConfig, Qt::QueuedConnection, std::move(newConfigJson))) {
+                    summary.append(tr("Merging %1 folders and %2 devices").arg(importedFolders).arg(importedDevices));
+                } else {
+                    return std::make_pair(tr("Unable to import folders/devices."), true);
+                }
             }
         }
 

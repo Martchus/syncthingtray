@@ -308,6 +308,7 @@ public Q_SLOTS:
 #endif
     bool applySettings(Data::SyncthingConnectionSettings &connectionSettings);
     void applyRawConfig();
+    void postRawConfig(const QByteArray &rawConfig);
 
     // methods to initiate/close connection
     void connect();

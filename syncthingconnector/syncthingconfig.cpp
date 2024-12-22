@@ -113,7 +113,10 @@ static void xmlAttributesToJsonObject(QXmlStreamReader &xmlReader, QJsonObject &
  */
 static void xmlElementToJsonValue(QXmlStreamReader &xmlReader, QJsonObject &object)
 {
-    static const auto arrayElements = QHash<QString, QString>{ { QStringLiteral("device"), QStringLiteral("devices") } };
+    static const auto arrayElements = QHash<QString, QString>{
+        { QStringLiteral("device"), QStringLiteral("devices") },
+        { QStringLiteral("address"), QStringLiteral("addresses") },
+    };
     auto name = xmlReader.name().toString();
     auto arrayName = arrayElements.find(name);
     auto text = QString();

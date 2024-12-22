@@ -508,7 +508,7 @@ ApplicationWindow {
         if (App.showToast(message)) {
             return;
         }
-        notifictionToolTip.text = message;
+        notifictionToolTip.text = notifictionToolTip.visible ? `${notifictionToolTip.text}\n${message}` : message;
         notifictionToolTip.open();
     }
 }

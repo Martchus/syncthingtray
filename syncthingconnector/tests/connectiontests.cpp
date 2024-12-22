@@ -447,8 +447,9 @@ void ConnectionTests::checkDevices()
             CPPUNIT_ASSERT_EQUAL_MESSAGE("paused device", QStringLiteral("Paused"), dev.statusString());
             CPPUNIT_ASSERT_EQUAL_MESSAGE("name", QStringLiteral("Test dev 2"), dev.name);
             CPPUNIT_ASSERT_MESSAGE("no introducer", !dev.introducer);
-            CPPUNIT_ASSERT_EQUAL(static_cast<decltype(dev.addresses.size())>(1), dev.addresses.size());
+            CPPUNIT_ASSERT_EQUAL(static_cast<decltype(dev.addresses.size())>(2), dev.addresses.size());
             CPPUNIT_ASSERT_EQUAL(QStringLiteral("tcp://192.168.2.2:22001"), dev.addresses.front());
+            CPPUNIT_ASSERT_EQUAL(QStringLiteral("tcp://192.168.2.2:22002"), dev.addresses.back());
             dev2 = &dev;
             dev2Index = index;
         } else if (dev.id == QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4")) {
