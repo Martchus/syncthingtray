@@ -188,8 +188,10 @@ void ApplicationTests::test()
     const char *const statusDirsOnlyArgs[] = { "syncthingctl", "status", "--all-dirs", nullptr };
     TESTUTILS_ASSERT_EXEC(resumeArgs);
     TESTUTILS_ASSERT_EXEC(statusDirsOnlyArgs);
+    const auto devPaused = stdout.find("device is paused");
+    CPPUNIT_ASSERT(devPaused != string::npos);
     CPPUNIT_ASSERT(stdout.find(" - Test dir 2") != string::npos);
-    CPPUNIT_ASSERT(stdout.find("paused") == string::npos);
+    CPPUNIT_ASSERT(stdout.find("paused", devPaused + 13) == string::npos);
 
     // test pause, verify via status on specific dir
     const char *const pauseArgs[] = { "syncthingctl", "pause", "--dir", "test2", nullptr };

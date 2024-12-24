@@ -614,6 +614,10 @@ void Application::printStatus(const ArgumentOccurrence &)
                 statusString = "No remote device connected";
                 statusColor = "34";
                 break;
+            case SyncthingStatus::Paused:
+                statusString = "At least one device is paused";
+                statusColor = "34";
+                break;
             case SyncthingStatus::Scanning:
                 statusString = "Scanning";
                 statusColor = "34";

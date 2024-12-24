@@ -1,5 +1,5 @@
 Overall statistics
-   Status                        Up to Date
+   Status                        At least one device is paused
       Global                        0 file\(s\), 0 dir\(s\), 0 bytes
       Local                         0 file\(s\), 0 dir\(s\), 0 bytes
    Incoming traffic              0 bytes

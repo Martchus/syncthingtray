@@ -1114,8 +1114,8 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
  * 1. SyncthingStatus::Synchronizing
  * 2. SyncthingStatus::RemoteNotInSync
  * 3. SyncthingStatus::Scanning
- * 4. SyncthingStatus::NoRemoteConnected
- * 5. SyncthingStatus::Paused
+ * 4. SyncthingStatus::Paused
+ * 5. SyncthingStatus::NoRemoteConnected
  * 6. SyncthingStatus::Idle
  *
  * \remarks
@@ -1155,9 +1155,8 @@ bool SyncthingConnection::setStatus(SyncthingStatus status)
         // check whether at least one directory is scanning, preparing to synchronize or synchronizing
         // note: We don't distinguish between "preparing to sync" and "synchronizing" for computing the overall
         //       status at the moment.
-        auto scanning = false, synchronizing = false, remoteSynchronizing = false, noRemoteConnected = true;
-        if ((m_statusComputionFlags && SyncthingStatusComputionFlags::Synchronizing)
-            || (m_statusComputionFlags && SyncthingStatusComputionFlags::Scanning)) {
+        auto scanning = false, synchronizing = false, remoteSynchronizing = false, noRemoteConnected = true, devPaused = true;
+        if (m_statusComputionFlags && (SyncthingStatusComputionFlags::Synchronizing | SyncthingStatusComputionFlags::Scanning)) {
             for (const SyncthingDir &dir : m_dirs) {
                 switch (dir.status) {
                 case SyncthingDirStatus::WaitingToSync:
@@ -1177,16 +1176,22 @@ bool SyncthingConnection::setStatus(SyncthingStatus status)
             }
         }
 
-        // set the status to "remote synchronizing" if at least one remote device is still in progress
-        // set the status to "no remote connected" if none of the devices is connected
-        if (!synchronizing && (m_statusComputionFlags && (SyncthingStatusComputionFlags::RemoteSynchronizing | SyncthingStatusComputionFlags::NoRemoteConnected))) {
+        // check whether at least one device is synchronizing
+        // check whether at least one device is paused
+        // check whether at least one devices is connected
+        if (!synchronizing && (m_statusComputionFlags && (SyncthingStatusComputionFlags::RemoteSynchronizing | SyncthingStatusComputionFlags::NoRemoteConnected | SyncthingStatusComputionFlags::DevicePaused))) {
             for (const SyncthingDev &dev : m_devs) {
                 if (dev.status == SyncthingDevStatus::Synchronizing) {
                     remoteSynchronizing = true;
-                    break;
+                    if (m_statusComputionFlags && SyncthingStatusComputionFlags::RemoteSynchronizing) {
+                        break;
+                    }
                 }
                 if (dev.isConnected()) {
                     noRemoteConnected = false;
+                }
+                if (dev.paused) {
+                    devPaused = true;
                 }
             }
         }
@@ -1197,16 +1202,10 @@ bool SyncthingConnection::setStatus(SyncthingStatus status)
             status = SyncthingStatus::RemoteNotInSync;
         } else if (scanning) {
             status = SyncthingStatus::Scanning;
+        } else if ((m_statusComputionFlags && SyncthingStatusComputionFlags::DevicePaused) && devPaused) {
+            status = SyncthingStatus::Paused;
         } else if ((m_statusComputionFlags && SyncthingStatusComputionFlags::NoRemoteConnected) && noRemoteConnected) {
             status = SyncthingStatus::NoRemoteConnected;
-        } else if (m_statusComputionFlags && SyncthingStatusComputionFlags::DevicePaused) {
-            // check whether at least one device is paused
-            for (const SyncthingDev &dev : m_devs) {
-                if (dev.paused) {
-                    status = SyncthingStatus::Paused;
-                    break;
-                }
-            }
         }
     }
     const auto hasStatusChanged = m_status != status || status == SyncthingStatus::Disconnected;
