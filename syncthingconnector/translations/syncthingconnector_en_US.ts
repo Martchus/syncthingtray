@@ -291,7 +291,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1230"/>
+        <location filename="../syncthingconnection.cpp" line="1229"/>
         <source>at offset %1</source>
         <translation type="unfinished"></translation>
     </message>
