@@ -610,6 +610,10 @@ void Application::printStatus(const ArgumentOccurrence &)
                 statusString = "Remote Syncing";
                 statusColor = "34";
                 break;
+            case SyncthingStatus::NoRemoteConnected:
+                statusString = "No remote device connected";
+                statusColor = "34";
+                break;
             case SyncthingStatus::Scanning:
                 statusString = "Scanning";
                 statusColor = "34";

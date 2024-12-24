@@ -29,6 +29,7 @@ enum class StatusEmblem {
     Paused,
     Complete,
     Add,
+    Cross,
 };
 
 enum class StatusIconStrokeWidth {
@@ -121,6 +122,7 @@ struct LIB_SYNCTHING_MODEL_EXPORT StatusIcons {
     QIcon error;
     QIcon errorSync;
     QIcon newItem;
+    QIcon noRemoteConnected;
     bool isValid;
 };
 

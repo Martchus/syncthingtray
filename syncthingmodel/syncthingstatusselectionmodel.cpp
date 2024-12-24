@@ -22,6 +22,7 @@ SyncthingStatusSelectionModel::SyncthingStatusSelectionModel(QObject *parent)
         itemFor(SyncthingStatus::Paused),
         itemFor(SyncthingStatus::Synchronizing),
         itemFor(SyncthingStatus::RemoteNotInSync),
+        itemFor(SyncthingStatus::NoRemoteConnected),
     });
 }
 

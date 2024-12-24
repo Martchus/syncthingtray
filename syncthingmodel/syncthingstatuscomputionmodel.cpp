@@ -24,6 +24,7 @@ SyncthingStatusComputionModel::SyncthingStatusComputionModel(QObject *parent)
         itemFor(SyncthingStatusComputionFlags::Scanning),
         itemFor(SyncthingStatusComputionFlags::Synchronizing),
         itemFor(SyncthingStatusComputionFlags::RemoteSynchronizing),
+        itemFor(SyncthingStatusComputionFlags::NoRemoteConnected),
         itemFor(SyncthingStatusComputionFlags::DevicePaused),
         itemFor(SyncthingStatusComputionFlags::OutOfSync),
         itemFor(SyncthingStatusComputionFlags::UnreadNotifications),
@@ -39,6 +40,8 @@ QString SyncthingStatusComputionModel::labelForId(const QVariant &id) const
         return tr("Local dir is synchronizing");
     case SyncthingStatusComputionFlags::RemoteSynchronizing:
         return tr("Remote dir has outstanding progress");
+    case SyncthingStatusComputionFlags::NoRemoteConnected:
+        return tr("No remote device connected");
     case SyncthingStatusComputionFlags::DevicePaused:
         return tr("A device is paused");
     case SyncthingStatusComputionFlags::OutOfSync:

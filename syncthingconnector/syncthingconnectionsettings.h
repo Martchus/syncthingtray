@@ -31,8 +31,9 @@ enum class SyncthingStatusComputionFlags : quint64 {
         << 4), /**< the return value of SyncthingConnection::hasOutOfSyncDirs() is considered by further displaying-related computations such as StatusInfo::updateConnectionStatus() */
     UnreadNotifications = (1
         << 5), /**< the return value of SyncthingConnection::hasUnreadNotifications() is considered by further displaying-related computations such as StatusInfo::updateConnectionStatus() */
+    NoRemoteConnected = (1 << 6), /**< the status SyncthingStatus::NoRemoteConnected might be set (in addition) */
     Default = SyncthingStatusComputionFlags::Scanning | SyncthingStatusComputionFlags::Synchronizing | SyncthingStatusComputionFlags::DevicePaused
-        | SyncthingStatusComputionFlags::OutOfSync | SyncthingStatusComputionFlags::UnreadNotifications,
+        | SyncthingStatusComputionFlags::OutOfSync | SyncthingStatusComputionFlags::UnreadNotifications | SyncthingStatusComputionFlags::NoRemoteConnected,
     /**< the default flags used all over the place */
 };
 

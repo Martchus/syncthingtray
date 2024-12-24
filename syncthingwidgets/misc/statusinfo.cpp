@@ -92,6 +92,10 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection, c
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "At least one remote folder is not in sync");
                 m_statusIcon = &icons.sync;
                 break;
+            case SyncthingStatus::NoRemoteConnected:
+                m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "No remote device connected");
+                m_statusIcon = &icons.noRemoteConnected;
+                break;
             default:
                 m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "Status is unknown");
                 m_statusIcon = &icons.disconnected;

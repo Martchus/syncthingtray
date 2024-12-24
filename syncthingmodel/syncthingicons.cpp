@@ -96,8 +96,8 @@ QByteArray makeSyncthingIcon(const StatusIconColorSet &colors, StatusEmblem stat
         ),
         QStringLiteral(
             "<circle id=\"bubble\" cx=\"11.5\" cy=\"11.5\" r=\"4.5\" style=\"fill:#000000\"/>"
-            "<g id=\"plus\">"
-                "<path style=\"fill:#fffff6;fill-opacity:1;stroke:none;stroke-width:0.48022598\" d=\"m 10.771186,8.4407554 c -1.1972026,0 -2.1610164,0.9652542 -2.1610164,2.1610166 0,1.197203 0.9652547,2.161017 2.1610164,2.161017 0.510789,0 0.973102,-0.183061 1.342194,-0.477411 l 1.919966,1.919965 0.339535,-0.339535 -1.919965,-1.919966 c 0.29565,-0.369668 0.479287,-0.832466 0.479287,-1.34407 0,-1.197203 -0.965254,-2.1610166 -2.161017,-2.1610166 z m 0,0.480226 c 0.931159,0 1.680791,0.7496332 1.680791,1.6807906 0,0.931159 -0.749632,1.680791 -1.680791,1.680791 -0.9311583,0 -1.6807905,-0.749632 -1.6807905,-1.680791 0,-0.9311574 0.7496322,-1.6807906 1.6807905,-1.6807906 z\"/>"
+            "<g id=\"cross\">"
+                "<path style=\"fill:#fffff6;fill-opacity:1;stroke:none;;stroke-width:1.01088\" d=\"M 9.819813,8.937 8.937,9.819813 10.616688,11.4995 8.937,13.179187 9.821766,14.062 11.501454,12.384266 13.179189,14.062 14.063954,13.179188 12.384267,11.4995 14.063954,9.819813 13.179188,8.937 11.499501,10.616687 Z\"/>"
             "</g>"
         ),
     };
@@ -307,6 +307,7 @@ StatusIcons::StatusIcons(const StatusIconSettings &settings)
     , error(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Alert, settings.strokeWidth), settings.renderSize)))
     , errorSync(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Synchronizing, settings.strokeWidth), settings.renderSize)))
     , newItem(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Add, settings.strokeWidth), settings.renderSize)))
+    , noRemoteConnected(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Cross, settings.strokeWidth), settings.renderSize)))
     , isValid(true)
 {
 }

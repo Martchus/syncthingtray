@@ -326,6 +326,7 @@ void WizardTests::testConfiguringLauncher()
             case Data::SyncthingStatus::Scanning:
             case Data::SyncthingStatus::Synchronizing:
             case Data::SyncthingStatus::RemoteNotInSync:
+            case Data::SyncthingStatus::NoRemoteConnected:
             case Data::SyncthingStatus::Paused:
                 qDebug() << "connected to Syncthing: " << m_connection.statusText();
             default:;
