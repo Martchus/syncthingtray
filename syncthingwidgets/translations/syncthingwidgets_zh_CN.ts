@@ -1825,16 +1825,21 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="96"/>
+        <source>No remote device connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="100"/>
         <source>Status is unknown</source>
         <translation>状态未知</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="119"/>
+        <location filename="../misc/statusinfo.cpp" line="123"/>
         <source>Not connected to other devices</source>
         <translation>未连接到其他设备</translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="143"/>
+        <location filename="../misc/statusinfo.cpp" line="147"/>
         <source>Connected to %1 devices</source>
         <translation>
             <numerusform>已连接 %1 个设备</numerusform>
@@ -1847,14 +1852,14 @@ The Web UI will be opened in the default web browser instead.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="150"/>
+        <location filename="../misc/statusinfo.cpp" line="154"/>
         <source>Connected to %1 and %2</source>
         <translation>
             <numerusform>已连接到 %1 和 %2</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="153"/>
+        <location filename="../misc/statusinfo.cpp" line="157"/>
         <source>Connected to %1</source>
         <translation>
             <numerusform>已连接到 %1</numerusform>

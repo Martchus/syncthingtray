@@ -674,32 +674,37 @@
 <context>
     <name>Data::SyncthingStatusComputionModel</name>
     <message>
-        <location filename="../syncthingstatuscomputionmodel.cpp" line="37"/>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="38"/>
         <source>Local dir is scanning</source>
         <translation>Lokaler Ordner wird gescannt</translation>
     </message>
     <message>
-        <location filename="../syncthingstatuscomputionmodel.cpp" line="39"/>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="40"/>
         <source>Local dir is synchronizing</source>
         <translation>Lokaler Ordner wird synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingstatuscomputionmodel.cpp" line="41"/>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="42"/>
         <source>Remote dir has outstanding progress</source>
         <translation>Entfernter Ordner hat ausstehende Elemente</translation>
     </message>
     <message>
-        <location filename="../syncthingstatuscomputionmodel.cpp" line="43"/>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="44"/>
+        <source>No remote device connected</source>
+        <translation>Nicht mit anderen Geräten verbunden</translation>
+    </message>
+    <message>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="46"/>
         <source>A device is paused</source>
         <translation>Ein Gerät ist pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingstatuscomputionmodel.cpp" line="45"/>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="48"/>
         <source>Local dir is out of sync</source>
         <translation>Lokaler Ordner ist nicht synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingstatuscomputionmodel.cpp" line="47"/>
+        <location filename="../syncthingstatuscomputionmodel.cpp" line="50"/>
         <source>Unread notification present</source>
         <translation>Ungelesene Benachrichtigungen</translation>
     </message>

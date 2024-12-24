@@ -1753,8 +1753,13 @@
         <source>At least one remote folder is not in sync</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="96"/>
+        <source>No remote device connected</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="143"/>
+        <location filename="../misc/statusinfo.cpp" line="147"/>
         <source>Connected to %1 devices</source>
         <translation>
             <numerusform>Connected to %1 device</numerusform>
@@ -1769,7 +1774,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="150"/>
+        <location filename="../misc/statusinfo.cpp" line="154"/>
         <source>Connected to %1 and %2</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1777,7 +1782,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="153"/>
+        <location filename="../misc/statusinfo.cpp" line="157"/>
         <source>Connected to %1</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1811,12 +1816,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="96"/>
+        <location filename="../misc/statusinfo.cpp" line="100"/>
         <source>Status is unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="119"/>
+        <location filename="../misc/statusinfo.cpp" line="123"/>
         <source>Not connected to other devices</source>
         <translation type="unfinished"></translation>
     </message>
