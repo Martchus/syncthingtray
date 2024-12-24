@@ -185,7 +185,9 @@ void drawIdAndStatus(const QStyledItemDelegate *delegate, QPainter *painter, QSt
     painter->drawText(textRect, painter->fontMetrics().elidedText(id, Qt::ElideRight, static_cast<int>(textRect.width())), textOption);
 
     // draw status text
-    opt.palette.setColor(QPalette::Text, index.data(statusColorRole).value<QColor>());
+    if (const auto color = index.data(statusColorRole).value<QColor>(); color.isValid()) {
+        opt.palette.setColor(QPalette::Text, color);
+    }
     textOption.setAlignment(Qt::AlignRight);
     setupPainterToDrawViewItemText(painter, opt);
     painter->drawText(statusTextRect, statusText, textOption);
