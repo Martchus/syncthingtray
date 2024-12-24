@@ -1149,6 +1149,11 @@ QWidget *LauncherOptionPage::setupWidget()
         ui()->stopOnMeteredCheckBox->setVisible(false);
     }
 
+    // set placeholder texts in path selections
+    for (auto *const pathSelection : std::initializer_list<QtUtilities::PathSelection *>{ ui()->configDirPathSelection, ui()->dataDirPathSelection }) {
+        pathSelection->lineEdit()->setPlaceholderText(tr("Leave empty for default path"));
+    }
+
     // hide libsyncthing-controls by default (as the checkbox is unchecked by default)
     for (auto *const lstWidget : std::initializer_list<QWidget *>{ ui()->configDirLabel, ui()->configDirPathSelection, ui()->dataDirLabel,
              ui()->dataDirPathSelection, ui()->logLevelLabel, ui()->logLevelComboBox, ui()->optionsLabel, ui()->expandEnvCheckBox }) {
