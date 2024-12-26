@@ -542,13 +542,19 @@ bool App::showToast(const QString &message)
 
 QString App::resolveUrl(const QUrl &url)
 {
-#ifdef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID)
     const auto urlString = url.toString(QUrl::FullyEncoded);
     const auto path = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("resolveUri", urlString).toString();
     if (path.isEmpty()) {
         showToast(tr("Unable to resolve URL \"%1\".").arg(urlString));
     }
     return path.isEmpty() ? urlString : path;
+#elif defined(Q_OS_WINDOWS)
+    auto path = url.path();
+    while (path.startsWith(QChar('/'))) {
+        path.remove(0, 1);
+    }
+    return path;
 #else
     return url.path();
 #endif
