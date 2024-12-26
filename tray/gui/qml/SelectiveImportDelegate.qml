@@ -64,6 +64,8 @@ ItemDelegate {
                             Layout.fillWidth: true
                             text: modelData.displayName
                             font.weight: Font.Medium
+                            elide: Text.ElideRight
+                            wrapMode: Text.WordWrap
                         }
                         ItemDelegate {
                             Layout.fillWidth: true
