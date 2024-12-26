@@ -13,6 +13,7 @@ Page {
             id: textArea
             width: parent.width
             readOnly: true
+            wrapMode: TextEdit.WrapAnywhere
         }
     }
     property list<Action> actions: [
@@ -28,6 +29,6 @@ Page {
                 App.clearLog();
                 textArea.clear();
             }
-        },
+        }
     ]
 }
