@@ -136,7 +136,12 @@ Page {
     }
 
     function updateValue(index, key, value) {
-        objectConfigPage.configObject[key] = value;
+        const configObject = objectConfigPage.configObject;
+        const currentValue = configObject[key];
+        if (currentValue === value) {
+            return;
+        }
+        configObject[key] = value;
         objectConfigPage.hasUnsavedChanges = true;
         listModel.setProperty(index, "value", value);
         if (Array.isArray(objectConfigPage.parentPage?.configObject) && objectConfigPage.objectNameLabel?.labelKey === key) {

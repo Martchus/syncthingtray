@@ -44,7 +44,7 @@ StackView {
         ]
         property alias model: dirsListView.mainModel
         function add() {
-            stackView.push("DirConfigPage.qml", {dirName: qsTr("New folder"), dirId: "", stackView: stackView}, StackView.PushTransition);
+            stackView.push("DirConfigPage.qml", {title: qsTr("Add new folder"), dirName: qsTr("New folder"), dirId: "", stackView: stackView}, StackView.PushTransition);
         }
     }
 }
