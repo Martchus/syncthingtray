@@ -178,7 +178,7 @@ void ModelTests::testFileModel()
     QCOMPARE(model.index(0, 2, cameraIdx).data(), QStringLiteral("2020-12-16 22:31:34.500"));
     QCOMPARE(model.index(0, 3, cameraIdx).data(), QVariant());
     QVERIFY(model.index(0, 4, cameraIdx).data(Qt::DecorationRole).canConvert<QPixmap>());
-    QCOMPARE(model.index(0, 4, cameraIdx).data(Qt::ToolTipRole), QStringLiteral("Exists globally and perhaps locally"));
+    QCOMPARE(model.index(0, 4, cameraIdx).data(Qt::ToolTipRole), QStringLiteral("Exists only globally"));
     QCOMPARE(model.index(1, 0, cameraIdx).data(), QStringLiteral("IMG_20201213_122451.jpg"));
     QCOMPARE(model.index(2, 0, cameraIdx).data(), QStringLiteral("IMG_20201213_122504.jpg"));
     QCOMPARE(model.index(3, 0, cameraIdx).data(), QStringLiteral("IMG_20201213_122505.jpg"));

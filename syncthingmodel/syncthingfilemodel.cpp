@@ -1115,11 +1115,14 @@ void SyncthingFileModel::markItemsFromDatabaseAsLocallyExisting(
     std::vector<std::unique_ptr<SyncthingItem>> &items, SyncthingFileModel::LocalItemMap &localItems)
 {
     for (auto &child : items) {
-        auto localItemIter = localItems.find(child->name);
-        if (localItemIter == localItems.end()) {
+        const auto localItemIter = localItems.find(child->name);
+        const auto itemExists = localItemIter != localItems.end();
+        child->existsLocally = itemExists;
+        if (!itemExists) {
+            static auto noLocalChildren = SyncthingFileModel::LocalItemMap();
+            markItemsFromDatabaseAsLocallyExisting(child->children, noLocalChildren);
             continue;
         }
-        child->existsLocally = true;
         localItemIter->second.existsInDb = child->existsInDb;
         localItemIter->second.index = child->index;
         markItemsFromDatabaseAsLocallyExisting(child->children, localItemIter->second.localChildren);
