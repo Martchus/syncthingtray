@@ -1155,7 +1155,7 @@ bool SyncthingConnection::setStatus(SyncthingStatus status)
         // check whether at least one directory is scanning, preparing to synchronize or synchronizing
         // note: We don't distinguish between "preparing to sync" and "synchronizing" for computing the overall
         //       status at the moment.
-        auto scanning = false, synchronizing = false, remoteSynchronizing = false, noRemoteConnected = true, devPaused = true;
+        auto scanning = false, synchronizing = false, remoteSynchronizing = false, noRemoteConnected = true, devPaused = false;
         if (m_statusComputionFlags && (SyncthingStatusComputionFlags::Synchronizing | SyncthingStatusComputionFlags::Scanning)) {
             for (const SyncthingDir &dir : m_dirs) {
                 switch (dir.status) {
@@ -1190,7 +1190,7 @@ bool SyncthingConnection::setStatus(SyncthingStatus status)
                 if (dev.isConnected()) {
                     noRemoteConnected = false;
                 }
-                if (dev.paused) {
+                if (dev.paused && dev.status != SyncthingDevStatus::ThisDevice) {
                     devPaused = true;
                 }
             }
