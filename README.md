@@ -354,46 +354,71 @@ permission errors and problems with the app being stopped by the OS. For me it w
 on a three year old average Samsung device. It probably works on most recent phones except very
 low-end devices.
 
+**The Android app is still experimental.** Use it with care and create backups of your
+configuration and data before trying it. No builds are provided at this point so you have to
+[build it from sources](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android).
+
 If you're starting from scratch you can simply install and start the app. At this point you will
 have to manually configure that you want to run Syncthing itself. Then you can add devices and
 folders as usual. If you have already another Syncthing app installed, read the next sections
 for testing/migrating.
 
-The Android app is still experimental. Use it with care and create backups of your configuration
-and data before trying it. No builds are provided at this point so you have to
-[build it from sources](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android).
-
 ### Testing the app without migrating
-To only test the app without migrating your setup you can:
+To only test the app without migrating your setup you can follow the steps of this section. Note
+that changes done via the app *will* affect your existing Syncthing setup. You are *not* working
+in read-only mode or on a copy.
 
 0. Start the Syncthing app you are currently using (e.g. the Syncthing-Fork app) and ensure that
    Syncthing itself is running as well.
 1. Lookup the listening address and API key in the options of the app you are currently using.
-   Alternatively, do an export/backup in the app you are currently using. The backup directory
-   will contain the file `config.xml` which also contains the listening address and API key.
-   The export will also contain the HTTPs certificate which you need if HTTPs is used.
+   Alternatively, do an export/backup in the app you are currently using. This might be a good
+   idea anyway. The backup directory will contain the file `config.xml` which also contains the
+   listening address and API key. The export will also contain the HTTPs certificate which you
+   need if HTTPs is used.
 2. Install and start the Syncthing app from Syncthing Tray.
 3. Ensure that running Syncthing is disabled under the runtime condition settings.
-4. Configure the information from step 1 in the connection settings.
+4. Configure the information from step 1 in the connection settings. When using HTTPs the
+   certificate is required.
 5. After applying all settings, the app UI can be used to control your existing Syncthing setup.
-   Note that changes will affect your existing Syncthing setup. You are *not* working in
-   read-only mode or on a copy.
 
 ### Migrating data from your existing app setup
+You can follow these steps when switching apps on the same device. If you decided to import only
+specific devices and folders (recommended) you can still keep using your existing app setup
+(keeping both apps installed in parallel).
+
+You can also follow these steps when setting up Syncthing on a new device based on the
+configuration from another device.
+
 0. Start the Syncthing app you are currently using (e.g. the Syncthing-Fork app) and wait until
    everything is in-sync.
-1. Do an export of your Syncthing config and data. This will populate a directory on the internal
+1. Do an export in the app you are currently using. This will populate a directory on the internal
    or external storage.
 2. Stop the Syncthing app you are currently using.
-3. Start the Syncthing app from Syncthing Tray.
-4. Import the config and data from step 1 and select what parts you want to import.
-    * When selecting a full import the device ID from your existing app will be reused. In fact,
-      the entire Syncthing configuration and database will be reused. So the setup will be
-      identical to how it was before - except that now a different app is used. That also means
-      that no changes are required on other devices.
-    * When selecting only specific folders and devices the new app will keep its (different) own
-      device ID. You will have to add it on other devices as a new device and share relevant
+3. Start the Syncthing app from Syncthing Tray and enable running Syncthing in the app settings.
+4. Import the config and data from step 1 in the app settings. When clicking on "Import …" you
+   will be prompted to select the directory you stored the export made in step 1. After selecting
+   the directory no changes will be made immediately; the app will show you what it found and
+   allow you to and select what parts you want to import.
+    * It is recommended to select only specific folders and devices. Then the Syncthing Tray app
+      will keep its current device ID. This means it will appear as a new device on other devices.
+      So you will have to add it on other devices as a new device and accept sharing relevant
       folders.
+        * All devices and folders will be added in paused state. So you can still tweak settings
+          and ignore patterns before any scanning or syncing takes place.
+        * Changing folder paths is not possible after the import anymore, though. Therefore you
+          have to change the paths of the folders during the import if necassary.
+        * When setting up a completely new device you can simply select/create empty folders
+          where you want the imported folders to be. Then Syncthing will pull the contents from
+          other devices once you unpause the folders/devices.
+    * It is also possible to do a full import. This will import the Syncthing configuration and
+      database from the export. That means the device ID from your existing app setup will be
+      reused. In fact, the entire Syncthing configuration and database will be reused. So the
+      setup will be identical to how it was before - except that now a different app is used.
+      That also means that no changes are required on other devices. *The big caveat of this method
+      is that you should not start the other app anymore unless you re-import the config/database
+      there and make sure the app from Syncthing Tray is stopped. Re-using the Syncthing database
+      is also generally considered dangerious and therefore not recommended when setting up a new
+      device.*
 
 ## Download
 Checkout the [download section on the website](https://martchus.github.io/syncthingtray/#downloads-section) for an overview.
