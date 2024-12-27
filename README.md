@@ -358,10 +358,21 @@ low-end devices.
 configuration and data before trying it. No builds are provided at this point so you have to
 [build it from sources](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android).
 
-If you're starting from scratch you can simply install and start the app. At this point you will
-have to manually configure that you want to run Syncthing itself. Then you can add devices and
-folders as usual. If you have already another Syncthing app installed, read the next sections
-for testing/migrating.
+If you're starting from scratch you can simply install and start the app. You need to give the
+app *notification permission* via the app settings of Android. At this point you will have to
+manually configure that you want to *run Syncthing* itself in the settings within the app. Once
+Syncthing is running you can add devices and folders as usual. The official Syncthing
+documentation applies. There are also many help texts provided within the app itself. A few
+additional remarks:
+
+* You can select device IDs of nearby devices from the combo box when adding a new device. So
+  there's usually no need to copy & paste device IDs. If you nevertheless need to scan a QR-code
+  I recommended to simply use your camera app to scan and copy the QR-code information and paste
+  it into the Syncthing Tray app. So far there is no in-app QR-code scanning.
+* You can leave the device name empty to use the name the device advertises. The device name can
+  also be changed later (in contrast to IDs).
+* If you have already another Syncthing app installed or you have an existing configuration from
+  another device, read the next sections for testing/migrating.
 
 ### Testing the app without migrating
 To only test the app without migrating your setup you can follow the steps of this section. Note
