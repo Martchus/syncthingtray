@@ -255,7 +255,7 @@ private Q_SLOTS:
     void gatherLogs(const QByteArray &newOutput);
     void handleRunningChanged(bool isRunning);
     void handleGuiAddressChanged(const QUrl &newUrl);
-    void handleNewDevices(const std::vector<Data::SyncthingDev> &newDevices);
+    void handleChangedDevices();
     void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
     void handleStateChanged(Qt::ApplicationState state);
 #ifdef Q_OS_ANDROID

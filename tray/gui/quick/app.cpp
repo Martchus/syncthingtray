@@ -135,7 +135,10 @@ App::App(bool insecure, QObject *parent)
     m_notifier.setEnabledNotifications(Data::SyncthingHighLevelNotification::ConnectedDisconnected);
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &App::invalidateStatus);
-    connect(&m_connection, &SyncthingConnection::newDevices, this, &App::handleNewDevices);
+    connect(&m_connection, &SyncthingConnection::newDevices, this, &App::handleChangedDevices);
+    connect(&m_connection, &SyncthingConnection::autoReconnectIntervalChanged, this, &App::invalidateStatus);
+    connect(&m_connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &App::invalidateStatus);
+    connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &App::handleChangedDevices);
     connect(&m_connection, &SyncthingConnection::newErrors, this, &App::handleNewErrors);
 #ifdef Q_OS_ANDROID
     connect(&m_connection, &SyncthingConnection::newNotification, this, &App::updateSyncthingErrorsNotification);
@@ -614,9 +617,8 @@ void App::handleGuiAddressChanged(const QUrl &newUrl)
     }
 }
 
-void App::handleNewDevices(const std::vector<Data::SyncthingDev> &newDevices)
+void App::handleChangedDevices()
 {
-    Q_UNUSED(newDevices)
     m_statusInfo.updateConnectedDevices(m_connection);
     emit statusInfoChanged();
 #ifdef Q_OS_ANDROID
