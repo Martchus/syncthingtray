@@ -610,9 +610,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     }
 
     // update status icon and text of tray icon because reconnect interval might have changed
-    if (m_menu && m_menu->icon()) {
-        m_menu->icon()->updateStatusIconAndText();
-    }
+    updateIconAndTooltip();
 
     // show warning when explicitly specified connection configuration was not found
     if (!specifiedConnectionConfigFound && !connectionConfig.isEmpty()) {
@@ -641,9 +639,7 @@ bool TrayWidget::event(QEvent *event)
         m_ui->retranslateUi(this);
         applyLauncherSettings(false, true, false);
         handleStatusChanged(m_connection.status());
-        if (m_menu && m_menu->icon()) {
-            m_menu->icon()->updateStatusIconAndText();
-        }
+        updateIconAndTooltip();
         break;
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
     case QEvent::DevicePixelRatioChange:
@@ -988,9 +984,7 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
 void TrayWidget::handleNewErrors()
 {
     m_ui->notificationsPushButton->setVisible(m_connection.hasErrors());
-    if (m_menu && m_menu->icon()) {
-        m_menu->icon()->updateStatusIconAndText();
-    }
+    updateIconAndTooltip();
 }
 
 void TrayWidget::concludeWizard(const QString &errorMessage)
