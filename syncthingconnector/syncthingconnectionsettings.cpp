@@ -78,7 +78,7 @@ bool SyncthingConnectionSettings::loadFromJson(const QJsonObject &object)
     requestTimeout = advanced.value(QLatin1String("longPollingTimeout")).toInt(defaultRequestTimeout);
     longPollingTimeout = advanced.value(QLatin1String("longPollingTimeout")).toInt(defaultLongPollingTimeout);
     diskEventLimit = advanced.value(QLatin1String("diskEventLimit")).toInt(defaultDiskEventLimit);
-    statusComputionFlags = SyncthingStatusComputionFlags::Default;
+    statusComputionFlags = SyncthingStatusComputionFlags::Default | SyncthingStatusComputionFlags::RemoteSynchronizing;
     autoConnect = advanced.value(QLatin1String("autoConnect")).toBool(true);
     pauseOnMeteredConnection = advanced.value(QLatin1String("pauseOnMeteredConnection")).toBool();
 
