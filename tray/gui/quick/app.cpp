@@ -719,12 +719,16 @@ void App::clearSyncthingErrorsNotification()
 
 void App::showInternalError(const InternalError &error)
 {
-    const auto title = QJniObject::fromString(tr("Syncthing API error"));
-    const auto text = QJniObject::fromString(error.message);
+    const auto title = QJniObject::fromString(m_internalErrors.empty()
+        ? tr("Syncthing API error")
+        : tr("%1 Syncthing API errors").arg(m_internalErrors.size() + 1));
+    const auto text = QJniObject::fromString(m_internalErrors.empty()
+        ? error.message
+        : tr("most recent: ") + error.message);
     const auto subText = QJniObject::fromString(error.url.isEmpty() ? QString() : QStringLiteral("URL: ") + error.url.toString());
     static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
-    updateExtraAndroidNotification(title, text, subText, page, icon, 3 + m_internalErrors.size());
+    updateExtraAndroidNotification(title, text, subText, page, icon, 3);
 }
 
 void App::showNewDevice(const QString &devId, const QString &message)
