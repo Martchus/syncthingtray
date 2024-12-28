@@ -89,7 +89,7 @@ public class Activity extends QtActivity {
     void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
-            onAndroidIntent("sharedtext:" + sharedText, false);
+            sendAndroidIntentToQtQuickApp("sharedtext:" + sharedText, false);
         }
     }
 
@@ -106,7 +106,15 @@ public class Activity extends QtActivity {
     protected void onNewIntent(Intent intent) {
         boolean fromNotification = intent.getBooleanExtra("notification", false);
         if (fromNotification) {
-            onAndroidIntent(intent.getStringExtra("page"), fromNotification);
+            sendAndroidIntentToQtQuickApp(intent.getStringExtra("page"), fromNotification);
+        }
+    }
+
+    private void sendAndroidIntentToQtQuickApp(String page, boolean fromNotification) {
+        try {
+            onAndroidIntent(page, fromNotification);
+        } catch (java.lang.UnsatisfiedLinkError e) {
+            showToast("Unable to open in Syncthing Tray app right now.");
         }
     }
 
