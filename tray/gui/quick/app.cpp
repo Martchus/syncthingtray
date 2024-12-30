@@ -124,6 +124,7 @@ App::App(bool insecure, QObject *parent)
     auto statusIconSettings = StatusIconSettings();
     statusIconSettings.strokeWidth = StatusIconStrokeWidth::Thick;
     iconManager.applySettings(&statusIconSettings, &statusIconSettings, true, true);
+    connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::statusInfoChanged);
 #ifdef Q_OS_ANDROID
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::invalidateAndroidIconCache);
 #endif
