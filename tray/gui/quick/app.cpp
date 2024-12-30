@@ -88,6 +88,7 @@ static void onAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNotifi
 
 App::App(bool insecure, QObject *parent)
     : QObject(parent)
+    , m_app(static_cast<QGuiApplication *>(QCoreApplication::instance()))
     , m_notifier(m_connection)
     , m_dirModel(m_connection)
     , m_sortFilterDirModel(&m_dirModel)
@@ -110,10 +111,9 @@ App::App(bool insecure, QObject *parent)
     , m_isGuiLoaded(false)
     , m_unloadGuiWhenHidden(false)
 {
-    auto *const app = static_cast<QGuiApplication *>(QCoreApplication::instance());
-    app->installEventFilter(this);
-    app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
-    connect(app, &QGuiApplication::applicationStateChanged, this, &App::handleStateChanged);
+    m_app->installEventFilter(this);
+    m_app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+    connect(m_app, &QGuiApplication::applicationStateChanged, this, &App::handleStateChanged);
 
     deletePipelineCache();
     loadSettings();
@@ -150,7 +150,7 @@ App::App(bool insecure, QObject *parent)
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &App::handleGuiAddressChanged);
 
     connect(
-        &m_engine, &QQmlApplicationEngine::objectCreated, app,
+        &m_engine, &QQmlApplicationEngine::objectCreated, m_app,
         [](QObject *obj, const QUrl &objUrl) {
             if (!obj) {
                 std::cerr << "Unable to load " << objUrl.toString().toStdString() << '\n';
@@ -158,7 +158,7 @@ App::App(bool insecure, QObject *parent)
             }
         },
         Qt::QueuedConnection);
-    connect(&m_engine, &QQmlApplicationEngine::quit, app, &QGuiApplication::quit);
+    connect(&m_engine, &QQmlApplicationEngine::quit, m_app, &QGuiApplication::quit);
     m_engine.setProperty("app", QVariant::fromValue(this));
     m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global()));
 
@@ -478,7 +478,9 @@ DiffHighlighter *App::createDiffHighlighter(QTextDocument *parent)
 
 bool App::eventFilter(QObject *object, QEvent *event)
 {
-    Q_UNUSED(object)
+    if (object != m_app) {
+        return false;
+    }
     switch (event->type()) {
     case QEvent::ApplicationPaletteChange:
         qDebug() << "Application palette has changed";

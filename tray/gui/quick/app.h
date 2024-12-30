@@ -280,6 +280,7 @@ private:
     QString locateSettingsExportDir();
 
     QQmlApplicationEngine m_engine;
+    QGuiApplication *m_app;
     Data::SyncthingConnection m_connection;
     Data::SyncthingNotifier m_notifier;
     Data::SyncthingDirectoryModel m_dirModel;
