@@ -54,15 +54,17 @@ ApplicationWindow {
                             onTriggered: statusButton.showConnectionErrors()
                         }
                     }
-                    function showErrors(page) {
-                        pageStack.setCurrentIndex(5);
-                        settingsPage.push(page, {}, StackView.PushTransition);
-                    }
                     function showInternalErrors() {
-                        statusButton.showErrors("InternalErrorsPage.qml");
+                        pageStack.setCurrentIndex(5);
+                        if (!(settingsPage.currentItem instanceof InternalErrorsPage)) {
+                            settingsPage.push("InternalErrorsPage.qml", {}, StackView.PushTransition);
+                        }
                     }
                     function showConnectionErrors() {
-                        statusButton.showErrors("ErrorsPage.qml");
+                        pageStack.setCurrentIndex(5);
+                        if (!(settingsPage.currentItem instanceof ErrorsPage)) {
+                            settingsPage.push("ErrorsPage.qml", {}, StackView.PushTransition);
+                        }
                     }
                 }
                 BusyIndicator {
