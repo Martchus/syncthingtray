@@ -307,7 +307,7 @@ StatusIcons::StatusIcons(const StatusIconSettings &settings)
     , error(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Alert, settings.strokeWidth), settings.renderSize)))
     , errorSync(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Synchronizing, settings.strokeWidth), settings.renderSize)))
     , newItem(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Add, settings.strokeWidth), settings.renderSize)))
-    , noRemoteConnected(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Cross, settings.strokeWidth), settings.renderSize)))
+    , noRemoteConnected(QIcon(renderSvgImage(makeSyncthingIcon(settings.disconnectedColor, StatusEmblem::Cross, settings.strokeWidth), settings.renderSize)))
     , isValid(true)
 {
 }
