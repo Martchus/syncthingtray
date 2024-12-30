@@ -36,7 +36,7 @@ void SyncthingModel::invalidateNestedIndicies(const QVector<int> &affectedRoles)
         const auto parentIndex = index(i, 0);
         const auto childRows = rowCount(parentIndex);
         if (childRows > 0) {
-            emit dataChanged(index(0, 0, parentIndex), index(childRows - 1, columnCount(parentIndex) - 1), affectedRoles);
+            emit dataChanged(index(0, 0, parentIndex), index(childRows - 1, columnCount(parentIndex) - 1, parentIndex), affectedRoles);
         }
     }
 }
