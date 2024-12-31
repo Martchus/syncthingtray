@@ -133,7 +133,11 @@ App::App(bool insecure, QObject *parent)
     m_sortFilterDevModel.sort(0, Qt::AscendingOrder);
 
     m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
-    m_notifier.setEnabledNotifications(Data::SyncthingHighLevelNotification::ConnectedDisconnected);
+#ifdef Q_OS_ANDROID
+    m_notifier.setEnabledNotifications(SyncthingHighLevelNotification::ConnectedDisconnected | SyncthingHighLevelNotification::NewDevice | SyncthingHighLevelNotification::NewDir);
+#else
+    m_notifier.setEnabledNotifications(SyncthingHighLevelNotification::ConnectedDisconnected);
+#endif
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &App::invalidateStatus);
     connect(&m_connection, &SyncthingConnection::newDevices, this, &App::handleChangedDevices);
@@ -143,6 +147,8 @@ App::App(bool insecure, QObject *parent)
     connect(&m_connection, &SyncthingConnection::newErrors, this, &App::handleNewErrors);
 #ifdef Q_OS_ANDROID
     connect(&m_connection, &SyncthingConnection::newNotification, this, &App::updateSyncthingErrorsNotification);
+    connect(&m_notifier, &SyncthingNotifier::newDevice, this, &App::showNewDevice);
+    connect(&m_notifier, &SyncthingNotifier::newDir, this, &App::showNewDir);
 #endif
 
     m_launcher.setEmittingOutput(true);
@@ -739,19 +745,35 @@ void App::showNewDevice(const QString &devId, const QString &message)
     const auto title = QJniObject::fromString(tr("Syncthing device wants to connect"));
     const auto text = QJniObject::fromString(message);
     static const auto subText = QJniObject::fromString(QString());
-    const auto page = QJniObject::fromString(QStringLiteral("newDev:") + devId);
+    const auto page = QJniObject::fromString(QStringLiteral("newdev:") + devId);
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().networkWired);
     updateExtraAndroidNotification(title, text, subText, page, icon);
 }
 
-void App::showNewDir(const QString &devId, const QString &dirId, const QString &message)
+void App::showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message)
 {
     const auto title = QJniObject::fromString(tr("Syncthing device wants to share folder"));
     const auto text = QJniObject::fromString(message);
     static const auto subText = QJniObject::fromString(QString());
-    const auto page = QJniObject::fromString(QStringLiteral("newFolder:") % devId % QChar(',') % dirId);
+    const auto page = QJniObject::fromString(QStringLiteral("newfolder:") % devId % QChar(':') % dirId % QChar(':') % dirLabel);
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().shareAlt);
     updateExtraAndroidNotification(title, text, subText, page, icon);
+}
+
+static auto splitFolderRef(QStringView folderRef)
+{
+    struct { QStringView deviceId, folderId, folderLabel; } res;
+    if (const auto separatorPos1 = folderRef.indexOf(QChar(':')); separatorPos1 >= 0) {
+        res.deviceId = folderRef.mid(0, separatorPos1);
+        res.folderId = folderRef.mid(separatorPos1 + 1);
+        if (const auto separatorPos2 = res.folderId.indexOf(QChar(':')); separatorPos2 >= 0) {
+            res.folderLabel = res.folderId.mid(separatorPos2 + 1);
+            res.folderId = res.folderId.mid(0, separatorPos2);
+        }
+    } else {
+        res.folderId = folderRef;
+    }
+    return res;
 }
 
 void App::handleAndroidIntent(const QString &data, bool fromNotification)
@@ -764,6 +786,11 @@ void App::handleAndroidIntent(const QString &data, bool fromNotification)
         emit connectionErrorsRequested();
     } else if (data.startsWith(QLatin1String("sharedtext:"))) {
         emit textShared(data.mid(11));
+    } else if (data.startsWith(QLatin1String("newdev:"))) {
+        emit newDeviceTriggered(data.mid(7));
+    } else if (data.startsWith(QLatin1String("newfolder:"))) {
+        const auto folderRef = splitFolderRef(QStringView(data).mid(10));
+        emit newDirTriggered(folderRef.deviceId.toString(), folderRef.folderId.toString(), folderRef.folderLabel);
     }
 }
 #endif

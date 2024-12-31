@@ -31,7 +31,7 @@ public Q_SLOTS:
     void showSyncthingNotification(CppUtilities::DateTime when, const QString &message);
     void showSyncComplete(const QString &message);
     void showNewDev(const QString &devId, const QString &message);
-    void showNewDir(const QString &devId, const QString &dirId, const QString &message);
+    void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
     void setIcons(const Data::StatusIcons &statusIcons, const Data::StatusIcons &icons);
 
 Q_SIGNALS:
@@ -91,10 +91,11 @@ inline void DBusStatusNotifier::showNewDev(const QString &devId, const QString &
     m_newDevNotification.update(message);
 }
 
-inline void DBusStatusNotifier::showNewDir(const QString &devId, const QString &dirId, const QString &message)
+inline void DBusStatusNotifier::showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message)
 {
     Q_UNUSED(devId)
     Q_UNUSED(dirId)
+    Q_UNUSED(dirLabel)
     m_newDirNotification.update(message);
 }
 

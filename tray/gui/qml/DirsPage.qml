@@ -43,8 +43,8 @@ StackView {
             }
         ]
         property alias model: dirsListView.mainModel
-        function add() {
-            stackView.push("DirConfigPage.qml", {title: qsTr("Add new folder"), dirName: qsTr("New folder"), dirId: "", stackView: stackView}, StackView.PushTransition);
+        function add(dirId = "", dirName = "", shareWithDeviceId = "") {
+            stackView.push("DirConfigPage.qml", {title: qsTr("Add new folder"), dirName: qsTr("New folder"), dirId: dirId, dirName: dirName, shareWithDeviceId: shareWithDeviceId, stackView: stackView}, StackView.PushTransition);
         }
     }
 }

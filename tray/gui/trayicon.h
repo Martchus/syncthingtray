@@ -39,7 +39,7 @@ public Q_SLOTS:
     void showInternalErrorsDialog();
     void updateStatusIconAndText();
     void showNewDev(const QString &devId, const QString &message);
-    void showNewDir(const QString &devId, const QString &dirId, const QString &message);
+    void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
 
 private Q_SLOTS:
     void handleActivated(QSystemTrayIcon::ActivationReason reason);

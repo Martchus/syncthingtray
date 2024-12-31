@@ -14,6 +14,13 @@ AdvancedConfigPage {
         const config = App.connection.rawConfig?.defaults?.folder ?? {};
         // for now, give user simply always the chance to edit ignore patterns before syncing
         config.paused = true;
+        // add dirId/dirName as default values for id/label
+        if (dirId.length > 0) {
+            config.id = dirId;
+        }
+        if (dirName.length > 0) {
+            config.label = dirName;
+        }
         isNew = true;
         return config;
     }

@@ -387,9 +387,9 @@ ApplicationWindow {
             pageStack.setCurrentIndex(indexForward.pop());
             return true;
         }
-        function addDir() {
+        function addDir(dirId, dirName, shareWithDeviceId) {
             pageStack.setCurrentIndex(1);
-            pageStack.currentPage.add();
+            pageStack.currentPage.add(dirId, dirName, shareWithDeviceId);
         }
         function addDevice(deviceId) {
             pageStack.setCurrentIndex(2);
@@ -455,7 +455,6 @@ ApplicationWindow {
         }
     }
     onClosing: (event) => {
-
         if (!window.forceClose && App.launcher.running) {
             event.accepted = false;
             closeDialog.open();
@@ -492,6 +491,12 @@ ApplicationWindow {
             } else {
                 showNotifiction(qsTr("Not a valid device ID."));
             }
+        }
+        function onNewDeviceTriggered(devId) {
+            pageStack.addDevice(devId);
+        }
+        function onNewDirTriggered(devId, dirId, dirLabel) {
+            pageStack.addDir(dirId, dirLabel, devId);
         }
     }
     Connections {

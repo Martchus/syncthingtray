@@ -75,4 +75,5 @@ AdvancedDirConfigPage {
             ]},
         ],
     })
+    property string shareWithDeviceId
 }

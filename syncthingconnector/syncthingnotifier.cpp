@@ -100,7 +100,7 @@ void SyncthingNotifier::handleNewDirEvent(DateTime when, const QString &devId, c
             return devPrefix + tr(" wants to share folder %1 (%2).").arg(dirLabel, dirId);
         }
     }());
-    emit newDir(devId, dirId, log(message));
+    emit newDir(devId, dirId, dirLabel, log(message));
 }
 
 void SyncthingNotifier::handleSyncthingProcessError(QProcess::ProcessError processError)

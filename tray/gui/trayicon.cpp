@@ -289,15 +289,16 @@ void TrayIcon::showNewDev(const QString &devId, const QString &message)
     }
 }
 
-void TrayIcon::showNewDir(const QString &devId, const QString &dirId, const QString &message)
+void TrayIcon::showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message)
 {
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
     if (m_dbusNotificationsEnabled) {
-        m_dbusNotifier.showNewDir(devId, dirId, message);
+        m_dbusNotifier.showNewDir(devId, dirId, dirLabel, message);
     } else
 #else
     Q_UNUSED(devId)
     Q_UNUSED(dirId)
+    Q_UNUSED(dirLabel)
 #endif
     {
         m_messageClickedAction = TrayIconMessageClickedAction::ShowWebUi;

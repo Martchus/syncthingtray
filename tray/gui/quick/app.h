@@ -244,6 +244,8 @@ Q_SIGNALS:
     void importExportOngoingChanged(bool importExportOngoing);
     void statusInfoChanged();
     void textShared(const QString &text);
+    void newDeviceTriggered(const QString &devId);
+    void newDirTriggered(const QString &devId, const QString &dirId, const QString &dirLabel);
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
@@ -269,7 +271,7 @@ private Q_SLOTS:
     void clearSyncthingErrorsNotification();
     void showInternalError(const InternalError &error);
     void showNewDevice(const QString &devId, const QString &message);
-    void showNewDir(const QString &devId, const QString &dirId, const QString &message);
+    void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
     void handleAndroidIntent(const QString &page, bool fromNotification);
 #endif
 

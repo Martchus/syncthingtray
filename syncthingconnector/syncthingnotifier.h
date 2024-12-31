@@ -96,7 +96,7 @@ Q_SIGNALS:
     ///! \brief Emitted when a new device talks to us.
     void newDevice(const QString &devId, const QString &message);
     ///! \brief Emitted when a new directory is shared with us.
-    void newDir(const QString &devId, const QString &dirId, const QString &message);
+    void newDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
     ///! \brief Emitted when the Syncthing process fails to start or crashes.
     void syncthingProcessError(const QString &message, const QString &additionalInfo);
 
