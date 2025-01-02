@@ -78,7 +78,10 @@ public:
     const SyncthingProcess *process() const;
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::LogLevel libSyncthingLogLevel() const;
+    QString libSyncthingLogLevelString() const;
+    static QString libSyncthingLogLevelString(LibSyncthing::LogLevel logLevel);
     void setLibSyncthingLogLevel(LibSyncthing::LogLevel logLevel);
+    void setLibSyncthingLogLevel(const QString &logLevel, LibSyncthing::LogLevel fallbackLogLevel = LibSyncthing::LogLevel::Info);
 #endif
     static bool isLibSyncthingAvailable();
     static SyncthingLauncher *mainInstance();
@@ -113,7 +116,7 @@ private Q_SLOTS:
     void handleProcessReadyRead();
     void handleProcessStateChanged(QProcess::ProcessState newState);
     void handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
-    void handleOutputAvailable(const QByteArray &data);
+    void handleOutputAvailable(int logLevel, const QByteArray &data);
 
 private:
     void resetState();
@@ -253,13 +256,19 @@ inline const SyncthingProcess *SyncthingLauncher::process() const
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-/// \brief Returns the log level used for libsyncthing.
+/// \brief Returns the log level for the built-in Syncthing instance.
 inline LibSyncthing::LogLevel SyncthingLauncher::libSyncthingLogLevel() const
 {
     return m_libsyncthingLogLevel;
 }
 
-/// \brief Sets the log level used for libsyncthing.
+/// \brief Returns the log level for the built-in Syncthing instance as string.
+inline QString SyncthingLauncher::libSyncthingLogLevelString() const
+{
+    return libSyncthingLogLevelString(m_libsyncthingLogLevel);
+}
+
+/// \brief Sets the log level for the built-in Syncthing instance.
 inline void SyncthingLauncher::setLibSyncthingLogLevel(LibSyncthing::LogLevel logLevel)
 {
     m_libsyncthingLogLevel = logLevel;
