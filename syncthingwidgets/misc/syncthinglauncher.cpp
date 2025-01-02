@@ -416,7 +416,11 @@ void SyncthingLauncher::stopLibSyncthing()
 
 void SyncthingLauncher::handleProcessReadyRead()
 {
-    handleOutputAvailable(-1, m_process.readAll());
+    const auto data = m_process.readAll();
+    if (m_logFile.isOpen()) {
+        m_logFile.write(data);
+    }
+    handleOutputAvailable(-1, data);
 }
 
 void SyncthingLauncher::handleProcessStateChanged(QProcess::ProcessState newState)
@@ -472,6 +476,9 @@ void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, cons
     messageData.append(logLevelStrings[static_cast<int>(level)]);
     messageData.append(message, static_cast<int>(messageSize));
     messageData.append('\n');
+    if (level >= m_libsyncthingLogLevel && m_logFile.isOpen()) {
+        m_logFile.write(messageData);
+    }
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     QMetaObject::invokeMethod(this, &SyncthingLauncher::handleOutputAvailable, Qt::QueuedConnection, static_cast<int>(level), std::move(messageData));
 #else

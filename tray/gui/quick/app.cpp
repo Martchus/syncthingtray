@@ -1001,6 +1001,7 @@ void App::applyLauncherSettings()
     auto mod = false;
     ensureDefault(mod, launcherSettingsObj, QLatin1String("run"), false);
     ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnMetered"), false);
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("writeLogFile"), false);
     ensureDefault(mod, launcherSettingsObj, QLatin1String("logLevel"), m_launcher.libSyncthingLogLevelString());
     if (mod) {
         m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
@@ -1009,20 +1010,54 @@ void App::applyLauncherSettings()
     m_launcher.setStoppingOnMeteredConnection(launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
 
     auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
-    auto logLevel = launcherSettingsObj.value(QLatin1String("logLevel")).toString();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     auto options = LibSyncthing::RuntimeOptions();
     m_syncthingConfigDir = m_settingsDir->path() + QStringLiteral("/syncthing");
     m_syncthingDataDir = m_syncthingConfigDir;
     options.configDir = m_syncthingConfigDir.toStdString();
     options.dataDir = options.configDir;
-    m_launcher.setLibSyncthingLogLevel(logLevel);
+    m_launcher.setLibSyncthingLogLevel(launcherSettingsObj.value(QLatin1String("logLevel")).toString());
+    if (launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool()) {
+        if (!m_launcher.logFile().isOpen()) {
+            m_launcher.logFile().setFileName(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
+            m_launcher.logFile().open(QIODeviceBase::WriteOnly | QIODeviceBase::Append | QIODeviceBase::Text);
+        }
+    } else {
+        m_launcher.logFile().close();
+    }
     m_launcher.setRunning(shouldRun, std::move(options));
 #else
     if (shouldRun) {
         emit error(tr("This build of the app cannot launch Syncthing."));
     }
 #endif
+}
+
+bool App::clearLogfile()
+{
+    auto launcherSettings = m_settings.value(QLatin1String("launcher"));
+    auto launcherSettingsObj = launcherSettings.toObject();
+    if (launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool()) {
+        launcherSettingsObj.insert(QLatin1String("writeLogFile"), false);
+        m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
+        applyLauncherSettings();
+    }
+    emit settingsChanged(m_settings);
+    if (!storeSettings()) {
+        return false;
+    }
+
+    auto &logFile = m_launcher.logFile();
+    if (logFile.fileName().isEmpty()) {
+        logFile.setFileName(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
+    }
+    auto ok = !logFile.exists() || logFile.remove();
+    if (ok) {
+        emit info(tr("Persistent logging disabled and logfile removed"));
+    } else {
+        emit info(tr("Unable to remove logfile"));
+    }
+    return ok;
 }
 
 bool App::checkOngoingImportExport()

@@ -196,6 +196,7 @@ public:
     Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applySettings();
     Q_INVOKABLE void applyLauncherSettings();
+    Q_INVOKABLE bool clearLogfile();
     Q_INVOKABLE bool checkOngoingImportExport();
     Q_INVOKABLE bool checkSettings(const QUrl &url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool importSettings(const QVariantMap &availableSettings, const QVariantMap &selectedSettings, const QJSValue &callback = QJSValue());

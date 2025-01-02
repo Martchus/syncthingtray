@@ -33,6 +33,12 @@ StackView {
                     iconName: "terminal"
                 }
                 ListElement {
+                    callback: () => App.clearLogfile()
+                    label: qsTr("Clear log file")
+                    title: qsTr("Disables persistent logging and removes the log file")
+                    iconName: "trash-o"
+                }
+                ListElement {
                     key: "tweaks"
                     label: qsTr("Tweaks")
                     title: qsTr("Configure details of the app's behavior")
@@ -140,6 +146,7 @@ StackView {
                     {value: "fatal", label: qsTr("Fatal")},
                 ]},
                 {key: "stopOnMetered", label: qsTr("Stop on metered network connection"), statusText: Qt.binding(() => App.launcher.meteredStatus)},
+                {key: "writeLogFile", label: qsTr("Write persistent log file"), statusText: qsTr("Write a persistent log file into the app directory.")},
                 {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Shows Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
             ],
             tweaks: [

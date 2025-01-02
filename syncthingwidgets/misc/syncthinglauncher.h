@@ -12,6 +12,7 @@
 #include <c++utilities/io/buffersearch.h>
 
 #include <QByteArray>
+#include <QFile>
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QUrl>
@@ -54,6 +55,7 @@ public:
     explicit SyncthingLauncher(QObject *parent = nullptr);
     ~SyncthingLauncher() override;
 
+    QFile &logFile();
     bool isRunning() const;
     bool isStarting() const;
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
@@ -129,6 +131,7 @@ private:
     void showLibSyncthingNotSupported(QByteArray &&reason = QByteArrayLiteral("libsyncthing support not enabled"));
 
     SyncthingProcess m_process;
+    QFile m_logFile;
     QUrl m_guiListeningUrl;
 #if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
     const Settings::Launcher *m_lastLauncherSettings;
@@ -158,6 +161,15 @@ private:
     std::optional<SyncthingExitStatus> m_lastExitStatus;
     static SyncthingLauncher *s_mainInstance;
 };
+
+/// \brief Returns the log file.
+/// \remarks
+/// - No log file is written by default. Open the QFile returned by this function to enable logging to this file.
+/// - You must not use the QFile object returned by this function while Syncthing is running.
+inline QFile &SyncthingLauncher::logFile()
+{
+    return m_logFile;
+}
 
 /// \brief Returns whether Syncthing is running.
 inline bool SyncthingLauncher::isRunning() const
