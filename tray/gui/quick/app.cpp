@@ -247,13 +247,18 @@ const QString &App::status()
 QVariantMap App::statistics() const
 {
     auto stats = QVariantMap();
+    statistics(stats);
+    return stats;
+}
+
+void App::statistics(QVariantMap &res) const
+{
     auto dbDir = QDir(m_syncthingDataDir + QStringLiteral("/index-v0.14.0.db"));
     auto dbFiles = dbDir.entryInfoList({ QStringLiteral("*.ldb") }, QDir::Files);
     auto dbSize = std::accumulate(dbFiles.begin(), dbFiles.end(), qint64(), [](auto size, const auto &dbFile) { return size + dbFile.size(); });
-    stats[QStringLiteral("stConfigDir")] = m_syncthingConfigDir;
-    stats[QStringLiteral("stDataDir")] = m_syncthingDataDir;
-    stats[QStringLiteral("stDbSize")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(dbSize)));
-    return stats;
+    res[QStringLiteral("stConfigDir")] = m_syncthingConfigDir;
+    res[QStringLiteral("stDataDir")] = m_syncthingDataDir;
+    res[QStringLiteral("stDbSize")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(dbSize)));
 }
 
 #if !(defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS))
@@ -454,6 +459,21 @@ bool App::loadDirErrors(const QString &dirId, QObject *view)
     });
     connect(this, &QObject::destroyed, [connection] { disconnect(connection); });
     m_connection.requestDirPullErrors(dirId);
+    return true;
+}
+
+bool App::loadStatistics(const QJSValue &callback)
+{
+    if (!callback.isCallable()) {
+        return false;
+    }
+    auto query = m_connection.requestJsonData(QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
+        auto report = doc.object().toVariantMap();
+        statistics(report);
+        callback.call(QJSValueList({ m_engine.toScriptValue(report), QJSValue(std::move(error)) }));
+    });
+    connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
+    connect(this, &QObject::destroyed, [c = query.connection] { disconnect(c); });
     return true;
 }
 

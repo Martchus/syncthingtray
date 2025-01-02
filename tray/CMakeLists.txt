@@ -331,6 +331,7 @@ if (QUICK_GUI)
         gui/qml/OutOfSyncDirs.qml
         gui/qml/StartPage.qml
         gui/qml/Statistics.qml
+        gui/qml/StatisticsPage.qml
         gui/qml/SelectiveImportDelegate.qml
         gui/qml/SettingsPage.qml
         ${ADDITIONAL_QML_FILES}

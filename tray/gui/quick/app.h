@@ -166,6 +166,7 @@ public:
         return !m_internalErrors.isEmpty();
     }
     QVariantMap statistics() const;
+    void statistics(QVariantMap &res) const;
     bool isSavingConfig() const
     {
         return m_pendingConfigChange.reply != nullptr;
@@ -213,6 +214,7 @@ public:
     Q_INVOKABLE void clearLog();
     Q_INVOKABLE bool showQrCode(Icon *icon);
     Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
+    Q_INVOKABLE bool loadStatistics(const QJSValue &callback);
     Q_INVOKABLE bool showError(const QString &errorMessage);
     Q_INVOKABLE void setCurrentControls(bool visible, int tabIndex = -1);
     Q_INVOKABLE bool performHapticFeedback();

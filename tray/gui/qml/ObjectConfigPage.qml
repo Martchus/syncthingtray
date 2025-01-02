@@ -13,7 +13,8 @@ Page {
         model: ListModel {
             id: listModel
             dynamicRoles: true
-            Component.onCompleted: {
+            Component.onCompleted: listModel.loadEntries()
+            function loadEntries() {
                 listModel.clear();
 
                 let index = 0;
@@ -81,6 +82,7 @@ Page {
     property bool canAdd: Array.isArray(configObject) && childObjectTemplate !== undefined
     property bool isDangerous: false
     property bool hasUnsavedChanges: false
+    property bool readOnly: false
     property string itemLabel
     property string path: ""
     property string configCategory
@@ -122,6 +124,7 @@ Page {
             row.label = hasNestedValue ? nestedValue : (itemLabel.length ? itemLabel : uncamel(typeof value));
             row.labelKey = hasNestedValue ? nestedKey : "";
         }
+        handleReadOnlyMode(row);
         return row;
     }
 
@@ -132,7 +135,14 @@ Page {
         specialEntry.type = specialEntry.type ?? typeof specialEntry.value;
         specialEntry.label = specialEntry.label ?? uncamel(specialEntry.isArray ? specialEntry.key : specialEntry.type);
         specialEntry.desc = specialEntry.desc ?? "";
+        handleReadOnlyMode(specialEntry);
         return specialEntry;
+    }
+
+    function handleReadOnlyMode(entry) {
+        if (objectConfigPage.readOnly && entry.type !== "object") {
+            entry.type = "readonly";
+        }
     }
 
     function updateValue(index, key, value) {

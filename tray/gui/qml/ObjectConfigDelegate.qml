@@ -24,7 +24,7 @@ DelegateChooser {
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: modelData.value
+                        text: modelData.value.toString()
                         elide: Text.ElideRight
                         font.weight: Font.Light
                     }
@@ -500,6 +500,7 @@ DelegateChooser {
                                                     configObject: objectConfigPage.configObject[modelData.key],
                                                     parentObject: objectConfigPage.configObject,
                                                     isDangerous: objectConfigPage.isDangerous,
+                                                    readOnly: objectConfigPage.readOnly,
                                                     stackView: objectConfigPage.stackView,
                                                     parentPage: objectConfigPage,
                                                     objectNameLabel: objNameLabel,

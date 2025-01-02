@@ -55,12 +55,7 @@ StackView {
                     iconName: "exclamation-circle"
                 }
                 ListElement {
-                    callback: () => stackView.push("ObjectConfigPage.qml", {
-                                                       title: qsTr("Statistics"),
-                                                       stackView: stackView,
-                                                       configObject: App.statistics,
-                                                       specialEntries: appSettingsPage.specialEntries["statistics"]
-                                                   }, StackView.PushTransition)
+                    callback: () => stackView.push("StatisticsPage.qml", {stackView: stackView}, StackView.PushTransition)
                     label: qsTr("Statistics")
                     iconName: "area-chart"
                 }
@@ -151,11 +146,6 @@ StackView {
             ],
             tweaks: [
                 {key: "unloadGuiWhenHidden", type: "boolean", defaultValue: false, label: qsTr("Stop UI when hidden"), statusText: qsTr("Might help save battery live but resets UI state.")},
-            ],
-            statistics: [
-                {key: "stConfigDir", type: "readonly", label: qsTr("Syncthing config directory")},
-                {key: "stDataDir", type: "readonly", label: qsTr("Syncthing data directory")},
-                {key: "stDbSize", type: "readonly", label: qsTr("Syncthing database size")},
             ]
         })
         property bool hasUnsavedChanges: false
