@@ -132,6 +132,13 @@ StackView {
             ],
             launcher: [
                 {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => App.launcher.runningStatus)},
+                {key: "logLevel", label: qsTr("Log level"), type: "options", options: [
+                    {value: "debug", label: qsTr("Debug")},
+                    {value: "verbose", label: qsTr("Verbose")},
+                    {value: "info", label: qsTr("Info")},
+                    {value: "warning", label: qsTr("Warning")},
+                    {value: "fatal", label: qsTr("Fatal")},
+                ]},
                 {key: "stopOnMetered", label: qsTr("Stop on metered network connection"), statusText: Qt.binding(() => App.launcher.meteredStatus)},
                 {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Shows Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
             ],

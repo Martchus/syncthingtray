@@ -984,25 +984,39 @@ bool App::applySettings()
     return true;
 }
 
+/// \cond
+static void ensureDefault(bool &mod, QJsonObject &o, QLatin1String member, const QJsonValue &d)
+{
+    if (!o.contains(member)) {
+        o.insert(member, d);
+        mod = true;
+    }
+}
+/// \endcond
+
 void App::applyLauncherSettings()
 {
     auto launcherSettings = m_settings.value(QLatin1String("launcher"));
     auto launcherSettingsObj = launcherSettings.toObject();
-    if (!launcherSettings.isObject()) {
-        launcherSettingsObj.insert(QLatin1String("run"), false);
-        launcherSettingsObj.insert(QLatin1String("stopOnMetered"), false);
+    auto mod = false;
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("run"), false);
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnMetered"), false);
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("logLevel"), m_launcher.libSyncthingLogLevelString());
+    if (mod) {
         m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
     }
 
     m_launcher.setStoppingOnMeteredConnection(launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
 
     auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
+    auto logLevel = launcherSettingsObj.value(QLatin1String("logLevel")).toString();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     auto options = LibSyncthing::RuntimeOptions();
     m_syncthingConfigDir = m_settingsDir->path() + QStringLiteral("/syncthing");
     m_syncthingDataDir = m_syncthingConfigDir;
     options.configDir = m_syncthingConfigDir.toStdString();
     options.dataDir = options.configDir;
+    m_launcher.setLibSyncthingLogLevel(logLevel);
     m_launcher.setRunning(shouldRun, std::move(options));
 #else
     if (shouldRun) {
