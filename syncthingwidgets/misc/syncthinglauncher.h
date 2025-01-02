@@ -13,8 +13,10 @@
 
 #include <QByteArray>
 #include <QFuture>
+#include <QFutureWatcher>
 #include <QUrl>
 
+#include <cstdint>
 #include <optional>
 
 namespace Settings {
@@ -50,6 +52,7 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
 
 public:
     explicit SyncthingLauncher(QObject *parent = nullptr);
+    ~SyncthingLauncher() override;
 
     bool isRunning() const;
     bool isStarting() const;
@@ -110,19 +113,17 @@ private Q_SLOTS:
     void handleProcessReadyRead();
     void handleProcessStateChanged(QProcess::ProcessState newState);
     void handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    void runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions);
-#else
-    void showLibSyncthingNotSupported();
-#endif
+    void handleOutputAvailable(const QByteArray &data);
 
 private:
     void resetState();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void handleLoggingCallback(LibSyncthing::LogLevel, const char *message, std::size_t messageSize);
+    void runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions);
+    void handleLibSyncthingFinished();
 #endif
-    void handleOutputAvailable(QByteArray &&data);
     void terminateDueToMeteredConnection();
+    void showLibSyncthingNotSupported(QByteArray &&reason = QByteArrayLiteral("libsyncthing support not enabled"));
 
     SyncthingProcess m_process;
     QUrl m_guiListeningUrl;
@@ -133,8 +134,11 @@ private:
     std::optional<LibSyncthing::RuntimeOptions> m_lastRuntimeOptions;
 #endif
     SyncthingConnection *m_relevantConnection;
-    QFuture<void> m_startFuture;
+    QFuture<std::int64_t> m_startFuture;
     QFuture<void> m_stopFuture;
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    QFutureWatcher<std::int64_t> m_startWatcher;
+#endif
     QByteArray m_outputBuffer;
     CppUtilities::BufferSearch m_guiListeningUrlSearch;
     CppUtilities::BufferSearch m_exitSearch;

@@ -52,6 +52,7 @@ constexpr auto highestLogLevel = LogLevel::Fatal;
 
 using LoggingCallback = std::function<void(LogLevel, const char *message, std::size_t messageSize)>;
 
+LIB_SYNCTHING_EXPORT bool hasLoggingCallback();
 LIB_SYNCTHING_EXPORT void setLoggingCallback(const LoggingCallback &callback);
 LIB_SYNCTHING_EXPORT void setLoggingCallback(LoggingCallback &&callback);
 LIB_SYNCTHING_EXPORT std::int64_t runSyncthing(const RuntimeOptions &options = RuntimeOptions{});

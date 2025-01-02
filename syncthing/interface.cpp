@@ -133,8 +133,18 @@ inline RunningState::operator bool() const
 ///! \endcond
 
 /*!
+ * \brief Returns whether a logging callback has been set via setLoggingCallback().
+ */
+bool hasLoggingCallback()
+{
+    return static_cast<bool>(loggingCallback);
+}
+
+/*!
  * \brief Sets the callback function for logging. It will be called when a new log message becomes available.
- * \remarks The callback is not necessarily invoked in the same thread it was registered.
+ * \remarks
+ * - The callback is not necessarily invoked in the same thread it was registered.
+ * - Pass a default-constructed LibSyncthing::LoggingCallback() to remove a previously assigned callback.
  */
 void setLoggingCallback(const LoggingCallback &callback)
 {
@@ -143,7 +153,9 @@ void setLoggingCallback(const LoggingCallback &callback)
 
 /*!
  * \brief Sets the callback function for logging. It will be called when a new log message becomes available.
- * \remarks The callback is not necessarily invoked in the same thread it was registered.
+ * \remarks
+ * - The callback is not necessarily invoked in the same thread it was registered.
+ * - Pass a default-constructed LibSyncthing::LoggingCallback() to remove a previously assigned callback.
  */
 void setLoggingCallback(LoggingCallback &&callback)
 {

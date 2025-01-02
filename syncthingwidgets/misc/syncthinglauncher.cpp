@@ -10,6 +10,7 @@
 #include <c++utilities/io/ansiescapecodes.h>
 
 #include <QtConcurrentRun>
+#include <QMetaObject>
 
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
 #include <QNetworkInformation>
@@ -20,6 +21,7 @@
 #include <iostream>
 #include <limits>
 #include <string_view>
+#include <utility>
 
 using namespace std;
 using namespace std::placeholders;
@@ -35,7 +37,11 @@ SyncthingLauncher *SyncthingLauncher::s_mainInstance = nullptr;
  * \remarks
  * - This is *not* strictly a singleton class. However, one instance is supposed to be the "main instance" (see SyncthingLauncher::setMainInstance()).
  * - A SyncthingLauncher instance can only launch one Syncthing instance at a time.
- * - Using Syncthing as library is still under development and must be explicitly enabled by setting the CMake variable USE_LIBSYNCTHING.
+ * - Using Syncthing as library must be explicitly enabled by setting the CMake variable USE_LIBSYNCTHING.
+ * - When using Syncthing as library only one instance of SyncthingLauncher can start Syncthing at a time; trying to start a 2nd Syncthing instance
+ *   via another SyncthingLauncher will leads to a failure (but not to undefined behavior).
+ * - You must not try to Syncthing as library from multiple threads at the same time. This will lead to undefined behavior even when using different
+ *   SyncthingLauncher instances.
  */
 
 /*!
@@ -64,12 +70,28 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     connect(&m_process, &SyncthingProcess::stateChanged, this, &SyncthingLauncher::handleProcessStateChanged, Qt::QueuedConnection);
     connect(&m_process, &SyncthingProcess::errorOccurred, this, &SyncthingLauncher::errorOccurred, Qt::QueuedConnection);
     connect(&m_process, &SyncthingProcess::confirmKill, this, &SyncthingLauncher::confirmKill);
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    connect(&m_startWatcher, &QFutureWatcher<std::int64_t>::finished, this, &SyncthingLauncher::handleLibSyncthingFinished);
+#endif
 
     // initialize handling of metered connections
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
     if (const auto *const networkInformation = loadNetworkInformationBackendForMetered()) {
         connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) { setNetworkConnectionMetered(isMetered); });
         setNetworkConnectionMetered(networkInformation->isMetered());
+    }
+#endif
+}
+
+/*!
+ * \brief Ensures the built-in Syncthing instance is stopped if it was started by this SyncthingLauncher instance.
+ */
+SyncthingLauncher::~SyncthingLauncher()
+{
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    if (!m_startFuture.isCanceled()) {
+        stopLibSyncthing();
+        m_startFuture.waitForFinished();
     }
 #endif
 }
@@ -236,8 +258,7 @@ void SyncthingLauncher::launch(const QString &program, const QStringList &argume
     }
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    // use libsyncthing
-    m_startFuture = QtConcurrent::run(std::bind(&SyncthingLauncher::runLibSyncthing, this, LibSyncthing::RuntimeOptions{}));
+    runLibSyncthing(LibSyncthing::RuntimeOptions{});
 #else
     showLibSyncthingNotSupported();
 #endif
@@ -297,7 +318,7 @@ void SyncthingLauncher::launch(const LibSyncthing::RuntimeOptions &runtimeOption
         return;
     }
     resetState();
-    m_startFuture = QtConcurrent::run(std::bind(&SyncthingLauncher::runLibSyncthing, this, runtimeOptions));
+    runLibSyncthing(runtimeOptions);
 }
 #endif
 
@@ -348,7 +369,8 @@ void SyncthingLauncher::stopLibSyncthing()
 {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::stopSyncthing();
-    // no need to emit exited/runningChanged here; that is already done in runLibSyncthing()
+    // no need to emit exited/runningChanged here; that is already done after
+    // m_startFuture has finished
 #endif
 }
 
@@ -407,18 +429,21 @@ void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, cons
     if (level < m_libsyncthingLogLevel) {
         return;
     }
-    QByteArray messageData;
+    auto messageData = QByteArray();
     messageSize = min<size_t>(numeric_limits<int>::max() - 20, messageSize);
     messageData.reserve(static_cast<int>(messageSize) + 20);
     messageData.append(logLevelStrings[static_cast<int>(level)]);
     messageData.append(message, static_cast<int>(messageSize));
     messageData.append('\n');
-
-    handleOutputAvailable(std::move(messageData));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+    QMetaObject::invokeMethod(this, &SyncthingLauncher::handleOutputAvailable, Qt::QueuedConnection, std::move(messageData));
+#else
+    QMetaObject::invokeMethod(this, "handleOutputAvailable", Qt::QueuedConnection, Q_ARG(QByteArray, messageData));
+#endif
 }
 #endif
 
-void SyncthingLauncher::handleOutputAvailable(QByteArray &&data)
+void SyncthingLauncher::handleOutputAvailable(const QByteArray &data)
 {
     const auto *const exitOffset = m_exitSearch.process(data.data(), static_cast<std::size_t>(data.size()));
     const auto *const guiAddressOffset = m_guiListeningUrlSearch.process(data.data(), static_cast<std::size_t>(data.size()));
@@ -462,27 +487,43 @@ void SyncthingLauncher::terminateDueToMeteredConnection()
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+/*!
+ * \brief Starts the built-in Syncthing instance.
+ * \remarks Returns immediately as Syncthing is started in a different thread.
+ */
 void SyncthingLauncher::runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions)
 {
-    LibSyncthing::setLoggingCallback(bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
+    if (LibSyncthing::hasLoggingCallback()) {
+        showLibSyncthingNotSupported(QByteArrayLiteral("libsyncthing has already been started"));
+        return;
+    }
+    LibSyncthing::setLoggingCallback(std::bind(&SyncthingLauncher::handleLoggingCallback, this, _1, _2, _3));
     emit runningChanged(true);
     emit startingChanged();
-    const auto exitCode = LibSyncthing::runSyncthing(runtimeOptions);
+    m_startWatcher.setFuture(m_startFuture = QtConcurrent::run(std::bind(&LibSyncthing::runSyncthing, runtimeOptions)));
+}
+
+void SyncthingLauncher::handleLibSyncthingFinished()
+{
+    const auto exitCode = m_startFuture.result();
     const auto &exitStatus = m_lastExitStatus.emplace(static_cast<int>(exitCode), exitCode == 0 ? QProcess::NormalExit : QProcess::CrashExit);
+    LibSyncthing::setLoggingCallback(LibSyncthing::LoggingCallback());
     m_guiListeningUrl.clear();
     emit guiUrlChanged(m_guiListeningUrl);
     emit exited(exitStatus.code, exitStatus.status);
     emit runningChanged(false);
     emit startingChanged();
 }
+#endif
 
-#else
-void SyncthingLauncher::showLibSyncthingNotSupported()
+/*!
+ * \brief Shows that launching Syncthing is not supported by emitting a non-zero exit status and logging \a reason.
+ */
+void SyncthingLauncher::showLibSyncthingNotSupported(QByteArray &&reason)
 {
-    handleOutputAvailable(QByteArrayLiteral("libsyncthing support not enabled"));
+    handleOutputAvailable(std::move(reason));
     const auto &exitStatus = m_lastExitStatus.emplace(-1, QProcess::CrashExit);
     emit exited(exitStatus.code, exitStatus.status);
 }
-#endif
 
 } // namespace Data
