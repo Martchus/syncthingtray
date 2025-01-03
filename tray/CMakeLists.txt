@@ -394,6 +394,17 @@ if (ANDROID)
         message(WARNING "Unable to find OpenSSL libraries. HTTPS will not be supported.")
     endif ()
 
+    # specify required plugins so androiddeployqt knows what we need and don't need
+    qt_import_plugins(${META_TARGET_NAME}
+        INCLUDE_BY_TYPE imageformats Qt::QSvgPlugin Qt::QPngPlugin
+        INCLUDE_BY_TYPE iconengines Qt::QSvgIconPlugin
+        INCLUDE_BY_TYPE tls Qt::QTlsBackendOpenSSL
+        EXCLUDE_BY_TYPE platforminputcontexts webview
+    )
+    if (NOT CMAKE_BUILD_TYPE STREQUAL Debug)
+        qt_import_plugins(${META_TARGET_NAME} EXCLUDE_BY_TYPE qmltooling)
+    endif ()
+
     if (USE_LIBSYNCTHING)
         set_property(
             TARGET ${META_TARGET_NAME}
