@@ -41,6 +41,10 @@ Page {
                 });
             }
         }
+        footer: LoadingPane {
+            visible: objectConfigPage.isLoading
+            width: objectListView.width
+        }
         delegate: ObjectConfigDelegate {
             objectConfigPage: objectConfigPage
         }
@@ -81,6 +85,7 @@ Page {
     property var childObjectTemplate: configTemplates[path]
     property bool canAdd: Array.isArray(configObject) && childObjectTemplate !== undefined
     property bool isDangerous: false
+    property bool isLoading: false
     property bool hasUnsavedChanges: false
     property bool readOnly: false
     property string itemLabel

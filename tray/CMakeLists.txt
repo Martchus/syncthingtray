@@ -321,6 +321,7 @@ if (QUICK_GUI)
         gui/qml/IgnorePatternPage.qml
         gui/qml/ImportPage.qml
         gui/qml/InternalErrorsPage.qml
+        gui/qml/LoadingPane.qml
         gui/qml/LogPage.qml
         gui/qml/Main.qml
         gui/qml/MainTabButton.qml

@@ -27,6 +27,7 @@ DelegateChooser {
                         text: modelData.value.toString()
                         elide: Text.ElideRight
                         font.weight: Font.Light
+                        wrapMode: Text.WordWrap
                     }
                 }
                 ArrayElementButtons {
