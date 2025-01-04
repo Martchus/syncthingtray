@@ -27,6 +27,10 @@ Page {
                     const key = specialEntry.key;
                     const cond = specialEntry.cond;
                     if ((typeof cond !== "function") || cond(objectConfigPage)) {
+                        const init = specialEntry.init;
+                        if (typeof init === "function") {
+                            configObject[key] = init();
+                        }
                         listModel.append(objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, configObject[key], index++));
                     }
                     handledKeys.add(key);
@@ -78,7 +82,14 @@ Page {
 
     property alias model: objectListView.model
     property bool specialEntriesOnly: false
-    property var specialEntriesByKey: ({})
+    property var specialEntriesByKey: ({
+        "remoteIgnoredDevices.*": [
+            {key: "deviceID", label: qsTr("Device ID"), type: "deviceid", desc: qsTr("The ID of the device to be ignored.")},
+            {key: "name", label: qsTr("Device Name"), desc: qsTr("The name of the device being ignored (for informative purposes).")},
+            {key: "address", label: qsTr("Address"), desc: qsTr("The address of the device being ignored (for informative purposes).")},
+            {key: "time", label: qsTr("Time"), init: () => new Date().toISOString(), desc: qsTr("The time when this entry was added (for informative purposes).")},
+        ]
+    })
     property var specialEntries: []
     property var configObject: undefined
     property var parentObject: undefined
@@ -92,7 +103,13 @@ Page {
     property string path: ""
     property string configCategory
     property string helpUrl
-    property var configTemplates: ({})
+    property var configTemplates: ({
+        "devices": {deviceID: "", introducedBy: "", encryptionPassword: ""},
+        "addresses": "dynamic",
+        "ignoredFolders": {id: "", label: "", time: ""},
+        "remoteIgnoredDevices": {deviceID: "", name: "", time: "", address: ""},
+    })
+    property list<var> labelKeys: ["label", "name", "id", "deviceID"]
     readonly property int standardButtons: (configCategory.length > 0) ? (Dialog.Ok | Dialog.Cancel | Dialog.Help) : (Dialog.Ok | Dialog.Cancel)
     required property StackView stackView
     property Page parentPage
@@ -118,19 +135,21 @@ Page {
         const value = configEntry[1];
         const isArray = Array.isArray(objectConfigPage.configObject);
         const row = {key: key, value: value, type: typeof value, index: index, isArray: isArray, desc: ""};
-        if (!isArray) {
-            row.label = uncamel(key);
-            row.labelKey = "";
-        } else {
-            const nestedKey = "deviceID";
-            const nestedValue = value[nestedKey];
-            const nestedType = typeof nestedValue;
-            const hasNestedValue = nestedType === "string" || nestedType === "number";
-            row.label = hasNestedValue ? nestedValue : (itemLabel.length ? itemLabel : uncamel(typeof value));
-            row.labelKey = hasNestedValue ? nestedKey : "";
-        }
+        isArray ? computeArrayElementLabel(row) : (row.label = uncamel(key));
         handleReadOnlyMode(row);
         return row;
+    }
+
+    function computeArrayElementLabel(row) {
+        for (const nestedKey of objectConfigPage.labelKeys) {
+            const nestedValue = row.value[nestedKey];
+            const nestedType = typeof nestedValue;
+            if ((nestedType === "string" && nestedValue.length > 0) || nestedType === "number") {
+                row.label = nestedValue;
+                return;
+            }
+        }
+        row.label = itemLabel.length ? itemLabel : uncamel(typeof row.value);
     }
 
     function makeConfigRowForSpecialEntry(specialEntry, value, index) {
@@ -156,12 +175,21 @@ Page {
         if (currentValue === value) {
             return;
         }
+
+        // update config object and list model, flag unsaved changes
         configObject[key] = value;
         objectConfigPage.hasUnsavedChanges = true;
         listModel.setProperty(index, "value", value);
-        if (Array.isArray(objectConfigPage.parentPage?.configObject) && objectConfigPage.objectNameLabel?.labelKey === key) {
-            objectConfigPage.title = value;
-            objectConfigPage.objectNameLabel.text = value;
+
+        // update object name label (in parent page) and title for array elements
+        const parentPage = objectConfigPage.parentPage;
+        if (Array.isArray(parentPage?.configObject)) {
+            const parentRow = parentPage.model.get(objectConfigPage.objectNameLabel.modelIndex);
+            const parentValue = parentRow.value ?? {};
+            parentValue[key] = value;
+            parentRow.value = parentValue;
+            parentPage.computeArrayElementLabel(parentRow);
+            objectConfigPage.objectNameLabel.text = objectConfigPage.title = parentRow.label;
         }
     }
 
@@ -233,7 +261,7 @@ Page {
     function showNewValueDialog(key) {
         const template = objectConfigPage.childObjectTemplate;
         if (template !== undefined) {
-            const newValue = template === "object" ? Object.assign({}, template) : template;
+            const newValue = typeof template === "object" ? Object.assign({}, template) : template;
             objectConfigPage.addObject(key ?? objectConfigPage.configObject.length, newValue);
         } else {
             newValueDialog.key = key ?? (Array.isArray(objectConfigPage.configObject) ? objectConfigPage.configObject.length : "");
@@ -242,6 +270,9 @@ Page {
     }
 
     function uncamel(input) {
+        if (input === "id") {
+            return "ID";
+        }
         input = input.replace(/(.)([A-Z][a-z]+)/g, '$1 $2').replace(/([a-z0-9])([A-Z])/g, '$1 $2');
         const parts = input.split(' ');
         const lastPart = parts.splice(-1)[0];

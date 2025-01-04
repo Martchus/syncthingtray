@@ -9,10 +9,6 @@ ObjectConfigPage {
     id: advancedConfigPage
     isDangerous: true
     Component.onCompleted: configObject = findConfigObject()
-    configTemplates: {
-        "devices": {deviceID: "", introducedBy: "", encryptionPassword: ""},
-        "addresses": "dynamic",
-    }
     actions: [
         Action {
             text: qsTr("Apply")

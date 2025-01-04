@@ -482,8 +482,7 @@ DelegateChooser {
                     text: modelData.label
                     elide: Text.ElideRight
                     font.weight: Font.Medium
-                    readonly property string key: modelData.key
-                    readonly property string labelKey: modelData.labelKey ?? ""
+                    readonly property int modelIndex: modelData.index
                 }
                 ArrayElementButtons {
                     page: objectConfigPage
@@ -495,11 +494,13 @@ DelegateChooser {
             }
             onClicked: {
                 const currentPath = objectConfigPage.path;
-                const neestedPath = currentPath.length > 0 ? `${currentPath}.${modelData.key}` : modelData.key;
+                const configObject = objectConfigPage.configObject;
+                const pathKey = Array.isArray(configObject) ? "*" : modelData.key;
+                const neestedPath = currentPath.length > 0 ? `${currentPath}.${pathKey}` : pathKey;
                 objectConfigPage.stackView.push("ObjectConfigPage.qml", {
                                                     title: objNameLabel.text,
-                                                    configObject: objectConfigPage.configObject[modelData.key],
-                                                    parentObject: objectConfigPage.configObject,
+                                                    configObject: configObject[modelData.key],
+                                                    parentObject: configObject,
                                                     isDangerous: objectConfigPage.isDangerous,
                                                     readOnly: objectConfigPage.readOnly,
                                                     stackView: objectConfigPage.stackView,

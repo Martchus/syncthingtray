@@ -21,5 +21,13 @@ AdvancedDevConfigPage {
         ]},
         {key: "maxRecvKbps", label: qsTr("Incoming Rate Limit (KiB/s)"), desc: qsTr("Maximum receive rate to use for this device.")},
         {key: "maxSendKbps", label: qsTr("Outgoing Rate Limit (KiB/s)"), desc: qsTr("Maximum send rate to use for this device.")},
+        {key: "ignoredFolders", label: qsTr("Ignored folders"), itemLabel: qsTr("Ignored folder without ID/label"), desc: qsTr("The list of the folders that should be ignored. These folders will always be skipped when advertised from this remote device, i.e. they will be logged, but there will be no dialog shown."), helpUrl: "https://docs.syncthing.net/users/config#config-option-device.ignoredfolder"},
     ]
+    specialEntriesByKey: ({
+        "ignoredFolders.*": [
+            {key: "id", label: qsTr("Folder ID"), desc: qsTr("The ID of the folder to be ignored.")},
+            {key: "label", label: qsTr("Folder Label"), desc: qsTr("The label of the folder being ignored (for informative purposes).")},
+            {key: "time", label: qsTr("Time"), init: () => new Date().toISOString(), desc: qsTr("The time when this entry was added (for informative purposes).")},
+        ]
+    })
 }
