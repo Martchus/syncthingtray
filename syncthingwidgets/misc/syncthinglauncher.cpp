@@ -207,7 +207,7 @@ void SyncthingLauncher::setNetworkConnectionMetered(std::optional<bool> metered)
  */
 void SyncthingLauncher::setStoppingOnMeteredConnection(bool stopOnMeteredConnection)
 {
-    if ((stopOnMeteredConnection != m_stopOnMeteredConnection) && (m_stopOnMeteredConnection = stopOnMeteredConnection) && m_metered) {
+    if ((stopOnMeteredConnection != m_stopOnMeteredConnection) && (m_stopOnMeteredConnection = stopOnMeteredConnection) && m_metered.value_or(false)) {
         terminateDueToMeteredConnection();
     }
 }
