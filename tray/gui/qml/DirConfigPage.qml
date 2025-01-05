@@ -4,7 +4,7 @@ import Main
 
 AdvancedDirConfigPage {
     id: dirConfigPage
-    title: qsTr("Config of folder \"%1\"").arg(dirName)
+    title: dirName.length > 0 ? qsTr("Config of folder \"%1\"").arg(dirName) : qsTr("Add new folder")
     isDangerous: false
     specialEntriesOnly: true
     specialEntries: [
@@ -18,7 +18,7 @@ AdvancedDirConfigPage {
                 {value: "receiveonly", label: "Receive Only", desc: qsTr("Files are synchronized from the cluster, but any changes made locally will not be sent to other devices.")},
                 {value: "receiveencrypted", label: "Receive Encrypted", desc: qsTr("Stores and syncs only encrypted data. Folders on all connected devices need to be set up with the same password or be of type \"Receive Encrypted\" too. Can only be assigned to new folders.")},
             ]},
-        {key: "devices", type: "devices", label: qsTr("Share with"), desc: qsTr("Select devices to share this folder with.")},
+        {key: "devices", type: "devices", label: qsTr("Share with"), desc: qsTr("Select devices to share this folder with."), selectIds: dirConfigPage.shareWithDeviceIds},
         {key: "versioning", label: qsTr("Versioning"), desc: qsTr("Syncthing supports archiving the old version of a file when it is deleted or replaced with a newer version from the cluster. Versioning applies to changes received from <i>other</i> devices."), helpUrl: "https://docs.syncthing.net/users/versioning"},
         {key: "fsWatcherEnabled", label: qsTr("Watch for Changes"), desc: qsTr("Use notifications from the filesystem to detect changed items. Watching for changes discovers most changes without periodic scanning."), helpUrl: "https://docs.syncthing.net/users/syncing#scanning"},
         {key: "rescanIntervalS", label: qsTr("Rescan Interval"), desc: qsTr("The frequency in which Syncthing will rescan the folder for changes. Can be set to 0 to rely on triggering rescans manually.")},
@@ -75,5 +75,5 @@ AdvancedDirConfigPage {
             ]},
         ],
     })
-    property string shareWithDeviceId
+    property list<string> shareWithDeviceIds
 }

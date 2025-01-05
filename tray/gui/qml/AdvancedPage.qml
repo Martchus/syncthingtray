@@ -20,6 +20,14 @@ StackView {
             model: ListModel {
                 id: model
                 ListElement {
+                    specialPage: "PendingDevices.qml"
+                    label: qsTr("Pending devices")
+                }
+                ListElement {
+                    specialPage: "PendingDirs.qml"
+                    label: qsTr("Pending folders")
+                }
+                ListElement {
                     key: "remoteIgnoredDevices"
                     label: qsTr("Ignored devices")
                     title: qsTr("Ignored devices")
@@ -56,7 +64,13 @@ StackView {
             delegate: ItemDelegate {
                 width: listView.width
                 text: label
-                onClicked: stackView.push("ObjectConfigPage.qml", {title: title, isDangerous: isDangerous, configObject: advancedPage.config[key], path: key, configCategory: `config-option-${key}`, itemLabel: itemLabel, helpUrl: helpUrl, stackView: stackView}, StackView.PushTransition)
+                onClicked: {
+                    if (specialPage.length > 0) {
+                        stackView.push(specialPage, {pages: stackView.pages}, StackView.PushTransition)
+                    } else {
+                        stackView.push("ObjectConfigPage.qml", {title: title, isDangerous: isDangerous, configObject: advancedPage.config[key], path: key, configCategory: `config-option-${key}`, itemLabel: itemLabel, helpUrl: helpUrl, stackView: stackView}, StackView.PushTransition)
+                    }
+                }
             }
         }
 
@@ -89,4 +103,5 @@ StackView {
             }
         ]
     }
+    required property var pages
 }

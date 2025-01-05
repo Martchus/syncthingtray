@@ -2,7 +2,7 @@ import QtQuick
 
 AdvancedDevConfigPage {
     id: devConfigPage
-    title: qsTr("Config of device \"%1\"").arg(devName)
+    title: devName.length > 0 ? qsTr("Config of device \"%1\"").arg(devName) : qsTr("Add new device")
     isDangerous: false
     specialEntriesOnly: true
     specialEntries: [

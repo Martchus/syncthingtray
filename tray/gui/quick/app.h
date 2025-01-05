@@ -240,7 +240,10 @@ public:
         const QString &verb, const QString &path, const QVariantMap &parameters, const QJSValue &callback = QJSValue());
     Q_INVOKABLE QString formatDataSize(quint64 size) const;
     Q_INVOKABLE QString formatTraffic(quint64 total, double rate) const;
-    Q_INVOKABLE bool hasDevice(const QString &devId);
+    Q_INVOKABLE bool hasDevice(const QString &id);
+    Q_INVOKABLE bool hasDir(const QString &id);
+    Q_INVOKABLE QString deviceDisplayName(const QString &id) const;
+    Q_INVOKABLE QString dirDisplayName(const QString &id) const;
     Q_INVOKABLE QVariantList computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const;
 
 Q_SIGNALS:

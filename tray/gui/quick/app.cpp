@@ -910,10 +910,30 @@ QString App::formatTraffic(quint64 total, double rate) const
         % QString::fromStdString(CppUtilities::dataSizeToString(total)) % QChar(')');
 }
 
-bool QtGui::App::hasDevice(const QString &devId)
+bool QtGui::App::hasDevice(const QString &id)
 {
-    int row = 0;
-    return m_connection.findDevInfo(devId, row) != nullptr;
+    auto row = 0;
+    return m_connection.findDevInfo(id, row) != nullptr;
+}
+
+bool QtGui::App::hasDir(const QString &id)
+{
+    auto row = 0;
+    return m_connection.findDirInfo(id, row) != nullptr;
+}
+
+QString App::deviceDisplayName(const QString &id) const
+{
+    auto row = 0;
+    auto info = m_connection.findDevInfo(id, row);
+    return info != nullptr ? info->displayName() : id;
+}
+
+QString App::dirDisplayName(const QString &id) const
+{
+    auto row = 0;
+    auto info = m_connection.findDirInfo(id, row);
+    return info != nullptr ? info->displayName() : id;
 }
 
 QVariantList App::computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const

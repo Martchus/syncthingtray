@@ -335,6 +335,7 @@ ApplicationWindow {
         }
         AdvancedPage {
             id: advancedPage
+            pages: pageStack
         }
         SettingsPage {
             id: settingsPage
@@ -386,13 +387,13 @@ ApplicationWindow {
             pageStack.setCurrentIndex(indexForward.pop());
             return true;
         }
-        function addDir(dirId, dirName, shareWithDeviceId) {
+        function addDir(dirId, dirName, shareWithDeviceIds) {
             pageStack.setCurrentIndex(1);
-            pageStack.currentPage.add(dirId, dirName, shareWithDeviceId);
+            pageStack.currentPage.add(dirId, dirName, shareWithDeviceIds);
         }
-        function addDevice(deviceId) {
+        function addDevice(deviceId, deviceName) {
             pageStack.setCurrentIndex(2);
-            pageStack.currentPage.add(deviceId);
+            pageStack.currentPage.add(deviceId, deviceName);
         }
     }
     CustomDialog {
@@ -495,7 +496,7 @@ ApplicationWindow {
             pageStack.addDevice(devId);
         }
         function onNewDirTriggered(devId, dirId, dirLabel) {
-            pageStack.addDir(dirId, dirLabel, devId);
+            pageStack.addDir(dirId, dirLabel, [devId]);
         }
     }
     Connections {

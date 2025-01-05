@@ -379,8 +379,16 @@ DelegateChooser {
             required property var modelData
             property var devicesModel: {
                 const devices = [];
+                const idsToSelect = modelData.selectIds;
                 const sharedDevices = objectConfigPage.configObject[modelData.key];
                 const myId = App.connection.myId;
+                if (typeof idsToSelect === "object") {
+                    for (const idToSelect of idsToSelect) {
+                        if (idToSelect !== myId) {
+                            sharedDevices.push({deviceID: idToSelect, encryptionPassword: "", introducedBy: ""});
+                        }
+                    }
+                }
                 for (const sharedDev of sharedDevices) {
                     if (sharedDev.deviceID !== myId) {
                         devices.push(sharedDev);

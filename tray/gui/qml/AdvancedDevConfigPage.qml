@@ -12,9 +12,15 @@ AdvancedConfigPage {
     required property string devId
     function makeNewConfig() {
         const config = App.connection.rawConfig?.defaults?.device ?? {};
+
+        // add device ID and name as default values for deviceID/name
         if (devId.length > 0) {
             config.deviceID = devId;
         }
+        if (devName.length > 0) {
+            config.name = devName;
+        }
+
         isNew = true;
         return config;
     }
