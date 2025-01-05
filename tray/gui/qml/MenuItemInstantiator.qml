@@ -1,6 +1,6 @@
 import QtQml
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Material
 
 Instantiator {
     onObjectAdded: (index, object) => menu.insertItem(index, object)

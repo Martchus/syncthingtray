@@ -301,7 +301,6 @@ static int runApplication(int argc, const char *const *argv)
 #endif
 #endif
         qtConfigArgs.applySettings(true);
-        qtConfigArgs.applySettingsForQuickGui();
         networkAccessManager().setParent(&app);
 
         auto quickApp = App(insecureArg.isPresent());
