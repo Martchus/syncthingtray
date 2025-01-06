@@ -1022,7 +1022,9 @@ void App::applyLauncherSettings()
     ensureDefault(mod, launcherSettingsObj, QLatin1String("run"), false);
     ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnMetered"), false);
     ensureDefault(mod, launcherSettingsObj, QLatin1String("writeLogFile"), false);
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     ensureDefault(mod, launcherSettingsObj, QLatin1String("logLevel"), m_launcher.libSyncthingLogLevelString());
+#endif
     if (mod) {
         m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
     }
