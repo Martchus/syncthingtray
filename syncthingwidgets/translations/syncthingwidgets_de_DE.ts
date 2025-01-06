@@ -4,42 +4,42 @@
 <context>
     <name>Data::SyncthingLauncher</name>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="114"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="136"/>
         <source>Syncthing is running</source>
         <translation>Syncthing läuft</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="116"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="138"/>
         <source>Syncthing is temporarily stopped due to metered connection</source>
         <translation>Syncthing ist vorübergehend gestoppt, weil die Verbindung getaktet ist</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="118"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="140"/>
         <source>Syncthing exited with status %1</source>
         <translation>Syncthing hat sich mit dem Status %1 beendet</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="120"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="142"/>
         <source>Syncthing is not running</source>
         <translation>Syncthing läuft nicht</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="143"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="165"/>
         <source>Network connection is metered</source>
         <translation>Die Netzwerkverbindung ist getaktet</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="143"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="165"/>
         <source>Network connection is not metered</source>
         <translation>Die Netzwerkverbindung ist nicht getaktet</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="145"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="167"/>
         <source>State of network connection cannot be determined</source>
         <translation>Der Status der Netzwerkverbindung konnte nicht ermittelt werden</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="213"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="235"/>
         <source>Not built with libsyncthing support.</source>
         <translation>Unterstützung für libsyncthing nicht aktiviert.</translation>
     </message>

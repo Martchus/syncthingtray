@@ -4,42 +4,42 @@
 <context>
     <name>Data::SyncthingLauncher</name>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="114"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="136"/>
         <source>Syncthing is running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="116"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="138"/>
         <source>Syncthing is temporarily stopped due to metered connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="118"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="140"/>
         <source>Syncthing exited with status %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="120"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="142"/>
         <source>Syncthing is not running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="143"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="165"/>
         <source>Network connection is metered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="143"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="165"/>
         <source>Network connection is not metered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="145"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="167"/>
         <source>State of network connection cannot be determined</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="213"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="235"/>
         <source>Not built with libsyncthing support.</source>
         <translation type="unfinished"></translation>
     </message>
