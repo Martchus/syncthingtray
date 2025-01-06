@@ -144,7 +144,7 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction, bool
 {
     // keep track of certain log messages
     const auto startTime(DateTime::gmtNow());
-    bool myIdAnnounced = false, performanceAnnounced = false;
+    bool myIdAnnounced = false, performanceAnnounced = false, guiAnnounced = false;
     bool testDir1Ready = false, testDir2Ready = false;
     bool testDev1Ready = false, testDev2Ready = false;
     bool shuttingDown = false, shutDownLogged = false;
@@ -161,8 +161,10 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction, bool
         const string msg(message, messageSize);
         if (startsWith(msg, "My ID: ")) {
             myIdAnnounced = true;
-        } else if (startsWith(msg, "Single thread SHA256 performance is")) {
+        } else if (startsWith(msg, "Single thread SHA256 performance is") || startsWith(msg, "Hashing performance is")) {
             performanceAnnounced = true;
+        } else if (startsWith(msg, "GUI and API listening on")) {
+            guiAnnounced = true;
         } else if (msg == "Ready to synchronize test1 (sendreceive)") {
             testDir1Ready = true;
         } else if (msg == "Ready to synchronize test2 (sendreceive)") {
@@ -180,9 +182,9 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction, bool
         cout.write(message, static_cast<std::streamsize>(messageSize));
         cout << endl;
 
-        // stop Syncthing again if the found the messages we've been looking for or we've timed out
+        // stop Syncthing again if the messages we've been looking for were logged or we've timed out
         const auto timeout((DateTime::gmtNow() - startTime) > TimeSpan::fromSeconds(30));
-        if (!timeout && (!myIdAnnounced || !performanceAnnounced || (assertTestConfig && (!testDir1Ready || !testDev1Ready || !testDev2Ready)))) {
+        if (!timeout && (!myIdAnnounced || !performanceAnnounced || !guiAnnounced || (assertTestConfig && (!testDir1Ready || !testDev1Ready || !testDev2Ready)))) {
             // log status
             cout << "still waiting for:";
             if (!myIdAnnounced) {
@@ -190,6 +192,9 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction, bool
             }
             if (!performanceAnnounced) {
                 cout << " performanceAnnounced";
+            }
+            if (!guiAnnounced) {
+                cout << " guiAnnounced";
             }
             if (assertTestConfig) {
                 if (!testDir1Ready) {
@@ -211,8 +216,7 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction, bool
         if (!shuttingDown) {
             cerr << "stopping Syncthing again" << endl;
             shuttingDown = true;
-            std::thread stopThread(stopSyncthing);
-            stopThread.detach();
+            std::thread(stopSyncthing).detach();
         }
     });
 
