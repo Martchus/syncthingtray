@@ -222,7 +222,7 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
                         const auto minIndex = (page - 1) * perPage;
                         const auto maxIndex = minIndex + perPage - 1;
                         auto currentIndex = 0;
-                        auto obj = QJsonDocument::fromJson(QByteArray(needed)).object();
+                        auto obj = QJsonDocument::fromJson(QByteArray(needed.data(), static_cast<QByteArray::size_type>(needed.size()))).object();
                         auto keys = obj.keys();
                         auto filteredObj = QJsonObject();
                         for (const auto &key : keys) {
