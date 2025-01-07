@@ -288,6 +288,11 @@ static int runApplication(int argc, const char *const *argv)
 
 #ifdef GUI_QTQUICK
     if (quickGuiArg.isPresent()) {
+#ifdef SYNCTHINGTRAY_FORCE_VULKAN
+        // force Vulkan RHI backend to test it on Android or other platforms where setting an env variable is not so easy
+        qputenv("QSG_RHI_BACKEND", "vulkan");
+        qputenv("QSG_INFO", "1");
+#endif
 #ifdef SYNCTHINGTRAY_HAS_WEBVIEW
         QtWebView::initialize();
 #endif
