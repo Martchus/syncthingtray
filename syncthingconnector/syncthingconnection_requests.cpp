@@ -1,5 +1,6 @@
 #include "./syncthingconnection.h"
 #include "./utils.h"
+#include <qjsonvalue.h>
 
 #if defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) || defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
 #include "./syncthingconnectionmockhelpers.h"
@@ -1743,7 +1744,7 @@ static void readSyncthingItems(const QJsonArray &array, std::vector<std::unique_
             continue;
         }
         const auto jsonItemObj = jsonItem.toObject();
-        const auto type = jsonItemObj.value(QLatin1String("type")).toString();
+        const auto typeValue = jsonItemObj.value(QLatin1String("type"));
         const auto index = into.size();
         const auto children = jsonItemObj.value(QLatin1String("children"));
         auto &item = into.emplace_back(std::make_unique<SyncthingItem>());
@@ -1759,12 +1760,27 @@ static void readSyncthingItems(const QJsonArray &array, std::vector<std::unique_
         );
         item->index = index;
         item->level = level;
-        if (type == QLatin1String("FILE_INFO_TYPE_FILE")) {
+        switch (typeValue.toInt(-1)) {
+        case 0:
             item->type = SyncthingItemType::File;
-        } else if (type == QLatin1String("FILE_INFO_TYPE_DIRECTORY")) {
+            break;
+        case 1:
             item->type = SyncthingItemType::Directory;
-        } else if (type == QLatin1String("FILE_INFO_TYPE_SYMLINK")) {
+            break;
+        case 2:
+        case 3:
+        case 4:
             item->type = SyncthingItemType::Symlink;
+            break;
+        default:
+            const auto type = typeValue.toString();
+            if (type == QLatin1String("FILE_INFO_TYPE_FILE")) {
+                item->type = SyncthingItemType::File;
+            } else if (type == QLatin1String("FILE_INFO_TYPE_DIRECTORY")) {
+                item->type = SyncthingItemType::Directory;
+            } else if (type == QLatin1String("FILE_INFO_TYPE_SYMLINK")) {
+                item->type = SyncthingItemType::Symlink;
+            }
         }
         readSyncthingItems(children.toArray(), item->children, level + 1, levels);
         item->childrenPopulated = !levels || level < levels;
