@@ -60,6 +60,12 @@ ExpandableDelegate {
                 text: qsTr("Advanced config")
                 icon.source: App.faUrlBase + "cogs"
                 onTriggered: (source) => mainView.stackView.push("AdvancedDirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId, stackView: mainView.stackView}, StackView.PushTransition)
+            },
+            Action {
+                text: qsTr("Trigger media rescan")
+                icon.source: App.faUrlBase + "music"
+                enabled: App.scanSupported
+                onTriggered: (source) => App.scanPath(modelData.path)
             }
         ]
     }

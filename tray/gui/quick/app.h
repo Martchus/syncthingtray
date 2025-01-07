@@ -67,6 +67,7 @@ class App : public QObject {
     Q_PROPERTY(QString statusText READ statusText NOTIFY statusInfoChanged)
     Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY statusInfoChanged)
     Q_PROPERTY(QString additionalStatusText READ additionalStatusText NOTIFY statusInfoChanged)
+    Q_PROPERTY(bool scanSupported READ isScanSupported CONSTANT)
     QML_ELEMENT
     QML_SINGLETON
 
@@ -187,6 +188,14 @@ public:
     {
         return m_statusInfo.additionalStatusText();
     }
+    bool isScanSupported() const
+    {
+#ifdef Q_OS_ANDROID
+        return true;
+#else
+        return false;
+#endif
+    }
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();
@@ -204,6 +213,7 @@ public:
     Q_INVOKABLE bool exportSettings(const QUrl &url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
+    Q_INVOKABLE bool scanPath(const QString &path);
     Q_INVOKABLE bool copyText(const QString &text);
     Q_INVOKABLE bool copyPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE QString getClipboardText() const;

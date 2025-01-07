@@ -2,6 +2,7 @@ package io.github.martchus.syncthingtray;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.media.MediaScannerConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
@@ -66,6 +67,16 @@ public class Activity extends QtActivity {
         } catch (ActivityNotFoundException e1) {
             return false;
         }
+        return true;
+    }
+
+    public boolean scanPath(String path) {
+        MediaScannerConnection.scanFile(this, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
+            public void onScanCompleted(String path, Uri uri) {
+                showToast("Rescan of " + path + " completed");
+            }
+        });
+        showToast("Triggered rescan of " + path);
         return true;
     }
 

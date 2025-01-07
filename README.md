@@ -373,6 +373,9 @@ additional remarks:
   also be changed later (in contrast to IDs).
 * If you have already another Syncthing app installed or you have an existing configuration from
   another device, read the next sections for testing/migrating.
+* The app does not automatically trigger media library rescans yet, so e.g. synchronized music
+  might not show up immediately in your music app. However, you can trigger a rescan manually if
+  needed. You can do this per folder from the context menu on the folders page.
 
 ### Testing the app without migrating
 To only test the app without migrating your setup you can follow the steps of this section. Note

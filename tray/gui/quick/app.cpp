@@ -339,6 +339,20 @@ bool App::openPath(const QString &dirId, const QString &relativePath)
     return false;
 }
 
+bool App::scanPath(const QString &path)
+{
+#ifdef Q_OS_ANDROID
+    if (QJniObject(QNativeInterface::QAndroidApplication::context())
+            .callMethod<jboolean>("scanPath", "(Ljava/lang/String;)Z", QJniObject::fromString(path))) {
+        return true;
+    }
+#else
+    Q_UNUSED(path)
+#endif
+    emit error(tr("Scanning is not supported."));
+    return false;
+}
+
 bool App::copyText(const QString &text)
 {
     if (auto *const clipboard = QGuiApplication::clipboard()) {
