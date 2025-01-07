@@ -810,7 +810,7 @@ void App::handleAndroidIntent(const QString &data, bool fromNotification)
         emit newDeviceTriggered(data.mid(7));
     } else if (data.startsWith(QLatin1String("newfolder:"))) {
         const auto folderRef = splitFolderRef(QStringView(data).mid(10));
-        emit newDirTriggered(folderRef.deviceId.toString(), folderRef.folderId.toString(), folderRef.folderLabel);
+        emit newDirTriggered(folderRef.deviceId.toString(), folderRef.folderId.toString(), folderRef.folderLabel.toString());
     }
 }
 #endif
