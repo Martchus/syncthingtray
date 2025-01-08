@@ -15,10 +15,10 @@ Page {
             dynamicRoles: true
             Component.onCompleted: listModel.loadEntries()
             function loadEntries() {
+                const indexByKey = objectConfigPage.indexByKey = {};
                 listModel.clear();
 
                 let index = 0;
-                let handledKeys = new Set();
                 let configObject = objectConfigPage.configObject;
                 if (configObject === undefined) {
                     return;
@@ -31,15 +31,19 @@ Page {
                         if (typeof init === "function") {
                             configObject[key] = init();
                         }
+                        indexByKey[key] = index;
                         listModel.append(objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, configObject[key], index++));
+                    } else {
+                        indexByKey[key] = -1;
                     }
-                    handledKeys.add(key);
                 });
                 if (objectConfigPage.specialEntriesOnly) {
                     return;
                 }
                 Object.entries(configObject).forEach((configEntry) => {
-                    if (!handledKeys.has(configEntry[0])) {
+                    const key = configEntry[0];
+                    if (indexByKey[key] === undefined) {
+                        indexByKey[key] = index;
                         listModel.append(objectConfigPage.makeConfigRow(configEntry, index++));
                     }
                 });
@@ -82,6 +86,7 @@ Page {
 
     property alias model: objectListView.model
     property bool specialEntriesOnly: false
+    property var indexByKey: ({})
     property var specialEntriesByKey: ({
         "remoteIgnoredDevices.*": [
             {key: "deviceID", label: qsTr("Device ID"), type: "deviceid", desc: qsTr("The ID of the device to be ignored.")},
@@ -190,6 +195,14 @@ Page {
             parentRow.value = parentValue;
             parentPage.computeArrayElementLabel(parentRow);
             objectConfigPage.objectNameLabel.text = objectConfigPage.title = parentRow.label;
+        }
+
+        // update "ignorePerms" when setting "path" to a place where permissions should be ignored
+        if (key === "path" && configObject.ignorePerms === false && App.shouldIgnorePermissions(value)) {
+            const ignorePermsIndex = objectConfigPage.indexByKey.ignorePerms;
+            if (ignorePermsIndex >= 0) {
+                objectConfigPage.updateValue(ignorePermsIndex, "ignorePerms", true);
+            }
         }
     }
 

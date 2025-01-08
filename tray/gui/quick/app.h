@@ -230,6 +230,7 @@ public:
     Q_INVOKABLE bool performHapticFeedback();
     Q_INVOKABLE bool showToast(const QString &message);
     Q_INVOKABLE QString resolveUrl(const QUrl &url);
+    Q_INVOKABLE bool shouldIgnorePermissions(const QString &path);
     Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId, QObject *parent);
     Q_INVOKABLE QtGui::DiffHighlighter *createDiffHighlighter(QTextDocument *parent);
     Q_INVOKABLE QVariantList internalErrors() const;

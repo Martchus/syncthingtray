@@ -40,6 +40,11 @@
 #include <QJniEnvironment>
 #endif
 
+#ifndef Q_OS_ANDROID
+#include <QSet>
+#include <QStorageInfo>
+#endif
+
 #include <cstdlib>
 #include <filesystem>
 #include <functional>
@@ -603,6 +608,21 @@ QString App::resolveUrl(const QUrl &url)
     return path;
 #else
     return url.path();
+#endif
+}
+
+bool App::shouldIgnorePermissions(const QString &path)
+{
+#ifdef Q_OS_ANDROID
+    // QStorageInfo only returns "fuse" on Android but we can assume that permissions should be generally ignored
+    Q_UNUSED(path)
+    return true;
+#else
+    static const auto problematicFileSystems = QSet<QByteArray>({
+        QByteArrayLiteral("fat"), QByteArrayLiteral("vfat"), QByteArrayLiteral("exfat")
+    });
+    const auto storageInfo = QStorageInfo(path);
+    return storageInfo.isValid() && problematicFileSystems.contains(storageInfo.fileSystemType());
 #endif
 }
 

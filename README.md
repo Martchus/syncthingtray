@@ -376,6 +376,10 @@ additional remarks:
 * The app does not automatically trigger media library rescans yet, so e.g. synchronized music
   might not show up immediately in your music app. However, you can trigger a rescan manually if
   needed. You can do this per folder from the context menu on the folders page.
+* It is highly recommended to enable the option "Ignore permissions" on all folders under Android
+  and when certain file systems are used. The app enables this option therefore by default in
+  such cases when a path for a new folder has been selected. You can still disable the option
+  again manually.
 
 ### Testing the app without migrating
 To only test the app without migrating your setup you can follow the steps of this section. Note
