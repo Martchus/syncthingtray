@@ -27,12 +27,12 @@ StackView {
         ]
         property list<Action> extraActions: [
             Action {
-                text: qsTr("Pause all devices")
+                text: qsTr("Pause all")
                 icon.source: App.faUrlBase + "pause"
                 onTriggered: (source) => App.connection.pauseAllDevs()
             },
             Action {
-                text: qsTr("Resume all devices")
+                text: qsTr("Resume all")
                 icon.source: App.faUrlBase + "play"
                 onTriggered: (source) => App.connection.resumeAllDevs()
             }

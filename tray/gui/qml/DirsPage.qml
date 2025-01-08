@@ -27,17 +27,17 @@ StackView {
         ]
         property list<Action> extraActions: [
             Action {
-                text: qsTr("Pause all folders")
+                text: qsTr("Pause all")
                 icon.source: App.faUrlBase + "pause"
                 onTriggered: (source) => App.connection.pauseAllDirs()
             },
             Action {
-                text: qsTr("Resume all folders")
+                text: qsTr("Resume all")
                 icon.source: App.faUrlBase + "play"
                 onTriggered: (source) => App.connection.resumeAllDirs()
             },
             Action {
-                text: qsTr("Rescan all folders")
+                text: qsTr("Rescan all")
                 icon.source: App.faUrlBase + "refresh"
                 onTriggered: (source) => App.connection.rescanAllDirs()
             }

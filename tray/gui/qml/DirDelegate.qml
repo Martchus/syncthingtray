@@ -22,7 +22,7 @@ ExpandableDelegate {
                 onTriggered: (source) => App.connection[modelData.paused ? "resumeDirectories" : "pauseDirectories"]([modelData.dirId])
             },
             Action {
-                text: qsTr("Open in file browser")
+                text: qsTr("Open")
                 icon.source: App.faUrlBase + "folder"
                 onTriggered: (source) => App.openPath(modelData.path)
             }
@@ -46,12 +46,12 @@ ExpandableDelegate {
                 onTriggered: (source) => mainView.stackView.push("DirErrorsPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             },
             Action {
-                text: qsTr("Edit ignore patterns")
+                text: qsTr("Ignore patterns")
                 icon.source: App.faUrlBase + "filter"
                 onTriggered: (source) => mainView.stackView.push("IgnorePatternPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             },
             Action {
-                text: qsTr("Browse remote files")
+                text: qsTr("Remote files")
                 icon.source: App.faUrlBase + "folder-open-o"
                 enabled: !modelData.paused
                 onTriggered: (source) => mainView.stackView.push("FilesPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
@@ -62,7 +62,7 @@ ExpandableDelegate {
                 onTriggered: (source) => mainView.stackView.push("AdvancedDirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId, stackView: mainView.stackView}, StackView.PushTransition)
             },
             Action {
-                text: qsTr("Trigger media rescan")
+                text: qsTr("Media rescan")
                 icon.source: App.faUrlBase + "music"
                 enabled: App.scanSupported
                 onTriggered: (source) => App.scanPath(modelData.path)
