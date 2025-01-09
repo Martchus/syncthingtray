@@ -170,58 +170,58 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1790"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1805"/>
         <source>Unable to parse JSON response: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1803"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1818"/>
         <source>Unable to request: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1828"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1843"/>
         <source>Unable to parse response for browsing &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1842"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1857"/>
         <source>Unable to browse &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1866"/>
-        <location filename="../syncthingconnection_requests.cpp" line="1890"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1881"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1905"/>
         <source>Unable to query ignore patterns of &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1916"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1931"/>
         <source>Unable to change ignore patterns of &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1977"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1992"/>
         <source>Unable to post config: </source>
         <translation>无法发布日志： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2189"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2204"/>
         <source>Unable to parse Syncthing events: </source>
         <translation>无法解析 Syncthing 事件： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2218"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2233"/>
         <source>Unable to request Syncthing events: </source>
         <translation>无法请求 Syncthing 事件： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2817"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2832"/>
         <source>Unable to parse disk events: </source>
         <translation>无法解析磁盘事件： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2842"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2857"/>
         <source>Unable to request disk events: </source>
         <translation>无法请求磁盘事件： </translation>
     </message>
