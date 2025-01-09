@@ -401,6 +401,7 @@ if (ANDROID)
         INCLUDE_BY_TYPE imageformats Qt::QSvgPlugin Qt::QPngPlugin
         INCLUDE_BY_TYPE iconengines Qt::QSvgIconPlugin
         INCLUDE_BY_TYPE tls Qt::QTlsBackendOpenSSL
+        INCLUDE_BY_TYPE networkinformation Qt::QAndroidNetworkInformationPlugin
         INCLUDE_BY_TYPE platforms Qt::QAndroidIntegrationPlugin
         EXCLUDE_BY_TYPE platforminputcontexts webview
     )
