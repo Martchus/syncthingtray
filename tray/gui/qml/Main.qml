@@ -440,18 +440,29 @@ ApplicationWindow {
         }
     }
 
-    // avoid closing app (TODO: allow to keep Syncthing running in the background)
+    // handle closing
     CustomDialog {
         id: closeDialog
         title: window.title
         contentItem: Label {
             Layout.fillWidth: true
-            text: qsTr("Do you really want to close Syncthing?")
+            text: qsTr("Do you really want to close Syncthing? You can also just quit the UI but keep running Syncthing in the backround.")
             wrapMode: Text.WordWrap
         }
         onAccepted: {
             window.forceClose = true;
             window.close();
+        }
+        footer: DialogButtonBox {
+            Button {
+                text: qsTr("Run in background")
+                flat: true
+                onClicked: {
+                    closeDialog.close();
+                    App.minimize();
+                }
+                DialogButtonBox.buttonRole: DialogButtonBox.InvalidRole
+            }
         }
     }
     onClosing: (event) => {

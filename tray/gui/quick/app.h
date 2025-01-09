@@ -246,6 +246,7 @@ public:
     Q_INVOKABLE QString deviceDisplayName(const QString &id) const;
     Q_INVOKABLE QString dirDisplayName(const QString &id) const;
     Q_INVOKABLE QVariantList computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const;
+    Q_INVOKABLE bool minimize();
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
@@ -340,6 +341,7 @@ private:
     bool m_darkColorScheme;
     bool m_darkPalette;
     bool m_isGuiLoaded;
+    bool m_alwaysUnloadGuiWhenHidden;
     bool m_unloadGuiWhenHidden;
 };
 

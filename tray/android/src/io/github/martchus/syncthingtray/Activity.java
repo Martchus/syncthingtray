@@ -32,6 +32,15 @@ public class Activity extends QtActivity {
         return res;
     }
 
+    public boolean minimize() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                moveTaskToBack(true);
+            }
+        });
+        return true;
+    }
+
     public boolean showToast(String message) {
         Activity activity = this;
         runOnUiThread(new Runnable() {

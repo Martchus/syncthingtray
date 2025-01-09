@@ -115,6 +115,7 @@ App::App(bool insecure, QObject *parent)
     , m_darkColorScheme(false)
     , m_darkPalette(QtUtilities::isPaletteDark())
     , m_isGuiLoaded(false)
+    , m_alwaysUnloadGuiWhenHidden(false)
     , m_unloadGuiWhenHidden(false)
 {
     m_app->installEventFilter(this);
@@ -704,7 +705,8 @@ void App::handleStateChanged(Qt::ApplicationState state)
         for (auto *const uiObject : m_uiObjects) {
             uiObject->moveToThread(nullptr);
         }
-        if (m_unloadGuiWhenHidden) {
+        if (m_unloadGuiWhenHidden || m_alwaysUnloadGuiWhenHidden) {
+            m_unloadGuiWhenHidden = false;
             unloadMain();
         }
     } else if (state & Qt::ApplicationActive) {
@@ -968,6 +970,23 @@ QVariantList App::computeDirsNeedingItems(const QModelIndex &devProxyModelIndex)
     return dirs;
 }
 
+bool App::minimize()
+{
+#ifdef Q_OS_ANDROID
+    if (!QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("minimize", "()Z")) {
+        emit showError(tr("Unable to minimize app."));
+        return false;
+    }
+    m_unloadGuiWhenHidden = true;
+#else
+    const auto windows = QGuiApplication::topLevelWindows();
+    for (auto *const window : windows) {
+        window->setWindowState(Qt::WindowMinimized);
+    }
+#endif
+    return true;
+}
+
 bool App::openSettings()
 {
     if (!m_settingsDir.has_value()) {
@@ -1060,7 +1079,7 @@ bool App::applySettings()
         m_connection.reconnect();
     }
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
-    m_unloadGuiWhenHidden = tweaksSettings.value(QLatin1String("unloadGuiWhenHidden")).toBool(false);
+    m_alwaysUnloadGuiWhenHidden = tweaksSettings.value(QLatin1String("unloadGuiWhenHidden")).toBool(false);
     applyLauncherSettings();
     invalidateStatus();
     return true;
