@@ -1,6 +1,5 @@
 #include "./syncthingconnection.h"
 #include "./utils.h"
-#include <qjsonvalue.h>
 
 #if defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) || defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
 #include "./syncthingconnectionmockhelpers.h"
