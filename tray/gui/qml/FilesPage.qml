@@ -49,6 +49,7 @@ Page {
                     const modelIndex = delegateModel.modelIndex(index);
                     if (delegateModel.model.hasChildren(modelIndex)) {
                         delegateModel.rootIndex = modelIndex;
+                        listView.positionViewAtBeginning();
                     } else {
                         itemDelegate.toggle();
                     }
@@ -156,9 +157,12 @@ Page {
     property var extraActions: []
 
     function back() {
-        const isValid = delegateModel.rootIndex.valid;
+        const rootIndex = delegateModel.rootIndex;
+        const isValid = rootIndex.valid;
         if (isValid) {
+            const parentRow = rootIndex.row;
             delegateModel.rootIndex = delegateModel.parentModelIndex();
+            listView.positionViewAtIndex(parentRow, ListView.Center);
         }
         return isValid;
     }
