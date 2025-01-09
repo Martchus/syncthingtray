@@ -35,6 +35,7 @@
 #include <QJniObject>
 #endif
 
+#include <array>
 #include <optional>
 
 QT_FORWARD_DECLARE_CLASS(QTextDocument)
@@ -328,6 +329,7 @@ private:
     QJsonObject m_settings;
     QString m_faUrlBase;
     std::optional<QString> m_status;
+    std::array<QObject *, 5> m_uiObjects;
     QString m_log;
     int m_iconSize;
     int m_tabIndex;

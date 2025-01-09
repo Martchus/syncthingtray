@@ -101,6 +101,7 @@ App::App(bool insecure, QObject *parent)
     , m_sortFilterDevModel(&m_devModel)
     , m_changesModel(m_connection)
     , m_faUrlBase(QStringLiteral("image://fa/"))
+    , m_uiObjects({&m_dirModel, &m_sortFilterDirModel, &m_devModel, &m_sortFilterDevModel, &m_changesModel})
     , m_iconSize(16)
     , m_tabIndex(-1)
     , m_importExportStatus(ImportExportStatus::None)
@@ -698,14 +699,21 @@ void App::handleNewErrors(const std::vector<Data::SyncthingError> &errors)
 void App::handleStateChanged(Qt::ApplicationState state)
 {
     if (m_isGuiLoaded && ((state == Qt::ApplicationSuspended) || (state & Qt::ApplicationHidden))) {
-        qDebug() << "App considered suspended/hidden, reduce polling, stopping UI if requested";
+        qDebug() << "App considered suspended/hidden, reducing polling, stopping UI processing";
         setCurrentControls(false);
+        for (auto *const uiObject : m_uiObjects) {
+            uiObject->moveToThread(nullptr);
+        }
         if (m_unloadGuiWhenHidden) {
             unloadMain();
         }
     } else if (state & Qt::ApplicationActive) {
-        qDebug() << "App considered active, ensuring UI is loaded";
+        qDebug() << "App considered active, continuing polling, resuming UI processing";
         setCurrentControls(true);
+        auto *const uiThread = thread();
+        for (auto *const uiObject : m_uiObjects) {
+            uiObject->moveToThread(uiThread);
+        }
         if (!m_isGuiLoaded) {
             deletePipelineCache();
             loadMain();
