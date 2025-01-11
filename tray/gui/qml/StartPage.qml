@@ -303,6 +303,11 @@ Page {
             text: qsTr("Shutdown")
             icon.source: App.faUrlBase + "power-off"
             onTriggered: (source) => App.connection.shutdown()
+        },
+        Action {
+            text: qsTr("Run in background")
+            icon.source: App.faUrlBase + "window-minimize"
+            onTriggered: (source) => App.minimize()
         }
     ]
 }
