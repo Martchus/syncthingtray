@@ -4,7 +4,6 @@ import QtQuick.Layouts 1.2
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kquickcontrolsaddons 2.0
-import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
 
 RowLayout {
     id: toolBar
@@ -55,33 +54,8 @@ RowLayout {
                 }
             }
         ]
-        state: {
-            switch (plasmoid.nativeInterface.connection.status) {
-            case SyncthingPlasmoid.Data.Disconnected:
-                return plasmoid.nativeInterface.connection.connecting ? "connecting" : "disconnected"
-            case SyncthingPlasmoid.Data.Reconnecting:
-                return "connecting";
-            case SyncthingPlasmoid.Data.Paused:
-                return "paused"
-            default:
-                return "idle"
-            }
-        }
-        onClicked: {
-            switch (plasmoid.nativeInterface.connection.status) {
-            case SyncthingPlasmoid.Data.Disconnected:
-                plasmoid.nativeInterface.connection.connect()
-                break
-            case SyncthingPlasmoid.Data.Reconnecting:
-                break
-            case SyncthingPlasmoid.Data.Paused:
-                plasmoid.nativeInterface.connection.resumeAllDevs()
-                break
-            default:
-                plasmoid.nativeInterface.connection.pauseAllDevs()
-                break
-            }
-        }
+        state: plasmoid.nativeInterface.connectButtonState
+        onClicked: plasmoid.nativeInterface.triggerConnectButtonAction()
         PlasmaComponents3.ToolTip {
             text: connectButton.text
         }

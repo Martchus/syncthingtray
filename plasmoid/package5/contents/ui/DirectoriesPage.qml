@@ -4,7 +4,6 @@ import QtQml.Models 2.2
 import org.kde.plasma.components 2.0 as PlasmaComponents  // for Menu and MenuItem
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
-import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
 
 ColumnLayout {
     property alias view: directoryView

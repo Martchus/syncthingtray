@@ -5,7 +5,6 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.kquickcontrolsaddons 2.0
-import martchus.syncthingplasmoid 0.6 as SyncthingPlasmoid
 
 RowLayout {
     id: toolBar
@@ -56,33 +55,8 @@ RowLayout {
                 }
             }
         ]
-        state: {
-            switch (plasmoid.connection.status) {
-            case SyncthingPlasmoid.Data.Disconnected:
-                return plasmoid.connection.connecting ? "connecting" : "disconnected"
-            case SyncthingPlasmoid.Data.Reconnecting:
-                return "connecting";
-            case SyncthingPlasmoid.Data.Paused:
-                return "paused"
-            default:
-                return "idle"
-            }
-        }
-        onClicked: {
-            switch (plasmoid.connection.status) {
-            case SyncthingPlasmoid.Data.Disconnected:
-                plasmoid.connection.connect()
-                break
-            case SyncthingPlasmoid.Data.Reconnecting:
-                break
-            case SyncthingPlasmoid.Data.Paused:
-                plasmoid.connection.resumeAllDevs()
-                break
-            default:
-                plasmoid.connection.pauseAllDevs()
-                break
-            }
-        }
+        state: plasmoid.connectButtonState
+        onClicked: plasmoid.triggerConnectButtonAction()
         PlasmaComponents3.ToolTip {
             text: connectButton.text
         }

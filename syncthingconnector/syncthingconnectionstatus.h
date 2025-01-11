@@ -6,11 +6,6 @@
 #include <QObject>
 
 namespace Data {
-#undef Q_NAMESPACE
-#define Q_NAMESPACE
-Q_NAMESPACE
-extern LIB_SYNCTHING_CONNECTOR_EXPORT const QMetaObject staticMetaObject;
-QT_ANNOTATE_CLASS(qt_qnamespace, "") /*end*/
 
 /*!
  * \brief The SyncthingStatus enum specifies the overall status of the connection to Syncthing via its REST-API.
@@ -32,9 +27,6 @@ enum class SyncthingStatus {
     RemoteNotInSync = 8, /**< connected, at least one directory of a connected remote device is not in sync (still synchronizing, error, …) */
     NoRemoteConnected = 9, /**< connected to Syncthing but Syncthing is not connected to any remote device */
 };
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
-Q_ENUM_NS(SyncthingStatus)
-#endif
 
 /*!
  * \brief The SyncthingErrorCategory enum classifies different errors related to the SyncthingConnection class.
@@ -45,9 +37,6 @@ enum class SyncthingErrorCategory {
     Parsing, /**< an error when parsing Syncthing's response as a JSON document */
     TLS, /**< a TLS error occurred */
 };
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
-Q_ENUM_NS(SyncthingErrorCategory)
-#endif
 
 } // namespace Data
 

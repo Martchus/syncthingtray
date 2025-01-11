@@ -68,6 +68,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(QString statusText READ statusText NOTIFY connectionStatusChanged)
     Q_PROPERTY(QString additionalStatusText READ additionalStatusText NOTIFY connectionStatusChanged)
     Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY connectionStatusChanged)
+    Q_PROPERTY(QString connectButtonState READ connectButtonState NOTIFY connectionStatusChanged)
     Q_PROPERTY(QString incomingTraffic READ incomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(bool hasIncomingTraffic READ hasIncomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(QString outgoingTraffic READ outgoingTraffic NOTIFY trafficChanged)
@@ -107,6 +108,7 @@ public:
     QString additionalStatusText() const;
     QIcon statusIcon() const;
     QIcon syncthingIcon() const;
+    QString connectButtonState() const;
     QString incomingTraffic() const;
     bool hasIncomingTraffic() const;
     QString outgoingTraffic() const;
@@ -153,6 +155,7 @@ public Q_SLOTS:
     void copyToClipboard(const QString &text);
     void openLocalFileOrDir(const QString &dirId, const QString &relativePath);
     void updateStatusIconAndTooltip();
+    void triggerConnectButtonAction();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     void handleRelevantControlsChanged(bool visible, int index);
 #endif

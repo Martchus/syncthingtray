@@ -111,7 +111,6 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
 
     m_sortFilterDirModel.sort(0, Qt::AscendingOrder);
     m_sortFilterDevModel.sort(0, Qt::AscendingOrder);
-    qmlRegisterUncreatableMetaObject(Data::staticMetaObject, "martchus.syncthingplasmoid", 0, 6, "Data", QStringLiteral("only enums"));
 }
 
 SyncthingApplet::~SyncthingApplet()
@@ -224,6 +223,20 @@ void SyncthingApplet::initEngine(QObject *object)
 QIcon SyncthingApplet::statusIcon() const
 {
     return m_statusInfo.statusIcon();
+}
+
+QString SyncthingApplet::connectButtonState() const
+{
+    switch (m_connection.status()) {
+    case Data::SyncthingStatus::Disconnected:
+        return m_connection.isConnecting() ? QStringLiteral("connecting") : QStringLiteral("disconnected");
+    case Data::SyncthingStatus::Reconnecting:
+        return QStringLiteral("connecting");
+    case Data::SyncthingStatus::Paused:
+        return QStringLiteral("paused");
+    default:
+        return QStringLiteral("idle");
+    }
 }
 
 QString SyncthingApplet::incomingTraffic() const
@@ -345,6 +358,22 @@ void SyncthingApplet::updateStatusIconAndTooltip()
     m_statusInfo.updateConnectionStatus(m_connection);
     m_statusInfo.updateConnectedDevices(m_connection);
     emit connectionStatusChanged();
+}
+
+void SyncthingApplet::triggerConnectButtonAction()
+{
+    switch (m_connection.status()) {
+    case Data::SyncthingStatus::Disconnected:
+        m_connection.connect();
+        break;
+    case Data::SyncthingStatus::Reconnecting:
+        break;
+    case Data::SyncthingStatus::Paused:
+        m_connection.resumeAllDevs();
+        break;
+    default:
+        m_connection.pauseAllDevs();
+    }
 }
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
