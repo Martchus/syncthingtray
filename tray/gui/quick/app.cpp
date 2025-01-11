@@ -81,13 +81,20 @@ static void deletePipelineCache()
 }
 
 #ifdef Q_OS_ANDROID
-// define functions called from Java
+/// \brief The JniFn namespace defines functions called from Java.
+namespace JniFn {
 static App *appObjectForJava = nullptr;
 
-static void onAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNotification)
+static void stopLibSyncthing(JNIEnv *, jobject)
+{
+    QMetaObject::invokeMethod(appObjectForJava, "stopLibSyncthing", Qt::QueuedConnection);
+}
+
+static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNotification)
 {
     QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection,
         Q_ARG(QString, QJniObject::fromLocalRef(page).toString()), Q_ARG(bool, fromNotification));
+}
 }
 #endif
 
@@ -178,14 +185,15 @@ App::App(bool insecure, QObject *parent)
 
 #ifdef Q_OS_ANDROID
     // register native methods of Android activity
-    if (!appObjectForJava) {
-        appObjectForJava = this;
+    if (!JniFn::appObjectForJava) {
+        JniFn::appObjectForJava = this;
         auto env = QJniEnvironment();
         auto registeredMethods = true;
         static const JNINativeMethod activityMethods[] = {
-            { "onAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(onAndroidIntent) },
+            { "handleAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(JniFn::handleAndroidIntent) },
+            { "stopLibSyncthing", "()V", reinterpret_cast<void *>(JniFn::stopLibSyncthing) },
         };
-        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 1) && registeredMethods;
+        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 2) && registeredMethods;
         if (!registeredMethods) {
             qWarning() << "Unable to register all native methods in JNI environment.";
         }
@@ -695,6 +703,11 @@ void App::handleNewErrors(const std::vector<Data::SyncthingError> &errors)
 {
     Q_UNUSED(errors)
     invalidateStatus();
+#ifdef Q_OS_ANDROID
+    if (errors.empty()) {
+        clearSyncthingErrorsNotification();
+    }
+#endif
 }
 
 void App::handleStateChanged(Qt::ApplicationState state)
@@ -766,19 +779,14 @@ void App::clearAndroidExtraNotifications(int firstId, int lastId)
 
 void App::updateSyncthingErrorsNotification(CppUtilities::DateTime when, const QString &message)
 {
-    auto whenString = when.toString();
-    m_syncthingErrors.reserve(m_syncthingErrors.size() + 1 + whenString.size() + 2 + message.size());
-    if (!m_syncthingErrors.isEmpty()) {
-        m_syncthingErrors += QChar('\n');
-    }
-    m_syncthingErrors += std::move(whenString);
-    m_syncthingErrors += QChar(':');
-    m_syncthingErrors += QChar(' ');
-    m_syncthingErrors += message;
-
-    const auto title = QJniObject::fromString(tr("Syncthing errors/notifications"));
-    static const auto text = QJniObject::fromString(QString());
-    const auto subText = QJniObject::fromString(m_syncthingErrors);
+    ++m_syncthingErrors;
+    const auto title = QJniObject::fromString(m_syncthingErrors == 1
+        ? tr("Syncthing error/notification")
+        : tr("%1 Syncthing errors/notifications").arg(m_syncthingErrors));
+    const auto text = QJniObject::fromString(m_syncthingErrors == 1
+        ? message
+        : tr("most recent: ") + message);
+    const auto subText = QJniObject::fromString(QString::fromStdString(when.toString()));
     static const auto page = QJniObject::fromString(QStringLiteral("connectionErrors"));
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
     updateExtraAndroidNotification(title, text, subText, page, icon, 2);
@@ -786,7 +794,7 @@ void App::updateSyncthingErrorsNotification(CppUtilities::DateTime when, const Q
 
 void App::clearSyncthingErrorsNotification()
 {
-    m_syncthingErrors.clear();
+    m_syncthingErrors = 0;
     clearAndroidExtraNotifications(2, -1);
 }
 
@@ -856,6 +864,11 @@ void App::handleAndroidIntent(const QString &data, bool fromNotification)
         const auto folderRef = splitFolderRef(QStringView(data).mid(10));
         emit newDirTriggered(folderRef.deviceId.toString(), folderRef.folderId.toString(), folderRef.folderLabel.toString());
     }
+}
+
+void App::stopLibSyncthing()
+{
+    m_launcher.stopLibSyncthing();
 }
 #endif
 

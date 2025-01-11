@@ -292,6 +292,7 @@ private Q_SLOTS:
     void showNewDevice(const QString &devId, const QString &message);
     void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
     void handleAndroidIntent(const QString &page, bool fromNotification);
+    void stopLibSyncthing();
 #endif
 
 private:
@@ -315,7 +316,7 @@ private:
     QVariantList m_internalErrors;
     StatusInfo m_statusInfo;
 #ifdef Q_OS_ANDROID
-    QString m_syncthingErrors;
+    int m_syncthingErrors = 0;
     QHash<const QIcon *, QJniObject> m_androidIconCache;
     int m_androidNotificationId = 100000000;
 #endif

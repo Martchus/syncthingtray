@@ -148,7 +148,13 @@ public class Activity extends QtActivity {
     }
 
     public void onDestroy() {
+        // stop service and libsyncthing
+        // note: QtActivity will exit the main thread in super.onDestroy() so we cannot keep the service running.
+        //       It would not stop the service and Go threads but it would be impossible to re-enter the UI leaving
+        //       the app in some kind of zombie state.
         Log.i(TAG, "Destroying");
+        stopLibSyncthing();
+        stopSyncthingService();
         super.onDestroy();
     }
 
@@ -161,11 +167,12 @@ public class Activity extends QtActivity {
 
     private void sendAndroidIntentToQtQuickApp(String page, boolean fromNotification) {
         try {
-            onAndroidIntent(page, fromNotification);
+            handleAndroidIntent(page, fromNotification);
         } catch (java.lang.UnsatisfiedLinkError e) {
             showToast("Unable to open in Syncthing Tray app right now.");
         }
     }
 
-    private static native void onAndroidIntent(String page, boolean fromNotification);
+    private static native void handleAndroidIntent(String page, boolean fromNotification);
+    private static native void stopLibSyncthing();
 }
