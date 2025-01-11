@@ -116,7 +116,7 @@ public class Activity extends QtActivity {
         }
     }
 
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Creating");
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();

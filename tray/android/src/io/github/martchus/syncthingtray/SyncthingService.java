@@ -16,8 +16,7 @@ import android.util.Log;
 import io.github.martchus.syncthingtray.Activity;
 import io.github.martchus.syncthingtray.SyncthingServiceBinder;
 
-public class SyncthingService extends Service
-{
+public class SyncthingService extends Service {
     private final SyncthingServiceBinder m_binder = new SyncthingServiceBinder(this);
     private static final String TAG = "SyncthingService";
     private static SyncthingService s_instance = null;
