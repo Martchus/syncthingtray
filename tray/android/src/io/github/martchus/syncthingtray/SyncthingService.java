@@ -80,7 +80,6 @@ public class SyncthingService extends Service
             .setDefaults(Notification.DEFAULT_SOUND)
             .setCategory(Notification.CATEGORY_SERVICE)
             .setGroup(TAG)
-            .setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
             .setAutoCancel(false);
         m_extraNotificationBuilder
             .setSmallIcon(R.drawable.ic_stat_notify)
@@ -90,6 +89,9 @@ public class SyncthingService extends Service
             .setCategory(Notification.CATEGORY_SERVICE)
             .setGroup(TAG);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            m_notificationBuilder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             m_notificationBuilder.setFlag(Notification.FLAG_NO_CLEAR | Notification.FLAG_FOREGROUND_SERVICE, true);
         }
