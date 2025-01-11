@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.Toast;
+import android.util.Log;
 
 import androidx.core.content.FileProvider;
 
@@ -21,6 +22,7 @@ import io.github.martchus.syncthingtray.SyncthingService;
 import io.github.martchus.syncthingtray.Util;
 
 public class Activity extends QtActivity {
+    private static final String TAG = "SyncthingActivity";
 
     public boolean performHapticFeedback() {
         View rootView = getWindow().getDecorView().getRootView();
@@ -109,11 +111,13 @@ public class Activity extends QtActivity {
     void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
+            Log.i(TAG, "Sending shared text to Qt Quick app");
             sendAndroidIntentToQtQuickApp("sharedtext:" + sharedText, false);
         }
     }
 
     public void onCreate (Bundle savedInstanceState) {
+        Log.i(TAG, "Creating");
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -121,6 +125,31 @@ public class Activity extends QtActivity {
         if (Intent.ACTION_SEND.equals(action) && "text/plain".equals(type)) {
             handleSendText(intent);
         }
+    }
+
+    public void onStart() {
+        Log.i(TAG, "Starting");
+        super.onStart();
+    }
+
+    public void onResume() {
+        Log.i(TAG, "Resuming");
+        super.onResume();
+    }
+
+    public void onPause() {
+        Log.i(TAG, "Pausing");
+        super.onPause();
+    }
+
+    public void onStop() {
+        Log.i(TAG, "Stopping");
+        super.onStop();
+    }
+
+    public void onDestroy() {
+        Log.i(TAG, "Destroying");
+        super.onDestroy();
     }
 
     protected void onNewIntent(Intent intent) {

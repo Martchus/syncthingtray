@@ -312,7 +312,11 @@ static int runApplication(int argc, const char *const *argv)
         quickApp.applySettings();
         QObject::connect(&app, &QCoreApplication::aboutToQuit, &quickApp, &App::shutdown);
         SyncthingLauncher::setMainInstance(quickApp.launcher());
-        return app.exec();
+        const auto res = app.exec();
+#if defined(Q_OS_ANDROID)
+        qDebug() << "Qt event loop exited with return code " << res;
+#endif
+        return res;
     }
 #endif
 
