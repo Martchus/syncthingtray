@@ -90,18 +90,6 @@ StackView {
                 }
             }
         ]
-        property list<Action> extraActions: [
-            Action {
-                text: qsTr("Restart Syncthing")
-                icon.source: App.faUrlBase + "refresh"
-                onTriggered: (source) => App.connection.restart()
-            },
-            Action {
-                text: qsTr("Shutdown Syncthing")
-                icon.source: App.faUrlBase + "power-off"
-                onTriggered: (source) => App.connection.shutdown()
-            }
-        ]
     }
     required property var pages
 }

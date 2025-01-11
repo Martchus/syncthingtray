@@ -293,4 +293,16 @@ Page {
         }
     }
     required property var pages
+    property list<Action> extraActions: [
+        Action {
+            text: qsTr("Restart")
+            icon.source: App.faUrlBase + "refresh"
+            onTriggered: (source) => App.connection.restart()
+        },
+        Action {
+            text: qsTr("Shutdown")
+            icon.source: App.faUrlBase + "power-off"
+            onTriggered: (source) => App.connection.shutdown()
+        }
+    ]
 }
