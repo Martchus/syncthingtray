@@ -189,7 +189,7 @@ void SyncthingApplet::init()
     // apply settings and connect according to settings
     const auto palette = paletteFromTheme(m_theme);
     setBrightColors(isPaletteDark(palette));
-    IconManager::instance().setPalette(palette);
+    m_iconManager.setPalette(palette);
     handleSettingsChanged();
     if (c.readEntry<>("preferIconsFromTheme", false)) {
         Data::setForkAwesomeThemeOverrides();
@@ -215,7 +215,7 @@ void SyncthingApplet::initEngine(QObject *object)
         return;
     }
     const auto color = m_theme.color(Plasma::Theme::TextColor, Plasma::Theme::NormalColorGroup);
-    m_imageProvider = new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global(), color);
+    m_imageProvider = new QtForkAwesome::QuickImageProvider(m_iconManager.forkAwesomeRenderer(), color);
     connect(engine, &QObject::destroyed, this, &SyncthingApplet::handleImageProviderDestroyed); // engine has ownership over image provider
     engine->addImageProvider(QStringLiteral("fa"), m_imageProvider);
 }

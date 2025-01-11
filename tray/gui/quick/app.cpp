@@ -174,7 +174,7 @@ App::App(bool insecure, QObject *parent)
         Qt::QueuedConnection);
     connect(&m_engine, &QQmlApplicationEngine::quit, m_app, &QGuiApplication::quit);
     m_engine.setProperty("app", QVariant::fromValue(this));
-    m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global()));
+    m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(iconManager.forkAwesomeRenderer()));
 
 #ifdef Q_OS_ANDROID
     // register native methods of Android activity
