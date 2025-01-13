@@ -358,6 +358,9 @@ ApplicationWindow {
                 if (parentPage?.hasUnsavedChanges !== undefined) {
                     parentPage.hasUnsavedChanges = true;
                     currentPage.hasUnsavedChanges = false;
+                    if (currentPage.isDangerous) {
+                        parentPage.isDangerous = true;
+                    }
                 } else {
                     discardChangesDialog.open();
                     return true;

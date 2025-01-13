@@ -10,7 +10,7 @@ StackView {
     Layout.fillHeight: true
     initialItem: Page {
         id: advancedPage
-        title: qsTr("Advanced")
+        title: hasUnsavedChanges ? qsTr("Advanced - changes not saved yet") : qsTr("Advanced")
         Layout.fillWidth: true
         Layout.fillHeight: true
 
@@ -68,24 +68,42 @@ StackView {
                     if (specialPage.length > 0) {
                         stackView.push(specialPage, {pages: stackView.pages}, StackView.PushTransition)
                     } else {
-                        stackView.push("ObjectConfigPage.qml", {title: title, isDangerous: isDangerous, configObject: advancedPage.config[key], path: key, configCategory: `config-option-${key}`, itemLabel: itemLabel, helpUrl: helpUrl, stackView: stackView}, StackView.PushTransition)
+                        stackView.push("ObjectConfigPage.qml", {title: title, isDangerous: isDangerous, configObject: advancedPage.config[key], path: key, configCategory: `config-option-${key}`, itemLabel: itemLabel, helpUrl: helpUrl, stackView: stackView, parentPage: advancedPage}, StackView.PushTransition)
                     }
                 }
             }
         }
 
         property var config: App.connection.rawConfig
+        property bool hasUnsavedChanges: false
+        property bool isDangerous: false
         property list<Action> actions: [
             Action {
-                text: qsTr("Apply")
+                text: qsTr("Discard changes")
+                icon.source: App.faUrlBase + "undo"
+                enabled: advancedPage.hasUnsavedChanges
+                onTriggered: (source) => {
+                    advancedPage.config = App.connection.rawConfig;
+                    advancedPage.hasUnsavedChanges = false;
+                    advancedPage.isDangerous = false;
+                }
+            },
+            Action {
+                text: qsTr("Apply changes")
                 icon.source: App.faUrlBase + "check"
+                enabled: advancedPage.hasUnsavedChanges
                 onTriggered: (source) => {
                     const cfg = App.connection.rawConfig;
                     for (let i = 0, count = model.count; i !== count; ++i) {
                         const entryKey = model.get(i).key;
                         cfg[entryKey] = advancedPage.config[entryKey]
                     }
-                    App.postSyncthingConfig(cfg);
+                    App.postSyncthingConfig(cfg, (error) => {
+                        if (error.length === 0) {
+                            advancedPage.hasUnsavedChanges = false;
+                            advancedPage.isDangerous = false;
+                        }
+                    });
                     return true;
                 }
             }
