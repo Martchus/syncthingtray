@@ -24,6 +24,10 @@ import io.github.martchus.syncthingtray.Util;
 public class Activity extends QtActivity {
     private static final String TAG = "SyncthingActivity";
 
+    public Activity() {
+        Log.i(TAG, "New");
+    }
+
     public boolean performHapticFeedback() {
         View rootView = getWindow().getDecorView().getRootView();
         boolean res = false;
@@ -117,6 +121,12 @@ public class Activity extends QtActivity {
     }
 
     @Override
+    protected boolean handleRestart(Bundle savedInstanceState) {
+        loadQtQuickGui();
+        return true;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Creating");
         super.onCreate(savedInstanceState);
@@ -146,9 +156,15 @@ public class Activity extends QtActivity {
         super.onPause();
     }
 
+    @Override
     public void onStop() {
         Log.i(TAG, "Stopping");
         super.onStop();
+    }
+
+    @Override
+    protected boolean handleDestruction() {
+        return true;
     }
 
     @Override
@@ -158,8 +174,8 @@ public class Activity extends QtActivity {
         //       It would not stop the service and Go threads but it would be impossible to re-enter the UI leaving
         //       the app in some kind of zombie state.
         Log.i(TAG, "Destroying");
-        stopLibSyncthing();
-        stopSyncthingService();
+        //stopLibSyncthing();
+        //stopSyncthingService();
         super.onDestroy();
     }
 
@@ -178,6 +194,7 @@ public class Activity extends QtActivity {
         }
     }
 
+    private static native void loadQtQuickGui();
     private static native void handleAndroidIntent(String page, boolean fromNotification);
     private static native void stopLibSyncthing();
 }
