@@ -37,6 +37,10 @@ public class Activity extends QtActivity {
     private boolean m_storagePermissionRequested = false;
     private boolean m_notificationPermissionRequested = false;
 
+    public Activity() {
+        Log.i(TAG, "New");
+    }
+
     public boolean performHapticFeedback() {
         View rootView = getWindow().getDecorView().getRootView();
         boolean res = false;
@@ -200,6 +204,13 @@ public class Activity extends QtActivity {
     }
 
     @Override
+    protected boolean handleRestart(Bundle savedInstanceState) {
+        loadQtQuickGui();
+        hideSplashScreen(0);
+        return true;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Creating");
 
@@ -258,14 +269,19 @@ public class Activity extends QtActivity {
     }
 
     @Override
+    protected boolean handleDestruction() {
+        return true;
+    }
+
+    @Override
     public void onDestroy() {
         // stop service and libsyncthing
         // note: QtActivity will exit the main thread in super.onDestroy() so we cannot keep the service running.
         //       It would not stop the service and Go threads but it would be impossible to re-enter the UI leaving
         //       the app in some kind of zombie state.
         Log.i(TAG, "Destroying");
-        stopLibSyncthing();
-        stopSyncthingService();
+        //stopLibSyncthing();
+        //stopSyncthingService();
         super.onDestroy();
     }
 
@@ -293,6 +309,7 @@ public class Activity extends QtActivity {
         }
     }
 
+    private static native void loadQtQuickGui();
     private static native void handleAndroidIntent(String page, boolean fromNotification);
     private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
     private static native void handleNotificationPermissionChanged(boolean notificationPermissionGranted);
