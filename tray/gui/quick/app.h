@@ -223,6 +223,7 @@ public:
     QString currentSyncthingHomeDir() const;
 
     // helper functions invoked from QML
+    Q_INVOKABLE bool initEngine();
     Q_INVOKABLE bool loadMain();
     Q_INVOKABLE bool reloadMain();
     Q_INVOKABLE bool unloadMain();
@@ -344,7 +345,7 @@ private:
     bool openSettings();
     QString locateSettingsExportDir();
 
-    QQmlApplicationEngine m_engine;
+    std::optional<QQmlApplicationEngine> m_engine;
     QGuiApplication *m_app;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
     Data::SyncthingConnection m_connection;

@@ -97,6 +97,11 @@ namespace QtGui {
 namespace JniFn {
 static App *appObjectForJava = nullptr;
 
+static void loadQtQuickGui(JNIEnv *, jobject)
+{
+    QMetaObject::invokeMethod(appObjectForJava, "initEngine", Qt::QueuedConnection);
+}
+
 static void stopLibSyncthing(JNIEnv *, jobject)
 {
     QMetaObject::invokeMethod(appObjectForJava, "stopLibSyncthing", Qt::QueuedConnection);
@@ -205,19 +210,6 @@ App::App(bool insecure, QObject *parent)
     connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &App::handleRunningChanged);
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &App::handleGuiAddressChanged);
 
-    connect(
-        &m_engine, &QQmlApplicationEngine::objectCreated, m_app,
-        [](QObject *obj, const QUrl &objUrl) {
-            if (!obj) {
-                std::cerr << "Unable to load " << objUrl.toString().toStdString() << '\n';
-                QCoreApplication::exit(EXIT_FAILURE);
-            }
-        },
-        Qt::QueuedConnection);
-    connect(&m_engine, &QQmlApplicationEngine::quit, m_app, &QGuiApplication::quit);
-    m_engine.setProperty("app", QVariant::fromValue(this));
-    m_engine.addImageProvider(QStringLiteral("fa"), m_imageProvider = new QtForkAwesome::QuickImageProvider(iconManager.forkAwesomeRenderer()));
-
 #ifdef Q_OS_ANDROID
     // register native methods of Android activity
     if (!JniFn::appObjectForJava) {
@@ -229,8 +221,9 @@ App::App(bool insecure, QObject *parent)
             { "handleAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(JniFn::handleAndroidIntent) },
             { "handleStoragePermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleStoragePermissionChanged) },
             { "handleNotificationPermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleNotificationPermissionChanged) },
+            { "loadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::loadQtQuickGui) },
         };
-        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 4) && registeredMethods;
+        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 5) && registeredMethods;
         if (!registeredMethods) {
             qWarning() << "Unable to register all native methods in JNI environment.";
         }
@@ -240,7 +233,7 @@ App::App(bool insecure, QObject *parent)
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
 #endif
 
-    loadMain();
+    initEngine();
 
     qDebug() << "App initialized";
 }
@@ -332,17 +325,38 @@ bool App::nativePopups() const
 }
 #endif
 
+bool App::initEngine()
+{
+    // allow overriding Qml entry point for hot-reloading; otherwise load proper Qml module from resources
+    qDebug() << "Initializing QML engine";
+    m_engine.emplace();
+    connect(
+        &*m_engine, &QQmlApplicationEngine::objectCreated, m_app,
+        [](QObject *obj, const QUrl &objUrl) {
+            if (!obj) {
+                std::cerr << "Unable to load " << objUrl.toString().toStdString() << '\n';
+                QCoreApplication::exit(EXIT_FAILURE);
+            }
+        },
+        Qt::QueuedConnection);
+    connect(&*m_engine, &QQmlApplicationEngine::quit, m_app, &QGuiApplication::quit);
+    m_engine->setProperty("app", QVariant::fromValue(this));
+    m_engine->addImageProvider(QStringLiteral("fa"), m_imageProvider = new QtForkAwesome::QuickImageProvider(Data::IconManager::instance().forkAwesomeRenderer()));
+
+    return loadMain();
+}
+
 bool App::loadMain()
 {
     // allow overriding Qml entry point for hot-reloading; otherwise load proper Qml module from resources
     qDebug() << "Loading Qt Quick GUI";
     if (const auto path = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QML_ENTRY_POINT_PATH"); !path.isEmpty()) {
         qDebug() << "Path Qml entry point for Qt Quick GUI was overridden to: " << path;
-        m_engine.load(path);
+        m_engine->load(path);
     } else if (const auto type = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QML_ENTRY_POINT_TYPE"); !type.isEmpty()) {
-        m_engine.loadFromModule("Main", type);
+        m_engine->loadFromModule("Main", type);
         if (const auto rootObjects = m_engine.rootObjects(); !rootObjects.isEmpty()) {
-            auto *const window = new QQuickView(&m_engine, nullptr);
+            auto *const window = new QQuickView(&m_engine.value(), nullptr);
             window->loadFromModule("Main", type);
             window->setTitle(type);
             window->setWidth(700);
@@ -350,7 +364,7 @@ bool App::loadMain()
             window->setVisible(true);
         }
     } else {
-        m_engine.loadFromModule("Main", "AppWindow");
+        m_engine->loadFromModule("Main", "AppWindow");
     }
     m_isGuiLoaded = true;
     return true;
@@ -360,14 +374,14 @@ bool App::reloadMain()
 {
     qDebug() << "Reloading Qt Quick GUI";
     unloadMain();
-    m_engine.clearComponentCache();
+    m_engine->clearComponentCache();
     return loadMain();
 }
 
 bool App::unloadMain()
 {
     qDebug() << "Unloading Qt Quick GUI";
-    const auto rootObjects = m_engine.rootObjects();
+    const auto rootObjects = m_engine->rootObjects();
     for (auto *const rootObject : rootObjects) {
         rootObject->deleteLater();
     }
@@ -530,10 +544,10 @@ bool App::loadDirErrors(const QString &dirId, QObject *view)
         if (dir.id != dirId) {
             return;
         }
-        auto array = m_engine.newArray(static_cast<quint32>(dir.itemErrors.size()));
+        auto array = m_engine->newArray(static_cast<quint32>(dir.itemErrors.size()));
         auto index = quint32();
         for (const auto &itemError : dir.itemErrors) {
-            auto error = m_engine.newObject();
+            auto error = m_engine->newObject();
             error.setProperty(QStringLiteral("path"), itemError.path);
             error.setProperty(QStringLiteral("message"), itemError.message);
             array.setProperty(index++, error);
@@ -551,12 +565,11 @@ bool App::loadStatistics(const QJSValue &callback)
     if (!callback.isCallable()) {
         return false;
     }
-    auto query = m_connection.requestJsonData(
-        QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
-            auto report = doc.object().toVariantMap();
-            statistics(report);
-            callback.call(QJSValueList({ m_engine.toScriptValue(report), QJSValue(std::move(error)) }));
-        });
+    auto query = m_connection.requestJsonData(QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
+        auto report = doc.object().toVariantMap();
+        statistics(report);
+        callback.call(QJSValueList({ m_engine->toScriptValue(report), QJSValue(std::move(error)) }));
+    });
     connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
     connect(this, &QObject::destroyed, [c = query.connection] { disconnect(c); });
     return true;
@@ -1190,7 +1203,7 @@ bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, 
     }
     auto query = m_connection.requestJsonData(verb.toUtf8(), path, params, QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
         if (callback.isCallable()) {
-            callback.call(QJSValueList({ m_engine.toScriptValue(doc.object()), QJSValue(std::move(error)) }));
+            callback.call(QJSValueList({ m_engine->toScriptValue(doc.object()), QJSValue(std::move(error)) }));
         }
     });
     connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
@@ -1578,7 +1591,7 @@ bool App::checkSettings(const QUrl &url, const QJSValue &callback)
     }).then(this, [this, callback](const QVariantMap &availableSettings) {
         setImportExportStatus(ImportExportStatus::None);
         if (callback.isCallable()) {
-            callback.call(QJSValueList{ m_engine.toScriptValue(availableSettings) });
+            callback.call(QJSValueList{ m_engine->toScriptValue(availableSettings) });
         }
     });
     return true;
@@ -1857,7 +1870,7 @@ bool App::checkSyncthingHome(const QJSValue &callback)
     }).then(this, [this, callback](const QVariantMap &homeDirInfo) {
         setImportExportStatus(ImportExportStatus::None);
         if (callback.isCallable()) {
-            callback.call(QJSValueList{ m_engine.toScriptValue(homeDirInfo) });
+            callback.call(QJSValueList{ m_engine->toScriptValue(homeDirInfo) });
         }
     });
     return true;
