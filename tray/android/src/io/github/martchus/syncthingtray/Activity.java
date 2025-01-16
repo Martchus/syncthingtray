@@ -116,6 +116,7 @@ public class Activity extends QtActivity {
         }
     }
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Creating");
         super.onCreate(savedInstanceState);
@@ -127,16 +128,19 @@ public class Activity extends QtActivity {
         }
     }
 
+    @Override
     public void onStart() {
         Log.i(TAG, "Starting");
         super.onStart();
     }
 
+    @Override
     public void onResume() {
         Log.i(TAG, "Resuming");
         super.onResume();
     }
 
+    @Override
     public void onPause() {
         Log.i(TAG, "Pausing");
         super.onPause();
@@ -147,6 +151,7 @@ public class Activity extends QtActivity {
         super.onStop();
     }
 
+    @Override
     public void onDestroy() {
         // stop service and libsyncthing
         // note: QtActivity will exit the main thread in super.onDestroy() so we cannot keep the service running.
