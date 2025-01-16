@@ -61,6 +61,10 @@
             <meta-data
                 android:name="android.app.background_running"
                 android:value="true" />
+            <!-- keep main Qt event loop running when the activity has been destroyed -->
+            <meta-data
+                android:name="android.app.background_running_after_destruction"
+                android:value="@META_BACKGROUND_RUNNING_AFTER_DESTRUCTION@" />
         </activity>
         <service android:name=".SyncthingService" android:foregroundServiceType="specialUse" android:exported="true">
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="Synchronizes files continuously in the background."/>

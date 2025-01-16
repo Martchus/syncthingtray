@@ -400,6 +400,15 @@ if (ANDROID)
         set(ANDROID_APPLICATION_ARGUMENTS "qt-widgets-gui --windowed --wip")
     endif ()
 
+    # allow keeping the app running after the activity has been destroyed (requires Qt patches from my qtbase fork)
+    option(BACKGROUND_RUNNING_AFTER_ANDROID_ACTIVITY_DESTRUCTION
+           "keep the app running after activity has been destroyed (requires Qt patches)" OFF)
+    if (BACKGROUND_RUNNING_AFTER_ANDROID_ACTIVITY_DESTRUCTION)
+        set(META_BACKGROUND_RUNNING_AFTER_DESTRUCTION true)
+    else ()
+        set(META_BACKGROUND_RUNNING_AFTER_DESTRUCTION false)
+    endif ()
+
     # allow use of newer native Android APIs, see https://developer.android.com/ndk/guides/using-newer-apis
     set_source_files_properties(
         "gui/quick/app.cpp" PROPERTIES COMPILE_FLAGS

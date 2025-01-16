@@ -519,9 +519,6 @@ configuration from another device.
 ### Caveats on Android
 While Syncthing Tray basically works on Android, there are still some unresolved issues:
 
-* A foreground service is used but Syncthing is nevertheless terminated when the activity is
-  destroyed. Decoupling the activity from the rest of the application requires changes in Qt. It
-  will probably become feasible as of Qt 6.9.
 * The performance can be problematic due to the use of FUSE as of Android 11. Especially if one
   has many files in one directory the performance is bad.
     * I recommended to avoid having many files in a single directory.
@@ -544,6 +541,12 @@ While Syncthing Tray basically works on Android, there are still some unresolved
   will likely be removed when Syncthing v2 is released.)
 * Not all features the official web UI offers have been implemented in the Qt Quick based UI yet.
   One can easily open the official web UI in a web browser, though.
+* A [foreground service of type "Special use"](https://developer.android.com/develop/background-work/services/fgs/service-types#special-use)
+  is used so Syncthing is able to keep running in the background when the app activity is paused
+  or destroyed. Keeping Syncthing running when the activity is destroyed only works with custom Qt
+  patches found [on my fork of qtbase](https://github.com/Martchus/qtbase). With these patches
+  Syncthing Tray can be configured with the CMake option
+  `-DBACKGROUND_RUNNING_AFTER_ANDROID_ACTIVITY_DESTRUCTION:BOOL=ON` to make use of them.
 * Some of the problems/solutions found on the
   [Wiki pages of Syncthing-Fork](https://github.com/Catfriend1/syncthing-android/wiki) might help with
   Syncthing Tray on Android as well.

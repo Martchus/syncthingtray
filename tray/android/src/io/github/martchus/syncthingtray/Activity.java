@@ -36,6 +36,10 @@ public class Activity extends QtActivity {
     private int m_fontWeightAdjustment = 0;
     private boolean m_storagePermissionRequested = false;
     private boolean m_notificationPermissionRequested = false;
+    private boolean m_restarting = false;
+    private boolean m_explicitShutdown = false;
+    private boolean m_keepRunningAfterDestruction = false;
+    private android.content.pm.ActivityInfo m_info;
 
     public boolean performHapticFeedback() {
         View rootView = getWindow().getDecorView().getRootView();
@@ -180,6 +184,7 @@ public class Activity extends QtActivity {
     }
 
     public void stopSyncthingService() {
+        m_explicitShutdown = true;
         stopService(new Intent(this, SyncthingService.class));
     }
 
@@ -197,6 +202,24 @@ public class Activity extends QtActivity {
 
     public int fontWeightAdjustment() {
         return m_fontWeightAdjustment;
+    }
+
+    private Bundle metaData() {
+        if (m_info == null) {
+            try {
+                m_info = getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
+            } catch (PackageManager.NameNotFoundException e) {
+                Log.e(TAG, "Unable to get activity info: " + e.toString());
+                return null;
+            }
+        }
+        return m_info.metaData;
+    }
+
+    //@Override: overrides if patched version of Qt is used
+    protected boolean handleRestart(Bundle savedInstanceState) {
+        Log.i(TAG, "Restarting");
+        return m_restarting = true;
     }
 
     @Override
@@ -243,6 +266,12 @@ public class Activity extends QtActivity {
             handleNotificationPermissionChanged(notificationPermissionGranted());
         }
         super.onResume();
+
+        // load the Qt Quick GUI again when the activity was previously destroyed
+        if (m_restarting) {
+            m_restarting = false;
+            loadQtQuickGui();
+        }
     }
 
     @Override
@@ -257,15 +286,36 @@ public class Activity extends QtActivity {
         super.onStop();
     }
 
+    //@Override: overrides if patched version of Qt is used
+    protected boolean handleDestruction() {
+        return m_keepRunningAfterDestruction;
+    }
+
     @Override
     public void onDestroy() {
-        // stop service and libsyncthing
-        // note: QtActivity will exit the main thread in super.onDestroy() so we cannot keep the service running.
-        //       It would not stop the service and Go threads but it would be impossible to re-enter the UI leaving
-        //       the app in some kind of zombie state.
         Log.i(TAG, "Destroying");
-        stopLibSyncthing();
-        stopSyncthingService();
+
+        // stop service and libsyncthing unless background_running_after_destruction is configured
+        // note: QtActivity will normally exit the main thread in super.onDestroy() so we cannot keep the service running.
+        //       It would not stop the service and Go threads but it would be impossible to re-enter the UI leaving the app
+        //       in some kind of zombie state. This is fixed by custom Qt patches on my qtbase fork. With these patches
+        //       background_running_after_destruction can be enabled (via the CMake variable
+        //       BACKGROUND_RUNNING_AFTER_ANDROID_ACTIVITY_DESTRUCTION) as the problematic default behavior of Qt is
+        //       prevented.
+        if (m_explicitShutdown) {
+            m_keepRunningAfterDestruction = false;
+        } else {
+            Bundle md = metaData();
+            m_keepRunningAfterDestruction = md != null && md.getBoolean("android.app.background_running_after_destruction");
+        }
+        if (m_keepRunningAfterDestruction) {
+            Log.i(TAG, "Stopping only Qt Quick GUI");
+            unloadQtQuickGui();
+        } else {
+            Log.i(TAG, "Stopping Syncthing and Qt Quick GUI");
+            stopLibSyncthing();
+            stopSyncthingService();
+        }
         super.onDestroy();
     }
 
@@ -293,6 +343,8 @@ public class Activity extends QtActivity {
         }
     }
 
+    private static native void loadQtQuickGui();
+    private static native void unloadQtQuickGui();
     private static native void handleAndroidIntent(String page, boolean fromNotification);
     private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
     private static native void handleNotificationPermissionChanged(boolean notificationPermissionGranted);
