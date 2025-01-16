@@ -894,7 +894,7 @@ variable `PLASMA_USE_QT_SCALING=1` might help.
       "[Required system configuration](#required-system-configuration)" section for details.
 
 ## Copyright notice and license
-Copyright © 2016-2024 Marius Kittler
+Copyright © 2016-2025 Marius Kittler
 
 All code - unless stated otherwise in a comment on top of the file - is licensed under [GPL-2-or-later](LICENSE). This does *not* apply
 to code contained in Git repositories included as Git submodule (which contain their own README and licensing information).
