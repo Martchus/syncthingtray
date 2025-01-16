@@ -1,5 +1,6 @@
 package io.github.martchus.syncthingtray;
 
+import android.app.ForegroundServiceStartNotAllowedException;
 import android.app.Service;
 import android.app.PendingIntent;
 import android.app.Notification;
@@ -131,7 +132,7 @@ public class SyncthingService extends Service {
         intent.putExtra("notification", true);
         intent.putExtra("page", page);
         s_instance.m_extraNotificationBuilder.setContentTitle(title).setContentText(text).setSubText(subText);
-        s_instance.m_extraNotificationBuilder.setSmallIcon(Icon.createWithBitmap(bitmapIcon));
+        s_instance.m_extraNotificationBuilder.setSmallIcon(bitmapIcon != null ? Icon.createWithBitmap(bitmapIcon) : null);
         s_instance.m_extraNotificationBuilder.setContentIntent(PendingIntent.getActivity(s_instance, s_activityIntentRequestCode + id, intent, PendingIntent.FLAG_IMMUTABLE));
         s_instance.m_notificationManager.notify(id, s_instance.m_extraNotificationBuilder.build());
     }
@@ -188,10 +189,21 @@ public class SyncthingService extends Service {
         //       would not update the initial notification and instead again lead to duplicate notifications.
         //       We also have to use stopForeground() to remove the notification because invoking notificationManager.cancel() doesn't
         //       have any effect.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(s_notificationID, m_notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE);
-        } else {
-            startForeground(s_notificationID, m_notification);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startForeground(s_notificationID, m_notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE);
+            } else {
+                startForeground(s_notificationID, m_notification);
+            }
+            cancelExtraNotification(s_notificationID, -1);
+        } catch (ForegroundServiceStartNotAllowedException e) {
+            updateExtraNotification(
+                s_notificationTitle,
+                "Unable restart foreground service to run Syncthing while app is in background. Click to start Syncthing app again.",
+                "",
+                "",
+                null,
+                s_notificationID);
         }
     }
 }
