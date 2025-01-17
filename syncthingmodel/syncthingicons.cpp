@@ -340,10 +340,10 @@ ForkAwesomeIcons::ForkAwesomeIcons(QtForkAwesome::Renderer &renderer, const QCol
 }
 
 IconManager::IconManager(const QPalette *palette)
-    : m_statusIcons()
+    : m_palette(palette ? *palette : QGuiApplication::palette())
+    , m_statusIcons()
     , m_trayIcons(m_statusIcons)
-    , m_commonForkAwesomeIcons(
-          m_forkAwesomeRenderer, (palette ? *palette : QGuiApplication::palette()).color(QPalette::Normal, QPalette::Text), QSize(64, 64))
+    , m_commonForkAwesomeIcons(m_forkAwesomeRenderer, m_palette.color(QPalette::Normal, QPalette::Text), QSize(64, 64))
     , m_distinguishTrayIcons(false)
 {
     m_forkAwesomeRenderer.warnIfInvalid();

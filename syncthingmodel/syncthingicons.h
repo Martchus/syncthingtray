@@ -185,11 +185,11 @@ Q_SIGNALS:
 private:
     explicit IconManager(const QPalette *palette = nullptr);
 
+    QPalette m_palette;
     StatusIcons m_statusIcons;
     StatusIcons m_trayIcons;
     QtForkAwesome::Renderer m_forkAwesomeRenderer;
     ForkAwesomeIcons m_commonForkAwesomeIcons;
-    QPalette m_palette;
     std::optional<StatusIconSettings> m_paletteBasedSettingsForStatus;
     std::optional<StatusIconSettings> m_paletteBasedSettingsForTray;
     bool m_distinguishTrayIcons;
