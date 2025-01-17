@@ -40,6 +40,10 @@
 
 QT_FORWARD_DECLARE_CLASS(QTextDocument)
 
+namespace QtForkAwesome {
+class QuickImageProvider;
+}
+
 namespace QtGui {
 
 class App : public QObject {
@@ -303,6 +307,7 @@ private:
 
     QQmlApplicationEngine m_engine;
     QGuiApplication *m_app;
+    QtForkAwesome::QuickImageProvider *m_imageProvider;
     Data::SyncthingConnection m_connection;
     Data::SyncthingNotifier m_notifier;
     Data::SyncthingDirectoryModel m_dirModel;

@@ -101,6 +101,7 @@ static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNo
 App::App(bool insecure, QObject *parent)
     : QObject(parent)
     , m_app(static_cast<QGuiApplication *>(QCoreApplication::instance()))
+    , m_imageProvider(nullptr)
     , m_notifier(m_connection)
     , m_dirModel(m_connection)
     , m_sortFilterDirModel(&m_dirModel)
@@ -181,7 +182,7 @@ App::App(bool insecure, QObject *parent)
         Qt::QueuedConnection);
     connect(&m_engine, &QQmlApplicationEngine::quit, m_app, &QGuiApplication::quit);
     m_engine.setProperty("app", QVariant::fromValue(this));
-    m_engine.addImageProvider(QStringLiteral("fa"), new QtForkAwesome::QuickImageProvider(iconManager.forkAwesomeRenderer()));
+    m_engine.addImageProvider(QStringLiteral("fa"), m_imageProvider = new QtForkAwesome::QuickImageProvider(iconManager.forkAwesomeRenderer()));
 
 #ifdef Q_OS_ANDROID
     // register native methods of Android activity
@@ -539,6 +540,9 @@ bool App::eventFilter(QObject *object, QEvent *event)
     }
     switch (event->type()) {
     case QEvent::ApplicationPaletteChange:
+        if (m_app && m_imageProvider) {
+            m_imageProvider->setDefaultColor(m_app->palette().color(QPalette::Normal, QPalette::Text));
+        }
         qDebug() << "Application palette has changed";
         applyDarkmodeChange(m_darkColorScheme, QtUtilities::isPaletteDark());
         break;
