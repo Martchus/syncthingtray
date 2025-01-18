@@ -696,7 +696,7 @@ void SyncthingApplet::handleThemeChanged()
     // return to the event loop before setting the new theme color; otherwise Qt Quick does not update the images
     QTimer::singleShot(0, this, [this] {
         const auto palette = paletteFromTheme(m_theme);
-        IconManager::instance().setPalette(palette);
+        m_iconManager.setPalette(palette);
         setBrightColors(isPaletteDark(palette));
         if (m_imageProvider) {
             m_imageProvider->setDefaultColor(m_theme.color(Plasma::Theme::TextColor, Plasma::Theme::NormalColorGroup));
@@ -725,7 +725,7 @@ void SyncthingApplet::applySettings(int changeConnectionIndex)
     setSize(config.readEntry<QSize>("size", QSize(25, 25)));
     setShowingTabTexts(config.readEntry<bool>("showTabTexts", false));
     setShowingDownloads(config.readEntry<bool>("showDownloads", false));
-    IconManager::instance().applySettings(&settings.icons.status, nullptr, settings.icons.usePaletteForStatus, false);
+    m_iconManager.applySettings(&settings.icons.status, nullptr, settings.icons.usePaletteForStatus, false);
 
     // restore selected states
     // note: The settings dialog writes this to the Plasmoid's config like the other settings. However, it
