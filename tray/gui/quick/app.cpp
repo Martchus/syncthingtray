@@ -133,7 +133,16 @@ App::App(bool insecure, QObject *parent)
     deletePipelineCache();
     loadSettings();
     applySettings();
+
+    // react to color scheme changes (whether "dark mode" is enabled)
+    // note: Doing this is actually problematic since we would apply whether dark mode is enabled before the application
+    //       palette changes not taking any palette changes into account yet. Then, when the palette changes, we would also
+    //       not take it into account anymore because the dark mode setting was already applied. So it make sense to only
+    //       rely on reacting to palette changes by default. This may still be useful on platforms where Qt is not providing
+    //       a palette matching the darkmode setting but where it can detect whether darkmode is enabled.
+#ifdef SYNCTHING_APP_HANDLE_DARK_MODE_CHANGED_EXPLICITLY
     QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
+#endif
 
     auto &iconManager = Data::IconManager::instance();
     auto statusIconSettings = StatusIconSettings();
