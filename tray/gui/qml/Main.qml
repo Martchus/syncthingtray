@@ -16,6 +16,7 @@ ApplicationWindow {
     Material.theme: App.darkmodeEnabled ? Material.Dark : Material.Light
     Material.primary: pageStack.currentPage.isDangerous ? Material.Red : Material.LightBlue
     Material.accent: Material.primary
+    Material.onForegroundChanged: App.setPalette(Material.foreground, Material.background)
     header: ToolBar {
         Material.theme: Material.Dark
         ColumnLayout {
@@ -412,6 +413,8 @@ ApplicationWindow {
 
     // handle global keyboard and mouse events
     Component.onCompleted: {
+        App.setPalette(Material.foreground, Material.background);
+
         window.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
         window.contentItem.Keys.released.connect((event) => {
             const key = event.key;

@@ -251,6 +251,7 @@ public:
     Q_INVOKABLE QString dirDisplayName(const QString &id) const;
     Q_INVOKABLE QVariantList computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const;
     Q_INVOKABLE bool minimize();
+    Q_INVOKABLE void setPalette(const QColor &foreground, const QColor &background);
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);

@@ -59,6 +59,16 @@
 #define SYNCTHING_APP_PATH_CONVERSION(s) QString::fromLocal8Bit(s.string())
 #endif
 
+#ifdef Q_OS_ANDROID
+#define SYNCTHING_APP_HANDLE_DARK_MODE_CHANGED_EXPLICITLY
+#endif
+
+#ifdef SYNCTHING_APP_HANDLE_DARK_MODE_CHANGED_EXPLICITLY
+#define SYNCTHING_APP_IS_PALETTE_DARK(palette) false
+#else
+#define SYNCTHING_APP_IS_PALETTE_DARK(palette) QtUtilities::isPaletteDark(palette)
+#endif
+
 using namespace Data;
 
 namespace QtGui {
@@ -121,7 +131,7 @@ App::App(bool insecure, QObject *parent)
 #endif
     , m_darkmodeEnabled(false)
     , m_darkColorScheme(false)
-    , m_darkPalette(QtUtilities::isPaletteDark())
+    , m_darkPalette(SYNCTHING_APP_IS_PALETTE_DARK(m_app->palette()))
     , m_isGuiLoaded(false)
     , m_alwaysUnloadGuiWhenHidden(false)
     , m_unloadGuiWhenHidden(false)
@@ -556,8 +566,10 @@ bool App::eventFilter(QObject *object, QEvent *event)
             if (m_imageProvider) {
                 m_imageProvider->setDefaultColor(palette.color(QPalette::Normal, QPalette::Text));
             }
+#ifndef SYNCTHING_APP_HANDLE_DARK_MODE_CHANGED_EXPLICITLY
+            applyDarkmodeChange(m_darkColorScheme, SYNCTHING_APP_IS_PALETTE_DARK(palette));
+#endif
         }
-        applyDarkmodeChange(m_darkColorScheme, QtUtilities::isPaletteDark());
         break;
     default:;
     }
@@ -1015,6 +1027,23 @@ bool App::minimize()
     }
 #endif
     return true;
+}
+
+void App::setPalette(const QColor &foreground, const QColor &background)
+{
+#ifdef SYNCTHING_APP_HANDLE_DARK_MODE_CHANGED_EXPLICITLY
+    if (m_app) {
+        auto palette = m_app->palette();
+        palette.setColor(QPalette::Active, QPalette::Text, foreground);
+        palette.setColor(QPalette::Active, QPalette::Base, background);
+        palette.setColor(QPalette::Active, QPalette::WindowText, foreground);
+        palette.setColor(QPalette::Active, QPalette::Window, background);
+        m_app->setPalette(palette);
+    }
+#else
+    Q_UNUSED(foreground)
+    Q_UNUSED(background)
+#endif
 }
 
 bool App::openSettings()
