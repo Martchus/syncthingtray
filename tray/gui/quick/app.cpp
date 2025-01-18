@@ -549,10 +549,14 @@ bool App::eventFilter(QObject *object, QEvent *event)
     }
     switch (event->type()) {
     case QEvent::ApplicationPaletteChange:
-        if (m_app && m_imageProvider) {
-            m_imageProvider->setDefaultColor(m_app->palette().color(QPalette::Normal, QPalette::Text));
-        }
         qDebug() << "Application palette has changed";
+        if (m_app) {
+            const auto palette = m_app->palette();
+            IconManager::instance(&palette).setPalette(palette);
+            if (m_imageProvider) {
+                m_imageProvider->setDefaultColor(palette.color(QPalette::Normal, QPalette::Text));
+            }
+        }
         applyDarkmodeChange(m_darkColorScheme, QtUtilities::isPaletteDark());
         break;
     default:;

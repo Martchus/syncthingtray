@@ -630,11 +630,14 @@ bool TrayWidget::event(QEvent *event)
 {
     const auto res = QWidget::event(event);
     switch (event->type()) {
-    case QEvent::PaletteChange:
+    case QEvent::PaletteChange: {
+        const auto palette = QPalette();
+        IconManager::instance(&palette).setPalette(palette);
         setBrightColorsOfModelsAccordingToPalette();
         setLabelPixmaps();
         setTrafficPixmaps(true);
         break;
+    }
     case QEvent::LanguageChange:
         m_ui->retranslateUi(this);
         applyLauncherSettings(false, true, false);

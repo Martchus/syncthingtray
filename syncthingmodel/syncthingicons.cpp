@@ -347,16 +347,6 @@ IconManager::IconManager(const QPalette *palette)
     , m_distinguishTrayIcons(false)
 {
     m_forkAwesomeRenderer.warnIfInvalid();
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#endif
-    if (!palette) {
-        QObject::connect(qGuiApp, &QGuiApplication::paletteChanged, this, &IconManager::setPalette);
-    }
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
 }
 
 void IconManager::applySettings(
