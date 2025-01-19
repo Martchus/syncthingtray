@@ -59,11 +59,23 @@
 #define SYNCTHING_APP_PATH_CONVERSION(s) QString::fromLocal8Bit(s.string())
 #endif
 
+// configure dark mode depending on the platform
+// 1. Some platforms just provide a "darkmode flag", e.g. Windows and Android. Qt can read this flag and
+//    provide a Qt::ColorScheme value. Qt will only populate an appropriate QPalette on some platforms, e.g.
+//    it does on Windows but not on Android. On platforms where Qt does not populate an appropriate palette
+//    we therefore need to go by the Qt::ColorScheme value and populate the QPalette ourselves from the colors
+//    used by the Qt Quick Controls 2 style. This behavior is enabled via SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
+//    in subsequent code.
+//    Custom icons (Syncthing icons, ForkAwesome icons) are rendered using the text color from the application
+//    QPalette. This is the reason why we still populate the QPalette in this case and don't just ignore it.
+// 2. Some platforms allow the user to configure a custom palette but do *not* provide a "darkmode flag", e.g.
+//    KDE. In this case reading the Qt::ColorScheme value from Qt is useless but QPalette will be populate. We
+//    therefore need to determine whether the current color scheme is dark from the QPalette and set the Qt
+//    Quick Controls 2 style based on that.
 #ifdef Q_OS_ANDROID
-#define SYNCTHING_APP_HANDLE_DARK_MODE_CHANGED_EXPLICITLY
+#define SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
 #endif
-
-#ifdef SYNCTHING_APP_HANDLE_DARK_MODE_CHANGED_EXPLICITLY
+#ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
 #define SYNCTHING_APP_IS_PALETTE_DARK(palette) false
 #else
 #define SYNCTHING_APP_IS_PALETTE_DARK(palette) QtUtilities::isPaletteDark(palette)
@@ -143,14 +155,7 @@ App::App(bool insecure, QObject *parent)
     deletePipelineCache();
     loadSettings();
     applySettings();
-
-    // react to color scheme changes (whether "dark mode" is enabled)
-    // note: Doing this is actually problematic since we would apply whether dark mode is enabled before the application
-    //       palette changes not taking any palette changes into account yet. Then, when the palette changes, we would also
-    //       not take it into account anymore because the dark mode setting was already applied. So it make sense to only
-    //       rely on reacting to palette changes by default. This may still be useful on platforms where Qt is not providing
-    //       a palette matching the darkmode setting but where it can detect whether darkmode is enabled.
-#ifdef SYNCTHING_APP_HANDLE_DARK_MODE_CHANGED_EXPLICITLY
+#ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
     QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
 #endif
 
@@ -566,7 +571,7 @@ bool App::eventFilter(QObject *object, QEvent *event)
             if (m_imageProvider) {
                 m_imageProvider->setDefaultColor(palette.color(QPalette::Normal, QPalette::Text));
             }
-#ifndef SYNCTHING_APP_HANDLE_DARK_MODE_CHANGED_EXPLICITLY
+#ifndef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
             applyDarkmodeChange(m_darkColorScheme, SYNCTHING_APP_IS_PALETTE_DARK(palette));
 #endif
         }
@@ -1031,7 +1036,7 @@ bool App::minimize()
 
 void App::setPalette(const QColor &foreground, const QColor &background)
 {
-#ifdef SYNCTHING_APP_HANDLE_DARK_MODE_CHANGED_EXPLICITLY
+#ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
     if (m_app) {
         auto palette = m_app->palette();
         palette.setColor(QPalette::Active, QPalette::Text, foreground);
