@@ -397,6 +397,7 @@ if (ANDROID)
     endif ()
 
     # specify required plugins so androiddeployqt knows what we need and don't need
+    # cmake-format: off
     qt_import_plugins(${META_TARGET_NAME}
         INCLUDE_BY_TYPE imageformats Qt::QSvgPlugin Qt::QPngPlugin
         INCLUDE_BY_TYPE iconengines Qt::QSvgIconPlugin
@@ -405,6 +406,7 @@ if (ANDROID)
         INCLUDE_BY_TYPE platforms Qt::QAndroidIntegrationPlugin
         EXCLUDE_BY_TYPE platforminputcontexts webview
     )
+    # cmake-format: on
     if (NOT CMAKE_BUILD_TYPE STREQUAL Debug)
         qt_import_plugins(${META_TARGET_NAME} EXCLUDE_BY_TYPE qmltooling)
     endif ()
