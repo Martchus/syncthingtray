@@ -317,7 +317,7 @@ bool App::loadMain()
     // allow overriding Qml entry point for hot-reloading; otherwise load proper Qml module from resources
     qDebug() << "Loading Qt Quick GUI";
     if (const auto path = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QML_MAIN_PATH"); !path.isEmpty()) {
-        qDebug() << "Path Qml entry point for Qt Quick GUI was overriden to: " << path;
+        qDebug() << "Path Qml entry point for Qt Quick GUI was overridden to: " << path;
         m_engine.load(path);
     } else {
         m_engine.loadFromModule("Main", "Main");
