@@ -138,6 +138,7 @@ ApplicationWindow {
                     CustomToolButton {
                         visible: pageStack.currentExtraActions.length > 0
                         icon.source: App.faUrlBase + "ellipsis-v"
+                        text: qsTr("More")
                         onClicked: extraActionsMenu.popup()
                         Menu {
                             id: extraActionsMenu
