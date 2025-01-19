@@ -184,7 +184,9 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction, bool
 
         // stop Syncthing again if the messages we've been looking for were logged or we've timed out
         const auto timeout((DateTime::gmtNow() - startTime) > TimeSpan::fromSeconds(30));
-        if (!timeout && (!myIdAnnounced || !performanceAnnounced || !guiAnnounced || (assertTestConfig && (!testDir1Ready || !testDev1Ready || !testDev2Ready)))) {
+        if (!timeout
+            && (!myIdAnnounced || !performanceAnnounced || !guiAnnounced
+                || (assertTestConfig && (!testDir1Ready || !testDev1Ready || !testDev2Ready)))) {
             // log status
             cout << "still waiting for:";
             if (!myIdAnnounced) {

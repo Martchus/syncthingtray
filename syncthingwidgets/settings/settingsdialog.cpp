@@ -1150,7 +1150,8 @@ QWidget *LauncherOptionPage::setupWidget()
     }
 
     // set placeholder texts in path selections
-    for (auto *const pathSelection : std::initializer_list<QtUtilities::PathSelection *>{ ui()->configDirPathSelection, ui()->dataDirPathSelection }) {
+    for (auto *const pathSelection :
+        std::initializer_list<QtUtilities::PathSelection *>{ ui()->configDirPathSelection, ui()->dataDirPathSelection }) {
         pathSelection->lineEdit()->setPlaceholderText(tr("Leave empty for default path"));
     }
 

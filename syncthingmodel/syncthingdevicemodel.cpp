@@ -162,7 +162,9 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                     if (dev.overallCompletion.needed.isNull()) {
                         return tr("none");
                     }
-                    return tr("%1 item(s), ~ %2", nullptr, trQuandity(dev.overallCompletion.needed.items)).arg(dev.overallCompletion.needed.items).arg(dataSizeToString(dev.overallCompletion.needed.bytes).data());
+                    return tr("%1 item(s), ~ %2", nullptr, trQuandity(dev.overallCompletion.needed.items))
+                        .arg(dev.overallCompletion.needed.items)
+                        .arg(dataSizeToString(dev.overallCompletion.needed.bytes).data());
                 case 2:
                     return QString::fromStdString(dataSizeToString(dev.totalIncomingTraffic));
                 case 3:

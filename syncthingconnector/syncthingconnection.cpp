@@ -1179,7 +1179,10 @@ bool SyncthingConnection::setStatus(SyncthingStatus status)
         // check whether at least one device is synchronizing
         // check whether at least one device is paused
         // check whether at least one devices is connected
-        if (!synchronizing && (m_statusComputionFlags && (SyncthingStatusComputionFlags::RemoteSynchronizing | SyncthingStatusComputionFlags::NoRemoteConnected | SyncthingStatusComputionFlags::DevicePaused))) {
+        if (!synchronizing
+            && (m_statusComputionFlags
+                && (SyncthingStatusComputionFlags::RemoteSynchronizing | SyncthingStatusComputionFlags::NoRemoteConnected
+                    | SyncthingStatusComputionFlags::DevicePaused))) {
             for (const SyncthingDev &dev : m_devs) {
                 if (dev.status == SyncthingDevStatus::Synchronizing) {
                     remoteSynchronizing = true;

@@ -180,7 +180,9 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
                     if (dir.neededStats.isNull()) {
                         return tr("none");
                     }
-                    return tr("%1 item(s), ~ %2", nullptr, trQuandity(dir.neededStats.total)).arg(dir.neededStats.total).arg(dataSizeToString(dir.neededStats.bytes).data());
+                    return tr("%1 item(s), ~ %2", nullptr, trQuandity(dir.neededStats.total))
+                        .arg(dir.neededStats.total)
+                        .arg(dataSizeToString(dir.neededStats.bytes).data());
                 case 10:
                     if (dir.globalError.isEmpty() && !dir.pullErrorCount) {
                         return tr("none");

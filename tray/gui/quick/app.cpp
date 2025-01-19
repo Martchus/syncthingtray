@@ -117,7 +117,7 @@ static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNo
     QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection,
         Q_ARG(QString, QJniObject::fromLocalRef(page).toString()), Q_ARG(bool, fromNotification));
 }
-}
+} // namespace JniFn
 #endif
 
 App::App(bool insecure, QObject *parent)
@@ -131,7 +131,7 @@ App::App(bool insecure, QObject *parent)
     , m_sortFilterDevModel(&m_devModel)
     , m_changesModel(m_connection)
     , m_faUrlBase(QStringLiteral("image://fa/"))
-    , m_uiObjects({&m_dirModel, &m_sortFilterDirModel, &m_devModel, &m_sortFilterDevModel, &m_changesModel})
+    , m_uiObjects({ &m_dirModel, &m_sortFilterDirModel, &m_devModel, &m_sortFilterDevModel, &m_changesModel })
     , m_iconSize(16)
     , m_tabIndex(-1)
     , m_importExportStatus(ImportExportStatus::None)
@@ -173,7 +173,8 @@ App::App(bool insecure, QObject *parent)
 
     m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
 #ifdef Q_OS_ANDROID
-    m_notifier.setEnabledNotifications(SyncthingHighLevelNotification::ConnectedDisconnected | SyncthingHighLevelNotification::NewDevice | SyncthingHighLevelNotification::NewDir);
+    m_notifier.setEnabledNotifications(
+        SyncthingHighLevelNotification::ConnectedDisconnected | SyncthingHighLevelNotification::NewDevice | SyncthingHighLevelNotification::NewDir);
 #else
     m_notifier.setEnabledNotifications(SyncthingHighLevelNotification::ConnectedDisconnected);
 #endif
@@ -521,11 +522,12 @@ bool App::loadStatistics(const QJSValue &callback)
     if (!callback.isCallable()) {
         return false;
     }
-    auto query = m_connection.requestJsonData(QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
-        auto report = doc.object().toVariantMap();
-        statistics(report);
-        callback.call(QJSValueList({ m_engine.toScriptValue(report), QJSValue(std::move(error)) }));
-    });
+    auto query = m_connection.requestJsonData(
+        QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
+            auto report = doc.object().toVariantMap();
+            statistics(report);
+            callback.call(QJSValueList({ m_engine.toScriptValue(report), QJSValue(std::move(error)) }));
+        });
     connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
     connect(this, &QObject::destroyed, [c = query.connection] { disconnect(c); });
     return true;
@@ -662,9 +664,7 @@ bool App::shouldIgnorePermissions(const QString &path)
     Q_UNUSED(path)
     return true;
 #else
-    static const auto problematicFileSystems = QSet<QByteArray>({
-        QByteArrayLiteral("fat"), QByteArrayLiteral("vfat"), QByteArrayLiteral("exfat")
-    });
+    static const auto problematicFileSystems = QSet<QByteArray>({ QByteArrayLiteral("fat"), QByteArrayLiteral("vfat"), QByteArrayLiteral("exfat") });
     const auto storageInfo = QStorageInfo(path);
     return storageInfo.isValid() && problematicFileSystems.contains(storageInfo.fileSystemType());
 #endif
@@ -814,12 +814,9 @@ void App::clearAndroidExtraNotifications(int firstId, int lastId)
 void App::updateSyncthingErrorsNotification(CppUtilities::DateTime when, const QString &message)
 {
     ++m_syncthingErrors;
-    const auto title = QJniObject::fromString(m_syncthingErrors == 1
-        ? tr("Syncthing error/notification")
-        : tr("%1 Syncthing errors/notifications").arg(m_syncthingErrors));
-    const auto text = QJniObject::fromString(m_syncthingErrors == 1
-        ? message
-        : tr("most recent: ") + message);
+    const auto title = QJniObject::fromString(
+        m_syncthingErrors == 1 ? tr("Syncthing error/notification") : tr("%1 Syncthing errors/notifications").arg(m_syncthingErrors));
+    const auto text = QJniObject::fromString(m_syncthingErrors == 1 ? message : tr("most recent: ") + message);
     const auto subText = QJniObject::fromString(QString::fromStdString(when.toString()));
     static const auto page = QJniObject::fromString(QStringLiteral("connectionErrors"));
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
@@ -834,12 +831,9 @@ void App::clearSyncthingErrorsNotification()
 
 void App::showInternalError(const InternalError &error)
 {
-    const auto title = QJniObject::fromString(m_internalErrors.empty()
-        ? tr("Syncthing API error")
-        : tr("%1 Syncthing API errors").arg(m_internalErrors.size() + 1));
-    const auto text = QJniObject::fromString(m_internalErrors.empty()
-        ? error.message
-        : tr("most recent: ") + error.message);
+    const auto title = QJniObject::fromString(
+        m_internalErrors.empty() ? tr("Syncthing API error") : tr("%1 Syncthing API errors").arg(m_internalErrors.size() + 1));
+    const auto text = QJniObject::fromString(m_internalErrors.empty() ? error.message : tr("most recent: ") + error.message);
     const auto subText = QJniObject::fromString(error.url.isEmpty() ? QString() : QStringLiteral("URL: ") + error.url.toString());
     static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
@@ -868,7 +862,9 @@ void App::showNewDir(const QString &devId, const QString &dirId, const QString &
 
 static auto splitFolderRef(QStringView folderRef)
 {
-    struct { QStringView deviceId, folderId, folderLabel; } res;
+    struct {
+        QStringView deviceId, folderId, folderLabel;
+    } res;
     if (const auto separatorPos1 = folderRef.indexOf(QChar(':')); separatorPos1 >= 0) {
         res.deviceId = folderRef.mid(0, separatorPos1);
         res.folderId = folderRef.mid(separatorPos1 + 1);
@@ -1361,7 +1357,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
 
     setImportExportStatus(ImportExportStatus::Importing);
 
-    QtConcurrent::run([this, importSyncthingHome, availableSettings, selectedSettings, rawConfig = m_connection.rawConfig()] () mutable {
+    QtConcurrent::run([this, importSyncthingHome, availableSettings, selectedSettings, rawConfig = m_connection.rawConfig()]() mutable {
         // copy selected files from import directory to settings directory
         auto summary = QStringList();
         try {

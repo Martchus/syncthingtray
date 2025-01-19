@@ -9,8 +9,8 @@
 
 #include <c++utilities/io/ansiescapecodes.h>
 
-#include <QtConcurrentRun>
 #include <QMetaObject>
+#include <QtConcurrentRun>
 
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
 #include <QNetworkInformation>
@@ -192,7 +192,7 @@ void SyncthingLauncher::setNetworkConnectionMetered(std::optional<bool> metered)
                 else
 #endif
 #if defined(SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
-                if (m_lastRuntimeOptions) {
+                    if (m_lastRuntimeOptions) {
                     launch(*m_lastRuntimeOptions);
                 }
 #endif
@@ -207,7 +207,8 @@ void SyncthingLauncher::setNetworkConnectionMetered(std::optional<bool> metered)
  */
 void SyncthingLauncher::setStoppingOnMeteredConnection(bool stopOnMeteredConnection)
 {
-    if ((stopOnMeteredConnection != m_stopOnMeteredConnection) && (m_stopOnMeteredConnection = stopOnMeteredConnection) && m_metered.value_or(false)) {
+    if ((stopOnMeteredConnection != m_stopOnMeteredConnection) && (m_stopOnMeteredConnection = stopOnMeteredConnection)
+        && m_metered.value_or(false)) {
         terminateDueToMeteredConnection();
     }
 }
@@ -482,7 +483,8 @@ void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, cons
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     QMetaObject::invokeMethod(this, &SyncthingLauncher::handleOutputAvailable, Qt::QueuedConnection, static_cast<int>(level), std::move(messageData));
 #else
-    QMetaObject::invokeMethod(this, "handleOutputAvailable", Qt::QueuedConnection, Q_ARG(int, static_cast<int>(level)), Q_ARG(QByteArray, messageData));
+    QMetaObject::invokeMethod(
+        this, "handleOutputAvailable", Qt::QueuedConnection, Q_ARG(int, static_cast<int>(level)), Q_ARG(QByteArray, messageData));
 #endif
 }
 #endif
