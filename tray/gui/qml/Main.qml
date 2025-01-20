@@ -412,10 +412,15 @@ ApplicationWindow {
         onAccepted: pageStack.pop(true)
     }
 
-    // handle global keyboard and mouse events
     Component.onCompleted: {
+        // propagate palette of Qt Quick Controls 2 style to regular QPalette of QGuiApplication for icon rendering
         App.setPalette(Material.foreground, Material.background);
 
+        // apply font scaling (on platforms where additional scaling is necassary because Qt doesn't do it such as Android)
+        window.font.pixelSize *= App.fontScale;
+        window.font.weight += App.fontWeightAdjustment;
+
+        // handle global keyboard and mouse events
         window.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
         window.contentItem.Keys.released.connect((event) => {
             const key = event.key;

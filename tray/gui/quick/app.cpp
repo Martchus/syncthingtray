@@ -559,6 +559,24 @@ DiffHighlighter *App::createDiffHighlighter(QTextDocument *parent)
     return new DiffHighlighter(parent);
 }
 
+float App::fontScale() const
+{
+#ifdef Q_OS_ANDROID
+    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jfloat>("fontScale", "()F");
+#else
+    return 1.0f;
+#endif
+}
+
+int App::fontWeightAdjustment() const
+{
+#ifdef Q_OS_ANDROID
+    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jint>("fontWeightAdjustment", "()I");
+#else
+    return 0;
+#endif
+}
+
 bool App::eventFilter(QObject *object, QEvent *event)
 {
     if (object != m_app) {

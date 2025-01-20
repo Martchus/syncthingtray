@@ -2,6 +2,7 @@ package io.github.martchus.syncthingtray;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.media.MediaScannerConnection;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import io.github.martchus.syncthingtray.Util;
 
 public class Activity extends QtActivity {
     private static final String TAG = "SyncthingActivity";
+    private float m_fontScale = 1.0f;
+    private int m_fontWeightAdjustment = 0;
 
     public boolean performHapticFeedback() {
         View rootView = getWindow().getDecorView().getRootView();
@@ -116,10 +119,27 @@ public class Activity extends QtActivity {
         }
     }
 
+    public float fontScale() {
+        return m_fontScale;
+    }
+
+    public int fontWeightAdjustment() {
+        return m_fontWeightAdjustment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Creating");
         super.onCreate(savedInstanceState);
+
+        // read font scale as Qt does not handle this automatically on Android
+        Configuration config = getResources().getConfiguration();
+        m_fontScale = config.fontScale;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            m_fontWeightAdjustment = config.fontWeightAdjustment;
+        }
+
+        // read text another app might have shared with us
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();

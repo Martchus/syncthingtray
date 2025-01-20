@@ -73,6 +73,8 @@ class App : public QObject {
     Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY statusInfoChanged)
     Q_PROPERTY(QString additionalStatusText READ additionalStatusText NOTIFY statusInfoChanged)
     Q_PROPERTY(bool scanSupported READ isScanSupported CONSTANT)
+    Q_PROPERTY(float fontScale READ fontScale CONSTANT)
+    Q_PROPERTY(int fontWeightAdjustment READ fontWeightAdjustment CONSTANT)
     QML_ELEMENT
     QML_SINGLETON
 
@@ -201,6 +203,8 @@ public:
         return false;
 #endif
     }
+    float fontScale() const;
+    int fontWeightAdjustment() const;
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();
