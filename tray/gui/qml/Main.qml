@@ -420,6 +420,12 @@ ApplicationWindow {
         window.font.pixelSize *= App.fontScale;
         window.font.weight += App.fontWeightAdjustment;
 
+        // set system font family (on platforms where Qt doesn't do it such as Android)
+        const fontFamily = App.fontFamily;
+        if (fontFamily.length > 0) {
+            window.font.family = fontFamily;
+        }
+
         // handle global keyboard and mouse events
         window.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
         window.contentItem.Keys.released.connect((event) => {

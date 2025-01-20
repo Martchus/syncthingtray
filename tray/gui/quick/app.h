@@ -75,6 +75,7 @@ class App : public QObject {
     Q_PROPERTY(bool scanSupported READ isScanSupported CONSTANT)
     Q_PROPERTY(float fontScale READ fontScale CONSTANT)
     Q_PROPERTY(int fontWeightAdjustment READ fontWeightAdjustment CONSTANT)
+    Q_PROPERTY(QString fontFamily READ fontFamily CONSTANT)
     QML_ELEMENT
     QML_SINGLETON
 
@@ -205,6 +206,7 @@ public:
     }
     float fontScale() const;
     int fontWeightAdjustment() const;
+    QString fontFamily() const;
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();

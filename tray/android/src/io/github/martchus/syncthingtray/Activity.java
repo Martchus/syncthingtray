@@ -3,6 +3,8 @@ package io.github.martchus.syncthingtray;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
+//import android.content.res.Resources;
+//import android.graphics.Typeface;
 import android.media.MediaScannerConnection;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.provider.DocumentsContract;
 import android.net.Uri;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
 
@@ -26,6 +29,7 @@ public class Activity extends QtActivity {
     private static final String TAG = "SyncthingActivity";
     private float m_fontScale = 1.0f;
     private int m_fontWeightAdjustment = 0;
+    private String m_fontFamily = "";
 
     public boolean performHapticFeedback() {
         View rootView = getWindow().getDecorView().getRootView();
@@ -127,16 +131,25 @@ public class Activity extends QtActivity {
         return m_fontWeightAdjustment;
     }
 
+    public String fontFamily() {
+        return m_fontFamily;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Creating");
         super.onCreate(savedInstanceState);
 
-        // read font scale as Qt does not handle this automatically on Android
+        // read font family and scale as Qt does not handle this automatically on Android
         Configuration config = getResources().getConfiguration();
         m_fontScale = config.fontScale;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             m_fontWeightAdjustment = config.fontWeightAdjustment;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            //m_fontFamily = Typeface.DEFAULT.getSystemFontFamilyName();
+            m_fontFamily = new TextView(this).getTypeface().getSystemFontFamilyName();
+            Log.i(TAG, "Font family: " + m_fontFamily);
         }
 
         // read text another app might have shared with us

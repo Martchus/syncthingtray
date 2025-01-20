@@ -577,6 +577,15 @@ int App::fontWeightAdjustment() const
 #endif
 }
 
+QString App::fontFamily() const
+{
+#ifdef Q_OS_ANDROID
+    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("fontFamily").toString();
+#else
+    return QString();
+#endif
+}
+
 bool App::eventFilter(QObject *object, QEvent *event)
 {
     if (object != m_app) {
