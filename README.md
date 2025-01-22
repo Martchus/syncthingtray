@@ -569,6 +569,12 @@ This disables handling sub processes and `QProcess` (from Qt Core) is used inste
 
 ---
 
+To build Syncthing itself as a library Go is required and Syncthing needs to be checked out as a Git submodule.
+Checkout the [documentation of Syncthing itself](https://docs.syncthing.net/dev/building#prerequisites) for
+details.
+
+---
+
 It is also possible to build only the CLI (`syncthingctl`) by adding `-DNO_MODEL:BOOL=ON` and
 `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments. Then only the Qt modules `core`,
 `network` and `dbus` are required.
