@@ -438,6 +438,29 @@ configuration from another device.
       is also generally considered dangerious and therefore not recommended when setting up a new
       device.*
 
+### Caveats on Android
+While Syncthing Tray basically works on Android, there are still some unresolved issues:
+
+* A foreground service is used but Syncthing is nevertheless terminated when the activity is
+  destroyed. Decoupling the activity from the rest of the application requires changes in Qt. It
+  will probably become feasible as of Qt 6.9.
+* All native libraries need to be extracted taking quite some space on the device. This will be
+  fixed with Qt 6.9.
+* The performance can be problematic due to the use of FUSE as of Android 11. With
+  [FUSE Passthrough](https://source.android.com/docs/core/storage/fuse-passthrough) things have
+  improved but especially if one has many files in one directory the performance is still bad.
+  There is nothing one can do about it except storing the data in app's private directory. While
+  this is possible it of course doesn't cover all use cases.
+* Opening a directory in the file browser still doesn't work.
+* Media rescans need to be triggered manually.
+* The way Syncthing itself is built does not seem to specify an API level. Therefore the app
+  crashes under older Android versions such as Android 10.
+* The app doesn't use the configured system font. (It does use the configured font size and weight,
+  though.)
+* There are probably still many small UI bugs in the Qt Quick based UI used on Android.
+* Not all features the official web UI offers have been implemented in the Qt Quick based UI yet.
+  One can easily open the official web UI in a web browser, though.
+
 ## Download
 Checkout the [download section on the website](https://martchus.github.io/syncthingtray/#downloads-section) for an overview.
 Keep reading here for a more detailed list.
