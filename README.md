@@ -451,12 +451,19 @@ While Syncthing Tray basically works on Android, there are still some unresolved
   improved but especially if one has many files in one directory the performance is still bad.
   There is nothing one can do about it except storing the data in app's private directory. While
   this is possible it of course doesn't cover all use cases.
-* Opening a directory in the file browser still doesn't work.
+* Opening a directory in the file browser still doesn't work. Not sure what Android APIs need to
+  be used to make this work. The approach taken by
+  [syncthing-android](https://github.com/Catfriend1/syncthing-android) did not work when trying
+  to use it in my app.
 * Media rescans need to be triggered manually.
-* The way Syncthing itself is built does not seem to specify an API level. Therefore the app
-  crashes under older Android versions such as Android 10.
+* When using Go 1.23 the resulting APK does not run on older Android versions like Android 10.
+  Use `go install golang.org/dl/go1.22.11@latest && $GOPATH/src/go/bin/go1.22.11 download` to
+  install an older version of Go. Then conduct the build with `-DGO_BIN=$GOPATH/bin/go1.22.11`.
+  With this version of Go the resulting APK works Android 10 in my tests. The problem is likely
+  caused the an [upstream bug](https://github.com/golang/go/issues/70508) (even though it is not
+  limited to arm64).
 * The app doesn't use the configured system font. (It does use the configured font size and weight,
-  though.)
+  though.) Not sure what Android APIs need to be used to read the configured system font.
 * There are probably still many small UI bugs in the Qt Quick based UI used on Android.
 * Not all features the official web UI offers have been implemented in the Qt Quick based UI yet.
   One can easily open the official web UI in a web browser, though.
