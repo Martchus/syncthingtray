@@ -434,7 +434,7 @@ configuration from another device.
       setup will be identical to how it was before - except that now a different app is used.
       That also means that no changes are required on other devices. *The big caveat of this method
       is that you should not start the other app anymore unless you re-import the config/database
-      there and make sure the app from Syncthing Tray is stopped. Re-using the Syncthing database
+      there and make sure the app from Syncthing Tray is stopped. Reusing the Syncthing database
       is also generally considered dangerious and therefore not recommended when setting up a new
       device.*
 
