@@ -134,7 +134,7 @@
         <location filename="../syncthingdevicemodel.cpp" line="163"/>
         <location filename="../syncthingdevicemodel.cpp" line="190"/>
         <source>none</source>
-        <translation>keines</translation>
+        <translation>keine</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="192"/>
