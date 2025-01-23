@@ -130,6 +130,11 @@ public class Activity extends QtActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Creating");
+
+        // workaround https://github.com/golang/go/issues/70508
+        System.loadLibrary("androidsignalhandler");
+        initSigsysHandler();
+
         super.onCreate(savedInstanceState);
 
         // read font scale as Qt does not handle this automatically on Android
@@ -200,4 +205,5 @@ public class Activity extends QtActivity {
 
     private static native void handleAndroidIntent(String page, boolean fromNotification);
     private static native void stopLibSyncthing();
+    private static native void initSigsysHandler();
 }

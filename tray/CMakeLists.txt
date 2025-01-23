@@ -412,10 +412,21 @@ if (ANDROID)
     endif ()
 
     if (USE_LIBSYNCTHING)
+        # bundle internal Syncthing library
         set_property(
             TARGET ${META_TARGET_NAME}
             APPEND
             PROPERTY QT_ANDROID_EXTRA_LIBS "${SYNCTHINGINTERNAL_LIBRARY_PATH}")
+
+        # workaround https://github.com/golang/go/issues/70508
+        set(ANDROID_SIGNAL_HANDLER_LIBRARY "androidsignalhandler")
+        add_library("${ANDROID_SIGNAL_HANDLER_LIBRARY}" MODULE android/signalhandler.cpp)
+        find_library(ANDROID_LOG_LIB log)
+        target_link_libraries("${ANDROID_SIGNAL_HANDLER_LIBRARY}" "${ANDROID_LOG_LIB}")
+        set_property(
+            TARGET ${META_TARGET_NAME}
+            APPEND
+            PROPERTY QT_ANDROID_EXTRA_LIBS "${CMAKE_CURRENT_BINARY_DIR}/lib${ANDROID_SIGNAL_HANDLER_LIBRARY}.so")
     endif ()
 
     set(QT_ANDROID_SIGN_APK ON)
