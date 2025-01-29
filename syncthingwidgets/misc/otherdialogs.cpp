@@ -3,6 +3,8 @@
 #include "./diffhighlighter.h"
 #include "./textviewdialog.h"
 
+#include <qtutilities/models/checklistmodel.h>
+
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingdir.h>
 
@@ -21,6 +23,7 @@
 #include <QIcon>
 #include <QItemSelectionModel>
 #include <QLabel>
+#include <QListView>
 #include <QMenu>
 #include <QMessageBox>
 #include <QNetworkReply>
@@ -150,13 +153,26 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
         messageBox.exec();
     });
     QObject::connect(
-        model, &Data::SyncthingFileModel::actionNeedsConfirmation, dlg, [model](QAction *action, const QString &message, const QString &details) {
+        model, &Data::SyncthingFileModel::actionNeedsConfirmation, dlg, [model](QAction *action, const QString &message, const QString &details, const QSet<QString> &localDeletions) {
             auto messageBox = TextViewDialog(QStringLiteral("Confirm action - " APP_NAME));
+            auto deletionList = QString();
+            if (!localDeletions.isEmpty()) {
+                deletionList = QCoreApplication::translate("QtGui::OtherDialogs", "Deletion of the following local files:");
+                auto requiredSize = deletionList.size() + localDeletions.size();
+                for (const auto &path : localDeletions) {
+                    requiredSize += path.size();
+                }
+                deletionList.reserve(requiredSize);
+                for (const auto &path : localDeletions) {
+                    deletionList += QChar('\n');
+                    deletionList += path;
+                }
+            }
             auto *const browser = messageBox.browser();
             auto *const highlighter = new DiffHighlighter(browser->document());
             auto *const buttonLayout = new QHBoxLayout(&messageBox);
             auto *const editBtn = new QPushButton(
-                QIcon::fromTheme(QStringLiteral("document-edit")), QCoreApplication::translate("QtGui::OtherDialogs", "Edit manually"), &messageBox);
+                QIcon::fromTheme(QStringLiteral("document-edit")), QCoreApplication::translate("QtGui::OtherDialogs", "Edit patterns manually"), &messageBox);
             auto *const yesBtn = new QPushButton(
                 QIcon::fromTheme(QStringLiteral("dialog-ok")), QCoreApplication::translate("QtGui::OtherDialogs", "Apply"), &messageBox);
             auto *const noBtn = new QPushButton(
@@ -178,6 +194,20 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
             buttonLayout->addWidget(noBtn);
             browser->setText(details);
             messageBox.layout()->insertWidget(0, new QLabel(message, &messageBox));
+            auto *deletionModel = localDeletions.isEmpty() ? nullptr : new QtUtilities::ChecklistModel(&messageBox);
+            if (deletionModel) {
+                auto *deletionView = new QListView(&messageBox);
+                auto deletionItems = QList<QtUtilities::ChecklistItem>();
+                deletionItems.reserve(localDeletions.size());
+                for (const auto &path : localDeletions) {
+                    deletionItems.emplace_back(path, path, Qt::Checked);
+                }
+                deletionModel->setItems(deletionItems);
+                deletionView->setModel(deletionModel);
+                messageBox.layout()->insertWidget(1, new QLabel(QCoreApplication::translate("QtGui::OtherDialogs", "Deletion of the following local files:"), &messageBox));
+                messageBox.layout()->insertWidget(2, deletionView);
+                messageBox.layout()->insertWidget(3, new QLabel(QCoreApplication::translate("QtGui::OtherDialogs", "Changes to ignore patterns:"), &messageBox));
+            }
             messageBox.layout()->addLayout(buttonLayout);
             messageBox.setAttribute(Qt::WA_DeleteOnClose, false);
             action->setParent(&messageBox);
@@ -186,6 +216,16 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
             }
             if (!browser->isReadOnly()) {
                 model->editIgnorePatternsManually(browser->toPlainText());
+            }
+            if (deletionModel) {
+                auto editedLocalDeletions = QSet<QString>();
+                editedLocalDeletions.reserve(deletionModel->items().size());
+                for (const auto &item : deletionModel->items()) {
+                    if (item.isChecked()) {
+                        editedLocalDeletions.insert(item.id().toString());
+                    }
+                }
+                model->editLocalDeletions(editedLocalDeletions);
             }
             action->trigger();
         });

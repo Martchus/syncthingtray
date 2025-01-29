@@ -12,6 +12,7 @@
 #include <c++utilities/conversion/stringconversion.h>
 
 #include <QClipboard>
+#include <QFile>
 #include <QGuiApplication>
 #include <QNetworkReply>
 #include <QPainter>
@@ -84,7 +85,7 @@ SyncthingFileModel::SyncthingFileModel(SyncthingConnection &connection, const Sy
     connect(this, &SyncthingFileModel::hasStagedChangesChanged, this, &SyncthingFileModel::selectionActionsChanged);
     if (m_connection.isLocal()) {
         m_root->existsLocally = true;
-        m_localPath = dir.pathWithoutTrailingSlash().toString();
+        m_localPath = Data::substituteTilde(dir.pathWithoutTrailingSlash().toString(), m_connection.tilde(), m_connection.pathSeparator());
         m_columns += 1;
         connect(&m_localItemLookup, &QFutureWatcherBase::finished, this, &SyncthingFileModel::handleLocalLookupFinished);
     }
@@ -271,6 +272,20 @@ SyncthingIgnores SyncthingFileModel::computeNewIgnorePatterns() const
 void SyncthingFileModel::editIgnorePatternsManually(const QString &ignorePatterns)
 {
     m_manuallyEditedIgnorePatterns = ignorePatterns;
+}
+
+void SyncthingFileModel::editLocalDeletions(const QSet<QString> &localDeletions)
+{
+    m_manuallyEditedLocalDeletions = localDeletions;
+}
+
+void SyncthingFileModel::editLocalDeletionsFromVariantList(const QVariantList &localDeletions)
+{
+    m_manuallyEditedLocalDeletions.emplace();
+    m_manuallyEditedLocalDeletions->reserve(localDeletions.size());
+    for (const auto &path : localDeletions) {
+        m_manuallyEditedLocalDeletions->insert(path.toString());
+    }
 }
 
 QModelIndex SyncthingFileModel::parent(const QModelIndex &child) const
@@ -679,9 +694,9 @@ template <typename Callback> static void forEachItem(SyncthingItem *root, Callba
     }
 }
 
-void SyncthingFileModel::ignoreSelectedItems(bool ignore)
+void SyncthingFileModel::ignoreSelectedItems(bool ignore, bool deleteLocally)
 {
-    forEachItem(m_root.get(), [this, ignore](const SyncthingItem *item) {
+    forEachItem(m_root.get(), [this, ignore, deleteLocally](const SyncthingItem *item) {
         if (item->checked != Qt::Checked || !item->isFilesystemItem()) {
             return true;
         }
@@ -738,6 +753,13 @@ void SyncthingFileModel::ignoreSelectedItems(bool ignore)
             insertPattern(m_stagedChanges[m_presentIgnorePatterns.size() - 1].append, wantedPattern, path);
         }
 
+        // stage deletion of local file
+        if (deleteLocally) {
+            m_stagedLocalFileDeletions.insert(item->path);
+        } else {
+            m_stagedLocalFileDeletions.remove(item->path);
+        }
+
         // prepend the new pattern making sure it is effective and not shadowed by an existing pattern
         return false; // no need to add ignore patterns for children as they are applied recursively anyway
     });
@@ -747,7 +769,7 @@ void SyncthingFileModel::ignoreSelectedItems(bool ignore)
 QList<QAction *> SyncthingFileModel::selectionActions()
 {
     auto res = QList<QAction *>();
-    res.reserve(8);
+    res.reserve(9);
     if (!m_selectionMode) {
         auto *const startSelectionAction = new QAction(tr("Select items to sync/ignore"), this);
         startSelectionAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-select")));
@@ -765,7 +787,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
             res << discardAction;
         }
     } else {
-        auto *const discardAction = new QAction(tr("Discard selection and staged changes"), this);
+        auto *const discardAction = new QAction(tr("Uncheck all and discard staged changes"), this);
         discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo")));
         connect(discardAction, &QAction::triggered, this, [this] {
             if (const auto rootIndex = index(0, 0); rootIndex.isValid()) {
@@ -778,12 +800,19 @@ QList<QAction *> SyncthingFileModel::selectionActions()
         });
         res << discardAction;
 
-        auto *const ignoreSelectedAction = new QAction(tr("Ignore selected items (and their children)"), this);
+        auto *const ignoreSelectedAction = new QAction(tr("Ignore checked items (and their children)"), this);
         ignoreSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-remove")));
         connect(ignoreSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(); });
         res << ignoreSelectedAction;
 
-        auto *const includeSelectedAction = new QAction(tr("Include selected items (and their children)"), this);
+        if (!m_localPath.isEmpty()) {
+            auto *const ignoreAndDeleteSelectedAction = new QAction(tr("Ignore checked items (and their children) and ensure they are locally deleted"), this);
+            ignoreAndDeleteSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-remove")));
+            connect(ignoreAndDeleteSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(true, true); });
+            res << ignoreAndDeleteSelectedAction;
+        }
+
+        auto *const includeSelectedAction = new QAction(tr("Include checked items (and their children)"), this);
         includeSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-add")));
         connect(includeSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(false); });
         res << includeSelectedAction;
@@ -820,7 +849,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
 
     if (m_selectionMode) {
         auto *const removeIgnorePatternsAction
-            = new QAction(tr("Remove ignore patterns matching against selected items (may affect other items as well)"), this);
+            = new QAction(tr("Remove ignore patterns matching checked items (may affect other items as well)"), this);
         removeIgnorePatternsAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-delete")));
         connect(removeIgnorePatternsAction, &QAction::triggered, this, [this]() {
             forEachItem(m_root.get(), [this](SyncthingItem *item) {
@@ -855,7 +884,8 @@ QList<QAction *> SyncthingFileModel::selectionActions()
             if (action->needsConfirmation) {
                 action->needsConfirmation = false;
                 m_manuallyEditedIgnorePatterns.clear();
-                emit actionNeedsConfirmation(action, tr("Do you want to apply the following changes?"), computeIgnorePatternDiff());
+                m_manuallyEditedLocalDeletions.reset();
+                emit actionNeedsConfirmation(action, tr("Do you want to apply the following changes?"), computeIgnorePatternDiff(), m_stagedLocalFileDeletions);
                 return;
             }
             action->needsConfirmation = true;
@@ -877,7 +907,6 @@ QList<QAction *> SyncthingFileModel::selectionActions()
 
                 // reset state and query ignore patterns again on success so matching ignore patterns are updated
                 m_stagedChanges.clear();
-                m_stagedLocalFileDeletions.clear();
                 m_hasIgnorePatterns = false;
                 forEachItem(m_root.get(), [](SyncthingItem *item) {
                     item->ignorePattern = SyncthingItem::ignorePatternNotInitialized;
@@ -885,7 +914,23 @@ QList<QAction *> SyncthingFileModel::selectionActions()
                 });
                 queryIgnores();
 
-                emit notification(QStringLiteral("info"), tr("Ignore patterns have been changed."));
+                // delete local files/directories staged for deletion
+                const auto &localDeletions = m_manuallyEditedLocalDeletions.value_or(m_stagedLocalFileDeletions);
+                auto failedDeletions = QStringList();
+                for (const auto &path : localDeletions) {
+                    const auto fullPath = QString(m_localPath % m_pathSeparator % path);
+                    if (QFile::moveToTrash(fullPath)) {
+                        m_stagedLocalFileDeletions.remove(path);
+                    } else {
+                        failedDeletions.append(fullPath);
+                    }
+                }
+
+                if (failedDeletions.isEmpty()) {
+                    emit notification(QStringLiteral("info"), tr("Ignore patterns have been changed."));
+                } else {
+                    emit notification(QStringLiteral("info"), tr("Ignore patterns have been changed but the following local files could not be deleted:\n") + failedDeletions.join(QChar('\n')));
+                }
                 emit hasStagedChangesChanged(hasStagedChanges());
             });
         });

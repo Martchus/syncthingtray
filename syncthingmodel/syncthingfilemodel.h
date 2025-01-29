@@ -13,6 +13,7 @@
 #include <QPixmap>
 #include <QSet>
 
+#include <optional>
 #include <map>
 #include <memory>
 #include <vector>
@@ -86,14 +87,16 @@ public:
     bool hasStagedChanges() const;
     const std::vector<SyncthingIgnorePattern> &presentIgnorePatterns() const;
     SyncthingIgnores computeNewIgnorePatterns() const;
-    void editIgnorePatternsManually(const QString &ignorePatterns);
+    Q_INVOKABLE void editIgnorePatternsManually(const QString &ignorePatterns);
+    Q_INVOKABLE void editLocalDeletions(const QSet<QString> &localDeletions);
+    Q_INVOKABLE void editLocalDeletionsFromVariantList(const QVariantList &localDeletions);
     bool isRecursiveSelectionEnabled() const;
     void setRecursiveSelectionEnabled(bool recursiveSelectionEnabled);
 
 Q_SIGNALS:
     void fetchQueueEmpty();
     void notification(const QString &type, const QString &message, const QString &details = QString());
-    void actionNeedsConfirmation(QAction *action, const QString &message, const QString &diff = QString());
+    void actionNeedsConfirmation(QAction *action, const QString &message, const QString &diff = QString(), const QSet<QString> &localDeletions = QSet<QString>());
     void selectionModeEnabledChanged(bool selectionModeEnabled);
     void selectionActionsChanged();
     void hasStagedChangesChanged(bool hasStagedChanged);
@@ -111,7 +114,7 @@ private:
     void queryIgnores();
     void resetMatchingIgnorePatterns();
     void matchItemAgainstIgnorePatterns(SyncthingItem &item) const;
-    void ignoreSelectedItems(bool ignore = true);
+    void ignoreSelectedItems(bool ignore = true, bool deleteLocally = false);
     QString computeIgnorePatternDiff();
     QString availabilityNote(const SyncthingItem *item) const;
 
@@ -152,6 +155,7 @@ private:
     QFutureWatcher<LocalLookupRes> m_localItemLookup;
     std::unique_ptr<SyncthingItem> m_root;
     QString m_manuallyEditedIgnorePatterns;
+    std::optional<QSet<QString>> m_manuallyEditedLocalDeletions;
     QString m_ignoreAllByDefaultPattern;
     QChar m_pathSeparator;
     mutable QPixmap m_statusIcons[4];

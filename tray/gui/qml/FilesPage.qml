@@ -112,20 +112,68 @@ Page {
     CustomDialog {
         id: confirmActionDialog
         contentItem: ColumnLayout {
+            id: confirmActionLayout
             Label {
                 id: messageLabel
                 Layout.fillWidth: true
+                font.weight: Font.Medium
+                wrapMode: Text.WordWrap
             }
             ScrollView {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                TextArea {
-                    id: diffTextArea
-                    readOnly: true
+                ColumnLayout {
+                    width: confirmActionLayout.width
+                    CustomListView {
+                        id: deletionsView
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: deletionsView.contentHeight
+                        model: ListModel {
+                            id: deletionsModel
+                        }
+                        header: Label {
+                            width: deletionsView.width
+                            visible: deletionsView.model.count > 0
+                            text: qsTr("Deletion of the following local files:")
+                            font.weight: Font.Light
+                            wrapMode: Text.WordWrap
+                        }
+                        delegate: CheckDelegate {
+                            id: deletionDelegate
+                            width: deletionsView.width
+                            text: modelData.path
+                            checkState: modelData.checked ? Qt.Checked : Qt.Unchecked
+                            onCheckedChanged: deletionsModel.setProperty(modelData.index, "checked", deletionDelegate.checked)
+                            required property var modelData
+                        }
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        visible: deletionsView.model.count > 0
+                        text: qsTr("Changes to ignore patterns:")
+                        font.weight: Font.Light
+                        wrapMode: Text.WordWrap
+                    }
+                    TextArea {
+                        id: diffTextArea
+                        Layout.fillWidth: true
+                        readOnly: true
+                    }
                 }
             }
         }
-        onAccepted: action?.trigger()
+        onAccepted: {
+            const localDeletions = [];
+            const localDeletionCount = deletionsModel.count;
+            for (let i = 0; i !== localDeletionCount; ++i) {
+                const localDeletion = deletionsModel.get(i);
+                if (localDeletion.checked) {
+                    localDeletions.push(localDeletion.path);
+                }
+            }
+            page.model.editLocalDeletionsFromVariantList(localDeletions);
+            action?.trigger()
+        }
         onRejected: action?.dismiss()
         property var action
         property var diffHighlighter: App.createDiffHighlighter(diffTextArea.textDocument.textDocument)
@@ -140,11 +188,16 @@ Page {
             modelActionsInstantiator.model = page.model.selectionActions;
             page.extraActions = page.modelActions;
         }
-        function onActionNeedsConfirmation(action, message, diff) {
+        function onActionNeedsConfirmation(action, message, diff, localDeletions) {
             confirmActionDialog.title = action.text;
             confirmActionDialog.action = action;
             confirmActionDialog.message = message;
             confirmActionDialog.diff = diff;
+            deletionsModel.clear();
+            let index = 0;
+            for (const path of localDeletions) {
+                deletionsModel.append({path: path, checked: true, index: index++});
+            }
             confirmActionDialog.open();
         }
     }

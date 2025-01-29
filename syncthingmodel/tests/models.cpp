@@ -366,9 +366,10 @@ void ModelTests::testFileModel()
     QCOMPARE(actions.at(5)->text(), QStringLiteral("Review and apply staged changes"));
     connect(
         &model, &Data::SyncthingFileModel::actionNeedsConfirmation, this,
-        [&expectedDiff](QAction *action, const QString &message, const QString &diff = QString()) {
+        [&expectedDiff](QAction *action, const QString &message, const QString &diff, const QSet<QString> &localDeletions) {
             QCOMPARE(message, QStringLiteral("Do you want to apply the following changes?"));
             QCOMPARE(diff, expectedDiff);
+            QCOMPARE(localDeletions, QSet<QString>());
             action->trigger();
         },
         Qt::QueuedConnection);
