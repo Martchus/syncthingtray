@@ -42,55 +42,55 @@
 <context>
     <name>DirectoriesPage</name>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="23"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="22"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="23"/>
         <source>Filter folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="84"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="83"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="85"/>
         <source>Show errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="95"/>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="164"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="94"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="163"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="96"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="165"/>
         <source>Rescan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="103"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="104"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="103"/>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="171"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="170"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="104"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="172"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="113"/>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="178"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="112"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="177"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="114"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="179"/>
         <source>Open in file browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="150"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="149"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="151"/>
         <source>Copy label/ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="155"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="154"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="156"/>
         <source>Copy path</source>
         <translation type="unfinished"></translation>
@@ -287,22 +287,22 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="486"/>
+        <location filename="../lib/syncthingapplet.cpp" line="515"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="560"/>
+        <location filename="../lib/syncthingapplet.cpp" line="589"/>
         <source>Associated directory does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="586"/>
+        <location filename="../lib/syncthingapplet.cpp" line="615"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="653"/>
+        <location filename="../lib/syncthingapplet.cpp" line="682"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
@@ -357,80 +357,80 @@
 <context>
     <name>ToolBar</name>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="25"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="26"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="24"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="25"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="34"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="35"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="33"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="34"/>
         <source>Connecting …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="43"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="44"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="42"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="43"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="52"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="53"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="51"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="52"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="101"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="102"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="75"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="76"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="115"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="116"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="89"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="90"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="171"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="170"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="145"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="144"/>
         <source>Show new notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="190"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="189"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="164"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="163"/>
         <source>About Syncthing Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="202"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="201"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="176"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="175"/>
         <source>Show own device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="218"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="217"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="192"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="191"/>
         <source>Show Syncthing log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="230"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="229"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="204"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="203"/>
         <source>Rescan all folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="246"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="245"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="220"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="219"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/ToolBar.qml" line="261"/>
-        <location filename="../package6/contents/ui/ToolBar.qml" line="260"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="235"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="234"/>
         <source>Open Syncthing</source>
         <translation type="unfinished"></translation>
     </message>

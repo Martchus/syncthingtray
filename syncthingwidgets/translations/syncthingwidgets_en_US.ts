@@ -39,7 +39,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="235"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="236"/>
         <source>Not built with libsyncthing support.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -502,7 +502,7 @@
     <name>QtGui::BuiltinWebViewOptionPage</name>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1712"/>
+        <location filename="../settings/settingsdialog.cpp" line="1713"/>
         <source>Built-in web view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -522,7 +522,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1714"/>
+        <location filename="../settings/settingsdialog.cpp" line="1715"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1019,12 +1019,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1688"/>
+        <location filename="../settings/settingsdialog.cpp" line="1689"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1689"/>
+        <location filename="../settings/settingsdialog.cpp" line="1690"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1308,7 +1308,7 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="223"/>
-        <location filename="../settings/settingsdialog.cpp" line="1285"/>
+        <location filename="../settings/settingsdialog.cpp" line="1286"/>
         <source>Stop launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1343,67 +1343,67 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1154"/>
+        <location filename="../settings/settingsdialog.cpp" line="1155"/>
         <source>Leave empty for default path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1166"/>
+        <location filename="../settings/settingsdialog.cpp" line="1167"/>
         <source>Restore default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1172"/>
+        <location filename="../settings/settingsdialog.cpp" line="1173"/>
         <source>Show Syncthing releases/downloads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1320"/>
+        <location filename="../settings/settingsdialog.cpp" line="1321"/>
         <source>%1 exited with exit code %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1323"/>
+        <location filename="../settings/settingsdialog.cpp" line="1324"/>
         <source>%1 crashed with exit code %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1356"/>
+        <location filename="../settings/settingsdialog.cpp" line="1357"/>
         <source>failed to start (e.g. executable does not exist or not permission error)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1359"/>
+        <location filename="../settings/settingsdialog.cpp" line="1360"/>
         <source>process crashed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1362"/>
+        <location filename="../settings/settingsdialog.cpp" line="1363"/>
         <source>timeout error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1365"/>
+        <location filename="../settings/settingsdialog.cpp" line="1366"/>
         <source>read error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1368"/>
+        <location filename="../settings/settingsdialog.cpp" line="1369"/>
         <source>write error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1371"/>
+        <location filename="../settings/settingsdialog.cpp" line="1372"/>
         <source>unknown process error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1374"/>
+        <location filename="../settings/settingsdialog.cpp" line="1375"/>
         <source>An error occurred when running %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1427"/>
+        <location filename="../settings/settingsdialog.cpp" line="1428"/>
         <source>Kill launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1602,82 +1602,93 @@
 <context>
     <name>QtGui::OtherDialogs</name>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="43"/>
+        <location filename="../misc/otherdialogs.cpp" line="46"/>
         <source>Own device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="53"/>
+        <location filename="../misc/otherdialogs.cpp" line="56"/>
         <source>device ID is unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="61"/>
+        <location filename="../misc/otherdialogs.cpp" line="64"/>
         <source>Copy to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="98"/>
+        <location filename="../misc/otherdialogs.cpp" line="101"/>
         <source>Remote/global tree of folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="131"/>
+        <location filename="../misc/otherdialogs.cpp" line="134"/>
         <source>Manage ignore patterns (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../misc/otherdialogs.cpp" line="160"/>
         <location filename="../misc/otherdialogs.cpp" line="207"/>
+        <source>Deletion of the following local files:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="175"/>
+        <source>Edit patterns manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="209"/>
+        <source>Changes to ignore patterns:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="247"/>
         <source>Ignore patterns of folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="260"/>
+        <location filename="../misc/otherdialogs.cpp" line="300"/>
         <source>Do you want to save the changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="272"/>
+        <location filename="../misc/otherdialogs.cpp" line="312"/>
         <source>Notifications/errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="300"/>
+        <location filename="../misc/otherdialogs.cpp" line="340"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="312"/>
+        <location filename="../misc/otherdialogs.cpp" line="352"/>
         <source>Selected notification:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="336"/>
+        <location filename="../misc/otherdialogs.cpp" line="376"/>
         <source>Clear all notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="237"/>
+        <location filename="../misc/otherdialogs.cpp" line="277"/>
         <source>Ignore patterns have been changed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="159"/>
-        <source>Edit manually</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/otherdialogs.cpp" line="161"/>
+        <location filename="../misc/otherdialogs.cpp" line="177"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="163"/>
+        <location filename="../misc/otherdialogs.cpp" line="179"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="244"/>
+        <location filename="../misc/otherdialogs.cpp" line="284"/>
         <source>Unable to save ignore patterns: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1685,37 +1696,37 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1763"/>
+        <location filename="../settings/settingsdialog.cpp" line="1764"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1771"/>
+        <location filename="../settings/settingsdialog.cpp" line="1772"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1778"/>
+        <location filename="../settings/settingsdialog.cpp" line="1779"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1780"/>
+        <location filename="../settings/settingsdialog.cpp" line="1781"/>
         <source>additional tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1780"/>
+        <location filename="../settings/settingsdialog.cpp" line="1781"/>
         <source>Extra launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1803"/>
+        <location filename="../settings/settingsdialog.cpp" line="1804"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1809"/>
+        <location filename="../settings/settingsdialog.cpp" line="1810"/>
         <source>Start wizard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1890,8 +1901,8 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../settings/systemdoptionpage.ui" line="117"/>
         <location filename="../settings/systemdoptionpage.ui" line="172"/>
         <location filename="../settings/systemdoptionpage.ui" line="261"/>
-        <location filename="../settings/settingsdialog.cpp" line="1587"/>
-        <location filename="../settings/settingsdialog.cpp" line="1596"/>
+        <location filename="../settings/settingsdialog.cpp" line="1588"/>
+        <location filename="../settings/settingsdialog.cpp" line="1597"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1931,27 +1942,27 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1463"/>
+        <location filename="../settings/settingsdialog.cpp" line="1464"/>
         <source>Reload all unit files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1522"/>
+        <location filename="../settings/settingsdialog.cpp" line="1523"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1528"/>
+        <location filename="../settings/settingsdialog.cpp" line="1529"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1560"/>
+        <location filename="../settings/settingsdialog.cpp" line="1561"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1582"/>
+        <location filename="../settings/settingsdialog.cpp" line="1583"/>
         <source>since </source>
         <translation type="unfinished"></translation>
     </message>
