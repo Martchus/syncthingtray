@@ -249,12 +249,13 @@ void ModelTests::testFileModel()
 
     // selection actions when selection mode enabled
     actions = model.selectionActions();
-    QCOMPARE(actions.size(), 5);
-    QCOMPARE(actions.at(0)->text(), QStringLiteral("Discard selection and staged changes"));
-    QCOMPARE(actions.at(1)->text(), QStringLiteral("Ignore selected items (and their children)"));
-    QCOMPARE(actions.at(2)->text(), QStringLiteral("Include selected items (and their children)"));
-    QCOMPARE(actions.at(3)->text(), QStringLiteral("Ignore all items by default"));
-    QCOMPARE(actions.at(4)->text(), QStringLiteral("Remove ignore patterns matching against selected items (may affect other items as well)"));
+    QCOMPARE(actions.size(), 6);
+    QCOMPARE(actions.at(0)->text(), QStringLiteral("Uncheck all and discard staged changes"));
+    QCOMPARE(actions.at(1)->text(), QStringLiteral("Ignore checked items (and their children)"));
+    QCOMPARE(actions.at(2)->text(), QStringLiteral("Ignore and locally delete checked items (and their children)"));
+    QCOMPARE(actions.at(3)->text(), QStringLiteral("Include checked items (and their children)"));
+    QCOMPARE(actions.at(4)->text(), QStringLiteral("Ignore all items by default"));
+    QCOMPARE(actions.at(5)->text(), QStringLiteral("Remove ignore patterns matching checked items (may affect other items as well)"));
     actions.at(1)->trigger(); // this won't do much in the test setup
     actions.at(0)->trigger(); // disables selection mode
     qDeleteAll(actions);
@@ -308,21 +309,21 @@ void ModelTests::testFileModel()
 
     // test ignoring items by default
     actions = model.selectionActions();
-    QVERIFY(actions.size() > 3);
-    QCOMPARE(actions.at(3)->text(), QStringLiteral("Ignore all items by default"));
-    actions.at(3)->trigger();
+    QVERIFY(actions.size() > 4);
+    QCOMPARE(actions.at(4)->text(), QStringLiteral("Ignore all items by default"));
+    actions.at(4)->trigger();
     auto expectedDiff = QString(QChar('+') % model.m_ignoreAllByDefaultPattern % QChar('\n'));
     auto expectedPatterns = QStringList({ QStringLiteral("/**") });
     QCOMPARE(model.computeIgnorePatternDiff(), expectedDiff);
     QCOMPARE(model.computeNewIgnorePatterns().ignore, expectedPatterns);
 
     // test including items explicitly
-    QCOMPARE(actions.at(2)->text(), QStringLiteral("Include selected items (and their children)"));
+    QCOMPARE(actions.at(3)->text(), QStringLiteral("Include checked items (and their children)"));
     model.setData(androidIdx2, Qt::Checked, Qt::CheckStateRole);
     expectedDiff.prepend(QStringLiteral("+!/100ANDRO\n"));
     expectedPatterns.prepend(QStringLiteral("!/100ANDRO"));
     for (auto i = 0; i != 2; ++i) { // preform action twice; this should not lead to a duplicate
-        actions.at(2)->trigger();
+        actions.at(3)->trigger();
         QCOMPARE(model.computeIgnorePatternDiff(), expectedDiff);
         QCOMPARE(model.computeNewIgnorePatterns().ignore, expectedPatterns);
     }
@@ -330,7 +331,7 @@ void ModelTests::testFileModel()
     model.setData(cameraIdx2, Qt::Checked, Qt::CheckStateRole);
     expectedDiff.insert(QStringLiteral("+!/100ANDRO\n").size(), QStringLiteral("+!/Camera\n"));
     expectedPatterns.insert(1, QStringLiteral("!/Camera"));
-    actions.at(2)->trigger();
+    actions.at(3)->trigger();
     QCOMPARE(model.computeIgnorePatternDiff(), expectedDiff);
     QCOMPARE(model.computeNewIgnorePatterns().ignore, expectedPatterns);
     model.setData(cameraIdx2, Qt::Unchecked, Qt::CheckStateRole); // should the item be automatically unchecked?
@@ -338,7 +339,7 @@ void ModelTests::testFileModel()
     // test ignoring items explicitly
     model.setData(model.index(1, 0, cameraIdx2), Qt::Checked, Qt::CheckStateRole);
     model.setData(model.index(3, 0, cameraIdx2), Qt::Checked, Qt::CheckStateRole);
-    QCOMPARE(actions.at(1)->text(), QStringLiteral("Ignore selected items (and their children)"));
+    QCOMPARE(actions.at(1)->text(), QStringLiteral("Ignore checked items (and their children)"));
     actions.at(1)->trigger();
     expectedDiff.insert(
         QStringLiteral("+!/100ANDRO\n").size(), QStringLiteral("+/Camera/IMG_20201213_122451.jpg\n+/Camera/IMG_20201213_122505.jpg\n"));
@@ -351,9 +352,9 @@ void ModelTests::testFileModel()
     // note: Doing this makes not much sense after including items explicitly like the previous tests just did but this should of course work in general.
     qDeleteAll(actions);
     actions = model.selectionActions();
-    QVERIFY(actions.size() > 3);
-    QCOMPARE(actions.at(3)->text(), QStringLiteral("Include all items by default"));
-    actions.at(3)->trigger();
+    QVERIFY(actions.size() > 4);
+    QCOMPARE(actions.at(4)->text(), QStringLiteral("Include all items by default"));
+    actions.at(4)->trigger();
     expectedDiff.chop(model.m_ignoreAllByDefaultPattern.size() + 2);
     expectedPatterns.removeLast();
     QCOMPARE(model.computeIgnorePatternDiff(), expectedDiff);
@@ -362,8 +363,8 @@ void ModelTests::testFileModel()
     // test reviewing/applying changes
     qDeleteAll(actions);
     actions = model.selectionActions();
-    QVERIFY(actions.size() > 5);
-    QCOMPARE(actions.at(5)->text(), QStringLiteral("Review and apply staged changes"));
+    QVERIFY(actions.size() > 6);
+    QCOMPARE(actions.at(6)->text(), QStringLiteral("Review and apply staged changes"));
     connect(
         &model, &Data::SyncthingFileModel::actionNeedsConfirmation, this,
         [&expectedDiff](QAction *action, const QString &message, const QString &diff, const QSet<QString> &localDeletions) {
@@ -391,7 +392,7 @@ void ModelTests::testFileModel()
             QVERIFY(message.startsWith(QStringLiteral("Unable to change ignore patterns:")));
         },
         Qt::QueuedConnection);
-    actions.at(5)->trigger();
+    actions.at(6)->trigger();
     m_timeout.start();
     m_loop.exec();
 
@@ -406,9 +407,9 @@ void ModelTests::testFileModel()
     model.m_isIgnoringAllByDefault = true;
     qDeleteAll(actions);
     actions = model.selectionActions();
-    QVERIFY(actions.size() > 4);
-    QCOMPARE(actions.at(3)->text(), QStringLiteral("Include all items by default"));
-    actions.at(3)->trigger();
+    QVERIFY(actions.size() > 5);
+    QCOMPARE(actions.at(4)->text(), QStringLiteral("Include all items by default"));
+    actions.at(4)->trigger();
     expectedDiff = QStringLiteral(" !/100ANDRO\n /Camera/IMG_20201213_122451.jpg\n /Camera/IMG_20201213_122505.jpg\n !/Camera\n-")
         % model.m_ignoreAllByDefaultPattern % QChar('\n');
     QCOMPARE(model.computeIgnorePatternDiff(), expectedDiff);
@@ -418,8 +419,8 @@ void ModelTests::testFileModel()
     model.resetMatchingIgnorePatterns();
     model.setCheckState(rootIdx, Qt::Unchecked, true);
     model.setCheckState(model.index(1, 0, cameraIdx2), Qt::Checked);
-    QCOMPARE(actions.at(4)->text(), QStringLiteral("Remove ignore patterns matching against selected items (may affect other items as well)"));
-    actions.at(4)->trigger();
+    QCOMPARE(actions.at(5)->text(), QStringLiteral("Remove ignore patterns matching checked items (may affect other items as well)"));
+    actions.at(5)->trigger();
     const auto indexInDiff = expectedDiff.indexOf(QStringLiteral(" /Camera/IMG_20201213_122451.jpg"));
     expectedDiff[indexInDiff] = QChar('-');
     expectedPatterns.removeAt(1);
@@ -432,7 +433,7 @@ void ModelTests::testFileModel()
     QCOMPARE(model.computeIgnorePatternDiff(), expectedDiff);
     QCOMPARE(model.computeNewIgnorePatterns().ignore, expectedPatterns);
     // remove the added-back pattern
-    actions.at(4)->trigger();
+    actions.at(5)->trigger();
     expectedDiff[indexInDiff] = QChar('-');
     expectedPatterns.removeAt(1);
     QCOMPARE(model.computeIgnorePatternDiff(), expectedDiff);

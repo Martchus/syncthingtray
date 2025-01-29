@@ -520,11 +520,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="809"/>
-        <source>Ignore checked items (and their children) and ensure they are locally deleted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../syncthingfilemodel.cpp" line="815"/>
         <source>Include checked items (and their children)</source>
         <translation type="unfinished"></translation>
@@ -537,6 +532,11 @@
     <message>
         <location filename="../syncthingfilemodel.cpp" line="822"/>
         <source>Include all items by default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingfilemodel.cpp" line="809"/>
+        <source>Ignore and locally delete checked items (and their children)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

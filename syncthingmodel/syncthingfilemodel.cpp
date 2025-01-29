@@ -806,7 +806,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
         res << ignoreSelectedAction;
 
         if (!m_localPath.isEmpty()) {
-            auto *const ignoreAndDeleteSelectedAction = new QAction(tr("Ignore checked items (and their children) and ensure they are locally deleted"), this);
+            auto *const ignoreAndDeleteSelectedAction = new QAction(tr("Ignore and locally delete checked items (and their children)"), this);
             ignoreAndDeleteSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-remove")));
             connect(ignoreAndDeleteSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(true, true); });
             res << ignoreAndDeleteSelectedAction;
