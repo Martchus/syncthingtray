@@ -453,12 +453,18 @@ ApplicationWindow {
     }
 
     // handle closing
-    CustomDialog {
+    Dialog {
         id: closeDialog
+        parent: Overlay.overlay
+        anchors.centerIn: Overlay.overlay
+        popupType: App.nativePopups ? Popup.Native : Popup.Item
+        width: Math.min(popupType === Popup.Item ? parent.width - 20 : implicitWidth, 800)
+        standardButtons: Dialog.NoButton
+        modal: true
         title: window.title
         contentItem: Label {
             Layout.fillWidth: true
-            text: qsTr("Do you really want to close Syncthing? You can also just quit the UI but keep running Syncthing in the backround.")
+            text: qsTr("Do you want to shutdown Syncthing? You can also just quit the app and keep Syncthing running in the backround.")
             wrapMode: Text.WordWrap
         }
         onAccepted: {
@@ -466,6 +472,16 @@ ApplicationWindow {
             window.close();
         }
         footer: DialogButtonBox {
+            Button {
+                text: qsTr("Cancel")
+                flat: true
+                DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+            }
+            Button {
+                text: qsTr("Shutdown Syncthing and quit app")
+                flat: true
+                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            }
             Button {
                 text: qsTr("Run in background")
                 flat: true
