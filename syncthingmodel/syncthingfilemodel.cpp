@@ -773,7 +773,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
     if (!m_selectionMode) {
         auto *const startSelectionAction = new QAction(tr("Select items to sync/ignore"), this);
         startSelectionAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-select")));
-        startSelectionAction->setData(QStringLiteral("primary"));
+        startSelectionAction->setData(QStringLiteral("primary:") + tr("Select"));
         connect(startSelectionAction, &QAction::triggered, this, [this] { setSelectionModeEnabled(true); });
         res << startSelectionAction;
 
@@ -790,7 +790,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
     } else {
         auto *const discardAction = new QAction(tr("Uncheck all and discard staged changes"), this);
         discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo")));
-        discardAction->setData(QStringLiteral("primary"));
+        discardAction->setData(QStringLiteral("primary:") + tr("Discard"));
         connect(discardAction, &QAction::triggered, this, [this] {
             if (const auto rootIndex = index(0, 0); rootIndex.isValid()) {
                 setCheckState(index(0, 0), Qt::Unchecked, true);
@@ -885,7 +885,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
     if (!m_stagedChanges.isEmpty() || !m_stagedLocalFileDeletions.isEmpty()) {
         auto *const applyStagedChangesAction = new RejectableAction(tr("Review and apply staged changes"), this);
         applyStagedChangesAction->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")));
-        applyStagedChangesAction->setData(QStringLiteral("primary"));
+        applyStagedChangesAction->setData(QStringLiteral("primary:") + tr("Apply"));
         connect(applyStagedChangesAction, &QAction::triggered, this, [this, action = applyStagedChangesAction]() mutable {
             // allow user to review changes before applying them
             if (action->needsConfirmation) {

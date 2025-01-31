@@ -1800,78 +1800,93 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>QtGui::OtherDialogs</name>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="46"/>
+        <location filename="../misc/otherdialogs.cpp" line="49"/>
         <source>Own device ID</source>
         <translation>Eigene Geräte-ID</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="56"/>
+        <location filename="../misc/otherdialogs.cpp" line="59"/>
         <source>device ID is unknown</source>
         <translation>Geräte-ID ist unbekannt</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="64"/>
+        <location filename="../misc/otherdialogs.cpp" line="67"/>
         <source>Copy to clipboard</source>
         <translation>In Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="101"/>
+        <location filename="../misc/otherdialogs.cpp" line="122"/>
         <source>Remote/global tree of folder &quot;%1&quot;</source>
         <translation>Globale Dateistruktur von &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="134"/>
+        <location filename="../misc/otherdialogs.cpp" line="160"/>
+        <source>Ignore</source>
+        <translation>Ignorieren</translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="166"/>
+        <source>Include</source>
+        <translation>Einbeziehen</translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="172"/>
+        <source>Other</source>
+        <translation>Weiteres</translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="220"/>
         <source>Manage ignore patterns (experimental)</source>
         <translation>Ignoriermuster verwalten (experimentell)</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="160"/>
-        <location filename="../misc/otherdialogs.cpp" line="207"/>
-        <source>Deletion of the following local files:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/otherdialogs.cpp" line="175"/>
-        <source>Edit patterns manually</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/otherdialogs.cpp" line="209"/>
-        <source>Changes to ignore patterns:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../misc/otherdialogs.cpp" line="247"/>
+        <location filename="../misc/otherdialogs.cpp" line="295"/>
+        <source>Deletion of the following local files:</source>
+        <translation>Löschung folgender lokalen Dateien:</translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="262"/>
+        <source>Edit patterns manually</source>
+        <translation>Muster manuell editieren</translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="297"/>
+        <source>Changes to ignore patterns:</source>
+        <translation>Änderung der Ignorier-Muster:</translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="345"/>
         <source>Ignore patterns of folder &quot;%1&quot;</source>
         <translation>Ignoriermuster des Ordners &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="300"/>
+        <location filename="../misc/otherdialogs.cpp" line="398"/>
         <source>Do you want to save the changes?</source>
         <translation>Sollen die Änderungen gespeichert werden?</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="312"/>
+        <location filename="../misc/otherdialogs.cpp" line="410"/>
         <source>Notifications/errors</source>
         <translation>Benachrichtigungen/Fehlermeldungen</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="340"/>
+        <location filename="../misc/otherdialogs.cpp" line="438"/>
         <source>Copy</source>
         <translation>Kopieren</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="352"/>
+        <location filename="../misc/otherdialogs.cpp" line="450"/>
         <source>Selected notification:</source>
         <translation>Ausgewählte Benachrichtigung:</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="376"/>
+        <location filename="../misc/otherdialogs.cpp" line="474"/>
         <source>Clear all notifications</source>
         <translation>Alle Benachrichtigungen löschen</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="277"/>
+        <location filename="../misc/otherdialogs.cpp" line="375"/>
         <source>Ignore patterns have been changed.</source>
         <translation>Die Ignoriermuster wurden gespeichert.</translation>
     </message>
@@ -1884,17 +1899,17 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation type="vanished">Manuell editieren</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="177"/>
+        <location filename="../misc/otherdialogs.cpp" line="264"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="179"/>
+        <location filename="../misc/otherdialogs.cpp" line="266"/>
         <source>No</source>
         <translation>Nein</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="284"/>
+        <location filename="../misc/otherdialogs.cpp" line="382"/>
         <source>Unable to save ignore patterns: %1</source>
         <translation>Ignoriermuster können nicht gespeichert werden: %1</translation>
     </message>
