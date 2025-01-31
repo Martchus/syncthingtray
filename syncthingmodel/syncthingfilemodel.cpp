@@ -892,7 +892,8 @@ QList<QAction *> SyncthingFileModel::selectionActions()
                 action->needsConfirmation = false;
                 m_manuallyEditedIgnorePatterns.clear();
                 m_manuallyEditedLocalDeletions.reset();
-                emit actionNeedsConfirmation(action, tr("Do you want to apply the following changes?"), computeIgnorePatternDiff(), m_stagedLocalFileDeletions);
+                emit actionNeedsConfirmation(
+                    action, tr("Do you want to apply the following changes?"), computeIgnorePatternDiff(), m_stagedLocalFileDeletions);
                 return;
             }
             action->needsConfirmation = true;
@@ -936,7 +937,9 @@ QList<QAction *> SyncthingFileModel::selectionActions()
                 if (failedDeletions.isEmpty()) {
                     emit notification(QStringLiteral("info"), tr("Ignore patterns have been changed."));
                 } else {
-                    emit notification(QStringLiteral("error"), tr("Ignore patterns have been changed but the following local files could not be deleted:\n") + failedDeletions.join(QChar('\n')));
+                    emit notification(QStringLiteral("error"),
+                        tr("Ignore patterns have been changed but the following local files could not be deleted:\n")
+                            + failedDeletions.join(QChar('\n')));
                 }
                 emit hasStagedChangesChanged(hasStagedChanges());
             });

@@ -33,8 +33,8 @@
 #include <QTextBrowser>
 #include <QTextDocument>
 #include <QTextEdit>
-#include <QTreeView>
 #include <QToolBar>
+#include <QTreeView>
 #include <QVBoxLayout>
 
 #include <utility>
@@ -133,7 +133,7 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
     auto toolBar = new QToolBar(dlg);
     toolBar->setFloatable(false);
     toolBar->setMovable(false);
-    auto updateToolBarActions = [toolBar, model, actions = QList<QAction *>()] () mutable {
+    auto updateToolBarActions = [toolBar, model, actions = QList<QAction *>()]() mutable {
         toolBar->clear();
         qDeleteAll(actions);
         actions = model->selectionActions();
@@ -238,8 +238,8 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
         messageBox.setDetailedText(details);
         messageBox.exec();
     });
-    QObject::connect(
-        model, &Data::SyncthingFileModel::actionNeedsConfirmation, toolBar, [model, toolBar](QAction *action, const QString &message, const QString &details, const QSet<QString> &localDeletions) {
+    QObject::connect(model, &Data::SyncthingFileModel::actionNeedsConfirmation, toolBar,
+        [model, toolBar](QAction *action, const QString &message, const QString &details, const QSet<QString> &localDeletions) {
             auto *const rejectableAction = qobject_cast<RejectableAction *>(action);
             auto messageBox = TextViewDialog(QStringLiteral("Confirm action - " APP_NAME));
             auto deletionList = QString();
@@ -258,8 +258,8 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
             auto *const browser = messageBox.browser();
             auto *const highlighter = new DiffHighlighter(browser->document());
             auto *const buttonLayout = new QHBoxLayout(&messageBox);
-            auto *const editBtn = new QPushButton(
-                QIcon::fromTheme(QStringLiteral("document-edit")), QCoreApplication::translate("QtGui::OtherDialogs", "Edit patterns manually"), &messageBox);
+            auto *const editBtn = new QPushButton(QIcon::fromTheme(QStringLiteral("document-edit")),
+                QCoreApplication::translate("QtGui::OtherDialogs", "Edit patterns manually"), &messageBox);
             auto *const yesBtn = new QPushButton(
                 QIcon::fromTheme(QStringLiteral("dialog-ok")), QCoreApplication::translate("QtGui::OtherDialogs", "Apply"), &messageBox);
             auto *const noBtn = new QPushButton(
@@ -292,9 +292,11 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
                 }
                 deletionModel->setItems(deletionItems);
                 deletionView->setModel(deletionModel);
-                messageBox.layout()->insertWidget(widgetIndex++, new QLabel(QCoreApplication::translate("QtGui::OtherDialogs", "Deletion of the following local files:"), &messageBox));
+                messageBox.layout()->insertWidget(widgetIndex++,
+                    new QLabel(QCoreApplication::translate("QtGui::OtherDialogs", "Deletion of the following local files:"), &messageBox));
                 messageBox.layout()->insertWidget(widgetIndex++, deletionView);
-                messageBox.layout()->insertWidget(widgetIndex++, new QLabel(QCoreApplication::translate("QtGui::OtherDialogs", "Changes to ignore patterns:"), &messageBox));
+                messageBox.layout()->insertWidget(
+                    widgetIndex++, new QLabel(QCoreApplication::translate("QtGui::OtherDialogs", "Changes to ignore patterns:"), &messageBox));
             }
             messageBox.layout()->addLayout(buttonLayout);
             messageBox.setAttribute(Qt::WA_DeleteOnClose, false);

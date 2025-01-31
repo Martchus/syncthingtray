@@ -13,9 +13,9 @@
 #include <QPixmap>
 #include <QSet>
 
-#include <optional>
 #include <map>
 #include <memory>
+#include <optional>
 #include <vector>
 
 class ModelTests;
@@ -96,7 +96,8 @@ public:
 Q_SIGNALS:
     void fetchQueueEmpty();
     void notification(const QString &type, const QString &message, const QString &details = QString());
-    void actionNeedsConfirmation(QAction *action, const QString &message, const QString &diff = QString(), const QSet<QString> &localDeletions = QSet<QString>());
+    void actionNeedsConfirmation(
+        QAction *action, const QString &message, const QString &diff = QString(), const QSet<QString> &localDeletions = QSet<QString>());
     void selectionModeEnabledChanged(bool selectionModeEnabled);
     void selectionActionsChanged();
     void hasStagedChangesChanged(bool hasStagedChanged);
