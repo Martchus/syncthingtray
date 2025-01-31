@@ -201,6 +201,35 @@ Page {
             confirmActionDialog.open();
         }
     }
+    Drawer {
+        id: extraActionsDrawer
+        width: window.width
+        contentHeight: Math.min(drawerListView.contentHeight, window.height)
+        edge: Qt.BottomEdge
+        CustomListView {
+            id: drawerListView
+            anchors.fill: parent
+            model: page.extraActions
+            delegate: ItemDelegate {
+                id: drawerDelegate
+                width: drawerListView.width
+                text: modelData.text
+                enabled: modelData.enabled
+                visible: enabled
+                height: visible ? implicitHeight : 0
+                onClicked: modelData?.trigger()
+                contentItem: RowLayout {
+                    Label {
+                        Layout.fillWidth: true
+                        text: drawerDelegate.text
+                        elide: Text.ElideRight
+                        wrapMode: Text.WordWrap
+                    }
+                }
+                required property Action modelData
+            }
+        }
+    }
 
     required property string dirName
     required property string dirId
@@ -218,5 +247,10 @@ Page {
             listView.positionViewAtIndex(parentRow, ListView.Center);
         }
         return isValid;
+    }
+
+    function showExtraActions() {
+        extraActionsDrawer.open();
+        return true;
     }
 }

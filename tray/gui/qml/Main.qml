@@ -139,13 +139,17 @@ ApplicationWindow {
                         visible: pageStack.currentExtraActions.length > 0
                         icon.source: App.faUrlBase + "ellipsis-v"
                         text: qsTr("More")
-                        onClicked: extraActionsMenu.popup()
+                        onClicked: pageStack.currentPage?.showExtraActions() ?? extraActionsMenu.popup()
                         Menu {
                             id: extraActionsMenu
                             popupType: App.nativePopups ? Popup.Native : Popup.Item
                             MenuItemInstantiator {
                                 menu: extraActionsMenu
-                                model: pageStack.currentExtraActions
+                                model: {
+                                    const currentPage = pageStack.currentPage;
+                                    const extraActions = currentPage.showExtraActions === undefined ? currentPage.extraActions : undefined;
+                                    return extraActions ?? [];
+                                }
                             }
                         }
                     }
