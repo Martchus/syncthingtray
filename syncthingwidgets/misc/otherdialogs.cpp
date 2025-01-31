@@ -34,6 +34,8 @@
 #include <QTextDocument>
 #include <QTextEdit>
 #include <QTreeView>
+#include <QToolBar>
+#include <QToolButton>
 #include <QVBoxLayout>
 
 using namespace std;
@@ -95,6 +97,25 @@ QWidget *ownDeviceIdWidget(Data::SyncthingConnection &connection, int size, QWid
     return widget;
 }
 
+/// \cond
+static QToolButton *initToolButton(const QString &text, QAction *action, QWidget *parent)
+{
+    auto btn = new QToolButton(parent);
+    btn->setText(text);
+    btn->setIcon(action->icon());
+    btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    btn->setPopupMode(QToolButton::InstantPopup);
+    btn->addAction(action);
+    return btn;
+}
+
+static QString firstWord(const QString &text)
+{
+    const auto spacePos = text.indexOf(QChar(' '));
+    return spacePos > 0 ? text.mid(0, spacePos) : text;
+}
+/// \endcond
+
 QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Data::SyncthingDir &dir, QWidget *parent)
 {
     auto dlg = new QDialog(parent);
@@ -107,6 +128,71 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
     auto view = new QTreeView(dlg);
     auto model = new Data::SyncthingFileModel(connection, dir, view);
     view->setModel(model);
+
+    // setup toolbar
+    auto toolBar = new QToolBar(dlg);
+    toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    auto updateToolBarActions = [toolBar, model] {
+        const auto existingActions = toolBar->actions();
+        for (auto *const action : existingActions) {
+            toolBar->removeAction(action);
+        }
+        const auto newActions = model->selectionActions();
+        QToolButton *primaryBtn = nullptr, *ignoreBtn = nullptr, *includeBtn = nullptr, *otherBtn = nullptr;
+        QStringList primaryTexts;
+        QAction *firstPrimaryAction = nullptr;
+        for (auto *const action : newActions) {
+            const auto category = action->data().toString();
+            if (category == QStringLiteral("primary")) {
+                if (!firstPrimaryAction) {
+                    firstPrimaryAction = action;
+                    continue;
+                } else if (!primaryBtn) {
+                    primaryBtn = initToolButton(QString(), firstPrimaryAction, toolBar);
+                    primaryTexts << firstWord(firstPrimaryAction->text());
+                }
+                primaryBtn->addAction(action);
+                primaryTexts << firstWord(action->text());
+            } else if (category == QStringLiteral("ignore")) {
+                if (ignoreBtn) {
+                    ignoreBtn->addAction(action);
+                } else {
+                    ignoreBtn = initToolButton(QCoreApplication::translate("QtGui::OtherDialogs", "Ignore"), action, toolBar);
+                }
+            } else if (category == QStringLiteral("include")) {
+                if (includeBtn) {
+                    includeBtn->addAction(action);
+                } else {
+                    includeBtn = initToolButton(QCoreApplication::translate("QtGui::OtherDialogs", "Include"), action, toolBar);
+                }
+            } else {
+                if (otherBtn) {
+                    otherBtn->addAction(action);
+                } else {
+                    otherBtn = initToolButton(QCoreApplication::translate("QtGui::OtherDialogs", "Other"), action, toolBar);
+                }
+            }
+        }
+        if (firstPrimaryAction) {
+            if (primaryBtn) {
+                primaryBtn->setText(primaryTexts.join(QChar('/')));
+                toolBar->addWidget(primaryBtn);
+            } else {
+                toolBar->addAction(firstPrimaryAction);
+            }
+        }
+        if (ignoreBtn) {
+            toolBar->addWidget(ignoreBtn);
+        }
+        if (includeBtn) {
+            toolBar->addWidget(includeBtn);
+        }
+        if (otherBtn) {
+            toolBar->addWidget(otherBtn);
+        }
+    };
+    updateToolBarActions();
+    QObject::connect(model, &Data::SyncthingFileModel::selectionActionsChanged, toolBar, std::move(updateToolBarActions));
 
     // setup context menu
     view->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -177,6 +263,7 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
                 QIcon::fromTheme(QStringLiteral("dialog-ok")), QCoreApplication::translate("QtGui::OtherDialogs", "Apply"), &messageBox);
             auto *const noBtn = new QPushButton(
                 QIcon::fromTheme(QStringLiteral("dialog-cancel")), QCoreApplication::translate("QtGui::OtherDialogs", "No"), &messageBox);
+            auto widgetIndex = 0;
             QObject::connect(yesBtn, &QAbstractButton::clicked, &messageBox, [&messageBox] { messageBox.accept(); });
             QObject::connect(noBtn, &QAbstractButton::clicked, &messageBox, [&messageBox] { messageBox.reject(); });
             QObject::connect(editBtn, &QAbstractButton::clicked, &messageBox, [&messageBox, model, editBtn, highlighter] {
@@ -193,7 +280,7 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
             buttonLayout->addWidget(yesBtn);
             buttonLayout->addWidget(noBtn);
             browser->setText(details);
-            messageBox.layout()->insertWidget(0, new QLabel(message, &messageBox));
+            messageBox.layout()->insertWidget(widgetIndex++, new QLabel(message, &messageBox));
             auto *deletionModel = localDeletions.isEmpty() ? nullptr : new QtUtilities::ChecklistModel(&messageBox);
             if (deletionModel) {
                 auto *deletionView = new QListView(&messageBox);
@@ -204,9 +291,9 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
                 }
                 deletionModel->setItems(deletionItems);
                 deletionView->setModel(deletionModel);
-                messageBox.layout()->insertWidget(1, new QLabel(QCoreApplication::translate("QtGui::OtherDialogs", "Deletion of the following local files:"), &messageBox));
-                messageBox.layout()->insertWidget(2, deletionView);
-                messageBox.layout()->insertWidget(3, new QLabel(QCoreApplication::translate("QtGui::OtherDialogs", "Changes to ignore patterns:"), &messageBox));
+                messageBox.layout()->insertWidget(widgetIndex++, new QLabel(QCoreApplication::translate("QtGui::OtherDialogs", "Deletion of the following local files:"), &messageBox));
+                messageBox.layout()->insertWidget(widgetIndex++, deletionView);
+                messageBox.layout()->insertWidget(widgetIndex++, new QLabel(QCoreApplication::translate("QtGui::OtherDialogs", "Changes to ignore patterns:"), &messageBox));
             }
             messageBox.layout()->addLayout(buttonLayout);
             messageBox.setAttribute(Qt::WA_DeleteOnClose, false);
@@ -235,6 +322,7 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
     layout->setAlignment(Qt::AlignCenter);
     layout->setSpacing(0);
     layout->setContentsMargins(QMargins());
+    layout->addWidget(toolBar);
     layout->addWidget(view);
     dlg->setLayout(layout);
 
