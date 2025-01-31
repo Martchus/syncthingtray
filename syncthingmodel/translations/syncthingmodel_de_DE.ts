@@ -647,36 +647,36 @@
         <translation>Anwenden</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="895"/>
+        <location filename="../syncthingfilemodel.cpp" line="896"/>
         <source>Do you want to apply the following changes?</source>
         <translation>Sollen die folgenden Änderungen angewandt werden?</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="903"/>
+        <location filename="../syncthingfilemodel.cpp" line="904"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Ignoriermuster können nicht gespeichert werden, da noch eine vorherige Abfrage in Gange ist.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="911"/>
+        <location filename="../syncthingfilemodel.cpp" line="912"/>
         <source>Unable to change ignore patterns:
 %1</source>
         <translation>Kann Ignoriermuster nicht speichern:
 %1</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="937"/>
+        <location filename="../syncthingfilemodel.cpp" line="938"/>
         <source>Ignore patterns have been changed.</source>
         <translation>Ignoriermuster wurden gespeichert.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="939"/>
+        <location filename="../syncthingfilemodel.cpp" line="941"/>
         <source>Ignore patterns have been changed but the following local files could not be deleted:
 </source>
         <translation>Ignoriermuster wurden gespeichert, aber die folgenden lokalen Dateien konnten nicht gelöscht werden:
 </translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1115"/>
+        <location filename="../syncthingfilemodel.cpp" line="1118"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Ignoriermuster können nicht abgefragt werden, da noch eine vorherige Abfrage in Gange ist.</translation>
     </message>

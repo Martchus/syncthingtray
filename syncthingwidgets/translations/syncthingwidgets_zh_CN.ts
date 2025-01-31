@@ -1679,7 +1679,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="247"/>
-        <location filename="../misc/otherdialogs.cpp" line="295"/>
+        <location filename="../misc/otherdialogs.cpp" line="296"/>
         <source>Deletion of the following local files:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1689,42 +1689,42 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="297"/>
+        <location filename="../misc/otherdialogs.cpp" line="299"/>
         <source>Changes to ignore patterns:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="345"/>
+        <location filename="../misc/otherdialogs.cpp" line="347"/>
         <source>Ignore patterns of folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="398"/>
+        <location filename="../misc/otherdialogs.cpp" line="400"/>
         <source>Do you want to save the changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="410"/>
+        <location filename="../misc/otherdialogs.cpp" line="412"/>
         <source>Notifications/errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="438"/>
+        <location filename="../misc/otherdialogs.cpp" line="440"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="450"/>
+        <location filename="../misc/otherdialogs.cpp" line="452"/>
         <source>Selected notification:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="474"/>
+        <location filename="../misc/otherdialogs.cpp" line="476"/>
         <source>Clear all notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="375"/>
+        <location filename="../misc/otherdialogs.cpp" line="377"/>
         <source>Ignore patterns have been changed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1739,7 +1739,7 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="382"/>
+        <location filename="../misc/otherdialogs.cpp" line="384"/>
         <source>Unable to save ignore patterns: %1</source>
         <translation type="unfinished"></translation>
     </message>

@@ -565,34 +565,34 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="895"/>
+        <location filename="../syncthingfilemodel.cpp" line="896"/>
         <source>Do you want to apply the following changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="903"/>
+        <location filename="../syncthingfilemodel.cpp" line="904"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="911"/>
+        <location filename="../syncthingfilemodel.cpp" line="912"/>
         <source>Unable to change ignore patterns:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="937"/>
+        <location filename="../syncthingfilemodel.cpp" line="938"/>
         <source>Ignore patterns have been changed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="939"/>
+        <location filename="../syncthingfilemodel.cpp" line="941"/>
         <source>Ignore patterns have been changed but the following local files could not be deleted:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1115"/>
+        <location filename="../syncthingfilemodel.cpp" line="1118"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation type="unfinished"></translation>
     </message>
