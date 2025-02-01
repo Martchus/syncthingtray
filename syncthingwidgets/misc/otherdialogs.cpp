@@ -288,7 +288,11 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
                 auto deletionItems = QList<QtUtilities::ChecklistItem>();
                 deletionItems.reserve(localDeletions.size());
                 for (const auto &path : localDeletions) {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
                     deletionItems.emplace_back(path, path, Qt::Checked);
+#else
+                    deletionItems.append(QtUtilities::ChecklistItem(path, path, Qt::Checked));
+#endif
                 }
                 deletionModel->setItems(deletionItems);
                 deletionView->setModel(deletionModel);
