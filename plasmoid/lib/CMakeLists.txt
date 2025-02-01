@@ -36,6 +36,7 @@ find_package(syncthingwidgets ${META_APP_VERSION} REQUIRED)
 use_syncthingwidgets()
 
 # link also explicitly against the following Qt modules
+include(3rdParty)
 list(APPEND ADDITIONAL_QT_MODULES Network Qml)
 if (KF_MAJOR_VERSION GREATER_EQUAL 6)
     set(Config_MODULE_TARGETS ${KF_PACKAGE_PREFIX}::ConfigCore)

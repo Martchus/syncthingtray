@@ -53,6 +53,7 @@ find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFI
 use_qt_utilities(ONLY_HEADERS VISIBILITY PUBLIC)
 
 # find boost libraries
+include(3rdParty)
 option(USE_BOOST_PROCESS "enables Boost.Process for improved behavior of the launcher" ON)
 if (USE_BOOST_PROCESS)
     option(BOOST_STATIC_LINKAGE "${STATIC_LINKAGE}" "link statically against Boost (instead of dynamically)")
