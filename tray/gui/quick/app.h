@@ -29,6 +29,7 @@
 #include <QJsonObject>
 #include <QQmlApplicationEngine>
 #include <QUrl>
+#include <QtVersion>
 
 #ifdef Q_OS_ANDROID
 #include <QHash>
@@ -63,6 +64,7 @@ class App : public QObject {
     Q_PROPERTY(bool nativePopups READ nativePopups CONSTANT)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion CONSTANT)
+    Q_PROPERTY(QString qtVersion READ qtVersion CONSTANT)
     Q_PROPERTY(QString readmeUrl READ readmeUrl CONSTANT)
     Q_PROPERTY(QString website READ website CONSTANT)
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
@@ -147,6 +149,10 @@ public:
 #else
         return tr("not available");
 #endif
+    }
+    QString qtVersion() const
+    {
+        return QString::fromUtf8(qVersion());
     }
     QString readmeUrl() const
     {

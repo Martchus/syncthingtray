@@ -61,6 +61,21 @@ CustomDialog {
                 horizontalAlignment: Qt.AlignHCenter
                 elide: Qt.ElideRight
             }
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                text: qsTr("Qt version")
+                horizontalAlignment: Qt.AlignHCenter
+                elide: Qt.ElideRight
+            }
+            Label {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                text: App.qtVersion
+                font.weight: Font.Light
+                horizontalAlignment: Qt.AlignHCenter
+                elide: Qt.ElideRight
+            }
         }
     }
     footer: DialogButtonBox {
