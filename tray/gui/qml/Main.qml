@@ -468,7 +468,7 @@ ApplicationWindow {
         title: window.title
         contentItem: Label {
             Layout.fillWidth: true
-            text: qsTr("Do you want to shutdown Syncthing? You can also just quit the app and keep Syncthing running in the backround.")
+            text: qsTr("Do you want to shutdown Syncthing and quit the app? You can also just quit the app and keep Syncthing running in the backround.")
             wrapMode: Text.WordWrap
         }
         onAccepted: {
@@ -482,12 +482,12 @@ ApplicationWindow {
                 DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
             }
             Button {
-                text: qsTr("Shutdown Syncthing and quit app")
+                text: qsTr("Shutdown")
                 flat: true
                 DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
             }
             Button {
-                text: qsTr("Run in background")
+                text: qsTr("Background")
                 flat: true
                 onClicked: {
                     closeDialog.close();
