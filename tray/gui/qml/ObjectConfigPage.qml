@@ -111,6 +111,12 @@ Page {
     property var configTemplates: ({
         "devices": {deviceID: "", introducedBy: "", encryptionPassword: ""},
         "addresses": "dynamic",
+        "defaults.device.addresses": "dynamic",
+        "allowedNetworks": "",
+        "defaults.device.allowedNetworks": "",
+        "options.listenAddresses": "default",
+        "options.globalAnnounceServers": "default",
+        "options.alwaysLocalNet": "",
         "ignoredFolders": {id: "", label: "", time: ""},
         "remoteIgnoredDevices": {deviceID: "", name: "", time: "", address: ""},
     })

@@ -223,6 +223,7 @@ public:
     Q_INVOKABLE void applyLauncherSettings();
     Q_INVOKABLE bool clearLogfile();
     Q_INVOKABLE bool checkOngoingImportExport();
+    Q_INVOKABLE bool openSyncthingConfigFile();
     Q_INVOKABLE bool checkSettings(const QUrl &url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool importSettings(const QVariantMap &availableSettings, const QVariantMap &selectedSettings, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool exportSettings(const QUrl &url, const QJSValue &callback = QJSValue());

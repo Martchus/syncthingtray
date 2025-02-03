@@ -1261,6 +1261,14 @@ void App::setImportExportStatus(ImportExportStatus importExportStatus)
 }
 
 /*!
+ * \brief Opens the Syncthing config file in the standard editor.
+ */
+bool QtGui::App::openSyncthingConfigFile()
+{
+    return openPath(m_syncthingConfigDir + QStringLiteral("/config.xml"));
+}
+
+/*!
  * \brief Checks the location specified via \a url for settings to import.
  */
 bool App::checkSettings(const QUrl &url, const QJSValue &callback)
