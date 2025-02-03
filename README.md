@@ -938,13 +938,14 @@ variable `PLASMA_USE_QT_SCALING=1` might help.
     * This feature relies especially on the system being correctly configured. Checkout the
       "[Required system configuration](#required-system-configuration)" section for details.
 
-## Copyright notice and license
+## Legal information
+### Copyright notice and license
 Copyright © 2016-2025 Marius Kittler
 
 All code - unless stated otherwise in a comment on top of the file - is licensed under [GPL-2-or-later](LICENSE). This does *not* apply
 to code contained in Git repositories included as Git submodule (which contain their own README and licensing information).
 
-## Attribution for 3rd party content
+### Attribution for 3rd party content
 Syncthing Tray contains icons from various sources:
 
 * Some icons are taken from [Fork Awesome](https://forkaweso.me/Fork-Awesome) (see [their license](https://forkaweso.me/Fork-Awesome/license)).

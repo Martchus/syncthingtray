@@ -80,15 +80,9 @@ CustomDialog {
     }
     footer: DialogButtonBox {
         Button {
-            text: qsTr("License")
+            text: qsTr("Legal info")
             flat: true
-            onClicked: Qt.openUrlExternally(App.readmeUrl + "#copyright-notice-and-license")
-            DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
-        }
-        Button {
-            text: qsTr("Attribution")
-            flat: true
-            onClicked: Qt.openUrlExternally(App.readmeUrl + "#attribution-for-3rd-party-content")
+            onClicked: Qt.openUrlExternally(App.readmeUrl + "#legal-information")
             DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
         }
         Button {
