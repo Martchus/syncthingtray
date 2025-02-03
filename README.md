@@ -959,8 +959,9 @@ None of these icons have been (intentionally) modified so no copyright for modif
 
 Some of the code is based on code from other open source projects:
 
-* Code under `tray/gui/quick` originates from [Kirigami](https://invent.kde.org/frameworks/kirigami).
-  The comments at the beginning of those files state the original authors/contributors.
+* Code in `tray/gui/quick/quickicon.cpp` and the corresponding header file originates from
+  [Kirigami](https://invent.kde.org/frameworks/kirigami). The comments at the beginning of those files state the original
+  authors/contributors.
 * Parts of `tray/android/src/io/github/martchus/syncthingtray/Util.java` are based on
   [com.nutomic.syncthingandroid.util](https://github.com/Catfriend1/syncthing-android/blob/main/app/src/main/java/com/nutomic/syncthingandroid/util/FileUtils.java).
 * The icon files `ic_stat_notify*` under `tray/android/res` and `tray/resources` are taken from
