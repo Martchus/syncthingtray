@@ -37,6 +37,10 @@ Makefile*
 # Generated files
 /*/android/AndroidManifest.xml
 
+# Created by Java extension of Visual Studio Code
+/*/android/.gradle
+/*/android/build
+
 # Dolphin
 .directory
 
