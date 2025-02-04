@@ -19,6 +19,7 @@
 #include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingconnectionsettings.h>
+#include <syncthingconnector/syncthingconnectionstatus.h>
 #include <syncthingconnector/syncthingnotifier.h>
 
 #include <qtutilities/settingsdialog/qtsettings.h>
@@ -295,6 +296,7 @@ private Q_SLOTS:
     void handleChangedDevices();
     void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
     void handleStateChanged(Qt::ApplicationState state);
+    void handleConnectionStatusChanged(Data::SyncthingStatus newStatus);
 #ifdef Q_OS_ANDROID
     QJniObject &makeAndroidIcon(const QIcon &icon);
     void invalidateAndroidIconCache();
@@ -333,7 +335,6 @@ private:
     QVariantList m_internalErrors;
     StatusInfo m_statusInfo;
 #ifdef Q_OS_ANDROID
-    int m_syncthingErrors = 0;
     QHash<const QIcon *, QJniObject> m_androidIconCache;
     int m_androidNotificationId = 100000000;
 #endif

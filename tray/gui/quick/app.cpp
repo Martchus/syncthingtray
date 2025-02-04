@@ -179,7 +179,7 @@ App::App(bool insecure, QObject *parent)
     m_notifier.setEnabledNotifications(SyncthingHighLevelNotification::ConnectedDisconnected);
 #endif
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
-    connect(&m_connection, &SyncthingConnection::statusChanged, this, &App::invalidateStatus);
+    connect(&m_connection, &SyncthingConnection::statusChanged, this, &App::handleConnectionStatusChanged);
     connect(&m_connection, &SyncthingConnection::newDevices, this, &App::handleChangedDevices);
     connect(&m_connection, &SyncthingConnection::autoReconnectIntervalChanged, this, &App::invalidateStatus);
     connect(&m_connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &App::invalidateStatus);
@@ -788,6 +788,22 @@ void App::handleStateChanged(Qt::ApplicationState state)
     }
 }
 
+void App::handleConnectionStatusChanged(Data::SyncthingStatus newStatus)
+{
+    invalidateStatus();
+#ifdef Q_OS_ANDROID
+    switch (newStatus) {
+    case Data::SyncthingStatus::Reconnecting:
+        clearSyncthingErrorsNotification();
+        break;
+    default:
+        ;
+    }
+#else
+    Q_UNUSED(newStatus)
+#endif
+}
+
 #ifdef Q_OS_ANDROID
 void App::invalidateAndroidIconCache()
 {
@@ -831,10 +847,10 @@ void App::clearAndroidExtraNotifications(int firstId, int lastId)
 
 void App::updateSyncthingErrorsNotification(CppUtilities::DateTime when, const QString &message)
 {
-    ++m_syncthingErrors;
+    const auto syncthingErrors = m_connection.errors().size();
     const auto title = QJniObject::fromString(
-        m_syncthingErrors == 1 ? tr("Syncthing error/notification") : tr("%1 Syncthing errors/notifications").arg(m_syncthingErrors));
-    const auto text = QJniObject::fromString(m_syncthingErrors == 1 ? message : tr("most recent: ") + message);
+        syncthingErrors == 1 ? tr("Syncthing error/notification") : tr("%1 Syncthing errors/notifications").arg(syncthingErrors));
+    const auto text = QJniObject::fromString(syncthingErrors == 1 ? message : tr("most recent: ") + message);
     const auto subText = QJniObject::fromString(QString::fromStdString(when.toString()));
     static const auto page = QJniObject::fromString(QStringLiteral("connectionErrors"));
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
@@ -843,7 +859,6 @@ void App::updateSyncthingErrorsNotification(CppUtilities::DateTime when, const Q
 
 void App::clearSyncthingErrorsNotification()
 {
-    m_syncthingErrors = 0;
     clearAndroidExtraNotifications(2, -1);
 }
 
