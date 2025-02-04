@@ -41,7 +41,7 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
     Q_PROPERTY(bool running READ isRunning NOTIFY runningChanged)
     Q_PROPERTY(bool starting READ isStarting NOTIFY startingChanged)
     Q_PROPERTY(CppUtilities::DateTime activeSince READ activeSince)
-    Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
+    Q_PROPERTY(bool manuallyStopped READ isManuallyStopped WRITE setManuallyStopped)
     Q_PROPERTY(bool emittingOutput READ isEmittingOutput WRITE setEmittingOutput)
     Q_PROPERTY(std::optional<bool> networkConnectionMetered READ isNetworkConnectionMetered WRITE setNetworkConnectionMetered NOTIFY
             networkConnectionMeteredChanged)
@@ -66,6 +66,7 @@ public:
     bool isActiveFor(unsigned int atLeastSeconds) const;
     bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
     bool isManuallyStopped() const;
+    void setManuallyStopped(bool manuallyStopped);
     bool isEmittingOutput() const;
     void setEmittingOutput(bool emittingOutput);
     std::optional<bool> isNetworkConnectionMetered() const;
@@ -208,11 +209,19 @@ inline bool SyncthingLauncher::isActiveWithoutSleepFor(unsigned int atLeastSecon
 }
 
 /// \brief Returns whether the Syncthing instance has been manually stopped using SyncthingLauncher::terminate()
-/// or SyncthingLauncher::kill().
+/// or SyncthingLauncher::kill() or by other means communicated via SyncthingLauncher::setManuallyStopped().
 /// \remarks This is reset when calling SyncthingLauncher::launch().
 inline bool SyncthingLauncher::isManuallyStopped() const
 {
     return m_manuallyStopped;
+}
+
+/// \brief Sets whether the Syncthing instance has been manually stopped.
+/// \remarks Set this before stopping Syncthing by other means than the launcher (e.g. when using the shutdown API)
+///          to have SyncthingLauncher::isManuallyStopped() reflect that as well (e.g. to supress notifications).
+inline void SyncthingLauncher::setManuallyStopped(bool manuallyStopped)
+{
+    m_manuallyStopped = manuallyStopped;
 }
 
 /// \brief Returns whether the output/log should be emitted via outputAvailable() signal.

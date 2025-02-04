@@ -604,7 +604,7 @@ bool App::eventFilter(QObject *object, QEvent *event)
 void App::handleConnectionError(
     const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    if (!InternalError::isRelevant(m_connection, category, errorMessage, networkError)) {
+    if (!InternalError::isRelevant(m_connection, category, errorMessage, networkError, false)) {
         return;
     }
     qWarning() << "Connection error: " << errorMessage;

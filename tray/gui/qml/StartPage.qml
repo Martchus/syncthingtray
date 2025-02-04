@@ -297,12 +297,18 @@ Page {
         Action {
             text: qsTr("Restart")
             icon.source: App.faUrlBase + "refresh"
-            onTriggered: (source) => App.connection.restart()
+            onTriggered: (source) => {
+                App.launcher.manuallyStopped = true;
+                App.connection.restart();
+            }
         },
         Action {
             text: qsTr("Shutdown")
             icon.source: App.faUrlBase + "power-off"
-            onTriggered: (source) => App.connection.shutdown()
+            onTriggered: (source) => {
+                App.launcher.manuallyStopped = true;
+                App.connection.shutdown();
+            }
         },
         Action {
             text: qsTr("Run in background")

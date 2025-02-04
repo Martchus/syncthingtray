@@ -14,17 +14,16 @@ using namespace Data;
 
 namespace QtGui {
 
-#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
 /*!
  * \brief Returns whether to ignore inavailability after start or standby-wakeup.
  */
-static bool ignoreInavailabilityAfterStart(const Settings::Settings &settings, const SyncthingLauncher *launcher,
+static bool ignoreInavailabilityAfterStart(unsigned int ignoreInavailabilityAfterStartSec, const SyncthingLauncher *launcher,
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     const SyncthingService *service,
 #endif
     const QString &message, int networkError)
 {
-    if (!settings.ignoreInavailabilityAfterStart) {
+    if (!ignoreInavailabilityAfterStartSec) {
         return false;
     }
 
@@ -49,28 +48,27 @@ static bool ignoreInavailabilityAfterStart(const Settings::Settings &settings, c
     if ((launcher && launcher->isRunning())
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         && ((service && service->isSystemdAvailable()
-                && !service->isActiveWithoutSleepFor(launcher->activeSince(), settings.ignoreInavailabilityAfterStart))
-            || !launcher->isActiveWithoutSleepFor(settings.ignoreInavailabilityAfterStart))
+                && !service->isActiveWithoutSleepFor(launcher->activeSince(), ignoreInavailabilityAfterStartSec))
+            || !launcher->isActiveWithoutSleepFor(ignoreInavailabilityAfterStartSec))
 #else
-        && !launcher->isActiveWithoutSleepFor(settings.ignoreInavailabilityAfterStart)
+        && !launcher->isActiveWithoutSleepFor(ignoreInavailabilityAfterStartSec)
 #endif
     ) {
         return true;
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    if (service && !service->isActiveWithoutSleepFor(settings.ignoreInavailabilityAfterStart)) {
+    if (service && !service->isActiveWithoutSleepFor(ignoreInavailabilityAfterStartSec)) {
         return true;
     }
 #endif
     return false;
 }
-#endif
 
 /*!
  * \brief Returns whether the error is relevant. Only in this case a notification for the error should be shown.
  * \todo Unify with SyncthingNotifier::isDisconnectRelevant().
  */
-bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingErrorCategory category, const QString &message, int networkError)
+bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingErrorCategory category, const QString &message, int networkError, bool useGlobalSettings)
 {
     // ignore overall connection errors when auto reconnect tries >= 1
     if (category != SyncthingErrorCategory::OverallConnection && category != SyncthingErrorCategory::TLS && connection.autoReconnectTries() >= 1) {
@@ -82,6 +80,10 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
         return true;
     }
 
+    // define default settings
+    constexpr auto considerForReconnectDefault = true;
+    constexpr auto ignoreInavailabilityAfterStartSecDefault = 15;
+
 #if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
     // ignore configuration errors on first launch (to avoid greeting people with an error message)
     const auto &settings = Settings::values();
@@ -90,28 +92,42 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
         return false;
     }
 
+    // decide based on global user settings what to consider
+    const auto considerLauncherForReconnect = useGlobalSettings ? settings.launcher.considerForReconnect : considerForReconnectDefault;
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    const auto considerServiceForReconnect = useGlobalSettings ? settings.systemd.considerForReconnect : considerForReconnectDefault;
+#endif
+    const auto ignoreInavailabilityAfterStartSec = useGlobalSettings ? settings.ignoreInavailabilityAfterStart : ignoreInavailabilityAfterStartSecDefault;
+#else
+
+    // use always the default settings when not building with Qt Widgets GUI at all
+    Q_UNUSED(useGlobalSettings)
+    constexpr auto considerLauncherForReconnect = considerForReconnectDefault;
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    constexpr auto considerServiceForReconnect = considerForReconnectDefault;
+#endif
+    constexpr auto ignoreInavailabilityAfterStartSec = ignoreInavailabilityAfterStartSecDefault;
+#endif
+
     // consider process/launcher or systemd unit status
     const auto remoteHostClosed = networkError == QNetworkReply::ConnectionRefusedError || networkError == QNetworkReply::RemoteHostClosedError
         || networkError == QNetworkReply::ProxyConnectionClosedError;
     // ignore "remote host closed" error if we've just stopped Syncthing ourselves (or "connection refused" which can also be the result of stopping Syncthing ourselves)
     const auto *launcher = SyncthingLauncher::mainInstance();
-    if (settings.launcher.considerForReconnect && remoteHostClosed && launcher && launcher->isManuallyStopped()) {
+    if (considerLauncherForReconnect && remoteHostClosed && launcher && launcher->isManuallyStopped()) {
         return false;
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     const auto *const service = SyncthingService::mainInstance();
-    if (settings.systemd.considerForReconnect && remoteHostClosed && service && service->isManuallyStopped()) {
+    if (considerServiceForReconnect && remoteHostClosed && service && service->isManuallyStopped()) {
         return false;
     }
 #endif
 
-    return !ignoreInavailabilityAfterStart(settings, launcher,
+    return !ignoreInavailabilityAfterStart(ignoreInavailabilityAfterStartSec, launcher,
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         service,
 #endif
         message, networkError);
-#else
-    return true;
-#endif
 }
 } // namespace QtGui
