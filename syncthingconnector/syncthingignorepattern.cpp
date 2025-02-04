@@ -137,6 +137,7 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
     auto state = MatchVerbatimly;
     auto escapedState = MatchVerbatimly;
     auto inAsterisk = false;
+    auto wasInAsterisk = false;
     asterisks.clear();
 
     // define behavior to handle the current character in the glob pattern not matching the current pattern in the path
@@ -177,7 +178,7 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
         // start matching the glob pattern from the beginning
         globIter = glob.begin();
         asterisks.clear();
-        inAsterisk = false;
+        inAsterisk = wasInAsterisk = false;
         return true;
     };
 
@@ -185,8 +186,10 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
     const auto handleSingleMatch = [&, this] {
         // proceed with the next characters on a match
         const auto matchedChar = *(globIter++);
-        if (asterisks.empty() || asterisks.back().state != MatchManyAnyIncludingDirSep
-            || !(matchedChar == pathSeparator || matchedChar == genericPathSeparator)) {
+        // consider the asterisk dealt with after a single match
+        if (inAsterisk || !(matchedChar == pathSeparator || matchedChar == genericPathSeparator)) {
+            // take note that we were at an asterisk when it was a double asterisk (that allows matching the dir sep)
+            wasInAsterisk = !asterisks.empty() && asterisks.back().state == MatchManyAnyIncludingDirSep && inAsterisk;
             inAsterisk = false;
             if (!asterisks.empty()) {
                 asterisks.back().visited = false;
@@ -348,9 +351,15 @@ match:
             if (pathIter != pathEnd && matchSingleChar(*globIter)) {
                 ++pathIter;
                 handleSingleMatch();
-            } else if (inAsterisk
+            } else if ((wasInAsterisk || inAsterisk)
                 && (asterisks.back().state == MatchManyAnyIncludingDirSep
                     || (pathIter == pathEnd || (*pathIter != pathSeparator && *pathIter != genericPathSeparator)))) {
+                if (wasInAsterisk) {
+                    // match further characters via the asterisk we thought we have dealt with after all
+                    --globIter; // get back to where we were in the glob before considering the asterisk dealt with
+                    inAsterisk = true;
+                    wasInAsterisk = false;
+                }
                 // consider the path character dealt with despite no match if we have just passed an asterisk in the glob pattern
                 if (pathIter != pathEnd) {
                     ++pathIter;
