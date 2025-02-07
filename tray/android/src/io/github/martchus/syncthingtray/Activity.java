@@ -61,7 +61,7 @@ public class Activity extends QtActivity {
         File file = new File(path);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri fileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".qtprovider", file);
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
         if (file.isDirectory()) {
             String absolutePath = "";
             try {
