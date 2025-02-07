@@ -21,6 +21,8 @@ struct Asterisk {
     QString::const_iterator pos;
     SyncthingIgnorePatternState::State state;
     bool visited = false;
+    bool needPathSep = false;
+    std::size_t charsSincePathSep = 0;
 };
 
 struct CharacterRange {
@@ -192,6 +194,15 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
                 asterisks.back().visited = false;
             }
         }
+        if (inAsterisk && !asterisks.empty()) {
+            auto &asterisk = asterisks.back();
+            if (matchedChar == pathSeparator || matchedChar == genericPathSeparator) {
+                asterisk.charsSincePathSep = 0;
+            } else {
+                ++asterisk.charsSincePathSep;
+            }
+            asterisk.needPathSep = matchedChar == pathSeparator || matchedChar == genericPathSeparator;
+        }
     };
 
     // define function to match single character against the current character in the path
@@ -343,14 +354,24 @@ match:
             (characterRange.empty() ? characterRange.emplace_back() : characterRange.back()).upperBound = *globIter++;
             state = AppendRangeLower;
             break;
-        case MatchVerbatimly:
+        case MatchVerbatimly: {
             // match the current character in the glob pattern verbatimly against the current character in the path
-            if (pathIter != pathEnd && matchSingleChar(*globIter)) {
+            const auto atPathSep = pathIter != pathEnd && (*pathIter == pathSeparator || *pathIter == genericPathSeparator);
+            const auto needPathSep = inAsterisk && asterisks.back().needPathSep;
+            const auto lacksPathSep = needPathSep && !atPathSep;
+            if (needPathSep && atPathSep) {
+                asterisks.back().needPathSep = false;
+                ++pathIter;
+            } else if (pathIter != pathEnd && !lacksPathSep && matchSingleChar(*globIter)) {
+                if (inAsterisk) {
+                    const auto previousChar = *(globIter - 1);
+                    if (!atPathSep && asterisks.back().needPathSep && (previousChar == pathSeparator || previousChar == genericPathSeparator) && pathIter && !handleMismatch()) {
+                        return false;
+                    }
+                }
                 ++pathIter;
                 handleSingleMatch();
-            } else if (inAsterisk
-                && (asterisks.back().state == MatchManyAnyIncludingDirSep
-                    || (pathIter == pathEnd || (*pathIter != pathSeparator && *pathIter != genericPathSeparator)))) {
+            } else if (inAsterisk && (asterisks.back().state == MatchManyAnyIncludingDirSep|| !atPathSep)) {
                 // consider the path character dealt with despite no match if we have just passed an asterisk in the glob pattern
                 if (pathIter != pathEnd) {
                     ++pathIter;
@@ -361,6 +382,7 @@ match:
                 return false;
             }
             break;
+        }
         case MatchRange:
             // match the concluded character range in the glob pattern against the current character in the path
             if (pathIter != pathEnd) {
@@ -446,6 +468,10 @@ match:
 
     // check whether all characters of the glob have been matched against all characters of the path
     if (globIter == globEnd) {
+        // consider this a mismatch if a path separator was not matched
+        //if (inAsterisk && !asterisks.empty() && asterisks.back().needPathSep) {
+        //    return false;
+        //}
         // consider the match a success if all characters of the path were matched or the glob ended with a "**"
         if (pathIter == pathEnd || state == MatchManyAnyIncludingDirSep) {
             return true;
