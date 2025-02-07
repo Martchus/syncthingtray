@@ -69,9 +69,8 @@ public class Activity extends QtActivity {
             } catch (IOException e) {
                 absolutePath = file.getAbsolutePath();
             }
-            showToast(absolutePath);
-            //intent.setDataAndType(fileUri, DocumentsContract.Document.MIME_TYPE_DIR);
-            intent.setDataAndType(fileUri, "resource/folder");
+            intent.setDataAndType(fileUri, DocumentsContract.Document.MIME_TYPE_DIR);
+            intent.setDataAndType(Uri.fromFile(file), "resource/folder");
             intent.putExtra("org.openintents.extra.ABSOLUTE_PATH", absolutePath);
         } else {
             intent.setDataAndType(fileUri, "application/*");

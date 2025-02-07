@@ -452,10 +452,6 @@ While Syncthing Tray basically works on Android, there are still some unresolved
   There is nothing one can do about it except storing the data in app's private directory. While
   this is possible it of course doesn't cover all use cases. A file provider to be able to share
   the private app directory also still needs to be implemented.
-* Opening a directory in the file browser still doesn't work. Not sure what Android APIs need to
-  be used to make this work. The approach taken by
-  [syncthing-android](https://github.com/Catfriend1/syncthing-android) did not work when trying
-  to use it in my app.
 * Media rescans need to be triggered manually.
 * The app doesn't use the configured system font. (It does use the configured font size and weight,
   though.) Not sure what Android APIs need to be used to read the configured system font.
