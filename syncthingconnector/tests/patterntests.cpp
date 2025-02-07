@@ -103,71 +103,69 @@ void IgnorePatternTests::testBasicMatching()
 
 void IgnorePatternTests::testWildcards()
 {
-    /*
-    auto p2 = SyncthingIgnorePattern(QStringLiteral("(?d)(?i)foo*"));
-    CPPUNIT_ASSERT(p2.allowRemovalOnParentDirRemoval);
-    CPPUNIT_ASSERT(p2.caseInsensitive);
-    CPPUNIT_ASSERT(p2.matches(QStringLiteral("foo")));
-    CPPUNIT_ASSERT(p2.matches(QStringLiteral("FooBar")));
-    CPPUNIT_ASSERT(!p2.matches(QStringLiteral("barfoo")));
-    CPPUNIT_ASSERT(p2.matches(QStringLiteral("bar/foo")));
-    CPPUNIT_ASSERT(p2.matches(QStringLiteral("bar/foobaz")));
-    CPPUNIT_ASSERT(!p2.matches(QStringLiteral("bar/foo/baz")));
+    // auto p2 = SyncthingIgnorePattern(QStringLiteral("(?d)(?i)foo*"));
+    // CPPUNIT_ASSERT(p2.allowRemovalOnParentDirRemoval);
+    // CPPUNIT_ASSERT(p2.caseInsensitive);
+    // CPPUNIT_ASSERT(p2.matches(QStringLiteral("foo")));
+    // CPPUNIT_ASSERT(p2.matches(QStringLiteral("FooBar")));
+    // CPPUNIT_ASSERT(!p2.matches(QStringLiteral("barfoo")));
+    // CPPUNIT_ASSERT(p2.matches(QStringLiteral("bar/foo")));
+    // CPPUNIT_ASSERT(p2.matches(QStringLiteral("bar/foobaz")));
+    // CPPUNIT_ASSERT(!p2.matches(QStringLiteral("bar/foo/baz")));
 
-    auto p2a = SyncthingIgnorePattern(QStringLiteral("(?d)foo**"));
-    CPPUNIT_ASSERT(p2a.allowRemovalOnParentDirRemoval);
-    CPPUNIT_ASSERT(p2a.matches(QStringLiteral("foo")));
-    CPPUNIT_ASSERT(p2a.matches(QStringLiteral("foobar")));
-    CPPUNIT_ASSERT(!p2a.matches(QStringLiteral("barfoo")));
-    CPPUNIT_ASSERT(p2a.matches(QStringLiteral("bar/foo")));
-    CPPUNIT_ASSERT(p2a.matches(QStringLiteral("bar/foobaz")));
-    CPPUNIT_ASSERT(p2a.matches(QStringLiteral("bar/foo/baz")));
+    // auto p2a = SyncthingIgnorePattern(QStringLiteral("(?d)foo**"));
+    // CPPUNIT_ASSERT(p2a.allowRemovalOnParentDirRemoval);
+    // CPPUNIT_ASSERT(p2a.matches(QStringLiteral("foo")));
+    // CPPUNIT_ASSERT(p2a.matches(QStringLiteral("foobar")));
+    // CPPUNIT_ASSERT(!p2a.matches(QStringLiteral("barfoo")));
+    // CPPUNIT_ASSERT(p2a.matches(QStringLiteral("bar/foo")));
+    // CPPUNIT_ASSERT(p2a.matches(QStringLiteral("bar/foobaz")));
+    // CPPUNIT_ASSERT(p2a.matches(QStringLiteral("bar/foo/baz")));
 
-    auto p3 = SyncthingIgnorePattern(QStringLiteral("fo*ar"));
-    CPPUNIT_ASSERT(!p3.matches(QStringLiteral("foo")));
-    CPPUNIT_ASSERT(p3.matches(QStringLiteral("foar")));
-    CPPUNIT_ASSERT(p3.matches(QStringLiteral("foobar")));
-    CPPUNIT_ASSERT(!p3.matches(QStringLiteral("foobaR")));
-    CPPUNIT_ASSERT(p3.matches(QStringLiteral("foobaRar")));
-    CPPUNIT_ASSERT(p3.matches(QStringLiteral("foo*bar")));
+    // auto p3 = SyncthingIgnorePattern(QStringLiteral("fo*ar"));
+    // CPPUNIT_ASSERT(!p3.matches(QStringLiteral("foo")));
+    // CPPUNIT_ASSERT(p3.matches(QStringLiteral("foar")));
+    // CPPUNIT_ASSERT(p3.matches(QStringLiteral("foobar")));
+    // CPPUNIT_ASSERT(!p3.matches(QStringLiteral("foobaR")));
+    // CPPUNIT_ASSERT(p3.matches(QStringLiteral("foobaRar")));
+    // CPPUNIT_ASSERT(p3.matches(QStringLiteral("foo*bar")));
 
-    auto p4 = SyncthingIgnorePattern(QStringLiteral("fo\\*ar"));
-    CPPUNIT_ASSERT(!p4.matches(QStringLiteral("foar")));
-    CPPUNIT_ASSERT(!p4.matches(QStringLiteral("foobar")));
-    CPPUNIT_ASSERT(!p4.matches(QStringLiteral("foo*bar")));
-    CPPUNIT_ASSERT(p4.matches(QStringLiteral("fo*ar")));
+    // auto p4 = SyncthingIgnorePattern(QStringLiteral("fo\\*ar"));
+    // CPPUNIT_ASSERT(!p4.matches(QStringLiteral("foar")));
+    // CPPUNIT_ASSERT(!p4.matches(QStringLiteral("foobar")));
+    // CPPUNIT_ASSERT(!p4.matches(QStringLiteral("foo*bar")));
+    // CPPUNIT_ASSERT(p4.matches(QStringLiteral("fo*ar")));
 
-    auto p5 = SyncthingIgnorePattern(QStringLiteral("te*ne"));
-    CPPUNIT_ASSERT(p5.matches(QStringLiteral("telephone")));
-    CPPUNIT_ASSERT(p5.matches(QStringLiteral("subdir/telephone")));
-    CPPUNIT_ASSERT(!p5.matches(QStringLiteral("tele/phone")));
+    // auto p5 = SyncthingIgnorePattern(QStringLiteral("te*ne"));
+    // CPPUNIT_ASSERT(p5.matches(QStringLiteral("telephone")));
+    // CPPUNIT_ASSERT(p5.matches(QStringLiteral("subdir/telephone")));
+    // CPPUNIT_ASSERT(!p5.matches(QStringLiteral("tele/phone")));
 
-    auto p6 = SyncthingIgnorePattern(QStringLiteral("te**ne"));
-    CPPUNIT_ASSERT(p6.matches(QStringLiteral("telephone")));
-    CPPUNIT_ASSERT(p6.matches(QStringLiteral("subdir/telephone")));
-    CPPUNIT_ASSERT(p6.matches(QStringLiteral("tele/phone")));
+    // auto p6 = SyncthingIgnorePattern(QStringLiteral("te**ne"));
+    // CPPUNIT_ASSERT(p6.matches(QStringLiteral("telephone")));
+    // CPPUNIT_ASSERT(p6.matches(QStringLiteral("subdir/telephone")));
+    // CPPUNIT_ASSERT(p6.matches(QStringLiteral("tele/phone")));
 
-    auto p7 = SyncthingIgnorePattern(QStringLiteral("te??st"));
-    CPPUNIT_ASSERT(p7.matches(QStringLiteral("tebest")));
-    CPPUNIT_ASSERT(!p7.matches(QStringLiteral("teb/st")));
-    CPPUNIT_ASSERT(!p7.matches(QStringLiteral("test")));
+    // auto p7 = SyncthingIgnorePattern(QStringLiteral("te??st"));
+    // CPPUNIT_ASSERT(p7.matches(QStringLiteral("tebest")));
+    // CPPUNIT_ASSERT(!p7.matches(QStringLiteral("teb/st")));
+    // CPPUNIT_ASSERT(!p7.matches(QStringLiteral("test")));
 
-    auto p9 = SyncthingIgnorePattern(QStringLiteral("/foo*"));
-    CPPUNIT_ASSERT(p9.matches(QStringLiteral("foo")));
-    CPPUNIT_ASSERT(p9.matches(QStringLiteral("foobar")));
-    CPPUNIT_ASSERT(!p9.matches(QStringLiteral("barfoo")));
-    CPPUNIT_ASSERT(!p9.matches(QStringLiteral("bar/foo")));
+    // auto p9 = SyncthingIgnorePattern(QStringLiteral("/foo*"));
+    // CPPUNIT_ASSERT(p9.matches(QStringLiteral("foo")));
+    // CPPUNIT_ASSERT(p9.matches(QStringLiteral("foobar")));
+    // CPPUNIT_ASSERT(!p9.matches(QStringLiteral("barfoo")));
+    // CPPUNIT_ASSERT(!p9.matches(QStringLiteral("bar/foo")));
 
-    auto p10 = SyncthingIgnorePattern(QStringLiteral("/fo?"));
-    CPPUNIT_ASSERT(p10.matches(QStringLiteral("foO")));
-    CPPUNIT_ASSERT(!p10.matches(QStringLiteral("foO/")));
-    CPPUNIT_ASSERT(!p10.matches(QStringLiteral("fo/")));
-    CPPUNIT_ASSERT(!p10.matches(QStringLiteral("bar/foO")));
-    */
+    // auto p10 = SyncthingIgnorePattern(QStringLiteral("/fo?"));
+    // CPPUNIT_ASSERT(p10.matches(QStringLiteral("foO")));
+    // CPPUNIT_ASSERT(!p10.matches(QStringLiteral("foO/")));
+    // CPPUNIT_ASSERT(!p10.matches(QStringLiteral("fo/")));
+    // CPPUNIT_ASSERT(!p10.matches(QStringLiteral("bar/foO")));
 
     auto p11 = SyncthingIgnorePattern(QStringLiteral("/c++/**/.gradle"));
-    //CPPUNIT_ASSERT(p11.matches(QStringLiteral("c++/cmake/syncthingtray/tray/android/.gradle")));
-    CPPUNIT_ASSERT(!p11.matches(QStringLiteral("c++/cmake/syncthingtray/tray/android/build.gradle")));
+    //CPPUNIT_ASSERT(p11.matches(QStringLiteral("c++/cmake/android/.gradle")));
+    CPPUNIT_ASSERT(!p11.matches(QStringLiteral("c++/cmake/android/build.gradle")));
 }
 
 void IgnorePatternTests::testCharacterRange()
