@@ -381,7 +381,7 @@ void TrayWidget::showOwnDeviceId()
 
 void TrayWidget::showLog()
 {
-    auto *const dlg = TextViewDialog::forLogEntries(m_connection);
+    auto *const dlg = TextViewDialog::forLogEntries(m_connection, this);
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
     showDialog(dlg, centerWidgetAvoidingOverflow(dlg));
 }

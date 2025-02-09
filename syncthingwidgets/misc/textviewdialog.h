@@ -26,7 +26,7 @@ public:
     QTextBrowser *browser();
     QVBoxLayout *layout();
     void setCloseHandler(std::function<bool(TextViewDialog *)> &&closeHandler);
-    static TextViewDialog *forLogEntries(Data::SyncthingConnection &connection);
+    static TextViewDialog *forLogEntries(Data::SyncthingConnection &connection, QObject *gui = nullptr);
     static TextViewDialog *forLogEntries(const std::vector<Data::SyncthingLogEntry> &logEntries, const QString &title = QString());
 
 Q_SIGNALS:

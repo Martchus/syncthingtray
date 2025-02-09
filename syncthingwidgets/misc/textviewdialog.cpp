@@ -1,5 +1,7 @@
 #include "./textviewdialog.h"
 
+#include "./syncthinglauncher.h"
+
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingdir.h>
 
@@ -57,12 +59,26 @@ TextViewDialog::TextViewDialog(const QString &title, QWidget *parent)
     centerWidget(this);
 }
 
-TextViewDialog *TextViewDialog::forLogEntries(SyncthingConnection &connection)
+TextViewDialog *TextViewDialog::forLogEntries(SyncthingConnection &connection, QObject *gui)
 {
     auto *const dlg = new TextViewDialog(tr("Log"));
+    auto *const launcher = SyncthingLauncher::mainInstance();
+    auto *const helpLabel = new QLabel(dlg);
+    auto helpText = tr("Press F5 to reload.");
+    if (gui && launcher && launcher->isRunning() && connection.isLocal()) {
+        helpText += tr(" Checkout <a href=\"openLauncherSettings\">launcher settings</a> for continuous log of local Syncthing instance.");
+        QObject::connect(helpLabel, &QLabel::linkActivated, gui, [gui](const QString &link) {
+            if (link == QLatin1String("openLauncherSettings")) {
+                QMetaObject::invokeMethod(gui, "showLauncherSettings");
+            }
+        });
+    }
+    helpLabel->setWordWrap(true);
+    helpLabel->setText(helpText);
     QObject::connect(&connection, &SyncthingConnection::logAvailable, dlg, &TextViewDialog::showLogEntries);
     connect(dlg, &TextViewDialog::reload, &connection, &SyncthingConnection::requestLog);
     connection.requestLog();
+    dlg->layout()->addWidget(helpLabel);
     return dlg;
 }
 
