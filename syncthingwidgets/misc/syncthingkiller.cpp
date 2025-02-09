@@ -58,7 +58,7 @@ void SyncthingKiller::confirmKill() const
     const auto msg(tr("The process %1 (PID: %2) has been requested to terminate but hasn't reacted yet. "
                       "Kill the process?\n\n"
                       "This dialog closes automatically when the process finally terminates.")
-            .arg(process->program(), QString::number(process->processId())));
+                       .arg(process->program(), QString::number(process->processId())));
     auto *const msgBox = new QMessageBox(QMessageBox::Critical, QCoreApplication::applicationName(), msg);
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->addButton(tr("Keep running"), QMessageBox::RejectRole);

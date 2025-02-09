@@ -68,7 +68,8 @@ static bool ignoreInavailabilityAfterStart(unsigned int ignoreInavailabilityAfte
  * \brief Returns whether the error is relevant. Only in this case a notification for the error should be shown.
  * \todo Unify with SyncthingNotifier::isDisconnectRelevant().
  */
-bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingErrorCategory category, const QString &message, int networkError, bool useGlobalSettings)
+bool InternalError::isRelevant(
+    const SyncthingConnection &connection, SyncthingErrorCategory category, const QString &message, int networkError, bool useGlobalSettings)
 {
     // ignore overall connection errors when auto reconnect tries >= 1
     if (category != SyncthingErrorCategory::OverallConnection && category != SyncthingErrorCategory::TLS && connection.autoReconnectTries() >= 1) {
@@ -97,7 +98,8 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     const auto considerServiceForReconnect = useGlobalSettings ? settings.systemd.considerForReconnect : considerForReconnectDefault;
 #endif
-    const auto ignoreInavailabilityAfterStartSec = useGlobalSettings ? settings.ignoreInavailabilityAfterStart : ignoreInavailabilityAfterStartSecDefault;
+    const auto ignoreInavailabilityAfterStartSec
+        = useGlobalSettings ? settings.ignoreInavailabilityAfterStart : ignoreInavailabilityAfterStartSecDefault;
 #else
 
     // use always the default settings when not building with Qt Widgets GUI at all

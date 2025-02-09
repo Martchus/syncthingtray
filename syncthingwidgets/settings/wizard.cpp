@@ -761,7 +761,7 @@ void MainConfigWizardPage::initializePage()
         } else {
             m_ui->invalidConfigLabel->setText(tr("<b>The Syncthing config could be located under \"%1\" but it seems invalid/incomplete.</b> Hence "
                                                  "Syncthing is assumed to be not running.")
-                    .arg(detection.configFilePath));
+                                                  .arg(detection.configFilePath));
             m_ui->invalidConfigLabel->show();
         }
     }
@@ -1019,8 +1019,8 @@ void ApplyWizardPage::initializePage()
     }
 #endif
     html.append(QStringLiteral("</ul><p><b>%1</b></p><ul><li>%2</li><li>%3</li><li>%4</li></ul>")
-            .arg(tr("Further information:"), tr("Click on \"Show details from setup detection\" for further details."),
-                tr("If you want to do amendments, you can head back one or more steps."), tr("If you abort now, nothing will be changed.")));
+                    .arg(tr("Further information:"), tr("Click on \"Show details from setup detection\" for further details."),
+                        tr("If you want to do amendments, you can head back one or more steps."), tr("If you abort now, nothing will be changed.")));
     m_ui->summaryTextBrowser->setHtml(html);
 }
 
@@ -1105,7 +1105,8 @@ void FinalWizardPage::showResults()
         }
     } else {
         setSubTitle(tr("Not all changes could be applied"));
-        m_label->setText(QStringLiteral("<p>%1</p><p>%2</p>")
+        m_label->setText(
+            QStringLiteral("<p>%1</p><p>%2</p>")
                 .arg(wizard->configError(),
                     tr("You may try to head back one or more steps and try again or finish the wizard and configure Syncthing Tray manually.")));
     }

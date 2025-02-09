@@ -120,9 +120,9 @@ bool WebPage::canIgnoreCertificateError(const QWebEngineCertificateError &certif
     // never ignore errors other than CertificateCommonNameInvalid and CertificateAuthorityInvalid
     switch (certificateError
 #if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-            .type()
+                .type()
 #else
-            .error()
+                .error()
 #endif
     ) {
     case QWebEngineCertificateError::CertificateCommonNameInvalid:
