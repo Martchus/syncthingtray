@@ -453,8 +453,6 @@ While Syncthing Tray basically works on Android, there are still some unresolved
   this is possible it of course doesn't cover all use cases. A file provider to be able to share
   the private app directory also still needs to be implemented.
 * Media rescans need to be triggered manually.
-* The app doesn't use the configured system font. (It does use the configured font size and weight,
-  though.) Not sure what Android APIs need to be used to read the configured system font.
 * There are probably still many small UI bugs in the Qt Quick based UI used on Android.
 * Not all features the official web UI offers have been implemented in the Qt Quick based UI yet.
   One can easily open the official web UI in a web browser, though.

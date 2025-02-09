@@ -420,7 +420,8 @@ ApplicationWindow {
         // propagate palette of Qt Quick Controls 2 style to regular QPalette of QGuiApplication for icon rendering
         App.setPalette(Material.foreground, Material.background);
 
-        // apply font scaling (on platforms where additional scaling is necassary because Qt doesn't do it such as Android)
+        // apply font settings (where necessary because Qt doesn't do it such as Android)
+        window.font.family = App.fontFamily;
         window.font.pixelSize *= App.fontScale;
         window.font.weight += App.fontWeightAdjustment;
 

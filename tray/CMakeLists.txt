@@ -111,6 +111,11 @@ set(REQUIRED_ICONS
     window-close
     window-pin)
 
+# configure use of C++ 20 in Android-specific code
+if (ANDROID)
+    set(META_CXX_STANDARD 20)
+endif ()
+
 # find c++utilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.21.0 REQUIRED)
 use_cpp_utilities()
@@ -379,6 +384,11 @@ if (ANDROID)
     else ()
         set(ANDROID_APPLICATION_ARGUMENTS "qt-widgets-gui --windowed --wip")
     endif ()
+
+    # allow use of newer native Android APIs, see https://developer.android.com/ndk/guides/using-newer-apis
+    set_source_files_properties(
+        "gui/quick/app.cpp" PROPERTIES COMPILE_FLAGS
+                                       "-D__ANDROID_UNAVAILABLE_SYMBOLS_ARE_WEAK__ -Werror=unguarded-availability")
 
     set(ANDROID_MANIFEST_PATH "${ANDROID_PACKAGE_SOURCE_DIR}/AndroidManifest.xml")
     configure_file("resources/AndroidManifest.xml.in" "${ANDROID_MANIFEST_PATH}" @ONLY)

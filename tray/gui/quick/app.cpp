@@ -37,7 +37,11 @@
 #include <QtConcurrent/QtConcurrentRun>
 
 #ifdef Q_OS_ANDROID
+#include <QFontDatabase>
 #include <QJniEnvironment>
+
+#include <android/font.h>
+#include <android/font_matcher.h>
 #endif
 
 #ifndef Q_OS_ANDROID
@@ -559,6 +563,69 @@ DiffHighlighter *App::createDiffHighlighter(QTextDocument *parent)
     return new DiffHighlighter(parent);
 }
 
+#ifdef Q_OS_ANDROID
+#define REQUIRES_ANDROID_API(x) __attribute__((__availability__(android, introduced = x)))
+#define ANDROID_API_AT_LEAST(x) __builtin_available(android x, *)
+
+static void loadSystemFont(std::string_view fontPath, QString &fontFamily)
+{
+    auto fontFile = QFile(QString::fromUtf8(fontPath.data(), static_cast<qsizetype>(fontPath.size())));
+    if (!fontFile.open(QFile::ReadOnly)) {
+        qDebug() << "Unable to open font file: " << fontPath;
+        return;
+    }
+    if (const auto fontID = QFontDatabase::addApplicationFontFromData(fontFile.readAll()); fontID != -1) {
+        if (const auto families = QFontDatabase::applicationFontFamilies(fontID); !families.isEmpty() && fontFamily.isEmpty()) {
+            qDebug() << "Loaded font file: " << fontPath;
+            fontFamily = families.front();
+        }
+    } else {
+        qDebug() << "Unable to load font file: " << fontPath;
+    }
+}
+
+static void matchAndLoadDefaultFont(AFontMatcher *matcher, std::uint16_t weight, QString &fontFamily) REQUIRES_ANDROID_API(29)
+{
+    AFontMatcher_setStyle(matcher, weight, false);
+    if (auto *const font = AFontMatcher_match(matcher, "FontFamily.Default", reinterpret_cast<const uint16_t *>(u"foobar"), 3, nullptr)) {
+        auto path = std::string_view(AFont_getFontFilePath(font));
+        qDebug() << "Found system font: " << path;
+        loadSystemFont(path, fontFamily);
+        AFont_close(font);
+    }
+}
+
+static QString loadDefaultSystemFonts()
+{
+    auto defaultSystemFontFamily = QString();
+    if (ANDROID_API_AT_LEAST(29)) {
+        if (auto *const m = AFontMatcher_create()) {
+            matchAndLoadDefaultFont(m, AFONT_WEIGHT_NORMAL, defaultSystemFontFamily);
+            matchAndLoadDefaultFont(m, AFONT_WEIGHT_THIN, defaultSystemFontFamily);
+            matchAndLoadDefaultFont(m, AFONT_WEIGHT_LIGHT, defaultSystemFontFamily);
+            matchAndLoadDefaultFont(m, AFONT_WEIGHT_MEDIUM, defaultSystemFontFamily);
+            matchAndLoadDefaultFont(m, AFONT_WEIGHT_BOLD, defaultSystemFontFamily);
+            AFontMatcher_destroy(m);
+        }
+    }
+    return defaultSystemFontFamily;
+}
+#endif
+
+QString App::fontFamily() const
+{
+#ifdef Q_OS_ANDROID
+    static const auto defaultSystemFontFamily = loadDefaultSystemFonts();
+    if (defaultSystemFontFamily.isEmpty()) {
+        qDebug() << "Unable to determine/load system font family.";
+    } else {
+        qDebug() << "System font family: " << defaultSystemFontFamily;
+        return defaultSystemFontFamily;
+    }
+#endif
+    return QFont().family();
+}
+
 float App::fontScale() const
 {
 #ifdef Q_OS_ANDROID
@@ -796,8 +863,7 @@ void App::handleConnectionStatusChanged(Data::SyncthingStatus newStatus)
     case Data::SyncthingStatus::Reconnecting:
         clearSyncthingErrorsNotification();
         break;
-    default:
-        ;
+    default:;
     }
 #else
     Q_UNUSED(newStatus)
