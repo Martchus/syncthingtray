@@ -20,6 +20,7 @@ Page {
             width: listView.width
             contentItem: RowLayout {
                 Icon {
+                    id: fileIcon
                     source: decorationData
                 }
                 ColumnLayout {
@@ -66,14 +67,14 @@ Page {
             TapHandler {
                 acceptedDevices: PointerDevice.TouchScreen
                 onLongPressed: {
-                    contextMenu.popup();
+                    contextMenu.show();
                     App.performHapticFeedback();
                 }
             }
             TapHandler {
                 acceptedButtons: Qt.RightButton
                 acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
-                onTapped: contextMenu.popup()
+                onTapped: contextMenu.show()
             }
             Menu {
                 id: contextMenu
@@ -86,6 +87,9 @@ Page {
                     }
                     onObjectAdded: (index, object) => contextMenu.insertItem(index, object)
                     onObjectRemoved: (index, object) => contextMenu.removeItem(object)
+                }
+                function show() {
+                    contextMenu.popup(fileIcon, fileIcon.width / 2, fileIcon.height / 2)
                 }
             }
             function triggerAction(action) {

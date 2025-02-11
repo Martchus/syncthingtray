@@ -17,9 +17,10 @@ RowLayout {
         onClicked: page.swapObjects(rowData, -1)
     }
     IconOnlyButton {
+        id: menuButton
         text: qsTr("More options")
         icon.source: App.faUrlBase + "ellipsis-v"
-        onClicked: menu.popup()
+        onClicked: menu.popup(menuButton, menuButton.width / 2 - menu.width, menuButton.height / 2)
         Menu {
             id: menu
             popupType: App.nativePopups ? Popup.Native : Popup.Item

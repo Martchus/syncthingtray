@@ -10,7 +10,7 @@ ItemDelegate {
     width: mainView.width
     activeFocusOnTab: true
     Keys.onReturnPressed: (event) => detailsView.visible = !detailsView.visible
-    Keys.onMenuPressed: (event) => menu.popup()
+    Keys.onMenuPressed: (event) => menu.show()
     contentItem: ColumnLayout {
         RowLayout {
             spacing: 10
@@ -55,10 +55,11 @@ ItemDelegate {
                 }
             }
             IconOnlyButton {
+                id: menuButton
                 visible: !buttonRepeater.visible || mainDelegate.extraActions.length > 0
                 text: qsTr("More actions")
                 icon.source: App.faUrlBase + "ellipsis-v"
-                onClicked: menu.popup()
+                onClicked: menu.show()
                 Menu {
                     id: menu
                     popupType: App.nativePopups ? Popup.Native : Popup.Item
@@ -69,6 +70,9 @@ ItemDelegate {
                     MenuItemInstantiator {
                         menu: menu
                         model: mainDelegate.extraActions
+                    }
+                    function show() {
+                        menu.popup(menuButton, menuButton.width / 2 - menu.width, menuButton.height / 2)
                     }
                 }
             }
@@ -87,13 +91,13 @@ ItemDelegate {
         }
         onLongPressed: {
             App.performHapticFeedback();
-            menu.popup();
+            menu.show();
         }
     }
     TapHandler {
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
         acceptedButtons: Qt.RightButton
-        onTapped: menu.popup()
+        onTapped: menu.show()
     }
 
     required property var modelData
