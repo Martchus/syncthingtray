@@ -79,6 +79,7 @@ class App : public QObject {
     Q_PROPERTY(QString fontFamily READ fontFamily CONSTANT)
     Q_PROPERTY(float fontScale READ fontScale CONSTANT)
     Q_PROPERTY(int fontWeightAdjustment READ fontWeightAdjustment CONSTANT)
+    Q_PROPERTY(bool storagePermissionGranted READ storagePermissionGranted NOTIFY storagePermissionGrantedChanged)
     QML_ELEMENT
     QML_SINGLETON
 
@@ -214,6 +215,7 @@ public:
     QString fontFamily() const;
     float fontScale() const;
     int fontWeightAdjustment() const;
+    bool storagePermissionGranted() const;
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();
@@ -266,6 +268,7 @@ public:
     Q_INVOKABLE QVariantList computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const;
     Q_INVOKABLE bool minimize();
     Q_INVOKABLE void setPalette(const QColor &foreground, const QColor &background);
+    Q_INVOKABLE bool requestStoragePermission();
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
@@ -284,6 +287,7 @@ Q_SIGNALS:
     void textShared(const QString &text);
     void newDeviceTriggered(const QString &devId);
     void newDirTriggered(const QString &devId, const QString &dirId, const QString &dirLabel);
+    void storagePermissionGrantedChanged(bool storagePermissionGranted);
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
@@ -312,6 +316,7 @@ private Q_SLOTS:
     void showNewDevice(const QString &devId, const QString &message);
     void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
     void handleAndroidIntent(const QString &page, bool fromNotification);
+    void handleStoragePermissionChanged(bool storagePermissionGranted);
     void stopLibSyncthing();
 #endif
 
@@ -339,6 +344,7 @@ private:
 #ifdef Q_OS_ANDROID
     QHash<const QIcon *, QJniObject> m_androidIconCache;
     int m_androidNotificationId = 100000000;
+    mutable std::optional<bool> m_storagePermissionGranted;
 #endif
     Data::SyncthingConfig m_syncthingConfig;
     QString m_syncthingConfigDir;

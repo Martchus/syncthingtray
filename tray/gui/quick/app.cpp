@@ -121,6 +121,11 @@ static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNo
     QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection,
         Q_ARG(QString, QJniObject::fromLocalRef(page).toString()), Q_ARG(bool, fromNotification));
 }
+
+static void handleStoragePermissionChanged(JNIEnv *, jobject, jboolean storagePermissionGranted)
+{
+    QMetaObject::invokeMethod(appObjectForJava, "handleStoragePermissionChanged", Qt::QueuedConnection, Q_ARG(bool, storagePermissionGranted));
+}
 } // namespace JniFn
 #endif
 
@@ -220,10 +225,11 @@ App::App(bool insecure, QObject *parent)
         auto env = QJniEnvironment();
         auto registeredMethods = true;
         static const JNINativeMethod activityMethods[] = {
-            { "handleAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(JniFn::handleAndroidIntent) },
             { "stopLibSyncthing", "()V", reinterpret_cast<void *>(JniFn::stopLibSyncthing) },
+            { "handleAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(JniFn::handleAndroidIntent) },
+            { "handleStoragePermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleStoragePermissionChanged) },
         };
-        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 2) && registeredMethods;
+        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 3) && registeredMethods;
         if (!registeredMethods) {
             qWarning() << "Unable to register all native methods in JNI environment.";
         }
@@ -644,6 +650,27 @@ int App::fontWeightAdjustment() const
 #endif
 }
 
+bool App::storagePermissionGranted() const
+{
+#ifdef Q_OS_ANDROID
+    if (!m_storagePermissionGranted.has_value()) {
+        m_storagePermissionGranted = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("storagePermissionGranted");
+    }
+    return m_storagePermissionGranted.value();
+#else
+    return true;
+#endif
+}
+
+bool App::requestStoragePermission()
+{
+#ifdef Q_OS_ANDROID
+    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("requestStoragePermission");
+#else
+    return false;
+#endif
+}
+
 bool App::eventFilter(QObject *object, QEvent *event)
 {
     if (object != m_app) {
@@ -992,6 +1019,13 @@ void App::handleAndroidIntent(const QString &data, bool fromNotification)
     } else if (data.startsWith(QLatin1String("newfolder:"))) {
         const auto folderRef = splitFolderRef(QStringView(data).mid(10));
         emit newDirTriggered(folderRef.deviceId.toString(), folderRef.folderId.toString(), folderRef.folderLabel.toString());
+    }
+}
+
+void App::handleStoragePermissionChanged(bool storagePermissionGranted)
+{
+    if (!m_storagePermissionGranted.has_value() || m_storagePermissionGranted.value() != storagePermissionGranted) {
+        emit storagePermissionGrantedChanged(m_storagePermissionGranted.emplace(storagePermissionGranted));
     }
 }
 

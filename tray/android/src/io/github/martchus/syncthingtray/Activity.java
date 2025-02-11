@@ -2,17 +2,24 @@ package io.github.martchus.syncthingtray;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.Manifest;
 import android.media.MediaScannerConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.net.Uri;
+import android.provider.Settings;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.Toast;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import java.io.*;
@@ -24,8 +31,10 @@ import io.github.martchus.syncthingtray.Util;
 
 public class Activity extends QtActivity {
     private static final String TAG = "SyncthingActivity";
+    private static final int STORAGE_PERMISSION_REQUEST = 100;
     private float m_fontScale = 1.0f;
     private int m_fontWeightAdjustment = 0;
+    private boolean m_storagePermissionRequested = false;
 
     public boolean performHapticFeedback() {
         View rootView = getWindow().getDecorView().getRootView();
@@ -35,6 +44,31 @@ public class Activity extends QtActivity {
             res = rootView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
         }
         return res;
+    }
+
+    public boolean storagePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return Environment.isExternalStorageManager();
+        } else {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    public boolean requestStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            try {
+                startActivity(intent);
+                m_storagePermissionRequested = true;
+                return true;
+            } catch (ActivityNotFoundException ignored) {
+                showToast("Unable to request storage permission.");
+            }
+        } else {
+            ActivityCompat.requestPermissions(this,  new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST);
+        }
+        return false;
     }
 
     public boolean minimize() {
@@ -161,6 +195,10 @@ public class Activity extends QtActivity {
     @Override
     public void onResume() {
         Log.i(TAG, "Resuming");
+        if (m_storagePermissionRequested) {
+            m_storagePermissionRequested = false;
+            handleStoragePermissionChanged(storagePermissionGranted());
+        }
         super.onResume();
     }
 
@@ -170,6 +208,7 @@ public class Activity extends QtActivity {
         super.onPause();
     }
 
+    @Override
     public void onStop() {
         Log.i(TAG, "Stopping");
         super.onStop();
@@ -187,10 +226,19 @@ public class Activity extends QtActivity {
         super.onDestroy();
     }
 
-    protected void onNewIntent(Intent intent) {
+    @Override
+    protected void onNewIntent(@NonNull Intent intent) {
         boolean fromNotification = intent.getBooleanExtra("notification", false);
         if (fromNotification) {
             sendAndroidIntentToQtQuickApp(intent.getStringExtra("page"), fromNotification);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_PERMISSION_REQUEST) {
+            handleStoragePermissionChanged(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED);
         }
     }
 
@@ -203,6 +251,7 @@ public class Activity extends QtActivity {
     }
 
     private static native void handleAndroidIntent(String page, boolean fromNotification);
+    private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
     private static native void stopLibSyncthing();
     private static native void initSigsysHandler();
 }

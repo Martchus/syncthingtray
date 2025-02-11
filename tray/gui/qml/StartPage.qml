@@ -23,6 +23,23 @@ Page {
             spacing: 0
             ItemDelegate {
                 Layout.fillWidth: true
+                onClicked: App.requestStoragePermission()
+                visible: !App.storagePermissionGranted
+                contentItem: RowLayout {
+                    spacing: 15
+                    ForkAwesomeIcon {
+                        iconName: "unlock-alt"
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr("Request storage permission")
+                        elide: Text.ElideRight
+                        font.weight: Font.Medium
+                    }
+                }
+            }
+            ItemDelegate {
+                Layout.fillWidth: true
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
