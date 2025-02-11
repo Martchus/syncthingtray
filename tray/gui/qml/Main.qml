@@ -187,6 +187,11 @@ ApplicationWindow {
         }
     }
 
+    // apply font settings (where necessary because Qt doesn't do it such as Android)
+    font.family: App.fontFamily;
+    font.pixelSize: font.pixelSize * App.fontScale;
+    font.weight: font.weight + App.fontWeightAdjustment;
+
     readonly property bool inPortrait: window.width < window.height
     readonly property int spacing: 7
 
@@ -420,11 +425,6 @@ ApplicationWindow {
     Component.onCompleted: {
         // propagate palette of Qt Quick Controls 2 style to regular QPalette of QGuiApplication for icon rendering
         App.setPalette(Material.foreground, Material.background);
-
-        // apply font settings (where necessary because Qt doesn't do it such as Android)
-        window.font.family = App.fontFamily;
-        window.font.pixelSize *= App.fontScale;
-        window.font.weight += App.fontWeightAdjustment;
 
         // handle global keyboard and mouse events
         window.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
