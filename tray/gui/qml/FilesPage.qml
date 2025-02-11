@@ -6,10 +6,7 @@ import Main
 
 Page {
     id: page
-    title: {
-        const mainTitle = qsTr("Remote/global tree of \"%1\"").arg(dirName);
-        return path.length > 0 ? `${mainTitle}\n${path}` : mainTitle;
-    }
+    title: qsTr("Remote/global tree of \"%1\"").arg(dirName)
     Component.onCompleted: connections.onSelectionActionsChanged()
 
     DelegateModel {
@@ -29,12 +26,14 @@ Page {
                         Layout.fillWidth: true
                         text: textData
                         elide: Text.ElideRight
+                        wrapMode: Text.Wrap
                         font.weight: Font.Medium
                     }
                     Label {
                         Layout.fillWidth: true
                         text: details
                         elide: Text.ElideRight
+                        wrapMode: Text.Wrap
                         font.weight: Font.Light
                     }
                 }
@@ -103,6 +102,23 @@ Page {
     CustomListView {
         id: listView
         anchors.fill: parent
+        header: ItemDelegate {
+            visible: path.length > 0
+            height: visible ? implicitHeight : 0
+            width: listView.width
+            contentItem: RowLayout {
+                ForkAwesomeIcon {
+                    iconName: "folder-open-o"
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: path
+                    elide: Label.ElideRight
+                    wrapMode: Text.Wrap
+                }
+            }
+            onClicked: page.back()
+        }
         model: delegateModel
     }
     Instantiator {

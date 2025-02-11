@@ -111,6 +111,7 @@ ApplicationWindow {
                         elide: Label.ElideRight
                         horizontalAlignment: Qt.AlignLeft
                         verticalAlignment: Qt.AlignVCenter
+                        wrapMode: Text.Wrap
                         Layout.fillWidth: true
                     }
                     CustomToolButton {
