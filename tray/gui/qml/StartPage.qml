@@ -12,6 +12,7 @@ Page {
     Layout.fillHeight: true
     property var stats: App.connection.overallDirStatistics
     property var remoteCompletion: App.connection.overallRemoteCompletion
+    signal quitRequested
     CustomFlickable {
         id: mainView
         anchors.fill: parent
@@ -314,6 +315,11 @@ Page {
             text: qsTr("Run in background")
             icon.source: App.faUrlBase + "window-minimize"
             onTriggered: (source) => App.minimize()
+        },
+        Action {
+            text: qsTr("Quit")
+            icon.source: App.faUrlBase + "times"
+            onTriggered: (source) => startPage.quitRequested()
         }
     ]
 }

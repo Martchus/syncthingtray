@@ -329,6 +329,7 @@ ApplicationWindow {
         StartPage {
             id: startPage
             pages: pageStack
+            onQuitRequested: closeDialog.open()
         }
         DirsPage {
             id: dirsPage
