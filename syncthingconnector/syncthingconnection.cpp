@@ -886,7 +886,7 @@ QString SyncthingConnection::deviceNameOrId(const QString &deviceId) const
 {
     for (const auto &dev : devInfo()) {
         if (dev.id == deviceId) {
-            return dev.name;
+            return dev.displayName();
         }
     }
     return deviceId;
