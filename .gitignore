@@ -23,6 +23,7 @@ qrc_*.cpp
 ui_*.h
 Makefile*
 *-build-*
+.qmlls.ini
 
 # QtCreator
 *.autosave
