@@ -1750,11 +1750,11 @@ static void readSyncthingItems(const QJsonArray &array, std::vector<std::unique_
         item->name = jsonItemObj.value(QLatin1String("name")).toString();
         item->modificationTime = CppUtilities::DateTime::fromIsoStringGmt(jsonItemObj.value(QLatin1String("modTime")).toString().toUtf8().data());
         item->size = static_cast<std::size_t>(jsonItemObj
-                                                  .value(QLatin1String("size"))
+                .value(QLatin1String("size"))
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-                                                  .toInteger()
+                .toInteger()
 #else
-                                                  .toDouble()
+                .toDouble()
 #endif
         );
         item->index = index;
@@ -2402,11 +2402,11 @@ void SyncthingConnection::readDownloadProgressEvent(const QJsonObject &eventData
                   .arg(QString::fromLatin1(dataSizeToString(dirInfo.blocksAlreadyDownloaded > 0
                                ? static_cast<std::uint64_t>(dirInfo.blocksAlreadyDownloaded) * SyncthingItemDownloadProgress::syncthingBlockSize
                                : 0)
-                                               .data()),
+                               .data()),
                       QString::fromLatin1(dataSizeToString(dirInfo.blocksToBeDownloaded > 0
                               ? static_cast<std::uint64_t>(dirInfo.blocksToBeDownloaded) * SyncthingItemDownloadProgress::syncthingBlockSize
                               : 0)
-                                              .data()),
+                              .data()),
                       QString::number(dirInfo.downloadPercentage));
     }
     emit downloadProgressChanged();

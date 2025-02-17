@@ -750,7 +750,7 @@ QWidget *IconsOptionPage::setupWidget()
             label->setText(QString::number(value) + QStringLiteral(" px"));
         } else {
             label->setText(QCoreApplication::translate("QtGui::IconsOptionPageBase", "%1 px (scaled to %2 px)")
-                               .arg(QString::number(value), QString::number(static_cast<qreal>(value) * scaleFactor, 'f', 0)));
+                    .arg(QString::number(value), QString::number(static_cast<qreal>(value) * scaleFactor, 'f', 0)));
         }
     });
 
@@ -1098,7 +1098,7 @@ void AutostartOptionPage::reset()
         ui()->pathWarningLabel->setText(QCoreApplication::translate("QtGui::AutostartOptionPage",
             "There is already an autostart entry for \"%1\". "
             "It will not be overridden when applying changes unless you delete it first.")
-                                            .arg(configuredPath.value()));
+                .arg(configuredPath.value()));
     }
 }
 
