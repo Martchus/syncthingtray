@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.Material
-import QtQuick.Dialogs
 import Qt.labs.qmlmodels
 
 import Main

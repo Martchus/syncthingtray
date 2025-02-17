@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls.Material
 
 import Main
@@ -25,7 +24,7 @@ Page {
         Action {
             text: qsTr("Clear")
             icon.source: App.faUrlBase + "undo"
-            onTriggered: (source) => {
+            onTriggered: {
                 App.clearLog();
                 textArea.clear();
             }
