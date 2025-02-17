@@ -303,7 +303,10 @@ void SyncthingConnection::setPollingFlags(PollingFlags flags)
 
     // restart events/disk-events request as necessary
     if (normalEventsChanged) {
-        m_eventMask.clear();
+        if (!m_eventMask.isEmpty()) {
+            m_lastEventIdByMask.insert(m_eventMask, m_lastEventId);
+            m_eventMask.clear();
+        }
         cancelReplyWithoutAbortingConnection(m_eventsReply);
     }
     if (diskEventsChanged) {
@@ -615,6 +618,7 @@ void SyncthingConnection::continueReconnecting()
     m_abortingToConnect = m_abortingToReconnect = false;
     m_lastEventId = 0;
     m_lastDiskEventId = 0;
+    m_lastEventIdByMask.clear();
     m_configDir.clear();
     m_myId.clear();
     m_tilde.clear();
@@ -960,7 +964,6 @@ void SyncthingConnection::continueConnecting()
     requestErrors();
     requestVersion();
     for (const SyncthingDir &dir : m_dirs) {
-        requestDirStatus(dir.id);
         if (!m_requestCompletion || dir.paused) {
             continue;
         }

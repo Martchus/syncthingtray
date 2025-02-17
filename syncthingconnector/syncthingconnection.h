@@ -544,6 +544,7 @@ private:
     StatusRecomputation m_statusRecomputationFlags;
     SyncthingEventId m_lastEventId;
     SyncthingEventId m_lastDiskEventId;
+    QHash<QString, SyncthingEventId> m_lastEventIdByMask;
     QTimer m_trafficPollTimer;
     QTimer m_devStatsPollTimer;
     QTimer m_errorsPollTimer;

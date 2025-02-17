@@ -2164,6 +2164,12 @@ void SyncthingConnection::requestEvents()
         if (m_pollingFlags && PollingFlags::ItemFinished) {
             m_eventMask += QStringLiteral(",ItemFinished");
         }
+
+        // reset/restore event ID as each mask creates its own stream of IDs
+        m_lastConnectionsUpdateEvent = m_lastFileEvent = 0;
+        if (!(m_lastEventId = m_lastEventIdByMask.value(m_eventMask, 0))) {
+            m_hasEvents = false; // do initial requests again as we might have missed events
+        }
     }
     auto query = QUrlQuery();
     query.addQueryItem(QStringLiteral("events"), m_eventMask);
@@ -2206,21 +2212,26 @@ void SyncthingConnection::readEvents()
             return;
         }
 
-        // request further statistics only *after* receiving the first event (and not in continueConnecting())
-        // note: We avoid requesting the whole event history. So we rely on these statistics to tell the initial state. When the
-        //       state of e.g. a directory changes before we receive the first event we would miss that state change if statistics
-        //       were requested in continueConnecting().
-        if (!m_hasEvents) {
-            requestConnections();
-            requestDirStatistics();
-            requestDeviceStatistics();
-        }
-
+        const auto hadEvents = m_hasEvents;
         m_hasEvents = true;
         const auto replyArray = replyDoc.array();
         emit newEvents(replyArray);
         const auto res = readEventsFromJsonArray(replyArray, m_lastEventId);
         emit allEventsProcessed();
+
+        // request further statistics only *after* receiving the first event (and not in continueConnecting())
+        // note: We avoid requesting the whole event history. So we rely on these statistics to tell the initial state. When the
+        //       state of e.g. a directory changes before we receive the first event we would miss that state change if statistics
+        //       were requested in continueConnecting().
+        if (!hadEvents) {
+            requestConnections();
+            requestDirStatistics();
+            requestDeviceStatistics();
+            for (const SyncthingDir &dir : m_dirs) {
+                requestDirStatus(dir.id);
+            }
+        }
+
         if (!res) {
             return;
         }
