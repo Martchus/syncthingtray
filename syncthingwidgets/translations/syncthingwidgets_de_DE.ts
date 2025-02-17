@@ -1841,7 +1841,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="247"/>
-        <location filename="../misc/otherdialogs.cpp" line="296"/>
+        <location filename="../misc/otherdialogs.cpp" line="300"/>
         <source>Deletion of the following local files:</source>
         <translation>Löschung folgender lokalen Dateien:</translation>
     </message>
@@ -1851,42 +1851,42 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Muster manuell editieren</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="299"/>
+        <location filename="../misc/otherdialogs.cpp" line="303"/>
         <source>Changes to ignore patterns:</source>
         <translation>Änderung der Ignorier-Muster:</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="347"/>
+        <location filename="../misc/otherdialogs.cpp" line="351"/>
         <source>Ignore patterns of folder &quot;%1&quot;</source>
         <translation>Ignoriermuster des Ordners &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="400"/>
+        <location filename="../misc/otherdialogs.cpp" line="404"/>
         <source>Do you want to save the changes?</source>
         <translation>Sollen die Änderungen gespeichert werden?</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="412"/>
+        <location filename="../misc/otherdialogs.cpp" line="416"/>
         <source>Notifications/errors</source>
         <translation>Benachrichtigungen/Fehlermeldungen</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="440"/>
+        <location filename="../misc/otherdialogs.cpp" line="444"/>
         <source>Copy</source>
         <translation>Kopieren</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="452"/>
+        <location filename="../misc/otherdialogs.cpp" line="456"/>
         <source>Selected notification:</source>
         <translation>Ausgewählte Benachrichtigung:</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="476"/>
+        <location filename="../misc/otherdialogs.cpp" line="480"/>
         <source>Clear all notifications</source>
         <translation>Alle Benachrichtigungen löschen</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="377"/>
+        <location filename="../misc/otherdialogs.cpp" line="381"/>
         <source>Ignore patterns have been changed.</source>
         <translation>Die Ignoriermuster wurden gespeichert.</translation>
     </message>
@@ -1909,7 +1909,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Nein</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="384"/>
+        <location filename="../misc/otherdialogs.cpp" line="388"/>
         <source>Unable to save ignore patterns: %1</source>
         <translation>Ignoriermuster können nicht gespeichert werden: %1</translation>
     </message>
@@ -2216,10 +2216,20 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>QtGui::TextViewDialog</name>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="62"/>
-        <location filename="../misc/textviewdialog.cpp" line="71"/>
+        <location filename="../misc/textviewdialog.cpp" line="64"/>
+        <location filename="../misc/textviewdialog.cpp" line="87"/>
         <source>Log</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="67"/>
+        <source>Press F5 to reload.</source>
+        <translation>Drücke F5 um neu zu landen.</translation>
+    </message>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="69"/>
+        <source> Checkout &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt; for continuous log of local Syncthing instance.</source>
+        <translation> Öffne die &lt;a href=&quot;openLauncherSettings&quot;&gt;Starter-Einstellungen&lt;/a&gt; für ein kontinuierliches Log der lokalen Syncthing-Instanz.</translation>
     </message>
 </context>
 <context>

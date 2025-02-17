@@ -1645,7 +1645,7 @@
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="247"/>
-        <location filename="../misc/otherdialogs.cpp" line="296"/>
+        <location filename="../misc/otherdialogs.cpp" line="300"/>
         <source>Deletion of the following local files:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1655,42 +1655,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="299"/>
+        <location filename="../misc/otherdialogs.cpp" line="303"/>
         <source>Changes to ignore patterns:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="347"/>
+        <location filename="../misc/otherdialogs.cpp" line="351"/>
         <source>Ignore patterns of folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="400"/>
+        <location filename="../misc/otherdialogs.cpp" line="404"/>
         <source>Do you want to save the changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="412"/>
+        <location filename="../misc/otherdialogs.cpp" line="416"/>
         <source>Notifications/errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="440"/>
+        <location filename="../misc/otherdialogs.cpp" line="444"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="452"/>
+        <location filename="../misc/otherdialogs.cpp" line="456"/>
         <source>Selected notification:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="476"/>
+        <location filename="../misc/otherdialogs.cpp" line="480"/>
         <source>Clear all notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="377"/>
+        <location filename="../misc/otherdialogs.cpp" line="381"/>
         <source>Ignore patterns have been changed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1705,7 +1705,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="384"/>
+        <location filename="../misc/otherdialogs.cpp" line="388"/>
         <source>Unable to save ignore patterns: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1983,9 +1983,19 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>QtGui::TextViewDialog</name>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="62"/>
-        <location filename="../misc/textviewdialog.cpp" line="71"/>
+        <location filename="../misc/textviewdialog.cpp" line="64"/>
+        <location filename="../misc/textviewdialog.cpp" line="87"/>
         <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="67"/>
+        <source>Press F5 to reload.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="69"/>
+        <source> Checkout &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt; for continuous log of local Syncthing instance.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

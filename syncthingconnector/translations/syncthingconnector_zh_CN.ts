@@ -211,17 +211,17 @@
         <translation>无法解析 Syncthing 事件： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2233"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2243"/>
         <source>Unable to request Syncthing events: </source>
         <translation>无法请求 Syncthing 事件： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2832"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2842"/>
         <source>Unable to parse disk events: </source>
         <translation>无法解析磁盘事件： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2857"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2867"/>
         <source>Unable to request disk events: </source>
         <translation>无法请求磁盘事件： </translation>
     </message>
@@ -281,17 +281,17 @@
         <translation>无法解析时间戳 &quot;%1&quot; (%2): %3</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1016"/>
+        <location filename="../syncthingconnection.cpp" line="1013"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>无法找到 Syncthing 使用的证书。</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1022"/>
+        <location filename="../syncthingconnection.cpp" line="1019"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>无法加载 Syncthing 使用的证书。</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1232"/>
+        <location filename="../syncthingconnection.cpp" line="1229"/>
         <source>at offset %1</source>
         <translation>在偏移量 %1 处</translation>
     </message>
