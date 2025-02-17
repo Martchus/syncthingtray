@@ -957,9 +957,6 @@ void SyncthingConnection::continueConnecting()
     }
 
     // read additional information (beside config and status)
-    requestConnections();
-    requestDirStatistics();
-    requestDeviceStatistics();
     requestErrors();
     requestVersion();
     for (const SyncthingDir &dir : m_dirs) {
