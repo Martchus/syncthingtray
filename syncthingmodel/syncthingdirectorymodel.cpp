@@ -41,6 +41,7 @@ QHash<int, QByteArray> SyncthingDirectoryModel::roleNames() const
         { DirectoryPullErrorCount, "pullErrorCount" },
         { DirectoryDetail, "detail" },
         { DirectoryDetailIcon, "detailIcon" },
+        { DirectoryDetailTooltip, "detailTooltip" },
         { DirectoryNeededItemsCount, "neededItemsCount" },
     };
     return roles;
@@ -253,7 +254,8 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
             }
             break;
         case Qt::ToolTipRole:
-            switch (m_singleColumnMode ? 1 : index.column()) {
+        case DirectoryDetailTooltip:
+            switch ((m_singleColumnMode || role == DirectoryDetailTooltip) ? 1 : index.column()) {
             case 1:
                 switch (row) {
                 case 3:
@@ -431,7 +433,7 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &dir, int inde
     }
 
     // update detail rows
-    static const QVector<int> modelRoles3({ Qt::DisplayRole, Qt::EditRole, Qt::ToolTipRole });
+    static const QVector<int> modelRoles3({ Qt::DisplayRole, Qt::EditRole, Qt::ToolTipRole, DirectoryDetailTooltip });
     emit dataChanged(this->index(0, 1, modelIndex1), this->index(newLastRow, 1, modelIndex1), modelRoles3);
     static const QVector<int> modelRoles4({ Qt::DisplayRole, Qt::EditRole, DirectoryDetail });
     emit dataChanged(this->index(0, 0, modelIndex1), this->index(newLastRow, 0, modelIndex1), modelRoles4);

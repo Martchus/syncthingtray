@@ -24,6 +24,7 @@ public:
         DeviceDetail,
         DeviceDetailIcon,
         DeviceNeededItemsCount,
+        DeviceDetailTooltip,
     };
 
     explicit SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent = nullptr);

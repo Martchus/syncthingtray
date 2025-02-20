@@ -42,6 +42,7 @@ QHash<int, QByteArray> SyncthingDeviceModel::roleNames() const
         { DeviceId, "devId" },
         { DeviceDetail, "detail" },
         { DeviceDetailIcon, "detailIcon" },
+        { DeviceDetailTooltip, "detailTooltip" },
         { DeviceNeededItemsCount, "neededItemsCount" },
     };
     return roles;
@@ -251,7 +252,8 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             }
             break;
         case Qt::ToolTipRole:
-            switch (m_singleColumnMode ? 1 : index.column()) {
+        case DeviceDetailTooltip:
+            switch ((m_singleColumnMode || role == DeviceDetailTooltip) ? 1 : index.column()) {
             case 1:
                 switch (row) {
                 case 4:
@@ -398,7 +400,7 @@ void SyncthingDeviceModel::devStatusChanged(const SyncthingDev &dev, int index)
     }
 
     // update detail rows
-    static const QVector<int> modelRoles3({ Qt::DisplayRole, Qt::EditRole, Qt::ToolTipRole });
+    static const QVector<int> modelRoles3({ Qt::DisplayRole, Qt::EditRole, Qt::ToolTipRole, DeviceDetailTooltip });
     emit dataChanged(this->index(0, 1, modelIndex1), this->index(newLastRow, 1, modelIndex1), modelRoles3);
     static const QVector<int> modelRoles4({ Qt::DisplayRole, Qt::EditRole, DeviceDetail, DeviceDetailIcon });
     emit dataChanged(this->index(0, 0, modelIndex1), this->index(newLastRow, 0, modelIndex1), modelRoles4);
