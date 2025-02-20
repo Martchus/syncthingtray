@@ -251,7 +251,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
             }
             break;
         case Qt::ToolTipRole:
-            switch (index.column()) {
+            switch (m_singleColumnMode ? 1 : index.column()) {
             case 1:
                 switch (row) {
                 case 4:
