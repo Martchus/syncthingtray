@@ -5,13 +5,14 @@ import QtQuick.Controls.Material
 import Main
 
 Page {
+    id: page
     title: qsTr("Ignore patterns of \"%1\"").arg(dirName)
     Component.onCompleted: App.loadIgnorePatterns(dirId, textArea)
     actions: [
         Action {
             text: qsTr("Save")
             icon.source: App.faUrlBase + "floppy-o"
-            onTriggered: (source) => App.saveIgnorePatterns(dirId, textArea)
+            onTriggered: App.saveIgnorePatterns(page.dirId, textArea)
         }
     ]
     ScrollView {
