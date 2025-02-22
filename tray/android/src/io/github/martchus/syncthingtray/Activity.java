@@ -35,6 +35,7 @@ public class Activity extends QtActivity {
     private float m_fontScale = 1.0f;
     private int m_fontWeightAdjustment = 0;
     private boolean m_storagePermissionRequested = false;
+    private boolean m_notificationPermissionRequested = false;
 
     public boolean performHapticFeedback() {
         View rootView = getWindow().getDecorView().getRootView();
@@ -69,6 +70,27 @@ public class Activity extends QtActivity {
             ActivityCompat.requestPermissions(this,  new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST);
         }
         return false;
+    }
+
+    public boolean notificationPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean requestNotificationPermission() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + getPackageName()));
+        try {
+            startActivity(intent);
+            m_notificationPermissionRequested = true;
+            return true;
+        } catch (ActivityNotFoundException ignored) {
+            showToast("Unable to request notification permission.");
+            return false;
+        }
     }
 
     public boolean minimize() {
@@ -199,6 +221,10 @@ public class Activity extends QtActivity {
             m_storagePermissionRequested = false;
             handleStoragePermissionChanged(storagePermissionGranted());
         }
+        if (m_notificationPermissionRequested) {
+            m_notificationPermissionRequested = false;
+            handleNotificationPermissionChanged(notificationPermissionGranted());
+        }
         super.onResume();
     }
 
@@ -252,6 +278,7 @@ public class Activity extends QtActivity {
 
     private static native void handleAndroidIntent(String page, boolean fromNotification);
     private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
+    private static native void handleNotificationPermissionChanged(boolean notificationPermissionGranted);
     private static native void stopLibSyncthing();
     private static native void initSigsysHandler();
 }

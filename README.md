@@ -358,12 +358,17 @@ low-end devices.
 configuration and data before trying it. No builds are provided at this point so you have to
 [build it from sources](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android).
 
-If you're starting from scratch you can simply install and start the app. You need to give the
-app *notification permission* via the app settings of Android. At this point you will have to
-manually configure that you want to *run Syncthing* itself in the settings within the app. Once
-Syncthing is running you can add devices and folders as usual. The official Syncthing
-documentation applies. There are also many help texts provided within the app itself. A few
-additional remarks:
+If you're starting from scratch you can simply install and start the app. Otherwise, checkout
+the sections about migrating after reading the general remarks.
+
+In any case, you need to give the app *notification permission* and *storage permission* via the
+app settings of Android. The start page of the app shows "Request … permission" actions for
+opening the app settings if the permissions hasn't been granted yet.
+
+At this point you will have to manually configure that you want to *run Syncthing* itself in the
+settings within the app. Once Syncthing is running you can add devices and folders as usual. The
+official Syncthing documentation applies. There are also many help texts provided within the app
+itself. A few additional remarks:
 
 * You can select device IDs of nearby devices from the combo box when adding a new device. So
   there's usually no need to copy & paste device IDs. If you nevertheless need to scan a QR-code

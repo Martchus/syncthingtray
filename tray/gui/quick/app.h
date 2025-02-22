@@ -80,6 +80,7 @@ class App : public QObject {
     Q_PROPERTY(float fontScale READ fontScale CONSTANT)
     Q_PROPERTY(int fontWeightAdjustment READ fontWeightAdjustment CONSTANT)
     Q_PROPERTY(bool storagePermissionGranted READ storagePermissionGranted NOTIFY storagePermissionGrantedChanged)
+    Q_PROPERTY(bool notificationPermissionGranted READ notificationPermissionGranted NOTIFY notificationPermissionGrantedChanged)
     QML_ELEMENT
     QML_SINGLETON
 
@@ -216,6 +217,7 @@ public:
     float fontScale() const;
     int fontWeightAdjustment() const;
     bool storagePermissionGranted() const;
+    bool notificationPermissionGranted() const;
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();
@@ -269,6 +271,7 @@ public:
     Q_INVOKABLE bool minimize();
     Q_INVOKABLE void setPalette(const QColor &foreground, const QColor &background);
     Q_INVOKABLE bool requestStoragePermission();
+    Q_INVOKABLE bool requestNotificationPermission();
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
@@ -288,6 +291,7 @@ Q_SIGNALS:
     void newDeviceTriggered(const QString &devId);
     void newDirTriggered(const QString &devId, const QString &dirId, const QString &dirLabel);
     void storagePermissionGrantedChanged(bool storagePermissionGranted);
+    void notificationPermissionGrantedChanged(bool notificationPermissionGranted);
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
@@ -317,6 +321,7 @@ private Q_SLOTS:
     void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
     void handleAndroidIntent(const QString &page, bool fromNotification);
     void handleStoragePermissionChanged(bool storagePermissionGranted);
+    void handleNotificationPermissionChanged(bool notificationPermissionGranted);
     void stopLibSyncthing();
 #endif
 
@@ -345,6 +350,7 @@ private:
     QHash<const QIcon *, QJniObject> m_androidIconCache;
     int m_androidNotificationId = 100000000;
     mutable std::optional<bool> m_storagePermissionGranted;
+    mutable std::optional<bool> m_notificationPermissionGranted;
 #endif
     Data::SyncthingConfig m_syncthingConfig;
     QString m_syncthingConfigDir;

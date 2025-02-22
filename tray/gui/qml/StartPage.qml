@@ -40,6 +40,23 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
+                onClicked: App.requestNotificationPermission()
+                visible: !App.notificationPermissionGranted
+                contentItem: RowLayout {
+                    spacing: 15
+                    ForkAwesomeIcon {
+                        iconName: "bell"
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr("Request notification permission")
+                        elide: Text.ElideRight
+                        font.weight: Font.Medium
+                    }
+                }
+            }
+            ItemDelegate {
+                Layout.fillWidth: true
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {

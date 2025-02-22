@@ -126,6 +126,11 @@ static void handleStoragePermissionChanged(JNIEnv *, jobject, jboolean storagePe
 {
     QMetaObject::invokeMethod(appObjectForJava, "handleStoragePermissionChanged", Qt::QueuedConnection, Q_ARG(bool, storagePermissionGranted));
 }
+
+static void handleNotificationPermissionChanged(JNIEnv *, jobject, jboolean notificationPermissionGranted)
+{
+    QMetaObject::invokeMethod(appObjectForJava, "handleNotificationPermissionChanged", Qt::QueuedConnection, Q_ARG(bool, notificationPermissionGranted));
+}
 } // namespace JniFn
 #endif
 
@@ -228,8 +233,9 @@ App::App(bool insecure, QObject *parent)
             { "stopLibSyncthing", "()V", reinterpret_cast<void *>(JniFn::stopLibSyncthing) },
             { "handleAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(JniFn::handleAndroidIntent) },
             { "handleStoragePermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleStoragePermissionChanged) },
+            { "handleNotificationPermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleNotificationPermissionChanged) },
         };
-        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 3) && registeredMethods;
+        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 4) && registeredMethods;
         if (!registeredMethods) {
             qWarning() << "Unable to register all native methods in JNI environment.";
         }
@@ -662,10 +668,31 @@ bool App::storagePermissionGranted() const
 #endif
 }
 
+bool App::notificationPermissionGranted() const
+{
+#ifdef Q_OS_ANDROID
+    if (!m_notificationPermissionGranted.has_value()) {
+        m_notificationPermissionGranted = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("notificationPermissionGranted");
+    }
+    return m_notificationPermissionGranted.value();
+#else
+    return true;
+#endif
+}
+
 bool App::requestStoragePermission()
 {
 #ifdef Q_OS_ANDROID
     return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("requestStoragePermission");
+#else
+    return false;
+#endif
+}
+
+bool App::requestNotificationPermission()
+{
+#ifdef Q_OS_ANDROID
+    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("requestNotificationPermission");
 #else
     return false;
 #endif
@@ -1026,6 +1053,13 @@ void App::handleStoragePermissionChanged(bool storagePermissionGranted)
 {
     if (!m_storagePermissionGranted.has_value() || m_storagePermissionGranted.value() != storagePermissionGranted) {
         emit storagePermissionGrantedChanged(m_storagePermissionGranted.emplace(storagePermissionGranted));
+    }
+}
+
+void App::handleNotificationPermissionChanged(bool notificationPermissionGranted)
+{
+    if (!m_notificationPermissionGranted.has_value() || m_notificationPermissionGranted.value() != notificationPermissionGranted) {
+        emit notificationPermissionGrantedChanged(m_notificationPermissionGranted.emplace(notificationPermissionGranted));
     }
 }
 

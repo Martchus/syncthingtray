@@ -97,6 +97,10 @@ public class SyncthingService extends Service {
         }
     }
 
+    public static boolean areNotificationsEnabled() {
+        return s_instance != null && s_instance.m_notificationManager.areNotificationsEnabled();
+    }
+
     public static void updateNotification(String title, String text, String subText, Bitmap bitmapIcon) {
         if (title != null) {
             s_notificationTitle = title;
