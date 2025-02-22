@@ -10,6 +10,12 @@ Page {
     Component.onCompleted: App.loadIgnorePatterns(dirId, textArea)
     actions: [
         Action {
+            text: qsTr("Edit externally")
+            icon.source: App.faUrlBase + "external-link"
+            enabled: App.connection.isLocal
+            onTriggered: App.openIgnorePatterns(page.dirId)
+        },
+        Action {
             text: qsTr("Save")
             icon.source: App.faUrlBase + "floppy-o"
             onTriggered: App.saveIgnorePatterns(page.dirId, textArea)

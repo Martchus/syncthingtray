@@ -242,6 +242,7 @@ public:
     Q_INVOKABLE QString getClipboardText() const;
     Q_INVOKABLE bool loadIgnorePatterns(const QString &dirId, QObject *textArea);
     Q_INVOKABLE bool saveIgnorePatterns(const QString &dirId, QObject *textArea);
+    Q_INVOKABLE bool openIgnorePatterns(const QString &dirId);
     Q_INVOKABLE bool loadErrors(QObject *listView);
     Q_INVOKABLE bool showLog(QObject *textArea);
     Q_INVOKABLE void clearLog();

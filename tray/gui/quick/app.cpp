@@ -480,6 +480,11 @@ bool App::saveIgnorePatterns(const QString &dirId, QObject *textArea)
     return true;
 }
 
+bool App::openIgnorePatterns(const QString &dirId)
+{
+    return openPath(dirId, QStringLiteral(".stignore"));
+}
+
 bool App::loadErrors(QObject *listView)
 {
     listView->setProperty("model", QVariant::fromValue(new Data::SyncthingErrorModel(m_connection, listView)));
