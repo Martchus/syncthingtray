@@ -1304,7 +1304,7 @@ void SyncthingConnection::emitTildeChanged(const QString &newTilde, const QStrin
 void SyncthingConnection::handleFatalConnectionError()
 {
     // start the timer before emitting the event so its active state can be observed in event handler
-    if (m_autoReconnectTimer.interval() || !m_autoReconnectTimer.isActive()) {
+    if (m_autoReconnectTimer.interval() && !m_autoReconnectTimer.isActive()) {
         m_autoReconnectTimer.start();
     }
     setStatus(SyncthingStatus::Disconnected);
