@@ -54,7 +54,7 @@ void DirView::mouseReleaseEvent(QMouseEvent *event)
         } else {
             emit openDir(*clickedRow.data);
         }
-    } else if (clickedRow.index.row() == 9 && clickedRow.data->pullErrorCount) {
+    } else if (clickedRow.index.row() == 10 && clickedRow.data->pullErrorCount) {
         auto &connection(*clickedRow.model->connection());
         connection.requestDirPullErrors(clickedRow.data->id);
 
