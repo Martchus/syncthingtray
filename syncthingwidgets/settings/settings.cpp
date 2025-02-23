@@ -631,7 +631,7 @@ Systemd::ServiceStatus Systemd::apply(
     const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
     const auto unitAvailable = service->isUnitAvailable();
     const auto isRunning = unitAvailable && service->isRunning();
-    const auto consideredForReconnect = considerForReconnect && isRelevant && unitAvailable;
+    const auto consideredForReconnect = considerForReconnect && isRelevant;
     connectAccordingToSettings(
         connection, currentConnectionSettings, *service, reconnectRequired, considerForReconnect, isRelevant, isRunning, consideredForReconnect);
     return ServiceStatus{ isRelevant, isRunning, consideredForReconnect, showButton && isRelevant, service->isUserScope() };
