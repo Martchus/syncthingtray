@@ -10,16 +10,20 @@
 #include <qtutilities/misc/desktoputils.h>
 
 #include <c++utilities/conversion/stringconversion.h>
+#include <c++utilities/io/path.h>
 
 #include <QClipboard>
 #include <QFile>
 #include <QGuiApplication>
+#include <QMetaObject>
 #include <QNetworkReply>
 #include <QPainter>
 #include <QStringBuilder>
+#include <QThreadPool>
 #include <QtConcurrent>
 
 #include <cassert>
+#include <filesystem>
 #include <limits>
 #include <utility>
 
@@ -922,32 +926,64 @@ QList<QAction *> SyncthingFileModel::selectionActions()
                 });
                 queryIgnores();
 
-                // delete local files/directories staged for deletion
+                // conclude immediately if there are no local deletions to do
                 const auto &localDeletions = m_manuallyEditedLocalDeletions.value_or(m_stagedLocalFileDeletions);
-                auto failedDeletions = QStringList();
-                for (const auto &path : localDeletions) {
-                    const auto fullPath = QString(m_localPath % m_pathSeparator % path);
-                    if (QFile::moveToTrash(fullPath)) {
-                        m_stagedLocalFileDeletions.remove(path);
-                    } else {
-                        failedDeletions.append(fullPath);
-                    }
+                if (localDeletions.isEmpty()) {
+                    return concludeApplyingChanges();
                 }
 
-                if (failedDeletions.isEmpty()) {
-                    emit notification(QStringLiteral("info"), tr("Ignore patterns have been changed."));
-                } else {
-                    emit notification(QStringLiteral("error"),
-                        tr("Ignore patterns have been changed but the following local files could not be deleted:\n")
-                            + failedDeletions.join(QChar('\n')));
-                }
-                emit hasStagedChangesChanged(hasStagedChanges());
+                // delete local files/directories staged for deletion
+                QThreadPool::globalInstance()->start([this, localDeletions, basePath = m_localPath + m_pathSeparator] {
+                    auto successfulDeletions = QStringList(), failedDeletions = QStringList();
+                    for (const auto &path : localDeletions) {
+                        const auto fullPath = basePath + path;
+#ifdef Q_OS_WINDOWS
+                        const auto fullNativePath = NativePathStringView(reinterpret_cast<const PathValueType *>(fullPath.utf16()), static_cast<std::size_t>(fullPath.size()));
+#else
+                        const auto fullPathUtf8 = fullPath.toUtf8();
+                        const auto fullNativePath = NativePathStringView(fullPathUtf8.data(), static_cast<std::size_t>(fullPathUtf8.size()));
+#endif
+                        const auto fullStdPath = std::filesystem::path(fullNativePath);
+#ifdef Q_OS_ANDROID
+                        // do normal deletion on Android as it has no standardized trash
+                        auto ec = std::error_code();
+                        std::filesystem::remove_all(fullStdPath, ec);
+                        if (ec) {
+                            failedDeletions.append(fullPath % QChar(':') % QChar(' ') % QString::fromStdString(ec.message()));
+                            continue;
+                        }
+#else
+                        // move item to trash instead of actually deleting it as this is probably more appropriate for a GUI app
+                        if (std::filesystem::exists(fullStdPath) && !QFile::moveToTrash(fullPath)) {
+                            failedDeletions.append(fullPath);
+                            continue;
+                        }
+#endif
+                        successfulDeletions.append(path);
+                    }
+                    QMetaObject::invokeMethod(this, "concludeApplyingChanges", Q_ARG(QStringList, successfulDeletions), Q_ARG(QStringList, failedDeletions));
+                });
             });
         });
         res << applyStagedChangesAction;
     }
 
     return res;
+}
+
+void SyncthingFileModel::concludeApplyingChanges(const QStringList &successfulDeletions, const QStringList &failedDeletions)
+{
+    for (const auto &file: successfulDeletions) {
+        m_stagedLocalFileDeletions.remove(file);
+    }
+    if (failedDeletions.isEmpty()) {
+        emit notification(QStringLiteral("info"), tr("Ignore patterns have been changed."));
+    } else {
+        emit notification(QStringLiteral("error"),
+            tr("Ignore patterns have been changed but the following local files could not be deleted:\n")
+                + failedDeletions.join(QChar('\n')));
+    }
+    emit hasStagedChangesChanged(hasStagedChanges());
 }
 
 void SyncthingFileModel::setSelectionModeEnabled(bool selectionModeEnabled)

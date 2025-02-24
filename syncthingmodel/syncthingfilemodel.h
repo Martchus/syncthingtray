@@ -108,6 +108,7 @@ private Q_SLOTS:
     void handleForkAwesomeIconsChanged() override;
     void handleBrightColorsChanged() override;
     void handleLocalLookupFinished();
+    void concludeApplyingChanges(const QStringList &successfulDeletions = QStringList(), const QStringList &failedDeletions = QStringList());
 
 private:
     void setCheckState(const QModelIndex &index, Qt::CheckState checkState, bool recursively = false);

@@ -64,6 +64,9 @@ use_qt_fork_awesome(VISIBILITY PUBLIC)
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Concurrent Network Gui Svg)
 
+# link against standard filesystem for local deletion in SyncthingFileModel
+use_standard_filesystem()
+
 # include modules to apply configuration
 include(BasicConfig)
 include(QtGuiConfig)
