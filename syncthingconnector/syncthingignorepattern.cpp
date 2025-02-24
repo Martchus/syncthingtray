@@ -318,6 +318,8 @@ match:
                 case MatchManyAny:
                     state = MatchManyAnyIncludingDirSep;
                     break;
+                case MatchManyAnyIncludingDirSep:
+                    break;
                 default:
                     state = MatchManyAny;
                 }

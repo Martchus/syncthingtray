@@ -166,6 +166,14 @@ void IgnorePatternTests::testWildcards()
     auto p11 = SyncthingIgnorePattern(QStringLiteral("/c++/**/.gradle"));
     CPPUNIT_ASSERT(p11.matches(QStringLiteral("c++/cmake/android/.gradle")));
     CPPUNIT_ASSERT(!p11.matches(QStringLiteral("c++/cmake/android/build.gradle")));
+
+    auto p12 = SyncthingIgnorePattern(QStringLiteral("/c++/***/.gradle"));
+    CPPUNIT_ASSERT(p12.matches(QStringLiteral("c++/cmake/android/.gradle")));
+    CPPUNIT_ASSERT(!p12.matches(QStringLiteral("c++/cmake/android/build.gradle")));
+
+    auto p13 = SyncthingIgnorePattern(QStringLiteral("!/Saved/***/0817/HL-00-00.sav"));
+    CPPUNIT_ASSERT(p13.matches(QStringLiteral("Saved/SaveGames/0817/HL-00-00.sav")));
+    CPPUNIT_ASSERT(!p13.matches(QStringLiteral("Saved/SaveGames/0817/HL-00-01.sav")));
 }
 
 void IgnorePatternTests::testCharacterRange()
