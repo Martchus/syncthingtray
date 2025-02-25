@@ -24,6 +24,8 @@ ObjectConfigPage {
         {key: "stConfigDir", label: qsTr("Syncthing config directory")},
         {key: "stDataDir", label: qsTr("Syncthing data directory")},
         {key: "stDbSize", label: qsTr("Syncthing database size")},
+        {key: "extFilesDir", label: qsTr("External files directory")},
+        {key: "extStoragePaths", label: qsTr("External storage paths")},
     ]
     function loadStatistics() {
         page.isLoading = true;

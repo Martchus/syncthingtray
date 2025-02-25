@@ -322,6 +322,7 @@ if (QUICK_GUI)
         gui/qml/FilesPage.qml
         gui/qml/ForkAwesomeIcon.qml
         gui/qml/HelpButton.qml
+        gui/qml/HomeDirPage.qml
         gui/qml/IconOnlyButton.qml
         gui/qml/IgnorePatternPage.qml
         gui/qml/ImportPage.qml

@@ -47,6 +47,23 @@ public class Activity extends QtActivity {
         return res;
     }
 
+    public boolean isExternalStorageMounted() {
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+    }
+
+    public String externalFilesDir() {
+        return getExternalFilesDir(null).getAbsolutePath();
+    }
+
+    public String[] externalStoragePaths() {
+        File[] files = ContextCompat.getExternalFilesDirs(getApplicationContext(), null);
+        String[] paths = new String[files.length];
+        for (int i = 0, len = files.length; i != len; ++i) {
+            paths[i] = files[i].getAbsolutePath();
+        }
+        return paths;
+    }
+
     public boolean storagePermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             return Environment.isExternalStorageManager();

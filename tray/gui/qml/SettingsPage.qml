@@ -70,6 +70,11 @@ StackView {
                     label: qsTr("Export all settings/secrets/data of app and backend")
                     iconName: "floppy-o"
                 }
+                ListElement {
+                    callback: () => stackView.push("HomeDirPage.qml", {}, StackView.PushTransition)
+                    label: qsTr("Move Syncthing home directory")
+                    iconName: "folder-open-o"
+                }
             }
             delegate: ItemDelegate {
                 width: listView.width

@@ -84,7 +84,7 @@ class App : public QObject {
     QML_ELEMENT
     QML_SINGLETON
 
-    enum class ImportExportStatus { None, Checking, Importing, Exporting };
+    enum class ImportExportStatus { None, Checking, Importing, Exporting, CheckingMove, Moving };
 
 public:
     explicit App(bool insecure, QObject *parent = nullptr);
@@ -218,6 +218,7 @@ public:
     int fontWeightAdjustment() const;
     bool storagePermissionGranted() const;
     bool notificationPermissionGranted() const;
+    QString currentSyncthingHomeDir() const;
 
     // helper functions invoked from QML
     Q_INVOKABLE bool loadMain();
@@ -234,6 +235,8 @@ public:
     Q_INVOKABLE bool checkSettings(const QUrl &url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool importSettings(const QVariantMap &availableSettings, const QVariantMap &selectedSettings, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool exportSettings(const QUrl &url, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool checkSyncthingHome(const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE bool scanPath(const QString &path);
@@ -269,6 +272,7 @@ public:
     Q_INVOKABLE QString deviceDisplayName(const QString &id) const;
     Q_INVOKABLE QString dirDisplayName(const QString &id) const;
     Q_INVOKABLE QVariantList computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const;
+    Q_INVOKABLE QVariant isPopulated(const QString &path) const;
     Q_INVOKABLE bool minimize();
     Q_INVOKABLE void setPalette(const QColor &foreground, const QColor &background);
     Q_INVOKABLE bool requestStoragePermission();
@@ -327,8 +331,12 @@ private Q_SLOTS:
 #endif
 
 private:
+    QString externalFilesDir() const;
+    QStringList externalStoragePaths() const;
     void setImportExportStatus(ImportExportStatus importExportStatus);
     void applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled);
+    static QString openSettingFile(QFile &settingsFile, const QString &path);
+    static QString readSettingFile(QFile &settingsFile, QJsonObject &settings);
     bool openSettings();
     QString locateSettingsExportDir();
 
@@ -357,6 +365,7 @@ private:
     QString m_syncthingConfigDir;
     QString m_syncthingDataDir;
     std::pair<QVariantMap, QVariantMap> m_settingsImport;
+    std::optional<QString> m_homeDirMove;
     Data::SyncthingLauncher m_launcher;
     QtUtilities::QtSettings m_qtSettings;
     QFile m_settingsFile;
