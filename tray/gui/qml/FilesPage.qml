@@ -154,7 +154,7 @@ Page {
                         header: Label {
                             width: deletionsView.width
                             visible: deletionsView.model.count > 0
-                            text: qsTr("Deletion of the following local files:")
+                            text: qsTr("Deletion of the following local files (will affect other devices unless ignored below!):")
                             font.weight: Font.Light
                             wrapMode: Text.WordWrap
                         }

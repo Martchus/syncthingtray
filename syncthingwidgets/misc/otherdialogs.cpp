@@ -244,7 +244,8 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
             auto messageBox = TextViewDialog(QStringLiteral("Confirm action - " APP_NAME));
             auto deletionList = QString();
             if (!localDeletions.isEmpty()) {
-                deletionList = QCoreApplication::translate("QtGui::OtherDialogs", "Deletion of the following local files:");
+                deletionList = QCoreApplication::translate(
+                    "QtGui::OtherDialogs", "Deletion of the following local files (will affect other devices unless ignored below!):");
                 auto requiredSize = deletionList.size() + localDeletions.size();
                 for (const auto &path : localDeletions) {
                     requiredSize += path.size();
