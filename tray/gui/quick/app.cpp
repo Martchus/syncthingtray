@@ -129,7 +129,8 @@ static void handleStoragePermissionChanged(JNIEnv *, jobject, jboolean storagePe
 
 static void handleNotificationPermissionChanged(JNIEnv *, jobject, jboolean notificationPermissionGranted)
 {
-    QMetaObject::invokeMethod(appObjectForJava, "handleNotificationPermissionChanged", Qt::QueuedConnection, Q_ARG(bool, notificationPermissionGranted));
+    QMetaObject::invokeMethod(
+        appObjectForJava, "handleNotificationPermissionChanged", Qt::QueuedConnection, Q_ARG(bool, notificationPermissionGranted));
 }
 } // namespace JniFn
 #endif
@@ -677,7 +678,8 @@ bool App::notificationPermissionGranted() const
 {
 #ifdef Q_OS_ANDROID
     if (!m_notificationPermissionGranted.has_value()) {
-        m_notificationPermissionGranted = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("notificationPermissionGranted");
+        m_notificationPermissionGranted
+            = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("notificationPermissionGranted");
     }
     return m_notificationPermissionGranted.value();
 #else

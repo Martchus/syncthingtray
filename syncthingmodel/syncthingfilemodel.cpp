@@ -938,7 +938,8 @@ QList<QAction *> SyncthingFileModel::selectionActions()
                     for (const auto &path : localDeletions) {
                         const auto fullPath = basePath + path;
 #ifdef Q_OS_WINDOWS
-                        const auto fullNativePath = NativePathStringView(reinterpret_cast<const PathValueType *>(fullPath.utf16()), static_cast<std::size_t>(fullPath.size()));
+                        const auto fullNativePath = NativePathStringView(
+                            reinterpret_cast<const PathValueType *>(fullPath.utf16()), static_cast<std::size_t>(fullPath.size()));
 #else
                         const auto fullPathUtf8 = fullPath.toUtf8();
                         const auto fullNativePath = NativePathStringView(fullPathUtf8.data(), static_cast<std::size_t>(fullPathUtf8.size()));
@@ -961,7 +962,8 @@ QList<QAction *> SyncthingFileModel::selectionActions()
 #endif
                         successfulDeletions.append(path);
                     }
-                    QMetaObject::invokeMethod(this, "concludeApplyingChanges", Q_ARG(QStringList, successfulDeletions), Q_ARG(QStringList, failedDeletions));
+                    QMetaObject::invokeMethod(
+                        this, "concludeApplyingChanges", Q_ARG(QStringList, successfulDeletions), Q_ARG(QStringList, failedDeletions));
                 });
             });
         });
@@ -973,15 +975,14 @@ QList<QAction *> SyncthingFileModel::selectionActions()
 
 void SyncthingFileModel::concludeApplyingChanges(const QStringList &successfulDeletions, const QStringList &failedDeletions)
 {
-    for (const auto &file: successfulDeletions) {
+    for (const auto &file : successfulDeletions) {
         m_stagedLocalFileDeletions.remove(file);
     }
     if (failedDeletions.isEmpty()) {
         emit notification(QStringLiteral("info"), tr("Ignore patterns have been changed."));
     } else {
         emit notification(QStringLiteral("error"),
-            tr("Ignore patterns have been changed but the following local files could not be deleted:\n")
-                + failedDeletions.join(QChar('\n')));
+            tr("Ignore patterns have been changed but the following local files could not be deleted:\n") + failedDeletions.join(QChar('\n')));
     }
     emit hasStagedChangesChanged(hasStagedChanges());
 }
