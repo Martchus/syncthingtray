@@ -13,13 +13,13 @@ ObjectConfigPage {
         Action {
             text: qsTr("Apply")
             icon.source: App.faUrlBase + "check"
-            onTriggered: (source) => advancedConfigPage.applyChanges()
+            onTriggered: advancedConfigPage.applyChanges()
         },
         Action {
             text: qsTr("Remove")
             icon.source: App.faUrlBase + "trash-o"
             enabled: advancedConfigPage.configObjectExists
-            onTriggered: (source) => removeDialog.open()
+            onTriggered: removeDialog.open()
         }
     ]
 

@@ -12,7 +12,7 @@ Page {
         Action {
             text: qsTr("Refresh")
             icon.source: App.faUrlBase + "refresh"
-            onTriggered: (source) => page.loadDirs()
+            onTriggered: page.loadDirs()
         }
     ]
     contentItem: CustomListView {

@@ -145,7 +145,7 @@ StackView {
                 text: qsTr("Discard changes")
                 icon.source: App.faUrlBase + "undo"
                 enabled: advancedPage.hasUnsavedChanges
-                onTriggered: (source) => {
+                onTriggered: {
                     advancedPage.config = App.connection.rawConfig;
                     advancedPage.hasUnsavedChanges = false;
                     advancedPage.isDangerous = false;
@@ -155,7 +155,7 @@ StackView {
                 text: qsTr("Apply changes")
                 icon.source: App.faUrlBase + "check"
                 enabled: advancedPage.hasUnsavedChanges
-                onTriggered: (source) => {
+                onTriggered: {
                     const cfg = App.connection.rawConfig;
                     for (let i = 0, count = model.count; i !== count; ++i) {
                         const entryKey = model.get(i).key;

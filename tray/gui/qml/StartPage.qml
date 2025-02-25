@@ -332,7 +332,7 @@ Page {
         Action {
             text: qsTr("Restart")
             icon.source: App.faUrlBase + "refresh"
-            onTriggered: (source) => {
+            onTriggered: {
                 App.launcher.manuallyStopped = true;
                 App.connection.restart();
             }
@@ -340,7 +340,7 @@ Page {
         Action {
             text: qsTr("Shutdown")
             icon.source: App.faUrlBase + "power-off"
-            onTriggered: (source) => {
+            onTriggered: {
                 App.launcher.manuallyStopped = true;
                 App.connection.shutdown();
             }
@@ -348,12 +348,12 @@ Page {
         Action {
             text: qsTr("Run in background")
             icon.source: App.faUrlBase + "window-minimize"
-            onTriggered: (source) => App.minimize()
+            onTriggered: App.minimize()
         },
         Action {
             text: qsTr("Quit")
             icon.source: App.faUrlBase + "times"
-            onTriggered: (source) => startPage.quitRequested()
+            onTriggered: startPage.quitRequested()
         }
     ]
 }

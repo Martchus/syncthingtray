@@ -22,19 +22,19 @@ StackView {
             Action {
                 text: qsTr("Add device")
                 icon.source: App.faUrlBase + "plus"
-                onTriggered: (source) => page.add()
+                onTriggered: page.add()
             }
         ]
         property list<Action> extraActions: [
             Action {
                 text: qsTr("Pause all")
                 icon.source: App.faUrlBase + "pause"
-                onTriggered: (source) => App.connection.pauseAllDevs()
+                onTriggered: App.connection.pauseAllDevs()
             },
             Action {
                 text: qsTr("Resume all")
                 icon.source: App.faUrlBase + "play"
-                onTriggered: (source) => App.connection.resumeAllDevs()
+                onTriggered: App.connection.resumeAllDevs()
             }
         ]
         property alias model: devsListView.mainModel

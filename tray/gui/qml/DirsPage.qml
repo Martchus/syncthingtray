@@ -22,24 +22,24 @@ StackView {
             Action {
                 text: qsTr("Add folder")
                 icon.source: App.faUrlBase + "plus"
-                onTriggered: (source) => page.add()
+                onTriggered: page.add()
             }
         ]
         property list<Action> extraActions: [
             Action {
                 text: qsTr("Pause all")
                 icon.source: App.faUrlBase + "pause"
-                onTriggered: (source) => App.connection.pauseAllDirs()
+                onTriggered: App.connection.pauseAllDirs()
             },
             Action {
                 text: qsTr("Resume all")
                 icon.source: App.faUrlBase + "play"
-                onTriggered: (source) => App.connection.resumeAllDirs()
+                onTriggered: App.connection.resumeAllDirs()
             },
             Action {
                 text: qsTr("Rescan all")
                 icon.source: App.faUrlBase + "refresh"
-                onTriggered: (source) => App.connection.rescanAllDirs()
+                onTriggered: App.connection.rescanAllDirs()
             }
         ]
         property alias model: dirsListView.mainModel

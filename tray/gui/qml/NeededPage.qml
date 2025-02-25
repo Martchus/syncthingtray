@@ -14,7 +14,7 @@ Page {
         Action {
             text: qsTr("Refresh")
             icon.source: App.faUrlBase + "refresh"
-            onTriggered: (source) => neededPage.refresh()
+            onTriggered: neededPage.refresh()
         }
     ]
     CustomListView {

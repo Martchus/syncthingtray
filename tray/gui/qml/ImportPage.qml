@@ -165,7 +165,7 @@ Page {
         Action {
             text: qsTr("Import selected")
             icon.source: App.faUrlBase + "download"
-            onTriggered: (source) => App.importSettings(importPage.availableSettings, importPage.selectedConfig)
+            onTriggered: App.importSettings(importPage.availableSettings, importPage.selectedConfig)
         }
     ]
     function handleSelectedIndexes(model) {

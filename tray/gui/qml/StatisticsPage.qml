@@ -12,7 +12,7 @@ ObjectConfigPage {
         Action {
             text: qsTr("Refresh")
             icon.source: App.faUrlBase + "refresh"
-            onTriggered: (source) => page.loadStatistics()
+            onTriggered: page.loadStatistics()
         }
     ]
     readOnly: true

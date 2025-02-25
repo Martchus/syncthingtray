@@ -11,7 +11,7 @@ Page {
         Action {
             text: qsTr("Clear")
             icon.source: App.faUrlBase + "trash"
-            onTriggered: (source) => App.connection.requestClearingErrors()
+            onTriggered: App.connection.requestClearingErrors()
         }
     ]
     CustomListView {

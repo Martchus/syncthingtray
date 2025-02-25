@@ -12,7 +12,7 @@ Page {
         Action {
             text: qsTr("Clear")
             icon.source: App.faUrlBase + "trash"
-            onTriggered: (source) => {
+            onTriggered: {
                 App.clearInternalErrors();
                 listView.model = App.internalErrors();
             }

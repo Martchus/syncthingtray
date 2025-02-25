@@ -14,7 +14,7 @@ Instantiator {
         icon.source: modelData.icon.source
         icon.width: App.iconSize
         icon.height: App.iconSize
-        onTriggered: (source) => modelData?.trigger(source)
+        onTriggered: modelData?.trigger()
     }
     required property Menu menu
 }

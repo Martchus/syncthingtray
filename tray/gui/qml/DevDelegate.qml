@@ -14,25 +14,25 @@ ExpandableDelegate {
                 text: modelData.paused ? qsTr("Resume") : qsTr("Pause")
                 enabled: !modelData.isThisDevice
                 icon.source: App.faUrlBase + (modelData.paused ? "play" : "pause")
-                onTriggered: (source) => App.connection[modelData.paused ? "resumeDevice" : "pauseDevice"]([modelData.devId])
+                onTriggered: App.connection[modelData.paused ? "resumeDevice" : "pauseDevice"]([modelData.devId])
             }
         ]
         extraActions: [
             Action {
                 text: qsTr("Edit")
                 icon.source: App.faUrlBase + "pencil"
-                onTriggered: (source) => mainView.stackView.push("DevConfigPage.qml", {devName: modelData.name, devId: modelData.devId, stackView: mainView.stackView}, StackView.PushTransition)
+                onTriggered: mainView.stackView.push("DevConfigPage.qml", {devName: modelData.name, devId: modelData.devId, stackView: mainView.stackView}, StackView.PushTransition)
             },
             Action {
                 text: qsTr("Out of Sync items")
                 icon.source: App.faUrlBase + "exchange"
                 enabled: !modelData.paused && (modelData.neededItemsCount > 0)
-                onTriggered: (source) => mainView.stackView.push("OutOfSyncDirs.qml", {devLabel: modelData.name, devId: modelData.devId, dirIndex: modelData.index, devFilterModel: mainDelegateModel.model, stackView: mainView.stackView}, StackView.PushTransition)
+                onTriggered: mainView.stackView.push("OutOfSyncDirs.qml", {devLabel: modelData.name, devId: modelData.devId, dirIndex: modelData.index, devFilterModel: mainDelegateModel.model, stackView: mainView.stackView}, StackView.PushTransition)
             },
             Action {
                 text: qsTr("Advanced config")
                 icon.source: App.faUrlBase + "cogs"
-                onTriggered: (source) => mainView.stackView.push("AdvancedDevConfigPage.qml", {devName: modelData.name, devId: modelData.devId, stackView: mainView.stackView}, StackView.PushTransition)
+                onTriggered: mainView.stackView.push("AdvancedDevConfigPage.qml", {devName: modelData.name, devId: modelData.devId, stackView: mainView.stackView}, StackView.PushTransition)
             }
         ]
     }
