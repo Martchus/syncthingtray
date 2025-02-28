@@ -100,10 +100,10 @@ Page {
         }
     }
     readonly property bool isDangerous: true
-    property var currentHomePopulated: null
+    property int currentHomePopulated: -1
     property bool customDirSelected: false
     property string customDirPath: ""
-    property var customDirPopulated: customDirPath.length > 0 ? App.isPopulated(customDirPath) : undefined
+    property int customDirPopulated: customDirPath.length > 0 ? page.isPopulated(customDirPath) : -1
     property list<Action> actions: [
         Action {
             text: qsTr("Move home to selected path")
@@ -120,16 +120,22 @@ Page {
         App.checkSyncthingHome((homeInfo) => {
             const model = dirsView.model;
             model.clear();
-            page.currentHomePopulated = homeInfo.currentHomePopulated;
+            page.currentHomePopulated = page.populatedPropertyToInt(homeInfo.currentHomePopulated);
             page.customDirSelected = false;
             page.customDirPath = "";
             homeInfo.availableDirs.forEach((dir, index) => {
                 dir.index = index;
                 dir.defaultSelected = dir.selected;
-                dir.populated = dir.populated ?? null;
+                dir.populated = page.populatedPropertyToInt(dir.populated);
                 model.append(dir);
             });
         });
+    }
+    function populatedPropertyToInt(populated) {
+        return (populated === undefined || populated === null) ? (-1) : (populated ? 1 : 0);
+    }
+    function isPopulated(dir) {
+        return page.populatedPropertyToInt(App.isPopulated(dir));
     }
     function findSelectedDir() {
         const model = dirsView.model;
@@ -154,13 +160,13 @@ Page {
     function warningForDir(populated, defaultSelected = false) {
         if (defaultSelected) {
             return qsTr("This is the current home directory.");
-        } else if (populated) {
+        } else if (populated > 0) {
             if (page.currentHomePopulated) {
                 return qsTr("Warning: This directory is not empty and its contents will be replaced with the current home directory!");
             } else {
                 return qsTr("Warning: This directory is not empty. Its contents will be used as new home directory.");
             }
-        } else if (populated === undefined || populated === null) {
+        } else if (populated < 0) {
             return qsTr("Warning: This path can probably not be used as home directory.");
         } else {
             return "";

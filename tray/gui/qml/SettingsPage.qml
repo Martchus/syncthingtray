@@ -117,6 +117,7 @@ StackView {
                                configObject: Qt.binding(() => appSettingsPage.config[key]),
                                specialEntries: appSettingsPage.specialEntries[key] ?? [],
                                specialEntriesByKey: appSettingsPage.specialEntries,
+                               specialEntriesOnly: true,
                                stackView: stackView,
                                actions: appSettingsPage.actions},
                            StackView.PushTransition)

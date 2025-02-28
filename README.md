@@ -356,7 +356,7 @@ low-end devices.
 
 **The Android app is still experimental.** Use it with care and create backups of your
 configuration and data before trying it. No builds are provided at this point so you have to
-[build it from sources](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android).
+[build it from sources](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android). See the section "Caveats on Android" below for further limitations.
 
 If you're starting from scratch you can simply install and start the app. Otherwise, checkout
 the sections about migrating after reading the general remarks.
@@ -459,6 +459,9 @@ While Syncthing Tray basically works on Android, there are still some unresolved
   the private app directory also still needs to be implemented.
 * Media rescans need to be triggered manually.
 * There are probably still many small UI bugs in the Qt Quick based UI used on Android.
+* The Syncthing home directory needs to be within the private directory of the app on the main
+  storage. The app allows moving the home directory to other locations, e.g. the private directory
+  of the app on the SD card. However, Syncthing fails to open its database on other locations.
 * Not all features the official web UI offers have been implemented in the Qt Quick based UI yet.
   One can easily open the official web UI in a web browser, though.
 

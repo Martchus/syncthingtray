@@ -1749,11 +1749,10 @@ QVariant App::isPopulated(const QString &path) const
     auto ec = std::error_code();
     const auto stdPath = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(path));
     const auto status = std::filesystem::symlink_status(stdPath, ec);
-    if (ec || (std::filesystem::exists(status) && !std::filesystem::is_directory(status))) {
-        return QVariant();
-    }
-    const auto populated = !std::filesystem::is_empty(stdPath, ec);
-    return ec ? QVariant() : QVariant(populated);
+    const auto existing = std::filesystem::exists(status);
+    return (existing && !std::filesystem::is_directory(status))
+        ? QVariant()
+        : QVariant(existing && !std::filesystem::is_empty(stdPath, ec));
 }
 
 QString App::currentSyncthingHomeDir() const
@@ -1768,7 +1767,7 @@ bool App::checkSyncthingHome(const QJSValue &callback)
     }
     setImportExportStatus(ImportExportStatus::CheckingMove);
     QtConcurrent::run([this, defaultPath = m_settingsDir.value_or(QDir()).path(), currentVal = currentSyncthingHomeDir()] () mutable {
-        auto externalDirs = externalStoragePaths();
+        const auto externalDirs = externalStoragePaths();
         auto availableDirs = QVariantList();
         auto defaultDir = QVariantMap();
         defaultDir[QStringLiteral("path")] = (defaultPath += QStringLiteral("/syncthing"));
@@ -1789,7 +1788,7 @@ bool App::checkSyncthingHome(const QJSValue &callback)
             }
             dir[QStringLiteral("path")] = path;
             dir[QStringLiteral("value")] = path;
-            dir[QStringLiteral("label")] = tr("External storage %1").arg(externalStorageNumber);
+            dir[QStringLiteral("label")] = tr("External storage %1").arg(++externalStorageNumber);
             dir[QStringLiteral("selected")] = isCurrentPath;
             dir[QStringLiteral("populated")] = isPopulated(path);
             availableDirs.emplace_back(dir);
@@ -1891,6 +1890,7 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
             launcherSettings.insert(QLatin1String("stHomeDir"), setHomeDir);
             m_settings.insert(QLatin1String("launcher"), launcherSettings);
             storeSettings();
+            emit settingsChanged(m_settings);
         }
 
         setImportExportStatus(ImportExportStatus::None);
@@ -1898,7 +1898,6 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
             callback.call(QJSValueList{ QJSValue(message), QJSValue(errorOccurred) });
         }
         emit errorOccurred ? error(message) : info(message);
-
         applySettings();
     });
     return true;
