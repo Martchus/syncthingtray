@@ -40,6 +40,12 @@ ExpandableDelegate {
                 onTriggered: mainView.stackView.push("NeededPage.qml", {dirLabel: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
             },
             Action {
+                text: modelData.overrideRevertActionLabel
+                icon.source: App.faUrlBase + "undo"
+                enabled: modelData.overrideRevertAction.length > 0
+                onTriggered: mainView.confirmDirAction(modelData.dirId, modelData.name, modelData.overrideRevertAction)
+            },
+            Action {
                 text: qsTr("Show errors")
                 enabled: modelData.pullErrorCount > 0
                 icon.source: App.faUrlBase + "exclamation-triangle"

@@ -210,6 +210,14 @@ App::App(bool insecure, QObject *parent)
     connect(&m_notifier, &SyncthingNotifier::newDir, this, &App::showNewDir);
 #endif
 
+    // show info when override/revert has been triggered
+    connect(&m_connection, &SyncthingConnection::overrideTriggered, this, [this] (const QString &dirId) {
+        emit info(tr("Triggered override of \"%1\"").arg(dirDisplayName(dirId)));
+    });
+    connect(&m_connection, &SyncthingConnection::revertTriggered, this, [this] (const QString &dirId) {
+        emit info(tr("Triggered revert of \"%1\"").arg(dirDisplayName(dirId)));
+    });
+
     m_launcher.setEmittingOutput(true);
     connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &App::gatherLogs);
     connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &App::handleRunningChanged);
@@ -1147,6 +1155,18 @@ bool App::postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &call
     emit savingConfigChanged(true);
     invalidateStatus();
     return true;
+}
+
+bool App::invokeDirAction(const QString &dirId, const QString &action)
+{
+    if (action == QLatin1String("override")) {
+        m_connection.requestOverride(dirId);
+        return true;
+    } else if (action == QLatin1String("revert")) {
+        m_connection.requestRevert(dirId);
+        return true;
+    }
+    return false;
 }
 
 bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, const QVariantMap &parameters, const QJSValue &callback)

@@ -263,6 +263,7 @@ public:
     Q_INVOKABLE QVariantList internalErrors() const;
     Q_INVOKABLE void clearInternalErrors();
     Q_INVOKABLE bool postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool invokeDirAction(const QString &dirId, const QString &action);
     Q_INVOKABLE bool requestFromSyncthing(
         const QString &verb, const QString &path, const QVariantMap &parameters, const QJSValue &callback = QJSValue());
     Q_INVOKABLE QString formatDataSize(quint64 size) const;

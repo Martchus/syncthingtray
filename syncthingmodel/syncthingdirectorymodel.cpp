@@ -43,6 +43,8 @@ QHash<int, QByteArray> SyncthingDirectoryModel::roleNames() const
         { DirectoryDetailIcon, "detailIcon" },
         { DirectoryDetailTooltip, "detailTooltip" },
         { DirectoryNeededItemsCount, "neededItemsCount" },
+        { DirectoryOverrideRevertAction, "overrideRevertAction" },
+        { DirectoryOverrideRevertActionLabel, "overrideRevertActionLabel" },
     };
     return roles;
 }
@@ -376,6 +378,26 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
         return dir.pullErrorCount;
     case DirectoryNeededItemsCount:
         return dir.neededStats.total;
+    case DirectoryOverrideRevertAction:
+        switch (dir.dirType) {
+        case SyncthingDirType::SendOnly:
+            return dir.isOutOfSync() ? QStringLiteral("override") : QString();
+        case SyncthingDirType::ReceiveOnly:
+        case SyncthingDirType::ReceiveEncrypted:
+            return dir.receiveOnlyStats.total ? QStringLiteral("revert") : QString();
+        default:
+            return QString();
+        }
+    case DirectoryOverrideRevertActionLabel:
+        switch (dir.dirType) {
+        case SyncthingDirType::SendOnly:
+            return dir.isOutOfSync() ? tr("Override remote changes") : QString();
+        case SyncthingDirType::ReceiveOnly:
+        case SyncthingDirType::ReceiveEncrypted:
+            return dir.receiveOnlyStats.total ? tr("Revert local changes") : QString();
+        default:
+            return QString();
+        }
     default:;
     }
 
@@ -410,7 +432,8 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &dir, int inde
     // update top-level indices
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
     static const QVector<int> modelRoles1({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, DirectoryPaused, DirectoryStatus,
-        DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath, DirectoryPullErrorCount, DirectoryNeededItemsCount });
+        DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath, DirectoryPullErrorCount, DirectoryNeededItemsCount,
+        DirectoryOverrideRevertAction, DirectoryOverrideRevertActionLabel });
     emit dataChanged(modelIndex1, modelIndex1, modelRoles1);
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::EditRole, Qt::ForegroundRole });

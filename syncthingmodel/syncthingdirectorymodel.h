@@ -26,6 +26,8 @@ public:
         DirectoryDetailIcon,
         DirectoryNeededItemsCount,
         DirectoryDetailTooltip,
+        DirectoryOverrideRevertAction,
+        DirectoryOverrideRevertActionLabel,
     };
 
     explicit SyncthingDirectoryModel(SyncthingConnection &connection, QObject *parent = nullptr);
