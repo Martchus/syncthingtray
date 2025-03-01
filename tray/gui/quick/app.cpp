@@ -75,7 +75,7 @@
 //    Custom icons (Syncthing icons, ForkAwesome icons) are rendered using the text color from the application
 //    QPalette. This is the reason why we still populate the QPalette in this case and don't just ignore it.
 // 2. Some platforms allow the user to configure a custom palette but do *not* provide a "darkmode flag", e.g.
-//    KDE. In this case reading the Qt::ColorScheme value from Qt is useless but QPalette will be populate. We
+//    KDE. In this case reading the Qt::ColorScheme value from Qt is useless but QPalette will be populated. We
 //    therefore need to determine whether the current color scheme is dark from the QPalette and set the Qt
 //    Quick Controls 2 style based on that.
 #ifdef Q_OS_ANDROID
