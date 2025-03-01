@@ -174,6 +174,8 @@ App::App(bool insecure, QObject *parent)
     applySettings();
 #ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
     QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
+#else
+    applyDarkmodeChange(m_darkColorScheme, m_darkPalette);
 #endif
 
     auto &iconManager = Data::IconManager::instance();
