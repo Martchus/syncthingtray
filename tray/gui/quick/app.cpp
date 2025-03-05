@@ -622,7 +622,7 @@ static void loadSystemFont(std::string_view fontPath, QString &fontFamily)
     }
 }
 
-static void matchAndLoadDefaultFont(AFontMatcher *matcher, std::uint16_t weight, QString &fontFamily) REQUIRES_ANDROID_API(29)
+static void matchAndLoadDefaultFont(AFontMatcher *matcher, std::uint16_t weight, QString &fontFamily) REQUIRES_ANDROID_API(34)
 {
     AFontMatcher_setStyle(matcher, weight, false);
     if (auto *const font = AFontMatcher_match(matcher, "FontFamily.Default", reinterpret_cast<const uint16_t *>(u"foobar"), 3, nullptr)) {
@@ -633,10 +633,15 @@ static void matchAndLoadDefaultFont(AFontMatcher *matcher, std::uint16_t weight,
     }
 }
 
+/*!
+ * \brief Loads the default system font on Android 14 and newer.
+ * \remarks The API would be available as of Android 10 (API 29) but using it leads to crashes. Not sure about
+ *          Android 11, 12 and 13 so only enabling this as of Android 14.
+ */
 static QString loadDefaultSystemFonts()
 {
     auto defaultSystemFontFamily = QString();
-    if (ANDROID_API_AT_LEAST(29)) {
+    if (ANDROID_API_AT_LEAST(34)) {
         if (auto *const m = AFontMatcher_create()) {
             matchAndLoadDefaultFont(m, AFONT_WEIGHT_NORMAL, defaultSystemFontFamily);
             matchAndLoadDefaultFont(m, AFONT_WEIGHT_THIN, defaultSystemFontFamily);
