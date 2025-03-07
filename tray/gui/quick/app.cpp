@@ -1410,10 +1410,15 @@ static void ensureDefault(bool &mod, QJsonObject &o, QLatin1String member, const
 
 void App::applyLauncherSettings()
 {
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    static constexpr auto runByDefault = true;
+#else
+    static constexpr auto runByDefault = false;
+#endif
     auto launcherSettings = m_settings.value(QLatin1String("launcher"));
     auto launcherSettingsObj = launcherSettings.toObject();
     auto mod = false;
-    ensureDefault(mod, launcherSettingsObj, QLatin1String("run"), false);
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("run"), runByDefault);
     ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnMetered"), false);
     ensureDefault(mod, launcherSettingsObj, QLatin1String("writeLogFile"), false);
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
