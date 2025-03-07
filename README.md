@@ -348,10 +348,10 @@ environment. Make it invoke
 The Plasmoid can be shown via a hot-key as well by configuring one in the Plasmoid settings.
 
 ## Using the Android app
-The Android app requires Android 9 or later. So far it has only been tested on Android 14 and 15,
-though. Depending on the Android version and vendor-specific limitations you might run into
-permission errors and problems with the app being stopped by the OS. For me it works well enough
-on a three year old average Samsung device. It probably works on most recent phones except very
+The Android app requires Android 9 or later. It is mainly tested on Android 14 and 15, though.
+Depending on the Android version and vendor-specific limitations you might run into permission
+errors and problems with the app being stopped by the OS. For me it works well enough on a
+three year old average Samsung device. It probably works on most recent phones except very
 low-end devices.
 
 **The Android app is still experimental.** Use it with care and create backups of your
@@ -365,10 +365,9 @@ In any case, you need to give the app *notification permission* and *storage per
 app settings of Android. The start page of the app shows "Request … permission" actions for
 opening the app settings if the permissions hasn't been granted yet.
 
-At this point you will have to manually configure that you want to *run Syncthing* itself in the
-settings within the app. Once Syncthing is running you can add devices and folders as usual. The
-official Syncthing documentation applies. There are also many help texts provided within the app
-itself. A few additional remarks:
+The app will start Syncthing automatically by default. Once Syncthing is running you can add
+devices and folders as usual. The official Syncthing documentation applies. There are also many
+help texts provided within the app itself. A few additional remarks:
 
 * You can select device IDs of nearby devices from the combo box when adding a new device. So
   there's usually no need to copy & paste device IDs. If you nevertheless need to scan a QR-code
@@ -378,9 +377,9 @@ itself. A few additional remarks:
   also be changed later (in contrast to IDs).
 * If you have already another Syncthing app installed or you have an existing configuration from
   another device, read the next sections for testing/migrating.
-* The app does not automatically trigger media library rescans yet, so e.g. synchronized music
-  might not show up immediately in your music app. However, you can trigger a rescan manually if
-  needed. You can do this per folder from the context menu on the folders page.
+* The app does not automatically trigger media library rescans, so e.g. synchronized music might
+  not show up immediately in your music app. However, you can trigger a rescan manually if needed.
+  You can do this per folder from the context menu on the folders page.
 * It is highly recommended to enable the option "Ignore permissions" on all folders under Android
   and when certain file systems are used. The app enables this option therefore by default in
   such cases when a path for a new folder has been selected. You can still disable the option
@@ -443,6 +442,21 @@ configuration from another device.
       is also generally considered dangerious and therefore not recommended when setting up a new
       device.*
 
+### Differences between Syncthing Tray on Android and the Syncthing-Fork app
+* The Syncthing-Fork app uses Android's native UI framework and therefore has a more "native" UI
+  than Syncthing Tray which uses Qt. The UI of Syncthing Tray still follows the Material style
+  guidelines and provides native file dialogs and notifications.
+* The UI of Syncthing Tray on Android is more in-line with the UI of Syncthing Tray on the desktop
+  and the official web-based UI.
+* The UI of Syncthing Tray on Android allows changing all advanced settings and has built-in help
+  texts for many options in accordance with the official Syncthing documentation.
+* The Syncthing-Fork app is generally more mature/stable. Syncthing Tray has still many caveats on
+  Android (see next section).
+* The Syncthing-Fork app provides many features that haven't been implemented yet by Syncthing Tray,
+  e.g. advanced run conditions. Syncthing Tray allows stopping Syncthing on metered network
+  connections, though.
+* The Syncthing-Fork app works probably better on older or very low-budget devices.
+      
 ### Caveats on Android
 While Syncthing Tray basically works on Android, there are still some unresolved issues:
 
