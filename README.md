@@ -356,14 +356,15 @@ low-end devices.
 
 **The Android app is still experimental.** Use it with care and create backups of your
 configuration and data before trying it. No builds are provided at this point so you have to
-[build it from sources](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android). See the section "Caveats on Android" below for further limitations.
+[build it from sources](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android).
+See the section "[Caveats on Android](#caveats-on-android)" below for further limitations.
 
 If you're starting from scratch you can simply install and start the app. Otherwise, checkout
 the sections about migrating after reading the general remarks.
 
 In any case, you need to give the app *notification permission* and *storage permission* via the
-app settings of Android. The start page of the app shows "Request … permission" actions for
-opening the app settings if the permissions hasn't been granted yet.
+app settings of Android. The start page of the app shows "Request … permission" actions at the
+top for opening the app settings if the permissions haven't been granted yet.
 
 The app will start Syncthing automatically by default. Once Syncthing is running you can add
 devices and folders as usual. The official Syncthing documentation applies. There are also many
@@ -443,15 +444,15 @@ configuration from another device.
       device.*
 
 ### Differences between Syncthing Tray on Android and the Syncthing-Fork app
-* The Syncthing-Fork app uses Android's native UI framework and therefore has a more "native" UI
+* The [Syncthing-Fork](https://github.com/Catfriend1/syncthing-android) app is generally more
+  mature/stable. Syncthing Tray has still many caveats on Android (see next section).
+* The Syncthing-Fork app uses Android's native UI framework and therefore has a more native UI
   than Syncthing Tray which uses Qt. The UI of Syncthing Tray still follows the Material style
   guidelines and provides native file dialogs and notifications.
 * The UI of Syncthing Tray on Android is more in-line with the UI of Syncthing Tray on the desktop
   and the official web-based UI.
 * The UI of Syncthing Tray on Android allows changing all advanced settings and has built-in help
   texts for many options in accordance with the official Syncthing documentation.
-* The Syncthing-Fork app is generally more mature/stable. Syncthing Tray has still many caveats on
-  Android (see next section).
 * The Syncthing-Fork app provides many features that haven't been implemented yet by Syncthing Tray,
   e.g. advanced run conditions. Syncthing Tray allows stopping Syncthing on metered network
   connections, though.
