@@ -4,47 +4,47 @@
 <context>
     <name>Data::SyncthingConnection</name>
     <message>
-        <location filename="../syncthingconnection.cpp" line="180"/>
+        <location filename="../syncthingconnection.cpp" line="181"/>
         <source>disconnected</source>
         <translation>odpojeno</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="182"/>
+        <location filename="../syncthingconnection.cpp" line="183"/>
         <source>reconnecting</source>
         <translation>znovu se připojuje</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="184"/>
+        <location filename="../syncthingconnection.cpp" line="185"/>
         <source>connected</source>
         <translation>spojeno</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="186"/>
+        <location filename="../syncthingconnection.cpp" line="187"/>
         <source>connected, scanning</source>
         <translation>spojeno, skenování</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="188"/>
+        <location filename="../syncthingconnection.cpp" line="189"/>
         <source>connected, paused</source>
         <translation>spojeno, pozastaveno</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="190"/>
+        <location filename="../syncthingconnection.cpp" line="191"/>
         <source>connected, synchronizing</source>
         <translation>spojeno, synchronizuje se</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="192"/>
+        <location filename="../syncthingconnection.cpp" line="193"/>
         <source>connected, remote not in sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="194"/>
+        <location filename="../syncthingconnection.cpp" line="195"/>
         <source>connected, but all remote devices disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="947"/>
+        <location filename="../syncthingconnection.cpp" line="950"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -53,12 +53,12 @@
         <translation type="vanished">spojeno, nesesynchronizováno</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="196"/>
+        <location filename="../syncthingconnection.cpp" line="197"/>
         <source>unknown</source>
         <translation>neznámý stav spojení</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="470"/>
+        <location filename="../syncthingconnection.cpp" line="472"/>
         <source>Connection configuration is insufficient.</source>
         <translation>Nastavení spojení není dostačující.</translation>
     </message>
@@ -93,12 +93,12 @@
         <translation>Nedaří se vyžádat si záznamy událostí v Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1016"/>
+        <location filename="../syncthingconnection.cpp" line="1019"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>Nedaří se nalézt certifikát, používaný Syncthing.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1022"/>
+        <location filename="../syncthingconnection.cpp" line="1025"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>Nedaří se načíst certifikát, používaný Syncthing.</translation>
     </message>
@@ -174,7 +174,7 @@
         <translation>Nedaří se zpracovat události v Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2254"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2253"/>
         <source>Unable to request Syncthing events: </source>
         <translation>Nedaří se vyžádat si události v Syncthing: </translation>
     </message>
@@ -285,27 +285,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2853"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2852"/>
         <source>Unable to parse disk events: </source>
         <translation>Nedaří se zpracovat události úložiště: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2878"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2877"/>
         <source>Unable to request disk events: </source>
         <translation>Nedaří se vyžádat si události úložiště: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1232"/>
+        <location filename="../syncthingconnection.cpp" line="1235"/>
         <source>at offset %1</source>
         <translation>na posunu %1</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="703"/>
+        <location filename="../syncthingconnection.h" line="704"/>
         <source>connecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="705"/>
+        <location filename="../syncthingconnection.h" line="706"/>
         <source>, re-connect attempt every %1 ms</source>
         <translation type="unfinished"></translation>
     </message>

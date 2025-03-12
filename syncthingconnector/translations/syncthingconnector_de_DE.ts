@@ -4,47 +4,47 @@
 <context>
     <name>Data::SyncthingConnection</name>
     <message>
-        <location filename="../syncthingconnection.cpp" line="180"/>
+        <location filename="../syncthingconnection.cpp" line="181"/>
         <source>disconnected</source>
         <translation>Verbindung getrennt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="182"/>
+        <location filename="../syncthingconnection.cpp" line="183"/>
         <source>reconnecting</source>
         <translation>Verbindung wird wiederhergestellt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="184"/>
+        <location filename="../syncthingconnection.cpp" line="185"/>
         <source>connected</source>
         <translation>verbunden</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="186"/>
+        <location filename="../syncthingconnection.cpp" line="187"/>
         <source>connected, scanning</source>
         <translation>verbunden, scannt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="188"/>
+        <location filename="../syncthingconnection.cpp" line="189"/>
         <source>connected, paused</source>
         <translation>verbunden, pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="190"/>
+        <location filename="../syncthingconnection.cpp" line="191"/>
         <source>connected, synchronizing</source>
         <translation>verbunden, am Synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="192"/>
+        <location filename="../syncthingconnection.cpp" line="193"/>
         <source>connected, remote not in sync</source>
         <translation>verbunden, entferntes Gerät nicht synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="194"/>
+        <location filename="../syncthingconnection.cpp" line="195"/>
         <source>connected, but all remote devices disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>verbunden, aber Verbindung zu allen entfernten Geräten getrennt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="947"/>
+        <location filename="../syncthingconnection.cpp" line="950"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
         <translation>Fehler beim Parsen des Zeitstempels &quot;%1&quot; (Kontext: &quot;%2&quot;): %3</translation>
     </message>
@@ -53,12 +53,12 @@
         <translation type="vanished">verbunden, nicht synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="196"/>
+        <location filename="../syncthingconnection.cpp" line="197"/>
         <source>unknown</source>
         <translation>Verbindungsstatus unbekannt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="470"/>
+        <location filename="../syncthingconnection.cpp" line="472"/>
         <source>Connection configuration is insufficient.</source>
         <translation>Verbindungskonfiguration is ungenügend</translation>
     </message>
@@ -93,12 +93,12 @@
         <translation>Fehler beim Abfragen des Syncthing-Logs: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1016"/>
+        <location filename="../syncthingconnection.cpp" line="1019"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1022"/>
+        <location filename="../syncthingconnection.cpp" line="1025"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht ausgelesen werden.</translation>
     </message>
@@ -174,7 +174,7 @@
         <translation>Fehler beim Auslesen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2254"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2253"/>
         <source>Unable to request Syncthing events: </source>
         <translation>Fehler beim Abfragen der Syncthing-Ereignisse: </translation>
     </message>
@@ -285,27 +285,27 @@
         <translation>Fehler beim Ändern des Ignoriermusters von &quot;%1&quot;: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2853"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2852"/>
         <source>Unable to parse disk events: </source>
         <translation>Fehler beim Auslesen der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2878"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2877"/>
         <source>Unable to request disk events: </source>
         <translation>Fehler beim Anfordern der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1232"/>
+        <location filename="../syncthingconnection.cpp" line="1235"/>
         <source>at offset %1</source>
         <translation>bei Zeichen %1</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="703"/>
+        <location filename="../syncthingconnection.h" line="704"/>
         <source>connecting</source>
         <translation>Verbindung wird hergestellt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="705"/>
+        <location filename="../syncthingconnection.h" line="706"/>
         <source>, re-connect attempt every %1 ms</source>
         <translation>, Verbindungsversuch alle %1 ms</translation>
     </message>

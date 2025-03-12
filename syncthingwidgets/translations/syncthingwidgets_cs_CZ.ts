@@ -1645,67 +1645,71 @@
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="247"/>
-        <location filename="../misc/otherdialogs.cpp" line="300"/>
+        <source>Deletion of the following local files (will affect other devices unless ignored below!):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/otherdialogs.cpp" line="301"/>
         <source>Deletion of the following local files:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="262"/>
+        <location filename="../misc/otherdialogs.cpp" line="263"/>
         <source>Edit patterns manually</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="303"/>
+        <location filename="../misc/otherdialogs.cpp" line="304"/>
         <source>Changes to ignore patterns:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="351"/>
+        <location filename="../misc/otherdialogs.cpp" line="352"/>
         <source>Ignore patterns of folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="404"/>
+        <location filename="../misc/otherdialogs.cpp" line="405"/>
         <source>Do you want to save the changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="416"/>
+        <location filename="../misc/otherdialogs.cpp" line="417"/>
         <source>Notifications/errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="444"/>
+        <location filename="../misc/otherdialogs.cpp" line="445"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="456"/>
+        <location filename="../misc/otherdialogs.cpp" line="457"/>
         <source>Selected notification:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="480"/>
+        <location filename="../misc/otherdialogs.cpp" line="481"/>
         <source>Clear all notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="381"/>
+        <location filename="../misc/otherdialogs.cpp" line="382"/>
         <source>Ignore patterns have been changed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="264"/>
+        <location filename="../misc/otherdialogs.cpp" line="265"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="266"/>
+        <location filename="../misc/otherdialogs.cpp" line="267"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="388"/>
+        <location filename="../misc/otherdialogs.cpp" line="389"/>
         <source>Unable to save ignore patterns: %1</source>
         <translation type="unfinished"></translation>
     </message>

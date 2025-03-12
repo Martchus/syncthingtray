@@ -4,63 +4,63 @@
 <context>
     <name>QtGui::App</name>
     <message>
-        <location filename="../gui/quick/app.cpp" line="291"/>
+        <location filename="../gui/quick/app.cpp" line="306"/>
         <source>Waiting for backend …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="383"/>
-        <location filename="../gui/quick/app.cpp" line="392"/>
+        <location filename="../gui/quick/app.cpp" line="402"/>
+        <location filename="../gui/quick/app.cpp" line="411"/>
         <source>Unable to open &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="421"/>
+        <location filename="../gui/quick/app.cpp" line="440"/>
         <source>Copied value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="425"/>
+        <location filename="../gui/quick/app.cpp" line="444"/>
         <source>Unable to copy value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="434"/>
+        <location filename="../gui/quick/app.cpp" line="453"/>
         <source>Unable to copy &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="284"/>
+        <location filename="../gui/quick/app.cpp" line="299"/>
         <source>Backend is starting …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="274"/>
+        <location filename="../gui/quick/app.cpp" line="285"/>
         <source>Checking for data to import …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="276"/>
+        <location filename="../gui/quick/app.cpp" line="287"/>
         <source>Importing configuration …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="278"/>
+        <location filename="../gui/quick/app.cpp" line="289"/>
         <source>Exporting configuration …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="289"/>
+        <location filename="../gui/quick/app.cpp" line="304"/>
         <source>Not connected to backend.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="294"/>
+        <location filename="../gui/quick/app.cpp" line="309"/>
         <source>Saving configuration …</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/quick/app.cpp" line="296"/>
+        <location filename="../gui/quick/app.cpp" line="311"/>
         <source>There are %n notification(s)/error(s).</source>
         <translation>
             <numerusform>There is %n notification/error.</numerusform>
@@ -68,7 +68,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/quick/app.cpp" line="298"/>
+        <location filename="../gui/quick/app.cpp" line="313"/>
         <source>There are %n Syncthing API error(s).</source>
         <translation>
             <numerusform>There is %n Syncthing API error.</numerusform>
@@ -76,204 +76,279 @@
         </translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="409"/>
+        <location filename="../gui/quick/app.cpp" line="428"/>
         <source>Scanning is not supported.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="453"/>
+        <location filename="../gui/quick/app.cpp" line="472"/>
         <source>Unable to load ignore patterns: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="474"/>
+        <location filename="../gui/quick/app.cpp" line="493"/>
         <source>Unable to save ignore patterns: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="790"/>
+        <location filename="../gui/quick/app.cpp" line="861"/>
         <source>Unable to resolve URL &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="993"/>
+        <location filename="../gui/quick/app.cpp" line="1066"/>
         <source>Syncthing API error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="993"/>
+        <location filename="../gui/quick/app.cpp" line="1066"/>
         <source>%1 Syncthing API errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="978"/>
-        <location filename="../gui/quick/app.cpp" line="994"/>
+        <location filename="../gui/quick/app.cpp" line="1051"/>
+        <location filename="../gui/quick/app.cpp" line="1067"/>
         <source>most recent: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="977"/>
+        <location filename="../gui/quick/app.cpp" line="1050"/>
         <source>Syncthing error/notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="977"/>
+        <location filename="../gui/quick/app.cpp" line="1050"/>
         <source>%1 Syncthing errors/notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1003"/>
+        <location filename="../gui/quick/app.cpp" line="1076"/>
         <source>Syncthing device wants to connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1013"/>
+        <location filename="../gui/quick/app.cpp" line="1086"/>
         <source>Syncthing device wants to share folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1093"/>
+        <location filename="../gui/quick/app.cpp" line="1166"/>
         <source>Another config change is still pending.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1192"/>
+        <location filename="../gui/quick/app.cpp" line="1277"/>
         <source>Unable to minimize app.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1228"/>
+        <location filename="../gui/quick/app.cpp" line="1324"/>
         <source>Unable to create settings directory under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1237"/>
+        <location filename="../gui/quick/app.cpp" line="1313"/>
         <source>Unable to open settings under &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1252"/>
+        <location filename="../gui/quick/app.cpp" line="215"/>
+        <source>Triggered override of &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="217"/>
+        <source>Triggered revert of &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="291"/>
+        <source>Checking locations to move home directory …</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="293"/>
+        <source>Moving home directory …</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="1343"/>
         <source>Unable to read settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1256"/>
+        <location filename="../gui/quick/app.cpp" line="1346"/>
         <source>Unable to restore settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1257"/>
+        <location filename="../gui/quick/app.cpp" line="1347"/>
         <source>JSON document contains no object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1277"/>
+        <location filename="../gui/quick/app.cpp" line="1378"/>
         <source>Unable to save settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1305"/>
+        <location filename="../gui/quick/app.cpp" line="1406"/>
         <source>Unable to load HTTPs certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1366"/>
+        <location filename="../gui/quick/app.cpp" line="1474"/>
         <source>This build of the app cannot launch Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1391"/>
+        <location filename="../gui/quick/app.cpp" line="1499"/>
         <source>Persistent logging disabled and logfile removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1393"/>
+        <location filename="../gui/quick/app.cpp" line="1501"/>
         <source>Unable to remove logfile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1401"/>
+        <location filename="../gui/quick/app.cpp" line="1509"/>
         <source>Another import/export still pending</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1453"/>
+        <location filename="../gui/quick/app.cpp" line="1562"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1466"/>
+        <location filename="../gui/quick/app.cpp" line="1575"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1524"/>
+        <location filename="../gui/quick/app.cpp" line="1633"/>
+        <location filename="../gui/quick/app.cpp" line="1878"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1531"/>
+        <location filename="../gui/quick/app.cpp" line="1640"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1552"/>
+        <location filename="../gui/quick/app.cpp" line="1674"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1564"/>
+        <location filename="../gui/quick/app.cpp" line="1687"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1582"/>
+        <location filename="../gui/quick/app.cpp" line="1705"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1597"/>
+        <location filename="../gui/quick/app.cpp" line="1720"/>
         <source>Merging %1 folders and %2 devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1599"/>
+        <location filename="../gui/quick/app.cpp" line="1722"/>
         <source>Unable to import folders/devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1617"/>
+        <location filename="../gui/quick/app.cpp" line="1740"/>
         <source>Unable to import settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1644"/>
+        <location filename="../gui/quick/app.cpp" line="1767"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1647"/>
+        <location filename="../gui/quick/app.cpp" line="1770"/>
         <source>settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1605"/>
+        <location filename="../gui/quick/app.cpp" line="1827"/>
+        <source>Default directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="1843"/>
+        <source>External storage %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="1852"/>
+        <source>Current home directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="1884"/>
+        <source>Waiting for backend to terminate before moving home …</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="1904"/>
+        <source>Home directory stays the same.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="1915"/>
+        <source>Cleaned up new home directory &quot;%1&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="1921"/>
+        <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="1924"/>
+        <source>Cleaned up previous home directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="1927"/>
+        <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="1929"/>
+        <source>Configured &quot;%1&quot; as Syncthing home.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="1933"/>
+        <source>Unable to move home directory: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/app.cpp" line="1728"/>
         <source>Nothing has been imported.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1653"/>
-        <location filename="../gui/quick/app.cpp" line="1663"/>
+        <location filename="../gui/quick/app.cpp" line="1790"/>
         <source>Unable to export settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1656"/>
+        <location filename="../gui/quick/app.cpp" line="1783"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.h" line="154"/>
+        <location filename="../gui/quick/app.h" line="155"/>
         <source>not available</source>
         <translation type="unfinished"></translation>
     </message>
