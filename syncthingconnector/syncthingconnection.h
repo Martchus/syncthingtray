@@ -577,6 +577,7 @@ private:
     bool m_hasStatus;
     bool m_hasEvents;
     bool m_hasDiskEvents;
+    bool m_statsRequested;
     std::vector<SyncthingDir> m_dirs;
     std::vector<SyncthingDev> m_devs;
     std::vector<SyncthingError> m_errors;

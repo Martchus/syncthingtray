@@ -2212,7 +2212,6 @@ void SyncthingConnection::readEvents()
             return;
         }
 
-        const auto hadEvents = m_hasEvents;
         m_hasEvents = true;
         const auto replyArray = replyDoc.array();
         emit newEvents(replyArray);
@@ -2223,7 +2222,7 @@ void SyncthingConnection::readEvents()
         // note: We avoid requesting the whole event history. So we rely on these statistics to tell the initial state. When the
         //       state of e.g. a directory changes before we receive the first event we would miss that state change if statistics
         //       were requested in continueConnecting().
-        if (!hadEvents) {
+        if (!m_statsRequested) {
             requestConnections();
             requestDirStatistics();
             requestDeviceStatistics();

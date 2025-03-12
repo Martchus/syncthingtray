@@ -114,6 +114,7 @@ SyncthingConnection::SyncthingConnection(
     , m_hasStatus(false)
     , m_hasEvents(false)
     , m_hasDiskEvents(false)
+    , m_statsRequested(false)
     , m_lastFileDeleted(false)
     , m_recordFileChanges(false)
     , m_useDeprecatedRoutes(true)
@@ -449,7 +450,7 @@ void SyncthingConnection::connect()
     }
 
     // reset status
-    m_connectionAborted = m_abortingToConnect = m_abortingToReconnect = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
+    m_connectionAborted = m_abortingToConnect = m_abortingToReconnect = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = m_statsRequested = false;
 
     if (!checkConnectionConfiguration()) {
         return;
@@ -569,7 +570,7 @@ void SyncthingConnection::reconnect()
 
     // reset variables to track connection progress
     // note: especially resetting events is important as it influences the subsequent hasPendingRequests() call
-    m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = false;
+    m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = m_statsRequested = false;
 
     // reconnect right now if no pending requests to be aborted
     if (!hasPendingRequests()) {
@@ -633,6 +634,7 @@ void SyncthingConnection::continueReconnecting()
     m_hasStatus = false;
     m_hasEvents = false;
     m_hasDiskEvents = false;
+    m_statsRequested = false;
     m_dirs.clear();
     m_devs.clear();
     m_errors.clear();
