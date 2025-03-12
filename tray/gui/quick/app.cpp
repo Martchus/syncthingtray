@@ -54,8 +54,8 @@
 #include <filesystem>
 #include <functional>
 #include <iostream>
-#include <stdexcept>
 #include <numeric>
+#include <stdexcept>
 
 #ifdef Q_OS_WINDOWS
 #define SYNCTHING_APP_STRING_CONVERSION(s) (s).toStdWString()
@@ -211,12 +211,10 @@ App::App(bool insecure, QObject *parent)
 #endif
 
     // show info when override/revert has been triggered
-    connect(&m_connection, &SyncthingConnection::overrideTriggered, this, [this] (const QString &dirId) {
-        emit info(tr("Triggered override of \"%1\"").arg(dirDisplayName(dirId)));
-    });
-    connect(&m_connection, &SyncthingConnection::revertTriggered, this, [this] (const QString &dirId) {
-        emit info(tr("Triggered revert of \"%1\"").arg(dirDisplayName(dirId)));
-    });
+    connect(&m_connection, &SyncthingConnection::overrideTriggered, this,
+        [this](const QString &dirId) { emit info(tr("Triggered override of \"%1\"").arg(dirDisplayName(dirId))); });
+    connect(&m_connection, &SyncthingConnection::revertTriggered, this,
+        [this](const QString &dirId) { emit info(tr("Triggered revert of \"%1\"").arg(dirDisplayName(dirId))); });
 
     m_launcher.setEmittingOutput(true);
     connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &App::gatherLogs);
@@ -746,7 +744,8 @@ QStringList App::externalStoragePaths() const
     auto paths = QStringList();
 #ifdef Q_OS_ANDROID
     auto env = QJniEnvironment();
-    const auto pathArray = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jobjectArray>("externalStoragePaths", "()[Ljava/lang/String;");
+    const auto pathArray
+        = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jobjectArray>("externalStoragePaths", "()[Ljava/lang/String;");
     const auto pathArrayObj = pathArray.object<jobjectArray>();
     const auto pathArrayLength = env->GetArrayLength(pathArrayObj);
     paths.reserve(pathArrayLength);
@@ -1326,7 +1325,8 @@ bool App::openSettings()
         m_settingsDir.reset();
         return false;
     }
-    if (const auto errorMessage = openSettingFile(m_settingsFile, m_settingsDir->path() + QStringLiteral("/appconfig.json")); !errorMessage.isEmpty()) {
+    if (const auto errorMessage = openSettingFile(m_settingsFile, m_settingsDir->path() + QStringLiteral("/appconfig.json"));
+        !errorMessage.isEmpty()) {
         m_settingsDir.reset();
         emit error(errorMessage);
         return false;
@@ -1539,7 +1539,7 @@ bool App::checkSettings(const QUrl &url, const QJSValue &callback)
         return false;
     }
     setImportExportStatus(ImportExportStatus::Checking);
-    QtConcurrent::run([this, url, currentHomePath = currentSyncthingHomeDir()] () mutable {
+    QtConcurrent::run([this, url, currentHomePath = currentSyncthingHomeDir()]() mutable {
         auto availableSettings = QVariantMap();
         auto pathStr = resolveUrl(url);
         auto path = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(pathStr));
@@ -1678,7 +1678,8 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
             if (importSyncthingHome) {
                 const auto homeSrcPathStr = availableSettings.value(QStringLiteral("syncthingHomePath")).toString();
                 const auto homeSrcPath = SYNCTHING_APP_STRING_CONVERSION(homeSrcPathStr);
-                const auto homeDstPath = syncthingHomePath.isEmpty() ? (settingsPath / "syncthing") : std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(syncthingHomePath));
+                const auto homeDstPath = syncthingHomePath.isEmpty() ? (settingsPath / "syncthing")
+                                                                     : std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(syncthingHomePath));
                 std::filesystem::remove_all(homeDstPath);
                 std::filesystem::create_directory(homeDstPath);
                 std::filesystem::copy(
@@ -1770,10 +1771,11 @@ bool App::exportSettings(const QUrl &url, const QJSValue &callback)
         }
         try {
             std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()), SYNCTHING_APP_STRING_CONVERSION(path),
-            std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive);
+                std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive);
             if (!currentHomePath.isEmpty()) {
-                std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(currentHomePath), SYNCTHING_APP_STRING_CONVERSION(path + QStringLiteral("/syncthing")),
-            std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive);
+                std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(currentHomePath),
+                    SYNCTHING_APP_STRING_CONVERSION(path + QStringLiteral("/syncthing")),
+                    std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive);
             }
         } catch (const std::filesystem::filesystem_error &e) {
             return std::make_pair(QString::fromUtf8(e.what()), true);
@@ -1802,9 +1804,7 @@ QVariant App::isPopulated(const QString &path) const
     const auto stdPath = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(path));
     const auto status = std::filesystem::symlink_status(stdPath, ec);
     const auto existing = std::filesystem::exists(status);
-    return (existing && !std::filesystem::is_directory(status))
-        ? QVariant()
-        : QVariant(existing && !std::filesystem::is_empty(stdPath, ec));
+    return (existing && !std::filesystem::is_directory(status)) ? QVariant() : QVariant(existing && !std::filesystem::is_empty(stdPath, ec));
 }
 
 QString App::currentSyncthingHomeDir() const
@@ -1818,7 +1818,7 @@ bool App::checkSyncthingHome(const QJSValue &callback)
         return false;
     }
     setImportExportStatus(ImportExportStatus::CheckingMove);
-    QtConcurrent::run([this, defaultPath = m_settingsDir.value_or(QDir()).path(), currentVal = currentSyncthingHomeDir()] () mutable {
+    QtConcurrent::run([this, defaultPath = m_settingsDir.value_or(QDir()).path(), currentVal = currentSyncthingHomeDir()]() mutable {
         const auto externalDirs = externalStoragePaths();
         auto availableDirs = QVariantList();
         auto defaultDir = QVariantMap();
@@ -1888,7 +1888,8 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
     }
 
     setImportExportStatus(ImportExportStatus::Moving);
-    QtConcurrent::run([newHomeDir = newHomeDir, customHomeDir = currentSyncthingHomeDir(), defaultPath = m_settingsDir.value_or(QDir()).path(), rawConfig = m_connection.rawConfig()]() mutable {
+    QtConcurrent::run([newHomeDir = newHomeDir, customHomeDir = currentSyncthingHomeDir(), defaultPath = m_settingsDir.value_or(QDir()).path(),
+                          rawConfig = m_connection.rawConfig()]() mutable {
         // determine paths
         const auto sourceDir = customHomeDir.isEmpty() ? defaultPath + QStringLiteral("/syncthing") : customHomeDir;
         const auto sourceDirStd = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(sourceDir));

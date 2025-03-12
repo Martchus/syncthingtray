@@ -450,7 +450,8 @@ void SyncthingConnection::connect()
     }
 
     // reset status
-    m_connectionAborted = m_abortingToConnect = m_abortingToReconnect = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = m_statsRequested = false;
+    m_connectionAborted = m_abortingToConnect = m_abortingToReconnect = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = m_statsRequested
+        = false;
 
     if (!checkConnectionConfiguration()) {
         return;
