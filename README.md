@@ -93,6 +93,7 @@ and workarounds for certain caveats like the positioning issues under Wayland.
   "[Configuring systemd integration](#configuring-systemd-integration)")
 * Provides an option to conveniently add the tray to the applications launched when the desktop environment starts
 * Can launch Syncthing automatically when started and display stdout/stderr (useful under Windows)
+* Browsing the global file tree and selecting items to add to ignore patterns.
 * Provides quick access to the official web-based UI
     * Can be opened as regular browser tab
     * Can be opened in a dedicated window utilizing either
@@ -453,6 +454,8 @@ configuration from another device.
   and the official web-based UI.
 * The UI of Syncthing Tray on Android allows changing all advanced settings and has built-in help
   texts for many options in accordance with the official Syncthing documentation.
+* Syncthing Tray allows browsing the global file tree of a folder. Items can be selected and added
+  to ignore patterns.
 * The Syncthing-Fork app provides many features that haven't been implemented yet by Syncthing Tray,
   e.g. advanced run conditions. Syncthing Tray allows stopping Syncthing on metered network
   connections, though.
