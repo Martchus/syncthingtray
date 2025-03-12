@@ -312,7 +312,7 @@ void SyncthingConnection::setPollingFlags(PollingFlags flags)
     if (diskEventsChanged) {
         cancelReplyWithoutAbortingConnection(m_diskEventsReply);
     }
-    if (m_keepPolling) {
+    if (m_hasConfig && m_hasStatus && m_keepPolling) {
         requestEvents();
         requestDiskEvents(m_diskEventLimit);
     }
