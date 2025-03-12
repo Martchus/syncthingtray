@@ -77,8 +77,9 @@ class App : public QObject {
     Q_PROPERTY(QString additionalStatusText READ additionalStatusText NOTIFY statusInfoChanged)
     Q_PROPERTY(bool scanSupported READ isScanSupported CONSTANT)
     Q_PROPERTY(QString fontFamily READ fontFamily CONSTANT)
-    Q_PROPERTY(float fontScale READ fontScale CONSTANT)
+    Q_PROPERTY(qreal fontScale READ fontScale CONSTANT)
     Q_PROPERTY(int fontWeightAdjustment READ fontWeightAdjustment CONSTANT)
+    Q_PROPERTY(QFont font READ font CONSTANT)
     Q_PROPERTY(bool storagePermissionGranted READ storagePermissionGranted NOTIFY storagePermissionGrantedChanged)
     Q_PROPERTY(bool notificationPermissionGranted READ notificationPermissionGranted NOTIFY notificationPermissionGrantedChanged)
     QML_ELEMENT
@@ -214,8 +215,9 @@ public:
 #endif
     }
     QString fontFamily() const;
-    float fontScale() const;
+    qreal fontScale() const;
     int fontWeightAdjustment() const;
+    QFont font() const;
     bool storagePermissionGranted() const;
     bool notificationPermissionGranted() const;
     QString currentSyncthingHomeDir() const;

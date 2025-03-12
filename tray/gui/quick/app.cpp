@@ -666,15 +666,15 @@ QString App::fontFamily() const
         return defaultSystemFontFamily;
     }
 #endif
-    return QFont().family();
+    return QString();
 }
 
-float App::fontScale() const
+qreal App::fontScale() const
 {
 #ifdef Q_OS_ANDROID
-    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jfloat>("fontScale", "()F");
+    return qreal(QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jfloat>("fontScale", "()F"));
 #else
-    return 1.0f;
+    return qreal(1.0);
 #endif
 }
 
@@ -685,6 +685,26 @@ int App::fontWeightAdjustment() const
 #else
     return 0;
 #endif
+}
+
+/*!
+ * \brief Return the font applying extra settings where necessary.
+ * \remarks On some platforms like on Android this is required because Qt does not read these settings.
+ */
+QFont App::font() const
+{
+    auto f = QFont();
+    if (const auto family = fontFamily(); !family.isEmpty()) {
+        f.setFamily(family);
+    }
+    if (const auto scale = fontScale(); scale != qreal(1.0)) {
+        f.setPixelSize(static_cast<int>(static_cast<qreal>(f.pixelSize()) * scale));
+        f.setPointSizeF(f.pointSizeF() * scale);
+    }
+    if (const auto weightAdjustment = fontWeightAdjustment(); weightAdjustment != 0) {
+        f.setWeight(static_cast<QFont::Weight>(f.weight() + weightAdjustment));
+    }
+    return f;
 }
 
 bool App::storagePermissionGranted() const

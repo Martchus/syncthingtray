@@ -11,6 +11,7 @@ ApplicationWindow {
     width: 700
     height: 500
     title: qsTr("Syncthing")
+    font: App.font
     onVisibleChanged: App.setCurrentControls(window.visible, pageStack.currentIndex)
     Material.theme: App.darkmodeEnabled ? Material.Dark : Material.Light
     Material.primary: pageStack.currentPage.isDangerous ? Material.Red : Material.LightBlue
@@ -187,11 +188,6 @@ ApplicationWindow {
             }
         }
     }
-
-    // apply font settings (where necessary because Qt doesn't do it such as Android)
-    font.family: App.fontFamily;
-    font.pixelSize: font.pixelSize * App.fontScale;
-    font.weight: font.weight + App.fontWeightAdjustment;
 
     readonly property bool inPortrait: window.width < window.height
     readonly property int spacing: 7
