@@ -856,7 +856,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="604"/>
         <source>Pause all devices while the local network connection is metered</source>
-        <translation>Pausiere alle Geräte solange die lokele Netzwerkverbindung getaktet ist</translation>
+        <translation>Pausiere alle Geräte solange die lokale Netzwerkverbindung getaktet ist</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="461"/>
@@ -985,7 +985,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <location filename="../misc/dbusstatusnotifier.cpp" line="38"/>
         <location filename="../misc/dbusstatusnotifier.cpp" line="42"/>
         <source>View details</source>
-        <translation>Zeige details</translation>
+        <translation>Zeige Details</translation>
     </message>
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="46"/>
@@ -1022,7 +1022,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/wizard.cpp" line="625"/>
         <source>It looks like Syncthing has not been running on this system before as its configuration cannot be found. Is that correct?</source>
-        <translation>Es sieht so aus als wurde Syncthing auf dem System noch nicht ausgeführt, da die Syncthing-Konfiguration nicht gefunden werden konnte. Ist das richtig?</translation>
+        <translation>Es sieht so aus als würde Syncthing auf dem System noch nicht ausgeführt, da die Syncthing-Konfiguration nicht gefunden werden konnte. Ist das richtig?</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="621"/>
@@ -1152,7 +1152,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="22"/>
         <source>Open Syncthing&apos;s UI via</source>
-        <translation>Öffne die Syncthingoberfläche mit</translation>
+        <translation>Öffne die Syncthing-Oberfläche mit</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="28"/>
