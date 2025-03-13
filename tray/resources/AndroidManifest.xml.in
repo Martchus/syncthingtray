@@ -62,7 +62,7 @@
                 android:name="android.app.background_running"
                 android:value="true" />
         </activity>
-        <service android:name=".SyncthingService" android:foregroundServiceType="specialUse" android:exported="true">
+        <service android:name=".SyncthingService" android:foregroundServiceType="specialUse|dataSync" android:exported="true">
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="Synchronizes files continuously in the background."/>
         </service>
         <provider

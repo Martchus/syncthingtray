@@ -195,7 +195,10 @@ public class SyncthingService extends Service {
         //       have any effect.
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                startForeground(s_notificationID, m_notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE);
+                final int serviceType = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+                    ? ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                    : ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC;
+                startForeground(s_notificationID, m_notification, serviceType);
             } else {
                 startForeground(s_notificationID, m_notification);
             }
