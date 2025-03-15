@@ -199,6 +199,7 @@ set(GO_BUILD_EXTRA_ARGS
     ""
     CACHE STRING "additional arguments to add to the Go build (see `go help build`)")
 unset(GO_BUILD_ARGS)
+unset(GO_BUILD_TAGS)
 if (GO_BUILD_MOD)
     list(APPEND GO_BUILD_ARGS -mod "${GO_BUILD_MOD}")
 endif ()
@@ -225,6 +226,15 @@ endif ()
 set(SYNCTHINGINTERNAL_HEADER_PATH "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.h")
 set(SYNCTHINGINTERNAL_LIBRARY_PATH "${CMAKE_CURRENT_BINARY_DIR}/${SYNCTHINGINTERNAL_LIBRARY_NAME}")
 
+# configure use system SQLite3
+option(SYNCTHING_USE_SYSTEM_SQLITE "use the system-provided SQLite3 library" ON)
+if (SYNCTHING_USE_SYSTEM_SQLITE)
+    set(GO_BUILD_TAGS "${GO_BUILD_TAGS} libsqlite3")
+    if (MINGW)
+        set(GO_BUILD_TAGS "${GO_BUILD_TAGS} sqlite_omit_load_extension")
+    endif ()
+endif ()
+
 # generate Syncthing's assets (not setting GOARCH/GOOS here, this is supposed to run on the host)
 add_custom_command(
     OUTPUT "${SYNCTHING_PATH}/${GENERATED_SYNCTHING_GUI_FILES_RELATIVE_PATH}"
@@ -235,6 +245,9 @@ add_custom_command(
     COMMENT "Building Syncthing's assets")
 
 # compile Syncthing as static library
+if (GO_BUILD_TAGS)
+    list(APPEND GO_BUILD_ARGS -tags "${GO_BUILD_TAGS}")
+endif ()
 add_custom_command(
     OUTPUT "${SYNCTHINGINTERNAL_LIBRARY_PATH}" "${SYNCTHINGINTERNAL_HEADER_PATH}"
     COMMAND
@@ -309,6 +322,9 @@ else ()
     list(APPEND PRIVATE_INCLUDE_DIRS $<BUILD_INTERFACE:${SYNCTHING_PATH}/c-bindings>)
     list(APPEND PRIVATE_LIBRARIES $<BUILD_INTERFACE:${SYNCTHINGINTERNAL_LIBRARY_PATH_ABSOLUTE}>
          $<INSTALL_INTERFACE:${LIB_INSTALL_DESTINATION}/${SYNCTHINGINTERNAL_LIBRARY_NAME}>)
+endif ()
+if (SYNCTHING_USE_SYSTEM_SQLITE)
+    use_package(TARGET_NAME SQLite::SQLite3 PACKAGE_NAME SQLite3 PACKAGE_ARGS REQUIRED)
 endif ()
 
 # include modules to apply configuration
