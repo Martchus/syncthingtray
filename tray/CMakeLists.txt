@@ -512,6 +512,13 @@ if (ANDROID)
             TARGET ${META_TARGET_NAME}
             APPEND
             PROPERTY QT_ANDROID_EXTRA_LIBS "${SYNCTHINGINTERNAL_LIBRARY_PATH}")
+        if (SYNCTHING_USE_SYSTEM_SQLITE)
+            find_package(SQLite3 REQUIRED)
+            set_property(
+                TARGET ${META_TARGET_NAME}
+                APPEND
+                PROPERTY QT_ANDROID_EXTRA_LIBS "${SQLite3_LIBRARIES}")
+        endif ()
 
         # workaround https://github.com/golang/go/issues/70508
         set(ANDROID_SIGNAL_HANDLER_LIBRARY "androidsignalhandler")
