@@ -5,7 +5,7 @@ shopt -s nullglob
 
 libsyncthingdir=$(dirname "$0")
 syncthingrepodir=$libsyncthingdir/go/src/github.com/syncthing/syncthing
-special_release_regex='rc|beta|debian'
+special_release_regex='rc|debian'
 latest_tag=
 
 echo '==> Updating Syncthing repo'
