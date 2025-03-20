@@ -7,15 +7,20 @@ import Main
 Pane {
     height: visible ? implicitHeight : 0
     contentItem: RowLayout {
+        Item {
+            Layout.fillWidth: true
+        }
         BusyIndicator {
             Layout.preferredWidth: App.iconSize * 2
             Layout.preferredHeight: Layout.preferredWidth
         }
         Label {
-            Layout.fillWidth: true
             text: qsTr("Loading …")
             elide: Text.ElideRight
             font.weight: Font.Light
+        }
+        Item {
+            Layout.fillWidth: true
         }
     }
 }

@@ -7,54 +7,59 @@ import Main
 
 Page {
     id: objectConfigPage
-    CustomListView {
-        id: objectListView
+    StackLayout {
         anchors.fill: parent
-        model: ListModel {
-            id: listModel
-            dynamicRoles: true
-            Component.onCompleted: listModel.loadEntries()
-            function loadEntries() {
-                const indexByKey = objectConfigPage.indexByKey = {};
-                listModel.clear();
+        currentIndex: objectConfigPage.isLoading ? 0 : 1
+        LoadingPane {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
+        CustomListView {
+            id: objectListView
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            model: ListModel {
+                id: listModel
+                dynamicRoles: true
+                Component.onCompleted: listModel.loadEntries()
+                function loadEntries() {
+                    const indexByKey = objectConfigPage.indexByKey = {};
+                    listModel.clear();
 
-                let index = 0;
-                let configObject = objectConfigPage.configObject;
-                if (configObject === undefined) {
-                    return;
-                }
-                objectConfigPage.specialEntries.forEach((specialEntry) => {
-                    const key = specialEntry.key;
-                    const cond = specialEntry.cond;
-                    if ((typeof cond !== "function") || cond(objectConfigPage)) {
-                        const init = specialEntry.init;
-                        if (typeof init === "function") {
-                            configObject[key] = init();
+                    let index = 0;
+                    let configObject = objectConfigPage.configObject;
+                    if (configObject === undefined) {
+                        return;
+                    }
+                    objectConfigPage.specialEntries.forEach((specialEntry) => {
+                        const key = specialEntry.key;
+                        const cond = specialEntry.cond;
+                        if ((typeof cond !== "function") || cond(objectConfigPage)) {
+                            const init = specialEntry.init;
+                            if (typeof init === "function") {
+                                configObject[key] = init();
+                            }
+                            indexByKey[key] = index;
+                            listModel.append(objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, configObject[key], index++));
+                        } else {
+                            indexByKey[key] = -1;
                         }
-                        indexByKey[key] = index;
-                        listModel.append(objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, configObject[key], index++));
-                    } else {
-                        indexByKey[key] = -1;
+                    });
+                    if (objectConfigPage.specialEntriesOnly) {
+                        return;
                     }
-                });
-                if (objectConfigPage.specialEntriesOnly) {
-                    return;
+                    Object.entries(configObject).forEach((configEntry) => {
+                        const key = configEntry[0];
+                        if (indexByKey[key] === undefined) {
+                            indexByKey[key] = index;
+                            listModel.append(objectConfigPage.makeConfigRow(configEntry, index++));
+                        }
+                    });
                 }
-                Object.entries(configObject).forEach((configEntry) => {
-                    const key = configEntry[0];
-                    if (indexByKey[key] === undefined) {
-                        indexByKey[key] = index;
-                        listModel.append(objectConfigPage.makeConfigRow(configEntry, index++));
-                    }
-                });
             }
-        }
-        footer: LoadingPane {
-            visible: objectConfigPage.isLoading
-            width: objectListView.width
-        }
-        delegate: ObjectConfigDelegate {
-            objectConfigPage: objectConfigPage
+            delegate: ObjectConfigDelegate {
+                objectConfigPage: objectConfigPage
+            }
         }
     }
     CustomDialog {
