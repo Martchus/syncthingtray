@@ -75,6 +75,11 @@ StackView {
                     label: qsTr("Move Syncthing home directory")
                     iconName: "folder-open-o"
                 }
+                ListElement {
+                    callback: () => App.cleanSyncthingHomeDirectory()
+                    label: qsTr("Clean Syncthing home directory")
+                    iconName: "eraser"
+                }
             }
             delegate: ItemDelegate {
                 width: listView.width
