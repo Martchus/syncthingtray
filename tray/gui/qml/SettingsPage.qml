@@ -76,6 +76,12 @@ StackView {
                     iconName: "folder-open-o"
                 }
                 ListElement {
+                    callback: () => App.cleanSyncthingHomeDirectory()
+                    label: qsTr("Clean Syncthing home directory")
+                    title: qsTr("Removes the migrated database of Syncthing v1")
+                    iconName: "eraser"
+                }
+                ListElement {
                     label: qsTr("Save support bundle")
                     functionName: "saveSupportBundle"
                     iconName: "user-md"

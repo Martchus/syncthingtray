@@ -259,6 +259,8 @@ const QString &App::status()
         return m_status.emplace(tr("Checking locations to move home directory …"));
     case ImportExportStatus::Moving:
         return m_status.emplace(tr("Moving home directory …"));
+    case ImportExportStatus::Cleaning:
+        return m_status.emplace(tr("Cleaning home directory …"));
     case ImportExportStatus::SavingSupportBundle:
         return m_status.emplace(tr("Saving support bundle …"));
     }
@@ -1921,7 +1923,7 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
         return false;
     }
     if (!m_settingsDir.has_value()) {
-        emit error(tr("Unable to import settings: settings directory was not located."));
+        emit error(tr("Unable to move Syncthing home: settings directory was not located."));
         return false;
     }
 
@@ -2043,6 +2045,41 @@ bool App::saveSupportBundle(const QUrl &url, const QJSValue &callback)
         if (callback.isCallable()) {
             callback.call(QJSValueList{ QJSValue(message), QJSValue(errors.isEmpty()) });
         }
+    });
+    return true;
+}
+
+bool App::cleanSyncthingHomeDirectory(const QJSValue &callback)
+{
+    if (checkOngoingImportExport()) {
+        return false;
+    }
+    setImportExportStatus(ImportExportStatus::Cleaning);
+    QtConcurrent::run([dataDir = m_syncthingDataDir]() mutable {
+        auto summary = QStringList();
+        auto error = false;
+
+        if (auto oldDbDir = QDir(dataDir + QStringLiteral("/index-v0.14.0.db-migrated")); oldDbDir.exists()) {
+            if (oldDbDir.removeRecursively()) {
+                summary.append(tr("Removed old database directory."));
+            } else {
+                summary.append(tr("Unable to remove old database directory."));
+                error = true;
+            }
+        }
+
+        if (summary.isEmpty()) {
+            summary.append(tr("There was nothing to clean up."));
+        }
+        return std::make_tuple(summary.join(QChar('\n')), error);
+    }).then(this, [this, callback](const std::tuple<QString, bool> &res) {
+        auto [message, errorOccurred] = res;
+        setImportExportStatus(ImportExportStatus::None);
+        if (callback.isCallable()) {
+            callback.call(QJSValueList{ QJSValue(message), QJSValue(errorOccurred) });
+        }
+        emit errorOccurred ? error(message) : info(message);
+        applySettings();
     });
     return true;
 }
