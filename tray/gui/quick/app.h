@@ -85,7 +85,7 @@ class App : public QObject {
     QML_ELEMENT
     QML_SINGLETON
 
-    enum class ImportExportStatus { None, Checking, Importing, Exporting, CheckingMove, Moving };
+    enum class ImportExportStatus { None, Checking, Importing, Exporting, CheckingMove, Moving, Cleaning };
 
 public:
     explicit App(bool insecure, QObject *parent = nullptr);
@@ -232,6 +232,7 @@ public:
     Q_INVOKABLE bool applySettings();
     Q_INVOKABLE void applyLauncherSettings();
     Q_INVOKABLE bool clearLogfile();
+    Q_INVOKABLE bool cleanSyncthingHomeDirectory(const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool checkOngoingImportExport();
     Q_INVOKABLE bool openSyncthingConfigFile();
     Q_INVOKABLE bool checkSettings(const QUrl &url, const QJSValue &callback = QJSValue());
