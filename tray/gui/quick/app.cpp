@@ -16,6 +16,7 @@
 #include <syncthingconnector/syncthingconnectionsettings.h>
 
 #include <qtutilities/misc/desktoputils.h>
+#include <qtutilities/resources/resources.h>
 
 #include <qtforkawesome/renderer.h>
 #include <qtquickforkawesome/imageprovider.h>
@@ -91,23 +92,6 @@ using namespace Data;
 
 namespace QtGui {
 
-static void deletePipelineCache()
-{
-#ifdef Q_OS_ANDROID
-    // delete OpenGL pipeline cache under Android as it seems to break loading the app in certain cases
-    const auto cachePaths = QStandardPaths::standardLocations(QStandardPaths::CacheLocation);
-    for (const auto &cachePath : cachePaths) {
-        const auto cacheDir = QDir(cachePath);
-        const auto subdirs = cacheDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-        for (const auto &subdir : subdirs) {
-            if (subdir.startsWith(QLatin1String("qtpipelinecache"))) {
-                QFile::remove(cachePath % QChar('/') % subdir % QStringLiteral("/qqpc_opengl"));
-            }
-        }
-    }
-#endif
-}
-
 #ifdef Q_OS_ANDROID
 /// \brief The JniFn namespace defines functions called from Java.
 namespace JniFn {
@@ -169,7 +153,7 @@ App::App(bool insecure, QObject *parent)
     m_app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     connect(m_app, &QGuiApplication::applicationStateChanged, this, &App::handleStateChanged);
 
-    deletePipelineCache();
+    QtUtilities::deletePipelineCacheIfNeeded();
     loadSettings();
     applySettings();
 #ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
@@ -981,7 +965,7 @@ void App::handleStateChanged(Qt::ApplicationState state)
             uiObject->moveToThread(uiThread);
         }
         if (!m_isGuiLoaded) {
-            deletePipelineCache();
+            QtUtilities::deletePipelineCacheIfNeeded();
             loadMain();
         }
     }
