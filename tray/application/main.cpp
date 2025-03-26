@@ -422,16 +422,6 @@ static int runApplication(int argc, const char *const *argv)
 #endif
 }
 
-// define macro to export main function if required
-// note: This macro can be removed when depending on c++utilities 5.28.0.
-#ifndef CPP_UTILITIES_MAIN_EXPORT
-#ifdef PLATFORM_ANDROID
-#define CPP_UTILITIES_MAIN_EXPORT CPP_UTILITIES_GENERIC_LIB_EXPORT
-#else
-#define CPP_UTILITIES_MAIN_EXPORT
-#endif
-#endif
-
 CPP_UTILITIES_MAIN_EXPORT int main(int argc, char *argv[])
 {
     SET_APPLICATION_INFO;
