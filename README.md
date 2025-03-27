@@ -278,7 +278,7 @@ inactive. That's all the systemd integration can optimize in that regard.
 
 Be aware that Syncthing Tray assumes by default that the systemd unit is a
 [user unit](https://wiki.archlinux.org/index.php/Systemd/User). If you are using
-a regular system-wide unit (including those started with `…@username`) you need to enable the
+a regular system-wide unit (including those ending with `…@username`) you need to enable the
 "System unit" checkbox in the settings. Note that starting and stopping the system-wide Syncthing
 unit requires authorization (systemd can ask through PolicyKit).
 
@@ -286,7 +286,7 @@ unit requires authorization (systemd can ask through PolicyKit).
 The communication between Syncthing Tray and systemd is implemented using systemd's D-Bus service.
 That means systemd's D-Bus service (which is called `org.freedesktop.systemd1`) must be running on
 your D-Bus. For [user units](https://wiki.archlinux.org/index.php/Systemd/User) the session D-Bus is
-relevant and for regular units (including those started with `…@username`) the system D-Bus is relevant.
+relevant and for regular units (including those ending with `…@username`) the system D-Bus is relevant.
 
 It seems that systemd's D-Bus service is only available when D-Bus itself is started via systemd. That
 is by default the case under Arch Linux and openSUSE and likely most other modern distributions where
