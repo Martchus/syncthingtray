@@ -593,6 +593,8 @@ The Qt Quick UI needs at least Qt 6.8 and also additional Qt modules found in th
 It also contains experimental code for a built-in web view which uses the Qt WebView module. This is optional
 and not used at this point.
 
+When building for Android at least Qt 6.9 is required.
+
 To build the plugin for Dolphin integration KIO is also required. To skip building the plugin,
 add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
 
