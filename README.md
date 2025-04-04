@@ -589,7 +589,7 @@ It is recommended to use at least Qt 5.14 to avoid limitations in previous versi
 The built-in web view and therefore the modules WebEngineWidgets/WebKitWidgets are optional (see
 section "[Select Qt module for web view and JavaScript](#select-qt-module-for-web-view-and-javascript)").
 
-The Qt Quick UI needs at least Qt 6.8 and also additional Qt modules found in the Qt Declarative repository.
+The Qt Quick UI needs at least Qt 6.9 and also additional Qt modules found in the Qt Declarative repository.
 It also contains experimental code for a built-in web view which uses the Qt WebView module. This is optional
 and not used at this point.
 

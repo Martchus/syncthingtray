@@ -13,6 +13,7 @@ ApplicationWindow {
     title: qsTr("Syncthing")
     font: App.font
     onVisibleChanged: App.setCurrentControls(window.visible, pageStack.currentIndex)
+    flags: Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint
     Material.theme: App.darkmodeEnabled ? Material.Dark : Material.Light
     Material.primary: pageStack.currentPage.isDangerous ? Material.Red : Material.LightBlue
     Material.accent: Material.primary
