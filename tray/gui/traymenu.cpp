@@ -80,6 +80,13 @@ static void moveInside(QPoint &point, const QSize &innerRect, const QRect &outer
     }
 }
 
+/*!
+ * \brief Shows the menu using positioning settings.
+ * \remarks
+ * Not using `popup(pos.value())` because as of Qt 6.9.0 this function returns early if there is not visible action. This could be worked
+ * around using `addAction(QString())` but in some styles (e.g. the classic "Windows" style) this leads to an empty action being drawn. So
+ * this function just uses `show()` in any case now.
+ */
 void TrayMenu::showUsingPositioningSettings()
 {
     if (m_windowType == WindowType::None) {
@@ -87,13 +94,12 @@ void TrayMenu::showUsingPositioningSettings()
         return;
     }
     resize(sizeHint());
-    auto pos = Settings::values().appearance.positioning.positionToUse();
-    if (pos.has_value()) {
-        moveInside(pos.value(), size(), availableScreenGeometryAtPoint(pos.value()));
-        popup(pos.value());
-    } else {
-        show();
+    if (auto pos = Settings::values().appearance.positioning.positionToUse(); pos.has_value()) {
+        const auto popupSize = size();
+        moveInside(pos.value(), popupSize, availableScreenGeometryAtPoint(pos.value()));
+        setGeometry(QRect(pos.value(), popupSize));
     }
+    show();
     activateWindow();
 }
 
