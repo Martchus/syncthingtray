@@ -968,7 +968,7 @@ bool setAutostartPath(const QString &path)
 #elif defined(PLATFORM_WINDOWS)
     auto settings = QSettings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat);
     if (!path.isEmpty()) {
-        settings.setValue(QStringLiteral(PROJECT_NAME), path);
+        settings.setValue(QStringLiteral(PROJECT_NAME), QStringLiteral("\"%1\"").arg(path));
     } else {
         settings.remove(QStringLiteral(PROJECT_NAME));
     }
