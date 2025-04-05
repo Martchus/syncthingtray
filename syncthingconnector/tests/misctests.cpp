@@ -175,6 +175,8 @@ void MiscTests::testSplittingArguments()
     CPPUNIT_ASSERT_EQUAL_MESSAGE("empty arguments", QStringList(), SyncthingProcess::splitArguments(QString()));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("one argument without special characters", QStringList({ QStringLiteral("-simple") }),
         SyncthingProcess::splitArguments(QStringLiteral("-simple")));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("simple quoted path", QStringList({ QStringLiteral("path with whitespace") }),
+        SyncthingProcess::splitArguments(QStringLiteral("\"path with whitespace\"")));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("multiple arguments without special characters",
         QStringList({ QStringLiteral("-home"), QStringLiteral("some dir"), QStringLiteral("-no-restart") }),
         SyncthingProcess::splitArguments(QStringLiteral("-home \"some dir\" -no-restart")));
