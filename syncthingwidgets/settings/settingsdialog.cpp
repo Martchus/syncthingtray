@@ -863,6 +863,18 @@ QWidget *AutostartOptionPage::setupWidget()
     return widget;
 }
 
+#if (defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)) || (defined(PLATFORM_WINDOWS))
+static std::optional<QString> readQuotedPath(const QRegularExpression &regex, const QString &data)
+{
+    auto match = regex.match(data);
+    auto captured = match.captured(2);
+    if (captured.isNull()) {
+        captured = match.captured(3);
+    }
+    return captured.isNull() ? std::nullopt : std::make_optional(captured);
+}
+#endif
+
 /*!
  * \brief Returns the currently configured autostart path or an empty string if autostart is disabled; returns std::nullopt when the
  *        path cannot be determined.
@@ -891,16 +903,13 @@ std::optional<QString> configuredAutostartPath()
         return QString();
     }
     static const auto regex = QRegularExpression(QStringLiteral("Exec=(\"([^\"\\n]*)\"|([^\\s\\n]*))"));
-    const auto match = regex.match(data);
-    auto captured = match.captured(2);
-    if (captured.isNull()) {
-        captured = match.captured(3);
-    }
-    return captured.isNull() ? std::nullopt : std::make_optional(captured);
+    return readQuotedPath(regex, data);
 #elif defined(PLATFORM_WINDOWS)
-    return QSettings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat)
-        .value(QStringLiteral(PROJECT_NAME))
-        .toString();
+    static const auto regex = QRegularExpression(QStringLiteral("(\"([^\"\\n]*)\"|([^\\s\\n]*))"));
+    return readQuotedPath(regex,
+        QSettings(QStringLiteral("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat)
+            .value(QStringLiteral(PROJECT_NAME))
+            .toString());
 #else
     return std::nullopt;
 #endif
