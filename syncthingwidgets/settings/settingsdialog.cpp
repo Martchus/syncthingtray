@@ -866,6 +866,7 @@ QWidget *AutostartOptionPage::setupWidget()
 }
 
 #if (defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)) || (defined(PLATFORM_WINDOWS))
+/// \cond
 static std::optional<QString> readQuotedPath(const QRegularExpression &regex, const QString &data)
 {
     auto match = regex.match(data);
@@ -875,6 +876,7 @@ static std::optional<QString> readQuotedPath(const QRegularExpression &regex, co
     }
     return captured.isNull() ? std::nullopt : std::make_optional(captured);
 }
+/// \endcond
 #endif
 
 /*!
@@ -919,10 +921,6 @@ std::optional<QString> configuredAutostartPath()
 
 /*!
  * \brief Returns the autostart path that will be configured by invoking setAutostartEnabled(true).
- * \remarks
- * - Only implemented under Linux/Windows/Mac. Always returns false on other platforms.
- * - Does not check whether the startup entry is functional (eg. the specified path is still valid and points to the
- *   currently running instance of the application).
  */
 QString supposedAutostartPath()
 {
@@ -940,6 +938,7 @@ QString supposedAutostartPath()
 
 /*!
  * \brief Sets the \a path of the application's autostart entry or removes the entry if \a path is empty.
+ * \sa See https://learn.microsoft.com/en-us/windows/win32/setupapi/run-and-runonce-registry-keys for Windows implementation.
  */
 bool setAutostartPath(const QString &path)
 {
