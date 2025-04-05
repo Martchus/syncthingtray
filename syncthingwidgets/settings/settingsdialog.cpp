@@ -54,6 +54,8 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 #include <QStandardPaths>
 #elif defined(PLATFORM_WINDOWS)
 #include <QRegularExpression>
