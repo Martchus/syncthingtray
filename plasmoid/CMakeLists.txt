@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.17.0)
 # meta data
 set(META_PROJECT_NAME syncthingplasmoid)
 set(META_APP_NAME "Syncthing Plasmoid")
-set(META_APP_DESCRIPTION "Plasmoid to interact with Syncthing")
+set(META_APP_DESCRIPTION "Plasmoid to interact with ${META_SYNCTHING_NAME}")
 set(META_PROJECT_TYPE qtplugin)
 set(META_PLUGIN_CATEGORY plasma/applets)
 set(META_QT5_VERSION 5.8)

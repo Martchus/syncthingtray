@@ -1,7 +1,7 @@
 # metadata
 set(META_PROJECT_NAME syncthingfileitemaction)
 set(META_APP_NAME "Syncthing KIO-Plugin")
-set(META_APP_DESCRIPTION "KIO file item action for Syncthing")
+set(META_APP_DESCRIPTION "KIO file item action for ${META_SYNCTHING_NAME}")
 set(META_PROJECT_TYPE qtplugin)
 set(META_QT5_VERSION 5.8)
 

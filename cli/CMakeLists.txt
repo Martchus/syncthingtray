@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.17.0 FATAL_ERROR)
 # metadata
 set(META_PROJECT_NAME syncthingctl)
 set(META_APP_NAME "Syncthing control")
-set(META_APP_DESCRIPTION "Command line app to control Syncthing")
+set(META_APP_DESCRIPTION "Command line app to control ${META_SYNCTHING_NAME}")
 set(META_PROJECT_TYPE application)
 set(META_JS_SRC_DIR .)
 
