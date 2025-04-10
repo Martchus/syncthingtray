@@ -211,12 +211,54 @@ located under `~/.config/Martchus/Syncthing Tray` on GNU/Linux and
 `%appdata%\Martchus\Syncthing Tray` on Windows. The configuration and database of Syncthing
 itself are also located within this directory when Syncthing is launched via the mobile UI.
 
+## Single-instance behavior and launch options
+This section does *not* apply to the [Android app](#using-the-android-app), the
+[Plasmoid](#configuring-plasmoid) and the
+[Dolphin integration](#configuring-dolphin-integration).
+
+Syncthing Tray is a single-instance application. So if you try to start a second instance the
+second process will only pass arguments to the process that is already running and exit. This
+is useful as is prevents one from accidentally launching two Syncthing instances at the same
+time via the built-in Syncthing launcher. It also allows showing the triggering certain
+actions via certain launch options, see "[Configuring hotkeys](#configuring-hotkeys)" for
+details.
+
+Besides that there are a few other notable launch options:
+
+* `--connection [config name] …`:
+  Shows tray icons for the specified connection configurations (instead of just a single tray
+  icon for the primary connection configuration). Syncthing Tray will still behave as a
+  single-instance application so a single process will handle all those tray icons and the
+  built-in Syncthing launcher will launch Syncthing only once.
+* `--replace`:
+  Changes the single-instance behavior so that the already running process is existing and
+  the second process continues to run. This is useful to restart Syncthing Tray after
+  updating.
+* `--new-instance`:
+  Disables the single-instance behavior. This can be useful to run two instances of
+  Syncthing itself via the built-in launcher in parallel. This only makes sense if those
+  two Syncthing instances use a different configuration/database which can be achieved with
+  a [portable configuration](#location-of-the-configuration-file).
+* `--single-instance`:
+  Avoids the creation of a second tray icon if Syncthing Tray is already running. (Without
+  this option, Syncthing Tray will still show another tray icon despite its single-instance
+  behavior.)
+* `--help`:
+  Prints all launch options.
+
+Those were just the options of the tray application. Checkout the
+"[Using the command-line interface](#using-the-command-line-interface)" section for an
+overview of available tooling for the command-line.
+
 ## Configuring Plasmoid
 The Plasmoid requires installing Syncthing Tray via distribution-specific packaging. It is
 *not* available via the generic GNU/Linux download or the Flatpak. Checkout the relevant notes
 on the [downloads page](https://martchus.github.io/syncthingtray/#downloads-section) for
 available options and details on package names. For further information about supported versions
 of Plasma, checkout the "[Supported platforms](#supported-platforms)" section.
+
+The built-in Syncthing launcher is not available in the Plasmoid as it is recommended to rely on
+the systemd integration instead.
 
 Once installed, Plasma might need to be restarted for the Plasmoid to be selectable.
 
