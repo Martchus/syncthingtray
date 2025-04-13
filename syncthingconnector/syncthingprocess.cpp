@@ -70,7 +70,7 @@ namespace Data {
 
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
 #ifdef PLATFORM_WINDOWS
-#define LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS boost::process::windows::create_no_window,
+#define LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS boost::process::v1::windows::create_no_window,
 #ifdef Q_CC_MSVC
 // fix crashes using MSVC; for some reason using tStdWString() leads to crashes with Qt 6.5.0 and MSVC 2022
 #define LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(s) std::wstring(reinterpret_cast<const wchar_t *>(s.utf16()), s.size())
@@ -99,9 +99,9 @@ struct SyncthingProcessInternalData : std::enable_shared_from_this<SyncthingProc
     std::mutex mutex;
     QString program;
     QStringList arguments;
-    boost::process::group group;
-    boost::process::child child;
-    boost::process::async_pipe pipe;
+    boost::process::v1::group group;
+    boost::process::v1::child child;
+    boost::process::v1::async_pipe pipe;
     std::mutex readMutex;
     std::condition_variable readCondVar;
     char buffer[bufferCapacity];
@@ -437,12 +437,12 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     // get Boost.Process' code converter to provoke and handle a possible error when it is setting up its default locale via e.g. `std::locale("")`
     try {
-        boost::process::codecvt();
+        boost::process::v1::codecvt();
     } catch (const std::runtime_error &e) {
         setErrorString(QStringLiteral("unable to initialize codecvt/locale: ") % QString::fromLocal8Bit(e.what())
             % QStringLiteral("\nBe sure your locale setup is correct, see https://wiki.archlinux.org/title/Locale for details."));
         std::cerr << EscapeCodes::Phrases::Error << "Unable to initialize locale for launching process" << EscapeCodes::Phrases::End;
-        std::cerr << EscapeCodes::Phrases::SubError << "Unable to initialize boost::process::codecvt/std::locale: " << e.what()
+        std::cerr << EscapeCodes::Phrases::SubError << "Unable to initialize boost::process::v1::codecvt/std::locale: " << e.what()
                   << EscapeCodes::Phrases::End;
         std::cerr << EscapeCodes::Phrases::SubMessage
                   << "Be sure the locale is setup correctly in your environment (see https://wiki.archlinux.org/title/Locale)"
@@ -479,7 +479,7 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
     emit stateChanged(m_process->state = QProcess::Starting);
 
     // define handler
-    auto successHandler = boost::process::extend::on_success = [this, maybeProcess = m_process->weak_from_this()](auto &executor) {
+    auto successHandler = boost::process::v1::extend::on_success = [this, maybeProcess = m_process->weak_from_this()](auto &executor) {
         std::cerr << EscapeCodes::Phrases::Info << "Launched process, PID: "
                   << executor
 #ifdef PLATFORM_WINDOWS
@@ -493,7 +493,7 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
             emit started();
         }
     };
-    auto exitHandler = boost::process::on_exit = [this, maybeProcess = m_process->weak_from_this()](int rc, const std::error_code &ec) {
+    auto exitHandler = boost::process::v1::on_exit = [this, maybeProcess = m_process->weak_from_this()](int rc, const std::error_code &ec) {
         const auto lock = SyncthingProcessInternalData::Lock(maybeProcess);
         if (!lock) {
             return;
@@ -509,7 +509,7 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
                 Q_ARG(QString, QString::fromStdString(msg)), Q_ARG(bool, false));
         }
     };
-    auto errorHandler = boost::process::extend::on_error = [this, maybeProcess = m_process->weak_from_this()](auto &, const std::error_code &ec) {
+    auto errorHandler = boost::process::v1::extend::on_error = [this, maybeProcess = m_process->weak_from_this()](auto &, const std::error_code &ec) {
         const auto lock = SyncthingProcessInternalData::Lock(maybeProcess);
         if (!lock) {
             return;
@@ -552,7 +552,7 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
         }
         hasProgram = true;
         if (path.is_relative()) {
-            path = boost::process::search_path(path);
+            path = boost::process::v1::search_path(path);
         }
         if (!path.empty()) {
             break;
@@ -568,17 +568,17 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
     // start the process within a new process group (or job object under Windows)
     try {
         if (path.empty()) {
-            throw boost::process::process_error(
+            throw boost::process::v1::process_error(
                 std::make_error_code(std::errc::no_such_file_or_directory), "unable to find the specified executable in the search paths");
         }
         switch (m_mode) {
         case QProcess::MergedChannels:
-            m_process->child = boost::process::child(LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS m_handler->ioc, m_process->group, path, args,
-                (boost::process::std_out & boost::process::std_err) > m_process->pipe, std::move(successHandler), std::move(exitHandler),
+            m_process->child = boost::process::v1::child(LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS m_handler->ioc, m_process->group, path, args,
+                (boost::process::v1::std_out & boost::process::v1::std_err) > m_process->pipe, std::move(successHandler), std::move(exitHandler),
                 std::move(errorHandler));
             break;
         case QProcess::ForwardedChannels:
-            m_process->child = boost::process::child(LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS m_handler->ioc, m_process->group, path, args,
+            m_process->child = boost::process::v1::child(LIB_SYNCTHING_CONNECTOR_PLATFORM_ARGS m_handler->ioc, m_process->group, path, args,
                 std::move(successHandler), std::move(exitHandler), std::move(errorHandler));
             break;
         default:
@@ -587,7 +587,7 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
             handleError(QProcess::FailedToStart, QStringLiteral("specified channel mode not supported"), false);
             return;
         }
-    } catch (const boost::process::process_error &e) {
+    } catch (const boost::process::v1::process_error &e) {
         std::cerr << EscapeCodes::Phrases::Error << "Unable to launch process: " << e.what() << EscapeCodes::Phrases::End;
         emit stateChanged(m_process->state = QProcess::NotRunning);
         handleError(QProcess::FailedToStart, QString::fromUtf8(e.what()), false);
@@ -624,7 +624,7 @@ void SyncthingProcess::terminate()
     const auto groupId = m_process->group.native_handle();
     lock.unlock();
     if (::killpg(groupId, SIGTERM) == -1) {
-        if (const auto ec = boost::process::detail::get_last_error(); ec != std::errc::no_such_process) {
+        if (const auto ec = boost::process::v1::detail::get_last_error(); ec != std::errc::no_such_process) {
             const auto msg = ec.message();
             std::cerr << EscapeCodes::Phrases::Error << "Unable to kill process group " << groupId << ": " << msg << EscapeCodes::Phrases::End;
             setErrorString(QString::fromStdString(msg));
