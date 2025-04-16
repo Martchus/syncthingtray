@@ -1033,6 +1033,8 @@ Some of the code is based on code from other open source projects:
   [com.nutomic.syncthingandroid.util](https://github.com/Catfriend1/syncthing-android/blob/main/app/src/main/java/com/nutomic/syncthingandroid/util/FileUtils.java).
 * The icon files `ic_stat_notify*` under `tray/android/res` and `tray/resources` are taken from
   [syncthing-android](https://github.com/Catfriend1/syncthing-android/tree/main/app/src/main/res).
+* The code in `tray/android/src/io/github/martchus/syncthingtray/DocumentsProvider.java` is based on
+  [`TermuxDocumentsProvider.java` from Termux](https://github.com/termux/termux-app/blob/master/app/src/main/java/com/termux/filepicker/TermuxDocumentsProvider.java).
 * Many of the descriptions used in the Qt Quick GUI are taken from [Syncthing](https://github.com/syncthing/syncthing)
   and [its documentation](https://github.com/syncthing/docs).
 * The `uncamel` function used in the Qt Quick GUI is taken from [Syncthing](https://github.com/syncthing/syncthing).
