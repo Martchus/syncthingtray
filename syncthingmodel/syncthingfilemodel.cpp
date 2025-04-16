@@ -934,6 +934,13 @@ QList<QAction *> SyncthingFileModel::selectionActions()
 
                 // delete local files/directories staged for deletion
                 QThreadPool::globalInstance()->start([this, localDeletions, basePath = m_localPath + m_pathSeparator] {
+#if defined(Q_OS_ANDROID) // Android is known to have no standardized trash
+                    static constexpr auto trashSupported = false;
+#elif QT_VERSION < QT_VERSION_CHECK(6, 9, 0) // otherwise, assume trash is supported
+                    static constexpr auto trashSupported = true;
+#else // or check whether trash is supported which is possible as of Qt 6.9.0
+                    static const auto trashSupported = QFile::supportsMoveToTrash();
+#endif
                     auto successfulDeletions = QStringList(), failedDeletions = QStringList();
                     for (const auto &path : localDeletions) {
                         const auto fullPath = basePath + path;
@@ -945,21 +952,29 @@ QList<QAction *> SyncthingFileModel::selectionActions()
                         const auto fullNativePath = NativePathStringView(fullPathUtf8.data(), static_cast<std::size_t>(fullPathUtf8.size()));
 #endif
                         const auto fullStdPath = std::filesystem::path(fullNativePath);
-#ifdef Q_OS_ANDROID
-                        // do normal deletion on Android as it has no standardized trash
+
+                        // check whether item still exists
                         auto ec = std::error_code();
+                        const auto itemExists = std::filesystem::exists(fullStdPath, ec);
+                        if (!ec) {
+                            failedDeletions.append(fullPath % QChar(':') % QChar(' ') % QString::fromStdString(ec.message()));
+                        }
+                        if (!itemExists) {
+                            continue;
+                        }
+
+                        // move item to trash if supported instead of actually deleting it as this is probably more appropriate for a GUI app
+                        if (trashSupported && !QFile::moveToTrash(fullPath)) {
+                            failedDeletions.append(fullPath);
+                            continue;
+                        }
+
+                        // do normal deletion if trash is not supported
                         std::filesystem::remove_all(fullStdPath, ec);
                         if (ec) {
                             failedDeletions.append(fullPath % QChar(':') % QChar(' ') % QString::fromStdString(ec.message()));
                             continue;
                         }
-#else
-                        // move item to trash instead of actually deleting it as this is probably more appropriate for a GUI app
-                        if (std::filesystem::exists(fullStdPath) && !QFile::moveToTrash(fullPath)) {
-                            failedDeletions.append(fullPath);
-                            continue;
-                        }
-#endif
                         successfulDeletions.append(path);
                     }
                     QMetaObject::invokeMethod(
