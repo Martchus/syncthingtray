@@ -512,19 +512,22 @@ While Syncthing Tray basically works on Android, there are still some unresolved
 * A foreground service is used but Syncthing is nevertheless terminated when the activity is
   destroyed. Decoupling the activity from the rest of the application requires changes in Qt. It
   will probably become feasible as of Qt 6.9.
-* All native libraries need to be extracted taking quite some space on the device. This will be
-  fixed with Qt 6.9.
-* The performance can be problematic due to the use of FUSE as of Android 11. With
-  [FUSE Passthrough](https://source.android.com/docs/core/storage/fuse-passthrough) things have
-  improved but especially if one has many files in one directory the performance is still bad.
-  There is nothing one can do about it except storing the data in app's private directory. While
-  this is possible it of course doesn't cover all use cases. A file provider to be able to share
-  the private app directory also still needs to be implemented.
-* Media rescans need to be triggered manually.
+* The performance can be problematic due to the use of FUSE as of Android 11. Especially if one
+  has many files in one directory the performance is bad.
+    * I recommended to avoid having many files in a single directory.
+    * Alternatively one can store the data in one of the app's private directories (on the internal
+      storage or the SD card) which can be faster due to
+      [FUSE Passthrough](https://source.android.com/docs/core/storage/fuse-passthrough). To be able
+      to do this, the app exposes the private directories as "document provider" which are this way
+      selectable via the Android file selection dialog from other apps. This of course does not
+      cover all use cases as other apps might only be able to use files from fixed directories.
+* Media rescans need to be triggered manually but this can be easily done per folder from the UI.
 * There are probably still many small UI bugs in the Qt Quick based UI used on Android.
 * The Syncthing home directory needs to be within the private directory of the app on the main
   storage. The app allows moving the home directory to other locations, e.g. the private directory
-  of the app on the SD card. However, Syncthing fails to open its database on other locations.
+  of the app on the SD card. However, Syncthing fails to open its database on other locations. (Having
+  the database on the SD card seems to work with Syncthing v2 which switched to SQLite. So this caveat
+  will likely be removed when Syncthing v2 is released.)
 * Not all features the official web UI offers have been implemented in the Qt Quick based UI yet.
   One can easily open the official web UI in a web browser, though.
 
