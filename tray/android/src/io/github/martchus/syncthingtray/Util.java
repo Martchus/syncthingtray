@@ -5,7 +5,6 @@
 
 package io.github.martchus.syncthingtray;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
@@ -19,7 +18,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
 public class Util {
-
     private static final String TAG = "Util";
     private static final String DOWNLOADS_VOLUME_NAME = "downloads";
     private static final String PRIMARY_VOLUME_NAME = "primary";
@@ -36,37 +34,25 @@ public class Util {
         }
     }
 
-    private static String getAbsolutePathFromUri(Context context, final String documentId) {
-        // determine volumeId, e.g. "home", "documents"
-        String volumeId = getVolumeIdFromDocument(documentId);
-        if (volumeId == null) {
-            return "";
-        }
-
-        // handle Uri referring to internal or external storage.
-        String volumePath = getVolumePath(volumeId, context);
-        if (volumePath == null) {
-            return File.separator;
-        }
-        if (volumePath.endsWith(File.separator)) {
-            volumePath = volumePath.substring(0, volumePath.length() - 1);
-        }
-        String documentPath = getPathFromDocument(documentId);
-        if (documentPath.endsWith(File.separator)) {
-            documentPath = documentPath.substring(0, documentPath.length() - 1);
-        }
-        if (documentPath.length() > 0) {
-            if (documentPath.startsWith(File.separator)) {
-                return volumePath + documentPath;
-            } else {
-                return volumePath + File.separator + documentPath;
-            }
-        } else {
-            return volumePath;
-        }
+    private static String removeTrailingFileSeparator(String path) {
+        return path.endsWith(File.separator) ? path.substring(0, path.length() - 1) : path;
     }
 
-    @SuppressLint("ObsoleteSdkInt")
+    private static String combinePath(String path1, String path2) {
+        return path2.startsWith(File.separator) ? path1 + path2 : path1 + File.separator + path2;
+    }
+
+    private static String getAbsolutePathFromUri(Context context, final String documentId) {
+        // determine the volumeId which is the scheme of the documentId URI
+        final int colon = documentId.indexOf(':');
+        final String volumeId = colon >= 0 ? documentId.substring(0, colon) : documentId;
+
+        // determine path of volumeId (e.g. "home", "documents" or "primary") and append the rest of the document path
+        final String volumePath = removeTrailingFileSeparator(getVolumePath(volumeId, context));
+        final String documentPath = removeTrailingFileSeparator(colon >= 0 ? documentId.substring(colon + 1) : "");
+        return documentPath.isEmpty() ? volumePath : combinePath(volumePath, documentPath);
+    }
+
     private static String getVolumePath(final String volumeId, Context context) {
         try {
             if (HOME_VOLUME_NAME.equals(volumeId)) {
@@ -75,7 +61,6 @@ public class Util {
             if (DOWNLOADS_VOLUME_NAME.equals(volumeId)) {
                 return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
             }
-
             StorageManager mStorageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
             Class<?> storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
             Method getVolumeList = mStorageManager.getClass().getMethod("getVolumeList");
@@ -102,22 +87,14 @@ public class Util {
                 }
             }
         } catch (Exception e) {
-            Log.w(TAG, "Ran into exception when determining volume path for " + volumeId, e);
+            Log.d(TAG, "Unable to determine volume path for: " + volumeId, e);
         }
-        Log.d(TAG, "Unable to determine volume path for " + volumeId);
         if (PRIMARY_VOLUME_NAME.equals(volumeId)) {
             return Environment.getExternalStorageDirectory().getAbsolutePath();
         }
-        return "/storage/" + volumeId;
-    }
-
-    private static String getVolumeIdFromDocument(final String documentId) {
-        final String[] split = documentId.split(":");
-        return split.length > 0 ? split[0] : null;
-    }
-
-    private static String getPathFromDocument(final String documentId) {
-        final String[] split = documentId.split(":");
-        return ((split.length >= 2) && (split[1] != null)) ? split[1] : File.separator;
+        if (!volumeId.startsWith("/storage/")) {
+            return "/storage/" + volumeId;
+        }
+        return volumeId;
     }
 }
