@@ -1245,6 +1245,12 @@ void SyncthingConnection::emitError(const QString &message, SyncthingErrorCatego
         cerr << Phrases::Error << "Syncthing connection error: " << message.toLocal8Bit().data() << reply->errorString().toLocal8Bit().data() << endl;
     }
     emit error(message + reply->errorString(), category, reply->error(), reply->request(), reply->bytesAvailable() ? reply->readAll() : QByteArray());
+
+    // request errors immediately after a failed API request so erorrs like "Decoding posted config: folder has empty ID" show up immediately
+    if (category == SyncthingErrorCategory::SpecificRequest && m_errorsPollTimer.isActive()) {
+        requestErrors();
+        m_errorsPollTimer.start(); // this stops and restarts the active timer to reset the remaining time
+    }
 }
 
 /*!
