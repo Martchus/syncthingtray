@@ -40,7 +40,7 @@ SyncthingLauncher *SyncthingLauncher::s_mainInstance = nullptr;
  * - Using Syncthing as library must be explicitly enabled by setting the CMake variable USE_LIBSYNCTHING.
  * - When using Syncthing as library only one instance of SyncthingLauncher can start Syncthing at a time; trying to start a 2nd Syncthing instance
  *   via another SyncthingLauncher will leads to a failure (but not to undefined behavior).
- * - You must not try to Syncthing as library from multiple threads at the same time. This will lead to undefined behavior even when using different
+ * - You must not try to start Syncthing as library from multiple threads at the same time. This will lead to undefined behavior even when using different
  *   SyncthingLauncher instances.
  */
 
