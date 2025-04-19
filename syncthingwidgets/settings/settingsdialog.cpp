@@ -114,10 +114,12 @@ ConnectionOptionPage::~ConnectionOptionPage()
 
 void ConnectionOptionPage::hideConnectionStatus()
 {
-    ui()->statusTextLabel->setHidden(true);
-    ui()->statusLabel->setHidden(true);
-    ui()->connectPushButton->setHidden(true);
     m_connection = nullptr;
+    if (ui()) {
+        ui()->statusTextLabel->setHidden(true);
+        ui()->statusLabel->setHidden(true);
+        ui()->connectPushButton->setHidden(true);
+    }
 }
 
 QWidget *ConnectionOptionPage::setupWidget()
