@@ -509,7 +509,7 @@ void SyncthingLauncher::handleOutputAvailable(int logLevel, const QByteArray &da
         emit guiUrlChanged(m_guiListeningUrl);
     }
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    if (logLevel < static_cast<int>(m_libsyncthingLogLevel)) {
+    if (logLevel >= 0 && logLevel < static_cast<int>(m_libsyncthingLogLevel)) {
         return;
     }
 #else
