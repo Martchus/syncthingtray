@@ -164,10 +164,7 @@ SyncthingProcess::~SyncthingProcess()
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     // block until all callbacks have been processed
-    if (!m_process) {
-        return;
-    }
-    const auto lock = std::lock_guard<std::mutex>(m_process->mutex);
+    const auto lock = std::lock_guard<std::mutex>(m_processMutex);
     m_process.reset();
 #endif
 }
@@ -463,8 +460,8 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
     }
 
     // handle current/previous process
+    auto processLock = std::unique_lock<std::mutex>(m_processMutex);
     if (m_process) {
-        const auto lock = std::lock_guard<std::mutex>(m_process->mutex);
         if (m_process->state != QProcess::NotRunning) {
             setErrorString(QStringLiteral("process is still running"));
             std::cerr << EscapeCodes::Phrases::Error << "Unable to launch process: previous process still running" << EscapeCodes::Phrases::End;
@@ -479,6 +476,7 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
         m_handler = std::make_unique<SyncthingProcessIOHandler>();
     }
     m_process = std::make_shared<SyncthingProcessInternalData>(m_handler->ioc);
+    processLock.unlock(); // the critical section where m_process is reset or re-assigned is over
     emit stateChanged(m_process->state = QProcess::Starting);
 
     // define handler
@@ -491,12 +489,14 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
                          .pid
 #endif
                   << EscapeCodes::Phrases::End;
+        const auto overallProcessLock = std::lock_guard<std::mutex>(m_processMutex);
         if (const auto lock = SyncthingProcessInternalData::Lock(maybeProcess)) {
             emit stateChanged(m_process->state = QProcess::Running);
             emit started();
         }
     };
     auto exitHandler = boost::process::v1::on_exit = [this, maybeProcess = m_process->weak_from_this()](int rc, const std::error_code &ec) {
+        const auto overallProcessLock = std::lock_guard<std::mutex>(m_processMutex);
         const auto lock = SyncthingProcessInternalData::Lock(maybeProcess);
         if (!lock) {
             return;
@@ -513,6 +513,7 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
         }
     };
     auto errorHandler = boost::process::v1::extend::on_error = [this, maybeProcess = m_process->weak_from_this()](auto &, const std::error_code &ec) {
+        const auto overallProcessLock = std::lock_guard<std::mutex>(m_processMutex);
         const auto lock = SyncthingProcessInternalData::Lock(maybeProcess);
         if (!lock) {
             return;
@@ -679,6 +680,7 @@ void SyncthingProcess::bufferOutput()
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     m_process->pipe.async_read_some(boost::asio::buffer(m_process->buffer, m_process->bufferCapacity),
         [this, maybeProcess = m_process->weak_from_this()](const boost::system::error_code &ec, auto bytesRead) {
+            const auto processLock = std::lock_guard<std::mutex>(m_processMutex);
             const auto lock = SyncthingProcessInternalData::Lock(maybeProcess);
             if (!lock) {
                 return;

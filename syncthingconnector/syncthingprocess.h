@@ -12,6 +12,7 @@
 
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
 #include <memory>
+#include <mutex>
 #endif
 
 #if defined(LIB_SYNCTHING_CONNECTOR_NO_PROCESS) || (!QT_CONFIG(process) && !defined(LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS))
@@ -134,6 +135,10 @@ private:
     CppUtilities::DateTime m_lastWakeUp;
     QTimer m_killTimer;
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
+    // define mutex to be acquired when m_process changes (m_process is reset or re-assigned) so callbacks in
+    // second thread can acquired it as well to block any changes to m_process
+    std::mutex m_processMutex;
+    // define internal data/handler fields for process managed via Boost.Process
     std::shared_ptr<SyncthingProcessInternalData> m_process;
     std::unique_ptr<SyncthingProcessIOHandler> m_handler;
 #endif
