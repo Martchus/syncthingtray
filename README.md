@@ -520,7 +520,11 @@ While Syncthing Tray basically works on Android, there are still some unresolved
       [FUSE Passthrough](https://source.android.com/docs/core/storage/fuse-passthrough). To be able
       to do this, the app exposes the private directories as "document provider" which are this way
       selectable via the Android file selection dialog from other apps. This of course does not
-      cover all use cases as other apps might only be able to use files from fixed directories.
+      cover all use cases as other apps might only be able to use files from fixed directories. One
+      open source file manager that allows accessing these files is
+      [Material Files](https://github.com/zhanghai/MaterialFiles) where one can add it as "external
+      storage". Note that Files by Google recognizes the document provider of the Syncthing app but
+      only opens the app itself instead of letting one browse the files.
 * Media rescans need to be triggered manually but this can be easily done per folder from the UI.
 * There are probably still many small UI bugs in the Qt Quick based UI used on Android.
 * The Syncthing home directory needs to be within the private directory of the app on the main
