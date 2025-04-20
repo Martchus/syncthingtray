@@ -27,6 +27,11 @@ SetupDetection::SetupDetection(QObject *parent)
         QStringLiteral(".service"));
 #endif
 
+    // recognize env variable SYNCTHING_PATH like the testsuite does
+    if (const auto syncthingPathFromEnv = qEnvironmentVariable("SYNCTHING_PATH"); !syncthingPathFromEnv.isEmpty()) {
+        launcherSettings.syncthingPath = syncthingPathFromEnv;
+    }
+
     // configure launcher to test invocation of "syncthing --version" capturing output
     defaultSyncthingArgs = launcherSettings.syncthingArgs;
     launcherSettings.syncthingArgs = QStringLiteral("--version");
