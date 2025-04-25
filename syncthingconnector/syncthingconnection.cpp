@@ -1006,8 +1006,8 @@ bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
         return false;
     }
 
-    // only possible if the Syncthing instance is running on the local machine
-    if (!::Data::isLocal(syncthingUrl)) {
+    // auto-determining the path is only possible if the Syncthing instance is running locally
+    if (m_certificatePath.isEmpty() && !::Data::isLocal(syncthingUrl)) {
         return false;
     }
 
