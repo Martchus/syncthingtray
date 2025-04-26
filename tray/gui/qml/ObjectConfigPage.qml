@@ -18,6 +18,7 @@ Page {
             id: objectListView
             Layout.fillWidth: true
             Layout.fillHeight: true
+            cacheBuffer: 10000
             model: ListModel {
                 id: listModel
                 dynamicRoles: true
