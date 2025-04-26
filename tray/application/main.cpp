@@ -1,7 +1,3 @@
-#ifdef GUI_QTQUICK
-#define QT_UTILITIES_GUI_QTQUICK
-#endif
-
 #ifdef GUI_QTWIDGETS
 #include "./singleinstance.h"
 

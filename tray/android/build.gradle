@@ -42,13 +42,6 @@ android {
     buildToolsVersion androidBuildToolsVersion
     ndkVersion androidNdkVersion
 
-    // Exclude certain libraries
-    packagingOptions {
-        exclude 'lib/*/*Controls_Imagine*'
-        exclude 'lib/*/*Controls_Fluent*'
-        exclude 'lib/*/*Controls_Universal*'
-    }
-
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
