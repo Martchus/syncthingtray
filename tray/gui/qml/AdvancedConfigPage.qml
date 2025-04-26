@@ -54,6 +54,10 @@ ObjectConfigPage {
         return (advancedConfigPage.configObjectExists = (entry !== undefined)) ? entry : advancedConfigPage.makeNewConfig();
     }
 
+    function isPresentEmptyString(value) {
+        return typeof value === "string" && value.length === 0;
+    }
+
     function applyChanges() {
         const cfg = App.connection.rawConfig;
         const entries = cfg !== undefined ? cfg[entriesKey] : undefined;
@@ -62,6 +66,10 @@ ObjectConfigPage {
         }
         advancedConfigPage.updateIdentification();
         const cfgObj = configObject;
+        if (isPresentEmptyString(cfgObj.id) || isPresentEmptyString(cfgObj.deviceID)) {
+            App.showError(qsTr("The ID must not be empty."));
+            return false;
+        }
         const index = entries.findIndex(advancedConfigPage.isEntry);
         const supposedToExist = advancedConfigPage.configObjectExists;
         if (supposedToExist && index >= 0) {
@@ -69,7 +77,7 @@ ObjectConfigPage {
         } else if (!supposedToExist && index < 0) {
             entries.push(cfgObj);
         } else {
-            App.showError("Can't apply, key is already used.");
+            App.showError(qsTr("Can't apply, ID is already used."));
             return false;
         }
         App.postSyncthingConfig(cfg, (error) => {
