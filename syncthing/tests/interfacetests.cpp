@@ -145,7 +145,7 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction, bool
     // keep track of certain log messages
     const auto startTime(DateTime::gmtNow());
     bool myIdAnnounced = false, performanceAnnounced = false, guiAnnounced = false;
-    bool testDir1Ready = false, testDir2Ready = false;
+    bool testDir1Ready = false, testDir2Ready = false; // don't wait on dir2 as it is paused
     bool testDev1Ready = false, testDev2Ready = false;
     bool shuttingDown = false, shutDownLogged = false;
 
@@ -167,11 +167,11 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction, bool
             guiAnnounced = true;
         } else if (msg == "Ready to synchronize test1 (sendreceive)") {
             testDir1Ready = true;
-        } else if (msg == "Ready to synchronize test2 (sendreceive)") {
+        } else if (msg == "Ready to synchronize test2 (sendreceive)" || msg == "Ready to synchronize \"Test dir 2\" (test2) (sendreceive)") {
             testDir2Ready = true;
         } else if (msg == "Device 6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4 is \"Test dev 1\" at [dynamic]") {
             testDev1Ready = true;
-        } else if (msg == "Device MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7 is \"Test dev 2\" at [tcp://192.168.2.2:22001]") {
+        } else if (startsWith(msg, "Device MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7 is \"Test dev 2\" at [tcp://192.168.2.2")) {
             testDev2Ready = true;
         } else if (msg == "Exiting") {
             shutDownLogged = true;
