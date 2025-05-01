@@ -139,46 +139,48 @@ Page {
                 font.weight: Font.Medium
                 wrapMode: Text.WordWrap
             }
+            CustomListView {
+                id: deletionsView
+                Layout.fillWidth: true
+                Layout.preferredHeight: Math.min(deletionsView.contentHeight, confirmActionLayout.height / 2)
+                ScrollBar.vertical: ScrollBar { }
+                ScrollIndicator.vertical: ScrollIndicator {
+                    visible: false
+                }
+                clip: true
+                model: ListModel {
+                    id: deletionsModel
+                }
+                header: Label {
+                    width: deletionsView.width
+                    height: visible ? implicitHeight : 0
+                    visible: deletionsView.model.count > 0
+                    text: qsTr("Deletion of the following local files (will affect other devices unless ignored below!):")
+                    font.weight: Font.Light
+                    wrapMode: Text.WordWrap
+                }
+                delegate: CheckDelegate {
+                    id: deletionDelegate
+                    width: deletionsView.width
+                    text: modelData.path
+                    checkState: modelData.checked ? Qt.Checked : Qt.Unchecked
+                    onCheckedChanged: deletionsModel.setProperty(modelData.index, "checked", deletionDelegate.checked)
+                    required property var modelData
+                }
+            }
+            Label {
+                Layout.fillWidth: true
+                visible: deletionsView.model.count > 0
+                text: qsTr("Changes to ignore patterns:")
+                font.weight: Font.Light
+                wrapMode: Text.WordWrap
+            }
             ScrollView {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                ColumnLayout {
-                    width: confirmActionLayout.width
-                    CustomListView {
-                        id: deletionsView
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: deletionsView.contentHeight
-                        model: ListModel {
-                            id: deletionsModel
-                        }
-                        header: Label {
-                            width: deletionsView.width
-                            visible: deletionsView.model.count > 0
-                            text: qsTr("Deletion of the following local files (will affect other devices unless ignored below!):")
-                            font.weight: Font.Light
-                            wrapMode: Text.WordWrap
-                        }
-                        delegate: CheckDelegate {
-                            id: deletionDelegate
-                            width: deletionsView.width
-                            text: modelData.path
-                            checkState: modelData.checked ? Qt.Checked : Qt.Unchecked
-                            onCheckedChanged: deletionsModel.setProperty(modelData.index, "checked", deletionDelegate.checked)
-                            required property var modelData
-                        }
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        visible: deletionsView.model.count > 0
-                        text: qsTr("Changes to ignore patterns:")
-                        font.weight: Font.Light
-                        wrapMode: Text.WordWrap
-                    }
-                    TextArea {
-                        id: diffTextArea
-                        Layout.fillWidth: true
-                        readOnly: true
-                    }
+                TextArea {
+                    id: diffTextArea
+                    readOnly: true
                 }
             }
         }
