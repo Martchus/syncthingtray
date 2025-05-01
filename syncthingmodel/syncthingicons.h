@@ -90,11 +90,12 @@ struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
     StatusIconColorSet scanningColor;
     StatusIconColorSet synchronizingColor;
     StatusIconColorSet pausedColor;
+    StatusIconColorSet noRemoteColor;
     StatusIconColorSet disconnectedColor;
     QSize renderSize = QSize(32, 32);
     StatusIconStrokeWidth strokeWidth = StatusIconStrokeWidth::Normal;
 
-    static constexpr auto distinguishableColorCount = 8;
+    static constexpr auto distinguishableColorCount = 9;
 
     struct ColorMapping {
         QString colorName;

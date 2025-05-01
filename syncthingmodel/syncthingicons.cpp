@@ -203,7 +203,8 @@ StatusIconSettings::StatusIconSettings()
     , scanningColor({ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8"), QStringLiteral("#FFFFFF") })
     , synchronizingColor({ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8"), QStringLiteral("#FFFFFF") })
     , pausedColor({ QStringLiteral("#A9A9A9"), QStringLiteral("#58656C"), QStringLiteral("#FFFFFF") })
-    , disconnectedColor({ QStringLiteral("#A9A9A9"), QStringLiteral("#58656C"), QStringLiteral("#FFFFFF") })
+    , noRemoteColor({ QStringLiteral("#A9A9A9"), QStringLiteral("#58656C"), QStringLiteral("#FFFFFF") })
+    , disconnectedColor(noRemoteColor)
 {
 }
 
@@ -215,7 +216,8 @@ StatusIconSettings::StatusIconSettings(StatusIconSettings::DarkTheme)
     , scanningColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA5EFFF") })
     , synchronizingColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA5EFFF") })
     , pausedColor({ QStringLiteral("#00000000"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA7A7A7") })
-    , disconnectedColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FFA7A7A7") })
+    , noRemoteColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FFA7A7A7") })
+    , disconnectedColor(noRemoteColor)
     , strokeWidth(StatusIconStrokeWidth::Thick)
 {
 }
@@ -228,7 +230,8 @@ StatusIconSettings::StatusIconSettings(StatusIconSettings::BrightTheme)
     , scanningColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FF26B6DB") })
     , synchronizingColor({ QStringLiteral("#00000000"), QStringLiteral("#00000000"), QStringLiteral("#FF26B6DB") })
     , pausedColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA7A7A7") })
-    , disconnectedColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA7A7A7") })
+    , noRemoteColor({ QStringLiteral("#00FFFFFF"), QStringLiteral("#00FFFFFF"), QStringLiteral("#FFA7A7A7") })
+    , disconnectedColor(noRemoteColor)
     , strokeWidth(StatusIconStrokeWidth::Thick)
 {
 }
@@ -243,6 +246,7 @@ std::vector<StatusIconSettings::ColorMapping> StatusIconSettings::colorMapping()
         { QCoreApplication::translate("Data::StatusIconSettings", "Scanning"), StatusEmblem::Scanning, scanningColor },
         { QCoreApplication::translate("Data::StatusIconSettings", "Synchronizing"), StatusEmblem::Synchronizing, synchronizingColor },
         { QCoreApplication::translate("Data::StatusIconSettings", "Paused"), StatusEmblem::Paused, pausedColor },
+        { QCoreApplication::translate("Data::StatusIconSettings", "No remote device connected"), StatusEmblem::Cross, noRemoteColor },
         { QCoreApplication::translate("Data::StatusIconSettings", "Disconnected"), StatusEmblem::None, disconnectedColor },
     });
 }
@@ -253,7 +257,7 @@ StatusIconSettings::StatusIconSettings(const QString &str)
     const auto parts = QtUtilities::splitRef(str, QChar(';'));
     auto index = int();
     for (auto *field :
-        { &defaultColor, &errorColor, &warningColor, &idleColor, &scanningColor, &synchronizingColor, &pausedColor, &disconnectedColor }) {
+        { &defaultColor, &errorColor, &warningColor, &idleColor, &scanningColor, &synchronizingColor, &pausedColor, &noRemoteColor, &disconnectedColor }) {
         if (index >= parts.size()) {
             break;
         }
@@ -267,6 +271,12 @@ StatusIconSettings::StatusIconSettings(const QString &str)
         }
         ++index;
     }
+    // use disconnectedColor to initialize newly introduced noRemoteColor
+    // note: Since noRemoteColor has been inserted before disconnectedColor it is initalized by the preceeding loop. So we need to assign
+    //       the new color to the old one.
+    if (parts.size() < 9) {
+        disconnectedColor = noRemoteColor;
+    }
 }
 
 QString StatusIconSettings::toString() const
@@ -274,7 +284,7 @@ QString StatusIconSettings::toString() const
     QString res;
     res.reserve(128);
     for (auto *field :
-        { &defaultColor, &errorColor, &warningColor, &idleColor, &scanningColor, &synchronizingColor, &pausedColor, &disconnectedColor }) {
+        { &defaultColor, &errorColor, &warningColor, &idleColor, &scanningColor, &synchronizingColor, &pausedColor, &noRemoteColor, &disconnectedColor }) {
         if (!res.isEmpty()) {
             res += QChar(';');
         }
@@ -308,7 +318,7 @@ StatusIcons::StatusIcons(const StatusIconSettings &settings)
     , errorSync(QIcon(renderSvgImage(makeSyncthingIcon(settings.errorColor, StatusEmblem::Synchronizing, settings.strokeWidth), settings.renderSize)))
     , newItem(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Add, settings.strokeWidth), settings.renderSize)))
     , noRemoteConnected(
-          QIcon(renderSvgImage(makeSyncthingIcon(settings.disconnectedColor, StatusEmblem::Cross, settings.strokeWidth), settings.renderSize)))
+          QIcon(renderSvgImage(makeSyncthingIcon(settings.noRemoteColor, StatusEmblem::Cross, settings.strokeWidth), settings.renderSize)))
     , isValid(true)
 {
 }
