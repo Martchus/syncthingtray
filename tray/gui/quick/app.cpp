@@ -1,6 +1,10 @@
 #include "./app.h"
 
 #include "resources/config.h"
+#include <qcoreapplication.h>
+#include <qcoreapplication_platform.h>
+#include <qdebug.h>
+#include <qlogging.h>
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 #include <syncthing/interface.h>
@@ -99,6 +103,10 @@ static App *appObjectForJava = nullptr;
 
 static void loadQtQuickGui(JNIEnv *, jobject)
 {
+    qDebug() << "Invoking init engine";
+    qDebug() << "Has activity context: " << QNativeInterface::QAndroidApplication::isActivityContext();
+    qDebug() << "Activity: " << QNativeInterface::QAndroidApplication::context().className();
+    QCoreApplication::instance()->eventDispatcher()->wakeUp();
     QMetaObject::invokeMethod(appObjectForJava, "initEngine", Qt::QueuedConnection);
 }
 
@@ -230,6 +238,7 @@ App::App(bool insecure, QObject *parent)
     }
 
     // start Android service
+    qDebug() << "Activity on startup: " << QNativeInterface::QAndroidApplication::context().className();
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
 #endif
 
@@ -368,6 +377,9 @@ bool App::loadMain()
         m_engine->loadFromModule("Main", "AppWindow");
     }
     m_isGuiLoaded = true;
+#ifdef Q_OS_ANDROID
+    QNativeInterface::QAndroidApplication::hideSplashScreen();
+#endif
     return true;
 }
 

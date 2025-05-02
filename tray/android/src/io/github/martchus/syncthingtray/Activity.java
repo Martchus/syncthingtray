@@ -203,11 +203,12 @@ public class Activity extends QtActivity {
         return m_fontWeightAdjustment;
     }
 
+    boolean m_restarting = false;
+
     @Override
     protected boolean handleRestart(Bundle savedInstanceState) {
-        loadQtQuickGui();
-        hideSplashScreen(0);
-        return true;
+        Log.i(TAG, "Handle restart");
+        return m_restarting = true;
     }
 
     @Override
@@ -254,6 +255,10 @@ public class Activity extends QtActivity {
             handleNotificationPermissionChanged(notificationPermissionGranted());
         }
         super.onResume();
+        if (m_restarting) {
+            m_restarting = false;
+            loadQtQuickGui();
+        }
     }
 
     @Override
