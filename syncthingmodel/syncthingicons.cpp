@@ -256,8 +256,8 @@ StatusIconSettings::StatusIconSettings(const QString &str)
 {
     const auto parts = QtUtilities::splitRef(str, QChar(';'));
     auto index = int();
-    for (auto *field :
-        { &defaultColor, &errorColor, &warningColor, &idleColor, &scanningColor, &synchronizingColor, &pausedColor, &noRemoteColor, &disconnectedColor }) {
+    for (auto *field : { &defaultColor, &errorColor, &warningColor, &idleColor, &scanningColor, &synchronizingColor, &pausedColor, &noRemoteColor,
+             &disconnectedColor }) {
         if (index >= parts.size()) {
             break;
         }
@@ -283,8 +283,8 @@ QString StatusIconSettings::toString() const
 {
     QString res;
     res.reserve(128);
-    for (auto *field :
-        { &defaultColor, &errorColor, &warningColor, &idleColor, &scanningColor, &synchronizingColor, &pausedColor, &noRemoteColor, &disconnectedColor }) {
+    for (auto *field : { &defaultColor, &errorColor, &warningColor, &idleColor, &scanningColor, &synchronizingColor, &pausedColor, &noRemoteColor,
+             &disconnectedColor }) {
         if (!res.isEmpty()) {
             res += QChar(';');
         }
