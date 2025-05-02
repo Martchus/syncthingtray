@@ -120,7 +120,12 @@ find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFF
 use_cpp_utilities()
 
 # find qtutilities
-find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES} 6.15.0 REQUIRED)
+set(QT_UTILITIES_REQUIRED_VERSION 6.15.0)
+if (ANDROID)
+    set(QT_UTILITIES_REQUIRED_VERSION 6.16.0)
+endif ()
+find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES}
+             ${QT_UTILITIES_REQUIRED_VERSION} REQUIRED)
 use_qt_utilities()
 
 # find backend libraries
