@@ -24,18 +24,26 @@ import androidx.core.content.FileProvider;
 
 import java.io.*;
 
+import org.qtproject.qt.android.QtQuickView;
+import org.qtproject.qt.qml.target.Main;
+
 import org.qtproject.qt.android.bindings.QtActivity;
 
 import io.github.martchus.syncthingtray.SyncthingService;
 import io.github.martchus.syncthingtray.Util;
 
-public class Activity extends QtActivity {
+public class Activity extends android.app.Activity {
     private static final String TAG = "SyncthingActivity";
     private static final int STORAGE_PERMISSION_REQUEST = 100;
     private float m_fontScale = 1.0f;
     private int m_fontWeightAdjustment = 0;
     private boolean m_storagePermissionRequested = false;
     private boolean m_notificationPermissionRequested = false;
+    private Main m_mainQmlContent;
+
+    public Activity() {
+        Log.i(TAG, "New");
+    }
 
     public boolean performHapticFeedback() {
         View rootView = getWindow().getDecorView().getRootView();
@@ -216,6 +224,12 @@ public class Activity extends QtActivity {
             m_fontWeightAdjustment = config.fontWeightAdjustment;
         }
 
+        setContentView(R.layout.activity_main);
+        m_mainQmlContent = new Main();
+        QtQuickView qmlView = new QtQuickView(this);
+        layout.addView(qmlView, params);
+        qmlView.loadContent(m_mainQmlContent);
+
         // read text another app might have shared with us
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -243,6 +257,7 @@ public class Activity extends QtActivity {
             handleNotificationPermissionChanged(notificationPermissionGranted());
         }
         super.onResume();
+        //loadQtQuickGui();
     }
 
     @Override
@@ -264,8 +279,8 @@ public class Activity extends QtActivity {
         //       It would not stop the service and Go threads but it would be impossible to re-enter the UI leaving
         //       the app in some kind of zombie state.
         Log.i(TAG, "Destroying");
-        stopLibSyncthing();
-        stopSyncthingService();
+        //stopLibSyncthing();
+        //stopSyncthingService();
         super.onDestroy();
     }
 
@@ -293,6 +308,7 @@ public class Activity extends QtActivity {
         }
     }
 
+    private static native void loadQtQuickGui();
     private static native void handleAndroidIntent(String page, boolean fromNotification);
     private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
     private static native void handleNotificationPermissionChanged(boolean notificationPermissionGranted);
