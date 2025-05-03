@@ -145,9 +145,6 @@ App::App(bool insecure, QObject *parent)
     , m_darkmodeEnabled(false)
     , m_darkColorScheme(false)
     , m_darkPalette(SYNCTHING_APP_IS_PALETTE_DARK(m_app->palette()))
-    , m_isGuiLoaded(false)
-    , m_alwaysUnloadGuiWhenHidden(false)
-    , m_unloadGuiWhenHidden(false)
 {
     m_app->installEventFilter(this);
     m_app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
@@ -205,6 +202,7 @@ App::App(bool insecure, QObject *parent)
     connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &App::handleRunningChanged);
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &App::handleGuiAddressChanged);
 
+#if !defined(Q_OS_ANDROID)
     connect(
         &m_engine, &QQmlApplicationEngine::objectCreated, m_app,
         [](QObject *obj, const QUrl &objUrl) {
@@ -216,7 +214,7 @@ App::App(bool insecure, QObject *parent)
         Qt::QueuedConnection);
     connect(&m_engine, &QQmlApplicationEngine::quit, m_app, &QGuiApplication::quit);
     m_engine.setProperty("app", QVariant::fromValue(this));
-    m_engine.addImageProvider(QStringLiteral("fa"), m_imageProvider = new QtForkAwesome::QuickImageProvider(iconManager.forkAwesomeRenderer()));
+#endif
 
 #ifdef Q_OS_ANDROID
     // register native methods of Android activity
@@ -238,16 +236,26 @@ App::App(bool insecure, QObject *parent)
 
     // start Android service
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
-#endif
-
+#else
     loadMain();
+#endif
 
     qDebug() << "App initialized";
 }
 
-App *App::create(QQmlEngine *, QJSEngine *engine)
+App *App::create(QQmlEngine *qmlEngine, QJSEngine *engine)
 {
+#ifdef Q_OS_ANDROID
+    Q_UNUSED(engine)
+    auto *const app = JniFn::appObjectForJava;
+#else
     auto *const app = engine->property("app").value<App *>();
+#endif
+    if (qmlEngine) {
+        auto *const imageProvider = new QtForkAwesome::QuickImageProvider(Data::IconManager::instance().forkAwesomeRenderer());
+        connect(app->m_imageProvider = imageProvider, &QObject::destroyed, app, [app] () { app->m_imageProvider = nullptr; });
+        qmlEngine->addImageProvider(QStringLiteral("fa"), imageProvider);
+    }
     QJSEngine::setObjectOwnership(app, QJSEngine::CppOwnership);
     return app;
 }
@@ -332,6 +340,7 @@ bool App::nativePopups() const
 }
 #endif
 
+#if !defined(Q_OS_ANDROID)
 bool App::loadMain()
 {
     // allow overriding Qml entry point for hot-reloading; otherwise load proper Qml module from resources
@@ -352,7 +361,6 @@ bool App::loadMain()
     } else {
         m_engine.loadFromModule("Main", "AppWindow");
     }
-    m_isGuiLoaded = true;
     return true;
 }
 
@@ -371,9 +379,9 @@ bool App::unloadMain()
     for (auto *const rootObject : rootObjects) {
         rootObject->deleteLater();
     }
-    m_isGuiLoaded = false;
     return true;
 }
+#endif
 
 void App::shutdown()
 {
@@ -530,10 +538,14 @@ bool App::loadDirErrors(const QString &dirId, QObject *view)
         if (dir.id != dirId) {
             return;
         }
-        auto array = m_engine.newArray(static_cast<quint32>(dir.itemErrors.size()));
+        auto engine = this->engine();
+        if (!engine) {
+            return;
+        }
+        auto array = engine->newArray(static_cast<quint32>(dir.itemErrors.size()));
         auto index = quint32();
         for (const auto &itemError : dir.itemErrors) {
-            auto error = m_engine.newObject();
+            auto error = engine->newObject();
             error.setProperty(QStringLiteral("path"), itemError.path);
             error.setProperty(QStringLiteral("message"), itemError.message);
             array.setProperty(index++, error);
@@ -548,14 +560,13 @@ bool App::loadDirErrors(const QString &dirId, QObject *view)
 
 bool App::loadStatistics(const QJSValue &callback)
 {
-    if (!callback.isCallable()) {
-        return false;
-    }
     auto query = m_connection.requestJsonData(
         QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
             auto report = doc.object().toVariantMap();
             statistics(report);
-            callback.call(QJSValueList({ m_engine.toScriptValue(report), QJSValue(std::move(error)) }));
+            if (callback.isCallable() && engine()) {
+                callback.call(QJSValueList({ engine()->toScriptValue(report), QJSValue(std::move(error)) }));
+            }
         });
     connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
     connect(this, &QObject::destroyed, [c = query.connection] { disconnect(c); });
@@ -685,8 +696,12 @@ QFont App::font() const
         f.setFamily(family);
     }
     if (const auto scale = fontScale(); scale != qreal(1.0)) {
-        f.setPixelSize(static_cast<int>(static_cast<qreal>(f.pixelSize()) * scale));
-        f.setPointSizeF(f.pointSizeF() * scale);
+        if (const auto pixelSize = f.pixelSize(); pixelSize > 0) {
+            f.setPixelSize(static_cast<int>(static_cast<qreal>(pixelSize) * scale));
+        }
+        if (const auto pointSize = f.pointSizeF(); pointSize > 0) {
+            f.setPointSizeF(pointSize * scale);
+        }
     }
     if (const auto weightAdjustment = fontWeightAdjustment(); weightAdjustment != 0) {
         f.setWeight(static_cast<QFont::Weight>(f.weight() + weightAdjustment));
@@ -952,15 +967,11 @@ void App::handleNewErrors(const std::vector<Data::SyncthingError> &errors)
 
 void App::handleStateChanged(Qt::ApplicationState state)
 {
-    if (m_isGuiLoaded && ((state == Qt::ApplicationSuspended) || (state & Qt::ApplicationHidden))) {
+    if ((state == Qt::ApplicationSuspended) || (state & Qt::ApplicationHidden)) {
         qDebug() << "App considered suspended/hidden, reducing polling, stopping UI processing";
         setCurrentControls(false);
         for (auto *const uiObject : m_uiObjects) {
             uiObject->moveToThread(nullptr);
-        }
-        if (m_unloadGuiWhenHidden || m_alwaysUnloadGuiWhenHidden) {
-            m_unloadGuiWhenHidden = false;
-            unloadMain();
         }
     } else if (state & Qt::ApplicationActive) {
         qDebug() << "App considered active, continuing polling, resuming UI processing";
@@ -968,10 +979,6 @@ void App::handleStateChanged(Qt::ApplicationState state)
         auto *const uiThread = thread();
         for (auto *const uiObject : m_uiObjects) {
             uiObject->moveToThread(uiThread);
-        }
-        if (!m_isGuiLoaded) {
-            QtUtilities::deletePipelineCacheIfNeeded();
-            loadMain();
         }
     }
 }
@@ -1189,8 +1196,8 @@ bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, 
         params.addQueryItem(parameter.first, parameter.second.toString());
     }
     auto query = m_connection.requestJsonData(verb.toUtf8(), path, params, QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
-        if (callback.isCallable()) {
-            callback.call(QJSValueList({ m_engine.toScriptValue(doc.object()), QJSValue(std::move(error)) }));
+        if (callback.isCallable() && engine()) {
+            callback.call(QJSValueList({ engine()->toScriptValue(doc.object()), QJSValue(std::move(error)) }));
         }
     });
     connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
@@ -1266,7 +1273,6 @@ bool App::minimize()
         emit showError(tr("Unable to minimize app."));
         return false;
     }
-    m_unloadGuiWhenHidden = true;
 #else
     const auto windows = QGuiApplication::topLevelWindows();
     for (auto *const window : windows) {
@@ -1406,7 +1412,6 @@ bool App::applySettings()
         m_connection.reconnect();
     }
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
-    m_alwaysUnloadGuiWhenHidden = tweaksSettings.value(QLatin1String("unloadGuiWhenHidden")).toBool(false);
     applyLauncherSettings();
     invalidateStatus();
     return true;
@@ -1577,8 +1582,8 @@ bool App::checkSettings(const QUrl &url, const QJSValue &callback)
         return availableSettings;
     }).then(this, [this, callback](const QVariantMap &availableSettings) {
         setImportExportStatus(ImportExportStatus::None);
-        if (callback.isCallable()) {
-            callback.call(QJSValueList{ m_engine.toScriptValue(availableSettings) });
+        if (callback.isCallable() && engine()) {
+            callback.call(QJSValueList{ engine()->toScriptValue(availableSettings) });
         }
     });
     return true;
@@ -1856,8 +1861,8 @@ bool App::checkSyncthingHome(const QJSValue &callback)
         return homeDirInfo;
     }).then(this, [this, callback](const QVariantMap &homeDirInfo) {
         setImportExportStatus(ImportExportStatus::None);
-        if (callback.isCallable()) {
-            callback.call(QJSValueList{ m_engine.toScriptValue(homeDirInfo) });
+        if (callback.isCallable() && engine()) {
+            callback.call(QJSValueList{  engine()->toScriptValue(homeDirInfo) });
         }
     });
     return true;

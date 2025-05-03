@@ -223,9 +223,11 @@ public:
     QString currentSyncthingHomeDir() const;
 
     // helper functions invoked from QML
+#if !defined(Q_OS_ANDROID)    
     Q_INVOKABLE bool loadMain();
     Q_INVOKABLE bool reloadMain();
     Q_INVOKABLE bool unloadMain();
+#endif
     Q_INVOKABLE void shutdown();
     Q_INVOKABLE bool loadSettings();
     Q_INVOKABLE bool storeSettings();
@@ -335,6 +337,7 @@ private Q_SLOTS:
 #endif
 
 private:
+    QQmlEngine *engine();
     QString externalFilesDir() const;
     QStringList externalStoragePaths() const;
     void setImportExportStatus(ImportExportStatus importExportStatus);
@@ -344,7 +347,11 @@ private:
     bool openSettings();
     QString locateSettingsExportDir();
 
+#ifdef Q_OS_ANDROID
+    QQmlEngine *m_engine;
+#else
     QQmlApplicationEngine m_engine;
+#endif
     QGuiApplication *m_app;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
     Data::SyncthingConnection m_connection;
@@ -387,10 +394,16 @@ private:
     bool m_darkmodeEnabled;
     bool m_darkColorScheme;
     bool m_darkPalette;
-    bool m_isGuiLoaded;
-    bool m_alwaysUnloadGuiWhenHidden;
-    bool m_unloadGuiWhenHidden;
 };
+
+inline QQmlEngine *App::engine()
+{
+#ifdef Q_OS_ANDROID
+    return m_engine;
+#else
+    return &m_engine;
+#endif
+}
 
 inline void App::clearLog()
 {

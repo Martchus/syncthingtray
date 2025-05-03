@@ -14,6 +14,8 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import android.util.Log;
 
@@ -25,12 +27,6 @@ import androidx.core.content.FileProvider;
 import java.io.*;
 
 import org.qtproject.qt.android.QtQuickView;
-import org.qtproject.qt.qml.target.Main;
-
-import org.qtproject.qt.android.bindings.QtActivity;
-
-import io.github.martchus.syncthingtray.SyncthingService;
-import io.github.martchus.syncthingtray.Util;
 
 public class Activity extends android.app.Activity {
     private static final String TAG = "SyncthingActivity";
@@ -39,7 +35,6 @@ public class Activity extends android.app.Activity {
     private int m_fontWeightAdjustment = 0;
     private boolean m_storagePermissionRequested = false;
     private boolean m_notificationPermissionRequested = false;
-    private Main m_mainQmlContent;
 
     public Activity() {
         Log.i(TAG, "New");
@@ -224,11 +219,13 @@ public class Activity extends android.app.Activity {
             m_fontWeightAdjustment = config.fontWeightAdjustment;
         }
 
+        // load Qt libraries and initialize Qt UI
+        QtQuickView qtQuickView = new QtQuickView(this, "qrc:/qt/qml/Main/gui/qml/AppControl.qml", "syncthingtray");
         setContentView(R.layout.activity_main);
-        m_mainQmlContent = new Main();
-        QtQuickView qmlView = new QtQuickView(this);
-        layout.addView(qmlView, params);
-        qmlView.loadContent(m_mainQmlContent);
+        ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        FrameLayout qmlFrameLayout = findViewById(R.id.quick_frame_layout);
+        qmlFrameLayout.addView(qtQuickView, params);
 
         // read text another app might have shared with us
         Intent intent = getIntent();
@@ -257,7 +254,6 @@ public class Activity extends android.app.Activity {
             handleNotificationPermissionChanged(notificationPermissionGranted());
         }
         super.onResume();
-        //loadQtQuickGui();
     }
 
     @Override
@@ -308,7 +304,6 @@ public class Activity extends android.app.Activity {
         }
     }
 
-    private static native void loadQtQuickGui();
     private static native void handleAndroidIntent(String page, boolean fromNotification);
     private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
     private static native void handleNotificationPermissionChanged(boolean notificationPermissionGranted);

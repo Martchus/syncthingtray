@@ -151,7 +151,6 @@ StackView {
                 {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Shows Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
             ],
             tweaks: [
-                {key: "unloadGuiWhenHidden", type: "boolean", defaultValue: false, label: qsTr("Stop UI when hidden"), statusText: qsTr("Might help save battery live but resets UI state.")},
             ]
         })
         property bool hasUnsavedChanges: false
