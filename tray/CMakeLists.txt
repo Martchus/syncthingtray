@@ -302,6 +302,7 @@ if (QUICK_GUI)
         gui/qml/AdvancedDirConfigPage.qml
         gui/qml/AdvancedPage.qml
         gui/qml/ArrayElementButtons.qml
+        gui/qml/AppControl.qml
         gui/qml/ChangesPage.qml
         gui/qml/CopyPasteButtons.qml
         gui/qml/CustomDialog.qml
