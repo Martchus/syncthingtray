@@ -349,7 +349,8 @@ bool App::loadMain()
         qDebug() << "Path Qml entry point for Qt Quick GUI was overridden to: " << path;
         m_engine.load(path);
     } else {
-        m_engine.loadFromModule("Main", "Main");
+        //m_engine.loadFromModule("Main", "AppControl");
+        m_engine.loadFromModule("Main", "AppWindow");
     }
     return true;
 }

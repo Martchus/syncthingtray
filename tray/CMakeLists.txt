@@ -303,6 +303,7 @@ if (QUICK_GUI)
         gui/qml/AdvancedPage.qml
         gui/qml/ArrayElementButtons.qml
         gui/qml/AppControl.qml
+        gui/qml/AppWindow.qml
         gui/qml/ChangesPage.qml
         gui/qml/CopyPasteButtons.qml
         gui/qml/CustomDialog.qml
@@ -332,6 +333,7 @@ if (QUICK_GUI)
         gui/qml/IgnorePatternPage.qml
         gui/qml/ImportPage.qml
         gui/qml/InternalErrorsPage.qml
+        gui/qml/LeftDrawer.qml
         gui/qml/LoadingPane.qml
         gui/qml/LogPage.qml
         gui/qml/Main.qml
@@ -341,6 +343,7 @@ if (QUICK_GUI)
         gui/qml/ObjectConfigDelegate.qml
         gui/qml/ObjectConfigPage.qml
         gui/qml/OutOfSyncDirs.qml
+        gui/qml/PageStack.qml
         gui/qml/PendingDevices.qml
         gui/qml/PendingDirs.qml
         gui/qml/StartPage.qml

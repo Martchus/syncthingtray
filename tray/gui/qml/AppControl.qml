@@ -7,16 +7,29 @@ import Main
 
 Control {
     id: control
-    font: App.font
-    onVisibleChanged: App.setCurrentControls(control.visible, 0 /* pageStack.currentIndex */)
-    Material.theme: App.darkmodeEnabled ? Material.Dark : Material.Light
-    //Material.primary: pageStack.currentPage.isDangerous ? Material.Red : Material.LightBlue
-    Material.primary: Material.LightBlue
-    Material.accent: Material.primary
-    Material.onForegroundChanged: App.setPalette(Material.foreground, Material.background)
- 
-    Label {
+    font: main.font
+    Material.theme: main.Material.theme
+    Material.primary: main.Material.primary
+    Material.accent: main.Material.accent
+
+    LeftDrawer {
+        id: drawer
+        pageStack: pageStack
+    }
+    ColumnLayout {
         anchors.fill: parent
-        text: qsTr("foobar")
+        PageStack {
+            id: pageStack
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.leftMargin: drawer.visible ? drawer.effectiveWidth : 0
+            window: control
+        }
+    }
+
+    readonly property Main main: Main {
+        window: control
+        pageStack: pageStack
+        drawer: drawer
     }
 }
