@@ -880,10 +880,12 @@ It is possible to turn on logging of the underlying library by setting environme
 * `SYNCTHINGTRAY_FAKE_FIRST_LAUNCH`: assume Syncthing Tray (or the Plasmoid) has been launched for the
   first time
 * `SYNCTHINGTRAY_ENABLE_WIP_FEATURES`: enable work-in-progress/experimental features
-* `SYNCTHINGTRAY_QML_MAIN_PATH`: specifies the Qt Quick GUI entry point to use externally provided QML
-  code, e.g. set to something like `G:\projects\main\syncthingtray\tray\gui\qml\Main.qml`; useful to
-  hot-reload the Qt Quick GUI with QML code changes with F5 without recompiling and relaunching the
+* `SYNCTHINGTRAY_QML_ENTRY_POINT_PATH`: specifies the Qt Quick GUI entry point to use externally provided
+  QML code, e.g. set to something like `G:\projects\main\syncthingtray\tray\gui\qml\AppWindow.qml`; useful
+  to hot-reload the Qt Quick GUI with QML code changes with F5 without recompiling and relaunching the
   application
+* `SYNCTHINGTRAY_QML_ENTRY_POINT_TYPE`: specifies the Qt Quick GUI entry point to use the specified
+  QML module instead of the usual `AppWindow`
 * `SYNCTHING_PATH`: override the path of Syncthing's executable when running tests, also recognized by
   the wizard
 * `SYNCTHING_PORT`: override the port of the Syncthing test instance spawned when running tests

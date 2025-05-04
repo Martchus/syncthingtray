@@ -32,7 +32,7 @@
 #include <QJsonValue>
 #include <QNetworkReply>
 #include <QQmlContext>
-#include <QQuickWindow>
+#include <QQuickView>
 #include <QStandardPaths>
 #include <QStringBuilder>
 #include <QUrlQuery>
@@ -336,11 +336,21 @@ bool App::loadMain()
 {
     // allow overriding Qml entry point for hot-reloading; otherwise load proper Qml module from resources
     qDebug() << "Loading Qt Quick GUI";
-    if (const auto path = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QML_MAIN_PATH"); !path.isEmpty()) {
+    if (const auto path = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QML_ENTRY_POINT_PATH"); !path.isEmpty()) {
         qDebug() << "Path Qml entry point for Qt Quick GUI was overridden to: " << path;
         m_engine.load(path);
+    } else if (const auto type = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QML_ENTRY_POINT_TYPE"); !type.isEmpty()) {
+        m_engine.loadFromModule("Main", type);
+        if (const auto rootObjects = m_engine.rootObjects(); !rootObjects.isEmpty()) {
+            auto *const window = new QQuickView(&m_engine, nullptr);
+            window->loadFromModule("Main", type);
+            window->setTitle(type);
+            window->setWidth(700);
+            window->setHeight(500);
+            window->setVisible(true);
+        }
     } else {
-        m_engine.loadFromModule("Main", "Main");
+        m_engine.loadFromModule("Main", "AppWindow");
     }
     m_isGuiLoaded = true;
     return true;
@@ -1264,6 +1274,11 @@ bool App::minimize()
     }
 #endif
     return true;
+}
+
+void App::quit()
+{
+    m_app->quit();
 }
 
 void App::setPalette(const QColor &foreground, const QColor &background)

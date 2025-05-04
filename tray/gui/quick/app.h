@@ -277,6 +277,7 @@ public:
     Q_INVOKABLE QVariantList computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const;
     Q_INVOKABLE QVariant isPopulated(const QString &path) const;
     Q_INVOKABLE bool minimize();
+    Q_INVOKABLE void quit();
     Q_INVOKABLE void setPalette(const QColor &foreground, const QColor &background);
     Q_INVOKABLE bool requestStoragePermission();
     Q_INVOKABLE bool requestNotificationPermission();

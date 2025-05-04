@@ -302,8 +302,11 @@ if (QUICK_GUI)
         gui/qml/AdvancedDirConfigPage.qml
         gui/qml/AdvancedPage.qml
         gui/qml/ArrayElementButtons.qml
+        gui/qml/AppControl.qml
+        gui/qml/AppWindow.qml
         gui/qml/ChangesPage.qml
         gui/qml/CopyPasteButtons.qml
+        gui/qml/CloseDialog.qml
         gui/qml/CustomDialog.qml
         gui/qml/CustomFlickable.qml
         gui/qml/CustomListView.qml
@@ -313,6 +316,7 @@ if (QUICK_GUI)
         gui/qml/DevDelegate.qml
         gui/qml/DevListView.qml
         gui/qml/DevsPage.qml
+        gui/qml/DiscardChangesDialog.qml
         gui/qml/DirConfigPage.qml
         gui/qml/DirDelegate.qml
         gui/qml/DirListView.qml
@@ -331,22 +335,28 @@ if (QUICK_GUI)
         gui/qml/IgnorePatternPage.qml
         gui/qml/ImportPage.qml
         gui/qml/InternalErrorsPage.qml
+        gui/qml/LeftDrawer.qml
         gui/qml/LoadingPane.qml
         gui/qml/LogPage.qml
-        gui/qml/Main.qml
+        gui/qml/MainTabBar.qml
         gui/qml/MainTabButton.qml
+        gui/qml/MainToolBar.qml
         gui/qml/MenuItemInstantiator.qml
+        gui/qml/Meta.qml
         gui/qml/NeededPage.qml
+        gui/qml/Notifications.qml
         gui/qml/ObjectConfigDelegate.qml
         gui/qml/ObjectConfigPage.qml
         gui/qml/OutOfSyncDirs.qml
+        gui/qml/PageStack.qml
         gui/qml/PendingDevices.qml
         gui/qml/PendingDirs.qml
+        gui/qml/SelectiveImportDelegate.qml
+        gui/qml/SettingsPage.qml
         gui/qml/StartPage.qml
         gui/qml/Statistics.qml
         gui/qml/StatisticsPage.qml
-        gui/qml/SelectiveImportDelegate.qml
-        gui/qml/SettingsPage.qml
+        gui/qml/Theming.qml
         ${ADDITIONAL_QML_FILES}
         SOURCES
         gui/quick/quickicon.h

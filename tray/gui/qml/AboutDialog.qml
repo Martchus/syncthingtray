@@ -6,6 +6,8 @@ import Main
 
 CustomDialog {
     id: aboutDialog
+    Material.primary: Material.LightBlue
+    Material.accent: Material.LightBlue
     width: Math.min(parent.width - 20, 400)
     focus: true
     standardButtons: Dialog.Ok
