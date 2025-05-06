@@ -4,42 +4,47 @@
 <context>
     <name>Data::StatusIconSettings</name>
     <message>
-        <location filename="../syncthingicons.cpp" line="239"/>
+        <location filename="../syncthingicons.cpp" line="242"/>
         <source>Misc. notifications</source>
         <translation>Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="240"/>
+        <location filename="../syncthingicons.cpp" line="243"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="241"/>
+        <location filename="../syncthingicons.cpp" line="244"/>
         <source>Warning</source>
         <translation>Warnungen</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="242"/>
+        <location filename="../syncthingicons.cpp" line="245"/>
         <source>Idle</source>
         <translation>Leerlauf</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="243"/>
+        <location filename="../syncthingicons.cpp" line="246"/>
         <source>Scanning</source>
         <translation>Scannen</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="244"/>
+        <location filename="../syncthingicons.cpp" line="247"/>
         <source>Synchronizing</source>
         <translation>Synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="245"/>
+        <location filename="../syncthingicons.cpp" line="248"/>
         <source>Paused</source>
         <translation>Pausiert</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="246"/>
+        <location filename="../syncthingicons.cpp" line="249"/>
+        <source>No remote device connected</source>
+        <translation type="unfinished">Nicht mit anderen Geräten verbunden</translation>
+    </message>
+    <message>
+        <location filename="../syncthingicons.cpp" line="250"/>
         <source>Disconnected</source>
         <translation>Getrennt</translation>
     </message>
@@ -674,19 +679,19 @@
 %1</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="982"/>
+        <location filename="../syncthingfilemodel.cpp" line="997"/>
         <source>Ignore patterns have been changed.</source>
         <translation>Ignoriermuster wurden gespeichert.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="985"/>
+        <location filename="../syncthingfilemodel.cpp" line="1000"/>
         <source>Ignore patterns have been changed but the following local files could not be deleted:
 </source>
         <translation>Ignoriermuster wurden gespeichert, aber die folgenden lokalen Dateien konnten nicht gelöscht werden:
 </translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1155"/>
+        <location filename="../syncthingfilemodel.cpp" line="1170"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Ignoriermuster können nicht abgefragt werden, da noch eine vorherige Abfrage in Gange ist.</translation>
     </message>

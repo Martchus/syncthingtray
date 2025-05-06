@@ -4,42 +4,47 @@
 <context>
     <name>Data::StatusIconSettings</name>
     <message>
-        <location filename="../syncthingicons.cpp" line="239"/>
+        <location filename="../syncthingicons.cpp" line="242"/>
         <source>Misc. notifications</source>
         <translation>杂项通知</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="240"/>
+        <location filename="../syncthingicons.cpp" line="243"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="241"/>
+        <location filename="../syncthingicons.cpp" line="244"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="242"/>
+        <location filename="../syncthingicons.cpp" line="245"/>
         <source>Idle</source>
         <translation>空闲</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="243"/>
+        <location filename="../syncthingicons.cpp" line="246"/>
         <source>Scanning</source>
         <translation>扫描中</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="244"/>
+        <location filename="../syncthingicons.cpp" line="247"/>
         <source>Synchronizing</source>
         <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="245"/>
+        <location filename="../syncthingicons.cpp" line="248"/>
         <source>Paused</source>
         <translation>已暂停</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="246"/>
+        <location filename="../syncthingicons.cpp" line="249"/>
+        <source>No remote device connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingicons.cpp" line="250"/>
         <source>Disconnected</source>
         <translation>已断连</translation>
     </message>
@@ -591,18 +596,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="982"/>
+        <location filename="../syncthingfilemodel.cpp" line="997"/>
         <source>Ignore patterns have been changed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="985"/>
+        <location filename="../syncthingfilemodel.cpp" line="1000"/>
         <source>Ignore patterns have been changed but the following local files could not be deleted:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1155"/>
+        <location filename="../syncthingfilemodel.cpp" line="1170"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation type="unfinished"></translation>
     </message>
