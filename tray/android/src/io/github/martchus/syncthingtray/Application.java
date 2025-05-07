@@ -2,9 +2,10 @@ package io.github.martchus.syncthingtray;
 
 import android.os.StrictMode;
 
-//import org.qtproject.qt.android.bindings.QtApplication; // extends android.app.Application
+import org.qtproject.qt.android.bindings.QtApplication; // extends android.app.Application
 
-public class Application extends android.app.Application {
+//public class Application extends android.app.Application {
+public class Application extends QtApplication {
 
     @Override
     public void onCreate() {
