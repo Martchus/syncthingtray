@@ -240,6 +240,8 @@ App::App(bool insecure, QObject *parent)
     loadMain();
 #endif
 
+    qDebug() << "Scale factor: " << m_app->devicePixelRatio();
+
     qDebug() << "App initialized";
 }
 

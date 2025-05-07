@@ -289,6 +289,7 @@ static int runApplication(int argc, const char *const *argv)
         qputenv("QSG_RHI_BACKEND", "vulkan");
         qputenv("QSG_INFO", "1");
 #endif
+        //qputenv("QT_SCALE_FACTOR", "3");
 #ifdef SYNCTHINGTRAY_HAS_WEBVIEW
         QtWebView::initialize();
 #endif
