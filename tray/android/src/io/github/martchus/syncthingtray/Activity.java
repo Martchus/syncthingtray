@@ -27,7 +27,7 @@ import androidx.core.content.FileProvider;
 
 import java.io.*;
 
-import org.qtproject.qt.android.QtActivityDelegate;
+//import org.qtproject.qt.android.QtActivityDelegate;
 import org.qtproject.qt.android.QtQuickView;
 
 public class Activity extends android.app.Activity {
@@ -37,7 +37,7 @@ public class Activity extends android.app.Activity {
     private int m_fontWeightAdjustment = 0;
     private boolean m_storagePermissionRequested = false;
     private boolean m_notificationPermissionRequested = false;
-    private QtActivityDelegate m_delegate;
+    //private QtActivityDelegate m_delegate;
 
     public Activity() {
         Log.i(TAG, "New");
@@ -228,15 +228,15 @@ public class Activity extends android.app.Activity {
 
         // load Qt libraries and initialize Qt UI
         QtQuickView qtQuickView = new QtQuickView(this, "qrc:/qt/qml/Main/gui/qml/AppControl.qml", "syncthingtray");
-        m_delegate = new QtActivityDelegate(this);
-        m_delegate.setUpLayout();
-        //setContentView(R.layout.activity_main);
+        //m_delegate = new QtActivityDelegate(this);
+        //m_delegate.setUpLayout();
+        setContentView(R.layout.activity_main);
 
         ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        //FrameLayout qmlFrameLayout = findViewById(R.id.quick_frame_layout);
-        //qmlFrameLayout.addView(qtQuickView, params);
-        m_delegate.layout().addView(qtQuickView, params);
+        FrameLayout qmlFrameLayout = findViewById(R.id.quick_frame_layout);
+        qmlFrameLayout.addView(qtQuickView, params);
+        //m_delegate.layout().addView(qtQuickView, params);
 
         // read text another app might have shared with us
         Intent intent = getIntent();
@@ -270,14 +270,14 @@ public class Activity extends android.app.Activity {
     @Override
     public void onPause() {
         Log.i(TAG, "Pausing");
-        m_delegate.displayManager().unregisterDisplayListener();
+        //m_delegate.displayManager().unregisterDisplayListener();
         super.onPause();
     }
 
     @Override
     public void onStop() {
         Log.i(TAG, "Stopping");
-        m_delegate.displayManager().registerDisplayListener();
+        //m_delegate.displayManager().registerDisplayListener();
         super.onStop();
     }
 
