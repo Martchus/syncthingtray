@@ -896,11 +896,11 @@ QByteArray Application::editConfigViaScript() const
     globalObject.setProperty(QStringLiteral("console"), engine.newQObject(&console));
 
     // provide helper
-    QFile helperFile(QStringLiteral(":/js/helper.js"));
-    helperFile.open(QFile::ReadOnly);
-    const auto helperScript(helperFile.readAll());
-    if (helperScript.isEmpty()) {
-        cerr << Phrases::Error << "Unable to load internal helper script." << Phrases::EndFlush;
+    auto helperFile = QFile(QStringLiteral(":/js/helper.js"));
+    const auto opened = helperFile.open(QFile::ReadOnly);
+    const auto helperScript = opened ? helperFile.readAll() : QByteArray();
+    if (helperFile.error() != QFile::NoError) {
+        cerr << Phrases::Error << "Unable to load internal helper script: " << helperFile.errorString().toStdString() << Phrases::EndFlush;
         return QByteArray();
     }
     const auto helperRes(engine.evaluate(QString::fromUtf8(helperScript)));
