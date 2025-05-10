@@ -76,10 +76,10 @@ Drawer {
         }
     }
 
-    required property var pageStack
+    required property PageStack pageStack
+    required property AboutDialog aboutDialog
+    required property CloseDialog closeDialog
     readonly property bool inPortrait: parent.width < parent.height
     readonly property double initialPosition: interactive ? 0 : 1
     readonly property int effectiveWidth: !interactive ? width : 0
-    property var aboutDialog
-    property var closeDialog
 }

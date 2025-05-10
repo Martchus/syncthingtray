@@ -306,6 +306,7 @@ if (QUICK_GUI)
         gui/qml/AppWindow.qml
         gui/qml/ChangesPage.qml
         gui/qml/CopyPasteButtons.qml
+        gui/qml/CloseDialog.qml
         gui/qml/CustomDialog.qml
         gui/qml/CustomFlickable.qml
         gui/qml/CustomListView.qml
@@ -337,7 +338,9 @@ if (QUICK_GUI)
         gui/qml/LoadingPane.qml
         gui/qml/LogPage.qml
         gui/qml/Main.qml
+        gui/qml/MainTabBar.qml
         gui/qml/MainTabButton.qml
+        gui/qml/MainToolBar.qml
         gui/qml/MenuItemInstantiator.qml
         gui/qml/NeededPage.qml
         gui/qml/ObjectConfigDelegate.qml

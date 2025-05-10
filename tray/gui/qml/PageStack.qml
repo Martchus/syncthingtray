@@ -23,7 +23,7 @@ SwipeView {
         App.setCurrentControls(window.visible, newIndex);
 
         // update search text
-        if (searchTextArea !== undefined) {
+        if (searchTextArea !== null) {
             pageStack.changingIndex = true;
             searchTextArea.text = pageStack.children[currentIndex]?.currentItem?.model?.filterRegularExpressionPattern() ?? "";
             pageStack.changingIndex = false;
