@@ -431,6 +431,9 @@ help texts provided within the app itself. A few additional remarks:
   and when certain file systems are used. The app enables this option therefore by default in
   such cases when a path for a new folder has been selected. You can still disable the option
   again manually.
+* It is probably also a good idea to enable authentication for accessing the web-based UI as
+  otherwise any other app would be able to access it. A user name and password can be configured
+  under "Advanced" → "Syncthing API and web-based GUI".
 
 ### Testing the app without migrating
 To only test the app without migrating your setup you can follow the steps of this section. Note
