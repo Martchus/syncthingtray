@@ -1037,11 +1037,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="39"/>
-        <source>Use Drag &amp; Drop to re-use a selected color at a different position.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../settings/iconsoptionpage.ui" line="46"/>
         <source>Status icons</source>
         <translation type="unfinished"></translation>
@@ -1089,6 +1084,11 @@
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="152"/>
         <source>Foreground color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/iconsoptionpage.ui" line="39"/>
+        <source>Use Drag &amp; Drop to reuse a selected color at a different position.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -1193,9 +1193,8 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Symbole</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="39"/>
         <source>Use Drag &amp; Drop to re-use a selected color at a different position.</source>
-        <translation>Verwende Drag &amp; Drop um eine ausgewählte Farbe an eine andere Position zu kopieren.</translation>
+        <translation type="vanished">Verwende Drag &amp; Drop um eine ausgewählte Farbe an eine andere Position zu kopieren.</translation>
     </message>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="46"/>
@@ -1246,6 +1245,11 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <location filename="../settings/iconsoptionpage.ui" line="152"/>
         <source>Foreground color</source>
         <translation>Vordergrundfarbe</translation>
+    </message>
+    <message>
+        <location filename="../settings/iconsoptionpage.ui" line="39"/>
+        <source>Use Drag &amp; Drop to reuse a selected color at a different position.</source>
+        <translation>Verwende Drag &amp; Drop um eine ausgewählte Farbe an eine andere Position zu kopieren.</translation>
     </message>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="197"/>

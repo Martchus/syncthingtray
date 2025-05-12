@@ -41,7 +41,7 @@
     <message>
         <location filename="../syncthingicons.cpp" line="249"/>
         <source>No remote device connected</source>
-        <translation type="unfinished">Nicht mit anderen Geräten verbunden</translation>
+        <translation>Nicht mit anderen Geräten verbunden</translation>
     </message>
     <message>
         <location filename="../syncthingicons.cpp" line="250"/>

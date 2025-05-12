@@ -1058,9 +1058,8 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>图标</translation>
     </message>
     <message>
-        <location filename="../settings/iconsoptionpage.ui" line="39"/>
         <source>Use Drag &amp; Drop to re-use a selected color at a different position.</source>
-        <translation>使用拖放功能在不同位置重复使用选定的颜色。</translation>
+        <translation type="vanished">使用拖放功能在不同位置重复使用选定的颜色。</translation>
     </message>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="46"/>
@@ -1111,6 +1110,11 @@ The Web UI will be opened in the default web browser instead.</source>
         <location filename="../settings/iconsoptionpage.ui" line="152"/>
         <source>Foreground color</source>
         <translation>前景色</translation>
+    </message>
+    <message>
+        <location filename="../settings/iconsoptionpage.ui" line="39"/>
+        <source>Use Drag &amp; Drop to reuse a selected color at a different position.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="197"/>
