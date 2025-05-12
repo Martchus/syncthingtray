@@ -17,7 +17,7 @@ Dialog {
     title: meta.title
     contentItem: Label {
         Layout.fillWidth: true
-        text: qsTr("Do you want to shutdown Syncthing and quit the app? You can also just quit the app and keep Syncthing running in the backround.")
+        text: qsTr("Do you want to shutdown Syncthing and quit the app? You can also just quit the app and keep Syncthing running in the background.")
         wrapMode: Text.WordWrap
     }
     onAccepted: closeRequested()

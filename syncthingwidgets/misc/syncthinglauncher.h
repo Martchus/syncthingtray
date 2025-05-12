@@ -218,7 +218,7 @@ inline bool SyncthingLauncher::isManuallyStopped() const
 
 /// \brief Sets whether the Syncthing instance has been manually stopped.
 /// \remarks Set this before stopping Syncthing by other means than the launcher (e.g. when using the shutdown API)
-///          to have SyncthingLauncher::isManuallyStopped() reflect that as well (e.g. to supress notifications).
+///          to have SyncthingLauncher::isManuallyStopped() reflect that as well (e.g. to suppress notifications).
 inline void SyncthingLauncher::setManuallyStopped(bool manuallyStopped)
 {
     m_manuallyStopped = manuallyStopped;

@@ -322,7 +322,7 @@ void ModelTests::testFileModel()
     model.setData(androidIdx2, Qt::Checked, Qt::CheckStateRole);
     expectedDiff.prepend(QStringLiteral("+!/100ANDRO\n"));
     expectedPatterns.prepend(QStringLiteral("!/100ANDRO"));
-    for (auto i = 0; i != 2; ++i) { // preform action twice; this should not lead to a duplicate
+    for (auto i = 0; i != 2; ++i) { // perform action twice; this should not lead to a duplicate
         actions.at(3)->trigger();
         QCOMPARE(model.computeIgnorePatternDiff(), expectedDiff);
         QCOMPARE(model.computeNewIgnorePatterns().ignore, expectedPatterns);

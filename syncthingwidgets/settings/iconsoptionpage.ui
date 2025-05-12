@@ -36,7 +36,7 @@
    <item>
     <widget class="QLabel" name="dragAndDropInfoLabel">
      <property name="text">
-      <string>Use Drag &amp; Drop to re-use a selected color at a different position.</string>
+      <string>Use Drag &amp; Drop to reuse a selected color at a different position.</string>
      </property>
     </widget>
    </item>

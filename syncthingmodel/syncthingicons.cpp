@@ -272,7 +272,7 @@ StatusIconSettings::StatusIconSettings(const QString &str)
         ++index;
     }
     // use disconnectedColor to initialize newly introduced noRemoteColor
-    // note: Since noRemoteColor has been inserted before disconnectedColor it is initalized by the preceeding loop. So we need to assign
+    // note: Since noRemoteColor has been inserted before disconnectedColor it is initialized by the preceeding loop. So we need to assign
     //       the new color to the old one.
     if (parts.size() < 9) {
         disconnectedColor = noRemoteColor;
