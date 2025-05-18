@@ -273,11 +273,18 @@ The Plasmoid can be added/shown in two different ways:
       in the settings of the system tray Plasmoid. You can access the settings of the
       system tray Plasmoid from its context-menu which can be opened by right-clicking on
       the arrow for expanding/collapsing.
+    * The list of entries in the system tray Plasmoid settings might show an
+      invalid/disabled entry for Syncthing in some cases. There should always nevertheless
+      also be a valid entry which can be used. See the
+      [related issue](https://github.com/Martchus/syncthingtray/issues/239) for details.
     * This way it is also possible to show the icon only in certain states by choosing to
       show it only when important and selecting the states in the Plasmoid's settings.
     * Configuring the size has no effect when the Plasmoid is displayed as part of the
       system tray Plasmoid.
-2. It can be added to a panel or the desktop like any other Plasmoid.
+2. It can be added to a panel or the desktop like any other Plasmoid. **Note that under
+   recent Plasma versions the configuration no longer seems to be stored persistently.**
+   So I recommend using the previous option or following the
+   [related issue](https://github.com/Martchus/syncthingtray/issues/339) for workarounds.
 
 This allows you to add multiple instances of the Plasmoid but it is recommended to pick
 only one place. For that it makes also most sense to ensure the autostart of the
