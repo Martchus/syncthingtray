@@ -544,6 +544,9 @@ While Syncthing Tray basically works on Android, there are still some unresolved
   will likely be removed when Syncthing v2 is released.)
 * Not all features the official web UI offers have been implemented in the Qt Quick based UI yet.
   One can easily open the official web UI in a web browser, though.
+* Some of the problems/solutions found on the
+  [Wiki pages of Syncthing-Fork](https://github.com/Catfriend1/syncthing-android/wiki) might help with
+  Syncthing Tray on Android as well.
 
 ## Download
 Checkout the [download section on the website](https://martchus.github.io/syncthingtray/#downloads-section) for an overview.
