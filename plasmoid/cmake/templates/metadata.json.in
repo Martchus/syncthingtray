@@ -3,11 +3,11 @@
     "KPlugin": {
         "Authors": [{"Name": "@META_APP_AUTHOR@"}],
         "BugReportUrl": "@META_APP_BUGTRACKER_URL@",
-        "Category": "SystemServices",
+        "Category": "Utilities",
         "Description": "@META_APP_DESCRIPTION@",
         "EnabledByDefault": false,
         "FormFactors": ["desktop"],
-        "Icon": "syncthingtray",
+        "Icon": "@META_TARGET_PREFIX@syncthingtray@META_TARGET_SUFFIX@",
         "Id": "@META_ID@",
         "License": "@META_PROJECT_LICENSE@",
         "Name": "Syncthing",

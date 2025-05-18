@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Syncthing
-Icon=syncthingtray
+Icon=@META_TARGET_PREFIX@syncthingtray@META_TARGET_SUFFIX@
 Type=Service
 Keywords=syncthing;sync;
 X-KDE-ParentApp=
@@ -9,7 +9,7 @@ X-KDE-PluginInfo-Author=@META_APP_AUTHOR@
 X-KDE-PluginInfo-Email=@META_APP_AUTHOR_MAIL@
 X-KDE-PluginInfo-License=@META_PROJECT_LICENSE@
 X-KDE-PluginInfo-Name=@META_ID@
-X-KDE-PluginInfo-Version=@META_VERSION_MAJOR@.@META_VERSION_MINOR@.@META_VERSION_PATCH@
+X-KDE-PluginInfo-Version=@META_APP_VERSION@
 X-KDE-PluginInfo-Website=@META_APP_URL@
 X-KDE-ServiceTypes=Plasma/Applet
 X-Plasma-NotificationArea=true
