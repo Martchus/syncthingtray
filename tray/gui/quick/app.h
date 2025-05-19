@@ -224,6 +224,7 @@ public:
 
     // helper functions invoked from QML
     Q_INVOKABLE bool initEngine();
+    Q_INVOKABLE bool destroyEngine();
     Q_INVOKABLE bool loadMain();
     Q_INVOKABLE bool reloadMain();
     Q_INVOKABLE bool unloadMain();

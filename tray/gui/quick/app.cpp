@@ -108,6 +108,14 @@ static void loadQtQuickGui(JNIEnv *, jobject)
     qDebug() << "Activity: " << QNativeInterface::QAndroidApplication::context().className();
     QCoreApplication::instance()->eventDispatcher()->wakeUp();
     QMetaObject::invokeMethod(appObjectForJava, "initEngine", Qt::QueuedConnection);
+    //qDebug() << "Before processing events";
+    //QCoreApplication::instance()->eventDispatcher()->processEvents(QEventLoop::AllEvents);
+    //qDebug() << "After processing events";
+}
+
+static void unloadQtQuickGui(JNIEnv *, jobject)
+{
+    QMetaObject::invokeMethod(appObjectForJava, "destroyEngine", Qt::QueuedConnection);
 }
 
 static void stopLibSyncthing(JNIEnv *, jobject)
@@ -230,8 +238,9 @@ App::App(bool insecure, QObject *parent)
             { "handleStoragePermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleStoragePermissionChanged) },
             { "handleNotificationPermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleNotificationPermissionChanged) },
             { "loadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::loadQtQuickGui) },
+            { "unloadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::unloadQtQuickGui) },
         };
-        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 5) && registeredMethods;
+        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 6) && registeredMethods;
         if (!registeredMethods) {
             qWarning() << "Unable to register all native methods in JNI environment.";
         }
@@ -339,6 +348,7 @@ bool App::initEngine()
     // allow overriding Qml entry point for hot-reloading; otherwise load proper Qml module from resources
     qDebug() << "Initializing QML engine";
     m_engine.emplace();
+    qDebug() << "Emplaced engine";
     connect(
         &*m_engine, &QQmlApplicationEngine::objectCreated, m_app,
         [](QObject *obj, const QUrl &objUrl) {
@@ -349,11 +359,22 @@ bool App::initEngine()
         },
         Qt::QueuedConnection);
     connect(&*m_engine, &QQmlApplicationEngine::quit, m_app, &QGuiApplication::quit);
+    qDebug() << "Connected signals";
     m_engine->setProperty("app", QVariant::fromValue(this));
+    qDebug() << "Set app";
     m_engine->addImageProvider(
         QStringLiteral("fa"), m_imageProvider = new QtForkAwesome::QuickImageProvider(Data::IconManager::instance().forkAwesomeRenderer()));
+    qDebug() << "Set image provider";
 
     return loadMain();
+}
+
+bool App::destroyEngine()
+{
+    unloadMain();
+    qDebug() << "Destroying QML engine";
+    m_engine.reset();
+    return true;
 }
 
 bool App::loadMain()
@@ -998,7 +1019,7 @@ void App::handleStateChanged(Qt::ApplicationState state)
         }
         if (!m_isGuiLoaded) {
             QtUtilities::deletePipelineCacheIfNeeded();
-            loadMain();
+            m_engine ? loadMain() : initEngine();
         }
     }
 }

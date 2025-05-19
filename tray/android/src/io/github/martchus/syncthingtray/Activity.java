@@ -285,6 +285,7 @@ public class Activity extends QtActivity {
         //       It would not stop the service and Go threads but it would be impossible to re-enter the UI leaving
         //       the app in some kind of zombie state.
         Log.i(TAG, "Destroying");
+        unloadQtQuickGui();
         //stopLibSyncthing();
         //stopSyncthingService();
         super.onDestroy();
@@ -315,6 +316,7 @@ public class Activity extends QtActivity {
     }
 
     private static native void loadQtQuickGui();
+    private static native void unloadQtQuickGui();
     private static native void handleAndroidIntent(String page, boolean fromNotification);
     private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
     private static native void handleNotificationPermissionChanged(boolean notificationPermissionGranted);
