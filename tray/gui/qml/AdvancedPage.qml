@@ -20,6 +20,12 @@ StackView {
             model: ListModel {
                 id: model
                 ListElement {
+                    key: "gui"
+                    specialEntriesKey: "guiAuth"
+                    label: qsTr("Web-based GUI authentication")
+                    iconName: "key-modern"
+                }
+                ListElement {
                     specialPage: "PendingDevices.qml"
                     label: qsTr("Pending devices")
                     iconName: "laptop"
@@ -42,7 +48,7 @@ StackView {
                 ListElement {
                     key: "gui"
                     label: qsTr("Syncthing API and web-based GUI")
-                    title: qsTr("Advanced Syncthing API and GUI configuration")
+                    title: qsTr("Advanced Syncthing API and web-based GUI configuration")
                     isDangerous: true
                     iconName: "cogs"
                 }
@@ -81,11 +87,14 @@ StackView {
                 icon.height: App.iconSize
                 onClicked: {
                     if (specialPage.length > 0) {
-                        stackView.push(specialPage, {pages: stackView.pages}, StackView.PushTransition)
+                        stackView.push(specialPage, {pages: stackView.pages}, StackView.PushTransition);
                     } else if (func.length > 0) {
                         App[func]();
                     } else {
-                        stackView.push("ObjectConfigPage.qml", {title: title, isDangerous: isDangerous, configObject: advancedPage.config[key], specialEntries: advancedPage.specialEntriesByKey[key] ?? [], specialEntriesByKey: advancedPage.specialEntriesByKey, path: key, configCategory: `config-option-${key}`, itemLabel: itemLabel, helpUrl: helpUrl, stackView: stackView, parentPage: advancedPage}, StackView.PushTransition)
+                        const specialEntriesOnly = specialEntriesKey.length > 0;
+                        const se = (specialEntriesOnly ? advancedPage.specialEntries[specialEntriesKey] : advancedPage.specialEntriesByKey[key]) ?? [];
+                        const pageTitle = title.length > 0 ? title : label
+                        stackView.push("ObjectConfigPage.qml", {title: pageTitle, isDangerous: isDangerous, configObject: advancedPage.config[key], specialEntries: se, specialEntriesByKey: advancedPage.specialEntriesByKey, specialEntriesOnly: specialEntriesOnly, path: key, configCategory: `config-option-${key}`, itemLabel: itemLabel, helpUrl: helpUrl, stackView: stackView, parentPage: advancedPage}, StackView.PushTransition);
                     }
                 }
             }
@@ -94,6 +103,12 @@ StackView {
         property var config: App.connection.rawConfig
         property bool hasUnsavedChanges: false
         property bool isDangerous: false
+        property var specialEntries: ({
+            "guiAuth": [
+                {key: "user", label: qsTr("GUI Authentication User"), desc: qsTr("Set to require authentication for accessing the web-based GUI.")},
+                {key: "password", label: qsTr("GUI Authentication Password (bcrypt hash!)"), desc: qsTr("Contains the bcrypt hash of the password used to restrict accessing the web-based GUI. You can also enter a plain password which will then be hashed when applying the configuration.")},
+            ],
+        })
         property var specialEntriesByKey: ({
             "gui": [
                 {key: "apiKey", label: qsTr("API Key"), desc: qsTr("If set, this is the API key that enables usage of the REST interface. The app uses the REST interface so this value must not be empty for the app to function.")},
