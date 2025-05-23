@@ -24,6 +24,12 @@ K_PLUGIN_CLASS_WITH_JSON(SyncthingFileItemAction, "metadata.json");
 K_PLUGIN_FACTORY(SyncthingFileItemActionFactory, registerPlugin<SyncthingFileItemAction>();)
 #endif
 
+static QString streamlinePath(const QString &path)
+{
+    const auto canonicalPath = QDir(path).canonicalPath();
+    return QDir::cleanPath(canonicalPath.isEmpty() ? path : canonicalPath);
+}
+
 struct SyncthingItem {
     SyncthingItem(const Data::SyncthingDir *dir, const QString &path);
     const Data::SyncthingDir *dir;
@@ -112,7 +118,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
             // don't show any actions when remote files are selected
             return actions;
         }
-        paths << QDir::cleanPath(item.localPath());
+        paths << streamlinePath(item.localPath());
     }
 
     // determine relevant Syncthing dirs
@@ -121,7 +127,7 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     QList<SyncthingItem> detectedItems;
     const Data::SyncthingDir *lastDir = nullptr;
     for (const Data::SyncthingDir &dir : dirs) {
-        auto dirPath = QDir::cleanPath(Data::substituteTilde(dir.path, connection.tilde(), connection.pathSeparator()));
+        auto dirPath = streamlinePath(Data::substituteTilde(dir.path, connection.tilde(), connection.pathSeparator()));
         auto dirPathWithSlash = dirPath + QChar('/');
         for (const QString &path : std::as_const(paths)) {
             if (path == dirPath) {
