@@ -54,7 +54,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="950"/>
+        <location filename="../syncthingconnection.cpp" line="958"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -89,12 +89,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1019"/>
+        <location filename="../syncthingconnection.cpp" line="1027"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1025"/>
+        <location filename="../syncthingconnection.cpp" line="1033"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -291,17 +291,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1235"/>
+        <location filename="../syncthingconnection.cpp" line="1243"/>
         <source>at offset %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="704"/>
+        <location filename="../syncthingconnection.h" line="706"/>
         <source>connecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="706"/>
+        <location filename="../syncthingconnection.h" line="708"/>
         <source>, re-connect attempt every %1 ms</source>
         <translation type="unfinished"></translation>
     </message>

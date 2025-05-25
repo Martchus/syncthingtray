@@ -50,71 +50,71 @@
 <context>
     <name>SyncthingFileItemAction</name>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="151"/>
+        <location filename="../syncthingfileitemaction.cpp" line="157"/>
         <source>Rescan selected items</source>
         <translation>Znovu prohledat označené položky</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="170"/>
+        <location filename="../syncthingfileitemaction.cpp" line="176"/>
         <source>Rescan selected folders</source>
         <translation>Znovu prohledat označené adresáře</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="183"/>
+        <location filename="../syncthingfileitemaction.cpp" line="189"/>
         <source>Resume selected folders</source>
         <translation>Pokračovat označené adresáře</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="153"/>
-        <location filename="../syncthingfileitemaction.cpp" line="170"/>
-        <location filename="../syncthingfileitemaction.cpp" line="201"/>
+        <location filename="../syncthingfileitemaction.cpp" line="159"/>
+        <location filename="../syncthingfileitemaction.cpp" line="176"/>
+        <location filename="../syncthingfileitemaction.cpp" line="207"/>
         <source>Rescan &quot;%1&quot;</source>
         <translation>Znovu prohledat „%“</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="186"/>
+        <location filename="../syncthingfileitemaction.cpp" line="192"/>
         <source>Pause selected folders</source>
         <translation>Pozastavit označené adresáře</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="201"/>
+        <location filename="../syncthingfileitemaction.cpp" line="207"/>
         <source>Rescan containing folders</source>
         <translation>Znovu prohledat obsažené adresáře</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="213"/>
+        <location filename="../syncthingfileitemaction.cpp" line="219"/>
         <source>Resume containing folders</source>
         <translation>Pokračovat obsažené adresáře</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="183"/>
-        <location filename="../syncthingfileitemaction.cpp" line="213"/>
+        <location filename="../syncthingfileitemaction.cpp" line="189"/>
+        <location filename="../syncthingfileitemaction.cpp" line="219"/>
         <source>Resume &quot;%1&quot;</source>
         <translation>Pokračovat „%1“</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="217"/>
+        <location filename="../syncthingfileitemaction.cpp" line="223"/>
         <source>Pause containing folders</source>
         <translation>Pozastavit obsažené adresáře</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="186"/>
-        <location filename="../syncthingfileitemaction.cpp" line="217"/>
+        <location filename="../syncthingfileitemaction.cpp" line="192"/>
+        <location filename="../syncthingfileitemaction.cpp" line="223"/>
         <source>Pause &quot;%1&quot;</source>
         <translation>Pozastavit „%1“</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="241"/>
+        <location filename="../syncthingfileitemaction.cpp" line="247"/>
         <source>Not a shared directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="275"/>
+        <location filename="../syncthingfileitemaction.cpp" line="281"/>
         <source>Select Syncthing config ...</source>
         <translation>Vybrat nastavení pro Syncthing…</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="280"/>
+        <location filename="../syncthingfileitemaction.cpp" line="286"/>
         <source>About</source>
         <translation>O aplikaci</translation>
     </message>
