@@ -105,6 +105,10 @@ SwipeView {
         pageStack.setCurrentIndex(2);
         pageStack.currentPage.add(deviceId, deviceName);
     }
+    function showPage(index) {
+        pageStack.setCurrentIndex(index);
+        return pageStack.children[index];
+    }
     function updateSearchText(searchText, updateModel = true) {
         if (pageStack.searchText === searchText) {
             return;

@@ -44,13 +44,13 @@ ToolBar {
                     }
                 }
                 function showInternalErrors() {
-                    pageStack.setCurrentIndex(5);
+                    const settingsPage = pageStack.showPage(5);
                     if (!(settingsPage.currentItem instanceof InternalErrorsPage)) {
                         settingsPage.push("InternalErrorsPage.qml", {}, StackView.PushTransition);
                     }
                 }
                 function showConnectionErrors() {
-                    pageStack.setCurrentIndex(5);
+                    const settingsPage = pageStack.showPage(5);
                     if (!(settingsPage.currentItem instanceof ErrorsPage)) {
                         settingsPage.push("ErrorsPage.qml", {}, StackView.PushTransition);
                     }

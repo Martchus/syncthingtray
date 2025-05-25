@@ -57,13 +57,7 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
-                onClicked: {
-                    const pages = startPage.pages;
-                    const advancedPageIndex = 4;
-                    const advancedPage = pages.children[advancedPageIndex];
-                    pages.setCurrentIndex(advancedPageIndex);
-                    advancedPage.showGuiAuth();
-                }
+                onClicked: startPage.pages.showPage(4).showGuiAuth()
                 visible: !App.connection.guiRequiringAuth
                 contentItem: RowLayout {
                     spacing: 15
@@ -157,11 +151,7 @@ Page {
                 Layout.fillWidth: true
                 onClicked: {
                     if (App.connection.hasErrors) {
-                        const pages = startPage.pages;
-                        const settingsPageIndex = 5;
-                        const settingsPage = pages.children[settingsPageIndex];
-                        pages.setCurrentIndex(settingsPageIndex);
-                        settingsPage.push("ErrorsPage.qml", {}, StackView.PushTransition);
+                        startPage.pages.showPage(5).push("ErrorsPage.qml", {}, StackView.PushTransition);
                     } else {
                         App.performHapticFeedback();
                     }
