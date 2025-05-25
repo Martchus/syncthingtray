@@ -238,14 +238,6 @@ public class Activity extends QtActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             m_fontWeightAdjustment = config.fontWeightAdjustment;
         }
-
-        // read text another app might have shared with us
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
-        if (Intent.ACTION_SEND.equals(action) && "text/plain".equals(type)) {
-            handleSendText(intent);
-        }
     }
 
     @Override
@@ -271,6 +263,16 @@ public class Activity extends QtActivity {
         if (m_restarting) {
             m_restarting = false;
             loadQtQuickGui();
+        }
+
+        // read text another app might have shared with us
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        if (Intent.ACTION_SEND.equals(action) && "text/plain".equals(type)) {
+            handleSendText(intent);
+        } else {
+            onNewIntent(intent);
         }
     }
 
@@ -321,9 +323,8 @@ public class Activity extends QtActivity {
 
     @Override
     protected void onNewIntent(@NonNull Intent intent) {
-        boolean fromNotification = intent.getBooleanExtra("notification", false);
-        if (fromNotification) {
-            sendAndroidIntentToQtQuickApp(intent.getStringExtra("page"), fromNotification);
+        if (intent.getBooleanExtra("notification", false)) {
+            sendAndroidIntentToQtQuickApp(intent.getStringExtra("page"), true);
         }
     }
 
