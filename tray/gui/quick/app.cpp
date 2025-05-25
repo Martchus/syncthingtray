@@ -939,7 +939,14 @@ void App::handleRunningChanged(bool isRunning)
 
 void App::handleGuiAddressChanged(const QUrl &newUrl)
 {
-    m_connectionSettingsFromLauncher.syncthingUrl = newUrl.toString();
+    auto url = newUrl;
+#ifndef QT_NO_SSL
+    // always use TLS if supported by Qt for the sake of security (especially on Android)
+    // note: Syncthing itself always supports it and allows connections via TLS even if the "tls" setting
+    //       is disabled (because this setting is just about *enforcing* TLS).
+    url.setScheme(QStringLiteral("https"));
+#endif
+    m_connectionSettingsFromLauncher.syncthingUrl = url.toString();
     if (!m_syncthingConfig.restore(m_syncthingConfigDir + QStringLiteral("/config.xml"))) {
         if (!newUrl.isEmpty()) {
             emit error("Unable to read Syncthing config for automatic connection to backend.");

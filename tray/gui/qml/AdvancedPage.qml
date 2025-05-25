@@ -94,7 +94,7 @@ StackView {
                         const specialEntriesOnly = specialEntriesKey.length > 0;
                         const se = (specialEntriesOnly ? advancedPage.specialEntries[specialEntriesKey] : advancedPage.specialEntriesByKey[key]) ?? [];
                         const pageTitle = title.length > 0 ? title : label
-                        stackView.push("ObjectConfigPage.qml", {title: pageTitle, isDangerous: isDangerous, configObject: advancedPage.config[key], specialEntries: se, specialEntriesByKey: advancedPage.specialEntriesByKey, specialEntriesOnly: specialEntriesOnly, path: key, configCategory: `config-option-${key}`, itemLabel: itemLabel, helpUrl: helpUrl, stackView: stackView, parentPage: advancedPage}, StackView.PushTransition);
+                        stackView.push("ObjectConfigPage.qml", {title: pageTitle, isDangerous: isDangerous, configObject: advancedPage.config[key], specialEntries: se, specialEntriesByKey: advancedPage.specialEntriesByKey, specialEntriesOnly: specialEntriesOnly, path: key, configCategory: `config-option-${key}`, itemLabel: itemLabel, helpUrl: helpUrl, stackView: stackView, parentPage: advancedPage, actions: [discardAction, applyAction]}, StackView.PushTransition);
                     }
                 }
             }
@@ -103,18 +103,20 @@ StackView {
         property var config: App.connection.rawConfig
         property bool hasUnsavedChanges: false
         property bool isDangerous: false
+        readonly property string usernameDesc: qsTr("Set to require authentication for accessing the web-based GUI.")
+        readonly property string passwordDesc: qsTr("Contains the bcrypt hash of the password used to restrict accessing the web-based GUI. You can also enter a plain password which will then be hashed when applying the configuration.")
         property var specialEntries: ({
             "guiAuth": [
-                {key: "user", label: qsTr("GUI Authentication User"), desc: qsTr("Set to require authentication for accessing the web-based GUI.")},
-                {key: "password", label: qsTr("GUI Authentication Password (bcrypt hash!)"), desc: qsTr("Contains the bcrypt hash of the password used to restrict accessing the web-based GUI. You can also enter a plain password which will then be hashed when applying the configuration.")},
+                {key: "user", label: qsTr("Username"), desc: advancedPage.usernameDesc},
+                {key: "password", label: qsTr("Password (turned into bcrypt hash when saving)"), desc: advancedPage.passwordDesc},
             ],
         })
         property var specialEntriesByKey: ({
             "gui": [
                 {key: "apiKey", label: qsTr("API Key"), desc: qsTr("If set, this is the API key that enables usage of the REST interface. The app uses the REST interface so this value must not be empty for the app to function.")},
                 {key: "address", label: qsTr("GUI Listen Address"), desc: qsTr("Set the listen address.")},
-                {key: "user", label: qsTr("GUI Authentication User"), desc: qsTr("Set to require authentication for accessing the web-based GUI.")},
-                {key: "password", label: qsTr("GUI Authentication Password (bcrypt hash!)"), desc: qsTr("Contains the bcrypt hash of the password used to restrict accessing the web-based GUI. You can also enter a plain password which will then be hashed when applying the configuration.")},
+                {key: "user", label: qsTr("GUI Authentication User"), desc: advancedPage.usernameDesc},
+                {key: "password", label: qsTr("GUI Authentication Password (bcrypt hash!)"), desc: advancedPage.passwordDesc},
                 {key: "useTLS", label: qsTr("Use HTTPS for GUI and API"), desc: qsTr("If enabled, TLS (HTTPS) will be enforced. Non-HTTPS requests will be redirected to HTTPS. When set to false, TLS connections are still possible but not required.")},
                 {key: "sendBasicAuthPrompt", label: qsTr("Prompt for basic authentication"), desc: qsTr("When this setting is enabled, the web-based GUI will respond to unauthenticated requests with a 401 response prompting for Basic Authorization, so that https://user:pass@localhost style URLs continue to work in standard browsers. Other clients that always send the Authorization request header do not need this setting.")},
                 {key: "authMode", label: qsTr("Authentication mode"), type: "options", desc: qsTr("Authentication mode to use. If not present, the authentication mode (static) is controlled by the presence of user/password fields for backward compatibility."), options: [
@@ -157,6 +159,7 @@ StackView {
         })
         property list<Action> actions: [
             Action {
+                id: discardAction
                 text: qsTr("Discard changes")
                 icon.source: App.faUrlBase + "undo"
                 enabled: advancedPage.hasUnsavedChanges
@@ -167,6 +170,7 @@ StackView {
                 }
             },
             Action {
+                id: applyAction
                 text: qsTr("Apply changes")
                 icon.source: App.faUrlBase + "check"
                 enabled: advancedPage.hasUnsavedChanges
@@ -178,6 +182,10 @@ StackView {
                     }
                     App.postSyncthingConfig(cfg, (error) => {
                         if (error.length === 0) {
+                            const currentPage = stackView.currentItem;
+                            if (currentPage) {
+                                currentPage.hasUnsavedChanges = false;
+                            }
                             advancedPage.hasUnsavedChanges = false;
                             advancedPage.isDangerous = false;
                         }
@@ -186,6 +194,11 @@ StackView {
                 }
             }
         ]
+    }
+    function showGuiAuth() {
+        advancedPage.hasUnsavedChanges = true;
+        listView.currentIndex = 0;
+        listView.currentItem.click();
     }
     required property var pages
 }

@@ -916,6 +916,14 @@ std::vector<const SyncthingDev *> SyncthingConnection::connectedDevices() const
 }
 
 /*!
+ * \brief Returns whether the web-based GUI requires authentication.
+ */
+bool SyncthingConnection::isGuiRequiringAuth() const
+{
+    return !m_rawConfig.value(QLatin1String("gui")).toObject().value(QLatin1String("user")).toString().isEmpty();
+}
+
+/*!
  * \brief Appends a device info object with the specified \a devId to \a devs.
  *
  * If such an object already exists, it is recycled by moving it to \a devs.

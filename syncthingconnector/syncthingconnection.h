@@ -169,6 +169,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(std::vector<const SyncthingDev *> connectedDevices READ connectedDevices)
     Q_PROPERTY(QStringList directoryIds READ directoryIds NOTIFY newDirs)
     Q_PROPERTY(QStringList deviceIds READ deviceIds NOTIFY newDevices)
+    Q_PROPERTY(bool guiRequiringAuth READ isGuiRequiringAuth NOTIFY newConfig)
     Q_PROPERTY(QJsonObject rawConfig READ rawConfig NOTIFY newConfig)
     Q_PROPERTY(bool useDeprecatedRoutes READ isUsingDeprecatedRoutes WRITE setUseDeprecatedRoutes)
     Q_PROPERTY(bool pausingOnMeteredConnection READ isPausingOnMeteredConnection WRITE setPausingOnMeteredConnection)
@@ -287,6 +288,7 @@ public:
     QStringList deviceIds() const;
     Q_INVOKABLE QString deviceNameOrId(const QString &deviceId) const;
     std::vector<const SyncthingDev *> connectedDevices() const;
+    bool isGuiRequiringAuth() const;
     const QJsonObject &rawConfig() const;
     SyncthingDir *findDirInfo(const QString &dirId, int &row);
     SyncthingDir *findDirInfoConsideringLabels(const QString &dirIdOrLabel, int &row);

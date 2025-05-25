@@ -57,6 +57,38 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
+                onClicked: {
+                    const pages = startPage.pages;
+                    const advancedPageIndex = 4;
+                    const advancedPage = pages.children[advancedPageIndex];
+                    pages.setCurrentIndex(advancedPageIndex);
+                    advancedPage.showGuiAuth();
+                }
+                visible: !App.connection.guiRequiringAuth
+                contentItem: RowLayout {
+                    spacing: 15
+                    ForkAwesomeIcon {
+                        iconName: "key-modern"
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Label {
+                            Layout.fillWidth: true
+                            text: qsTr("Set password for web-based GUI")
+                            elide: Text.ElideRight
+                            font.weight: Font.Medium
+                        }
+                        Label {
+                            Layout.fillWidth: true
+                            text: qsTr("Otherwise other apps can access the web-based GUI without authentication.")
+                            font.weight: Font.Light
+                            wrapMode: Text.Wrap
+                        }
+                    }
+                }
+            }
+            ItemDelegate {
+                Layout.fillWidth: true
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
