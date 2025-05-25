@@ -199,7 +199,6 @@ App::App(bool insecure, QObject *parent)
     connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &App::handleChangedDevices);
     connect(&m_connection, &SyncthingConnection::newErrors, this, &App::handleNewErrors);
 #ifdef Q_OS_ANDROID
-    connect(&m_connection, &SyncthingConnection::newNotification, this, &App::updateSyncthingErrorsNotification);
     connect(&m_notifier, &SyncthingNotifier::newDevice, this, &App::showNewDevice);
     connect(&m_notifier, &SyncthingNotifier::newDir, this, &App::showNewDir);
 #endif
@@ -983,9 +982,7 @@ void App::handleNewErrors(const std::vector<Data::SyncthingError> &errors)
     Q_UNUSED(errors)
     invalidateStatus();
 #ifdef Q_OS_ANDROID
-    if (errors.empty()) {
-        clearSyncthingErrorsNotification();
-    }
+    updateSyncthingErrorsNotification(errors);
 #endif
 }
 
@@ -1071,13 +1068,18 @@ void App::clearAndroidExtraNotifications(int firstId, int lastId)
     QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "cancelExtraNotification", "(II)V", firstId, lastId);
 }
 
-void App::updateSyncthingErrorsNotification(CppUtilities::DateTime when, const QString &message)
+void App::updateSyncthingErrorsNotification(const std::vector<Data::SyncthingError> &newErrors)
 {
-    const auto syncthingErrors = m_connection.errors().size();
+    if (newErrors.empty()) {
+        clearSyncthingErrorsNotification();
+        return;
+    }
+    const auto syncthingErrors = newErrors.size();
+    const auto &mostRecent = newErrors.back();
     const auto title = QJniObject::fromString(
         syncthingErrors == 1 ? tr("Syncthing error/notification") : tr("%1 Syncthing errors/notifications").arg(syncthingErrors));
-    const auto text = QJniObject::fromString(syncthingErrors == 1 ? message : tr("most recent: ") + message);
-    const auto subText = QJniObject::fromString(QString::fromStdString(when.toString()));
+    const auto text = QJniObject::fromString(syncthingErrors == 1 ? mostRecent.message : tr("Most recent: ") + mostRecent.message);
+    const auto subText = QJniObject::fromString(QString::fromStdString(mostRecent.when.toString()));
     static const auto page = QJniObject::fromString(QStringLiteral("connectionErrors"));
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
     updateExtraAndroidNotification(title, text, subText, page, icon, 2);
@@ -1092,7 +1094,7 @@ void App::showInternalError(const InternalError &error)
 {
     const auto title = QJniObject::fromString(
         m_internalErrors.empty() ? tr("Syncthing API error") : tr("%1 Syncthing API errors").arg(m_internalErrors.size() + 1));
-    const auto text = QJniObject::fromString(m_internalErrors.empty() ? error.message : tr("most recent: ") + error.message);
+    const auto text = QJniObject::fromString(m_internalErrors.empty() ? error.message : tr("Most recent: ") + error.message);
     const auto subText = QJniObject::fromString(error.url.isEmpty() ? QString() : QStringLiteral("URL: ") + error.url.toString());
     static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);

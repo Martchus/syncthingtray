@@ -327,7 +327,7 @@ private Q_SLOTS:
     void updateExtraAndroidNotification(
         const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id = 0);
     void clearAndroidExtraNotifications(int firstId, int lastId = -1);
-    void updateSyncthingErrorsNotification(CppUtilities::DateTime when, const QString &message);
+    void updateSyncthingErrorsNotification(const std::vector<Data::SyncthingError> &newErrors);
     void clearSyncthingErrorsNotification();
     void showInternalError(const InternalError &error);
     void showNewDevice(const QString &devId, const QString &message);
