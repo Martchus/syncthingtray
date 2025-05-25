@@ -120,8 +120,9 @@ public class SyncthingService extends Service {
         Log.i(TAG, "Updating notification: " + s_notificationText);
         s_instance.m_notificationBuilder.setContentTitle(s_notificationTitle).setContentText(s_notificationText).setSubText(s_notificationSubText);
         if (s_notificationIcon != null) {
+            // update only large icon (not calling setSmallIcon(icon)) because Android doesn't render the badge correctly on the small icon
             Icon icon = Icon.createWithBitmap(s_notificationIcon);
-            s_instance.m_notificationBuilder.setSmallIcon(icon).setLargeIcon(icon);
+            s_instance.m_notificationBuilder.setLargeIcon(icon);
         }
         s_instance.m_notification = s_instance.m_notificationBuilder.build();
         s_instance.showForegroundNotification();
