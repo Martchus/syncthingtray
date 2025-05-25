@@ -24,6 +24,7 @@ public class SyncthingService extends Service {
     private static final int s_notificationID = 1;
     private static final int s_activityIntentRequestCode = 1;
     private Intent m_notificationContentIntent;
+    private Intent m_shutdownIntent;
     private NotificationManager m_notificationManager;
     private NotificationChannel m_notificationChannel;
     private NotificationChannel m_extraNotificationChannel;
@@ -66,6 +67,8 @@ public class SyncthingService extends Service {
 
         m_notificationContentIntent = new Intent(this, Activity.class);
         m_notificationContentIntent.putExtra("notification", true);
+        m_shutdownIntent = new Intent(this, Activity.class);
+        m_shutdownIntent.setAction("shutdown");
 
         m_notificationBuilder
             .setContentTitle(s_notificationTitle)
@@ -76,6 +79,7 @@ public class SyncthingService extends Service {
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setContentIntent(PendingIntent.getActivity(this, s_activityIntentRequestCode, m_notificationContentIntent, PendingIntent.FLAG_IMMUTABLE))
+            .addAction((new Notification.Action.Builder(null, "Shutdown", PendingIntent.getActivity(this, s_activityIntentRequestCode, m_shutdownIntent, PendingIntent.FLAG_IMMUTABLE)).build()))
             .setPriority(Notification.PRIORITY_DEFAULT)
             .setDefaults(Notification.DEFAULT_SOUND)
             .setCategory(Notification.CATEGORY_SERVICE)
@@ -165,6 +169,7 @@ public class SyncthingService extends Service {
 
     @Override
     public void onDestroy() {
+        s_instance = null;
         super.onDestroy();
         stopForeground(Service.STOP_FOREGROUND_REMOVE);
         Log.i(TAG, "Destroyed service and notification");

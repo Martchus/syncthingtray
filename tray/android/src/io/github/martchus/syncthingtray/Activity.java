@@ -325,6 +325,9 @@ public class Activity extends QtActivity {
     protected void onNewIntent(@NonNull Intent intent) {
         if (intent.getBooleanExtra("notification", false)) {
             sendAndroidIntentToQtQuickApp(intent.getStringExtra("page"), true);
+        } else if ("shutdown".equals(intent.getAction())) {
+            stopSyncthingService();
+            finish();
         }
     }
 
