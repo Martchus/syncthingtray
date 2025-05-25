@@ -39,7 +39,7 @@ ApplicationWindow {
             }
         });
     }
-    onVisibleChanged: App.setCurrentControls(window.visible, pageStack.currentIndex)
+    onVisibleChanged: App.setCurrentControls(appWindow.visible, pageStack.currentIndex)
     onActiveFocusItemChanged: {
         if (activeFocusItem?.toString().startsWith("QQuickPopupItem")) {
             appWindow.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
@@ -48,7 +48,7 @@ ApplicationWindow {
     onClosing: (event) => {
         if (!appWindow.forceClose && App.launcher.running) {
             event.accepted = false;
-            main.closeDialog.open();
+            closeDialog.open();
         }
     }
 
