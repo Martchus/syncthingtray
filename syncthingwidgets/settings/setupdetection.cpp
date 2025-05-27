@@ -32,9 +32,8 @@ SetupDetection::SetupDetection(QObject *parent)
         launcherSettings.syncthingPath = syncthingPathFromEnv;
     }
 
-    // configure launcher to test invocation of "syncthing --version" capturing output
+    // configure launcher to check version of Syncthing binary
     defaultSyncthingArgs = launcherSettings.syncthingArgs;
-    launcherSettings.syncthingArgs = QStringLiteral("--version");
     launcher.setEmittingOutput(true);
 
     // configure timeout
@@ -124,6 +123,8 @@ void SetupDetection::startTest()
     restoreConfig();
     initConnection();
     connection.reconnect();
+    launcherSettings.syncthingArgs = QStringLiteral("version"); // test invocation of "syncthing version" and "syncthing --version"
+    additionalArgsToProbe = { QStringLiteral("--version") };
     launcher.launch(launcherSettings);
     autostartConfiguredPath = configuredAutostartPath();
     autostartEnabled = autostartConfiguredPath.has_value() ? !autostartConfiguredPath.value().isEmpty() : isAutostartEnabled();
@@ -138,6 +139,11 @@ void SetupDetection::handleConnectionError(const QString &error)
 
 void SetupDetection::handleLauncherExit(int exitCode, QProcess::ExitStatus exitStatus)
 {
+    if (exitCode != 0 && !additionalArgsToProbe.isEmpty()) {
+        launcherSettings.syncthingArgs = additionalArgsToProbe.takeLast();
+        launcher.launch(launcherSettings);
+        return;
+    }
     launcherExitCode = exitCode;
     launcherExitStatus = exitStatus;
     checkDone();
