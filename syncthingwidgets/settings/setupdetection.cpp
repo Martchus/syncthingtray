@@ -124,7 +124,7 @@ void SetupDetection::startTest()
     initConnection();
     connection.reconnect();
     launcherSettings.syncthingArgs = QStringLiteral("version"); // test invocation of "syncthing version" and "syncthing --version"
-    additionalArgsToProbe = { QStringLiteral("--version") };
+    additionalArgsToProbe = QStringList({ QStringLiteral("--version") });
     launcher.launch(launcherSettings);
     autostartConfiguredPath = configuredAutostartPath();
     autostartEnabled = autostartConfiguredPath.has_value() ? !autostartConfiguredPath.value().isEmpty() : isAutostartEnabled();
