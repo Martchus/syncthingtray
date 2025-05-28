@@ -10,7 +10,7 @@ ApplicationWindow {
     visible: true
     width: 700
     height: 500
-    title: main.title
+    title: meta.title
     font: theming.font
     header: MainToolBar {
         drawer: drawer
