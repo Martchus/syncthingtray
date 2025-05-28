@@ -36,6 +36,22 @@ ItemDelegate {
                     font.weight: Font.Light
                 }
             }
+            Icon {
+                id: storageIcon
+                Layout.preferredWidth: 16
+                Layout.preferredHeight: 16
+                source: modelData.storageIcon
+                MouseArea {
+                    anchors.fill: parent
+                    onPressAndHold: {
+                        storageToolTip.show(modelData.storageTooltip);
+                        App.performHapticFeedback();
+                    }
+                }
+                ToolTip {
+                    id: storageToolTip
+                }
+            }
             QtObject {
                 id: source
                 property int row: modelData.index

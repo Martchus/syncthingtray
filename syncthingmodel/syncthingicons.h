@@ -71,10 +71,12 @@ inline StatusIconColorSet::StatusIconColorSet(const QString &backgroundStart, co
 LIB_SYNCTHING_MODEL_EXPORT QByteArray makeSyncthingIcon(
     const StatusIconColorSet &colors = StatusIconColorSet{ QStringLiteral("#26B6DB"), QStringLiteral("#0882C8"), QStringLiteral("#FFFFFF") },
     StatusEmblem statusEmblem = StatusEmblem::None, StatusIconStrokeWidth strokeWidth = StatusIconStrokeWidth::Normal);
+LIB_SYNCTHING_MODEL_EXPORT QByteArray makeSdCardIcon(const StatusIconColorSet &colors);
 LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QString &path, const QSize &size = QSize(32, 32), int margin = 0);
 LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QByteArray &contents, const QSize &size = QSize(32, 32), int margin = 0);
 
-struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
+struct LIB_SYNCTHING_MODEL_EXPORT
+    StatusIconSettings {
     struct DarkTheme {};
     struct BrightTheme {};
 
@@ -124,6 +126,7 @@ struct LIB_SYNCTHING_MODEL_EXPORT StatusIcons {
     QIcon errorSync;
     QIcon newItem;
     QIcon noRemoteConnected;
+    QIcon sdCard;
     bool isValid;
 };
 

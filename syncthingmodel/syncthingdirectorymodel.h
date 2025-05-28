@@ -13,6 +13,8 @@ struct SyncthingDir;
 
 class LIB_SYNCTHING_MODEL_EXPORT SyncthingDirectoryModel : public SyncthingModel {
     Q_OBJECT
+    Q_PROPERTY(QStringList sdCardPaths READ sdCardPaths WRITE setSdCardPaths)
+
 public:
     enum SyncthingDirectoryModelRole {
         DirectoryStatus = SyncthingModelUserRole + 1,
@@ -28,6 +30,8 @@ public:
         DirectoryDetailTooltip,
         DirectoryOverrideRevertAction,
         DirectoryOverrideRevertActionLabel,
+        DirectoryStorageIcon,
+        DirectoryStorageTooltip,
     };
 
     explicit SyncthingDirectoryModel(SyncthingConnection &connection, QObject *parent = nullptr);
@@ -43,6 +47,8 @@ public:
     int rowCount(const QModelIndex &parent) const override;
     Q_INVOKABLE const SyncthingDir *dirInfo(const QModelIndex &index) const;
     Q_INVOKABLE const SyncthingDir *info(const QModelIndex &index) const;
+    const QStringList &sdCardPaths() const;
+    void setSdCardPaths(const QStringList &sdCardPaths);
 
 private Q_SLOTS:
     void dirStatusChanged(const Data::SyncthingDir &dir, int index);
@@ -57,11 +63,17 @@ private:
 
     const std::vector<SyncthingDir> &m_dirs;
     std::vector<int> m_rowCount;
+    QStringList m_sdCardPaths;
 };
 
 inline const SyncthingDir *SyncthingDirectoryModel::info(const QModelIndex &index) const
 {
     return dirInfo(index);
+}
+
+inline const QStringList &SyncthingDirectoryModel::sdCardPaths() const
+{
+    return m_sdCardPaths;
 }
 
 } // namespace Data

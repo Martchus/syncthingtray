@@ -143,6 +143,25 @@ QByteArray makeSyncthingIcon(const StatusIconColorSet &colors, StatusEmblem stat
     // clang-format on
 }
 
+/*!
+ * \brief Generates SVG code for an SD card icon with the specified \a colors.
+ */
+QByteArray makeSdCardIcon(const StatusIconColorSet &colors)
+{
+    const auto fgColor = colors.foreground.name(QColor::HexRgb);
+    const auto bgColor = colors.backgroundStart.name(QColor::HexRgb);
+    return (QStringLiteral(
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        "<svg width=\"37.072mm\" height=\"49.193mm\" version=\"1.1\" viewBox=\"0 0 37.072 49.193\" xml:space=\"preserve\" xmlns=\"http://www.w3.org/2000/svg\">"
+            "<g transform=\"translate(-60.255 -16.594)\" stroke-dashoffset=\"1.9995\" stroke-width=\".17568\">"
+                "<path d=\"m61.255 16.594c-0.554 0-0.99942 0.44594-0.99942 0.99994v47.192c0 0.554 0.44594 1.0005 0.99994 1.0005h35.071c0.554 0 0.99993-0.44646 0.99994-1.0005l5.17e-4 -39.197-10.3-8.9958s-19.671 0.0067-25.772 0zm12.106 6.3676h4.2566v13.182h-4.2566v-13.182zm8 0h4.2566v13.182h-4.2566v-13.182zm-16 5.17e-4h4.2566v13.182h-4.2566v-13.182z\" fill=\"") % fgColor % QStringLiteral("\"/>"
+                "<path d=\"m73.361 22.962v13.182h4.2567v-13.182zm8.0002 0v13.182h4.2567v-13.182zm-16 5.17e-4v13.182h4.2567v-13.182z\" fill=\"") % bgColor % QStringLiteral("\"/>"
+            "</g>"
+        "</svg>"
+    )).toUtf8();
+
+}
+
 /// \cond
 namespace Detail {
 template <typename SourceType> QPixmap renderSvgImage(const SourceType &source, const QSize &givenSize, int margin)
@@ -319,6 +338,7 @@ StatusIcons::StatusIcons(const StatusIconSettings &settings)
     , newItem(QIcon(renderSvgImage(makeSyncthingIcon(settings.defaultColor, StatusEmblem::Add, settings.strokeWidth), settings.renderSize)))
     , noRemoteConnected(
           QIcon(renderSvgImage(makeSyncthingIcon(settings.noRemoteColor, StatusEmblem::Cross, settings.strokeWidth), settings.renderSize)))
+    , sdCard(QIcon(renderSvgImage(makeSdCardIcon(settings.defaultColor), settings.renderSize)))
     , isValid(true)
 {
 }

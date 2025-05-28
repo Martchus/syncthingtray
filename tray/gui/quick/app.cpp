@@ -181,6 +181,24 @@ App::App(bool insecure, QObject *parent)
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::invalidateAndroidIconCache);
 #endif
 
+    // set SD card paths to show SD card icons via directory model
+#ifdef Q_OS_ANDROID
+    auto extStoragePaths = externalStoragePaths();
+    auto sdCardPaths = QStringList();
+    if (extStoragePaths.size() > 1) {
+        static constexpr auto storagePrefix = QLatin1String("/storage/");
+        sdCardPaths.reserve(extStoragePaths.size() - 1);
+        for (auto i = extStoragePaths.begin() + 1, end = extStoragePaths.end(); i != end; ++i) {
+            if (const auto &path = *i; path.startsWith(storagePrefix)) {
+                if (const auto volumeEnd = path.indexOf(QChar('/'), storagePrefix.size()); volumeEnd > 0) {
+                    sdCardPaths.emplace_back(QStringView(path.data(), volumeEnd + 1));
+                }
+            }
+        }
+    }
+    m_dirModel.setSdCardPaths(sdCardPaths);
+#endif
+
     m_sortFilterDirModel.sort(0, Qt::AscendingOrder);
     m_sortFilterDevModel.sort(0, Qt::AscendingOrder);
 

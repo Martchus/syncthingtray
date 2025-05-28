@@ -45,6 +45,8 @@ QHash<int, QByteArray> SyncthingDirectoryModel::roleNames() const
         { DirectoryNeededItemsCount, "neededItemsCount" },
         { DirectoryOverrideRevertAction, "overrideRevertAction" },
         { DirectoryOverrideRevertActionLabel, "overrideRevertActionLabel" },
+        { DirectoryStorageIcon, "storageIcon" },
+        { DirectoryStorageTooltip, "storageTooltip" },
     };
     return roles;
 }
@@ -62,6 +64,13 @@ const SyncthingDir *SyncthingDirectoryModel::dirInfo(const QModelIndex &index) c
 {
     return (index.parent().isValid() ? dirInfo(index.parent())
                                      : (static_cast<size_t>(index.row()) < m_dirs.size() ? &m_dirs[static_cast<size_t>(index.row())] : nullptr));
+}
+
+void SyncthingDirectoryModel::setSdCardPaths(const QStringList &sdCardPaths)
+{
+    static const auto affectedRoles = QVector<int>({DirectoryStorageIcon, DirectoryStorageTooltip});
+    m_sdCardPaths = sdCardPaths;
+    invalidateTopLevelIndicies(affectedRoles);
 }
 
 QModelIndex SyncthingDirectoryModel::index(int row, int column, const QModelIndex &parent) const
@@ -398,6 +407,20 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
         default:
             return QString();
         }
+    case DirectoryStorageIcon:
+        for (const auto &path : m_sdCardPaths) {
+            if (dir.path.startsWith(path)) {
+                return statusIcons().sdCard;
+            }
+        }
+        break;
+    case DirectoryStorageTooltip:
+        for (const auto &path : m_sdCardPaths) {
+            if (dir.path.startsWith(path)) {
+                return tr("On SD card");
+            }
+        }
+        break;
     default:;
     }
 
@@ -433,7 +456,7 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &dir, int inde
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
     static const QVector<int> modelRoles1({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, DirectoryPaused, DirectoryStatus,
         DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath, DirectoryPullErrorCount, DirectoryNeededItemsCount,
-        DirectoryOverrideRevertAction, DirectoryOverrideRevertActionLabel });
+        DirectoryOverrideRevertAction, DirectoryOverrideRevertActionLabel, DirectoryStorageIcon, DirectoryStorageTooltip });
     emit dataChanged(modelIndex1, modelIndex1, modelRoles1);
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::EditRole, Qt::ForegroundRole });
