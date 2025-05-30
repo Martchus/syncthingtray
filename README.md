@@ -1,7 +1,8 @@
 # Syncthing Tray
 Syncthing Tray provides a tray icon and further platform integrations for
 [Syncthing](https://github.com/syncthing/syncthing). Checkout the
-[website](https://martchus.github.io/syncthingtray) for an overview.
+[website](https://martchus.github.io/syncthingtray) for an overview and
+screenshots.
 
 The following integrations are provided:
 
@@ -65,9 +66,9 @@ for how to achieve a more native look and feel. Under GNOME one needs to install
 one's distribution already provides such an extension by default).
 
 Limitations of your system tray might affect Syncthing Tray. For instance when using the mentioned GNOME
-extension the Syncthing Tray UI shown in the screenshots below is only shown by *double*-clicking the icon.
-If your system tray is unable to show the Syncthing Tray UI at all like on COSMIC you can still use Syncthing
-Tray for the tray icon and basic functionality accessible via the menu.
+extension the Syncthing Tray UI shown in the [screenshots](screenshots.md) is only shown by *double*-clicking
+the icon. If your system tray is unable to show the Syncthing Tray UI at all like on COSMIC you can still use
+Syncthing Tray for the tray icon and basic functionality accessible via the menu.
 
 Note that under Wayland-based desktops there will be positioning issues. The Plasmoid is not affected
 by this, though.
@@ -114,7 +115,7 @@ and workarounds for certain caveats like the positioning issues under Wayland.
     * Rescan selected items
     * Rescan entire Syncthing folder
     * Pause/resume Syncthing folder
-    * See also the [screenshots below](#syncthing-actions-for-dolphin)
+    * See also the [screenshots](screenshots.md#syncthing-actions-for-dolphin)
 * Allows building Syncthing as a library to run it in the same process as the tray/GUI
 * English and German localization
 
@@ -152,35 +153,6 @@ To uninstall, just delete the executable again.
 For further cleanup you may ensure that autostart is disabled (to avoid a dangling autostart entry). You may also
 delete the configuration files (see "[Location of the configuration file](#location-of-the-configuration-file)"
 section below).
-
-## Screenshots
-The screenshots are not up-to-date.
-
-### Qt Widgets based GUI under Windows 11
-![Qt Widgets based GUI under Windows 11](/tray/resources/screenshots/windows-11.png?raw=true)
-
-### Qt Widgets based GUI under Openbox/Tint2 with dark Breeze theme
-![Qt Widgets based GUI under Openbox/Tint2](/tray/resources/screenshots/tint2-dark.png?raw=true)
-
-### Plasmoid (for KDE's Plasma shell)
-#### Light theme
-![Plasmoid (light theme)](/plasmoid/resources/screenshots/plasmoid-1.png?raw=true)
-
-#### Dark theme
-![Plasmoid (dark theme)](/plasmoid/resources/screenshots/plasmoid-2.png?raw=true)
-
-### Icon customization dialog
-![Plasmoid (customized icons)](/tray/resources/screenshots/custom-icons.png?raw=true)
-
-### Settings dialog
-![Settings dialog](/tray/resources/screenshots/settings.png?raw=true)
-
-### Web view
-![Web view](/tray/resources/screenshots/webview.png?raw=true)
-![Web view (dark)](/tray/resources/screenshots/webview-dark.png?raw=true)
-
-### Syncthing actions for Dolphin
-![Rescan/pause/status](/fileitemactionplugin/resources/screenshots/dolphin.png?raw=true)
 
 ## General remarks on the configuration
 You need to configure how Syncthing Tray should connect to Syncthing itself. The previous
