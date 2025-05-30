@@ -67,7 +67,7 @@
 #endif
 
 // configure dark mode depending on the platform
-// 1. Some platforms just provide a "darkmode flag", e.g. Windows and Android. Qt can read this flag and
+// 1. Some platforms just provide a "dark mode flag", e.g. Windows and Android. Qt can read this flag and
 //    provide a Qt::ColorScheme value. Qt will only populate an appropriate QPalette on some platforms, e.g.
 //    it does on Windows but not on Android. On platforms where Qt does not populate an appropriate palette
 //    we therefore need to go by the Qt::ColorScheme value and populate the QPalette ourselves from the colors
@@ -75,7 +75,7 @@
 //    in subsequent code.
 //    Custom icons (Syncthing icons, ForkAwesome icons) are rendered using the text color from the application
 //    QPalette. This is the reason why we still populate the QPalette in this case and don't just ignore it.
-// 2. Some platforms allow the user to configure a custom palette but do *not* provide a "darkmode flag", e.g.
+// 2. Some platforms allow the user to configure a custom palette but do *not* provide a "dark mode flag", e.g.
 //    KDE. In this case reading the Qt::ColorScheme value from Qt is useless but QPalette will be populated. We
 //    therefore need to determine whether the current color scheme is dark from the QPalette and set the Qt
 //    Quick Controls 2 style based on that.
@@ -1691,7 +1691,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
         return false;
     }
 
-    // stop Syncthing if necassary
+    // stop Syncthing if necessary
     const auto importSyncthingHome = selectedSettings.value(QStringLiteral("syncthingHome")).toBool();
     if (importSyncthingHome && m_launcher.isRunning()) {
         emit info(tr("Waiting for backend to terminate before importing settings …"));
@@ -1936,7 +1936,7 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
         return false;
     }
 
-    // stop Syncthing if necassary
+    // stop Syncthing if necessary
     if (m_launcher.isRunning()) {
         emit info(tr("Waiting for backend to terminate before moving home …"));
         m_homeDirMove = newHomeDir;
