@@ -58,3 +58,7 @@ button, input[type="button"] {
     border: 1px solid #aaa;
     padding: 3px;
 }
+
+img {
+    max-width: 100%;
+}

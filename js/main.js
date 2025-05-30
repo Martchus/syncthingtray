@@ -10,6 +10,9 @@ function main()
             initializer: initializeDownloadsSection,
             state: {params: undefined},
         },
+        'screenshots': {
+            initializer: initializeScreenshotsSection,
+        },
         'doc': {
         },
         'contact': {
@@ -26,6 +29,22 @@ function initializeDownloadsSection()
     queryReleases();
     renderUserAgent(query.get("useragent") ?? window.navigator.userAgent);
     return window.downloadsInitialized = true;
+}
+
+function initializeScreenshotsSection()
+{
+    if (window.screenshotsInitialized) {
+        return true;
+    }
+    AjaxHelper.queryRoute("GET", "./screenshots.html", (xhr, res) => {
+        const container = document.getElementById("screenshots-container");
+        container.innerHTML = xhr.responseText;
+        container.querySelectorAll('img').forEach(img => {
+            img.style.cursor = 'zoom-in';
+            img.onclick = function () { window.open(this.src) };
+        });
+    });
+    return window.screenshotsInitialized = true;
 }
 
 function renderUserAgent(userAgent)

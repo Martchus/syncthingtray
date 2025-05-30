@@ -23,6 +23,9 @@ section, .into-text {
 #downloads-nav-link {
     background-image: url(../img/icon/download.svg);
 }
+#screenshots-nav-link {
+    background-image: url(../img/icon/image.svg);
+}
 #doc-nav-link {
     background-image: url(../img/icon/book-open-variant.svg);
 }
@@ -119,6 +122,9 @@ section, .into-text {
 }
 .downloads-platform {
     padding: 5px;
+}
+#screenshots-container .downloads-platform {
+    margin-top: 20px;
 }
 .downloads-platform input[type="checkbox"] {
     display: none;
