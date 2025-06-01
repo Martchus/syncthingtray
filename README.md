@@ -851,6 +851,8 @@ It is possible to turn on logging of the underlying library by setting environme
 * `LIB_SYNCTHING_CONNECTOR_LOG_NOTIFICATIONS`: log computed high-level notifications/events
 * `SYNCTHINGTRAY_LOG_JS_CONSOLE`: log message from the JavaScript console of the built-in web view
 
+On Windows, you'll have to use the `syncthingtray-cli` executable to see output in the terminal.
+
 ### Useful environment variables for development
 * `QT_QPA_PLATFORM`: set to `offscreen` to disable graphical output, e.g. to run tests in headless
   environment
