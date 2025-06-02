@@ -4,47 +4,47 @@
 <context>
     <name>Data::StatusIconSettings</name>
     <message>
-        <location filename="../syncthingicons.cpp" line="242"/>
+        <location filename="../syncthingicons.cpp" line="261"/>
         <source>Misc. notifications</source>
         <translation>Různá oznámení</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="243"/>
+        <location filename="../syncthingicons.cpp" line="262"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="244"/>
+        <location filename="../syncthingicons.cpp" line="263"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="245"/>
+        <location filename="../syncthingicons.cpp" line="264"/>
         <source>Idle</source>
         <translation>Nečinné</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="246"/>
+        <location filename="../syncthingicons.cpp" line="265"/>
         <source>Scanning</source>
         <translation>Skenuje</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="247"/>
+        <location filename="../syncthingicons.cpp" line="266"/>
         <source>Synchronizing</source>
         <translation>Synchronizuje</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="248"/>
+        <location filename="../syncthingicons.cpp" line="267"/>
         <source>Paused</source>
         <translation>Pozastaveno</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="249"/>
+        <location filename="../syncthingicons.cpp" line="268"/>
         <source>No remote device connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="250"/>
+        <location filename="../syncthingicons.cpp" line="269"/>
         <source>Disconnected</source>
         <translation>Odpojeno</translation>
     </message>
@@ -188,43 +188,43 @@
 <context>
     <name>Data::SyncthingDirectoryModel</name>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="96"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="128"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="105"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="137"/>
         <source>ID</source>
         <translation>Identifikátor</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="98"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="107"/>
         <source>Status</source>
         <translation>Stav</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="130"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="139"/>
         <source>Path</source>
         <translation>Popis umístění</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="140"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="149"/>
         <source>Rescan interval</source>
         <translation>Interval skenování</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="142"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="151"/>
         <source>Last scan</source>
         <translation>Poslední sken</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="144"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="153"/>
         <source>Last file</source>
         <translation>Poslední soubor</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="146"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="155"/>
         <source>Out of Sync items</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="186"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="195"/>
         <source>%1 item(s), ~ %2</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -233,7 +233,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="197"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="206"/>
         <source>%1 item(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -242,7 +242,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="199"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="208"/>
         <source>%1 and %2 item(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -251,13 +251,18 @@
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="394"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="403"/>
         <source>Override remote changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="397"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="406"/>
         <source>Revert local changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingdirectorymodel.cpp" line="420"/>
+        <source>On SD card</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -265,13 +270,13 @@
         <translation type="vanished">Chyby</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="171"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="180"/>
         <source>not shared</source>
         <translation>nesdíleno</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="178"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="181"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="187"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="190"/>
         <source>unknown</source>
         <translation>neznámé</translation>
     </message>
@@ -284,8 +289,8 @@
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="184"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="191"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="193"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="200"/>
         <source>none</source>
         <translation>žádno</translation>
     </message>
@@ -298,23 +303,23 @@
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="278"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="287"/>
         <source>Deleted at %1</source>
         <translation>Smazáno na %1</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="281"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="290"/>
         <source>Updated at %1</source>
         <translation>Aktualizováno na %1</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="294"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="303"/>
         <source>Click for details</source>
         <translation>Pro podrobnosti klikněte</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="148"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="293"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="157"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="302"/>
         <source>Failed items</source>
         <translation>Nezdařené položky</translation>
     </message>
@@ -331,22 +336,22 @@
         <translation type="vanished">Nesdíleno</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="132"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="141"/>
         <source>Global status</source>
         <translation>Globální stav</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="134"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="143"/>
         <source>Local status</source>
         <translation>Místní stav</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="136"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="145"/>
         <source>Shared with</source>
         <translation>Sdíleno s</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="138"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="147"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
