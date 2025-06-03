@@ -812,6 +812,18 @@ bool App::requestNotificationPermission()
 #endif
 }
 
+void App::addDialog(QObject *dialog)
+{
+    m_dialogs.append(dialog);
+    connect(dialog, &QObject::destroyed, this, &App::removeDialog);
+}
+
+void App::removeDialog(QObject *dialog)
+{
+    disconnect(dialog, &QObject::destroyed, this, &App::removeDialog);
+    m_dialogs.removeAll(dialog);
+}
+
 bool App::eventFilter(QObject *object, QEvent *event)
 {
     if (object != m_app) {

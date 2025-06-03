@@ -4,16 +4,11 @@ import QtQuick.Controls.Material
 
 import Main
 
-Dialog {
+CustomDialog {
     id: closeDialog
     Material.primary: Material.LightBlue
     Material.accent: Material.LightBlue
-    parent: Overlay.overlay
-    anchors.centerIn: Overlay.overlay
-    popupType: App.nativePopups ? Popup.Native : Popup.Item
-    width: Math.min(popupType === Popup.Item ? parent.width - 20 : implicitWidth, 800)
     standardButtons: Dialog.NoButton
-    modal: true
     title: meta.title
     contentItem: Label {
         Layout.fillWidth: true

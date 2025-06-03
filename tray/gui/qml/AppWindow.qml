@@ -31,7 +31,13 @@ ApplicationWindow {
         appWindow.contentItem.Keys.released.connect((event) => {
             const key = event.key;
             if (key === Qt.Key_Back || (key === Qt.Key_Backspace && typeof activeFocusItem.getText !== "function")) {
-                event.accepted = pageStack.pop();
+                const dialog = App.currentDialog;
+                if (dialog) {
+                    dialog.reject();
+                    event.accepted = true;
+                } else {
+                    event.accepted = pageStack.pop();
+                }
             } else if (key === Qt.Key_Forward) {
                 event.accepted = pageStack.forward();
             } else if (key === Qt.Key_F5) {

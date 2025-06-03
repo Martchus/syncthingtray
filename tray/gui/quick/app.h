@@ -82,6 +82,7 @@ class App : public QObject {
     Q_PROPERTY(QFont font READ font CONSTANT)
     Q_PROPERTY(bool storagePermissionGranted READ storagePermissionGranted NOTIFY storagePermissionGrantedChanged)
     Q_PROPERTY(bool notificationPermissionGranted READ notificationPermissionGranted NOTIFY notificationPermissionGrantedChanged)
+    Q_PROPERTY(QObject *currentDialog READ currentDialog)
     QML_ELEMENT
     QML_SINGLETON
 
@@ -221,6 +222,7 @@ public:
     bool storagePermissionGranted() const;
     bool notificationPermissionGranted() const;
     QString currentSyncthingHomeDir() const;
+    QObject *currentDialog();
 
     // helper functions invoked from QML
     Q_INVOKABLE bool initEngine();
@@ -285,6 +287,8 @@ public:
     Q_INVOKABLE void setPalette(const QColor &foreground, const QColor &background);
     Q_INVOKABLE bool requestStoragePermission();
     Q_INVOKABLE bool requestNotificationPermission();
+    Q_INVOKABLE void addDialog(QObject *dialog);
+    Q_INVOKABLE void removeDialog(QObject *dialog);
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
@@ -382,6 +386,7 @@ private:
     QString m_faUrlBase;
     std::optional<QString> m_status;
     std::array<QObject *, 5> m_uiObjects;
+    QObjectList m_dialogs;
     QString m_log;
     int m_iconSize;
     int m_tabIndex;
@@ -404,6 +409,11 @@ inline void App::clearLog()
 inline QVariantList App::internalErrors() const
 {
     return m_internalErrors;
+}
+
+inline QObject *App::currentDialog()
+{
+    return m_dialogs.isEmpty() ? nullptr : m_dialogs.back();
 }
 
 } // namespace QtGui
