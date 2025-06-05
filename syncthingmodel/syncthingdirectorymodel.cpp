@@ -68,7 +68,7 @@ const SyncthingDir *SyncthingDirectoryModel::dirInfo(const QModelIndex &index) c
 
 void SyncthingDirectoryModel::setSdCardPaths(const QStringList &sdCardPaths)
 {
-    static const auto affectedRoles = QVector<int>({DirectoryStorageIcon, DirectoryStorageTooltip});
+    static const auto affectedRoles = QVector<int>({ DirectoryStorageIcon, DirectoryStorageTooltip });
     m_sdCardPaths = sdCardPaths;
     invalidateTopLevelIndicies(affectedRoles);
 }

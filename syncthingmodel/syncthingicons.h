@@ -75,8 +75,7 @@ LIB_SYNCTHING_MODEL_EXPORT QByteArray makeSdCardIcon(const StatusIconColorSet &c
 LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QString &path, const QSize &size = QSize(32, 32), int margin = 0);
 LIB_SYNCTHING_MODEL_EXPORT QPixmap renderSvgImage(const QByteArray &contents, const QSize &size = QSize(32, 32), int margin = 0);
 
-struct LIB_SYNCTHING_MODEL_EXPORT
-    StatusIconSettings {
+struct LIB_SYNCTHING_MODEL_EXPORT StatusIconSettings {
     struct DarkTheme {};
     struct BrightTheme {};
 

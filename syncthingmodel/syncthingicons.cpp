@@ -150,6 +150,7 @@ QByteArray makeSdCardIcon(const StatusIconColorSet &colors)
 {
     const auto fgColor = colors.foreground.name(QColor::HexRgb);
     const auto bgColor = colors.backgroundStart.name(QColor::HexRgb);
+    // clang-format off
     return (QStringLiteral(
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
         "<svg width=\"37.072mm\" height=\"49.193mm\" version=\"1.1\" viewBox=\"0 0 37.072 49.193\" xml:space=\"preserve\" xmlns=\"http://www.w3.org/2000/svg\">"
@@ -159,7 +160,7 @@ QByteArray makeSdCardIcon(const StatusIconColorSet &colors)
             "</g>"
         "</svg>"
     )).toUtf8();
-
+    // clang-format on
 }
 
 /// \cond
