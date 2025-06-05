@@ -147,8 +147,8 @@ StackView {
                     {value: "fatal", label: qsTr("Fatal")},
                 ]},
                 {key: "stopOnMetered", label: qsTr("Stop on metered network connection"), statusText: Qt.binding(() => App.launcher.meteredStatus)},
-                {key: "writeLogFile", label: qsTr("Write persistent log file"), statusText: qsTr("Write a persistent log file into the app directory.")},
-                {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Shows Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
+                {key: "writeLogFile", label: qsTr("Write persistent log file"), statusText: qsTr("Write a persistent log file into the app directory")},
+                {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Show Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
             ],
             tweaks: [
                 {key: "unloadGuiWhenHidden", type: "boolean", defaultValue: false, label: qsTr("Stop UI when hidden"), statusText: qsTr("Might help save battery live but resets UI state.")},
