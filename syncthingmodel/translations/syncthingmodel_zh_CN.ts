@@ -4,47 +4,47 @@
 <context>
     <name>Data::StatusIconSettings</name>
     <message>
-        <location filename="../syncthingicons.cpp" line="261"/>
+        <location filename="../syncthingicons.cpp" line="262"/>
         <source>Misc. notifications</source>
         <translation>杂项通知</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="262"/>
+        <location filename="../syncthingicons.cpp" line="263"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="263"/>
+        <location filename="../syncthingicons.cpp" line="264"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="264"/>
+        <location filename="../syncthingicons.cpp" line="265"/>
         <source>Idle</source>
         <translation>空闲</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="265"/>
+        <location filename="../syncthingicons.cpp" line="266"/>
         <source>Scanning</source>
         <translation>扫描中</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="266"/>
+        <location filename="../syncthingicons.cpp" line="267"/>
         <source>Synchronizing</source>
         <translation>同步中</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="267"/>
+        <location filename="../syncthingicons.cpp" line="268"/>
         <source>Paused</source>
         <translation>已暂停</translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="268"/>
+        <location filename="../syncthingicons.cpp" line="269"/>
         <source>No remote device connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingicons.cpp" line="269"/>
+        <location filename="../syncthingicons.cpp" line="270"/>
         <source>Disconnected</source>
         <translation>已断连</translation>
     </message>
