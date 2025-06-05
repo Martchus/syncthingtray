@@ -141,6 +141,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(bool aborted READ isAborted NOTIFY statusChanged)
     Q_PROPERTY(bool hasErrors READ hasErrors NOTIFY newErrors)
     Q_PROPERTY(bool hasOutOfSyncDirs READ hasOutOfSyncDirs NOTIFY hasOutOfSyncDirsChanged)
+    Q_PROPERTY(bool hasState READ hasState NOTIFY hasStateChanged)
     Q_PROPERTY(bool requestingCompletionEnabled READ isRequestingCompletionEnabled WRITE setRequestingCompletionEnabled)
     Q_PROPERTY(int autoReconnectInterval READ autoReconnectInterval WRITE setAutoReconnectInterval NOTIFY autoReconnectIntervalChanged)
     Q_PROPERTY(unsigned int autoReconnectTries READ autoReconnectTries)
@@ -236,6 +237,7 @@ public:
     bool hasPendingRequestsIncludingEvents() const;
     bool hasErrors() const;
     bool hasOutOfSyncDirs() const;
+    bool hasState() const;
 
     // getter/setter to configure connection behavior
     bool isRequestingCompletionEnabled() const;
@@ -411,6 +413,7 @@ Q_SIGNALS:
     void overrideTriggered(const QString &dirId);
     void revertTriggered(const QString &dirId);
     void hasOutOfSyncDirsChanged();
+    void hasStateChanged();
 
 private Q_SLOTS:
     // handler to evaluate results from request...() methods
@@ -769,6 +772,15 @@ inline bool SyncthingConnection::hasPendingRequests() const
 inline bool SyncthingConnection::hasErrors() const
 {
     return !m_errors.empty();
+}
+
+/*!
+ * \brief Returns whether we have a known "state" (up-to-date or stale).
+ * \remarks So this function will return true if a connection was established - also if the connection to Syncthing is currently lost.
+ */
+inline bool SyncthingConnection::hasState() const
+{
+    return m_hasConfig && m_hasStatus && m_hasEvents;
 }
 
 /*!

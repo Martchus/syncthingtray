@@ -58,7 +58,7 @@ Page {
             ItemDelegate {
                 Layout.fillWidth: true
                 onClicked: startPage.pages.showPage(4).showGuiAuth()
-                visible: !App.connection.guiRequiringAuth
+                visible: App.connection.hasState && !App.connection.guiRequiringAuth
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
@@ -83,6 +83,7 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
+                visible: App.connection.hasState
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
@@ -116,6 +117,7 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
+                visible: App.connection.hasState
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
@@ -193,6 +195,7 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
+                visible: App.connection.hasState
                 TapHandler {
                     acceptedButtons: Qt.LeftButton
                     onTapped: qrCodeDlg.open()
@@ -249,6 +252,7 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
+                visible: App.connection.hasState
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
@@ -302,6 +306,7 @@ Page {
             ItemDelegate {
                 Layout.fillWidth: true
                 onClicked: pages.addDevice()
+                visible: App.connection.hasState
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
@@ -318,6 +323,7 @@ Page {
             ItemDelegate {
                 Layout.fillWidth: true
                 onClicked: pages.addDir()
+                visible: App.connection.hasState
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {

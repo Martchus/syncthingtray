@@ -2212,11 +2212,15 @@ void SyncthingConnection::readEvents()
             return;
         }
 
+        const auto hadStateChanged = m_hasConfig && m_hasStatus && !m_hasEvents;
         m_hasEvents = true;
         const auto replyArray = replyDoc.array();
         emit newEvents(replyArray);
         const auto res = readEventsFromJsonArray(replyArray, m_lastEventId);
         emit allEventsProcessed();
+        if (hadStateChanged) {
+            emit hasStateChanged();
+        }
 
         // request further statistics only *after* receiving the first event (and not in continueConnecting())
         // note: We avoid requesting the whole event history. So we rely on these statistics to tell the initial state. When the

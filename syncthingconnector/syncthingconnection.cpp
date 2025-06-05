@@ -651,7 +651,8 @@ void SyncthingConnection::continueReconnecting()
     m_syncthingVersion.clear();
     emit dirStatisticsChanged();
 
-    // notify that the configuration has been invalidated
+    // notify that the state/configuration has been invalidated
+    emit hasStateChanged();
     if (!isConfigInvalidated) {
         emit newConfigApplied();
     }

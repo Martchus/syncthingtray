@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.Material
 
+import Main
+
 ItemDelegate {
     id: itemDelegate
     Layout.fillWidth: true
@@ -9,6 +11,7 @@ ItemDelegate {
     ToolTip.text: qsTr("%1 files, %2 dirs, ~ %3").arg(stats.files).arg(stats.dirs).arg(stats.bytesAsString)
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
     hoverEnabled: true
+    visible: App.connection.hasState
     contentItem: RowLayout {
         spacing: 15
         ForkAwesomeIcon {
