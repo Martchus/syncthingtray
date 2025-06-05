@@ -14,6 +14,7 @@
 #include <syncthingmodel/syncthingicons.h>
 
 #include <syncthingconnector/syncthingconnectionsettings.h>
+#include <syncthingconnector/utils.h>
 
 #include <qtutilities/misc/desktoputils.h>
 #include <qtutilities/resources/resources.h>
@@ -1276,8 +1277,7 @@ QString App::formatDataSize(quint64 size) const
 
 QString App::formatTraffic(quint64 total, double rate) const
 {
-    return QString::fromStdString(CppUtilities::bitrateToString(rate, true)) % QChar(',') % QChar(' ') % QChar('(')
-        % QString::fromStdString(CppUtilities::dataSizeToString(total)) % QChar(')');
+    return trafficString(total, rate);
 }
 
 bool QtGui::App::hasDevice(const QString &id)
