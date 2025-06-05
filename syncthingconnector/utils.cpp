@@ -38,7 +38,7 @@ QString agoString(DateTime dateTime)
     const TimeSpan delta(DateTime::now() - dateTime);
     if (!delta.isNegative() && static_cast<std::uint64_t>(delta.totalTicks()) > (TimeSpan::ticksPerMinute / 4uL)) {
         return QCoreApplication::translate("Data::Utils", "%1 ago")
-            .arg(QString::fromUtf8(delta.toString(TimeSpanOutputFormat::WithMeasures, true).data()));
+            .arg(QString::fromStdString(delta.toString(TimeSpanOutputFormat::WithMeasures, true)));
     } else {
         return QCoreApplication::translate("Data::Utils", "right now");
     }
@@ -54,10 +54,10 @@ QString trafficString(std::uint64_t total, double rate)
     static const QString unknownStr(QCoreApplication::translate("Data::Utils", "unknown"));
     if (rate != 0.0) {
         return total != SyncthingConnection::unknownTraffic
-            ? QStringLiteral("%1 (%2)").arg(QString::fromUtf8(bitrateToString(rate, true).data()), QString::fromUtf8(dataSizeToString(total).data()))
-            : QString::fromUtf8(bitrateToString(rate, true).data());
+            ? QStringLiteral("%1 (%2)").arg(QString::fromStdString(bitrateToString(rate, true)), QString::fromStdString(dataSizeToString(total)))
+            : QString::fromStdString(bitrateToString(rate, true));
     } else if (total != SyncthingConnection::unknownTraffic) {
-        return QString::fromUtf8(dataSizeToString(total).data());
+        return QString::fromStdString(dataSizeToString(total));
     }
     return unknownStr;
 }
@@ -69,7 +69,7 @@ QString directoryStatusString(const SyncthingStatistics &stats)
 {
     return QCoreApplication::translate("Data::Utils", "%1 file(s)", nullptr, trQuandity(stats.files)).arg(stats.files) % QChar(',') % QChar(' ')
         % QCoreApplication::translate("Data::Utils", "%1 dir(s)", nullptr, trQuandity(stats.dirs)).arg(stats.dirs) % QChar(',') % QChar(' ')
-        % QString::fromUtf8(dataSizeToString(stats.bytes).data());
+        % QString::fromStdString(dataSizeToString(stats.bytes));
 }
 
 /*!
@@ -109,7 +109,7 @@ QString rescanIntervalString(int rescanInterval, bool fileSystemWatcherEnabled)
         }
         return QCoreApplication::translate("Data::Utils", "file system watcher active, periodic rescan disabled");
     }
-    return QString::fromLatin1(TimeSpan::fromSeconds(rescanInterval).toString(TimeSpanOutputFormat::WithMeasures, true).data())
+    return QString::fromStdString(TimeSpan::fromSeconds(rescanInterval).toString(TimeSpanOutputFormat::WithMeasures, true))
         + (fileSystemWatcherEnabled ? QCoreApplication::translate("Data::Utils", ", file system watcher enabled")
                                     : QCoreApplication::translate("Data::Utils", ", file system watcher disabled"));
 }
