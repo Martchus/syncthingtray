@@ -322,6 +322,19 @@ const QString &App::status()
     }
 }
 
+qint64 App::databaseSize(const QString &path, const QString &extension) const
+{
+    const auto dir = QDir(m_syncthingDataDir % QChar('/') % path);
+    const auto files = dir.entryInfoList({ extension }, QDir::Files);
+    return std::accumulate(files.begin(), files.end(), qint64(), [](auto size, const auto &file) { return size + file.size(); });
+}
+
+QVariant App::formattedDatabaseSize(const QString &path, const QString &extension) const
+{
+    const auto size = databaseSize(path, extension);
+    return size > 0 ? QVariant(QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(size)))) : QVariant();
+}
+
 QVariantMap App::statistics() const
 {
     auto stats = QVariantMap();
@@ -331,12 +344,12 @@ QVariantMap App::statistics() const
 
 void App::statistics(QVariantMap &res) const
 {
-    auto dbDir = QDir(m_syncthingDataDir + QStringLiteral("/index-v0.14.0.db"));
-    auto dbFiles = dbDir.entryInfoList({ QStringLiteral("*.ldb") }, QDir::Files);
-    auto dbSize = std::accumulate(dbFiles.begin(), dbFiles.end(), qint64(), [](auto size, const auto &dbFile) { return size + dbFile.size(); });
+
     res[QStringLiteral("stConfigDir")] = m_syncthingConfigDir;
     res[QStringLiteral("stDataDir")] = m_syncthingDataDir;
-    res[QStringLiteral("stDbSize")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(dbSize)));
+    res[QStringLiteral("stLevelDbSize")] = formattedDatabaseSize(QStringLiteral("index-v0.14.0.db"), QStringLiteral("*.ldb"));
+    res[QStringLiteral("stLevelDbMigratedSize")] = formattedDatabaseSize(QStringLiteral("index-v0.14.0.db-migrated"), QStringLiteral("*.ldb"));
+    res[QStringLiteral("stSQLiteDbSize")] = formattedDatabaseSize(QStringLiteral("index-v2"), QStringLiteral("*.db*"));
 #ifdef Q_OS_ANDROID
     res[QStringLiteral("extFilesDir")] = externalFilesDir();
     res[QStringLiteral("extStoragePaths")] = externalStoragePaths();
@@ -604,6 +617,11 @@ bool App::loadStatistics(const QJSValue &callback)
     auto query = m_connection.requestJsonData(
         QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
             auto report = doc.object().toVariantMap();
+            report[QStringLiteral("uptime")] = QString::fromStdString(CppUtilities::TimeSpan::fromSeconds(report[QStringLiteral("uptime")].toDouble()).toString(CppUtilities::TimeSpanOutputFormat::WithMeasures));
+            report[QStringLiteral("memoryUsage")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("memoryUsageMiB")).toDouble() * 1024 * 1024)));
+            report[QStringLiteral("processRSS")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("processRSSMiB")).toDouble() * 1024 * 1024)));
+            report[QStringLiteral("memorySize")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report[QStringLiteral("memorySize")].toDouble() * 1024 * 1024)));
+            report[QStringLiteral("totSize")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("totMiB")).toDouble() * 1024 * 1024)));
             statistics(report);
             callback.call(QJSValueList({ m_engine->toScriptValue(report), QJSValue(std::move(error)) }));
         });

@@ -24,7 +24,7 @@ DelegateChooser {
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: modelData.value.toString()
+                        text: modelData.value?.toString() ?? ""
                         elide: Text.ElideRight
                         font.weight: Font.Light
                         wrapMode: Text.WordWrap

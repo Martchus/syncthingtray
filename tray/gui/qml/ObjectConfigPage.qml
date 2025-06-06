@@ -40,11 +40,14 @@ Page {
                             if (typeof init === "function") {
                                 configObject[key] = init();
                             }
-                            indexByKey[key] = index;
-                            listModel.append(objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, configObject[key], index++));
-                        } else {
-                            indexByKey[key] = -1;
+                            const value = configObject[key];
+                            if ((value !== undefined && value !== null) || !specialEntry.optional) {
+                                indexByKey[key] = index;
+                                listModel.append(objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, value, index++));
+                                return;
+                            }
                         }
+                        indexByKey[key] = -1;
                     });
                     if (objectConfigPage.specialEntriesOnly) {
                         return;

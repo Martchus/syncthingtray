@@ -185,6 +185,8 @@ public:
     {
         return !m_internalErrors.isEmpty();
     }
+    qint64 databaseSize(const QString &path, const QString &extension) const;
+    QVariant formattedDatabaseSize(const QString &path, const QString &extension) const;
     QVariantMap statistics() const;
     void statistics(QVariantMap &res) const;
     bool isSavingConfig() const
