@@ -28,7 +28,7 @@ ApplicationWindow {
     Component.onCompleted: {
         // handle global keyboard and mouse events
         appWindow.contentItem.forceActiveFocus(Qt.ActiveWindowFocusReason);
-        appWindow.contentItem.Keys.released.connect((event) => {
+        [appWindow.contentItem, appWindow.header, appWindow.footer].forEach(item => item.Keys.released.connect((event) => {
             const key = event.key;
             if (key === Qt.Key_Back || (key === Qt.Key_Backspace && typeof activeFocusItem.getText !== "function")) {
                 const dialog = App.currentDialog;
@@ -43,7 +43,7 @@ ApplicationWindow {
             } else if (key === Qt.Key_F5) {
                 event.accepted = App.reloadMain();
             }
-        });
+        }));
     }
     onVisibleChanged: App.setCurrentControls(appWindow.visible, pageStack.currentIndex)
     onActiveFocusItemChanged: {
