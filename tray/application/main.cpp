@@ -7,6 +7,7 @@
 
 #ifdef GUI_QTQUICK
 #include "../gui/quick/app.h"
+#include "../gui/quick/appservice.h"
 #endif
 
 #include <syncthingwidgets/misc/syncthinglauncher.h>
@@ -68,6 +69,8 @@ Q_IMPORT_QML_PLUGIN(WebViewItemPlugin)
 #ifdef Q_OS_ANDROID
 #include <QDebug>
 #include <QSslSocket>
+#include <QtCore/private/qandroidextras_p.h>
+#include <QtGui/private/qhighdpiscaling_p.h>
 #endif
 
 using namespace std;
@@ -245,6 +248,9 @@ static int runApplication(int argc, const char *const *argv)
     });
     syncthingArg.setSubArguments({ &syncthingHelp });
 #endif
+#ifdef Q_OS_ANDROID
+    auto serviceArg = OperationArgument("service", '\0', "runs service");
+#endif
 
     parser.setMainArguments({
 #ifdef GUI_QTWIDGETS
@@ -255,6 +261,9 @@ static int runApplication(int argc, const char *const *argv)
 #endif
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
         &cliArg, &syncthingArg,
+#endif
+#ifdef Q_OS_ANDROID
+        &serviceArg,
 #endif
         &parser.noColorArg(), &parser.helpArg(),
 #ifdef GUI_QTWIDGETS
@@ -282,6 +291,25 @@ static int runApplication(int argc, const char *const *argv)
     }
 #endif
 
+#ifdef Q_OS_ANDROID
+    if (serviceArg.isPresent()) {
+        qDebug() << "Initializing service";
+        SET_QT_APPLICATION_INFO;
+        qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
+        const auto scaleFactor = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jfloat>("scaleFactor", "()F");
+        qDebug() << "Scale factor for notification/service icons: " << scaleFactor;
+        QHighDpiScaling::setGlobalFactor(scaleFactor);
+        auto androidService = QAndroidService(argc, const_cast<char **>(argv));
+        auto guiApp = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
+        auto serviceApp = AppService(insecureArg.isPresent());
+        networkAccessManager().setParent(&androidService);
+        qDebug() << "Executing service";
+        const auto res = androidService.exec();
+        qDebug() << "Qt service event loop exited with return code " << res;
+        return res;
+    }
+#endif
+
 #ifdef GUI_QTQUICK
     if (quickGuiArg.isPresent()) {
         qDebug() << "Initializing Qt Quick GUI";
@@ -296,20 +324,33 @@ static int runApplication(int argc, const char *const *argv)
         SET_QT_APPLICATION_INFO;
         auto app = QtApp(argc, const_cast<char **>(argv));
         LOAD_QT_TRANSLATIONS;
-#if defined(Q_OS_ANDROID)
-        qDebug() << "Running Qt Quick GUI";
-#if !defined(QT_NO_SSL)
+#if defined(Q_OS_ANDROID) && !defined(QT_NO_SSL)
         qDebug() << "TLS support available: " << QSslSocket::supportsSsl();
-#endif
 #endif
         qtConfigArgs.applySettings(true);
         networkAccessManager().setParent(&app);
-
+#if !defined(Q_OS_ANDROID)
+        auto appService = AppService(insecureArg.isPresent());
+#endif
         auto quickApp = App(insecureArg.isPresent());
-        QObject::connect(&app, &QCoreApplication::aboutToQuit, &quickApp, &App::shutdown);
+#if !defined(Q_OS_ANDROID)
+        QObject::connect(&quickApp, &App::syncthingTerminationRequested, &appService, &AppService::terminateSyncthing);
+        QObject::connect(&quickApp, &App::syncthingRestartRequested, &appService, &AppService::restartSyncthing);
+        QObject::connect(&quickApp, &App::syncthingShutdownRequested, &appService, &AppService::shutdownSyncthing);
+        QObject::connect(&quickApp, &App::syncthingConnectRequested, appService.connection(),
+            static_cast<void (SyncthingConnection::*)()>(&SyncthingConnection::connect));
+        QObject::connect(&quickApp, &App::settingsReloadRequested, &appService, &AppService::reloadSettings);
+        QObject::connect(&quickApp, &App::launcherStatusRequested, &appService, &AppService::broadcastLauncherStatus);
+        QObject::connect(&quickApp, &App::clearLogRequested, &appService, &AppService::clearLog);
+        QObject::connect(&quickApp, &App::replayLogRequested, &appService, &AppService::replayLog);
+        QObject::connect(&appService, &AppService::launcherStatusChanged, &quickApp, &App::handleLauncherStatusBroadcast);
+        QObject::connect(&appService, &AppService::logsAvailable, &quickApp, &App::logsAvailable);
+        QObject::connect(&appService, &AppService::error, &quickApp, &App::error);
+        appService.broadcastLauncherStatus();
+#endif
         const auto res = app.exec();
 #if defined(Q_OS_ANDROID)
-        qDebug() << "Qt event loop exited with return code " << res;
+        qDebug() << "Qt UI event loop exited with return code " << res;
 #endif
         return res;
     }

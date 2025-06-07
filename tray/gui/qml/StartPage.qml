@@ -360,18 +360,12 @@ Page {
         Action {
             text: qsTr("Restart")
             icon.source: App.faUrlBase + "refresh"
-            onTriggered: {
-                App.launcher.manuallyStopped = true;
-                App.connection.restart();
-            }
+            onTriggered: App.restartSyncthing()
         },
         Action {
             text: qsTr("Shutdown")
             icon.source: App.faUrlBase + "power-off"
-            onTriggered: {
-                App.launcher.manuallyStopped = true;
-                App.connection.shutdown();
-            }
+            onTriggered: App.shutdownSyncthing()
         },
         Action {
             text: qsTr("Quit app")

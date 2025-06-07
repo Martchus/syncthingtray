@@ -77,6 +77,7 @@ public:
     bool shouldLaunchAccordingToSettings() const;
     QString errorString() const;
     QUrl guiUrl() const;
+    QVariant overallStatus() const;
     SyncthingProcess *process();
     const SyncthingProcess *process() const;
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING

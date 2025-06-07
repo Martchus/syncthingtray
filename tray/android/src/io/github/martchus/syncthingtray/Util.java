@@ -22,8 +22,21 @@ public class Util {
     private static final String DOWNLOADS_VOLUME_NAME = "downloads";
     private static final String PRIMARY_VOLUME_NAME = "primary";
     private static final String HOME_VOLUME_NAME = "home";
+    private static boolean m_initialized = false;
 
     private Util() {
+    }
+
+    public static void init() {
+        if (m_initialized) {
+            return;
+        }
+
+        // workaround https://github.com/golang/go/issues/70508
+        System.loadLibrary("androidsignalhandler");
+        initSigsysHandler();
+
+        m_initialized = true;
     }
 
     public static String getAbsolutePathFromStorageAccessFrameworkUri(Context context, final Uri uri) {
@@ -97,4 +110,6 @@ public class Util {
         }
         return volumeId;
     }
+
+    private static native void initSigsysHandler();
 }

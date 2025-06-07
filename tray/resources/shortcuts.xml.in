@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <shortcut
+        android:shortcutId="start_service"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/shortcut_start_service">
+        <intent
+            android:action="@META_PROJECT_RDNS@.intent.action.START_SERVICE"
+            android:targetPackage="@META_PROJECT_RDNS@" />
+    </shortcut>
+</shortcuts>

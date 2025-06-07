@@ -41,8 +41,15 @@ set(WIDGETS_SRC_FILES
     gui/helper.cpp)
 set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 set(WIDGETS_UI_FILES gui/traywidget.ui)
-set(QML_HEADER_FILES gui/quick/app.h gui/quick/scenegraph/managedtexturenode.h)
-set(QML_SRC_FILES gui/quick/app.cpp gui/quick/scenegraph/managedtexturenode.cpp)
+set(QML_HEADER_FILES gui/quick/appbase.h gui/quick/appservice.h gui/quick/app.h gui/quick/scenegraph/managedtexturenode.h)
+set(QML_SRC_FILES gui/quick/appbase.cpp gui/quick/appservice.cpp gui/quick/app.cpp
+                  gui/quick/scenegraph/managedtexturenode.cpp)
+if (ANDROID)
+    list(APPEND QML_HEADER_FILES gui/quick/android.h)
+    list(APPEND QML_SRC_FILES gui/quick/android.cpp)
+else ()
+    list(APPEND EXCLUDED_FILES gui/quick/android.h gui/quick/android.cpp)
+endif ()
 
 set(TS_FILES
     translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
@@ -147,6 +154,13 @@ endif ()
 
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
+
+if (ANDROID)
+    # enable private Qt headers for QAndroidService and QAndroidIntent
+    list(APPEND ADDITIONAL_QT_MODULES CorePrivate)
+    # enable private Qt headers for QHighDpiScaling
+    list(APPEND ADDITIONAL_QT_MODULES GuiPrivate)
+endif ()
 
 # configure libsyncthing
 option(USE_LIBSYNCTHING "whether libsyncthing should be included for syncthingtray's CLI" OFF)
@@ -418,6 +432,8 @@ if (ANDROID)
 
     set(ANDROID_MANIFEST_PATH "${ANDROID_PACKAGE_SOURCE_DIR}/AndroidManifest.xml")
     configure_file("resources/AndroidManifest.xml.in" "${ANDROID_MANIFEST_PATH}" @ONLY)
+    set(ANDROID_SHORTCUTS_PATH "${ANDROID_PACKAGE_SOURCE_DIR}/res/xml/shortcuts.xml")
+    configure_file("resources/shortcuts.xml.in" "${ANDROID_SHORTCUTS_PATH}" @ONLY)
 
     find_package(OpenSSL)
     if (OPENSSL_FOUND)
@@ -435,16 +451,24 @@ if (ANDROID)
     # specify required plugins so androiddeployqt knows what we need and don't need
     # cmake-format: off
     qt_import_plugins(${META_TARGET_NAME}
-        INCLUDE_BY_TYPE imageformats Qt::QSvgPlugin Qt::QPngPlugin
-        INCLUDE_BY_TYPE iconengines Qt::QSvgIconPlugin
-        INCLUDE_BY_TYPE tls Qt::QTlsBackendOpenSSLPlugin
-        INCLUDE_BY_TYPE networkinformation Qt::QAndroidNetworkInformationPlugin
-        INCLUDE_BY_TYPE platforms Qt::QAndroidIntegrationPlugin
+        INCLUDE_BY_TYPE imageformats ${QT_PACKAGE_PREFIX}::QSvgPlugin
+        INCLUDE_BY_TYPE iconengines ${QT_PACKAGE_PREFIX}::QSvgIconPlugin
+        INCLUDE_BY_TYPE tls ${QT_PACKAGE_PREFIX}::QTlsBackendOpenSSLPlugin
+        INCLUDE_BY_TYPE networkinformation ${QT_PACKAGE_PREFIX}::QAndroidNetworkInformationPlugin
+        INCLUDE_BY_TYPE platforms ${QT_PACKAGE_PREFIX}::QAndroidIntegrationPlugin ${QT_PACKAGE_PREFIX}::QMinimalIntegrationPlugin
         EXCLUDE_BY_TYPE platforminputcontexts webview
     )
     # cmake-format: on
     if (NOT CMAKE_BUILD_TYPE STREQUAL Debug)
         qt_import_plugins(${META_TARGET_NAME} EXCLUDE_BY_TYPE qmltooling)
+    endif ()
+
+    # assert existance of required platform plugins as those MUST be present (or the app will crash on startup)
+    if (NOT TARGET ${QT_PACKAGE_PREFIX}::QAndroidIntegrationPlugin)
+        message(FATAL_ERROR "The required Android platform plugin is not present in your Qt build.")
+    endif ()
+    if (NOT TARGET ${QT_PACKAGE_PREFIX}::QMinimalIntegrationPlugin)
+        message(FATAL_ERROR "The required \"minimal\" platform plugin is not present in your Qt build.")
     endif ()
 
     if (USE_LIBSYNCTHING)

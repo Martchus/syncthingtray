@@ -52,7 +52,7 @@ ApplicationWindow {
         }
     }
     onClosing: (event) => {
-        if (!appWindow.forceClose && App.launcher.running) {
+        if (!appWindow.forceClose && App.syncthingRunning) {
             event.accepted = false;
             closeDialog.open();
         }

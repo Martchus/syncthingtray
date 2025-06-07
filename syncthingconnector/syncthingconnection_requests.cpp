@@ -673,6 +673,7 @@ void SyncthingConnection::readClearingErrors()
 
     switch (reply->error()) {
     case QNetworkReply::NoError:
+        emit errorsCleared();
         requestErrors();
         if (m_errorsPollTimer.isActive()) {
             m_errorsPollTimer.start(); // this stops and restarts the active timer to reset the remaining time

@@ -579,4 +579,18 @@ void SyncthingLauncher::showLibSyncthingNotSupported(QByteArray &&reason)
     emit exited(exitStatus.code, exitStatus.status);
 }
 
+QVariant SyncthingLauncher::overallStatus() const
+{
+    const auto isMetered = isNetworkConnectionMetered();
+    return QVariantMap{
+        { QStringLiteral("isRunning"), isRunning() },
+        { QStringLiteral("isStarting"), isStarting() },
+        { QStringLiteral("isManuallyStopped"), isManuallyStopped() },
+        { QStringLiteral("guiUrl"), guiUrl() },
+        { QStringLiteral("errorString"), errorString() },
+        { QStringLiteral("runningStatus"), runningStatus() },
+        { QStringLiteral("isMetered"), isMetered.has_value() ? QVariant(isMetered.value()) : QVariant() },
+    };
+}
+
 } // namespace Data

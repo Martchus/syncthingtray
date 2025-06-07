@@ -28,7 +28,7 @@ static void initSigsysHandler()
 extern "C" {
 
 JNIEXPORT void JNICALL
-Java_io_github_martchus_syncthingtray_Activity_initSigsysHandler(JNIEnv *env, jobject thiz)
+Java_io_github_martchus_syncthingtray_Util_initSigsysHandler(JNIEnv *env, jobject thiz)
 {
     initSigsysHandler();
 }

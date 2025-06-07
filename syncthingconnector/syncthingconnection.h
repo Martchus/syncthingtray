@@ -408,6 +408,7 @@ Q_SIGNALS:
     void directoryResumeTriggered(const QStringList &dirIds);
     void restartTriggered();
     void shutdownTriggered();
+    void errorsCleared();
     void logAvailable(const std::vector<Data::SyncthingLogEntry> &logEntries);
     void qrCodeAvailable(const QString &text, const QByteArray &qrCodeData);
     void overrideTriggered(const QString &dirId);
