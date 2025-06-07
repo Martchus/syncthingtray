@@ -65,6 +65,23 @@
             <meta-data
                 android:name="android.app.background_running_after_destruction"
                 android:value="@META_BACKGROUND_RUNNING_AFTER_DESTRUCTION@" />
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+        <activity
+            android:name=".StartServiceActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="unspecified"
+            android:theme="@style/AppTheme"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="@META_PROJECT_RDNS@.intent.action.START_SERVICE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.splash_screen_drawable"
+                android:resource="@drawable/splash" />
         </activity>
         <service android:name=".SyncthingService" android:foregroundServiceType="specialUse" android:exported="true">
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="Synchronizes files continuously in the background."/>
