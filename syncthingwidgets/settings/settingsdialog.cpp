@@ -6,6 +6,10 @@
 
 #include <qtutilities/misc/compat.h>
 
+#ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
+#include <qtutilities/setup/updater.h>
+#endif
+
 #include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingprocess.h>
@@ -1773,6 +1777,30 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 {
     setWindowFlags(windowFlags() | Qt::WindowMaximizeButtonHint);
 
+#ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
+    // initialize option page for updating
+    auto *const updateOptionPage = new UpdateOptionPage(QtUtilities::UpdateHandler::mainInstance(), this);
+    updateOptionPage->setRestartHandler([] {
+        auto *const updateHandler = QtUtilities::UpdateHandler::mainInstance();
+        if (!updateHandler) {
+            return;
+        }
+        auto *const process = new Data::SyncthingProcess();
+        QObject::connect(process, &Data::SyncthingProcess::finished, process, &QObject::deleteLater);
+        QObject::connect(process, &Data::SyncthingProcess::errorOccurred, process, [process] {
+            auto messageBox = QMessageBox();
+            messageBox.setWindowTitle(QStringLiteral("Syncthing"));
+            messageBox.setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+            messageBox.setIcon(QMessageBox::Critical);
+            messageBox.setText(
+                QCoreApplication::translate("QtGui", "Unable to restart via \"%1\": %2").arg(process->program(), process->errorString()));
+            messageBox.exec();
+        });
+        process->setProcessChannelMode(QProcess::ForwardedChannels);
+        process->start(updateHandler->updater()->storedPath(), QStringList({ QStringLiteral("qt-widgets-gui"), QStringLiteral("--replace") }));
+    });
+#endif
+
     // setup categories
     QList<OptionCategory *> categories;
     OptionCategory *category;
@@ -1796,14 +1824,20 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     translateCategory(category, [] { return tr("Startup"); });
     category->assignPages({ new AutostartOptionPage, new LauncherOptionPage,
         new LauncherOptionPage(QStringLiteral("Process"), tr("additional tool"), tr("Extra launcher"))
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
             ,
+        updateOptionPage
+#endif
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        ,
         new SystemdOptionPage
 #endif
     });
     category->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
     m_launcherSettingsCategory = static_cast<int>(categories.size());
     m_launcherSettingsPageIndex = 1;
+    m_updateSettingsCategory = m_launcherSettingsCategory;
+    m_updateSettingsPageIndex = 3;
     categories << category;
 
     categories << values().qt.category();
@@ -1851,6 +1885,13 @@ void SettingsDialog::selectLauncherSettings()
 {
     if (m_launcherSettingsCategory >= 0 && m_launcherSettingsPageIndex >= 0) {
         selectPage(m_launcherSettingsCategory, m_launcherSettingsPageIndex);
+    }
+}
+
+void SettingsDialog::selectUpdateSettings()
+{
+    if (m_updateSettingsCategory >= 0 && m_updateSettingsPageIndex >= 0) {
+        selectPage(m_updateSettingsCategory, m_updateSettingsPageIndex);
     }
 }
 

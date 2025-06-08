@@ -113,6 +113,7 @@ set(REQUIRED_ICONS
     system-run
     system-search
     system-file-manager
+    system-software-update-symbolic
     text-x-generic
     quickwizard
     view-refresh
@@ -216,6 +217,24 @@ Exec=${SYNCTHINGCTL_TARGET_NAME} resume --all-devs\n\
 Name=Restart Syncthing (local instance)\n\
 Exec=${SYNCTHINGCTL_TARGET_NAME} restart")
 set(DESKTOP_FILE_ADDITIONAL_ENTRIES "${DESKTOP_FILE_ADDITIONAL_ENTRIES}${ACTIONS}\n")
+
+# configure whether setup tools are enabled
+option(
+    SETUP_TOOLS
+    "enables setup tools; needs qtutilities and syncthingwidgets built with this option as well; makes likely sense to disable when distributing via a package manager"
+    OFF)
+if (SETUP_TOOLS)
+    if (NOT USE_LIBSYNCTHING)
+        message(
+            FATAL_ERROR
+                "When enabling SETUP_TOOLS you must also enable USE_LIBSYNCTHING as this feature uses the signature verification from Syncthing."
+        )
+    endif ()
+    set_property(
+        SOURCE application/main.cpp gui/traywidget.cpp
+        APPEND
+        PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SETUP_TOOLS_ENABLED)
+endif ()
 
 # configure Qt Quick GUI
 include(QtGuiConfig)

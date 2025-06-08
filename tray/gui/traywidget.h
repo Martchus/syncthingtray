@@ -66,6 +66,7 @@ public:
 public Q_SLOTS:
     void showSettingsDialog();
     void showLauncherSettings();
+    void showUpdateSettings();
     void showWizard();
     void showAboutDialog();
     void showWebUI();
@@ -124,6 +125,7 @@ private Q_SLOTS:
     void setBrightColorsOfModelsAccordingToPalette();
     void setLabelPixmaps();
     void setTrafficPixmaps(bool recompute = false);
+    void connectWithUpdateNotifier();
 
 private:
     TrayMenu *m_menu;

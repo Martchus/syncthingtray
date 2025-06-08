@@ -34,6 +34,10 @@
 #include <qtutilities/resources/resources.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 
+#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+#include <qtutilities/setup/updater.h>
+#endif
+
 #include <c++utilities/application/argumentparser.h>
 #include <c++utilities/conversion/stringconversion.h>
 
@@ -97,9 +101,16 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     // take record of the newly created instance
     s_instances.push_back(this);
 
-    // show the connection configuration in the previous icon's tooltip as soon as there's a 2nd icon
-    if (s_instances.size() == 2) {
+    // tweak behavior to deal with the presence of more than one tray widgets
+    switch (s_instances.size()) {
+    case 1:
+        // show notifications about new versions only via the first instance (and not all at the same time)
+        connectWithUpdateNotifier();
+        break;
+    case 2:
+        // show the connection configuration in the previous icon's tooltip as soon as there's a 2nd icon
         s_instances.front()->updateIconAndTooltip();
+        break;
     }
 
     m_ui->setupUi(this);
@@ -239,6 +250,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 TrayWidget::~TrayWidget()
 {
     auto i = std::find(s_instances.begin(), s_instances.end(), this);
+    auto wasFirst = i == s_instances.begin();
     if (i != s_instances.end()) {
         s_instances.erase(i);
     }
@@ -246,8 +258,14 @@ TrayWidget::~TrayWidget()
         delete s_settingsDlg;
         delete s_aboutDlg;
         QCoreApplication::quit();
-    } else if (s_instances.size() == 1) {
-        s_instances.front()->updateIconAndTooltip();
+    } else {
+        auto *const remainingInstance = s_instances.front();
+        if (wasFirst) {
+            remainingInstance->connectWithUpdateNotifier();
+        }
+        if (s_instances.size() == 1) {
+            remainingInstance->updateIconAndTooltip();
+        }
     }
 }
 
@@ -281,6 +299,12 @@ void TrayWidget::showLauncherSettings()
 {
     showSettingsDialog();
     settingsDialog()->selectLauncherSettings();
+}
+
+void TrayWidget::showUpdateSettings()
+{
+    showSettingsDialog();
+    settingsDialog()->selectUpdateSettings();
 }
 
 void TrayWidget::showWizard()
@@ -1062,6 +1086,15 @@ void TrayWidget::setTrafficPixmaps(bool recompute)
         m_connection.totalIncomingRate() > 0.0 ? m_trafficIcons.downloadIconActive : m_trafficIcons.downloadIconInactive);
     m_ui->trafficOutTextLabel->setPixmap(
         m_connection.totalOutgoingRate() > 0.0 ? m_trafficIcons.uploadIconActive : m_trafficIcons.uploadIconInactive);
+}
+
+void TrayWidget::connectWithUpdateNotifier()
+{
+#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+    if (auto *const updateHandler = QtUtilities::UpdateHandler::mainInstance()) {
+        connect(updateHandler->notifier(), &QtUtilities::UpdateNotifier::updateAvailable, m_menu->icon(), &TrayIcon::showNewVersionAvailable);
+    }
+#endif
 }
 
 } // namespace QtGui

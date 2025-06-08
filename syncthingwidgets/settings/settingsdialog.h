@@ -205,6 +205,7 @@ public:
     ~SettingsDialog() override;
     void hideConnectionStatus();
     void selectLauncherSettings();
+    void selectUpdateSettings();
 
 Q_SIGNALS:
     void wizardRequested();
@@ -218,6 +219,7 @@ private:
     ConnectionOptionPage *m_connectionsOptionPage = nullptr;
     AppearanceOptionPage *m_appearanceOptionPage = nullptr;
     int m_launcherSettingsCategory = -1, m_launcherSettingsPageIndex = -1;
+    int m_updateSettingsCategory = -1, m_updateSettingsPageIndex = -1;
 };
 } // namespace QtGui
 

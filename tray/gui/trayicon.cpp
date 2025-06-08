@@ -112,6 +112,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, &widget, &TrayWidget::showNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &TrayIcon::showInternalErrorsDialog);
     connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, &widget, &TrayWidget::showWebUI);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::updateSettingsRequested, &widget, &TrayWidget::showUpdateSettings);
     connect(&notifier, &SyncthingNotifier::connected, &m_dbusNotifier, &DBusStatusNotifier::hideDisconnect);
 #endif
 
@@ -150,6 +151,9 @@ void TrayIcon::handleMessageClicked()
         break;
     case TrayIconMessageClickedAction::ShowWebUi:
         trayMenu().widget().showWebUI();
+        break;
+    case TrayIconMessageClickedAction::ShowUpdateSettings:
+        trayMenu().widget().showUpdateSettings();
         break;
     }
 }
@@ -286,6 +290,21 @@ void TrayIcon::showNewDir(const QString &devId, const QString &dirId, const QStr
     {
         m_messageClickedAction = TrayIconMessageClickedAction::ShowWebUi;
         showMessage(tr("New Syncthing folder - click for web UI"), message, QSystemTrayIcon::Information);
+    }
+}
+
+void TrayIcon::showNewVersionAvailable(const QString &version, const QString &additionalInfo)
+{
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    if (m_dbusNotificationsEnabled) {
+        m_dbusNotifier.showNewVersionAvailable(version, additionalInfo);
+    } else
+#else
+    Q_UNUSED(additionalInfo)
+#endif
+    {
+        m_messageClickedAction = TrayIconMessageClickedAction::ShowUpdateSettings;
+        showMessage(tr("New version - click to open updater"), tr("Version %1 is available").arg(version), QSystemTrayIcon::Information);
     }
 }
 

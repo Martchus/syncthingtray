@@ -81,6 +81,7 @@ set(REQUIRED_ICONS
     preferences-desktop-notification
     preferences-system-startup
     preferences-system-services
+    system-software-update-symbolic
     view-refresh
     emblem-checked
     network-connect
@@ -142,6 +143,18 @@ if (AUTOSTART_EXEC_PATH)
         SOURCE settings/settingsdialog.cpp
         APPEND
         PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_AUTOSTART_EXEC_PATH="${AUTOSTART_EXEC_PATH}")
+endif ()
+
+# configure whether setup tools are enabled
+option(
+    SETUP_TOOLS
+    "enables setup tools; needs qtutilities built with this option as well; makes likely sense to disable when distributing via a package manager"
+    OFF)
+if (SETUP_TOOLS)
+    set_property(
+        SOURCE settings/settingsdialog.cpp
+        APPEND
+        PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED)
 endif ()
 
 # link also explicitly against the following Qt modules

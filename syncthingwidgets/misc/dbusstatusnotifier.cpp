@@ -28,6 +28,7 @@ DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
     , m_syncCompleteNotification(QStringLiteral(APP_NAME), NotificationIcon::Information, 5000)
     , m_newDevNotification(QStringLiteral(APP_NAME) + tr(" - new device"), NotificationIcon::Information, 5000)
     , m_newDirNotification(QStringLiteral(APP_NAME) + tr(" - new folder"), NotificationIcon::Information, 5000)
+    , m_newVersionNotification(QStringLiteral(APP_NAME) + tr(" - new version"), NotificationIcon::Information, 5000)
 {
     m_disconnectedNotification.setApplicationName(QStringLiteral(APP_NAME));
     m_disconnectedNotification.setMessage(tr("Disconnected from Syncthing"));
@@ -56,6 +57,10 @@ DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
     m_newDirNotification.setActions(m_newDevNotification.actions());
     connect(&m_newDirNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::webUiRequested);
 
+    m_newVersionNotification.setApplicationName(QStringLiteral(APP_NAME));
+    m_newVersionNotification.setActions(QStringList({ QStringLiteral("update"), tr("Open updater") }));
+    connect(&m_newVersionNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::updateSettingsRequested);
+
     const auto &iconManager = IconManager::instance();
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &DBusStatusNotifier::setIcons);
     setIcons(iconManager.statusIcons(), iconManager.trayIcons());
@@ -72,6 +77,7 @@ void DBusStatusNotifier::setIcons(const StatusIcons &, const StatusIcons &icons)
     m_syncCompleteNotification.setImage(makeImage(icons.syncComplete));
     m_newDevNotification.setImage(makeImage(icons.newItem));
     m_newDirNotification.setImage(m_newDevNotification.image());
+    m_newVersionNotification.setImage(makeImage(icons.idling));
 }
 
 void DBusStatusNotifier::handleSyncthingNotificationAction(const QString &action)

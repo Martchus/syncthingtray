@@ -259,11 +259,16 @@ static void setVarFromEnv(bool &var, const char *envVar)
     }
 }
 
+QSettings &settings()
+{
+    static auto s = QtUtilities::getSettings(QStringLiteral(PROJECT_NAME));
+    return *s;
+}
+
 bool restore()
 {
-    auto s = QtUtilities::getSettings(QStringLiteral(PROJECT_NAME));
+    auto &settings = ::Settings::settings();
     auto &v = values();
-    auto &settings = *s;
     v.error = QtUtilities::errorMessageForSettings(settings);
 
     const auto version = QVersionNumber::fromString(settings.value(QStringLiteral("v")).toString());
@@ -437,8 +442,7 @@ bool restore()
 
 bool save()
 {
-    auto s = QtUtilities::getSettings(QStringLiteral(PROJECT_NAME));
-    auto &settings = *s;
+    auto &settings = ::Settings::settings();
     auto &v = values();
 
     settings.setValue(QStringLiteral("v"), QStringLiteral(APP_VERSION));

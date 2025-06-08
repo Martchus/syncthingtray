@@ -40,6 +40,10 @@
 #include <qtutilities/resources/resources.h>
 #include <qtutilities/settingsdialog/qtsettings.h>
 
+#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+#include <qtutilities/setup/updater.h>
+#endif
+
 #include <QNetworkAccessManager>
 #include <QSettings>
 #include <QStringBuilder>
@@ -97,6 +101,19 @@ static void handleSystemdServiceError(const QString &context, const QString &nam
     msgBox->setInformativeText(name % QStringLiteral(":\n") % message);
     msgBox->show();
 }
+#endif
+
+#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+// clang-format off
+constexpr auto signingKey = std::string_view(
+R"(-----BEGIN EC PUBLIC KEY-----
+MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBzGxkQSS43eE4r+A7HjlcEch5apsn
+fKOgJWaRE2TOD9dNoBO2RSaJEAzzOXg2BPMsiPdr+Ty99FZtX8fmIcgJHGoB3sE1
+PmSOaw3YWAXrHUYslrVRJI4iYCLuT4qjFMHgmqvphEE/zGDZ5Tyu6FwVlSjCO4Yy
+FdsjpzKV6nrX6EsK++o=
+-----END EC PUBLIC KEY-----
+)");
+// clang-format on
 #endif
 
 QObject *parentObject = nullptr;
@@ -414,6 +431,17 @@ static int runApplication(int argc, const char *const *argv)
         if (settings.icons.preferIconsFromTheme) {
             Data::setForkAwesomeThemeOverrides();
         }
+#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+        auto updateHandler = QtUtilities::UpdateHandler(&Settings::settings(), &networkAccessManager());
+        updateHandler.updater()->setVerifier([](const QtUtilities::Updater::Update &update) {
+            if (update.signature.empty()) {
+                return QStringLiteral("empty/non-existent signature");
+            }
+            return QString::fromUtf8(LibSyncthing::verify(signingKey, update.signature, update.data));
+        });
+        updateHandler.applySettings();
+        QtUtilities::UpdateHandler::setMainInstance(&updateHandler);
+#endif
 
         // init Syncthing Tray and immediately shutdown on failure
         auto parent = QObject();

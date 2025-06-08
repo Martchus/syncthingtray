@@ -32,6 +32,7 @@ public Q_SLOTS:
     void showSyncComplete(const QString &message);
     void showNewDev(const QString &devId, const QString &message);
     void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
+    void showNewVersionAvailable(const QString &version, const QString &additionalInfo);
     void setIcons(const Data::StatusIcons &statusIcons, const Data::StatusIcons &icons);
 
 Q_SIGNALS:
@@ -40,6 +41,7 @@ Q_SIGNALS:
     void showNotificationsRequested();
     void errorDetailsRequested();
     void webUiRequested();
+    void updateSettingsRequested();
 
 private Q_SLOTS:
     void handleSyncthingNotificationAction(const QString &action);
@@ -52,6 +54,7 @@ private:
     QtUtilities::DBusNotification m_syncCompleteNotification;
     QtUtilities::DBusNotification m_newDevNotification;
     QtUtilities::DBusNotification m_newDirNotification;
+    QtUtilities::DBusNotification m_newVersionNotification;
 };
 
 inline void DBusStatusNotifier::showDisconnect()
@@ -97,6 +100,13 @@ inline void DBusStatusNotifier::showNewDir(const QString &devId, const QString &
     Q_UNUSED(dirId)
     Q_UNUSED(dirLabel)
     m_newDirNotification.update(message);
+}
+
+inline void DBusStatusNotifier::showNewVersionAvailable(const QString &version, const QString &additionalInfo)
+{
+    Q_UNUSED(additionalInfo)
+    m_newVersionNotification.setMessage(tr("Version %1 is available").arg(version));
+    m_newVersionNotification.show();
 }
 
 } // namespace QtGui
