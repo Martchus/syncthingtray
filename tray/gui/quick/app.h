@@ -90,6 +90,7 @@ class App : public QObject {
 
 public:
     explicit App(bool insecure, QObject *parent = nullptr);
+    ~App();
     static App *create(QQmlEngine *, QJSEngine *engine);
 
     // properties

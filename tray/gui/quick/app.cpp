@@ -262,6 +262,14 @@ App::App(bool insecure, QObject *parent)
     qDebug() << "App initialized";
 }
 
+App::~App()
+{
+    qDebug() << "Destorying app";
+    if (JniFn::appObjectForJava == this) {
+        JniFn::appObjectForJava = nullptr;
+    }
+}
+
 App *App::create(QQmlEngine *qmlEngine, QJSEngine *engine)
 {
     auto *const app = engine->property("app").value<App *>();
