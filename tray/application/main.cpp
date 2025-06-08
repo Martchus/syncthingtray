@@ -245,6 +245,9 @@ static int runApplication(int argc, const char *const *argv)
     });
     syncthingArg.setSubArguments({ &syncthingHelp });
 #endif
+#ifdef Q_OS_ANDROID
+    auto serviceArg = OperationArgument("service", '\0', "runs service");
+#endif
 
     parser.setMainArguments({
 #ifdef GUI_QTWIDGETS
@@ -256,6 +259,9 @@ static int runApplication(int argc, const char *const *argv)
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
         &cliArg, &syncthingArg,
 #endif
+#ifdef Q_OS_ANDROID
+        &serviceArg,
+#endif
         &parser.noColorArg(), &parser.helpArg(),
 #ifdef GUI_QTWIDGETS
         &quitArg
@@ -264,7 +270,10 @@ static int runApplication(int argc, const char *const *argv)
 
     // parse arguments
 #if defined(Q_OS_ANDROID)
-    qDebug() << "Parsing CLI arguments";
+    qDebug() << "Parsing CLI arguments: ";
+    for (int i = 0; i != argc; ++i) {
+        qDebug() << "arg: " << argv[i];
+    }
     parser.setExitFunction([](int status) {
         qWarning() << "Unable to parse CLI arguments, exiting early";
         std::exit(status);
@@ -279,6 +288,19 @@ static int runApplication(int argc, const char *const *argv)
         std::cerr << EscapeCodes::Phrases::Info << "Quitting as told by another instance" << EscapeCodes::Phrases::EndFlush;
         QCoreApplication::quit();
         return EXIT_SUCCESS;
+    }
+#endif
+
+#ifdef Q_OS_ANDROID
+    if (serviceArg.isPresent()) {
+        qDebug() << "Initializing service";
+        SET_QT_APPLICATION_INFO;
+        auto app = QCoreApplication(argc, const_cast<char **>(argv));
+        networkAccessManager().setParent(&app);
+        auto serviceOnlyApp = App(insecureArg.isPresent());
+        const auto res = app.exec();
+        //networkAccessManager().setParent(nullptr);
+        return res;
     }
 #endif
 
@@ -304,9 +326,7 @@ static int runApplication(int argc, const char *const *argv)
 #endif
         qtConfigArgs.applySettings(true);
         networkAccessManager().setParent(&app);
-
         auto quickApp = App(insecureArg.isPresent());
-        QObject::connect(&app, &QCoreApplication::aboutToQuit, &quickApp, &App::shutdown);
         const auto res = app.exec();
 #if defined(Q_OS_ANDROID)
         qDebug() << "Qt event loop exited with return code " << res;

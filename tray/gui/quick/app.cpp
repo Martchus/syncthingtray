@@ -134,7 +134,7 @@ static void handleNotificationPermissionChanged(JNIEnv *, jobject, jboolean noti
 
 App::App(bool insecure, QObject *parent)
     : QObject(parent)
-    , m_app(static_cast<QGuiApplication *>(QCoreApplication::instance()))
+    , m_app(qobject_cast<QGuiApplication *>(QCoreApplication::instance()))
     , m_imageProvider(nullptr)
     , m_notifier(m_connection)
     , m_dirModel(m_connection)
@@ -155,25 +155,30 @@ App::App(bool insecure, QObject *parent)
 #endif
     , m_darkmodeEnabled(false)
     , m_darkColorScheme(false)
-    , m_darkPalette(SYNCTHING_APP_IS_PALETTE_DARK(m_app->palette()))
+    , m_darkPalette(m_app ? SYNCTHING_APP_IS_PALETTE_DARK(m_app->palette()) : false)
     , m_isGuiLoaded(false)
     , m_alwaysUnloadGuiWhenHidden(false)
     , m_unloadGuiWhenHidden(false)
 {
     qDebug() << "Initializing app";
-    m_app->installEventFilter(this);
-    m_app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
-    connect(m_app, &QGuiApplication::applicationStateChanged, this, &App::handleStateChanged);
+    if (m_app) {
+        m_app->installEventFilter(this);
+        m_app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+        connect(m_app, &QGuiApplication::applicationStateChanged, this, &App::handleStateChanged);
+    }
 
     QtUtilities::deletePipelineCacheIfNeeded();
     loadSettings();
     applySettings();
+    if (m_app) {
 #ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
-    QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
+        QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
 #else
-    applyDarkmodeChange(m_darkColorScheme, m_darkPalette);
+        applyDarkmodeChange(m_darkColorScheme, m_darkPalette);
 #endif
+    }
 
+    qDebug() << "Initializing icon manager";
     auto &iconManager = Data::IconManager::instance();
     auto statusIconSettings = StatusIconSettings();
     statusIconSettings.strokeWidth = StatusIconStrokeWidth::Thick;
@@ -185,20 +190,23 @@ App::App(bool insecure, QObject *parent)
 
     // set SD card paths to show SD card icons via directory model
 #ifdef Q_OS_ANDROID
-    auto extStoragePaths = externalStoragePaths();
-    auto sdCardPaths = QStringList();
-    if (extStoragePaths.size() > 1) {
-        static constexpr auto storagePrefix = QLatin1String("/storage/");
-        sdCardPaths.reserve(extStoragePaths.size() - 1);
-        for (auto i = extStoragePaths.begin() + 1, end = extStoragePaths.end(); i != end; ++i) {
-            if (const auto &path = *i; path.startsWith(storagePrefix)) {
-                if (const auto volumeEnd = path.indexOf(QChar('/'), storagePrefix.size()); volumeEnd > 0) {
-                    sdCardPaths.emplace_back(QStringView(path.data(), volumeEnd + 1));
+    if (m_app) {
+        qDebug() << "Loading external storage paths";
+        auto extStoragePaths = externalStoragePaths();
+        auto sdCardPaths = QStringList();
+        if (extStoragePaths.size() > 1) {
+            static constexpr auto storagePrefix = QLatin1String("/storage/");
+            sdCardPaths.reserve(extStoragePaths.size() - 1);
+            for (auto i = extStoragePaths.begin() + 1, end = extStoragePaths.end(); i != end; ++i) {
+                if (const auto &path = *i; path.startsWith(storagePrefix)) {
+                    if (const auto volumeEnd = path.indexOf(QChar('/'), storagePrefix.size()); volumeEnd > 0) {
+                        sdCardPaths.emplace_back(QStringView(path.data(), volumeEnd + 1));
+                    }
                 }
             }
         }
+        m_dirModel.setSdCardPaths(sdCardPaths);
     }
-    m_dirModel.setSdCardPaths(sdCardPaths);
 #endif
 
     m_sortFilterDirModel.sort(0, Qt::AscendingOrder);
@@ -236,7 +244,7 @@ App::App(bool insecure, QObject *parent)
 
 #ifdef Q_OS_ANDROID
     // register native methods of Android activity
-    if (!JniFn::appObjectForJava) {
+    if (m_app && !JniFn::appObjectForJava) {
         qDebug() << "Registering JNI methods";
         JniFn::appObjectForJava = this;
         auto env = QJniEnvironment();
@@ -260,7 +268,7 @@ App::App(bool insecure, QObject *parent)
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
 #endif
 
-    initEngine();
+    QObject::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &App::shutdown);
 
     if (!SyncthingLauncher::mainInstance()) {
         SyncthingLauncher::setMainInstance(&m_launcher);
@@ -272,6 +280,10 @@ App::App(bool insecure, QObject *parent)
     timer->setInterval(1000);
     timer->start();
 #endif
+
+    if (m_app) {
+        initEngine();
+    }
 
     qDebug() << "App initialized";
 }
