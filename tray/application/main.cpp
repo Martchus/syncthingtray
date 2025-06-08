@@ -305,7 +305,6 @@ static int runApplication(int argc, const char *const *argv)
         networkAccessManager().setParent(&app);
 
         auto quickApp = App(insecureArg.isPresent());
-        quickApp.applySettings();
         QObject::connect(&app, &QCoreApplication::aboutToQuit, &quickApp, &App::shutdown);
         SyncthingLauncher::setMainInstance(quickApp.launcher());
 #ifdef SYNCTHINGTRAY_DEBUG_MAIN_LOOP_ACTIVITY
