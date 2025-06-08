@@ -307,12 +307,6 @@ static int runApplication(int argc, const char *const *argv)
 
         auto quickApp = App(insecureArg.isPresent());
         QObject::connect(&app, &QCoreApplication::aboutToQuit, &quickApp, &App::shutdown);
-#ifdef SYNCTHINGTRAY_DEBUG_MAIN_LOOP_ACTIVITY
-        auto *const timer = new QTimer(&app);
-        QObject::connect(timer, &QTimer::timeout, timer, [] { qDebug() << "Main event loop still active"; });
-        timer->setInterval(1000);
-        timer->start();
-#endif
         const auto res = app.exec();
 #if defined(Q_OS_ANDROID)
         qDebug() << "Qt event loop exited with return code " << res;

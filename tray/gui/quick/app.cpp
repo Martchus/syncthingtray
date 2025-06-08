@@ -266,6 +266,13 @@ App::App(bool insecure, QObject *parent)
         SyncthingLauncher::setMainInstance(&m_launcher);
     }
 
+#if defined(SYNCTHINGTRAY_DEBUG_MAIN_LOOP_ACTIVITY)
+    auto *const timer = new QTimer(this);
+    QObject::connect(timer, &QTimer::timeout, timer, [] { qDebug() << "Main event loop still active"; });
+    timer->setInterval(1000);
+    timer->start();
+#endif
+
     qDebug() << "App initialized";
 }
 
