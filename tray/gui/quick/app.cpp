@@ -282,9 +282,11 @@ App::~App()
     if (SyncthingLauncher::mainInstance() == &m_launcher) {
         SyncthingLauncher::setMainInstance(nullptr);
     }
+#ifdef Q_OS_ANDROID
     if (JniFn::appObjectForJava == this) {
         JniFn::appObjectForJava = nullptr;
     }
+#endif
 }
 
 App *App::create(QQmlEngine *qmlEngine, QJSEngine *engine)
