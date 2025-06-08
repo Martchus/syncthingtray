@@ -642,11 +642,16 @@ bool App::loadStatistics(const QJSValue &callback)
     auto query = m_connection.requestJsonData(
         QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
             auto report = doc.object().toVariantMap();
-            report[QStringLiteral("uptime")] = QString::fromStdString(CppUtilities::TimeSpan::fromSeconds(report[QStringLiteral("uptime")].toDouble()).toString(CppUtilities::TimeSpanOutputFormat::WithMeasures));
-            report[QStringLiteral("memoryUsage")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("memoryUsageMiB")).toDouble() * 1024 * 1024)));
-            report[QStringLiteral("processRSS")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("processRSSMiB")).toDouble() * 1024 * 1024)));
-            report[QStringLiteral("memorySize")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report[QStringLiteral("memorySize")].toDouble() * 1024 * 1024)));
-            report[QStringLiteral("totSize")] = QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("totMiB")).toDouble() * 1024 * 1024)));
+            report[QStringLiteral("uptime")] = QString::fromStdString(CppUtilities::TimeSpan::fromSeconds(report[QStringLiteral("uptime")].toDouble())
+                    .toString(CppUtilities::TimeSpanOutputFormat::WithMeasures));
+            report[QStringLiteral("memoryUsage")] = QString::fromStdString(
+                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("memoryUsageMiB")).toDouble() * 1024 * 1024)));
+            report[QStringLiteral("processRSS")] = QString::fromStdString(
+                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("processRSSMiB")).toDouble() * 1024 * 1024)));
+            report[QStringLiteral("memorySize")] = QString::fromStdString(
+                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report[QStringLiteral("memorySize")].toDouble() * 1024 * 1024)));
+            report[QStringLiteral("totSize")] = QString::fromStdString(
+                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("totMiB")).toDouble() * 1024 * 1024)));
             statistics(report);
             callback.call(QJSValueList({ m_engine->toScriptValue(report), QJSValue(std::move(error)) }));
         });
