@@ -160,6 +160,7 @@ App::App(bool insecure, QObject *parent)
     , m_alwaysUnloadGuiWhenHidden(false)
     , m_unloadGuiWhenHidden(false)
 {
+    qDebug() << "Initializing app";
     m_app->installEventFilter(this);
     m_app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     connect(m_app, &QGuiApplication::applicationStateChanged, this, &App::handleStateChanged);
@@ -236,6 +237,7 @@ App::App(bool insecure, QObject *parent)
 #ifdef Q_OS_ANDROID
     // register native methods of Android activity
     if (!JniFn::appObjectForJava) {
+        qDebug() << "Registering JNI methods";
         JniFn::appObjectForJava = this;
         auto env = QJniEnvironment();
         auto registeredMethods = true;
@@ -254,6 +256,7 @@ App::App(bool insecure, QObject *parent)
     }
 
     // start Android service
+    qDebug() << "Starting Android service";
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
 #endif
 

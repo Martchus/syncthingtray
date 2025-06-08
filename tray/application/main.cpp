@@ -284,6 +284,7 @@ static int runApplication(int argc, const char *const *argv)
 
 #ifdef GUI_QTQUICK
     if (quickGuiArg.isPresent()) {
+        qDebug() << "Initializing Qt Quick GUI";
 #ifdef SYNCTHINGTRAY_FORCE_VULKAN
         // force Vulkan RHI backend to test it on Android or other platforms where setting an env variable is not so easy
         qputenv("QSG_RHI_BACKEND", "vulkan");
