@@ -1826,9 +1826,6 @@ void SettingsDialog::init()
     startWizardButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     connect(startWizardButton, &QPushButton::clicked, this, &SettingsDialog::wizardRequested);
     addHeadingWidget(startWizardButton);
-
-    // some settings could be applied without restarting the application, good idea?
-    //connect(this, &Dialogs::SettingsDialog::applied, bind(&Dialogs::QtSettings::apply, &Settings::qtSettings()));
 }
 
 void SettingsDialog::hideConnectionStatus()
