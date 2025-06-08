@@ -307,7 +307,6 @@ static int runApplication(int argc, const char *const *argv)
 
         auto quickApp = App(insecureArg.isPresent());
         QObject::connect(&app, &QCoreApplication::aboutToQuit, &quickApp, &App::shutdown);
-        SyncthingLauncher::setMainInstance(quickApp.launcher());
 #ifdef SYNCTHINGTRAY_DEBUG_MAIN_LOOP_ACTIVITY
         auto *const timer = new QTimer(&app);
         QObject::connect(timer, &QTimer::timeout, timer, [] { qDebug() << "Main event loop still active"; });

@@ -262,12 +262,19 @@ App::App(bool insecure, QObject *parent)
 
     initEngine();
 
+    if (!SyncthingLauncher::mainInstance()) {
+        SyncthingLauncher::setMainInstance(&m_launcher);
+    }
+
     qDebug() << "App initialized";
 }
 
 App::~App()
 {
     qDebug() << "Destorying app";
+    if (SyncthingLauncher::mainInstance() == &m_launcher) {
+        SyncthingLauncher::setMainInstance(nullptr);
+    }
     if (JniFn::appObjectForJava == this) {
         JniFn::appObjectForJava = nullptr;
     }
