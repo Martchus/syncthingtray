@@ -106,6 +106,7 @@ set(REQUIRED_ICONS
     system-run
     system-search
     system-file-manager
+    system-software-update-symbolic
     text-x-generic
     quickwizard
     view-refresh

@@ -189,6 +189,7 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
 };
 
 SYNCTHINGWIDGETS_EXPORT Settings &values();
+SYNCTHINGWIDGETS_EXPORT QSettings &settings();
 SYNCTHINGWIDGETS_EXPORT bool restore();
 SYNCTHINGWIDGETS_EXPORT bool save();
 } // namespace Settings

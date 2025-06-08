@@ -6,6 +6,10 @@
 
 #include <qtutilities/misc/compat.h>
 
+#ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
+#include <qtutilities/setup/updater.h>
+#endif
+
 #include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingprocess.h>
@@ -1791,8 +1795,12 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     translateCategory(category, [] { return tr("Startup"); });
     category->assignPages({ new AutostartOptionPage, new LauncherOptionPage,
         new LauncherOptionPage(QStringLiteral("Process"), tr("additional tool"), tr("Extra launcher"))
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
             ,
+        new UpdateOptionPage(*(new UpdateHandler(&Settings::settings(), &networkAccessManager(), this)), this)
+#endif
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        ,
         new SystemdOptionPage
 #endif
     });
