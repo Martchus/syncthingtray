@@ -48,16 +48,110 @@ class QuickImageProvider;
 
 namespace QtGui {
 
-class App : public QObject {
+class AppBase : public QObject {
     Q_OBJECT
     Q_PROPERTY(Data::SyncthingConnection *connection READ connection CONSTANT)
     Q_PROPERTY(Data::SyncthingNotifier *notifier READ notifier CONSTANT)
+
+public:
+    explicit AppBase(bool insecure, QObject *parent = nullptr);
+    ~AppBase();
+
+    // properties
+    Data::SyncthingConnection *connection()
+    {
+        return &m_connection;
+    }
+    Data::SyncthingNotifier *notifier()
+    {
+        return &m_notifier;
+    }
+
+Q_SIGNALS:
+    void logsAvailable(const QString &newLogMessages);
+
+protected:
+    //virtual bool isRunning() = 0;
+    //virtual bool isStarting() = 0;
+    //virtual bool runningStatus() = 0;
+
+protected:
+    Data::SyncthingConnection m_connection;
+    Data::SyncthingNotifier m_notifier;
+    Data::SyncthingConnectionSettings m_connectionSettingsFromLauncher;
+    Data::SyncthingConnectionSettings m_connectionSettingsFromConfig;
+    Data::SyncthingConfig m_syncthingConfig;
+    QFile m_settingsFile;
+    std::optional<QDir> m_settingsDir;
+    QJsonObject m_settings;
+    QVariantList m_internalErrors;
+    StatusInfo m_statusInfo;
+    QString m_syncthingConfigDir;
+    QString m_syncthingDataDir;
+    QString m_log;
+    bool m_connectToLaunched;
+    bool m_insecure;
+};
+
+class AppService : public AppBase {
+    Q_OBJECT
+    Q_PROPERTY(Data::SyncthingLauncher *launcher READ launcher CONSTANT)
+
+public:
+    explicit AppService(bool insecure, QObject *parent = nullptr);
+    ~AppService();
+
+    // properties
+    Data::SyncthingLauncher *launcher()
+    {
+        return &m_launcher;
+    }
+
+public Q_SLOTS:
+    Q_INVOKABLE void applyLauncherSettings();
+
+private Q_SLOTS:
+    void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,
+        const QByteArray &response);
+    void invalidateStatus();
+    void gatherLogs(const QByteArray &newOutput);
+    void handleRunningChanged(bool isRunning);
+    void handleGuiAddressChanged(const QUrl &newUrl);
+    void handleChangedDevices();
+    void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
+    void handleConnectionStatusChanged(Data::SyncthingStatus newStatus);
+#ifdef Q_OS_ANDROID
+    void stopLibSyncthing();
+    QJniObject &makeAndroidIcon(const QIcon &icon);
+    void invalidateAndroidIconCache();
+    void updateAndroidNotification();
+    void updateExtraAndroidNotification(
+        const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id = 0);
+    void clearAndroidExtraNotifications(int firstId, int lastId = -1);
+    void updateSyncthingErrorsNotification(const std::vector<Data::SyncthingError> &newErrors);
+    void clearSyncthingErrorsNotification();
+    void showInternalError(const InternalError &error);
+    void showNewDevice(const QString &devId, const QString &message);
+    void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
+#endif
+
+private:
+    Data::SyncthingLauncher m_launcher;
+#ifdef Q_OS_ANDROID
+    QHash<const QIcon *, QJniObject> m_androidIconCache;
+    int m_androidNotificationId = 100000000;
+    mutable std::optional<bool> m_storagePermissionGranted;
+    mutable std::optional<bool> m_notificationPermissionGranted;
+#endif
+};
+
+class App : public AppBase {
+    Q_OBJECT
     Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel CONSTANT)
     Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDirModel READ sortFilterDirModel CONSTANT)
     Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel CONSTANT)
     Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDevModel READ sortFilterDevModel CONSTANT)
     Q_PROPERTY(Data::SyncthingRecentChangesModel *changesModel READ changesModel CONSTANT)
-    Q_PROPERTY(Data::SyncthingLauncher *launcher READ launcher CONSTANT)
     Q_PROPERTY(QJsonObject settings READ settings WRITE setSettings NOTIFY settingsChanged)
     Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
@@ -94,14 +188,6 @@ public:
     static App *create(QQmlEngine *, QJSEngine *engine);
 
     // properties
-    Data::SyncthingConnection *connection()
-    {
-        return &m_connection;
-    }
-    Data::SyncthingNotifier *notifier()
-    {
-        return &m_notifier;
-    }
     Data::SyncthingDirectoryModel *dirModel()
     {
         return &m_dirModel;
@@ -121,10 +207,6 @@ public:
     Data::SyncthingRecentChangesModel *changesModel()
     {
         return &m_changesModel;
-    }
-    Data::SyncthingLauncher *launcher()
-    {
-        return &m_launcher;
     }
     const QString &faUrlBase()
     {
@@ -328,21 +410,9 @@ private Q_SLOTS:
     void handleStateChanged(Qt::ApplicationState state);
     void handleConnectionStatusChanged(Data::SyncthingStatus newStatus);
 #ifdef Q_OS_ANDROID
-    QJniObject &makeAndroidIcon(const QIcon &icon);
-    void invalidateAndroidIconCache();
-    void updateAndroidNotification();
-    void updateExtraAndroidNotification(
-        const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id = 0);
-    void clearAndroidExtraNotifications(int firstId, int lastId = -1);
-    void updateSyncthingErrorsNotification(const std::vector<Data::SyncthingError> &newErrors);
-    void clearSyncthingErrorsNotification();
-    void showInternalError(const InternalError &error);
-    void showNewDevice(const QString &devId, const QString &message);
-    void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
     void handleAndroidIntent(const QString &page, bool fromNotification);
     void handleStoragePermissionChanged(bool storagePermissionGranted);
     void handleNotificationPermissionChanged(bool notificationPermissionGranted);
-    void stopLibSyncthing();
 #endif
 
 private:
@@ -358,44 +428,26 @@ private:
     std::optional<QQmlApplicationEngine> m_engine;
     QGuiApplication *m_app;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
-    Data::SyncthingConnection m_connection;
-    Data::SyncthingNotifier m_notifier;
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingSortFilterModel m_sortFilterDirModel;
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingSortFilterModel m_sortFilterDevModel;
     Data::SyncthingRecentChangesModel m_changesModel;
-    Data::SyncthingConnectionSettings m_connectionSettingsFromLauncher;
-    Data::SyncthingConnectionSettings m_connectionSettingsFromConfig;
     Data::SyncthingConnection::QueryResult m_pendingConfigChange;
-    QVariantList m_internalErrors;
-    StatusInfo m_statusInfo;
 #ifdef Q_OS_ANDROID
-    QHash<const QIcon *, QJniObject> m_androidIconCache;
-    int m_androidNotificationId = 100000000;
     mutable std::optional<bool> m_storagePermissionGranted;
     mutable std::optional<bool> m_notificationPermissionGranted;
 #endif
-    Data::SyncthingConfig m_syncthingConfig;
-    QString m_syncthingConfigDir;
-    QString m_syncthingDataDir;
     std::pair<QVariantMap, QVariantMap> m_settingsImport;
     std::optional<QString> m_homeDirMove;
-    Data::SyncthingLauncher m_launcher;
     QtUtilities::QtSettings m_qtSettings;
-    QFile m_settingsFile;
-    std::optional<QDir> m_settingsDir;
-    QJsonObject m_settings;
     QString m_faUrlBase;
     std::optional<QString> m_status;
     std::array<QObject *, 5> m_uiObjects;
     QObjectList m_dialogs;
-    QString m_log;
     int m_iconSize;
     int m_tabIndex;
     ImportExportStatus m_importExportStatus;
-    bool m_insecure;
-    bool m_connectToLaunched;
     bool m_darkmodeEnabled;
     bool m_darkColorScheme;
     bool m_darkPalette;

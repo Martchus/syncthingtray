@@ -148,6 +148,11 @@ endif ()
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 
+# enable using private Qt headers for QAndroidService
+if (ANDROID)
+    list(APPEND ADDITIONAL_QT_MODULES CorePrivate)
+endif ()
+
 # configure libsyncthing
 option(USE_LIBSYNCTHING "whether libsyncthing should be included for syncthingtray's CLI" OFF)
 if (USE_LIBSYNCTHING)
@@ -441,7 +446,7 @@ if (ANDROID)
         INCLUDE_BY_TYPE iconengines Qt::QSvgIconPlugin
         INCLUDE_BY_TYPE tls Qt::QTlsBackendOpenSSLPlugin
         INCLUDE_BY_TYPE networkinformation Qt::QAndroidNetworkInformationPlugin
-        INCLUDE_BY_TYPE platforms Qt::QAndroidIntegrationPlugin
+        INCLUDE_BY_TYPE platforms Qt::QAndroidIntegrationPlugin Qt::QMinimalIntegrationPlugin
         EXCLUDE_BY_TYPE platforminputcontexts webview
     )
     # cmake-format: on

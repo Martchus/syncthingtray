@@ -18,6 +18,7 @@ import org.qtproject.qt.android.bindings.QtService;
 
 import io.github.martchus.syncthingtray.Activity;
 import io.github.martchus.syncthingtray.SyncthingServiceBinder;
+import io.github.martchus.syncthingtray.Util;
 
 public class SyncthingService extends QtService {
     private final SyncthingServiceBinder m_binder = new SyncthingServiceBinder(this);
@@ -163,9 +164,15 @@ public class SyncthingService extends QtService {
 
     @Override
     public void onCreate() {
-        super.onCreate();
+        Log.i(TAG, "Creating Syncthing service");
+        Util.init();
+
+        Log.i(TAG, "Putting service in foreground and showing notification");
         initializeNotificationManagement();
+        showForegroundNotification();
         s_instance = this;
+
+        super.onCreate();
         Log.i(TAG, "Created service and notification");
     }
 
@@ -173,20 +180,22 @@ public class SyncthingService extends QtService {
     public void onDestroy() {
         s_instance = null;
         super.onDestroy();
+        stopLibSyncthing();
         stopForeground(Service.STOP_FOREGROUND_REMOVE);
         Log.i(TAG, "Destroyed service and notification");
     }
 
-    @Override
-    public SyncthingServiceBinder onBind(Intent intent) {
-        return m_binder;
-    }
+    //@Override
+    //public SyncthingServiceBinder onBind(Intent intent) {
+    //    return m_binder;
+    //}
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(TAG, "Starting work: TODO");
+
+        
         super.onStartCommand(intent, flags, startId);
-        Log.i(TAG, "Putting service in foreground and showing notification");
-        showForegroundNotification();
         return Service.START_STICKY;
     }
 
@@ -218,4 +227,6 @@ public class SyncthingService extends QtService {
                 s_notificationID);
         }
     }
+
+    private static native void stopLibSyncthing();
 }

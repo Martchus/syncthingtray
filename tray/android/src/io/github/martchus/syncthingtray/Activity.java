@@ -226,9 +226,7 @@ public class Activity extends QtActivity {
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Creating");
 
-        // workaround https://github.com/golang/go/issues/70508
-        System.loadLibrary("androidsignalhandler");
-        initSigsysHandler();
+        Util.init();
 
         super.onCreate(savedInstanceState);
 
@@ -315,7 +313,6 @@ public class Activity extends QtActivity {
             unloadQtQuickGui();
         } else {
             Log.i(TAG, "Stopping Syncthing and Qt Quick GUI");
-            stopLibSyncthing();
             stopSyncthingService();
         }
         super.onDestroy();
@@ -352,6 +349,4 @@ public class Activity extends QtActivity {
     private static native void handleAndroidIntent(String page, boolean fromNotification);
     private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
     private static native void handleNotificationPermissionChanged(boolean notificationPermissionGranted);
-    private static native void stopLibSyncthing();
-    private static native void initSigsysHandler();
 }

@@ -89,6 +89,8 @@
 #define SYNCTHING_APP_IS_PALETTE_DARK(palette) QtUtilities::isPaletteDark(palette)
 #endif
 
+#define SYNCTHINGTRAY_DEBUG_MAIN_LOOP_ACTIVITY
+
 using namespace Data;
 
 namespace QtGui {
@@ -96,6 +98,7 @@ namespace QtGui {
 #ifdef Q_OS_ANDROID
 /// \brief The JniFn namespace defines functions called from Java.
 namespace JniFn {
+static AppService *appServiceObjectForJava = nullptr;
 static App *appObjectForJava = nullptr;
 
 static void loadQtQuickGui(JNIEnv *, jobject)
@@ -110,7 +113,7 @@ static void unloadQtQuickGui(JNIEnv *, jobject)
 
 static void stopLibSyncthing(JNIEnv *, jobject)
 {
-    QMetaObject::invokeMethod(appObjectForJava, "stopLibSyncthing", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(appServiceObjectForJava, "stopLibSyncthing", Qt::QueuedConnection);
 }
 
 static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNotification)
@@ -132,11 +135,359 @@ static void handleNotificationPermissionChanged(JNIEnv *, jobject, jboolean noti
 } // namespace JniFn
 #endif
 
-App::App(bool insecure, QObject *parent)
+/// \cond
+static void ensureDefault(bool &mod, QJsonObject &o, QLatin1String member, const QJsonValue &d)
+{
+    if (!o.contains(member)) {
+        o.insert(member, d);
+        mod = true;
+    }
+}
+/// \endcond
+
+AppBase::AppBase(bool insecure, QObject *parent)
     : QObject(parent)
-    , m_app(qobject_cast<QGuiApplication *>(QCoreApplication::instance()))
-    , m_imageProvider(nullptr)
     , m_notifier(m_connection)
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    , m_connectToLaunched(true)
+#else
+    , m_connectToLaunched(false)
+#endif
+    , m_insecure(insecure)
+{
+    qDebug() << "Initializing base";
+#if defined(SYNCTHINGTRAY_DEBUG_MAIN_LOOP_ACTIVITY)
+    if (auto *const app = QCoreApplication::instance()) {
+        auto *const timer = new QTimer(this);
+        QObject::connect(timer, &QTimer::timeout, app, [msg = QStringLiteral("%1 still active (%2)").arg(app->metaObject()->className(), qEnvironmentVariable("QT_QPA_PLATFORM"))] { qDebug() << msg; });
+        timer->setInterval(1000);
+        timer->start();
+    }
+#endif
+
+    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
+#ifdef Q_OS_ANDROID
+    m_notifier.setEnabledNotifications(
+        SyncthingHighLevelNotification::ConnectedDisconnected | SyncthingHighLevelNotification::NewDevice | SyncthingHighLevelNotification::NewDir);
+#else
+    m_notifier.setEnabledNotifications(SyncthingHighLevelNotification::ConnectedDisconnected);
+#endif
+}
+
+AppBase::~AppBase()
+{
+}
+
+AppService::AppService(bool insecure, QObject *parent)
+    : AppBase(insecure, parent)
+{
+    qDebug() << "Initializing service app";
+
+#ifdef Q_OS_ANDROID
+    if (!JniFn::appServiceObjectForJava) {
+        qDebug() << "Registering service JNI methods";
+        JniFn::appServiceObjectForJava = this;
+        auto env = QJniEnvironment();
+        auto registeredMethods = true;
+        static const JNINativeMethod activityMethods[] = {
+            { "stopLibSyncthing", "()V", reinterpret_cast<void *>(JniFn::stopLibSyncthing) },
+        };
+        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", activityMethods, 1) && registeredMethods;
+        if (!registeredMethods) {
+            qWarning() << "Unable to register all native methods in JNI environment.";
+        }
+    }
+#endif
+
+    connect(&m_connection, &SyncthingConnection::error, this, &AppService::handleConnectionError);
+    connect(&m_connection, &SyncthingConnection::statusChanged, this, &AppService::handleConnectionStatusChanged);
+    connect(&m_connection, &SyncthingConnection::newDevices, this, &AppService::handleChangedDevices);
+    connect(&m_connection, &SyncthingConnection::autoReconnectIntervalChanged, this, &AppService::invalidateStatus);
+    connect(&m_connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &AppService::invalidateStatus);
+    connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &AppService::handleChangedDevices);
+    connect(&m_connection, &SyncthingConnection::newErrors, this, &AppService::handleNewErrors);
+
+    m_launcher.setEmittingOutput(true);
+    connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &AppService::gatherLogs);
+    connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &AppService::handleRunningChanged);
+    connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::handleGuiAddressChanged);
+
+#ifdef Q_OS_ANDROID
+    connect(&m_notifier, &SyncthingNotifier::newDevice, this, &AppService::showNewDevice);
+    connect(&m_notifier, &SyncthingNotifier::newDir, this, &AppService::showNewDir);
+#endif
+
+    if (!SyncthingLauncher::mainInstance()) {
+        SyncthingLauncher::setMainInstance(&m_launcher);
+    }
+}
+
+AppService::~AppService()
+{
+    qDebug() << "Destroying service";
+    if (SyncthingLauncher::mainInstance() == &m_launcher) {
+        SyncthingLauncher::setMainInstance(nullptr);
+    }
+    if (JniFn::appServiceObjectForJava == this) {
+        JniFn::appServiceObjectForJava = nullptr;
+    }
+}
+
+void AppService::applyLauncherSettings()
+{
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    static constexpr auto runByDefault = true;
+#else
+    static constexpr auto runByDefault = false;
+#endif
+    auto launcherSettings = m_settings.value(QLatin1String("launcher"));
+    auto launcherSettingsObj = launcherSettings.toObject();
+    auto mod = false;
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("run"), runByDefault);
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnMetered"), false);
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("writeLogFile"), false);
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("logLevel"), m_launcher.libSyncthingLogLevelString());
+#endif
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("stHomeDir"), QString());
+    if (mod) {
+        m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
+    }
+
+    m_launcher.setStoppingOnMeteredConnection(launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
+
+    auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    auto options = LibSyncthing::RuntimeOptions();
+    auto customSyncthingHome = launcherSettingsObj.value(QLatin1String("stHomeDir")).toString();
+    m_syncthingConfigDir = customSyncthingHome.isEmpty() ? m_settingsDir->path() + QStringLiteral("/syncthing") : customSyncthingHome;
+    m_syncthingDataDir = m_syncthingConfigDir;
+    options.configDir = m_syncthingConfigDir.toStdString();
+    options.dataDir = options.configDir;
+    m_launcher.setLibSyncthingLogLevel(launcherSettingsObj.value(QLatin1String("logLevel")).toString());
+    if (launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool()) {
+        if (!m_launcher.logFile().isOpen()) {
+            m_launcher.logFile().setFileName(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
+            if (!m_launcher.logFile().open(QIODeviceBase::WriteOnly | QIODeviceBase::Append | QIODeviceBase::Text)) {
+                // FIXME: emit error
+                //emit error(tr("Unable to open persistent log file for Syncthing under \"%1\": %2")
+                //        .arg(m_launcher.logFile().fileName(), m_launcher.logFile().errorString()));
+                return;
+            }
+        }
+    } else {
+        m_launcher.logFile().close();
+    }
+    m_launcher.setRunning(shouldRun, std::move(options));
+#else
+    if (shouldRun) {
+        // FIXME: show error like in UI
+        //emit error(tr("This build of the app cannot launch Syncthing."));
+    }
+#endif
+}
+
+#ifdef Q_OS_ANDROID
+void AppService::stopLibSyncthing()
+{
+    m_launcher.stopLibSyncthing();
+}
+#endif
+
+void AppService::handleConnectionError(
+    const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
+{
+#ifdef Q_OS_ANDROID
+    auto error = InternalError(errorMessage, request.url(), response);
+    showInternalError(error);
+#endif
+}
+
+void AppService::invalidateStatus()
+{
+    m_statusInfo.updateConnectionStatus(m_connection);
+    m_statusInfo.updateConnectedDevices(m_connection);
+#ifdef Q_OS_ANDROID
+    updateAndroidNotification();
+#endif
+}
+
+void AppService::gatherLogs(const QByteArray &newOutput)
+{
+    const auto asText = QString::fromUtf8(newOutput);
+    emit logsAvailable(asText);
+    m_log.append(asText);
+}
+
+void AppService::handleRunningChanged(bool isRunning)
+{
+    if (m_connectToLaunched) {
+        invalidateStatus();
+    }
+}
+
+void AppService::handleGuiAddressChanged(const QUrl &newUrl)
+{
+    auto url = newUrl;
+#ifndef QT_NO_SSL
+    // always use TLS if supported by Qt for the sake of security (especially on Android)
+    // note: Syncthing itself always supports it and allows connections via TLS even if the "tls" setting
+    //       is disabled (because this setting is just about *enforcing* TLS).
+    url.setScheme(QStringLiteral("https"));
+#endif
+    m_connectionSettingsFromLauncher.syncthingUrl = url.toString();
+    if (!m_syncthingConfig.restore(m_syncthingConfigDir + QStringLiteral("/config.xml"))) {
+        // FIXME: show errror like in UI
+        return;
+    }
+    m_connectionSettingsFromLauncher.apiKey = m_syncthingConfig.guiApiKey.toUtf8();
+    m_connectionSettingsFromLauncher.authEnabled = false;
+#ifndef QT_NO_SSL
+    m_connectionSettingsFromLauncher.httpsCertPath = m_syncthingConfigDir + QStringLiteral("/https-cert.pem");
+#endif
+
+    if (m_connectToLaunched) {
+        invalidateStatus();
+        if (newUrl.isEmpty()) {
+            m_connection.disconnect();
+        } else if (m_connection.applySettings(m_connectionSettingsFromLauncher) || !m_connection.isConnected()) {
+            m_connection.reconnect();
+        }
+    }
+}
+
+void AppService::handleChangedDevices()
+{
+    m_statusInfo.updateConnectedDevices(m_connection);
+#ifdef Q_OS_ANDROID
+    updateAndroidNotification();
+#endif
+}
+
+void AppService::handleNewErrors(const std::vector<Data::SyncthingError> &errors)
+{
+    Q_UNUSED(errors)
+    invalidateStatus();
+#ifdef Q_OS_ANDROID
+    updateSyncthingErrorsNotification(errors);
+#endif
+}
+
+void AppService::handleConnectionStatusChanged(Data::SyncthingStatus newStatus)
+{
+    invalidateStatus();
+#ifdef Q_OS_ANDROID
+    switch (newStatus) {
+    case Data::SyncthingStatus::Reconnecting:
+        clearSyncthingErrorsNotification();
+        break;
+    default:;
+    }
+#else
+    Q_UNUSED(newStatus)
+#endif
+}
+
+#ifdef Q_OS_ANDROID
+void AppService::invalidateAndroidIconCache()
+{
+    m_statusInfo.updateConnectionStatus(m_connection);
+    m_androidIconCache.clear();
+    updateAndroidNotification();
+}
+
+QJniObject &AppService::makeAndroidIcon(const QIcon &icon)
+{
+    auto &cachedIcon = m_androidIconCache[&icon];
+    if (!cachedIcon.isValid()) {
+        cachedIcon = IconManager::makeAndroidBitmap(icon.pixmap(QSize(32, 32)).toImage());
+    }
+    return cachedIcon;
+}
+
+void AppService::updateAndroidNotification()
+{
+    // FIXME: const auto title = QJniObject::fromString(m_connection.isConnected() ? m_statusInfo.statusText() : status());
+    const auto title = QJniObject::fromString(m_statusInfo.statusText());
+    const auto text = QJniObject::fromString(m_statusInfo.additionalStatusText());
+    static const auto subText = QJniObject::fromString(QString());
+    const auto &icon = makeAndroidIcon(m_statusInfo.statusIcon());
+    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateNotification",
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;)V", title.object(), text.object(), subText.object(),
+        icon.object());
+}
+
+void AppService::updateExtraAndroidNotification(
+    const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id)
+{
+    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(),
+        subText.object(), page.object(), icon.object(), id ? id : ++m_androidNotificationId);
+}
+
+void AppService::clearAndroidExtraNotifications(int firstId, int lastId)
+{
+    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "cancelExtraNotification", "(II)V", firstId, lastId);
+}
+
+void AppService::updateSyncthingErrorsNotification(const std::vector<Data::SyncthingError> &newErrors)
+{
+    if (newErrors.empty()) {
+        clearSyncthingErrorsNotification();
+        return;
+    }
+    const auto syncthingErrors = newErrors.size();
+    const auto &mostRecent = newErrors.back();
+    const auto title = QJniObject::fromString(
+        syncthingErrors == 1 ? tr("Syncthing error/notification") : tr("%1 Syncthing errors/notifications").arg(syncthingErrors));
+    const auto text = QJniObject::fromString(syncthingErrors == 1 ? mostRecent.message : tr("Most recent: ") + mostRecent.message);
+    const auto subText = QJniObject::fromString(QString::fromStdString(mostRecent.when.toString()));
+    static const auto page = QJniObject::fromString(QStringLiteral("connectionErrors"));
+    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
+    updateExtraAndroidNotification(title, text, subText, page, icon, 2);
+}
+
+void AppService::clearSyncthingErrorsNotification()
+{
+    clearAndroidExtraNotifications(2, -1);
+}
+
+void AppService::showInternalError(const InternalError &error)
+{
+    const auto title = QJniObject::fromString(
+        m_internalErrors.empty() ? tr("Syncthing API error") : tr("%1 Syncthing API errors").arg(m_internalErrors.size() + 1));
+    const auto text = QJniObject::fromString(m_internalErrors.empty() ? error.message : tr("Most recent: ") + error.message);
+    const auto subText = QJniObject::fromString(error.url.isEmpty() ? QString() : QStringLiteral("URL: ") + error.url.toString());
+    static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
+    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
+    updateExtraAndroidNotification(title, text, subText, page, icon, 3);
+}
+
+void AppService::showNewDevice(const QString &devId, const QString &message)
+{
+    const auto title = QJniObject::fromString(tr("Syncthing device wants to connect"));
+    const auto text = QJniObject::fromString(message);
+    static const auto subText = QJniObject::fromString(QString());
+    const auto page = QJniObject::fromString(QStringLiteral("newdev:") + devId);
+    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().networkWired);
+    updateExtraAndroidNotification(title, text, subText, page, icon);
+}
+
+void AppService::showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message)
+{
+    const auto title = QJniObject::fromString(tr("Syncthing device wants to share folder"));
+    const auto text = QJniObject::fromString(message);
+    static const auto subText = QJniObject::fromString(QString());
+    const auto page = QJniObject::fromString(QStringLiteral("newfolder:") % devId % QChar(':') % dirId % QChar(':') % dirLabel);
+    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().shareAlt);
+    updateExtraAndroidNotification(title, text, subText, page, icon);
+}
+#endif
+
+App::App(bool insecure, QObject *parent)
+    : AppBase(insecure, parent)
+    , m_app(static_cast<QGuiApplication *>(QCoreApplication::instance()))
+    , m_imageProvider(nullptr)
     , m_dirModel(m_connection)
     , m_sortFilterDirModel(&m_dirModel)
     , m_devModel(m_connection)
@@ -147,12 +498,6 @@ App::App(bool insecure, QObject *parent)
     , m_iconSize(16)
     , m_tabIndex(-1)
     , m_importExportStatus(ImportExportStatus::None)
-    , m_insecure(insecure)
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    , m_connectToLaunched(true)
-#else
-    , m_connectToLaunched(false)
-#endif
     , m_darkmodeEnabled(false)
     , m_darkColorScheme(false)
     , m_darkPalette(m_app ? SYNCTHING_APP_IS_PALETTE_DARK(m_app->palette()) : false)
@@ -160,12 +505,10 @@ App::App(bool insecure, QObject *parent)
     , m_alwaysUnloadGuiWhenHidden(false)
     , m_unloadGuiWhenHidden(false)
 {
-    qDebug() << "Initializing app";
-    if (m_app) {
-        m_app->installEventFilter(this);
-        m_app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
-        connect(m_app, &QGuiApplication::applicationStateChanged, this, &App::handleStateChanged);
-    }
+    qDebug() << "Initializing UI";
+    m_app->installEventFilter(this);
+    m_app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+    connect(m_app, &QGuiApplication::applicationStateChanged, this, &App::handleStateChanged);
 
     QtUtilities::deletePipelineCacheIfNeeded();
     loadSettings();
@@ -185,40 +528,32 @@ App::App(bool insecure, QObject *parent)
     iconManager.applySettings(&statusIconSettings, &statusIconSettings, true, true);
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::statusInfoChanged);
 #ifdef Q_OS_ANDROID
-    connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::invalidateAndroidIconCache);
+    // FIXME
+    //connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::invalidateAndroidIconCache);
 #endif
 
     // set SD card paths to show SD card icons via directory model
 #ifdef Q_OS_ANDROID
-    if (m_app) {
-        qDebug() << "Loading external storage paths";
-        auto extStoragePaths = externalStoragePaths();
-        auto sdCardPaths = QStringList();
-        if (extStoragePaths.size() > 1) {
-            static constexpr auto storagePrefix = QLatin1String("/storage/");
-            sdCardPaths.reserve(extStoragePaths.size() - 1);
-            for (auto i = extStoragePaths.begin() + 1, end = extStoragePaths.end(); i != end; ++i) {
-                if (const auto &path = *i; path.startsWith(storagePrefix)) {
-                    if (const auto volumeEnd = path.indexOf(QChar('/'), storagePrefix.size()); volumeEnd > 0) {
-                        sdCardPaths.emplace_back(QStringView(path.data(), volumeEnd + 1));
-                    }
+    qDebug() << "Loading external storage paths";
+    auto extStoragePaths = externalStoragePaths();
+    auto sdCardPaths = QStringList();
+    if (extStoragePaths.size() > 1) {
+        static constexpr auto storagePrefix = QLatin1String("/storage/");
+        sdCardPaths.reserve(extStoragePaths.size() - 1);
+        for (auto i = extStoragePaths.begin() + 1, end = extStoragePaths.end(); i != end; ++i) {
+            if (const auto &path = *i; path.startsWith(storagePrefix)) {
+                if (const auto volumeEnd = path.indexOf(QChar('/'), storagePrefix.size()); volumeEnd > 0) {
+                    sdCardPaths.emplace_back(QStringView(path.data(), volumeEnd + 1));
                 }
             }
         }
-        m_dirModel.setSdCardPaths(sdCardPaths);
     }
+    m_dirModel.setSdCardPaths(sdCardPaths);
 #endif
 
     m_sortFilterDirModel.sort(0, Qt::AscendingOrder);
     m_sortFilterDevModel.sort(0, Qt::AscendingOrder);
 
-    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
-#ifdef Q_OS_ANDROID
-    m_notifier.setEnabledNotifications(
-        SyncthingHighLevelNotification::ConnectedDisconnected | SyncthingHighLevelNotification::NewDevice | SyncthingHighLevelNotification::NewDir);
-#else
-    m_notifier.setEnabledNotifications(SyncthingHighLevelNotification::ConnectedDisconnected);
-#endif
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &App::handleConnectionStatusChanged);
     connect(&m_connection, &SyncthingConnection::newDevices, this, &App::handleChangedDevices);
@@ -226,10 +561,6 @@ App::App(bool insecure, QObject *parent)
     connect(&m_connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &App::invalidateStatus);
     connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &App::handleChangedDevices);
     connect(&m_connection, &SyncthingConnection::newErrors, this, &App::handleNewErrors);
-#ifdef Q_OS_ANDROID
-    connect(&m_notifier, &SyncthingNotifier::newDevice, this, &App::showNewDevice);
-    connect(&m_notifier, &SyncthingNotifier::newDir, this, &App::showNewDir);
-#endif
 
     // show info when override/revert has been triggered
     connect(&m_connection, &SyncthingConnection::overrideTriggered, this,
@@ -237,27 +568,21 @@ App::App(bool insecure, QObject *parent)
     connect(&m_connection, &SyncthingConnection::revertTriggered, this,
         [this](const QString &dirId) { emit info(tr("Triggered revert of \"%1\"").arg(dirDisplayName(dirId))); });
 
-    m_launcher.setEmittingOutput(true);
-    connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &App::gatherLogs);
-    connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &App::handleRunningChanged);
-    connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &App::handleGuiAddressChanged);
-
 #ifdef Q_OS_ANDROID
     // register native methods of Android activity
-    if (m_app && !JniFn::appObjectForJava) {
-        qDebug() << "Registering JNI methods";
+    if (!JniFn::appObjectForJava) {
+        qDebug() << "Registering UI JNI methods";
         JniFn::appObjectForJava = this;
         auto env = QJniEnvironment();
         auto registeredMethods = true;
         static const JNINativeMethod activityMethods[] = {
-            { "stopLibSyncthing", "()V", reinterpret_cast<void *>(JniFn::stopLibSyncthing) },
             { "handleAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(JniFn::handleAndroidIntent) },
             { "handleStoragePermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleStoragePermissionChanged) },
             { "handleNotificationPermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleNotificationPermissionChanged) },
             { "loadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::loadQtQuickGui) },
             { "unloadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::unloadQtQuickGui) },
         };
-        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 6) && registeredMethods;
+        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 5) && registeredMethods;
         if (!registeredMethods) {
             qWarning() << "Unable to register all native methods in JNI environment.";
         }
@@ -270,20 +595,7 @@ App::App(bool insecure, QObject *parent)
 
     QObject::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &App::shutdown);
 
-    if (!SyncthingLauncher::mainInstance()) {
-        SyncthingLauncher::setMainInstance(&m_launcher);
-    }
-
-#if defined(SYNCTHINGTRAY_DEBUG_MAIN_LOOP_ACTIVITY)
-    auto *const timer = new QTimer(this);
-    QObject::connect(timer, &QTimer::timeout, timer, [] { qDebug() << "Main event loop still active"; });
-    timer->setInterval(1000);
-    timer->start();
-#endif
-
-    if (m_app) {
-        initEngine();
-    }
+    initEngine();
 
     qDebug() << "App initialized";
 }
@@ -291,9 +603,6 @@ App::App(bool insecure, QObject *parent)
 App::~App()
 {
     qDebug() << "Destorying app";
-    if (SyncthingLauncher::mainInstance() == &m_launcher) {
-        SyncthingLauncher::setMainInstance(nullptr);
-    }
 #ifdef Q_OS_ANDROID
     if (JniFn::appObjectForJava == this) {
         JniFn::appObjectForJava = nullptr;
@@ -338,11 +647,13 @@ const QString &App::status()
         return m_status.emplace(tr("Moving home directory …"));
     }
     if (m_connectToLaunched) {
+        /* FIXME: query service
         if (!m_launcher.isRunning()) {
             return m_status.emplace(m_launcher.runningStatus());
         } else if (m_launcher.isStarting()) {
             return m_status.emplace(tr("Backend is starting …"));
         }
+        */
     }
     switch (m_connection.status()) {
     case Data::SyncthingStatus::Disconnected:
@@ -479,7 +790,8 @@ bool App::unloadMain()
 
 void App::shutdown()
 {
-    m_launcher.stopLibSyncthing();
+    // FIXME: stop libsyncthing
+    //m_launcher.stopLibSyncthing();
 #ifdef Q_OS_ANDROID
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("stopSyncthingService");
 #endif
@@ -920,9 +1232,6 @@ void App::handleConnectionError(
     qWarning() << "Connection error: " << errorMessage;
     auto error = InternalError(errorMessage, request.url(), response);
     emit internalError(error);
-#ifdef Q_OS_ANDROID
-    showInternalError(error);
-#endif
     const auto emitHasInternalErrorsChanged = m_internalErrors.isEmpty();
     m_internalErrors.emplace_back(QVariant::fromValue(std::move(error)));
     if (emitHasInternalErrorsChanged) {
@@ -1004,9 +1313,6 @@ void App::invalidateStatus()
     m_statusInfo.updateConnectionStatus(m_connection);
     m_statusInfo.updateConnectedDevices(m_connection);
     emit statusInfoChanged();
-#ifdef Q_OS_ANDROID
-    updateAndroidNotification();
-#endif
     emit statusChanged();
 }
 
@@ -1065,18 +1371,12 @@ void App::handleChangedDevices()
 {
     m_statusInfo.updateConnectedDevices(m_connection);
     emit statusInfoChanged();
-#ifdef Q_OS_ANDROID
-    updateAndroidNotification();
-#endif
 }
 
 void App::handleNewErrors(const std::vector<Data::SyncthingError> &errors)
 {
     Q_UNUSED(errors)
     invalidateStatus();
-#ifdef Q_OS_ANDROID
-    updateSyncthingErrorsNotification(errors);
-#endif
 }
 
 void App::handleStateChanged(Qt::ApplicationState state)
@@ -1108,112 +1408,10 @@ void App::handleStateChanged(Qt::ApplicationState state)
 void App::handleConnectionStatusChanged(Data::SyncthingStatus newStatus)
 {
     invalidateStatus();
-#ifdef Q_OS_ANDROID
-    switch (newStatus) {
-    case Data::SyncthingStatus::Reconnecting:
-        clearSyncthingErrorsNotification();
-        break;
-    default:;
-    }
-#else
     Q_UNUSED(newStatus)
-#endif
 }
 
 #ifdef Q_OS_ANDROID
-void App::invalidateAndroidIconCache()
-{
-    m_statusInfo.updateConnectionStatus(m_connection);
-    m_androidIconCache.clear();
-    updateAndroidNotification();
-}
-
-QJniObject &App::makeAndroidIcon(const QIcon &icon)
-{
-    auto &cachedIcon = m_androidIconCache[&icon];
-    if (!cachedIcon.isValid()) {
-        cachedIcon = IconManager::makeAndroidBitmap(icon.pixmap(QSize(32, 32)).toImage());
-    }
-    return cachedIcon;
-}
-
-void App::updateAndroidNotification()
-{
-    const auto title = QJniObject::fromString(m_connection.isConnected() ? m_statusInfo.statusText() : status());
-    const auto text = QJniObject::fromString(m_statusInfo.additionalStatusText());
-    static const auto subText = QJniObject::fromString(QString());
-    const auto &icon = makeAndroidIcon(m_statusInfo.statusIcon());
-    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateNotification",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;)V", title.object(), text.object(), subText.object(),
-        icon.object());
-}
-
-void App::updateExtraAndroidNotification(
-    const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id)
-{
-    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(),
-        subText.object(), page.object(), icon.object(), id ? id : ++m_androidNotificationId);
-}
-
-void App::clearAndroidExtraNotifications(int firstId, int lastId)
-{
-    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "cancelExtraNotification", "(II)V", firstId, lastId);
-}
-
-void App::updateSyncthingErrorsNotification(const std::vector<Data::SyncthingError> &newErrors)
-{
-    if (newErrors.empty()) {
-        clearSyncthingErrorsNotification();
-        return;
-    }
-    const auto syncthingErrors = newErrors.size();
-    const auto &mostRecent = newErrors.back();
-    const auto title = QJniObject::fromString(
-        syncthingErrors == 1 ? tr("Syncthing error/notification") : tr("%1 Syncthing errors/notifications").arg(syncthingErrors));
-    const auto text = QJniObject::fromString(syncthingErrors == 1 ? mostRecent.message : tr("Most recent: ") + mostRecent.message);
-    const auto subText = QJniObject::fromString(QString::fromStdString(mostRecent.when.toString()));
-    static const auto page = QJniObject::fromString(QStringLiteral("connectionErrors"));
-    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
-    updateExtraAndroidNotification(title, text, subText, page, icon, 2);
-}
-
-void App::clearSyncthingErrorsNotification()
-{
-    clearAndroidExtraNotifications(2, -1);
-}
-
-void App::showInternalError(const InternalError &error)
-{
-    const auto title = QJniObject::fromString(
-        m_internalErrors.empty() ? tr("Syncthing API error") : tr("%1 Syncthing API errors").arg(m_internalErrors.size() + 1));
-    const auto text = QJniObject::fromString(m_internalErrors.empty() ? error.message : tr("Most recent: ") + error.message);
-    const auto subText = QJniObject::fromString(error.url.isEmpty() ? QString() : QStringLiteral("URL: ") + error.url.toString());
-    static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
-    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
-    updateExtraAndroidNotification(title, text, subText, page, icon, 3);
-}
-
-void App::showNewDevice(const QString &devId, const QString &message)
-{
-    const auto title = QJniObject::fromString(tr("Syncthing device wants to connect"));
-    const auto text = QJniObject::fromString(message);
-    static const auto subText = QJniObject::fromString(QString());
-    const auto page = QJniObject::fromString(QStringLiteral("newdev:") + devId);
-    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().networkWired);
-    updateExtraAndroidNotification(title, text, subText, page, icon);
-}
-
-void App::showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message)
-{
-    const auto title = QJniObject::fromString(tr("Syncthing device wants to share folder"));
-    const auto text = QJniObject::fromString(message);
-    static const auto subText = QJniObject::fromString(QString());
-    const auto page = QJniObject::fromString(QStringLiteral("newfolder:") % devId % QChar(':') % dirId % QChar(':') % dirLabel);
-    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().shareAlt);
-    updateExtraAndroidNotification(title, text, subText, page, icon);
-}
-
 static auto splitFolderRef(QStringView folderRef)
 {
     struct {
@@ -1263,11 +1461,6 @@ void App::handleNotificationPermissionChanged(bool notificationPermissionGranted
         emit notificationPermissionGrantedChanged(m_notificationPermissionGranted.emplace(notificationPermissionGranted));
     }
 }
-
-void App::stopLibSyncthing()
-{
-    m_launcher.stopLibSyncthing();
-}
 #endif
 
 void App::clearInternalErrors()
@@ -1276,7 +1469,8 @@ void App::clearInternalErrors()
         return;
     }
 #ifdef Q_OS_ANDROID
-    clearAndroidExtraNotifications(3, 3 + m_internalErrors.size());
+    // FIXME: tell service to clear notification
+    //clearAndroidExtraNotifications(3, 3 + m_internalErrors.size());
 #endif
     m_internalErrors.clear();
     invalidateStatus();
@@ -1534,7 +1728,8 @@ bool App::applySettings()
     }
     m_connection.setInsecure(m_insecure);
     if (m_connectToLaunched) {
-        handleGuiAddressChanged(m_launcher.guiUrl());
+        // FIXME: tell service gui address has changed
+        //handleGuiAddressChanged(m_launcher.guiUrl());
     } else if (m_connection.applySettings(m_connectionSettingsFromConfig) || !m_connection.isConnected()) {
         m_connection.reconnect();
     }
@@ -1545,66 +1740,9 @@ bool App::applySettings()
     return true;
 }
 
-/// \cond
-static void ensureDefault(bool &mod, QJsonObject &o, QLatin1String member, const QJsonValue &d)
-{
-    if (!o.contains(member)) {
-        o.insert(member, d);
-        mod = true;
-    }
-}
-/// \endcond
-
 void App::applyLauncherSettings()
 {
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    static constexpr auto runByDefault = true;
-#else
-    static constexpr auto runByDefault = false;
-#endif
-    auto launcherSettings = m_settings.value(QLatin1String("launcher"));
-    auto launcherSettingsObj = launcherSettings.toObject();
-    auto mod = false;
-    ensureDefault(mod, launcherSettingsObj, QLatin1String("run"), runByDefault);
-    ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnMetered"), false);
-    ensureDefault(mod, launcherSettingsObj, QLatin1String("writeLogFile"), false);
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    ensureDefault(mod, launcherSettingsObj, QLatin1String("logLevel"), m_launcher.libSyncthingLogLevelString());
-#endif
-    ensureDefault(mod, launcherSettingsObj, QLatin1String("stHomeDir"), QString());
-    if (mod) {
-        m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
-    }
-
-    m_launcher.setStoppingOnMeteredConnection(launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
-
-    auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    auto options = LibSyncthing::RuntimeOptions();
-    auto customSyncthingHome = launcherSettingsObj.value(QLatin1String("stHomeDir")).toString();
-    m_syncthingConfigDir = customSyncthingHome.isEmpty() ? m_settingsDir->path() + QStringLiteral("/syncthing") : customSyncthingHome;
-    m_syncthingDataDir = m_syncthingConfigDir;
-    options.configDir = m_syncthingConfigDir.toStdString();
-    options.dataDir = options.configDir;
-    m_launcher.setLibSyncthingLogLevel(launcherSettingsObj.value(QLatin1String("logLevel")).toString());
-    if (launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool()) {
-        if (!m_launcher.logFile().isOpen()) {
-            m_launcher.logFile().setFileName(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
-            if (!m_launcher.logFile().open(QIODeviceBase::WriteOnly | QIODeviceBase::Append | QIODeviceBase::Text)) {
-                emit error(tr("Unable to open persistent log file for Syncthing under \"%1\": %2")
-                        .arg(m_launcher.logFile().fileName(), m_launcher.logFile().errorString()));
-                return;
-            }
-        }
-    } else {
-        m_launcher.logFile().close();
-    }
-    m_launcher.setRunning(shouldRun, std::move(options));
-#else
-    if (shouldRun) {
-        emit error(tr("This build of the app cannot launch Syncthing."));
-    }
-#endif
+    // FIXME: tell service
 }
 
 bool App::clearLogfile()
@@ -1621,6 +1759,7 @@ bool App::clearLogfile()
         return false;
     }
 
+    /* FIXME: query logfile from launcher
     auto &logFile = m_launcher.logFile();
     if (logFile.fileName().isEmpty()) {
         logFile.setFileName(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
@@ -1632,6 +1771,8 @@ bool App::clearLogfile()
         emit info(tr("Unable to remove logfile"));
     }
     return ok;
+    */
+    return true;
 }
 
 bool App::checkOngoingImportExport()
@@ -1767,6 +1908,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
 
     // stop Syncthing if necessary
     const auto importSyncthingHome = selectedSettings.value(QStringLiteral("syncthingHome")).toBool();
+    /* FIXME: query launcher status from service
     if (importSyncthingHome && m_launcher.isRunning()) {
         emit info(tr("Waiting for backend to terminate before importing settings …"));
         m_settingsImport.first = availableSettings;
@@ -1774,6 +1916,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
         m_launcher.terminate();
         return false;
     }
+    */
 
     setImportExportStatus(ImportExportStatus::Importing);
     QtConcurrent::run([this, importSyncthingHome, availableSettings, selectedSettings, rawConfig = m_connection.rawConfig()]() mutable {
@@ -2011,12 +2154,14 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
     }
 
     // stop Syncthing if necessary
+    /* FIXME: query service
     if (m_launcher.isRunning()) {
         emit info(tr("Waiting for backend to terminate before moving home …"));
         m_homeDirMove = newHomeDir;
         m_launcher.terminate();
         return false;
     }
+    */
 
     setImportExportStatus(ImportExportStatus::Moving);
     QtConcurrent::run([newHomeDir = newHomeDir, customHomeDir = currentSyncthingHomeDir(), defaultPath = m_settingsDir.value_or(QDir()).path(),

@@ -1,3 +1,4 @@
+#include <qguiapplication.h>
 #ifdef GUI_QTWIDGETS
 #include "./singleinstance.h"
 
@@ -66,6 +67,7 @@ Q_IMPORT_QML_PLUGIN(WebViewItemPlugin)
 #include <iostream>
 
 #ifdef Q_OS_ANDROID
+#include <QtCore/private/qandroidextras_p.h>
 #include <QDebug>
 #include <QSslSocket>
 #endif
@@ -295,11 +297,13 @@ static int runApplication(int argc, const char *const *argv)
     if (serviceArg.isPresent()) {
         qDebug() << "Initializing service";
         SET_QT_APPLICATION_INFO;
-        auto app = QCoreApplication(argc, const_cast<char **>(argv));
+        qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
+        auto app = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
         networkAccessManager().setParent(&app);
-        auto serviceOnlyApp = App(insecureArg.isPresent());
+        auto serviceApp = AppService(insecureArg.isPresent());
+        qDebug() << "Running service";
         const auto res = app.exec();
-        //networkAccessManager().setParent(nullptr);
+        qDebug() << "Qt service event loop exited with return code " << res;
         return res;
     }
 #endif
@@ -329,7 +333,7 @@ static int runApplication(int argc, const char *const *argv)
         auto quickApp = App(insecureArg.isPresent());
         const auto res = app.exec();
 #if defined(Q_OS_ANDROID)
-        qDebug() << "Qt event loop exited with return code " << res;
+        qDebug() << "Qt UI event loop exited with return code " << res;
 #endif
         return res;
     }
