@@ -67,9 +67,9 @@ Q_IMPORT_QML_PLUGIN(WebViewItemPlugin)
 #include <iostream>
 
 #ifdef Q_OS_ANDROID
-#include <QtCore/private/qandroidextras_p.h>
 #include <QDebug>
 #include <QSslSocket>
+#include <QtCore/private/qandroidextras_p.h>
 #endif
 
 using namespace std;
@@ -298,11 +298,12 @@ static int runApplication(int argc, const char *const *argv)
         qDebug() << "Initializing service";
         SET_QT_APPLICATION_INFO;
         qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
-        auto app = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
-        networkAccessManager().setParent(&app);
+        auto guiApp = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
+        auto androidService = QAndroidService(argc, const_cast<char **>(argv));
+        networkAccessManager().setParent(&androidService);
         auto serviceApp = AppService(insecureArg.isPresent());
-        qDebug() << "Running service";
-        const auto res = app.exec();
+        qDebug() << "Executing service";
+        const auto res = androidService.exec();
         qDebug() << "Qt service event loop exited with return code " << res;
         return res;
     }

@@ -159,7 +159,9 @@ AppBase::AppBase(bool insecure, QObject *parent)
 #if defined(SYNCTHINGTRAY_DEBUG_MAIN_LOOP_ACTIVITY)
     if (auto *const app = QCoreApplication::instance()) {
         auto *const timer = new QTimer(this);
-        QObject::connect(timer, &QTimer::timeout, app, [msg = QStringLiteral("%1 still active (%2)").arg(app->metaObject()->className(), qEnvironmentVariable("QT_QPA_PLATFORM"))] { qDebug() << msg; });
+        QObject::connect(timer, &QTimer::timeout, app,
+            [msg = QStringLiteral("%1 still active (%2)")
+                    .arg(app->metaObject()->className(), qEnvironmentVariable("QT_QPA_PLATFORM", QStringLiteral("android")))] { qDebug() << msg; });
         timer->setInterval(1000);
         timer->start();
     }
@@ -220,6 +222,8 @@ AppService::AppService(bool insecure, QObject *parent)
     if (!SyncthingLauncher::mainInstance()) {
         SyncthingLauncher::setMainInstance(&m_launcher);
     }
+
+    invalidateStatus();
 }
 
 AppService::~AppService()
@@ -228,9 +232,11 @@ AppService::~AppService()
     if (SyncthingLauncher::mainInstance() == &m_launcher) {
         SyncthingLauncher::setMainInstance(nullptr);
     }
+#ifdef Q_OS_ANDROID
     if (JniFn::appServiceObjectForJava == this) {
         JniFn::appServiceObjectForJava = nullptr;
     }
+#endif
 }
 
 void AppService::applyLauncherSettings()
@@ -297,9 +303,15 @@ void AppService::stopLibSyncthing()
 void AppService::handleConnectionError(
     const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
+    Q_UNUSED(networkError)
+    Q_UNUSED(category)
 #ifdef Q_OS_ANDROID
     auto error = InternalError(errorMessage, request.url(), response);
     showInternalError(error);
+#else
+    Q_UNUSED(errorMessage)
+    Q_UNUSED(request)
+    Q_UNUSED(response)
 #endif
 }
 
@@ -321,6 +333,7 @@ void AppService::gatherLogs(const QByteArray &newOutput)
 
 void AppService::handleRunningChanged(bool isRunning)
 {
+    Q_UNUSED(isRunning)
     if (m_connectToLaunched) {
         invalidateStatus();
     }
