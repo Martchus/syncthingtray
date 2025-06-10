@@ -1,6 +1,10 @@
 #include "./app.h"
 
 #include "resources/config.h"
+#include <cstddef>
+#include <private/qandroidextras_p.h>
+#include <qjniobject.h>
+#include <qobject.h>
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 #include <syncthing/interface.h>
@@ -96,6 +100,40 @@ using namespace Data;
 namespace QtGui {
 
 #ifdef Q_OS_ANDROID
+SyncthingServiceBinder::SyncthingServiceBinder()
+{
+    qDebug() << "Initializing Syncthing service binder";
+}
+
+bool SyncthingServiceBinder::onTransact(int code, const QAndroidParcel &data, const QAndroidParcel &reply, QAndroidBinder::CallType flags)
+{
+    return false;
+}
+
+SyncthingServiceConnection::SyncthingServiceConnection()
+{
+}
+
+bool SyncthingServiceConnection::connect()
+{
+    const auto serviceIntent = QAndroidIntent(QNativeInterface::QAndroidApplication::context(), "io.github.martchus.syncthingtray.SyncthingService");
+    const auto bindResult = QtAndroidPrivate::bindService(serviceIntent, *this, QtAndroidPrivate::BindFlag::AutoCreate);
+    qDebug() << "Binding to service: " << bindResult;
+    return bindResult;
+}
+
+void SyncthingServiceConnection::onServiceConnected(const QString &name, const QAndroidBinder &serviceBinder)
+{
+    qDebug() << "Connected to service: " << name;
+    m_binder = serviceBinder;
+}
+
+void SyncthingServiceConnection::onServiceDisconnected(const QString &name)
+{
+    qDebug() << "Disconnected from service: " << name;
+    m_binder = QAndroidBinder();
+}
+
 /// \brief The JniFn namespace defines functions called from Java.
 namespace JniFn {
 static AppService *appServiceObjectForJava = nullptr;
@@ -114,6 +152,17 @@ static void unloadQtQuickGui(JNIEnv *, jobject)
 static void stopLibSyncthing(JNIEnv *, jobject)
 {
     QMetaObject::invokeMethod(appServiceObjectForJava, "stopLibSyncthing", Qt::QueuedConnection);
+}
+
+static void broadcastLauncherStatus(JNIEnv *, jobject)
+{
+    QMetaObject::invokeMethod(appServiceObjectForJava, "broadcastLauncherStatus", Qt::QueuedConnection);
+}
+
+static void handleLauncherStatusBroadcast(JNIEnv *, jobject, jobject intent)
+{
+    const auto status = QAndroidIntent(QJniObject::fromLocalRef(intent)).extraVariant(QStringLiteral("status"));
+    QMetaObject::invokeMethod(appObjectForJava, "handleLauncherStatusBroadcast", Qt::QueuedConnection, Q_ARG(QVariant, status));
 }
 
 static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNotification)
@@ -193,12 +242,17 @@ AppService::AppService(bool insecure, QObject *parent)
         auto registeredMethods = true;
         static const JNINativeMethod activityMethods[] = {
             { "stopLibSyncthing", "()V", reinterpret_cast<void *>(JniFn::stopLibSyncthing) },
+            { "broadcastLauncherStatus", "()V", reinterpret_cast<void *>(JniFn::broadcastLauncherStatus) },
         };
-        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", activityMethods, 1) && registeredMethods;
+        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", activityMethods, 2) && registeredMethods;
         if (!registeredMethods) {
             qWarning() << "Unable to register all native methods in JNI environment.";
         }
     }
+#endif
+
+#ifdef Q_OS_ANDROID
+    m_serviceConnection.connect();
 #endif
 
     connect(&m_connection, &SyncthingConnection::error, this, &AppService::handleConnectionError);
@@ -236,6 +290,18 @@ AppService::~AppService()
     if (JniFn::appServiceObjectForJava == this) {
         JniFn::appServiceObjectForJava = nullptr;
     }
+#endif
+}
+
+void AppService::broadcastLauncherStatus()
+{
+#ifdef Q_OS_ANDROID
+    auto intent = QAndroidIntent(QStringLiteral("io.github.martchus.syncthingtray.launcherstatus"));
+    intent.putExtra(QStringLiteral("status"), QVariant(QStringLiteral("message from C++ service")));
+    QJniObject(QNativeInterface::QAndroidApplication::context())
+        .callMethod<void>("sendBroadcast", "(Landroid/content/Intent;)V", intent.handle().object());
+#else
+    // FIXME
 #endif
 }
 
@@ -589,13 +655,14 @@ App::App(bool insecure, QObject *parent)
         auto env = QJniEnvironment();
         auto registeredMethods = true;
         static const JNINativeMethod activityMethods[] = {
+            { "handleLauncherStatusBroadcast", "(Landroid/content/Intent;)V", reinterpret_cast<void *>(JniFn::handleLauncherStatusBroadcast) },
             { "handleAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(JniFn::handleAndroidIntent) },
             { "handleStoragePermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleStoragePermissionChanged) },
             { "handleNotificationPermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleNotificationPermissionChanged) },
             { "loadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::loadQtQuickGui) },
             { "unloadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::unloadQtQuickGui) },
         };
-        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 5) && registeredMethods;
+        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 6) && registeredMethods;
         if (!registeredMethods) {
             qWarning() << "Unable to register all native methods in JNI environment.";
         }
@@ -1441,6 +1508,16 @@ static auto splitFolderRef(QStringView folderRef)
         res.folderId = folderRef;
     }
     return res;
+}
+
+//QAndroidBinder *App::handleBind(const QAndroidIntent &intent)
+//{
+//    return nullptr;
+//}
+
+void App::handleLauncherStatusBroadcast(const QVariant &status)
+{
+    qDebug() << "Service sent launcher status: " << status.toString();
 }
 
 void App::handleAndroidIntent(const QString &data, bool fromNotification)

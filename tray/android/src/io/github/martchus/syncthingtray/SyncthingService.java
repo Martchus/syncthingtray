@@ -192,10 +192,8 @@ public class SyncthingService extends QtService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "Starting work: TODO");
-
-        
         super.onStartCommand(intent, flags, startId);
+        broadcastLauncherStatus();
         return Service.START_STICKY;
     }
 
@@ -229,4 +227,5 @@ public class SyncthingService extends QtService {
     }
 
     private static native void stopLibSyncthing();
+    private static native void broadcastLauncherStatus();
 }

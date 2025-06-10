@@ -3,6 +3,7 @@
 
 #include "./quickicon.h"
 
+#include <qtmetamacros.h>
 #include <syncthingwidgets/misc/diffhighlighter.h>
 #include <syncthingwidgets/misc/internalerror.h>
 #include <syncthingwidgets/misc/otherdialogs.h>
@@ -35,6 +36,7 @@
 #ifdef Q_OS_ANDROID
 #include <QHash>
 #include <QJniObject>
+#include <QtCore/private/qandroidextras_p.h>
 #endif
 
 #include <array>
@@ -46,7 +48,28 @@ namespace QtForkAwesome {
 class QuickImageProvider;
 }
 
+#ifdef Q_OS_ANDROID
 namespace QtGui {
+
+class SyncthingServiceBinder : public QAndroidBinder {
+public:
+    explicit SyncthingServiceBinder();
+
+    bool onTransact(int code, const QAndroidParcel &data, const QAndroidParcel &reply, QAndroidBinder::CallType flags) override;
+};
+
+class SyncthingServiceConnection : public QAndroidServiceConnection {
+public:
+    explicit SyncthingServiceConnection();
+
+    bool connect();
+    void onServiceConnected(const QString &name, const QAndroidBinder &serviceBinder) override;
+    void onServiceDisconnected(const QString &name) override;
+
+private:
+    QAndroidBinder m_binder;
+};
+#endif
 
 class AppBase : public QObject {
     Q_OBJECT
@@ -108,6 +131,7 @@ public:
     }
 
 public Q_SLOTS:
+    Q_INVOKABLE void broadcastLauncherStatus();
     Q_INVOKABLE void applyLauncherSettings();
 
 private Q_SLOTS:
@@ -142,6 +166,7 @@ private:
     int m_androidNotificationId = 100000000;
     mutable std::optional<bool> m_storagePermissionGranted;
     mutable std::optional<bool> m_notificationPermissionGranted;
+    SyncthingServiceConnection m_serviceConnection;
 #endif
 };
 
@@ -375,6 +400,11 @@ public:
     Q_INVOKABLE void addDialog(QObject *dialog);
     Q_INVOKABLE void removeDialog(QObject *dialog);
 
+    //#ifdef Q_OS_ANDROID
+    //    // helper functions invoked directly from JNI env
+    //    QAndroidBinder *handleBind(const QAndroidIntent &intent);
+    //#endif
+
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
     void settingsChanged(const QJsonObject &settingsChanged);
@@ -410,6 +440,7 @@ private Q_SLOTS:
     void handleStateChanged(Qt::ApplicationState state);
     void handleConnectionStatusChanged(Data::SyncthingStatus newStatus);
 #ifdef Q_OS_ANDROID
+    void handleLauncherStatusBroadcast(const QVariant &status);
     void handleAndroidIntent(const QString &page, bool fromNotification);
     void handleStoragePermissionChanged(bool storagePermissionGranted);
     void handleNotificationPermissionChanged(bool notificationPermissionGranted);

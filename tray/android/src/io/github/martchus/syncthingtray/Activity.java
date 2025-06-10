@@ -1,7 +1,10 @@
 package io.github.martchus.syncthingtray;
 
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.Manifest;
@@ -9,6 +12,7 @@ import android.media.MediaScannerConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+//import android.os.IBinder;
 import android.provider.DocumentsContract;
 import android.net.Uri;
 import android.provider.Settings;
@@ -40,6 +44,22 @@ public class Activity extends QtActivity {
     private boolean m_explicitShutdown = false;
     private boolean m_keepRunningAfterDestruction = false;
     private android.content.pm.ActivityInfo m_info;
+    public static final String BROADCAST_LAUNCHER_STATUS = "io.github.martchus.syncthingtray.launcherstatus";
+    private final BroadcastReceiver m_serviceMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (BROADCAST_LAUNCHER_STATUS.equals(intent.getAction())) {
+                handleLauncherStatusBroadcast(intent);
+            }
+        }
+    };
+
+    private void registerServiceBroadcastReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BROADCAST_LAUNCHER_STATUS);
+        registerReceiver(m_serviceMessageReceiver, intentFilter);
+        Log.i(TAG, "Registered broadcast receiver");
+    }
 
     public boolean performHapticFeedback() {
         View rootView = getWindow().getDecorView().getRootView();
@@ -236,6 +256,9 @@ public class Activity extends QtActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             m_fontWeightAdjustment = config.fontWeightAdjustment;
         }
+
+        // receive messages from the Syncthing service to be informed about launcher status
+        registerServiceBroadcastReceiver();
     }
 
     @Override
@@ -346,6 +369,7 @@ public class Activity extends QtActivity {
 
     private static native void loadQtQuickGui();
     private static native void unloadQtQuickGui();
+    private static native void handleLauncherStatusBroadcast(Intent intent);
     private static native void handleAndroidIntent(String page, boolean fromNotification);
     private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
     private static native void handleNotificationPermissionChanged(boolean notificationPermissionGranted);

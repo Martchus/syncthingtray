@@ -85,7 +85,7 @@
         </activity>
         <service
             android:name=".SyncthingService"
-            android:process=":qt_service"
+            android:process=":service"
             android:foregroundServiceType="specialUse"
             android:exported="true">
             <property
