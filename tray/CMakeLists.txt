@@ -44,8 +44,10 @@ set(WIDGETS_UI_FILES gui/traywidget.ui)
 set(QML_HEADER_FILES gui/quick/app.h gui/quick/scenegraph/managedtexturenode.h)
 set(QML_SRC_FILES gui/quick/app.cpp gui/quick/scenegraph/managedtexturenode.cpp)
 
-set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
-             translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
+set(TS_FILES
+    translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
+    translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_ru_RU.ts
+    translations/${META_PROJECT_NAME}_en_US.ts)
 
 set(ICON_FILES resources/icons/hicolor/scalable/apps/${META_PROJECT_NAME}.svg)
 
