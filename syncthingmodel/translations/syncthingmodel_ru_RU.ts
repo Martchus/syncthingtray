@@ -124,7 +124,7 @@
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="183"/>
         <source>local</source>
-        <translation>местный</translation>
+        <translation>локальный</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="183"/>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="143"/>
         <source>Local status</source>
-        <translation>Местный статус</translation>
+        <translation>Локальный статус</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="145"/>
