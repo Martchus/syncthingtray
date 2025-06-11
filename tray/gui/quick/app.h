@@ -3,7 +3,6 @@
 
 #include "./quickicon.h"
 
-#include <qtmetamacros.h>
 #include <syncthingwidgets/misc/diffhighlighter.h>
 #include <syncthingwidgets/misc/internalerror.h>
 #include <syncthingwidgets/misc/otherdialogs.h>
@@ -57,7 +56,7 @@ class SyncthingServiceBinder : public QAndroidBinder {
 public:
     enum SyncthingServiceAction : int
     {
-        ApplyLauncherSettings = 1,
+        ReloadSettings = 1,
     };
 
     explicit SyncthingServiceBinder(AppService &service);
@@ -102,16 +101,22 @@ public:
     }
 
     Q_INVOKABLE bool loadSettings();
+    Q_INVOKABLE void applyConnectionSettings(const QUrl &syncthingUrl);
+    Q_INVOKABLE void applySyncthingSettings();
 
 Q_SIGNALS:
     void error(const QString &errorMessage, const QString &details = QString());
     void settingsChanged(const QJsonObject &settingsChanged);
     void logsAvailable(const QString &newLogMessages);
 
+protected Q_SLOTS:
+    void handleGuiAddressChanged(const QUrl &newUrl);
+
 protected:
     static QString openSettingFile(QFile &settingsFile, const QString &path);
     static QString readSettingFile(QFile &settingsFile, QJsonObject &settings);
     bool openSettings();
+    virtual void invalidateStatus();
 
 protected:
     Data::SyncthingConnection m_connection;
@@ -145,17 +150,23 @@ public:
         return &m_launcher;
     }
 
+Q_SIGNALS:
+#ifndef Q_OS_ANDROID
+    void launcherStatusChanged(const QVariant &status);
+#endif
+
 public Q_SLOTS:
     Q_INVOKABLE void broadcastLauncherStatus();
     Q_INVOKABLE bool applyLauncherSettings();
+    Q_INVOKABLE bool applySettings();
+    Q_INVOKABLE bool reloadSettings();
 
 private Q_SLOTS:
     void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,
         const QByteArray &response);
-    void invalidateStatus();
+    void invalidateStatus() override;
     void gatherLogs(const QByteArray &newOutput);
     void handleRunningChanged(bool isRunning);
-    void handleGuiAddressChanged(const QUrl &newUrl);
     void handleChangedDevices();
     void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
     void handleConnectionStatusChanged(Data::SyncthingStatus newStatus);
@@ -204,6 +215,7 @@ class App : public AppBase {
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QVariantMap statistics READ statistics)
     Q_PROPERTY(bool savingConfig READ isSavingConfig NOTIFY savingConfigChanged)
+    Q_PROPERTY(bool launching READ isLaunching NOTIFY launchingChanged)
     Q_PROPERTY(bool importExportOngoing READ isImportExportOngoing NOTIFY importExportOngoingChanged)
     Q_PROPERTY(QString statusText READ statusText NOTIFY statusInfoChanged)
     Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY statusInfoChanged)
@@ -319,6 +331,10 @@ public:
     {
         return m_importExportStatus != ImportExportStatus::None;
     }
+    bool isLaunching() const
+    {
+        return m_launcherStatus.value(QStringLiteral("isStarting")).toBool();
+    }
     const QString &statusText() const
     {
         return m_statusInfo.statusText();
@@ -359,7 +375,6 @@ public:
     Q_INVOKABLE void shutdown();
     Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applySettings();
-    Q_INVOKABLE void applyLauncherSettings();
     Q_INVOKABLE bool clearLogfile();
     Q_INVOKABLE bool checkOngoingImportExport();
     Q_INVOKABLE bool openSyncthingConfigFile();
@@ -423,6 +438,7 @@ Q_SIGNALS:
     void internalErrorsRequested();
     void connectionErrorsRequested();
     void savingConfigChanged(bool isSavingConfig);
+    void launchingChanged(bool launchingChanged);
     void importExportOngoingChanged(bool importExportOngoing);
     void statusInfoChanged();
     void textShared(const QString &text);
@@ -437,16 +453,15 @@ protected:
 private Q_SLOTS:
     void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,
         const QByteArray &response);
-    void invalidateStatus();
+    void invalidateStatus() override;
     void gatherLogs(const QByteArray &newOutput);
     void handleRunningChanged(bool isRunning);
-    void handleGuiAddressChanged(const QUrl &newUrl);
     void handleChangedDevices();
     void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
     void handleStateChanged(Qt::ApplicationState state);
     void handleConnectionStatusChanged(Data::SyncthingStatus newStatus);
-#ifdef Q_OS_ANDROID
     void handleLauncherStatusBroadcast(const QVariant &status);
+#ifdef Q_OS_ANDROID
     void handleAndroidIntent(const QString &page, bool fromNotification);
     void handleStoragePermissionChanged(bool storagePermissionGranted);
     void handleNotificationPermissionChanged(bool notificationPermissionGranted);
@@ -460,6 +475,7 @@ private:
     QString locateSettingsExportDir();
 
     std::optional<QQmlApplicationEngine> m_engine;
+    QVariantMap m_launcherStatus;
     QGuiApplication *m_app;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
     Data::SyncthingDirectoryModel m_dirModel;

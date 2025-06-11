@@ -361,7 +361,7 @@ Page {
             text: qsTr("Restart")
             icon.source: App.faUrlBase + "refresh"
             onTriggered: {
-                App.launcher.manuallyStopped = true;
+                App.launcher.manuallyStopped = true; // FIXME: App.launcher
                 App.connection.restart();
             }
         },
@@ -369,7 +369,7 @@ Page {
             text: qsTr("Shutdown")
             icon.source: App.faUrlBase + "power-off"
             onTriggered: {
-                App.launcher.manuallyStopped = true;
+                App.launcher.manuallyStopped = true; // FIXME: App.launcher
                 App.connection.shutdown();
             }
         },

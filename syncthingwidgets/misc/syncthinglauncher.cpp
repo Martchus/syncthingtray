@@ -1,5 +1,6 @@
 #include "./syncthinglauncher.h"
 
+#include <qabstractanimation.h>
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/utils.h>
 
@@ -577,6 +578,20 @@ void SyncthingLauncher::showLibSyncthingNotSupported(QByteArray &&reason)
     handleOutputAvailable(4, std::move(reason)); // LibSyncthing::LogLevel::Fatal
     const auto &exitStatus = m_lastExitStatus.emplace(-1, QProcess::CrashExit);
     emit exited(exitStatus.code, exitStatus.status);
+}
+
+QVariant SyncthingLauncher::overallStatus() const
+{
+    const auto isMetered = isNetworkConnectionMetered();
+    return QVariantMap{
+        {QStringLiteral("isRunning"), isRunning()},
+        {QStringLiteral("isStarting"), isStarting()},
+        {QStringLiteral("isManuallyStopped"), isManuallyStopped()},
+        {QStringLiteral("guiUrl"), guiUrl()},
+        {QStringLiteral("errorString"), errorString()},
+        {QStringLiteral("runningStatus"), runningStatus()},
+        {QStringLiteral("isMetered"), isMetered.has_value() ? QVariant(isMetered.value()) : QVariant()},
+    };
 }
 
 } // namespace Data

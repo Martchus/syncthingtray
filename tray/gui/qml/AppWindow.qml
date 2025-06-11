@@ -52,7 +52,7 @@ ApplicationWindow {
         }
     }
     onClosing: (event) => {
-        if (!appWindow.forceClose && App.launcher.running) {
+        if (!appWindow.forceClose && App.launcher.running) { // FIXME: App.launcher
             event.accepted = false;
             closeDialog.open();
         }

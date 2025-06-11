@@ -108,8 +108,8 @@ bool SyncthingServiceBinder::onTransact(int code, const QAndroidParcel &data, co
     Q_UNUSED(reply)
     Q_UNUSED(flags)
     switch (code) {
-    case SyncthingServiceBinder::ApplyLauncherSettings:
-        QMetaObject::invokeMethod(&m_service, "applyLauncherSettings", Qt::QueuedConnection);
+    case SyncthingServiceBinder::ReloadSettings:
+        QMetaObject::invokeMethod(&m_service, "reloadSettings", Qt::QueuedConnection);
         return true;
     default:
         return false;
@@ -265,6 +265,12 @@ bool AppBase::openSettings()
     return true;
 }
 
+void AppBase::invalidateStatus()
+{
+    m_statusInfo.updateConnectionStatus(m_connection);
+    m_statusInfo.updateConnectedDevices(m_connection);
+}
+
 QString AppBase::readSettingFile(QFile &settingsFile, QJsonObject &settings)
 {
     auto parsError = QJsonParseError();
@@ -291,6 +297,78 @@ bool AppBase::loadSettings()
     }
     emit settingsChanged(m_settings);
     return true;
+}
+
+void AppBase::applyConnectionSettings(const QUrl &syncthingUrl)
+{
+    auto connectionSettings = m_settings.value(QLatin1String("connection"));
+    auto connectionSettingsObj = connectionSettings.toObject();
+    auto couldLoadCertificate = false;
+    auto modified = !connectionSettings.isObject();
+    if (!modified) {
+        couldLoadCertificate = m_connectionSettingsFromConfig.loadFromJson(connectionSettingsObj);
+    } else {
+        m_connectionSettingsFromConfig.storeToJson(connectionSettingsObj);
+        couldLoadCertificate = m_connectionSettingsFromConfig.loadHttpsCert();
+    }
+    auto useLauncherVal = connectionSettingsObj.value(QStringLiteral("useLauncher"));
+    m_connectToLaunched = useLauncherVal.toBool(m_connectToLaunched);
+    if (!useLauncherVal.isBool()) {
+        connectionSettingsObj.insert(QStringLiteral("useLauncher"), m_connectToLaunched);
+        modified = true;
+    }
+    if (modified) {
+        m_settings.insert(QLatin1String("connection"), connectionSettingsObj);
+    }
+    if (!couldLoadCertificate) {
+        emit error(tr("Unable to load HTTPs certificate"));
+    }
+    m_connection.setInsecure(m_insecure);
+        if (m_connectToLaunched) {
+        handleGuiAddressChanged(syncthingUrl);
+    } else if (m_connection.applySettings(m_connectionSettingsFromConfig) || !m_connection.isConnected()) {
+        m_connection.reconnect();
+    }
+}
+
+void AppBase::applySyncthingSettings()
+{
+    const auto launcherSettingsObj = m_settings.value(QLatin1String("launcher")).toObject();
+    auto customSyncthingHome = launcherSettingsObj.value(QLatin1String("stHomeDir")).toString();
+    m_syncthingConfigDir = customSyncthingHome.isEmpty() ? m_settingsDir->path() + QStringLiteral("/syncthing") : customSyncthingHome;
+    m_syncthingDataDir = m_syncthingConfigDir;
+}
+
+void AppBase::handleGuiAddressChanged(const QUrl &newUrl)
+{
+    auto url = newUrl;
+#ifndef QT_NO_SSL
+    // always use TLS if supported by Qt for the sake of security (especially on Android)
+    // note: Syncthing itself always supports it and allows connections via TLS even if the "tls" setting
+    //       is disabled (because this setting is just about *enforcing* TLS).
+    url.setScheme(QStringLiteral("https"));
+#endif
+    m_connectionSettingsFromLauncher.syncthingUrl = url.toString();
+    if (!m_syncthingConfig.restore(m_syncthingConfigDir + QStringLiteral("/config.xml"))) {
+        if (!newUrl.isEmpty()) {
+            emit error("Unable to read Syncthing config for automatic connection to backend.");
+        }
+        return;
+    }
+    m_connectionSettingsFromLauncher.apiKey = m_syncthingConfig.guiApiKey.toUtf8();
+    m_connectionSettingsFromLauncher.authEnabled = false;
+#ifndef QT_NO_SSL
+    m_connectionSettingsFromLauncher.httpsCertPath = m_syncthingConfigDir + QStringLiteral("/https-cert.pem");
+#endif
+
+    if (m_connectToLaunched) {
+        invalidateStatus();
+        if (newUrl.isEmpty()) {
+            m_connection.disconnect();
+        } else if (m_connection.applySettings(m_connectionSettingsFromLauncher) || !m_connection.isConnected()) {
+            m_connection.reconnect();
+        }
+    }
 }
 
 AppService::AppService(bool insecure, QObject *parent)
@@ -335,7 +413,9 @@ AppService::AppService(bool insecure, QObject *parent)
     m_launcher.setEmittingOutput(true);
     connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &AppService::gatherLogs);
     connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &AppService::handleRunningChanged);
+    connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &AppService::broadcastLauncherStatus);
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::handleGuiAddressChanged);
+    connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::broadcastLauncherStatus);
 
 #ifdef Q_OS_ANDROID
     connect(&m_notifier, &SyncthingNotifier::newDevice, this, &AppService::showNewDevice);
@@ -346,9 +426,7 @@ AppService::AppService(bool insecure, QObject *parent)
         SyncthingLauncher::setMainInstance(&m_launcher);
     }
 
-    loadSettings();
-    applyLauncherSettings();
-    invalidateStatus();
+    reloadSettings();
 }
 
 AppService::~AppService()
@@ -368,11 +446,11 @@ void AppService::broadcastLauncherStatus()
 {
 #ifdef Q_OS_ANDROID
     auto intent = QAndroidIntent(QStringLiteral("io.github.martchus.syncthingtray.launcherstatus"));
-    intent.putExtra(QStringLiteral("status"), QVariant(QStringLiteral("message from C++ service")));
+    intent.putExtra(QStringLiteral("status"), m_launcher.overallStatus());
     QJniObject(QNativeInterface::QAndroidApplication::context())
         .callMethod<void>("sendBroadcast", "(Landroid/content/Intent;)V", intent.handle().object());
 #else
-    // FIXME
+    emit launcherStatusChanged(m_launcher.overallStatus());
 #endif
 }
 
@@ -413,6 +491,23 @@ bool AppService::applyLauncherSettings()
     return true;
 }
 
+
+bool AppService::reloadSettings()
+{
+    const auto res = loadSettings() && applyLauncherSettings();
+    invalidateStatus();
+    return res;
+}
+
+bool AppService::applySettings()
+{
+    applySyncthingSettings();
+    applyConnectionSettings(m_launcher.guiUrl());
+    applyLauncherSettings();
+    invalidateStatus();
+    return true;
+}
+
 #ifdef Q_OS_ANDROID
 void AppService::stopLibSyncthing()
 {
@@ -437,8 +532,7 @@ void AppService::handleConnectionError(
 
 void AppService::invalidateStatus()
 {
-    m_statusInfo.updateConnectionStatus(m_connection);
-    m_statusInfo.updateConnectedDevices(m_connection);
+    AppBase::invalidateStatus();
 #ifdef Q_OS_ANDROID
     updateAndroidNotification();
 #endif
@@ -456,36 +550,6 @@ void AppService::handleRunningChanged(bool isRunning)
     Q_UNUSED(isRunning)
     if (m_connectToLaunched) {
         invalidateStatus();
-    }
-}
-
-void AppService::handleGuiAddressChanged(const QUrl &newUrl)
-{
-    auto url = newUrl;
-#ifndef QT_NO_SSL
-    // always use TLS if supported by Qt for the sake of security (especially on Android)
-    // note: Syncthing itself always supports it and allows connections via TLS even if the "tls" setting
-    //       is disabled (because this setting is just about *enforcing* TLS).
-    url.setScheme(QStringLiteral("https"));
-#endif
-    m_connectionSettingsFromLauncher.syncthingUrl = url.toString();
-    if (!m_syncthingConfig.restore(m_syncthingConfigDir + QStringLiteral("/config.xml"))) {
-        // FIXME: show errror like in UI
-        return;
-    }
-    m_connectionSettingsFromLauncher.apiKey = m_syncthingConfig.guiApiKey.toUtf8();
-    m_connectionSettingsFromLauncher.authEnabled = false;
-#ifndef QT_NO_SSL
-    m_connectionSettingsFromLauncher.httpsCertPath = m_syncthingConfigDir + QStringLiteral("/https-cert.pem");
-#endif
-
-    if (m_connectToLaunched) {
-        invalidateStatus();
-        if (newUrl.isEmpty()) {
-            m_connection.disconnect();
-        } else if (m_connection.applySettings(m_connectionSettingsFromLauncher) || !m_connection.isConnected()) {
-            m_connection.reconnect();
-        }
     }
 }
 
@@ -782,13 +846,11 @@ const QString &App::status()
         return m_status.emplace(tr("Moving home directory …"));
     }
     if (m_connectToLaunched) {
-        /* FIXME: query service
-        if (!m_launcher.isRunning()) {
-            return m_status.emplace(m_launcher.runningStatus());
-        } else if (m_launcher.isStarting()) {
+        if (!m_launcherStatus.value(QStringLiteral("isRunning")).toBool()) {
+            return m_status.emplace(m_launcherStatus.value(QStringLiteral("runningStatus")).toString());
+        } else if (m_launcherStatus.value(QStringLiteral("isStarting")).toBool()) {
             return m_status.emplace(tr("Backend is starting …"));
         }
-        */
     }
     switch (m_connection.status()) {
     case Data::SyncthingStatus::Disconnected:
@@ -1444,6 +1506,7 @@ bool App::shouldIgnorePermissions(const QString &path)
 
 void App::invalidateStatus()
 {
+    AppBase::invalidateStatus();
     m_status.reset();
     m_statusInfo.updateConnectionStatus(m_connection);
     m_statusInfo.updateConnectedDevices(m_connection);
@@ -1467,38 +1530,6 @@ void App::handleRunningChanged(bool isRunning)
         importSettings(m_settingsImport.first, m_settingsImport.second);
     } else if (m_homeDirMove.has_value()) {
         moveSyncthingHome(m_homeDirMove.value());
-    }
-}
-
-void App::handleGuiAddressChanged(const QUrl &newUrl)
-{
-    auto url = newUrl;
-#ifndef QT_NO_SSL
-    // always use TLS if supported by Qt for the sake of security (especially on Android)
-    // note: Syncthing itself always supports it and allows connections via TLS even if the "tls" setting
-    //       is disabled (because this setting is just about *enforcing* TLS).
-    url.setScheme(QStringLiteral("https"));
-#endif
-    m_connectionSettingsFromLauncher.syncthingUrl = url.toString();
-    if (!m_syncthingConfig.restore(m_syncthingConfigDir + QStringLiteral("/config.xml"))) {
-        if (!newUrl.isEmpty()) {
-            emit error("Unable to read Syncthing config for automatic connection to backend.");
-        }
-        return;
-    }
-    m_connectionSettingsFromLauncher.apiKey = m_syncthingConfig.guiApiKey.toUtf8();
-    m_connectionSettingsFromLauncher.authEnabled = false;
-#ifndef QT_NO_SSL
-    m_connectionSettingsFromLauncher.httpsCertPath = m_syncthingConfigDir + QStringLiteral("/https-cert.pem");
-#endif
-
-    if (m_connectToLaunched) {
-        invalidateStatus();
-        if (newUrl.isEmpty()) {
-            m_connection.disconnect();
-        } else if (m_connection.applySettings(m_connectionSettingsFromLauncher) || !m_connection.isConnected()) {
-            m_connection.reconnect();
-        }
     }
 }
 
@@ -1546,6 +1577,29 @@ void App::handleConnectionStatusChanged(Data::SyncthingStatus newStatus)
     Q_UNUSED(newStatus)
 }
 
+void App::handleLauncherStatusBroadcast(const QVariant &status)
+{
+    const auto launcherStatus = status.toMap();
+    const auto isStarting = launcherStatus.value(QStringLiteral("isStarting"));
+    const auto isStartingChanged = isStarting != m_launcherStatus.value(QStringLiteral("isStarting"));
+    const auto isRunning = launcherStatus.value(QStringLiteral("isRunning"));
+    const auto isRunningChanged = isRunning != m_launcherStatus.value(QStringLiteral("isRunning"));
+    const auto guiUrl = launcherStatus.value(QStringLiteral("guiUrl"));
+    const auto guiUrlChanged = guiUrl != m_launcherStatus.value(QStringLiteral("guiUrl"));
+    m_launcherStatus = launcherStatus;
+    if (isStartingChanged) {
+        emit launchingChanged(isStarting.toBool());
+    }
+    if (isRunningChanged) {
+        qDebug() << "Launcher running status has changed: " << isRunning;
+        handleRunningChanged(isRunning.toBool());
+    }
+    if (guiUrlChanged) {
+        qDebug() << "GUI address changed: " << guiUrl;
+        handleGuiAddressChanged(guiUrl.toUrl());
+    }
+}
+
 #ifdef Q_OS_ANDROID
 static auto splitFolderRef(QStringView folderRef)
 {
@@ -1569,11 +1623,6 @@ static auto splitFolderRef(QStringView folderRef)
 //{
 //    return nullptr;
 //}
-
-void App::handleLauncherStatusBroadcast(const QVariant &status)
-{
-    qDebug() << "Service sent launcher status: " << status.toString();
-}
 
 void App::handleAndroidIntent(const QString &data, bool fromNotification)
 {
@@ -1786,50 +1835,18 @@ bool App::storeSettings()
         emit error(tr("Unable to save settings: ") + m_settingsFile.errorString());
         return false;
     }
+    m_serviceConnection.binder().transact(SyncthingServiceBinder::ReloadSettings, QAndroidParcel(), nullptr, QAndroidBinder::CallType::OneWay);
     return true;
 }
 
 bool App::applySettings()
 {
-    auto connectionSettings = m_settings.value(QLatin1String("connection"));
-    auto connectionSettingsObj = connectionSettings.toObject();
-    auto couldLoadCertificate = false;
-    auto modified = !connectionSettings.isObject();
-    if (!modified) {
-        couldLoadCertificate = m_connectionSettingsFromConfig.loadFromJson(connectionSettingsObj);
-    } else {
-        m_connectionSettingsFromConfig.storeToJson(connectionSettingsObj);
-        couldLoadCertificate = m_connectionSettingsFromConfig.loadHttpsCert();
-    }
-    auto useLauncherVal = connectionSettingsObj.value(QStringLiteral("useLauncher"));
-    m_connectToLaunched = useLauncherVal.toBool(m_connectToLaunched);
-    if (!useLauncherVal.isBool()) {
-        connectionSettingsObj.insert(QStringLiteral("useLauncher"), m_connectToLaunched);
-        modified = true;
-    }
-    if (modified) {
-        m_settings.insert(QLatin1String("connection"), connectionSettingsObj);
-    }
-    if (!couldLoadCertificate) {
-        emit error(tr("Unable to load HTTPs certificate"));
-    }
-    m_connection.setInsecure(m_insecure);
-    if (m_connectToLaunched) {
-        // FIXME: read gui url from service-provided launcher status
-        //handleGuiAddressChanged(m_launcher.guiUrl());
-    } else if (m_connection.applySettings(m_connectionSettingsFromConfig) || !m_connection.isConnected()) {
-        m_connection.reconnect();
-    }
+    applySyncthingSettings();
+    applyConnectionSettings(m_launcherStatus.value(QStringLiteral("guiUrl")).toUrl());
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
     m_alwaysUnloadGuiWhenHidden = tweaksSettings.value(QLatin1String("unloadGuiWhenHidden")).toBool(false);
-    applyLauncherSettings();
     invalidateStatus();
     return true;
-}
-
-void App::applyLauncherSettings()
-{
-    m_serviceConnection.binder().transact(SyncthingServiceBinder::ApplyLauncherSettings, QAndroidParcel(), nullptr, QAndroidBinder::CallType::OneWay);
 }
 
 bool App::clearLogfile()
@@ -1839,7 +1856,8 @@ bool App::clearLogfile()
     if (launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool()) {
         launcherSettingsObj.insert(QLatin1String("writeLogFile"), false);
         m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
-        applyLauncherSettings();
+        // FIXME
+        //applyLauncherSettings();
     }
     emit settingsChanged(m_settings);
     if (!storeSettings()) {
@@ -1995,15 +2013,14 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
 
     // stop Syncthing if necessary
     const auto importSyncthingHome = selectedSettings.value(QStringLiteral("syncthingHome")).toBool();
-    /* FIXME: query launcher status from service
-    if (importSyncthingHome && m_launcher.isRunning()) {
+    if (importSyncthingHome && m_launcherStatus.value(QStringLiteral("isRunning")).toBool()) {
         emit info(tr("Waiting for backend to terminate before importing settings …"));
         m_settingsImport.first = availableSettings;
         m_settingsImport.second = selectedSettings;
-        m_launcher.terminate();
+        // FIXME
+        //m_launcher.terminate();
         return false;
     }
-    */
 
     setImportExportStatus(ImportExportStatus::Importing);
     QtConcurrent::run([this, importSyncthingHome, availableSettings, selectedSettings, rawConfig = m_connection.rawConfig()]() mutable {
