@@ -40,8 +40,10 @@ set(SRC_FILES
 set(TEST_HEADER_FILES)
 set(TEST_SRC_FILES tests/connectiontests.cpp tests/patterntests.cpp tests/misctests.cpp)
 
-set(TS_FILES translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
-             translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_en_US.ts)
+set(TS_FILES
+    translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
+    translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_ru_RU.ts
+    translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.27.0 REQUIRED)
