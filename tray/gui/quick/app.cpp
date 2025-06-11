@@ -1,10 +1,6 @@
 #include "./app.h"
 
 #include "resources/config.h"
-#include <cstddef>
-#include <private/qandroidextras_p.h>
-#include <qjniobject.h>
-#include <qobject.h>
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 #include <syncthing/interface.h>
@@ -100,14 +96,24 @@ using namespace Data;
 namespace QtGui {
 
 #ifdef Q_OS_ANDROID
-SyncthingServiceBinder::SyncthingServiceBinder()
+SyncthingServiceBinder::SyncthingServiceBinder(AppService &service)
+    : m_service(service)
 {
     qDebug() << "Initializing Syncthing service binder";
 }
 
 bool SyncthingServiceBinder::onTransact(int code, const QAndroidParcel &data, const QAndroidParcel &reply, QAndroidBinder::CallType flags)
 {
-    return false;
+    Q_UNUSED(data)
+    Q_UNUSED(reply)
+    Q_UNUSED(flags)
+    switch (code) {
+    case SyncthingServiceBinder::ApplyLauncherSettings:
+        QMetaObject::invokeMethod(&m_service, "applyLauncherSettings", Qt::QueuedConnection);
+        return true;
+    default:
+        return false;
+    }
 }
 
 SyncthingServiceConnection::SyncthingServiceConnection()
@@ -229,6 +235,64 @@ AppBase::~AppBase()
 {
 }
 
+QString AppBase::openSettingFile(QFile &settingsFile, const QString &path)
+{
+    settingsFile.close();
+    settingsFile.unsetError();
+    settingsFile.setFileName(path);
+    if (!settingsFile.open(QFile::ReadWrite)) {
+        return tr("Unable to open settings under \"%1\": ").arg(path) + settingsFile.errorString();
+    }
+    return QString();
+}
+
+bool AppBase::openSettings()
+{
+    if (!m_settingsDir.has_value()) {
+        m_settingsDir.emplace(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    }
+    if (!m_settingsDir->exists() && !m_settingsDir->mkpath(QStringLiteral("."))) {
+        emit error(tr("Unable to create settings directory under \"%1\".").arg(m_settingsDir->path()));
+        m_settingsDir.reset();
+        return false;
+    }
+    if (const auto errorMessage = openSettingFile(m_settingsFile, m_settingsDir->path() + QStringLiteral("/appconfig.json"));
+        !errorMessage.isEmpty()) {
+        m_settingsDir.reset();
+        emit error(errorMessage);
+        return false;
+    }
+    return true;
+}
+
+QString AppBase::readSettingFile(QFile &settingsFile, QJsonObject &settings)
+{
+    auto parsError = QJsonParseError();
+    auto doc = QJsonDocument::fromJson(settingsFile.readAll(), &parsError);
+    settings = doc.object();
+    if (settingsFile.error() != QFile::NoError) {
+        return tr("Unable to read settings: ") + settingsFile.errorString();
+    }
+    if (parsError.error != QJsonParseError::NoError || !doc.isObject()) {
+        return tr("Unable to restore settings: ")
+            + (parsError.error != QJsonParseError::NoError ? parsError.errorString() : tr("JSON document contains no object"));
+    }
+    return QString();
+}
+
+bool AppBase::loadSettings()
+{
+    if (!m_settingsFile.isOpen() && !openSettings()) {
+        return false;
+    }
+    if (const auto errorMessage = readSettingFile(m_settingsFile, m_settings); !errorMessage.isEmpty()) {
+        emit error(errorMessage);
+        return false;
+    }
+    emit settingsChanged(m_settings);
+    return true;
+}
+
 AppService::AppService(bool insecure, QObject *parent)
     : AppBase(insecure, parent)
 {
@@ -251,8 +315,13 @@ AppService::AppService(bool insecure, QObject *parent)
     }
 #endif
 
+    qDebug() << "Initializing icon manager for service";
+    auto &iconManager = Data::IconManager::instance();
+    auto statusIconSettings = StatusIconSettings();
+    statusIconSettings.strokeWidth = StatusIconStrokeWidth::Thick;
+    iconManager.applySettings(&statusIconSettings, &statusIconSettings, true, true);
 #ifdef Q_OS_ANDROID
-    m_serviceConnection.connect();
+    connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &AppService::invalidateAndroidIconCache);
 #endif
 
     connect(&m_connection, &SyncthingConnection::error, this, &AppService::handleConnectionError);
@@ -277,6 +346,8 @@ AppService::AppService(bool insecure, QObject *parent)
         SyncthingLauncher::setMainInstance(&m_launcher);
     }
 
+    loadSettings();
+    applyLauncherSettings();
     invalidateStatus();
 }
 
@@ -305,30 +376,11 @@ void AppService::broadcastLauncherStatus()
 #endif
 }
 
-void AppService::applyLauncherSettings()
+bool AppService::applyLauncherSettings()
 {
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    static constexpr auto runByDefault = true;
-#else
-    static constexpr auto runByDefault = false;
-#endif
-    auto launcherSettings = m_settings.value(QLatin1String("launcher"));
-    auto launcherSettingsObj = launcherSettings.toObject();
-    auto mod = false;
-    ensureDefault(mod, launcherSettingsObj, QLatin1String("run"), runByDefault);
-    ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnMetered"), false);
-    ensureDefault(mod, launcherSettingsObj, QLatin1String("writeLogFile"), false);
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    ensureDefault(mod, launcherSettingsObj, QLatin1String("logLevel"), m_launcher.libSyncthingLogLevelString());
-#endif
-    ensureDefault(mod, launcherSettingsObj, QLatin1String("stHomeDir"), QString());
-    if (mod) {
-        m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
-    }
-
+    const auto launcherSettingsObj = m_settings.value(QLatin1String("launcher")).toObject();
     m_launcher.setStoppingOnMeteredConnection(launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
-
-    auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
+    const auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     auto options = LibSyncthing::RuntimeOptions();
     auto customSyncthingHome = launcherSettingsObj.value(QLatin1String("stHomeDir")).toString();
@@ -344,7 +396,7 @@ void AppService::applyLauncherSettings()
                 // FIXME: emit error
                 //emit error(tr("Unable to open persistent log file for Syncthing under \"%1\": %2")
                 //        .arg(m_launcher.logFile().fileName(), m_launcher.logFile().errorString()));
-                return;
+                return false;
             }
         }
     } else {
@@ -355,8 +407,10 @@ void AppService::applyLauncherSettings()
     if (shouldRun) {
         // FIXME: show error like in UI
         //emit error(tr("This build of the app cannot launch Syncthing."));
+        return false;
     }
 #endif
+    return true;
 }
 
 #ifdef Q_OS_ANDROID
@@ -585,6 +639,11 @@ App::App(bool insecure, QObject *parent)
     , m_unloadGuiWhenHidden(false)
 {
     qDebug() << "Initializing UI";
+
+#ifdef Q_OS_ANDROID
+    m_serviceConnection.connect();
+#endif
+
     m_app->installEventFilter(this);
     m_app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     connect(m_app, &QGuiApplication::applicationStateChanged, this, &App::handleStateChanged);
@@ -606,10 +665,6 @@ App::App(bool insecure, QObject *parent)
     statusIconSettings.strokeWidth = StatusIconStrokeWidth::Thick;
     iconManager.applySettings(&statusIconSettings, &statusIconSettings, true, true);
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::statusInfoChanged);
-#ifdef Q_OS_ANDROID
-    // FIXME
-    //connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::invalidateAndroidIconCache);
-#endif
 
     // set SD card paths to show SD card icons via directory model
 #ifdef Q_OS_ANDROID
@@ -1715,64 +1770,6 @@ void App::setPalette(const QColor &foreground, const QColor &background)
 #endif
 }
 
-QString App::openSettingFile(QFile &settingsFile, const QString &path)
-{
-    settingsFile.close();
-    settingsFile.unsetError();
-    settingsFile.setFileName(path);
-    if (!settingsFile.open(QFile::ReadWrite)) {
-        return tr("Unable to open settings under \"%1\": ").arg(path) + settingsFile.errorString();
-    }
-    return QString();
-}
-
-bool App::openSettings()
-{
-    if (!m_settingsDir.has_value()) {
-        m_settingsDir.emplace(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    }
-    if (!m_settingsDir->exists() && !m_settingsDir->mkpath(QStringLiteral("."))) {
-        emit error(tr("Unable to create settings directory under \"%1\".").arg(m_settingsDir->path()));
-        m_settingsDir.reset();
-        return false;
-    }
-    if (const auto errorMessage = openSettingFile(m_settingsFile, m_settingsDir->path() + QStringLiteral("/appconfig.json"));
-        !errorMessage.isEmpty()) {
-        m_settingsDir.reset();
-        emit error(errorMessage);
-        return false;
-    }
-    return true;
-}
-
-QString App::readSettingFile(QFile &settingsFile, QJsonObject &settings)
-{
-    auto parsError = QJsonParseError();
-    auto doc = QJsonDocument::fromJson(settingsFile.readAll(), &parsError);
-    settings = doc.object();
-    if (settingsFile.error() != QFile::NoError) {
-        return tr("Unable to read settings: ") + settingsFile.errorString();
-    }
-    if (parsError.error != QJsonParseError::NoError || !doc.isObject()) {
-        return tr("Unable to restore settings: ")
-            + (parsError.error != QJsonParseError::NoError ? parsError.errorString() : tr("JSON document contains no object"));
-    }
-    return QString();
-}
-
-bool App::loadSettings()
-{
-    if (!m_settingsFile.isOpen() && !openSettings()) {
-        return false;
-    }
-    if (const auto errorMessage = readSettingFile(m_settingsFile, m_settings); !errorMessage.isEmpty()) {
-        emit error(errorMessage);
-        return false;
-    }
-    emit settingsChanged(m_settings);
-    return true;
-}
-
 bool App::storeSettings()
 {
     if (!m_settingsFile.isOpen() && !openSettings()) {
@@ -1818,7 +1815,7 @@ bool App::applySettings()
     }
     m_connection.setInsecure(m_insecure);
     if (m_connectToLaunched) {
-        // FIXME: tell service gui address has changed
+        // FIXME: read gui url from service-provided launcher status
         //handleGuiAddressChanged(m_launcher.guiUrl());
     } else if (m_connection.applySettings(m_connectionSettingsFromConfig) || !m_connection.isConnected()) {
         m_connection.reconnect();
@@ -1832,7 +1829,7 @@ bool App::applySettings()
 
 void App::applyLauncherSettings()
 {
-    // FIXME: tell service
+    m_serviceConnection.binder().transact(SyncthingServiceBinder::ApplyLauncherSettings, QAndroidParcel(), nullptr, QAndroidBinder::CallType::OneWay);
 }
 
 bool App::clearLogfile()

@@ -51,11 +51,21 @@ class QuickImageProvider;
 #ifdef Q_OS_ANDROID
 namespace QtGui {
 
+class AppService;
+
 class SyncthingServiceBinder : public QAndroidBinder {
 public:
-    explicit SyncthingServiceBinder();
+    enum SyncthingServiceAction : int
+    {
+        ApplyLauncherSettings = 1,
+    };
+
+    explicit SyncthingServiceBinder(AppService &service);
 
     bool onTransact(int code, const QAndroidParcel &data, const QAndroidParcel &reply, QAndroidBinder::CallType flags) override;
+
+private:
+    AppService &m_service;
 };
 
 class SyncthingServiceConnection : public QAndroidServiceConnection {
@@ -63,6 +73,7 @@ public:
     explicit SyncthingServiceConnection();
 
     bool connect();
+    const QAndroidBinder &binder() const { return m_binder; }
     void onServiceConnected(const QString &name, const QAndroidBinder &serviceBinder) override;
     void onServiceDisconnected(const QString &name) override;
 
@@ -90,13 +101,17 @@ public:
         return &m_notifier;
     }
 
+    Q_INVOKABLE bool loadSettings();
+
 Q_SIGNALS:
+    void error(const QString &errorMessage, const QString &details = QString());
+    void settingsChanged(const QJsonObject &settingsChanged);
     void logsAvailable(const QString &newLogMessages);
 
 protected:
-    //virtual bool isRunning() = 0;
-    //virtual bool isStarting() = 0;
-    //virtual bool runningStatus() = 0;
+    static QString openSettingFile(QFile &settingsFile, const QString &path);
+    static QString readSettingFile(QFile &settingsFile, QJsonObject &settings);
+    bool openSettings();
 
 protected:
     Data::SyncthingConnection m_connection;
@@ -132,7 +147,7 @@ public:
 
 public Q_SLOTS:
     Q_INVOKABLE void broadcastLauncherStatus();
-    Q_INVOKABLE void applyLauncherSettings();
+    Q_INVOKABLE bool applyLauncherSettings();
 
 private Q_SLOTS:
     void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,
@@ -166,7 +181,6 @@ private:
     int m_androidNotificationId = 100000000;
     mutable std::optional<bool> m_storagePermissionGranted;
     mutable std::optional<bool> m_notificationPermissionGranted;
-    SyncthingServiceConnection m_serviceConnection;
 #endif
 };
 
@@ -343,7 +357,6 @@ public:
     Q_INVOKABLE bool reloadMain();
     Q_INVOKABLE bool unloadMain();
     Q_INVOKABLE void shutdown();
-    Q_INVOKABLE bool loadSettings();
     Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applySettings();
     Q_INVOKABLE void applyLauncherSettings();
@@ -400,15 +413,8 @@ public:
     Q_INVOKABLE void addDialog(QObject *dialog);
     Q_INVOKABLE void removeDialog(QObject *dialog);
 
-    //#ifdef Q_OS_ANDROID
-    //    // helper functions invoked directly from JNI env
-    //    QAndroidBinder *handleBind(const QAndroidIntent &intent);
-    //#endif
-
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
-    void settingsChanged(const QJsonObject &settingsChanged);
-    void error(const QString &errorMessage, const QString &details = QString());
     void internalError(const QtGui::InternalError &error);
     void info(const QString &infoMessage, const QString &details = QString());
     void statusChanged();
@@ -451,9 +457,6 @@ private:
     QStringList externalStoragePaths() const;
     void setImportExportStatus(ImportExportStatus importExportStatus);
     void applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled);
-    static QString openSettingFile(QFile &settingsFile, const QString &path);
-    static QString readSettingFile(QFile &settingsFile, QJsonObject &settings);
-    bool openSettings();
     QString locateSettingsExportDir();
 
     std::optional<QQmlApplicationEngine> m_engine;
@@ -468,6 +471,7 @@ private:
 #ifdef Q_OS_ANDROID
     mutable std::optional<bool> m_storagePermissionGranted;
     mutable std::optional<bool> m_notificationPermissionGranted;
+    SyncthingServiceConnection m_serviceConnection;
 #endif
     std::pair<QVariantMap, QVariantMap> m_settingsImport;
     std::optional<QString> m_homeDirMove;

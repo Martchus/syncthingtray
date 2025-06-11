@@ -299,9 +299,9 @@ static int runApplication(int argc, const char *const *argv)
         SET_QT_APPLICATION_INFO;
         qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
         auto guiApp = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
-        auto androidService = QAndroidService(argc, const_cast<char **>(argv), [](const QAndroidIntent &) { return new SyncthingServiceBinder(); });
-        networkAccessManager().setParent(&androidService);
         auto serviceApp = AppService(insecureArg.isPresent());
+        auto androidService = QAndroidService(argc, const_cast<char **>(argv), [&serviceApp](const QAndroidIntent &) { return new SyncthingServiceBinder(serviceApp); });
+        networkAccessManager().setParent(&androidService);
         qDebug() << "Executing service";
         const auto res = androidService.exec();
         qDebug() << "Qt service event loop exited with return code " << res;

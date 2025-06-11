@@ -185,11 +185,6 @@ public class SyncthingService extends QtService {
         Log.i(TAG, "Destroyed service and notification");
     }
 
-    //@Override
-    //public SyncthingServiceBinder onBind(Intent intent) {
-    //    return m_binder;
-    //}
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
