@@ -420,7 +420,8 @@
     <message>
         <location filename="../utils.cpp" line="86"/>
         <source>Synchronization of local folder %1 complete</source>
-        <translation>Синхронизация локальной папки %1 завершена</translation>
+        <translation>«%1»
+Синхронизация завершена</translation>
     </message>
     <message>
         <location filename="../utils.cpp" line="94"/>
