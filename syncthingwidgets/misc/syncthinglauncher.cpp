@@ -1,6 +1,5 @@
 #include "./syncthinglauncher.h"
 
-#include <qabstractanimation.h>
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/utils.h>
 
@@ -584,13 +583,13 @@ QVariant SyncthingLauncher::overallStatus() const
 {
     const auto isMetered = isNetworkConnectionMetered();
     return QVariantMap{
-        {QStringLiteral("isRunning"), isRunning()},
-        {QStringLiteral("isStarting"), isStarting()},
-        {QStringLiteral("isManuallyStopped"), isManuallyStopped()},
-        {QStringLiteral("guiUrl"), guiUrl()},
-        {QStringLiteral("errorString"), errorString()},
-        {QStringLiteral("runningStatus"), runningStatus()},
-        {QStringLiteral("isMetered"), isMetered.has_value() ? QVariant(isMetered.value()) : QVariant()},
+        { QStringLiteral("isRunning"), isRunning() },
+        { QStringLiteral("isStarting"), isStarting() },
+        { QStringLiteral("isManuallyStopped"), isManuallyStopped() },
+        { QStringLiteral("guiUrl"), guiUrl() },
+        { QStringLiteral("errorString"), errorString() },
+        { QStringLiteral("runningStatus"), runningStatus() },
+        { QStringLiteral("isMetered"), isMetered.has_value() ? QVariant(isMetered.value()) : QVariant() },
     };
 }
 

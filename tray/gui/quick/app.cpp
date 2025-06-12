@@ -1,4 +1,9 @@
 #include "./app.h"
+#include <private/qandroidextras_p.h>
+
+#ifdef Q_OS_ANDROID
+#include "./android.h"
+#endif
 
 #include "resources/config.h"
 
@@ -34,7 +39,6 @@
 #include <QNetworkReply>
 #include <QQmlContext>
 #include <QQuickView>
-#include <QStandardPaths>
 #include <QStringBuilder>
 #include <QUrlQuery>
 #include <QtConcurrent/QtConcurrentRun>
@@ -89,597 +93,9 @@
 #define SYNCTHING_APP_IS_PALETTE_DARK(palette) QtUtilities::isPaletteDark(palette)
 #endif
 
-#define SYNCTHINGTRAY_DEBUG_MAIN_LOOP_ACTIVITY
-
 using namespace Data;
 
 namespace QtGui {
-
-#ifdef Q_OS_ANDROID
-SyncthingServiceBinder::SyncthingServiceBinder(AppService &service)
-    : m_service(service)
-{
-    qDebug() << "Initializing Syncthing service binder";
-}
-
-bool SyncthingServiceBinder::onTransact(int code, const QAndroidParcel &data, const QAndroidParcel &reply, QAndroidBinder::CallType flags)
-{
-    Q_UNUSED(data)
-    Q_UNUSED(reply)
-    Q_UNUSED(flags)
-    switch (code) {
-    case SyncthingServiceBinder::ReloadSettings:
-        QMetaObject::invokeMethod(&m_service, "reloadSettings", Qt::QueuedConnection);
-        return true;
-    default:
-        return false;
-    }
-}
-
-SyncthingServiceConnection::SyncthingServiceConnection()
-{
-}
-
-bool SyncthingServiceConnection::connect()
-{
-    const auto serviceIntent = QAndroidIntent(QNativeInterface::QAndroidApplication::context(), "io.github.martchus.syncthingtray.SyncthingService");
-    const auto bindResult = QtAndroidPrivate::bindService(serviceIntent, *this, QtAndroidPrivate::BindFlag::AutoCreate);
-    qDebug() << "Binding to service: " << bindResult;
-    return bindResult;
-}
-
-void SyncthingServiceConnection::onServiceConnected(const QString &name, const QAndroidBinder &serviceBinder)
-{
-    qDebug() << "Connected to service: " << name;
-    m_binder = serviceBinder;
-}
-
-void SyncthingServiceConnection::onServiceDisconnected(const QString &name)
-{
-    qDebug() << "Disconnected from service: " << name;
-    m_binder = QAndroidBinder();
-}
-
-/// \brief The JniFn namespace defines functions called from Java.
-namespace JniFn {
-static AppService *appServiceObjectForJava = nullptr;
-static App *appObjectForJava = nullptr;
-
-static void loadQtQuickGui(JNIEnv *, jobject)
-{
-    QMetaObject::invokeMethod(appObjectForJava, "initEngine", Qt::QueuedConnection);
-}
-
-static void unloadQtQuickGui(JNIEnv *, jobject)
-{
-    QMetaObject::invokeMethod(appObjectForJava, "destroyEngine", Qt::QueuedConnection);
-}
-
-static void stopLibSyncthing(JNIEnv *, jobject)
-{
-    QMetaObject::invokeMethod(appServiceObjectForJava, "stopLibSyncthing", Qt::QueuedConnection);
-}
-
-static void broadcastLauncherStatus(JNIEnv *, jobject)
-{
-    QMetaObject::invokeMethod(appServiceObjectForJava, "broadcastLauncherStatus", Qt::QueuedConnection);
-}
-
-static void handleLauncherStatusBroadcast(JNIEnv *, jobject, jobject intent)
-{
-    const auto status = QAndroidIntent(QJniObject::fromLocalRef(intent)).extraVariant(QStringLiteral("status"));
-    QMetaObject::invokeMethod(appObjectForJava, "handleLauncherStatusBroadcast", Qt::QueuedConnection, Q_ARG(QVariant, status));
-}
-
-static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNotification)
-{
-    QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection,
-        Q_ARG(QString, QJniObject::fromLocalRef(page).toString()), Q_ARG(bool, fromNotification));
-}
-
-static void handleStoragePermissionChanged(JNIEnv *, jobject, jboolean storagePermissionGranted)
-{
-    QMetaObject::invokeMethod(appObjectForJava, "handleStoragePermissionChanged", Qt::QueuedConnection, Q_ARG(bool, storagePermissionGranted));
-}
-
-static void handleNotificationPermissionChanged(JNIEnv *, jobject, jboolean notificationPermissionGranted)
-{
-    QMetaObject::invokeMethod(
-        appObjectForJava, "handleNotificationPermissionChanged", Qt::QueuedConnection, Q_ARG(bool, notificationPermissionGranted));
-}
-} // namespace JniFn
-#endif
-
-/// \cond
-static void ensureDefault(bool &mod, QJsonObject &o, QLatin1String member, const QJsonValue &d)
-{
-    if (!o.contains(member)) {
-        o.insert(member, d);
-        mod = true;
-    }
-}
-/// \endcond
-
-AppBase::AppBase(bool insecure, QObject *parent)
-    : QObject(parent)
-    , m_notifier(m_connection)
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    , m_connectToLaunched(true)
-#else
-    , m_connectToLaunched(false)
-#endif
-    , m_insecure(insecure)
-{
-    qDebug() << "Initializing base";
-#if defined(SYNCTHINGTRAY_DEBUG_MAIN_LOOP_ACTIVITY)
-    if (auto *const app = QCoreApplication::instance()) {
-        auto *const timer = new QTimer(this);
-        QObject::connect(timer, &QTimer::timeout, app,
-            [msg = QStringLiteral("%1 still active (%2)")
-                    .arg(app->metaObject()->className(), qEnvironmentVariable("QT_QPA_PLATFORM", QStringLiteral("android")))] { qDebug() << msg; });
-        timer->setInterval(1000);
-        timer->start();
-    }
-#endif
-
-    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
-#ifdef Q_OS_ANDROID
-    m_notifier.setEnabledNotifications(
-        SyncthingHighLevelNotification::ConnectedDisconnected | SyncthingHighLevelNotification::NewDevice | SyncthingHighLevelNotification::NewDir);
-#else
-    m_notifier.setEnabledNotifications(SyncthingHighLevelNotification::ConnectedDisconnected);
-#endif
-}
-
-AppBase::~AppBase()
-{
-}
-
-QString AppBase::openSettingFile(QFile &settingsFile, const QString &path)
-{
-    settingsFile.close();
-    settingsFile.unsetError();
-    settingsFile.setFileName(path);
-    if (!settingsFile.open(QFile::ReadWrite)) {
-        return tr("Unable to open settings under \"%1\": ").arg(path) + settingsFile.errorString();
-    }
-    return QString();
-}
-
-bool AppBase::openSettings()
-{
-    if (!m_settingsDir.has_value()) {
-        m_settingsDir.emplace(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
-    }
-    if (!m_settingsDir->exists() && !m_settingsDir->mkpath(QStringLiteral("."))) {
-        emit error(tr("Unable to create settings directory under \"%1\".").arg(m_settingsDir->path()));
-        m_settingsDir.reset();
-        return false;
-    }
-    if (const auto errorMessage = openSettingFile(m_settingsFile, m_settingsDir->path() + QStringLiteral("/appconfig.json"));
-        !errorMessage.isEmpty()) {
-        m_settingsDir.reset();
-        emit error(errorMessage);
-        return false;
-    }
-    return true;
-}
-
-void AppBase::invalidateStatus()
-{
-    m_statusInfo.updateConnectionStatus(m_connection);
-    m_statusInfo.updateConnectedDevices(m_connection);
-}
-
-QString AppBase::readSettingFile(QFile &settingsFile, QJsonObject &settings)
-{
-    auto parsError = QJsonParseError();
-    auto doc = QJsonDocument::fromJson(settingsFile.readAll(), &parsError);
-    settings = doc.object();
-    if (settingsFile.error() != QFile::NoError) {
-        return tr("Unable to read settings: ") + settingsFile.errorString();
-    }
-    if (parsError.error != QJsonParseError::NoError || !doc.isObject()) {
-        return tr("Unable to restore settings: ")
-            + (parsError.error != QJsonParseError::NoError ? parsError.errorString() : tr("JSON document contains no object"));
-    }
-    return QString();
-}
-
-bool AppBase::loadSettings()
-{
-    if (!m_settingsFile.isOpen() && !openSettings()) {
-        return false;
-    }
-    if (const auto errorMessage = readSettingFile(m_settingsFile, m_settings); !errorMessage.isEmpty()) {
-        emit error(errorMessage);
-        return false;
-    }
-    emit settingsChanged(m_settings);
-    return true;
-}
-
-void AppBase::applyConnectionSettings(const QUrl &syncthingUrl)
-{
-    auto connectionSettings = m_settings.value(QLatin1String("connection"));
-    auto connectionSettingsObj = connectionSettings.toObject();
-    auto couldLoadCertificate = false;
-    auto modified = !connectionSettings.isObject();
-    if (!modified) {
-        couldLoadCertificate = m_connectionSettingsFromConfig.loadFromJson(connectionSettingsObj);
-    } else {
-        m_connectionSettingsFromConfig.storeToJson(connectionSettingsObj);
-        couldLoadCertificate = m_connectionSettingsFromConfig.loadHttpsCert();
-    }
-    auto useLauncherVal = connectionSettingsObj.value(QStringLiteral("useLauncher"));
-    m_connectToLaunched = useLauncherVal.toBool(m_connectToLaunched);
-    if (!useLauncherVal.isBool()) {
-        connectionSettingsObj.insert(QStringLiteral("useLauncher"), m_connectToLaunched);
-        modified = true;
-    }
-    if (modified) {
-        m_settings.insert(QLatin1String("connection"), connectionSettingsObj);
-    }
-    if (!couldLoadCertificate) {
-        emit error(tr("Unable to load HTTPs certificate"));
-    }
-    m_connection.setInsecure(m_insecure);
-        if (m_connectToLaunched) {
-        handleGuiAddressChanged(syncthingUrl);
-    } else if (m_connection.applySettings(m_connectionSettingsFromConfig) || !m_connection.isConnected()) {
-        m_connection.reconnect();
-    }
-}
-
-void AppBase::applySyncthingSettings()
-{
-    const auto launcherSettingsObj = m_settings.value(QLatin1String("launcher")).toObject();
-    auto customSyncthingHome = launcherSettingsObj.value(QLatin1String("stHomeDir")).toString();
-    m_syncthingConfigDir = customSyncthingHome.isEmpty() ? m_settingsDir->path() + QStringLiteral("/syncthing") : customSyncthingHome;
-    m_syncthingDataDir = m_syncthingConfigDir;
-}
-
-void AppBase::handleGuiAddressChanged(const QUrl &newUrl)
-{
-    auto url = newUrl;
-#ifndef QT_NO_SSL
-    // always use TLS if supported by Qt for the sake of security (especially on Android)
-    // note: Syncthing itself always supports it and allows connections via TLS even if the "tls" setting
-    //       is disabled (because this setting is just about *enforcing* TLS).
-    url.setScheme(QStringLiteral("https"));
-#endif
-    m_connectionSettingsFromLauncher.syncthingUrl = url.toString();
-    if (!m_syncthingConfig.restore(m_syncthingConfigDir + QStringLiteral("/config.xml"))) {
-        if (!newUrl.isEmpty()) {
-            emit error("Unable to read Syncthing config for automatic connection to backend.");
-        }
-        return;
-    }
-    m_connectionSettingsFromLauncher.apiKey = m_syncthingConfig.guiApiKey.toUtf8();
-    m_connectionSettingsFromLauncher.authEnabled = false;
-#ifndef QT_NO_SSL
-    m_connectionSettingsFromLauncher.httpsCertPath = m_syncthingConfigDir + QStringLiteral("/https-cert.pem");
-#endif
-
-    if (m_connectToLaunched) {
-        invalidateStatus();
-        if (newUrl.isEmpty()) {
-            m_connection.disconnect();
-        } else if (m_connection.applySettings(m_connectionSettingsFromLauncher) || !m_connection.isConnected()) {
-            m_connection.reconnect();
-        }
-    }
-}
-
-AppService::AppService(bool insecure, QObject *parent)
-    : AppBase(insecure, parent)
-{
-    qDebug() << "Initializing service app";
-
-#ifdef Q_OS_ANDROID
-    if (!JniFn::appServiceObjectForJava) {
-        qDebug() << "Registering service JNI methods";
-        JniFn::appServiceObjectForJava = this;
-        auto env = QJniEnvironment();
-        auto registeredMethods = true;
-        static const JNINativeMethod activityMethods[] = {
-            { "stopLibSyncthing", "()V", reinterpret_cast<void *>(JniFn::stopLibSyncthing) },
-            { "broadcastLauncherStatus", "()V", reinterpret_cast<void *>(JniFn::broadcastLauncherStatus) },
-        };
-        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", activityMethods, 2) && registeredMethods;
-        if (!registeredMethods) {
-            qWarning() << "Unable to register all native methods in JNI environment.";
-        }
-    }
-#endif
-
-    qDebug() << "Initializing icon manager for service";
-    auto &iconManager = Data::IconManager::instance();
-    auto statusIconSettings = StatusIconSettings();
-    statusIconSettings.strokeWidth = StatusIconStrokeWidth::Thick;
-    iconManager.applySettings(&statusIconSettings, &statusIconSettings, true, true);
-#ifdef Q_OS_ANDROID
-    connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &AppService::invalidateAndroidIconCache);
-#endif
-
-    connect(&m_connection, &SyncthingConnection::error, this, &AppService::handleConnectionError);
-    connect(&m_connection, &SyncthingConnection::statusChanged, this, &AppService::handleConnectionStatusChanged);
-    connect(&m_connection, &SyncthingConnection::newDevices, this, &AppService::handleChangedDevices);
-    connect(&m_connection, &SyncthingConnection::autoReconnectIntervalChanged, this, &AppService::invalidateStatus);
-    connect(&m_connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &AppService::invalidateStatus);
-    connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &AppService::handleChangedDevices);
-    connect(&m_connection, &SyncthingConnection::newErrors, this, &AppService::handleNewErrors);
-
-    m_launcher.setEmittingOutput(true);
-    connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &AppService::gatherLogs);
-    connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &AppService::handleRunningChanged);
-    connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &AppService::broadcastLauncherStatus);
-    connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::handleGuiAddressChanged);
-    connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::broadcastLauncherStatus);
-
-#ifdef Q_OS_ANDROID
-    connect(&m_notifier, &SyncthingNotifier::newDevice, this, &AppService::showNewDevice);
-    connect(&m_notifier, &SyncthingNotifier::newDir, this, &AppService::showNewDir);
-#endif
-
-    if (!SyncthingLauncher::mainInstance()) {
-        SyncthingLauncher::setMainInstance(&m_launcher);
-    }
-
-    reloadSettings();
-}
-
-AppService::~AppService()
-{
-    qDebug() << "Destroying service";
-    if (SyncthingLauncher::mainInstance() == &m_launcher) {
-        SyncthingLauncher::setMainInstance(nullptr);
-    }
-#ifdef Q_OS_ANDROID
-    if (JniFn::appServiceObjectForJava == this) {
-        JniFn::appServiceObjectForJava = nullptr;
-    }
-#endif
-}
-
-void AppService::broadcastLauncherStatus()
-{
-#ifdef Q_OS_ANDROID
-    auto intent = QAndroidIntent(QStringLiteral("io.github.martchus.syncthingtray.launcherstatus"));
-    intent.putExtra(QStringLiteral("status"), m_launcher.overallStatus());
-    QJniObject(QNativeInterface::QAndroidApplication::context())
-        .callMethod<void>("sendBroadcast", "(Landroid/content/Intent;)V", intent.handle().object());
-#else
-    emit launcherStatusChanged(m_launcher.overallStatus());
-#endif
-}
-
-bool AppService::applyLauncherSettings()
-{
-    const auto launcherSettingsObj = m_settings.value(QLatin1String("launcher")).toObject();
-    m_launcher.setStoppingOnMeteredConnection(launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
-    const auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    auto options = LibSyncthing::RuntimeOptions();
-    auto customSyncthingHome = launcherSettingsObj.value(QLatin1String("stHomeDir")).toString();
-    m_syncthingConfigDir = customSyncthingHome.isEmpty() ? m_settingsDir->path() + QStringLiteral("/syncthing") : customSyncthingHome;
-    m_syncthingDataDir = m_syncthingConfigDir;
-    options.configDir = m_syncthingConfigDir.toStdString();
-    options.dataDir = options.configDir;
-    m_launcher.setLibSyncthingLogLevel(launcherSettingsObj.value(QLatin1String("logLevel")).toString());
-    if (launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool()) {
-        if (!m_launcher.logFile().isOpen()) {
-            m_launcher.logFile().setFileName(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
-            if (!m_launcher.logFile().open(QIODeviceBase::WriteOnly | QIODeviceBase::Append | QIODeviceBase::Text)) {
-                // FIXME: emit error
-                //emit error(tr("Unable to open persistent log file for Syncthing under \"%1\": %2")
-                //        .arg(m_launcher.logFile().fileName(), m_launcher.logFile().errorString()));
-                return false;
-            }
-        }
-    } else {
-        m_launcher.logFile().close();
-    }
-    m_launcher.setRunning(shouldRun, std::move(options));
-#else
-    if (shouldRun) {
-        // FIXME: show error like in UI
-        //emit error(tr("This build of the app cannot launch Syncthing."));
-        return false;
-    }
-#endif
-    return true;
-}
-
-
-bool AppService::reloadSettings()
-{
-    const auto res = loadSettings() && applyLauncherSettings();
-    invalidateStatus();
-    return res;
-}
-
-bool AppService::applySettings()
-{
-    applySyncthingSettings();
-    applyConnectionSettings(m_launcher.guiUrl());
-    applyLauncherSettings();
-    invalidateStatus();
-    return true;
-}
-
-#ifdef Q_OS_ANDROID
-void AppService::stopLibSyncthing()
-{
-    m_launcher.stopLibSyncthing();
-}
-#endif
-
-void AppService::handleConnectionError(
-    const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
-{
-    Q_UNUSED(networkError)
-    Q_UNUSED(category)
-#ifdef Q_OS_ANDROID
-    auto error = InternalError(errorMessage, request.url(), response);
-    showInternalError(error);
-#else
-    Q_UNUSED(errorMessage)
-    Q_UNUSED(request)
-    Q_UNUSED(response)
-#endif
-}
-
-void AppService::invalidateStatus()
-{
-    AppBase::invalidateStatus();
-#ifdef Q_OS_ANDROID
-    updateAndroidNotification();
-#endif
-}
-
-void AppService::gatherLogs(const QByteArray &newOutput)
-{
-    const auto asText = QString::fromUtf8(newOutput);
-    emit logsAvailable(asText);
-    m_log.append(asText);
-}
-
-void AppService::handleRunningChanged(bool isRunning)
-{
-    Q_UNUSED(isRunning)
-    if (m_connectToLaunched) {
-        invalidateStatus();
-    }
-}
-
-void AppService::handleChangedDevices()
-{
-    m_statusInfo.updateConnectedDevices(m_connection);
-#ifdef Q_OS_ANDROID
-    updateAndroidNotification();
-#endif
-}
-
-void AppService::handleNewErrors(const std::vector<Data::SyncthingError> &errors)
-{
-    Q_UNUSED(errors)
-    invalidateStatus();
-#ifdef Q_OS_ANDROID
-    updateSyncthingErrorsNotification(errors);
-#endif
-}
-
-void AppService::handleConnectionStatusChanged(Data::SyncthingStatus newStatus)
-{
-    invalidateStatus();
-#ifdef Q_OS_ANDROID
-    switch (newStatus) {
-    case Data::SyncthingStatus::Reconnecting:
-        clearSyncthingErrorsNotification();
-        break;
-    default:;
-    }
-#else
-    Q_UNUSED(newStatus)
-#endif
-}
-
-#ifdef Q_OS_ANDROID
-void AppService::invalidateAndroidIconCache()
-{
-    m_statusInfo.updateConnectionStatus(m_connection);
-    m_androidIconCache.clear();
-    updateAndroidNotification();
-}
-
-QJniObject &AppService::makeAndroidIcon(const QIcon &icon)
-{
-    auto &cachedIcon = m_androidIconCache[&icon];
-    if (!cachedIcon.isValid()) {
-        cachedIcon = IconManager::makeAndroidBitmap(icon.pixmap(QSize(32, 32)).toImage());
-    }
-    return cachedIcon;
-}
-
-void AppService::updateAndroidNotification()
-{
-    // FIXME: const auto title = QJniObject::fromString(m_connection.isConnected() ? m_statusInfo.statusText() : status());
-    const auto title = QJniObject::fromString(m_statusInfo.statusText());
-    const auto text = QJniObject::fromString(m_statusInfo.additionalStatusText());
-    static const auto subText = QJniObject::fromString(QString());
-    const auto &icon = makeAndroidIcon(m_statusInfo.statusIcon());
-    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateNotification",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;)V", title.object(), text.object(), subText.object(),
-        icon.object());
-}
-
-void AppService::updateExtraAndroidNotification(
-    const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id)
-{
-    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(),
-        subText.object(), page.object(), icon.object(), id ? id : ++m_androidNotificationId);
-}
-
-void AppService::clearAndroidExtraNotifications(int firstId, int lastId)
-{
-    QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "cancelExtraNotification", "(II)V", firstId, lastId);
-}
-
-void AppService::updateSyncthingErrorsNotification(const std::vector<Data::SyncthingError> &newErrors)
-{
-    if (newErrors.empty()) {
-        clearSyncthingErrorsNotification();
-        return;
-    }
-    const auto syncthingErrors = newErrors.size();
-    const auto &mostRecent = newErrors.back();
-    const auto title = QJniObject::fromString(
-        syncthingErrors == 1 ? tr("Syncthing error/notification") : tr("%1 Syncthing errors/notifications").arg(syncthingErrors));
-    const auto text = QJniObject::fromString(syncthingErrors == 1 ? mostRecent.message : tr("Most recent: ") + mostRecent.message);
-    const auto subText = QJniObject::fromString(QString::fromStdString(mostRecent.when.toString()));
-    static const auto page = QJniObject::fromString(QStringLiteral("connectionErrors"));
-    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
-    updateExtraAndroidNotification(title, text, subText, page, icon, 2);
-}
-
-void AppService::clearSyncthingErrorsNotification()
-{
-    clearAndroidExtraNotifications(2, -1);
-}
-
-void AppService::showInternalError(const InternalError &error)
-{
-    const auto title = QJniObject::fromString(
-        m_internalErrors.empty() ? tr("Syncthing API error") : tr("%1 Syncthing API errors").arg(m_internalErrors.size() + 1));
-    const auto text = QJniObject::fromString(m_internalErrors.empty() ? error.message : tr("Most recent: ") + error.message);
-    const auto subText = QJniObject::fromString(error.url.isEmpty() ? QString() : QStringLiteral("URL: ") + error.url.toString());
-    static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
-    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
-    updateExtraAndroidNotification(title, text, subText, page, icon, 3);
-}
-
-void AppService::showNewDevice(const QString &devId, const QString &message)
-{
-    const auto title = QJniObject::fromString(tr("Syncthing device wants to connect"));
-    const auto text = QJniObject::fromString(message);
-    static const auto subText = QJniObject::fromString(QString());
-    const auto page = QJniObject::fromString(QStringLiteral("newdev:") + devId);
-    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().networkWired);
-    updateExtraAndroidNotification(title, text, subText, page, icon);
-}
-
-void AppService::showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message)
-{
-    const auto title = QJniObject::fromString(tr("Syncthing device wants to share folder"));
-    const auto text = QJniObject::fromString(message);
-    static const auto subText = QJniObject::fromString(QString());
-    const auto page = QJniObject::fromString(QStringLiteral("newfolder:") % devId % QChar(':') % dirId % QChar(':') % dirLabel);
-    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().shareAlt);
-    updateExtraAndroidNotification(title, text, subText, page, icon);
-}
-#endif
 
 App::App(bool insecure, QObject *parent)
     : AppBase(insecure, parent)
@@ -723,11 +139,7 @@ App::App(bool insecure, QObject *parent)
 #endif
     }
 
-    qDebug() << "Initializing icon manager";
-    auto &iconManager = Data::IconManager::instance();
-    auto statusIconSettings = StatusIconSettings();
-    statusIconSettings.strokeWidth = StatusIconStrokeWidth::Thick;
-    iconManager.applySettings(&statusIconSettings, &statusIconSettings, true, true);
+    auto &iconManager = initIconManager();
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::statusInfoChanged);
 
     // set SD card paths to show SD card icons via directory model
@@ -767,29 +179,14 @@ App::App(bool insecure, QObject *parent)
         [this](const QString &dirId) { emit info(tr("Triggered revert of \"%1\"").arg(dirDisplayName(dirId))); });
 
 #ifdef Q_OS_ANDROID
-    // register native methods of Android activity
-    if (!JniFn::appObjectForJava) {
-        qDebug() << "Registering UI JNI methods";
-        JniFn::appObjectForJava = this;
-        auto env = QJniEnvironment();
-        auto registeredMethods = true;
-        static const JNINativeMethod activityMethods[] = {
-            { "handleLauncherStatusBroadcast", "(Landroid/content/Intent;)V", reinterpret_cast<void *>(JniFn::handleLauncherStatusBroadcast) },
-            { "handleAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(JniFn::handleAndroidIntent) },
-            { "handleStoragePermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleStoragePermissionChanged) },
-            { "handleNotificationPermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleNotificationPermissionChanged) },
-            { "loadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::loadQtQuickGui) },
-            { "unloadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::unloadQtQuickGui) },
-        };
-        registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 6) && registeredMethods;
-        if (!registeredMethods) {
-            qWarning() << "Unable to register all native methods in JNI environment.";
-        }
-    }
-
     // start Android service
     qDebug() << "Starting Android service";
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
+
+    JniFn::registerActivityJniMethods(this);
+
+    // request launcher status in case the service has already been running
+    requestLauncherStatus();
 #endif
 
     QObject::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &App::shutdown);
@@ -803,9 +200,7 @@ App::~App()
 {
     qDebug() << "Destorying app";
 #ifdef Q_OS_ANDROID
-    if (JniFn::appObjectForJava == this) {
-        JniFn::appObjectForJava = nullptr;
-    }
+    JniFn::unregisterActivityJniMethods(this);
 #endif
 }
 
@@ -854,19 +249,14 @@ const QString &App::status()
     }
     switch (m_connection.status()) {
     case Data::SyncthingStatus::Disconnected:
-        return m_status.emplace(tr("Not connected to backend."));
     case Data::SyncthingStatus::Reconnecting:
-        return m_status.emplace(tr("Waiting for backend …"));
+        break;
     default:
         if (m_pendingConfigChange.reply) {
             return m_status.emplace(tr("Saving configuration …"));
-        } else if (const auto errorCount = m_connection.errors().size()) {
-            return m_status.emplace(tr("There are %n notification(s)/error(s).", nullptr, static_cast<int>(errorCount)));
-        } else if (const auto internalErrorCount = m_internalErrors.size()) {
-            return m_status.emplace(tr("There are %n Syncthing API error(s).", nullptr, static_cast<int>(internalErrorCount)));
         }
-        return m_status.emplace();
     }
+    return AppBase::status();
 }
 
 qint64 App::databaseSize(const QString &path, const QString &extension) const
@@ -1507,7 +897,6 @@ bool App::shouldIgnorePermissions(const QString &path)
 void App::invalidateStatus()
 {
     AppBase::invalidateStatus();
-    m_status.reset();
     m_statusInfo.updateConnectionStatus(m_connection);
     m_statusInfo.updateConnectedDevices(m_connection);
     emit statusInfoChanged();
@@ -1835,7 +1224,11 @@ bool App::storeSettings()
         emit error(tr("Unable to save settings: ") + m_settingsFile.errorString());
         return false;
     }
+#ifdef Q_OS_ANDROID
     m_serviceConnection.binder().transact(SyncthingServiceBinder::ReloadSettings, QAndroidParcel(), nullptr, QAndroidBinder::CallType::OneWay);
+#else
+    emit settingsReloadRequested();
+#endif
     return true;
 }
 
@@ -1998,6 +1391,25 @@ static QStringList::size_type importObjects(
 }
 /// \endcond
 
+void App::terminateSyncthing()
+{
+#ifdef Q_OS_ANDROID
+    m_serviceConnection.binder().transact(SyncthingServiceBinder::TerminateSyncthing, QAndroidParcel(), nullptr, QAndroidBinder::CallType::OneWay);
+#else
+    emit syncthingTerminationRequested();
+#endif
+}
+
+void App::requestLauncherStatus()
+{
+#ifdef Q_OS_ANDROID
+    m_serviceConnection.binder().transact(
+        SyncthingServiceBinder::BroadcastLauncherStatus, QAndroidParcel(), nullptr, QAndroidBinder::CallType::OneWay);
+#else
+    emit launcherStatusRequested();
+#endif
+}
+
 /*!
  * \brief Imports selected settings (app-related and of Syncthing itself) from the specified \a url.
  */
@@ -2017,8 +1429,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
         emit info(tr("Waiting for backend to terminate before importing settings …"));
         m_settingsImport.first = availableSettings;
         m_settingsImport.second = selectedSettings;
-        // FIXME
-        //m_launcher.terminate();
+        terminateSyncthing();
         return false;
     }
 
